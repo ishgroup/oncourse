@@ -665,7 +665,7 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="fromName" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="toName" type="VARCHAR" isMandatory="true" length="100"/>
-		<db-attribute name="description" type="TEXT" length="10000"/>
+		<db-attribute name="description" type="VARCHAR" length="1000"/>
 		<db-attribute name="isShownOnWeb" type="SMALLINT"/>
 		<db-attribute name="discountId" type="BIGINT"/>
 		<db-attribute name="shoppingCart"  isMandatory="true" type="SMALLINT"/>
@@ -4772,7 +4772,7 @@
 	<obj-relationship name="membeshipDiscountRelations" source="ContactRelationType" target="DiscountMembershipRelationType" deleteRule="Deny" db-relationship-path="membeshipDiscountRelations"/>
 	<obj-relationship name="relationType" source="EntityRelation" target="EntityRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
 	<obj-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" deleteRule="Deny" db-relationship-path="entityRelations"/>
-	<obj-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount" deleteRule="Deny" db-relationship-path="entityRelationTypeDiscount"/>
+	<obj-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount" deleteRule="Nullify" db-relationship-path="entityRelationTypeDiscount"/>
 	<obj-relationship name="taggedContact" source="ContactTagRelation" target="Contact" deleteRule="Nullify" db-relationship-path="taggedContact"/>
 	<obj-relationship name="contact" source="ContactUnavailableRuleRelation" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="contact" source="CorporatePass" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>

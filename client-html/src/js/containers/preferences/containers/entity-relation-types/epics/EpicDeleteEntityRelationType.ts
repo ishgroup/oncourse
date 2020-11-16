@@ -27,12 +27,12 @@ const request: EpicUtils.Request<any, any, any> = {
             },
             {
                 type: FETCH_SUCCESS,
-                payload: { message: "Entity Relation Type was successfully deleted" }
+                payload: { message: "Sellable item was successfully deleted" }
             }
         ];
     },
     processError: response => {
-        return FetchErrorHandler(response, "Error. Entity Relation Type was not deleted");
+        return FetchErrorHandler(response, "Error. Sellable item was not deleted");
     }
 };
 

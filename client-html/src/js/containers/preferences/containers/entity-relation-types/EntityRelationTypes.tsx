@@ -13,18 +13,22 @@ import {
 } from "../../actions";
 import { getFormValues } from "redux-form";
 import { State } from "../../../../reducers/state";
-import {EntityRelationCartAction, EntityRelationType} from "@api/model";
+import { Discount, EntityRelationType} from "@api/model";
 import { Fetch } from "../../../../model/common/Fetch";
 import EntityRelationTypesForm from "./components/EntityRelationTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { showConfirm } from "../../../../common/actions";
+import { getDiscounts } from "../../../entities/discounts/actions";
+import { sortDefaultSelectItems } from "../../../../common/utils/common";
 
 interface Props {
     getTypes: () => void;
+    getDiscounts: () => void;
     updateEntityRelationTypes: (entityRelationTypes: EntityRelationType[]) => void;
     deleteEntityRelationType: (id: string) => void;
     entityRelationTypes: EntityRelationType[];
     data: EntityRelationType[];
+    discounts: Discount[];
     timestamps: Date[];
     fetch: Fetch;
     openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
@@ -33,6 +37,7 @@ interface Props {
 class EntityRelationTypes extends React.Component<Props, any> {
     componentDidMount() {
         this.props.getTypes();
+        this.props.getDiscounts();
     }
 
     render() {
@@ -40,6 +45,7 @@ class EntityRelationTypes extends React.Component<Props, any> {
             updateEntityRelationTypes,
             deleteEntityRelationType,
             data,
+            discounts,
             entityRelationTypes,
             fetch,
             timestamps,
@@ -49,6 +55,11 @@ class EntityRelationTypes extends React.Component<Props, any> {
         const created = timestamps && timestamps[0];
         const modified = timestamps && timestamps[1];
 
+        const discountsMap = discounts && discounts.map(item => ({
+            value: Number(item.id),
+            label: item.name
+        }));
+
         const form = <EntityRelationTypesForm />;
 
         const componentForm = React.cloneElement(form, {
@@ -57,12 +68,13 @@ class EntityRelationTypes extends React.Component<Props, any> {
             openConfirm,
             entityRelationTypes,
             data,
+            discountsMap,
             fetch,
             onUpdate: updateEntityRelationTypes,
             onDelete: deleteEntityRelationType
         });
 
-        return <div>{entityRelationTypes && componentForm}</div>;
+        return <div>{entityRelationTypes && discounts && componentForm}</div>;
     }
 }
 
@@ -70,12 +82,14 @@ const mapStateToProps = (state: State) => ({
     data: getFormValues("EntityRelationTypesForm")(state),
     entityRelationTypes: state.preferences.entityRelationTypes,
     timestamps: state.preferences.entityRelationTypes && getTimestamps(state.preferences.entityRelationTypes),
+    discounts: state.discounts.items,
     fetch: state.fetch
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return {
         getTypes: () => dispatch(getEntityRelationTypes()),
+        getDiscounts: () => dispatch(getDiscounts("")),
         updateEntityRelationTypes: (entityRelationTypes: EntityRelationType[]) =>
             dispatch(updateEntityRelationTypes(entityRelationTypes)),
         deleteEntityRelationType: (id: string) => dispatch(deleteEntityRelationType(id)),

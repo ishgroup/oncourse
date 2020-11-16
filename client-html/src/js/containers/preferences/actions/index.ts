@@ -204,9 +204,9 @@ export const getContactRelationTypes = () => ({
 });
 
 
-export const updateEntityRelationTypes = (contactRelationTypes: EntityRelationType[]) => ({
+export const updateEntityRelationTypes = (entityRelationTypes: EntityRelationType[]) => ({
   type: UPDATE_ENTITY_RELATION_TYPES_REQUEST,
-  payload: { contactRelationTypes }
+  payload: { entityRelationTypes }
 });
 
 export const deleteEntityRelationType = (id: string) => ({

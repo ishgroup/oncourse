@@ -3,5 +3,5 @@ description: Cart action for related courses in checkout
 enum:
   - No action
   - Suggestion
-  - Add allow removal
-  - Add no removal
+  - Add but do not allow removal
+  - Add and allow removal

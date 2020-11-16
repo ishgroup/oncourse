@@ -8,7 +8,7 @@ import Fab from "@material-ui/core/Fab";
 import {
     FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
-import {EntityRelationCartAction, EntityRelationType} from "@api/model";
+import { EntityRelationType } from "@api/model";
 import isEqual from "lodash.isequal";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
@@ -20,12 +20,13 @@ import EntityRelationTypesRenderer from "./EntityRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 
-const manualLink = getManualLink("generalPrefs_contactRelationTypes");
+const manualLink = getManualLink("generalPrefs_sellableItemsRelationTypes");
 
 interface Props {
     data: any;
     classes: any;
     entityRelationTypes: EntityRelationType[];
+    discountsMap: any;
     created: Date;
     modified: Date;
     dispatch: any;
@@ -106,8 +107,12 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
     onAddNew = () => {
         const item = {} as EntityRelationType;
         item.id = null;
+        item.name = "";
         item.toName = "";
         item.fromName = "";
+        item.description = "";
+        item.shoppingCart = null;
+        item.discountId = null;
         item.isShownOnWeb = true;
         item.considerHistory = false;
 
@@ -148,7 +153,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
 
     render() {
         const {
-            classes, handleSubmit, data, dirty, created, modified, invalid
+            classes, handleSubmit, data, dirty, created, modified, invalid, discountsMap
         } = this.props;
 
         return (
@@ -170,7 +175,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
                                 <AddIcon />
                             </Fab>
                             <Typography className="appHeaderFontSize pl-2" variant="body1" color="inherit" noWrap>
-                                Course Relation Types
+                                Sellable items Relation Types
                             </Typography>
 
                             <div className="flex-fill" />
@@ -201,6 +206,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
                                     component={EntityRelationTypesRenderer}
                                     onDelete={this.onClickDelete}
                                     classes={classes}
+                                    discounts={discountsMap}
                                 />
                             )}
                         </Grid>
