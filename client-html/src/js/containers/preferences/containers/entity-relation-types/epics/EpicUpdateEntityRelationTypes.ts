@@ -14,22 +14,22 @@ import { EntityRelationType } from "@api/model";
 
 const request: EpicUtils.Request<any, any, any> = {
     type: UPDATE_ENTITY_RELATION_TYPES_REQUEST,
-    getData: payload => PreferencesService.updateEntityRelationTypes(payload.contactRelationTypes),
+    getData: payload => PreferencesService.updateEntityRelationTypes(payload.entityRelationTypes),
     retrieveData: () => PreferencesService.getEntityRelationTypes(),
     processData: (items: EntityRelationType[]) => {
         return [
             {
                 type: UPDATE_ENTITY_RELATION_TYPES_FULFILLED,
-                payload: { contactRelationTypes: items }
+                payload: { entityRelationTypes: items }
             },
             {
                 type: FETCH_SUCCESS,
-                payload: { message: "Entity Relation Types were successfully updated" }
+                payload: { message: "Sellable items were successfully updated" }
             }
         ];
     },
     processError: response => {
-        return FetchErrorHandler(response, "Error. Entity Relation Types was not updated");
+        return FetchErrorHandler(response, "Error. Sellable items were not updated");
     }
 };
 

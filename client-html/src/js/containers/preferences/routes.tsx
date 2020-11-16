@@ -139,9 +139,9 @@ const preferencesRoutes = [
     main: ContactRelationTypes
   },
   {
-    title: "Course relation types",
-    path: "/preferences/courseRelationTypes",
-    url: "/preferences/courseRelationTypes",
+    title: "Sellable items relation types",
+    path: "/preferences/sellableItemsRelationTypes",
+    url: "/preferences/sellableItemsRelationTypes",
     customAppBar: true,
     main: EntityRelationTypes
   },

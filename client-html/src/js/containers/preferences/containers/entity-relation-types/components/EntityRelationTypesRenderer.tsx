@@ -12,6 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import { EntityRelationType, EntityRelationCartAction } from "@api/model";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import {validateSingleMandatoryField, validateUniqueNamesInArray} from "../../../../../common/utils/validation";
 
 const CartActions = Object.keys(EntityRelationCartAction)
     .filter(val => isNaN(Number(val)))
@@ -20,7 +21,7 @@ const CartActions = Object.keys(EntityRelationCartAction)
 CartActions.sort(sortDefaultSelectItems);
 
 const renderEntityRelationTypes = props => {
-    const { fields, classes, onDelete } = props;
+    const { fields, classes, onDelete, discounts } = props;
 
     return (
         <Grid item xs={12}>
@@ -32,11 +33,24 @@ const renderEntityRelationTypes = props => {
                         <Grid container spacing={2} className="relative">
                             <Grid item xs={12}>
                                 <Grid container>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
+                                        <FormField
+                                            type="text"
+                                            name={`${item}.name`}
+                                            label="Name of relationship"
+                                            fullWidth
+                                            className={classes.field}
+                                            disabled={field.systemType}
+                                            required
+                                            validate={validateUniqueNamesInArray}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={4}>
                                         <FormField
                                             type="text"
                                             name={`${item}.toName`}
-                                            label="To Name"
+                                            label="To name"
                                             fullWidth
                                             className={classes.field}
                                             disabled={field.systemType}
@@ -44,12 +58,12 @@ const renderEntityRelationTypes = props => {
                                         />
                                     </Grid>
 
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
                                         <div className="d-flex">
                                             <FormField
                                                 type="text"
                                                 name={`${item}.fromName`}
-                                                label="From Name"
+                                                label="From name"
                                                 fullWidth
                                                 className={clsx(classes.field, "flex-fill")}
                                                 disabled={field.systemType}
@@ -72,12 +86,34 @@ const renderEntityRelationTypes = props => {
 
                                     <Grid item xs={12}>
                                         <FormField
+                                            type="text"
+                                            name={`${item}.description`}
+                                            label="Description"
+                                            fullWidth
+                                            className={classes.field}
+                                            disabled={field.systemType}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={4}>
+                                        <FormField
                                             type="select"
                                             name={`${item}.shoppingCart`}
                                             label="Cart action"
                                             items={CartActions}
                                             className={classes.field}
                                             required
+                                            fullWidth
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={8}>
+                                        <FormField
+                                            type="select"
+                                            name={`${item}.discountId`}
+                                            label="Discount"
+                                            items={discounts}
+                                            className={classes.field}
                                             fullWidth
                                         />
                                     </Grid>
@@ -94,7 +130,7 @@ const renderEntityRelationTypes = props => {
                                                     fullWidth
                                                 />
                                             )}
-                                            label={`Allow ${field.toName} to access all information in ${field.fromName} skillsOnCourse portal`}
+                                            label={`Show on web`}
                                         />
                                     </Grid>
 

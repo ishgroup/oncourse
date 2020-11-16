@@ -14,6 +14,7 @@ import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toCaye
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestEntityRelationType
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.validateBeforeRemove
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.validateBeforeUpdate
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.validateDuplicates
 
 class EntityRelationTypeApiImpl implements EntityRelationTypeApi {
 
@@ -44,6 +45,7 @@ class EntityRelationTypeApiImpl implements EntityRelationTypeApi {
     @Override
     void update(List<EntityRelationTypeDTO> relationTypes) {
         ObjectContext context = cayenneService.newContext
+        validateDuplicates(relationTypes)
 
         relationTypes.each { dtoModel ->
             validateBeforeUpdate(dtoModel)

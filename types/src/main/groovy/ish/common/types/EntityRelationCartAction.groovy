@@ -19,9 +19,9 @@ enum EntityRelationCartAction implements DisplayableExtendedEnumeration<Integer>
 
     SUGGESTION(1, "Suggestion"),
 
-    ADD_ALLOW_REMOVAL(2, "Add allow removal"),
+    ADD_ALLOW_REMOVAL(2, "Add and allow removal"),
 
-    ADD_NO_REMOVAL(3, "Add no removal");
+    ADD_NO_REMOVAL(3, "Add but do not allow removal");
 
     private String displayName
     private int value
