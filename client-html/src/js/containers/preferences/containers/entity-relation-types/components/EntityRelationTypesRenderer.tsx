@@ -12,6 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import { EntityRelationType, EntityRelationCartAction } from "@api/model";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import {validateSingleMandatoryField, validateUniqueNamesInArray} from "../../../../../common/utils/validation";
 
 const CartActions = Object.keys(EntityRelationCartAction)
     .filter(val => isNaN(Number(val)))
@@ -41,6 +42,7 @@ const renderEntityRelationTypes = props => {
                                             className={classes.field}
                                             disabled={field.systemType}
                                             required
+                                            validate={validateUniqueNamesInArray}
                                         />
                                     </Grid>
 

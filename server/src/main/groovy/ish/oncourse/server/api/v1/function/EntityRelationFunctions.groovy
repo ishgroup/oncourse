@@ -48,17 +48,17 @@ class EntityRelationFunctions {
     static void validateBeforeRemove(EntityRelationType dbEntity) {
 
         if (dbEntity.id <= 0) {
-            EntityValidator.throwClientErrorException(dbEntity.id, "id", "System entity relation type cannot be removed")
+            EntityValidator.throwClientErrorException(dbEntity.id, "id", "System sellable item relation type cannot be removed")
         }
 
         if (!dbEntity.entityRelations.empty) {
-            EntityValidator.throwClientErrorException(dbEntity.id, "entityRelations", "Entity relation type cannot be removed. It has assigned Entity relations.")
+            EntityValidator.throwClientErrorException(dbEntity.id, "entityRelations", "Sellable item cannot be removed. It has assigned Entity relations.")
         }
     }
 
     static void validateBeforeUpdate(EntityRelationTypeDTO dtoModel) {
         if (!dtoModel.name || dtoModel.name.empty) {
-            EntityValidator.throwClientErrorException("name", "Entity relation type should has a name.")
+            EntityValidator.throwClientErrorException("name", "Sellable item should has a name.")
         }
 
         if (!dtoModel.toName || dtoModel.toName.empty) {
@@ -70,7 +70,17 @@ class EntityRelationFunctions {
         }
 
         if (dtoModel.shoppingCart == null) {
-            EntityValidator.throwClientErrorException("shoppingCart", "Entity relation type should has a shoppingCart.")
+            EntityValidator.throwClientErrorException("shoppingCart", "Sellable item should has a shoppingCart.")
+        }
+    }
+
+
+    static void validateDuplicates(List<EntityRelationTypeDTO> relationTypes) {
+        List<String> names =  relationTypes*.name.flatten() as List<String>
+        List<String> duplicates = names.findAll { names.count(it) > 1 }.unique()
+
+        if (!duplicates.empty) {
+            EntityValidator.throwClientErrorException("name", "Sellable item shuold has unique name!")
         }
     }
 }
