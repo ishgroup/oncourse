@@ -10,6 +10,9 @@ import DocumentTags from "./DocumentTags";
 const styles = (theme: AppTheme) => createStyles({
   container: {
     paddingLeft: `${theme.spacing(10.5)}px !important`
+  },
+  documentNoTags: {
+    fontSize: 13
   }
 });
 
@@ -27,7 +30,7 @@ class DocumentItem extends React.PureComponent<any, any> {
       <Paper onClick={this.openFullDocumentView} classes={{ root: "cursor-pointer" }}>
         <Grid container className={`p-1 relative ${classes.container}`}>
           <DocumentHeader item={item} unlink={unlink} index={index} entity={entity} />
-          <DocumentTags tags={item.tags} />
+          <DocumentTags tags={item.tags} classes={classes} />
         </Grid>
       </Paper>
     );
