@@ -12,6 +12,10 @@
 package ish.oncourse.server.api.v1.function
 
 import ish.common.types.CourseEnrolmentType
+import ish.oncourse.server.cayenne.CourseCourseRelation
+import ish.oncourse.server.cayenne.CourseProductRelation
+import ish.oncourse.server.cayenne.EntityRelation
+
 import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
 import static ish.common.types.CourseEnrolmentType.OPEN_FOR_ENROLMENT
 import ish.oncourse.server.api.BidiMap
@@ -31,9 +35,39 @@ class CourseFunctions {
         put(ENROLMENT_BY_APPLICATION, CourseEnrolmentTypeDTO.ENROLMENT_BY_APPLICATION)
     }}
 
+    static SaleDTO toRestToEntityRelation(EntityRelation relation) {
+        SaleDTO dto
+        if (relation instanceof CourseCourseRelation) {
+            dto = toRestSalable(relation.toCourse)
+            dto.entityToId = relation.toCourse.id
+        } else if (relation instanceof CourseProductRelation) {
+            dto = toRestSalable(relation.product)
+            dto.entityToId = relation.product.id
+        } else {
+            throw new IllegalArgumentException("Unsupported entity type relation")
+        }
+        dto.id = relation.id
+        dto.relationId = relation.relationType?.id
+        dto
+    }
+
+
+    static SaleDTO toRestFromEntityRelation(EntityRelation relation) {
+        SaleDTO dto
+        if (relation instanceof CourseCourseRelation) {
+            dto = toRestSalable(relation.fromCourse)
+            dto.entityFromId = relation.fromCourse.id
+        } else {
+            throw new IllegalArgumentException("Unsupported entity type relation")
+        }
+        dto.id = relation.id
+        dto.relationId = relation.relationType?.id
+        dto
+    }
+
+
     static SaleDTO toRestSalable(Course course) {
         new SaleDTO().with { s ->
-            s.id = course.id
             s.active =  course.currentlyOffered || course.isShownOnWeb
             s.code = course.code
             s.name = course.with { "$it.name $it.code" }
@@ -44,7 +78,6 @@ class CourseFunctions {
 
     static SaleDTO toRestSalable(Product product) {
         new SaleDTO().with { s ->
-            s.id = product.id
             s.name = product.name
             s.code = product.sku
             switch (product) {

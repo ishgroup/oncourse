@@ -27,9 +27,13 @@ import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.QualificationDao
+import ish.oncourse.server.cayenne.EntityRelationType
+import org.apache.cayenne.query.SelectById
+
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.CourseFunctions.ENROLMENT_TYPE_MAP
-import static ish.oncourse.server.api.v1.function.CourseFunctions.toRestSalable
+import static ish.oncourse.server.api.v1.function.CourseFunctions.toRestFromEntityRelation
+import static ish.oncourse.server.api.v1.function.CourseFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
@@ -57,7 +61,6 @@ import ish.oncourse.server.cayenne.CourseAttachmentRelation
 import ish.oncourse.server.cayenne.CourseCustomField
 import ish.oncourse.server.cayenne.CourseTagRelation
 import ish.oncourse.server.cayenne.CourseUnavailableRuleRelation
-import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.duplicate.DuplicateCourseService
 import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.users.SystemUserService
@@ -140,8 +143,10 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.hasEnrolments = course.courseClasses.find { c -> !c.enrolments.empty} != null
             courseDTO.webDescription = course.webDescription
             courseDTO.documents = course.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
-            courseDTO.relatedlSalables = (course.toCourses.collect { toRestSalable(it.toCourse) } + course.fromCourses.collect { toRestSalable(it.fromCourse) } +
-                    course.productRelations.collect { toRestSalable(it.product) })
+            courseDTO.relatedlSalables = (course.toCourses.collect { toRestToEntityRelation(it) } +
+                    course.fromCourses.collect { toRestFromEntityRelation(it) } +
+                    course.productRelations.collect { toRestToEntityRelation(it) }
+            )
             courseDTO.qualificationId = course.qualification?.id
             courseDTO.qualNationalCode = course.qualification?.nationalCode
             courseDTO.qualTitle = course.qualification?.title
@@ -429,11 +434,12 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         course.context.deleteObjects(course.fromCourses.findAll { !courseRelationsToSave.contains(it.fromCourse.id) })
         course.context.deleteObjects(course.toCourses.findAll { !courseRelationsToSave.contains(it.toCourse.id) })
         if(map[true] != null) {
-            map[true].findAll { !course.toCourses*.toCourse*.id.contains(it.id) && !course.fromCourses*.fromCourse*.id.contains(it.id) }
+            map[true].findAll { !course.toCourses*.toCourse*.id.contains(it.entityToId) && !course.fromCourses*.fromCourse*.id.contains(it.entityFromId) }
                     .each { c ->
                         courseCourseRelationDao.newObject(course.context).with { courseRelation ->
-                            courseRelation.fromCourse = course
-                            courseRelation.toCourse = entityDao.getById(course.context, c.id)
+                            courseRelation.fromCourse = c.entityFromId ? entityDao.getById(course.context, c.entityFromId) : course
+                            courseRelation.toCourse = c.entityToId ? entityDao.getById(course.context, c.entityFromId) : course
+                            courseRelation.relationType = getRecordById(course.context, EntityRelationType, c.relationId ? c.relationId : EntityRelationType.DEFAULT_SYSTEM_TYPE_ID)
                         }
                     }
         }
@@ -442,10 +448,11 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         List<Long> productRelationsToSave = map[false]*.id ?: [] as List<Long>
         course.context.deleteObjects(course.productRelations.findAll { !productRelationsToSave.contains(it.product.id) })
         if(map[false] != null) {
-            map[false].findAll { !course.productRelations*.product*.id.contains(it.id) }.each { product ->
+            map[false].findAll { !course.productRelations*.product*.id.contains(it.entityToId) }.each { product ->
                 courseProductRelationDao.newObject(course.context).with { courseModule ->
                     courseModule.course = course
-                    courseModule.product = productDao.getById(course.context, product.id)
+                    courseModule.product = productDao.getById(course.context, product.entityToId)
+                    courseModule.relationType = getRecordById(course.context, EntityRelationType, product.relationId ? product.relationId : EntityRelationType.DEFAULT_SYSTEM_TYPE_ID)
                 }
             }
         }

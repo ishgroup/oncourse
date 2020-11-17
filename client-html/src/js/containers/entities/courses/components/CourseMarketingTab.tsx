@@ -20,11 +20,13 @@ import { Classes } from "../../../../model/entities/CourseClass";
 
 const transform = (sale: Sale): NestedListItem => ({
     id: sale.id.toString(),
-    entityId: sale.id,
+    entityId: sale.entityToId ? sale.entityToId : sale.entityFromId,
     entityName: sale.type,
     primaryText: sale.name,
     secondaryText: sale.code,
-    link: sale.type === SaleType.Class ? `/${Classes.path}?search=id is ${sale.id}` : `/${entityForLink(sale.type)}/${sale.id}`,
+    link: sale.type === SaleType.Class ?
+        `/${Classes.path}?search=id is ${sale.entityToId ? sale.entityToId : sale.entityFromId}` :
+        `/${entityForLink(sale.type)}/${sale.entityToId ? sale.entityToId : sale.entityFromId}`,
     active: typeof sale.active === "boolean" ? sale.active : true
 });
 

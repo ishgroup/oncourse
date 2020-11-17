@@ -92,7 +92,7 @@ class EntityRelation extends _EntityRelation implements Queueable {
 	@Override
 	void prePersist() {
 		if (getRelationType() == null) {
-			setRelationType(SelectById.query(EntityRelationType, -1l).selectOne(context))
+			setRelationType(SelectById.query(EntityRelationType, EntityRelationType.DEFAULT_SYSTEM_TYPE_ID).selectOne(context))
 		}
 	}
 
