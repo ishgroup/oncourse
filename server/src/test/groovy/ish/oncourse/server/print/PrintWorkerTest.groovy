@@ -4,13 +4,13 @@
 
 package ish.oncourse.server.print
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import ish.print.PrintRequest
 import ish.print.PrintTransformationsFactory
 import ish.print.transformations.PrintTransformation
@@ -24,6 +24,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.Before
 import org.junit.Test
 
+@CompileStatic
 class PrintWorkerTest extends CayenneIshTestCase {
 
 	private PreferenceController prefController
@@ -31,7 +32,7 @@ class PrintWorkerTest extends CayenneIshTestCase {
     @Before
     void setupTest() throws Exception {
 		wipeTables()
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/util/entityUtilTest.xml")
+        InputStream st = PrintWorkerTest.class.getClassLoader().getResourceAsStream("ish/util/entityUtilTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)

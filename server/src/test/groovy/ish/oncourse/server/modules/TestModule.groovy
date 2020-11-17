@@ -7,6 +7,7 @@ package ish.oncourse.server.modules
 import com.google.inject.Binder
 import com.google.inject.Module
 import com.google.inject.Scopes
+import groovy.transform.CompileStatic
 import ish.oncourse.GoogleGuiceInjector
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.impl.AntlrAqlService
@@ -35,16 +36,7 @@ import ish.oncourse.server.imports.ImportService
 import ish.oncourse.server.lifecycle.InvoiceLineInitHelper
 import ish.oncourse.server.quality.QualityService
 import ish.oncourse.server.querying.QueryService
-import ish.oncourse.server.reference.updater.IReferenceUpdaterFactory
-import ish.oncourse.server.reference.updater.ReferenceUpdaterFactory
-import ish.oncourse.server.replication.builders.AngelStubBuilderImpl
-import ish.oncourse.server.replication.builders.IAngelStubBuilder
-import ish.oncourse.server.replication.services.AngelQueueService
-import ish.oncourse.server.replication.services.IAngelQueueService
 import ish.oncourse.server.services.ISchedulerService
-import ish.oncourse.server.replication.services.TransactionGroupProcessorImpl
-import ish.oncourse.server.replication.updaters.AngelUpdaterImpl
-import ish.oncourse.server.replication.updaters.IAngelUpdater
 import ish.oncourse.server.report.IReportService
 import ish.oncourse.server.report.ReportService
 import ish.oncourse.server.scripting.GroovyScriptService
@@ -56,13 +48,13 @@ import ish.oncourse.server.services.ISystemUserService
 import ish.oncourse.server.services.TestSchedulerService
 import ish.oncourse.server.services.TestSystemUserService
 import ish.oncourse.server.upgrades.DataPopulation
-import ish.oncourse.webservices.ITransactionGroupProcessor
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.mockito.Mockito
 /**
  */
 // this module use for tests
+@CompileStatic
 class TestModule implements Module {
 
 	private static final Logger logger = LogManager.getLogger()
@@ -72,15 +64,6 @@ class TestModule implements Module {
 
         binder.bind(IReportService.class).to(ReportService.class).in(Scopes.SINGLETON)
 
-        binder.bind(ISoapPortLocator.class).to(SoapPortLocatorImpl.class)
-
-        binder.bind(IReferenceUpdaterFactory.class).to(ReferenceUpdaterFactory.class)
-
-        binder.bind(ITransactionGroupProcessor.class).to(TransactionGroupProcessorImpl.class)
-
-        binder.bind(IAngelStubBuilder.class).to(AngelStubBuilderImpl.class)
-        binder.bind(IAngelUpdater.class).to(AngelUpdaterImpl.class)
-        binder.bind(IAngelQueueService.class).to(AngelQueueService.class)
 
         binder.bind(AccountTransactionService.class).in(Scopes.SINGLETON)
         binder.bind(AuditService.class).in(Scopes.SINGLETON)

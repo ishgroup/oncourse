@@ -13,6 +13,8 @@ import io.bootique.test.junit.BQTestFactory
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.integration.Plugin
+import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.modules.ApiCayenneLayerModule
 import ish.oncourse.server.modules.ApiImplementationModule
 import ish.oncourse.server.modules.ApiServiceModule
@@ -33,6 +35,7 @@ import org.dbunit.ext.mysql.MySqlDataTypeFactory
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.ClassRule
+import org.reflections.Reflections
 
 import javax.sql.DataSource
 import java.sql.Connection
@@ -107,7 +110,8 @@ abstract class IshTestCase {
 			databaseType = DERBY
         }
 
-		injector = testFactory
+
+        BQTestFactory.Builder builder = testFactory
                 .app(String.format("--config=classpath:%s", yamlTestConfig))
 				.module(AngelModule.class)
 				.module(JdbcModule.class)
@@ -145,14 +149,22 @@ abstract class IshTestCase {
                 })
 				.module(TestModule.class)
                 .module(ApiCayenneLayerModule.class)
-//				.module(AngelJettyModule.class)
-				.createRuntime()
+        
+        testModules.each {
+            builder.module(it)
+        }
+        
+        injector = builder.createRuntime()
 
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
 
         DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
 
         dataSource = domain.getDataNode(ANGEL_NODE).getDataSource()
+    }
+
+    static List<Class> getTestModules() {
+        new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(TestModule)
     }
 
     static boolean testEnvDerby() {

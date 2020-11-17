@@ -16,7 +16,6 @@ import ish.print.transformations.AccountTransactionTransformation;
 import ish.print.transformations.BankingPaymentInterfaceTransformation;
 import ish.print.transformations.CertificateReportTransformation;
 import ish.print.transformations.ContactAccountTransactionTransformation;
-import ish.print.transformations.ContactAmountOwingSqlTransformation;
 import ish.print.transformations.CourseClassEnrolmentTransformation;
 import ish.print.transformations.CourseClassOutcomeTransformation;
 import ish.print.transformations.CourseClassSessionTransformation;
@@ -50,8 +49,7 @@ public class PrintTransformationsFactory {
 			"Certificate", mapFromValues("Certificate", new CertificateReportTransformation()),
 
 			"Contact", mapFromValues("AccountTransaction", new ContactAccountTransactionTransformation(),
-									 "Contact", new StatementLineReportTransformation(),
-									 "ContactDataRowDelegator", new ContactAmountOwingSqlTransformation()),
+									 "Contact", new StatementLineReportTransformation()),
 
 			"CourseClass", mapFromValues("Enrolment", new CourseClassEnrolmentTransformation(),
 										 "Outcome", new CourseClassOutcomeTransformation(),

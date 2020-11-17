@@ -17,6 +17,7 @@ import ConcessionTypes from "./containers/concession-types/ConcessionTypes";
 import ContactRelationTypes from "./containers/contact-relation-types/ContactRelationTypes";
 import CustomFields from "./containers/custom-fields/CustomFields";
 import TutorRoleForm from "./containers/tutor-roles/TutorRoleFormContainer";
+import EntityRelationTypes from "./containers/entity-relation-types/EntityRelationTypes";
 
 const preferencesRoutes = [
   {
@@ -136,6 +137,13 @@ const preferencesRoutes = [
     url: "/preferences/contactRelationTypes",
     customAppBar: true,
     main: ContactRelationTypes
+  },
+  {
+    title: "Sellable items relation types",
+    path: "/preferences/sellableItemsRelationTypes",
+    url: "/preferences/sellableItemsRelationTypes",
+    customAppBar: true,
+    main: EntityRelationTypes
   },
   {
     title: "Custom fields",

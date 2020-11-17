@@ -3,6 +3,7 @@
  */
 package ish.oncourse.server.services
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.AccountTransactionType
 import ish.common.types.ProductStatus
@@ -12,7 +13,6 @@ import ish.oncourse.server.accounting.AccountTransactionService
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
+@CompileStatic
 class VoucherExpiryJobTest extends CayenneIshTestCase {
 	
 	private ICayenneService cayenneService
@@ -36,7 +37,7 @@ class VoucherExpiryJobTest extends CayenneIshTestCase {
 		this.cayenneService = injector.getInstance(ICayenneService.class)
 		this.accountTransactionService = injector.getInstance(AccountTransactionService.class)
 
-		InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream(
+		InputStream st = VoucherExpiryJobTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/server/services/voucherExpiryJobTestDataSet.xml")
 		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
 		builder.setColumnSensing(true)

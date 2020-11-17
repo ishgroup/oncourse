@@ -1,0 +1,192 @@
+databaseChangeLog:
+  - changeSet:
+      id: 53-1
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: EntityRelationType
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(100)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: fromName
+                  type: VARCHAR(100)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: toName
+                  type: VARCHAR(100)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: description
+                  type: TEXT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: isShownOnWeb
+                  type: SMALLINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: shoppingCart
+                  type: SMALLINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: considerHistory
+                  type: SMALLINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: discountId
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: willowId
+                  type: BIGINT
+            tableName: EntityRelationType
+  - changeSet:
+      id: 53-2
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - columnExists:
+                tableName: EntityRelation
+                columnName: typeId
+      changes:
+        - addColumn:
+            tableName: EntityRelation
+            columns:
+              - column:
+                 name: typeId
+                 type: BIGINT
+  - changeSet:
+      id: 53-3
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: 'select count(*) from EntityRelationType'
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  header: id
+                  name: id
+                  type: NUMERIC
+              - column:
+                  header: createdOn
+                  name: createdOn
+                  type: DATE
+              - column:
+                  header: modifiedOn
+                  name: modifiedOn
+                  type: DATE
+              - column:
+                  header: name
+                  name: name
+                  type: STRING
+              - column:
+                  header: fromName
+                  name: fromName
+                  type: STRING
+              - column:
+                  header: toName
+                  name: toName
+                  type: STRING
+              - column:
+                  header: description
+                  name: description
+                  type: STRING
+              - column:
+                  header: isShownOnWeb
+                  name: isShownOnWeb
+                  type: NUMERIC
+              - column:
+                  header: shoppingCart
+                  name: shoppingCart
+                  type: NUMERIC
+              - column:
+                  header: considerHistory
+                  name: considerHistory
+                  type: NUMERIC
+              - column:
+                  header: discountId
+                  name: discountId
+                  type: skip
+              - column:
+                  header: willowId
+                  name: willowId
+                  type: skip
+            commentLineStartsWith: '#'
+            encoding: UTF-8
+            file: database/data/entityRelationType.csv
+            quotchar: '"'
+            separator: ','
+            tableName: EntityRelationType
+  - changeSet:
+      id: 53-4
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - foreignKeyConstraintExists:
+                foreignKeyName: Entity_Relation_Type_fk
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: typeId
+            baseTableName: EntityRelation
+            constraintName: Entity_Relation_Type_fk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: EntityRelationType
+            validate: true
+  - changeSet:
+      id: 53-5
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - foreignKeyConstraintExists:
+                foreignKeyName: EntityRelationType_Discount_fk
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: discountId
+            baseTableName: EntityRelationType
+            constraintName: EntityRelationType_Discount_fk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: Discount
+            validate: true

@@ -7,7 +7,6 @@ import ish.CayenneIshTestCase
 import ish.common.types.PaymentStatus
 import ish.math.Money
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -31,7 +30,7 @@ class PaymentInLineTest extends CayenneIshTestCase {
 
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/paymentInLineTest.xml")
+        InputStream st = PaymentInLineTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/paymentInLineTest.xml")
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
         builder.setColumnSensing(true)
 

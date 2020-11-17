@@ -12,7 +12,6 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.glue._Account
 import ish.oncourse.server.cayenne.glue._AccountTransaction
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import ish.persistence.Preferences
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
@@ -56,12 +55,8 @@ class InvoiceLineTest extends CayenneIshTestCase {
 		wipeTables()
 
         this.cayenneService = injector.getInstance(ICayenneService.class)
-//		this.stubBuilder = injector.getInstance(IAngelStubBuilder.class);
-//		this.queueService = injector.getInstance(IAngelQueueService.class);
-//		this.pref = injector.getInstance(PreferenceController.class);
-//		this.transactionBuilder = injector.getInstance(ITransactionStubBuilder.class);
 
-		InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/invoiceLineTest.xml")
+		InputStream st = InvoiceLineTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/invoiceLineTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
         Date start1 = DateUtils.addDays(new Date(), -4)

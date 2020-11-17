@@ -4,6 +4,7 @@
  */
 package ish.oncourse.server.util
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
@@ -22,7 +23,6 @@ import ish.oncourse.server.cayenne.PaymentMethod
 import ish.oncourse.server.cayenne.PaymentOut
 import ish.oncourse.server.cayenne.PaymentOutLine
 import ish.oncourse.server.cayenne.Tax
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.QueryCacheStrategy
@@ -43,13 +43,14 @@ import java.time.LocalDate
 
 /**
  */
+@CompileStatic
 class AccountTransactionUtilTest extends CayenneIshTestCase {
 
 	@Before
     void setupTest() throws Exception {
 		wipeTables()
 
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/ishDataContextTestDataSet.xml")
+        InputStream st = AccountTransactionUtilTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/ishDataContextTestDataSet.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)

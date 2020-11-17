@@ -4,6 +4,7 @@
 
 package ish.oncourse.server.print
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
@@ -16,7 +17,6 @@ import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import ish.print.AdditionalParameters
 import ish.print.PrintTransformationsFactory
 import ish.print.transformations.PrintTransformation
@@ -37,6 +37,7 @@ import org.junit.Test
 
 import java.time.LocalDate
 
+@CompileStatic
 class PrintTransformationTest extends CayenneIshTestCase {
 
 	static Date before = DateUtils.addDays(new Date(), -5)
@@ -48,7 +49,7 @@ class PrintTransformationTest extends CayenneIshTestCase {
     @Before
     void setupTest() throws Exception {
 		wipeTables()
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/print/printTransformationTest.xml")
+        InputStream st = PrintTransformationTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/print/printTransformationTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)

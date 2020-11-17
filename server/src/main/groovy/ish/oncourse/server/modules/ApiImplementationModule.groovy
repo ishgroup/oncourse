@@ -44,6 +44,7 @@ import ish.oncourse.server.api.v1.service.DocumentExportApi
 import ish.oncourse.server.api.v1.service.EmailTemplateApi
 import ish.oncourse.server.api.v1.service.EnrolmentApi
 import ish.oncourse.server.api.v1.service.EntityApi
+import ish.oncourse.server.api.v1.service.EntityRelationTypeApi
 import ish.oncourse.server.api.v1.service.ExportApi
 import ish.oncourse.server.api.v1.service.ExportTemplateApi
 import ish.oncourse.server.api.v1.service.FilterApi
@@ -119,6 +120,7 @@ import ish.oncourse.server.api.v1.service.impl.DocumentExportApiImpl
 import ish.oncourse.server.api.v1.service.impl.EmailTemplateApiImpl
 import ish.oncourse.server.api.v1.service.impl.EnrolmentApiImpl
 import ish.oncourse.server.api.v1.service.impl.EntityApiImpl
+import ish.oncourse.server.api.v1.service.impl.EntityRelationTypeApiImpl
 import ish.oncourse.server.api.v1.service.impl.ExportApiImpl
 import ish.oncourse.server.api.v1.service.impl.ExportTemplateApiImpl
 import ish.oncourse.server.api.v1.service.impl.FilterApiImpl
@@ -263,5 +265,6 @@ class ApiImplementationModule implements Module {
         binder.bind(AssessmentClassApi).to(AssessmentClassApiImpl)
         binder.bind(SessionApi).to(SessionApiImpl)
         binder.bind(CheckoutApi).to(CheckoutApiImpl)
+        binder.bind(EntityRelationTypeApi).to(EntityRelationTypeApiImpl)
     }
 }

@@ -6,7 +6,6 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.SearchRequestDTO
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.service.impl.TimetableApiImpl
-import ish.oncourse.server.replication.services.AngelQueueServiceTest
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import static org.junit.Assert.assertArrayEquals
@@ -23,7 +22,7 @@ class TimetableApiTest extends CayenneIshTestCase {
     @Before
     void before() {
         wipeTables()
-        InputStream st = AngelQueueServiceTest.classLoader.getResourceAsStream('ish/oncourse/server/api/TimetableApiTest.xml')
+        InputStream st = TimetableApiTest.classLoader.getResourceAsStream('ish/oncourse/server/api/TimetableApiTest.xml')
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
         executeDatabaseOperation(dataSet)
 

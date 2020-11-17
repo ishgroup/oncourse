@@ -30,6 +30,7 @@ export type ManualType =
   | "generalPrefs_college"
   | "generalPrefs_concessionTypes"
   | "generalPrefs_contactRelationTypes"
+  | "generalPrefs_sellableItemsRelationTypes"
   | "generalPrefs_customFields"
   | "generalPrefs_financial"
   | "generalPrefs_holidays"

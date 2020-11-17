@@ -4,6 +4,7 @@
  */
 package ish.oncourse.server.messaging
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
@@ -14,7 +15,6 @@ import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.MessagePerson
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.cayenne.ObjectContext
@@ -31,6 +31,7 @@ import org.junit.Test
 
 /**
  */
+@CompileStatic
 class EmailQueuingListenerTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
@@ -41,7 +42,7 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
 
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/voucherTest.xml")
+        InputStream st = EmailQueuingListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/voucherTest.xml")
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
         builder.setColumnSensing(true)
         FlatXmlDataSet dataSet = builder.build(st)

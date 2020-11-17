@@ -4,6 +4,7 @@
  */
 package ish.oncourse.server.print
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
@@ -15,7 +16,6 @@ import ish.oncourse.server.cayenne.PaymentOut
 import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.cayenne.ReportOverlay
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import ish.oncourse.server.upgrades.DataPopulation
 import ish.print.AdditionalParameters
 import ish.print.PrintRequest
@@ -77,7 +77,6 @@ class ReportPrintingTest extends CayenneIshTestCase {
         aMap.put("Outcome", Arrays.asList("CourseClass"))
         aMap.put("Enrolment", Arrays.asList("CourseClass", "Enrolment"))
         aMap.put("Session", Arrays.asList("CourseClass", "Session"))
-        aMap.put("ContactDataRowDelegator", Arrays.asList("Contact"))
         AVAILABLE_TRANSFORMATIONS = Collections.unmodifiableMap(aMap)
     }
 
@@ -88,7 +87,7 @@ class ReportPrintingTest extends CayenneIshTestCase {
 		wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/sampleData.xml")
+        InputStream st = ReportPrintingTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/sampleData.xml")
 
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
         builder.setColumnSensing(true)
@@ -192,7 +191,7 @@ class ReportPrintingTest extends CayenneIshTestCase {
         Class<? extends PersistentObjectI> entityClass = EntityUtil.entityClassForName(sourceEntity)
 
         List<PersistentObjectI> list = new ArrayList<>()
-        if (PaymentInterface.class.equals(entityClass)) {
+        if (entityClass instanceof PaymentInterface) {
 			list.addAll(cayenneService.getNewContext().select(SelectQuery.query(PaymentIn.class)))
             list.addAll(cayenneService.getNewContext().select(SelectQuery.query(PaymentOut.class)))
         } else {

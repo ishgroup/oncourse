@@ -11,13 +11,13 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.types.EntityRelationType
+import ish.common.types.EntityRelationIdentifier
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._EntityRelation
+import org.apache.cayenne.query.SelectById
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Entity relation describes generic link between two records in onCourse.
@@ -54,7 +54,7 @@ class EntityRelation extends _EntityRelation implements Queueable {
 	@Nonnull
 	@API
 	@Override
-	EntityRelationType getFromEntityIdentifier() {
+	EntityRelationIdentifier getFromEntityIdentifier() {
 		return super.getFromEntityIdentifier()
 	}
 
@@ -84,8 +84,16 @@ class EntityRelation extends _EntityRelation implements Queueable {
 	@Nonnull
 	@API
 	@Override
-	EntityRelationType getToEntityIdentifier() {
+	EntityRelationIdentifier getToEntityIdentifier() {
 		return super.getToEntityIdentifier()
+	}
+
+
+	@Override
+	void prePersist() {
+		if (getRelationType() == null) {
+			setRelationType(SelectById.query(EntityRelationType, -1l).selectOne(context))
+		}
 	}
 
 

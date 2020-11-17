@@ -16,7 +16,6 @@ import ish.oncourse.server.cayenne.PaymentOut
 import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.integration.PluginService
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import ish.oncourse.server.report.JRRuntimeConfig
 import ish.oncourse.server.upgrades.DataPopulation
 import ish.print.AdditionalParameters
@@ -27,7 +26,6 @@ import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.io.FileUtils
-import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
@@ -60,7 +58,7 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
     void setup() throws Exception {
 		wipeTables()
 
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/sampleData.xml")
+        InputStream st = ConcurrentReportPrintingTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/sampleData.xml")
 
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
         builder.setColumnSensing(true)

@@ -1,7 +1,7 @@
 package ish.oncourse.server.quality
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import ish.quality.QualityResult
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
@@ -12,12 +12,13 @@ import static org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
+@CompileStatic
 class QualityServiceTest extends CayenneIshTestCase {
 
 	@Before
     void setupTest() throws Exception {
 		wipeTables()
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/quality/qualityServiceTest.xml")
+        InputStream st = QualityServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/quality/qualityServiceTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)

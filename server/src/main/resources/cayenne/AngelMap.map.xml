@@ -665,10 +665,10 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="fromName" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="toName" type="VARCHAR" isMandatory="true" length="100"/>
-		<db-attribute name="description" type="TEXT" isMandatory="true" length="10000"/>
+		<db-attribute name="description" type="VARCHAR" length="1000"/>
 		<db-attribute name="isShownOnWeb" type="SMALLINT"/>
 		<db-attribute name="discountId" type="BIGINT"/>
-		<db-attribute name="shoppingCart" type="SMALLINT"/>
+		<db-attribute name="shoppingCart"  isMandatory="true" type="SMALLINT"/>
 		<db-attribute name="considerHistory" type="SMALLINT"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
@@ -2205,11 +2205,11 @@
 	<obj-entity name="EntityRelation" className="ish.oncourse.server.cayenne.EntityRelation" clientClassName="ish.oncourse.cayenne.EntityRelation" dbEntityName="EntityRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="fromEntityAngelId" type="java.lang.Long" db-attribute-path="fromRecordId"/>
-		<obj-attribute name="fromEntityIdentifier" type="ish.common.types.EntityRelationType" db-attribute-path="fromEntityIdentifier"/>
+		<obj-attribute name="fromEntityIdentifier" type="ish.common.types.EntityRelationIdentifier" db-attribute-path="fromEntityIdentifier"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="toEntityAngelId" type="java.lang.Long" db-attribute-path="toRecordId"/>
-		<obj-attribute name="toEntityIdentifier" type="ish.common.types.EntityRelationType" db-attribute-path="toEntityIdentifier"/>
+		<obj-attribute name="toEntityIdentifier" type="ish.common.types.EntityRelationIdentifier" db-attribute-path="toEntityIdentifier"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="EntityRelationType" className="ish.oncourse.server.cayenne.EntityRelationType" dbEntityName="EntityRelationType" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
@@ -3450,7 +3450,7 @@
 	<db-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" toMany="true">
 		<db-attribute-pair source="id" target="typeId"/>
 	</db-relationship>
-	<db-relationship name="discountEntityRelations" source="EntityRelationType" target="Discount" toMany="true">
+	<db-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount">
 		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
 	<db-relationship name="createdBy" source="ContactRelationType" target="SystemUser">
@@ -4770,8 +4770,9 @@
 		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="createdBy"/>
 	</obj-relationship>
 	<obj-relationship name="membeshipDiscountRelations" source="ContactRelationType" target="DiscountMembershipRelationType" deleteRule="Deny" db-relationship-path="membeshipDiscountRelations"/>
+	<obj-relationship name="relationType" source="EntityRelation" target="EntityRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
 	<obj-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" deleteRule="Deny" db-relationship-path="entityRelations"/>
-	<obj-relationship name="discountEntityRelations" source="EntityRelationType" target="Discount" deleteRule="Deny" db-relationship-path="discountEntityRelations"/>
+	<obj-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount" deleteRule="Nullify" db-relationship-path="entityRelationTypeDiscount"/>
 	<obj-relationship name="taggedContact" source="ContactTagRelation" target="Contact" deleteRule="Nullify" db-relationship-path="taggedContact"/>
 	<obj-relationship name="contact" source="ContactUnavailableRuleRelation" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="contact" source="CorporatePass" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
