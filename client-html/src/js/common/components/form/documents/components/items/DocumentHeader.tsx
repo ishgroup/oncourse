@@ -64,7 +64,6 @@ const styles = (theme: AppTheme) =>
       display: "-webkit-box",
       WebkitBoxOrient: "vertical",
       WebkitLineClamp: 2,
-      overflow: "hidden",
       maxHeight: "3em"
     },
     avatar: {
@@ -92,7 +91,7 @@ const DocumentInfo = props => {
   const { classes } = props;
   return (
     <div className="flex-column flex-fill overflow-hidden pr-1">
-      <Typography noWrap className={classes.infoName}>
+      <Typography className={`text-truncate ${classes.infoName}`}>
         {props.name}
       </Typography>
       <Typography className={classes.miniGrayText}>
