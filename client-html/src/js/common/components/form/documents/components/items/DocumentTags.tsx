@@ -2,7 +2,7 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
-const DocumentTags: React.FC<any> = ({ tags, bold }) => (
+const DocumentTags: React.FC<any> = ({ tags, bold, classes }) => (
   <Grid container>
     {tags.length ? (
       tags.map(t => (
@@ -12,7 +12,7 @@ const DocumentTags: React.FC<any> = ({ tags, bold }) => (
         </Typography>
       ))
     ) : (
-      <Typography variant="body2" className="placeholderContent">
+      <Typography variant="body2" className={`placeholderContent ${classes && classes.documentNoTags}`}>
         No Tags
       </Typography>
     )}
