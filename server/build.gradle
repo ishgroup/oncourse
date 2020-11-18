@@ -49,13 +49,7 @@ sourceSets {
 	}
 }
 
-task testJar(type: Jar) {
-	archiveClassifier = 'tests'
-	from sourceSets.test.output
-}
-
 dependencies {
-//	api 'ish.oncourse.commercial.plugin:replication:99-SNAPSHOT'
 	api project(":types")
 	api project(':server-api')
 	
@@ -317,9 +311,8 @@ publishing {
 			artifactId 'server-jar'
 		}
 		test(MavenPublication) {
-			artifact (testJar) {
-				artifactId "test"
-			}
+			from sourceSets.test.output
+			artifactId "test"
 		}
 		executables(MavenPublication) {
 			artifact(installer_unix) {
