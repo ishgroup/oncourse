@@ -310,10 +310,10 @@ publishing {
 			from components.java
 			artifactId 'server-jar'
 		}
-		test(MavenPublication) {
-			from sourceSets.test.output
-			artifactId "test"
-		}
+//		test(MavenPublication) {
+//			from sourceSets.test.output
+//			artifactId "test"
+//		}
 		executables(MavenPublication) {
 			artifact(installer_unix) {
 				classifier "executable"
