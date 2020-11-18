@@ -4,10 +4,13 @@
  */
 package ish.oncourse.commercial.replication
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentType
 import ish.math.Money
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
+import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
@@ -28,6 +31,7 @@ import static org.junit.Assert.assertEquals
 
 /**
  */
+@CompileStatic
 class ISHDataContextTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService

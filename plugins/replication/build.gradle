@@ -14,13 +14,14 @@ ext {
     cayenneVersion = '4.1'
     derbyVersion = '10.14.2.0'
     bootiqueVersion = '1.0'
+    groovyVersion ='2.5.13'
 
 }
 
 
 dependencies {
     implementation("ish.oncourse.willow:webservices-client:$webservicesVersion")
-    testImplementation group: "ish.oncourse.angel", name: "test", version: "99-SNAPSHOT", changing: true
+    testImplementation group: "ish.oncourse.angel", name: "test", version: "99-SNAPSHOT", classifier: 'tests', changing: true 
     testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
     testImplementation 'org.mockito:mockito-core:2.18.3'
     testImplementation "org.apache.derby:derbytools:$derbyVersion"
@@ -31,6 +32,17 @@ dependencies {
     testImplementation "org.testng:testng:6.13.1"
     testImplementation "org.apache.derby:derbyclient:$derbyVersion"
     testImplementation "org.apache.derby:derbynet:$derbyVersion"
+
+
+
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.dbunit:dbunit:2.6.0'
+
+    testImplementation "org.codehaus.groovy:groovy-test:$groovyVersion"
+    testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
+    testImplementation "org.codehaus.groovy:groovy-testng:$groovyVersion"
+    testImplementation "org.codehaus.groovy:groovy-sql:$groovyVersion"
+
 }
 
 cgen {

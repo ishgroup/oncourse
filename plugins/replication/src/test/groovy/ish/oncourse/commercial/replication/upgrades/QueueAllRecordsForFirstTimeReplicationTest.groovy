@@ -6,6 +6,8 @@ package ish.oncourse.commercial.replication.upgrades
 
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
+import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
@@ -57,7 +59,7 @@ class QueueAllRecordsForFirstTimeReplicationTest extends CayenneIshTestCase {
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
         InputStream st = QueueAllRecordsForFirstTimeReplicationTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/server/recordQueuingTestDataSet.xml")
+				"ish/oncourse/commercial/replication/upgrades/recordQueuingTestDataSet.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
         ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet)

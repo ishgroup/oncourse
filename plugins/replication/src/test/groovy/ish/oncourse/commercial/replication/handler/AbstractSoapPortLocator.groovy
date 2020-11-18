@@ -4,6 +4,7 @@
  */
 package ish.oncourse.commercial.replication.handler
 
+import groovy.transform.CompileStatic
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.webservices.soap.v22.PaymentPortType
 import ish.oncourse.webservices.soap.v22.ReplicationPortType
@@ -11,35 +12,24 @@ import ish.oncourse.webservices.soap.v7.ReferencePortType
 
 /**
  */
+@CompileStatic
 class AbstractSoapPortLocator implements ISoapPortLocator {
 
-	/**
-	 * @see ish.oncourse.server.modules.ISoapPortLocator#referencePort()
-	 */
 	@Override
 	ReferencePortType referencePort() {
 		return null
 	}
-
-	/**
-	 * @see ish.oncourse.server.modules.ISoapPortLocator#paymentPort()
-	 */
+	
 	@Override
 	PaymentPortType paymentPort() {
 		return null
 	}
-
-	/**
-	 * @see ish.oncourse.server.modules.ISoapPortLocator#replicationPort()
-	 */
+	
 	@Override
 	ReplicationPortType replicationPort() {
 		return null
 	}
-
-	/**
-	 * @see ish.oncourse.server.modules.ISoapPortLocator#resetReplicationPort()
-	 */
+	
 	@Override
 	void resetReplicationPort() {}
 }

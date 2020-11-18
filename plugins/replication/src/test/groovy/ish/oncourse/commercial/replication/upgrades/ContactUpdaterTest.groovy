@@ -4,13 +4,14 @@
  */
 package ish.oncourse.commercial.replication.upgrades
 
+import groovy.transform.CompileStatic
 import ish.common.types.Gender
+import ish.oncourse.commercial.replication.updaters.ContactUpdater
+import ish.oncourse.commercial.replication.updaters.RelationShipCallback
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.server.replication.updaters.ContactUpdater
-import ish.oncourse.server.replication.updaters.RelationShipCallback
 import ish.oncourse.webservices.v22.stubs.replication.ContactStub
 import org.apache.cayenne.ObjectContext
 import org.junit.Before
@@ -21,6 +22,7 @@ import static org.junit.Assert.assertNull
 
 /**
  */
+@CompileStatic
 class ContactUpdaterTest {
 
 	// @Mock

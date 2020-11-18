@@ -1,12 +1,13 @@
 package ish.oncourse.commercial.replication.updaters
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.*
 import ish.math.Money
+import ish.oncourse.commercial.replication.handler.OutboundReplicationHandlerTest
+import ish.oncourse.commercial.replication.services.TransactionGroupProcessorImpl
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
-import ish.oncourse.server.replication.services.TransactionGroupProcessorImpl
 import ish.oncourse.webservices.v22.stubs.replication.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -20,6 +21,7 @@ import java.time.LocalDate
 
 import static org.junit.Assert.*
 
+@CompileStatic
 class PaymentInUpdaterTest extends CayenneIshTestCase {
 
     private ICayenneService cayenneService
@@ -27,7 +29,7 @@ class PaymentInUpdaterTest extends CayenneIshTestCase {
     @Before
     void setup() throws Exception {
         wipeTables()
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/replication/updaters/PaymentInUpdaterTest.xml")
+        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/updaters/PaymentInUpdaterTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
         executeDatabaseOperation(dataSet)
         this.cayenneService = injector.getInstance(ICayenneService.class)

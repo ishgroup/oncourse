@@ -5,8 +5,11 @@
 
 package ish.oncourse.commercial.replication.lifecycle
 
+import groovy.transform.CompileStatic
+import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
 import ish.math.Money
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
@@ -22,6 +25,9 @@ import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.cayenne.query.SortOrder
 import org.apache.commons.lang3.time.DateUtils
+import org.dbunit.dataset.ReplacementDataSet
+import org.dbunit.dataset.xml.FlatXmlDataSet
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -29,6 +35,7 @@ import org.junit.Test
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertEquals
 
+@CompileStatic
 class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
 
 
@@ -39,7 +46,7 @@ class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
         wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
-        InputStream st = InvoiceLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/lifecycle/invoiceLifecycleTest.xml")
+        InputStream st = InvoiceLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/lifecycle/invoiceLifecycleTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)

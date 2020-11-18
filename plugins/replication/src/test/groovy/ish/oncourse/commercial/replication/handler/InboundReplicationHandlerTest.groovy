@@ -4,10 +4,11 @@
  */
 package ish.oncourse.commercial.replication.handler
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.*
+import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.modules.ISoapPortLocator
 import ish.oncourse.webservices.ITransactionGroupProcessor
 import ish.oncourse.webservices.soap.v22.ReplicationPortType
 import ish.oncourse.webservices.util.GenericTransactionGroup
@@ -20,6 +21,7 @@ import static org.junit.Assert.*
 
 /**
  */
+@CompileStatic
 class InboundReplicationHandlerTest extends CayenneIshTestCase {
 
 	private ITransactionGroupProcessor transactionGroupAtomicUpdater
@@ -40,9 +42,6 @@ class InboundReplicationHandlerTest extends CayenneIshTestCase {
 			ReplicationPortType replicationPort() {
 
 				return new AbstractReplicationPortType() {
-					/**
-					 * @see ish.oncourse.server.replication.handler.AbstractReplicationPortType#getRecords()
-					 */
 					@Override
 					ReplicationRecords getRecords() {
 						ReplicationRecords records = new ReplicationRecords()
@@ -193,9 +192,6 @@ class InboundReplicationHandlerTest extends CayenneIshTestCase {
 
 				return new AbstractReplicationPortType() {
 
-					/**
-					 * @see ish.oncourse.server.replication.handler.AbstractReplicationPortType#getRecords()
-					 */
 					@Override
 					ReplicationRecords getRecords() {
 						ReplicationRecords records = new ReplicationRecords()
@@ -250,9 +246,6 @@ class InboundReplicationHandlerTest extends CayenneIshTestCase {
 						return records
 					}
 
-					/**
-					 * @see ish.oncourse.server.replication.handler.AbstractReplicationPortType#sendResults(ish.oncourse.webservices.v22.stubs.replication.ReplicationResult)
-					 */
 					@Override
 					int sendResults(ReplicationResult replResult) {
 

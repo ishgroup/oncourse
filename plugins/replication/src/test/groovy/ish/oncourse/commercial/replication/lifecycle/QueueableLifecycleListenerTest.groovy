@@ -4,13 +4,17 @@
  */
 package ish.oncourse.commercial.replication.lifecycle
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.MessageType
-import ish.oncourse.cayenne.QueuedRecordAction
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
+import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
+import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
+import ish.oncourse.commercial.replication.handler.OutboundReplicationHandlerTest
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
+import ish.oncourse.server.lifecycle.SampleEntityBuilder
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.EJBQLQuery
 import org.apache.cayenne.query.ObjectSelect
@@ -24,12 +28,13 @@ import static org.junit.Assert.*
 
 /**
  */
+@CompileStatic
 class QueueableLifecycleListenerTest extends CayenneIshTestCase {
 
 	@Before
     void setup() throws Exception {
 		wipeTables()
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/lifecycle/queuDataSet.xml")
+        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/lifecycle/queuDataSet.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
         executeDatabaseOperation(dataSet)
         PreferenceController pref = injector.getInstance(PreferenceController.class)

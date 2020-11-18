@@ -5,8 +5,11 @@
 
 package ish.oncourse.commercial.replication
 
+import ish.CayenneIshTestCase
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
+import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.CourseClass
@@ -16,6 +19,9 @@ import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
+import org.dbunit.dataset.ReplacementDataSet
+import org.dbunit.dataset.xml.FlatXmlDataSet
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.Before
 import org.junit.Test
 
@@ -32,7 +38,7 @@ class EnrolmentTest extends CayenneIshTestCase {
         wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
-        InputStream st = EnrolmentTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/enrolment-outcomeTest.xml")
+        InputStream st = EnrolmentTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/enrolment-outcomeTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
         Date start1 = DateUtils.addDays(new Date(), -2)

@@ -4,6 +4,7 @@
  */
 package ish.oncourse.commercial.replication.handler
 
+import groovy.transform.CompileStatic
 import ish.oncourse.webservices.soap.v22.AuthFailure
 import ish.oncourse.webservices.soap.v22.ReplicationFault
 import ish.oncourse.webservices.soap.v22.ReplicationPortType
@@ -11,6 +12,7 @@ import ish.oncourse.webservices.v22.stubs.replication.*
 
 /**
  */
+@CompileStatic
 class AbstractReplicationPortType implements ReplicationPortType {
 
 	/**

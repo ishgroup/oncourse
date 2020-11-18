@@ -4,16 +4,18 @@
  */
 package ish.oncourse.commercial.replication.handler
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.*
 import ish.math.Money
+import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
+import ish.oncourse.commercial.replication.modules.ISoapPortLocator
+import ish.oncourse.commercial.replication.services.IAngelQueueService
 import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.server.modules.ISoapPortLocator
-import ish.oncourse.server.replication.builders.IAngelStubBuilder
-import ish.oncourse.server.replication.services.IAngelQueueService
 import ish.oncourse.webservices.soap.v22.ReplicationPortType
 import ish.oncourse.webservices.util.GenericReplicationStub
 import ish.oncourse.webservices.v22.stubs.replication.*
@@ -33,6 +35,7 @@ import static org.junit.Assert.*
 
 /**
  */
+
 class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
@@ -47,7 +50,7 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 	@Test
 	void testSendInvoiceRecords() throws Exception {
 
-		InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/replication/handler/testDataSet.xml")
+		InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/handler/testDataSet.xml")
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 		executeDatabaseOperation(dataSet)
 		ObjectContext ctx = this.cayenneService.getNewContext()

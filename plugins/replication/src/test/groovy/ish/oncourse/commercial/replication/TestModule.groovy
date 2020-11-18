@@ -22,6 +22,7 @@ import ish.oncourse.commercial.replication.updaters.IAngelUpdater
 import ish.oncourse.webservices.ITransactionGroupProcessor
 
 @CompileStatic
+@ish.TestModule
 class TestModule implements Module {
     
     @Override

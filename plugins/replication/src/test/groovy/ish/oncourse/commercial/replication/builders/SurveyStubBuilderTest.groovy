@@ -1,9 +1,10 @@
 package ish.oncourse.commercial.replication.builders
 
+import groovy.transform.CompileStatic
 import ish.common.types.SurveyVisibility
+import ish.oncourse.commercial.replication.updaters.AngelUpdaterImpl
+import ish.oncourse.commercial.replication.updaters.RelationShipCallback
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.server.replication.updaters.AngelUpdaterImpl
-import ish.oncourse.server.replication.updaters.RelationShipCallback
 import ish.oncourse.webservices.v22.stubs.replication.SurveyStub
 import org.apache.cayenne.ObjectId
 import org.junit.Test
@@ -11,6 +12,7 @@ import org.junit.Test
 import static org.junit.Assert.assertEquals
 import static org.mockito.Mockito.*
 
+@CompileStatic
 class SurveyStubBuilderTest {
 
 
@@ -51,20 +53,20 @@ class SurveyStubBuilderTest {
     }
 
     private static Survey createMockSurvey() {
-        final Enrolment enrolment = org.mockito.Mockito.mock(Enrolment)
-        org.mockito.Mockito.when(enrolment.getId()).thenReturn(1L)
-        final FieldConfiguration fieldConfiguration = org.mockito.Mockito.spy(new SurveyFieldConfiguration())
+        final Enrolment enrolment = mock(Enrolment)
+        when(enrolment.getId()).thenReturn(1L)
+        final FieldConfiguration fieldConfiguration = spy(new SurveyFieldConfiguration())
         fieldConfiguration.setId(1L)
-        org.mockito.Mockito.when(fieldConfiguration.getId()).thenCallRealMethod()
-        Survey survey = org.mockito.Mockito.mock(Survey)
-        org.mockito.Mockito.when(survey.getComment()).thenReturn('Comment')
-        org.mockito.Mockito.when(survey.getCourseScore()).thenReturn(1)
-        org.mockito.Mockito.when(survey.getTutorScore()).thenReturn(2)
-        org.mockito.Mockito.when(survey.getVenueScore()).thenReturn(3)
-        org.mockito.Mockito.when(survey.getEnrolment()).thenReturn(enrolment)
-        org.mockito.Mockito.when(survey.getVisibility()).thenReturn(SurveyVisibility.REVIEW)
-        org.mockito.Mockito.when(survey.getFieldConfiguration()).thenReturn(fieldConfiguration)
-        org.mockito.Mockito.when(survey.getObjectId()).thenReturn(new ObjectId("Survey", "id", 1L))
+        when(fieldConfiguration.getId()).thenCallRealMethod()
+        Survey survey = mock(Survey)
+        when(survey.getComment()).thenReturn('Comment')
+        when(survey.getCourseScore()).thenReturn(1)
+        when(survey.getTutorScore()).thenReturn(2)
+        when(survey.getVenueScore()).thenReturn(3)
+        when(survey.getEnrolment()).thenReturn(enrolment)
+        when(survey.getVisibility()).thenReturn(SurveyVisibility.REVIEW)
+        when(survey.getFieldConfiguration()).thenReturn(fieldConfiguration)
+        when(survey.getObjectId()).thenReturn(new ObjectId("Survey", "id", 1L))
         survey
     }
 }

@@ -4,9 +4,10 @@
  */
 package ish.oncourse.commercial.replication.services
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.QueuedTransaction
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.Before
@@ -16,6 +17,7 @@ import static org.junit.Assert.assertEquals
 
 /**
  */
+@CompileStatic
 class AngelQueueServiceTest extends CayenneIshTestCase {
 
 	private AngelQueueService service
@@ -23,7 +25,7 @@ class AngelQueueServiceTest extends CayenneIshTestCase {
     @Before
     void setup() throws Exception {
 		wipeTables()
-        InputStream st = AngelQueueServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/replication/services/angelQueueServiceTest.xml")
+        InputStream st = AngelQueueServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/services/angelQueueServiceTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
         executeDatabaseOperation(dataSet)
 

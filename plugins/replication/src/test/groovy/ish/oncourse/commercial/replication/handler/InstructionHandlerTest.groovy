@@ -1,10 +1,13 @@
 package ish.oncourse.commercial.replication.handler
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
-import ish.oncourse.cayenne.QueuedRecordAction
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
+import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
+import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
+import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.server.modules.ISoapPortLocator
 import ish.oncourse.webservices.soap.v22.ReplicationPortType
 import ish.oncourse.webservices.v22.stubs.replication.InstructionStub
 import org.apache.cayenne.CayenneRuntimeException
@@ -22,6 +25,7 @@ import static org.junit.Assert.*
 
 /**
  */
+@CompileStatic
 class InstructionHandlerTest extends CayenneIshTestCase {
 	private ICayenneService cayenneService
 
@@ -31,7 +35,7 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		this.cayenneService = injector.getInstance(ICayenneService.class)
 
 		InputStream st = DiscountTest.class.getClassLoader().getResourceAsStream(
-			"ish/oncourse/server/replication/handler/instructionHandlerTestDataSet.xml")
+			"ish/oncourse/commercial/replication/handler/instructionHandlerTestDataSet.xml")
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
 		ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet)

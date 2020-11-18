@@ -4,14 +4,15 @@
  */
 package ish.oncourse.commercial.replication.handler
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
-import ish.oncourse.cayenne.QueuedRecordAction
+import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
+import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
+import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
+import ish.oncourse.commercial.replication.modules.ISoapPortLocator
+import ish.oncourse.commercial.replication.services.IAngelQueueService
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.QueuedRecord
-import ish.oncourse.server.cayenne.QueuedTransaction
-import ish.oncourse.server.modules.ISoapPortLocator
-import ish.oncourse.server.replication.builders.IAngelStubBuilder
-import ish.oncourse.server.replication.services.IAngelQueueService
 import ish.oncourse.webservices.soap.v22.ReplicationPortType
 import ish.oncourse.webservices.util.GenericReplicationStub
 import ish.oncourse.webservices.v22.stubs.replication.*
@@ -27,6 +28,7 @@ import static org.junit.Assert.*
 
 /**
  */
+@CompileStatic
 class OutboundReplicationActionNullTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
@@ -46,7 +48,7 @@ class OutboundReplicationActionNullTest extends CayenneIshTestCase {
 	@Test
 	void testQueuedRecordWithNullAction() throws Exception {
 		InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/server/replication/handler/actionNullDataSet.xml")
+				"ish/oncourse/commercial/replication/handler/actionNullDataSet.xml")
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 		executeDatabaseOperation(dataSet)
