@@ -1,0 +1,99 @@
+/**
+ * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+package ish.oncourse.commercial.replication
+
+import ish.CayenneIshTestCase
+import ish.common.types.PaymentSource
+import ish.common.types.PaymentType
+import ish.math.Money
+import ish.oncourse.entity.services.SetPaymentMethod
+import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.cayenne.*
+import ish.util.PaymentMethodUtil
+import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.SelectById
+import org.apache.cayenne.query.SelectQuery
+import org.apache.commons.lang3.time.DateUtils
+import org.dbunit.dataset.ReplacementDataSet
+import org.dbunit.dataset.xml.FlatXmlDataSet
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.Before
+import org.junit.Test
+
+import java.time.LocalDate
+
+import static org.junit.Assert.assertEquals
+
+/**
+ */
+class ISHDataContextTest extends CayenneIshTestCase {
+
+	private ICayenneService cayenneService
+
+    @Before
+    void setup() throws Exception {
+		wipeTables()
+        this.cayenneService = injector.getInstance(ICayenneService.class)
+        InputStream st = ISHDataContextTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/ishDataContextTestDataSet.xml")
+        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
+
+        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+        Date start1 = DateUtils.addDays(new Date(), -2)
+        Date start2 = DateUtils.addDays(new Date(), -2)
+        rDataSet.addReplacementObject("[start_date1]", start1)
+        rDataSet.addReplacementObject("[start_date2]", start2)
+        rDataSet.addReplacementObject("[end_date1]", DateUtils.addHours(start1, 2))
+        rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
+
+        executeDatabaseOperation(rDataSet)
+        super.setup()
+    }
+
+	@Test
+    void testTransactionKey() {
+
+		ObjectContext context = cayenneService.getNewContext()
+
+        context.deleteObjects(context.select(SelectQuery.query(QueuedRecord.class)))
+        context.deleteObjects(context.select(SelectQuery.query(QueuedTransaction.class)))
+        context.commitChanges()
+
+        Account accountIn = SelectById.query(Account.class, 50).selectOne(context)
+        Contact payer = SelectById.query(Contact.class, 1).selectOne(context)
+        Invoice invoice1 = SelectById.query(Invoice.class, 1).selectOne(context)
+        Invoice invoice2 = SelectById.query(Invoice.class, 2).selectOne(context)
+
+        PaymentIn payment = context.newObject(PaymentIn.class)
+        payment.setPaymentDate(LocalDate.now())
+        payment.setAccountIn(accountIn)
+        payment.setAmount(new Money(new BigDecimal(50)))
+        payment.setPayer(payer)
+        payment.setReconciled(false)
+        payment.setSource(PaymentSource.SOURCE_ONCOURSE)
+        SetPaymentMethod.valueOf(PaymentMethodUtil.getCustomPaymentMethod(context, PaymentMethod.class, PaymentType.EFT), payment).set()
+
+        PaymentInLine pil1 = context.newObject(PaymentInLine.class)
+        pil1.setInvoice(invoice1)
+        pil1.setAccountOut(accountIn)
+        pil1.setAmount(invoice1.getAmountOwing())
+        pil1.setPaymentIn(payment)
+
+        PaymentInLine pil2 = context.newObject(PaymentInLine.class)
+        pil2.setInvoice(invoice2)
+        pil2.setAccountOut(accountIn)
+        pil2.setAmount(invoice2.getAmountOwing())
+        pil2.setPaymentIn(payment)
+
+        context.commitChanges()
+
+        List<QueuedRecord> queuedRecords = context.select(SelectQuery.query(QueuedRecord.class))
+        assertEquals(3, queuedRecords.size())
+        Long transactionId = queuedRecords.get(0).getTransactionId()
+
+        for (QueuedRecord r : queuedRecords) {
+			assertEquals(transactionId, r.getTransactionId())
+        }
+	}
+}
