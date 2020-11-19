@@ -39,6 +39,7 @@ public interface CorporatePassApi  {
     @POST
     @Path("/v1/makeCorporatePass")
     @Produces({ "application/json" })
+    @XValidate
     @CollegeInfo
     void makeCorporatePass(MakeCorporatePassRequest request);
 }

@@ -28,6 +28,7 @@ public interface ContactApi  {
     @PUT
     @Path("/v1/contact")
     @Produces({ "application/json" })
+    @XValidate
     @CollegeInfo
     @ContactValidation
     ContactId createOrGetContact(CreateContactParams createContactParams);
@@ -36,6 +37,7 @@ public interface ContactApi  {
     @Path("/v1/createParentChildrenRelation")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @XValidate
     @CollegeInfo
     void createParentChildrenRelation(CreateParentChildrenRequest request);
 
@@ -67,6 +69,7 @@ public interface ContactApi  {
     @PUT
     @Path("/v1/submitConcession")
     @Produces({ "application/json" })
+    @XValidate
     @CollegeInfo
     void submitConcession(Concession concession);
 
@@ -74,6 +77,7 @@ public interface ContactApi  {
     @Path("/v1/submitContactDetails")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @XValidate
     @CollegeInfo
     ContactId submitContactDetails(SubmitFieldsRequest contactFields);
 }

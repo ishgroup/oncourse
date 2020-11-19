@@ -272,6 +272,7 @@ paths:
   /v1/contact:
     put:
       x-filter:
+        - XValidate
         - CollegeInfo
         - ContactValidation
       summary: Create or get Contact
@@ -353,6 +354,7 @@ paths:
   /v1/createParentChildrenRelation:
     put:
       x-filter:
+      - XValidate 
       - CollegeInfo
       summary: Create parent children relation
       operationId: createParentChildrenRelation
@@ -381,6 +383,7 @@ paths:
   /v1/submitContactDetails:
     post:
       x-filter:
+      - XValidate
       - CollegeInfo
       summary: Save contact details from web form
       operationId: submitContactDetails
@@ -641,6 +644,7 @@ paths:
   /v1/submitConcession:
     put:
       x-filter:
+      - XValidate
       - CollegeInfo
       summary: Save conact's concession
       operationId: submitConcession
@@ -736,6 +740,7 @@ paths:
   /v1/makeCorporatePass:
     post:
       x-filter:
+      - XValidate
       - CollegeInfo
       summary: Make corporate pass process
       operationId: makeCorporatePass
