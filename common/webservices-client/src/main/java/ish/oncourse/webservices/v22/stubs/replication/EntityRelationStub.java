@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="fromEntityWillowId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="toEntityAngelId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="toEntityWillowId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="relationTypeId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -40,7 +41,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "fromEntityAngelId",
     "fromEntityWillowId",
     "toEntityAngelId",
-    "toEntityWillowId"
+    "toEntityWillowId",
+    "relationTypeId"
 })
 public class EntityRelationStub
     extends ReplicationStub
@@ -70,6 +72,10 @@ public class EntityRelationStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long toEntityWillowId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "long")
+    protected Long relationTypeId;
 
     /**
      * Gets the value of the fromEntityIdentifier property.
@@ -213,6 +219,30 @@ public class EntityRelationStub
      */
     public void setToEntityWillowId(Long value) {
         this.toEntityWillowId = value;
+    }
+
+    /**
+     * Gets the value of the relationTypeId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getRelationTypeId() {
+        return relationTypeId;
+    }
+
+    /**
+     * Sets the value of the relationTypeId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRelationTypeId(Long value) {
+        this.relationTypeId = value;
     }
 
 }

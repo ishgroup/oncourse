@@ -62,6 +62,7 @@ public class ObjectFactory {
     private final static QName _Survey_QNAME = new QName("http://repl.v22.soap.webservices.oncourse.ish/", "survey");
     private final static QName _SessionModule_QNAME = new QName("http://repl.v22.soap.webservices.oncourse.ish/", "sessionModule");
     private final static QName _EntityRelation_QNAME = new QName("http://repl.v22.soap.webservices.oncourse.ish/", "entityRelation");
+    private final static QName _EntityRelationType_QNAME = new QName("http://repl.v22.soap.webservices.oncourse.ish/", "entityRelationType");
     private final static QName _CorporatePass_QNAME = new QName("http://repl.v22.soap.webservices.oncourse.ish/", "corporatePass");
     private final static QName _CorporatePassCourseClass_QNAME = new QName("http://repl.v22.soap.webservices.oncourse.ish/", "corporatePassCourseClass");
     private final static QName _CorporatePassProduct_QNAME = new QName("http://repl.v22.soap.webservices.oncourse.ish/", "corporatePassProduct");
@@ -439,6 +440,14 @@ public class ObjectFactory {
      */
     public EntityRelationStub createEntityRelationStub() {
         return new EntityRelationStub();
+    }
+
+    /**
+     * Create an instance of {@link EntityRelationTypeStub }
+     * 
+     */
+    public EntityRelationTypeStub createEntityRelationTypeStub() {
+        return new EntityRelationTypeStub();
     }
 
     /**
@@ -915,7 +924,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ParametersMap }
-     * 
+     *
      */
     public ParametersMap createParametersMap() {
         return new ParametersMap();
@@ -1316,6 +1325,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v22.soap.webservices.oncourse.ish/", name = "entityRelation")
     public JAXBElement<EntityRelationStub> createEntityRelation(EntityRelationStub value) {
         return new JAXBElement<EntityRelationStub>(_EntityRelation_QNAME, EntityRelationStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link EntityRelationTypeStub }{@code >}}
+     *
+     */
+    @XmlElementDecl(namespace = "http://repl.v22.soap.webservices.oncourse.ish/", name = "entityRelationType")
+    public JAXBElement<EntityRelationTypeStub> createEntityRelationType(EntityRelationTypeStub value) {
+        return new JAXBElement<EntityRelationTypeStub>(_EntityRelationType_QNAME, EntityRelationTypeStub.class, null, value);
     }
 
     /**
@@ -1842,7 +1860,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://repl.v22.soap.webservices.oncourse.ish/", name = "paymentStatusRequest")
     public JAXBElement<String> createPaymentStatusRequest(String value) {
@@ -1851,7 +1869,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://repl.v22.soap.webservices.oncourse.ish/", name = "paymentStatusResponse")
     public JAXBElement<TransactionGroup> createPaymentStatusResponse(TransactionGroup value) {
@@ -1860,7 +1878,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://repl.v22.soap.webservices.oncourse.ish/", name = "refundRequest")
     public JAXBElement<TransactionGroup> createRefundRequest(TransactionGroup value) {
@@ -1869,7 +1887,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://repl.v22.soap.webservices.oncourse.ish/", name = "refundResponse")
     public JAXBElement<TransactionGroup> createRefundResponse(TransactionGroup value) {
@@ -1878,7 +1896,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://repl.v22.soap.webservices.oncourse.ish/", name = "paymentRequest")
     public JAXBElement<TransactionGroup> createPaymentRequest(TransactionGroup value) {
@@ -1887,7 +1905,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ParametersMap }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://repl.v22.soap.webservices.oncourse.ish/", name = "paymentModel")
     public JAXBElement<ParametersMap> createPaymentModel(ParametersMap value) {
@@ -1896,7 +1914,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TransactionGroup }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://repl.v22.soap.webservices.oncourse.ish/", name = "paymentResponse")
     public JAXBElement<TransactionGroup> createPaymentResponse(TransactionGroup value) {
@@ -1987,7 +2005,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ParametersMap }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://repl.v22.soap.webservices.oncourse.ish/", name = "usiRequest")
     public JAXBElement<ParametersMap> createUsiRequest(ParametersMap value) {
@@ -1996,7 +2014,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ParametersMap }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://repl.v22.soap.webservices.oncourse.ish/", name = "usiResponse")
     public JAXBElement<ParametersMap> createUsiResponse(ParametersMap value) {

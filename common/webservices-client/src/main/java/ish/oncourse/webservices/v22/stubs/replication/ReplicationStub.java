@@ -74,6 +74,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     SurveyStub.class,
     SessionModuleStub.class,
     EntityRelationStub.class,
+    EntityRelationTypeStub.class,
     CorporatePassStub.class,
     CorporatePassCourseClassStub.class,
     CorporatePassProductStub.class,
