@@ -16,7 +16,7 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._EntityRelationType
 
 @API
-@QueueableEntity
+//@QueueableEntity
 class EntityRelationType extends _EntityRelationType implements Queueable {
 
     final static Long DEFAULT_SYSTEM_TYPE_ID = -1l;
