@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import com.sun.istack.NotNull
 import ish.common.types.EntityRelationIdentifier
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
@@ -39,12 +40,11 @@ class EntityRelation extends _EntityRelation implements Queueable {
 	}
 
 	/**
-	 * @return angel ID of the entity record on the left side of the relation
+	 * @return ID of the entity record on the left side of the relation
 	 */
 	@Nonnull
 	@API
-	@Override
-	Long getFromEntityAngelId() {
+	Long getFromRecordId() {
 		return super.getFromEntityAngelId()
 	}
 
@@ -53,8 +53,7 @@ class EntityRelation extends _EntityRelation implements Queueable {
 	 */
 	@Nonnull
 	@API
-	@Override
-	EntityRelationIdentifier getFromEntityIdentifier() {
+	EntityRelationIdentifier getFromEntity() {
 		return super.getFromEntityIdentifier()
 	}
 
@@ -69,12 +68,11 @@ class EntityRelation extends _EntityRelation implements Queueable {
 	}
 
 	/**
-	 * @return angel ID of entity record on the right side of the relation
+	 * @return ID of entity record on the right side of the relation
 	 */
 	@Nonnull
 	@API
-	@Override
-	Long getToEntityAngelId() {
+	Long getToRecordId() {
 		return super.getToEntityAngelId()
 	}
 
@@ -83,9 +81,18 @@ class EntityRelation extends _EntityRelation implements Queueable {
 	 */
 	@Nonnull
 	@API
-	@Override
-	EntityRelationIdentifier getToEntityIdentifier() {
+	EntityRelationIdentifier getToEntity() {
 		return super.getToEntityIdentifier()
+	}
+
+	/**
+	 * @return type of relation between entities
+	 */
+	@NotNull
+	@API
+	@Override
+	EntityRelationType getRelationType() {
+		return super.getRelationType()
 	}
 
 
