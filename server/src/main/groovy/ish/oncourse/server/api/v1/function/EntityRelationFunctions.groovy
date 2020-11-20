@@ -39,6 +39,8 @@ class EntityRelationFunctions {
         dbEntity.considerHistory = dtoModel.considerHistory
         if (dtoModel.discountId) {
             dbEntity.entityRelationTypeDiscount = SelectById.query(Discount, dtoModel.discountId).selectOne(dbEntity.context)
+        } else {
+            dbEntity.entityRelationTypeDiscount = null
         }
         if (dtoModel.shoppingCart) {
             dbEntity.shoppingCart = TypesUtil.getEnumForDisplayName(dtoModel.shoppingCart.toString(), EntityRelationCartAction)
