@@ -115,6 +115,7 @@ const renderEntityRelationTypes = props => {
                                             items={discounts}
                                             className={classes.field}
                                             fullWidth
+                                            allowEmpty={true}
                                         />
                                     </Grid>
 
