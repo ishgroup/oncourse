@@ -26,8 +26,8 @@ databaseChangeLog:
                   name: modifiedOn
                   type: TIMESTAMP
               - column:
-                  name: VARCHAR(32)
-                  type: TIMESTAMP
+                  name: transactionKey
+                  type: VARCHAR(100)
                   constraints:
                     nullable: false
 
