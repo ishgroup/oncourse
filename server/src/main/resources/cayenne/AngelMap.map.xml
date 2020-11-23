@@ -656,7 +656,7 @@
 		<db-attribute name="toEntityIdentifier" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="toRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
-		<db-attribute name="typeId" type="BIGINT"/>
+		<db-attribute name="typeId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="EntityRelationType">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
