@@ -8,27 +8,13 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, FieldArray } from "redux-form";
 import Grid from "@material-ui/core/Grid";
-import { Sale, SaleType } from "@api/model";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { State } from "../../../../reducers/state";
 import { clearSales, getSales } from "../../sales/actions";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { getPlainCourses, setPlainCourses, setPlainCoursesSearch } from "../actions";
-import { entityForLink } from "../../common/utils";
-import { Classes } from "../../../../model/entities/CourseClass";
-
-const transform = (sale: Sale): NestedListItem => ({
-    id: sale.id.toString(),
-    entityId: sale.entityToId ? sale.entityToId : sale.entityFromId,
-    entityName: sale.type,
-    primaryText: sale.name,
-    secondaryText: sale.code,
-    link: sale.type === SaleType.Class ?
-        `/${Classes.path}?search=id is ${sale.entityToId ? sale.entityToId : sale.entityFromId}` :
-        `/${entityForLink(sale.type)}/${sale.entityToId ? sale.entityToId : sale.entityFromId}`,
-    active: typeof sale.active === "boolean" ? sale.active : true
-});
+import { formatRelatedSalables, formattedEntityRelationTypes } from "../utils";
 
 const salesSort = (a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
 
@@ -49,7 +35,8 @@ const CourseMarketingTab: React.FC<any> = props => {
     coursesPending,
     setCoursesSearch,
     getCourses,
-    clearCoursesSearch
+    clearCoursesSearch,
+    entityRelationTypes
   } = props;
 
   const onDeleteAll = useCallback(() => {
@@ -63,7 +50,7 @@ const CourseMarketingTab: React.FC<any> = props => {
           form,
           "relatedlSalables",
           values.relatedlSalables.filter(
-            sale => sale.id !== saleToDelete.entityId || sale.type !== saleToDelete.entityName
+            sale => String(sale.id) !== String(saleToDelete.id) || sale.type !== saleToDelete.entityName
           )
         )
       );
@@ -76,9 +63,8 @@ const CourseMarketingTab: React.FC<any> = props => {
       const salesCombined = (sales || []).concat(courses || []);
 
       const newSalesList = values.relatedlSalables.concat(
-        salesToAdd.map(v1 => salesCombined.find(v2 => v2.id === v1.entityId && v2.type === v1.entityName))
+        salesToAdd.map(v1 => salesCombined.find(v2 => String(v2.id) === String(v1.entityId) && v2.type === v1.entityName))
       );
-
       newSalesList.sort(salesSort);
       dispatch(change(form, "relatedlSalables", newSalesList));
     },
@@ -90,11 +76,11 @@ const CourseMarketingTab: React.FC<any> = props => {
     getCourses();
   }, []);
 
-  const listValues = useMemo(() => (values && values.relatedlSalables ? values.relatedlSalables.map(transform) : []), [
+  const listValues = useMemo(() => (values && values.relatedlSalables ? formatRelatedSalables(values.relatedlSalables) : []), [
     values.relatedlSalables
   ]);
 
-  const searchValues = useMemo(() => [...(sales ? sales.map(transform) : []), ...courses.map(transform)], [
+  const searchValues = useMemo(() => [...(sales ? formatRelatedSalables(sales) : []), ...formatRelatedSalables(courses)], [
     sales,
     courses
   ]);
@@ -126,7 +112,7 @@ const CourseMarketingTab: React.FC<any> = props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid item xs={twoColumn ? 10 : 12}>
         <NestedList
           title={`${listValues.length} Related courses / products`}
           searchPlaceholder="Find products"
@@ -148,6 +134,8 @@ const CourseMarketingTab: React.FC<any> = props => {
           aqlEntity="Product"
           additionalAqlEntity="Course"
           additionalAqlEntityTags={["Course"]}
+          relationTypes={formattedEntityRelationTypes(entityRelationTypes)}
+          formField="relatedlSalables"
         />
       </Grid>
     </Grid>
@@ -158,7 +146,8 @@ const mapStateToProps = (state: State) => ({
   sales: state.sales.items,
   pending: state.sales.pending,
   courses: state.courses.items,
-  coursesPending: state.courses.loading
+  coursesPending: state.courses.loading,
+  entityRelationTypes: state.preferences.entityRelationTypes
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
