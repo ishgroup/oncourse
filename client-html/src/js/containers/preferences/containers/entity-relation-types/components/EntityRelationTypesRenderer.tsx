@@ -10,158 +10,172 @@ import Button from "@material-ui/core/Button";
 import { FormControlLabel } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { EntityRelationType, EntityRelationCartAction } from "@api/model";
+import { Simulate } from "react-dom/test-utils";
+import ArrowForward from "@material-ui/icons/ArrowForward";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
-import {validateSingleMandatoryField, validateUniqueNamesInArray} from "../../../../../common/utils/validation";
-import {Simulate} from "react-dom/test-utils";
+import { validateSingleMandatoryField, validateUniqueNamesInArray } from "../../../../../common/utils/validation";
+
 import ended = Simulate.ended;
 
 const CartActions = Object.keys(EntityRelationCartAction)
-    .filter(val => isNaN(Number(val)))
-    .map(mapSelectItems);
+  .filter(val => isNaN(Number(val)))
+  .map(mapSelectItems);
 
 CartActions.sort(sortDefaultSelectItems);
 
 const renderEntityRelationTypes = props => {
-    const { fields, classes, onDelete, discounts } = props;
+  const {
+    fields, classes, onDelete, discounts
+  } = props;
 
-    return (
-        <Grid item xs={12}>
-            {fields.map((item: EntityRelationType, index) => {
-                const field = fields.get(index);
+  return (
+    <Grid item xs={12}>
+      {fields.map((item: EntityRelationType, index) => {
+        const field = fields.get(index);
 
-                return (
-                    <Card className="card" key={index}>
-                        <Grid container spacing={2} className="relative">
-                            <Grid item xs={12}>
-                                <Grid container>
-                                    <Grid item xs={4}>
-                                        <FormField
-                                            type="text"
-                                            name={`${item}.name`}
-                                            label="Name of relationship"
-                                            fullWidth
-                                            className={classes.field}
-                                            disabled={field.systemType}
-                                            required
-                                            validate={validateUniqueNamesInArray}
-                                        />
-                                    </Grid>
+        return (
+          <Card className="card" key={index}>
+            <Grid container spacing={2} className="relative">
+              <Grid item xs={12}>
+                <Grid container>
+                  <Grid item xs={4}>
+                    <FormField
+                      type="text"
+                      name={`${item}.name`}
+                      label="Name of relationship"
+                      fullWidth
+                      className={classes.field}
+                      disabled={field.systemType}
+                      required
+                      validate={validateUniqueNamesInArray}
+                    />
+                  </Grid>
 
-                                    <Grid item xs={8}>
-                                        <FormField
-                                            type="text"
-                                            name={`${item}.description`}
-                                            label="Description"
-                                            fullWidth
-                                            className={classes.field}
-                                            disabled={field.systemType}
-                                        />
-                                        <div>
-                                            {!field.systemType && (
-                                                <Button
-                                                    size="small"
-                                                    color="secondary"
-                                                    className={classes.deleteButton}
-                                                    onClick={() => onDelete(field, index)}
-                                                >
-                                                    Delete
-                                                </Button>
-                                            )}
-                                        </div>
-                                    </Grid>
+                  <Grid item xs={8}>
+                    <FormField
+                      type="text"
+                      name={`${item}.description`}
+                      label="Description"
+                      fullWidth
+                      className={classes.field}
+                      disabled={field.systemType}
+                    />
+                    <div>
+                      {!field.systemType && (
+                        <Button
+                          size="small"
+                          color="secondary"
+                          className={classes.deleteButton}
+                          onClick={() => onDelete(field, index)}
+                        >
+                          Delete
+                        </Button>
+                      )}
+                    </div>
+                  </Grid>
 
-                                    <Grid item xs={4}>
-                                        <FormField
-                                            type="text"
-                                            name={`${item}.fromName`}
-                                            label="From name"
-                                            fullWidth
-                                            className={classes.field}
-                                            disabled={field.systemType}
-                                            required
-                                        />
-                                    </Grid>
+                  <Grid item xs={4}>
+                    <FormField
+                      type="text"
+                      name={`${item}.fromName`}
+                      label="From name"
+                      fullWidth
+                      className={classes.field}
+                      disabled={field.systemType}
+                      required
+                      labelAdornment={(
+                        <ArrowForward
+                          className={clsx("inputAdornmentIcon relative", classes.adornmentLabelForwardArrow)}
+                        />
+                      )}
+                    />
+                  </Grid>
 
-                                    <Grid item xs={4}>
-                                        <FormField
-                                            type="select"
-                                            name={`${item}.shoppingCart`}
-                                            label="Cart action"
-                                            items={CartActions}
-                                            className={classes.field}
-                                            required
-                                            fullWidth
-                                        />
-                                    </Grid>
+                  <Grid item xs={4}>
+                    <FormField
+                      type="select"
+                      name={`${item}.shoppingCart`}
+                      label="Cart action"
+                      items={CartActions}
+                      className={classes.field}
+                      required
+                      fullWidth
+                      labelAdornment={(
+                        <ArrowForward
+                          className={clsx("inputAdornmentIcon relative", classes.adornmentLabelForwardArrow)}
+                        />
+                      )}
+                    />
+                  </Grid>
 
-                                    <Grid item xs={4}>
-                                        <div className="d-flex">
-                                            <FormField
-                                                type="text"
-                                                name={`${item}.toName`}
-                                                label="To name"
-                                                fullWidth
-                                                className={clsx(classes.field, "flex-fill")}
-                                                disabled={field.systemType}
-                                                required
-                                            />
-                                        </div>
-                                    </Grid>
+                  <Grid item xs={4}>
+                    <div className="d-flex">
+                      <FormField
+                        type="text"
+                        name={`${item}.toName`}
+                        label="To name"
+                        fullWidth
+                        className={clsx(classes.field, "flex-fill")}
+                        disabled={field.systemType}
+                        required
+                      />
+                    </div>
+                  </Grid>
 
-                                    <Grid item xs={8}/>
+                  <Grid item xs={8} />
 
-                                    <Grid item xs={4}>
-                                        <FormField
-                                            type="select"
-                                            name={`${item}.discountId`}
-                                            label="Apply discount for item from 'To name' section"
-                                            items={discounts}
-                                            className={classes.field}
-                                            fullWidth
-                                            allowEmpty={true}
-                                        />
-                                    </Grid>
+                  <Grid item xs={4}>
+                    <FormField
+                      type="select"
+                      name={`${item}.discountId`}
+                      label="Apply discount for item from 'To name' section"
+                      items={discounts}
+                      className={classes.field}
+                      fullWidth
+                      allowEmpty
+                    />
+                  </Grid>
 
-                                    <Grid item xs={6}>
-                                        <FormControlLabel
-                                            className={classes.checkbox}
-                                            control={(
-                                                <FormField
-                                                    type="checkbox"
-                                                    name={`${item}.isShownOnWeb`}
-                                                    color="primary"
-                                                    value="true"
-                                                    fullWidth
-                                                />
-                                            )}
-                                            label={`Show on web`}
-                                        />
-                                    </Grid>
+                  <Grid item xs={6}>
+                    <FormControlLabel
+                      className={classes.checkbox}
+                      control={(
+                        <FormField
+                          type="checkbox"
+                          name={`${item}.isShownOnWeb`}
+                          color="primary"
+                          value="true"
+                          fullWidth
+                        />
+                      )}
+                      label="Show on web"
+                    />
+                  </Grid>
 
-                                    <Grid item xs={6}>
-                                        <FormControlLabel
-                                            className={classes.checkbox}
-                                            control={(
-                                                <FormField
-                                                    type="checkbox"
-                                                    name={`${item}.considerHistory`}
-                                                    color="primary"
-                                                    value="true"
-                                                    fullWidth
-                                                />
-                                            )}
-                                            label={`Consider history`}
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Card>
-                );
-            })}
-        </Grid>
-    );
+                  <Grid item xs={6}>
+                    <FormControlLabel
+                      className={classes.checkbox}
+                      control={(
+                        <FormField
+                          type="checkbox"
+                          name={`${item}.considerHistory`}
+                          color="primary"
+                          value="true"
+                          fullWidth
+                        />
+                      )}
+                      label="Consider history"
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Card>
+        );
+      })}
+    </Grid>
+  );
 };
 
 export default renderEntityRelationTypes;

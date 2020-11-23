@@ -21,5 +21,8 @@ export const concessionTypesStyles = theme => createStyles({
   },
   field: {
     paddingRight: "20px"
+  },
+  adornmentLabelForwardArrow: {
+    top: 4
   }
 });
