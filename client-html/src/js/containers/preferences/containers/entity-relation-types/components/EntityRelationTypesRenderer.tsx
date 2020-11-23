@@ -11,10 +11,10 @@ import { FormControlLabel } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { EntityRelationType, EntityRelationCartAction } from "@api/model";
 import { Simulate } from "react-dom/test-utils";
-import ArrowForward from "@material-ui/icons/ArrowForward";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { validateSingleMandatoryField, validateUniqueNamesInArray } from "../../../../../common/utils/validation";
+import Subtitle from "../../../../../common/components/layout/Subtitle";
 
 import ended = Simulate.ended;
 
@@ -38,7 +38,7 @@ const renderEntityRelationTypes = props => {
           <Card className="card" key={index}>
             <Grid container spacing={2} className="relative">
               <Grid item xs={12}>
-                <Grid container>
+                <Grid container spacing={2}>
                   <Grid item xs={4}>
                     <FormField
                       type="text"
@@ -75,67 +75,82 @@ const renderEntityRelationTypes = props => {
                     </div>
                   </Grid>
 
-                  <Grid item xs={4}>
+                  <Grid item xs={1} />
+                  <Grid item xs={2}>
                     <FormField
                       type="text"
                       name={`${item}.fromName`}
                       label="From name"
                       fullWidth
-                      className={classes.field}
                       disabled={field.systemType}
                       required
-                      labelAdornment={(
-                        <ArrowForward
-                          className={clsx("inputAdornmentIcon relative", classes.adornmentLabelForwardArrow)}
-                        />
-                      )}
+                      classes={{
+                        textField: "text-left",
+                        fitWidth: clsx("flex-fill", classes.fromNameLabel),
+                      }}
                     />
                   </Grid>
+                  <Grid item xs={1} />
 
                   <Grid item xs={4}>
-                    <FormField
-                      type="select"
-                      name={`${item}.shoppingCart`}
-                      label="Cart action"
-                      items={CartActions}
-                      className={classes.field}
-                      required
-                      fullWidth
-                      labelAdornment={(
-                        <ArrowForward
-                          className={clsx("inputAdornmentIcon relative", classes.adornmentLabelForwardArrow)}
+                    <Grid container className={clsx("p-2", classes.shoppingCartActionBox)}>
+                      <Grid item xs={12}>
+                        <Subtitle label="Shopping cart action" />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormField
+                          type="select"
+                          name={`${item}.shoppingCart`}
+                          label="Cart action"
+                          items={CartActions}
+                          required
+                          fullWidth
                         />
-                      )}
-                    />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormField
+                          type="select"
+                          name={`${item}.discountId`}
+                          label="Apply discount to item on right"
+                          items={discounts}
+                          fullWidth
+                          allowEmpty
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControlLabel
+                          className={classes.checkbox}
+                          control={(
+                            <FormField
+                              type="checkbox"
+                              name={`${item}.considerHistory`}
+                              color="primary"
+                              value="true"
+                              fullWidth
+                            />
+                          )}
+                          label="Consider history"
+                        />
+                      </Grid>
+                    </Grid>
                   </Grid>
 
-                  <Grid item xs={4}>
+                  <Grid item xs={1} />
+                  <Grid item xs={2}>
                     <div className="d-flex">
                       <FormField
                         type="text"
                         name={`${item}.toName`}
                         label="To name"
                         fullWidth
-                        className={clsx(classes.field, "flex-fill")}
+                        className="flex-fill"
                         disabled={field.systemType}
                         required
+                        classes={{ textField: "text-left", fitWidth: "flex-fill", label: "text-left" }}
                       />
                     </div>
                   </Grid>
-
-                  <Grid item xs={8} />
-
-                  <Grid item xs={4}>
-                    <FormField
-                      type="select"
-                      name={`${item}.discountId`}
-                      label="Apply discount for item from 'To name' section"
-                      items={discounts}
-                      className={classes.field}
-                      fullWidth
-                      allowEmpty
-                    />
-                  </Grid>
+                  <Grid item xs={1} />
 
                   <Grid item xs={6}>
                     <FormControlLabel
@@ -150,22 +165,6 @@ const renderEntityRelationTypes = props => {
                         />
                       )}
                       label="Show on web"
-                    />
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <FormControlLabel
-                      className={classes.checkbox}
-                      control={(
-                        <FormField
-                          type="checkbox"
-                          name={`${item}.considerHistory`}
-                          color="primary"
-                          value="true"
-                          fullWidth
-                        />
-                      )}
-                      label="Consider history"
                     />
                   </Grid>
                 </Grid>

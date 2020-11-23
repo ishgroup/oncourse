@@ -4,6 +4,7 @@
  */
 
 import createStyles from "@material-ui/core/styles/createStyles";
+import { darken } from "@material-ui/core";
 
 export const concessionTypesStyles = theme => createStyles({
   marginTop: {
@@ -24,5 +25,16 @@ export const concessionTypesStyles = theme => createStyles({
   },
   adornmentLabelForwardArrow: {
     top: 4
+  },
+  shoppingCartActionBox: {
+    backgroundColor: darken(theme.palette.background.paper, 0.05)
+  },
+  fromNameLabel: {
+    "& > span": {
+      paddingRight: 14
+    }
+  },
+  fromNameLabelOnEdit: {
+    paddingRight: 17
   }
 });
