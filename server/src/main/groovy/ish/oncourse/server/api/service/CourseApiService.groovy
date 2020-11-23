@@ -325,14 +325,26 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         }
 
 
-        courseDTO.relatedlSalables.findAll { it.id != null }.each { relatedProduct ->
+        courseDTO.relatedlSalables.findAll { it.entityToId != null }.each { relatedProduct ->
             if (relatedProduct.type == SaleTypeDTO.COURSE) {
-                if (!entityDao.getById(context, relatedProduct.id)) {
-                    validator.throwClientErrorException(id, 'relatedProducts', "Course with id=$relatedProduct.id not found.")
+                if (!entityDao.getById(context, relatedProduct.entityToId)) {
+                    validator.throwClientErrorException(id, 'relatedProducts', "Course with id=$relatedProduct.entityToId not found.")
                 }
             } else {
-                if (!productDao.getById(context, relatedProduct.id)) {
-                    validator.throwClientErrorException(id, 'relatedProducts', "Product with id=$relatedProduct.id not found.")
+                if (!productDao.getById(context, relatedProduct.entityToId)) {
+                    validator.throwClientErrorException(id, 'relatedProducts', "Product with id=$relatedProduct.entityToId not found.")
+                }
+            }
+        }
+
+        courseDTO.relatedlSalables.findAll { it.entityFromId != null }.each { relatedProduct ->
+            if (relatedProduct.type == SaleTypeDTO.COURSE) {
+                if (!entityDao.getById(context, relatedProduct.entityFromId)) {
+                    validator.throwClientErrorException(id, 'relatedProducts', "Course with id=$relatedProduct.entityFromId not found.")
+                }
+            } else {
+                if (!productDao.getById(context, relatedProduct.entityFromId)) {
+                    validator.throwClientErrorException(id, 'relatedProducts', "Product with id=$relatedProduct.entityFromId not found.")
                 }
             }
         }
@@ -430,8 +442,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
     void updateRelatedProducts(Course course, List<SaleDTO> relatedProductDTOs) {
         Map<Boolean, List<SaleDTO>> map = relatedProductDTOs.groupBy { it.type == SaleTypeDTO.COURSE }
 
-        List<Long> courseRelationsToSave = map[true]*.id ?: [] as List<Long>
+        List<Long> courseRelationsToSave = map[true]*.entityFromId ?: [] as List<Long>
         course.context.deleteObjects(course.fromCourses.findAll { !courseRelationsToSave.contains(it.fromCourse.id) })
+        courseRelationsToSave = map[true]*.entityToId ?: [] as List<Long>
         course.context.deleteObjects(course.toCourses.findAll { !courseRelationsToSave.contains(it.toCourse.id) })
         if(map[true] != null) {
             map[true].findAll { !course.toCourses*.toCourse*.id.contains(it.entityToId) && !course.fromCourses*.fromCourse*.id.contains(it.entityFromId) }
@@ -445,7 +458,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         }
 
 
-        List<Long> productRelationsToSave = map[false]*.id ?: [] as List<Long>
+        List<Long> productRelationsToSave = map[false]*.entityToId ?: [] as List<Long>
         course.context.deleteObjects(course.productRelations.findAll { !productRelationsToSave.contains(it.product.id) })
         if(map[false] != null) {
             map[false].findAll { !course.productRelations*.product*.id.contains(it.entityToId) }.each { product ->
