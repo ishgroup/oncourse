@@ -70,5 +70,11 @@ export const listStyles = theme =>
       fontSize: "0.75em",
       height: "20px",
       minWidth: theme.spacing(5)
+    },
+    selectRelationIdTextField: {
+      paddingBottom: 0,
+      "& > div > div > span": {
+        fontSize: 14
+      }
     }
   });
