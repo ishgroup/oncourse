@@ -355,8 +355,41 @@ class Course extends _Course implements ICourse, Queueable, NotableTrait, Expand
 	List<Product> getRelatedProducts() {
 		List<Product> products = new ArrayList<>()
 
-		super.getProductRelations().each { it ->
-			products.add(it.getProduct())
+		super.getProductToRelations().each { it ->
+			products.add(it.getToProduct())
+		}
+		super.getProductFromRelations().each { it ->
+			products.add(it.getFromProduct())
+		}
+
+		return products
+	}
+
+	/**
+	 * @return a list of products related to this one
+	 */
+	@Nonnull
+	@API
+	List<Product> getRelatedToProducts() {
+		List<Product> products = new ArrayList<>()
+
+		super.getProductToRelations().each { it ->
+			products.add(it.getToProduct())
+		}
+
+		return products
+	}
+
+	/**
+	 * @return a list of courses this one relate to
+	 */
+	@Nonnull
+	@API
+	List<Product> getRelatedFromProducts() {
+		List<Product> products = new ArrayList<>()
+
+		super.getProductFromRelations().each { it ->
+			products.add(it.getFromProduct())
 		}
 
 		return products

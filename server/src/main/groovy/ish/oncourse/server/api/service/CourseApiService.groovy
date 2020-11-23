@@ -25,6 +25,7 @@ import ish.oncourse.server.api.dao.CourseModuleDao
 import ish.oncourse.server.api.dao.CourseProductRelationDao
 import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ModuleDao
+import ish.oncourse.server.api.dao.ProductCourseRelationDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.QualificationDao
 import ish.oncourse.server.cayenne.EntityRelationType
@@ -104,6 +105,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
     private CourseProductRelationDao courseProductRelationDao
 
     @Inject
+    private ProductCourseRelationDao productCourseRelationDao
+
+    @Inject
     private ProductDao productDao
 
     @Inject
@@ -145,7 +149,8 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.documents = course.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
             courseDTO.relatedlSalables = (course.toCourses.collect { toRestToEntityRelation(it) } +
                     course.fromCourses.collect { toRestFromEntityRelation(it) } +
-                    course.productRelations.collect { toRestToEntityRelation(it) }
+                    course.productToRelations.collect { toRestToEntityRelation(it) } +
+                    course.productFromRelations.collect { toRestFromEntityRelation(it) }
             )
             courseDTO.qualificationId = course.qualification?.id
             courseDTO.qualNationalCode = course.qualification?.nationalCode
@@ -349,6 +354,10 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             }
         }
 
+        if (courseDTO.relatedlSalables.any { it.entityToId == null && it.entityFromId == null }) {
+            validator.throwClientErrorException(id, 'relatedProducts', "You should specify id of related entity.")
+        }
+
         courseDTO.modules.findAll { it.id != null }.each { module ->
             if (!moduleDao.getById(context, module.id)) {
                 validator.throwClientErrorException(id, 'modules', "Module with id=$module.id not found.")
@@ -448,26 +457,37 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         course.context.deleteObjects(course.toCourses.findAll { !courseRelationsToSave.contains(it.toCourse.id) })
         if(map[true] != null) {
             map[true].findAll { !course.toCourses*.toCourse*.id.contains(it.entityToId) && !course.fromCourses*.fromCourse*.id.contains(it.entityFromId) }
-                    .each { c ->
+                    .each { sale ->
                         courseCourseRelationDao.newObject(course.context).with { courseRelation ->
-                            courseRelation.fromCourse = c.entityFromId ? entityDao.getById(course.context, c.entityFromId) : course
-                            courseRelation.toCourse = c.entityToId ? entityDao.getById(course.context, c.entityFromId) : course
-                            courseRelation.relationType = getRecordById(course.context, EntityRelationType, c.relationId ? c.relationId : EntityRelationType.DEFAULT_SYSTEM_TYPE_ID)
+                            courseRelation.fromCourse = sale.entityFromId ? entityDao.getById(course.context, sale.entityFromId) : course
+                            courseRelation.toCourse = sale.entityToId ? entityDao.getById(course.context, sale.entityFromId) : course
+                            courseRelation.relationType = getRecordById(course.context, EntityRelationType, sale.relationId ? sale.relationId : EntityRelationType.DEFAULT_SYSTEM_TYPE_ID)
                         }
                     }
         }
 
 
         List<Long> productRelationsToSave = map[false]*.entityToId ?: [] as List<Long>
-        course.context.deleteObjects(course.productRelations.findAll { !productRelationsToSave.contains(it.product.id) })
+        course.context.deleteObjects(course.productToRelations.findAll { !productRelationsToSave.contains(it.toProduct.id) })
+        productRelationsToSave = map[false]*.entityFromId ?: [] as List<Long>
+        course.context.deleteObjects(course.productFromRelations.findAll { !productRelationsToSave.contains(it.fromProduct.id) })
         if(map[false] != null) {
-            map[false].findAll { !course.productRelations*.product*.id.contains(it.entityToId) }.each { product ->
-                courseProductRelationDao.newObject(course.context).with { courseModule ->
-                    courseModule.course = course
-                    courseModule.product = productDao.getById(course.context, product.entityToId)
-                    courseModule.relationType = getRecordById(course.context, EntityRelationType, product.relationId ? product.relationId : EntityRelationType.DEFAULT_SYSTEM_TYPE_ID)
-                }
-            }
+            map[false].findAll { !course.productToRelations*.toProduct*.id.contains(it.entityToId) && !course.productFromRelations*.fromProduct*.id.contains(it.entityFromId) }
+                    .each { sale ->
+                        if (sale.entityToId) {
+                            courseProductRelationDao.newObject(course.context).with {productRelation ->
+                                productRelation.fromCourse = course
+                                productRelation.toProduct = productDao.getById(course.context, sale.entityToId)
+                                productRelation.relationType = getRecordById(course.context, EntityRelationType, sale.relationId ? sale.relationId : EntityRelationType.DEFAULT_SYSTEM_TYPE_ID)
+                            }
+                        } else if (sale.entityFromId) {
+                            productCourseRelationDao.newObject(course.context).with {productRelation ->
+                                productRelation.toCourse = course
+                                productRelation.fromProduct = productDao.getById(course.context, sale.entityFromId)
+                                productRelation.relationType = getRecordById(course.context, EntityRelationType, sale.relationId ? sale.relationId : EntityRelationType.DEFAULT_SYSTEM_TYPE_ID)
+                            }
+                        }
+                    }
         }
     }
 

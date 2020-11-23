@@ -15,10 +15,7 @@ import com.google.inject.Inject;
 import ish.duplicate.CourseDuplicationRequest;
 import ish.duplicate.DuplicationResult;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.Course;
-import ish.oncourse.server.cayenne.CourseAttachmentRelation;
-import ish.oncourse.server.cayenne.CourseCourseRelation;
-import ish.oncourse.server.cayenne.CourseProductRelation;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -80,10 +77,16 @@ public class DuplicateCourseService {
                 relation.setToCourse(courseCourseRelation.getToCourse());
             }
 
-            for (var courseProductRelation : oldCourse.getProductRelations()) {
+            for (var courseProductRelation : oldCourse.getProductToRelations()) {
                 var relation = context.newObject(CourseProductRelation.class);
-                relation.setCourse(newCourse);
-                relation.setProduct(courseProductRelation.getProduct());
+                relation.setFromCourse(newCourse);
+                relation.setToProduct(courseProductRelation.getToProduct());
+            }
+
+            for (var productCourseRelation : oldCourse.getProductFromRelations()) {
+                var relation = context.newObject(ProductCourseRelation.class);
+                relation.setToCourse(newCourse);
+                relation.setFromProduct(productCourseRelation.getFromProduct());
             }
 
             for (var courseAttachmentRelation : oldCourse.getAttachmentRelations()) {

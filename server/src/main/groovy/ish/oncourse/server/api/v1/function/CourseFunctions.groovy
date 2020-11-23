@@ -15,6 +15,7 @@ import ish.common.types.CourseEnrolmentType
 import ish.oncourse.server.cayenne.CourseCourseRelation
 import ish.oncourse.server.cayenne.CourseProductRelation
 import ish.oncourse.server.cayenne.EntityRelation
+import ish.oncourse.server.cayenne.ProductCourseRelation
 
 import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
 import static ish.common.types.CourseEnrolmentType.OPEN_FOR_ENROLMENT
@@ -41,8 +42,8 @@ class CourseFunctions {
             dto = toRestSalable(relation.toCourse)
             dto.entityToId = relation.toCourse.id
         } else if (relation instanceof CourseProductRelation) {
-            dto = toRestSalable(relation.product)
-            dto.entityToId = relation.product.id
+            dto = toRestSalable(relation.toProduct)
+            dto.entityToId = relation.toProduct.id
         } else {
             throw new IllegalArgumentException("Unsupported entity type relation")
         }
@@ -57,6 +58,9 @@ class CourseFunctions {
         if (relation instanceof CourseCourseRelation) {
             dto = toRestSalable(relation.fromCourse)
             dto.entityFromId = relation.fromCourse.id
+        } else if (relation instanceof ProductCourseRelation) {
+            dto = toRestSalable(relation.fromProduct)
+            dto.entityFromId = relation.fromProduct.id
         } else {
             throw new IllegalArgumentException("Unsupported entity type relation")
         }
@@ -80,6 +84,7 @@ class CourseFunctions {
         new SaleDTO().with { s ->
             s.name = product.name
             s.code = product.sku
+            s.active = Boolean.TRUE
             switch (product) {
                 case VoucherProduct:
                     s.type = SaleTypeDTO.VOUCHER
