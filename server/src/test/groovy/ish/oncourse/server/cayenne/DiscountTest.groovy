@@ -4,12 +4,11 @@
  */
 package ish.oncourse.server.cayenne
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.math.Money
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.replication.builders.IAngelStubBuilder
-import ish.oncourse.server.replication.services.IAngelQueueService
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.SelectQuery
@@ -34,8 +33,6 @@ class DiscountTest extends CayenneIshTestCase {
 		wipeTables()
 
         this.cayenneService = injector.getInstance(ICayenneService.class)
-        IAngelStubBuilder stubBuilder = injector.getInstance(IAngelStubBuilder.class)
-        IAngelQueueService queueService = injector.getInstance(IAngelQueueService.class)
         PreferenceController pref = injector.getInstance(PreferenceController.class)
 
         InputStream st = DiscountTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/testDataset.xml")

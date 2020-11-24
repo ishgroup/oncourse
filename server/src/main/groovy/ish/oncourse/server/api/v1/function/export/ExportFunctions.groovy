@@ -93,7 +93,6 @@ class ExportFunctions {
                                                             Enrolment.simpleName,
                                                             TutorAttendance.simpleName],
             (Contact.simpleName.toLowerCase())    : [Contact.simpleName,
-                                                     "ContactDataRowDelegator",
                                                      Student.simpleName,
                                                      Tutor.simpleName,
                                                      AccountTransaction.simpleName],

@@ -292,6 +292,11 @@ task packageDslDoc(type: Zip) {
 	dependsOn tasks.getByName('classes'),tasks.getByName('dslDocs')
 }
 
+task testJar(type: Jar) {
+	archiveClassifier = 'tests'
+	from sourceSets.test.output
+}
+
 
 // "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
 publishing {
@@ -309,6 +314,11 @@ publishing {
 		jar(MavenPublication) {
 			from components.java
 			artifactId 'server-jar'
+		}
+		test(MavenPublication) {
+			artifact (testJar) {
+				artifactId "test"
+			}
 		}
 		executables(MavenPublication) {
 			artifact(installer_unix) {

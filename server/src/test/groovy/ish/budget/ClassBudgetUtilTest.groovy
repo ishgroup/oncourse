@@ -4,14 +4,12 @@
  */
 package ish.budget
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.math.Money
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.replication.builders.IAngelStubBuilder
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
-import ish.oncourse.server.replication.services.IAngelQueueService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.time.DateUtils
@@ -22,6 +20,7 @@ import static org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
+@CompileStatic
 class ClassBudgetUtilTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
@@ -31,11 +30,9 @@ class ClassBudgetUtilTest extends CayenneIshTestCase {
 		wipeTables()
 
         this.cayenneService = injector.getInstance(ICayenneService.class)
-        IAngelStubBuilder stubBuilder = injector.getInstance(IAngelStubBuilder.class)
-        IAngelQueueService queueService = injector.getInstance(IAngelQueueService.class)
         PreferenceController pref = injector.getInstance(PreferenceController.class)
 
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/budget/classBudgetTest.xml")
+        InputStream st = ClassBudgetUtilTest.class.getClassLoader().getResourceAsStream("ish/budget/classBudgetTest.xml")
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
         builder.setColumnSensing(true)
         FlatXmlDataSet dataSet = builder.build(st)

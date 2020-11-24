@@ -47,7 +47,10 @@ import {
   GET_ACCOUNT_TRANSACTION_LOCKED_DATE_FULFILLED,
   GET_TUTOR_ROLES_FULFILLED,
   GET_LANGUAGES_REQUEST_FULFILLED,
-  GET_USI_SORTWARE_ID_FULFILLED
+  GET_USI_SORTWARE_ID_FULFILLED,
+  GET_ENTITY_RELATION_TYPES_FULFILLED,
+  DELETE_ENTITY_RELATION_TYPE_FULFILLED,
+  UPDATE_ENTITY_RELATION_TYPES_FULFILLED
 } from "../actions";
 import { GET_MESSAGE_QUEUED_FULFILLED, POST_AUTHENTICATION_FULFILLED } from "../../../common/actions";
 import getTimestamps from "../../../common/utils/timestamps/getTimestamps";
@@ -180,6 +183,17 @@ export const preferencesReducer = (state: any = {}, action: IAction<any>): any =
       return {
         ...state,
         contactRelationTypes
+      };
+    }
+
+    case GET_ENTITY_RELATION_TYPES_FULFILLED:
+    case DELETE_ENTITY_RELATION_TYPE_FULFILLED:
+    case UPDATE_ENTITY_RELATION_TYPES_FULFILLED: {
+      const { entityRelationTypes } = action.payload;
+
+      return {
+        ...state,
+        entityRelationTypes
       };
     }
 

@@ -67,8 +67,10 @@ public class CayenneService implements ICayenneService {
 			for (var node : runtime.getDataDomain().getDataNodes()) {
 				// install ExtendedTypes
 				installExtendedTypes(node);
+				if (runtime.getDataDomain().getDefaultNode() == null) {
+					runtime.getDataDomain().setDefaultNode(node);
+				}
 			}
-
 			setupListeners();
 
 			logger.info("creating shared data context...");

@@ -8,7 +8,6 @@ import ish.print.transformations.AccountAccountTransactionTransformation
 import ish.print.transformations.AccountTransactionTransformation
 import ish.print.transformations.BankingPaymentInterfaceTransformation
 import ish.print.transformations.ContactAccountTransactionTransformation
-import ish.print.transformations.ContactAmountOwingSqlTransformation
 import ish.print.transformations.CourseClassEnrolmentTransformation
 import ish.print.transformations.CourseClassOutcomeTransformation
 import ish.print.transformations.CourseClassSessionTransformation
@@ -37,7 +36,6 @@ class PrintTransformationsFactoryTest {
 		//Contact
 		assertEquals(ContactAccountTransactionTransformation.class, getPrintTransformationFor("Contact", "AccountTransaction", EMPTY).getClass())
 		assertEquals(StatementLineReportTransformation.class, getPrintTransformationFor("Contact", "Contact", StatementLineReportTransformation.STATEMENT_REPORT_CODE).getClass())
-		assertEquals(ContactAmountOwingSqlTransformation.class, getPrintTransformationFor("Contact", "ContactDataRowDelegator", ContactAmountOwingSqlTransformation.REPORT_CODE).getClass())
 
 		//CourseClass
 		assertEquals(CourseClassEnrolmentTransformation.class, getPrintTransformationFor("CourseClass", "Enrolment", EMPTY).getClass())

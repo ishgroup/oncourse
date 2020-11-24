@@ -15,3 +15,12 @@ properties:
   expiryDate:
     type: string
     format: date
+  entityFromId:
+    type: integer
+    format: int64
+  entityToId:
+    type: integer
+    format: int64
+  relationId:
+    type: integer
+    format: int64

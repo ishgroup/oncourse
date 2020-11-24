@@ -4,6 +4,7 @@
  */
 package ish.oncourse.server.services
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.AccountTransactionType
 import ish.common.types.PaymentSource
@@ -22,7 +23,6 @@ import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tax
 import ish.oncourse.server.cayenne.glue._AccountTransaction
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import ish.persistence.Preferences
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.exp.Expression
@@ -46,6 +46,7 @@ import org.quartz.JobExecutionException
 
 /**
  */
+@CompileStatic
 class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 	private static final Logger logger = LogManager.getLogger()
 	private ICayenneService cayenneService
@@ -62,7 +63,7 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 		wipeTables()
 		this.cayenneService = injector.getInstance(ICayenneService.class)
 
-		InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream(
+		InputStream st = DelayedEnrolmentIncomePostingJobTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/server/services/delayedEnrolmentIncomePostingJobTestDataSet.xml")
 		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
 		builder.setColumnSensing(true)

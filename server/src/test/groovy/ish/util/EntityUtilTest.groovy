@@ -4,6 +4,7 @@
 
 package ish.util
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Country
@@ -11,7 +12,6 @@ import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import static junit.framework.TestCase.assertEquals
 import static junit.framework.TestCase.assertNotNull
 import static junit.framework.TestCase.assertTrue
@@ -24,13 +24,14 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.Before
 import org.junit.Test
 
+@CompileStatic
 class EntityUtilTest extends CayenneIshTestCase {
 
 	@Before
     void setupTest() throws Exception {
 		wipeTables()
 
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/util/entityUtilTest.xml")
+        InputStream st = EntityUtilTest.class.getClassLoader().getResourceAsStream("ish/util/entityUtilTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)

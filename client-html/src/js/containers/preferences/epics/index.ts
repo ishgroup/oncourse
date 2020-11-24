@@ -12,6 +12,7 @@ import { EpicTaxTypes } from "../containers/tax-types/epics";
 import { EpicMessaging } from "../containers/messaging/epics";
 import { EpicConcessionTypes } from "../containers/concession-types/epics";
 import { EpicContactRelationTypes } from "../containers/contact-relation-types/epics";
+import { EpicEntityRelationTypes } from "../containers/entity-relation-types/epics";
 import { EpicCustomFields } from "../containers/custom-fields/epics";
 import { EpicGetComplexPath } from "./EpicGetComplexPath";
 import { EpicGetIsLogged } from "./EpicGetIsLogged";
@@ -42,6 +43,7 @@ export const EpicPreferences = combineEpics(
   EpicMessaging,
   EpicConcessionTypes,
   EpicContactRelationTypes,
+  EpicEntityRelationTypes,
   EpicCustomFields,
   EpicGetCountries,
   EpicGetLanguages,

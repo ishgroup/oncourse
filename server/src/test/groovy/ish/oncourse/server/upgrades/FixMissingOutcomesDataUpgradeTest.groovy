@@ -4,13 +4,13 @@
  */
 package ish.oncourse.server.upgrades
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Attendance
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.SelectQuery
@@ -24,6 +24,7 @@ import org.junit.Test
 
 /**
  */
+@CompileStatic
 class FixMissingOutcomesDataUpgradeTest extends CayenneIshTestCase {
 	private static final Logger logger = LogManager.getLogger()
 
@@ -37,7 +38,7 @@ class FixMissingOutcomesDataUpgradeTest extends CayenneIshTestCase {
 
 	@Test
     void testDataUpgrade() throws Exception {
-		InputStream st = OutboundReplicationHandlerTest.class.getClassLoader()
+		InputStream st = FixMissingOutcomesDataUpgradeTest.class.getClassLoader()
 				.getResourceAsStream("ish/oncourse/server/upgrades/atttendanceUpgradeDataSet.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
         executeDatabaseOperation(dataSet)
