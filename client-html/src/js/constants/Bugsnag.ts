@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import Bugsnag from "@bugsnag/js";
+import Bugsnag from "@bugsnag/browser";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
 import { EnvironmentConstants } from "./EnvironmentConstants";
 
