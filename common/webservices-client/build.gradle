@@ -39,11 +39,11 @@ task wsdl2Java() {
             classpath configurations.ws
             main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
             args = ['-xjc-Xinheritance',
-                    '-wsdlLocation', '/wsdl/v22_replication.wsdl',
-                    '-b', "${projectDir}/src/main/resources/wsdl/replication22_binding.xml",
-                    '-p', "ish.oncourse.webservices.v22.stubs.replication",
+                    '-wsdlLocation', '/wsdl/v23_replication.wsdl',
+                    '-b', "${projectDir}/src/main/resources/wsdl/replication23_binding.xml",
+                    '-p', "ish.oncourse.webservices.v23.stubs.replication",
                     '-d', "${projectDir}/src/main/java",
-                    "${projectDir}/src/main/resources/wsdl/v22_replication.wsdl"
+                    "${projectDir}/src/main/resources/wsdl/v23_replication.wsdl"
             ]
             systemProperties = ['exitOnFinish':'TRUE']
         }

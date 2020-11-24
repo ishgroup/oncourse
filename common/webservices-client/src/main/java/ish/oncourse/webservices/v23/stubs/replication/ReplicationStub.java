@@ -1,5 +1,5 @@
 
-package ish.oncourse.webservices.v22.stubs.replication;
+package ish.oncourse.webservices.v23.stubs.replication;
 
 import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -74,6 +74,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     SurveyStub.class,
     SessionModuleStub.class,
     EntityRelationStub.class,
+    EntityRelationTypeStub.class,
     CorporatePassStub.class,
     CorporatePassCourseClassStub.class,
     CorporatePassProductStub.class,

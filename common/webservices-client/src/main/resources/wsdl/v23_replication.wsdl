@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="ReplicationService" targetNamespace="http://repl.v22.soap.webservices.oncourse.ish/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                  xmlns:tns="http://repl.v22.soap.webservices.oncourse.ish/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="ReplicationService" targetNamespace="http://repl.v23.soap.webservices.oncourse.ish/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:tns="http://repl.v23.soap.webservices.oncourse.ish/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
     <wsdl:types>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://repl.v22.soap.webservices.oncourse.ish/"
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://repl.v23.soap.webservices.oncourse.ish/"
                    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
                    xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
                    jaxb:extensionBindingPrefixes="inheritance"
                    elementFormDefault="unqualified"
-                   targetNamespace="http://repl.v22.soap.webservices.oncourse.ish/" version="1.0">
+                   targetNamespace="http://repl.v23.soap.webservices.oncourse.ish/" version="1.0">
             <xs:element name="replicationStub" type="tns:replicationStub"/>
             <xs:element name="aclAccessKey" type="tns:aclAccessKeyStub"/>
             <xs:element name="aclRole" type="tns:aclRoleStub"/>
@@ -46,6 +46,7 @@
             <xs:element name="survey" type="tns:surveyStub" />
             <xs:element name="sessionModule" type="tns:sessionModuleStub" />
             <xs:element name="entityRelation" type="tns:entityRelationStub" />
+            <xs:element name="entityRelationType" type="tns:entityRelationTypeStub" />
             <xs:element name="corporatePass" type="tns:corporatePassStub" />
             <xs:element name="corporatePassCourseClass" type="tns:corporatePassCourseClassStub" />
             <xs:element name="corporatePassProduct" type="tns:corporatePassProductStub" />
@@ -859,6 +860,24 @@
                             <xs:element name="fromEntityWillowId" type="xs:long" />
                             <xs:element name="toEntityAngelId" type="xs:long" />
                             <xs:element name="toEntityWillowId" type="xs:long" />
+                            <xs:element name="relationTypeId" type="xs:long" />
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+
+            <xs:complexType name="entityRelationTypeStub">
+                <xs:complexContent>
+                    <xs:extension base="tns:replicationStub">
+                        <xs:sequence>
+                            <xs:element name="name" type="xs:string" nillable="false" />
+                            <xs:element name="toName" type="xs:string" nillable="false"/>
+                            <xs:element name="fromName" type="xs:string" nillable="false"/>
+                            <xs:element name="description" type="xs:string" />
+                            <xs:element name="isShownOnWeb" type="xs:boolean" />
+                            <xs:element name="considerHistory" type="xs:boolean" />
+                            <xs:element name="shoppingCart" type="xs:int" nillable="false"/>
+                            <xs:element name="discountId" type="xs:long" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
