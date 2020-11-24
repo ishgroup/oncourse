@@ -4956,7 +4956,7 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  defaultValue: '0000-00-00 00:00:00'
+                  defaultValueComputed: current_timestamp()
                   name: createdOn
                   type: timestamp
               - column:

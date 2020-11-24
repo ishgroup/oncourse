@@ -22,9 +22,7 @@ const request: EpicUtils.Request<any, any, {body: LoginRequest, host, port}> = {
   getData: payload => LoginService.postLoginRequest(payload.body, payload.host, payload.port),
   processData: (data, state, { body }) => {
     if (bugsnagClient) {
-      bugsnagClient.user = {
-        name: body.login
-      };
+      bugsnagClient.setUser(null, null, body.login);
     }
 
     if (state.lastLocation && !state.lastLocation.includes("Quit")) {

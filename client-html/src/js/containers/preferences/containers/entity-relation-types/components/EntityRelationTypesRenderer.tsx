@@ -75,8 +75,7 @@ const renderEntityRelationTypes = props => {
                     </div>
                   </Grid>
 
-                  <Grid item xs={1} />
-                  <Grid item xs={2}>
+                  <Grid item xs={4}>
                     <FormField
                       type="text"
                       name={`${item}.fromName`}
@@ -90,7 +89,6 @@ const renderEntityRelationTypes = props => {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={1} />
 
                   <Grid item xs={4}>
                     <Grid container className={clsx("p-2", classes.shoppingCartActionBox)}>
@@ -105,6 +103,7 @@ const renderEntityRelationTypes = props => {
                           items={CartActions}
                           required
                           fullWidth
+                          hideLabel
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -135,8 +134,7 @@ const renderEntityRelationTypes = props => {
                     </Grid>
                   </Grid>
 
-                  <Grid item xs={1} />
-                  <Grid item xs={2}>
+                  <Grid item xs={4}>
                     <div className="d-flex">
                       <FormField
                         type="text"
@@ -146,11 +144,14 @@ const renderEntityRelationTypes = props => {
                         className="flex-fill"
                         disabled={field.systemType}
                         required
-                        classes={{ textField: "text-left", fitWidth: "flex-fill", label: "text-left" }}
+                        classes={{
+                          textField: "text-end",
+                          fitWidth: clsx("flex-fill", classes.fromNameLabel),
+                          label: clsx("text-end", classes.fromNameLabelOnEdit)
+                        }}
                       />
                     </div>
                   </Grid>
-                  <Grid item xs={1} />
 
                   <Grid item xs={6}>
                     <FormControlLabel
