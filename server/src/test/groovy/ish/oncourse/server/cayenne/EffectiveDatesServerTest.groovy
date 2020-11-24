@@ -172,7 +172,7 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
 
 	private void checkError(Exception ex) {
 		logger.catching(ex)
-        Throwable th =  ExceptionUtils.getRootCause(ex)
+        Throwable th =  ExceptionUtils.getThrowables(ex)[0]
         assertTrue(th instanceof ValidationException)
         assertTrue(((ValidationException) th).getValidationResult().hasFailures())
         assertEquals(1, ((ValidationException) th).getValidationResult().getFailures().size())

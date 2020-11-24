@@ -158,7 +158,7 @@ abstract class IshTestCase {
         dataSource = domain.getDataNode(ANGEL_NODE).getDataSource()
     }
 
-    static List<Class> getTestModules() {
+    static Set<Class> getTestModules() {
         new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(ish.TestModule)
     }
 
