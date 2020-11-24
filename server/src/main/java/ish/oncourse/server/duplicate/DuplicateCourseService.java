@@ -69,24 +69,28 @@ public class DuplicateCourseService {
                 var relation = context.newObject(CourseCourseRelation.class);
                 relation.setFromCourse(courseCourseRelation.getFromCourse());
                 relation.setToCourse(newCourse);
+                relation.setRelationType(courseCourseRelation.getRelationType());
             }
 
             for (var courseCourseRelation : oldCourse.getToCourses()) {
                 var relation = context.newObject(CourseCourseRelation.class);
                 relation.setFromCourse(newCourse);
                 relation.setToCourse(courseCourseRelation.getToCourse());
+                relation.setRelationType(courseCourseRelation.getRelationType());
             }
 
             for (var courseProductRelation : oldCourse.getProductToRelations()) {
                 var relation = context.newObject(CourseProductRelation.class);
                 relation.setFromCourse(newCourse);
                 relation.setToProduct(courseProductRelation.getToProduct());
+                relation.setRelationType(courseProductRelation.getRelationType());
             }
 
             for (var productCourseRelation : oldCourse.getProductFromRelations()) {
                 var relation = context.newObject(ProductCourseRelation.class);
                 relation.setToCourse(newCourse);
                 relation.setFromProduct(productCourseRelation.getFromProduct());
+                relation.setRelationType(productCourseRelation.getRelationType());
             }
 
             for (var courseAttachmentRelation : oldCourse.getAttachmentRelations()) {
