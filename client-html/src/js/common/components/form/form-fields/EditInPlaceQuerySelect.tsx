@@ -110,11 +110,11 @@ const completeSuggestions = (
       break;
     }
     case "EQ": {
-      variants = ["is"];
+      variants = operatorsFilter === "String" ? ["is"] : [];
       break;
     }
     case "NE": {
-      variants = ["not is"];
+      variants = operatorsFilter === "String" ? ["not is"] : [];
       break;
     }
     case "BooleanLiteral": {
@@ -148,20 +148,23 @@ const completeSuggestions = (
     case "~":
     case "contains":
     case "starts with":
-    case "ends with":
     case "!~":
     case "not contains":
-    case "not starts with":
+    case "not starts with": {
+      variants = ["String", "RichText"].includes(operatorsFilter) ? [token] : [];
+      break;
+    }
+    case "ends with":
     case "not ends with": {
       variants = operatorsFilter === "String" ? [token] : [];
       break;
     }
     case "LIKE": {
-      variants = operatorsFilter === "String" ? ["~", "like"] : [];
+      variants = ["String", "RichText"].includes(operatorsFilter) ? ["~", "like"] : [];
       break;
     }
     case "NOT_LIKE": {
-      variants = operatorsFilter === "String" ? ["!~", "not like"] : [];
+      variants = ["String", "RichText"].includes(operatorsFilter) ? ["!~", "not like"] : [];
       break;
     }
     case "<=":
@@ -210,7 +213,8 @@ const completeSuggestions = (
     case "IntegerLiteral":
     case "FloatingPointLiteral":
     case "SingleQuotedStringLiteral":
-    case "DoubleQuotedStringLiteral": {
+    case "DoubleQuotedStringLiteral":
+    case "RichTextLiteral": {
       variants = [];
       break;
     }
@@ -898,7 +902,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     }
 
     if (
-      ["DoubleQuotedStringLiteral", "SingleQuotedStringLiteral"].includes(lastTokenType)
+      ["DoubleQuotedStringLiteral", "SingleQuotedStringLiteral", "RichTextLiteral"].includes(lastTokenType)
       && value.match(SIMPLE_SEARCH_QUOTES_AND_NO_WHITESPACE_REGEX)
     ) {
       this.simpleSearchChecked = false;
@@ -920,14 +924,14 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     }
 
     if (lastTokenType === "WS") {
-      if (this.autoQuotesAdded && preLastTokenType === "Identifier" && this.operatorsFilter === "String") {
+      if (this.autoQuotesAdded && preLastTokenType === "Identifier" && ["String", "RichText"].includes(this.operatorsFilter)) {
         this.autoQuotesAdded = false;
       }
 
       if (
         !this.autoQuotesAdded
-        && this.operatorsFilter === "String"
-        && !["Identifier", "DoubleQuotedStringLiteral", "SingleQuotedStringLiteral"].includes(preLastTokenType)
+        && ["String", "RichText"].includes(this.operatorsFilter)
+        && !["Identifier", "DoubleQuotedStringLiteral", "SingleQuotedStringLiteral", "RichTextLiteral"].includes(preLastTokenType)
       ) {
         const { inputValue } = this.state;
 

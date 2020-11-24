@@ -85,6 +85,7 @@ databaseChangeLog:
               - column:
                  name: typeId
                  type: BIGINT
+                 value: -1
   - changeSet:
       id: 53-3
       author: rostislav

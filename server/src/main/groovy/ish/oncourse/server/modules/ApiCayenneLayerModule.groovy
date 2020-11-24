@@ -52,6 +52,7 @@ import ish.oncourse.server.api.dao.PayRateDao
 import ish.oncourse.server.api.dao.PaymentInDao
 import ish.oncourse.server.api.dao.PayslipDao
 import ish.oncourse.server.api.dao.PriorLearningDao
+import ish.oncourse.server.api.dao.ProductCourseRelationDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.QualificationDao
 import ish.oncourse.server.api.dao.ReportDao
@@ -85,6 +86,7 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(CourseModuleDao).in(Scopes.SINGLETON)
         binder.bind(CourseClassDao).in(Scopes.SINGLETON)
         binder.bind(CourseProductRelationDao).in(Scopes.SINGLETON)
+        binder.bind(ProductCourseRelationDao).in(Scopes.SINGLETON)
 
         binder.bind(DefinedTutorRoleDao).in(Scopes.SINGLETON)
         binder.bind(DiscountDao).in(Scopes.SINGLETON)

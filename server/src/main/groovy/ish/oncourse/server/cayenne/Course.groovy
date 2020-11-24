@@ -308,21 +308,155 @@ class Course extends _Course implements ICourse, Queueable, NotableTrait, Expand
 	}
 
 	/**
-	 *
 	 * @return a list of all courses related to this one
-	 * TODO: check that this code is correct
 	 */
 	@Nonnull
+	@API
 	List<Course> getRelatedCourses() {
-		List<Course> result = new ArrayList<>()
+		List<Course> courses = new ArrayList<>()
 
-		for (CourseCourseRelation relation : getFromCourses()) {
-			result.add(relation.getToCourse())
+		super.getFromCourses().each { it ->
+			courses.add(it.getFromCourse())
 		}
-		for (CourseCourseRelation relation : getToCourses()) {
-			result.add(relation.getFromCourse())
+		super.getToCourses().each { it ->
+			courses.add(it.getToCourse())
 		}
-		return result
+
+		return courses
+	}
+
+	/**
+	 * @return a list of all courses related to this one by type with specified name
+	 */
+	@Nonnull
+	@API
+	List<Course> getRelatedCourses(String name) {
+		List<Course> courses = new ArrayList<>()
+
+		super.getFromCourses().each { it ->
+			if (name == it.getRelationType().getName()) {
+				courses.add(it.getFromCourse())
+			}
+		}
+		super.getToCourses().each { it ->
+			if (name == it.getRelationType().getName()) {
+				courses.add(it.getToCourse())
+			}
+		}
+
+		return courses
+	}
+
+	/**
+	 * @return a list of all products related to this one
+	 */
+	@Nonnull
+	@API
+	List<Product> getRelatedProducts() {
+		List<Product> products = new ArrayList<>()
+
+		super.getProductToRelations().each { it ->
+			products.add(it.getToProduct())
+		}
+		super.getProductFromRelations().each { it ->
+			products.add(it.getFromProduct())
+		}
+
+		return products
+	}
+
+	/**
+	 * @return a list of products related to this one
+	 */
+	@Nonnull
+	@API
+	List<Product> getRelatedToProducts() {
+		List<Product> products = new ArrayList<>()
+
+		super.getProductToRelations().each { it ->
+			products.add(it.getToProduct())
+		}
+
+		return products
+	}
+
+	/**
+	 * @return a list of courses this one relate to
+	 */
+	@Nonnull
+	@API
+	List<Product> getRelatedFromProducts() {
+		List<Product> products = new ArrayList<>()
+
+		super.getProductFromRelations().each { it ->
+			products.add(it.getFromProduct())
+		}
+
+		return products
+	}
+
+	/**
+	 * @return a list of courses related to this one
+	 */
+	@Nonnull
+	@API
+	List<Course> getRelatedToCourses() {
+		List<Course> courses = new ArrayList<>()
+
+		super.getToCourses().each { it ->
+			courses.add(it.getToCourse())
+		}
+
+		return courses
+	}
+
+	/**
+	 * @return a list of courses related to this one by type with specified name
+	 */
+	@Nonnull
+	@API
+	List<Course> getRelatedToCourses(String name) {
+		List<Course> courses = new ArrayList<>()
+
+		super.getToCourses().each { it ->
+			if (name == it.getRelationType().getName()) {
+				courses.add(it.getToCourse())
+			}
+		}
+
+		return courses
+	}
+
+	/**
+	 * @return a list of courses this one relate to
+	 */
+	@Nonnull
+	@API
+	List<Course> getRelatedFromCourses() {
+		List<Course> courses = new ArrayList<>()
+
+		super.getFromCourses().each { it ->
+			courses.add(it.getFromCourse())
+		}
+
+		return courses
+	}
+
+	/**
+	 * @return a list of courses this one relate to by type with specified name
+	 */
+	@Nonnull
+	@API
+	List<Course> getRelatedFromCourses(String name) {
+		List<Course> courses = new ArrayList<>()
+
+		super.getFromCourses().each { it ->
+			if (name == it.getRelationType().getName()) {
+				courses.add(it.getFromCourse())
+			}
+		}
+
+		return courses
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package ish.validation
+package ish
 
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy

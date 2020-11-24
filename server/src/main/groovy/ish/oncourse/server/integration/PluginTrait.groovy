@@ -67,13 +67,14 @@ trait PluginTrait {
 		name = args.get("name") as String
 		
 		injector = args.get("injector") as Injector
-
-		cayenneService = injector.getInstance(ICayenneService) 
-		emailService = injector.getInstance(EmailService)
-		systemUserService = injector.getInstance(ISystemUserService)
-		templateService = injector.getInstance(TemplateService)
-		preferenceController = injector.getInstance(PreferenceController)
 		
+		if (injector) {
+			cayenneService = injector.getInstance(ICayenneService)
+			emailService = injector.getInstance(EmailService)
+			systemUserService = injector.getInstance(ISystemUserService)
+			templateService = injector.getInstance(TemplateService)
+			preferenceController = injector.getInstance(PreferenceController)
+		}
 
 				// check to see whether this plugin with initialised with a configuration
 		if (configuration) {

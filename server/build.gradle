@@ -49,13 +49,7 @@ sourceSets {
 	}
 }
 
-task testJar(type: Jar) {
-	archiveClassifier = 'tests'
-	from sourceSets.test.output
-}
-
 dependencies {
-//	api 'ish.oncourse.commercial.plugin:replication:99-SNAPSHOT'
 	api project(":types")
 	api project(':server-api')
 	
@@ -296,6 +290,11 @@ task packageDslDoc(type: Zip) {
 	archiveBaseName = "dsl"
 	tasks.getByName('dslDocs').mustRunAfter(tasks.getByName('classes'))
 	dependsOn tasks.getByName('classes'),tasks.getByName('dslDocs')
+}
+
+task testJar(type: Jar) {
+	archiveClassifier = 'tests'
+	from sourceSets.test.output
 }
 
 

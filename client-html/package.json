@@ -70,14 +70,14 @@
     "webpack-bugsnag-plugins": "*",
     "webpack-bundle-analyzer": "3.*",
     "webpack-cli": "3.*",
-    "webpack-dev-server": "^3.*",
+    "webpack-dev-server": "3.11.0",
     "webpack-pwa-manifest": "4.*",
     "workbox-webpack-plugin": "4.*",
     "zip-webpack-plugin": "3.*"
   },
   "dependencies": {
-    "@bugsnag/js": "6.5.*",
-    "@bugsnag/plugin-react": "6.5.*",
+    "@bugsnag/js": "7.5.*",
+    "@bugsnag/plugin-react": "7.3.*",
     "@ckeditor/ckeditor5-autoformat": "latest",
     "@ckeditor/ckeditor5-basic-styles": "latest",
     "@ckeditor/ckeditor5-editor-classic": "latest",

@@ -240,8 +240,15 @@ class Product extends _Product implements Queueable {
 	 */
 	@Nonnull
 	@API
-	List<Course> getCourses() {
-		return courseRelations*.course
+	List<Course> getRelatedCourses() {
+		List<Course> courses = new ArrayList<>()
+		courseFromRelations.each { it ->
+			courses.add(it.toCourse)
+		}
+		courseToRelations.each { it ->
+			courses.add(it.fromCourse)
+		}
+		return courses
 	}
 
 	/**
