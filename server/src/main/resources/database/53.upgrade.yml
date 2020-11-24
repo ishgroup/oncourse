@@ -191,3 +191,17 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: Discount
             validate: true
+  - changeSet:
+      id: 53-6
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: EntityRelation
+            columnName: typeId
+      changes:
+        - addNotNullConstraint:
+            columnDataType: BIGINT
+            columnName: typeId
+            tableName: EntityRelation
+            validate: true
