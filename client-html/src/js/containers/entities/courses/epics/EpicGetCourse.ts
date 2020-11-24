@@ -16,16 +16,12 @@ import { getEntityItemById } from "../../common/entityItemsService";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import { removeActionsFromQueue } from "../../../../common/actions";
 import { State } from "../../../../reducers/state";
-import { formatRelatedSalablesAfterFetch } from "../utils";
 
 const request: EpicUtils.Request<any, State, number> = {
   type: GET_COURSE,
   hideLoadIndicator: true,
   getData: id => getEntityItemById("Course", id),
   processData: (course: Course, s, id) => {
-    if (course.relatedlSalables && course.relatedlSalables.length) {
-      course.relatedlSalables = formatRelatedSalablesAfterFetch(course.relatedlSalables);
-    }
     return [
       {
         type: GET_COURSE_FULFILLED,

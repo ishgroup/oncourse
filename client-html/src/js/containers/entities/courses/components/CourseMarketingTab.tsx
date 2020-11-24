@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, FieldArray } from "redux-form";
 import Grid from "@material-ui/core/Grid";
+import { Sale } from "@api/model";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { State } from "../../../../reducers/state";
@@ -15,8 +16,63 @@ import { clearSales, getSales } from "../../sales/actions";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { getPlainCourses, setPlainCourses, setPlainCoursesSearch } from "../actions";
 import { formatRelatedSalables, formattedEntityRelationTypes } from "../utils";
+import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
+import { stubFunction } from "../../../../common/utils/common";
 
 const salesSort = (a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+
+const RelationCellBase = ({
+                            relationTypes, item, dispatch, form, index
+                          }) => {
+  const onRelationChange = rel => {
+    const entityId = item.entityFromId || item.entityToId;
+    const changed: Sale = {
+      id: item.id,
+      name: item.name,
+      code: item.code,
+      active: item.active,
+      type: item.type,
+      expiryDate: item.expiryDate,
+      entityFromId: rel.combined ? entityId : rel.isReverseRelation ? null : entityId,
+      entityToId: rel.isReverseRelation ? entityId : null,
+      relationId: rel.id
+    };
+    dispatch(change(form, `relatedlSalables[${index}]`, changed));
+  };
+
+  const getSelectedRelation = () => {
+    if (!relationTypes.length || typeof item.relationId !== "number") {
+      return null;
+    }
+    return relationTypes.find(t => t.id === item.relationId && (t.combined || (
+      typeof item.entityToId === "number"
+        ? t.isReverseRelation
+        : !t.isReverseRelation
+    )));
+  };
+
+  return (
+    <div className="ml-2">
+      {relationTypes.length && (
+        <EditInPlaceField
+          meta={{}}
+          items={relationTypes}
+          input={{
+            onChange: onRelationChange,
+            onFocus: stubFunction,
+            onBlur: stubFunction,
+            value: getSelectedRelation()
+          }}
+          formatting="inline"
+          returnType="object"
+          placeholder="Select relation"
+          disabled={item.id}
+          select
+        />
+      )}
+    </div>
+  );
+};
 
 const CourseMarketingTab: React.FC<any> = props => {
   const {
@@ -63,7 +119,12 @@ const CourseMarketingTab: React.FC<any> = props => {
       const salesCombined = (sales || []).concat(courses || []);
 
       const newSalesList = values.relatedlSalables.concat(
-        salesToAdd.map(v1 => salesCombined.find(v2 => String(v2.id) === String(v1.entityId) && v2.type === v1.entityName))
+        salesToAdd.map(v1 => {
+          const sale = salesCombined.find(v2 => String(v2.id) === String(v1.entityId) && v2.type === v1.entityName);
+          return {
+            ...sale, id: null, entityFromId: sale.id, relationId: -1
+          };
+        })
       );
       newSalesList.sort(salesSort);
       dispatch(change(form, "relatedlSalables", newSalesList));
@@ -84,6 +145,17 @@ const CourseMarketingTab: React.FC<any> = props => {
     sales,
     courses
   ]);
+
+  const relationTypes = useMemo(() => formattedEntityRelationTypes(entityRelationTypes), [entityRelationTypes]);
+
+  const relationCell = props => (
+    <RelationCellBase
+      {...props}
+      relationTypes={relationTypes}
+      dispatch={dispatch}
+      form={form}
+    />
+  );
 
   return (
     <Grid container className="pl-3 pr-3">
@@ -134,8 +206,7 @@ const CourseMarketingTab: React.FC<any> = props => {
           aqlEntity="Product"
           additionalAqlEntity="Course"
           additionalAqlEntityTags={["Course"]}
-          relationTypes={formattedEntityRelationTypes(entityRelationTypes)}
-          formField="relatedlSalables"
+          CustomCell={relationCell}
         />
       </Grid>
     </Grid>

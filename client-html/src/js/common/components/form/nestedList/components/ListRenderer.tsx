@@ -14,13 +14,10 @@ import clsx from "clsx";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Button from "@material-ui/core/Button/Button";
 import Paper from "@material-ui/core/Paper/Paper";
-import { EntityRelationType } from "@api/model";
 import { NestedListItem } from "../NestedList";
 import { openInternalLink } from "../../../../utils/links";
 import DynamicSizeList from "../../DynamicSizeList";
 import { listStyles } from "./styles";
-import FormField from "../../form-fields/FormField";
-import { uniqueEntityRelationTypes } from "../../../../../containers/entities/courses/utils";
 
 interface Props {
   classes: any;
@@ -31,94 +28,70 @@ interface Props {
   fade?: boolean;
   dataRowClass?: string;
   disabled?: boolean;
-  relationTypes?: EntityRelationType[];
-  formField?: string;
+  CustomCell?: React.ReactNode;
 }
 
 const RowContent = React.memo<any>(({
-  style, item, index, classes, dataRowClass, disabled, onDelete, onClick, type, forwardedRef, relationTypes, formField
-}) => {
-  const uniqueRelationTypes = relationTypes && relationTypes.length ? uniqueEntityRelationTypes(relationTypes, item.relationId) : [];
-  const headerText = (item, relationTypes) => {
-    const isReverseRelation = String(item.relationId).includes("r");
-    const filteredRelations = Array.isArray(relationTypes) ? relationTypes.filter(r => r.isReverseRelation === isReverseRelation) : [];
-    const relation = filteredRelations.find(r => String(r.id) === String(parseInt(item.relationId, 10)));
+                                      style, item, index, classes, dataRowClass, disabled, onDelete, onClick, type, forwardedRef, CustomCell
+                                    }) => (
+                                      <li
+                                        ref={forwardedRef}
+                                        style={style}
+                                        className={clsx("pb-1", {
+      [classes.fade]: !item.active
+    })}
+                                      >
+                                        <div className={clsx("d-flex", classes.root__item)}>
+                                          <div
+                                            className={clsx(classes.textRow, dataRowClass)}
+                                          >
+                                            <Typography
+                                              variant="body2"
+                                              className={clsx("text-truncate", classes.dInline, item.link && "linkDecoration")}
+                                              onClick={item.link ? () => openInternalLink(item.link) : undefined}
+                                            >
+                                              {item.primaryText}
+                                            </Typography>
 
-    return (
-      <Typography variant="body2" className={clsx("text-truncate", classes.dInline)}>
-        {relation && relation.name ? `${item.primaryText} ${relation.fromName} ${relation.name} ${relation.toName}` : item.primaryText}
-      </Typography>
-    );
-  };
+                                            <div className={classes.chipsWrapper}>
+                                              <Typography
+                                                className={clsx(
+              "ml-2 mr-2 text-truncate",
+              classes.dInline
+            )}
+                                                variant="caption"
+                                              >
+                                                {item.secondaryText}
+                                              </Typography>
 
-  return (
-    <li
-      ref={forwardedRef}
-      style={style}
-      className={clsx("pb-1", {
-        [classes.fade]: !item.active
-      })}
-    >
-      <div className={clsx("d-flex", classes.root__item)}>
-        <div
-          className={clsx(classes.textRow, dataRowClass, {
-            "linkDecoration": item.link
-          })}
-          onClick={item.link ? () => openInternalLink(item.link) : undefined}
-        >
-          {headerText(item, relationTypes)}
+                                              <Typography variant="body2" className={classes.chips}>
+                                                {item.entityName}
+                                              </Typography>
+                                            </div>
 
-          <div className={classes.chipsWrapper}>
-            <Typography
-              className={clsx(
-                "ml-2 mr-2 text-truncate",
-                classes.dInline
-              )}
-              variant="caption"
-            >
-              {item.secondaryText}
-            </Typography>
-
-            <Typography variant="body2" className={classes.chips}>
-              {item.entityName}
-            </Typography>
-          </div>
-        </div>
-        {type === "list" && uniqueRelationTypes.length && formField ? (
-          <div className="ml-2">
-            <FormField
-              type="select"
-              name={`${formField}[${index}][relationId]`}
-              label="Type of relations"
-              items={uniqueRelationTypes}
-              selectValueMark="value"
-              selectLabelMark="label"
-              defaultValue={item.relationId}
-              classes={{ textField: classes.selectRelationIdTextField }}
-              placeholder="Select relation"
-              hideLabel
-            />
-          </div>
-        ) : ""}
-        <span className={clsx("centeredFLex", disabled && "invisible")}>
-          {type === "list" && onDelete && (
-          <ButtonBase className={classes.deleteButton} onClick={() => onDelete(item, index)}>
-            <Delete className={classes.deleteIcon} />
-          </ButtonBase>
-          )}
-          {type === "search" && (
-            <>
-              <span className="flex-fill" />
-              <Button className={classes.button} onClick={() => onClick(item, index)}>
-                Add
-              </Button>
-            </>
-          )}
-        </span>
-      </div>
-    </li>
-  );
-});
+                                            {CustomCell && <CustomCell item={item} index={index} />}
+                                          </div>
+                                          <span className={clsx("centeredFLex", disabled && "invisible")}>
+                                            {type === "list" && onDelete && (
+                                            <ButtonBase
+                                              className={classes.deleteButton}
+                                              onClick={() => onDelete(item, index)}
+                                            >
+                                              <Delete className={classes.deleteIcon} />
+                                            </ButtonBase>
+                                            )}
+                                            {type === "search" && (
+                                            <>
+                                              <span className="flex-fill" />
+                                              <Button className={classes.button} onClick={() => onClick(item, index)}>
+                                                Add
+                                              </Button>
+                                            </>
+        )}
+                                          </span>
+                                        </div>
+                                      </li>
+));
 
 const RowRenderer = React.forwardRef<any, any>(({ data, index, style }, ref) => {
   const { items, ...rest } = data;
@@ -127,8 +100,8 @@ const RowRenderer = React.forwardRef<any, any>(({ data, index, style }, ref) => 
 
 const ListRenderer = React.memo(
   ({
- classes, items, onDelete, onClick, fade, dataRowClass, disabled, type, relationTypes, formField
-}: Props) => {
+     classes, items, onDelete, onClick, fade, dataRowClass, disabled, type, CustomCell
+   }: Props) => {
     const [changedIndex, setChangedIndex] = useState<number>();
 
     useEffect(() => {
@@ -155,8 +128,8 @@ const ListRenderer = React.memo(
     }, []);
 
     const itemData = useMemo(() => ({
-      items, dataRowClass, type, classes, disabled, onDelete: deleteHandler, onClick: clickHandler, relationTypes, formField
-    }), [items, dataRowClass, type, classes, disabled, deleteHandler, clickHandler, relationTypes, formField]);
+      items, dataRowClass, type, classes, disabled, onDelete: deleteHandler, onClick: clickHandler, CustomCell
+    }), [items, dataRowClass, type, classes, disabled, deleteHandler, clickHandler, CustomCell]);
 
     return (
       <Paper className={clsx(classes.root, { [classes.fade]: fade, [classes.root__height]: isVirtual })}>
@@ -186,8 +159,7 @@ const ListRenderer = React.memo(
               type={type}
               onDelete={onDelete}
               onClick={onClick}
-              relationTypes={relationTypes}
-              formField={formField}
+              CustomCell={CustomCell}
             />
           ))
         )}

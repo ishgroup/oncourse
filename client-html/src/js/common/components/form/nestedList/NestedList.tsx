@@ -11,7 +11,6 @@ import debounce from "lodash.debounce";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Field, Validator } from "redux-form";
 import { connect } from "react-redux";
-import { EntityRelationType } from "@api/model";
 import PaperListRenderer, { PanelItemChangedMessage } from "./components/PaperListRenderer";
 import ListRenderer from "./components/ListRenderer";
 import { InputSection, InputSectionWithToggle } from "./components/InputSections";
@@ -85,8 +84,7 @@ interface Props {
   disableAddAll?: boolean;
   validate?: Validator;
   entityTags?: any;
-  relationTypes?: EntityRelationType[];
-  formField?: string;
+  CustomCell?: React.ReactNode;
 }
 
 interface NestedListState {
@@ -559,8 +557,7 @@ class NestedList extends React.Component<Props, NestedListState> {
       name,
       validate,
       disabled,
-      relationTypes,
-      formField
+      CustomCell
     } = this.props;
     const { searchEnabled, searchExpression, additionalSearchExpression } = this.state;
 
@@ -609,8 +606,7 @@ class NestedList extends React.Component<Props, NestedListState> {
               fade={searchEnabled}
               dataRowClass={dataRowClass}
               disabled={disabled}
-              relationTypes={relationTypes}
-              formField={formField}
+              CustomCell={CustomCell}
             />
           ))}
       </>

@@ -49,7 +49,7 @@ const styles = theme =>
       alignItems: "right"
     },
     dataRowClass: {
-      gridTemplateColumns: "3fr 2fr"
+      gridTemplateColumns: "1fr 1fr 1fr"
     },
     moduleRowClass: {
       gridTemplateColumns: "1fr 0.5fr"

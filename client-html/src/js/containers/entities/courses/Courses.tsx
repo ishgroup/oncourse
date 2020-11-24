@@ -23,7 +23,6 @@ import {
 } from "./actions";
 import CourseCogWheel from "./components/CourseCogWheel";
 import CourseEditView from "./components/CourseEditView";
-import { formatRelatedSalablesBeforeSave } from "./utils";
 
 export const ENTITY_NAME = "Course";
 
@@ -162,8 +161,6 @@ const preformatBeforeSubmit = (value: CourseExtended): Course => {
   if (value.qualificationId) {
     delete value.fieldOfEducation;
   }
-
-  value = { ...value, relatedlSalables: formatRelatedSalablesBeforeSave(Array.from(value.relatedlSalables)) };
 
   return value;
 };

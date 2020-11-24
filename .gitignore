@@ -4,3 +4,6 @@
 .settings
 **/node_modules/
 **/build/
+server/onCourse.yml
+/server/logSetup.xml
+/server/onCourseSSL.keystore
