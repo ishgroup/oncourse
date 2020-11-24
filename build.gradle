@@ -9,7 +9,7 @@ buildscript {
         mariadbVersion = '2.4.1'
         tapestryVersion = '5.4.3'
 		bootiqueVersion = '1.0'
-        webservicesVersion = '103' 
+        webservicesVersion = '104'
 
     }
 
@@ -47,7 +47,7 @@ taskTree{
 
 ext {
     replicationVersions = [
-            21, 22      // introduced in onCourse 9.13
+            21, 22, 23      // introduced in onCourse 9.13
 	]
     referenceVersions = [
             7      // introduced in onCourse 9.10
