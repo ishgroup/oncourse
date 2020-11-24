@@ -110,11 +110,11 @@ const completeSuggestions = (
       break;
     }
     case "EQ": {
-      variants = operatorsFilter === "String" ? ["is"] : [];
+      variants = ["is"];
       break;
     }
     case "NE": {
-      variants = operatorsFilter === "String" ? ["not is"] : [];
+      variants = ["not is"];
       break;
     }
     case "BooleanLiteral": {
