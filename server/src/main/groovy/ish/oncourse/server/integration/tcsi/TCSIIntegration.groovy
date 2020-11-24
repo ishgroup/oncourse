@@ -13,6 +13,8 @@ package ish.oncourse.server.integration.tcsi
 
 import com.nimbusds.jose.jwk.RSAKey
 import groovy.transform.CompileDynamic
+import groovyx.net.http.HttpResponseDecorator
+
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.URLENC
 import static groovyx.net.http.Method.POST
@@ -84,10 +86,21 @@ class TCSIIntegration implements PluginTrait {
                     logger.warn("Device activation success: $deviceName, $organisationId")
                 }
                 response.failure = { resp, body ->
-                    logger.error("HEIMS data collection system responde with error: " +
-                            "$deviceName, $organisationId, $activationCode, $jwkCertificate \n" +
-                            "resp: $resp \n" +
-                            "body: $body")
+                    if (resp instanceof HttpResponseDecorator) {
+                        HttpResponseDecorator decorator = resp as HttpResponseDecorator
+                        String headers = decorator.headers.inject  {a,b -> a = "$a\n  $b"}
+                    
+                    
+                    logger.error("HEIMS data collection system responde with error:\n" +
+                            "device name: $deviceName\n" +
+                            "organisation id: $organisationId\n" +
+                            "activation code: $activationCode\n" +
+                            "jwk certificate $jwkCertificate \n" +
+                            "response satatus: $decorator.status\n" +
+                            "response body: $body\n" +
+                            "response headers: $headers")
+                    }
+                    
                     errorMessage = "HEIMS data collection system responde with error: \n"
 
                     body['errors'].each { error ->
