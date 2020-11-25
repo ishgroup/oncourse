@@ -73,57 +73,6 @@ class ScriptAddMenu extends React.Component<any, any> {
         >
           <div className="outline-none mt-1">
             <div className="d-flex">
-              {/* <div className={"flex-fill"}> */}
-              {/* <Typography className={clsx("heading", "pl-2", "mb-1")}>Trigger</Typography> */}
-              {/* <MenuItem className={classes.listItemPadding} button> */}
-              {/* <Typography variant="subtitle1" color="textSecondary"> */}
-              {/* Schedule */}
-              {/* </Typography> */}
-              {/* </MenuItem> */}
-              {/* <MenuItem className={classes.listItemPadding} button> */}
-              {/* <Typography variant="subtitle1" color="textSecondary"> */}
-              {/* On create */}
-              {/* </Typography> */}
-              {/* </MenuItem> */}
-              {/* <MenuItem className={classes.listItemPadding} button> */}
-              {/* <Typography variant="subtitle1" color="textSecondary"> */}
-              {/* On edit */}
-              {/* </Typography> */}
-              {/* </MenuItem> */}
-              {/* <MenuItem className={classes.listItemPadding} button> */}
-              {/* <Typography variant="subtitle1" color="textSecondary"> */}
-              {/* On delete */}
-              {/* </Typography> */}
-              {/* </MenuItem> */}
-              {/* <MenuItem className={classes.listItemPadding} button> */}
-              {/* <Typography variant="subtitle1" color="textSecondary"> */}
-              {/* Publish to web */}
-              {/* </Typography> */}
-              {/* </MenuItem> */}
-              {/* <MenuItem className={classes.listItemPadding} button> */}
-              {/* <Typography variant="subtitle1" color="textSecondary"> */}
-              {/* Enrolment */}
-              {/* </Typography> */}
-              {/* </MenuItem> */}
-
-              {/* <Typography className={clsx("heading", "pl-2", "mb-1", "mt-3")}> */}
-              {/* Search */}
-              {/* </Typography> */}
-              {/* <MenuItem className={classes.listItemPadding} button disabled> */}
-              {/* <Typography variant="subtitle1" color="textSecondary"> */}
-              {/* Find records */}
-              {/* </Typography> */}
-              {/* </MenuItem> */}
-
-              {/* <Typography className={clsx("heading", "pl-2", "mb-1", "mt-3")}> */}
-              {/* Join */}
-              {/* </Typography> */}
-              {/* <MenuItem className={classes.listItemPadding} button disabled> */}
-              {/* <Typography variant="subtitle1" color="textSecondary"> */}
-              {/* Transform records */}
-              {/* </Typography> */}
-              {/* </MenuItem> */}
-              {/* </div> */}
               <div className="flex-fill">
                 <Typography className="heading pl-2 mb-1">Action</Typography>
                 <MenuItem
@@ -138,7 +87,12 @@ class ScriptAddMenu extends React.Component<any, any> {
                   </Typography>
                 </MenuItem>
 
-                <MenuItem button className={classes.listItemPadding} data-component="Query" onClick={this.addComponent}>
+                <MenuItem
+                  button
+                  className={classes.listItemPadding}
+                  data-component="Query"
+                  onClick={this.addComponent}
+                >
                   <Typography variant="subtitle1" color="textSecondary">
                     Query
                   </Typography>
@@ -156,45 +110,16 @@ class ScriptAddMenu extends React.Component<any, any> {
                   </Typography>
                 </MenuItem>
 
-                {/* <MenuItem className={classes.listItemPadding} button disabled> */}
-                {/* <Typography variant="subtitle1" color="textSecondary"> */}
-                {/* Email */}
-                {/* </Typography> */}
-                {/* </MenuItem> */}
-                {/* <MenuItem className={classes.listItemPadding} button disabled> */}
-                {/* <Typography variant="subtitle1" color="textSecondary"> */}
-                {/* Email document */}
-                {/* </Typography> */}
-                {/* </MenuItem> */}
-                {/* <MenuItem className={classes.listItemPadding} button disabled> */}
-                {/* <Typography variant="subtitle1" color="textSecondary"> */}
-                {/* SMS */}
-                {/* </Typography> */}
-                {/* </MenuItem> */}
-                {/* <MenuItem className={classes.listItemPadding} button disabled> */}
-                {/* <Typography variant="subtitle1" color="textSecondary"> */}
-                {/* Report */}
-                {/* </Typography> */}
-                {/* </MenuItem> */}
-                {/* <MenuItem className={classes.listItemPadding} button disabled> */}
-                {/* <Typography variant="subtitle1" color="textSecondary"> */}
-                {/* Export */}
-                {/* </Typography> */}
-                {/* </MenuItem> */}
-                {/* <MenuItem className={classes.listItemPadding} button disabled> */}
-                {/* <Typography variant="subtitle1" color="textSecondary"> */}
-                {/* Store document */}
-                {/* </Typography> */}
-                {/* </MenuItem> */}
-
-                {/* <Typography className={clsx("heading", "pl-2", "mb-1", "mt-3")}> */}
-                {/* Advanced */}
-                {/* </Typography> */}
-                {/* <MenuItem className={classes.listItemPadding} button> */}
-                {/* <Typography variant="subtitle1" color="textSecondary"> */}
-                {/* Custom script */}
-                {/* </Typography> */}
-                {/* </MenuItem> */}
+                <MenuItem
+                  button
+                  className={classes.listItemPadding}
+                  data-component="Message"
+                  onClick={this.addComponent}
+                >
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Message
+                  </Typography>
+                </MenuItem>
               </div>
             </div>
           </div>
