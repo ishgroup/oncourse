@@ -1,7 +1,7 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.webservices.replication.v22.updaters;
+package ish.oncourse.webservices.replication.v23.updaters;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseProductRelation;
@@ -9,7 +9,7 @@ import ish.oncourse.model.EntityRelation;
 import ish.oncourse.model.Product;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.updaters.UpdaterException;
-import ish.oncourse.webservices.v22.stubs.replication.EntityRelationStub;
+import ish.oncourse.webservices.v23.stubs.replication.EntityRelationStub;
 
 public class CourseProductRelationUpdater extends EntityRelationUpdater {
 	

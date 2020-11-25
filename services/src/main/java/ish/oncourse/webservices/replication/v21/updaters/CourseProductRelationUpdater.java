@@ -18,8 +18,8 @@ public class CourseProductRelationUpdater extends EntityRelationUpdater {
 		super.updateEntity(stub, entity, callback);
 		if (entity instanceof CourseProductRelation) {
 			CourseProductRelation relationEntity = (CourseProductRelation) entity;
-			relationEntity.setCourse((Course) callback.updateRelationShip(stub.getFromEntityAngelId(), ENTITY_CLASS_MAPPING.get(entity.getFromEntityIdentifier())));
-			relationEntity.setProduct((Product) callback.updateRelationShip(stub.getToEntityAngelId(), ENTITY_CLASS_MAPPING.get(entity.getToEntityIdentifier())));
+			relationEntity.setFromCourse((Course) callback.updateRelationShip(stub.getFromEntityAngelId(), ENTITY_CLASS_MAPPING.get(entity.getFromEntityIdentifier())));
+			relationEntity.setToProduct((Product) callback.updateRelationShip(stub.getToEntityAngelId(), ENTITY_CLASS_MAPPING.get(entity.getToEntityIdentifier())));
 		} else {
 			throw new UpdaterException("Invalid entity type passed!" + entity.getClass());
 		}
