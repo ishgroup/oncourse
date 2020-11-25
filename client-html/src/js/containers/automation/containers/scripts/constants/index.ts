@@ -1,4 +1,9 @@
-import { ScriptComponent, ScriptEmailComponent, ScriptQueryComponent } from "../../../../../model/scripts";
+import {
+  ScriptComponent,
+  ScriptEmailComponent,
+  ScriptQueryComponent,
+  ScriptMessageComponent
+} from "../../../../../model/scripts";
 
 export const SCRIPT_EDIT_VIEW_FORM_NAME = "ScriptsForm";
 
@@ -38,6 +43,26 @@ export const getQueryComponent = (body: string): ScriptQueryComponent => {
     queryClosureReturnValue: "result",
     entity: entityMatch && entityMatch[1],
     query: queryMatch && queryMatch[1].replace(/\\"/g, '"')
+  };
+};
+
+export const getMessageTemplate = (template: string, from: string) =>
+  `\n// Message closure start 
+  message {
+    template "${template}"
+    from "${from || ''}"
+    record records
+  }      
+  // Message closure end\n`;
+
+export const getMessageComponent = (body: string): ScriptMessageComponent => {
+  const templateMatch = body.match(/template\s+"(.+)"\s+from/);
+  const fromMatch = body.match(/from\s+"(.+)"\s+(record)?/);
+
+  return {
+    type: "Message",
+    template: templateMatch && templateMatch[1],
+    from: fromMatch && fromMatch[1],
   };
 };
 
