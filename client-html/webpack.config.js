@@ -12,6 +12,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const { BugsnagBuildReporterPlugin, BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const __common = require("./webpack/__common");
 
 module.exports = function (options = {}) {
@@ -120,6 +121,9 @@ const _main = (NODE_ENV, SOURCE_MAP, BUILD_NUMBER) => {
 
 const plugins = (NODE_ENV, BUILD_NUMBER) => {
   const plugins = [
+    new CleanWebpackPlugin({
+      verbose: true
+    }),
     new MiniCssExtractPlugin({ filename: '[name].css' }),
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
     __common.PwaManifestPlugin(),
