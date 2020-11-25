@@ -10,6 +10,7 @@ import { ScriptComponent } from "../../../../../../model/scripts";
 import ScriptCard from "./CardBase";
 import EmailCardContent from "./EmailCardContent";
 import QueryCardContent from "./QueryCardContent";
+import MessageCardContent from "./MessageCardContent";
 
 const onDragEnd = ({ destination, source, fields }) => {
   if (destination && destination.index !== source.index) {
@@ -19,7 +20,16 @@ const onDragEnd = ({ destination, source, fields }) => {
 
 const CardsRenderer = props => {
   const {
-    fields, dispatch, onValidateQuery, classes, showConfirm, hasUpdateAccess, isInternal, isValidQuery, onInternalSaveClick
+    fields,
+    dispatch,
+    onValidateQuery,
+    classes,
+    showConfirm,
+    hasUpdateAccess,
+    isInternal,
+    isValidQuery,
+    onInternalSaveClick,
+    emailTemplates
   } = props;
 
   const onDelete = (e, index, fields, showConfirm) => {
@@ -92,6 +102,34 @@ const CardsRenderer = props => {
                               classes={classes}
                               onValidateQuery={onValidateQuery}
                               isValidQuery={isValidQuery}
+                            />
+                          </ScriptCard>
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                }
+                case "Message": {
+                  return (
+                    <Draggable key={index} draggableId={index + item} index={index} isDragDisabled={isInternal}>
+                      {provided => (
+                        <div ref={provided.innerRef} {...provided.draggableProps}>
+                          <ScriptCard
+                            heading="Message"
+                            className="mb-3"
+                            onDelete={!isInternal ? e => onDelete(e, index, fields, showConfirm) : null}
+                            dragHandlerProps={provided.dragHandleProps}
+                            expanded
+                            onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                          >
+                            <MessageCardContent
+                              dispatch={dispatch}
+                              field={component}
+                              name={item}
+                              classes={classes}
+                              onValidateQuery={onValidateQuery}
+                              isValidQuery={isValidQuery}
+                              emailTemplates={emailTemplates}
                             />
                           </ScriptCard>
                         </div>
