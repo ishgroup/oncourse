@@ -153,7 +153,7 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
 
             if (paymentRequest.checkoutModelRequest) {
                 checkoutModel = getCheckoutModel(paymentRequest.checkoutModelRequest)
-                V2ValidatePaymentRequest validatePaymentRequest = new V2ValidatePaymentRequest(checkoutModel, paymentRequest.ccAmount.toMoney(), context, financialService.getAvailableCredit(checkoutModel.payerId)).validate()
+                V2ValidatePaymentRequest validatePaymentRequest = new V2ValidatePaymentRequest(checkoutModel, (paymentRequest.ccAmount != null ? paymentRequest.ccAmount.toMoney() : Money.ZERO), context, financialService.getAvailableCredit(checkoutModel.payerId)).validate()
                 if (validatePaymentRequest.commonError) {
                     throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
                 }
