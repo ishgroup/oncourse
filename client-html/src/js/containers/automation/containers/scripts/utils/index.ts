@@ -12,6 +12,8 @@ import {
   getQueryComponent,
   getQueryTemplate,
   getScriptComponent,
+  getMessageTemplate,
+  getMessageComponent,
   importsRegexp
 } from "../constants/index";
 
@@ -25,6 +27,9 @@ const getClosureComponent = (body: string) => {
     switch (type) {
       case "Query": {
         return getQueryComponent(body);
+      }
+      case "Message": {
+        return getMessageComponent(body);
       }
     }
   }
@@ -95,6 +100,9 @@ const getComponentBody = (component: any) => {
     // }
     case "Script": {
       return component.content;
+    }
+    case "Message": {
+      return getMessageTemplate(component.template, component.from);
     }
     default:
       return null;
