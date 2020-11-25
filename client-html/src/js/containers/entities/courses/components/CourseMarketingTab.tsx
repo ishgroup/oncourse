@@ -142,9 +142,10 @@ const CourseMarketingTab: React.FC<any> = props => {
     values.relatedlSalables
   ]);
 
-  const searchValues = useMemo(() => [...(sales ? formatRelatedSalables(sales) : []), ...formatRelatedSalables(courses)], [
+  const searchValues = useMemo(() => [...(sales ? formatRelatedSalables(sales) : []), ...formatRelatedSalables(courses.filter(c => c.id !== values.id))], [
     sales,
-    courses
+    courses,
+    values.id
   ]);
 
   const relationTypes = useMemo(() => formattedEntityRelationTypes(entityRelationTypes), [entityRelationTypes]);
