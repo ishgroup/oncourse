@@ -22,11 +22,11 @@ import { stubFunction } from "../../../../common/utils/common";
 const salesSort = (a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
 
 const RelationCellBase = ({
-                            relationTypes, item, dispatch, form, index
-                          }) => {
+  relationTypes, item, dispatch, form, index
+}) => {
   const onRelationChange = rel => {
     const entityId = item.entityFromId || item.entityToId;
-    const changed: Sale = {
+    const changed: Sale & { tempId: any } = {
       id: item.id,
       name: item.name,
       code: item.code,
@@ -35,7 +35,8 @@ const RelationCellBase = ({
       expiryDate: item.expiryDate,
       entityFromId: rel.combined ? entityId : rel.isReverseRelation ? null : entityId,
       entityToId: rel.isReverseRelation ? entityId : null,
-      relationId: rel.id
+      relationId: rel.id,
+      tempId: item.tempId
     };
     dispatch(change(form, `relatedlSalables[${index}]`, changed));
   };
@@ -66,7 +67,7 @@ const RelationCellBase = ({
           formatting="inline"
           returnType="object"
           placeholder="Select relation"
-          disabled={item.id}
+          disabled={!item.tempId}
           select
         />
       )}
@@ -122,7 +123,7 @@ const CourseMarketingTab: React.FC<any> = props => {
         salesToAdd.map(v1 => {
           const sale = salesCombined.find(v2 => String(v2.id) === String(v1.entityId) && v2.type === v1.entityName);
           return {
-            ...sale, id: null, entityFromId: sale.id, relationId: -1
+            ...sale, tempId: sale.id, entityFromId: sale.id, relationId: -1
           };
         })
       );

@@ -162,6 +162,15 @@ const preformatBeforeSubmit = (value: CourseExtended): Course => {
     delete value.fieldOfEducation;
   }
 
+  if (value.relatedlSalables.length) {
+    value.relatedlSalables.forEach((s: any) => {
+      if (s.tempId) {
+        s.id = null;
+        delete s.tempId;
+      }
+    });
+  }
+
   return value;
 };
 

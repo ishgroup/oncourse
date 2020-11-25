@@ -14,6 +14,7 @@ import clsx from "clsx";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Button from "@material-ui/core/Button/Button";
 import Paper from "@material-ui/core/Paper/Paper";
+import Launch from "@material-ui/icons/Launch";
 import { NestedListItem } from "../NestedList";
 import { openInternalLink } from "../../../../utils/links";
 import DynamicSizeList from "../../DynamicSizeList";
@@ -32,65 +33,67 @@ interface Props {
 }
 
 const RowContent = React.memo<any>(({
-                                      style, item, index, classes, dataRowClass, disabled, onDelete, onClick, type, forwardedRef, CustomCell
-                                    }) => (
-                                      <li
-                                        ref={forwardedRef}
-                                        style={style}
-                                        className={clsx("pb-1", {
+  style, item, index, classes, dataRowClass, disabled, onDelete, onClick, type, forwardedRef, CustomCell
+}) => (
+  <li
+    ref={forwardedRef}
+    style={style}
+    className={clsx("pb-1", {
       [classes.fade]: !item.active
     })}
-                                      >
-                                        <div className={clsx("d-flex", classes.root__item)}>
-                                          <div
-                                            className={clsx(classes.textRow, dataRowClass)}
-                                          >
-                                            <Typography
-                                              variant="body2"
-                                              className={clsx("text-truncate", classes.dInline, item.link && "linkDecoration")}
-                                              onClick={item.link ? () => openInternalLink(item.link) : undefined}
-                                            >
-                                              {item.primaryText}
-                                            </Typography>
+  >
+    <div className={clsx("d-flex", classes.root__item)}>
+      <div
+        className={clsx(classes.textRow, dataRowClass)}
+      >
+        <Typography
+          variant="body2"
+          className={clsx("text-truncate", classes.dInline, item.link && "linkDecoration")}
+          onClick={item.link ? () => openInternalLink(item.link) : undefined}
+        >
+          {item.primaryText}
 
-                                            <div className={classes.chipsWrapper}>
-                                              <Typography
-                                                className={clsx(
+          <Launch fontSize="inherit" color="secondary" className="vert-align-mid ml-0-5" />
+        </Typography>
+
+        <div className={classes.chipsWrapper}>
+          <Typography
+            className={clsx(
               "ml-2 mr-2 text-truncate",
               classes.dInline
             )}
-                                                variant="caption"
-                                              >
-                                                {item.secondaryText}
-                                              </Typography>
+            variant="caption"
+          >
+            {item.secondaryText}
+          </Typography>
 
-                                              <Typography variant="body2" className={classes.chips}>
-                                                {item.entityName}
-                                              </Typography>
-                                            </div>
+          <Typography variant="body2" className={classes.chips}>
+            {item.entityName}
+          </Typography>
+        </div>
 
-                                            {CustomCell && <CustomCell item={item} index={index} />}
-                                          </div>
-                                          <span className={clsx("centeredFLex", disabled && "invisible")}>
-                                            {type === "list" && onDelete && (
-                                            <ButtonBase
-                                              className={classes.deleteButton}
-                                              onClick={() => onDelete(item, index)}
-                                            >
-                                              <Delete className={classes.deleteIcon} />
-                                            </ButtonBase>
+        {CustomCell && <CustomCell item={item} index={index} />}
+      </div>
+      <span className={clsx("centeredFLex", disabled && "invisible")}>
+        {type === "list" && onDelete && (
+        <ButtonBase
+          className={classes.deleteButton}
+          onClick={() => onDelete(item, index)}
+        >
+          <Delete className={classes.deleteIcon} />
+        </ButtonBase>
                                             )}
-                                            {type === "search" && (
-                                            <>
-                                              <span className="flex-fill" />
-                                              <Button className={classes.button} onClick={() => onClick(item, index)}>
-                                                Add
-                                              </Button>
-                                            </>
+        {type === "search" && (
+        <>
+          <span className="flex-fill" />
+          <Button className={classes.button} onClick={() => onClick(item, index)}>
+            Add
+          </Button>
+        </>
         )}
-                                          </span>
-                                        </div>
-                                      </li>
+      </span>
+    </div>
+  </li>
 ));
 
 const RowRenderer = React.forwardRef<any, any>(({ data, index, style }, ref) => {
