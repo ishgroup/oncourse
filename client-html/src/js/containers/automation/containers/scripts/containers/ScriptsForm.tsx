@@ -39,7 +39,7 @@ import { setScriptComponents } from "../actions";
 import { ScriptComponentType } from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { getQueryComponent, getScriptComponent } from "../constants";
+import { getQueryComponent, getScriptComponent, getMessageComponent } from "../constants";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -141,6 +141,9 @@ const getInitComponentBody = (componentName: ScriptComponentType) => {
     }
     case "Script": {
       return getScriptComponent("");
+    }
+    case "Message": {
+      return getMessageComponent("");
     }
     default:
       return null;
@@ -429,6 +432,7 @@ const ScriptsForm = React.memo<Props>(props => {
                   isInternal={isInternal}
                   isValidQuery={isValidQuery}
                   onInternalSaveClick={onInternalSaveClick}
+                  emailTemplates={emailTemplates}
                 />
 
                 <FormField
