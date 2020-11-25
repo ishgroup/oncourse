@@ -8,6 +8,9 @@ package ish.oncourse.commercial.plugin.xero
 import groovy.json.JsonSlurper
 import groovy.transform.CompileDynamic
 import groovy.xml.MarkupBuilder
+
+import java.util.concurrent.ExecutionException
+
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.URLENC
 import static groovyx.net.http.ContentType.XML
@@ -491,7 +494,7 @@ Review all the other employee settings and ensure they are correct.
 			from (preferenceController.emailFromAddress)
 			to (bounceAddress)
 		}
-		throw new RuntimeException(errorInfo)
+		throw new XeroException()
 	}
 
 	private void saveEmployeeId(String employeeId) {

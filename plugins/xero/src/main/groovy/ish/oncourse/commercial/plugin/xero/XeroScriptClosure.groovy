@@ -74,43 +74,47 @@ class XeroScriptClosure implements ScriptClosureTrait<XeroIntegration> {
 				integration.addManualJournalForTransactions(startOn, postJournals)
 				break
 			case 'payroll':
-				integration.payslip = integration.objectContext.localObject(payslip)
-				integration.contact = integration.payslip.contact
+				try {
 
-				integration.bounceAddress = bounceAddress
-				if (!integration.contact.dateOfBirth) {
-					integration.interruptExport(XeroIntegration.MESSAGE_DOB_REQUIRED)
+					integration.payslip = integration.objectContext.localObject(payslip)
+					integration.contact = integration.payslip.contact
+
+					integration.bounceAddress = bounceAddress
+					if (!integration.contact.dateOfBirth) {
+						integration.interruptExport(XeroIntegration.MESSAGE_DOB_REQUIRED)
+					}
+
+					if (!(integration.contact.street && integration.contact.suburb && integration.contact.state && integration.contact.postcode)) {
+						integration.interruptExport(XeroIntegration.MESSAGE_ADDRESS_REQUIRED)
+					}
+
+					Employee employee = integration.getEmployee()
+
+					if (!employee) {
+						integration.createEmployee()
+						integration.interruptExport(XeroIntegration.MESSAGE_CONFIGURE_XERO_EMPLOYEE)
+					}
+
+					if (!employee.earningId) {
+						integration.interruptExport(XeroIntegration.MESSAGE_CONFIGURE_EARNING)
+					}
+					if (!employee.calendarId) {
+						integration.interruptExport(XeroIntegration.MESSAGE_CONFIGURE_CALENDAR)
+					}
+
+					String payrunId = integration.getPayRunId(employee.calendarId)
+
+					String payslipId = integration.getPaysplipId(payrunId, employee.id)
+					if (!payslipId) {
+						integration.interruptExport(XeroIntegration.MESSAGE_PAYSLIP_MISSING)
+					}
+
+					Money total = payslip.paylines.collect { payline -> payline.value.multiply(payline.quantity) }.inject { a, b -> a.add(b) }
+
+					integration.addEarningLine(payslipId, employee.earningId, total)
+				} catch (XeroException ignored) {
+					// ignored and allow proceed with other payslip records
 				}
-
-				if (!(integration.contact.street && integration.contact.suburb && integration.contact.state && integration.contact.postcode)) {
-					integration.interruptExport(XeroIntegration.MESSAGE_ADDRESS_REQUIRED)
-				}
-
-				Employee employee = integration.getEmployee()
-
-				if (!employee) {
-					integration.createEmployee()
-					integration.interruptExport(XeroIntegration.MESSAGE_CONFIGURE_XERO_EMPLOYEE)
-				}
-
-				if (!employee.earningId) {
-					integration.interruptExport(XeroIntegration.MESSAGE_CONFIGURE_EARNING)
-				}
-				if (!employee.calendarId) {
-					integration.interruptExport(XeroIntegration.MESSAGE_CONFIGURE_CALENDAR)
-				}
-
-				String payrunId = integration.getPayRunId(employee.calendarId)
-
-				String payslipId = integration.getPaysplipId(payrunId, employee.id)
-				if (!payslipId) {
-					integration.interruptExport(XeroIntegration.MESSAGE_PAYSLIP_MISSING)
-				}
-
-				Money total = payslip.paylines.collect { payline -> payline.value.multiply(payline.quantity) }.inject { a, b -> a.add(b)}
-
-				integration.addEarningLine(payslipId, employee.earningId, total)
-
 				break
 			default:
 				throw new IllegalArgumentException("Unsupported xero action")
