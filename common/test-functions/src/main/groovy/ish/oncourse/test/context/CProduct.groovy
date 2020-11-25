@@ -13,8 +13,8 @@ class CProduct {
     CProduct relatedTo(CCourse from) {
         CourseProductRelation relation = new CourseProductRelation()
         relation.setCollege(this.product.college)
-        relation.setCourse(from.course)
-        relation.setProduct(this.product)
+        relation.setFromCourse(from.course)
+        relation.setToProduct(this.product)
         relation.setCreated(new Date())
         relation.setModified(new Date())
         return this

@@ -2,6 +2,7 @@ package ish.oncourse.ui.utils;
 
 import ish.oncourse.model.*;
 import ish.oncourse.model.auto._CourseProductRelation;
+import ish.oncourse.model.auto._ProductCourseRelation;
 import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.preference.GetPreference;
@@ -9,10 +10,7 @@ import ish.oncourse.services.preference.Preferences;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static ish.common.types.EntityRelationIdentifier.COURSE;
@@ -52,15 +50,28 @@ public class CourseItemModelDaoHelper {
 	}
 
 	public static List<Product> selectRelatedProducts(Course course) {
-		return ObjectSelect.query(CourseProductRelation.class)
-							.where(CourseProductRelation.COURSE.eq(course))
-							.and(CourseCourseRelation.COLLEGE.eq(course.getCollege()))
-							.and(CourseProductRelation.PRODUCT.dot(Product.IS_WEB_VISIBLE).eq(TRUE))
-							.cacheStrategy(LOCAL_CACHE, CourseProductRelation.class.getSimpleName())
-							.select(course.getObjectContext())
-							.stream()
-							.map(_CourseProductRelation::getProduct)
-							.collect(Collectors.toList());
+		List<Product> products = new ArrayList<>();
+		products.addAll(ObjectSelect.query(CourseProductRelation.class)
+				.where(CourseProductRelation.FROM_COURSE.eq(course))
+				.and(CourseCourseRelation.COLLEGE.eq(course.getCollege()))
+				.and(CourseProductRelation.TO_PRODUCT.dot(Product.IS_WEB_VISIBLE).eq(TRUE))
+				.cacheStrategy(LOCAL_CACHE, CourseProductRelation.class.getSimpleName())
+				.select(course.getObjectContext())
+				.stream()
+				.map(_CourseProductRelation::getToProduct)
+				.collect(Collectors.toList())
+		);
+		products.addAll(ObjectSelect.query(ProductCourseRelation.class)
+				.where(ProductCourseRelation.TO_COURSE.eq(course))
+				.and(ProductCourseRelation.COLLEGE.eq(course.getCollege()))
+				.and(ProductCourseRelation.FROM_PRODUCT.dot(Product.IS_WEB_VISIBLE).eq(TRUE))
+				.cacheStrategy(LOCAL_CACHE, ProductCourseRelation.class.getSimpleName())
+				.select(course.getObjectContext())
+				.stream()
+				.map(_ProductCourseRelation::getFromProduct)
+				.collect(Collectors.toList())
+		);
+		return products;
 	}
 
 	static List<CourseClass> getWebVisibleClasses(Course course) {

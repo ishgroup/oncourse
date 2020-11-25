@@ -2,6 +2,7 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._EntityRelation;
 import ish.oncourse.utils.QueueableObjectUtils;
+import org.apache.cayenne.query.SelectById;
 
 public class EntityRelation extends _EntityRelation implements Queueable {
 
@@ -14,5 +15,12 @@ public class EntityRelation extends _EntityRelation implements Queueable {
 	@Override
 	public boolean isAsyncReplicationAllowed() {
 		return true;
+	}
+
+	@Override
+	protected void onPrePersist() {
+		if (super.getRelationType() == null) {
+			super.setRelationType(SelectById.query(EntityRelationType.class, EntityRelationType.DEFAULT_SYSTEM_TYPE_ID).selectOne(objectContext));
+		}
 	}
 }

@@ -72,6 +72,70 @@
 	<changeSet id="8" author="rostislav" runOnChange="false" runAlways="false" context="production">
 		<modifyDataType tableName="Course" columnName="code" newDataType="VARCHAR(128)"/>
 	</changeSet>
+	
+	<changeSet id="9" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="EntityRelationType"/>
+			</not>
+		</preConditions>
+		<createTable tableName="EntityRelationType">
+			<column name="id" type="BIGINT" autoIncrement="true" >
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="created" type="datetime" />
+			<column name="modified" type="datetime" />
+			<column name="name" type="VARCHAR(100)" />
+			<column name="toName" type="VARCHAR(100)" />
+			<column name="fromName" type="VARCHAR(100)" />
+			<column name="description" type="TEXT" />
+			<column name="isShownOnWeb" type="SMALLINT" />
+			<column name="shoppingCart" type="SMALLINT" />
+			<column name="considerHistory" type="SMALLINT" />
+			<column name="discountId" type="BIGINT" />
+			<column name="collegeId" type="BIGINT" />
+			<column name="angelId" type="BIGINT" />
+		</createTable>
+	</changeSet>
+
+	<changeSet id="10" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="EntityRelation" columnName="typeId"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="EntityRelation">
+			<column name="typeId" type="BIGINT" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="11" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<foreignKeyConstraintExists foreignKeyName="fk_EntityRelation_Type"/>
+			</not>
+		</preConditions>
+		<addForeignKeyConstraint baseTableName="EntityRelation"
+								 baseColumnNames="typeId"
+								 constraintName="fk_EntityRelation_Type"
+								 referencedTableName="EntityRelationType"
+								 referencedColumnNames="id"
+								 validate="true"/>
+	</changeSet>
+
+	<changeSet id="12" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<foreignKeyConstraintExists foreignKeyName="EntityRelationType_Discount_fk"/>
+			</not>
+		</preConditions>
+		<addForeignKeyConstraint baseTableName="EntityRelationType"
+								 baseColumnNames="discountId"
+								 constraintName="EntityRelationType_Discount_fk"
+								 referencedTableName="Discount"
+								 referencedColumnNames="id"
+								 validate="true"/>
+	</changeSet>
 
 
 </databaseChangeLog>

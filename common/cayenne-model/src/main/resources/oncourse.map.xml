@@ -599,6 +599,22 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="toEntityIdentifier" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="toRecordId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="typeId" type="BIGINT"/>
+	</db-entity>
+	<db-entity name="EntityRelationType">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="fromName" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="toName" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="description" type="VARCHAR" length="1000"/>
+		<db-attribute name="isShownOnWeb" type="SMALLINT"/>
+		<db-attribute name="discountId" type="BIGINT"/>
+		<db-attribute name="shoppingCart"  isMandatory="true" type="SMALLINT"/>
+		<db-attribute name="considerHistory" type="SMALLINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="angelId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Field">
 		<db-attribute name="angelId" type="BIGINT" isMandatory="true"/>
@@ -1846,6 +1862,9 @@
 	<obj-entity name="CourseProductRelation" superEntityName="EntityRelation" className="ish.oncourse.model.CourseProductRelation">
 		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 2)]]></qualifier>
 	</obj-entity>
+	<obj-entity name="ProductCourseRelation" superEntityName="EntityRelation" className="ish.oncourse.model.ProductCourseRelation">
+		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 2)]]></qualifier>
+	</obj-entity>
 	<obj-entity name="CustomFee" className="ish.oncourse.model.CustomFee" dbEntityName="CustomFee" superClassName="WillowCayenneObject">
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="fee" type="java.math.BigDecimal" db-attribute-path="fee"/>
@@ -2013,6 +2032,19 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="toEntityIdentifier" type="ish.common.types.EntityRelationIdentifier" db-attribute-path="toEntityIdentifier"/>
 		<obj-attribute name="toEntityWillowId" type="java.lang.Long" db-attribute-path="toRecordId"/>
+		<pre-persist method-name="onPrePersist"/>
+	</obj-entity>
+	<obj-entity name="EntityRelationType" className="ish.oncourse.model.EntityRelationType" dbEntityName="EntityRelationType" superClassName="WillowCayenneObject">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="fromName" type="java.lang.String" db-attribute-path="fromName"/>
+		<obj-attribute name="toName" type="java.lang.String" db-attribute-path="toName"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="isShownOnWeb" type="java.lang.Boolean" db-attribute-path="isShownOnWeb"/>
+		<obj-attribute name="shoppingCart" type="ish.common.types.EntityRelationCartAction" db-attribute-path="shoppingCart"/>
+		<obj-attribute name="considerHistory" type="java.lang.Boolean" db-attribute-path="considerHistory"/>
 	</obj-entity>
 	<obj-entity name="Field" className="ish.oncourse.model.Field" dbEntityName="Field" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -2977,6 +3009,9 @@
 	<db-relationship name="entityRelation" source="College" target="EntityRelation" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="entityRelationTypes" source="College" target="EntityRelationType" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="fieldConfigurationLinks" source="College" target="FieldConfigurationLink" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -3532,6 +3567,9 @@
 	<db-relationship name="college" source="EntityRelation" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="relationType" source="EntityRelation" target="EntityRelationType">
+		<db-attribute-pair source="typeId" target="id"/>
+	</db-relationship>
 	<db-relationship name="relationFromCourse" source="EntityRelation" target="Course">
 		<db-attribute-pair source="fromRecordId" target="id"/>
 	</db-relationship>
@@ -3543,6 +3581,15 @@
 	</db-relationship>
 	<db-relationship name="relationToProduct" source="EntityRelation" target="Product">
 		<db-attribute-pair source="toRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="EntityRelationType" target="College">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" toMany="true">
+		<db-attribute-pair source="id" target="typeId"/>
+	</db-relationship>
+	<db-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount">
+		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="Field" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -4466,8 +4513,10 @@
 	<obj-relationship name="college" source="CourseModule" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="CourseModule" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="module" source="CourseModule" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
-	<obj-relationship name="course" source="CourseProductRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>
-	<obj-relationship name="product" source="CourseProductRelation" target="Product" deleteRule="Nullify" db-relationship-path="relationToProduct"/>
+	<obj-relationship name="fromCourse" source="CourseProductRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>
+	<obj-relationship name="toProduct" source="CourseProductRelation" target="Product" deleteRule="Nullify" db-relationship-path="relationToProduct"/>
+	<obj-relationship name="fromProduct" source="ProductCourseRelation" target="Product" deleteRule="Nullify" db-relationship-path="relationFromProduct"/>
+	<obj-relationship name="toCourse" source="ProductCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationToCourse"/>
 	<obj-relationship name="college" source="CustomFee" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="CustomField" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="customFieldType" source="CustomField" target="CustomFieldType" deleteRule="Nullify" db-relationship-path="customFieldType"/>
@@ -4514,6 +4563,10 @@
 	<obj-relationship name="surveys" source="Enrolment" target="Survey" deleteRule="Deny" db-relationship-path="surveys"/>
 	<obj-relationship name="relatedObject" source="EnrolmentCustomField" target="Enrolment" deleteRule="Nullify" db-relationship-path="relatedEnrolment"/>
 	<obj-relationship name="college" source="EntityRelation" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="relationType" source="EntityRelation" target="EntityRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
+	<obj-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" deleteRule="Deny" db-relationship-path="entityRelations"/>
+	<obj-relationship name="college" source="EntityRelationType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="discount" source="EntityRelationType" target="Discount" deleteRule="Nullify" db-relationship-path="entityRelationTypeDiscount"/>
 	<obj-relationship name="college" source="Field" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="fieldConfiguration" source="Field" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>
 	<obj-relationship name="fieldHeading" source="Field" target="FieldHeading" deleteRule="Nullify" db-relationship-path="fieldHeading"/>
