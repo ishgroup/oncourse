@@ -13,10 +13,10 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.EntityRelationCartAction
 import ish.oncourse.API
-import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._EntityRelationType
 
 import javax.annotation.Nonnull
+import javax.annotation.Nullable
 
 @API
 //@QueueableEntity
@@ -27,8 +27,7 @@ class EntityRelationType extends _EntityRelationType implements Queueable {
     /**
      * @return the date and time this record was created
      */
-    @API
-    @Override
+    @Nonnull @API @Override
     Date getCreatedOn() {
         return super.getCreatedOn()
     }
@@ -36,8 +35,7 @@ class EntityRelationType extends _EntityRelationType implements Queueable {
     /**
      * @return the date and time this record was modified
      */
-    @API
-    @Override
+    @Nonnull @API @Override
     Date getModifiedOn() {
         return super.getModifiedOn()
     }
@@ -45,29 +43,23 @@ class EntityRelationType extends _EntityRelationType implements Queueable {
     /**
      * @return the name of relation type
      */
-    @Nonnull
-    @API
-    @Override
+    @Nonnull @API @Override
     String getName() {
         return super.getName()
     }
 
     /**
-     * @return the type name of entity record on the right side of the relation
+     * @return the label name of record on the right side of the relation
      */
-    @Nonnull
-    @API
-    @Override
+    @Nonnull @API @Override
     String getToName() {
         return super.getToName()
     }
 
     /**
-     * @return the type name of entity record on the left side of the relation
+     * @return the label name of record on the left side of the relation
      */
-    @Nonnull
-    @API
-    @Override
+    @Nonnull @API @Override
     String getFromName() {
         return super.getFromName()
     }
@@ -75,8 +67,7 @@ class EntityRelationType extends _EntityRelationType implements Queueable {
     /**
      * @return the text description of this relation type
      */
-    @API
-    @Override
+    @Nullable @API @Override
     String getDescription() {
         return super.getDescription()
     }
@@ -84,35 +75,36 @@ class EntityRelationType extends _EntityRelationType implements Queueable {
     /**
      * @return true if relation type is shown on web
      */
-    @API
-    @Override
+    @Nonnull @API @Override
     Boolean getIsShownOnWeb() {
         return super.getIsShownOnWeb()
     }
 
     /**
-     * @return true if need to consider history
+     * When considering shopping cart actions, do we need to consider only the current shopping cart
+     * or should be look at all of the user's history of purchases and enrolments?
+     *
+     * @return true if we should consider history
      */
-    @API
-    @Override
+    @Nonnull @API @Override
     Boolean getConsiderHistory() {
         return super.getConsiderHistory()
     }
 
     /**
-     * @see ish.common.types.EntityRelationCartAction
-     * @return the cart action which should be done
+     * During a checkout process, we might need to apply certain rules.
+     *
+     * @return the cart action which should be applied to the record on the right
      */
-    @API
-    @Override
+    @Nonnull @API @Override
     EntityRelationCartAction getShoppingCart() {
         return super.getShoppingCart()
     }
 
     /**
-     * @return the discount which is applied if item from left side of the relation would be selected
+     * @return a discount to apply to the record on the right side of the relation
      */
-    @API
+    @Nullable @API
     Discount getDiscount() {
         return super.getEntityRelationTypeDiscount()
     }
@@ -120,14 +112,9 @@ class EntityRelationType extends _EntityRelationType implements Queueable {
     /**
      * @return the list of relationships
      */
-    @Nonnull
-    @API
-    @Override
+    @Nonnull @API @Override
     List<EntityRelation> getEntityRelations() {
         return super.getEntityRelations()
     }
-
-
-
 
 }

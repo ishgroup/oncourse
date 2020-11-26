@@ -27,6 +27,7 @@ import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+
 /**
  * Courses are the 'product' students purchase when they enrol. They are enrolled into an instance of a Course, called
  * a CourseClass. The Course carries all the marketing information and is typically what you tag to create a navigation
@@ -310,8 +311,7 @@ class Course extends _Course implements ICourse, Queueable, NotableTrait, Expand
 	/**
 	 * @return a list of all courses related to this one
 	 */
-	@Nonnull
-	@API
+	@Nonnull @API
 	List<Course> getRelatedCourses() {
 		List<Course> courses = new ArrayList<>()
 
@@ -326,10 +326,10 @@ class Course extends _Course implements ICourse, Queueable, NotableTrait, Expand
 	}
 
 	/**
-	 * @return a list of all courses related to this one by type with specified name
+	 * A list of all courses related to this one by type with specified name
+	 * @return
 	 */
-	@Nonnull
-	@API
+	@Nonnull @API
 	List<Course> getRelatedCourses(String name) {
 		List<Course> courses = new ArrayList<>()
 
@@ -350,8 +350,7 @@ class Course extends _Course implements ICourse, Queueable, NotableTrait, Expand
 	/**
 	 * @return a list of all products related to this one
 	 */
-	@Nonnull
-	@API
+	@Nonnull @API
 	List<Product> getRelatedProducts() {
 		List<Product> products = new ArrayList<>()
 
