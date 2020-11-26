@@ -1,0 +1,33 @@
+get:
+  operationId: getSaleRelations
+  description: Get relations for sale added to checkout cart
+  tags:
+    - Checkout
+  parameters:
+    - name: courseId
+      in: query
+      type: integer
+      format: int64
+      required: true
+    - name: productId
+      in: query
+      type: integer
+      format: int64
+      required: true
+    - name: contactId
+      in: query
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/checkout/CheckoutSaleRelation.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: ENROLMENT
+    errorMessage: Sorry, you have no permissions to make checkout. Please contact your administrator
