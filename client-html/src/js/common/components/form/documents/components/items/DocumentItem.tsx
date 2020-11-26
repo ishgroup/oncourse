@@ -3,6 +3,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Grid } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
+import clsx from "clsx";
 import { AppTheme } from "../../../../../../model/common/Theme";
 import DocumentHeader from "./DocumentHeader";
 import DocumentTags from "./DocumentTags";
@@ -13,6 +14,11 @@ const styles = (theme: AppTheme) => createStyles({
   },
   documentNoTags: {
     fontSize: 13
+  },
+  documentPaper: {
+    "&:hover": {
+      boxShadow: theme.shadows["3"]
+    }
   }
 });
 
@@ -27,9 +33,9 @@ class DocumentItem extends React.PureComponent<any, any> {
       classes, item, unlink, index, entity
     } = this.props;
     return (
-      <Paper onClick={this.openFullDocumentView} classes={{ root: "cursor-pointer" }}>
-        <Grid container className={`p-1 relative ${classes.container}`}>
-          <DocumentHeader item={item} unlink={unlink} index={index} entity={entity} />
+      <Paper onClick={this.openFullDocumentView} classes={{ root: clsx("cursor-pointer", classes.documentPaper) }}>
+        <Grid container className={clsx("p-1 relative", classes.container)}>
+          <DocumentHeader item={item} unlink={unlink} index={index} entity={entity} editItem={this.openFullDocumentView} />
           <DocumentTags tags={item.tags} classes={classes} />
         </Grid>
       </Paper>

@@ -10,7 +10,9 @@
  */
 
 import Avatar from "@material-ui/core/Avatar";
-import { Directions, Language, Link } from "@material-ui/icons";
+import {
+ Directions, Language, Link, MoreVert
+} from "@material-ui/icons";
 import { AlertTitle } from "@material-ui/lab";
 import Alert from "@material-ui/lab/Alert";
 import clsx from "clsx";
@@ -35,18 +37,21 @@ import {
 import Tooltip from "@material-ui/core/Tooltip";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import { Document } from "@api/model";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import { AppTheme } from "../../../../../../model/common/Theme";
 import { formatRelativeDate } from "../../../../../utils/dates/formatRelative";
 import DocumentIconsChooser from "./DocumentIconsChooser";
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../../../../utils/dates/format";
 import { getDocumentShareSummary, getDocumentVersion } from "../utils";
+import Button from "../../../../buttons/Button";
 
 library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile);
 
 const styles = (theme: AppTheme) =>
   createStyles({
     closeIcon: {
-      fontSize: "16px",
+      fontSize: 20,
       width: "24px",
       height: "24px",
       margin: 0,
@@ -67,8 +72,8 @@ const styles = (theme: AppTheme) =>
       maxHeight: "3em"
     },
     avatar: {
-      width: "30px",
-      height: "30px",
+      width: "25px",
+      height: "25px",
       margin: "2px"
     },
     share: {
@@ -91,7 +96,7 @@ const DocumentInfo = props => {
   const { classes } = props;
   return (
     <div className="flex-column flex-fill overflow-hidden pr-1">
-      <Typography className={`text-truncate ${classes.infoName}`}>
+      <Typography className={clsx("text-truncate", classes.infoName)}>
         {props.name}
       </Typography>
       <Typography className={classes.miniGrayText}>
@@ -109,17 +114,20 @@ interface Props {
   unlink: any;
   classes: any;
   item: Document;
+  editItem: () => void;
 }
 
 class DocumentHeader extends React.PureComponent<Props, any> {
   state = {
-    popoverAnchor: null
+    popoverAnchor: null,
+    openMoreMenu: null
   }
 
   unlinkItem = e => {
     e.stopPropagation();
     const { index, unlink } = this.props;
     unlink(index);
+    this.onCloseMoreMenu(e);
   };
 
   openDocumentURL = (e: MouseEvent<any>, url: string) => {
@@ -139,9 +147,29 @@ class DocumentHeader extends React.PureComponent<Props, any> {
     });
   };
 
+  onOpenMoreMenu = event => {
+    event.stopPropagation();
+    this.setState({
+      openMoreMenu: event.currentTarget
+    });
+  };
+
+  onCloseMoreMenu = event => {
+    event.stopPropagation();
+    this.setState({
+      openMoreMenu: null
+    });
+  };
+
+  openFullDocumentView = e => {
+    const { editItem } = this.props;
+    editItem();
+    this.onCloseMoreMenu(e);
+  };
+
   render() {
     const { classes, item, entity } = this.props;
-    const { popoverAnchor } = this.state;
+    const { popoverAnchor, openMoreMenu } = this.state;
 
     const validUrl = item
       && (item.versionId
@@ -182,14 +210,14 @@ class DocumentHeader extends React.PureComponent<Props, any> {
               && item.access === "Public") || (!item.attachmentRelations.length && entity === "Course" && item.access === "Public"))
               && (
                 <Avatar className={clsx("activeAvatar", classes.avatar)}>
-                  <Language />
+                  <Language fontSize="small" />
                 </Avatar>
               )}
             {
               ["Link", "Public"].includes(item.access)
               && (
               <Avatar className={clsx("activeAvatar", classes.avatar)}>
-                <Link />
+                <Link fontSize="small" />
               </Avatar>
             )
             }
@@ -197,7 +225,7 @@ class DocumentHeader extends React.PureComponent<Props, any> {
               ["Tutors and enrolled students", "Tutors only"].includes(item.access)
               && (
               <Avatar className={clsx("activeAvatar", classes.avatar)}>
-                <Directions />
+                <Directions fontSize="small" />
               </Avatar>
               )
             }
@@ -223,14 +251,31 @@ class DocumentHeader extends React.PureComponent<Props, any> {
             </Alert>
           </Popover>
 
-          <Tooltip title="Unlink">
-            <IconButton
-              onClick={this.unlinkItem}
-              className={classes.closeIcon}
-            >
-              <CloseIcon fontSize="inherit" color="inherit" />
-            </IconButton>
-          </Tooltip>
+          <IconButton
+            aria-label="more"
+            aria-controls="document-more-menu"
+            aria-haspopup="true"
+            onClick={this.onOpenMoreMenu}
+            className={classes.closeIcon}
+          >
+            <MoreVert fontSize="inherit" color="inherit" />
+          </IconButton>
+
+          <Menu
+            open={Boolean(openMoreMenu)}
+            anchorEl={openMoreMenu}
+            onClose={this.onCloseMoreMenu}
+          >
+            <MenuItem onClick={this.openFullDocumentView}>
+              Document info
+            </MenuItem>
+            <MenuItem onClick={this.openFullDocumentView}>
+              Permissions
+            </MenuItem>
+            <MenuItem onClick={this.unlinkItem} className="errorColor">
+              Unlink
+            </MenuItem>
+          </Menu>
         </div>
       </Grid>
     );
