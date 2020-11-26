@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.v23.updaters;
 
 import ish.oncourse.model.*;
+import ish.oncourse.model.Module;
 import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 
