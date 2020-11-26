@@ -99,7 +99,7 @@ class CloudAssessIntegration implements PluginTrait {
 
         List enrolmentUnits = completedUnitRecords(fromDate, toDate)
 
-        updatedOnCourseOutcomes(units)
+        updatedOnCourseOutcomes(enrolmentUnits)
     }
 
     protected static updatedOnCourseOutcomes(List enrolmentUnits) {
