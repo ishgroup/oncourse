@@ -7,7 +7,7 @@ buildscript {
 		solrVersion = '7.1.0'
 		groovyVersion = '2.5.9'
         mariadbVersion = '2.4.1'
-        tapestryVersion = '5.4.3'
+        tapestryVersion = '5.5.0'
 		bootiqueVersion = '1.0'
         webservicesVersion = '105'
 
