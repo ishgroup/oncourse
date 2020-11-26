@@ -2,10 +2,7 @@ package ish.oncourse.webservices.soap;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentOut;
-import ish.oncourse.model.Session;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
@@ -44,7 +41,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.webservices.services", StringUtils.EMPTY, ReplicationTestModule.class);
-		new LoadDataSet().dataSetFile("ish/oncourse/webservices/soap/v6/paymentDataSet.xml")
+		new LoadDataSet().dataSetFile("ish/oncourse/webservices/soap/v7/paymentDataSet.xml")
 				.load(testContext.getDS());
 		cayenneService = getService(ICayenneService.class);
 		Calendar cal = Calendar.getInstance();
@@ -445,6 +442,13 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 		PaymentIn payment = Cayenne.objectForPK(context, PaymentIn.class, 2000);
 		assertNotNull(payment);
+
+		// make a persistent state as 'new' for the current invoice
+		// it need in PaymentInModelFromPaymentInBuilder build method
+		for (PaymentInLine line: payment.getPaymentInLines()) {
+			Invoice newInvoice = line.getInvoice().makeCopy();
+			line.setInvoice(newInvoice);
+		}
 		
 		Enrolment enrolment = Cayenne.objectForPK(context, Enrolment.class, 2000);
 		assertNotNull(enrolment);
