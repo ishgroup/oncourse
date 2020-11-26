@@ -2,9 +2,7 @@ package ish.oncourse.webservices.jobs;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentTransaction;
+import ish.oncourse.model.*;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.PaymentInSupport;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -111,31 +109,19 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		objectContext = cayenneService.newContext();
 
 		Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 2000);
-		assertEquals("Enrolment has failed.", EnrolmentStatus.FAILED, enrolment.getStatus());
+		assertEquals("Enrolment should be in transaction.", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
 
 		Enrolment enrolment2 = Cayenne.objectForPK(objectContext, Enrolment.class, 2001);
-		assertEquals("Enrolment2 has failed.", EnrolmentStatus.FAILED, enrolment2.getStatus());
+		assertEquals("Enrolment2 should be in transaction.", EnrolmentStatus.IN_TRANSACTION, enrolment2.getStatus());
 
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select transactionId from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000"));
-		assertEquals("1 Invoice in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000"));
-		assertEquals("1 InvoiceLine in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=%s", newCopy.getId()));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=%s", newCopy.getPaymentInLines().get(0).getId()));
 		assertEquals("1 PaymentInLine in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000"));
-		assertTrue("at least 1 Enrolment in the queue.", 1 <= actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2001"));
-		assertTrue("at least 1 Enrolment in the queue.", 1 <= actualData.getRowCount());
 	}
 
 	@Test
@@ -180,34 +166,19 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		assertEquals("Payment has failed.", PaymentStatus.FAILED, p.getStatus());
 		
 		Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 2000);
-		assertEquals("Enrolment has failed.", EnrolmentStatus.FAILED, enrolment.getStatus());
+		assertEquals("Enrolment should be in transaction.", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
 
 		Enrolment enrolment2 = Cayenne.objectForPK(objectContext, Enrolment.class, 2001);
-		assertEquals("Enrolment2 has failed.", EnrolmentStatus.FAILED, enrolment2.getStatus());
+		assertEquals("Enrolment2 should be in transaction.", EnrolmentStatus.IN_TRANSACTION, enrolment2.getStatus());
 
 		// check the queue
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select transactionId from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000"));
-		assertEquals("1 Invoice in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000"));
-		assertEquals("1 InvoiceLine in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2001"));
-		assertEquals("1 InvoiceLine in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000"));
-		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2001"));
-		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
 	}
 	
 	@Test
@@ -257,22 +228,17 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		ITable actualData = dbUnitConnection.createQueryTable("PaymentIn",
 				String.format("select * from PaymentIn"));
 		
-		assertEquals("There should be only five PaymentIn", 5, actualData.getRowCount());
+		assertEquals("There should be only four PaymentIn", 4, actualData.getRowCount());
 		
 		actualData = dbUnitConnection.createQueryTable("PaymentIn",
 				String.format("select * from PaymentIn where status=4"));
 		
 		assertEquals("Expecting only three failed paymentIn", 3, actualData.getRowCount());
 		
-		actualData = dbUnitConnection.createQueryTable("PaymentIn",
-				String.format("select * from PaymentIn where amount=0 and type=10 and status=3"));
-		
-		assertEquals("There should only be one PaymentIn refund.", 1, actualData.getRowCount());
-		
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='PaymentIn'"));
 		
-		assertEquals("Expecting 4 records in the queue for PaymentIn", 4, actualData.getRowCount());
+		assertEquals("Expecting 3 records in the queue for PaymentIn", 3, actualData.getRowCount());
 		
 		ObjectContext objectContext = cayenneService.newContext();
 		
@@ -286,16 +252,10 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		p = Cayenne.objectForPK(objectContext, PaymentIn.class, 20000);
 		assertEquals("Payment has failed.", PaymentStatus.FAILED, p.getStatus());
 
-		Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 2000);
-		assertEquals("Enrolment has failed.", EnrolmentStatus.FAILED, enrolment.getStatus());
+		Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 20000);
+		assertEquals("Enrolment should be in transaction.", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
 
-		Enrolment enrolment2 = Cayenne.objectForPK(objectContext, Enrolment.class, 2001);
-		assertEquals("Enrolment2 has failed.", EnrolmentStatus.FAILED, enrolment2.getStatus());
-		
-		enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 20000);
-		assertEquals("Enrolment is active.", EnrolmentStatus.SUCCESS, enrolment.getStatus());
-
-		enrolment2 = Cayenne.objectForPK(objectContext, Enrolment.class, 20010);
+		Enrolment enrolment2 = Cayenne.objectForPK(objectContext, Enrolment.class, 20010);
 		assertEquals("Enrolment2 is active.", EnrolmentStatus.SUCCESS, enrolment2.getStatus());
 	}
 	
@@ -381,8 +341,8 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		assertEquals(PaymentStatus.FAILED, payment1.getStatus());
 		assertEquals(PaymentStatus.FAILED, payment2.getStatus());
 		
-		assertEquals(EnrolmentStatus.FAILED, enrolment1.getStatus());
-		assertEquals(EnrolmentStatus.FAILED, enrolment2.getStatus());
+		assertEquals(EnrolmentStatus.IN_TRANSACTION, enrolment1.getStatus());
+		assertEquals(EnrolmentStatus.IN_TRANSACTION, enrolment2.getStatus());
 
 	}
 
@@ -431,11 +391,11 @@ public class PaymentInExpireJobTest extends ServiceTest {
 
 
 		PaymentIn p = Cayenne.objectForPK(objectContext, PaymentIn.class, 20000);
-		assertEquals("Payment has failed.", PaymentStatus.SUCCESS, p.getStatus());
+		assertEquals("Payment hasn't became success.", PaymentStatus.SUCCESS, p.getStatus());
 		Enrolment e = Cayenne.objectForPK(objectContext, Enrolment.class, 20000);
-		assertEquals("Payment has failed.", EnrolmentStatus.SUCCESS,e.getStatus());
+		assertEquals("Payment has changed status but it can't.", EnrolmentStatus.IN_TRANSACTION,e.getStatus());
 		Enrolment e1 = Cayenne.objectForPK(objectContext, Enrolment.class, 20010);
-		assertEquals("Payment has failed.", EnrolmentStatus.SUCCESS,e.getStatus());
+		assertEquals("Payment has changed status but it can't.", EnrolmentStatus.IN_TRANSACTION,e.getStatus());
 		
 	}
 
