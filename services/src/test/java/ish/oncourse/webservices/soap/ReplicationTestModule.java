@@ -11,6 +11,8 @@ import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.test.tapestry.TestModule;
 import ish.oncourse.util.PageRenderer;
+import ish.oncourse.webservices.CheckoutVerificationService;
+import ish.oncourse.webservices.ICheckoutVerificationService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
@@ -74,6 +76,7 @@ public class ReplicationTestModule {
 		}).withId("WebSiteServiceOverride");
 
 		binder.bind(IUSIVerificationService.class, USIVerificationService.class);
+		binder.bind(ICheckoutVerificationService.class, CheckoutVerificationService.class);
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
