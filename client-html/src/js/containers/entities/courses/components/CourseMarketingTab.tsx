@@ -67,7 +67,6 @@ const RelationCellBase = ({
           formatting="inline"
           returnType="object"
           placeholder="Select relation"
-          disabled={!item.tempId}
           select
         />
       )}
