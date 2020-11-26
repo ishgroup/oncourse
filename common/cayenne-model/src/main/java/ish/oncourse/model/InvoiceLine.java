@@ -66,4 +66,24 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 			setModified(getCreated());
 		}
     }
+
+	/**
+	 * Makes a copy of current InvoiceLine object.
+	 *
+	 * @return invoice line.
+	 */
+	public InvoiceLine makeCopy() {
+		InvoiceLine invoiceLine = objectContext.newObject(InvoiceLine.class);
+
+		invoiceLine.setCollege(getCollege());
+		invoiceLine.setEnrolment(getEnrolment());
+		invoiceLine.setQuantity(getQuantity());
+		invoiceLine.setDiscountEachExTax(getDiscountEachExTax());
+		invoiceLine.setPriceEachExTax(getPriceEachExTax());
+		invoiceLine.setTaxEach(getTaxEach());
+		invoiceLine.setTitle(getTitle());
+
+		return invoiceLine;
+	}
+
 }

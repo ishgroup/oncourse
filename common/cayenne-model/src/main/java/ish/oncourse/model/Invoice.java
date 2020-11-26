@@ -41,4 +41,45 @@ public class Invoice extends _Invoice {
 	public InvoiceType getType() {
 		return InvoiceType.INVOICE;
 	}
+
+	/**
+	 * Makes a copy of current Invoice object.
+	 *
+	 * @return invoice.
+	 */
+	public Invoice makeCopy(){
+		Invoice invoice = makeShallowCopy();
+
+		for (InvoiceLine line: getInvoiceLines()) {
+			InvoiceLine invoiceLine = line.makeCopy();
+			invoiceLine.setInvoice(invoice);
+		}
+		return invoice;
+	}
+
+	/**
+	 * Makes shallow copy of current Invoice object.
+	 *
+	 * @return Invoice.
+	 */
+	public Invoice makeShallowCopy() {
+		Invoice invoice = objectContext.newObject(Invoice.class);
+
+		invoice.setCollege(getCollege());
+		invoice.setContact(getContact());
+
+		invoice.setType(getType());
+		invoice.setAmountOwing(getAmountOwing());
+		invoice.setInvoiceDate(getInvoiceDate());
+		invoice.setInvoiceNumber(getInvoiceNumber());
+		invoice.setDateDue(getDateDue());
+		invoice.setAllowAutoPay(getAllowAutoPay());
+		invoice.setConfirmationStatus(getConfirmationStatus());
+		invoice.setTotalExGst(getTotalExGst());
+		invoice.setTotalGst(getTotalGst());
+		invoice.setSource(getSource());
+		invoice.setDescription(getDescription());
+
+		return invoice;
+	}
 }
