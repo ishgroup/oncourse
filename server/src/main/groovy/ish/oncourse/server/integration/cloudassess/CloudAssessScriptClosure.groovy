@@ -150,8 +150,7 @@ class CloudAssessScriptClosure implements ScriptClosureTrait<CloudAssessIntegrat
                 integration.course(code, courseName, qualification)
                 break
             case CloudAssessScriptClosure.OUTCOMES:
-                def outcomes = integration.outcomes(since)
-                integration.updatedOnCourseOutcomes(outcomes)
+                integration.outcomes(since)
                 break
             default:
                 throw new IllegalArgumentException("Unknown action: ${action}")

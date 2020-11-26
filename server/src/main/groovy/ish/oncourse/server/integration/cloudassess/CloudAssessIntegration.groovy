@@ -14,13 +14,16 @@ package ish.oncourse.server.integration.cloudassess
 import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
+import groovyx.net.http.RESTClient
 import ish.common.types.OutcomeStatus
+import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
+import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -28,89 +31,111 @@ import org.apache.logging.log4j.Logger
 @CompileDynamic
 @Plugin(type = 7)
 class CloudAssessIntegration implements PluginTrait {
-    public static final String CLOUDASSESS_USERNAME = "username"
     public static final String CLOUDASSESS_API_KEY = "apiKey"
-    public static final String CLOUDASSESS_ORG_ID = "orgId"
+    
+    static final String clientKey = null
+    
+    static final String BASE_URL = "https://my.assessapp.com"
 
-    static final clientId = "041103224c6696aa4592aec26e2ac35d9b5bae1d817b8ac6b2c5cfb9c6f94fdf"
-    static final clientSecret = "08f3154678c9e305865c0fa2aaeadf6ed012522ceb2ce853c3ba7541e545e2bd"
+    static final String BASE_URL_TEST = "https://stg.assessapp.com"
 
-    static final BASE_URL = "https://www.assessapp.com"
+    static final String MEMBERSHIP_URL = "/api/v2/members"
+    static final String COURSE_URL = "/api/v2/intakes"
+    static final String QUALIFICATION_URL = "/api/v2/qualifications"
+    static final String ENROLMENT_URL = "/api/v2/enrolments"
+    static final String UNIT_ENROLMENTS_URL = "/api/v2/unit_enrolments"
 
-    static final LOGIN_URL = "/api/authorise"
-    static final MEMBERSHIP_URL = "/api/memberships"
-    static final COURSE_URL = "/api/courses"
-    static final COURSE_ENROLMENT_URL = "/api/course_enrolments"
-    static final COMPLETED_UNIT_RECORDS_URL = "/api/completed_unit_records"
-    static final COMPLETED_ASSESSMENT_RECORDS_URL = "/api/completed_assessment_records"
+    static final DATE_FORMAT_PATTEN = "yyyy-MM-dd"
 
-    static final DATE_FORMAT_PATTEN = "dd-MMM-yyyy"
-
-    def username
     def apiKey
-    def orgId
 
     private static Logger logger = LogManager.logger
 
     CloudAssessIntegration(Map args) {
         loadConfig(args)
-
-        this.username = configuration.getIntegrationProperty(CLOUDASSESS_USERNAME).value
         this.apiKey = configuration.getIntegrationProperty(CLOUDASSESS_API_KEY).value
-        this.orgId = configuration.getIntegrationProperty(CLOUDASSESS_ORG_ID).value
+    }
+    
+    private RESTClient client() {
+        RESTClient httpClient = new RESTClient(BASE_URL)
+        httpClient.headers["Api-Key"] = apiKey
+        httpClient.headers["Client-Key"] = clientKey
+        httpClient
     }
 
-    protected enrol(enrolment, code) {
-        def accessToken = login().access_token
+    protected enrol(Enrolment enrolment, String code) {
 
-        def courseCode = code ?: enrolment.courseClass.course.code
+        String courseCode = code ?: enrolment.courseClass.course.code
 
-        def courseId = courseSearch(accessToken, courseCode).response.find{ it -> it.code == courseCode}?.id
+        Long courseId = courseSearch(courseCode)
 
         if (courseId) {
-            def membershipId = membershipSearch(accessToken, enrolment.student.contact.email).response.find{ it -> it.email == enrolment.student.contact.email}?.id
-            membershipId = membershipId ?: membershipCreate(
-                    accessToken,
-                    enrolment.student.contact.email,
+            String email = enrolment.student.contact.email
+            Long memberId = memberSearch(email)
+            memberId = memberId ?: memberCreate(
+                    email,
                     enrolment.student.contact.firstName,
                     enrolment.student.contact.lastName,
                     enrolment.student.studentNumber.toString(),
-                    enrolment.student.contact.id).response.id
+                    enrolment.student.contact.id)
 
-            enrolmentCreate(accessToken, courseId, membershipId).response.id
+            enrolmentCreate(courseId, memberId, enrolment.id)
         }
     }
 
     protected course(code, courseName, qualification) {
-        def accessToken = login().access_token
 
-        def courseId = courseSearch(accessToken, code).response.find{ it -> it.code == code}?.id
+        Long courseId = courseSearch(code)
 
         if (!courseId) {
-            courseCreate(accessToken, code, courseName, qualification)
+            courseCreate(code, courseName, qualification)
         }
     }
 
-    protected outcomes(since) {
-        def accessToken = login().access_token
+    protected void outcomes(Date since) {
 
-        def fromDate = (since ?: Calendar.getInstance().getTime() - 1).format(DATE_FORMAT_PATTEN)
-        def toDate = Calendar.getInstance().getTime().format(DATE_FORMAT_PATTEN)
+        String fromDate = (since ?: Calendar.getInstance().getTime() - 1).format(DATE_FORMAT_PATTEN)
+        String toDate = Calendar.getInstance().getTime().format(DATE_FORMAT_PATTEN)
 
-        completedUnitRecords(accessToken, fromDate, toDate).response
+        List enrolmentUnits = completedUnitRecords(fromDate, toDate)
+
+        updatedOnCourseOutcomes(units)
     }
 
-    protected static updatedOnCourseOutcomes(records) {
+    protected static updatedOnCourseOutcomes(List enrolmentUnits) {
         def updatedOutcomes = []
-        records.each { r ->
+        enrolmentUnits.each { enrolmentUnit ->
+            Expression studentQualifier 
+            if (enrolmentUnit.member.external_id) {
+                studentQualifier = Outcome.ENROLMENT
+                        .dot(Enrolment.STUDENT)
+                        .dot(Student.CONTACT)
+                        .dot(Contact.ID)
+                        .eq(enrolmentUnit.member.external_id)
+            } else if (enrolmentUnit.member.learner_code) {
+                studentQualifier = Outcome.ENROLMENT
+                        .dot(Enrolment.STUDENT)
+                        .dot(Student.STUDENT_NUMBER)
+                        .eq(Long.valueOf(enrolmentUnit.member.learner_code as String))
+            } else if (enrolmentUnit.member.email) {
+                studentQualifier = Outcome.ENROLMENT
+                        .dot(Enrolment.STUDENT)
+                        .dot(Student.CONTACT)
+                        .dot(Contact.EMAIL)
+                        .eq(enrolmentUnit.member.email)
+            } else {
+                throw new IllegalStateException("The enrolment unit has wrong member assigned: $enrolmentUnit")
+            }
+            
             def outcomes = ObjectSelect.query(Outcome)
-                    .where(Outcome.ENROLMENT.dot(Enrolment.STUDENT).dot(Student.STUDENT_NUMBER).eq(r.student.student_number))
-                    .and(Outcome.MODULE.dot(Module.NATIONAL_CODE).eq(r.unit.code))
+                    .where(studentQualifier)
+                    .and(Outcome.MODULE.dot(Module.NATIONAL_CODE).eq(enrolmentUnit.unit.code))
                     .select(cayenneService.newContext)
 
             outcomes.each { o ->
-                //2 = "Competent", 3 = "Not Yet Competent"
-                def outcomeStatus = r.outcome_id == 2 ? OutcomeStatus.STATUS_ASSESSABLE_PASS : (r.outcome_id == 3 ? OutcomeStatus.STATUS_ASSESSABLE_FAIL : null)
+                
+                //'C' = "Competent", 'CN' = "Not Competent"
+                def outcomeStatus = enrolmentUnit.outcome.acronym == 'C' ? OutcomeStatus.STATUS_ASSESSABLE_PASS : (enrolmentUnit.outcome.acronym == 'NC' ? OutcomeStatus.STATUS_ASSESSABLE_FAIL : null)
                 if (outcomeStatus && o.status != outcomeStatus) {
                     o.status = outcomeStatus
                     updatedOutcomes << o
@@ -121,149 +146,109 @@ class CloudAssessIntegration implements PluginTrait {
 
         updatedOutcomes
     }
+    
 
     /**
-     * @return [access_token, token_type, expires_in, refresh_token]
+     * @return id
      */
-    private login() {
-        def httpClient = new IshRESTClient(BASE_URL)
-
-        httpClient.request(Method.POST, ContentType.JSON) {
-            uri.path = LOGIN_URL
-            body = [
-                    username: username,
-                    api_key1: apiKey,
-                    client_id: clientId,
-                    client_secret: clientSecret
-            ]
-
-            response.success = { resp, result ->
-                result
-            }
-
-            response.failure = { resp, result ->
-                throw new IllegalStateException("Login to Cloud Assess failed: ${result.response}")
-            }
-        }
-    }
-
-    /**
-     * @param accessToken - returned from Login endpoint
-     * @param lastName    - search parameter. last name of student
-     * @return list of memberships with '30 - Student' for this organization
-     */
-    private membershipSearch(accessToken, email) {
-        def httpClient = new IshRESTClient(BASE_URL)
-
-        httpClient.request(Method.GET, ContentType.JSON) {
+    private Long memberSearch(email) {
+        Long id = null
+        client().request(Method.GET, ContentType.JSON) {
             uri.path = MEMBERSHIP_URL
 
             uri.query = [
-                    access_token: accessToken,
-                    organisation_id: orgId,
-                    search_role_id: 30,
-                    search: email
+                    email: email,
             ]
 
             response.success = { resp, result ->
-                result
+                id = result.find{ member -> member.role == 'learner'}?.id
             }
 
             response.failure = { resp, result ->
                 throw new IllegalStateException("Membership search failed: ${result.response}")
             }
         }
+        return id
     }
 
     /**
-     * @param accessToken - returned from Login endpoint
      * @param email       - email of student
      * @param firstName   - first name of student
      * @param lastName    - last name of student
      * @param angelId     - angelId of Contact record for this student
-     * @return [status, response: [id, email, first_name, last_name, student_number, organisation_id, role_id, external_user_id, external_user_identifier]]
+     * @return cloud assess member id
      */
-    private membershipCreate(accessToken, email, firstName, lastName, studentNumber, angelId) {
-        def httpClient = new IshRESTClient(BASE_URL)
-
-        httpClient.request(Method.POST, ContentType.JSON) {
+    private Long memberCreate(email, firstName, lastName, studentNumber, angelId) {
+        Long id = null
+        client().request(Method.POST, ContentType.JSON) {
             uri.path = MEMBERSHIP_URL
             body = [
-                    access_token: accessToken,
-                    membership: [
-                            organisation_id: orgId,
+                    member: [
                             email: email,
                             first_name: firstName,
                             last_name: lastName,
-                            role_id: 30,
+                            role: 'learner',
                             active: true, //optional
-                            student_number: studentNumber, //optional
-                            external_user_id: angelId  //optional
-                            //external_user_identifier: uniqueIdentifier //optional
+                            learner_code: studentNumber, //optional
+                            external_id: angelId  //optional
                     ]
             ]
 
             response.success = { resp, result ->
-                result
+                id = result.id
             }
 
             response.failure = { resp, result ->
                 throw new IllegalStateException("Membership creation failed: ${result.response}")
             }
         }
+        return id
     }
 
     /**
-     * @param accessToken - returned from Login endpoint
      * @return list of courses for this organization
      */
-    private courseSearch(accessToken, courseCode) {
-        def httpClient = new IshRESTClient(BASE_URL)
-
-        httpClient.request(Method.GET, ContentType.JSON) {
+    private Long courseSearch(courseCode) {
+        Long id = null
+        client().request(Method.GET, ContentType.JSON) {
             uri.path = COURSE_URL
 
             uri.query = [
-                    access_token: accessToken,
-                    organisation_id: orgId,
                     search: courseCode
             ]
 
             response.success = { resp, result ->
-                result
+                id = result.find { course -> course.code == courseCode}?.id
             }
 
             response.failure = { resp, result ->
                 throw new IllegalStateException("Course search failed: ${result.response}")
             }
         }
+        return id
     }
 
     /**
-     * @param accessToken       - returned from Login endpoint
      * @param code              - course code
      * @param name              - course name
      * @param qualificationCode - qualification Code for course
-     * @return [status, response: [id, code, name, qualification: [id, code, name], organisation_id, external_course_id]]
+     * @return id
      */
-    private courseCreate(accessToken, code, name, qualificationCode) {
-        def httpClient = new IshRESTClient(BASE_URL)
-
-        httpClient.request(Method.POST, ContentType.JSON) {
+    private courseCreate(String code, String name, String qualificationCode) {
+        Long qualificationId =  qualificationSearch(qualificationCode)
+        client().request(Method.POST, ContentType.JSON) {
             uri.path = COURSE_URL
             body = [
-                    access_token: accessToken,
-                    course: [
-                            organisation_id: orgId,
+                    intake: [
                             code: code,
-                            name: name,
-                            //qualification_id: "Cloud Assess database ID", // (required or provide ‘qualification_code’ instead)
-                            qualification_code: qualificationCode
+                            title: name,
+                            qualification_id: qualificationId,
+                            active: true,
                     ]
             ]
 
             response.success = { resp, result ->
-                result
+                result.id
             }
 
             response.failure = { resp, result ->
@@ -273,29 +258,26 @@ class CloudAssessIntegration implements PluginTrait {
     }
 
     /**
-     * @param accessToken - returned from Login endpoint
-     * @param courseId    - course id
-     * @return list of enrolments of this course
+     * @return id
      */
-    private enrolmentSearch(accessToken, courseId) {
-        def httpClient = new IshRESTClient(BASE_URL)
-
-        httpClient.request(Method.GET, ContentType.JSON) {
-            uri.path = COURSE_ENROLMENT_URL
+    private Long qualificationSearch(String qualificationCode) {
+        Long id = null
+        client().request(Method.GET, ContentType.JSON) {
+            uri.path = QUALIFICATION_URL
 
             uri.query = [
-                    access_token: accessToken,
-                    course_id: courseId,
+                    search: qualificationCode
             ]
 
             response.success = { resp, result ->
-                result
+                id = result.find { qualification -> qualification.code == qualificationCode}?.id
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Course enrolment search failed: ${result.response}")
+                throw new IllegalStateException("Qualification search failed: ${result.response}")
             }
         }
+        return id
     }
 
     /**
@@ -305,22 +287,20 @@ class CloudAssessIntegration implements PluginTrait {
      *
      * @return [status, response: [id, course_id, membership_id]]
      */
-    private enrolmentCreate(accessToken, courseId, membershipId) {
-        def httpClient = new IshRESTClient(BASE_URL)
-
-        httpClient.request(Method.POST, ContentType.JSON) {
-            uri.path = COURSE_ENROLMENT_URL
+    private void enrolmentCreate(Long courseId, Long memberId, Long angelId) {
+        client().request(Method.POST, ContentType.JSON) {
+            uri.path = ENROLMENT_URL
             body = [
-                    access_token: accessToken,
-                    course_enrolment: [
-                            course_id: courseId,
-                            membership_id: membershipId,
-                            enrol_in_all_units: true
+                    enrolment: [
+                            intake_id: courseId,
+                            member_id: memberId,
+                            active: true,
+                            external_id: angelId
                     ]
             ]
 
             response.success = { resp, result ->
-                result
+                return 
             }
 
             response.failure = { resp, result ->
@@ -337,26 +317,23 @@ class CloudAssessIntegration implements PluginTrait {
      *
      * @return list of assessment records that have been completed (2 = "Competent", 3 = "Not Yet Competent") in the selected organisation.
      */
-    private completedUnitRecords(accessToken, from, to) {
-        def httpClient = new IshRESTClient(BASE_URL)
-
-        httpClient.request(Method.GET, ContentType.JSON) {
-            uri.path = COMPLETED_UNIT_RECORDS_URL
+    private List completedUnitRecords( from, to) {
+        List units = []
+        client().request(Method.GET, ContentType.JSON) {
+            uri.path = UNIT_ENROLMENTS_URL
             uri.query = [
-                    access_token: accessToken,
-                    organisation_id: orgId,
-                    search_completed_from: from,
-                    search_completed_to: to,
-                    search_outcome: 2 // (2 = "Competent", 3 = "Not Yet Competent")
-
+                    completed_from: from,
+                    completed_to: to,
             ]
+            
             response.success = { resp, result ->
-                result
+                units = result
             }
 
             response.failure = { resp, result ->
                 throw new IllegalStateException("Request failed: ${result.response}")
             }
         }
+        return units
     }
 }
