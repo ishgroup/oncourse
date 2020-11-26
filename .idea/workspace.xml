@@ -4,22 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="882969">
-      <change afterPath="$PROJECT_DIR$/groovyConfig.groovy" afterDir="false" />
+    <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="test dependencies">
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish/oncourse" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish/oncourse/commercial" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish/oncourse/commercial/plugin" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish/oncourse/commercial/plugin/cloudassess" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish/oncourse/commercial/plugin/cloudassess/CloudAssessIntegration.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish/oncourse/commercial/plugin/cloudassess/CloudAssessScriptClosure.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/resources" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/resources/scripts" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/resources/scripts/ish.script.cloudAssessEnrolmentCreate.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/resources/scripts/ish.script.cloudAssessEnrolmentCreate.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/ArticleStubBuilder.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/ArticleStubBuilder.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/AssessmentClassModuleStubBuilbedr.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/AssessmentClassModuleStubBuilbedr.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/MembershipStubBuilder.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/MembershipStubBuilder.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/TagRelationStubBuilder.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/TagRelationStubBuilder.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/VoucherStubBuilder.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/VoucherStubBuilder.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DFADedupper.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DFADedupper.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DedupperFactory.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DedupperFactory.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldConfigurationLinkUpdater.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldConfigurationLinkUpdater.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldHeadingUpdater.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldHeadingUpdater.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldUpdater.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldUpdater.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/PaymentOutUpdater.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/PaymentOutUpdater.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +96,6 @@
   <component name="ProjectViewState">
     <option name="flattenModules" value="true" />
     <option name="flattenPackages" value="true" />
-    <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
@@ -99,7 +103,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/plugins/cloud-assess/src/main/resources/scripts" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2835294" />
@@ -107,33 +111,42 @@
     <property name="show.unlinked.gradle.project.popup" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="ish.oncourse.commercial.replication" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ish.oncourse.commercial.replication" />
+      <recent name="ish.oncourse.commercial.replication.lifecycle" />
+      <recent name="ish.oncourse.commercial.replication.upgrades" />
       <recent name="ish.oncourse.commercial.replication.modules" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater" />
-      <recent name="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference" />
+      <recent name="$PROJECT_DIR$/plugins/cloud-assess/src/main/resources/scripts" />
+      <recent name="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish/oncourse/commercial/plugin" />
+      <recent name="$PROJECT_DIR$/plugins" />
+      <recent name="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication" />
+      <recent name="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/lifecycle" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.trunk [fatJar]">
-    <configuration name="trunk [compileJava]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.QueueAllRecordsForFirstTimeReplicationTest">
+    <configuration name="QueueAllRecordsForFirstTimeReplicationTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
+        <option name="scriptParameters" value="--tests &quot;ish.oncourse.commercial.replication.upgrades.QueueAllRecordsForFirstTimeReplicationTest&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="compileJava" />
+            <option value=":plugins:replication:cleanTest" />
+            <option value=":plugins:replication:test" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
     <configuration name="trunk [deps]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -174,6 +187,25 @@
       <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="trunk [sourcesJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="sourcesJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="trunk [te]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -195,10 +227,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.QueueAllRecordsForFirstTimeReplicationTest" />
         <item itemvalue="Gradle.trunk [fatJar]" />
+        <item itemvalue="Gradle.trunk [sourcesJar]" />
         <item itemvalue="Gradle.trunk [te]" />
         <item itemvalue="Gradle.trunk [deps]" />
-        <item itemvalue="Gradle.trunk [compileJava]" />
       </list>
     </recent_temporary>
   </component>
@@ -246,14 +279,18 @@
       <workItem from="1604670407654" duration="324000" />
       <workItem from="1604906564397" duration="973000" />
       <workItem from="1604913182489" duration="3565000" />
-      <workItem from="1605179203746" duration="9840000" />
-    </task>
-    <task id="LOCAL-00001" summary="put gradle/idea settings under version control">
-      <created>1602752538032</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1602752538032</updated>
+      <workItem from="1605179203746" duration="10697000" />
+      <workItem from="1605467924183" duration="7468000" />
+      <workItem from="1605592694661" duration="599000" />
+      <workItem from="1605599416447" duration="68000" />
+      <workItem from="1605624058784" duration="1592000" />
+      <workItem from="1605682936615" duration="16306000" />
+      <workItem from="1605818996853" duration="241000" />
+      <workItem from="1605856680448" duration="741000" />
+      <workItem from="1605898887623" duration="627000" />
+      <workItem from="1606111686697" duration="2836000" />
+      <workItem from="1606130542135" duration="981000" />
+      <workItem from="1606314517458" duration="4412000" />
     </task>
     <task id="LOCAL-00002" summary="define common gradle configs: dependencies/publications">
       <created>1602756138028</created>
@@ -535,29 +572,76 @@
       <option name="project" value="LOCAL" />
       <updated>1605264197028</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="OD-15213 Compile all groovy code statically">
+      <created>1605273191031</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1605273191031</updated>
+    </task>
+    <task id="LOCAL-00043" summary="add source code to plugin jar. Need to simplify debugging">
+      <created>1605685893030</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1605685893030</updated>
+    </task>
+    <task id="LOCAL-00044" summary="move replication tests to plugin">
+      <created>1605693517032</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1605693517033</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Fix replication handlers">
+      <created>1605695222029</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1605695222029</updated>
+    </task>
+    <task id="LOCAL-00046" summary="test dependencies">
+      <created>1605697348027</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1605697348028</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Enable replication tests">
+      <created>1605713147031</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1605713147031</updated>
+    </task>
+    <task id="LOCAL-00048" summary="fix column data type">
+      <created>1605899309029</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1605899309029</updated>
+    </task>
+    <task id="LOCAL-00049" summary="fix column name">
+      <created>1606131873041</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1606131873041</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Do not interrupt payroll scrip execution, and just skip payslip record and proceed with other">
+      <created>1606315744030</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1606315744030</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-    <option name="exactExcludedFiles">
-      <list>
-        <option value="$PROJECT_DIR$/../../git/angel/client-html/src/js/common/services/DefaultHttpClient.js.map" />
-        <option value="$PROJECT_DIR$/../../git/angel/client-html/src/js/common/services/DefaultHttpClient.js" />
-      </list>
-    </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Move course class removal validation to replication plugin (need it case if replication enabled)" />
-    <MESSAGE value="OD-15310 Fix custom reports to use correct localDate types" />
-    <MESSAGE value="OD-15310 Fix custom scripts" />
-    <MESSAGE value="OD-15310 Fix local date formatting for all reports" />
-    <MESSAGE value="separate config for replication publishing: assemble fat jar that include webservices-client and ws implementation libs" />
-    <MESSAGE value="Move utility method to replication plugin" />
-    <MESSAGE value="move byron custom scripts under version control" />
-    <MESSAGE value="FIx date format for custom resources" />
-    <MESSAGE value="move back ws libs to server" />
-    <MESSAGE value="fix coompillation" />
     <MESSAGE value="include sources to plugin jar" />
     <MESSAGE value="Fix wrong imports" />
     <MESSAGE value="Fix imports" />
@@ -573,17 +657,31 @@
     <MESSAGE value="OD-15213 Fix missed import" />
     <MESSAGE value="Fix plugin compillation" />
     <MESSAGE value="Fix compillation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix compillation" />
+    <MESSAGE value="OD-15213 Compile all groovy code statically" />
+    <MESSAGE value="OD-15213 add source code to plugin jar. Need to simplify debugging" />
+    <MESSAGE value="add source code to plugin jar. Need to simplify debugging" />
+    <MESSAGE value="move replication tests to plugin" />
+    <MESSAGE value="Fix replication handlers" />
+    <MESSAGE value="test dependencies" />
+    <MESSAGE value="Enable replication tests" />
+    <MESSAGE value="fix column data type" />
+    <MESSAGE value="fix column name" />
+    <MESSAGE value="Do not interrupt payroll scrip execution, and just skip payslip record and proceed with other" />
+    <option name="LAST_COMMIT_MESSAGE" value="Do not interrupt payroll scrip execution, and just skip payslip record and proceed with other" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="463" y="201" key="#Project_Structure" timestamp="1605105240922">
+    <state x="463" y="201" key="#Project_Structure" timestamp="1605276259505">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
-    <state x="463" y="201" key="#Project_Structure/68.23.1612.1027@68.23.1612.1027" timestamp="1605105240922" />
-    <state x="685" y="253" key="#com.intellij.ide.util.MemberChooser" timestamp="1604915458710">
+    <state x="463" y="201" key="#Project_Structure/68.23.1612.1027@68.23.1612.1027" timestamp="1605276259505" />
+    <state x="685" y="253" key="#com.intellij.ide.util.MemberChooser" timestamp="1605522701338">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
-    <state x="685" y="253" key="#com.intellij.ide.util.MemberChooser/68.23.1612.1027@68.23.1612.1027" timestamp="1604915458710" />
+    <state x="685" y="253" key="#com.intellij.ide.util.MemberChooser/68.23.1612.1027@68.23.1612.1027" timestamp="1605522701338" />
+    <state x="567" y="415" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1605526422931">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state x="567" y="415" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/68.23.1612.1027@68.23.1612.1027" timestamp="1605526422931" />
     <state x="728" y="410" key="#xdebugger.evaluate" timestamp="1604929197024">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
@@ -592,36 +690,36 @@
       <screen x="0" y="23" width="3360" height="1867" />
     </state>
     <state x="2035" y="762" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/-1440.538.1440.900/0.23.3360.1867@0.23.3360.1867" timestamp="1602799146937" />
-    <state x="68" y="139" key="CommitChangelistDialog2" timestamp="1605264186325">
+    <state x="331" y="182" key="CommitChangelistDialog2" timestamp="1606425355841">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
-    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1605187491072" />
-    <state x="68" y="139" key="CommitChangelistDialog2/68.23.1612.1027@68.23.1612.1027" timestamp="1605264186325" />
-    <state x="226" y="115" width="1292" height="821" key="DiffContextDialog" timestamp="1604924518521">
-      <screen x="65" y="23" width="1615" height="1027" />
+    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1605899295352" />
+    <state x="331" y="182" key="CommitChangelistDialog2/68.23.1612.1027@68.23.1612.1027" timestamp="1606425355841" />
+    <state x="229" y="115" width="1289" height="821" key="DiffContextDialog" timestamp="1606130807117">
+      <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="226" y="115" width="1292" height="821" key="DiffContextDialog/65.23.1615.1027@65.23.1615.1027" timestamp="1604924518521" />
-    <state x="229" y="115" key="DiffContextDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1604327865585" />
-    <state width="1567" height="345" key="GridCell.Tab.0.bottom" timestamp="1605166948427">
-      <screen x="68" y="23" width="1612" height="1027" />
+    <state x="229" y="115" width="1289" height="821" key="DiffContextDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1606130807117" />
+    <state width="1567" height="280" key="GridCell.Tab.0.bottom" timestamp="1605815542239">
+      <screen x="65" y="23" width="1615" height="1027" />
     </state>
-    <state width="1567" height="280" key="GridCell.Tab.0.bottom/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686247" />
-    <state width="1567" height="345" key="GridCell.Tab.0.bottom/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948427" />
-    <state width="1567" height="345" key="GridCell.Tab.0.center" timestamp="1605166948426">
-      <screen x="68" y="23" width="1612" height="1027" />
+    <state width="1567" height="280" key="GridCell.Tab.0.bottom/65.23.1615.1027@65.23.1615.1027" timestamp="1605815542239" />
+    <state width="1567" height="280" key="GridCell.Tab.0.bottom/68.23.1612.1027@68.23.1612.1027" timestamp="1605712427592" />
+    <state width="1567" height="280" key="GridCell.Tab.0.center" timestamp="1605815542238">
+      <screen x="65" y="23" width="1615" height="1027" />
     </state>
-    <state width="1567" height="280" key="GridCell.Tab.0.center/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686246" />
-    <state width="1567" height="345" key="GridCell.Tab.0.center/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948426" />
-    <state width="1567" height="345" key="GridCell.Tab.0.left" timestamp="1605166948425">
-      <screen x="68" y="23" width="1612" height="1027" />
+    <state width="1567" height="280" key="GridCell.Tab.0.center/65.23.1615.1027@65.23.1615.1027" timestamp="1605815542238" />
+    <state width="1567" height="280" key="GridCell.Tab.0.center/68.23.1612.1027@68.23.1612.1027" timestamp="1605712427591" />
+    <state width="1567" height="280" key="GridCell.Tab.0.left" timestamp="1605815542237">
+      <screen x="65" y="23" width="1615" height="1027" />
     </state>
-    <state width="1567" height="280" key="GridCell.Tab.0.left/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686245" />
-    <state width="1567" height="345" key="GridCell.Tab.0.left/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948425" />
-    <state width="1567" height="345" key="GridCell.Tab.0.right" timestamp="1605166948427">
-      <screen x="68" y="23" width="1612" height="1027" />
+    <state width="1567" height="280" key="GridCell.Tab.0.left/65.23.1615.1027@65.23.1615.1027" timestamp="1605815542237" />
+    <state width="1567" height="280" key="GridCell.Tab.0.left/68.23.1612.1027@68.23.1612.1027" timestamp="1605712427591" />
+    <state width="1567" height="280" key="GridCell.Tab.0.right" timestamp="1605815542238">
+      <screen x="65" y="23" width="1615" height="1027" />
     </state>
-    <state width="1567" height="280" key="GridCell.Tab.0.right/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686246" />
-    <state width="1567" height="345" key="GridCell.Tab.0.right/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948427" />
+    <state width="1567" height="280" key="GridCell.Tab.0.right/65.23.1615.1027@65.23.1615.1027" timestamp="1605815542238" />
+    <state width="1567" height="280" key="GridCell.Tab.0.right/68.23.1612.1027@68.23.1612.1027" timestamp="1605712427592" />
     <state width="1567" height="345" key="GridCell.Tab.1.bottom" timestamp="1605166948428">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
@@ -642,44 +740,72 @@
     </state>
     <state width="1567" height="345" key="GridCell.Tab.1.right/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385532" />
     <state width="1567" height="345" key="GridCell.Tab.1.right/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948428" />
-    <state x="620" y="254" key="RollbackChangesDialog" timestamp="1604934620926">
+    <state x="485" y="237" key="NewModule_or_Project.wizard" timestamp="1605857457562">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
+    <state x="485" y="237" key="NewModule_or_Project.wizard/65.23.1615.1027@65.23.1615.1027" timestamp="1605857457562" />
+    <state x="487" y="237" key="NewModule_or_Project.wizard/68.23.1612.1027@68.23.1612.1027" timestamp="1605857007071" />
+    <state x="622" y="254" key="RollbackChangesDialog" timestamp="1605711605349">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
     <state x="620" y="254" key="RollbackChangesDialog/65.23.1615.1027@65.23.1615.1027" timestamp="1604934620926" />
-    <state x="622" y="254" key="RollbackChangesDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1604328293230" />
-    <state x="360" y="118" width="1002" height="665" key="SettingsEditor" timestamp="1605187225589">
-      <screen x="65" y="23" width="1615" height="1027" />
+    <state x="622" y="254" key="RollbackChangesDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1605711605349" />
+    <state x="242" y="148" width="1002" height="665" key="SettingsEditor" timestamp="1605696419891">
+      <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="787" y="482" width="1861" height="1208" key="SettingsEditor/-1440.538.1440.900/0.23.3360.1867@0.23.3360.1867" timestamp="1602799221787" />
     <state x="360" y="118" key="SettingsEditor/65.23.1615.1027@65.23.1615.1027" timestamp="1605187225589" />
-    <state x="242" y="148" width="1002" height="665" key="SettingsEditor/68.23.1612.1027@68.23.1612.1027" timestamp="1605103666795" />
-    <state x="549" y="369" key="com.intellij.ide.util.TipDialog" timestamp="1604910251237">
+    <state x="242" y="148" width="1002" height="665" key="SettingsEditor/68.23.1612.1027@68.23.1612.1027" timestamp="1605696419891" />
+    <state x="728" y="404" key="VCS.ChangeListViewerDialog" timestamp="1606131020646">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
-    <state x="549" y="369" key="com.intellij.ide.util.TipDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1604910251237" />
-    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1604642898300">
-      <screen x="65" y="23" width="1615" height="1027" />
+    <state x="728" y="404" key="VCS.ChangeListViewerDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1606131020646" />
+    <state x="549" y="369" key="com.intellij.ide.util.TipDialog" timestamp="1606111895721">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state x="549" y="369" key="com.intellij.ide.util.TipDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1606111895721" />
+    <state x="685" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606125587567">
+      <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.23.1615.1027@65.23.1615.1027" timestamp="1604642898300" />
+    <state x="685" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/68.23.1612.1027@68.23.1612.1027" timestamp="1606125587567" />
     <state x="171" y="123" width="1409" height="827" key="dock-window-1" timestamp="1605186620738">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="171" y="123" width="1409" height="827" key="dock-window-1/68.23.1612.1027@68.23.1612.1027" timestamp="1605186620738" />
-    <state x="523" y="293" width="853" height="550" key="find.popup" timestamp="1605260369843">
+    <state x="523" y="293" width="853" height="550" key="find.popup" timestamp="1605706002684">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="521" y="293" width="883" height="550" key="find.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1605187362291" />
-    <state x="523" y="293" width="853" height="550" key="find.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1605260369843" />
+    <state x="523" y="293" width="853" height="550" key="find.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1605706002684" />
+    <state x="247" y="150" key="new project wizard" timestamp="1606424555730">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state x="247" y="150" key="new project wizard/68.23.1612.1027@68.23.1612.1027" timestamp="1606424555730" />
     <state x="633" y="160" key="refactoring.ChangeSignatureDialog" timestamp="1605102492405">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="633" y="160" key="refactoring.ChangeSignatureDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1605102492405" />
-    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1605264131425">
+    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1606399137189">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="536" y="250" width="674" height="676" key="search.everywhere.popup/62.23.1618.1027@62.23.1618.1027" timestamp="1604661701986" />
-    <state x="538" y="250" width="672" height="676" key="search.everywhere.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1605187352861" />
-    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1605264131425" />
+    <state x="538" y="250" width="672" height="676" key="search.everywhere.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1605791424565" />
+    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1606399137189" />
     <state x="542" y="250" width="670" height="676" key="search.everywhere.popup/71.23.1609.1027@71.23.1609.1027" timestamp="1604411205487" />
+    <state x="731" y="381" key="svn.propertyDialog" timestamp="1605711596810">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state x="731" y="381" key="svn.propertyDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1605711596810" />
+    <state x="664" y="457" key="svn.upgradeDialog" timestamp="1605857402035">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state x="664" y="457" key="svn.upgradeDialog/65.23.1615.1027@65.23.1615.1027" timestamp="1605857402035" />
+    <state x="666" y="457" key="svn.upgradeDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1605856966010" />
+    <state x="628" y="409" key="svn4idea.checkout.options" timestamp="1605857400329">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state x="628" y="409" key="svn4idea.checkout.options/65.23.1615.1027@65.23.1615.1027" timestamp="1605857400329" />
+    <state x="630" y="409" key="svn4idea.checkout.options/68.23.1612.1027@68.23.1612.1027" timestamp="1605856964361" />
   </component>
 </project>

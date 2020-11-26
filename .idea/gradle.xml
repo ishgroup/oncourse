@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/plugins" />
+            <option value="$PROJECT_DIR$/plugins/cloud-assess" />
             <option value="$PROJECT_DIR$/plugins/replication" />
             <option value="$PROJECT_DIR$/plugins/xero" />
           </set>
