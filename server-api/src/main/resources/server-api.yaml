@@ -40,8 +40,8 @@ paths:
     $ref: './path/checkout/status/api.yaml'
   /checkout/discount:
     $ref: './path/checkout/discount/api.yaml'
-  /checkout/saleRelations:
-    $ref: './path/checkout/saleRelations/api.yaml'
+#  /checkout/saleRelations:
+#    $ref: './path/checkout/saleRelations/api.yaml'
   /control:
     $ref: './path/control/api.yaml'
   /dashboard/statistic:
