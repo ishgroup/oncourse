@@ -128,7 +128,7 @@ class CloudAssessIntegration implements PluginTrait {
             
             def outcomes = ObjectSelect.query(Outcome)
                     .where(studentQualifier)
-                    .and(Outcome.MODULE.dot(Module.NATIONAL_CODE).eq(enrolmentUnit.unit.code))
+                    .and(Outcome.MODULE.dot(ish.oncourse.server.cayenne.Module.NATIONAL_CODE).eq(enrolmentUnit.unit.code as String))
                     .select(cayenneService.newContext)
 
             outcomes.each { o ->
