@@ -13,6 +13,21 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.common.types.EntityRelationIdentifier
+import ish.oncourse.server.api.dao.ContactDao
+import ish.oncourse.server.api.dao.CourseDao
+import ish.oncourse.server.api.dao.DiscountDao
+import ish.oncourse.server.api.dao.ProductDao
+import ish.oncourse.server.api.v1.model.CheckoutSaleRelationDTO
+import ish.oncourse.server.api.v1.model.EntityRelationCartActionDTO
+import ish.oncourse.server.api.v1.model.SaleDTO
+import ish.oncourse.server.api.v1.model.SaleTypeDTO
+import ish.oncourse.server.api.v1.service.DiscountApi
+import ish.oncourse.server.cayenne.Course
+import ish.oncourse.server.cayenne.EntityRelation
+import ish.oncourse.server.cayenne.EntityRelationType
+import ish.oncourse.server.cayenne.Product
+
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
 import ish.common.types.PaymentStatus
@@ -84,6 +99,15 @@ class CheckoutApiImpl implements CheckoutApi {
     public static final int VALIDATION_ERROR = 400
 
 
+    @Inject
+    ContactDao contactDao
+    
+    @Inject
+    CourseDao courseDao
+    
+    @Inject
+    ProductDao productDao
+    
     @Inject
     PreferenceController preferenceController
 
@@ -158,6 +182,65 @@ class CheckoutApiImpl implements CheckoutApi {
                 dto
             }
         }
+    }
+
+    @Override
+    List<CheckoutSaleRelationDTO> getSaleRelations(Long courseId, Long productId, Long contactId) {
+
+        ObjectContext context = cayenneService.newContext
+        List<EntityRelation> relations = []
+        List<CheckoutSaleRelationDTO> result = []
+        Contact contact = contactId ? contactDao.getById(context, contactId) : null
+        
+        if (courseId) {
+            relations = ObjectSelect.query(EntityRelation)
+                    .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(courseId))
+                    .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(EntityRelationIdentifier.COURSE))
+                    .select(context)
+        } else if (productId) {
+            relations = ObjectSelect.query(EntityRelation)
+                    .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(productId))
+                    .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(EntityRelationIdentifier.PRODUCT))
+                    .select(context)
+        }
+
+        
+        relations.findAll { it.toEntity == EntityRelationIdentifier.COURSE }.each { relation ->
+            EntityRelationType relationType = relation.relationType
+            Course course = courseDao.getById(context, relation.toRecordId)
+            
+            if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
+                //ignore that course since student already enrolled in 
+            } else {
+                result << new CheckoutSaleRelationDTO().with {saleRelation ->
+                    saleRelation.item = new SaleDTO().with { sale ->
+                            sale.type = SaleTypeDTO.COURSE
+                            sale.id = course.id
+                            sale
+                        }
+                    saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relationType.shoppingCart)
+                    if (relationType.discount) {
+                        saleRelation.discount = DiscountFunctions.toRestDiscount(relationType.discount, false)
+                    }
+                    saleRelation
+                }
+            }
+        }
+
+        relations.findAll { it.toEntity == EntityRelationIdentifier.PRODUCT }.each { relation ->
+            Product product = productDao.getById(context, relation.toRecordId)
+            result << new CheckoutSaleRelationDTO().with {saleRelation ->
+                saleRelation.item = new SaleDTO().with { sale ->
+                    sale.type = SaleTypeDTO.PRODUCT
+                    sale.id = product.id
+                    sale
+                }
+                saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relation.relationType.shoppingCart)
+                saleRelation
+            }
+        }
+        
+        return result
     }
 
     @Override

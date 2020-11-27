@@ -2,7 +2,7 @@ type: object
 properties:
   item:
     $ref: '../../entity/Sale.yaml'
-  relation:
-    $ref: '../../entity/EntityRelationType.yaml'
+  cartAction:
+    $ref: '../../enum/EntityRelationCartAction.yaml'
   discount:
     $ref: '../../entity/discount/Discount.yaml'

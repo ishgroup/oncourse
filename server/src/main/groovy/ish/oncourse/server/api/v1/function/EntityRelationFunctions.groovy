@@ -1,7 +1,5 @@
 package ish.oncourse.server.api.v1.function
 
-import ish.common.types.EntityRelationCartAction
-import ish.common.types.TypesUtil
 import ish.oncourse.server.api.v1.model.EntityRelationCartActionDTO
 import ish.oncourse.server.api.v1.model.EntityRelationTypeDTO
 import ish.oncourse.server.api.validation.EntityValidator
@@ -24,7 +22,7 @@ class EntityRelationFunctions {
             dtoModel.description = dbEntity.description
             dtoModel.isShownOnWeb = dbEntity.isShownOnWeb
             dtoModel.considerHistory = dbEntity.considerHistory
-            dtoModel.shoppingCart = EntityRelationCartActionDTO.fromValue(dbEntity.shoppingCart?.displayName)
+            dtoModel.shoppingCart = EntityRelationCartActionDTO.values()[0].(dbEntity.shoppingCart)
             dtoModel.discountId = dbEntity.entityRelationTypeDiscount?.id
             dtoModel
         }
@@ -43,7 +41,7 @@ class EntityRelationFunctions {
             dbEntity.entityRelationTypeDiscount = null
         }
         if (dtoModel.shoppingCart) {
-            dbEntity.shoppingCart = TypesUtil.getEnumForDisplayName(dtoModel.shoppingCart.toString(), EntityRelationCartAction)
+            dbEntity.shoppingCart = dtoModel.shoppingCart.dbType
         }
     }
 
