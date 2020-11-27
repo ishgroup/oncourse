@@ -22,7 +22,7 @@ class EntityRelationFunctions {
             dtoModel.description = dbEntity.description
             dtoModel.isShownOnWeb = dbEntity.isShownOnWeb
             dtoModel.considerHistory = dbEntity.considerHistory
-            dtoModel.shoppingCart = EntityRelationCartActionDTO.values()[0].(dbEntity.shoppingCart)
+            dtoModel.shoppingCart = EntityRelationCartActionDTO.values()[0].fromDbType(dbEntity.shoppingCart)
             dtoModel.discountId = dbEntity.entityRelationTypeDiscount?.id
             dtoModel
         }
