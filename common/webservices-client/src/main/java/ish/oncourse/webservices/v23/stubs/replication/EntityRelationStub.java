@@ -19,8 +19,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;complexContent&gt;
  *     &lt;extension base="{http://repl.v23.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="fromEntityIdentifier" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *         &lt;element name="toEntityIdentifier" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="fromEntityIdentifier" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="toEntityIdentifier" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="fromEntityAngelId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="fromEntityWillowId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="toEntityAngelId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
@@ -48,14 +48,10 @@ public class EntityRelationStub
     extends ReplicationStub
 {
 
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
-    @XmlSchemaType(name = "int")
-    protected Integer fromEntityIdentifier;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
-    @XmlSchemaType(name = "int")
-    protected Integer toEntityIdentifier;
+    @XmlElement(required = true)
+    protected String fromEntityIdentifier;
+    @XmlElement(required = true)
+    protected String toEntityIdentifier;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
@@ -85,7 +81,7 @@ public class EntityRelationStub
      *     {@link String }
      *     
      */
-    public Integer getFromEntityIdentifier() {
+    public String getFromEntityIdentifier() {
         return fromEntityIdentifier;
     }
 
@@ -97,7 +93,7 @@ public class EntityRelationStub
      *     {@link String }
      *     
      */
-    public void setFromEntityIdentifier(Integer value) {
+    public void setFromEntityIdentifier(String value) {
         this.fromEntityIdentifier = value;
     }
 
@@ -109,7 +105,7 @@ public class EntityRelationStub
      *     {@link String }
      *     
      */
-    public Integer getToEntityIdentifier() {
+    public String getToEntityIdentifier() {
         return toEntityIdentifier;
     }
 
@@ -121,7 +117,7 @@ public class EntityRelationStub
      *     {@link String }
      *     
      */
-    public void setToEntityIdentifier(Integer value) {
+    public void setToEntityIdentifier(String value) {
         this.toEntityIdentifier = value;
     }
 

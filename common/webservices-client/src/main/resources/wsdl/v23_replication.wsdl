@@ -854,8 +854,8 @@
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
-                            <xs:element name="fromEntityIdentifier" type="xs:int" />
-                            <xs:element name="toEntityIdentifier" type="xs:int" />
+                            <xs:element name="fromEntityIdentifier" type="xs:string" />
+                            <xs:element name="toEntityIdentifier" type="xs:string" />
                             <xs:element name="fromEntityAngelId" type="xs:long" />
                             <xs:element name="fromEntityWillowId" type="xs:long" />
                             <xs:element name="toEntityAngelId" type="xs:long" />
