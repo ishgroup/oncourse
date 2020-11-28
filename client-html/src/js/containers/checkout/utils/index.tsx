@@ -515,8 +515,8 @@ export const checkoutCourseClassMap = ({ id, values }): CheckoutCourseClass => {
 };
 
 export const checkoutCourseMap = (courseBase, skipCheck?: boolean): CheckoutCourse => {
-  const course: CheckoutCourse = courseBase;
-  course.courseId = course.id;
+  const course: CheckoutCourse = { ...courseBase };
+  course.courseId = courseBase.id;
   course.type = "course";
   course.checked = !skipCheck;
   course.class = null;

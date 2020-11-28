@@ -61,6 +61,7 @@ export interface CheckoutCourseClass extends CourseClass {
 }
 
 export type CheckoutCourse = Course & CheckoutListRow & {
+  id: any;
   courseId: number;
   class: CheckoutCourseClass;
   tax: number;

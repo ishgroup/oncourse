@@ -13,6 +13,7 @@ import { CheckoutPage } from "../components/CheckoutSelection";
 import { CHECKOUT_CONTACT_COLUMNS, CHECKOUT_COURSE_CLASS_COLUMNS, CheckoutCurrentStep } from "../constants";
 import CheckoutService from "../services/CheckoutService";
 import { checkoutCourseClassMap, checkoutCourseMap } from "./index";
+import uniqid from "uniqid";
 
 export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep, setActiveField, setCustomLoading, dispatch) => {
   setCustomLoading(true);
@@ -129,6 +130,7 @@ export const processCheckoutCourseClassId = (
 
       onSelectHandler(plainCourse, "course", true);
 
+      // @ts-ignore
       const updatedCourse: CheckoutCourse = {
         ...plainCourse,
         paymentPlans: [],
@@ -137,7 +139,7 @@ export const processCheckoutCourseClassId = (
         taxAmount: 0,
         type: "course",
         courseId: plainCourse.id,
-        id: plainClass.id,
+        id: uniqid(),
         price: plainClass.price,
         priceOverriden: null,
         discount: null,

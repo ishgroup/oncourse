@@ -47,9 +47,6 @@ const styles = (theme: AppTheme) => createStyles({
         display: "block"
       }
     },
-    selectedClass: {
-      backgroundColor: "rgba(0, 0, 0, 0.08)"
-    },
     disabledSessionButton: {
       color: `${theme.palette.text.disabled} !important`,
       "& $disabledWarningColor": {
@@ -59,23 +56,23 @@ const styles = (theme: AppTheme) => createStyles({
     disabledWarningColor: {}
   });
 
-const hasSelectedPassedClasses = (course, selectedItems) => {
+const isSelectedPassedClass = course => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  return selectedItems.some(i => i.id === course.id && course.class.endDateTime && isBefore(new Date(course.class.endDateTime), today));
+  return course.class && course.class.endDateTime && isBefore(new Date(course.class.endDateTime), today);
 };
 
 const EnrolClassListView = React.memo<any>(props => {
   const {
-   course, courseClasses, classes, onSelect, isClassesEmpty, selectedItems, currencySymbol
+   course, courseClasses, classes, onSelect, isClassesEmpty, currencySymbol, selectedItems
   } = props;
 
   const [showPastClasses, setShowPastClasses] = React.useState(false);
   const [months, setMonths] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    setShowPastClasses(hasSelectedPassedClasses(course, selectedItems));
-  }, [course.id, selectedItems.length]);
+    setShowPastClasses(isSelectedPassedClass(course));
+  }, [course.id]);
 
   const togglePastClasses = React.useCallback(() => {
     setShowPastClasses(prev => !prev);
@@ -88,7 +85,7 @@ const EnrolClassListView = React.memo<any>(props => {
     return courseClasses;
   }, [showPastClasses, courseClasses]);
 
-  const hidePassedClassesDisabled = React.useMemo(() => hasSelectedPassedClasses(course, selectedItems), [course, selectedItems]);
+  const hidePassedClassesDisabled = React.useMemo(() => isSelectedPassedClass(course), [course]);
 
   React.useEffect(() => {
     if (!visibleClasses.length) {
@@ -134,8 +131,7 @@ const EnrolClassListView = React.memo<any>(props => {
               return (
                 <CalendarDayBase day={d.day} timezone={d.timezone} key={d.day.toString()}>
                   {d.sessions.map(s => {
-                    const isDisabled = selectedItems.some(i => i.id === s.id);
-                    const isSelected = !isDisabled && course.class && course.class.id === s.id;
+                    const isSelected = selectedItems.some(i => i.type === "course" && i.class.id === s.id);
                     const isTransfered = course.transferedClassId === s.id;
                     const isTraineeship = course.isTraineeship === "true";
 
@@ -146,8 +142,8 @@ const EnrolClassListView = React.memo<any>(props => {
                         classes={{
                           disabled: classes.disabledSessionButton
                         }}
-                        className={clsx("text-left", classes.sessionButton, isSelected && classes.selectedClass)}
-                        disabled={isDisabled || isTransfered}
+                        className={clsx("text-left", classes.sessionButton)}
+                        disabled={isSelected || isTransfered}
                         fullWidth
                       >
                         <Grid container>
@@ -179,7 +175,7 @@ const EnrolClassListView = React.memo<any>(props => {
                           </Grid>
                         </Grid>
                       </Button>
-);
+                    );
                   })}
                 </CalendarDayBase>
               );

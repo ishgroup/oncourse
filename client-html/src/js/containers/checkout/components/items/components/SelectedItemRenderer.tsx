@@ -38,14 +38,14 @@ const styles = (theme: AppTheme) => createStyles({
 
 const CourseItemRenderer: React.FC<any> = props => {
   const {
-   item, index, classes, onDelete, openRow, selectionCondition
+   item, index, classes, onDelete, openRow, selected
   } = props;
 
   return (
     <>
       <div className="flex-fill text-truncate cursor-pointer">
-        <div className="flex-fill text-truncate text-nowrap" onClick={openRow ? () => openRow(item, item.type) : undefined}>
-          <Typography variant="body2" className={clsx({ "fontWeight600": selectionCondition && selectionCondition(item) })} noWrap>
+        <div className="flex-fill text-truncate text-nowrap" onClick={openRow ? () => openRow(item) : undefined}>
+          <Typography variant="body2" className={clsx({ "fontWeight600": selected })} noWrap>
             {item.code}
             <span className="mr-1" />
             {item.name}
@@ -81,13 +81,13 @@ export const StyledCourseItemRenderer = withStyles(styles)(CourseItemRenderer);
 
 const CommonItemRenderer: React.FC<any> = props => {
   const {
- item, index, classes, onDelete, openRow, selectionCondition
+ item, index, classes, onDelete, openRow, selected
 } = props;
 
   return (
     <>
-      <div className="flex-fill text-truncate cursor-pointer" onClick={() => openRow(item, item.type)}>
-        <Typography variant="body2" noWrap className={clsx({ "fontWeight600": selectionCondition(item) })}>
+      <div className="flex-fill text-truncate cursor-pointer" onClick={() => openRow(item)}>
+        <Typography variant="body2" noWrap className={clsx({ "fontWeight600": selected })}>
           {item.name}
         </Typography>
       </div>
@@ -100,10 +100,18 @@ const CommonItemRenderer: React.FC<any> = props => {
 
 const Item = props => {
   const {
- index, classes, selectionCondition, item
+ index, classes, selectedCourse, openedItem, item
 } = props;
 
   const [mounted, setMounted] = useState(false);
+
+  const selected = React.useMemo(
+    () => (
+      (selectedCourse && selectedCourse.id === item.id)
+      || (openedItem && openedItem.id === item.id && openedItem.type === item.type)
+    ),
+    [selectedCourse, openedItem]
+  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -118,37 +126,29 @@ const Item = props => {
       classes.root,
       "relative",
       !mounted && "bounceInRight animated",
-      selectionCondition(item) && "selectedItemArrow"
+      selected && "selectedItemArrow"
     )}
     >
       <div className="centeredFlex">
         {item.type === "course" ? (
-          <CourseItemRenderer item={item} {...props} selectionCondition={selectionCondition} />
+          <CourseItemRenderer item={item} {...props} selected={selected} />
       ) : (
-        <CommonItemRenderer item={item} {...props} selectionCondition={selectionCondition} />
+        <CommonItemRenderer item={item} {...props} selected={selected} />
       )}
       </div>
       {mounted && item.type === "course" && item.class.message && (
-      <CheckoutAlertTextMessage message={item.class.message} />
-    )}
+        <CheckoutAlertTextMessage message={item.class.message} />
+      )}
     </div>
 );
 };
 
 const SelectedItemRenderer = memo<any>(({
- items, selectedCourse, openedItem, ...rest
+ items, ...rest
 }) => {
-  const selectionCondition = React.useCallback(
-    item => (
-        (selectedCourse && selectedCourse.id === item.id)
-        || (openedItem && openedItem.id === item.id && openedItem.type === item.type)
-      ),
-    [selectedCourse, openedItem]
-  );
-
   return (
     <div className="relative">
-      {items && items.map((item, index) => <Item item={item} index={index} selectionCondition={selectionCondition} {...rest} />)}
+      {items && items.map((item, index) => <Item item={item} index={index} {...rest} />)}
     </div>
   );
 });

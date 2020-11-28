@@ -18,6 +18,7 @@ import {
  Category, ColumnWidth, createStringEnum
 } from "@api/model";
 import debounce from "lodash.debounce";
+import uniqid from "uniqid";
 import { LinkAdornment } from "../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../common/utils/links";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
@@ -416,21 +417,20 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
   }, []);
 
   const openItem = React.useCallback(
-    (item, type) => {
+    item => {
       if (checkoutStep > 0) handleChangeStep(CheckoutCurrentStep.shoppingCart);
-      switch (type) {
+      switch (item.type) {
         case "course":
           if (selectedCourse && selectedCourse.id === item.id) {
             return;
           }
           setSelectedCourse(item);
           if (
-            !item.courseId
-            || !selectedCourse
-            || (selectedCourse && typeof selectedCourse.courseId === "number" && selectedCourse.courseId !== item.courseId)) {
-            checkoutGetCourseClassList(`course.id is ${item.courseId || item.id} AND isCancelled is false`);
+            !selectedCourse
+            || (selectedCourse && typeof selectedCourse.courseId === "number" && selectedCourse.courseId !== item.courseId)
+          ) {
+            checkoutGetCourseClassList(`course.id is ${item.courseId} AND isCancelled is false`);
           }
-
           setOpenClassListView(true);
           onCloseItemView();
           break;
@@ -443,7 +443,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           dispatch(initialize(CHECKOUT_ITEM_EDIT_VIEW_FORM, {
             items: ""
           }));
-          getItemRecord(item, type);
+          getItemRecord(item, item.type);
           setOpenItemEditView(true);
           setOpenedItem(item);
           onCloseClassList();
@@ -529,9 +529,10 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         onContactInit();
         break;
       case "course": {
-        const course = checkoutCourseMap(row);
         if (!skipEditView) {
-          openItem(course, type);
+          const course = checkoutCourseMap(row);
+          course.id = uniqid();
+          openItem(course);
         }
         dispatch(change(FORM, "items", ""));
         onClearItemsSearch(true);
@@ -552,7 +553,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             row.restrictToPayer = false;
           }
           calculateVoucherOrMembershipExpiry(row);
-          openItem(row, type);
+          openItem(row);
           addSelectedItem(row);
         }
         dispatch(change(FORM, "items", ""));
@@ -903,8 +904,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     (selectedClass: CheckoutCourseClass) => {
       const updatedCourse: CheckoutCourse = {
         ...selectedCourse,
-        courseId: selectedCourse.courseId ? selectedCourse.courseId : selectedCourse.id,
-        id: selectedClass.id,
         price: selectedClass.price,
         animate: true,
         discount: null,
@@ -913,8 +912,14 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         studyReason: "Not stated",
         class: { ...selectedClass }
       };
+
+      if (selectedItems.some(i => i.id === updatedCourse.id)) {
+        updateSelectedClass(updatedCourse);
+      } else {
+        addSelectedItem(updatedCourse);
+      }
+
       setSelectedCourse(updatedCourse);
-      updateSelectedClass(updatedCourse);
       getClassPaymentPlans(updatedCourse);
       openSidebarDrawer();
       setTimeout(() => {
@@ -1133,9 +1138,8 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
               <EnrolCourseClassView
                 course={selectedCourse}
                 onClose={onCloseClassList}
-                setSelectedCourse={setSelectedCourse}
-                selectedItems={selectedItems}
                 onClassSelect={onClassSelect}
+                selectedItems={selectedItems}
               />
             )}
 

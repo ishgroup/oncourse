@@ -2,13 +2,11 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import Button from "@material-ui/core/Button";
 import { AppBarTitle } from "../../CheckoutSelection";
 import EnrolClassListView from "./EnrolClassListView";
-import { addItem } from "../../../actions";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { State } from "../../../../../reducers/state";
 
@@ -17,30 +15,19 @@ const EnrolCourseClassView = React.memo<any>(props => {
     course,
     courseClasses,
     onClose,
-    setSelectedCourse,
-    addSelectedItem,
     isClassesEmpty,
-    selectedItems,
     currencySymbol,
-    onClassSelect
+    onClassSelect,
+    selectedItems
   } = props;
-
-  useEffect(() => {
-    if (!course.class || selectedItems.some(i => i.id === course.id && i.type === course.type)) {
-      return;
-    }
-
-    setSelectedCourse(course);
-    addSelectedItem(course);
-  }, [course]);
 
   return (
     <div className="flex-column w-100">
       <CustomAppBar>
         <AppBarTitle
-          title={course && course.name}
           type="course"
-          link={course.courseId}
+          title={course && course.name}
+          link={course && course.courseId}
         />
         <div>
           <Button
@@ -59,8 +46,8 @@ const EnrolCourseClassView = React.memo<any>(props => {
         courseClasses={courseClasses}
         onSelect={onClassSelect}
         isClassesEmpty={isClassesEmpty}
-        selectedItems={selectedItems}
         currencySymbol={currencySymbol}
+        selectedItems={selectedItems}
       />
     </div>
   );
@@ -72,8 +59,4 @@ const mapStateToProps = (state: State) => ({
   currencySymbol: state.currency && state.currency.shortCurrencySymbol
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  addSelectedItem: (item: any) => dispatch(addItem(item))
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EnrolCourseClassView);
+export default connect<any, any, any>(mapStateToProps, null)(EnrolCourseClassView);
