@@ -292,7 +292,8 @@ Review all the other employee settings and ensure they are correct.
 				}
 			}
 			response.failure = { resp, body ->
-				interruptExport("Error appears while getting employee by extrernal ID: $body")
+				logger.error(body?.toString())
+				interruptExport("Error appears while getting employee by extrernal ID: ${body['Message']}")
 			}
 		} as Employee
 	}
@@ -315,7 +316,8 @@ Review all the other employee settings and ensure they are correct.
 				}
 			}
 			response.failure = { resp, body ->
-				interruptExport("Error appears while searching employee by first name/last name/DOB: $body")
+				logger.error(body?.toString())
+				interruptExport("Error appears while searching employee by first name/last name/DOB: ${body['Message']}")
 			}
 		}
 		return id
@@ -336,7 +338,8 @@ Review all the other employee settings and ensure they are correct.
 				interruptExport(MESSAGE_CONFIGURE_XERO_EMPLOYEE)
 			}
 			response.failure = { resp, body ->
-				interruptExport("Error appears while creating employee: $body")
+				logger.error(body?.toString())
+				interruptExport("Error appears while creating employee: ${body['Message']}")
 			}
 		}
 
@@ -359,7 +362,8 @@ Review all the other employee settings and ensure they are correct.
 				return createPayRun(calendarId)
 			}
 			response.failure = { resp, body ->
-				interruptExport("Error appears while getting draft Pay Run: $body")
+				logger.error(body?.toString())
+				interruptExport("Error appears while getting draft Pay Run: ${body['Message']}")
 			}
 		}
 
@@ -388,7 +392,8 @@ Review all the other employee settings and ensure they are correct.
 				return result.PayRuns.PayRun[0].PayRunID.toString()
 			}
 			response.failure = { resp, body ->
-				interruptExport("Xero app create PayRun error: $body")
+				logger.error(body?.toString())
+				interruptExport("Xero app create PayRun error: ${body['Message']}")
 			}
 		}
 
@@ -411,7 +416,8 @@ Review all the other employee settings and ensure they are correct.
 				return null
 			}
 			response.failure = { resp, body ->
-				interruptExport("Xero app get Paysplip error: $body")
+				logger.error(body?.toString())
+				interruptExport("Xero app get Paysplip error: ${body['Message']}")
 			}
 		}
 	}
@@ -455,7 +461,8 @@ Review all the other employee settings and ensure they are correct.
 
 			}
 			response.failure = { resp, body ->
-				interruptExport("Xero app add Earning Line error: $body")
+				logger.error(body?.toString())
+				interruptExport("Xero app add Earning Line error: ${body['Message']}")
 			}
 		}
 	}
@@ -477,7 +484,8 @@ Review all the other employee settings and ensure they are correct.
 				objectContext.commitChanges()
 			}
 			response.failure = { resp, body ->
-				interruptExport("Xero app post Earning Lines error: $body")
+				logger.error(body?.toString())
+				interruptExport("Xero app post Earning Lines error: ${body['Message']}")
 			}
 		}
 	}
