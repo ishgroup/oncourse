@@ -12,7 +12,6 @@ import ish.common.types.CourseEnrolmentType;
 import ish.oncourse.model.Application;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.CourseCourseRelation;
 import ish.oncourse.model.CourseCustomField;
 import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.ExpandableCayenneDataObject;
@@ -52,9 +51,7 @@ public abstract class _Course extends ExpandableCayenneDataObject {
     public static final String COURSE_MODULES_PROPERTY = "courseModules";
     public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
     public static final String FIELD_CONFIGURATION_SCHEME_PROPERTY = "fieldConfigurationScheme";
-    public static final String FROM_COURSES_PROPERTY = "fromCourses";
     public static final String QUALIFICATION_PROPERTY = "qualification";
-    public static final String TO_COURSES_PROPERTY = "toCourses";
     public static final String VOUCHER_PRODUCT_COURSES_PROPERTY = "voucherProductCourses";
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
 
@@ -81,9 +78,7 @@ public abstract class _Course extends ExpandableCayenneDataObject {
     public static final Property<List<CourseModule>> COURSE_MODULES = Property.create("courseModules", List.class);
     public static final Property<List<CourseCustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
     public static final Property<FieldConfigurationScheme> FIELD_CONFIGURATION_SCHEME = Property.create("fieldConfigurationScheme", FieldConfigurationScheme.class);
-    public static final Property<List<CourseCourseRelation>> FROM_COURSES = Property.create("fromCourses", List.class);
     public static final Property<Qualification> QUALIFICATION = Property.create("qualification", Qualification.class);
-    public static final Property<List<CourseCourseRelation>> TO_COURSES = Property.create("toCourses", List.class);
     public static final Property<List<VoucherProductCourse>> VOUCHER_PRODUCT_COURSES = Property.create("voucherProductCourses", List.class);
     public static final Property<List<WaitingList>> WAITING_LISTS = Property.create("waitingLists", List.class);
 
@@ -109,9 +104,7 @@ public abstract class _Course extends ExpandableCayenneDataObject {
     protected Object courseModules;
     protected Object customFields;
     protected Object fieldConfigurationScheme;
-    protected Object fromCourses;
     protected Object qualification;
-    protected Object toCourses;
     protected Object voucherProductCourses;
     protected Object waitingLists;
 
@@ -333,38 +326,12 @@ public abstract class _Course extends ExpandableCayenneDataObject {
         return (FieldConfigurationScheme)readProperty("fieldConfigurationScheme");
     }
 
-    public void addToFromCourses(CourseCourseRelation obj) {
-        addToManyTarget("fromCourses", obj, true);
-    }
-
-    public void removeFromFromCourses(CourseCourseRelation obj) {
-        removeToManyTarget("fromCourses", obj, true);
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<CourseCourseRelation> getFromCourses() {
-        return (List<CourseCourseRelation>)readProperty("fromCourses");
-    }
-
     public void setQualification(Qualification qualification) {
         setToOneTarget("qualification", qualification, true);
     }
 
     public Qualification getQualification() {
         return (Qualification)readProperty("qualification");
-    }
-
-    public void addToToCourses(CourseCourseRelation obj) {
-        addToManyTarget("toCourses", obj, true);
-    }
-
-    public void removeFromToCourses(CourseCourseRelation obj) {
-        removeToManyTarget("toCourses", obj, true);
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<CourseCourseRelation> getToCourses() {
-        return (List<CourseCourseRelation>)readProperty("toCourses");
     }
 
     public void addToVoucherProductCourses(VoucherProductCourse obj) {
@@ -442,12 +409,8 @@ public abstract class _Course extends ExpandableCayenneDataObject {
                 return this.customFields;
             case "fieldConfigurationScheme":
                 return this.fieldConfigurationScheme;
-            case "fromCourses":
-                return this.fromCourses;
             case "qualification":
                 return this.qualification;
-            case "toCourses":
-                return this.toCourses;
             case "voucherProductCourses":
                 return this.voucherProductCourses;
             case "waitingLists":
@@ -527,14 +490,8 @@ public abstract class _Course extends ExpandableCayenneDataObject {
             case "fieldConfigurationScheme":
                 this.fieldConfigurationScheme = val;
                 break;
-            case "fromCourses":
-                this.fromCourses = val;
-                break;
             case "qualification":
                 this.qualification = val;
-                break;
-            case "toCourses":
-                this.toCourses = val;
                 break;
             case "voucherProductCourses":
                 this.voucherProductCourses = val;
@@ -579,9 +536,7 @@ public abstract class _Course extends ExpandableCayenneDataObject {
         out.writeObject(this.courseModules);
         out.writeObject(this.customFields);
         out.writeObject(this.fieldConfigurationScheme);
-        out.writeObject(this.fromCourses);
         out.writeObject(this.qualification);
-        out.writeObject(this.toCourses);
         out.writeObject(this.voucherProductCourses);
         out.writeObject(this.waitingLists);
     }
@@ -610,9 +565,7 @@ public abstract class _Course extends ExpandableCayenneDataObject {
         this.courseModules = in.readObject();
         this.customFields = in.readObject();
         this.fieldConfigurationScheme = in.readObject();
-        this.fromCourses = in.readObject();
         this.qualification = in.readObject();
-        this.toCourses = in.readObject();
         this.voucherProductCourses = in.readObject();
         this.waitingLists = in.readObject();
     }

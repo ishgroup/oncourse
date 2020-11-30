@@ -4,6 +4,7 @@
 package ish.oncourse.ui.utils;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.model.EntityRelationType;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.test.MariaDB;
 import ish.oncourse.test.TestContext;
@@ -15,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static io.reactivex.Observable.range;
+import static org.junit.Assert.assertEquals;
 
 /**
  * User: akoiro
@@ -33,6 +35,7 @@ public class CourseItemModelTestData {
 
 		dataContext = new DataContext().withObjectContext(testContext.getServerRuntime().newContext());
 		CCollege college = dataContext.newCollege();
+		EntityRelationType relationType = dataContext.newEntityRelationType(college.getCollege());
 		range(0, 20).blockingForEach((i) -> college.newCourse("from" + i.toString(), "from" + i.toString()));
 		range(0, 20).blockingForEach((i) -> college.newCourse("to" + i.toString(), "to" + i.toString()));
 
@@ -41,11 +44,11 @@ public class CourseItemModelTestData {
 
 		college.getCourses().stream()
 				.filter(c -> c.getCourse().getCode().startsWith("from"))
-				.forEach(cCourse::relatedFrom);
+				.forEach(from -> cCourse.relatedFrom(from, relationType));
 
 		college.getCourses().stream()
 				.filter(c -> c.getCourse().getCode().startsWith("to"))
-				.forEach(cCourse::relatedTo);
+				.forEach(to -> cCourse.relatedTo(to, relationType));
 
 
 		dataContext.getObjectContext().commitChanges();
@@ -65,8 +68,7 @@ public class CourseItemModelTestData {
 		CourseItemModel courseItemModel = CourseItemModel.valueOf(objectContext.localObject(course)
 				, new SearchParams());
 
-		System.out.println(CourseItemModelDaoHelper.selectRelatedCourses(course));
-
-		System.out.println(CourseItemModelDaoHelper.selectRelatedProducts(course));
+		assertEquals(40, courseItemModel.relatedCourses.size());
+		assertEquals(0, courseItemModel.relatedProducts.size());
 	}
 }

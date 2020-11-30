@@ -137,5 +137,59 @@
 								 validate="true"/>
 	</changeSet>
 
+	<changeSet id="13" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<columnExists tableName="EntityRelation" columnName="fromEntityIdentifier" />
+		</preConditions>
+		<modifyDataType tableName="EntityRelation" columnName="fromEntityIdentifier" newDataType="VARCHAR(100)" />
+	</changeSet>
+
+	<changeSet id="14" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<columnExists tableName="EntityRelation" columnName="toEntityIdentifier" />
+		</preConditions>
+		<modifyDataType tableName="EntityRelation" columnName="toEntityIdentifier" newDataType="VARCHAR(100)" />
+	</changeSet>
+
+	<changeSet id="15" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<columnExists tableName="EntityRelation" columnName="fromEntityIdentifier" />
+		</preConditions>
+		<update tableName="EntityRelation">
+			<column name="fromEntityIdentifier" value="Course" />
+			<where>fromEntityIdentifier="1"</where>
+		</update>
+	</changeSet>
+
+	<changeSet id="16" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<columnExists tableName="EntityRelation" columnName="fromEntityIdentifier" />
+		</preConditions>
+		<update tableName="EntityRelation">
+			<column name="fromEntityIdentifier" value="Product" />
+			<where>fromEntityIdentifier="2"</where>
+		</update>
+	</changeSet>
+
+	<changeSet id="17" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<columnExists tableName="EntityRelation" columnName="toEntityIdentifier" />
+		</preConditions>
+		<update tableName="EntityRelation">
+			<column name="toEntityIdentifier" value="Course" />
+			<where>toEntityIdentifier="1"</where>
+		</update>
+	</changeSet>
+
+	<changeSet id="18" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<columnExists tableName="EntityRelation" columnName="toEntityIdentifier" />
+		</preConditions>
+		<update tableName="EntityRelation">
+			<column name="toEntityIdentifier" value="Product" />
+			<where>toEntityIdentifier="2"</where>
+		</update>
+	</changeSet>
+
 
 </databaseChangeLog>

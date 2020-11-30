@@ -25,30 +25,39 @@ class CCourse {
         return this
     }
 
-    CCourse relatedTo(CProduct product) {
-        CourseProductRelation relation = new CourseProductRelation()
+    CCourse relatedTo(CProduct product, EntityRelationType relationType) {
+        EntityRelation relation = new EntityRelation()
+        relation.setRelationType(relationType)
         relation.setCollege(this.course.college)
-        relation.setFromCourse(this.course)
-        relation.setToProduct(product.product)
+        relation.setFromEntityWillowId(this.course.id)
+        relation.setFromEntityIdentifier("Product")
+        relation.setToEntityWillowId(product.product.id)
+        relation.setToEntityIdentifier("Course")
         relation.setCreated(new Date())
         relation.setModified(new Date())
         return this
     }
 
-    CCourse relatedFrom(CCourse from) {
-        CourseCourseRelation relation = new CourseCourseRelation()
-        relation.setToCourse(this.course)
-        relation.setFromCourse(from.course)
+    CCourse relatedFrom(CCourse from, EntityRelationType relationType) {
+        EntityRelation relation = new EntityRelation()
+        relation.setRelationType(relationType)
+        relation.setToEntityWillowId(this.course.id)
+        relation.setToEntityIdentifier("Course")
+        relation.setFromEntityWillowId(from.course.id)
+        relation.setFromEntityIdentifier("Course")
         relation.setCollege(this.course.college)
         relation.setCreated(new Date())
         relation.setModified(new Date())
         return this
     }
 
-    CCourse relatedTo(CCourse to) {
-        CourseCourseRelation relation = new CourseCourseRelation()
-        relation.setToCourse(to.course)
-        relation.setFromCourse(this.course)
+    CCourse relatedTo(CCourse to, EntityRelationType relationType) {
+        EntityRelation relation = new EntityRelation()
+        relation.setRelationType(relationType)
+        relation.setToEntityWillowId(to.course.id)
+        relation.setToEntityIdentifier("Course")
+        relation.setFromEntityWillowId(this.course.id)
+        relation.setFromEntityIdentifier("Course")
         relation.setCollege(this.course.college)
         relation.setCreated(new Date())
         relation.setModified(new Date())

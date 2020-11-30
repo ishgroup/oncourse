@@ -7,7 +7,6 @@ import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
 
-import ish.common.types.EntityRelationIdentifier;
 import ish.oncourse.model.College;
 import ish.oncourse.model.EntityRelationType;
 
@@ -35,20 +34,20 @@ public abstract class _EntityRelation extends WillowCayenneObject {
 
     public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
     public static final Property<Date> CREATED = Property.create("created", Date.class);
-    public static final Property<EntityRelationIdentifier> FROM_ENTITY_IDENTIFIER = Property.create("fromEntityIdentifier", EntityRelationIdentifier.class);
+    public static final Property<String> FROM_ENTITY_IDENTIFIER = Property.create("fromEntityIdentifier", String.class);
     public static final Property<Long> FROM_ENTITY_WILLOW_ID = Property.create("fromEntityWillowId", Long.class);
     public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
-    public static final Property<EntityRelationIdentifier> TO_ENTITY_IDENTIFIER = Property.create("toEntityIdentifier", EntityRelationIdentifier.class);
+    public static final Property<String> TO_ENTITY_IDENTIFIER = Property.create("toEntityIdentifier", String.class);
     public static final Property<Long> TO_ENTITY_WILLOW_ID = Property.create("toEntityWillowId", Long.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<EntityRelationType> RELATION_TYPE = Property.create("relationType", EntityRelationType.class);
 
     protected Long angelId;
     protected Date created;
-    protected EntityRelationIdentifier fromEntityIdentifier;
+    protected String fromEntityIdentifier;
     protected Long fromEntityWillowId;
     protected Date modified;
-    protected EntityRelationIdentifier toEntityIdentifier;
+    protected String toEntityIdentifier;
     protected Long toEntityWillowId;
 
     protected Object college;
@@ -74,12 +73,12 @@ public abstract class _EntityRelation extends WillowCayenneObject {
         return this.created;
     }
 
-    public void setFromEntityIdentifier(EntityRelationIdentifier fromEntityIdentifier) {
+    public void setFromEntityIdentifier(String fromEntityIdentifier) {
         beforePropertyWrite("fromEntityIdentifier", this.fromEntityIdentifier, fromEntityIdentifier);
         this.fromEntityIdentifier = fromEntityIdentifier;
     }
 
-    public EntityRelationIdentifier getFromEntityIdentifier() {
+    public String getFromEntityIdentifier() {
         beforePropertyRead("fromEntityIdentifier");
         return this.fromEntityIdentifier;
     }
@@ -104,12 +103,12 @@ public abstract class _EntityRelation extends WillowCayenneObject {
         return this.modified;
     }
 
-    public void setToEntityIdentifier(EntityRelationIdentifier toEntityIdentifier) {
+    public void setToEntityIdentifier(String toEntityIdentifier) {
         beforePropertyWrite("toEntityIdentifier", this.toEntityIdentifier, toEntityIdentifier);
         this.toEntityIdentifier = toEntityIdentifier;
     }
 
-    public EntityRelationIdentifier getToEntityIdentifier() {
+    public String getToEntityIdentifier() {
         beforePropertyRead("toEntityIdentifier");
         return this.toEntityIdentifier;
     }
@@ -186,7 +185,7 @@ public abstract class _EntityRelation extends WillowCayenneObject {
                 this.created = (Date)val;
                 break;
             case "fromEntityIdentifier":
-                this.fromEntityIdentifier = (EntityRelationIdentifier)val;
+                this.fromEntityIdentifier = (String)val;
                 break;
             case "fromEntityWillowId":
                 this.fromEntityWillowId = (Long)val;
@@ -195,7 +194,7 @@ public abstract class _EntityRelation extends WillowCayenneObject {
                 this.modified = (Date)val;
                 break;
             case "toEntityIdentifier":
-                this.toEntityIdentifier = (EntityRelationIdentifier)val;
+                this.toEntityIdentifier = (String)val;
                 break;
             case "toEntityWillowId":
                 this.toEntityWillowId = (Long)val;
@@ -238,10 +237,10 @@ public abstract class _EntityRelation extends WillowCayenneObject {
         super.readState(in);
         this.angelId = (Long)in.readObject();
         this.created = (Date)in.readObject();
-        this.fromEntityIdentifier = (EntityRelationIdentifier)in.readObject();
+        this.fromEntityIdentifier = (String)in.readObject();
         this.fromEntityWillowId = (Long)in.readObject();
         this.modified = (Date)in.readObject();
-        this.toEntityIdentifier = (EntityRelationIdentifier)in.readObject();
+        this.toEntityIdentifier = (String)in.readObject();
         this.toEntityWillowId = (Long)in.readObject();
         this.college = in.readObject();
         this.relationType = in.readObject();

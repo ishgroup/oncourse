@@ -30,7 +30,6 @@ public class CreateTables {
 	private DataDomain domain;
 	private DbGenerator generator;
 
-	private List<Relationship> entityRelations = new ArrayList<>();
 	private List<Relationship> customFields = new ArrayList<>();
 
 	public CreateTables(ServerRuntime serverRuntime) {
@@ -65,14 +64,6 @@ public class CreateTables {
 	}
 
 	private void before() {
-		entityRelations.add(dataMap.getDbEntity("EntityRelation").getRelationship("relationToProduct"));
-		entityRelations.add(dataMap.getDbEntity("EntityRelation").getRelationship("relationFromProduct"));
-		entityRelations.add(dataMap.getDbEntity("EntityRelation").getRelationship("relationToCourse"));
-		entityRelations.add(dataMap.getDbEntity("EntityRelation").getRelationship("relationFromCourse"));
-		for (Relationship rel : entityRelations) {
-			dataMap.getDbEntity("EntityRelation").removeRelationship(rel.getName());
-		}
-
 		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedContact"));
 		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedEnrolment"));
 		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedCourse"));
@@ -88,10 +79,6 @@ public class CreateTables {
 
 
 	private void after() {
-		for (Relationship rel : entityRelations) {
-			dataMap.getDbEntity("EntityRelation").addRelationship(rel);
-		}
-
 		for (Relationship rel : customFields) {
 			dataMap.getDbEntity("CustomField").addRelationship(rel);
 		}

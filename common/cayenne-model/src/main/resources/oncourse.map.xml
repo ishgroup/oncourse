@@ -593,11 +593,11 @@
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
-		<db-attribute name="fromEntityIdentifier" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="fromEntityIdentifier" type="VARCHAR" length="100" isMandatory="true"/>
 		<db-attribute name="fromRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
-		<db-attribute name="toEntityIdentifier" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="toEntityIdentifier" type="VARCHAR" length="100" isMandatory="true"/>
 		<db-attribute name="toRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="typeId" type="BIGINT"/>
 	</db-entity>
@@ -1848,9 +1848,6 @@
 		<obj-attribute name="dayOffset" type="java.lang.Integer" db-attribute-path="dayOffset"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
-	<obj-entity name="CourseCourseRelation" superEntityName="EntityRelation" className="ish.oncourse.model.CourseCourseRelation">
-		<qualifier><![CDATA[(fromEntityIdentifier = enum:ish.common.types.EntityRelationIdentifier.COURSE) and (toEntityIdentifier = enum:ish.common.types.EntityRelationIdentifier.COURSE)]]></qualifier>
-	</obj-entity>
 	<obj-entity name="CourseCustomField" superEntityName="CustomField" className="ish.oncourse.model.CourseCustomField">
 		<qualifier><![CDATA[entityName = "Course"]]></qualifier>
 	</obj-entity>
@@ -1858,12 +1855,6 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-	</obj-entity>
-	<obj-entity name="CourseProductRelation" superEntityName="EntityRelation" className="ish.oncourse.model.CourseProductRelation">
-		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 2)]]></qualifier>
-	</obj-entity>
-	<obj-entity name="ProductCourseRelation" superEntityName="EntityRelation" className="ish.oncourse.model.ProductCourseRelation">
-		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 2)]]></qualifier>
 	</obj-entity>
 	<obj-entity name="CustomFee" className="ish.oncourse.model.CustomFee" dbEntityName="CustomFee" superClassName="WillowCayenneObject">
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
@@ -2027,10 +2018,10 @@
 	<obj-entity name="EntityRelation" className="ish.oncourse.model.EntityRelation" dbEntityName="EntityRelation" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="fromEntityIdentifier" type="ish.common.types.EntityRelationIdentifier" db-attribute-path="fromEntityIdentifier"/>
+		<obj-attribute name="fromEntityIdentifier" type="java.lang.String" db-attribute-path="fromEntityIdentifier"/>
 		<obj-attribute name="fromEntityWillowId" type="java.lang.Long" db-attribute-path="fromRecordId"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-		<obj-attribute name="toEntityIdentifier" type="ish.common.types.EntityRelationIdentifier" db-attribute-path="toEntityIdentifier"/>
+		<obj-attribute name="toEntityIdentifier" type="java.lang.String" db-attribute-path="toEntityIdentifier"/>
 		<obj-attribute name="toEntityWillowId" type="java.lang.Long" db-attribute-path="toRecordId"/>
 		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
@@ -3327,14 +3318,8 @@
 	<db-relationship name="courseClasses" source="Course" target="CourseClass" toMany="true">
 		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
-	<db-relationship name="courseFromRelation" source="Course" target="EntityRelation" toMany="true">
-		<db-attribute-pair source="id" target="fromRecordId"/>
-	</db-relationship>
 	<db-relationship name="courseModules" source="Course" target="CourseModule" toMany="true">
 		<db-attribute-pair source="id" target="courseId"/>
-	</db-relationship>
-	<db-relationship name="courseToRelation" source="Course" target="EntityRelation" toMany="true">
-		<db-attribute-pair source="id" target="toRecordId"/>
 	</db-relationship>
 	<db-relationship name="customFields" source="Course" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
@@ -3569,18 +3554,6 @@
 	</db-relationship>
 	<db-relationship name="relationType" source="EntityRelation" target="EntityRelationType">
 		<db-attribute-pair source="typeId" target="id"/>
-	</db-relationship>
-	<db-relationship name="relationFromCourse" source="EntityRelation" target="Course">
-		<db-attribute-pair source="fromRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="relationFromProduct" source="EntityRelation" target="Product">
-		<db-attribute-pair source="fromRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="relationToCourse" source="EntityRelation" target="Course">
-		<db-attribute-pair source="toRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="relationToProduct" source="EntityRelation" target="Product">
-		<db-attribute-pair source="toRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="EntityRelationType" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -3870,14 +3843,8 @@
 	<db-relationship name="discountMembershipProducts" source="Product" target="DiscountMembership" toMany="true">
 		<db-attribute-pair source="id" target="membershipProductId"/>
 	</db-relationship>
-	<db-relationship name="productFromRelation" source="Product" target="EntityRelation" toMany="true">
-		<db-attribute-pair source="id" target="fromRecordId"/>
-	</db-relationship>
 	<db-relationship name="productItems" source="Product" target="ProductItem" toMany="true">
 		<db-attribute-pair source="id" target="productId"/>
-	</db-relationship>
-	<db-relationship name="productToRelation" source="Product" target="EntityRelation" toMany="true">
-		<db-attribute-pair source="id" target="toRecordId"/>
 	</db-relationship>
 	<db-relationship name="voucherProductCourses" source="Product" target="VoucherProductCourse" toMany="true">
 		<db-attribute-pair source="id" target="voucherProductId"/>
@@ -4487,9 +4454,7 @@
 	<obj-relationship name="courseModules" source="Course" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
 	<obj-relationship name="customFields" source="Course" target="CourseCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="fieldConfigurationScheme" source="Course" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationScheme"/>
-	<obj-relationship name="fromCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseFromRelation"/>
 	<obj-relationship name="qualification" source="Course" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
-	<obj-relationship name="toCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseToRelation"/>
 	<obj-relationship name="voucherProductCourses" source="Course" target="VoucherProductCourse" deleteRule="Deny" db-relationship-path="voucherProductCourses"/>
 	<obj-relationship name="waitingLists" source="Course" target="WaitingList" deleteRule="Deny" db-relationship-path="waitingLists"/>
 	<obj-relationship name="assessmentClasses" source="CourseClass" target="AssessmentClass" deleteRule="Deny" db-relationship-path="assessmentClasses"/>
@@ -4507,16 +4472,10 @@
 	<obj-relationship name="relatedObject" source="CourseClassCustomField" target="CourseClass" deleteRule="Nullify" db-relationship-path="relatedCourseClass"/>
 	<obj-relationship name="college" source="CourseClassPaymentPlanLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="CourseClassPaymentPlanLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
-	<obj-relationship name="fromCourse" source="CourseCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>
-	<obj-relationship name="toCourse" source="CourseCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationToCourse"/>
 	<obj-relationship name="relatedObject" source="CourseCustomField" target="Course" deleteRule="Nullify" db-relationship-path="relatedCourse"/>
 	<obj-relationship name="college" source="CourseModule" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="CourseModule" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="module" source="CourseModule" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
-	<obj-relationship name="fromCourse" source="CourseProductRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>
-	<obj-relationship name="toProduct" source="CourseProductRelation" target="Product" deleteRule="Nullify" db-relationship-path="relationToProduct"/>
-	<obj-relationship name="fromProduct" source="ProductCourseRelation" target="Product" deleteRule="Nullify" db-relationship-path="relationFromProduct"/>
-	<obj-relationship name="toCourse" source="ProductCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationToCourse"/>
 	<obj-relationship name="college" source="CustomFee" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="CustomField" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="customFieldType" source="CustomField" target="CustomFieldType" deleteRule="Nullify" db-relationship-path="customFieldType"/>

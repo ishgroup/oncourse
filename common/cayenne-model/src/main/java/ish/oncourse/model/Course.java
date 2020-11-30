@@ -8,6 +8,7 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.commitlog.CommitLog;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -90,5 +91,17 @@ public class Course extends _Course implements Queueable {
 	@Property(value = FieldProperty.CUSTOM_FIELD_COURSE, type = PropertyGetSetFactory.SET, params = {String.class, String.class})
 	public void setCustomFieldValue(String key, String value) {
 		setCustomFieldValue(key, value, CourseCustomField.class);
+	}
+
+	List<EntityRelation> getToCourses() {
+		return ObjectSelect.query(EntityRelation.class)
+				.where(EntityRelation.FROM_ENTITY_WILLOW_ID.eq(getId()))
+				.select(objectContext);
+	}
+
+	List<EntityRelation> getFromCourses() {
+		return ObjectSelect.query(EntityRelation.class)
+				.where(EntityRelation.TO_ENTITY_WILLOW_ID.eq(getId()))
+				.select(objectContext);
 	}
 }

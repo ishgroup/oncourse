@@ -1,7 +1,9 @@
 package ish.oncourse.test.context
 
 import com.github.javafaker.Faker
+import ish.common.types.EntityRelationCartAction
 import ish.oncourse.model.College
+import ish.oncourse.model.EntityRelationType
 import ish.oncourse.model.PaymentGatewayType
 import ish.oncourse.model.Preference
 import ish.oncourse.model.WillowUser
@@ -82,5 +84,17 @@ class DataContext {
             colleges.add(new CCollege(objectContext: this.objectContext, college: it).load())
         })
         return this
+    }
+
+    EntityRelationType newEntityRelationType(College college) {
+        EntityRelationType relationType = objectContext.newObject(EntityRelationType)
+        relationType.college = college
+        relationType.name = "Default"
+        relationType.toName = "Similar"
+        relationType.fromName = "Similar"
+        relationType.isShownOnWeb = Boolean.TRUE
+        relationType.shoppingCart = EntityRelationCartAction.NO_ACTION
+        objectContext.commitChanges()
+        return relationType
     }
 }

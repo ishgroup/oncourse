@@ -1,19 +1,18 @@
 package ish.oncourse.ui.utils;
 
 import ish.oncourse.model.*;
-import ish.oncourse.model.auto._CourseProductRelation;
-import ish.oncourse.model.auto._ProductCourseRelation;
 import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.preference.GetPreference;
 import ish.oncourse.services.preference.Preferences;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.cayenne.query.SelectById;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static ish.common.types.EntityRelationIdentifier.COURSE;
 import static ish.oncourse.model.auto._EntityRelation.*;
 import static java.lang.Boolean.TRUE;
 import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
@@ -33,16 +32,22 @@ public class CourseItemModelDaoHelper {
 	}
 
 	public static List<Course> selectRelatedCourses(Course course) {
-		List<CourseCourseRelation> relations = new LinkedList<>(
-				ObjectSelect.query(CourseCourseRelation.class)
-							.or(FROM_ENTITY_IDENTIFIER.eq(COURSE).andExp(FROM_ENTITY_WILLOW_ID.eq(course.getId())),
-									TO_ENTITY_IDENTIFIER.eq(COURSE).andExp(TO_ENTITY_WILLOW_ID.eq(course.getId())))
-							.and(CourseCourseRelation.COLLEGE.eq(course.getCollege()))
-							.cacheStrategy(LOCAL_CACHE, CourseCourseRelation.class.getSimpleName())
-							.select(course.getObjectContext()));
+		ObjectContext context = course.getObjectContext();
+
+		List<EntityRelation> relations = new LinkedList<>(
+				ObjectSelect.query(EntityRelation.class)
+						.or(FROM_ENTITY_WILLOW_ID.eq(course.getId()),
+								TO_ENTITY_WILLOW_ID.eq(course.getId()))
+						.and(FROM_ENTITY_IDENTIFIER.eq(Course.class.getSimpleName()))
+						.and(TO_ENTITY_IDENTIFIER.eq(Course.class.getSimpleName()))
+						.and(EntityRelation.COLLEGE.eq(course.getCollege()))
+						.and(RELATION_TYPE.isNull().orExp(RELATION_TYPE.dot(EntityRelationType.IS_SHOWN_ON_WEB).eq(TRUE)))
+						.cacheStrategy(LOCAL_CACHE, EntityRelation.class.getSimpleName())
+						.select(context));
 
 		return relations.stream()
-						.map((r) -> Arrays.asList(r.getFromCourse(), r.getToCourse()))
+						.map((r) -> Arrays.asList(SelectById.query(Course.class, r.getFromEntityWillowId()).selectOne(context),
+								SelectById.query(Course.class, r.getToEntityWillowId()).selectOne(context)))
 						.flatMap(Collection::stream)
 						.filter(c -> !c.getId().equals(course.getId()) && c.getIsWebVisible())
 						.sorted((c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()))
@@ -50,25 +55,38 @@ public class CourseItemModelDaoHelper {
 	}
 
 	public static List<Product> selectRelatedProducts(Course course) {
-		List<Product> products = new ArrayList<>();
-		products.addAll(ObjectSelect.query(CourseProductRelation.class)
-				.where(CourseProductRelation.FROM_COURSE.eq(course))
-				.and(CourseCourseRelation.COLLEGE.eq(course.getCollege()))
-				.and(CourseProductRelation.TO_PRODUCT.dot(Product.IS_WEB_VISIBLE).eq(TRUE))
-				.cacheStrategy(LOCAL_CACHE, CourseProductRelation.class.getSimpleName())
-				.select(course.getObjectContext())
+		ObjectContext context = course.getObjectContext();
+
+		List<EntityRelation> fromRelations = ObjectSelect.query(EntityRelation.class)
+				.where(FROM_ENTITY_IDENTIFIER.eq(Course.class.getSimpleName()))
+				.and(FROM_ENTITY_WILLOW_ID.eq(course.getId()))
+				.and(TO_ENTITY_IDENTIFIER.eq(Product.class.getSimpleName()))
+				.and(EntityRelation.COLLEGE.eq(course.getCollege()))
+				.and(RELATION_TYPE.isNull().orExp(RELATION_TYPE.dot(EntityRelationType.IS_SHOWN_ON_WEB).eq(TRUE)))
+				.cacheStrategy(LOCAL_CACHE, EntityRelation.class.getSimpleName())
+				.select(context);
+
+		List<Product> products = fromRelations
 				.stream()
-				.map(_CourseProductRelation::getToProduct)
-				.collect(Collectors.toList())
-		);
-		products.addAll(ObjectSelect.query(ProductCourseRelation.class)
-				.where(ProductCourseRelation.TO_COURSE.eq(course))
-				.and(ProductCourseRelation.COLLEGE.eq(course.getCollege()))
-				.and(ProductCourseRelation.FROM_PRODUCT.dot(Product.IS_WEB_VISIBLE).eq(TRUE))
-				.cacheStrategy(LOCAL_CACHE, ProductCourseRelation.class.getSimpleName())
-				.select(course.getObjectContext())
+				.map((r) -> Collections.singletonList(SelectById.query(Product.class, r.getToEntityWillowId()).selectOne(context)))
+				.flatMap(Collection::stream)
+				.filter(product -> TRUE.equals(product.getIsWebVisible()))
+				.collect(Collectors.toList());
+
+		List<EntityRelation> toRelations = ObjectSelect.query(EntityRelation.class)
+				.where(TO_ENTITY_IDENTIFIER.eq(Course.class.getSimpleName()))
+				.and(TO_ENTITY_WILLOW_ID.eq(course.getId()))
+				.and(FROM_ENTITY_IDENTIFIER.eq(Product.class.getSimpleName()))
+				.and(EntityRelation.COLLEGE.eq(course.getCollege()))
+				.and(RELATION_TYPE.isNull().orExp(RELATION_TYPE.dot(EntityRelationType.IS_SHOWN_ON_WEB).eq(TRUE)))
+				.cacheStrategy(LOCAL_CACHE, EntityRelation.class.getSimpleName())
+				.select(context);
+
+		products.addAll(toRelations
 				.stream()
-				.map(_ProductCourseRelation::getFromProduct)
+				.map((r) -> Collections.singletonList(SelectById.query(Product.class, r.getFromEntityWillowId()).selectOne(context)))
+				.flatMap(Collection::stream)
+				.filter(product -> TRUE.equals(product.getIsWebVisible()))
 				.collect(Collectors.toList())
 		);
 		return products;
