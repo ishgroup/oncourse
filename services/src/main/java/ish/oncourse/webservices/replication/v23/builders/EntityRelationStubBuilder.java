@@ -12,9 +12,9 @@ public class EntityRelationStubBuilder extends AbstractWillowStubBuilder<EntityR
 		stub.setCreated(entity.getCreated());
 		stub.setModified(entity.getModified());
 		stub.setFromEntityWillowId(entity.getFromEntityWillowId());
-		stub.setFromEntityIdentifier(entity.getFromEntityIdentifier().getDatabaseValue());
+		stub.setFromEntityIdentifier(entity.getFromEntityIdentifier());
 		stub.setToEntityWillowId(entity.getToEntityWillowId());
-		stub.setToEntityIdentifier(entity.getToEntityIdentifier().getDatabaseValue());
+		stub.setToEntityIdentifier(entity.getToEntityIdentifier());
 		stub.setRelationTypeId(entity.getRelationType() != null ? entity.getRelationType().getId() : null);
 		return stub;
 	}

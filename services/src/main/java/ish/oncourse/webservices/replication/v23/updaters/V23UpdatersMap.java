@@ -71,9 +71,6 @@ public class V23UpdatersMap {
         updaterMap.put(Survey.class.getSimpleName(), new SurveyUpdater());
         updaterMap.put(SessionModule.class.getSimpleName(), new SessionModuleUpdater());
         updaterMap.put(EntityRelation.class.getSimpleName(), new EntityRelationUpdater());
-        updaterMap.put(CourseCourseRelation.class.getSimpleName(), new CourseCourseRelationUpdater());
-        updaterMap.put(CourseProductRelation.class.getSimpleName(), new CourseProductRelationUpdater());
-        updaterMap.put(ProductCourseRelation.class.getSimpleName(), new ProductCourseRelationUpdater());
 		updaterMap.put(EntityRelationType.class.getSimpleName(), new EntityRelationTypeUpdater());
 		updaterMap.put(CorporatePass.class.getSimpleName(), new CorporatePassUpdater());
         updaterMap.put(CorporatePassCourseClass.class.getSimpleName(), new CorporatePassCourseClassUpdater());

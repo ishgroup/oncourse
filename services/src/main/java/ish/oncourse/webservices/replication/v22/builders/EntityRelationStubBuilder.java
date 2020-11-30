@@ -12,10 +12,17 @@ public class EntityRelationStubBuilder extends AbstractWillowStubBuilder<EntityR
 		stub.setCreated(entity.getCreated());
 		stub.setModified(entity.getModified());
 		stub.setFromEntityWillowId(entity.getFromEntityWillowId());
-		stub.setFromEntityIdentifier(entity.getFromEntityIdentifier().getDatabaseValue());
+		stub.setFromEntityIdentifier(getStringValueFromNum(entity.getFromEntityIdentifier()));
 		stub.setToEntityWillowId(entity.getToEntityWillowId());
-		stub.setToEntityIdentifier(entity.getToEntityIdentifier().getDatabaseValue());
+		stub.setToEntityIdentifier(getStringValueFromNum(entity.getToEntityIdentifier()));
 		return stub;
+	}
+
+	private int getStringValueFromNum(String value) {
+		if (value.equals("Product")) {
+			return 2;
+		}
+		return 1;
 	}
 
 }

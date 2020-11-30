@@ -60,8 +60,6 @@ public class V23BuildersMap {
         builderMap.put(MembershipProduct.class.getSimpleName(), new MembershipProductStubBuilder());
         builderMap.put(SessionModule.class.getSimpleName(), new SessionModuleStubBuilder());
         builderMap.put(EntityRelation.class.getSimpleName(), new EntityRelationStubBuilder());
-        builderMap.put(CourseProductRelation.class.getSimpleName(), new EntityRelationStubBuilder());
-		builderMap.put(ProductCourseRelation.class.getSimpleName(), new EntityRelationStubBuilder());
 		builderMap.put(CorporatePass.class.getSimpleName(), new CorporatePassStubBuilder());
         builderMap.put(CorporatePassCourseClass.class.getSimpleName(), new CorporatePassCourseClassStubBuilder());
 		builderMap.put(Article.class.getSimpleName(), new ArticleStubBuilder());
