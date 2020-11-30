@@ -308,8 +308,11 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
             ...li,
             items: li.items.map(item => ({
               ...item,
-              checked: items.some(pi => pi.nodeId === li.contact.id && pi.itemId === item.id)
-                ? false : item.checked
+              checked: items.some(pi => pi.nodeId === li.contact.id
+                && (pi.itemId === item.id
+                  || (item.class && item.class.id === pi.itemId)))
+                ? false
+                : item.checked
             }))
           }))
         },
