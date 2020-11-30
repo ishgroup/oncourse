@@ -300,6 +300,8 @@ Review all the other employee settings and ensure they are correct.
 
 	private String searchEmployee() {
 		String id = null
+		String firstName = contact.tutor?.givenNameLegal?:contact.firstName
+		String lastName = contact.tutor?.familyNameLegal?:contact.lastName
 		new RESTClient(XERO_API_BASE).request(GET, JSON) {
 			uri.path = '/payroll.xro/1.0/Employees'
 			headers.'Authorization' = "Bearer $accessToken"
@@ -307,7 +309,7 @@ Review all the other employee settings and ensure they are correct.
 			headers.'Accept' = JSON
 
 			uri.query = [
-					where: "FirstName==\"$contact.firstName\" AND LastName==\"$contact.lastName\" AND DateOfBirth==${contact.dateOfBirth.format('\'DateTime\'(YYYY,MM,dd)')}",
+					where: "FirstName==\"$firstName\" AND LastName==\"$lastName\" AND DateOfBirth==${contact.dateOfBirth.format('\'DateTime\'(YYYY,MM,dd)')}",
 			]
 			response.success = { resp, result ->
 				if (result['Employees'] && !result['Employees'].empty) {
@@ -520,8 +522,8 @@ Review all the other employee settings and ensure they are correct.
 		xml.Employees() {
 			Employee() {
 
-				FirstName(contact.firstName)
-				LastName(contact.lastName)
+				FirstName(contact.tutor?.givenNameLegal?:contact.firstName)
+				LastName(contact.tutor?.familyNameLegal?:contact.lastName)
 				DateOfBirth(contact.birthDate.format(DATE_FORMAT))
 
 				HomeAddress() {
