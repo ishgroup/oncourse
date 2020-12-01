@@ -31,9 +31,10 @@ import org.apache.logging.log4j.Logger
 @Plugin(type = 7)
 class CloudAssessIntegration implements PluginTrait {
     public static final String CLOUDASSESS_API_KEY = "apiKey"
-    
-    static final String clientKey = null
-    
+
+    // key for ish onCourse to be kept confidential
+    static final String clientKey = "MTqAhbUoJno8HCHJG5NBDo1L"
+
     static final String BASE_URL = "https://my.assessapp.com"
 
     static final String BASE_URL_TEST = "https://stg.assessapp.com"
@@ -54,7 +55,7 @@ class CloudAssessIntegration implements PluginTrait {
         loadConfig(args)
         this.apiKey = configuration.getIntegrationProperty(CLOUDASSESS_API_KEY).value
     }
-    
+
     private RESTClient client() {
         RESTClient httpClient = new RESTClient(BASE_URL)
         httpClient.headers["Api-Key"] = apiKey
@@ -104,7 +105,7 @@ class CloudAssessIntegration implements PluginTrait {
     protected static updatedOnCourseOutcomes(List enrolmentUnits) {
         def updatedOutcomes = []
         enrolmentUnits.each { enrolmentUnit ->
-            Expression studentQualifier 
+            Expression studentQualifier
             if (enrolmentUnit.member.external_id) {
                 studentQualifier = Outcome.ENROLMENT
                         .dot(Enrolment.STUDENT)
@@ -125,14 +126,14 @@ class CloudAssessIntegration implements PluginTrait {
             } else {
                 throw new IllegalStateException("The enrolment unit has wrong member assigned: $enrolmentUnit")
             }
-            
+
             def outcomes = ObjectSelect.query(Outcome)
                     .where(studentQualifier)
                     .and(Outcome.MODULE.dot(ish.oncourse.server.cayenne.Module.NATIONAL_CODE).eq(enrolmentUnit.unit.code as String))
                     .select(cayenneService.newContext)
 
             outcomes.each { o ->
-                
+
                 //'C' = "Competent", 'CN' = "Not Competent"
                 def outcomeStatus = enrolmentUnit.outcome.acronym == 'C' ? OutcomeStatus.STATUS_ASSESSABLE_PASS : (enrolmentUnit.outcome.acronym == 'NC' ? OutcomeStatus.STATUS_ASSESSABLE_FAIL : null)
                 if (outcomeStatus && o.status != outcomeStatus) {
@@ -145,7 +146,7 @@ class CloudAssessIntegration implements PluginTrait {
 
         updatedOutcomes
     }
-    
+
 
     /**
      * @return id
@@ -299,7 +300,7 @@ class CloudAssessIntegration implements PluginTrait {
             ]
 
             response.success = { resp, result ->
-                return 
+                return
             }
 
             response.failure = { resp, result ->
@@ -324,7 +325,7 @@ class CloudAssessIntegration implements PluginTrait {
                     completed_from: from,
                     completed_to: to,
             ]
-            
+
             response.success = { resp, result ->
                 units = result
             }
