@@ -42,6 +42,10 @@ class CourseFunctions {
             dto = toRestSalable(SelectById.query(Course, relation.toEntityAngelId).selectOne(relation.context))
         } else if (Product.simpleName == relation.toEntityIdentifier) {
             dto = toRestSalable(SelectById.query(Product, relation.toEntityAngelId).selectOne(relation.context))
+        } else if (Module.simpleName == relation.toEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Module, relation.toEntityAngelId).selectOne(relation.context))
+        } else if (Qualification.simpleName == relation.toEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Qualification, relation.toEntityAngelId).selectOne(relation.context))
         } else {
             throw new IllegalArgumentException("Unsupported entity type relation")
         }
@@ -58,6 +62,10 @@ class CourseFunctions {
             dto = toRestSalable(SelectById.query(Course, relation.fromEntityAngelId).selectOne(relation.context))
         } else if (Product.simpleName == relation.fromEntityIdentifier) {
             dto = toRestSalable(SelectById.query(Product, relation.fromEntityAngelId).selectOne(relation.context))
+        } else if (Module.simpleName == relation.fromEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Module, relation.fromEntityAngelId).selectOne(relation.context))
+        } else if (Qualification.simpleName == relation.fromEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Qualification, relation.fromEntityAngelId).selectOne(relation.context))
         } else {
             throw new IllegalArgumentException("Unsupported entity type relation")
         }
@@ -96,6 +104,26 @@ class CourseFunctions {
                 default:
                     throw new IllegalArgumentException("${product.class}")
                 }
+            s
+        }
+    }
+
+    static SaleDTO toRestSalable(Module module) {
+        new SaleDTO().with { s ->
+            s.name = module.title
+            s.code = module.nationalCode
+            s.active = module.isOffered
+            s.type = SaleTypeDTO.MODULE
+            s
+        }
+    }
+
+    static SaleDTO toRestSalable(Qualification qualification) {
+        new SaleDTO().with { s ->
+            s.name = qualification.title
+            s.code = qualification.nationalCode
+            s.active = qualification.isOffered
+            s.type = SaleTypeDTO.QUALIFICATION
             s
         }
     }
