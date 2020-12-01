@@ -27,6 +27,7 @@ import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.Product
+import org.apache.commons.lang3.StringUtils
 
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
@@ -185,60 +186,67 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
-    List<CheckoutSaleRelationDTO> getSaleRelations(Long courseId, Long productId, Long contactId) {
+    List<CheckoutSaleRelationDTO> getSaleRelations(String courseIds, String productIds, Long contactId) {
 
         ObjectContext context = cayenneService.newContext
         List<EntityRelation> relations = []
         List<CheckoutSaleRelationDTO> result = []
         Contact contact = contactId ? contactDao.getById(context, contactId) : null
         
-        if (courseId) {
-            relations = ObjectSelect.query(EntityRelation)
-                    .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(courseId))
+        
+        if (StringUtils.trimToNull(courseIds)) {
+            relations.addAll(ObjectSelect.query(EntityRelation)
+                    .where(EntityRelation.FROM_ENTITY_ANGEL_ID.in(courseIds.split(',').collect {Long.valueOf(it)} as List<Long>))
                     .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(EntityRelationIdentifier.COURSE))
-                    .select(context)
-        } else if (productId) {
-            relations = ObjectSelect.query(EntityRelation)
-                    .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(productId))
+                    .select(context))
+        } else if (productIds) {
+            relations.addAll(ObjectSelect.query(EntityRelation)
+                    .where(EntityRelation.FROM_ENTITY_ANGEL_ID.in(productIds.split(',').collect {Long.valueOf(it)} as List<Long>))
                     .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(EntityRelationIdentifier.PRODUCT))
-                    .select(context)
+                    .select(context))
         }
 
         
         relations.findAll { it.toEntity == EntityRelationIdentifier.COURSE }.each { relation ->
             EntityRelationType relationType = relation.relationType
-            Course course = courseDao.getById(context, relation.toRecordId)
-            
-            if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
-                //ignore that course since student already enrolled in 
-            } else {
-                result << new CheckoutSaleRelationDTO().with {saleRelation ->
-                    saleRelation.item = new SaleDTO().with { sale ->
-                            sale.type = SaleTypeDTO.COURSE
-                            sale.id = course.id
-                            sale
+            if (!result.any {it.item.id == relation.toRecordId &&  it.item.type == SaleTypeDTO.COURSE}) {
+                Course course = courseDao.getById(context, relation.toRecordId)
+                
+                if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
+                    //ignore that course since student already enrolled in 
+                } else {
+                   
+                    result << new CheckoutSaleRelationDTO().with {saleRelation ->
+                        saleRelation.item = new SaleDTO().with { sale ->
+                                sale.type = SaleTypeDTO.COURSE
+                                sale.id = course.id
+                                sale
+                            }
+                        saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relationType.shoppingCart)
+                        if (relationType.discount) {
+                            saleRelation.discount = DiscountFunctions.toRestDiscount(relationType.discount, false)
                         }
-                    saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relationType.shoppingCart)
-                    if (relationType.discount) {
-                        saleRelation.discount = DiscountFunctions.toRestDiscount(relationType.discount, false)
+                        saleRelation
                     }
-                    saleRelation
                 }
             }
         }
 
         relations.findAll { it.toEntity == EntityRelationIdentifier.PRODUCT }.each { relation ->
-            Product product = productDao.getById(context, relation.toRecordId)
-            result << new CheckoutSaleRelationDTO().with {saleRelation ->
-                saleRelation.item = new SaleDTO().with { sale ->
-                    sale.type = SaleTypeDTO.PRODUCT
-                    sale.id = product.id
-                    sale
+            if (!result.any { it.item.id == relation.toRecordId && it.item.type == SaleTypeDTO.PRODUCT }) {
+                Product product = productDao.getById(context, relation.toRecordId)
+                result << new CheckoutSaleRelationDTO().with { saleRelation ->
+                    saleRelation.item = new SaleDTO().with { sale ->
+                        sale.type = SaleTypeDTO.PRODUCT
+                        sale.id = product.id
+                        sale
+                    }
+                    saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relation.relationType.shoppingCart)
+                    saleRelation
                 }
-                saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relation.relationType.shoppingCart)
-                saleRelation
             }
         }
+        
         
         return result
     }
