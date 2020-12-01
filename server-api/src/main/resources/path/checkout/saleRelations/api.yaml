@@ -4,15 +4,13 @@ get:
   tags:
     - Checkout
   parameters:
-    - name: courseId
+    - name: courseIds
       in: query
-      type: integer
-      format: int64
+      type: string
       required: true
-    - name: productId
+    - name: productIds
       in: query
-      type: integer
-      format: int64
+      type: string
       required: true
     - name: contactId
       in: query
