@@ -15,7 +15,9 @@ import ish.common.types.QualificationType
 import ish.messaging.IQualification
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.cayenne.glue._Qualification
+import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -192,5 +194,21 @@ class Qualification extends _Qualification implements Queueable, IQualification 
 	@Override
 	String getSummaryDescription() {
 		return getTitle()
+	}
+
+	/**
+	 * @return courses related to this qualification
+	 */
+	@Nonnull
+	@API
+	List<Course> getRelatedCourses() {
+		List<Course> courses = new ArrayList<>()
+		EntityRelationDao.getRelatedFrom(context, Qualification.simpleName, id)
+				.findAll { it -> Course.simpleName == it.fromEntityIdentifier}
+				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context)) }
+		EntityRelationDao.getRelatedTo(context, Qualification.simpleName, id)
+				.findAll { it -> Course.simpleName == it.toEntityIdentifier}
+				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context)) }
+		return courses
 	}
 }

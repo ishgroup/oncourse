@@ -19,21 +19,17 @@ import ish.messaging.ICourse
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.api.dao.CourseCourseRelationDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.CourseModuleDao
-import ish.oncourse.server.api.dao.CourseProductRelationDao
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ModuleDao
-import ish.oncourse.server.api.dao.ProductCourseRelationDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.QualificationDao
-import ish.oncourse.server.cayenne.CourseCourseRelation
-import ish.oncourse.server.cayenne.CourseProductRelation
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
-import org.apache.cayenne.query.SelectById
 
+import static ish.oncourse.server.cayenne.EntityRelationType.DEFAULT_SYSTEM_TYPE_ID
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.CourseFunctions.ENROLMENT_TYPE_MAP
 import static ish.oncourse.server.api.v1.function.CourseFunctions.toRestFromEntityRelation
@@ -102,13 +98,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
     private ModuleDao moduleDao
 
     @Inject
-    private CourseCourseRelationDao courseCourseRelationDao
-
-    @Inject
-    private CourseProductRelationDao courseProductRelationDao
-
-    @Inject
-    private ProductCourseRelationDao productCourseRelationDao
+    EntityRelationDao entityRelationDao
 
     @Inject
     private ProductDao productDao
@@ -150,11 +140,8 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.hasEnrolments = course.courseClasses.find { c -> !c.enrolments.empty} != null
             courseDTO.webDescription = course.webDescription
             courseDTO.documents = course.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
-            courseDTO.relatedlSalables = (course.toCourses.collect { toRestToEntityRelation(it) } +
-                    course.fromCourses.collect { toRestFromEntityRelation(it) } +
-                    course.productToRelations.collect { toRestToEntityRelation(it) } +
-                    course.productFromRelations.collect { toRestFromEntityRelation(it) }
-            )
+            courseDTO.relatedlSalables = (EntityRelationDao.getRelatedFrom(course.context, Course.simpleName, course.id).collect { it -> toRestFromEntityRelation(it) } +
+                    EntityRelationDao.getRelatedTo(course.context, Course.simpleName, course.id).collect { it -> toRestToEntityRelation(it) })
             courseDTO.qualificationId = course.qualification?.id
             courseDTO.qualNationalCode = course.qualification?.nationalCode
             courseDTO.qualTitle = course.qualification?.title
@@ -221,7 +208,6 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
 
         updateTags(course, course.taggingRelations, courseDTO.tags*.id, CourseTagRelation, course.context)
         updateDocuments(course, course.attachmentRelations, courseDTO.documents, CourseAttachmentRelation, course.context)
-        updateRelatedProducts(course, courseDTO.relatedlSalables)
         updateModules(course, courseDTO.modules)
         course.reportableHours = courseDTO.reportableHours
 
@@ -451,54 +437,46 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         }
     }
 
-    void updateRelatedProducts(Course course, List<SaleDTO> relatedProductDTOs) {
-        Map<Boolean, List<SaleDTO>> map = relatedProductDTOs.groupBy { it.type == SaleTypeDTO.COURSE }
-        List<EntityRelation> currentList
-        List<SaleDTO> relationsToSave
-        
+    void updateRelatedEntities(Long courseId, List<SaleDTO> relatedEntities) {
+        Course dbModel = entityDao.getById(cayenneService.newContext, courseId)
+        updateRelatedEntities(dbModel, relatedEntities)
+    }
 
-        relationsToSave = map[true] ?: [] as  List<SaleDTO>
-        currentList = []
-        currentList.addAll(course.fromCourses)
-        currentList.addAll(course.toCourses)
+    void updateRelatedEntities(Course course, List<SaleDTO> relatedEntities) {
+        ObjectContext context = course.context
+        List<EntityRelation> currentRelations = []
+        List<SaleDTO> relationsToSave
+
+        currentRelations += entityRelationDao.getRelatedFrom(context, Course.simpleName, course.id)
+        currentRelations += entityRelationDao.getRelatedTo(context, Course.simpleName, course.id)
 
         //remove relations that missed from resulted list
-        course.context.deleteObjects(currentList.findAll { !(it.id in relationsToSave.findAll {it.id != null}*.id)})
-        //create new relations
-        relationsToSave.findAll { it.id == null }
-                .each { sale ->
-                    courseCourseRelationDao.newObject(course.context).with { courseRelation ->
-                        courseRelation.fromCourse = sale.entityFromId ? entityDao.getById(course.context, sale.entityFromId) : course
-                        courseRelation.toCourse = sale.entityToId ? entityDao.getById(course.context, sale.entityToId) : course
-                        courseRelation.relationType = getRecordById(course.context, EntityRelationType, sale.relationId)
-                    }
-                }
-        
+        course.context.deleteObjects(currentRelations.findAll { !(it.id in relatedEntities.findAll { it.id != null }*.id) })
 
-        relationsToSave = map[false] ?: [] as  List<SaleDTO>
-        
-        currentList = []
-        currentList.addAll(course.productToRelations)
-        currentList.addAll(course.productFromRelations)
+        relatedEntities.each { it ->
+            EntityRelation relation
+            if (it.id == null) {
+                relation = context.newObject(EntityRelation)
+            } else {
+                relation = entityRelationDao.getById(context, it.id)
+            }
+            if (it.entityToId != null) {
+                relation.toEntityAngelId = it.entityToId
+                relation.toEntityIdentifier = it.type.getCayenneClassName()
+                relation.fromEntityAngelId = course.id
+                relation.fromEntityIdentifier = Course.simpleName
+            } else if (it.entityFromId != null) {
+                relation.toEntityAngelId = course.id
+                relation.toEntityIdentifier = Course.simpleName
+                relation.fromEntityAngelId = it.entityFromId
+                relation.fromEntityIdentifier = it.type.getCayenneClassName()
+            } else {
+                throw new IllegalArgumentException("A related entity should be specified.")
+            }
+            relation.relationType = getRecordById(context, EntityRelationType, it.relationId ?: DEFAULT_SYSTEM_TYPE_ID)
+        }
 
-        course.context.deleteObjects(currentList.findAll { !(it.id in relationsToSave.findAll {it.id != null}*.id)})
-        relationsToSave.findAll { it.id == null }
-                .each { sale ->
-                    if (sale.entityToId) {
-                        courseProductRelationDao.newObject(course.context).with {productRelation ->
-                            productRelation.fromCourse = course
-                            productRelation.toProduct = productDao.getById(course.context, sale.entityToId)
-                            productRelation.relationType = getRecordById(course.context, EntityRelationType, sale.relationId)
-                        }
-                    } else if (sale.entityFromId) {
-                        productCourseRelationDao.newObject(course.context).with {productRelation ->
-                            productRelation.toCourse = course
-                            productRelation.fromProduct = productDao.getById(course.context, sale.entityFromId)
-                            productRelation.relationType = getRecordById(course.context, EntityRelationType, sale.relationId)
-                        }
-                    }
-                }
-        
+        context.commitChanges()
     }
 
     void duplicateCourse(List<Long> courseIds) {

@@ -15,10 +15,12 @@ import ish.common.types.ExpiryType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.cayenne.glue._Product
 import ish.util.MoneyFormatter
 import ish.util.MoneyUtil
 import org.apache.cayenne.query.Ordering
+import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SortOrder
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -242,12 +244,12 @@ class Product extends _Product implements Queueable {
 	@API
 	List<Course> getRelatedCourses() {
 		List<Course> courses = new ArrayList<>()
-		courseFromRelations.each { it ->
-			courses.add(it.toCourse)
-		}
-		courseToRelations.each { it ->
-			courses.add(it.fromCourse)
-		}
+		EntityRelationDao.getRelatedFrom(context, Product.simpleName, id)
+				.findAll { it -> Course.simpleName == it.fromEntityIdentifier}
+				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context)) }
+		EntityRelationDao.getRelatedTo(context, Product.simpleName, id)
+				.findAll { it -> Course.simpleName == it.toEntityIdentifier}
+				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context)) }
 		return courses
 	}
 

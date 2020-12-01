@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.types.EntityRelationIdentifier
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._EntityRelation
@@ -50,7 +49,7 @@ class EntityRelation extends _EntityRelation implements Queueable {
 	 * @return type of entity on the left side of the relation
 	 */
 	@Nonnull @API
-	EntityRelationIdentifier getFromEntity() {
+	String getFromEntity() {
 		return super.getFromEntityIdentifier()
 	}
 
@@ -75,7 +74,7 @@ class EntityRelation extends _EntityRelation implements Queueable {
 	 * @return type of entity on the right side of the relation
 	 */
 	@Nonnull @API
-	EntityRelationIdentifier getToEntity() {
+	String getToEntity() {
 		return super.getToEntityIdentifier()
 	}
 

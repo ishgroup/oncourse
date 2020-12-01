@@ -12,10 +12,9 @@
 package ish.oncourse.server.api.v1.function
 
 import ish.common.types.CourseEnrolmentType
-import ish.oncourse.server.cayenne.CourseCourseRelation
-import ish.oncourse.server.cayenne.CourseProductRelation
 import ish.oncourse.server.cayenne.EntityRelation
-import ish.oncourse.server.cayenne.ProductCourseRelation
+import ish.oncourse.server.cayenne.Qualification
+import org.apache.cayenne.query.SelectById
 
 import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
 import static ish.common.types.CourseEnrolmentType.OPEN_FOR_ENROLMENT
@@ -24,6 +23,7 @@ import ish.oncourse.server.api.v1.model.CourseEnrolmentTypeDTO
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.cayenne.ArticleProduct
+import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.Product
@@ -38,16 +38,19 @@ class CourseFunctions {
 
     static SaleDTO toRestToEntityRelation(EntityRelation relation) {
         SaleDTO dto
-        if (relation instanceof CourseCourseRelation) {
-            dto = toRestSalable(relation.toCourse)
-            dto.entityToId = relation.toCourse.id
-        } else if (relation instanceof CourseProductRelation) {
-            dto = toRestSalable(relation.toProduct)
-            dto.entityToId = relation.toProduct.id
+        if (Course.simpleName == relation.toEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Course, relation.toEntityAngelId).selectOne(relation.context))
+        } else if (Product.simpleName == relation.toEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Product, relation.toEntityAngelId).selectOne(relation.context))
+        } else if (Module.simpleName == relation.toEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Module, relation.toEntityAngelId).selectOne(relation.context))
+        } else if (Qualification.simpleName == relation.toEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Qualification, relation.toEntityAngelId).selectOne(relation.context))
         } else {
             throw new IllegalArgumentException("Unsupported entity type relation")
         }
         dto.id = relation.id
+        dto.entityToId = relation.toEntityAngelId
         dto.relationId = relation.relationType?.id
         dto
     }
@@ -55,16 +58,19 @@ class CourseFunctions {
 
     static SaleDTO toRestFromEntityRelation(EntityRelation relation) {
         SaleDTO dto
-        if (relation instanceof CourseCourseRelation) {
-            dto = toRestSalable(relation.fromCourse)
-            dto.entityFromId = relation.fromCourse.id
-        } else if (relation instanceof ProductCourseRelation) {
-            dto = toRestSalable(relation.fromProduct)
-            dto.entityFromId = relation.fromProduct.id
+        if (Course.simpleName == relation.fromEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Course, relation.fromEntityAngelId).selectOne(relation.context))
+        } else if (Product.simpleName == relation.fromEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Product, relation.fromEntityAngelId).selectOne(relation.context))
+        } else if (Module.simpleName == relation.fromEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Module, relation.fromEntityAngelId).selectOne(relation.context))
+        } else if (Qualification.simpleName == relation.fromEntityIdentifier) {
+            dto = toRestSalable(SelectById.query(Qualification, relation.fromEntityAngelId).selectOne(relation.context))
         } else {
             throw new IllegalArgumentException("Unsupported entity type relation")
         }
         dto.id = relation.id
+        dto.entityFromId = relation.fromEntityAngelId
         dto.relationId = relation.relationType?.id
         dto
     }
@@ -98,6 +104,26 @@ class CourseFunctions {
                 default:
                     throw new IllegalArgumentException("${product.class}")
                 }
+            s
+        }
+    }
+
+    static SaleDTO toRestSalable(Module module) {
+        new SaleDTO().with { s ->
+            s.name = module.title
+            s.code = module.nationalCode
+            s.active = module.isOffered
+            s.type = SaleTypeDTO.MODULE
+            s
+        }
+    }
+
+    static SaleDTO toRestSalable(Qualification qualification) {
+        new SaleDTO().with { s ->
+            s.name = qualification.title
+            s.code = qualification.nationalCode
+            s.active = qualification.isOffered
+            s.type = SaleTypeDTO.QUALIFICATION
             s
         }
     }

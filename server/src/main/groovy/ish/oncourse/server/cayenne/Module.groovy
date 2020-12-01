@@ -15,7 +15,9 @@ import ish.common.types.ModuleType
 import ish.messaging.IModule
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.cayenne.glue._Module
+import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -178,5 +180,21 @@ class Module extends _Module implements Queueable, IModule {
 	@Override
 	String getSummaryDescription() {
 		return getTitle()
+	}
+
+	/**
+	 * @return courses related to this module
+	 */
+	@Nonnull
+	@API
+	List<Course> getRelatedCourses() {
+		List<Course> courses = new ArrayList<>()
+		EntityRelationDao.getRelatedFrom(context, Module.simpleName, id)
+				.findAll { it -> Course.simpleName == it.fromEntityIdentifier}
+				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context)) }
+		EntityRelationDao.getRelatedTo(context, Module.simpleName, id)
+				.findAll { it -> Course.simpleName == it.toEntityIdentifier}
+				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context)) }
+		return courses
 	}
 }
