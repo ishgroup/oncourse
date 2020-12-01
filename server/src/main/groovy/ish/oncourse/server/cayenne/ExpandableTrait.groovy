@@ -26,11 +26,6 @@ trait ExpandableTrait {
     abstract ObjectContext getContext()
 
     abstract Class<? extends CustomField> getCustomFieldClass()
-    
-    @Deprecated
-    String get(String customFieldName) {
-        return customField(customFieldName)
-    }
 
     @Deprecated
     String customField(String key) {
@@ -38,17 +33,28 @@ trait ExpandableTrait {
     }
 
     /**
+     * This implements getters for custom fields, for example like
+     * contact.passportNumber
+     *
+     * @param key
+     * @return
+     */
+    String propertyMissing(String key) {
+        return getCustomFieldValue(key)
+    }
+
+    /**
      * set Custom Field value
      * contact.passportNumber = '123'
+     * @throws MissingPropertyException
      */
-    @API
     void propertyMissing(String key, String value) {
         CustomField customField = customFields.find {it.customFieldType.key == key}
         if (customField) {
             customField.value = value
             return
-        } 
-        
+        }
+
         CustomFieldType type = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(key)).selectFirst(context)
         if (type) {
             customField = context.newObject(customFieldClass)
@@ -56,18 +62,28 @@ trait ExpandableTrait {
             customField.customFieldType = type
             customField.value = value
         } else {
-            throw new RuntimeException("The record attribute: $key does not exist. If you are attempting to access a custom field, check the keycode of that field.")
+            throw new MissingPropertyException("The record attribute: $key does not exist. If you are attempting to access a custom field, check the keycode of that field.")
         }
     }
-    
+
     /**
      * @param key custom field unique key
      * @return custom field value
+     * @throws MissingPropertyException
      */
-    @Nullable
-    @API
+    @Nullable @API
     Object getCustomFieldValue(String key) {
-        return customFields.find {it.customFieldType.key == key }?.objectValue
+        CustomField customField = customFields.find {it.customFieldType.key == key}
+        if (customField) {
+            return customField.objectValue
+        }
+
+        CustomFieldType type = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(key)).selectFirst(context)
+        if (type) {
+            return null
+        } else {
+            throw new MissingPropertyException("The record attribute: $key does not exist. If you are attempting to access a custom field, check the keycode of that field.")
+        }
     }
 
     /**
