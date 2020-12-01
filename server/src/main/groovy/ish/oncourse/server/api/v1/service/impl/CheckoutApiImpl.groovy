@@ -17,6 +17,7 @@ import ish.common.types.EntityRelationIdentifier
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.DiscountDao
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.v1.model.CheckoutSaleRelationDTO
 import ish.oncourse.server.api.v1.model.EntityRelationCartActionDTO
@@ -193,19 +194,13 @@ class CheckoutApiImpl implements CheckoutApi {
         Contact contact = contactId ? contactDao.getById(context, contactId) : null
         
         if (courseId) {
-            relations = ObjectSelect.query(EntityRelation)
-                    .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(courseId))
-                    .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(EntityRelationIdentifier.COURSE))
-                    .select(context)
+            relations = EntityRelationDao.getRelatedTo(context, Course.simpleName, courseId)
         } else if (productId) {
-            relations = ObjectSelect.query(EntityRelation)
-                    .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(productId))
-                    .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(EntityRelationIdentifier.PRODUCT))
-                    .select(context)
+            relations = EntityRelationDao.getRelatedTo(context, Product.simpleName, productId)
         }
 
         
-        relations.findAll { it.toEntity == EntityRelationIdentifier.COURSE }.each { relation ->
+        relations.findAll { Course.simpleName == it.toEntityIdentifier }.each { relation ->
             EntityRelationType relationType = relation.relationType
             Course course = courseDao.getById(context, relation.toRecordId)
             
@@ -227,7 +222,7 @@ class CheckoutApiImpl implements CheckoutApi {
             }
         }
 
-        relations.findAll { it.toEntity == EntityRelationIdentifier.PRODUCT }.each { relation ->
+        relations.findAll { Product.simpleName == it.toEntityIdentifier }.each { relation ->
             Product product = productDao.getById(context, relation.toRecordId)
             result << new CheckoutSaleRelationDTO().with {saleRelation ->
                 saleRelation.item = new SaleDTO().with { sale ->

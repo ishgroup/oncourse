@@ -12,12 +12,17 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.service.CourseApiService
 import ish.oncourse.server.api.v1.model.CourseDTO
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.service.CourseApi
+import ish.oncourse.server.cayenne.Course
 
 class CourseApiImpl implements CourseApi {
+
+    @Inject
+    private CourseDao courseDao
 
     @Inject
     private CourseApiService courseApiService
@@ -28,8 +33,11 @@ class CourseApiImpl implements CourseApi {
     }
 
     @Override
-    void create(CourseDTO course) {
-        courseApiService.create(course)
+    void create(CourseDTO courseDTO) {
+        Course dbModel = courseApiService.create(courseDTO)
+        if (!courseDTO.relatedlSalables.empty) {
+            courseApiService.updateRelatedEntities(dbModel, courseDTO.relatedlSalables)
+        }
     }
 
     @Override
@@ -48,7 +56,10 @@ class CourseApiImpl implements CourseApi {
     }
 
     @Override
-    void update(Long id, CourseDTO course) {
-        courseApiService.update(id, course)
+    void update(Long id, CourseDTO courseDTO) {
+        courseApiService.update(id, courseDTO)
+        if (!courseDTO.relatedlSalables.empty) {
+            courseApiService.updateRelatedEntities(id, courseDTO.relatedlSalables)
+        }
     }
 }

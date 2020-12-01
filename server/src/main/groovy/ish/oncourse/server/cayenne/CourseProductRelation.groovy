@@ -11,12 +11,10 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.oncourse.server.cayenne.glue._CourseProductRelation
-
 /**
  * A persistent class mapped as "CourseProductRelation" Cayenne entity.
  */
-class CourseProductRelation extends _CourseProductRelation {
+class CourseProductRelation  {
 
 
 }

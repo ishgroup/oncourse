@@ -11,14 +11,17 @@
 
 package ish.oncourse.aql.model.attribute;
 
+import ish.oncourse.aql.impl.CompilationContext;
+import ish.oncourse.aql.impl.LazyExpressionNode;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
-import ish.oncourse.server.cayenne.CourseCourseRelation;
 import ish.oncourse.server.cayenne.Course;
 import org.apache.cayenne.Persistent;
+import org.apache.cayenne.exp.parser.ASTPath;
 import org.apache.cayenne.exp.parser.SimpleNode;
 
+import java.util.List;
 import java.util.Optional;
 
 public class AllRelatedCoursesCourses implements SyntheticAttributeDescriptor {
@@ -46,12 +49,24 @@ public class AllRelatedCoursesCourses implements SyntheticAttributeDescriptor {
 
     @Override
     public SimpleNode spawnNode() {
-        return new SyntheticCompoundNodeTemplate(getAttributeName(),
-                Course.TO_COURSES.outer()
-                    .dot(CourseCourseRelation.TO_COURSE_PROPERTY).outer()
-                    .getExpression(),
-                Course.FROM_COURSES.outer()
-                        .dot(CourseCourseRelation.FROM_COURSE_PROPERTY).outer()
-                        .getExpression());
+        return new LazyExpressionNode() {
+
+            @Override
+            public SimpleNode resolveParent(SimpleNode parent, List<SimpleNode> args, CompilationContext ctx) {
+                if (ctx.hasErrors()) {
+                    return null;
+                }
+                if (args.get(0) != this || !(args.get(1) instanceof ASTPath)) {
+                    ctx.reportError(-1, -1, "Invalid arguments in VET property resolution.");
+                }
+
+                return null;
+            }
+
+            @Override
+            public SimpleNode resolveSelf(CompilationContext ctx) {
+                return this;
+            }
+        };
     }
 }

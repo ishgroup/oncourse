@@ -13,13 +13,14 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.EntityRelationCartAction
 import ish.oncourse.API
+import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._EntityRelationType
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 
 @API
-//@QueueableEntity
+@QueueableEntity
 class EntityRelationType extends _EntityRelationType implements Queueable {
 
     final static Long DEFAULT_SYSTEM_TYPE_ID = -1l
