@@ -113,8 +113,10 @@ class Avetmiss130Factory extends AvetmissFactory {
 
     static setTasmaniaProperties(Avetmiss130Line line, Outcome first_outcome) {
         // Client Identifier, Program Identifier, Program Commencement Date and Purchasing Contract Identifier
-        line.tasmania_programme_enrolment_identifier = first_outcome.enrolment.student.studentNumber.toString() +
+        line.tasmania_programme_enrolment_identifier = first_outcome.enrolment?.student?.studentNumber?.toString() ?: "" +
+                first_outcome.priorLearning?.student?.studentNumber?.toString() ?: "" +
                 first_outcome.enrolment?.courseClass?.course?.qualification?.nationalCode ?: "" +
+                first_outcome.priorLearning?.qualification?.nationalCode ?: "" +
                 first_outcome.enrolment?.courseClass?.startDateTime?.format("ddMMyyyy") +
                 first_outcome.vetPurchasingContractID
         line.commencement_date = first_outcome.startDate
