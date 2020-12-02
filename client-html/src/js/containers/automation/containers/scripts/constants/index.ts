@@ -1,3 +1,4 @@
+import uniqid from "uniqid";
 import {
   ScriptComponent,
   ScriptEmailComponent,
@@ -21,6 +22,7 @@ export const emailClosureRegexp = new RegExp(
 
 export const getScriptComponent = (content): ScriptComponent => ({
     type: "Script",
+    id: uniqid(),
     content
   });
 
@@ -39,6 +41,7 @@ export const getQueryComponent = (body: string): ScriptQueryComponent => {
 
   return {
     type: "Query",
+    id: uniqid(),
     // queryClosureReturnValue: queryClosureReturnValueMatch && queryClosureReturnValueMatch[1],
     queryClosureReturnValue: "result",
     entity: entityMatch && entityMatch[1],
@@ -46,24 +49,41 @@ export const getQueryComponent = (body: string): ScriptQueryComponent => {
   };
 };
 
-export const getMessageTemplate = (template: string, from: string) =>
-  `\n// Message closure start 
+export const getMessageTemplate = (component) => {
+  const entries = Object.entries(component);
+  const parsedString = entries.reduce((result, e) => (
+    e[0] === 'id' ? '' : `${result} ${e[0]} "${e[1]}"\n`), '');
+
+  return `\n// Message closure start 
   message {
-    template "${template}"
-    from "${from || ''}"
+    ${parsedString}
     record records
   }      
   // Message closure end\n`;
+}
 
 export const getMessageComponent = (body: string): ScriptMessageComponent => {
-  const templateMatch = body.match(/template\s+"(.+)"\s+from/);
-  const fromMatch = body.match(/from\s+"(.+)"\s+(record)?/);
-
-  return {
+  const result: ScriptMessageComponent = {
     type: "Message",
-    template: templateMatch && templateMatch[1],
-    from: fromMatch && fromMatch[1],
+    id: uniqid()
   };
+
+  if (!body) return result;
+
+  const entries = body.match(/\n?(.*")\n/gi);
+
+  entries.forEach(e => {
+    const matchedKey = e.match(/(.*?)\"/);
+    const key = matchedKey ? matchedKey[1].trim() : "";
+
+    if (!key) return;
+
+    const matchedValue = e.replace(key, '').trim();
+    const value = matchedValue.slice(1, matchedValue.length-1);
+    result[key] = value === "false" ? false : value;
+  });
+
+  return result
 };
 
 const getClosurePropRegex = (prop: string) => `${prop}\\s+([^\\n]+)\\n`;
@@ -116,9 +136,13 @@ export const getEmailComponent = (body: string): ScriptEmailComponent => {
   return emptyEmailRegex.test(parsedBody)
     ? {
         type: "Email",
+        id: uniqid(),
         ...matchProps
       }
-    : { type: "Script", content: body };
+    : { type: "Script",
+        id: uniqid(),
+        content: body
+      };
 };
 
 export const getEmailTemplate = (props: any) => {
