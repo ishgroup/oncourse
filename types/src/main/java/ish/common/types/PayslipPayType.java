@@ -1,5 +1,6 @@
 package ish.common.types;
 
+import ish.common.util.DisplayableExtendedEnumeration;
 import ish.oncourse.API;
 
 /**
@@ -12,11 +13,43 @@ import ish.oncourse.API;
  *
  */
 @API
-public enum PayslipPayType {
+public enum PayslipPayType implements DisplayableExtendedEnumeration<Integer> {
 
     @API
-    EMPLOYEE,
+    EMPLOYEE(1, "employee"),
 
     @API
-    CONTRACTOR
+    CONTRACTOR(2, "contractor");
+
+    private final String displayName;
+    private final int value;
+
+    PayslipPayType(int value, String displayName) {
+        this.value = value;
+        this.displayName = displayName;
+    }
+
+    /**
+     * @see ish.common.util.DisplayableExtendedEnumeration#getDatabaseValue()
+     */
+    @Override
+    public Integer getDatabaseValue() {
+        return this.value;
+    }
+
+    /**
+     * @see ish.common.util.DisplayableExtendedEnumeration#getDisplayName()
+     */
+    @Override
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    /**
+     * @see java.lang.Enum#toString()
+     */
+    @Override
+    public String toString() {
+        return getDisplayName();
+    }
 }
