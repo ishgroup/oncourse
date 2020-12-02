@@ -167,7 +167,7 @@ const Bindings = React.memo<BindingsProps>( props => {
     () => (emailTemplates
       ? emailTemplates.filter(t => t.keyCode).map(t => ({ value: t.keyCode, label: t.name }))
       : []), [emailTemplates]
-);
+  );
 
   const handleClick = useCallback(event => {
     setAnchorEl(event.currentTarget);

@@ -2,6 +2,7 @@ export type ScriptComponentType = "Script" | "Import" | "Query" | "Email" | "Mes
 
 export interface ScriptComponent {
   type: ScriptComponentType;
+  id: string;
   content?: string;
 }
 

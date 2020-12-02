@@ -58,7 +58,7 @@ const CardsRenderer = props => {
               switch (component.type) {
                 case "Script": {
                   return (
-                    <Draggable key={index} draggableId={index + item} index={index} isDragDisabled={isInternal}>
+                    <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
                       {provided => (
                         <div ref={provided.innerRef} {...provided.draggableProps}>
                           <ScriptCard
@@ -84,7 +84,7 @@ const CardsRenderer = props => {
                 }
                 case "Query": {
                   return (
-                    <Draggable key={index} draggableId={index + item} index={index} isDragDisabled={isInternal}>
+                    <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
                       {provided => (
                         <div ref={provided.innerRef} {...provided.draggableProps}>
                           <ScriptCard
@@ -111,7 +111,7 @@ const CardsRenderer = props => {
                 }
                 case "Message": {
                   return (
-                    <Draggable key={index} draggableId={index + item} index={index} isDragDisabled={isInternal}>
+                    <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
                       {provided => (
                         <div ref={provided.innerRef} {...provided.draggableProps}>
                           <ScriptCard
@@ -139,7 +139,7 @@ const CardsRenderer = props => {
                 }
                 case "Email": {
                   return (
-                    <Draggable key={index} draggableId={index + item} index={index} isDragDisabled={isInternal}>
+                    <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
                       {provided => (
                         <div ref={provided.innerRef} {...provided.draggableProps}>
                           <ScriptCard

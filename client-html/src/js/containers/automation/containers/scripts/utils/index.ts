@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Script } from "@api/model";
+import {Script} from "@api/model";
 import {
   closureNameRegexp,
   closureRegexp,
@@ -102,7 +102,7 @@ const getComponentBody = (component: any) => {
       return component.content;
     }
     case "Message": {
-      return getMessageTemplate(component.template, component.from);
+      return getMessageTemplate(component);
     }
     default:
       return null;
@@ -132,3 +132,20 @@ export const appendComponents = (value: any): Script => {
 
   return { ...value, content };
 };
+
+export const getType = (type) => {
+  switch (type.toLowerCase()) {
+    case "date time":
+      return "dateTime";
+    case "search select":
+      return "searchSelect";
+    case "remote data search select":
+      return "remoteDataSearchSelect";
+    case "header text":
+      return "headerText";
+    case "multiline text":
+      return "multilineText";
+    default:
+      return type.toLowerCase()
+  }
+}
