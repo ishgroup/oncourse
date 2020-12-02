@@ -17,6 +17,8 @@ import ish.common.types.EnrolmentStatus
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.MessageDao
+import ish.oncourse.server.cayenne.Payslip
+
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.model.RecipientGroupModel
 import ish.oncourse.server.api.model.RecipientsModel
@@ -231,6 +233,10 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
 
                 exp = Contact.TUTOR.dot(Tutor.COURSE_CLASS_ROLES).dot(CourseClassTutor.COURSE_CLASS).dot(CourseClass.ID).in(entitiesIds)
                 addRecipientsToGroup(recipientsModel.tutors, exp, messageType)
+                break
+            case Payslip.ENTITY_NAME:
+                addRecipientsToGroup(recipientsModel.tutors, exp.andExp(Contact.TUTOR.isNotNull()), messageType)
+                addRecipientsToGroup(recipientsModel.other, exp.andExp(Contact.STUDENT.outer().isNull()), messageType)
                 break
             default:
                 validator.throwClientErrorException("entityName", "Impossible to create response. Unrecognized entity name.")

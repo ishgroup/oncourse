@@ -27,6 +27,7 @@ import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.MessagePerson
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentOut
+import ish.oncourse.server.cayenne.Payslip
 import ish.oncourse.server.cayenne.ProductItem
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tutor
@@ -80,6 +81,8 @@ class MessageFunctions {
                 return { e -> (e as Voucher).redeemableBy ?: (e as Voucher).invoiceLine.invoice.contact }
             case WaitingList:
                 return { e -> (e as WaitingList).student.contact }
+            case Payslip:
+                return { e -> (e as Payslip).contact }
             default:
                 null
         }
@@ -130,6 +133,8 @@ class MessageFunctions {
                 return Contact.INVOICES.dot(Invoice.INVOICE_LINES).dot(InvoiceLine.VOUCHER_PAYMENT_IN).dot(Voucher.ID)
             case WaitingList.ENTITY_NAME:
                 return Contact.STUDENT.dot(Student.WAITING_LISTS).dot(WaitingList.ID)
+            case Payslip.ENTITY_NAME:
+                return Contact.PAYSLIPS.dot(WaitingList.ID)
             default:
                 null
         }
