@@ -31,6 +31,7 @@ class Avetmiss130Line extends AvetmissLine {
 
     protected LocalDate commencement_date
     protected String tasmania_programme_enrolment_identifier
+    protected int tasmania_programme_status
 
     Avetmiss130Line(ExportJurisdiction jurisdiction) {
         super(jurisdiction)
@@ -94,8 +95,7 @@ class Avetmiss130Line extends AvetmissLine {
                 append(50, tasmania_programme_enrolment_identifier)
 
                 //Program Status Identifier
-                // since onCourse does not create certificate records for the 130 export until the qualification is complete, this will always be 10
-                append(2, "10")
+                append(2, tasmania_programme_status)
 
                 //Client Resource Fee
                 // We will always report these fees in the 120
