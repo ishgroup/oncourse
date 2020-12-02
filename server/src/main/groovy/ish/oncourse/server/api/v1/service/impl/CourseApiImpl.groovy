@@ -12,8 +12,10 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.service.CourseApiService
+import ish.oncourse.server.api.v1.function.EntityRelationFunctions
 import ish.oncourse.server.api.v1.model.CourseDTO
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.service.CourseApi
@@ -22,7 +24,7 @@ import ish.oncourse.server.cayenne.Course
 class CourseApiImpl implements CourseApi {
 
     @Inject
-    private CourseDao courseDao
+    private CayenneService cayenneService
 
     @Inject
     private CourseApiService courseApiService
@@ -36,7 +38,7 @@ class CourseApiImpl implements CourseApi {
     void create(CourseDTO courseDTO) {
         Course dbModel = courseApiService.create(courseDTO)
         if (!courseDTO.relatedlSalables.empty) {
-            courseApiService.updateRelatedEntities(dbModel, courseDTO.relatedlSalables)
+            EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Course.simpleName, courseDTO.relatedlSalables)
         }
     }
 
@@ -59,7 +61,7 @@ class CourseApiImpl implements CourseApi {
     void update(Long id, CourseDTO courseDTO) {
         courseApiService.update(id, courseDTO)
         if (!courseDTO.relatedlSalables.empty) {
-            courseApiService.updateRelatedEntities(id, courseDTO.relatedlSalables)
+            EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Course.simpleName, courseDTO.relatedlSalables)
         }
     }
 }

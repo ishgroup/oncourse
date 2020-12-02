@@ -21,11 +21,17 @@ import ish.oncourse.server.api.dao.CorporatePassProductDao
 import ish.oncourse.server.api.dao.DiscountDao
 import ish.oncourse.server.api.dao.DiscountMembershipDao
 import ish.oncourse.server.api.dao.DiscountMembershipRelationTypeDao
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.MembershipProductDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
+import ish.oncourse.server.cayenne.Product
+
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import ish.oncourse.server.api.v1.function.MembershipProductFunctions
+
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePasses
 import ish.oncourse.server.api.v1.model.ExpiryTypeDTO
@@ -100,6 +106,8 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
             membershipProductDTO.status = membershipProduct.isOnSale ? membershipProduct.isWebVisible ? CAN_BE_PURCHASED_IN_OFFICE_ONLINE : CAN_BE_PURCHASED_IN_OFFICE : DISABLED
             membershipProductDTO.corporatePasses = membershipProduct.corporatePassProducts.collect { toRestMembershipCorporatePass(it.corporatePass) }
             membershipProductDTO.membershipDiscounts = membershipProduct.discountMemberships.collect { MembershipProductFunctions.toRestMembershipDiscount(it) }
+            membershipProductDTO.relatedlSalables = (EntityRelationDao.getRelatedFrom(membershipProduct.context, Product.simpleName, membershipProduct.id).collect { toRestFromEntityRelation(it) } +
+                    EntityRelationDao.getRelatedTo(membershipProduct.context, Product.simpleName, membershipProduct.id).collect { toRestToEntityRelation(it) })
             membershipProductDTO.createdOn = membershipProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO.modifiedOn = membershipProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO

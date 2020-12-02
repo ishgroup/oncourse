@@ -12,18 +12,28 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.service.ArticleProductApiService
+import ish.oncourse.server.api.v1.function.EntityRelationFunctions
 import ish.oncourse.server.api.v1.model.ArticleProductDTO
 import ish.oncourse.server.api.v1.service.ArticleProductApi
+import ish.oncourse.server.cayenne.ArticleProduct
+import ish.oncourse.server.cayenne.Product
 
 class ArticleProductApiImpl implements ArticleProductApi {
+
+    @Inject
+    private CayenneService cayenneService
 
     @Inject
     private ArticleProductApiService service
 
     @Override
-    void create(ArticleProductDTO article) {
-        service.create(article)
+    void create(ArticleProductDTO articleDTO) {
+        ArticleProduct dbModel = service.create(articleDTO)
+        if (!articleDTO.relatedlSalables.empty) {
+            EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Product.simpleName, articleDTO.relatedlSalables)
+        }
     }
 
     @Override
@@ -32,7 +42,10 @@ class ArticleProductApiImpl implements ArticleProductApi {
     }
 
     @Override
-    void update(Long id, ArticleProductDTO article) {
-        service.update(id, article)
+    void update(Long id, ArticleProductDTO articleDTO) {
+        service.update(id, articleDTO)
+        if (!articleDTO.relatedlSalables.empty) {
+            EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Product.simpleName, articleDTO.relatedlSalables)
+        }
     }
 }

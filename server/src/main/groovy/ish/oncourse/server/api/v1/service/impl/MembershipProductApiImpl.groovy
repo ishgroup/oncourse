@@ -12,18 +12,28 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.service.MembershipProductApiService
+import ish.oncourse.server.api.v1.function.EntityRelationFunctions
 import ish.oncourse.server.api.v1.model.MembershipProductDTO
 import ish.oncourse.server.api.v1.service.MembershipProductApi
+import ish.oncourse.server.cayenne.MembershipProduct
+import ish.oncourse.server.cayenne.Product
 
 class MembershipProductApiImpl implements MembershipProductApi {
+
+    @Inject
+    private CayenneService cayenneService
 
     @Inject
     private MembershipProductApiService service
 
     @Override
-    void create(MembershipProductDTO membershipProduct) {
-        service.create(membershipProduct)
+    void create(MembershipProductDTO membershipProductDTO) {
+        MembershipProduct dbModel = service.create(membershipProductDTO)
+        if (!membershipProductDTO.relatedlSalables.empty) {
+            EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Product.simpleName, membershipProductDTO.relatedlSalables)
+        }
     }
 
     @Override
@@ -32,7 +42,10 @@ class MembershipProductApiImpl implements MembershipProductApi {
     }
 
     @Override
-    void update(Long id, MembershipProductDTO membershipProduct) {
-        service.update(id, membershipProduct)
+    void update(Long id, MembershipProductDTO membershipProductDTO) {
+        service.update(id, membershipProductDTO)
+        if (!membershipProductDTO.relatedlSalables.empty) {
+            EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Product.simpleName, membershipProductDTO.relatedlSalables)
+        }
     }
 }

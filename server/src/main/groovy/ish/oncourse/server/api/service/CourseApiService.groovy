@@ -26,14 +26,15 @@ import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.QualificationDao
+import ish.oncourse.server.api.v1.function.EntityRelationFunctions
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
 
 import static ish.oncourse.server.cayenne.EntityRelationType.DEFAULT_SYSTEM_TYPE_ID
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.CourseFunctions.ENROLMENT_TYPE_MAP
-import static ish.oncourse.server.api.v1.function.CourseFunctions.toRestFromEntityRelation
-import static ish.oncourse.server.api.v1.function.CourseFunctions.toRestToEntityRelation
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
@@ -437,47 +438,6 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         }
     }
 
-    void updateRelatedEntities(Long courseId, List<SaleDTO> relatedEntities) {
-        Course dbModel = entityDao.getById(cayenneService.newContext, courseId)
-        updateRelatedEntities(dbModel, relatedEntities)
-    }
-
-    void updateRelatedEntities(Course course, List<SaleDTO> relatedEntities) {
-        ObjectContext context = course.context
-        List<EntityRelation> currentRelations = []
-        List<SaleDTO> relationsToSave
-
-        currentRelations += entityRelationDao.getRelatedFrom(context, Course.simpleName, course.id)
-        currentRelations += entityRelationDao.getRelatedTo(context, Course.simpleName, course.id)
-
-        //remove relations that missed from resulted list
-        course.context.deleteObjects(currentRelations.findAll { !(it.id in relatedEntities.findAll { it.id != null }*.id) })
-
-        relatedEntities.each { it ->
-            EntityRelation relation
-            if (it.id == null) {
-                relation = context.newObject(EntityRelation)
-            } else {
-                relation = entityRelationDao.getById(context, it.id)
-            }
-            if (it.entityToId != null) {
-                relation.toEntityAngelId = it.entityToId
-                relation.toEntityIdentifier = it.type.getCayenneClassName()
-                relation.fromEntityAngelId = course.id
-                relation.fromEntityIdentifier = Course.simpleName
-            } else if (it.entityFromId != null) {
-                relation.toEntityAngelId = course.id
-                relation.toEntityIdentifier = Course.simpleName
-                relation.fromEntityAngelId = it.entityFromId
-                relation.fromEntityIdentifier = it.type.getCayenneClassName()
-            } else {
-                throw new IllegalArgumentException("A related entity should be specified.")
-            }
-            relation.relationType = getRecordById(context, EntityRelationType, it.relationId ?: DEFAULT_SYSTEM_TYPE_ID)
-        }
-
-        context.commitChanges()
-    }
 
     void duplicateCourse(List<Long> courseIds) {
         ObjectContext context = cayenneService.newContext

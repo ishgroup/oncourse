@@ -12,18 +12,28 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.service.VoucherProductApiService
+import ish.oncourse.server.api.v1.function.EntityRelationFunctions
 import ish.oncourse.server.api.v1.model.VoucherProductDTO
 import ish.oncourse.server.api.v1.service.VoucherProductApi
+import ish.oncourse.server.cayenne.Product
+import ish.oncourse.server.cayenne.VoucherProduct
 
 class VoucherProductApiImpl implements VoucherProductApi {
+
+    @Inject
+    private CayenneService cayenneService
 
     @Inject
     private VoucherProductApiService service
 
     @Override
-    void create(VoucherProductDTO voucherProduct) {
-        service.create(voucherProduct)
+    void create(VoucherProductDTO voucherProductDTO) {
+        VoucherProduct dbModel = service.create(voucherProductDTO)
+        if (!voucherProductDTO.relatedlSalables.empty) {
+            EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Product.simpleName, voucherProductDTO.relatedlSalables)
+        }
     }
 
     @Override
@@ -32,7 +42,10 @@ class VoucherProductApiImpl implements VoucherProductApi {
     }
 
     @Override
-    void update(Long id, VoucherProductDTO voucherProduct) {
-        service.update(id, voucherProduct)
+    void update(Long id, VoucherProductDTO voucherProductDTO) {
+        service.update(id, voucherProductDTO)
+        if (!voucherProductDTO.relatedlSalables.empty) {
+            EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Product.simpleName, voucherProductDTO.relatedlSalables)
+        }
     }
 }
