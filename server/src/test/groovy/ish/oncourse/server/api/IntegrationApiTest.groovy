@@ -7,7 +7,7 @@ import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.cayenne.IntegrationConfiguration
-import ish.oncourse.server.integration.cloudassess.CloudAssessIntegration
+import ish.oncourse.server.integration.myob.MyobIntegration
 import org.apache.cayenne.query.ObjectSelect
 import static org.junit.Assert.assertEquals
 import org.junit.Before
@@ -28,9 +28,9 @@ class IntegrationApiTest extends CayenneIshTestCase {
         integrationApi.cayenneService = cayenneService
 
         assertEquals(0, integrationApi.get().size())
-        List<IntegrationPropDTO> fields = [new IntegrationPropDTO(key: CloudAssessIntegration.CLOUDASSESS_USERNAME, value: 'user'),
-                                           new IntegrationPropDTO(key: CloudAssessIntegration.CLOUDASSESS_API_KEY, value: 'apikey'),
-                                           new IntegrationPropDTO(key: CloudAssessIntegration.CLOUDASSESS_ORG_ID, value: 'originId'),
+        List<IntegrationPropDTO> fields = [new IntegrationPropDTO(key: MyobIntegration.MYOB_BASE_URL, value: 'http://myob.com'),
+                                           new IntegrationPropDTO(key: MyobIntegration.MYOB_USER, value: 'user'),
+                                           new IntegrationPropDTO(key: MyobIntegration.MYOB_PASSWORD, value: 'pass'),
 
         ]
         IntegrationDTO data = new IntegrationDTO(name: 'integration', type: new BigDecimal(7), props: fields)
