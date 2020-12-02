@@ -1,6 +1,8 @@
 type: object
 properties:
-  item:
+  fromItem:
+    $ref: '../../entity/Sale.yaml'
+  toItem:
     $ref: '../../entity/Sale.yaml'
   cartAction:
     $ref: '../../enum/EntityRelationCartAction.yaml'

@@ -589,7 +589,8 @@ class Avetmiss120Factory extends AvetmissFactory {
 
                 case ExportJurisdiction.TAS:
                     // Client Identifier, Program Identifier, Program Commencement Date and Purchasing Contract Identifier
-                    line.tasmania_programme_enrolment_identifier = outcome.enrolment.student.studentNumber.toString() +
+                    line.tasmania_programme_enrolment_identifier = outcome.enrolment?.student?.studentNumber?.toString() ?: "" +
+                            outcome.enrolment?.student?.studentNumber?.toString() ?: "" +
                             outcome.enrolment?.courseClass?.course?.qualification?.nationalCode ?: "" +
                             outcome.priorLearning?.qualification?.nationalCode ?: "" +
                             outcome.enrolment?.courseClass?.startDateTime?.format("ddMMyyyy") +

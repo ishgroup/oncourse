@@ -1801,4 +1801,24 @@
     <Module_Course COURSEID="207" CREATEDON="2013-03-25 12:37:24.456" MODIFIEDON="2013-03-25 12:37:24.456" MODULEID="12821" ID="25"/>
     <Module_Course COURSEID="207" CREATEDON="2013-03-25 12:37:24.456" MODIFIEDON="2013-03-25 12:37:24.456" MODULEID="22368" ID="26"/>
     <Module_Course COURSEID="207" CREATEDON="2013-03-25 12:37:24.456" MODIFIEDON="2013-03-25 12:37:24.456" MODULEID="14901" ID="27"/>
+
+
+    <CustomFieldType id="1" isMandatory="0" createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"
+                     name="ish_avetmiss_tasmania_industry" fieldKey="ish_avetmiss_tasmania_industry" entityIdentifier="Contact" sortOrder="1" dataType="8"/>
+
+    <CustomField id="1" entityIdentifier="Contact" foreignId="12" customFieldTypeId="1" value="A"
+                 createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"/>
+
+    <CustomFieldType id="2" isMandatory="0" createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"
+                     name="ish_avetmiss_tasmania_occupation" fieldKey="ish_avetmiss_tasmania_occupation" entityIdentifier="Contact" sortOrder="2" dataType="8"/>
+
+    <CustomField id="2" entityIdentifier="Contact" foreignId="12" customFieldTypeId="2" value="1"
+                 createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"/>
+
+    <CustomFieldType id="3" isMandatory="0" createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"
+                     name="ish_avetmiss_tasmania_occupation" fieldKey="ish_avetmiss_tasmania_occupation" entityIdentifier="Enrolment" sortOrder="3" dataType="6"/>
+
+    <CustomField id="3" entityIdentifier="Enrolment" foreignId="224" customFieldTypeId="3" value="100"
+                 createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"/>
+    
 </dataset>
