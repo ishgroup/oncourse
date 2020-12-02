@@ -13,11 +13,18 @@ public class EntityRelationUpdater extends AbstractWillowUpdater<EntityRelationS
 		entity.setModified(stub.getModified());
 		String fromType = stub.getFromEntityIdentifier();
 		entity.setFromEntityIdentifier(fromType);
-		entity.setFromEntityWillowId(callback.updateRelationShip(stub.getFromEntityAngelId(), getClassByName(fromType)).getId());
+		entity.setFromEntityWillowId(getEntityWillowId(stub.getFromEntityAngelId(), fromType, callback));
 		String toType = stub.getToEntityIdentifier();
 		entity.setToEntityIdentifier(toType);
-		entity.setToEntityWillowId(callback.updateRelationShip(stub.getToEntityAngelId(), getClassByName(toType)).getId());
+		entity.setToEntityWillowId(getEntityWillowId(stub.getToEntityAngelId(), toType, callback));
 		entity.setRelationType(callback.updateRelationShip(stub.getRelationTypeId(), EntityRelationType.class));
+	}
+
+	private Long getEntityWillowId(Long entityId, String entityName, RelationShipCallback callback) {
+		if (!entityName.equals(Module.class.getSimpleName()) && !entityName.equals(Qualification.class.getSimpleName())) {
+			return callback.updateRelationShip(entityId, getClassByName(entityName)).getId();
+		}
+		return entityId;
 	}
 
 	private Class<? extends Queueable> getClassByName(String name) {
