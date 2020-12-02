@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright ish group pty ltd 2020.
-  ~
-  ~ This program is free software: you can redistribute it and/or modify it under the terms of the
-  ~ GNU Affero General Public License version 3 as published by the Free Software Foundation.
-  ~
-  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  ~ See the GNU Affero General Public License for more details.
-  -->
-
 <data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
@@ -649,27 +638,27 @@
 	</db-entity>
 	<db-entity name="EntityRelation">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="fromEntityIdentifier" type="VARCHAR" length="100" isMandatory="true"/>
+		<db-attribute name="fromEntityIdentifier" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="fromRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
-		<db-attribute name="toEntityIdentifier" type="VARCHAR" length="100" isMandatory="true"/>
+		<db-attribute name="toEntityIdentifier" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="toRecordId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="willowId" type="BIGINT"/>
 		<db-attribute name="typeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="EntityRelationType">
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="considerHistory" type="SMALLINT"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="description" type="VARCHAR" length="1000"/>
+		<db-attribute name="discountId" type="BIGINT"/>
+		<db-attribute name="fromName" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="isShownOnWeb" type="SMALLINT"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
-		<db-attribute name="fromName" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="shoppingCart" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="toName" type="VARCHAR" isMandatory="true" length="100"/>
-		<db-attribute name="description" type="VARCHAR" length="1000"/>
-		<db-attribute name="isShownOnWeb" type="SMALLINT"/>
-		<db-attribute name="discountId" type="BIGINT"/>
-		<db-attribute name="shoppingCart"  isMandatory="true" type="SMALLINT"/>
-		<db-attribute name="considerHistory" type="SMALLINT"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="ExportTemplate">
@@ -2207,16 +2196,16 @@
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="EntityRelationType" className="ish.oncourse.server.cayenne.EntityRelationType" dbEntityName="EntityRelationType" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
-		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
-		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="fromName" type="java.lang.String" db-attribute-path="fromName"/>
-		<obj-attribute name="toName" type="java.lang.String" db-attribute-path="toName"/>
-		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="isShownOnWeb" type="java.lang.Boolean" db-attribute-path="isShownOnWeb"/>
-		<obj-attribute name="shoppingCart" type="ish.common.types.EntityRelationCartAction" db-attribute-path="shoppingCart"/>
 		<obj-attribute name="considerHistory" type="java.lang.Boolean" db-attribute-path="considerHistory"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="fromName" type="java.lang.String" db-attribute-path="fromName"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="isShownOnWeb" type="java.lang.Boolean" db-attribute-path="isShownOnWeb"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="shoppingCart" type="ish.common.types.EntityRelationCartAction" db-attribute-path="shoppingCart"/>
+		<obj-attribute name="toName" type="java.lang.String" db-attribute-path="toName"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="ExportTemplate" className="ish.oncourse.server.cayenne.ExportTemplate" clientClassName="ish.oncourse.cayenne.ExportTemplate" dbEntityName="ExportTemplate" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
@@ -3432,20 +3421,11 @@
 	<db-relationship name="relationType" source="ContactRelation" target="ContactRelationType">
 		<db-attribute-pair source="typeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relationType" source="EntityRelation" target="EntityRelationType">
-		<db-attribute-pair source="typeId" target="id"/>
-	</db-relationship>
 	<db-relationship name="toContact" source="ContactRelation" target="Contact">
 		<db-attribute-pair source="toContactId" target="id"/>
 	</db-relationship>
 	<db-relationship name="contactRelations" source="ContactRelationType" target="ContactRelation" toMany="true">
 		<db-attribute-pair source="id" target="typeId"/>
-	</db-relationship>
-	<db-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" toMany="true">
-		<db-attribute-pair source="id" target="typeId"/>
-	</db-relationship>
-	<db-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount">
-		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
 	<db-relationship name="createdBy" source="ContactRelationType" target="SystemUser">
 		<db-attribute-pair source="createdById" target="id"/>
@@ -3764,6 +3744,15 @@
 	</db-relationship>
 	<db-relationship name="taggingRelations" source="Enrolment" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="relationType" source="EntityRelation" target="EntityRelationType">
+		<db-attribute-pair source="typeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" toMany="true">
+		<db-attribute-pair source="id" target="typeId"/>
+	</db-relationship>
+	<db-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount">
+		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
 	<db-relationship name="automationBindings" source="ExportTemplate" target="AutomationBinding" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
@@ -4740,9 +4729,6 @@
 		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="createdBy"/>
 	</obj-relationship>
 	<obj-relationship name="membeshipDiscountRelations" source="ContactRelationType" target="DiscountMembershipRelationType" deleteRule="Deny" db-relationship-path="membeshipDiscountRelations"/>
-	<obj-relationship name="relationType" source="EntityRelation" target="EntityRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
-	<obj-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" deleteRule="Deny" db-relationship-path="entityRelations"/>
-	<obj-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount" deleteRule="Nullify" db-relationship-path="entityRelationTypeDiscount"/>
 	<obj-relationship name="taggedContact" source="ContactTagRelation" target="Contact" deleteRule="Nullify" db-relationship-path="taggedContact"/>
 	<obj-relationship name="contact" source="ContactUnavailableRuleRelation" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="contact" source="CorporatePass" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
@@ -4856,6 +4842,9 @@
 	<obj-relationship name="relatedObject" source="EnrolmentCustomField" target="Enrolment" deleteRule="Nullify" db-relationship-path="relatedEnrolment"/>
 	<obj-relationship name="notedEnrolment" source="EnrolmentNoteRelation" target="Enrolment" deleteRule="Nullify" db-relationship-path="notedEnrolment"/>
 	<obj-relationship name="taggedEnrolment" source="EnrolmentTagRelation" target="Enrolment" deleteRule="Nullify" db-relationship-path="taggedEnrolment"/>
+	<obj-relationship name="relationType" source="EntityRelation" target="EntityRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
+	<obj-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" deleteRule="Deny" db-relationship-path="entityRelations"/>
+	<obj-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount" deleteRule="Nullify" db-relationship-path="entityRelationTypeDiscount"/>
 	<obj-relationship name="automationBindings" source="ExportTemplate" target="ExportTemplateAutomationBinding" deleteRule="Cascade" db-relationship-path="automationBindings"/>
 	<obj-relationship name="relatedObject" source="ExportTemplateAutomationBinding" target="ExportTemplate" deleteRule="Nullify" db-relationship-path="exportTemplate"/>
 	<obj-relationship name="fieldConfiguration" source="Field" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>
