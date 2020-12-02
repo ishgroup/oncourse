@@ -60,6 +60,8 @@ const styles = theme => createStyles({
     }
   },
   editable: {
+    display: "flex",
+    alignItems: "center",
     width: "100%",
     overflow: "hidden",
     textOverflow: "ellipsis",
