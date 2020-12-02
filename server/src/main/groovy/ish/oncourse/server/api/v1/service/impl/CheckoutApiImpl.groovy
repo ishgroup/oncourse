@@ -13,17 +13,14 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
-import ish.common.types.EntityRelationIdentifier
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseDao
-import ish.oncourse.server.api.dao.DiscountDao
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.v1.model.CheckoutSaleRelationDTO
 import ish.oncourse.server.api.v1.model.EntityRelationCartActionDTO
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
-import ish.oncourse.server.api.v1.service.DiscountApi
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
