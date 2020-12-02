@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
 <dataset>
     <Account id="3" accountCode="ASSET3" description="Test asset account3" isEnabled="1" type="1"/>
     <Account id="5" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"  modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
@@ -29,7 +34,7 @@
     <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
     <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
     <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    
+
     <Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1"  modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00" enrolmentType="1" fieldConfigurationSchemaId="1"/>
     <Course id="2"  code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1"  modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00" enrolmentType="1" fieldConfigurationSchemaId="1"/>
 

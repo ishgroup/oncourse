@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
 <dataset>
 
     <Account id="100" accountCode="ASSET1" description="Test asset account1" isEnabled="1" type="1" />
@@ -27,7 +32,7 @@
     <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
     <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
     <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    
+
     <Course id="1"  code="Course1" name="Course1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
 
     <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="Site1" localTimezone="EES" isVirtual="0"/>

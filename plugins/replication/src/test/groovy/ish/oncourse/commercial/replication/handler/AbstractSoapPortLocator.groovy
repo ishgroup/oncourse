@@ -1,5 +1,5 @@
-/**
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 package ish.oncourse.commercial.replication.handler
@@ -19,17 +19,17 @@ class AbstractSoapPortLocator implements ISoapPortLocator {
 	ReferencePortType referencePort() {
 		return null
 	}
-	
+
 	@Override
 	PaymentPortType paymentPort() {
 		return null
 	}
-	
+
 	@Override
 	ReplicationPortType replicationPort() {
 		return null
 	}
-	
+
 	@Override
 	void resetReplicationPort() {}
 }

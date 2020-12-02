@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
 <dataset>
 	<Preference CREATEDON="2007-11-19 13:30:29.497" ID="903" MODIFIEDON="2013-05-06 00:33:41.913" VALUESTRING="31-Dec-2015" NAME="finance.transaction_locked" UNIQUEKEY="finance.transaction_locked"/>
 	<Preference CREATEDON="2007-11-19 13:30:29.497" ID="902" MODIFIEDON="2013-05-06 00:33:41.913" VALUESTRING="true" NAME="replication.enabled" UNIQUEKEY="replication.enabled"/>

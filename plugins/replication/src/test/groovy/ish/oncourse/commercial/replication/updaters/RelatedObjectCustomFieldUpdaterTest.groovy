@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 package ish.oncourse.commercial.replication.updaters
 
 import ish.CayenneIshTestCase
@@ -92,7 +97,7 @@ class RelatedObjectCustomFieldUpdaterTest extends CayenneIshTestCase {
             return (M) related
         }
     }
-    
+
     private TestContainer createCourseTestContainer() {
         TestContainer container = new TestContainer()
 
@@ -133,7 +138,7 @@ class RelatedObjectCustomFieldUpdaterTest extends CayenneIshTestCase {
 
         CourseClassCustomField entity = mock(CourseClassCustomField.class)
 
-        TestRelationshipCallback callback = new CourseClassTestRelationshipCallback() 
+        TestRelationshipCallback callback = new CourseClassTestRelationshipCallback()
 
         container.entity = entity
         container.stub = stub
@@ -157,7 +162,7 @@ class RelatedObjectCustomFieldUpdaterTest extends CayenneIshTestCase {
             return (M) related
         }
     }
-    
+
     private TestContainer createEnrolmentTestContainer() {
         TestContainer container = new TestContainer()
 
