@@ -17,6 +17,7 @@ import ish.common.types.EntityRelationIdentifier
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.DiscountDao
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.v1.model.CheckoutSaleRelationDTO
 import ish.oncourse.server.api.v1.model.EntityRelationCartActionDTO
@@ -195,22 +196,20 @@ class CheckoutApiImpl implements CheckoutApi {
         
         
         if (StringUtils.trimToNull(courseIds)) {
-            relations.addAll(ObjectSelect.query(EntityRelation)
-                    .where(EntityRelation.FROM_ENTITY_ANGEL_ID.in(courseIds.split(',').collect {Long.valueOf(it)} as List<Long>))
-                    .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
-                    .select(context))
+            (courseIds.split(',').collect {Long.valueOf(it)} as List<Long>).each { courseId ->
+                relations.addAll(EntityRelationDao.getRelatedTo(context, Course.simpleName, courseId))
+            }
         } else if (productIds) {
-            relations.addAll(ObjectSelect.query(EntityRelation)
-                    .where(EntityRelation.FROM_ENTITY_ANGEL_ID.in(productIds.split(',').collect {Long.valueOf(it)} as List<Long>))
-                    .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Product.simpleName))
-                    .select(context))
+            (courseIds.split(',').collect {Long.valueOf(it)} as List<Long>).each { productId ->
+                relations.addAll(EntityRelationDao.getRelatedTo(context, Product.simpleName, productId))
+            }
         }
 
         
-        relations.findAll { it.toEntity == Course.simpleName}.each { relation ->
+        relations.findAll { Course.simpleName == it.toEntityIdentifier }.each { relation ->
             EntityRelationType relationType = relation.relationType
-            if (!result.any {it.item.id == relation.toRecordId &&  it.item.type == SaleTypeDTO.COURSE}) {
-                Course course = courseDao.getById(context, relation.toRecordId)
+            if (!result.any {it.item.id == relation.toEntityAngelId &&  it.item.type == SaleTypeDTO.COURSE}) {
+                Course course = courseDao.getById(context, relation.toEntityAngelId)
                 
                 if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
                     //ignore that course since student already enrolled in 
@@ -232,9 +231,9 @@ class CheckoutApiImpl implements CheckoutApi {
             }
         }
 
-        relations.findAll { it.toEntity == 'Product' }.each { relation ->
-            if (!result.any { it.item.id == relation.toRecordId && it.item.type == SaleTypeDTO.PRODUCT }) {
-                Product product = productDao.getById(context, relation.toRecordId)
+        relations.findAll { Product.simpleName == it.toEntityIdentifier }.each { relation ->
+            if (!result.any { it.item.id == relation.toEntityAngelId && it.item.type == SaleTypeDTO.PRODUCT }) {
+                Product product = productDao.getById(context, relation.toEntityAngelId)
                 result << new CheckoutSaleRelationDTO().with { saleRelation ->
                     saleRelation.item = new SaleDTO().with { sale ->
                         sale.type = SaleTypeDTO.PRODUCT
