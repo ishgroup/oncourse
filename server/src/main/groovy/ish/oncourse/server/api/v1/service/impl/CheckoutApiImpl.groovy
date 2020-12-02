@@ -207,7 +207,7 @@ class CheckoutApiImpl implements CheckoutApi {
         }
 
         
-        relations.findAll { it.toEntity == EntityRelationIdentifier.COURSE }.each { relation ->
+        relations.findAll { it.toEntity == Course.simpleName}.each { relation ->
             EntityRelationType relationType = relation.relationType
             if (!result.any {it.item.id == relation.toRecordId &&  it.item.type == SaleTypeDTO.COURSE}) {
                 Course course = courseDao.getById(context, relation.toRecordId)
@@ -232,7 +232,7 @@ class CheckoutApiImpl implements CheckoutApi {
             }
         }
 
-        relations.findAll { it.toEntity == EntityRelationIdentifier.PRODUCT }.each { relation ->
+        relations.findAll { it.toEntity == 'Product' }.each { relation ->
             if (!result.any { it.item.id == relation.toRecordId && it.item.type == SaleTypeDTO.PRODUCT }) {
                 Product product = productDao.getById(context, relation.toRecordId)
                 result << new CheckoutSaleRelationDTO().with { saleRelation ->
