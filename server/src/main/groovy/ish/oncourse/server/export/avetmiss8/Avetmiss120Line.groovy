@@ -57,6 +57,9 @@ class Avetmiss120Line extends AvetmissLine {
     protected String providerABN
     protected String predominantDelivery
 
+    protected int ish_avetmiss_tasmania_resourcefee = 0
+    protected String tasmania_programme_enrolment_identifier
+
     Avetmiss120Line(ExportJurisdiction jurisdiction) {
         super(jurisdiction)
     }
@@ -256,6 +259,15 @@ class Avetmiss120Line extends AvetmissLine {
                     // ------------------
                     // full time learning option
                     append(fullTime)
+                    break
+
+                case ExportJurisdiction.TAS:
+                    // ------------------
+                    // programme enrolment identifier
+                    append(50, tasmania_programme_enrolment_identifier)
+
+                    // client resource fee
+                    append(5, ish_avetmiss_tasmania_resourcefee)
                     break
 
                 case ExportJurisdiction.VIC:

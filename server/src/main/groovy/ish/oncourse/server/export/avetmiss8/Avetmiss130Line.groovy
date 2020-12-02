@@ -29,6 +29,10 @@ class Avetmiss130Line extends AvetmissLine {
     protected Long certificateNumber
     protected boolean qualificationIssued
 
+    protected LocalDate commencement_date
+    protected String tasmania_programme_enrolment_identifier
+    protected int tasmania_programme_status
+
     Avetmiss130Line(ExportJurisdiction jurisdiction) {
         super(jurisdiction)
     }
@@ -74,9 +78,32 @@ class Avetmiss130Line extends AvetmissLine {
         // parchment number
         append(25, certificateNumber)
 
-        if (ExportJurisdiction.VIC == this.jurisdiction) {
-            //Program (Course) Commencement Date
-            append(startDate)
+        switch (jurisdiction) {
+
+            case ExportJurisdiction.VIC:
+                //Program (Course) Commencement Date
+                append(startDate)
+                break
+
+            case ExportJurisdiction.TAS:
+                //Income Contingent Loan Indicator
+                //Since we have no onCourse customers in Tasmania offering Diploma, this is always N
+                append(1, "N")
+
+                append(commencement_date)
+
+                append(50, tasmania_programme_enrolment_identifier)
+
+                //Program Status Identifier
+                append(2, tasmania_programme_status)
+
+                //Client Resource Fee
+                // We will always report these fees in the 120
+                append(5, 0)
+
+                //Client Tuition Fee
+                // We will always report these fees in the 120
+                append(5, 0)
         }
 
         return toString()
