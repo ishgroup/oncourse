@@ -304,11 +304,11 @@ class Avetmiss080Factory extends AvetmissFactory {
         if (this.jurisdiction == ExportJurisdiction.TAS) {
             try {
                 line.ish_avetmiss_tasmania_industry = student.contact.getCustomFieldValue("ish_avetmiss_tasmania_industry")
-            } catch (MissingPropertyException e)
+            } catch (MissingPropertyException ignored) {}
 
             try {
                 line.ish_avetmiss_tasmania_occupation = student.contact.getCustomFieldValue("ish_avetmiss_tasmania_occupation")
-            } catch (MissingPropertyException e)
+            } catch (MissingPropertyException ignored) {}
         }
 
         result.avetmiss080Lines.putIfAbsent(line.identifier, line)

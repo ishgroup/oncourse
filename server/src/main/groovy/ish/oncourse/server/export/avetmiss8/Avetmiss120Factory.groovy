@@ -596,7 +596,7 @@ class Avetmiss120Factory extends AvetmissFactory {
                             outcome.vetPurchasingContractID
                     try {
                         line.ish_avetmiss_tasmania_resourcefee = outcome.enrolment.getCustomFieldValue("ish_avetmiss_tasmania_resourcefee") as int
-                    } catch ( Exception e)
+                    } catch (Exception ignored) {}
                     break
 
                 case ExportJurisdiction.VIC:
