@@ -26,6 +26,10 @@ properties:
     type: array
     items:
      $ref: './ArticleProductCorporatePass.yaml'
+  relatedlSalables:
+    type: array
+    items:
+      $ref: '../Sale.yaml'
   createdOn:
     type: string
     format: date-time

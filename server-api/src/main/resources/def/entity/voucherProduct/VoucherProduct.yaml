@@ -34,6 +34,10 @@ properties:
   soldVouchersCount:
     type: integer
     format: int64
+  relatedlSalables:
+    type: array
+    items:
+      $ref: '../Sale.yaml'
   createdOn:
     type: string
     format: date-time
