@@ -18,9 +18,14 @@ import ish.oncourse.server.api.dao.AccountDao
 import ish.oncourse.server.api.dao.ArticleProductDao
 import ish.oncourse.server.api.dao.CorporatePassDao
 import ish.oncourse.server.api.dao.CorporatePassProductDao
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
+import ish.oncourse.server.cayenne.Product
+
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
 import ish.oncourse.server.api.v1.model.ArticleProductCorporatePassDTO
 import ish.oncourse.server.api.v1.model.ArticleProductDTO
@@ -80,6 +85,8 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
                     ap
                 }
             } as List<ArticleProductCorporatePassDTO>
+            articleProductDTO.relatedlSalables = (EntityRelationDao.getRelatedFrom(articleProduct.context, Product.simpleName, articleProduct.id).collect { toRestFromEntityRelation(it) } +
+                                        EntityRelationDao.getRelatedTo(articleProduct.context, Product.simpleName, articleProduct.id).collect { toRestToEntityRelation(it) })
             articleProductDTO.createdOn = articleProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             articleProductDTO.modifiedOn = articleProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             articleProductDTO

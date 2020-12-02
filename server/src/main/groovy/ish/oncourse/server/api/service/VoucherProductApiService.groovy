@@ -20,11 +20,16 @@ import ish.oncourse.server.api.dao.AccountDao
 import ish.oncourse.server.api.dao.CorporatePassDao
 import ish.oncourse.server.api.dao.CorporatePassProductDao
 import ish.oncourse.server.api.dao.CourseDao
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.api.dao.VoucherProductCourseDao
 import ish.oncourse.server.api.dao.VoucherProductDao
+import ish.oncourse.server.cayenne.Product
+
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE_ONLINE
@@ -99,6 +104,8 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                 }
             }
             voucherProductDTO.soldVouchersCount = voucherProduct.getProductItems().size()
+            voucherProductDTO.relatedlSalables = (EntityRelationDao.getRelatedFrom(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestFromEntityRelation(it) } +
+                    EntityRelationDao.getRelatedTo(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestToEntityRelation(it) })
             voucherProductDTO.createdOn = voucherProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             voucherProductDTO.modifiedOn = voucherProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             voucherProductDTO
