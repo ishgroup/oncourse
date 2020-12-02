@@ -16,6 +16,7 @@ import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._Payslip
 
 import javax.annotation.Nonnull
+import javax.annotation.Nullable
 import java.util.Date
 import java.util.List
 
@@ -28,8 +29,6 @@ import java.util.List
  */
 @API
 class Payslip extends _Payslip {
-
-
 
 	@Override
 	protected void postAdd() {
@@ -48,19 +47,15 @@ class Payslip extends _Payslip {
 	/**
 	 * @return the date and time this record was created
 	 */
-	@API
-	@Override
+	@Nonnull @API @Override
 	Date getCreatedOn() {
 		return super.getCreatedOn()
 	}
 
-
-
 	/**
 	 * @return the date and time this record was modified
 	 */
-	@API
-	@Override
+	@Nonnull @API @Override
 	Date getModifiedOn() {
 		return super.getModifiedOn()
 	}
@@ -68,8 +63,7 @@ class Payslip extends _Payslip {
 	/**
 	 * @return public notes appended to this payslip
 	 */
-	@API
-	@Override
+	@Nullable @API @Override
 	String getNotes() {
 		return super.getNotes()
 	}
@@ -77,8 +71,7 @@ class Payslip extends _Payslip {
 	/**
 	 * @return private notes appended to this payslip
 	 */
-	@API
-	@Override
+	@Nullable @API @Override
 	String getPrivateNotes() {
 		return super.getPrivateNotes()
 	}
@@ -86,9 +79,7 @@ class Payslip extends _Payslip {
 	/**
 	 * @return the workflow status of the payslip
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	PayslipStatus getStatus() {
 		return super.getStatus()
 	}
@@ -96,9 +87,7 @@ class Payslip extends _Payslip {
 	/**
 	 * @return the contact for the tutor this payslip belongs to
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	Contact getContact() {
 		return super.getContact()
 	}
@@ -106,9 +95,7 @@ class Payslip extends _Payslip {
 	/**
 	 * @return all paylines attached to this payslip
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	List<PayLine> getPaylines() {
 		return super.getPaylines()
 	}
@@ -116,9 +103,7 @@ class Payslip extends _Payslip {
 	/**
 	 * @return paymentInLines attached to this payslip
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	List<PaymentInLine> getPaymentInLines() {
 		return super.getPaymentInLines()
 	}
@@ -126,18 +111,16 @@ class Payslip extends _Payslip {
 	/**
 	 * @return paymentOutLines attached to this payslip
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	List<PaymentOutLine> getPaymentOutLines() {
 		return super.getPaymentOutLines()
 	}
 
-	@Override
+	@Nullable @Override
 	String getSummaryDescription() {
 		if(getContact() == null) {
 			return super.getSummaryDescription()
 		}
-		return "pay for " + getContact().getName(false)
+		return "pay for " + getContact().getName(true)
 	}
 }
