@@ -69,7 +69,7 @@ class Avetmiss130Factory extends AvetmissFactory {
                     line.setQualificationIssued(sufficientForQualification && !containsBadOutcome(outcome.getEnrolment()))
 
                     // the following code will not work if the qualification is split across several classes
-                    if (jurisdiction == ExportJurisdiction.TAS) {
+                    if (jurisdiction = ExportJurisdiction.TAS) {
                         def first_outcome = outcome.enrolment.outcomes.sort{it.startDate}.first()
                         setTasmaniaProperties(line, first_outcome)
                     }
@@ -99,7 +99,7 @@ class Avetmiss130Factory extends AvetmissFactory {
         line.setCertificateNumber(certificate.getCertificateNumber())
         line.setIssuedDate(LocalDateUtils.valueToDate(certificate.getIssuedOn()))
 
-        if (jurisdiction == ExportJurisdiction.TAS) {
+        if (jurisdiction = ExportJurisdiction.TAS) {
             def first_outcome = certificate.outcomes.sort{it.startDate}.first()
             setTasmaniaProperties(line, first_outcome)
             line.tasmania_programme_status = !certificate.revokedOn && certificate.printedOn ? 10 : 20
@@ -113,16 +113,14 @@ class Avetmiss130Factory extends AvetmissFactory {
 
     static setTasmaniaProperties(Avetmiss130Line line, Outcome first_outcome) {
         // Client Identifier, Program Identifier, Program Commencement Date and Purchasing Contract Identifier
-        line.tasmania_programme_enrolment_identifier = first_outcome.enrolment?.student?.studentNumber?.toString() ?: "" +
-                first_outcome.priorLearning?.student?.studentNumber?.toString() ?: "" +
+        line.tasmania_programme_enrolment_identifier = first_outcome.enrolment.student.studentNumber.toString() +
                 first_outcome.enrolment?.courseClass?.course?.qualification?.nationalCode ?: "" +
-                first_outcome.priorLearning?.qualification?.nationalCode ?: "" +
                 first_outcome.enrolment?.courseClass?.startDateTime?.format("ddMMyyyy") +
                 first_outcome.vetPurchasingContractID
         line.commencement_date = first_outcome.startDate
         if (first_outcome.startDate > LocalDate.now()) {
             line.tasmania_programme_status = 85
-        } else if (first_outcome.status == OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN) {
+        } else if (first_outcome.status = OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN) {
             line.tasmania_programme_status = 40
         }
         // ongoing training is the default until we issue a certificate
