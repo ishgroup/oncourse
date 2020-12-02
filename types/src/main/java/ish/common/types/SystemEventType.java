@@ -22,7 +22,8 @@ public enum SystemEventType implements DisplayableExtendedEnumeration<Integer> {
 	CLASS_CANCELLED(3, "Class cancelled"),
 	CLASS_PUBLISHED(4, "Class published"),
 	PAYSLIP_APPROVED(5, "Payslip approved"),
-	VALIDATE_CHECKOUT(6, "Validate checkout");
+	VALIDATE_CHECKOUT(6, "Validate checkout"),
+	PAYSLIP_PAID(7, "Payslip paid");
 
 	private int value;
 	private String displayName;

@@ -152,6 +152,9 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                         case SystemEventType.PAYSLIP_APPROVED:
                             st.type = PAYSLIP_APPROVED
                             break
+                        case SystemEventType.PAYSLIP_PAID:
+                            st.type = PAYSLIP_PAID
+                            break
                         default:
                             throw new ServerErrorException("Unexpected error: unknown system event trigger type '$dbScript.systemEventType' in script '$dbScript.name'", Response.Status.INTERNAL_SERVER_ERROR)
                     }
@@ -228,6 +231,10 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
             case PAYSLIP_APPROVED:
                 dbScript.triggerType = TriggerType.ONCOURSE_EVENT
                 dbScript.systemEventType = SystemEventType.PAYSLIP_APPROVED
+                break
+            case PAYSLIP_PAID:
+                dbScript.triggerType = TriggerType.ONCOURSE_EVENT
+                dbScript.systemEventType = SystemEventType.PAYSLIP_PAID
                 break
             case SCHEDULE:
                 dbScript.triggerType = TriggerType.CRON
