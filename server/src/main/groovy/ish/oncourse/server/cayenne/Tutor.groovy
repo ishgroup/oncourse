@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.PayslipPayType
 import ish.messaging.ITutor
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
@@ -307,4 +308,13 @@ class Tutor extends _Tutor implements ITutor, Queueable, Taggable, AttachableTra
 		return super.getSessions()
 	}
 
+	/**
+	 * By default, what type of Payslip to create for tutor pay associated with this tutor.
+	 * If NULL, then don't create tutor pay at all.
+	 * @return
+	 */
+	@API @Nullable @Override
+	PayslipPayType getPayType() {
+		return super.getPayType()
+	}
 }
