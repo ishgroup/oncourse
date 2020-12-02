@@ -36,6 +36,7 @@ import ish.oncourse.server.api.dao.DiscountMembershipRelationTypeDao
 import ish.oncourse.server.api.dao.EmailTemplateDao
 import ish.oncourse.server.api.dao.EnrolmentDao
 import ish.oncourse.server.api.dao.EntityRelationDao
+import ish.oncourse.server.api.dao.EntityRelationTypeDao
 import ish.oncourse.server.api.dao.ExportTemplateDao
 import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ImportDao
@@ -79,7 +80,6 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(ContactRelationTypeDao).in(Scopes.SINGLETON)
         binder.bind(CorporatePassDao).in(Scopes.SINGLETON)
         binder.bind(CorporatePassProductDao).in(Scopes.SINGLETON)
-        binder.bind(EntityRelationDao).in(Scopes.SINGLETON)
         binder.bind(CourseDao).in(Scopes.SINGLETON)
         binder.bind(CourseModuleDao).in(Scopes.SINGLETON)
         binder.bind(CourseClassDao).in(Scopes.SINGLETON)
@@ -91,6 +91,8 @@ class ApiCayenneLayerModule implements Module {
 
         binder.bind(EmailTemplateDao).in(Scopes.SINGLETON)
         binder.bind(EnrolmentDao).in(Scopes.SINGLETON)
+        binder.bind(EntityRelationDao).in(Scopes.SINGLETON)
+        binder.bind(EntityRelationTypeDao).in(Scopes.SINGLETON)
         binder.bind(ExportTemplateDao).in(Scopes.SINGLETON)
 
         binder.bind(FieldConfigurationSchemeDao).in(Scopes.SINGLETON)
