@@ -40,8 +40,8 @@ import java.time.Month
  */
 @CompileStatic
 class Avetmiss120Factory extends AvetmissFactory {
-    
-    
+
+
     Avetmiss120Factory(AvetmissExportResult result, ExportJurisdiction jurisdiction, PreferenceController preferenceController) {
         super(result, jurisdiction, preferenceController)
     }
@@ -587,6 +587,18 @@ class Avetmiss120Factory extends AvetmissFactory {
                     }
                     break
 
+                case ExportJurisdiction.TAS:
+                    // Client Identifier, Program Identifier, Program Commencement Date and Purchasing Contract Identifier
+                    line.tasmania_programme_enrolment_identifier = outcome.enrolment.student.studentNumber.toString() +
+                            outcome.enrolment?.courseClass?.course?.qualification?.nationalCode ?: "" +
+                            outcome.priorLearning?.qualification?.nationalCode ?: "" +
+                            outcome.enrolment?.courseClass?.startDateTime?.format("ddMMyyyy") +
+                            outcome.vetPurchasingContractID
+                    try {
+                        line.ish_avetmiss_tasmania_resourcefee = outcome.enrolment.getCustomFieldValue("ish_avetmiss_tasmania_resourcefee") as int
+                    } catch ( Exception e)
+                    break
+
                 case ExportJurisdiction.VIC:
                     // ------------------
                     // hours attended
@@ -667,7 +679,7 @@ class Avetmiss120Factory extends AvetmissFactory {
         return line
 
     }
-    
+
     void setOverriddenEndDate(LocalDate overriddenEndDate) {
         this.overriddenEndDate = overriddenEndDate
     }
@@ -698,5 +710,5 @@ class Avetmiss120Factory extends AvetmissFactory {
 
         return relatedOutcomes.collect { o -> o.startDate }.sort().first()
     }
-    
+
 }

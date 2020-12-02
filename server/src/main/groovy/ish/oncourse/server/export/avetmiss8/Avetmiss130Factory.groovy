@@ -49,7 +49,7 @@ class Avetmiss130Factory extends AvetmissFactory {
         }
 
         // special NSW and TAS export of a cluster of outcomes which don't make a full qualification
-        if (result.exportEndDate != null && Arrays.asList(ExportJurisdiction.SMART, ExportJurisdiction.TAS).contains(jurisdiction) && outcome.getEnrolment() != null && outcome.getModule() != null) {
+        if (result.exportEndDate && [ExportJurisdiction.SMART, ExportJurisdiction.TAS].contains(jurisdiction) && outcome.enrolment && outcome.module) {
             def bookingID = outcome.getEnrolment().getCourseClass().getDetBookingId()
             def siteID = outcome.getEnrolment().getCourseClass().getVetCourseSiteID()
             def lastOutcomeEndDate = getLastOutcomeEndDate(outcome.getEnrolment())
@@ -67,6 +67,18 @@ class Avetmiss130Factory extends AvetmissFactory {
 
                     line.setEndDate(lastOutcomeEndDate)
                     line.setQualificationIssued(sufficientForQualification && !containsBadOutcome(outcome.getEnrolment()))
+
+                    // the following code will not work if the qualification is split across several classes
+                    if (jurisdiction = ExportJurisdiction.TAS) {
+                        def first_outcome = outcome.enrolment.outcomes.sort{it.startDate}.first()
+
+                        // Client Identifier, Program Identifier, Program Commencement Date and Purchasing Contract Identifier
+                        line.tasmania_programme_enrolment_identifier = first_outcome.enrolment.student.studentNumber.toString() +
+                                first_outcome.enrolment?.courseClass?.course?.qualification?.nationalCode ?: "" +
+                                first_outcome.enrolment?.courseClass?.startDateTime?.format("ddMMyyyy") +
+                                first_outcome.vetPurchasingContractID
+                        line.commencement_date = first_outcome.startDate
+                    }
 
                     line.setIdentifier(line.courseId + line.clientId)
 
@@ -92,6 +104,18 @@ class Avetmiss130Factory extends AvetmissFactory {
 
         line.setCertificateNumber(certificate.getCertificateNumber())
         line.setIssuedDate(LocalDateUtils.valueToDate(certificate.getIssuedOn()))
+
+        if (jurisdiction = ExportJurisdiction.TAS) {
+            def first_outcome = certificate.outcomes.sort{it.startDate}.first()
+
+            // Client Identifier, Program Identifier, Program Commencement Date and Purchasing Contract Identifier
+            line.tasmania_programme_enrolment_identifier = first_outcome.enrolment.student.studentNumber.toString() +
+                    first_outcome.enrolment?.courseClass?.course?.qualification?.nationalCode ?: "" +
+                    first_outcome.priorLearning?.qualification?.nationalCode ?: "" +
+                    first_outcome.enrolment?.courseClass?.startDateTime?.format("ddMMyyyy") +
+                    first_outcome.vetPurchasingContractID
+            line.commencement_date = first_outcome.startDate
+        }
 
         line.setIdentifier(line.courseId + line.clientId)
         result.avetmiss130Lines.putIfAbsent(line.identifier, line)
