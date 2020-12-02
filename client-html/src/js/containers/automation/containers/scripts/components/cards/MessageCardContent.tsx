@@ -3,15 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {useMemo} from "react";
-import { connect } from "react-redux";
+import React, {useMemo, useState, useEffect} from "react";
+import {connect} from "react-redux";
+import {change} from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import LockOutlined from "@material-ui/icons/LockOutlined";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {EmailTemplateApi} from "@api/model";
+import {FormControlLabel} from "@material-ui/core";
+
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
 import {AppTheme} from "../../../../../../model/common/Theme";
 import {State} from "../../../../../../reducers/state";
 import {ADMIN_EMAIL_KEY} from "../../../../../../constants/Config";
+import {DefaultHttpService} from "../../../../../../common/services/HttpService";
+import {getType} from "../../utils";
+import {SCRIPT_EDIT_VIEW_FORM_NAME} from "../../constants";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   selectItemWrapper: {
@@ -26,14 +33,16 @@ const useStyles = makeStyles((theme: AppTheme) => ({
 
 const MessageCardContent = React.memo<any>(props => {
   const {
-    name, emailTemplates, customPreferencesFields
+    name, emailTemplates, customPreferencesFields, field, dispatch
   } = props;
+
+  const [emailVariables, setEmailVariables] = useState([]);
 
   const classes = useStyles();
 
   const emailTemplateItems = useMemo(
     () => (emailTemplates
-      ? emailTemplates.filter(t => t.keyCode).map(t => ({ value: t.keyCode, label: t.name, hasIcon: t.hasIcon }))
+      ? emailTemplates.filter(t => t.keyCode).map(t => ({ value: t.keyCode, label: t.name, hasIcon: t.hasIcon, id: t.id }))
       : []), [emailTemplates]);
 
   const emailTemplatesForRender = (item) => (
@@ -42,6 +51,37 @@ const MessageCardContent = React.memo<any>(props => {
         {item.label} <LockOutlined className={classes.itemIcon} />
       </span>
     ) : item.label )
+
+  const getEmailTemplate = async (id: number) => {
+    const emailTemplateService = new EmailTemplateApi(new DefaultHttpService());
+    let emailTemplate;
+
+    try {
+      const emailTemplate = await emailTemplateService.get(id);
+      emailTemplate && setEmailVariables(emailTemplate.variables);
+    } catch (e) {
+      console.warn(e)
+    }
+
+    return emailTemplate;
+  }
+
+  useEffect(() => {
+    if (field && field.template) {
+      const currentEmailTemplate = emailTemplates.filter(t => t.keyCode === field.template);
+      currentEmailTemplate.length && getEmailTemplate(currentEmailTemplate[0].id);
+    }
+  }, [field]);
+
+  const changeEmailTemplate = async (item) => {
+    const emailTemplate = await getEmailTemplate(item.id)
+
+    emailTemplate.variables && emailTemplate.variables.forEach(e => {
+      if (e.type === "Checkbox") {
+        dispatch(change(SCRIPT_EDIT_VIEW_FORM_NAME, `${name}.${e.name}`, false));
+      }
+    })
+  }
 
   return (
     <Grid container>
@@ -53,6 +93,7 @@ const MessageCardContent = React.memo<any>(props => {
           items={emailTemplateItems}
           className="d-flex mt-2"
           selectLabelCondition={emailTemplatesForRender}
+          onInnerValueChange={changeEmailTemplate}
           required
         />
 
@@ -64,6 +105,34 @@ const MessageCardContent = React.memo<any>(props => {
             placeholder={customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY] || 'No value'}
           />
         </Grid>
+
+        {
+          emailVariables.map(elem => (
+            elem.type === "Checkbox" ? (
+              <Grid key={getType(elem.type) + elem.label} item xs={12}>
+                <FormControlLabel
+                  control={
+                    <FormField
+                      type={elem.type.toLowerCase()}
+                      name={`${name}.${elem.name}`}
+                      label={elem.label}
+                    />
+                  }
+                  label={elem.label}
+                />
+              </Grid>
+            ) : (
+              <Grid key={getType(elem.type) + elem.label} item xs={12}>
+                <FormField
+                  type={getType(elem.type)}
+                  name={`${name}.${elem.name}`}
+                  label={elem.label}
+                  required
+                />
+              </Grid>
+            )
+          ))
+        }
       </Grid>
     </Grid>
   );
