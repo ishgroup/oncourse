@@ -197,12 +197,12 @@ class CheckoutApiImpl implements CheckoutApi {
         if (StringUtils.trimToNull(courseIds)) {
             relations.addAll(ObjectSelect.query(EntityRelation)
                     .where(EntityRelation.FROM_ENTITY_ANGEL_ID.in(courseIds.split(',').collect {Long.valueOf(it)} as List<Long>))
-                    .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(EntityRelationIdentifier.COURSE))
+                    .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
                     .select(context))
         } else if (productIds) {
             relations.addAll(ObjectSelect.query(EntityRelation)
                     .where(EntityRelation.FROM_ENTITY_ANGEL_ID.in(productIds.split(',').collect {Long.valueOf(it)} as List<Long>))
-                    .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(EntityRelationIdentifier.PRODUCT))
+                    .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Product.simpleName))
                     .select(context))
         }
 
