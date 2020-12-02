@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.PayslipPayType
 import ish.common.types.PayslipStatus
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._Payslip
@@ -122,5 +123,14 @@ class Payslip extends _Payslip {
 			return super.getSummaryDescription()
 		}
 		return "pay for " + getContact().getName(true)
+	}
+
+	/**
+	 * The payslip can be either for an employee (payroll) or contractor (invoice)
+	 * @return a pay type
+	 */
+	@Nonnull @API @Override
+	PayslipPayType getPayType() {
+		return super.getPayType()
 	}
 }
