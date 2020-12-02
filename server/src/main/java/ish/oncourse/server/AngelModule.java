@@ -39,6 +39,7 @@ import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.lifecycle.ClassPublishListener;
 import ish.oncourse.server.lifecycle.PayslipApprovedListener;
+import ish.oncourse.server.lifecycle.PayslipPaidListener;
 import ish.oncourse.server.modules.AngelJobFactory;
 import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.scripting.api.EmailService;
@@ -98,7 +99,13 @@ public class AngelModule extends ConfigModule {
     PayslipApprovedListener providePayslipApprovedListener(EventService eventService) {
         return new PayslipApprovedListener(eventService);
     }
-
+    
+    @Singleton
+    @Provides
+    PayslipPaidListener providePayslipPaidListener(EventService eventService) {
+        return new PayslipPaidListener(eventService);
+    }
+    
     @Singleton
     @Provides
     EventService provideEventService() {
@@ -107,8 +114,8 @@ public class AngelModule extends ConfigModule {
 
     @Singleton
     @Provides
-    CommitLogModuleExt provideCommitLogModuleExt(ClassPublishListener classPublishListener, PayslipApprovedListener payslipApprovedListener) {
-        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener);
+    CommitLogModuleExt provideCommitLogModuleExt(ClassPublishListener classPublishListener, PayslipApprovedListener payslipApprovedListener, PayslipPaidListener paidListener) {
+        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener);
     }
 
     @Override
