@@ -107,3 +107,29 @@ databaseChangeLog:
           "entityName": "EntityRelation",
           "selectQuery": "select id, willowId from EntityRelation"
         }
+
+  - changeSet:
+      id: 56-9
+      author: ari
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: Tutor
+            columnName: payType
+      changes:
+        - addColumn:
+            tableName: Tutor
+            columns:
+              - column:
+                  name: payType
+                  type: INTEGER
+        - addColumn:
+            tableName: Payslip
+            columns:
+              - column:
+                  name: payType
+                  type: INTEGER
+        - addNotNullConstraint:
+            tableName: Payslip
+            columnName: payType
+            defaultNullValue: 1
