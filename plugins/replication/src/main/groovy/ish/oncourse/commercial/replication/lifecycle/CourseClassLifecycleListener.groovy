@@ -31,6 +31,8 @@ class CourseClassLifecycleListener {
                 .where(QueuedRecord.TABLE_NAME.eq(courseClass.entityName))
                 .and(QueuedRecord.FOREIGN_RECORD_ID.eq(courseClass.id))
                 .select(cayenneService.newContext)
-        throw new ValidationException(CLASS_HAS_QUEUED_RECORDS_MESSAGE)
+        if (!records.empty) {
+            throw new ValidationException(CLASS_HAS_QUEUED_RECORDS_MESSAGE)
+        }
     }
 }
