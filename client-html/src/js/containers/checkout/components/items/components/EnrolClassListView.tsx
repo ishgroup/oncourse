@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import ListItem from "@material-ui/core/ListItem";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import Button from "@material-ui/core/Button";
+import { Radio } from "@material-ui/core";
 import { prefixer } from "../../../../../common/styles/mixins/prefixer";
 import { filterPastClasses } from "../../../utils";
 import { AppTheme } from "../../../../../model/common/Theme";
@@ -48,7 +49,7 @@ const styles = (theme: AppTheme) => createStyles({
       }
     },
     disabledSessionButton: {
-      color: `${theme.palette.text.disabled} !important`,
+      color: `${theme.palette.text.disabled}`,
       "& $disabledWarningColor": {
         color: "#fdc5c1"
       }
@@ -147,7 +148,10 @@ const EnrolClassListView = React.memo<any>(props => {
                         fullWidth
                       >
                         <Grid container>
-                          <Grid item xs={12} sm={8}>
+                          <Grid item xs={1}>
+                            <Radio color="primary" checked={isSelected} />
+                          </Grid>
+                          <Grid item xs={11} sm={7}>
                             <CalendarSession
                               {...s}
                               startLabel={s.startDateTime ? null : s.isSelfPaced ? "Self \n paced" : "No start date"}

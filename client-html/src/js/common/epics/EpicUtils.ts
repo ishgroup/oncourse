@@ -4,11 +4,11 @@
  */
 
 import {
- ActionsObservable, Epic, StateObservable, ofType 
+ ActionsObservable, Epic, StateObservable, ofType
 } from "redux-observable";
 import { Observable, concat, from } from "rxjs";
 import {
- delay, mergeMap, flatMap, catchError 
+ delay, mergeMap, flatMap, catchError
 } from "rxjs/operators";
 import { IAction } from "../actions/IshAction";
 import { FETCH_FINISH, FETCH_START } from "../actions";
@@ -30,7 +30,7 @@ export interface DelayedRequest<V, S, P> extends Request<V, S, P> {
   delay: number;
 }
 
-const processError = (data: any, type: string, processError: any, payload: any): IAction<any>[] => [
+export const processError = (data: any, type: string, processError: any, payload: any): IAction<any>[] => [
     ...(process.env.NODE_ENV === EnvironmentConstants.development
       ? [
           {

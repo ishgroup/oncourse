@@ -22,7 +22,7 @@ interface Props {
 const CheckoutItemView: React.FC<Props> = ({ onClose, openedItem, summary }) => {
   const formComponent = React.useMemo(() => {
     switch (openedItem.type) {
-      case "memberShip":
+      case "membership":
         return MembershipEditView;
       case "product":
         return ProductEditView;

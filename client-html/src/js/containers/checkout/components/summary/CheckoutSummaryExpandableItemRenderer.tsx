@@ -168,7 +168,7 @@ export const SummaryItemRow = React.memo<any>(props => {
         </>
       );
     }
-    if (item.type === "memberShip") {
+    if (item.type === "membership") {
       return (
         <Grid item xs={12}>
           {item.expiryType === "Never (Lifetime)" ? (
