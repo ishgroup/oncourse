@@ -32,7 +32,7 @@ class EntityRelationTypeApiImpl implements EntityRelationTypeApi {
     void update(List<EntityRelationTypeDTO> relationTypes) {
         validateDuplicates(relationTypes)
         relationTypes.each { it ->
-            if (it.id) {
+            if (!it.id) {
                 entityRelationTypeApiService.create(it)
             } else {
                 entityRelationTypeApiService.update(it.id, it)
