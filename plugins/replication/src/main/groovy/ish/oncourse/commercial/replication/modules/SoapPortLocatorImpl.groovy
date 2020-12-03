@@ -13,9 +13,9 @@ import ish.oncourse.commercial.replication.Replication
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.license.LicenseService
-import ish.oncourse.webservices.soap.v22.PaymentPortType
-import ish.oncourse.webservices.soap.v22.ReplicationPortType
-import ish.oncourse.webservices.soap.v22.ReplicationService
+import ish.oncourse.webservices.soap.v23.PaymentPortType
+import ish.oncourse.webservices.soap.v23.ReplicationPortType
+import ish.oncourse.webservices.soap.v23.ReplicationService
 import ish.oncourse.webservices.soap.v7.ReferencePortType
 import ish.oncourse.webservices.soap.v7.ReferenceService
 import org.apache.cxf.headers.Header

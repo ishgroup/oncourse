@@ -6,7 +6,7 @@ package ish.oncourse.commercial.replication.updaters
 
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
-import ish.oncourse.webservices.v22.stubs.replication.RoomStub
+import ish.oncourse.webservices.v23.stubs.replication.RoomStub
 
 /**
  */

@@ -8,7 +8,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.ContactRelation
 import ish.oncourse.server.cayenne.ContactRelationType
-import ish.oncourse.webservices.v22.stubs.replication.ContactRelationStub
+import ish.oncourse.webservices.v23.stubs.replication.ContactRelationStub
 
 class ContactRelationUpdater extends AbstractAngelUpdater<ContactRelationStub, ContactRelation> {
 

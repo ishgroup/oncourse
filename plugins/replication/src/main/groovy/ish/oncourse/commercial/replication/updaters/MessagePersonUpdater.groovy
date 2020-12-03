@@ -10,7 +10,7 @@ import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.webservices.v22.stubs.replication.MessagePersonStub
+import ish.oncourse.webservices.v23.stubs.replication.MessagePersonStub
 
 /**
  */

@@ -10,7 +10,7 @@ import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.ContactDuplicate
 import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.webservices.v22.stubs.replication.ContactDuplicateStub
+import ish.oncourse.webservices.v23.stubs.replication.ContactDuplicateStub
 
 class ContactDuplicateUpdater extends AbstractAngelUpdater<ContactDuplicateStub, ContactDuplicate> {
 

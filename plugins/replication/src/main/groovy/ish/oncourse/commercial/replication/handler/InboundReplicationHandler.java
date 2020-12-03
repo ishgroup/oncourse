@@ -8,10 +8,10 @@ package ish.oncourse.commercial.replication.handler;
 import com.google.inject.Inject;
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
-import ish.oncourse.webservices.soap.v22.ReplicationFault;
+import ish.oncourse.webservices.soap.v23.ReplicationFault;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericReplicationRecords;
-import ish.oncourse.webservices.v22.stubs.replication.ReplicationResult;
+import ish.oncourse.webservices.v23.stubs.replication.ReplicationResult;
 
 import java.util.ArrayList;
 import java.util.List;

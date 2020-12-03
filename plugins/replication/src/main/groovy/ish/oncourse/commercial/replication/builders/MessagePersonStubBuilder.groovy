@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.webservices.v22.stubs.replication.MessagePersonStub
+import ish.oncourse.webservices.v23.stubs.replication.MessagePersonStub
 
 /**
  */

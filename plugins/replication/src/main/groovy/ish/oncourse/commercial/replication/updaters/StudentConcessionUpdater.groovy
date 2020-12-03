@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.ConcessionType
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.StudentConcession
-import ish.oncourse.webservices.v22.stubs.replication.StudentConcessionStub
+import ish.oncourse.webservices.v23.stubs.replication.StudentConcessionStub
 
 /**
  */

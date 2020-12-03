@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.AssessmentSubmission
-import ish.oncourse.webservices.v22.stubs.replication.AssessmentSubmissionStub
+import ish.oncourse.webservices.v23.stubs.replication.AssessmentSubmissionStub
 
 /**
  * Created by Artem on 24/10/2016.

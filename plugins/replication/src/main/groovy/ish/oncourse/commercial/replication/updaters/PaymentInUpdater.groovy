@@ -11,7 +11,7 @@ import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.webservices.v22.stubs.replication.PaymentInStub
+import ish.oncourse.webservices.v23.stubs.replication.PaymentInStub
 import ish.util.LocalDateUtils
 import ish.util.PaymentMethodUtil
 import ish.util.SetBankingMethod

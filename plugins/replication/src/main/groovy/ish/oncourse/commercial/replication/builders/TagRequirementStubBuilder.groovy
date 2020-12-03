@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.builders
 import groovy.transform.CompileStatic
 import ish.oncourse.commercial.replication.updaters.AbstractAngelUpdater
 import ish.oncourse.server.cayenne.TagRequirement
-import ish.oncourse.webservices.v22.stubs.replication.TagRequirementStub
+import ish.oncourse.webservices.v23.stubs.replication.TagRequirementStub
 
 import static ish.oncourse.cayenne.TaggableClasses.*
 

@@ -11,7 +11,7 @@ import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.FieldConfiguration
 import ish.oncourse.server.cayenne.Survey
-import ish.oncourse.webservices.v22.stubs.replication.SurveyStub
+import ish.oncourse.webservices.v23.stubs.replication.SurveyStub
 import org.apache.cayenne.query.ObjectSelect
 
 class SurveyUpdater extends AbstractAngelUpdater<SurveyStub,Survey> {

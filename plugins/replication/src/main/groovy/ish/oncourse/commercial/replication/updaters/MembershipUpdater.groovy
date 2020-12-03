@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.MembershipProduct
-import ish.oncourse.webservices.v22.stubs.replication.MembershipStub
+import ish.oncourse.webservices.v23.stubs.replication.MembershipStub
 
 /**
  */

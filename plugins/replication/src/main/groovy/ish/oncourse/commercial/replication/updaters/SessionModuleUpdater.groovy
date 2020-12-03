@@ -8,7 +8,7 @@ import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Session
 import ish.oncourse.server.cayenne.SessionModule
 import ish.oncourse.commercial.replication.reference.ReferenceUtil
-import ish.oncourse.webservices.v22.stubs.replication.SessionModuleStub
+import ish.oncourse.webservices.v23.stubs.replication.SessionModuleStub
 
 /**
  */

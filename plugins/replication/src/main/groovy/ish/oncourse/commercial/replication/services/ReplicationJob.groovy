@@ -12,8 +12,8 @@ import ish.oncourse.commercial.replication.handler.ReplicationHandler
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.license.LicenseService
-import ish.oncourse.webservices.soap.v22.AuthFailure
-import ish.oncourse.webservices.soap.v22.ReplicationPortType
+import ish.oncourse.webservices.soap.v23.AuthFailure
+import ish.oncourse.webservices.soap.v23.ReplicationPortType
 import org.apache.cxf.binding.soap.SoapFault
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger

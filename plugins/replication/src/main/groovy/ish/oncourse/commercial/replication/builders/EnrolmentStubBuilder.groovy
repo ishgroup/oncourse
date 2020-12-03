@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.webservices.v22.stubs.replication.EnrolmentStub
+import ish.oncourse.webservices.v23.stubs.replication.EnrolmentStub
 
 /**
  */

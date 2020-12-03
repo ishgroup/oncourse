@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.updaters
 
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.v22.stubs.replication.CustomFieldStub
+import ish.oncourse.webservices.v23.stubs.replication.CustomFieldStub
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 

@@ -9,9 +9,9 @@ import ish.oncourse.webservices.util.SupportedVersions;
 
 class Replication {
 
-    static final SupportedVersions ACTUAL_REPLICATION_VERSION = SupportedVersions.V22
+    static final SupportedVersions ACTUAL_REPLICATION_VERSION = SupportedVersions.V23
 
-    static final String ACTUAL_REPLICATION_VERSION_STRING = "v22"
+    static final String ACTUAL_REPLICATION_VERSION_STRING = "v23"
 
     static final String ACTUAL_REFERENCE_VERSION_STRING = "v7"
 }

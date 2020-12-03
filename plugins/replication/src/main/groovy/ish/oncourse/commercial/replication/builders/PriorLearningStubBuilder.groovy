@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.PriorLearning
-import ish.oncourse.webservices.v22.stubs.replication.PriorLearningStub
+import ish.oncourse.webservices.v23.stubs.replication.PriorLearningStub
 
 class PriorLearningStubBuilder extends AbstractAngelStubBuilder<PriorLearning, PriorLearningStub> {
 

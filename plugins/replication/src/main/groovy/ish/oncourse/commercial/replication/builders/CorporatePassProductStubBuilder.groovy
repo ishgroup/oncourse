@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.CorporatePassProduct
-import ish.oncourse.webservices.v22.stubs.replication.CorporatePassProductStub
+import ish.oncourse.webservices.v23.stubs.replication.CorporatePassProductStub
 
 class CorporatePassProductStubBuilder extends AbstractAngelStubBuilder<CorporatePassProduct, CorporatePassProductStub> {
 	@Override

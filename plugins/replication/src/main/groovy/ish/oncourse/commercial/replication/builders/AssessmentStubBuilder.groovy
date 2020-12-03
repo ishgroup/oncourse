@@ -6,10 +6,10 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Assessment
-import ish.oncourse.webservices.v22.stubs.replication.AssessmentStub
+import ish.oncourse.webservices.v23.stubs.replication.AssessmentStub
 
 /**
- * Created by Artem on 22/10/2016.
+ * Created by Artem on 23/10/2016.
  */
 class AssessmentStubBuilder extends AbstractAngelStubBuilder<Assessment, AssessmentStub> {
 

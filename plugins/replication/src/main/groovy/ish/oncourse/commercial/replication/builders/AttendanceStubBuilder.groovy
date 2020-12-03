@@ -6,7 +6,7 @@ package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Attendance
 import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.webservices.v22.stubs.replication.AttendanceStub
+import ish.oncourse.webservices.v23.stubs.replication.AttendanceStub
 
 /**
  */

@@ -48,7 +48,6 @@ class AngelUpdaterImpl implements IAngelUpdater {
 		updaterMap.put(Survey.class.getSimpleName(), new SurveyUpdater())
 		updaterMap.put(Membership.class.getSimpleName(), new MembershipUpdater())
 		updaterMap.put(MembershipProduct.class.getSimpleName(), new MembershipProductUpdater())
-		updaterMap.put(EntityRelation.class.getSimpleName(), new EntityRelationUpdater())
 		updaterMap.put(CorporatePass.class.getSimpleName(), new CorporatePassUpdater())
 		updaterMap.put(CorporatePassCourseClass.class.getSimpleName(), new CorporatePassCourseClassUpdater())
 		updaterMap.put(CorporatePassProduct.class.getSimpleName(), new CorporatePassProductUpdater())

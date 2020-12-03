@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 
 import ish.math.Money
 import ish.oncourse.server.cayenne.ArticleProduct
-import ish.oncourse.webservices.v22.stubs.replication.ArticleProductStub
+import ish.oncourse.webservices.v23.stubs.replication.ArticleProductStub
 
 /**
  */

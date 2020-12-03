@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Certificate
-import ish.oncourse.webservices.v22.stubs.replication.CertificateStub
+import ish.oncourse.webservices.v23.stubs.replication.CertificateStub
 import ish.util.LocalDateUtils
 
 /**

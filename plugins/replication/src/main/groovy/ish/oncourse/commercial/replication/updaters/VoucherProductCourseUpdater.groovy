@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.VoucherProduct
 import ish.oncourse.server.cayenne.VoucherProductCourse
-import ish.oncourse.webservices.v22.stubs.replication.VoucherProductCourseStub
+import ish.oncourse.webservices.v23.stubs.replication.VoucherProductCourseStub
 
 /**
  */

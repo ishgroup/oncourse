@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Script
-import ish.oncourse.webservices.v22.stubs.replication.ScriptStub
+import ish.oncourse.webservices.v23.stubs.replication.ScriptStub
 
 class ScriptStubBuilder extends AbstractAngelStubBuilder<Script, ScriptStub> {
 	@Override

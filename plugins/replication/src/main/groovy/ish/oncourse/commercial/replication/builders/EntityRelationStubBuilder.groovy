@@ -5,7 +5,13 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.EntityRelation
-import ish.oncourse.webservices.v22.stubs.replication.EntityRelationStub
+import ish.oncourse.server.cayenne.Module
+import ish.oncourse.server.cayenne.Qualification
+import ish.oncourse.server.cayenne.Queueable
+import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.oncourse.webservices.v23.stubs.replication.EntityRelationStub
+import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.SelectById
 
 /**
  */
@@ -21,12 +27,24 @@ class EntityRelationStubBuilder extends AbstractAngelStubBuilder<EntityRelation,
 		stub.setCreated(entity.getCreatedOn())
 		stub.setModified(entity.getModifiedOn())
 
-		stub.setFromEntityIdentifier(entity.getFromEntityIdentifier().getDatabaseValue())
-		stub.setToEntityIdentifier(entity.getToEntityIdentifier().getDatabaseValue())
-		stub.setFromEntityAngelId(entity.getFromEntityAngelId())
-		stub.setToEntityAngelId(entity.getToEntityAngelId())
+		stub.setFromEntityIdentifier(entity.getFromEntityIdentifier())
+		stub.setToEntityIdentifier(entity.getToEntityIdentifier())
+		stub.setFromEntityAngelId(getWillowIdOfEntity(entity.getFromEntityAngelId(), entity.getFromEntityIdentifier(), entity.getContext()))
+		stub.setToEntityAngelId(getWillowIdOfEntity(entity.getToEntityAngelId(), entity.getToEntityIdentifier(), entity.getContext()))
+
+		stub.setRelationTypeId(entity.getRelationType().getId())
 
 		return stub
+	}
+
+	private static Long getWillowIdOfEntity(Long entityId, String entityName, ObjectContext context) {
+		if (Module.simpleName == entityName) {
+			return SelectById.query(Module, entityId).selectOne(context).getWillowId()
+		}
+		if (Qualification.simpleName == entityName) {
+			return SelectById.query(Qualification, entityId).selectOne(context).getWillowId()
+		}
+		return entityId
 	}
 
 }

@@ -9,8 +9,8 @@ import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.webservices.util.GenericReplicatedRecord
 import ish.oncourse.webservices.util.GenericReplicationStub
 import ish.oncourse.webservices.util.StubUtils
-import ish.oncourse.webservices.v22.stubs.replication.HollowStub
-import ish.oncourse.webservices.v22.stubs.replication.ReplicatedRecord
+import ish.oncourse.webservices.v23.stubs.replication.HollowStub
+import ish.oncourse.webservices.v23.stubs.replication.ReplicatedRecord
 import org.apache.cayenne.ObjectContext
 
 class ReplicationUtils {
