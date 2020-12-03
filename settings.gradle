@@ -17,6 +17,6 @@ pluginManagement {
 rootProject.name = 'onCourse commercial'
 include ':plugins:cloud-assess',
         ':plugins:xero',
-        ':plugins:replication'
-        
+        ':plugins:replication',
+        ':plugins:tcsi'
 
