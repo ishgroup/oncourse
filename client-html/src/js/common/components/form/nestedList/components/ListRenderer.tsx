@@ -52,8 +52,7 @@ const RowContent = React.memo<any>(({
           onClick={item.link ? () => openInternalLink(item.link) : undefined}
         >
           {item.primaryText}
-
-          <Launch fontSize="inherit" color="secondary" className="vert-align-mid ml-0-5" />
+          {Boolean(item.link) && <Launch fontSize="inherit" color="secondary" className="vert-align-mid ml-0-5" />}
         </Typography>
 
         <div className={classes.chipsWrapper}>
@@ -95,6 +94,8 @@ const RowContent = React.memo<any>(({
     </div>
   </li>
 ));
+
+export const NestedListRow = withStyles(listStyles)(RowContent);
 
 const RowRenderer = React.forwardRef<any, any>(({ data, index, style }, ref) => {
   const { items, ...rest } = data;

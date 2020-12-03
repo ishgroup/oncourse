@@ -39,7 +39,7 @@ const styles = (theme: AppTheme) => createStyles({
 interface Props {
   classes?: any;
   heading?: string;
-  subHeading?: string;
+  subHeading?: React.ReactNode;
   name?: string;
   placeholder?: string;
   items?: any[];

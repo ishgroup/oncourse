@@ -4,13 +4,13 @@
  */
 
 import {
-  ArticleProduct,
+  ArticleProduct, CheckoutSaleRelation,
   Course,
   CourseClass,
   Discount,
   EnrolmentStudyReason,
   MembershipProduct,
-  PaymentMethod,
+  PaymentMethod, Sale,
   VoucherProduct
 } from "@api/model";
 import { CheckoutFundingInvoice } from "./fundingInvoice";
@@ -19,7 +19,7 @@ export type CheckoutEntity = "contact"
   | "course"
   | "voucher"
   | "product"
-  | "memberShip"
+  | "membership"
 
 export interface CheckoutListRow {
   type: CheckoutEntity;
@@ -87,6 +87,7 @@ export type CheckoutItem = CheckoutCourse & VoucherProduct & MembershipProduct &
   validTo?: string;
   restrictToPayer?: boolean;
   expireNever?: string;
+  isRelation?: boolean;
 };
 
 export interface CheckoutState {
@@ -103,6 +104,7 @@ export interface CheckoutState {
   hasErrors?: boolean;
   disableDiscounts?: boolean;
   fundingInvoice?: CheckoutFundingInvoice;
+  salesRelations?: CheckoutSaleRelation[];
 }
 
 export interface CheckoutSummary {
@@ -178,4 +180,19 @@ export interface PreviousInvoiceState {
   invoices?: any[];
   invoiceTotal?: number;
   unCheckAll?: boolean;
+}
+
+export interface CheckoutEnrolmentCustom {
+  contactId?: number;
+  courseClass?: CheckoutCourse;
+}
+
+export interface CheckoutSaleExtended extends Sale {
+  cartItem?: CheckoutItem;
+  link?: string;
+}
+
+export interface CheckoutSaleRelationExtended extends CheckoutSaleRelation {
+  contactId?: number;
+  toItem?: CheckoutSaleExtended;
 }
