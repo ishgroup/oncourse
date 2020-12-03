@@ -39,6 +39,9 @@ const styles = (theme: AppTheme) => createStyles({
     "&:hover + $dropInfo": {
       visibility: "visible"
     }
+  },
+  documentGridItem: {
+    height: "auto"
   }
 });
 
@@ -314,7 +317,7 @@ class DocumentsRenderer extends React.PureComponent<any, DocumentsRendererState>
         </Grid>
         <Grid container spacing={3} wrap="wrap">
           {renderedItems && renderedItems.map((item, index) => (
-            <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id}>
+            <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id} className={classes.documentGridItem}>
               <DocumentItem entity={entity} index={index} item={item} editItem={this.setEditingItem} unlink={this.unlinkDocument} />
             </Grid>
           ))}
