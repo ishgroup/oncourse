@@ -183,9 +183,9 @@ class CheckoutApiImpl implements CheckoutApi {
         }
     }
 
-    List<CheckoutSaleRelationDTO> getSaleRelations(Long id, String entity, Contact contact) {
+    List<CheckoutSaleRelationDTO> getSaleRelations(Long id, String entityName, Contact contact) {
         ObjectContext context = cayenneService.newContext
-        List<EntityRelation> relations = EntityRelationDao.getRelatedTo(context, entity, id)
+        List<EntityRelation> relations = EntityRelationDao.getRelatedTo(context, entityName, id)
         List<CheckoutSaleRelationDTO> result = []
         
         relations.findAll { Course.simpleName == it.toEntityIdentifier }.each { relation ->
@@ -198,7 +198,7 @@ class CheckoutApiImpl implements CheckoutApi {
 
                 result << new CheckoutSaleRelationDTO().with {saleRelation ->
                     saleRelation.fromItem = new SaleDTO().with { sale ->
-                        sale.type = SaleTypeDTO.fromValue(entity)
+                        sale.type = SaleTypeDTO.values()[0].getFromCayenneClassName(entityName)
                         sale.id = id
                         sale
                     }
@@ -221,12 +221,12 @@ class CheckoutApiImpl implements CheckoutApi {
             Product product = productDao.getById(context, relation.toEntityAngelId)
             result << new CheckoutSaleRelationDTO().with { saleRelation ->
                 saleRelation.fromItem = new SaleDTO().with { sale ->
-                    sale.type = SaleTypeDTO.fromValue(entity)
+                    sale.type = SaleTypeDTO.values()[0].getFromCayenneClassName(entityName)
                     sale.id = id
                     sale
                 }
                 saleRelation.toItem = new SaleDTO().with { sale ->
-                    sale.type = SaleTypeDTO.PRODUCT
+                    sale.type = SaleTypeDTO.values()[0].getFromCayenneClassName(product.getClass().getSimpleName())
                     sale.id = product.id
                     sale
                 }
@@ -250,7 +250,7 @@ class CheckoutApiImpl implements CheckoutApi {
             }
         } else if (StringUtils.trimToNull(productIds)) {
             (productIds.split(',').collect {Long.valueOf(it)} as List<Long>).each { productId ->
-                result.addAll(getSaleRelations(productId, Course.simpleName, contact))
+                result.addAll(getSaleRelations(productId, Product.simpleName, contact))
             }
         }
         return result
