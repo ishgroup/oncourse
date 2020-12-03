@@ -61,23 +61,27 @@ class VetStudentLoans extends React.Component<any, any> {
           disabled={values.id}
           fullWidth
         />
-        <FormField
-          name="fields.activationCode"
-          label="Activation Code"
-          type="text"
-          required
-          fullWidth
-        />
-        <div className="mt-1">
-          <Button
-            href={`https://proda.humanservices.gov.au/piaweb/app/orgdel/orgs/${values.fields.organisationId}/devices/${values.fields.deviceName}`}
-            target="_blank"
-            variant="contained"
-            disabled={!hasNameAndID}
-          >
-            Get activation code
-          </Button>
-        </div>
+        {!values.id && (
+          <>
+            <FormField
+              name="fields.activationCode"
+              label="Activation Code"
+              type="text"
+              required
+              fullWidth
+            />
+            <div className="mt-1">
+              <Button
+                href={`https://proda.humanservices.gov.au/piaweb/app/orgdel/orgs/${values.fields.organisationId}/devices/${values.fields.deviceName}`}
+                target="_blank"
+                variant="contained"
+                disabled={!hasNameAndID}
+              >
+                Get activation code
+              </Button>
+            </div>
+          </>
+          )}
         {!hasNameAndID
           && <Typography variant="caption">Please fill Device name and Organisation ID fields to be able to get activation code</Typography>}
       </form>
