@@ -31,11 +31,11 @@ trait EntityRelationCartActionDTOTrait {
             case EntityRelationCartAction.NO_ACTION:
                 return EntityRelationCartActionDTO.NO_ACTION
             case EntityRelationCartAction.SUGGESTION:
-                return EntityRelationCartActionDTO.NO_ACTION
+                return EntityRelationCartActionDTO.SUGGESTION
             case EntityRelationCartAction.ADD_ALLOW_REMOVAL:
-                return EntityRelationCartActionDTO.NO_ACTION
+                return EntityRelationCartActionDTO.ADD_AND_ALLOW_REMOVAL
             case EntityRelationCartAction.ADD_NO_REMOVAL:
-                return EntityRelationCartActionDTO.NO_ACTION
+                return EntityRelationCartActionDTO.ADD_BUT_DO_NOT_ALLOW_REMOVAL
             default:
                 throw new IllegalArgumentException("$cartAction.displayName")
         }
