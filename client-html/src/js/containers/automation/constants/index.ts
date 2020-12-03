@@ -69,6 +69,7 @@ export const MESSAGE_TEMPLATE_ENTITIES = stringLiterals(
   "Membership",
   "PaymentIn",
   "PaymentOut",
+  "Payslip",
   "ProductItem",
   "Voucher",
   "WaitingList"
