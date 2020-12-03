@@ -26,4 +26,19 @@ trait SaleTypeDTOTrait {
                 return (this as SaleTypeDTO).toString()
         }
     }
+
+    SaleTypeDTO getFromCayenneClassName(String entityName) {
+        switch (entityName) {
+            case "ArticleProduct":
+                return SaleTypeDTO.PRODUCT
+            case "MembershipProduct":
+                return SaleTypeDTO.MEMBERSHIP
+            case "VoucherProduct":
+                return SaleTypeDTO.VOUCHER
+            case "CourseClass":
+                return SaleTypeDTO.CLASS
+            default:
+                return SaleTypeDTO.fromValue(entityName)
+        }
+    }
 }
