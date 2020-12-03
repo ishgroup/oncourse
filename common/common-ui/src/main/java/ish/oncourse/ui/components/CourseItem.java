@@ -38,7 +38,6 @@ import java.util.regex.Pattern;
 
 public class CourseItem extends ISHCommon {
 
-	private static final int COURSE_DETAILS_LENGTH = 490;
 	public static final String COURSE_CONTEXT = "CourseContext";
 	private static final Logger logger = LogManager.getLogger();
 
@@ -53,12 +52,6 @@ public class CourseItem extends ISHCommon {
 	@Parameter
 	@Property
 	private boolean linkToLocationsMap;
-	
-	@Inject
-	private IPlainTextExtractor extractor;
-
-	@Inject
-	private IRichtextConverter textileConverter;
 	
 	@Inject
 	private PreferenceController preferenceController;
@@ -147,16 +140,7 @@ public class CourseItem extends ISHCommon {
 	}
 
 	public String getCourseDetail() {
-		String detail = textileConverter.convertCustomText(courseItemModel.getCourse().getDetail(), new ValidationErrors());
-		if (detail == null) {
-			return StringUtils.EMPTY;
-		}
-
-		if (isList) {
-			return StringUtilities.abbreviate(extractor.extractFromHtml(detail), COURSE_DETAILS_LENGTH);
-		} else {
-			return detail;
-		}
+		return convertCustomText(courseItemModel.getCourse().getDetail(), isList);
 	}
 
 	public String getCourseItemClass() {

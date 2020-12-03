@@ -3,9 +3,14 @@ package ish.oncourse.ui.base;
 import ish.math.Money;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.Queueable;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.tapestry.TapestryFormatUtils;
+import ish.oncourse.utils.StringUtilities;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -39,9 +44,34 @@ public abstract class ISHCommon {
     @Property
     private Document entityAttachment;
 
+    @Inject
+    private IRichtextConverter textileConverter;
+
+    @Inject
+    private IPlainTextExtractor extractor;
+
     @Property
     private TapestryFormatUtils formatUtils = new TapestryFormatUtils();
+    
+    private static final int SNIPPET_LENGTH = 490;
 
+    public String convertCustomText(String source) {
+        return convertCustomText(source, true);
+    }
+    
+    public String convertCustomText(String source, Boolean snippet) {
+        String detail = textileConverter.convertCustomText(source, new ValidationErrors());
+        if (detail == null) {
+            return StringUtils.EMPTY;
+        }
+
+        if (snippet) {
+            return StringUtilities.abbreviate(extractor.extractFromHtml(detail), SNIPPET_LENGTH);
+        } else {
+            return detail;
+        }    
+    }
+    
     public String formatMoney(Money money, String pattern) {
        return formatUtils.formatMoney(money, pattern);
     }
@@ -73,4 +103,5 @@ public abstract class ISHCommon {
     public static int getIntParam(String s, int def) {
         return (s != null && s.matches("\\d+")) ? Integer.parseInt(s) : def;
     }
+    
 }
