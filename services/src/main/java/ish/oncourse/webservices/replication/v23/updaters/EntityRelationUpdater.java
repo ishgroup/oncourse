@@ -30,7 +30,8 @@ public class EntityRelationUpdater extends AbstractWillowUpdater<EntityRelationS
 
 	private Class<? extends Queueable> getClassByName(String name) {
 		try {
-			return Class.forName(name).asSubclass(Queueable.class);
+			String path = EntityRelation.class.getPackage().getName();
+			return Class.forName(path.concat(".").concat(name)).asSubclass(Queueable.class);
 		} catch (ClassNotFoundException | ClassCastException e) {
 			e.printStackTrace();
 			return null;
