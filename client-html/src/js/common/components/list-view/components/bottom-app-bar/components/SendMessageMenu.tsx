@@ -28,6 +28,7 @@ const SendMessageEntities = [
   "CourseClass",
   "PaymentIn",
   "PaymentOut",
+  "Payslip",
   "ProductItem",
   "WaitingList"
 ];
@@ -40,6 +41,7 @@ const EntitiesToMessageTemplateEntitiesMap = {
   CourseClass: ["Contact", "CourseClass", "Enrolment"],
   PaymentIn: ["Contact", "PaymentIn"],
   PaymentOut: ["Contact", "PaymentOut"],
+  Payslip: ["Contact", "Payslip"],
   ProductItem: ["Contact", "Voucher", "Membership", "Article", "ProductItem"],
   WaitingList: ["Contact", "WaitingList"]
 };
