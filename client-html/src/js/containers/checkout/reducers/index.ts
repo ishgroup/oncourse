@@ -1144,11 +1144,8 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       const items = [...state.items];
 
       cartItems.forEach(c => {
-        console.log(c.toItem);
         items.push(c.toItem.cartItem);
       });
-
-      console.log(action.payload, state.items, items);
 
       return {
         ...state,
@@ -1158,7 +1155,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
           list: state.summary.list.map(li => ({
             ...li,
             items: items.map(it => {
-              const cartItem = cartItems.find(ci => ci.contactId === li.contact.id);
+              const cartItem = cartItems.find(ci => ci.contactIds.includes(li.contact.id));
               return { ...it, checked: cartItem ? true : it.checked };
             })
           }))

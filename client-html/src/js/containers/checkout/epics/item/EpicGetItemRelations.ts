@@ -1,6 +1,6 @@
 import { ActionsObservable, Epic } from "redux-observable";
 import { flatMap, mergeMap, catchError } from "rxjs/operators";
-import { CheckoutSaleRelation, MembershipProduct } from "@api/model";
+import { CheckoutSaleRelation } from "@api/model";
 import uniqid from "uniqid";
 import {
   CHECKOUT_ADD_CONTACT,
@@ -10,7 +10,6 @@ import {
 import CheckoutService from "../../services/CheckoutService";
 import { State } from "../../../../reducers/state";
 import { processError } from "../../../../common/epics/EpicUtils";
-import { checkoutUpdateSummaryPrices } from "../../actions/checkoutSummary";
 import EntityService from "../../../../common/services/EntityService";
 import {
   checkoutCourseClassMap, checkoutCourseMap, checkoutProductMap, checkoutVoucherMap, processCheckoutSale
@@ -37,7 +36,9 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
     if (!state$.value.checkout.contacts.length || !state$.value.checkout.items.length) {
       return { cartItems, suggestItems };
     }
+
     const relations = [];
+
     await state$.value.checkout.contacts
       .map(c => ({
           id: c.id,
@@ -51,9 +52,19 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
         await a;
         const draft = await b.get();
         const items = draft.filter((d: CheckoutSaleRelation) =>
-          !state$.value.checkout.items.some(i => (i.type === "course" ? i.courseId === d.toItem.id : i.id === d.toItem.id)
-          && relations.some(r => r.toItem.id !== d.toItem.id)));
-        relations.push(...items.map(i => ({ ...i, contactId: b.id })));
+          !state$.value.checkout.items.some(i => (i.type === "course" ? i.courseId === d.toItem.id : i.id === d.toItem.id)));
+
+        const newItems = [];
+
+        items.forEach(i => {
+          const match = relations.find(r => r.toItem.id === i.toItem.id);
+          if (match) {
+            match.contactIds.push(b.id);
+          } else {
+            newItems.push({ ...i, contactIds: [b.id] });
+          }
+        });
+        relations.push(...newItems);
       }, Promise.resolve());
 
     await relations
