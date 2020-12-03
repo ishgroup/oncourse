@@ -31,9 +31,7 @@ class ArticleProductApiImpl implements ArticleProductApi {
     @Override
     void create(ArticleProductDTO articleDTO) {
         ArticleProduct dbModel = service.create(articleDTO)
-        if (!articleDTO.relatedlSalables.empty) {
-            EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Product.simpleName, articleDTO.relatedlSalables)
-        }
+        EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Product.simpleName, articleDTO.relatedlSalables)
     }
 
     @Override
@@ -44,8 +42,6 @@ class ArticleProductApiImpl implements ArticleProductApi {
     @Override
     void update(Long id, ArticleProductDTO articleDTO) {
         service.update(id, articleDTO)
-        if (!articleDTO.relatedlSalables.empty) {
-            EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Product.simpleName, articleDTO.relatedlSalables)
-        }
+        EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Product.simpleName, articleDTO.relatedlSalables)
     }
 }

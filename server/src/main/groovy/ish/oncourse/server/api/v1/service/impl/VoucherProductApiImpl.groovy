@@ -31,9 +31,7 @@ class VoucherProductApiImpl implements VoucherProductApi {
     @Override
     void create(VoucherProductDTO voucherProductDTO) {
         VoucherProduct dbModel = service.create(voucherProductDTO)
-        if (!voucherProductDTO.relatedlSalables.empty) {
-            EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Product.simpleName, voucherProductDTO.relatedlSalables)
-        }
+        EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Product.simpleName, voucherProductDTO.relatedlSalables)
     }
 
     @Override
@@ -44,8 +42,6 @@ class VoucherProductApiImpl implements VoucherProductApi {
     @Override
     void update(Long id, VoucherProductDTO voucherProductDTO) {
         service.update(id, voucherProductDTO)
-        if (!voucherProductDTO.relatedlSalables.empty) {
-            EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Product.simpleName, voucherProductDTO.relatedlSalables)
-        }
+        EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Product.simpleName, voucherProductDTO.relatedlSalables)
     }
 }
