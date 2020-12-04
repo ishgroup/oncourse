@@ -8,7 +8,7 @@ import {
   Course,
   CourseClass,
   Discount,
-  EnrolmentStudyReason,
+  EnrolmentStudyReason, EntityRelationCartAction,
   MembershipProduct,
   PaymentMethod, Sale,
   VoucherProduct
@@ -87,7 +87,7 @@ export type CheckoutItem = CheckoutCourse & VoucherProduct & MembershipProduct &
   validTo?: string;
   restrictToPayer?: boolean;
   expireNever?: string;
-  isRelation?: boolean;
+  cartAction?: EntityRelationCartAction;
 };
 
 export interface CheckoutState {

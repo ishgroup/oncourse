@@ -3,6 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { CheckoutSaleRelationExtended } from "../../../model/checkout";
+
 export const CHECKOUT_ADD_CONTACT = "checkout/add/contact";
 export const CHECKOUT_REMOVE_CONTACT = "checkout/remove/contact";
 export const CHECKOUT_UPDATE_CONTACT = "checkout/update/contact";
@@ -21,6 +23,11 @@ export const CHECKOUT_SET_HAS_ERRORS = "checkout/set/hasErrors";
 export const CHECKOUT_CLEAR_STATE = "checkout/clear/state";
 
 export const CHECKOUT_UPDATE_RELATED_ITEMS = "checkout/update/relatedItems";
+
+export const checkoutUpdateRelatedItems = (cartItems: CheckoutSaleRelationExtended[], suggestItems: CheckoutSaleRelationExtended[]) => ({
+  type: CHECKOUT_UPDATE_RELATED_ITEMS,
+  payload: { cartItems, suggestItems }
+});
 
 export const checkoutClearState = () => ({
   type: CHECKOUT_CLEAR_STATE

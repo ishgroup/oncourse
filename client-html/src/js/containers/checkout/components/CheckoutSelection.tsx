@@ -87,7 +87,14 @@ import {
   getPlainMembershipProducts, setPlainMembershipProductSearch
 } from "../../entities/membershipProducts/actions";
 import {
-  addContact, removeContact, updateContact, addItem, removeItem, updateClassItem, checkoutClearState
+  addContact,
+  removeContact,
+  updateContact,
+  addItem,
+  removeItem,
+  updateClassItem,
+  checkoutClearState,
+  checkoutUpdateRelatedItems
 } from "../actions";
 import {
   checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts
@@ -830,19 +837,49 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
 
   const onItemDeleteHandler = React.useCallback(
     (e, i, row) => {
-      removeItem(row.id, row.type);
+      const onRemove = () => {
+        removeItem(row.id, row.type);
 
-      if (selectedCourse && selectedCourse.id === row.id) {
-        onCloseClassList();
+        if (selectedCourse && selectedCourse.id === row.id) {
+          onCloseClassList();
+        }
+        if (openedItem && openedItem.id === row.id && openedItem.type === row.type) {
+          onCloseItemView();
+        }
+        if (row.cartAction && selectedItems.length) {
+          dispatch(checkoutUpdateRelatedItems(
+            [],
+            [...salesRelations,
+                {
+                  cartAction: row.cartAction,
+                  toItem: {
+                    id: row.id,
+                    cartItem: row,
+                    type: row.type.capitalize(),
+                    link: `/${row.type.toLowerCase()}/${row.type === "course" ? row.courseId : row.id}`
+                  },
+                  fromItem: { id: selectedItems[0].id }
+                }
+              ]
+          ));
+        }
+
+        setTimeout(() => {
+          checkoutUpdateSummaryClassesDiscounts();
+        }, 500);
+      };
+
+      if (row.cartAction === "Add but do not allow removal") {
+        openConfirm(
+          onRemove,
+          "The item you are removing is required by another item in the shopping cart.",
+          "Override"
+        );
+      } else {
+        onRemove();
       }
-      if (openedItem && openedItem.id === row.id && openedItem.type === row.type) {
-        onCloseItemView();
-      }
-      setTimeout(() => {
-        checkoutUpdateSummaryClassesDiscounts();
-      }, 500);
     },
-    [selectedCourse, openedItem]
+    [selectedCourse, salesRelations, openedItem]
   );
 
   const debouncedSearchUpdate = React.useCallback<any>(debounce((name, val) => setItemsSearch(val.trim().toLowerCase()), 800), []);
