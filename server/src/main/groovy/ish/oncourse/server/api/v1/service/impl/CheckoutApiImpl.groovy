@@ -186,57 +186,66 @@ class CheckoutApiImpl implements CheckoutApi {
 
     List<CheckoutSaleRelationDTO> getSaleRelations(Long id, String entityName, Contact contact) {
         ObjectContext context = cayenneService.newContext
-        List<EntityRelation> relations = EntityRelationDao.getRelatedTo(context, entityName, id)
+        List<EntityRelation> relations = EntityRelationDao.getRelatedToOrEqual(context, entityName, id)
                 .findAll { EntityRelationCartAction.NO_ACTION != it.relationType.shoppingCart }
         List<CheckoutSaleRelationDTO> result = []
         
-        relations.findAll { Course.simpleName == it.toEntityIdentifier }.each { relation ->
+        relations.findAll { Course.simpleName == it.toEntityIdentifier && id != it.toEntityAngelId }.each { relation ->
             EntityRelationType relationType = relation.relationType
             Course course = courseDao.getById(context, relation.toEntityAngelId)
 
             if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
                 //ignore that course since student already enrolled in 
             } else {
+                result << createCourseCheckoutSaleRelation(id, entityName, course, relationType)
+            }
+        }
 
-                result << new CheckoutSaleRelationDTO().with {saleRelation ->
-                    saleRelation.fromItem = new SaleDTO().with { sale ->
-                        sale.type = SaleTypeDTO.values()[0].getFromCayenneClassName(entityName)
-                        sale.id = id
-                        sale
-                    }
-                    saleRelation.toItem = new SaleDTO().with { sale ->
-                        sale.type = SaleTypeDTO.COURSE
-                        sale.id = course.id
-                        sale
-                    }
-                    saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relationType.shoppingCart)
-                    if (relationType.discount) {
-                        saleRelation.discount = DiscountFunctions.toRestDiscount(relationType.discount, false)
-                    }
-                    saleRelation
-                }
+        relations.findAll { Course.simpleName == it.fromEntityIdentifier && id != it.fromEntityAngelId }.each { relation ->
+            EntityRelationType relationType = relation.relationType
+            Course course = courseDao.getById(context, relation.fromEntityAngelId)
+
+            if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
+                //ignore that course since student already enrolled in
+            } else {
+                result << createCourseCheckoutSaleRelation(id, entityName, course, relationType)
             }
         }
         
-        relations.findAll { Product.simpleName == it.toEntityIdentifier }.each { relation ->
-            
+        relations.findAll { Product.simpleName == it.toEntityIdentifier && id != it.toEntityAngelId }.each { relation ->
+            EntityRelationType relationType = relation.relationType
             Product product = productDao.getById(context, relation.toEntityAngelId)
-            result << new CheckoutSaleRelationDTO().with { saleRelation ->
-                saleRelation.fromItem = new SaleDTO().with { sale ->
-                    sale.type = SaleTypeDTO.values()[0].getFromCayenneClassName(entityName)
-                    sale.id = id
-                    sale
-                }
-                saleRelation.toItem = new SaleDTO().with { sale ->
-                    sale.type = SaleTypeDTO.values()[0].getFromCayenneClassName(product.getClass().getSimpleName())
-                    sale.id = product.id
-                    sale
-                }
-                saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relation.relationType.shoppingCart)
-                saleRelation
-            }
+            result << createProductCheckoutSaleRelation(id, entityName, product, relationType)
         }
+
+        relations.findAll { Product.simpleName == it.fromEntityIdentifier && id != it.fromEntityAngelId }.each { relation ->
+            EntityRelationType relationType = relation.relationType
+            Product product = productDao.getById(context, relation.fromEntityAngelId)
+            result << createProductCheckoutSaleRelation(id, entityName, product, relationType)
+        }
+
         result
+    }
+
+    private static CheckoutSaleRelationDTO createCourseCheckoutSaleRelation(Long id, String entityName, Course course, EntityRelationType relationType) {
+        new CheckoutSaleRelationDTO().with {saleRelation ->
+            saleRelation.fromItem = new SaleDTO(id: id, type: SaleTypeDTO.values()[0].getFromCayenneClassName(entityName))
+            saleRelation.toItem = new SaleDTO(id: course.id, type: SaleTypeDTO.COURSE)
+            saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relationType.shoppingCart)
+            if (relationType.discount) {
+                saleRelation.discount = DiscountFunctions.toRestDiscount(relationType.discount, false)
+            }
+            saleRelation
+        }
+    }
+
+    private static CheckoutSaleRelationDTO createProductCheckoutSaleRelation(Long id, String entityName, Product product, EntityRelationType relationType) {
+        new CheckoutSaleRelationDTO().with { saleRelation ->
+            saleRelation.fromItem = new SaleDTO(id: id, type: SaleTypeDTO.values()[0].getFromCayenneClassName(entityName))
+            saleRelation.toItem = new SaleDTO(id: product.id, type: SaleTypeDTO.values()[0].getFromCayenneClassName(product.getClass().getSimpleName()))
+            saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relationType.shoppingCart)
+            saleRelation
+        }
     }
 
     @Override
