@@ -89,7 +89,7 @@ const MessageCardContent = React.memo<any>(props => {
         <FormField
           type="select"
           name={`${name}.template`}
-          label="Email template"
+          label="Template"
           items={emailTemplateItems}
           className="d-flex mt-2"
           selectLabelCondition={emailTemplatesForRender}
