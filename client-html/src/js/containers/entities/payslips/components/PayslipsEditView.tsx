@@ -12,7 +12,7 @@ import {
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import IconButton from "@material-ui/core/IconButton";
-import { Contact, PayslipStatus } from "@api/model";
+import { Contact, PayslipPayType, PayslipStatus } from "@api/model";
 import Typography from "@material-ui/core/Typography";
 import AddCircle from "@material-ui/icons/AddCircle";
 import FormField from "../../../../common/components/form/form-fields/FormField";
@@ -27,6 +27,7 @@ import { formatCurrency } from "../../../../common/utils/numbers/numbersNormaliz
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
+import { mapSelectItems } from "../../../../common/utils/common";
 
 const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSize }[] => (threeColumn
     ? [
@@ -59,6 +60,8 @@ const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSi
         { xs: 4 },
         { xs: 6 }
       ]);
+
+const payslipPayTypes = Object.keys(PayslipPayType).map(mapSelectItems);
 
 class PayslipsEditView extends React.PureComponent<any, any> {
   componentDidMount() {
@@ -168,6 +171,16 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                     itemRenderer={ContactSelectItemRenderer}
                     rowHeight={55}
                     required
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <FormField
+                      type="select"
+                      name="payType"
+                      label="Pay type"
+                      items={payslipPayTypes}
+                      disabled={!isNew}
                   />
                 </Grid>
 
