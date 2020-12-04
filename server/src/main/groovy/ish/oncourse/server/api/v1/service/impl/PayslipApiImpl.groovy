@@ -13,18 +13,9 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.function.EntityFunctions.validateEntityExistence
-import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
 import ish.oncourse.server.api.service.PayslipApiService
 import static ish.oncourse.server.api.v1.function.PayslipFunctions.markAs
-import static ish.oncourse.server.api.v1.function.PayslipFunctions.toDbPayslip
-import static ish.oncourse.server.api.v1.function.PayslipFunctions.toRestPayslip
-import static ish.oncourse.server.api.v1.function.PayslipFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.PayslipFunctions.validateForSave
-import static ish.oncourse.server.api.v1.function.PayslipFunctions.validateRequest
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.PayslipDTO
 import ish.oncourse.server.api.v1.model.PayslipRequestDTO
@@ -39,16 +30,11 @@ class PayslipApiImpl implements PayslipApi {
     private ICayenneService cayenneService
 
     @Inject
-    private PayslipApiService entityApiService
+    private PayslipApiService payslipApiService
 
     @Override
     void create(PayslipDTO payslip) {
-        ObjectContext context = cayenneService.newContext
-
-        checkForBadRequest(validateForSave(payslip, context))
-
-        toDbPayslip(payslip, context.newObject(Payslip), context)
-        context.commitChanges()
+        payslipApiService.create(payslip)
     }
 
     @Override
@@ -56,7 +42,7 @@ class PayslipApiImpl implements PayslipApi {
 
         ObjectContext context = cayenneService.newContext
 
-        checkForBadRequest(validateRequest(request))
+        payslipApiService.validateRequest(request)
 
         ObjectSelect.query(Payslip)
                 .where(Payslip.ID.in(request.ids))
@@ -68,7 +54,7 @@ class PayslipApiImpl implements PayslipApi {
 
     @Override
     Object get(Long id) {
-        toRestPayslip(getRecordById(cayenneService.newContext, Payslip, id,
+        payslipApiService.toRestModel(getRecordById(cayenneService.newContext, Payslip, id,
                 Payslip.CONTACT.joint(),
                 Payslip.PAYLINES.joint()
         ))
@@ -76,31 +62,16 @@ class PayslipApiImpl implements PayslipApi {
 
     @Override
     void remove(Long id) {
-        checkForBadRequest(validateIdParam ( id))
-
-        ObjectContext context = cayenneService.newContext
-        Payslip entity = getRecordById(context, Payslip, id)
-        checkForBadRequest(validateEntityExistence(id, entity))
-        checkForBadRequest(validateForDelete(entity))
-
-        deleteRecord(context, entity)
+        payslipApiService.remove(id)
     }
 
     @Override
     void update(Long id, PayslipDTO payslip) {
-        checkForBadRequest(validateIdParam(id))
-
-        ObjectContext context = cayenneService.newContext
-        Payslip dbPayslip = getRecordById(context, Payslip, id)
-        checkForBadRequest(validateEntityExistence(id, dbPayslip))
-        checkForBadRequest(validateForSave(payslip, context, dbPayslip))
-
-        toDbPayslip(payslip, dbPayslip, context)
-        context.commitChanges()
+        payslipApiService.update(id, payslip)
     }
 
     @Override
     void bulkChange(DiffDTO diff) {
-        entityApiService.bulkChange(diff)
+        payslipApiService.bulkChange(diff)
     }
 }
