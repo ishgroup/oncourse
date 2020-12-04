@@ -27,16 +27,16 @@ import ish.oncourse.server.api.dao.CorporatePassDao
 import ish.oncourse.server.api.dao.CorporatePassProductDao
 import ish.oncourse.server.api.dao.CourseClassDao
 import ish.oncourse.server.api.dao.CourseClassTutorDao
-import ish.oncourse.server.api.dao.CourseCourseRelationDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.CourseModuleDao
-import ish.oncourse.server.api.dao.CourseProductRelationDao
 import ish.oncourse.server.api.dao.DefinedTutorRoleDao
 import ish.oncourse.server.api.dao.DiscountDao
 import ish.oncourse.server.api.dao.DiscountMembershipDao
 import ish.oncourse.server.api.dao.DiscountMembershipRelationTypeDao
 import ish.oncourse.server.api.dao.EmailTemplateDao
 import ish.oncourse.server.api.dao.EnrolmentDao
+import ish.oncourse.server.api.dao.EntityRelationDao
+import ish.oncourse.server.api.dao.EntityRelationTypeDao
 import ish.oncourse.server.api.dao.ExportTemplateDao
 import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ImportDao
@@ -80,11 +80,9 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(ContactRelationTypeDao).in(Scopes.SINGLETON)
         binder.bind(CorporatePassDao).in(Scopes.SINGLETON)
         binder.bind(CorporatePassProductDao).in(Scopes.SINGLETON)
-        binder.bind(CourseCourseRelationDao).in(Scopes.SINGLETON)
         binder.bind(CourseDao).in(Scopes.SINGLETON)
         binder.bind(CourseModuleDao).in(Scopes.SINGLETON)
         binder.bind(CourseClassDao).in(Scopes.SINGLETON)
-        binder.bind(CourseProductRelationDao).in(Scopes.SINGLETON)
 
         binder.bind(DefinedTutorRoleDao).in(Scopes.SINGLETON)
         binder.bind(DiscountDao).in(Scopes.SINGLETON)
@@ -93,6 +91,8 @@ class ApiCayenneLayerModule implements Module {
 
         binder.bind(EmailTemplateDao).in(Scopes.SINGLETON)
         binder.bind(EnrolmentDao).in(Scopes.SINGLETON)
+        binder.bind(EntityRelationDao).in(Scopes.SINGLETON)
+        binder.bind(EntityRelationTypeDao).in(Scopes.SINGLETON)
         binder.bind(ExportTemplateDao).in(Scopes.SINGLETON)
 
         binder.bind(FieldConfigurationSchemeDao).in(Scopes.SINGLETON)

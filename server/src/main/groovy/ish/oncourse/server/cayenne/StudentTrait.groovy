@@ -11,11 +11,18 @@
 
 package ish.oncourse.server.cayenne
 
+import org.apache.cayenne.ObjectContext
+
 trait StudentTrait {
 
     abstract Long getId()
+    abstract ObjectContext getContext()
 
     boolean isEnrolled(CourseClass courseClass) {
         courseClass.successAndQueuedEnrolments.any { !it.newRecord && it.student.id == id}
+    }
+
+    boolean isEnrolled(Course course) {
+        course.courseClasses.any { isEnrolled(it) }
     }
 }

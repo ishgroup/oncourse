@@ -34,7 +34,10 @@ const styles = theme => createStyles({
     display: "flex"
   },
   inlineTextField: {
-    verticalAlign: "baseline"
+    verticalAlign: "baseline",
+    "& > div": {
+      marginTop: 0
+    }
   },
   bottomMargin: {
     marginBottom: `${theme.spacing(1) + 1}px`
@@ -130,6 +133,11 @@ const styles = theme => createStyles({
     padding: 0,
     minWidth: "2.2em"
   },
+  inlineSelect: {
+    "&$inlineSelect": {
+      padding: 0
+    }
+  },
   smallOffsetInput: {
     padding: "2px"
   },
@@ -150,7 +158,8 @@ const styles = theme => createStyles({
   textFieldBorderModified: {
     "&:after": {
       borderBottomColor: theme.palette.primary.main
-    }
+    },
+
   },
   selectIcon: {
     fontSize: "24px",
@@ -400,7 +409,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         ));
       }
 
-      const match = items.find(
+      const match = value && items.find(
         item => (returnType === "object" ? item[selectValueMark] === value[selectValueMark] : item[selectValueMark] === value)
       );
 
@@ -676,11 +685,12 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     : returnType === "object"
                       ? selectLabelCondition
                         ? selectLabelCondition(input.value)
-                        : input.value[selectValueMark] || ""
+                        : input.value ? input.value[selectValueMark] : ""
                       : input.value}
                   inputRef={this.setInputNode}
                   classes={{
                     root: clsx(classes.textFieldBorderModified, fieldClasses.text),
+                    select: clsx(formatting === "inline" && classes.inlineSelect),
                     // @ts-ignore
                     underline: fieldClasses.underline
                   }}

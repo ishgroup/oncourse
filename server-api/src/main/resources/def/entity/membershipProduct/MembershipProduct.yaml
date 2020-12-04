@@ -34,6 +34,10 @@ properties:
     type: array
     items:
       $ref: './MembershipDiscount.yaml'
+  relatedlSalables:
+    type: array
+    items:
+      $ref: '../Sale.yaml'
   createdOn:
     type: string
     format: date-time

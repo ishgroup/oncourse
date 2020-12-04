@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import {
- CheckoutApi, CheckoutModel, CheckoutResponse, CourseClassDiscount, SessionStatus
+  CheckoutApi, CheckoutModel, CheckoutResponse, CheckoutSaleRelation, CourseClassDiscount, SessionStatus
 } from "@api/model";
 import { DefaultHttpService } from "../../../common/services/HttpService";
 
@@ -20,6 +20,10 @@ class CheckoutService {
 
   public getSessionStatus(sessionId: string): Promise<SessionStatus> {
     return this.checkoutApi.status(sessionId);
+  }
+
+  public getSaleRelations(courseIds: string, productIds: string, contactId: number): Promise<CheckoutSaleRelation[]> {
+    return this.checkoutApi.getSaleRelations(courseIds, productIds, contactId);
   }
 }
 

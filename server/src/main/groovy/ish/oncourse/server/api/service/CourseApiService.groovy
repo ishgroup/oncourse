@@ -19,21 +19,20 @@ import ish.messaging.ICourse
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.api.dao.CourseCourseRelationDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.CourseModuleDao
-import ish.oncourse.server.api.dao.CourseProductRelationDao
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.QualificationDao
-import ish.oncourse.server.cayenne.EntityRelationType
+import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.util.EntityUtil
 import org.apache.cayenne.query.SelectById
 
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.CourseFunctions.ENROLMENT_TYPE_MAP
-import static ish.oncourse.server.api.v1.function.CourseFunctions.toRestFromEntityRelation
-import static ish.oncourse.server.api.v1.function.CourseFunctions.toRestToEntityRelation
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
@@ -53,8 +52,6 @@ import static ish.oncourse.server.api.v1.model.CourseStatusDTO.ENABLED
 import static ish.oncourse.server.api.v1.model.CourseStatusDTO.ENABLED_AND_VISIBLE_ONLINE
 import ish.oncourse.server.api.v1.model.HolidayDTO
 import ish.oncourse.server.api.v1.model.ModuleDTO
-import ish.oncourse.server.api.v1.model.SaleDTO
-import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseAttachmentRelation
@@ -74,7 +71,7 @@ import static org.apache.commons.lang3.StringUtils.trimToNull
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
-class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> {
+class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao>  {
 
     @Inject
     private PreferenceController preferenceController
@@ -98,10 +95,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
     private ModuleDao moduleDao
 
     @Inject
-    private CourseCourseRelationDao courseCourseRelationDao
-
-    @Inject
-    private CourseProductRelationDao courseProductRelationDao
+    EntityRelationDao entityRelationDao
 
     @Inject
     private ProductDao productDao
@@ -143,10 +137,8 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.hasEnrolments = course.courseClasses.find { c -> !c.enrolments.empty} != null
             courseDTO.webDescription = course.webDescription
             courseDTO.documents = course.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
-            courseDTO.relatedlSalables = (course.toCourses.collect { toRestToEntityRelation(it) } +
-                    course.fromCourses.collect { toRestFromEntityRelation(it) } +
-                    course.productRelations.collect { toRestToEntityRelation(it) }
-            )
+            courseDTO.relatedlSalables = (EntityRelationDao.getRelatedFrom(course.context, Course.simpleName, course.id).collect { it -> toRestFromEntityRelation(it) } +
+                    EntityRelationDao.getRelatedTo(course.context, Course.simpleName, course.id).collect { it -> toRestToEntityRelation(it) })
             courseDTO.qualificationId = course.qualification?.id
             courseDTO.qualNationalCode = course.qualification?.nationalCode
             courseDTO.qualTitle = course.qualification?.title
@@ -213,7 +205,6 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
 
         updateTags(course, course.taggingRelations, courseDTO.tags*.id, CourseTagRelation, course.context)
         updateDocuments(course, course.attachmentRelations, courseDTO.documents, CourseAttachmentRelation, course.context)
-        updateRelatedProducts(course, courseDTO.relatedlSalables)
         updateModules(course, courseDTO.modules)
         course.reportableHours = courseDTO.reportableHours
 
@@ -324,19 +315,6 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             validator.throwClientErrorException(id, 'fieldOfEducation', "Field of education should be empty for course with qualification")
         }
 
-
-        courseDTO.relatedlSalables.findAll { it.id != null }.each { relatedProduct ->
-            if (relatedProduct.type == SaleTypeDTO.COURSE) {
-                if (!entityDao.getById(context, relatedProduct.id)) {
-                    validator.throwClientErrorException(id, 'relatedProducts', "Course with id=$relatedProduct.id not found.")
-                }
-            } else {
-                if (!productDao.getById(context, relatedProduct.id)) {
-                    validator.throwClientErrorException(id, 'relatedProducts', "Product with id=$relatedProduct.id not found.")
-                }
-            }
-        }
-
         courseDTO.modules.findAll { it.id != null }.each { module ->
             if (!moduleDao.getById(context, module.id)) {
                 validator.throwClientErrorException(id, 'modules', "Module with id=$module.id not found.")
@@ -427,36 +405,6 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         }
     }
 
-    void updateRelatedProducts(Course course, List<SaleDTO> relatedProductDTOs) {
-        Map<Boolean, List<SaleDTO>> map = relatedProductDTOs.groupBy { it.type == SaleTypeDTO.COURSE }
-
-        List<Long> courseRelationsToSave = map[true]*.id ?: [] as List<Long>
-        course.context.deleteObjects(course.fromCourses.findAll { !courseRelationsToSave.contains(it.fromCourse.id) })
-        course.context.deleteObjects(course.toCourses.findAll { !courseRelationsToSave.contains(it.toCourse.id) })
-        if(map[true] != null) {
-            map[true].findAll { !course.toCourses*.toCourse*.id.contains(it.entityToId) && !course.fromCourses*.fromCourse*.id.contains(it.entityFromId) }
-                    .each { c ->
-                        courseCourseRelationDao.newObject(course.context).with { courseRelation ->
-                            courseRelation.fromCourse = c.entityFromId ? entityDao.getById(course.context, c.entityFromId) : course
-                            courseRelation.toCourse = c.entityToId ? entityDao.getById(course.context, c.entityFromId) : course
-                            courseRelation.relationType = getRecordById(course.context, EntityRelationType, c.relationId ? c.relationId : EntityRelationType.DEFAULT_SYSTEM_TYPE_ID)
-                        }
-                    }
-        }
-
-
-        List<Long> productRelationsToSave = map[false]*.id ?: [] as List<Long>
-        course.context.deleteObjects(course.productRelations.findAll { !productRelationsToSave.contains(it.product.id) })
-        if(map[false] != null) {
-            map[false].findAll { !course.productRelations*.product*.id.contains(it.entityToId) }.each { product ->
-                courseProductRelationDao.newObject(course.context).with { courseModule ->
-                    courseModule.course = course
-                    courseModule.product = productDao.getById(course.context, product.entityToId)
-                    courseModule.relationType = getRecordById(course.context, EntityRelationType, product.relationId ? product.relationId : EntityRelationType.DEFAULT_SYSTEM_TYPE_ID)
-                }
-            }
-        }
-    }
 
     void duplicateCourse(List<Long> courseIds) {
         ObjectContext context = cayenneService.newContext

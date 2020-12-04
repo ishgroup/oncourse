@@ -13,11 +13,13 @@ import { connect } from "react-redux";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
+import Chip from '@material-ui/core/Chip';
 import Button from "@material-ui/core/Button";
 import {
- Category, ColumnWidth, createStringEnum
+  Category, CheckoutSaleRelation, ColumnWidth, createStringEnum
 } from "@api/model";
 import debounce from "lodash.debounce";
+import uniqid from "uniqid";
 import { LinkAdornment } from "../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../common/utils/links";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
@@ -47,14 +49,23 @@ import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
 import { latestActivityStorageHandler } from "../../../common/utils/storage";
 import { getCustomFieldTypes } from "../../entities/customFieldTypes/actions";
-import { CHECKOUT_CONTACT_COLUMNS, CheckoutCurrentStep } from "../constants";
+import {
+  CHECKOUT_CONTACT_COLUMNS,
+  CHECKOUT_MEMBERSHIP_COLUMNS, CHECKOUT_PRODUCT_COLUMNS,
+  CHECKOUT_VOUCHER_COLUMNS,
+  CheckoutCurrentStep
+} from "../constants";
 import {
   calculateVoucherOrMembershipExpiry,
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
   getCheckoutCurrentStep,
-  processCheckoutContactId, processCheckoutCourseClassId, processCheckoutEnrolmentId, processCheckoutInvoiceId,
+  processCheckoutContactId,
+  processCheckoutCourseClassId,
+  processCheckoutEnrolmentId,
+  processCheckoutInvoiceId,
+  processCheckoutSale,
   processCheckoutWaitingListIds
 } from "../utils";
 import CheckoutFundingInvoice from "./fundingInvoice/CheckoutFundingInvoice";
@@ -76,7 +87,14 @@ import {
   getPlainMembershipProducts, setPlainMembershipProductSearch
 } from "../../entities/membershipProducts/actions";
 import {
-  addContact, removeContact, updateContact, addItem, removeItem, updateClassItem, checkoutClearState
+  addContact,
+  removeContact,
+  updateContact,
+  addItem,
+  removeItem,
+  updateClassItem,
+  checkoutClearState,
+  checkoutUpdateRelatedItems
 } from "../actions";
 import {
   checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts
@@ -103,6 +121,7 @@ import { checkoutClearPaymentStatus, checkoutGetActivePaymentMethods, checkoutSe
 import { checkoutUpdateSummaryClassesDiscounts, checkoutUpdateSummaryPrices } from "../actions/checkoutSummary";
 import CheckoutSummaryHeaderField from "./summary/CheckoutSummaryHeaderField";
 import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from "./summary/CheckoutSummaryList";
+import SaleRelations from "./items/components/SaleRelations";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 export const CONTACT_ENTITY_NAME: string = "Contact";
@@ -119,7 +138,8 @@ export const CheckoutPage = createStringEnum([
   "previousCredit",
   "previousOwing",
   "fundingInvoiceCompanies",
-  "fundingInvoiceSummary"
+  "fundingInvoiceSummary",
+  "salesRelations"
 ]);
 
 export type CheckoutPage = keyof typeof CheckoutPage;
@@ -216,6 +236,7 @@ interface Props extends Partial<EditViewProps> {
   finalTotal?: number;
   summary?: CheckoutSummary;
   isEnabledFundingInvoice?: boolean;
+  salesRelations?: CheckoutSaleRelation[];
 }
 
 const titles = {
@@ -228,7 +249,8 @@ const titles = {
   [CheckoutPage.previousCredit]: "Previous credit notes",
   [CheckoutPage.previousOwing]: "Previous owing invoices",
   [CheckoutPage.fundingInvoiceCompanies]: "Search for a company by name",
-  [CheckoutPage.fundingInvoiceSummary]: "Funding invoice"
+  [CheckoutPage.fundingInvoiceSummary]: "Funding invoice",
+  [CheckoutPage.salesRelations]: "Suggestions"
 };
 
 const createConfirmMessage = "Please first save or cancel the new contact you are creating.";
@@ -322,7 +344,8 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     summary,
     invalid,
     isEnabledFundingInvoice,
-    fundingInvoiceInvalid
+    fundingInvoiceInvalid,
+    salesRelations
   } = props;
 
   const [sidebarWidth, setSidebarWidth] = React.useState(SIDEBAR_DEFAULT_WIDTH);
@@ -401,7 +424,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
 
   const getItemRecord = React.useCallback((item, type) => {
     switch (type) {
-      case "memberShip":
+      case "membership":
         getMemberShipRecord(item);
         break;
       case "product":
@@ -416,34 +439,33 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
   }, []);
 
   const openItem = React.useCallback(
-    (item, type) => {
+    item => {
       if (checkoutStep > 0) handleChangeStep(CheckoutCurrentStep.shoppingCart);
-      switch (type) {
+      switch (item.type) {
         case "course":
           if (selectedCourse && selectedCourse.id === item.id) {
             return;
           }
           setSelectedCourse(item);
           if (
-            !item.courseId
-            || !selectedCourse
-            || (selectedCourse && typeof selectedCourse.courseId === "number" && selectedCourse.courseId !== item.courseId)) {
-            checkoutGetCourseClassList(`course.id is ${item.courseId || item.id} AND isCancelled is false`);
+            !selectedCourse
+            || (selectedCourse && typeof selectedCourse.courseId === "number" && selectedCourse.courseId !== item.courseId)
+          ) {
+            checkoutGetCourseClassList(`course.id is ${item.courseId} AND isCancelled is false`);
           }
-
           setOpenClassListView(true);
           onCloseItemView();
           break;
         case "voucher":
         case "product":
-        case "memberShip":
+        case "membership":
           if (openedItem && openedItem.id === item.id && openedItem.type === item.type) {
             return;
           }
           dispatch(initialize(CHECKOUT_ITEM_EDIT_VIEW_FORM, {
             items: ""
           }));
-          getItemRecord(item, type);
+          getItemRecord(item, item.type);
           setOpenItemEditView(true);
           setOpenedItem(item);
           onCloseClassList();
@@ -529,9 +551,10 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         onContactInit();
         break;
       case "course": {
-        const course = checkoutCourseMap(row);
         if (!skipEditView) {
-          openItem(course, type);
+          const course = checkoutCourseMap(row);
+          course.id = uniqid();
+          openItem(course);
         }
         dispatch(change(FORM, "items", ""));
         onClearItemsSearch(true);
@@ -539,20 +562,10 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       }
       case "voucher":
       case "product":
-      case "memberShip":
+      case "membership":
         if (selectedItems.filter(i => i.id === row.id && i.type === type).length === 0) {
-          if (typeof row.price === "string") {
-            row.price = parseFloat(row.price);
-          }
-          row.type = type;
-          row.checked = true;
-          row.quantity = 1;
-          row.originalPrice = row.price;
-          if ( type === "voucher") {
-            row.restrictToPayer = false;
-          }
-          calculateVoucherOrMembershipExpiry(row);
-          openItem(row, type);
+          processCheckoutSale(row, type);
+          openItem(row);
           addSelectedItem(row);
         }
         dispatch(change(FORM, "items", ""));
@@ -775,7 +788,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           return false;
         case "product":
         case "voucher":
-        case "memberShip":
+        case "membership":
           return selectedItems.filter(c => c.id === row.id && c.type === type).length === 1;
         default:
           return false;
@@ -824,19 +837,49 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
 
   const onItemDeleteHandler = React.useCallback(
     (e, i, row) => {
-      removeItem(row.id, row.type);
+      const onRemove = () => {
+        removeItem(row.id, row.type);
 
-      if (selectedCourse && selectedCourse.id === row.id) {
-        onCloseClassList();
+        if (selectedCourse && selectedCourse.id === row.id) {
+          onCloseClassList();
+        }
+        if (openedItem && openedItem.id === row.id && openedItem.type === row.type) {
+          onCloseItemView();
+        }
+        if (row.cartAction && selectedItems.length) {
+          dispatch(checkoutUpdateRelatedItems(
+            [],
+            [...salesRelations,
+                {
+                  cartAction: row.cartAction,
+                  toItem: {
+                    id: row.id,
+                    cartItem: row,
+                    type: row.type.capitalize(),
+                    link: `/${row.type.toLowerCase()}/${row.type === "course" ? row.courseId : row.id}`
+                  },
+                  fromItem: { id: selectedItems[0].id }
+                }
+              ]
+          ));
+        }
+
+        setTimeout(() => {
+          checkoutUpdateSummaryClassesDiscounts();
+        }, 500);
+      };
+
+      if (row.cartAction === "Add but do not allow removal") {
+        openConfirm(
+          onRemove,
+          "The item you are removing is required by another item in the shopping cart.",
+          "Override"
+        );
+      } else {
+        onRemove();
       }
-      if (openedItem && openedItem.id === row.id && openedItem.type === row.type) {
-        onCloseItemView();
-      }
-      setTimeout(() => {
-        checkoutUpdateSummaryClassesDiscounts();
-      }, 500);
     },
-    [selectedCourse, openedItem]
+    [selectedCourse, salesRelations, openedItem]
   );
 
   const debouncedSearchUpdate = React.useCallback<any>(debounce((name, val) => setItemsSearch(val.trim().toLowerCase()), 800), []);
@@ -869,23 +912,27 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     return null;
   }, [value, contacts, contactsLoading]);
 
-  const handleSummmayClick = React.useCallback(() => {
+  const handleSummmayClick = () => {
     handleChangeStep(CheckoutCurrentStep.summary);
     setActiveField(CheckoutPage.summary);
     dispatch({ type: FETCH_FINISH });
-  }, []);
+  };
 
-  const handlePaymentClick = React.useCallback(() => {
+  const handlePaymentClick = () => {
     handleChangeStep(CheckoutCurrentStep.payment);
     onCheckoutClearPaymentStatus();
     dispatch({ type: FETCH_FINISH });
-  }, []);
+  };
 
-  const handleShoppingCartExpand = React.useCallback(() => {
+  const handleShoppingCartExpand = () => {
     handleChangeStep(CheckoutCurrentStep.shoppingCart);
     setActiveField(CheckoutPage.default);
     dispatch({ type: FETCH_FINISH });
-  }, []);
+  };
+
+  const onShowSaleRelationsClick = () => {
+    handleFocusCallback({ target: { name: CheckoutPage.salesRelations } }, CheckoutPage.salesRelations);
+  };
 
   const openDiscount = React.useCallback(
     row => {
@@ -903,8 +950,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     (selectedClass: CheckoutCourseClass) => {
       const updatedCourse: CheckoutCourse = {
         ...selectedCourse,
-        courseId: selectedCourse.courseId ? selectedCourse.courseId : selectedCourse.id,
-        id: selectedClass.id,
         price: selectedClass.price,
         animate: true,
         discount: null,
@@ -913,8 +958,14 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         studyReason: "Not stated",
         class: { ...selectedClass }
       };
+
+      if (selectedItems.some(i => i.id === updatedCourse.id)) {
+        updateSelectedClass(updatedCourse);
+      } else {
+        addSelectedItem(updatedCourse);
+      }
+
       setSelectedCourse(updatedCourse);
-      updateSelectedClass(updatedCourse);
       getClassPaymentPlans(updatedCourse);
       openSidebarDrawer();
       setTimeout(() => {
@@ -966,6 +1017,16 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
 
                 <HeaderField
                   heading="Items"
+                  subHeading={
+                    salesRelations.length ? (
+                      <Chip
+                        className={clsx("relative", activeField === CheckoutPage.salesRelations && "selectedItemArrow")}
+                        size="small"
+                        label="Show suggested"
+                        onClick={onShowSaleRelationsClick}
+                      />
+                    ) : null
+                  }
                   name={CheckoutPage.items}
                   placeholder="Find course or item..."
                   onFocus={handleFocusCallback}
@@ -1065,7 +1126,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             <LoadingIndicator
               customLoading={activeField !== CheckoutPage.contacts && fetch && fetch.pending ? fetch.pending : customLoading}
             />
-            {!openItemEditView
+            { !openItemEditView
               && !openedItem
               && !openClassListView
               && !selectedCourse
@@ -1115,6 +1176,14 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                         />
                       </div>
                     )}
+
+                    {activeField === CheckoutPage.salesRelations && (
+                      <SaleRelations
+                        relations={salesRelations}
+                        cartItems={selectedItems}
+                        onSelect={onSelectHandler}
+                      />
+                    )}
                   </div>
                 </>
               )}
@@ -1133,9 +1202,8 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
               <EnrolCourseClassView
                 course={selectedCourse}
                 onClose={onCloseClassList}
-                setSelectedCourse={setSelectedCourse}
-                selectedItems={selectedItems}
                 onClassSelect={onClassSelect}
+                selectedItems={selectedItems}
               />
             )}
 
@@ -1221,6 +1289,7 @@ const mapStateToProps = (state: State) => ({
   isContactEditViewDirty: isDirty(CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME)(state),
   contactEditRecord: state.checkout.contactEditRecord,
   itemEditRecord: state.checkout.itemEditRecord,
+  salesRelations: state.checkout.salesRelations,
   contacts: state.contacts.items,
   contactsSearch: state.contacts.search,
   contactsLoading: state.contacts.loading,
@@ -1270,11 +1339,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string, onCancel?: any) =>
     dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel)),
   getCourses: (offset?: number) => dispatch(getPlainCourses(offset, "code,name,isTraineeship", true, PLAIN_LIST_MAX_PAGE_SIZE)),
-  getProducts: (offset?: number) => dispatch(getPlainArticleProducts(offset, "sku,name,price_with_tax", true, PLAIN_LIST_MAX_PAGE_SIZE)),
+  getProducts: (offset?: number) => dispatch(getPlainArticleProducts(offset, CHECKOUT_PRODUCT_COLUMNS, true, PLAIN_LIST_MAX_PAGE_SIZE)),
   getVouchers: (offset?: number) =>
-    dispatch(getPlainVoucherProducts(offset, "sku,name,priceExTax,expiryDays", true, PLAIN_LIST_MAX_PAGE_SIZE)),
+    dispatch(getPlainVoucherProducts(offset, CHECKOUT_VOUCHER_COLUMNS, true, PLAIN_LIST_MAX_PAGE_SIZE)),
   getMembershipProducts: (offset?: number) => dispatch(
-    getPlainMembershipProducts(offset, "sku,name,priceExTax,price_with_tax,expiryType,expiryDays", true, PLAIN_LIST_MAX_PAGE_SIZE)
+    getPlainMembershipProducts(offset, CHECKOUT_MEMBERSHIP_COLUMNS, true, PLAIN_LIST_MAX_PAGE_SIZE)
   ),
   addSelectedContact: contact => dispatch(addContact(contact)),
   removeContact: index => dispatch(removeContact(index)),

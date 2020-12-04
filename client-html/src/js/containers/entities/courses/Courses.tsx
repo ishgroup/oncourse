@@ -16,7 +16,7 @@ import { getManualLink } from "../../../common/utils/getManualLink";
 import { FilterGroup } from "../../../model/common/ListView";
 import { CourseExtended } from "../../../model/entities/Course";
 import { Classes } from "../../../model/entities/CourseClass";
-import { getDataCollectionRules } from "../../preferences/actions";
+import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
 import {
  createCourse, deleteCourse, getCourse, updateCourse
@@ -41,6 +41,7 @@ interface CoursesProps {
   clearListState?: () => void;
   getTags?: () => void;
   values?: CourseExtended;
+  getRelationTypes?: () => void;
 }
 
 const Initial: Course = {
@@ -161,6 +162,15 @@ const preformatBeforeSubmit = (value: CourseExtended): Course => {
     delete value.fieldOfEducation;
   }
 
+  if (value.relatedlSalables.length) {
+    value.relatedlSalables.forEach((s: any) => {
+      if (s.tempId) {
+        s.id = null;
+        delete s.tempId;
+      }
+    });
+  }
+
   return value;
 };
 
@@ -183,7 +193,8 @@ const Courses: React.FC<CoursesProps> = props => {
     clearListState,
     onInit,
     getTags,
-    getPermissions
+    getPermissions,
+    getRelationTypes
   } = props;
 
   useEffect(() => {
@@ -191,6 +202,7 @@ const Courses: React.FC<CoursesProps> = props => {
     getFilters();
     getTags();
     getPermissions();
+    getRelationTypes();
     return () => {
       clearListState();
     };
@@ -244,7 +256,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onGet: (id: string) => dispatch(getCourse(id)),
   onDelete: (id: string) => dispatch(deleteCourse(id)),
   onUpdate: (id: string, course: CourseExtended) => dispatch(updateCourse(id, course)),
-  clearListState: () => dispatch(clearListState())
+  clearListState: () => dispatch(clearListState()),
+  getRelationTypes: () => dispatch(getEntityRelationTypes())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Courses);

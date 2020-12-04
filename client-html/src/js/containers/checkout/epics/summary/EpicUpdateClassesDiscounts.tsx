@@ -38,7 +38,7 @@ const request: EpicUtils.Request<any, State, boolean> = {
               classItem: i,
               listIndex,
               itemIndex,
-              membershipIds: l.items.filter(i => i.type === "memberShip" && i.checked).map(i => i.id).join(",")
+              membershipIds: l.items.filter(i => i.type === "membership" && i.checked).map(i => i.id).join(",")
             });
           }
         }
@@ -49,7 +49,7 @@ const request: EpicUtils.Request<any, State, boolean> = {
     const items = [];
 
     await enrolments.map(e => () =>
-      CheckoutService.getContactDiscounts(e.contactId, e.classItem.id, codes, e.membershipIds, totalEnrolmentsCount, totalAmountExDiscount)
+      CheckoutService.getContactDiscounts(e.contactId, e.classItem.class.id, codes, e.membershipIds, totalEnrolmentsCount, totalAmountExDiscount)
         .then(res => {
           const discounts = res.map(i => i.discount);
 

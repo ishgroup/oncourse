@@ -85,6 +85,7 @@ databaseChangeLog:
               - column:
                  name: typeId
                  type: BIGINT
+                 value: -1
   - changeSet:
       id: 53-3
       author: rostislav
@@ -189,4 +190,18 @@ databaseChangeLog:
             onUpdate: NO ACTION
             referencedColumnNames: id
             referencedTableName: Discount
+            validate: true
+  - changeSet:
+      id: 53-6
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: EntityRelation
+            columnName: typeId
+      changes:
+        - addNotNullConstraint:
+            columnDataType: BIGINT
+            columnName: typeId
+            tableName: EntityRelation
             validate: true

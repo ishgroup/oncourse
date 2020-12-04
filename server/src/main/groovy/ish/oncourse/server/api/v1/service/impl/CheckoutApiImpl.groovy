@@ -13,6 +13,21 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.common.types.EntityRelationCartAction
+import ish.oncourse.server.api.dao.ContactDao
+import ish.oncourse.server.api.dao.CourseDao
+import ish.oncourse.server.api.dao.EntityRelationDao
+import ish.oncourse.server.api.dao.ProductDao
+import ish.oncourse.server.api.v1.model.CheckoutSaleRelationDTO
+import ish.oncourse.server.api.v1.model.EntityRelationCartActionDTO
+import ish.oncourse.server.api.v1.model.SaleDTO
+import ish.oncourse.server.api.v1.model.SaleTypeDTO
+import ish.oncourse.server.cayenne.Course
+import ish.oncourse.server.cayenne.EntityRelation
+import ish.oncourse.server.cayenne.EntityRelationType
+import ish.oncourse.server.cayenne.Product
+import org.apache.commons.lang3.StringUtils
+
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
 import ish.common.types.PaymentStatus
@@ -84,6 +99,15 @@ class CheckoutApiImpl implements CheckoutApi {
     public static final int VALIDATION_ERROR = 400
 
 
+    @Inject
+    ContactDao contactDao
+    
+    @Inject
+    CourseDao courseDao
+    
+    @Inject
+    ProductDao productDao
+    
     @Inject
     PreferenceController preferenceController
 
@@ -158,6 +182,89 @@ class CheckoutApiImpl implements CheckoutApi {
                 dto
             }
         }
+    }
+
+    List<CheckoutSaleRelationDTO> getSaleRelations(Long id, String entityName, Contact contact) {
+        ObjectContext context = cayenneService.newContext
+        List<EntityRelation> relations = EntityRelationDao.getRelatedToOrEqual(context, entityName, id)
+                .findAll { EntityRelationCartAction.NO_ACTION != it.relationType.shoppingCart }
+        List<CheckoutSaleRelationDTO> result = []
+        
+        relations.findAll { Course.simpleName == it.toEntityIdentifier && id != it.toEntityAngelId }.each { relation ->
+            EntityRelationType relationType = relation.relationType
+            Course course = courseDao.getById(context, relation.toEntityAngelId)
+
+            if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
+                //ignore that course since student already enrolled in 
+            } else {
+                result << createCourseCheckoutSaleRelation(id, entityName, course, relationType)
+            }
+        }
+
+        relations.findAll { Course.simpleName == it.fromEntityIdentifier && id != it.fromEntityAngelId }.each { relation ->
+            EntityRelationType relationType = relation.relationType
+            Course course = courseDao.getById(context, relation.fromEntityAngelId)
+
+            if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
+                //ignore that course since student already enrolled in
+            } else {
+                result << createCourseCheckoutSaleRelation(id, entityName, course, relationType)
+            }
+        }
+        
+        relations.findAll { Product.simpleName == it.toEntityIdentifier && id != it.toEntityAngelId }.each { relation ->
+            EntityRelationType relationType = relation.relationType
+            Product product = productDao.getById(context, relation.toEntityAngelId)
+            result << createProductCheckoutSaleRelation(id, entityName, product, relationType)
+        }
+
+        relations.findAll { Product.simpleName == it.fromEntityIdentifier && id != it.fromEntityAngelId }.each { relation ->
+            EntityRelationType relationType = relation.relationType
+            Product product = productDao.getById(context, relation.fromEntityAngelId)
+            result << createProductCheckoutSaleRelation(id, entityName, product, relationType)
+        }
+
+        result
+    }
+
+    private static CheckoutSaleRelationDTO createCourseCheckoutSaleRelation(Long id, String entityName, Course course, EntityRelationType relationType) {
+        new CheckoutSaleRelationDTO().with {saleRelation ->
+            saleRelation.fromItem = new SaleDTO(id: id, type: SaleTypeDTO.values()[0].getFromCayenneClassName(entityName))
+            saleRelation.toItem = new SaleDTO(id: course.id, type: SaleTypeDTO.COURSE)
+            saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relationType.shoppingCart)
+            if (relationType.discount) {
+                saleRelation.discount = DiscountFunctions.toRestDiscount(relationType.discount, false)
+            }
+            saleRelation
+        }
+    }
+
+    private static CheckoutSaleRelationDTO createProductCheckoutSaleRelation(Long id, String entityName, Product product, EntityRelationType relationType) {
+        new CheckoutSaleRelationDTO().with { saleRelation ->
+            saleRelation.fromItem = new SaleDTO(id: id, type: SaleTypeDTO.values()[0].getFromCayenneClassName(entityName))
+            saleRelation.toItem = new SaleDTO(id: product.id, type: SaleTypeDTO.values()[0].getFromCayenneClassName(product.getClass().getSimpleName()))
+            saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relationType.shoppingCart)
+            saleRelation
+        }
+    }
+
+    @Override
+    List<CheckoutSaleRelationDTO> getSaleRelations(String courseIds, String productIds, Long contactId) {
+
+        ObjectContext context = cayenneService.newContext
+        List<CheckoutSaleRelationDTO> result = []
+        Contact contact = contactId ? contactDao.getById(context, contactId) : null
+        
+        if (StringUtils.trimToNull(courseIds)) {
+            (courseIds.split(',').collect {Long.valueOf(it)} as List<Long>).each { courseId ->
+                result.addAll(getSaleRelations(courseId, Course.simpleName, contact))
+            }
+        } else if (StringUtils.trimToNull(productIds)) {
+            (productIds.split(',').collect {Long.valueOf(it)} as List<Long>).each { productId ->
+                result.addAll(getSaleRelations(productId, Product.simpleName, contact))
+            }
+        }
+        return result
     }
 
     @Override

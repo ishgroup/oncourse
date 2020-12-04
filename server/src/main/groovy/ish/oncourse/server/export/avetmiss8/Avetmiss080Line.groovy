@@ -41,6 +41,9 @@ class Avetmiss080Line extends AvetmissLine {
     protected String clientIndustryEmployment
     protected String clientOccupationIdentifier
 
+    protected String ish_avetmiss_tasmania_industry
+    protected String ish_avetmiss_tasmania_occupation
+
     /**
      * Creates a new instance of AvetmissLine
      */
@@ -188,15 +191,29 @@ class Avetmiss080Line extends AvetmissLine {
         // survey status
         append(1, "A")
 
-        if (ExportJurisdiction.QLD == this.jurisdiction) {
-            append(10, uniqueStateLearnerIdentifier)
+        switch (jurisdiction) {
+            case ExportJurisdiction.TAS:
+                append(11, "") //Statistical Area Level 1 Identifier
+                append(9, "") //Statistical Area Level 2 Identifier
 
-        } else if (ExportJurisdiction.VIC == this.jurisdiction) {
-            append(11, "") //Statistical Area Level 1 Identifier
-            append(9, "") //Statistical Area Level 2 Identifier
-            append(9, uniqueStateLearnerIdentifier)
-            append(1, clientIndustryEmployment)
-            append(1, clientOccupationIdentifier)
+                //Client Industry of Employment
+                append(1, ish_avetmiss_tasmania_industry)
+
+                //Client Occupation Identifier
+                append(1, ish_avetmiss_tasmania_occupation)
+                break
+
+            case ExportJurisdiction.QLD:
+                append(10, uniqueStateLearnerIdentifier)
+                break
+
+            case ExportJurisdiction.VIC:
+                append(11, "") //Statistical Area Level 1 Identifier
+                append(9, "") //Statistical Area Level 2 Identifier
+                append(9, uniqueStateLearnerIdentifier)
+                append(1, clientIndustryEmployment)
+                append(1, clientOccupationIdentifier)
+                break
         }
 
         return toString()

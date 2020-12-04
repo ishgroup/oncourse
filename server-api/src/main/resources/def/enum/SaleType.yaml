@@ -6,3 +6,5 @@ enum:
   - Voucher
   - Class
   - Course
+  - Module
+  - Qualification

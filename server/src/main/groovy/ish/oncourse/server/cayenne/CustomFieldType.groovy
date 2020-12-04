@@ -10,16 +10,17 @@
  */
 package ish.oncourse.server.cayenne
 
+import ish.common.types.DataType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._CustomFieldType
 
 import javax.annotation.Nonnull
+import javax.annotation.Nullable
 import java.util.Date
 
 /**
- * A definition of a custom field which can be used to extend the Contact object. Custom fields currently can only be
- * attached to Contacts and can only contain string data.
+ * A definition of a custom field which can be used to extend the Contact object.
  */
 @API
 @QueueableEntity
@@ -30,9 +31,7 @@ class CustomFieldType extends _CustomFieldType implements Queueable {
 	/**
 	 * @return the date and time this record was created
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	Date getCreatedOn() {
 		return super.getCreatedOn()
 	}
@@ -42,8 +41,7 @@ class CustomFieldType extends _CustomFieldType implements Queueable {
 	 *
 	 * @return default value for this custom field type
 	 */
-	@API
-	@Override
+	@Nullable @API @Override
 	String getDefaultValue() {
 		return super.getDefaultValue()
 	}
@@ -51,9 +49,7 @@ class CustomFieldType extends _CustomFieldType implements Queueable {
 	/**
 	 * @return if true, the custom field must be not null and not empty in order to save the Contact record
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	Boolean getIsMandatory() {
 		return super.getIsMandatory()
 	}
@@ -61,9 +57,7 @@ class CustomFieldType extends _CustomFieldType implements Queueable {
 	/**
 	 * @return the date and time this record was modified
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	Date getModifiedOn() {
 		return super.getModifiedOn()
 	}
@@ -73,9 +67,7 @@ class CustomFieldType extends _CustomFieldType implements Queueable {
 	 *
 	 * @return the human readable name of the field
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	String getName() {
 		return super.getName()
 	}
@@ -87,9 +79,7 @@ class CustomFieldType extends _CustomFieldType implements Queueable {
 	 *
 	 * @return set fieldKey value
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	String getKey() {
 		return super.getKey()
 	}
@@ -100,5 +90,24 @@ class CustomFieldType extends _CustomFieldType implements Queueable {
 	        setSortOrder(0L)
 		}
         super.onEntityCreation()
+	}
+
+	/**
+	 * Custom fields can have a data type to constrain the data which can be stored. This cannot be changed once the field has been created.
+	 *
+	 * @return
+	 */
+	@Nonnull @API @Override
+	DataType getDataType() {
+		return super.getDataType()
+	}
+
+	/**
+	 * The entity (eg. Contact, Enrolment) to which this custom field type is bound.
+	 * @return
+	 */
+	@Nonnull @API @Override
+	String getEntityIdentifier() {
+		return super.getEntityIdentifier()
 	}
 }

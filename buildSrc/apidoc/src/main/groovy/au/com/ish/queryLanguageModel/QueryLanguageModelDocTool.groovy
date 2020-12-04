@@ -31,9 +31,11 @@ class QueryLanguageModelDocTool {
     private final String ANGEL_MAP_PATH = "../server/src/main/resources/cayenne/AngelMap.map.xml"
     private final String SYNTHETIC_ATTRIBUTES_PATH = "syntheticAttributes.xml"
     private final String IGNORED_ATTRIBUTES_PATH = "ignoredAttributes.xml"
+    private final String RICHTEXT_ATTRIBUTES_PATH = "richTextAttributes.xml"
     private final String OUTPUT_FILE = "/queryLanguageModel.ts"
 
     private static final String WILLOW_ID_PROPRETY = 'willowId'
+    private static final String RICHTEXT_ATTRIBUTE_TYPE = 'RichText'
     private static final STRING_CLASSES = ['string', 'java.lang.String', 'byte[]']
     private static final DATE_CLASSES = ['java.util.Date', 'java.time.LocalDate', 'java.time.LocalDateTime']
     private static final NUMERIC_CLASSES = ['int', 'java.lang.Integer', 'java.lang.Long', 'ish.math.Money', 'java.lang.Double', 'java.math.BigDecimal', 'float']
@@ -116,15 +118,20 @@ class QueryLanguageModelDocTool {
         GPathResult ignoredAttributes = new XmlSlurper().parseText(ignoredAttributesFile.text)
         List entitiesWithIgnoredAttributes = ignoredAttributes['entity'].collect()
 
+        InputStream richTextAttributesFile = getClass().getResourceAsStream(RICHTEXT_ATTRIBUTES_PATH)
+        GPathResult richTextAttributes = new XmlSlurper().parseText(richTextAttributesFile.text)
+        List entitiesWithRichTextAttributes = richTextAttributes['entity'].collect()
+
         entities
             .findAll { it.@superEntityName.isEmpty() || SPECIFIC_ENTITIES.contains(it.@name) }
             .each {
                 logger.log(LogLevel.INFO, "Generating typescript interface for " + it.@name.toString())
                 output.append("export const ${it.@name} = {\n")
                 GPathResult entity = it as GPathResult
-                GPathResult ignoredAttrs = entitiesWithIgnoredAttributes.find {it.@name == entity.@name}
+                GPathResult ignoredAttrs = entitiesWithIgnoredAttributes.find {it.@name == entity.@name} as GPathResult
+                GPathResult richTextAttrs = entitiesWithRichTextAttributes.find {it.@name == entity.@name} as GPathResult
                 output.append(generateProperties( it['obj-attribute'].collect().toList(),
-                        ignoredAttrs ))
+                        ignoredAttrs , richTextAttrs))
                 output.append(generateRelations( relations, dbRelations, entities, entity,
                         ignoredAttrs ))
                 output.append(generateSyntheticAttributes( entitiesWithSynthAttributes, entity ))
@@ -157,7 +164,7 @@ class QueryLanguageModelDocTool {
         if (parentEntity != null) {
             GPathResult ignoredAttrsForEntity = ignoredAttributes.find {it.@name == parentEntity.@name}
             renderedSrc.append(generateProperties(parentEntity['obj-attribute'].collect().toList(),
-                    ignoredAttrsForEntity))
+                    ignoredAttrsForEntity, null))
             renderedSrc.append(generateRelations(relations, dbRelations, entities, parentEntity,
                     ignoredAttrsForEntity))
             renderedSrc.append(generateSyntheticAttributes( entitiesWithSynthAttributes, parentEntity ))
@@ -168,17 +175,29 @@ class QueryLanguageModelDocTool {
     }
 
 
-    private static StringBuilder generateProperties(List properties, GPathResult ignoredAttributes) {
+    private static StringBuilder generateProperties(List properties, GPathResult ignoredAttributes, GPathResult richTextAttributes) {
         StringBuilder renderedProperties = new StringBuilder()
 
-        List attributes = ignoredAttributes ?
+        List ignored = ignoredAttributes ?
                 ignoredAttributes['attribute'].collect()
                         .stream()
                         .map{it -> it.@name.toString() }
-                        .collect(Collectors.toList()) :
-                Collections.emptyList()
+                        .collect(Collectors.toList()) as List :
+                Collections.emptyList() as List
+        List richText = richTextAttributes ?
+                richTextAttributes['attribute'].collect()
+                        .stream()
+                        .map{it -> it.@name.toString() }
+                        .collect(Collectors.toList()) as List :
+                Collections.emptyList() as List
+
         properties
-            .findAll { it.@name != WILLOW_ID_PROPRETY && !attributes.contains(it.@name.toString())}
+            .findAll { it.@name != WILLOW_ID_PROPRETY && !ignored.contains(it.@name.toString())}
+            .each  {
+                if (richText.contains(it.@name.toString())) {
+                    it.@type = RICHTEXT_ATTRIBUTE_TYPE
+                }
+            }
             .each { renderedProperties.append("   ${it.@name}: '${defineTypescriptReturnType(it.@type.toString())}',\n") }
 
         renderedProperties

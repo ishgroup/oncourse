@@ -63,11 +63,11 @@ trait CustomFieldTrait {
                 case ENTITY:
                 case FILE:
                 case MESSAGE_TEMPLATE:
-                    throw new IllegalArgumentException("$ENTITY.displayName type is not supported for aoutomation options")
+                    throw new IllegalArgumentException("$ENTITY.displayName type is not supported for automation options")
 
             }
         } catch (DateTimeParseException e) {
-            logger.error("Can not parse value  $value to $customFieldType.dataType.displayName data type")
+            logger.error("Can not parse value $value to $customFieldType.dataType.displayName data type")
             logger.catching(e)
             return null
         }

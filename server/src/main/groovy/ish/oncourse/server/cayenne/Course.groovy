@@ -18,15 +18,19 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateCourseClassNominalHours
 import ish.oncourse.function.CalculateCourseReportableHours
+import ish.oncourse.server.api.dao.CourseDao
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.cayenne.glue._Course
 import ish.util.CourseUtil
 import ish.validation.ValidationFailure
+import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.ValidationResult
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+
 /**
  * Courses are the 'product' students purchase when they enrol. They are enrolled into an instance of a Course, called
  * a CourseClass. The Course carries all the marketing information and is typically what you tag to create a navigation
@@ -308,21 +312,148 @@ class Course extends _Course implements ICourse, Queueable, NotableTrait, Expand
 	}
 
 	/**
-	 *
 	 * @return a list of all courses related to this one
-	 * TODO: check that this code is correct
+	 */
+	@Nonnull @API
+	List<Course> getRelatedCourses() {
+		List<Course> courses = new ArrayList<>()
+
+		EntityRelationDao.getRelatedFrom(context, Course.simpleName, id)
+				.findAll { it -> Course.simpleName == it.fromEntityIdentifier }
+				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context))}  as List<Course>
+
+		EntityRelationDao.getRelatedTo(context, Course.simpleName, id)
+				.findAll { it -> Course.simpleName == it.toEntityIdentifier }
+				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context))}  as List<Course>
+
+		return courses
+	}
+
+	/**
+	 * A list of all courses related to this one by type with specified name
+	 * @return
+	 */
+	@Nonnull @API
+	List<Course> getRelatedCourses(String name) {
+		List<Course> courses = new ArrayList<>()
+
+		EntityRelationDao.getRelatedFromByName(context, Course.simpleName, id, name)
+				.findAll { it -> Course.simpleName == it.fromEntityIdentifier }
+				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context))} as List<Course>
+
+		EntityRelationDao.getRelatedToByName(context, Course.simpleName, id, name)
+				.findAll { it -> Course.simpleName == it.toEntityIdentifier }
+				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context))} as List<Course>
+
+		return courses
+	}
+
+	/**
+	 * @return a list of all products related to this one
+	 */
+	@Nonnull @API
+	List<Product> getRelatedProducts() {
+		List<Product> products = new ArrayList<>()
+
+		EntityRelationDao.getRelatedFrom(context, Course.simpleName, id)
+				.findAll { it -> Product.simpleName == it.fromEntityIdentifier }
+				.each { it -> products.add(SelectById.query(Product, it.fromRecordId).selectOne(context))} as List<Product>
+
+		EntityRelationDao.getRelatedTo(context, Course.simpleName, id)
+				.findAll { it -> Product.simpleName == it.toEntityIdentifier }
+				.each { it -> products.add(SelectById.query(Product, it.toRecordId).selectOne(context))} as List<Product>
+
+		return products
+	}
+
+	/**
+	 * @return a list of products related to this one
 	 */
 	@Nonnull
-	List<Course> getRelatedCourses() {
-		List<Course> result = new ArrayList<>()
+	@API
+	List<Product> getRelatedToProducts() {
+		List<Product> products = new ArrayList<>()
 
-		for (CourseCourseRelation relation : getFromCourses()) {
-			result.add(relation.getToCourse())
-		}
-		for (CourseCourseRelation relation : getToCourses()) {
-			result.add(relation.getFromCourse())
-		}
-		return result
+		EntityRelationDao.getRelatedTo(context, Course.simpleName, id)
+				.findAll { it -> Product.simpleName == it.toEntityIdentifier }
+				.each { it -> products.add(SelectById.query(Product, it.toRecordId).selectOne(context))} as List<Product>
+
+		return products
+	}
+
+	/**
+	 * @return a list of courses this one relate to
+	 */
+	@Nonnull
+	@API
+	List<Product> getRelatedFromProducts() {
+		List<Product> products = new ArrayList<>()
+
+		EntityRelationDao.getRelatedFrom(context, Course.simpleName, id)
+				.findAll { it -> Product.simpleName == it.fromEntityIdentifier }
+				.each { it -> products.add(SelectById.query(Product, it.fromRecordId).selectOne(context))} as List<Product>
+
+		return products
+	}
+
+	/**
+	 * @return a list of courses related to this one
+	 */
+	@Nonnull
+	@API
+	List<Course> getRelatedToCourses() {
+		List<Course> courses = new ArrayList<>()
+
+		EntityRelationDao.getRelatedTo(context, Course.simpleName, id)
+				.findAll { it -> Course.simpleName == it.toEntityIdentifier }
+				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context))}  as List<Course>
+
+		return courses
+	}
+
+	/**
+	 * @return a list of courses related to this one by type with specified name
+	 */
+	@Nonnull
+	@API
+	List<Course> getRelatedToCourses(String name) {
+		List<Course> courses = new ArrayList<>()
+
+		EntityRelationDao.getRelatedToByName(context, Course.simpleName, id, name)
+				.findAll { it -> Course.simpleName == it.toEntityIdentifier }
+				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context))} as List<Course>
+
+		return courses
+	}
+
+	/**
+	 * @return a list of courses this one relate to
+	 */
+	@Nonnull
+	@API
+	List<Course> getRelatedFromCourses() {
+		List<Course> courses = new ArrayList<>()
+
+		EntityRelationDao.getRelatedFrom(context, Course.simpleName, id)
+				.findAll { it -> Course.simpleName == it.fromEntityIdentifier }
+				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context))}  as List<Course>
+
+		return courses
+	}
+
+	/**
+	 * @return a list of courses this one relate to by type with specified name
+	 */
+	@Nonnull
+	@API
+	List<Course> getRelatedFromCourses(String name) {
+		List<Course> courses = new ArrayList<>()
+
+		EntityRelationDao.getRelatedFromByName(context, Course.simpleName, id, name)
+				.findAll { it -> Course.simpleName == it.fromEntityIdentifier }
+				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context))}  as List<Course>
+
+		return courses
 	}
 
 	/**

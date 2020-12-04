@@ -84,6 +84,7 @@ interface Props {
   disableAddAll?: boolean;
   validate?: Validator;
   entityTags?: any;
+  CustomCell?: React.ReactNode;
 }
 
 interface NestedListState {
@@ -555,7 +556,8 @@ class NestedList extends React.Component<Props, NestedListState> {
       dataRowClass,
       name,
       validate,
-      disabled
+      disabled,
+      CustomCell
     } = this.props;
     const { searchEnabled, searchExpression, additionalSearchExpression } = this.state;
 
@@ -604,6 +606,7 @@ class NestedList extends React.Component<Props, NestedListState> {
               fade={searchEnabled}
               dataRowClass={dataRowClass}
               disabled={disabled}
+              CustomCell={CustomCell}
             />
           ))}
       </>
@@ -620,6 +623,7 @@ export interface NestedListItem {
   link?: string;
   active: boolean;
   panelItemIds?: number[];
+  relationId?: number;
 }
 
 export interface NestedListPanelItem {

@@ -13,13 +13,8 @@ import io.bootique.test.junit.BQTestFactory
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.modules.ApiCayenneLayerModule
-import ish.oncourse.server.modules.ApiImplementationModule
-import ish.oncourse.server.modules.ApiServiceModule
-
-//import ish.oncourse.server.modules.AngelJettyModule
 import ish.oncourse.server.modules.TestModule
 import ish.oncourse.server.report.JRRuntimeConfig
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
@@ -163,8 +158,8 @@ abstract class IshTestCase {
         dataSource = domain.getDataNode(ANGEL_NODE).getDataSource()
     }
 
-    static List<Class> getTestModules() {
-        new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(TestModule)
+    static Set<Class> getTestModules() {
+        new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(ish.TestModule)
     }
 
     static boolean testEnvDerby() {

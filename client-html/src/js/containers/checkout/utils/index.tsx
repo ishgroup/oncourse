@@ -294,7 +294,7 @@ export const getCheckoutModel = (
             relatedFundingSourceId: pricesOnly || !state.fundingInvoice.item ? null : fundingInvoice.relatedFundingSourceId
           })),
 
-      memberships: l.items.filter(i => i.checked && i.type === "memberShip")
+      memberships: l.items.filter(i => i.checked && i.type === "membership")
         .map(({ id, validTo }): CheckoutMembership => ({
           productId: id, validTo
         })),
@@ -332,8 +332,6 @@ export const getInvoiceLineKey = (entity: CheckoutEntity) => {
   switch (entity) {
     case "course":
       return "enrolment";
-    case "memberShip":
-      return "membership";
     case "product":
       return "article";
     default:
@@ -515,8 +513,8 @@ export const checkoutCourseClassMap = ({ id, values }): CheckoutCourseClass => {
 };
 
 export const checkoutCourseMap = (courseBase, skipCheck?: boolean): CheckoutCourse => {
-  const course: CheckoutCourse = courseBase;
-  course.courseId = course.id;
+  const course: CheckoutCourse = { ...courseBase };
+  course.courseId = courseBase.id;
   course.type = "course";
   course.checked = !skipCheck;
   course.class = null;
@@ -541,7 +539,7 @@ export const calculateVoucherOrMembershipExpiry = (item: CheckoutItem) => {
       }
       break;
     }
-    case "memberShip": {
+    case "membership": {
       if (item.expiryType === "Never (Lifetime)") {
         item.expireNever = item.expiryType;
       } else {
@@ -561,6 +559,20 @@ export const calculateVoucherOrMembershipExpiry = (item: CheckoutItem) => {
       }
     }
   }
+};
+
+export const processCheckoutSale = (row, type) => {
+  if (typeof row.price === "string") {
+    row.price = parseFloat(row.price);
+  }
+  row.type = type;
+  row.checked = true;
+  row.quantity = 1;
+  row.originalPrice = row.price;
+  if ( type === "voucher") {
+    row.restrictToPayer = false;
+  }
+  calculateVoucherOrMembershipExpiry(row);
 };
 
 export const getCheckoutCurrentStep = (step: CheckoutCurrentStep): number => {

@@ -3,12 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { CheckoutSaleRelationExtended } from "../../../model/checkout";
+
 export const CHECKOUT_ADD_CONTACT = "checkout/add/contact";
 export const CHECKOUT_REMOVE_CONTACT = "checkout/remove/contact";
 export const CHECKOUT_UPDATE_CONTACT = "checkout/update/contact";
 
 export const CHECKOUT_ADD_ITEM = "checkout/add/item";
-export const CHECKOUT_ADD_WAITING_LIST_ENROLMENTS = "checkout/add/waitingListEnrolments";
+export const CHECKOUT_ADD_ENROLMENTS = "checkout/add/enrolments";
 export const CHECKOUT_UPDATE_CLASS_ITEM = "checkout/update/classItem";
 export const CHECKOUT_REMOVE_ITEM = "checkout/remove/item";
 
@@ -19,6 +21,13 @@ export const CHECKOUT_SUMMARY_SEND_CONTEXT = "checkout/summary/send/context";
 
 export const CHECKOUT_SET_HAS_ERRORS = "checkout/set/hasErrors";
 export const CHECKOUT_CLEAR_STATE = "checkout/clear/state";
+
+export const CHECKOUT_UPDATE_RELATED_ITEMS = "checkout/update/relatedItems";
+
+export const checkoutUpdateRelatedItems = (cartItems: CheckoutSaleRelationExtended[], suggestItems: CheckoutSaleRelationExtended[]) => ({
+  type: CHECKOUT_UPDATE_RELATED_ITEMS,
+  payload: { cartItems, suggestItems }
+});
 
 export const checkoutClearState = () => ({
   type: CHECKOUT_CLEAR_STATE
@@ -74,8 +83,8 @@ export const toggleSendContext = (listIndex: number, type: string) => ({
   payload: { listIndex, type }
 });
 
-export const checkoutAddWaitingListEnrolments = enrolments => ({
-  type: CHECKOUT_ADD_WAITING_LIST_ENROLMENTS,
+export const checkoutAddEnrolments = enrolments => ({
+  type: CHECKOUT_ADD_ENROLMENTS,
   payload: enrolments
 });
 

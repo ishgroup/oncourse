@@ -36,6 +36,7 @@
     "antlr4ts-cli": "0.5.0-alpha.3",
     "babel-loader": "8.*",
     "babel-plugin-dynamic-import-node": "2.*",
+    "clean-webpack-plugin": "^3.0.0",
     "compression-webpack-plugin": "3.*",
     "css-loader": "^4.3.0",
     "enzyme": "3.*",
@@ -76,8 +77,8 @@
     "zip-webpack-plugin": "3.*"
   },
   "dependencies": {
-    "@bugsnag/js": "6.5.*",
-    "@bugsnag/plugin-react": "6.5.*",
+    "@bugsnag/js": "7.5.*",
+    "@bugsnag/plugin-react": "7.3.*",
     "@ckeditor/ckeditor5-autoformat": "latest",
     "@ckeditor/ckeditor5-basic-styles": "latest",
     "@ckeditor/ckeditor5-editor-classic": "latest",

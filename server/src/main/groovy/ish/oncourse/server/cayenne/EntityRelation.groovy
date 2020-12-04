@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.types.EntityRelationIdentifier
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._EntityRelation
@@ -20,41 +19,37 @@ import org.apache.cayenne.query.SelectById
 import javax.annotation.Nonnull
 
 /**
- * Entity relation describes generic link between two records in onCourse.
+ * An Entity relation is a link between two records in onCourse. At the moment, Course and Product
+ * relations are the only ones implemented.
+ *
+ * Typically you would not use this record directly, but instead use methods on (for exmample) the Course
+ * entity such as relatedCourses()
  */
-//TODO docs
 @API
 @QueueableEntity
 class EntityRelation extends _EntityRelation implements Queueable {
 
-
-
 	/**
 	 * @return the date and time this record was created
 	 */
-	@API
-	@Override
+	@Nonnull @API @Override
 	Date getCreatedOn() {
 		return super.getCreatedOn()
 	}
 
 	/**
-	 * @return angel ID of the entity record on the left side of the relation
+	 * @return id of the record on the left side of the relation
 	 */
-	@Nonnull
-	@API
-	@Override
-	Long getFromEntityAngelId() {
+	@Nonnull @API
+	Long getFromRecordId() {
 		return super.getFromEntityAngelId()
 	}
 
 	/**
-	 * @return type of entity record on the left side of the relation
+	 * @return type of entity on the left side of the relation
 	 */
-	@Nonnull
-	@API
-	@Override
-	EntityRelationIdentifier getFromEntityIdentifier() {
+	@Nonnull @API
+	String getFromEntity() {
 		return super.getFromEntityIdentifier()
 	}
 
@@ -62,30 +57,33 @@ class EntityRelation extends _EntityRelation implements Queueable {
 	/**
 	 * @return the date and time this record was modified
 	 */
-	@API
-	@Override
+	@Nonnull @API @Override
 	Date getModifiedOn() {
 		return super.getModifiedOn()
 	}
 
 	/**
-	 * @return angel ID of entity record on the right side of the relation
+	 * @return id of record on the right side of the relation
 	 */
-	@Nonnull
-	@API
-	@Override
-	Long getToEntityAngelId() {
+	@Nonnull @API
+	Long getToRecordId() {
 		return super.getToEntityAngelId()
 	}
 
 	/**
-	 * @return type of entity record on the right side of the relation
+	 * @return type of entity on the right side of the relation
 	 */
-	@Nonnull
-	@API
-	@Override
-	EntityRelationIdentifier getToEntityIdentifier() {
+	@Nonnull @API
+	String getToEntity() {
 		return super.getToEntityIdentifier()
+	}
+
+	/**
+	 * @return type of relation between entities
+	 */
+	@Nonnull @API @Override
+	EntityRelationType getRelationType() {
+		return super.getRelationType()
 	}
 
 

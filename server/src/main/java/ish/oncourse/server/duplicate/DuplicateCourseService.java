@@ -15,21 +15,16 @@ import com.google.inject.Inject;
 import ish.duplicate.CourseDuplicationRequest;
 import ish.duplicate.DuplicationResult;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.Course;
-import ish.oncourse.server.cayenne.CourseAttachmentRelation;
-import ish.oncourse.server.cayenne.CourseCourseRelation;
-import ish.oncourse.server.cayenne.CourseProductRelation;
+import ish.oncourse.server.api.dao.EntityRelationDao;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.validation.ValidationException;
-import org.apache.cayenne.validation.ValidationFailure;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DuplicateCourseService {
@@ -67,25 +62,6 @@ public class DuplicateCourseService {
             newCourse.setReportableHours(oldCourse.getReportableHours());
             newCourse.setFieldConfigurationSchema(oldCourse.getFieldConfigurationSchema());
 
-
-            for (var courseCourseRelation : oldCourse.getFromCourses()) {
-                var relation = context.newObject(CourseCourseRelation.class);
-                relation.setFromCourse(courseCourseRelation.getFromCourse());
-                relation.setToCourse(newCourse);
-            }
-
-            for (var courseCourseRelation : oldCourse.getToCourses()) {
-                var relation = context.newObject(CourseCourseRelation.class);
-                relation.setFromCourse(newCourse);
-                relation.setToCourse(courseCourseRelation.getToCourse());
-            }
-
-            for (var courseProductRelation : oldCourse.getProductRelations()) {
-                var relation = context.newObject(CourseProductRelation.class);
-                relation.setCourse(newCourse);
-                relation.setProduct(courseProductRelation.getProduct());
-            }
-
             for (var courseAttachmentRelation : oldCourse.getAttachmentRelations()) {
                 var relation = context.newObject(CourseAttachmentRelation.class);
                 relation.setAttachedCourse(newCourse);
@@ -103,6 +79,7 @@ public class DuplicateCourseService {
 
             try {
                 context.commitChanges();
+                duplicateEntityRelations(oldCourse, newCourse);
             } catch (ValidationException ve) {
                 logger.error(ve);
                 context.rollbackChanges();
@@ -118,6 +95,29 @@ public class DuplicateCourseService {
             }
         }
         return result;
+    }
+
+    private void duplicateEntityRelations(Course oldCourse, Course newCourse) {
+
+        for (var entityRelation : EntityRelationDao.getRelatedFrom(context, Course.class.getSimpleName(), oldCourse.getId())) {
+            var relation = context.newObject(EntityRelation.class);
+            relation.setFromEntityAngelId(entityRelation.getFromEntityAngelId());
+            relation.setFromEntityIdentifier(entityRelation.getFromEntityIdentifier());
+            relation.setToEntityAngelId(newCourse.getId());
+            relation.setToEntityIdentifier(Course.class.getSimpleName());
+            relation.setRelationType(entityRelation.getRelationType());
+        }
+
+        for (var entityRelation : EntityRelationDao.getRelatedTo(context, Course.class.getSimpleName(), oldCourse.getId())) {
+            var relation = context.newObject(EntityRelation.class);
+            relation.setFromEntityAngelId(newCourse.getId());
+            relation.setFromEntityIdentifier(Course.class.getSimpleName());
+            relation.setToEntityAngelId(entityRelation.getToEntityAngelId());
+            relation.setToEntityIdentifier(entityRelation.getToEntityIdentifier());
+            relation.setRelationType(entityRelation.getRelationType());
+        }
+
+        context.commitChanges();
     }
 
     public static class DuplicateCourseCode {

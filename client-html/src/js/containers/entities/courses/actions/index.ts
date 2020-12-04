@@ -36,8 +36,8 @@ export const getCourse = (id: string) => ({
 export const getPlainCourses = (offset?: number, columns?: string, ascending?: boolean, pageSize?: number) => ({
   type: GET_PLAIN_COURSES,
   payload: {
- offset, columns, ascending, pageSize
-}
+    offset, columns, ascending, pageSize
+  }
 });
 
 export const setPlainCoursesSearch = (search: string, enrolmentTypeSearch: CourseEnrolmentType = null) => ({

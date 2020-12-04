@@ -4,6 +4,7 @@ import ish.CayenneIshTestCase
 import ish.common.types.AccountType
 import ish.common.types.AttachmentInfoVisibility
 import ish.common.types.CourseEnrolmentType
+import ish.common.types.EntityRelationCartAction
 import ish.common.types.ModuleType
 import ish.common.types.QualificationType
 import ish.duplicate.CourseDuplicationRequest
@@ -17,11 +18,13 @@ import ish.oncourse.server.cayenne.CourseCourseRelation
 import ish.oncourse.server.cayenne.CourseModule
 import ish.oncourse.server.cayenne.CourseProductRelation
 import ish.oncourse.server.cayenne.Document
+import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.Qualification
 import ish.oncourse.server.cayenne.Tax
+import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import static org.junit.Assert.assertEquals
@@ -59,12 +62,14 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
         CourseCourseRelation courseCourseRelation = context.newObject(CourseCourseRelation.class)
         courseCourseRelation.setFromCourse(course)
         courseCourseRelation.setToCourse(relatedCourse)
+        courseCourseRelation.setRelationType(getRelationType(context))
 
         Product product = createProduct(context)
 
         CourseProductRelation productRelation = context.newObject(CourseProductRelation.class)
-        productRelation.setCourse(course)
-        productRelation.setProduct(product)
+        productRelation.setFromCourse(course)
+        productRelation.setToProduct(product)
+        productRelation.setRelationType(getRelationType(context))
 
         Module module = context.newObject(Module.class)
         module.setType(ModuleType.MODULE)
@@ -137,14 +142,14 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
 
 
         List<CourseProductRelation> courseProductRelations = ObjectSelect.query(CourseProductRelation.class)
-                .where(CourseProductRelation.COURSE.eq(duplicatedCourse))
-                .and(CourseProductRelation.PRODUCT.eq(product))
+                .where(CourseProductRelation.FROM_COURSE.eq(duplicatedCourse))
+                .and(CourseProductRelation.TO_PRODUCT.eq(product))
                 .select(context)
         assertEquals(1, courseProductRelations.size())
         assertNotNull(courseProductRelations.get(0).getCreatedOn())
         assertNotNull(courseProductRelations.get(0).getModifiedOn())
-        assertEquals(duplicatedCourse, courseProductRelations.get(0).getCourse())
-        assertNotNull(courseProductRelations.get(0).getProduct())
+        assertEquals(duplicatedCourse, courseProductRelations.get(0).getFromCourse())
+        assertNotNull(courseProductRelations.get(0).getToProduct())
 
 
         List<CourseAttachmentRelation> courseAttachmentRelations = ObjectSelect.query(CourseAttachmentRelation.class)
@@ -182,5 +187,16 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
         product.setType(1)
 
         return product
+    }
+
+
+    private EntityRelationType getRelationType(ObjectContext context) {
+        context.newObject(EntityRelationType).with { it ->
+            it.name = "Test"
+            it.toName = "To name"
+            it.fromName = "From name"
+            it.shoppingCart = EntityRelationCartAction.NO_ACTION
+            it
+        }
     }
 }

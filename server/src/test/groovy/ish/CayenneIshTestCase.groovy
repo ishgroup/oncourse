@@ -134,14 +134,6 @@ abstract class CayenneIshTestCase extends IshTestCase {
 			datamap.getDbEntity("NodeRelation").removeRelationship(rel.getName())
 		}
 
-		List<Relationship> entityRelationshipsToRemove = new ArrayList<>()
-		entityRelationshipsToRemove.add(datamap.getDbEntity("EntityRelation").getRelationship("relationToProduct"))
-		entityRelationshipsToRemove.add(datamap.getDbEntity("EntityRelation").getRelationship("relationFromProduct"))
-		entityRelationshipsToRemove.add(datamap.getDbEntity("EntityRelation").getRelationship("relationToCourse"))
-		entityRelationshipsToRemove.add(datamap.getDbEntity("EntityRelation").getRelationship("relationFromCourse"))
-		for (Relationship rel : entityRelationshipsToRemove) {
-			datamap.getDbEntity("EntityRelation").removeRelationship(rel.getName())
-		}
 
 		List<Relationship> binaryRelationshipsToRemove = new ArrayList<>()
 		binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedCertificate"))
@@ -229,9 +221,7 @@ abstract class CayenneIshTestCase extends IshTestCase {
 		for (Relationship rel : nodeRelationshipsToRemove) {
 			datamap.getDbEntity("NodeRelation").addRelationship(rel)
 		}
-		for (Relationship rel : entityRelationshipsToRemove) {
-			datamap.getDbEntity("EntityRelation").addRelationship(rel)
-		}
+
 		for (Relationship rel : binaryRelationshipsToRemove) {
 			datamap.getDbEntity("BinaryRelation").addRelationship(rel)
 		}

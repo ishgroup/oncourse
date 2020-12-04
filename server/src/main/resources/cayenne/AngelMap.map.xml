@@ -649,14 +649,14 @@
 	</db-entity>
 	<db-entity name="EntityRelation">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="fromEntityIdentifier" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="fromEntityIdentifier" type="VARCHAR" length="100" isMandatory="true"/>
 		<db-attribute name="fromRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
-		<db-attribute name="toEntityIdentifier" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="toEntityIdentifier" type="VARCHAR" length="100" isMandatory="true"/>
 		<db-attribute name="toRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
-		<db-attribute name="typeId" type="BIGINT"/>
+		<db-attribute name="typeId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="EntityRelationType">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -1991,9 +1991,6 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="CourseCourseRelation" superEntityName="EntityRelation" className="ish.oncourse.server.cayenne.CourseCourseRelation" clientClassName="ish.oncourse.cayenne.CourseCourseRelation">
-		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 1)]]></qualifier>
-	</obj-entity>
 	<obj-entity name="CourseCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.CourseCustomField" clientClassName="ish.oncourse.cayenne.CourseCustomField">
 		<qualifier><![CDATA[entityIdentifier = "Course"]]></qualifier>
 	</obj-entity>
@@ -2005,9 +2002,6 @@
 	</obj-entity>
 	<obj-entity name="CourseNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.CourseNoteRelation" clientClassName="ish.oncourse.cayenne.CourseNoteRelation">
 		<qualifier><![CDATA[entityIdentifier = "Course"]]></qualifier>
-	</obj-entity>
-	<obj-entity name="CourseProductRelation" superEntityName="EntityRelation" className="ish.oncourse.server.cayenne.CourseProductRelation" clientClassName="ish.oncourse.cayenne.CourseProductRelation">
-		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 2)]]></qualifier>
 	</obj-entity>
 	<obj-entity name="CourseTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.CourseTagRelation" clientClassName="ish.oncourse.cayenne.CourseTagRelation">
 		<qualifier><![CDATA[entityIdentifier = 1]]></qualifier>
@@ -2205,11 +2199,11 @@
 	<obj-entity name="EntityRelation" className="ish.oncourse.server.cayenne.EntityRelation" clientClassName="ish.oncourse.cayenne.EntityRelation" dbEntityName="EntityRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="fromEntityAngelId" type="java.lang.Long" db-attribute-path="fromRecordId"/>
-		<obj-attribute name="fromEntityIdentifier" type="ish.common.types.EntityRelationIdentifier" db-attribute-path="fromEntityIdentifier"/>
+		<obj-attribute name="fromEntityIdentifier" type="java.lang.String" db-attribute-path="fromEntityIdentifier"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="toEntityAngelId" type="java.lang.Long" db-attribute-path="toRecordId"/>
-		<obj-attribute name="toEntityIdentifier" type="ish.common.types.EntityRelationIdentifier" db-attribute-path="toEntityIdentifier"/>
+		<obj-attribute name="toEntityIdentifier" type="java.lang.String" db-attribute-path="toEntityIdentifier"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="EntityRelationType" className="ish.oncourse.server.cayenne.EntityRelationType" dbEntityName="EntityRelationType" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
@@ -3513,12 +3507,6 @@
 	<db-relationship name="courseClasses" source="Course" target="CourseClass" toMany="true">
 		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
-	<db-relationship name="courseFromRelation" source="Course" target="EntityRelation" toMany="true">
-		<db-attribute-pair source="id" target="toRecordId"/>
-	</db-relationship>
-	<db-relationship name="courseToRelation" source="Course" target="EntityRelation" toMany="true">
-		<db-attribute-pair source="id" target="fromRecordId"/>
-	</db-relationship>
 	<db-relationship name="customFileds" source="Course" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
@@ -3776,18 +3764,6 @@
 	</db-relationship>
 	<db-relationship name="taggingRelations" source="Enrolment" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
-	</db-relationship>
-	<db-relationship name="relationFromCourse" source="EntityRelation" target="Course">
-		<db-attribute-pair source="fromRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="relationFromProduct" source="EntityRelation" target="Product">
-		<db-attribute-pair source="fromRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="relationToCourse" source="EntityRelation" target="Course">
-		<db-attribute-pair source="toRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="relationToProduct" source="EntityRelation" target="Product">
-		<db-attribute-pair source="toRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="automationBindings" source="ExportTemplate" target="AutomationBinding" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
@@ -4257,14 +4233,8 @@
 	<db-relationship name="liabilityAccount" source="Product" target="Account">
 		<db-attribute-pair source="liabilityAccountId" target="id"/>
 	</db-relationship>
-	<db-relationship name="productFromRelation" source="Product" target="EntityRelation" toMany="true">
-		<db-attribute-pair source="id" target="fromRecordId"/>
-	</db-relationship>
 	<db-relationship name="productItems" source="Product" target="ProductItem" toMany="true">
 		<db-attribute-pair source="id" target="productId"/>
-	</db-relationship>
-	<db-relationship name="productToRelation" source="Product" target="EntityRelation" toMany="true">
-		<db-attribute-pair source="id" target="toRecordId"/>
 	</db-relationship>
 	<db-relationship name="tax" source="Product" target="Tax">
 		<db-attribute-pair source="taxId" target="id"/>
@@ -4798,14 +4768,11 @@
 	<obj-relationship name="customFields" source="Course" target="CourseCustomField" deleteRule="Cascade" db-relationship-path="customFileds"/>
 	<obj-relationship name="enrolments" source="Course" target="Enrolment" deleteRule="Deny" db-relationship-path="courseClasses.enrolments"/>
 	<obj-relationship name="fieldConfigurationSchema" source="Course" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationSchema"/>
-	<obj-relationship name="fromCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseFromRelation"/>
 	<obj-relationship name="modules" source="Course" target="Module" deleteRule="Nullify" db-relationship-path="modules.module"/>
 	<obj-relationship name="noteRelations" source="Course" target="CourseNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
-	<obj-relationship name="productRelations" source="Course" target="CourseProductRelation" deleteRule="Cascade" db-relationship-path="courseToRelation"/>
 	<obj-relationship name="qualification" source="Course" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
 	<obj-relationship name="sessions" source="Course" target="Session" deleteRule="Nullify" db-relationship-path="courseClasses.sessions"/>
 	<obj-relationship name="taggingRelations" source="Course" target="CourseTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
-	<obj-relationship name="toCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseToRelation"/>
 	<obj-relationship name="unavailableRuleRelations" source="Course" target="CourseUnavailableRuleRelation" deleteRule="Cascade" db-relationship-path="unavailableRuleRelations"/>
 	<obj-relationship name="voucherProductCourses" source="Course" target="VoucherProductCourse" deleteRule="Deny" db-relationship-path="voucherProductCourses"/>
 	<obj-relationship name="waitingLists" source="Course" target="WaitingList" deleteRule="Deny" db-relationship-path="waitingLists"/>
@@ -4838,14 +4805,10 @@
 	<obj-relationship name="definedTutorRole" source="CourseClassTutor" target="DefinedTutorRole" deleteRule="Nullify" db-relationship-path="definedTutorRole"/>
 	<obj-relationship name="sessionsTutors" source="CourseClassTutor" target="TutorAttendance" deleteRule="Cascade" db-relationship-path="sessionCourseClassTutors"/>
 	<obj-relationship name="tutor" source="CourseClassTutor" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
-	<obj-relationship name="fromCourse" source="CourseCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>
-	<obj-relationship name="toCourse" source="CourseCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationToCourse"/>
 	<obj-relationship name="relatedObject" source="CourseCustomField" target="Course" deleteRule="Nullify" db-relationship-path="relatedCourse"/>
 	<obj-relationship name="course" source="CourseModule" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="module" source="CourseModule" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
 	<obj-relationship name="notedCourse" source="CourseNoteRelation" target="Course" deleteRule="Nullify" db-relationship-path="notedCourse"/>
-	<obj-relationship name="course" source="CourseProductRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>
-	<obj-relationship name="product" source="CourseProductRelation" target="Product" deleteRule="Nullify" db-relationship-path="relationToProduct"/>
 	<obj-relationship name="taggedCourse" source="CourseTagRelation" target="Course" deleteRule="Nullify" db-relationship-path="taggedCourse"/>
 	<obj-relationship name="course" source="CourseUnavailableRuleRelation" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="customFieldType" source="CustomField" target="CustomFieldType" deleteRule="Nullify" db-relationship-path="customFieldType"/>
@@ -5018,7 +4981,6 @@
 	<obj-relationship name="student" source="PriorLearning" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="attachedPriorLearning" source="PriorLearningAttachmentRelation" target="PriorLearning" deleteRule="Nullify" db-relationship-path="attachedPriorLearning"/>
 	<obj-relationship name="corporatePassProducts" source="Product" target="CorporatePassProduct" deleteRule="Deny" db-relationship-path="corporatePassProduct"/>
-	<obj-relationship name="courseRelations" source="Product" target="CourseProductRelation" deleteRule="Deny" db-relationship-path="productToRelation"/>
 	<obj-relationship name="incomeAccount" source="Product" target="Account" deleteRule="Nullify" db-relationship-path="incomeAccount"/>
 	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="tax" source="Product" target="Tax" deleteRule="Nullify" db-relationship-path="tax"/>

@@ -6,13 +6,13 @@
 import { Epic } from "redux-observable";
 
 import { initialize } from "redux-form";
+import { Course } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_COURSE, GET_COURSE_FULFILLED } from "../actions";
 import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions/index";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { getEntityItemById } from "../../common/entityItemsService";
-import { Course } from "@api/model";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import { removeActionsFromQueue } from "../../../../common/actions";
 import { State } from "../../../../reducers/state";
@@ -36,9 +36,7 @@ const request: EpicUtils.Request<any, State, number> = {
       ...(s.actionsQueue.queuedActions.length ? [removeActionsFromQueue([{ entity: "Note" }])] : [])
     ];
   },
-  processError: response => {
-    return [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, null)];
-  }
+  processError: response => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, null)]
 };
 
 export const EpicGetCourse: Epic<any, any> = EpicUtils.Create(request);

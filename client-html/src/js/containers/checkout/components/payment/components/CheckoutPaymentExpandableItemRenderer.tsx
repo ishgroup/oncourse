@@ -26,7 +26,7 @@ const ItemRow = React.memo<any>(props => {
     switch (item.type) {
       case "course":
         return { type: "enrolment/", id: line.id };
-      case "memberShip":
+      case "membership":
       case "voucher":
         return { type: "sale/", id: line.id };
       case "product":

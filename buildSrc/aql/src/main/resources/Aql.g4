@@ -123,6 +123,7 @@ value
    | FloatingPointLiteral      # Float
    | SingleQuotedStringLiteral # String
    | DoubleQuotedStringLiteral # String
+   | RichTextLiteral           # RichText
    | BooleanLiteral            # Boolean
    | NullLiteral               # Null
    | Identifier                # Id
@@ -269,6 +270,9 @@ DoubleQuotedStringLiteral: '"' StringCharacters? '"';
 fragment StringCharacters: StringCharacter+;
 fragment StringCharacter: ~["\\] | EscapeSequence;
 
+// RichText Literals
+RichTextLiteral: '"' StringCharacters? '"';
+
 // Escape Sequences for Character and String Literals
 fragment EscapeSequence
     :   '\\' [btnfr"'\\]
@@ -283,5 +287,5 @@ fragment OctalEscape
 fragment UnicodeEscape: '\\' 'u' HexDigit HexDigit HexDigit HexDigit;
 fragment ZeroToThree: [0-3];
 
-// Skip all witespace signs
+// Skip all whitespace signs
 WS: [ \t\r\n]+ -> channel(HIDDEN) ;

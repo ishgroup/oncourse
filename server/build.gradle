@@ -52,7 +52,7 @@ sourceSets {
 dependencies {
 	api project(":types")
 	api project(':server-api')
-	
+
 	implementation "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
 	implementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
 	implementation "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
@@ -65,7 +65,7 @@ dependencies {
 
 	api "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 	api "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
-	
+
 	implementation 'javax.jws:javax.jws-api:1.1'
 	implementation "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 
@@ -132,7 +132,7 @@ dependencies {
 	implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
 	implementation 'com.google.apis:google-api-services-classroom:v1-rev135-1.23.0'
 
-	implementation 'com.nimbusds:nimbus-jose-jwt:8.9'
+	api 'com.nimbusds:nimbus-jose-jwt:8.9'
 	implementation 'com.bugsnag:bugsnag:3.6.1'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
@@ -292,6 +292,11 @@ task packageDslDoc(type: Zip) {
 	dependsOn tasks.getByName('classes'),tasks.getByName('dslDocs')
 }
 
+task testJar(type: Jar) {
+	archiveClassifier = 'tests'
+	from sourceSets.test.output
+}
+
 
 // "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
 publishing {
@@ -310,10 +315,11 @@ publishing {
 			from components.java
 			artifactId 'server-jar'
 		}
-//		test(MavenPublication) {
-//			from sourceSets.test.output
-//			artifactId "test"
-//		}
+		test(MavenPublication) {
+			artifact (testJar) {
+				artifactId "test"
+			}
+		}
 		executables(MavenPublication) {
 			artifact(installer_unix) {
 				classifier "executable"
@@ -367,8 +373,9 @@ task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
 }
 
 compileJava {
-	dependsOn queryGrammar, cgen, copyWebApp
+	dependsOn queryGrammar, cgen
 }
+assembleDist.dependsOn(copyWebApp)
 
 task runServer(dependsOn: [classes], type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
