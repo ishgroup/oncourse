@@ -48,18 +48,14 @@ taskTree{
 apply plugin: 'idea'
 
 subprojects {
+	repositories {
+		mavenCentral()
+	}
+
 	apply plugin: 'java-library'
 	apply plugin: 'java'
 	apply plugin: 'maven-publish'
 
-	repositories {
-		maven {
-			url 'https://repo.ish.com.au/content/groups/public'
-		}
-		maven {
-			url 'https://repo.ish.com.au/content/groups/ish'
-		}
-	}
 	sourceCompatibility = 11
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"

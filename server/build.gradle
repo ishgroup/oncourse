@@ -154,11 +154,6 @@ configurations.all {
 	}
 }
 
-repositories {
-	maven {
-		url 'https://repo.ish.com.au/repository/thirdparty'
-	}
-}
 sourceCompatibility = JavaVersion.VERSION_11
 
 project.ext {

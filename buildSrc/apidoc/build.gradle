@@ -12,9 +12,7 @@
 apply plugin: 'groovy'
 
 repositories {
-    maven {
-        url 'https://repo.ish.com.au/content/groups/public'
-    }
+	mavenCentral()
 }
 
 dependencies {

@@ -15,14 +15,12 @@ plugins {
     id 'antlr'
 }
 
-ext {
-    antlrVersion = '4.7.1'
+repositories {
+    mavenCentral()
 }
 
-repositories {
-    maven {
-        url 'https://repo.ish.com.au/content/groups/public'
-    }
+ext {
+    antlrVersion = '4.7.1'
 }
 
 dependencies {
