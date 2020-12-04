@@ -31,6 +31,8 @@ onCourse hosting and support plans are available from ish along with commercial 
 * Australian RTO VET, FEE LOAN and higher education compliance
 * Lots of third party integrations 
 
+[Inquire here](https://www.ish.com.au) for commercial support and additional features.
+
 ## License
 
 onCourse is licensed under the AGPL version 3. If you'd like to contribute to this product we welcome your pull request. Other than reviewing the technical merit of your change, we also require that you fill out a CLA. This protects you legally and ensures the source can be properly licensed now and into the future. 
