@@ -113,23 +113,45 @@ databaseChangeLog:
       author: ari
       preConditions:
         - onFail: MARK_RAN
-        - columnExists:
-            tableName: Tutor
-            columnName: payType
+        - not:
+          - columnExists:
+              tableName: Tutor
+              columnName: payType
       changes:
         - addColumn:
             tableName: Tutor
             columns:
               - column:
                   name: payType
-                  type: INTEGER
+                  type: SMALLINT
+  - changeSet:
+      id: 56-10
+      author: ari
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+          - columnExists:
+              tableName: Payslip
+              columnName: payType
+      changes:
         - addColumn:
             tableName: Payslip
             columns:
               - column:
                   name: payType
-                  type: INTEGER
+                  type: SMALLINT
+                  value: 1
+  - changeSet:
+      id: 56-11
+      author: ari
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: Payslip
+            columnName: payType
+      changes:
         - addNotNullConstraint:
             tableName: Payslip
             columnName: payType
+            columnDataType: SMALLINT
             defaultNullValue: 1
