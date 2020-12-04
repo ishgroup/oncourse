@@ -25,12 +25,7 @@ buildscript {
 	}
 
 	repositories {
-		maven {
-			url 'https://repo.ish.com.au/content/groups/public'
-		}
-		maven {
-			url 'https://repo.ish.com.au/content/groups/ish'
-		}
+		mavenCentral()
 	}
 
 	dependencies {
@@ -84,7 +79,7 @@ subprojects {
 		api "org.codehaus.groovy:groovy-templates:$groovyVersion"
 		api "org.codehaus.groovy:groovy-xml:$groovyVersion"
 		api "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
-		
+
 		implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
 		testImplementation 'junit:junit:4.13'

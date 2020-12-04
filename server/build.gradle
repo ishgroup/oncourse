@@ -52,7 +52,7 @@ sourceSets {
 dependencies {
 	api project(":types")
 	api project(':server-api')
-	
+
 	implementation "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
 	implementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
 	implementation "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
@@ -65,7 +65,7 @@ dependencies {
 
 	api "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 	api "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
-	
+
 	implementation 'javax.jws:javax.jws-api:1.1'
 	implementation "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 
@@ -373,8 +373,9 @@ task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
 }
 
 compileJava {
-	dependsOn queryGrammar, cgen, copyWebApp
+	dependsOn queryGrammar, cgen
 }
+assembleDist.dependsOn(copyWebApp)
 
 task runServer(dependsOn: [classes], type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
