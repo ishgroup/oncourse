@@ -1119,7 +1119,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="notes" type="LONGVARCHAR" length="8000"/>
-		<db-attribute name="payType" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="payType" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="privateNotes" type="LONGVARCHAR" length="8000"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true"/>
 	</db-entity>
@@ -1457,7 +1457,7 @@
 		<db-attribute name="givenName_legal" type="VARCHAR" length="256"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
-		<db-attribute name="payType" type="INTEGER"/>
+		<db-attribute name="payType" type="SMALLINT"/>
 		<db-attribute name="payrollRef" type="VARCHAR" length="32"/>
 		<db-attribute name="resume" type="CLOB" length="32000"/>
 		<db-attribute name="willowId" type="BIGINT"/>
