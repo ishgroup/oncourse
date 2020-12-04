@@ -3,6 +3,7 @@ package ish.oncourse.server.api.v1.function
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.ArticleProduct
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.EntityRelation
@@ -12,6 +13,8 @@ import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.Qualification
 import ish.oncourse.server.cayenne.VoucherProduct
+import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 
@@ -20,7 +23,30 @@ import static ish.oncourse.server.cayenne.EntityRelationType.DEFAULT_SYSTEM_TYPE
 
 class EntityRelationFunctions {
 
+    static validateRelatedEntitiesBeforeSave(ObjectContext context, Long entityId, List<SaleDTO> relatedEntities) {
+        relatedEntities.findAll { it.entityToId != null }.each { relatedProduct ->
+            Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(relatedProduct.type.getCayenneClassName())
+            CayenneDataObject entityTo = SelectById.query(clzz, relatedProduct.entityToId).selectOne(context)
+            if (!entityTo) {
+                EntityValidator.throwClientErrorException(entityId, 'relatedlSalables', "$clzz.simpleName with id=$relatedProduct.entityToId not found.")
+            }
+        }
+
+        relatedEntities.findAll { it.entityFromId != null }.each { relatedProduct ->
+            Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(relatedProduct.type.getCayenneClassName())
+            CayenneDataObject entityTo = SelectById.query(clzz, relatedProduct.entityFromId).selectOne(context)
+            if (!entityTo) {
+                EntityValidator.throwClientErrorException(entityId, 'relatedlSalables', "$clzz.simpleName with id=$relatedProduct.entityFromId not found.")
+            }
+        }
+
+        if (relatedEntities.any { it.entityToId == null && it.entityFromId == null }) {
+            EntityValidator.throwClientErrorException(entityId, 'relatedProducts', "You should specify id of related entity.")
+        }
+    }
+
     static void updateRelatedEntities(ObjectContext context, Long entityId, String entityName, List<SaleDTO> relatedEntities) {
+        validateRelatedEntitiesBeforeSave(context, entityId, relatedEntities)
         List<EntityRelation> currentRelations = []
         List<SaleDTO> relationsToSave
 

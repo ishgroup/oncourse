@@ -39,7 +39,7 @@ const EnrolItemListView = React.memo<any>(props => {
         showFirst={8}
       />
       <EnrolItemListRenderer
-        type="memberShip"
+        type="membership"
         title={`${membershipProducts.length > 1 ? "Memberships" : "Membership"}`}
         items={membershipProducts}
         onChangeHandler={onChangeHandler}

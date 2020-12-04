@@ -26,12 +26,10 @@ import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.QualificationDao
-import ish.oncourse.server.api.v1.function.EntityRelationFunctions
-import ish.oncourse.server.cayenne.EntityRelation
-import ish.oncourse.server.cayenne.EntityRelationType
+import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.util.EntityUtil
+import org.apache.cayenne.query.SelectById
 
-import static ish.oncourse.server.cayenne.EntityRelationType.DEFAULT_SYSTEM_TYPE_ID
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.CourseFunctions.ENROLMENT_TYPE_MAP
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
@@ -54,8 +52,6 @@ import static ish.oncourse.server.api.v1.model.CourseStatusDTO.ENABLED
 import static ish.oncourse.server.api.v1.model.CourseStatusDTO.ENABLED_AND_VISIBLE_ONLINE
 import ish.oncourse.server.api.v1.model.HolidayDTO
 import ish.oncourse.server.api.v1.model.ModuleDTO
-import ish.oncourse.server.api.v1.model.SaleDTO
-import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseAttachmentRelation
@@ -75,7 +71,7 @@ import static org.apache.commons.lang3.StringUtils.trimToNull
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
-class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> {
+class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao>  {
 
     @Inject
     private PreferenceController preferenceController
@@ -317,35 +313,6 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
 
         if (courseDTO.qualificationId && isNotBlank(courseDTO.fieldOfEducation)) {
             validator.throwClientErrorException(id, 'fieldOfEducation', "Field of education should be empty for course with qualification")
-        }
-
-
-        courseDTO.relatedlSalables.findAll { it.entityToId != null }.each { relatedProduct ->
-            if (relatedProduct.type == SaleTypeDTO.COURSE) {
-                if (!entityDao.getById(context, relatedProduct.entityToId)) {
-                    validator.throwClientErrorException(id, 'relatedProducts', "Course with id=$relatedProduct.entityToId not found.")
-                }
-            } else {
-                if (!productDao.getById(context, relatedProduct.entityToId)) {
-                    validator.throwClientErrorException(id, 'relatedProducts', "Product with id=$relatedProduct.entityToId not found.")
-                }
-            }
-        }
-
-        courseDTO.relatedlSalables.findAll { it.entityFromId != null }.each { relatedProduct ->
-            if (relatedProduct.type == SaleTypeDTO.COURSE) {
-                if (!entityDao.getById(context, relatedProduct.entityFromId)) {
-                    validator.throwClientErrorException(id, 'relatedProducts', "Course with id=$relatedProduct.entityFromId not found.")
-                }
-            } else {
-                if (!productDao.getById(context, relatedProduct.entityFromId)) {
-                    validator.throwClientErrorException(id, 'relatedProducts', "Product with id=$relatedProduct.entityFromId not found.")
-                }
-            }
-        }
-
-        if (courseDTO.relatedlSalables.any { it.entityToId == null && it.entityFromId == null }) {
-            validator.throwClientErrorException(id, 'relatedProducts', "You should specify id of related entity.")
         }
 
         courseDTO.modules.findAll { it.id != null }.each { module ->

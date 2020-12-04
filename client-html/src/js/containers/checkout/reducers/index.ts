@@ -9,7 +9,7 @@ import { CheckoutDiscount, CheckoutItem, CheckoutState } from "../../../model/ch
 import { getContactName } from "../../entities/contacts/utils";
 import {
   CHECKOUT_ADD_CONTACT,
-  CHECKOUT_ADD_ITEM, CHECKOUT_ADD_WAITING_LIST_ENROLMENTS,
+  CHECKOUT_ADD_ITEM, CHECKOUT_ADD_ENROLMENTS,
   CHECKOUT_CHANGE_STEP,
   CHECKOUT_CLEAR_STATE,
   CHECKOUT_REMOVE_CONTACT,
@@ -18,7 +18,7 @@ import {
   CHECKOUT_TOGGLE_SUMMARY_ITEM,
   CHECKOUT_TOGGLE_SUMMARY_VOUCHER_ITEM,
   CHECKOUT_UPDATE_CLASS_ITEM,
-  CHECKOUT_UPDATE_CONTACT
+  CHECKOUT_UPDATE_CONTACT, CHECKOUT_UPDATE_RELATED_ITEMS
 } from "../actions";
 import {
   CHECKOUT_FUNDING_INVOICE_ADD_COMPANY,
@@ -136,7 +136,8 @@ const initial: CheckoutState = {
     companies: [],
     item: null,
     trackAmountOwing: false
-  }
+  },
+  salesRelations: []
 };
 
 export const checkoutReducer = (state: CheckoutState = initial, action: IAction): CheckoutState => {
@@ -1067,7 +1068,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       };
     }
 
-    case CHECKOUT_ADD_WAITING_LIST_ENROLMENTS: {
+    case CHECKOUT_ADD_ENROLMENTS: {
       const enrolments = action.payload;
 
       const addedIds = {};
@@ -1131,6 +1132,36 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
 
     case CHECKOUT_CLEAR_STATE: {
       return { ...initial };
+    }
+
+    case CHECKOUT_UPDATE_RELATED_ITEMS: {
+      const { cartItems, suggestItems } = action.payload;
+
+      if (!cartItems.length && !suggestItems.length) {
+        return state;
+      }
+
+      const items = [...state.items];
+
+      cartItems.forEach(c => {
+        items.push(c.toItem.cartItem);
+      });
+
+      return {
+        ...state,
+        items,
+        summary: {
+          ...state.summary,
+          list: state.summary.list.map(li => ({
+            ...li,
+            items: items.map(it => {
+              const cartItem = cartItems.find(ci => ci.contactIds.includes(li.contact.id));
+              return { ...it, checked: cartItem ? true : it.checked };
+            })
+          }))
+        },
+        salesRelations: suggestItems
+      };
     }
 
     case CHECKOUT_FUNDING_INVOICE_ADD_COMPANY: {

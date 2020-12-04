@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.common.types.EntityRelationCartAction
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.EntityRelationDao
@@ -186,6 +187,7 @@ class CheckoutApiImpl implements CheckoutApi {
     List<CheckoutSaleRelationDTO> getSaleRelations(Long id, String entityName, Contact contact) {
         ObjectContext context = cayenneService.newContext
         List<EntityRelation> relations = EntityRelationDao.getRelatedTo(context, entityName, id)
+                .findAll { EntityRelationCartAction.NO_ACTION != it.relationType.shoppingCart }
         List<CheckoutSaleRelationDTO> result = []
         
         relations.findAll { Course.simpleName == it.toEntityIdentifier }.each { relation ->

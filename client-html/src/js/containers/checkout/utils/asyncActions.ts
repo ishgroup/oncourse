@@ -3,27 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import uniqid from "uniqid";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import EntityService from "../../../common/services/EntityService";
 import { getCustomColumnsMap } from "../../../common/utils/common";
-import { CheckoutContact, CheckoutCourse } from "../../../model/checkout";
-import { addContact, checkoutAddWaitingListEnrolments } from "../actions";
+import { CheckoutContact, CheckoutCourse, CheckoutEnrolmentCustom } from "../../../model/checkout";
+import { addContact, checkoutAddEnrolments } from "../actions";
 import { checkoutUpdateSummaryPrices } from "../actions/checkoutSummary";
 import { CheckoutPage } from "../components/CheckoutSelection";
 import { CHECKOUT_CONTACT_COLUMNS, CHECKOUT_COURSE_CLASS_COLUMNS, CheckoutCurrentStep } from "../constants";
 import CheckoutService from "../services/CheckoutService";
 import { checkoutCourseClassMap, checkoutCourseMap } from "./index";
-import uniqid from "uniqid";
 
 export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep, setActiveField, setCustomLoading, dispatch) => {
   setCustomLoading(true);
 
-  const enrolments = [];
+  const enrolments: CheckoutEnrolmentCustom[] = [];
 
   await ids.map(id => () =>
     EntityService.getPlainRecords("WaitingList", "student.contact.id,course.id", `id is ${id}`)
       .then(res => {
-        const enrolment: any = {};
+        const enrolment: CheckoutEnrolmentCustom = {};
         const courseId = res.rows[0].values[1];
         let plainCourse;
 
@@ -52,7 +52,7 @@ export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep,
               enrolment.courseClass = {
                 ...plainCourse,
                 courseId: plainCourse.id,
-                id: plainClass.id,
+                id: uniqid(),
                 price: plainClass.price,
                 discount: null,
                 discounts: [],
@@ -85,7 +85,7 @@ export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep,
     await b();
   }, Promise.resolve());
 
-  dispatch(checkoutAddWaitingListEnrolments(enrolments));
+  dispatch(checkoutAddEnrolments(enrolments));
   onChangeStep(CheckoutCurrentStep.summary);
   setActiveField(CheckoutPage.summary);
   dispatch(checkoutUpdateSummaryPrices());
