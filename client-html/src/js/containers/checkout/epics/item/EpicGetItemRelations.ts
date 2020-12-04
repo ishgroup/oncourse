@@ -1,10 +1,13 @@
 import { ActionsObservable, Epic } from "redux-observable";
-import { flatMap, mergeMap, catchError } from "rxjs/operators";
+import {
+ flatMap, switchMap, catchError
+} from "rxjs/operators";
 import { CheckoutSaleRelation } from "@api/model";
 import uniqid from "uniqid";
 import {
   CHECKOUT_ADD_CONTACT,
-  CHECKOUT_ADD_ITEM, CHECKOUT_REMOVE_CONTACT, CHECKOUT_REMOVE_ITEM,
+  CHECKOUT_ADD_ITEM,
+  CHECKOUT_REMOVE_CONTACT,
   CHECKOUT_UPDATE_RELATED_ITEMS
 } from "../../actions";
 import CheckoutService from "../../services/CheckoutService";
@@ -25,11 +28,10 @@ import {
 export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObservable<any>, state$): any => action$
 .ofType(
   CHECKOUT_ADD_ITEM,
-  CHECKOUT_REMOVE_ITEM,
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_REMOVE_CONTACT
 ).pipe(
-  mergeMap(async () => {
+  switchMap(async () => {
     const cartItems = [];
     const suggestItems = [];
 
@@ -43,8 +45,8 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
       .map(c => ({
           id: c.id,
           get: () => CheckoutService.getSaleRelations(
-            state$.value.checkout.items.filter(i => i.type === "course" && !i.isRelation).map(i => i.courseId).toString() || null,
-            state$.value.checkout.items.filter(i => i.type !== "course" && !i.isRelation).map(i => i.id).toString() || null,
+            state$.value.checkout.items.filter(i => i.type === "course" && !i.cartAction).map(i => i.courseId).toString() || null,
+            state$.value.checkout.items.filter(i => i.type !== "course" && !i.cartAction).map(i => i.id).toString() || null,
             c.id
           )
       }))
@@ -75,6 +77,7 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
             return EntityService.getPlainRecords("Course", "code,name,isTraineeship", `id is ${r.toItem.id}`)
               .then(res => {
                 plainCourse = checkoutCourseMap(res.rows.map(getCustomColumnsMap("code,name,isTraineeship"))[0], true);
+
                 return EntityService.getPlainRecords(
                   "CourseClass",
                   CHECKOUT_COURSE_CLASS_COLUMNS,
@@ -100,7 +103,10 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
                     class: plainClass
                   };
                   r.toItem.link = `/course/${plainCourse.id}`;
-                  r.toItem.cartItem.isRelation = true;
+                  r.toItem.cartItem.cartAction = r.cartAction;
+                  r.toItem.cartItem.checked = true;
+                } else {
+                  r.cartAction = null;
                 }
               });
           }
@@ -109,7 +115,8 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
               .then(res => {
                 r.toItem.cartItem = checkoutProductMap(res.rows.map(getCustomColumnsMap(CHECKOUT_MEMBERSHIP_COLUMNS))[0]);
                 processCheckoutSale(r.toItem.cartItem, "membership");
-                r.toItem.cartItem.isRelation = true;
+                r.toItem.cartItem.cartAction = r.cartAction;
+                r.toItem.cartItem.checked = true;
                 r.toItem.link = `/membership/${r.toItem.cartItem.id}`;
               });
           }
@@ -118,7 +125,8 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
               .then(res => {
                 r.toItem.cartItem = checkoutVoucherMap(res.rows.map(getCustomColumnsMap(CHECKOUT_VOUCHER_COLUMNS))[0]);
                 processCheckoutSale(r.toItem.cartItem, "voucher");
-                r.toItem.cartItem.isRelation = true;
+                r.toItem.cartItem.cartAction = r.cartAction;
+                r.toItem.cartItem.checked = true;
                 r.toItem.link = `/voucher/${r.toItem.cartItem.id}`;
               });
           }
@@ -127,7 +135,8 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
               .then(res => {
                 r.toItem.cartItem = checkoutProductMap(res.rows.map(getCustomColumnsMap(CHECKOUT_PRODUCT_COLUMNS))[0]);
                 processCheckoutSale(r.toItem.cartItem, "product");
-                r.toItem.cartItem.isRelation = true;
+                r.toItem.cartItem.cartAction = r.cartAction;
+                r.toItem.cartItem.checked = true;
                 r.toItem.link = `/product/${r.toItem.cartItem.id}`;
               });
           }
