@@ -11,6 +11,8 @@ properties:
   status:
     $ref: '../enum/PayslipStatus.yaml'
     required: true
+  payType:
+    $ref: '../enum/PayslipPayType.yaml'
   tutorId:
     type: integer
     format: int64
