@@ -50,6 +50,10 @@ apply plugin: 'idea'
 subprojects {
 	repositories {
 		mavenCentral()
+		maven {
+			//needed for itext
+			url 'http://jasperreports.sourceforge.net/maven2'
+		}
 	}
 
 	apply plugin: 'java-library'
