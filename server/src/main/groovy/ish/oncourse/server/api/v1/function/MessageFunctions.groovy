@@ -20,6 +20,7 @@ import ish.oncourse.server.cayenne.Article
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.Membership
@@ -50,9 +51,17 @@ class MessageFunctions {
     ]
 
     private static final Map<String, Map<String, Property<Long>>> ENTITY_TRANSFORMATION = [
-            "CourseClass" : ["Enrolment" : Enrolment.COURSE_CLASS.dot(CourseClass.ID)],
-            "ProductItem" : ["Voucher" : ProductItem.ID, "Membership": ProductItem.ID, "Article": ProductItem.ID ]
-
+            "CourseClass" : ["Contact": Contact.STUDENT.dot(Student.ENROLMENTS).dot(Enrolment.COURSE_CLASS).dot(CourseClass.ID),  "Enrolment" : Enrolment.COURSE_CLASS.dot(CourseClass.ID)],
+            "ProductItem" : ["Contact": Contact.PRODUCT_ITEMS.dot(ProductItem.ID),  "Voucher" : ProductItem.ID, "Membership": ProductItem.ID, "Article": ProductItem.ID ],
+            "Enrolment" : ["Contact" : Contact.STUDENT.dot(Student.ENROLMENTS).dot(Enrolment.ID)],
+            "Invoice" : ["Contact" : Contact.INVOICES.dot(Invoice.ID)],
+            "Application" : ["Contact" : Contact.STUDENT.dot(Student.APPLICATIONS).dot(Application.ID)],
+            "Student" : ["Contact" : Contact.STUDENT.dot(Student.ID)],
+            "Tutor" : ["Contact" : Contact.TUTOR.dot(Tutor.ID)],
+            "PaymentIn" : ["Contact" : Contact.PAYMENTS_IN.dot(PaymentIn.ID)],
+            "PaymentOut" : ["Contact" : Contact.PAYMENTS_OUT.dot(PaymentOut.ID)],
+            "WaitingList" : ["Contact" :  Contact.STUDENT.dot(Student.WAITING_LISTS).dot(WaitingList.ID)],
+            "Payslip" : ["Contact" :  Contact.PAYSLIPS.dot(Payslip.ID)]
     ]
 
     static Function<CayenneDataObject, Contact> getRecipientFunction(Class<? extends CayenneDataObject> clazz) {
@@ -142,7 +151,7 @@ class MessageFunctions {
 
     static Property<Long> getEntityTransformationProperty(String entityName, String templateEntityName) {
         Property<Long> property = Property.create("id", Long)
-        if (templateEntityName != "Contact" && entityName != templateEntityName) {
+        if (entityName != "Contact" && entityName != templateEntityName) {
             property = ENTITY_TRANSFORMATION.get(entityName)?.get(templateEntityName)
         }
         property

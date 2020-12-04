@@ -395,7 +395,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         def iterator = ObjectSelect.query(clazz).where(property.in(entitiesIds)).batchIterator(context, BATCH_SIZE)
         if (template.entity.equalsIgnoreCase("Contact")) {
             templateForContact = true
-            iterator = ObjectSelect.query(Contact).where(property.in(recipientsToSend)).batchIterator(context, BATCH_SIZE)
+            iterator = ObjectSelect.query(Contact).where(Contact.ID.in(recipientsToSend)).batchIterator(context, BATCH_SIZE)
         }
         iterator.forEach() { batch ->
             ObjectContext batchContext = cayenneService.newContext
