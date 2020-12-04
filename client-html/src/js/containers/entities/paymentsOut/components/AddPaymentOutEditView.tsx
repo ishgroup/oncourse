@@ -332,15 +332,12 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
       EntityService.getPlainRecords("Enrolment", "id", `invoiceLines.invoice.id is ${invoiceId}`)
         .then(res => {
           const ids = res.rows.map(r => Number(r.id));
-
           if (ids && ids.length === 1) {
-            const enrolmentId = ids[0];
-
             EntityService.getPlainRecords(
               "PaymentIn",
               "amount",
               // eslint-disable-next-line max-len
-              `status is SUCCESS and paymentMethod.type = CREDIT_CARD and paymentInLines.invoice.invoiceLines.enrolment.id is ${enrolmentId}`
+              `status is SUCCESS and paymentMethod.type = CREDIT_CARD`
             )
             .then(res => {
               const row = res.rows[0];
