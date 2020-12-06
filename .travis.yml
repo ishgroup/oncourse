@@ -12,7 +12,7 @@ jdk:
   - openjdk11
 
 script:
-  - ./gradlew server:test --scan -s
+  - ./gradlew server:test
 
 addons:
-  mariadb: '10.3.22'
+  mariadb: '10.4.17'
