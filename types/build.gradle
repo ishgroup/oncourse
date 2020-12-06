@@ -24,6 +24,8 @@ dependencies {
     api 'commons-codec:commons-codec:1.14'
     api 'javax.mail:mail:1.4.7'
 	api 'org.springframework:spring-context:4.2.4.RELEASE'
+
+    testImplementation 'org.mockito:mockito-core:2.18.3'
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
