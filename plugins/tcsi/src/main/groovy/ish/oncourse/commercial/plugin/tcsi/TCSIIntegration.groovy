@@ -16,7 +16,9 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.IntegrationConfiguration
+import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.integration.OnSave
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
@@ -30,6 +32,7 @@ import javax.ws.rs.core.Response
 
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.URLENC
+import static groovyx.net.http.Method.GET
 import static groovyx.net.http.Method.POST
 import static groovyx.net.http.Method.PUT
 
@@ -41,22 +44,33 @@ class TCSIIntegration implements PluginTrait {
     public static final String TCSI_ACTIVATION_CODE = "activationCode"
     public static final String TCSI_JWK_CERTIFICATE = "jwkCertificate"
 
-    static final String BASE_URL = 'https://5.rsp.humanservices.gov.au'
-    static final String BASE_URL_TEST = 'https://test.5.rsp.humanservices.gov.au'
-    static final String AUTH_URL = 'https://PRODA.humanservices.gov.au'
-    static final String AUTH_URL_TEST= 'https://vnd.PRODA.humanservices.gov.au'
     static final String AUTH_AUDIENCE = 'https://proda.humanservices.gov.au'
     static final String AUTH_AUDIENCE_TSCI  = 'https://tcsi.humanservices.gov.au'
-    static final String TCSI_BASE_URL = 'https://test.api.humanservices.gov.au/centrelink/ext-vend/tcsi/b2g/v1'
-    static final String DHS_PRODUCT_ID = '08b1e117-5efa-4b4d-b3d7-65ae18908671'
 
+    static final String DHS_PRODUCT_ID_TEST = '858d06ed-7fbe-423c-be45-ac5742cf137c'
+    static final String BASE_URL_TEST = 'https://test.5.rsp.humanservices.gov.au'
+    static final String AUTH_URL_TEST= 'https://vnd.PRODA.humanservices.gov.au'
+    static final String TCSI_BASE_URL_TEST = 'https://test.api.humanservices.gov.au/centrelink/ext-vend/tcsi/b2g/v1'
+    
+    static final String DHS_PRODUCT_ID = '08b1e117-5efa-4b4d-b3d7-65ae18908671'
+    static final String BASE_URL = 'https://5.rsp.humanservices.gov.au'
+    static final String AUTH_URL = 'https://PRODA.humanservices.gov.au'
+    static final String TCSI_BASE_URL = 'https://api.humanservices.gov.au/centrelink/ext-vend/tcsi/b2g/v1'
+
+    static final String BASE_API_PATH = '/centrelink/ext-vend/tcsi/b2g/v1'
+    static final String STUDENTS_PATH = BASE_API_PATH + '/students/'
+    
     String deviceName
     String organisationId
     String jwkCertificate
     private String authToken
 
     private static Logger logger = LogManager.logger
-
+    
+    private static final Closure failureHangler = { resp, body ->
+        throw new RuntimeException('Device authentication error')
+    }
+    
     TCSIIntegration(Map args) {
         loadConfig(args)
 
@@ -168,5 +182,65 @@ class TCSIIntegration implements PluginTrait {
         if (error) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(errorMessage: error)).build())
         }
+    }
+    
+    void enrolment(Enrolment e) {
+        authenticatDevice()
+        def student  = getStudent(e.student.studentNumber)  
+        if (!student) {
+            createStudent()
+        }
+    }
+    
+    
+    def getStudent(Long uid) {
+        getClient().request(GET, JSON) {
+            uri.path = STUDENTS_PATH + uid
+            response.success = { resp, result ->
+                return result
+            }
+            response.failure =  failureHangler
+        }
+    }
+    
+    def createStudent(Student student) {
+        getClient().request(POST, JSON) {
+            uri.path = STUDENTS_PATH
+            body = [
+                    'correlation_id' : "${System.currentTimeMillis()}",
+                    'student' : TCSIUtils.getStudentData(student)
+            ]
+            response.success = { resp, result ->
+                return result
+            }
+            response.failure =  failureHangler
+        }
+    }
+    
+    
+    
+    
+    private RESTClient getClient() {
+        if  (!authToken) {
+            authenticatDevice()
+        }
+        Date currentDate = new Date()
+        String timestamp = (currentDate.getTime() / 1000).toString()
+        RESTClient client  = new RESTClient(TCSI_BASE_URL)
+        client.headers["date-timestamp"] = timestamp
+        client.headers["Content-Type"] = "application/json"
+        client.headers["Accept"] = "application/json"
+        client.headers['x-ibm-client-id'] = DHS_PRODUCT_ID
+        client.headers['organisation-id'] = organisationId
+        client.headers['organisation-name'] = "ish onCourse"
+        client.headers['provider-type'] = "VET"
+        client.headers['user-name'] = "ish"
+        client.headers['message-id'] = timestamp.toString()
+        client.headers['software-name'] = "onCourse"
+        client.headers['software-version'] = '1.0.0'
+        client.headers['access-token'] = authToken
+        client.headers['tcsi-omit-links'] = true
+
+        return client
     }
 }
