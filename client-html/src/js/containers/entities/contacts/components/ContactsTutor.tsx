@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { Contact, WorkingWithChildrenStatus } from "@api/model";
+import { Contact, PayslipPayType, WorkingWithChildrenStatus } from "@api/model";
 import { Grid } from "@material-ui/core";
 import NumberFormat from "react-number-format";
 import FormField from "../../../../common/components/form/form-fields/FormField";
@@ -22,6 +22,8 @@ interface ContactsTutorProps {
 }
 
 const workingWithChildrenStatusItems = Object.keys(WorkingWithChildrenStatus).map(mapSelectItems);
+
+const payslipPayTypes = Object.keys(PayslipPayType).map(mapSelectItems);
 
 export const TFNInputMask = props => {
   const { inputRef, ...other } = props;
@@ -97,6 +99,9 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField type="date" name="tutor.dateFinished" label="Date finished" />
+        </Grid>
+        <Grid item xs={12}>
+          <FormField type="select" name="tutor.defaultPayType" label="Tutor pay default type" items={payslipPayTypes} allowEmpty />
         </Grid>
         <Grid item xs={12} className="mt-2 pb-2">
           <div className="heading">WORKING WITH CHILDREN CHECK (WWCC)</div>
