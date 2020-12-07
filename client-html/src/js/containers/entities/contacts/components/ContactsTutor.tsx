@@ -101,7 +101,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
           <FormField type="date" name="tutor.dateFinished" label="Date finished" />
         </Grid>
         <Grid item xs={12}>
-          <FormField type="select" name="tutor.defaultPayType" label="Tutor pay default type" items={payslipPayTypes} allowEmpty />
+          <FormField type="select" name="tutor.defaultPayType" label="Tutor pay default type" items={payslipPayTypes} defaultValue={"Employee"} allowEmpty />
         </Grid>
         <Grid item xs={12} className="mt-2 pb-2">
           <div className="heading">WORKING WITH CHILDREN CHECK (WWCC)</div>
