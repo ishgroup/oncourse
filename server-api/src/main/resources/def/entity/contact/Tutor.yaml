@@ -40,5 +40,7 @@ properties:
     type: integer
   cancelledClassesCount:
     type: integer
+  defaultPayType:
+    $ref: '../../enum/PayslipPayType.yaml'
 
 
