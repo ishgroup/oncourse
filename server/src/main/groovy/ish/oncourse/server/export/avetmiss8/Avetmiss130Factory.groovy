@@ -120,7 +120,7 @@ class Avetmiss130Factory extends AvetmissFactory {
         line.commencement_date = first_outcome.startDate
         if (first_outcome.startDate > LocalDate.now()) {
             line.tasmania_programme_status = 85
-        } else if (first_outcome.status = OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN) {
+        } else if (first_outcome.status == OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN) {
             line.tasmania_programme_status = 40
         }
         // ongoing training is the default until we issue a certificate
