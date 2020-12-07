@@ -360,15 +360,15 @@ cgen {
 	}
 }
 
-task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
-	from('../client-html/build/assets') {
-		include '**/*.*'
+task copyWebApp(type: Copy) {
+	from('../client-html/') {
+		include 'jest.config.js'
 	}
 	into 'build/resources/main/static'
 }
 
 compileJava {
-	dependsOn queryGrammar, cgen
+	dependsOn queryGrammar, cgen, copyWebApp
 }
 assembleDist.dependsOn(copyWebApp)
 
