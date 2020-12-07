@@ -16,6 +16,8 @@ import groovy.transform.CompileStatic
 import ish.common.types.AttachmentSpecialType
 import ish.common.types.USIFieldStatus
 import ish.common.types.USIVerificationResult
+import ish.oncourse.server.api.v1.model.PayslipPayTypeDTO
+
 import static ish.common.types.USIVerificationStatus.VALID
 import ish.common.types.UsiStatus
 import ish.oncourse.function.GetContactFullName
@@ -351,6 +353,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.wwChildrenExpiry = LocalDateUtils.valueToDate(dto.wwChildrenExpiry)
         cayenneModel.wwChildrenRef = dto.wwChildrenRef
         cayenneModel.wwChildrenStatus = dto.wwChildrenStatus?.getDbType()
+        cayenneModel.payType = dto.defaultPayType?.dbType
 
         cayenneModel
     }
@@ -638,6 +641,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         }
         new TutorDTO().with { tutor ->
             tutor.id = dbTutor.id
+            tutor.defaultPayType = PayslipPayTypeDTO.values()[0].fromDbType(dbTutor.payType)
             tutor.dateFinished = LocalDateUtils.dateToValue(dbTutor.dateFinished)
             tutor.dateStarted = LocalDateUtils.dateToValue(dbTutor.dateStarted)
             tutor.familyNameLegal = dbTutor.familyNameLegal
