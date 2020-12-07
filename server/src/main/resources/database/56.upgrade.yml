@@ -124,6 +124,7 @@ databaseChangeLog:
               - column:
                   name: payType
                   type: SMALLINT
+                  value: 1
   - changeSet:
       id: 56-10
       author: ari
