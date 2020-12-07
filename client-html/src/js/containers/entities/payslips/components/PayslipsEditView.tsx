@@ -180,7 +180,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                       name="payType"
                       label="Pay type"
                       items={payslipPayTypes}
-                      disabled={!isNew}
+                      disabled={values && values.status === "Paid/Exported"}
                       required
                   />
                 </Grid>
