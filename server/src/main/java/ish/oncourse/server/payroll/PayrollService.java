@@ -13,6 +13,7 @@ package ish.oncourse.server.payroll;
 import com.google.inject.Inject;
 import ish.common.types.AttendanceType;
 import ish.common.types.ClassCostFlowType;
+import ish.common.types.PayslipPayType;
 import ish.math.Money;
 import ish.oncourse.entity.services.SessionService;
 import ish.oncourse.server.ICayenneService;
@@ -133,9 +134,11 @@ public class PayrollService {
      */
     private Payslip newPayslip(Contact contact, Collection<PayLine> lines, ObjectContext context) {
         Payslip result = null;
-        if (contact != null && lines != null && lines.size() > 0) {
+        if (contact != null && lines != null && lines.size() > 0
+                && contact.getTutor() != null && contact.getTutor().getPayType() != null) {
             result = context.newObject(Payslip.class);
             result.setContact(contact);
+            result.setPayType(contact.getTutor().getPayType());
             for (var line : lines) {
                 result.addToPaylines(line);
             }
@@ -299,6 +302,10 @@ public class PayrollService {
 
 
     protected boolean isEligibleToProcess(ClassCost classCost, Date untilDate) {
+        var tutor = classCost.getContact().getTutor();
+        if (tutor == null || tutor.getPayType() == null) {
+            return false;
+        }
         var result = false;
         var courseClass = classCost.getCourseClass();
 
@@ -313,13 +320,14 @@ public class PayrollService {
             case PER_SESSION:
             case PER_TIMETABLED_HOUR:
                 if (!isDistantCourseClass(courseClass)) {
-                    result = classCost.getTutorRole().getSessionsTutors().stream().filter(
+                    assert classCost.getTutorRole() != null;
+                    result = classCost.getTutorRole().getSessionsTutors().stream().anyMatch(
                             tutorAttendance ->
                                     isSessionEndBefore(tutorAttendance.getSession(), untilDate)
                                     && hasPayableDuration(tutorAttendance.getSession())
                                     && !isAlreadyPaid(classCost, tutorAttendance.getSession())
                                     && hasEligibleRateOnDate(classCost, tutorAttendance.getSession().getStartDatetime())
-                    ).findAny().isPresent();
+                    );
                 }
                 break;
             case PER_ENROLMENT:
