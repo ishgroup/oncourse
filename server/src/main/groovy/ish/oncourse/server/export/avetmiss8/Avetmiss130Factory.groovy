@@ -99,7 +99,7 @@ class Avetmiss130Factory extends AvetmissFactory {
         line.setCertificateNumber(certificate.getCertificateNumber())
         line.setIssuedDate(LocalDateUtils.valueToDate(certificate.getIssuedOn()))
 
-        if (jurisdiction = ExportJurisdiction.TAS) {
+        if (jurisdiction == ExportJurisdiction.TAS) {
             def first_outcome = certificate.outcomes.sort{it.startDate}.first()
             setTasmaniaProperties(line, first_outcome)
             line.tasmania_programme_status = !certificate.revokedOn && certificate.printedOn ? 10 : 20
