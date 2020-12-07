@@ -181,6 +181,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                       label="Pay type"
                       items={payslipPayTypes}
                       disabled={!isNew}
+                      required
                   />
                 </Grid>
 
