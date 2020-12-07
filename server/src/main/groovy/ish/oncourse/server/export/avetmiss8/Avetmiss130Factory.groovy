@@ -69,7 +69,7 @@ class Avetmiss130Factory extends AvetmissFactory {
                     line.setQualificationIssued(sufficientForQualification && !containsBadOutcome(outcome.getEnrolment()))
 
                     // the following code will not work if the qualification is split across several classes
-                    if (jurisdiction = ExportJurisdiction.TAS) {
+                    if (jurisdiction == ExportJurisdiction.TAS) {
                         def first_outcome = outcome.enrolment.outcomes.sort{it.startDate}.first()
                         setTasmaniaProperties(line, first_outcome)
                     }
