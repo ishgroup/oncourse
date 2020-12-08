@@ -38,20 +38,6 @@ class SecurityUtilTest extends IshTestCase {
 	}
 
 	@Test
-    void testHashLength() {
-		String hash = null
-        try {
-			hash = SecurityUtil.hashPassword("test")
-        } catch (UnsupportedEncodingException e) {
-			e.printStackTrace()
-        }
-		assertFalse(hash == null)
-        if (hash != null) {
-			assertTrue(hash.length() > 8)
-        }
-	}
-
-	@Test
     void testHashOfNullString() {
 		String hash = SecurityUtil.hashByteArray(null)
         assertTrue(hash == null)
@@ -77,33 +63,6 @@ class SecurityUtilTest extends IshTestCase {
             input = input + SecurityUtil.generateRandomPassword(10)
         }
 	}
-
-	@Test
-    void testHashValue() {
-		String hash = null
-        try {
-			hash = SecurityUtil.hashPassword("test")
-        } catch (UnsupportedEncodingException e) {
-			e.printStackTrace()
-        }
-		assertTrue(hash != null)
-        assertFalse(hash == "test")
-    }
-
-	/**
-	 * If our hash algorithm changes, lots of existing stuff breaks.
-	 */
-	@Test
-    void testHashDoesNotChange() {
-		String properHash = "f5a55f743c7b45c1f3c545355a6138a2b4d384a7"
-        String calculatedHash = null
-        try {
-			calculatedHash = SecurityUtil.hashPassword("97y52ou3rnc hugtdjfgiluhh")
-        } catch (UnsupportedEncodingException e) {
-			e.printStackTrace()
-        }
-		assertTrue(properHash == calculatedHash)
-    }
 
 	static void main(String[] args) {
 		FileWriter writer=null
