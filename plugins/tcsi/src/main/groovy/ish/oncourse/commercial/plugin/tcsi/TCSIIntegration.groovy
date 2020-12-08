@@ -39,6 +39,12 @@ import static groovyx.net.http.Method.PUT
 @CompileDynamic
 @Plugin(type = 11, oneOnly = true)
 class TCSIIntegration implements PluginTrait {
+    
+    static boolean test = true
+
+    TCSIIntegration() {
+    }
+    
     public static final String TCSI_DEVICE_NAME = "deviceName"
     public static final String TCSI_ORGANISATION_ID = "organisationId"
     public static final String TCSI_ACTIVATION_CODE = "activationCode"
@@ -52,13 +58,13 @@ class TCSIIntegration implements PluginTrait {
     static final String AUTH_URL_TEST= 'https://vnd.PRODA.humanservices.gov.au'
     static final String TCSI_BASE_URL_TEST = 'https://test.api.humanservices.gov.au/centrelink/ext-vend/tcsi/b2g/v1'
     
-    static final String DHS_PRODUCT_ID = '08b1e117-5efa-4b4d-b3d7-65ae18908671'
-    static final String BASE_URL = 'https://5.rsp.humanservices.gov.au'
-    static final String AUTH_URL = 'https://PRODA.humanservices.gov.au'
-    static final String TCSI_BASE_URL = 'https://api.humanservices.gov.au/centrelink/ext-vend/tcsi/b2g/v1'
+    static final String DHS_PRODUCT_ID = test ? DHS_PRODUCT_ID_TEST : '08b1e117-5efa-4b4d-b3d7-65ae18908671'
+    static final String BASE_URL = test ? BASE_URL_TEST : 'https://5.rsp.humanservices.gov.au'
+    static final String AUTH_URL = test ? AUTH_URL_TEST : 'https://PRODA.humanservices.gov.au'
+    static final String TCSI_BASE_URL = test ? TCSI_BASE_URL_TEST :'https://api.humanservices.gov.au/centrelink/ext-vend/tcsi/b2g/v1'
 
     static final String BASE_API_PATH = '/centrelink/ext-vend/tcsi/b2g/v1'
-    static final String STUDENTS_PATH = BASE_API_PATH + '/students/'
+    static final String STUDENTS_PATH = BASE_API_PATH + '/students'
     
     String deviceName
     String organisationId
@@ -68,6 +74,8 @@ class TCSIIntegration implements PluginTrait {
     private static Logger logger = LogManager.logger
     
     private static final Closure failureHangler = { resp, body ->
+        logger.error(resp.toString())
+        logger.error(body.toString())
         throw new RuntimeException('Device authentication error')
     }
     
@@ -185,7 +193,6 @@ class TCSIIntegration implements PluginTrait {
     }
     
     void enrolment(Enrolment e) {
-        authenticatDevice()
         def student  = getStudent(e.student.studentNumber)  
         if (!student) {
             createStudent()
@@ -195,11 +202,18 @@ class TCSIIntegration implements PluginTrait {
     
     def getStudent(Long uid) {
         getClient().request(GET, JSON) {
-            uri.path = STUDENTS_PATH + uid
+            uri.path = STUDENTS_PATH + "/students-uid/" + uid
             response.success = { resp, result ->
                 return result
             }
-            response.failure =  failureHangler
+            response.failure =   { resp, result ->
+                if (resp.status == 404) {
+                    return null
+                } else {
+                    failureHangler(resp, result)
+                }
+            }
+                    
         }
     }
     
