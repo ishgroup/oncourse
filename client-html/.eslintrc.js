@@ -114,6 +114,7 @@ module.exports = {
         "prefer-template": "off",
         "quote-props": "off",
         "radix": "error",
+        "react/no-this-in-sfc": "off",
         "react/prop-types": "off",
         "react/state-in-constructor": "off",
         "react/sort-comp": "off",
