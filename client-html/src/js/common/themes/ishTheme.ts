@@ -241,6 +241,7 @@ export const highcontrastTheme = createMuiTheme({
 // High Contrast Theme
 
 const christmasThemePalette = {
+  type: "light",
   common: { black: "#111111", white: "#fff" },
   primary: {
     main: "#B3000C",
