@@ -10,37 +10,45 @@
  */
 package ish.security;
 
-import ish.util.SecurityUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.regex.Pattern;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
-/**
- * Wrapper on {@link PasswordUtil} for easy method access and default exception handling.
- */
+
 public class AuthenticationUtil {
+
+	private static final int ITERATIONS = 3;
+	private static final int MEMORY = 2 ^ 15; // 32Mb RAM
+	private static final int THREADS = 8;
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationUtil.class);
+	private static final PasswordEncoder encoder = new Argon2PasswordEncoder(16, 32, THREADS, MEMORY, ITERATIONS);
+
+	public static String generatePasswordHash(String password) {
+		Instant start = Instant.now();
+		String hash = encoder.encode(password);
+		Instant end = Instant.now();
+		LOGGER.info("Calculated password hash in {} ms", ChronoUnit.MILLIS.between(start, end));
+		return hash;
+	}
 
 	/**
 	 * Computes password hash and checks if it matches stored value.
 	 */
 	public static boolean checkPassword(String password, String hash) {
-		try {
-			return PasswordUtil.validatePassword(password, hash);
-		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-			throw new RuntimeException("Password cannot be verified.", e);
-		}
-	}
-
-	/**
-	 * Generates hash string for specified password.
-	 */
-	public static String generatePasswordHash(String password) {
-		try {
-			return PasswordUtil.computeHash(password);
-		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-			throw new RuntimeException("Cannot compute hash.", e);
+		if (hash.startsWith("$")) {
+			return encoder.matches(password, hash);
+		} else {
+			try {
+				return PasswordUtil.validateOldPassword(password, hash);
+			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+				throw new RuntimeException("Password cannot be verified.", e);
+			}
 		}
 	}
 
@@ -52,9 +60,13 @@ public class AuthenticationUtil {
 	public static boolean upgradeEncoding(String hash) {
 		// new password algorithms all generate hashes starting with '$'
 		if (!hash.startsWith("$")) {
+			LOGGER.warn("Upgrading old pasword hash.");
 			return true;
 		}
-
-		return false;
+		boolean upgrade = encoder.upgradeEncoding(hash);
+		if (upgrade) {
+			LOGGER.warn("Upgrading pasword hash with lower iterations or memory.");
+		}
+		return upgrade;
 	}
 }
