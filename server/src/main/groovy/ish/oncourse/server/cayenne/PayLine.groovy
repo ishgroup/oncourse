@@ -11,15 +11,15 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.ClassCostRepetitionType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._PayLine
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.math.BigDecimal
+import java.math.RoundingMode
 import java.time.LocalDate
-import java.util.Date
 
 /**
  * A persistent class mapped as "PayLine" Cayenne entity.
@@ -187,5 +187,40 @@ class PayLine extends _PayLine {
 	@Override
 	Session getSession() {
 		return super.getSession()
+	}
+
+	String getPaidFor() {
+		String paidFor = null
+		String quantity = this.quantity.setScale(1, RoundingMode.HALF_UP).toString()
+		switch(this.classCost.repetitionType) {
+			case ClassCostRepetitionType.PER_TIMETABLED_HOUR:
+			case ClassCostRepetitionType.PER_STUDENT_CONTACT_HOUR:
+				paidFor = quantity.concat(" hour")
+				break
+			case ClassCostRepetitionType.PER_ENROLMENT:
+				paidFor = quantity.concat(" enrolment")
+				break
+			case ClassCostRepetitionType.PER_UNIT:
+				paidFor = quantity.concat(" unit")
+				break
+			case ClassCostRepetitionType.PER_SESSION:
+				paidFor = quantity.concat(" session")
+				break
+			default:
+				return null
+		}
+		return this.quantity > BigDecimal.ONE ? paidFor.concat("s") : paidFor
+	}
+
+	Money getAmount() {
+		return this.getAmount(2)
+	}
+
+	Money getAmount(int scale) {
+		return this.getAmount(scale, RoundingMode.HALF_UP)
+	}
+
+	Money getAmount(int scale, RoundingMode mode) {
+		return Money.valueOf((this.value * this.quantity).setScale(scale, mode))
 	}
 }

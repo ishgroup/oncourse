@@ -13,6 +13,7 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.PayslipPayType
 import ish.common.types.PayslipStatus
+import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._Payslip
 
@@ -132,5 +133,9 @@ class Payslip extends _Payslip {
 	@Nonnull @API @Override
 	PayslipPayType getPayType() {
 		return super.getPayType()
+	}
+
+	Money getFullAmount() {
+		super.getPaylines().sum { it -> it.amount } as Money
 	}
 }
