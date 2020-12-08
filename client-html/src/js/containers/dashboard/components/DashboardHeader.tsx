@@ -178,17 +178,17 @@ class DashboardHeader extends React.PureComponent<any, any> {
                         >
                           High Contrast Theme
                         </MenuItem>
-                        {/* <MenuItem */}
-                        {/*  id="christmas" */}
-                        {/*  onClick={() => { */}
-                        {/*    this.themeMenuClose(); */}
-                        {/*    themeHandler("christmas"); */}
-                        {/*    setPreferencesTheme("christmas"); */}
-                        {/*  }} */}
-                        {/*  selected={themeName === "christmas"} */}
-                        {/* > */}
-                        {/*  Christmas Theme */}
-                        {/* </MenuItem> */}
+                        <MenuItem
+                          id="christmas"
+                          onClick={() => {
+                            this.themeMenuClose();
+                            themeHandler("christmas");
+                            setPreferencesTheme("christmas");
+                          }}
+                          selected={themeName === "christmas"}
+                        >
+                          Christmas Theme
+                        </MenuItem>
                       </Menu>
                     )}
                   </ThemeContext.Consumer>

@@ -10,8 +10,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { green, grey } from "@material-ui/core/colors";
 import getOS from "../utils/getOS";
 import { AppTheme } from "../../model/common/Theme";
-import christmasHeaderBackground from "../../../images/christmas_header_background.gif";
-import christmasBodyBackground from "../../../images/christmas_body_background.png";
+import christmasHeaderBackground from "../../../images/beach-header.jpg";
+import christmasBodyBackground from "../../../images/sparkles.gif";
 import christmasBodyBackgroundStars from "../../../images/icon-stars-black.png";
 import InterRomanVar from "../../../fonts/inter/Inter-Roman.var.woff2";
 import InterItalicVar from "../../../fonts/inter/Inter-Italic.var.woff2";
@@ -443,24 +443,15 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".christmasBody": {
         backgroundImage: `url(${christmasBodyBackground})`,
-        backgroundPosition: "left bottom",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "contain",
-        "&:before": {
-          content: "''",
-          backgroundImage: `url(${christmasBodyBackgroundStars})`,
-          position: "absolute",
-          top: 0,
-          left: 0,
-          height: "100%",
-          width: "100%"
-        }
+        backgroundRepeat: "repeat"
       },
       ".christmasBackground": {
         background: "transparent"
       },
       ".christmasHeader": {
-        backgroundImage: `url(${christmasHeaderBackground})`
+        backgroundImage: `url(${christmasHeaderBackground})`,
+        backgroundSize: "cover",
+        backgroundPosition: "top"
       },
       ".selectedItemArrow": {
         [theme.breakpoints.up("md")]: {
