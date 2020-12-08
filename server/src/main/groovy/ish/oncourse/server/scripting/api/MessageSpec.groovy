@@ -25,6 +25,7 @@ import ish.oncourse.server.messaging.AttachmentParam
  *     template "ish.email.simple"
  *     records enrolments
  *     from "support@ish.com.au"
+ *     bcc "bcc@ish.com.au"
  *     anyBinding_1 anyValue_1
  *     anyBinding_2 anyValue_2
  *     ....
