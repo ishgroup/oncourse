@@ -197,8 +197,8 @@
     <PaymentOutLine id="2" accountInId="100" amount="20.00" invoiceId="2" paymentOutId="2"/>
 
     <!-- payslips -->
-    <Payslip id="1" contactId="1" status="4" privateNotes="Private contact 1 notes" createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
-    <Payslip id="2" contactId="2" status="4" privateNotes="Private contact 2 notes" createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
+    <Payslip id="1" payType="1" contactId="1" status="4" privateNotes="Private contact 1 notes" createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
+    <Payslip id="2" payType="1" contactId="2" status="4" privateNotes="Private contact 2 notes" createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
 
     <!-- product items -->
     <Product id="1"  createdOn="2010-10-12 15:50:36.166" description="contact 1 product"

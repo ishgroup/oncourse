@@ -63,7 +63,7 @@
                perUnitAmountExTax="0"
                type="6"/>
 
-    <Payslip id="100" contactid="100" status="4" privateNotes="Private notes..." createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
+    <Payslip id="100" payType="1" contactid="100" status="4" privateNotes="Private notes..." createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
 
     <PayLine id="100" payslipid="100" sessionid="100" classCostid="100" quantity="2" value="71" taxValue="0" budgetedQuantity="2" budgetedValue="71" dateFor="2013-01-01 00:00:00" description="Description..." createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
     <PayLine id="200" payslipid="100" sessionid="200" classCostid="100" quantity="2" value="71" taxValue="0" budgetedQuantity="2" budgetedValue="71" dateFor="2013-01-01 00:00:00" description="Description..." createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
