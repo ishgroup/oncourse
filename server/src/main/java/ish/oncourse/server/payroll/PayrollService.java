@@ -134,8 +134,7 @@ public class PayrollService {
      */
     private Payslip newPayslip(Contact contact, Collection<PayLine> lines, ObjectContext context) {
         Payslip result = null;
-        if (contact != null && lines != null && lines.size() > 0
-                && contact.getTutor() != null && contact.getTutor().getPayType() != null) {
+        if (contact != null && lines != null && lines.size() > 0 && validateTutor(contact)) {
             result = context.newObject(Payslip.class);
             result.setContact(contact);
             result.setPayType(contact.getTutor().getPayType());
@@ -191,7 +190,7 @@ public class PayrollService {
      */
     public List<PayLine> createLackingPaylines(ClassCost classCost, Date until, boolean confirm) {
 
-        if (!validateClassCost(classCost, until)) {
+        if (!validateClassCost(classCost, until) || !validateTutor(classCost.getContact())) {
             return Collections.EMPTY_LIST;
         }
 
@@ -224,16 +223,18 @@ public class PayrollService {
 
         logger.debug("update for cost: {} sunk: {} desc: {}", classCost.getFlowType(), classCost.getIsSunk(), classCost.getDescription());
 
-        if (classCost.getContact() == null || courseClass == null) {
-            logger.debug("paylines not created: no contact or class");
-            return false;
-        }
-
         if (!isDistantCourseClass(courseClass) && (courseClass.getStartDateTime() == null || !hasClassStarted(courseClass, until))) {
             logger.debug("paylines not created: class not started or not self-placed");
             return false;
         }
         return true;
+    }
+
+    private boolean validateTutor(Contact contact) {
+        if (contact.getTutor() == null || contact.getTutor().getPayType() == null) {
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
     }
 
     /**
