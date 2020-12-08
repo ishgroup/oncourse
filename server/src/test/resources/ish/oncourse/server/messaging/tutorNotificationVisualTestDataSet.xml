@@ -65,7 +65,7 @@
                onCostRate="45.4444"
     />
 
-    <Payslip id="1" contactId="1" status="4" privateNotes="Private notes..." createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
+    <Payslip id="1" payType="1" contactId="1" status="4" privateNotes="Private notes..." createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
 
     <PayLine id="1" payslipId="1" sessionId="1" quantity="2" value="73.06" taxValue="0" budgetedQuantity="2" budgetedValue="73.05" dateFor="2013-01-01 19:20:00"  createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
     <PayLine id="2" payslipId="1" sessionId="2" classCostId="1" quantity="2" value="71.25" taxValue="0" budgetedQuantity="2" budgetedValue="71.25" dateFor="2013-01-01 10:00:00" description="Description..." createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00"/>
