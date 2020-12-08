@@ -22,26 +22,6 @@ import java.util.regex.Pattern;
  */
 public class AuthenticationUtil {
 
-	private static final Pattern HASH_PATTERN = Pattern.compile("[a-zA-Z0-9]+:\\d+:[0-9a-f]+:[0-9a-f]+");
-
-	/**
-	 * Computes hash for password and compares it with stored one using old password hashing approach.
-	 */
-	public static boolean checkOldPassword(String password, String hash) {
-		try {
-			return SecurityUtil.hashPassword(password).equals(hash);
-		} catch (UnsupportedEncodingException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Cheks if password hash is in valid format.
-	 */
-	public static boolean isValidPasswordHash(String hash) {
-		return HASH_PATTERN.matcher(hash).matches();
-	}
-
 	/**
 	 * Computes password hash and checks if it matches stored value.
 	 */
@@ -59,10 +39,22 @@ public class AuthenticationUtil {
 	public static String generatePasswordHash(String password) {
 		try {
 			return PasswordUtil.computeHash(password);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			throw new RuntimeException("Cannot compute hash.", e);
-		} catch (InvalidKeySpecException e) {
-			throw new RuntimeException("Cannot compute hash,", e);
 		}
+	}
+
+	/**
+	 * Return true if the hash should be upgraded to a more secure encoding
+	 * @param hash
+	 * @return
+	 */
+	public static boolean upgradeEncoding(String hash) {
+		// new password algorithms all generate hashes starting with '$'
+		if (!hash.startsWith("$")) {
+			return true;
+		}
+
+		return false;
 	}
 }

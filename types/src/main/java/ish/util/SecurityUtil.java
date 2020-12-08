@@ -88,20 +88,6 @@ public final class SecurityUtil {
 	}
 
 	/**
-	 * Take a clear text password and return a hash. If an error occurs, null is returned.
-	 *
-	 * @return hashed password
-	 * @throws UnsupportedEncodingException
-	 */
-	public static String hashPassword(String pass) throws UnsupportedEncodingException {
-		if (pass == null) {
-			return null;
-		}
-		return hashByteArray(pass.getBytes(StandardCharsets.UTF_8));
-
-	}
-
-	/**
 	 * Take a file and return a hash. If an error occurs, null is returned.
 	 *
 	 * @return hashed password

@@ -24,6 +24,7 @@ dependencies {
     api 'commons-codec:commons-codec:1.14'
     api 'javax.mail:mail:1.4.7'
 	api 'org.springframework:spring-context:4.2.4.RELEASE'
+    api 'org.springframework.security:spring-security-crypto:5.4.2'
 
     testImplementation 'org.mockito:mockito-core:2.18.3'
 }

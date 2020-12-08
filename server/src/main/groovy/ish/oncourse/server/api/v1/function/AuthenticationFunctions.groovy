@@ -127,18 +127,12 @@ class AuthenticationFunctions {
     }
 
     static String checkInternalAuth(SystemUser user, String password) {
-        if (AuthenticationUtil.isValidPasswordHash(user.password)) {
-            // normal authentication procedure
-            if (AuthenticationUtil.checkPassword(password, user.password)) {
-                return null
-            }
-        } else {
-            // fallback to old password hashing system
-            if (AuthenticationUtil.checkOldPassword(password, user.password)) {
-                // if password is correct replace old hash with new one
+
+        if (AuthenticationUtil.checkPassword(password, user.password)) {
+            if (AuthenticationUtil.upgradeEncoding(password)) {
                 user.password = AuthenticationUtil.generatePasswordHash(password)
-                return null
             }
+            return null
         }
 
         return 'User or password incorrect.'
