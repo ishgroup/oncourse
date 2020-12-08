@@ -9,13 +9,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [11, 15]
+
+    services:
+      mysql:
+       image: mysql:5.7
+       env:
+         MYSQL_ALLOW_EMPTY_PASSWORD: yes
+         MYSQL_DATABASE: angelTest_trunk
+       ports:
+         - 3306
+       options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 11
+        java-version: ${{ matrix.java }}
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Run tests
