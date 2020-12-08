@@ -1,5 +1,7 @@
 package ish.oncourse.server.payroll
 
+import ish.oncourse.server.cayenne.Tutor
+
 import static ish.common.types.ClassCostFlowType.WAGES
 import ish.common.types.ClassCostRepetitionType
 import ish.math.Money
@@ -38,6 +40,12 @@ class PayrollGenerationSelfPacedTest {
         Date date = new Date()
 
         ClassCost classCost = mock(ClassCost.class)
+
+        Contact contact = mock(Contact.class)
+        when(classCost.getContact()).thenReturn(contact)
+
+        Tutor tutor = mock(Tutor.class)
+        when(classCost.getContact().getTutor()).thenReturn(tutor)
 
         CourseClass courseClass =  mock(CourseClass.class)
         when(courseClass.getIsDistantLearningCourse()).thenReturn(true)
