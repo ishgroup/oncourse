@@ -423,5 +423,8 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".vert-align-mid": {
     verticalAlign: "middle"
+  },
+  ".grid-temp-col-3-fr": {
+    gridTemplateColumns: "1fr 1fr 1fr"
   }
 });

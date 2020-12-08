@@ -29,6 +29,7 @@ import { getIncomeAccounts } from "../accounts/actions";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../constants/Config";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import { getEntityRelationTypes } from "../../preferences/actions";
 
 interface MembershipProductsProps {
   getMembershipProductRecord?: () => void;
@@ -37,6 +38,7 @@ interface MembershipProductsProps {
   onSave?: (id: string, membershipProduct: MembershipProduct) => void;
   getRecords?: () => void;
   getFilters?: () => void;
+  getRelationTypes?: () => void;
   getAccounts?: () => void;
   getTaxes?: () => void;
   clearListState?: () => void;
@@ -100,6 +102,18 @@ const findRelatedGroup: any[] = [
 
 const manualLink = getManualLink("concessions_creatingMemberships");
 
+const preformatBeforeSubmit = (value: MembershipProduct): MembershipProduct => {
+  if (value.relatedlSalables.length) {
+    value.relatedlSalables.forEach((s: any) => {
+      if (s.tempId) {
+        s.id = null;
+        delete s.tempId;
+      }
+    });
+  }
+  return value;
+};
+
 const MembershipProducts: React.FC<MembershipProductsProps> = props => {
   const [initNew, setInitNew] = useState(false);
 
@@ -119,7 +133,8 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
     accounts,
     preferences,
     getMembershipProductContactRelationTypes,
-    checkPermissions
+    checkPermissions,
+    getRelationTypes
   } = props;
 
   useEffect(() => {
@@ -142,6 +157,7 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
     getTaxes();
     getFilters();
     checkPermissions();
+    getRelationTypes();
     return () => {
       clearListState();
     };
@@ -163,6 +179,7 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
         onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
+        preformatBeforeSubmit={preformatBeforeSubmit}
         defaultDeleteDisabled
         noListTags
       />
@@ -187,7 +204,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getMembershipProductRecord: (id: string) => dispatch(getMembershipProduct(id)),
   onSave: (id: string, membershipProduct: MembershipProduct) => dispatch(updateMembershipProduct(id, membershipProduct)),
   onCreate: (membershipProduct: MembershipProduct) => dispatch(createMembershipProduct(membershipProduct)),
-  checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" }))
+  checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
+  getRelationTypes: () => dispatch(getEntityRelationTypes())
 });
 
 const mapStateToProps = (state: State) => ({

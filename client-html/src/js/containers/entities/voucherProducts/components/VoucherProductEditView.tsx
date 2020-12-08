@@ -23,6 +23,7 @@ interface VoucherProductEditViewProps {
   nestedIndex?: number;
   rootEntity?: string;
   twoColumn?: boolean;
+  submitSucceeded?: boolean;
   showConfirm?: any;
   openNestedEditView?: any;
   manualLink?: string;
@@ -60,7 +61,8 @@ const VoucherProductEditView: React.FC<VoucherProductEditViewProps> = props => {
     openNestedEditView,
     manualLink,
     accounts,
-    access
+    access,
+    submitSucceeded
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -83,7 +85,8 @@ const VoucherProductEditView: React.FC<VoucherProductEditViewProps> = props => {
         showConfirm,
         openNestedEditView,
         manualLink,
-        accounts
+        accounts,
+        submitSucceeded
       }}
     />
   );

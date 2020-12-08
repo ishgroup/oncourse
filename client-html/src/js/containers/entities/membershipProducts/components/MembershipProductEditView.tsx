@@ -46,6 +46,7 @@ interface MembershipProductEditViewProps {
   nestedIndex?: number;
   rootEntity?: string;
   twoColumn?: boolean;
+  submitSucceeded?: boolean;
   showConfirm?: any;
   openNestedEditView?: any;
   manualLink?: string;
@@ -70,7 +71,8 @@ const MembershipProductEditView: React.FC<MembershipProductEditViewProps> = prop
     manualLink,
     accounts,
     taxes,
-    access
+    access,
+    submitSucceeded
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -94,7 +96,8 @@ const MembershipProductEditView: React.FC<MembershipProductEditViewProps> = prop
         openNestedEditView,
         manualLink,
         accounts,
-        taxes
+        taxes,
+        submitSucceeded
       }}
     />
   );

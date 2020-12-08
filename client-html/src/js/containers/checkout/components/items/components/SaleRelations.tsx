@@ -5,7 +5,6 @@
 import React, { useMemo } from "react";
 import { Card } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import Grid from "@material-ui/core/Grid";
 import { CheckoutItem, CheckoutSaleRelationExtended } from "../../../../../model/checkout";
 import { NestedListRow } from "../../../../../common/components/form/nestedList/components/ListRenderer";
 import { AppTheme } from "../../../../../model/common/Theme";
@@ -36,7 +35,7 @@ const SaleRelations: React.FC<Props> = ({ relations, cartItems, onSelect }) => {
         return;
       }
 
-      const name = item.type === "course" ? `${item.code}  ${item.name}` : item.name;
+      const name = "related to " + (item.type === "course" ? `${item.code} ${item.name}` : item.name);
       if (result[name]) {
         result[name].push(r.toItem);
       } else {
@@ -48,33 +47,31 @@ const SaleRelations: React.FC<Props> = ({ relations, cartItems, onSelect }) => {
   }, [relations, cartItems]);
 
   return (
-    <Grid container className="p-3">
-      <Grid item xs={12} sm={8}>
-        {Object.keys(groupedRelations).map(k => (
-          <div key={k}>
-            <div className="heading pb-1">{k}</div>
-            <Card>
-              <ul className={classes.listRoot}>
-                {groupedRelations[k].map(r => (
-                  <NestedListRow
-                    key={r.id}
-                    type="search"
-                    onClick={() => onSelect(r.cartItem, r.type.toLowerCase())}
-                    item={{
-                      link: r.link,
-                      primaryText: r.cartItem.name,
-                      secondaryText: r.cartItem.code,
-                      entityName: r.type,
-                      active: true
-                    }}
-                  />
-                ))}
-              </ul>
-            </Card>
-          </div>
-        ))}
-      </Grid>
-    </Grid>
+    <div>
+      {Object.keys(groupedRelations).map(k => (
+        <div key={k}>
+          <div className="heading pb-1">{k}</div>
+          <Card>
+            <ul className={classes.listRoot}>
+              {groupedRelations[k].map(r => (
+                <NestedListRow
+                  key={r.id}
+                  type="search"
+                  onClick={() => onSelect(r.cartItem, r.type.toLowerCase())}
+                  item={{
+                    link: r.link,
+                    primaryText: r.cartItem.name,
+                    secondaryText: r.cartItem.code,
+                    entityName: r.type,
+                    active: true
+                  }}
+                />
+              ))}
+            </ul>
+          </Card>
+        </div>
+      ))}
+    </div>
 );
 };
 

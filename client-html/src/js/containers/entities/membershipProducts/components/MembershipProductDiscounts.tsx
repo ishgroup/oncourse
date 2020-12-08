@@ -10,15 +10,14 @@ import NestedList, {
   NestedListPanelItem
 } from "../../../../common/components/form/nestedList/NestedList";
 import { clearDiscountsSearch, searchDiscounts } from "../actions";
+import RelatedCoursesCommon from "../../common/components/RelatedCoursesCommon";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-interface MembershipDiscountsProps {
-  values?: MembershipProduct;
-  twoColumn?: boolean;
+interface MembershipDiscountsProps extends EditViewProps<MembershipProduct>{
   foundDiscounts?: MembershipDiscount[];
   searchDiscounts?: (search: string) => void;
   clearDiscountsSearch?: (pending: boolean) => void;
   discountsPending?: boolean;
-  submitSucceeded?: any;
   contactRelationTypes?: NestedListPanelItem[];
 }
 
@@ -82,7 +81,9 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
     clearDiscountsSearch,
     discountsPending,
     submitSucceeded,
-    contactRelationTypes
+    contactRelationTypes,
+    dispatch,
+    form
   } = props;
 
   const discounts = values ? values.membershipDiscounts : [];
@@ -113,6 +114,12 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
           usePaper
         />
       </div>
+      <RelatedCoursesCommon
+        values={values}
+        dispatch={dispatch}
+        form={form}
+        submitSucceeded={submitSucceeded}
+      />
     </div>
   );
 };

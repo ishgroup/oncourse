@@ -24,6 +24,7 @@ import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { ACCOUNT_DEFAULT_VOUCHER_LIABILITY_ID } from "../../../constants/Config";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getEntityTags } from "../../tags/actions";
+import { getEntityRelationTypes } from "../../preferences/actions";
 
 interface VoucherProductsProps {
   getVoucherProductRecord?: () => void;
@@ -32,6 +33,7 @@ interface VoucherProductsProps {
   onCreate?: (voucherProduct: VoucherProduct) => void;
   onSave?: (id: string, voucherProduct: VoucherProduct) => void;
   getFilters?: () => void;
+  getRelationTypes?: () => void;
   clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   getDefaultLiabilityAccount?: () => void;
@@ -83,6 +85,18 @@ const findRelatedGroup: any[] = [
   { title: "Vouchers", list: "sale", expression: "product.id" }
 ];
 
+const preformatBeforeSubmit = (value: VoucherProduct): VoucherProduct => {
+  if (value.relatedlSalables.length) {
+    value.relatedlSalables.forEach((s: any) => {
+      if (s.tempId) {
+        s.id = null;
+        delete s.tempId;
+      }
+    });
+  }
+  return value;
+};
+
 const VoucherProducts: React.FC<VoucherProductsProps> = props => {
   const {
     getVoucherProductRecord,
@@ -97,7 +111,8 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
     updatingAccounts,
     preferences,
     accounts,
-    checkPermissions
+    checkPermissions,
+    getRelationTypes
   } = props;
 
   const [initNew, setInitNew] = useState(false);
@@ -121,6 +136,7 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
     getFilters();
     getTagsForClassesSearch();
     checkPermissions();
+    getRelationTypes();
     return () => {
       clearListState();
     };
@@ -145,6 +161,7 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
         onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
+        preformatBeforeSubmit={preformatBeforeSubmit}
         defaultDeleteDisabled
         noListTags
       />
@@ -167,7 +184,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getVoucherProductRecord: (id: string) => dispatch(getVoucherProduct(id)),
   onSave: (id: string, voucherProduct: VoucherProduct) => dispatch(updateVoucherProduct(id, voucherProduct)),
   onCreate: (voucherProduct: VoucherProduct) => dispatch(createVoucherProduct(voucherProduct)),
-  checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" }))
+  checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
+  getRelationTypes: () => dispatch(getEntityRelationTypes())
 });
 
 const mapStateToProps = (state: State) => ({

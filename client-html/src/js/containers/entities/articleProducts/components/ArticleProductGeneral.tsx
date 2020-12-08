@@ -14,9 +14,11 @@ import { Decimal } from "decimal.js-light";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { State } from "../../../../reducers/state";
+import RelatedCoursesCommon from "../../common/components/RelatedCoursesCommon";
 
 interface ArticleProductGeneralProps {
   twoColumn?: boolean;
+  submitSucceeded?: boolean;
   manualLink?: string;
   accounts?: Account[];
   taxes?: Tax[];
@@ -59,7 +61,7 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
 
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, taxes, values, dispatch, form
+    twoColumn, accounts, taxes, values, dispatch, form, submitSucceeded
   } = props;
   return (
     <div className="generalRoot">
@@ -131,12 +133,20 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           </Grid>
         </Grid>
       </div>
-      <FormField
-        type="select"
-        name="status"
-        label="Status"
-        items={productStatusItems}
-        selectLabelMark="value"
+      <div>
+        <FormField
+          type="select"
+          name="status"
+          label="Status"
+          items={productStatusItems}
+          selectLabelMark="value"
+        />
+      </div>
+      <RelatedCoursesCommon
+        values={values}
+        dispatch={dispatch}
+        form={form}
+        submitSucceeded={submitSucceeded}
       />
     </div>
   );

@@ -138,8 +138,7 @@ export const CheckoutPage = createStringEnum([
   "previousCredit",
   "previousOwing",
   "fundingInvoiceCompanies",
-  "fundingInvoiceSummary",
-  "salesRelations"
+  "fundingInvoiceSummary"
 ]);
 
 export type CheckoutPage = keyof typeof CheckoutPage;
@@ -249,8 +248,7 @@ const titles = {
   [CheckoutPage.previousCredit]: "Previous credit notes",
   [CheckoutPage.previousOwing]: "Previous owing invoices",
   [CheckoutPage.fundingInvoiceCompanies]: "Search for a company by name",
-  [CheckoutPage.fundingInvoiceSummary]: "Funding invoice",
-  [CheckoutPage.salesRelations]: "Suggestions"
+  [CheckoutPage.fundingInvoiceSummary]: "Funding invoice"
 };
 
 const createConfirmMessage = "Please first save or cancel the new contact you are creating.";
@@ -847,16 +845,19 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           onCloseItemView();
         }
         if (row.cartAction && selectedItems.length) {
+          const id = row.type === "course" ? row.courseId : row.id;
+          row.id = id;
+
           dispatch(checkoutUpdateRelatedItems(
             [],
             [...salesRelations,
                 {
                   cartAction: row.cartAction,
                   toItem: {
-                    id: row.id,
+                    id,
                     cartItem: row,
                     type: row.type.capitalize(),
-                    link: `/${row.type.toLowerCase()}/${row.type === "course" ? row.courseId : row.id}`
+                    link: `/${row.type.toLowerCase()}/${id}`
                   },
                   fromItem: { id: selectedItems[0].id }
                 }
@@ -928,10 +929,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     handleChangeStep(CheckoutCurrentStep.shoppingCart);
     setActiveField(CheckoutPage.default);
     dispatch({ type: FETCH_FINISH });
-  };
-
-  const onShowSaleRelationsClick = () => {
-    handleFocusCallback({ target: { name: CheckoutPage.salesRelations } }, CheckoutPage.salesRelations);
   };
 
   const openDiscount = React.useCallback(
@@ -1017,16 +1014,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
 
                 <HeaderField
                   heading="Items"
-                  subHeading={
-                    salesRelations.length ? (
-                      <Chip
-                        className={clsx("relative", activeField === CheckoutPage.salesRelations && "selectedItemArrow")}
-                        size="small"
-                        label="Show suggested"
-                        onClick={onShowSaleRelationsClick}
-                      />
-                    ) : null
-                  }
                   name={CheckoutPage.items}
                   placeholder="Find course or item..."
                   onFocus={handleFocusCallback}
@@ -1173,16 +1160,9 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                           disabledHandler={onSelectDisabledHandler}
                           searchString={itemsSearch}
                           selectedItems={selectedItems}
+                          salesRelations={salesRelations}
                         />
                       </div>
-                    )}
-
-                    {activeField === CheckoutPage.salesRelations && (
-                      <SaleRelations
-                        relations={salesRelations}
-                        cartItems={selectedItems}
-                        onSelect={onSelectHandler}
-                      />
                     )}
                   </div>
                 </>
