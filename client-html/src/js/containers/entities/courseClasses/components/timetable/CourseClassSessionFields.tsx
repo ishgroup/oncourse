@@ -133,9 +133,10 @@ const CourseClassSessionFields: React.FC<Props> = ({
     (checked, tutor: CourseClassTutorExtended) => {
       if (checked) {
         dispatch(arrayPush(form, `sessions[${session.index}].tutors`, tutor.tutorName));
+        const courseClassTutorIds = session.courseClassTutorIds ? session.courseClassTutorIds : [];
         tutor.id
           ? dispatch(
-              change(form, `sessions[${session.index}].courseClassTutorIds`, [...session.courseClassTutorIds, tutor.id])
+              change(form, `sessions[${session.index}].courseClassTutorIds`, [...courseClassTutorIds, tutor.id])
             )
           : dispatch(
               change(form, `sessions[${session.index}].temporaryTutorIds`, [
@@ -153,7 +154,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           courseClassTutorIds: session.courseClassTutorIds
         };
 
-        const tutorNameIndex = session.tutors.findIndex(name => name === tutor.tutorName);
+        const tutorNameIndex = session.tutors ? session.tutors.findIndex(name => name === tutor.tutorName) : -1;
         dispatch(arrayRemove(form, `sessions[${session.index}].tutors`, tutorNameIndex));
 
         const contactIdIndex = session.contactIds ? session.contactIds.findIndex(id => id === tutor.contactId) : -1;
