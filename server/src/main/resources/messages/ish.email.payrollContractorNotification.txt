@@ -1,0 +1,19 @@
+Dear ${record.contact.fullName},
+Your pay has been processed for the gross amount of ${record.fullAmount}.
+
+<% record.paylines.findAll { it.classCost }.sort { it.dateFor }.each { payLine -> %>
+------------------------
+Item: ${payLine.dateFor.format("E dd MMM yy")}, ${payLine.classCost.courseClass.course.name}
+Description: ${payLine.description}
+Rate: <% if (payLine.paidFor) { %> ${payLine.paidFor}, @${payLine.value} <% } else { %> ${payLine.value} <% } %>
+Total: ${payLine.amount}
+<% } %>
+------------------------
+<% if (!record.paylines.findAll { !it.classCost }.empty) { %>
+Custom lines:
+<% record.paylines.findAll { !it.classCost }.eachWithIndex { payLine, i -> %>
+${i+1}. ${payLine.description}   ${payLine.value}
+<% } %>
+<% } %>
+
+Please issue us an invoice for this amount at your earliest convenience.
