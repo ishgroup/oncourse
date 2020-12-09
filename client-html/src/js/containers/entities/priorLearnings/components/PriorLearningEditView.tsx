@@ -299,7 +299,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     clearContactsSearch: () => dispatch(clearContactsSearch()),
     getQualifications: (offset?: number) => dispatch(getPlainQualifications(offset, "", true)),
     clearQualifications: () => dispatch(clearPlainQualificationItems()),
-    setQualificationsSearch: (search: string) => dispatch(setPlainQualificationSearch(search))
+    setQualificationsSearch: (search: string) => dispatch(setPlainQualificationSearch(`~"${search}"`))
   });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PriorLearningEditView);

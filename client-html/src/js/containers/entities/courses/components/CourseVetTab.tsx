@@ -248,8 +248,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
           clearSearchResult={clearModuleSearch}
           resetSearch={submitSucceeded}
           dataRowClass={classes.moduleRowClass}
-          aqlEntity="Module"
-          aqlEntityTags={["Module"]}
+          aqlEntities={["Module"]}
           disabled={values.hasEnrolments}
         />
       </Grid>
@@ -268,7 +267,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getPlainQualifications: (offset?: number) => dispatch(getPlainQualifications(offset, "", true)),
     clearPlainQualificationItems: () => dispatch(clearPlainQualificationItems()),
-    setQualificationsSearch: (search: string) => dispatch(setPlainQualificationSearch(search)),
+    setQualificationsSearch: (search: string) => dispatch(setPlainQualificationSearch(`~"${search}"`)),
     getModules: (offset?: number) => dispatch(getModules(offset, "nationalCode,title,nominalHours", true)),
     setModuleSearch: (search: string) => dispatch(setModuleSearch(search)),
     clearModuleSearch: (loading: boolean) => dispatch(clearModuleItems(loading))

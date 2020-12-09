@@ -28,7 +28,7 @@ class EntityRelationFunctions {
             Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(relatedProduct.type.getCayenneClassName())
             CayenneDataObject entityTo = SelectById.query(clzz, relatedProduct.entityToId).selectOne(context)
             if (!entityTo) {
-                EntityValidator.throwClientErrorException(entityId, 'relatedlSalables', "$clzz.simpleName with id=$relatedProduct.entityToId not found.")
+                EntityValidator.throwClientErrorException(entityId, 'relatedSellables', "$clzz.simpleName with id=$relatedProduct.entityToId not found.")
             }
         }
 
@@ -36,12 +36,12 @@ class EntityRelationFunctions {
             Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(relatedProduct.type.getCayenneClassName())
             CayenneDataObject entityTo = SelectById.query(clzz, relatedProduct.entityFromId).selectOne(context)
             if (!entityTo) {
-                EntityValidator.throwClientErrorException(entityId, 'relatedlSalables', "$clzz.simpleName with id=$relatedProduct.entityFromId not found.")
+                EntityValidator.throwClientErrorException(entityId, 'relatedSellables', "$clzz.simpleName with id=$relatedProduct.entityFromId not found.")
             }
         }
 
         if (relatedEntities.any { it.entityToId == null && it.entityFromId == null }) {
-            EntityValidator.throwClientErrorException(entityId, 'relatedProducts', "You should specify id of related entity.")
+            EntityValidator.throwClientErrorException(entityId, 'relatedSellables', "You should specify id of related entity.")
         }
     }
 

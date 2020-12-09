@@ -74,8 +74,8 @@ class CorporatePassLimit extends Component<Props, any> {
 
   onAdd = (salesToAdd: NestedListItem[]) => {
     const {
- values, sales, courseClassItems, dispatch, form
-} = this.props;
+     values, sales, courseClassItems, dispatch, form
+    } = this.props;
 
     const salesCombined = (sales || []).concat(courseClassItems || []);
 
@@ -118,8 +118,6 @@ class CorporatePassLimit extends Component<Props, any> {
           <NestedList
             title="Limit Use"
             titleCaption="This pass will only be available for the following classes and products"
-            searchPlaceholder="Find products"
-            additionalSearchPlaceholder="Find classes"
             formId={values.id}
             values={listValues}
             searchValues={searchValues}
@@ -127,17 +125,31 @@ class CorporatePassLimit extends Component<Props, any> {
             onAdd={this.onAdd}
             onDelete={this.onDelete}
             onDeleteAll={this.onDeleteAll}
-            onSearch={getSearchResult}
-            onAdditionalSearch={searchCourseClassSales}
-            clearSearchResult={clearSearchResult}
-            clearAdditionalSearchResult={clearCourseClassSales}
+            onSearch={(search, entity) => {
+              switch (entity) {
+                case "Product":
+                  getSearchResult(search);
+                  break;
+                case "CourseClass":
+                  searchCourseClassSales(search);
+                  break;
+              }
+            }}
+            clearSearchResult={(pending, entity) => {
+              switch (entity) {
+                case "Product":
+                  clearSearchResult(pending);
+                  break;
+                case "CourseClass":
+                  clearCourseClassSales(pending);
+                  break;
+              }
+            }}
             sort={salesSort}
             resetSearch={submitSucceeded}
             dataRowClass={classes.dataRowClass}
             searchType="withToggle"
-            aqlEntity="Product"
-            additionalAqlEntity="CourseClass"
-            additionalAqlEntityTags={["Course", "CourseClass"]}
+            aqlEntities={["Product", "CourseClass"]}
           />
         </div>
       </div>
@@ -152,14 +164,14 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getSearchResult: (search: string) => {
-      if (search) dispatch(getSales(search));
-    },
-    clearSearchResult: (pending: boolean) => dispatch(clearSales(pending)),
-    searchCourseClassSales: (search: string) => {
-      if (search) dispatch(getCourseClassSales(search));
-    },
-    clearCourseClassSales: (pending: boolean) => dispatch(clearCourseClassSales(pending))
-  });
+  getSearchResult: (search: string) => {
+    if (search) dispatch(getSales(search));
+  },
+  clearSearchResult: (pending: boolean) => dispatch(clearSales(pending)),
+  searchCourseClassSales: (search: string) => {
+    if (search) dispatch(getCourseClassSales(search));
+  },
+  clearCourseClassSales: (pending: boolean) => dispatch(clearCourseClassSales(pending))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CorporatePassLimit));

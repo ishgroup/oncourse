@@ -101,8 +101,8 @@ const findRelatedGroup: any[] = [
 const manualLink = getManualLink("product");
 
 const preformatBeforeSubmit = (value: ArticleProduct): ArticleProduct => {
-  if (value.relatedlSalables.length) {
-    value.relatedlSalables.forEach((s: any) => {
+  if (value.relatedSellables.length) {
+    value.relatedSellables.forEach((s: any) => {
       if (s.tempId) {
         s.id = null;
         delete s.tempId;

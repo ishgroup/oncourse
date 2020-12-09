@@ -526,7 +526,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     clearContacts: () => dispatch(clearContacts()),
     getQualifications: (offset?: number) => dispatch(getPlainQualifications(offset, "", true)),
     clearQualifications: () => dispatch(clearPlainQualificationItems()),
-    setQualificationsSearch: (search: string) => dispatch(setPlainQualificationSearch(search)),
+    setQualificationsSearch: (search: string) => dispatch(setPlainQualificationSearch(`~"${search}"`)),
     getCertificateOutcomes: (studentId: number) => dispatch(getCertificateOutcomes(studentId)),
     clearCertificateOutcomes: (loading?: boolean) => dispatch(clearCertificateOutcomes(loading)),
     setCertificateOutcomesSearch: (search: string) => dispatch(setCertificateOutcomesSearch(search))

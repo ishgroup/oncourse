@@ -22,7 +22,7 @@ const Initial: SiteState = {
   rowsCount: 10000
 };
 
-export const siteReducer = (state: SiteState = { ...Initial }, action: IAction<any>): any => {
+export const siteReducer = (state: SiteState = { ...Initial }, action: IAction): any => {
   switch (action.type) {
     case SET_PLAIN_SITES_SEARCH:
     case GET_VIRTUAL_SITES_FULFILLED:
@@ -42,8 +42,8 @@ export const siteReducer = (state: SiteState = { ...Initial }, action: IAction<a
 
     case SET_PLAIN_SITES: {
       const {
- items, offset, pageSize, loading
-} = action.payload;
+       items, offset, pageSize, loading
+      } = action.payload;
 
       const updated = offset ? state.items.concat(items) : items;
 

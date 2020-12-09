@@ -14,17 +14,12 @@ import { Decimal } from "decimal.js-light";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { State } from "../../../../reducers/state";
-import RelatedCoursesCommon from "../../common/components/RelatedCoursesCommon";
+import RelationsCommon from "../../common/components/RelationsCommon";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-interface ArticleProductGeneralProps {
-  twoColumn?: boolean;
-  submitSucceeded?: boolean;
-  manualLink?: string;
+interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
   taxes?: Tax[];
-  values?: ArticleProduct;
-  dispatch?: any;
-  form?: string;
 }
 
 const validateNonNegative = value => (value < 0 ? "Must be non negative" : undefined);
@@ -61,7 +56,7 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
 
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, taxes, values, dispatch, form, submitSucceeded
+    twoColumn, accounts, taxes, values, dispatch, form, submitSucceeded, rootEntity
   } = props;
   return (
     <div className="generalRoot">
@@ -142,11 +137,12 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           selectLabelMark="value"
         />
       </div>
-      <RelatedCoursesCommon
+      <RelationsCommon
         values={values}
         dispatch={dispatch}
         form={form}
         submitSucceeded={submitSucceeded}
+        rootEntity={rootEntity}
       />
     </div>
   );

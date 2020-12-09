@@ -27,7 +27,7 @@ export default (
       relationId: rel.id,
       tempId: item.tempId
     };
-    dispatch(change(form, `relatedlSalables[${index}]`, changed));
+    dispatch(change(form, `relatedSellables[${index}]`, changed));
   };
 
   const getSelectedRelation = () => {

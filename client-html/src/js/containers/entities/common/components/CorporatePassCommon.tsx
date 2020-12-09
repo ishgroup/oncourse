@@ -96,7 +96,7 @@ class VoucherProductCorporatePasses extends React.PureComponent<any, any> {
             sort={(a, b) =>
               (`${a.contact.lastName},${a.contact.firstName}` > `${b.contact.lastName},${b.contact.firstName}` ? 1 : -1)}
             searchType="withToggle"
-            aqlEntity="CorporatePass"
+            aqlEntities={["CorporatePass"]}
             usePaper
           />
         </div>

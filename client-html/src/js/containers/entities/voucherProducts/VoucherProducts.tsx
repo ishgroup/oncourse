@@ -86,8 +86,8 @@ const findRelatedGroup: any[] = [
 ];
 
 const preformatBeforeSubmit = (value: VoucherProduct): VoucherProduct => {
-  if (value.relatedlSalables.length) {
-    value.relatedlSalables.forEach((s: any) => {
+  if (value.relatedSellables.length) {
+    value.relatedSellables.forEach((s: any) => {
       if (s.tempId) {
         s.id = null;
         delete s.tempId;

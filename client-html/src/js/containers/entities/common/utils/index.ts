@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { SaleType } from "@api/model";
+import {
+ Course, Module, Qualification, Sale, SaleType
+} from "@api/model";
 import { Classes } from "../../../../model/entities/CourseClass";
 
 export const entityForLink = (type: SaleType) => {
@@ -18,6 +20,10 @@ export const entityForLink = (type: SaleType) => {
       return "voucher";
     case SaleType.Course:
       return "course";
+    case SaleType.Module:
+      return "module";
+    case SaleType.Qualification:
+      return "qualification";
     default: {
       console.error(`unknown sale type ${type}!`);
       return "";
@@ -31,18 +37,31 @@ export const transformDataType = type => (type === "BOOLEAN"
   ? "Checkbox"
   : (type.substring(0, 1) + type.substring(1).toLowerCase()).replace("_", " "));
 
-export const formatRelatedSalables = relatedItems => relatedItems.map(r => {
-  const entityId = r.entityToId ? r.entityToId : r.entityFromId ? r.entityFromId : r.id;
+export const formatRelatedSalables = (relatedItems, type?: SaleType) => relatedItems.map(r => {
+  const item: Qualification & Module & Sale & Course = { ...r };
+
+  const entityName = type || item.type;
+
+  if (item.title) {
+    item.name = item.title;
+  }
+
+  if (item.nationalCode) {
+    item.code = item.nationalCode;
+  }
+
+  const entityId = item.entityToId ? item.entityToId : item.entityFromId ? item.entityFromId : item.id;
+
   return {
-    id: r.id,
+    id: item.id,
     entityId,
-    entityName: r.type,
-    primaryText: r.name,
-    secondaryText: r.code,
-    link: r.type === SaleType.Class
+    entityName,
+    primaryText: item.name,
+    secondaryText: item.code,
+    link: entityName === SaleType.Class
       ? `/${Classes.path}?search=id is ${entityId}`
-      : `/${entityForLink(r.type)}/${entityId}`,
-    active: typeof r.active === "boolean" ? r.active : true,
+      : `/${entityForLink(entityName)}/${entityId}`,
+    active: typeof r.active === "boolean" ? r.active : typeof r.isOffered === "boolean" ? r.isOffered : true,
     ...r
   };
 });
