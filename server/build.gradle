@@ -185,8 +185,6 @@ test {
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
 
-//	default database for running test is mysql
-
 	def dbTests = project.hasProperty('databaseConfig') ? databaseConfig : "derby-test"
 	systemProperty 'databaseName', project.hasProperty('buildername') ? buildername : "angelTest_trunk"
 
@@ -196,6 +194,11 @@ test {
 		case "derby-test":
 			systemProperty 'yamlTestConfig', 'application-test-derby.yml'
 			exclude '**/db/Mysql*.class'
+			break
+
+		case "mariadb-local":
+			systemProperty 'yamlTestConfig', 'application-test-local-mariadb.yml'
+			exclude '**/db/Derby*.class'
 			break
 
 		case "mysql-test":
