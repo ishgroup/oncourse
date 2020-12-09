@@ -78,7 +78,7 @@
   },
   "dependencies": {
     "@bugsnag/js": "7.5.*",
-    "@bugsnag/plugin-react": "7.3.*",
+    "@bugsnag/plugin-react": "7.5.*",
     "@ckeditor/ckeditor5-autoformat": "latest",
     "@ckeditor/ckeditor5-basic-styles": "latest",
     "@ckeditor/ckeditor5-editor-classic": "latest",
