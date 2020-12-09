@@ -15,6 +15,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import { RouteComponentProps, withRouter } from "react-router";
 import { APP_BAR_HEIGHT } from "../../../constants/Config";
 import christmasBodyBackgroundStars from "../../../../images/christmas_header_background.gif";
+import { vImage } from "../../utils/common";
 
 const styles = theme => createStyles({
     listContainer: {
@@ -23,7 +24,7 @@ const styles = theme => createStyles({
       padding: theme.spacing(4),
       "&:before": localStorage.getItem("theme") === "christmas" ? {
         content: "''",
-        backgroundImage: `url(${christmasBodyBackgroundStars})`,
+        backgroundImage: `url(${vImage(christmasBodyBackgroundStars)})`,
         position: "absolute",
         top: 0,
         left: 0,

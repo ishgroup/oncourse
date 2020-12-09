@@ -81,3 +81,5 @@ export const isInStandaloneMode = () =>
   // @ts-ignore
   || (window.navigator.standalone)
   || document.referrer.includes('android-app://');
+
+export const vImage = img => `${img}?v=${process.env.RELEASE_VERSION}`;
