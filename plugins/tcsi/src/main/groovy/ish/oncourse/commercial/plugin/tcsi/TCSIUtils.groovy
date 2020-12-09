@@ -25,17 +25,19 @@ class TCSIUtils {
         if (s.contact.dateOfBirth) {
             student["date_of_birth"] = s.contact.dateOfBirth.format(DATE_FORMAT)   // E314
         }
+//        Error: The Term Address Postcode (E319) has been reported for an offshore location.
+//        student["term_address_postcode"] = s.contact.postcode // E319
+//        student["term_address_country_code"] = s.contact.country.saccCode.toString()   // E661
+        
         student["student_family_name"] = s.contact.lastName // E402
         student["student_given_name_first"] = s.contact.firstName   // E403
         student["residential_address_street"] = s.contact.street   // E410
         student["residential_address_suburb"] = s.contact.suburb   //E469
         student["residential_address_state"] = s.contact.state  // E470
         student["residential_address_postcode"] = s.contact.postcode // E320
-        student["term_address_postcode"] = s.contact.postcode // E319
 
-        if (s.contact.country) {
+        if (s.contact.country && !s.contact.country.isAustralia()) {
             student["residential_address_country_code"] = s.contact.country.saccCode.toString()   //E658
-            student["term_address_country_code"] = s.contact.country.saccCode.toString()   // E661
         }
         
         if (s.contact.tfn) {
@@ -229,26 +231,22 @@ class TCSIUtils {
         student["residential_address_street"] = "30-34 Wilson St"
         student["residential_address_suburb"] = "NEWTOWN"
         student["residential_address_state"] = "NSW"
-        student["residential_address_country_code"] = "9111"    
+        // not Australia
+//        student["residential_address_country_code"] = "9111"    
         student["residential_address_postcode"] = "2042"
         student["tfn"] = '123212234'
-//        student["chessn"] = '123212234'
         student["usi"] = '2222222222'
         student["gender_code"] = "F" //E315
-        student["atsi_code"] = "3" // E316
+        student["atsi_code"] = "9" // E316
       
         student["country_of_birth_code"] = "9111" // E346
 
-        student["year_of_arrival_in_australia"] = "9999"    // E347
+        student["year_of_arrival_in_australia"] = "9998"    // E347
 
         student["language_spoken_at_home_code"] = "1201" // E348
         student["year_left_school"] = '2009'
 
         student["level_left_school"] = '11'
-
-
-        student["term_address_postcode"] = "2042"   // E319
-        student["term_address_country_code"] = "9111"// E661
 
         student["citizenships"] = []
         def citizenship = [:]

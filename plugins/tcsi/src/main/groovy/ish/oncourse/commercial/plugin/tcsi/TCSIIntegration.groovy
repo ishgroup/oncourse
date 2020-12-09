@@ -12,15 +12,12 @@
 package ish.oncourse.commercial.plugin.tcsi
 
 import com.nimbusds.jose.jwk.RSAKey
-import groovy.json.JsonOutput
 import groovy.transform.CompileDynamic
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
-import ish.common.types.PayslipStatus
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.IntegrationConfiguration
-import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.integration.OnSave
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
@@ -35,7 +32,7 @@ import javax.ws.rs.core.Response
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.URLENC
 import static groovyx.net.http.Method.POST
-import static groovyx.net.http.Method.PUT
+import static groovyx.net.http.Method.GET
 
 @CompileDynamic
 @Plugin(type = 11, oneOnly = true)
@@ -206,16 +203,18 @@ class TCSIIntegration implements PluginTrait {
     
     
     def getStudent() {
-        uri.path = STUDENTS_PATH + "/students-uid/" + enrolment.student.studentNumber
-        uri.path = STUDENTS_PATH 
-        response.success = { resp, result ->
-            return result
-        }
-        response.failure =   { resp, result ->
-            if (resp.status == 404) {
-                return null
-            } else {
-                failureHangler(resp, result)
+        getClient().request(GET, JSON) {
+            uri.path = STUDENTS_PATH + "/students-uid/" + enrolment.student.studentNumber
+            uri.path = STUDENTS_PATH 
+            response.success = { resp, result ->
+                return result["result"][0]["student"]
+            }
+            response.failure =   { resp, result ->
+                if (resp.status == 404) {
+                    return null
+                } else {
+                    failureHangler(resp, result)
+                }
             }
         }
                 
