@@ -12,9 +12,11 @@
 package ish.oncourse.commercial.plugin.tcsi
 
 import com.nimbusds.jose.jwk.RSAKey
+import groovy.json.JsonOutput
 import groovy.transform.CompileDynamic
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
+import ish.common.types.PayslipStatus
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.IntegrationConfiguration
@@ -32,7 +34,6 @@ import javax.ws.rs.core.Response
 
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.URLENC
-import static groovyx.net.http.Method.GET
 import static groovyx.net.http.Method.POST
 import static groovyx.net.http.Method.PUT
 
@@ -70,13 +71,16 @@ class TCSIIntegration implements PluginTrait {
     String organisationId
     String jwkCertificate
     private String authToken
+    
+    private Enrolment enrolment
+    
 
     private static Logger logger = LogManager.logger
     
     private static final Closure failureHangler = { resp, body ->
         logger.error(resp.toString())
         logger.error(body.toString())
-        throw new RuntimeException('Device authentication error')
+        throw new RuntimeException('Something unexpected happend, please contact ish support for more details')
     }
     
     TCSIIntegration(Map args) {
@@ -193,47 +197,42 @@ class TCSIIntegration implements PluginTrait {
     }
     
     void enrolment(Enrolment e) {
-        def student  = getStudent(e.student.studentNumber)  
+        enrolment = e
+        def student  = getStudent()  
         if (!student) {
             createStudent()
         }
     }
     
     
-    def getStudent(Long uid) {
-        getClient().request(GET, JSON) {
-            uri.path = STUDENTS_PATH + "/students-uid/" + uid
-            response.success = { resp, result ->
-                return result
-            }
-            response.failure =   { resp, result ->
-                if (resp.status == 404) {
-                    return null
-                } else {
-                    failureHangler(resp, result)
-                }
-            }
-                    
+    def getStudent() {
+        uri.path = STUDENTS_PATH + "/students-uid/" + enrolment.student.studentNumber
+        uri.path = STUDENTS_PATH 
+        response.success = { resp, result ->
+            return result
         }
+        response.failure =   { resp, result ->
+            if (resp.status == 404) {
+                return null
+            } else {
+                failureHangler(resp, result)
+            }
+        }
+                
     }
     
-    def createStudent(Student student) {
+    
+    def createStudent() {
         getClient().request(POST, JSON) {
             uri.path = STUDENTS_PATH
-            body = [
-                    'correlation_id' : "${System.currentTimeMillis()}",
-                    'student' : TCSIUtils.getStudentData(student)
-            ]
+            body = TCSIUtils.getStudentData(enrolment.student)
             response.success = { resp, result ->
-                return result
+                return handleResponce(result, "Create student")
             }
-            response.failure =  failureHangler
+            response.failure = failureHangler
         }
     }
-    
-    
-    
-    
+
     private RESTClient getClient() {
         if  (!authToken) {
             authenticatDevice()
@@ -256,5 +255,32 @@ class TCSIIntegration implements PluginTrait {
         client.headers['tcsi-omit-links'] = true
 
         return client
+    }
+    
+    private handleResponce(List responceArray, String description) {
+        def response = responceArray[0]
+        if (response['success']) {
+            return response['result']
+        }
+
+        String errorInfo = "Interrapt tcsi export for: $enrolment.student.contact.fullName, error happend while $description\n" +
+                "Error info:\n"
+
+        List<Map> errors =  response['result']['errors']
+        errors.each {error ->
+            errorInfo += error["error_description"]
+            errorInfo +="\n"
+        }
+        
+        
+        
+        logger.error(errorInfo)
+
+        emailService.email {
+            subject("TCSI export failed for: $enrolment.student.contact.fullName")
+            content(errorInfo)
+            from (preferenceController.emailFromAddress)
+        }
+        throw new TCSIException()
     }
 }

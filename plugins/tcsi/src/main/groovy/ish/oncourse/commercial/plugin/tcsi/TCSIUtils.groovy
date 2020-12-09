@@ -5,6 +5,7 @@
 
 package ish.oncourse.commercial.plugin.tcsi
 
+import groovy.json.JsonOutput
 import groovy.transform.CompileDynamic
 import ish.common.types.AvetmissStudentDisabilityType
 import ish.common.types.AvetmissStudentIndigenousStatus
@@ -18,7 +19,7 @@ class TCSIUtils {
     static final String DATE_FORMAT='yyyy-MM-dd'
 
     @CompileDynamic
-    static Map<String, Object> getStudentData(Student s) {
+    static String getStudentData(Student s) {
         Map<String, Object> student = [:]
         student["student_identification_code"] = s.studentNumber.toString() // E313
         if (s.contact.dateOfBirth) {
@@ -132,83 +133,94 @@ class TCSIUtils {
         }
 
         student["citizenships"] = []
+            
         def citizenship = [:]
+        citizenship['correlation_id'] = "citizenship_${System.currentTimeMillis()}"
+        String residentCode
         if (s.citizenship) {
             switch (s.citizenship) {
                 case StudentCitizenship.AUSTRALIAN_CITIZEN:
-                    citizenship["citizen_resident_code"] = "1"   //E358
+                   residentCode = "1"   //E358
                     break
                 case StudentCitizenship.NEW_ZELAND_CITIZEN:
-                    citizenship["citizen_resident_code"] = "2"   //E358
+                   residentCode = "2"   //E358
                     break
                 case StudentCitizenship.STUDENT_WITH_PERMANENT_HUMANITARIAN_VISA:
-                    citizenship["citizen_resident_code"] = "8"   //E358
+                   residentCode = "8"   //E358
                     break
                 case StudentCitizenship.STUDENT_WITH_PERMANENT_VISA:
-                    citizenship["citizen_resident_code"] = "3"  //E358
+                   residentCode = "3"  //E358
                     break
                 case StudentCitizenship.STUDENT_WITH_TEMPORARY_ENTRY_PERMIT:
-                    citizenship["citizen_resident_code"] = "4"   //E358
+                   residentCode = "4"   //E358
                     break
                 default:
-                    citizenship["citizen_resident_code"] = "5"   //E358
+                   residentCode = "5"   //E358
 
             }
         } else {
-            citizenship [ "citizen_resident_code" ] = "5"   //E358
+            residentCode = "5"   //E358
         }
+        
+        citizenship['citizenship'] = ['citizen_resident_code': residentCode]
         student["citizenships"] << citizenship
 
         student["disabilities"] = []
-        def disabilities = [:]
+        def disability = [:]
+        disability['correlation_id'] = "disability_${System.currentTimeMillis()}"
+        String disabilityCode
         if (s.disabilityType) {
             switch (s.disabilityType) {
                 case AvetmissStudentDisabilityType.HEARING:
-                    disabilities["disability_code"] = "11"
+                    disabilityCode = "11"
                     break
                 case AvetmissStudentDisabilityType.PHYSICAL:
-                    disabilities["disability_code"] = "12"
+                    disabilityCode = "12"
                     break
                 case AvetmissStudentDisabilityType.INTELLECTUAL:
-                    disabilities["disability_code"] = "13"
+                    disabilityCode = "13"
                     break
                 case AvetmissStudentDisabilityType.LEARNING:
-                    disabilities["disability_code"] = "14"
+                    disabilityCode = "14"
                     break
                 case AvetmissStudentDisabilityType.MENTAL:
-                    disabilities["disability_code"] = "15"
+                    disabilityCode = "15"
                     break
                 case AvetmissStudentDisabilityType.BRAIN_IMPAIRMENT:
-                    disabilities["disability_code"] = "16"
+                    disabilityCode = "16"
                     break
                 case AvetmissStudentDisabilityType.VISION:
-                    disabilities["disability_code"] = "17"
+                    disabilityCode = "17"
                     break
                 case AvetmissStudentDisabilityType.MEDICAL_CONDITION:
-                    disabilities["disability_code"] = "18"
+                    disabilityCode = "18"
                     break
                 case AvetmissStudentDisabilityType.OTHER:
-                    disabilities["disability_code"] = "19"
+                    disabilityCode = "19"
                     break
                 default:
-                    disabilities["disability_code"] = "99" // E615
+                    disabilityCode = "99" // E615
             }
         } else {
-            disabilities["disability_code"] = "99" // E615
+            disabilityCode = "99" // E615
         }
-        
-        
-        disabilities["disability_effective_from_date"] = "" // E609
-        disabilities["disability_effective_to_date"] = ""    // E610
-        student["disabilities"] << disabilities
+        disability['disability'] = ['disability_code' : disabilityCode] 
+        student["disabilities"] << disability
 
-        return student
+        def studentData  = [
+                'correlation_id' : "studentData_${System.currentTimeMillis()}",
+                'student' : student
+        ]
+
+        return JsonOutput.toJson([studentData])
+        
+        
     }
 
 
 
     @CompileDynamic
-    static Map<String, Object> testStudent() {
+    static String testStudent() {
         Map<String, Object> student = [:]
         student["student_identification_code"] = '123'
         student["date_of_birth"] = "1991-07-20"
@@ -220,7 +232,7 @@ class TCSIUtils {
         student["residential_address_country_code"] = "9111"    
         student["residential_address_postcode"] = "2042"
         student["tfn"] = '123212234'
-        student["chessn"] = '123212234'
+//        student["chessn"] = '123212234'
         student["usi"] = '2222222222'
         student["gender_code"] = "F" //E315
         student["atsi_code"] = "3" // E316
@@ -237,21 +249,30 @@ class TCSIUtils {
 
         student["term_address_postcode"] = "2042"   // E319
         student["term_address_country_code"] = "9111"// E661
-        
+
         student["citizenships"] = []
         def citizenship = [:]
-        citizenship [ "citizen_resident_code" ] = "1"   //E358
+        citizenship['correlation_id'] = "citizenship_${System.currentTimeMillis()}"
+        String residentCode ="1"
+        citizenship['citizenship'] = ['citizen_resident_code': residentCode]
         student["citizenships"] << citizenship
 
         student["disabilities"] = []
-        def disabilities = [:]
-        disabilities["disability_code"] = "15" // E615
-        disabilities["disability_effective_from_date"] = "" // E609
-        disabilities["disability_effective_to_date"] = ""    // E610
-        student["disabilities"] << disabilities
+        def disability = [:]
+        disability['correlation_id'] = "disability_${System.currentTimeMillis()}"
+        String disabilityCode = "15"
+        disability['disability'] = ['disability_code' : disabilityCode]
+        student["disabilities"] << disability
 
-        return student
+        
+        def studentData  = [
+                'correlation_id' : "studentData_${System.currentTimeMillis()}",
+                'student' : student
+        ]
+
+        return JsonOutput.toJson([studentData])
+
     }
-
+    
 
 }
