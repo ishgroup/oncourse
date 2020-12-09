@@ -25,13 +25,16 @@ export const CLEAR_PLAIN_QUALIFICATION_ITEMS = "clear/qualification/plain";
 
 export const SET_PLAIN_QUALIFICATION_ITEMS_SEARCH = "set/qualification/plain/search";
 
-export const getPlainQualifications = (offset?: number, sortings?: string, ascending?: boolean) => ({
+export const getPlainQualifications = (offset?: number, sortings?: string, ascending?: boolean, pageSize?: number) => ({
   type: GET_PLAIN_QUALIFICATION_ITEMS,
-  payload: { offset, sortings, ascending }
+  payload: {
+   offset, sortings, ascending, pageSize
+  }
 });
 
-export const clearPlainQualificationItems = () => ({
-  type: CLEAR_PLAIN_QUALIFICATION_ITEMS
+export const clearPlainQualificationItems = (loading?: boolean) => ({
+  type: CLEAR_PLAIN_QUALIFICATION_ITEMS,
+  payload: { loading }
 });
 
 export const setPlainQualificationSearch = (search: string) => ({

@@ -4,48 +4,46 @@
  */
 
 import React from "react";
-import { Typography } from "@material-ui/core";
 import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
-import { AddCircle } from "@material-ui/icons";
 import Collapse from "@material-ui/core/Collapse/Collapse";
-import { Switch } from "../../form-fields/Switch";
+import Typography from "@material-ui/core/Typography";
+import AddCircle from "@material-ui/icons/AddCircle";
+import Close from "@material-ui/icons/Close";
 import SearchInput from "./SearchInput";
+import { Switch } from "../../form-fields/Switch";
 
 export const InputSection = React.memo<any>(props => {
   const {
     classes,
-    searchEnabled,
     title,
     searchExpression,
     searchPlaceholder,
+    aqlPlaceholderPrefix,
     searchValuesToShow,
     onSearchChange,
     onAqlSearchChange,
     onSearchEscape,
-    onBlur,
     onFocus,
+    onBlur,
     onAddEvent,
-    inputRef,
     toggleSearch,
-    hideAddButton,
+    validateAql,
+    inputRef,
+    aqlComponentRef,
+    titleCaption,
     formError,
     disabled,
+    setSelectedEntity,
     aqlEntity,
-    additionalAqlEntity,
-    aqlComponentRef,
-    validateAql,
     isValidAqlQuery,
-    additionalSearchPlaceholder,
-    additionalSearchExpression,
-    additionalAqlComponentRef,
-    clearDoubleSearch,
     searchTags,
-    additionalSearchTags,
-    searchType,
-    titleCaption,
     secondaryHeading,
-    disableAddAll
+    disableAddAll,
+    searchEnabled,
+    hideAddButton,
+    aqlEntities,
+    onAqlSearchClear
   } = props;
 
   return (
@@ -59,17 +57,32 @@ export const InputSection = React.memo<any>(props => {
           >
             {title}
           </Typography>
-          <IconButton
-            className={clsx(
-              "addButtonColor",
-              secondaryHeading && "p-0 ml-1",
-              (searchEnabled || hideAddButton) && "invisible"
-)}
-            onClick={toggleSearch}
-            disabled={disabled}
-          >
-            <AddCircle className="inherit" />
-          </IconButton>
+          {searchEnabled
+            ? (
+              <IconButton
+                className={clsx(
+                secondaryHeading && "p-0 ml-1",
+                  hideAddButton && "invisible"
+              )}
+                onClick={toggleSearch}
+                disabled={disabled}
+              >
+                <Close className="inherit" />
+              </IconButton>
+            )
+            : (
+              <IconButton
+                className={clsx(
+                  "addButtonColor",
+                  secondaryHeading && "p-0 ml-1",
+                  hideAddButton && "invisible"
+                )}
+                onClick={toggleSearch}
+                disabled={disabled}
+              >
+                <AddCircle className="inherit" />
+              </IconButton>
+            )}
         </div>
 
         {titleCaption && (
@@ -80,8 +93,10 @@ export const InputSection = React.memo<any>(props => {
 
         <Collapse in={searchEnabled && !disabled} unmountOnExit mountOnEnter>
           <SearchInput
+            onAqlSearchClear={onAqlSearchClear}
             searchExpression={searchExpression}
             searchPlaceholder={searchPlaceholder}
+            aqlPlaceholderPrefix={aqlPlaceholderPrefix}
             searchValuesToShow={searchValuesToShow}
             onSearchChange={onSearchChange}
             onAqlSearchChange={onAqlSearchChange}
@@ -96,16 +111,11 @@ export const InputSection = React.memo<any>(props => {
             validateAql={validateAql}
             isValidAqlQuery={isValidAqlQuery}
             aqlComponentRef={aqlComponentRef}
-            additionalAqlEntity={additionalAqlEntity}
-            additionalSearchPlaceholder={additionalSearchPlaceholder}
-            additionalSearchExpression={additionalSearchExpression}
-            additionalAqlComponentRef={additionalAqlComponentRef}
-            clearDoubleSearch={clearDoubleSearch}
             className={classes.inputMargin}
             searchTags={searchTags}
-            additionalSearchTags={additionalSearchTags}
-            searchType={searchType}
             disableAddAll={disableAddAll}
+            setSelectedEntity={setSelectedEntity}
+            aqlEntities={aqlEntities}
             autoFocus
           />
         </Collapse>
@@ -126,33 +136,31 @@ export const InputSectionWithToggle = React.memo<any>(props => {
     title,
     searchExpression,
     searchPlaceholder,
+    aqlPlaceholderPrefix,
     searchValuesToShow,
     onSearchChange,
+    onAqlSearchChange,
     onSearchEscape,
-    onBlur,
     onFocus,
+    onBlur,
     onAddEvent,
     toggleSearch,
+    onSwitchToggle,
+    validateAql,
     inputRef,
+    aqlComponentRef,
     titleCaption,
     toggleEnabled,
-    onSwitchToggle,
     formError,
     disabled,
+    setSelectedEntity,
     aqlEntity,
-    additionalAqlEntity,
-    aqlComponentRef,
-    onAqlSearchChange,
-    validateAql,
     isValidAqlQuery,
-    additionalSearchPlaceholder,
-    additionalSearchExpression,
-    additionalAqlComponentRef,
-    clearDoubleSearch,
     searchTags,
-    additionalSearchTags,
     secondaryHeading,
-    disableAddAll
+    disableAddAll,
+    aqlEntities,
+    onAqlSearchClear
   } = props;
 
   return (
@@ -183,8 +191,10 @@ export const InputSectionWithToggle = React.memo<any>(props => {
 
         <div className={clsx(!secondaryHeading && classes.root__search)}>
           <SearchInput
+            onAqlSearchClear={onAqlSearchClear}
             searchExpression={searchExpression}
             searchPlaceholder={searchPlaceholder}
+            aqlPlaceholderPrefix={aqlPlaceholderPrefix}
             searchValuesToShow={searchValuesToShow}
             onSearchChange={onSearchChange}
             onAqlSearchChange={onAqlSearchChange}
@@ -195,19 +205,15 @@ export const InputSectionWithToggle = React.memo<any>(props => {
             toggleSearch={toggleSearch}
             onFocus={onFocus}
             onBlur={onBlur}
-            className={`w-100 ${classes.topOffset}`}
+            className={clsx("w-100", classes.topOffset)}
             aqlEntity={aqlEntity}
+            setSelectedEntity={setSelectedEntity}
             validateAql={validateAql}
             isValidAqlQuery={isValidAqlQuery}
             aqlComponentRef={aqlComponentRef}
-            additionalAqlEntity={additionalAqlEntity}
-            additionalSearchPlaceholder={additionalSearchPlaceholder}
-            additionalSearchExpression={additionalSearchExpression}
-            additionalAqlComponentRef={additionalAqlComponentRef}
-            clearDoubleSearch={clearDoubleSearch}
             searchTags={searchTags}
-            additionalSearchTags={additionalSearchTags}
             disableAddAll={disableAddAll}
+            aqlEntities={aqlEntities}
           />
         </div>
       </Collapse>

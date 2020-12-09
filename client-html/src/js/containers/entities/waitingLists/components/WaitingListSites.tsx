@@ -79,8 +79,7 @@ class WaitingListSites extends React.PureComponent<any, any> {
             sort={(a, b) =>
               (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 0)}
             resetSearch={submitSucceeded}
-            aqlEntity="Site"
-            aqlEntityTags={["Site"]}
+            aqlEntities={["Site"]}
             usePaper
           />
         </Grid>
@@ -96,7 +95,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getQuickSearchSites: (search: string) => dispatch(getSites(null, "name,suburb,postcode", null, null, search)),
-    clearSites: (loading: boolean) => dispatch(setPlainSites([]))
+    clearSites: () => dispatch(setPlainSites([]))
   });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(WaitingListSites);

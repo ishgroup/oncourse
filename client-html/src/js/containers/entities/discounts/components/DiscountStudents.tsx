@@ -23,8 +23,7 @@ import { State } from "../../../../reducers/state";
 import { clearQuickSearchConcessionTypes, quickSearchConcessionTypes } from "../../common/actions";
 import { clearMembershipSearch, searchMemberships } from "../actions";
 import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { greaterThanZeroIncludeValidation } from "../../../../common/utils/validation/numbersValidation";
+import { greaterThanZeroIncludeValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 
 interface DiscountStudentsProps {
@@ -317,7 +316,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               sort={(a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)}
               resetSearch={submitSucceeded}
               searchType="withToggle"
-              aqlEntity="ConcessionType"
+              aqlEntities={["ConcessionType"]}
               usePaper
             />
           </div>
@@ -342,7 +341,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               panelItems={contactRelationTypes}
               panelCaption="Also apply to"
               searchType="withToggle"
-              aqlEntity="Product"
+              aqlEntities={["Product"]}
               usePaper
             />
           </div>

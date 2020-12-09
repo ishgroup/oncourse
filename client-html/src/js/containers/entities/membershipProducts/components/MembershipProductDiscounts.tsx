@@ -10,7 +10,7 @@ import NestedList, {
   NestedListPanelItem
 } from "../../../../common/components/form/nestedList/NestedList";
 import { clearDiscountsSearch, searchDiscounts } from "../actions";
-import RelatedCoursesCommon from "../../common/components/RelatedCoursesCommon";
+import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
 
 interface MembershipDiscountsProps extends EditViewProps<MembershipProduct>{
@@ -83,7 +83,8 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
     submitSucceeded,
     contactRelationTypes,
     dispatch,
-    form
+    form,
+    rootEntity
   } = props;
 
   const discounts = values ? values.membershipDiscounts : [];
@@ -110,15 +111,16 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
           panelItems={contactRelationTypes}
           panelCaption="Also apply to"
           searchType="withToggle"
-          aqlEntity="Discount"
+          aqlEntities={["Discount"]}
           usePaper
         />
       </div>
-      <RelatedCoursesCommon
+      <RelationsCommon
         values={values}
         dispatch={dispatch}
         form={form}
         submitSucceeded={submitSucceeded}
+        rootEntity={rootEntity}
       />
     </div>
   );

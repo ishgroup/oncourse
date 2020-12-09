@@ -48,10 +48,7 @@ type SearchTypes = "withToggle" | "immediate";
 
 interface Props {
   formId: number;
-  aqlEntity?: string;
-  aqlEntityTags?: string[];
-  additionalAqlEntity?: string;
-  additionalAqlEntityTags?: string[];
+  aqlEntities?: string[];
   values: NestedListItem[];
   searchValues: NestedListItem[];
   title: string;
@@ -59,14 +56,12 @@ interface Props {
   titleCaption?: string;
   classes?: any;
   searchPlaceholder?: string;
-  additionalSearchPlaceholder?: string;
+  aqlPlaceholderPrefix?: string;
   onAdd: (items: NestedListItem[]) => void;
   onDelete: (item: NestedListItem, index?: number) => void;
   onDeleteAll?: () => void;
-  onSearch: (search: string) => void;
-  onAdditionalSearch?: (search: string) => void;
-  clearSearchResult: (pending: boolean) => void;
-  clearAdditionalSearchResult?: (pending: boolean) => void;
+  onSearch: (search: string, entity?: string) => void;
+  clearSearchResult: (pending: boolean, entity?: string) => void;
   sort?: (a, b) => void;
   usePaper?: boolean;
   resetSearch?: boolean;
@@ -90,12 +85,11 @@ interface Props {
 interface NestedListState {
   searchEnabled: boolean;
   searchExpression?: string;
-  additionalSearchExpression?: string;
   toggleEnabled?: boolean;
   formError?: string;
   isValidAqlQuery?: boolean;
   searchTags?: Suggestion[];
-  additionalSearchTags?: Suggestion[];
+  selectedAqlEntity?: string;
 }
 
 class NestedList extends React.Component<Props, NestedListState> {
@@ -103,40 +97,33 @@ class NestedList extends React.Component<Props, NestedListState> {
 
   private readonly aqlComponentRef: any;
 
-  private readonly additionalAqlComponentRef: any;
-
   constructor(props) {
     super(props);
     this.inputRef = React.createRef();
     this.aqlComponentRef = React.createRef();
-    this.additionalAqlComponentRef = React.createRef();
 
     this.state = {
       searchEnabled: false,
       isValidAqlQuery: false,
       toggleEnabled: Boolean(props.values && props.values.length),
       searchExpression: "",
-      additionalSearchExpression: "",
+      selectedAqlEntity: props.aqlEntities ? props.aqlEntities[0] : null,
       formError: null,
-      searchTags: [],
-      additionalSearchTags: []
+      searchTags: []
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const {
       resetSearch,
       values,
       formId,
       clearSearchResult,
-      clearAdditionalSearchResult,
-      aqlEntityTags,
       entityTags,
-      additionalAqlEntityTags,
-      additionalAqlEntity
+      aqlEntities
     } = this.props;
 
-    const { searchTags, additionalSearchTags } = this.state;
+    const { selectedAqlEntity } = this.state;
 
     if (!prevProps.values.length && values.length) {
       this.setState({
@@ -154,56 +141,35 @@ class NestedList extends React.Component<Props, NestedListState> {
       this.setState({
         searchEnabled: false,
         toggleEnabled: Boolean(values && values.length),
-        searchExpression: "",
-        additionalSearchExpression: ""
+        searchExpression: ""
       });
-
-      clearSearchResult(false);
-
-      if (clearAdditionalSearchResult) {
-        clearAdditionalSearchResult(false);
-      }
-
-      if (additionalAqlEntity) {
-        this.clearDoubleSearch();
-      }
+      clearSearchResult(false, selectedAqlEntity);
     }
 
-    if (aqlEntityTags && !searchTags.length) {
-      let tagsMatch = 0;
+    if (aqlEntities && selectedAqlEntity !== prevState.selectedAqlEntity) {
+      const searchTags = entityTags[selectedAqlEntity] && entityTags[selectedAqlEntity].length
+        ? getTagNamesSuggestions(entityTags[selectedAqlEntity])
+          .filter((t, index, self) => self.findIndex(s => s.label === t.label) === index)
+        : [];
 
-      aqlEntityTags.forEach(t => {
-        if (entityTags[t] && entityTags[t].length) {
-          tagsMatch++;
-        }
+      this.setState({
+        searchTags
       });
-
-      if (tagsMatch === aqlEntityTags.length) {
-        this.setState({
-          searchTags: aqlEntityTags
-            .reduce((p, c) => p.concat(getTagNamesSuggestions(entityTags[c])), [])
-            .filter((t, index, self) => self.findIndex(s => s.label === t.label) === index)
-        });
-      }
     }
+  }
 
-    if (additionalAqlEntityTags && !additionalSearchTags.length) {
-      let tagsMatch = 0;
+  setSelectedEntity = newEntity => {
+    const { clearSearchResult } = this.props;
+    const { selectedAqlEntity } = this.state;
 
-      additionalAqlEntityTags.forEach(t => {
-        if (entityTags[t]) {
-          tagsMatch++;
-        }
-      });
+    clearSearchResult(false, selectedAqlEntity);
 
-      if (tagsMatch === additionalAqlEntityTags.length) {
-        this.setState({
-          additionalSearchTags: additionalAqlEntityTags
-            .reduce((p, c) => p.concat(getTagNamesSuggestions(entityTags[c])), [])
-            .filter((t, index, self) => self.findIndex(s => s.label === t.label) === index)
-        });
-      }
-    }
+    this.setState({
+      selectedAqlEntity: newEntity,
+      searchExpression: ""
+    },
+    () => setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 300));
+    this.aqlComponentRef.current.reset();
   }
 
   validateAql = isValidAqlQuery => {
@@ -214,15 +180,15 @@ class NestedList extends React.Component<Props, NestedListState> {
 
   triggerSearch = () => {
     const { onSearch, searchType } = this.props;
-    const { searchExpression } = this.state;
+    const { searchExpression, selectedAqlEntity } = this.state;
 
     if (searchExpression.length > 0 || searchType === "immediate") {
-      onSearch(searchExpression);
+      onSearch(searchExpression, selectedAqlEntity);
     }
   };
 
-  triggerAqlSearch = (additional?: boolean) => {
-    const { isValidAqlQuery } = this.state;
+  triggerAqlSearch = () => {
+    const { isValidAqlQuery, selectedAqlEntity } = this.state;
     const { searchType } = this.props;
 
     if (!isValidAqlQuery) {
@@ -242,18 +208,14 @@ class NestedList extends React.Component<Props, NestedListState> {
     }
 
     const {
-     clearSearchResult, onSearch, onAdditionalSearch, clearAdditionalSearchResult
+     clearSearchResult, onSearch
     } = this.props;
 
-    additional ? clearAdditionalSearchResult(true) : clearSearchResult(true);
+    clearSearchResult(true, selectedAqlEntity);
 
-    const newState = additional
-      ? { additionalSearchExpression: this.inputRef.current.value }
-      : { searchExpression: this.inputRef.current.value };
-
-    this.setState(newState, () => {
+    this.setState({ searchExpression: this.inputRef.current.value }, () => {
       if (value.length > 0 || searchType === "immediate") {
-        additional ? onAdditionalSearch(value) : onSearch(value);
+        onSearch(value, selectedAqlEntity);
       }
     });
   };
@@ -264,17 +226,17 @@ class NestedList extends React.Component<Props, NestedListState> {
 
   toggleSearch = () => {
     const {
-     clearSearchResult, onToggleSearch, aqlEntity, additionalAqlEntity
+     clearSearchResult, onToggleSearch, aqlEntities
     } = this.props;
 
-    const { searchEnabled } = this.state;
+    const { searchEnabled, selectedAqlEntity } = this.state;
 
     if (!searchEnabled) {
       if (typeof onToggleSearch === "function") {
         onToggleSearch();
       }
 
-      if (!aqlEntity) {
+      if (!aqlEntities) {
         setTimeout(() => {
           this.inputRef.current.focus();
         }, 300);
@@ -282,13 +244,13 @@ class NestedList extends React.Component<Props, NestedListState> {
     }
 
     if (searchEnabled) {
-      clearSearchResult(false);
+      clearSearchResult(false, selectedAqlEntity);
     }
 
-    if (aqlEntity) {
+    if (aqlEntities) {
       if (searchEnabled) {
         this.aqlComponentRef.current.reset();
-      } else if (!additionalAqlEntity) {
+      } else {
         setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 300);
       }
     }
@@ -299,43 +261,31 @@ class NestedList extends React.Component<Props, NestedListState> {
     });
   };
 
-  clearDoubleSearch = (additional?: boolean) => {
-    const { clearSearchResult, clearAdditionalSearchResult } = this.props;
-    const { searchExpression, additionalSearchExpression } = this.state;
-
-    if (additional) {
-      clearAdditionalSearchResult(false);
-
-      this.additionalAqlComponentRef.current.reset();
-
-      this.setState({
-        searchEnabled: Boolean(searchExpression),
-        additionalSearchExpression: ""
-      });
-    } else {
-      clearSearchResult(false);
-
-      if (this.aqlComponentRef.current) {
-        this.aqlComponentRef.current.reset();
-      }
-
-      this.setState({
-        searchEnabled: Boolean(additionalSearchExpression),
-        searchExpression: ""
-      });
-    }
-  };
-
   onSearchEscape = event => {
     if (event.keyCode === 27) {
       this.toggleSearch();
     }
   };
 
+  onAqlSearchClear = () => {
+    const { clearSearchResult } = this.props;
+    const { selectedAqlEntity } = this.state;
+
+    clearSearchResult(true, selectedAqlEntity);
+
+    this.setState(
+      {
+        searchExpression: ""
+      },
+      () => this.aqlComponentRef.current && this.aqlComponentRef.current.reset()
+    );
+  }
+
   onSearchChange = event => {
     const { clearSearchResult } = this.props;
+    const { selectedAqlEntity } = this.state;
 
-    clearSearchResult(true);
+    clearSearchResult(true, selectedAqlEntity);
 
     const { value } = event.target;
 
@@ -364,8 +314,6 @@ class NestedList extends React.Component<Props, NestedListState> {
   };
 
   onSwitchToggle = (e, checked) => {
-    const { additionalAqlEntity } = this.props;
-
     this.setState(
       {
         toggleEnabled: checked
@@ -374,41 +322,18 @@ class NestedList extends React.Component<Props, NestedListState> {
         if (!checked) {
           this.props.onDeleteAll();
           this.toggleSearch();
-        } else if (!additionalAqlEntity) {
+        } else {
           setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 300);
         }
       }
     );
   };
 
-  onDoubleFieldsBlur = () => {
-    const { searchExpression, additionalSearchExpression } = this.state;
-
-    if (this.aqlComponentRef.current && this.additionalAqlComponentRef.current) {
-      if (!searchExpression) {
-        this.aqlComponentRef.current.reset();
-      }
-
-      if (!additionalSearchExpression) {
-        this.additionalAqlComponentRef.current.reset();
-      }
-
-      if (!searchExpression && !additionalSearchExpression) {
-        this.toggleSearch();
-      }
-    }
-  };
-
   onBlur = () => {
-    const { searchType, additionalAqlEntity } = this.props;
+    const { searchType, aqlEntities } = this.props;
     const { searchExpression } = this.state;
 
-    if (additionalAqlEntity) {
-      this.onDoubleFieldsBlur();
-      return;
-    }
-
-    if (!searchExpression && searchType !== "immediate") {
+    if (!searchExpression && searchType !== "immediate" && (aqlEntities ? aqlEntities.length === 1 : true)) {
       this.toggleSearch();
     }
   };
@@ -426,6 +351,7 @@ class NestedList extends React.Component<Props, NestedListState> {
       title,
       classes,
       searchPlaceholder,
+      aqlPlaceholderPrefix,
       searchType,
       titleCaption,
       hideAddButton,
@@ -435,15 +361,12 @@ class NestedList extends React.Component<Props, NestedListState> {
       disabled,
       formError,
       searchValuesToShow,
-      aqlEntity,
+      selectedAqlEntity,
       isValidAqlQuery,
-      additionalAqlEntity,
-      additionalSearchPlaceholder,
-      additionalSearchExpression,
       searchTags,
-      additionalSearchTags,
       secondaryHeading,
-      disableAddAll
+      disableAddAll,
+      aqlEntities
     } = props;
 
     switch (searchType) {
@@ -455,7 +378,9 @@ class NestedList extends React.Component<Props, NestedListState> {
             title={title}
             searchExpression={searchExpression}
             searchPlaceholder={searchPlaceholder}
+            aqlPlaceholderPrefix={aqlPlaceholderPrefix}
             searchValuesToShow={searchValuesToShow}
+            onAqlSearchClear={this.onAqlSearchClear}
             onSearchChange={this.onSearchChange}
             onAqlSearchChange={this.onAqlSearchChange}
             onSearchEscape={this.onSearchEscape}
@@ -465,24 +390,20 @@ class NestedList extends React.Component<Props, NestedListState> {
             toggleSearch={this.toggleSearch}
             onSwitchToggle={this.onSwitchToggle}
             validateAql={this.validateAql}
-            clearDoubleSearch={this.clearDoubleSearch}
             inputRef={this.inputRef}
             aqlComponentRef={this.aqlComponentRef}
-            additionalAqlComponentRef={this.additionalAqlComponentRef}
             titleCaption={titleCaption}
             toggleEnabled={toggleEnabled}
             hideAddButton={hideAddButton}
             formError={formError}
             disabled={disabled}
-            aqlEntity={aqlEntity}
+            setSelectedEntity={this.setSelectedEntity}
+            aqlEntity={selectedAqlEntity}
             isValidAqlQuery={isValidAqlQuery}
-            additionalAqlEntity={additionalAqlEntity}
-            additionalSearchPlaceholder={additionalSearchPlaceholder}
-            additionalSearchExpression={additionalSearchExpression}
             searchTags={searchTags}
-            additionalSearchTags={additionalSearchTags}
             secondaryHeading={secondaryHeading}
             disableAddAll={disableAddAll}
+            aqlEntities={aqlEntities}
           />
         );
       }
@@ -495,8 +416,10 @@ class NestedList extends React.Component<Props, NestedListState> {
             title={title}
             searchExpression={searchExpression}
             searchPlaceholder={searchPlaceholder}
+            aqlPlaceholderPrefix={aqlPlaceholderPrefix}
             searchValuesToShow={searchValuesToShow}
             searchType={searchType}
+            onAqlSearchClear={this.onAqlSearchClear}
             onSearchChange={this.onSearchChange}
             onAqlSearchChange={this.onAqlSearchChange}
             onSearchEscape={this.onSearchEscape}
@@ -505,23 +428,19 @@ class NestedList extends React.Component<Props, NestedListState> {
             onAddEvent={this.onAddEvent}
             toggleSearch={this.toggleSearch}
             validateAql={this.validateAql}
-            clearDoubleSearch={this.clearDoubleSearch}
             inputRef={this.inputRef}
             aqlComponentRef={this.aqlComponentRef}
-            additionalAqlComponentRef={this.additionalAqlComponentRef}
             titleCaption={titleCaption}
             hideAddButton={hideAddButton}
             formError={formError}
             disabled={disabled}
-            aqlEntity={aqlEntity}
+            aqlEntity={selectedAqlEntity}
+            setSelectedEntity={this.setSelectedEntity}
             isValidAqlQuery={isValidAqlQuery}
-            additionalAqlEntity={additionalAqlEntity}
-            additionalSearchPlaceholder={additionalSearchPlaceholder}
-            additionalSearchExpression={additionalSearchExpression}
             searchTags={searchTags}
-            additionalSearchTags={additionalSearchTags}
             secondaryHeading={secondaryHeading}
             disableAddAll={disableAddAll}
+            aqlEntities={aqlEntities}
           />
         );
       }
@@ -559,7 +478,8 @@ class NestedList extends React.Component<Props, NestedListState> {
       disabled,
       CustomCell
     } = this.props;
-    const { searchEnabled, searchExpression, additionalSearchExpression } = this.state;
+
+    const { searchEnabled, searchExpression } = this.state;
 
     const searchValuesToShow = searchValues ? searchValues.filter(v1 => !values.some(v2 => v1.id === v2.id)) : [];
 
@@ -570,7 +490,7 @@ class NestedList extends React.Component<Props, NestedListState> {
         <this.renderSearchType {...{ ...this.props, ...this.state, searchValuesToShow }} />
 
         {searchEnabled
-          && (searchExpression.length > 0 || additionalSearchExpression.length > 0 || searchType === "immediate")
+          && (searchExpression.length > 0 || searchType === "immediate")
           && (searchValuesToShow.length > 0 ? (
             <ListRenderer
               type="search"

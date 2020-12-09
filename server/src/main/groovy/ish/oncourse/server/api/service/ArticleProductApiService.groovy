@@ -85,7 +85,7 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
                     ap
                 }
             } as List<ArticleProductCorporatePassDTO>
-            articleProductDTO.relatedlSalables = (EntityRelationDao.getRelatedFrom(articleProduct.context, Product.simpleName, articleProduct.id).collect { toRestFromEntityRelation(it) } +
+            articleProductDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(articleProduct.context, Product.simpleName, articleProduct.id).collect { toRestFromEntityRelation(it) } +
                                         EntityRelationDao.getRelatedTo(articleProduct.context, Product.simpleName, articleProduct.id).collect { toRestToEntityRelation(it) })
             articleProductDTO.createdOn = articleProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             articleProductDTO.modifiedOn = articleProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()

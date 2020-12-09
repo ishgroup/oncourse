@@ -34,7 +34,7 @@ properties:
   soldVouchersCount:
     type: integer
     format: int64
-  relatedlSalables:
+  relatedSellables:
     type: array
     items:
       $ref: '../Sale.yaml'

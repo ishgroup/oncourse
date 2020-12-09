@@ -52,7 +52,7 @@ properties:
     type: array
     items:
       $ref: '../Document.yaml'
-  relatedlSalables:
+  relatedSellables:
     type: array
     items:
       $ref: '../Sale.yaml'

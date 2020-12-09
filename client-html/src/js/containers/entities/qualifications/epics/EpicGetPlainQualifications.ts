@@ -5,21 +5,23 @@
 
 import { Epic } from "redux-observable";
 
+import { Qualification, DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
-import { GET_PLAIN_QUALIFICATION_ITEMS, GET_PLAIN_QUALIFICATION_ITEMS_FULFILLED } from "../actions/index";
-import { Qualification, DataResponse } from "@api/model";
+import { GET_PLAIN_QUALIFICATION_ITEMS, GET_PLAIN_QUALIFICATION_ITEMS_FULFILLED } from "../actions";
 import { State } from "../../../../reducers/state";
 
-const request: EpicUtils.Request<DataResponse, State, { offset?: number; sortings?: string; ascending?: boolean }> = {
+const request: EpicUtils.Request<DataResponse, State, { offset?: number; sortings?: string; ascending?: boolean, pageSize?: number }> = {
   type: GET_PLAIN_QUALIFICATION_ITEMS,
   hideLoadIndicator: true,
-  getData: ({ offset, sortings, ascending }, { qualification: { search } }) =>
+  getData: ({
+ offset, sortings, ascending, pageSize
+}, { qualification: { search } }) =>
     EntityService.getPlainRecords(
       "Qualification",
-      "nationalCode,title,level,fieldOfEducation",
-      search ? `~"${search}"` : null,
-      100,
+      "nationalCode,title,level,fieldOfEducation,isOffered",
+      search,
+      pageSize || 100,
       offset,
       sortings,
       ascending
@@ -30,7 +32,8 @@ const request: EpicUtils.Request<DataResponse, State, { offset?: number; sorting
       nationalCode: values[0],
       title: values[1],
       qualLevel: values[2],
-      fieldOfEducation: values[3]
+      fieldOfEducation: values[3],
+      isOffered: JSON.parse(values[4])
     }));
 
     return [

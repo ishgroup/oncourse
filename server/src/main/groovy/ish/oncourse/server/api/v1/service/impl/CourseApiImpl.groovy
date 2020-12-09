@@ -37,7 +37,7 @@ class CourseApiImpl implements CourseApi {
     @Override
     void create(CourseDTO courseDTO) {
         Course dbModel = courseApiService.create(courseDTO)
-        EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Course.simpleName, courseDTO.relatedlSalables)
+        EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Course.simpleName, courseDTO.relatedSellables)
     }
 
     @Override
@@ -58,6 +58,6 @@ class CourseApiImpl implements CourseApi {
     @Override
     void update(Long id, CourseDTO courseDTO) {
         courseApiService.update(id, courseDTO)
-        EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Course.simpleName, courseDTO.relatedlSalables)
+        EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Course.simpleName, courseDTO.relatedSellables)
     }
 }

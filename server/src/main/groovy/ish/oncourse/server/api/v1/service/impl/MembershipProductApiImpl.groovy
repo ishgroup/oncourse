@@ -31,7 +31,7 @@ class MembershipProductApiImpl implements MembershipProductApi {
     @Override
     void create(MembershipProductDTO membershipProductDTO) {
         MembershipProduct dbModel = service.create(membershipProductDTO)
-        EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Product.simpleName, membershipProductDTO.relatedlSalables)
+        EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Product.simpleName, membershipProductDTO.relatedSellables)
     }
 
     @Override
@@ -42,6 +42,6 @@ class MembershipProductApiImpl implements MembershipProductApi {
     @Override
     void update(Long id, MembershipProductDTO membershipProductDTO) {
         service.update(id, membershipProductDTO)
-        EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Product.simpleName, membershipProductDTO.relatedlSalables)
+        EntityRelationFunctions.updateRelatedEntities(cayenneService.newContext, id, Product.simpleName, membershipProductDTO.relatedSellables)
     }
 }
