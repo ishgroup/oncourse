@@ -110,7 +110,7 @@
     "date-fns": "2.8.*",
     "date-fns-tz": "1.0.*",
     "decimal.js-light": "2.5.*",
-    "eslint-import-resolver-webpack": "0.12.*",
+    "eslint-import-resolver-webpack": "0.13.*",
     "lodash.debounce": "4.0.*",
     "lodash.isempty": "4.4.*",
     "lodash.isequal": "4.5.*",
