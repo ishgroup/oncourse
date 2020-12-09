@@ -311,7 +311,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     },
     tabList: {
       listContainer: {
-        backgroundColor: "#B3000C"
+        backgroundColor: "#146B3A"
       }
     },
     table: {
