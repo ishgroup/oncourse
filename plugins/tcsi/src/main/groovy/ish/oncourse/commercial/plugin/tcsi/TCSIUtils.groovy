@@ -12,6 +12,8 @@ import ish.common.types.AvetmissStudentIndigenousStatus
 import ish.common.types.AvetmissStudentSchoolLevel
 import ish.common.types.Gender
 import ish.common.types.StudentCitizenship
+import ish.oncourse.server.cayenne.Course
+import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Student
 
 
@@ -218,57 +220,43 @@ class TCSIUtils {
         
         
     }
-
-
-
+    
+    
     @CompileDynamic
-    static String testStudent() {
-        Map<String, Object> student = [:]
-        student["student_identification_code"] = '123'
-        student["date_of_birth"] = "1991-07-20"
-        student["student_family_name"] = "Kravchenko"
-        student["student_given_name_first"] = "Artyom"
-        student["residential_address_street"] = "30-34 Wilson St"
-        student["residential_address_suburb"] = "NEWTOWN"
-        student["residential_address_state"] = "NSW"
-        // not Australia
-//        student["residential_address_country_code"] = "9111"    
-        student["residential_address_postcode"] = "2042"
-        student["tfn"] = '123212234'
-        student["usi"] = '2222222222'
-        student["gender_code"] = "F" //E315
-        student["atsi_code"] = "9" // E316
+    static String getCourseData(Course c) {
+        Map<String, Object> course = [:]
+
+        course["course_code"] = c.code
+        course["course_name"] = c.name
+        course["course_of_study_load"] = c.reportableHours
+        course["standard_course_duration"] = c.reportableHours
+        List<CourseClass> cortedClasses = c.courseClasses.findAll { it.startDateTime }.sort { it.startDateTime }
+        Date startDate = cortedClasses.empty ? new Date() : cortedClasses[0].startDateTime
+        course["course_effective_from_date"] = startDate.format(DATE_FORMAT)
       
-        student["country_of_birth_code"] = "9111" // E346
-
-        student["year_of_arrival_in_australia"] = "9998"    // E347
-
-        student["language_spoken_at_home_code"] = "1201" // E348
-        student["year_left_school"] = '2009'
-
-        student["level_left_school"] = '11'
-
-        student["citizenships"] = []
-        def citizenship = [:]
-        citizenship['correlation_id'] = "citizenship_${System.currentTimeMillis()}"
-        String residentCode ="1"
-        citizenship['citizenship'] = ['citizen_resident_code': residentCode]
-        student["citizenships"] << citizenship
-
-        student["disabilities"] = []
-        def disability = [:]
-        disability['correlation_id'] = "disability_${System.currentTimeMillis()}"
-        String disabilityCode = "15"
-        disability['disability'] = ['disability_code' : disabilityCode]
-        student["disabilities"] << disability
-
-        
-        def studentData  = [
-                'correlation_id' : "studentData_${System.currentTimeMillis()}",
-                'student' : student
+        def courseData  = [
+                'correlation_id' : "courseData_${System.currentTimeMillis()}",
+                'course' : course
         ]
 
-        return JsonOutput.toJson([studentData])
+        return JsonOutput.toJson([courseData])
+        
+    }
+    
+    static String testCourse() {
+        Map<String, Object> course = [:]
+
+        course["course_code"] = 'BSB40807'
+        course["course_name"] = 'TEST name'
+        course["course_of_study_load"] = 1
+        course["standard_course_duration"] = 1
+        course["course_effective_from_date"] = new Date().format(DATE_FORMAT)
+
+        def courseData  = [
+                'correlation_id' : "courseData_${System.currentTimeMillis()}",
+                'course' : course
+        ]
+        return JsonOutput.toJson([courseData])
 
     }
     

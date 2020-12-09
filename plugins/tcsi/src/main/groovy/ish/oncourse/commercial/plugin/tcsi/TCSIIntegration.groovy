@@ -63,7 +63,8 @@ class TCSIIntegration implements PluginTrait {
 
     static final String BASE_API_PATH = '/centrelink/ext-vend/tcsi/b2g/v1'
     static final String STUDENTS_PATH = BASE_API_PATH + '/students'
-    
+    static final String COURSES_PATH = BASE_API_PATH + '/courses'
+
     String deviceName
     String organisationId
     String jwkCertificate
@@ -195,9 +196,38 @@ class TCSIIntegration implements PluginTrait {
     
     void enrolment(Enrolment e) {
         enrolment = e
-        def student  = getStudent()  
-        if (!student) {
+        if (!getStudent()) {
             createStudent()
+        }
+        if (!getCourse()) {
+            createCourse()
+        }
+    }
+    
+    def getCourse() {
+        getClient().request(GET, JSON) {
+            uri.path = COURSES_PATH + "/students-uid/" + enrolment.student.studentNumber
+            response.success = { resp, result ->
+                return result["result"][0]["student"]
+            }
+            response.failure =   { resp, result ->
+                if (resp.status == 404) {
+                    return null
+                } else {
+                    failureHangler(resp, result)
+                }
+            }
+        }
+    }
+
+    def createCourse() {
+        getClient().request(POST, JSON) {
+            uri.path = COURSES_PATH
+            body = TCSIUtils.getCourseData(enrolment.courseClass.course)
+            response.success = { resp, result ->
+                return handleResponce(result, "Create course")
+            }
+            response.failure = failureHangler
         }
     }
     
@@ -205,7 +235,6 @@ class TCSIIntegration implements PluginTrait {
     def getStudent() {
         getClient().request(GET, JSON) {
             uri.path = STUDENTS_PATH + "/students-uid/" + enrolment.student.studentNumber
-            uri.path = STUDENTS_PATH 
             response.success = { resp, result ->
                 return result["result"][0]["student"]
             }
