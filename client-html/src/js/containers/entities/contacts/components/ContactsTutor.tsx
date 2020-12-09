@@ -3,23 +3,37 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Contact, PayslipPayType, WorkingWithChildrenStatus } from "@api/model";
 import { Grid } from "@material-ui/core";
 import NumberFormat from "react-number-format";
+import { change } from "redux-form";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import FormField from "../../../../common/components/form/form-fields/FormField";
+import Typography from "@material-ui/core/Typography";
 import { openInternalLink } from "../../../../common/utils/links";
 import { getContactFullName } from "../utils";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import ContactCourseClass from "./ContactCourseClass";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { Switch } from "../../../../common/components/form/form-fields/Switch";
+import { AppTheme } from "../../../../model/common/Theme";
 
 interface ContactsTutorProps {
   twoColumn?: boolean;
   isNew?: boolean;
   values?: Contact;
+  dispatch?: any;
 }
+
+const useStyles = makeStyles((theme: AppTheme) => ({
+  switchWrapper: {
+    display: "flex",
+    flexDirection: "column",
+  }
+}));
 
 const workingWithChildrenStatusItems = Object.keys(WorkingWithChildrenStatus).map(mapSelectItems);
 
@@ -40,8 +54,29 @@ export const TFNInputMask = props => {
 
 const ContactsTutor: React.FC<ContactsTutorProps> = props => {
   const {
-    twoColumn, values, isNew
+    dispatch, twoColumn, values, isNew
   } = props;
+
+  const [switchChanged, setSwitchChangedValue] = useState(false);
+  const [switchValue, setSwitchValue] = useState(false)
+
+  const classes = useStyles();
+
+  useEffect(() => {
+    if (isNew && !switchChanged) setSwitchValue(true)
+  }, [])
+
+  useEffect(() => {
+    if (!switchChanged && values.tutor && values.tutor.defaultPayType) setSwitchValue(true)
+  }, [values])
+
+  const changeEnableTutorPayGeneration = () => {
+    const defaultPayTypeValue = !switchValue ? "Employee" : null;
+    dispatch(change(LIST_EDIT_VIEW_FORM_NAME, 'tutor.defaultPayType', defaultPayTypeValue))
+
+    if (!switchChanged) setSwitchChangedValue(true)
+    setSwitchValue(!switchValue)
+  }
 
   const onCalendarClick = () => {
     const tutorId = values.tutor && values.tutor.id;
@@ -100,9 +135,29 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField type="date" name="tutor.dateFinished" label="Date finished" />
         </Grid>
-        <Grid item xs={12}>
-          <FormField type="select" name="tutor.defaultPayType" label="Tutor pay default type" items={payslipPayTypes} defaultValue={"Employee"} allowEmpty />
+
+        <Grid item xs={twoColumn ? 6 : 12} className={classes.switchWrapper}>
+          <Typography variant="caption" color="textSecondary">
+            Enable tutor pay generation
+          </Typography>
+          <Switch
+            onClick={() => changeEnableTutorPayGeneration()}
+            checked={switchValue}
+          />
         </Grid>
+
+        {switchValue && (
+          <Grid item xs={twoColumn ? 6 : 12}>
+            <FormField
+              type="select"
+              name="tutor.defaultPayType"
+              label="Tutor pay default type"
+              items={payslipPayTypes}
+              defaultValue={"Employee"}
+            />
+          </Grid>
+        )}
+
         <Grid item xs={12} className="mt-2 pb-2">
           <div className="heading">WORKING WITH CHILDREN CHECK (WWCC)</div>
         </Grid>
