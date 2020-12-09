@@ -69,7 +69,7 @@ class Avetmiss130Factory extends AvetmissFactory {
                     line.setQualificationIssued(sufficientForQualification && !containsBadOutcome(outcome.getEnrolment()))
 
                     // the following code will not work if the qualification is split across several classes
-                    if (ExportJurisdiction.TAS == jurisdiction) {
+                    if (jurisdiction == ExportJurisdiction.TAS) {
                         def first_outcome = outcome.enrolment.outcomes.sort{it.startDate}.first()
                         setTasmaniaProperties(line, first_outcome)
                     }
@@ -99,7 +99,7 @@ class Avetmiss130Factory extends AvetmissFactory {
         line.setCertificateNumber(certificate.getCertificateNumber())
         line.setIssuedDate(LocalDateUtils.valueToDate(certificate.getIssuedOn()))
 
-        if (ExportJurisdiction.TAS == jurisdiction) {
+        if (jurisdiction == ExportJurisdiction.TAS) {
             def first_outcome = certificate.outcomes.sort{it.startDate}.first()
             setTasmaniaProperties(line, first_outcome)
             line.tasmania_programme_status = !certificate.revokedOn && certificate.printedOn ? 10 : 20

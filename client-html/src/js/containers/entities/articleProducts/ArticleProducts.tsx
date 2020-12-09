@@ -26,6 +26,7 @@ import { getIncomeAccounts } from "../accounts/actions";
 import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../constants/Config";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import { getEntityRelationTypes } from "../../preferences/actions";
 
 interface ArticleProductsProps {
   getArticleProductRecord?: () => void;
@@ -36,6 +37,7 @@ interface ArticleProductsProps {
   getFilters?: () => void;
   clearListState?: () => void;
   getAccounts?: () => void;
+  getRelationTypes?: () => void;
   getTaxes?: () => void;
   checkPermissions?: () => void;
   getDefaultIncomeAccount?: () => void;
@@ -98,6 +100,19 @@ const findRelatedGroup: any[] = [
 
 const manualLink = getManualLink("product");
 
+const preformatBeforeSubmit = (value: ArticleProduct): ArticleProduct => {
+  if (value.relatedlSalables.length) {
+    value.relatedlSalables.forEach((s: any) => {
+      if (s.tempId) {
+        s.id = null;
+        delete s.tempId;
+      }
+    });
+  }
+
+  return value;
+};
+
 const ArticleProducts: React.FC<ArticleProductsProps> = props => {
   const [initNew, setInitNew] = useState(false);
 
@@ -115,7 +130,8 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
     preferences,
     updatingAccounts,
     updatingTaxes,
-    checkPermissions
+    checkPermissions,
+    getRelationTypes
   } = props;
 
   useEffect(() => {
@@ -137,6 +153,7 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
     getTaxes();
     getFilters();
     checkPermissions();
+    getRelationTypes();
     return () => {
       clearListState();
     };
@@ -161,6 +178,7 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
         onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
+        preformatBeforeSubmit={preformatBeforeSubmit}
         defaultDeleteDisabled
         noListTags
       />
@@ -181,7 +199,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getArticleProductRecord: (id: string) => dispatch(getArticleProduct(id)),
   onSave: (id: string, articleProduct: ArticleProduct) => dispatch(updateArticleProduct(id, articleProduct)),
   onCreate: (articleProduct: ArticleProduct) => dispatch(createArticleProduct(articleProduct)),
-  checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" }))
+  checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
+  getRelationTypes: () => dispatch(getEntityRelationTypes())
 });
 
 const mapStateToProps = (state: State) => ({

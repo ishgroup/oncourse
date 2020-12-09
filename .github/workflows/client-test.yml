@@ -1,4 +1,4 @@
-name: API test
+name: Client test
 
 on:
   push:
@@ -31,4 +31,4 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
     - name: Run tests
-      run: ./gradlew api-test:test -x client-html:test
+      run: ./gradlew client-html:test

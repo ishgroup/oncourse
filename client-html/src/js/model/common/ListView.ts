@@ -64,13 +64,13 @@ export interface ListState {
   recepients?: MessageData;
 }
 
-export interface EditViewContainerProps extends Partial<InjectedFormProps> {
+export interface EditViewContainerProps<E = any> extends Partial<InjectedFormProps> {
   classes?: any;
   EditViewContent: React.FunctionComponent<EditViewProps>;
   hasSelected: boolean;
   creatingNew: boolean;
   pending?: boolean;
-  values?: any;
+  values?: E;
   updateDeleteCondition?: any;
   fullScreenEditView?: any;
   toogleFullScreenEditView: any;

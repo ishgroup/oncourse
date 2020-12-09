@@ -48,9 +48,6 @@ const styles = theme =>
     icon: {
       alignItems: "right"
     },
-    dataRowClass: {
-      gridTemplateColumns: "1fr 1fr 1fr"
-    },
     moduleRowClass: {
       gridTemplateColumns: "1fr 0.5fr"
     }

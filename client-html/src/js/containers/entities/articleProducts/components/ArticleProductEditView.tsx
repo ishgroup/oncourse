@@ -12,21 +12,10 @@ import { plainCorporatePassPath } from "../../../../constants/Api";
 import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
 import ArticleProductGeneral from "./ArticleProductGeneral";
+import { EditViewContainerProps, EditViewProps } from "../../../../model/common/ListView";
 
-interface ArticleProductEditViewProps {
-  values?: ArticleProduct;
-  isNew?: boolean;
-  isNested?: boolean;
+interface ArticleProductEditViewProps extends EditViewProps<ArticleProduct> {
   classes?: any;
-  dispatch?: any;
-  dirty?: boolean;
-  form?: string;
-  nestedIndex?: number;
-  rootEntity?: string;
-  twoColumn?: boolean;
-  showConfirm?: any;
-  openNestedEditView?: any;
-  manualLink?: string;
   accounts?: Account[];
   taxes?: Tax[];
   access?: AccessState;
@@ -65,7 +54,8 @@ const ArticleProductEditView: React.FC<ArticleProductEditViewProps> = props => {
     manualLink,
     accounts,
     taxes,
-    access
+    access,
+    submitSucceeded
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -89,7 +79,8 @@ const ArticleProductEditView: React.FC<ArticleProductEditViewProps> = props => {
         openNestedEditView,
         manualLink,
         accounts,
-        taxes
+        taxes,
+        submitSucceeded
       }}
     />
   );

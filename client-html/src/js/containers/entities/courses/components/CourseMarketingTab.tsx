@@ -8,71 +8,14 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, FieldArray } from "redux-form";
 import Grid from "@material-ui/core/Grid";
-import { Sale } from "@api/model";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { State } from "../../../../reducers/state";
 import { clearSales, getSales } from "../../sales/actions";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { getPlainCourses, setPlainCourses, setPlainCoursesSearch } from "../actions";
-import { formatRelatedSalables, formattedEntityRelationTypes } from "../utils";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
-import { stubFunction } from "../../../../common/utils/common";
-
-const salesSort = (a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
-
-const RelationCellBase = ({
-  relationTypes, item, dispatch, form, index
-}) => {
-  const onRelationChange = rel => {
-    const entityId = item.entityFromId || item.entityToId;
-    const changed: Sale & { tempId: any } = {
-      id: item.id,
-      name: item.name,
-      code: item.code,
-      active: item.active,
-      type: item.type,
-      expiryDate: item.expiryDate,
-      entityFromId: rel.combined ? entityId : rel.isReverseRelation ? null : entityId,
-      entityToId: rel.isReverseRelation ? entityId : null,
-      relationId: rel.id,
-      tempId: item.tempId
-    };
-    dispatch(change(form, `relatedlSalables[${index}]`, changed));
-  };
-
-  const getSelectedRelation = () => {
-    if (!relationTypes.length || typeof item.relationId !== "number") {
-      return null;
-    }
-    return relationTypes.find(t => t.id === item.relationId && (t.combined || (
-      typeof item.entityToId === "number"
-        ? t.isReverseRelation
-        : !t.isReverseRelation
-    )));
-  };
-
-  return (
-    <div className="ml-2">
-      {relationTypes.length && (
-        <EditInPlaceField
-          meta={{}}
-          items={relationTypes}
-          input={{
-            onChange: onRelationChange,
-            onFocus: stubFunction,
-            onBlur: stubFunction,
-            value: getSelectedRelation()
-          }}
-          formatting="inline"
-          returnType="object"
-          placeholder="Select relation"
-          select
-        />
-      )}
-    </div>
-  );
-};
+import { formatRelatedSalables, formattedEntityRelationTypes, salesSort } from "../../common/utils";
+import NestedListRelationCell from "../../common/components/NestedListRelationCell";
 
 const CourseMarketingTab: React.FC<any> = props => {
   const {
@@ -150,7 +93,7 @@ const CourseMarketingTab: React.FC<any> = props => {
   const relationTypes = useMemo(() => formattedEntityRelationTypes(entityRelationTypes), [entityRelationTypes]);
 
   const relationCell = props => (
-    <RelationCellBase
+    <NestedListRelationCell
       {...props}
       relationTypes={relationTypes}
       dispatch={dispatch}
@@ -203,7 +146,7 @@ const CourseMarketingTab: React.FC<any> = props => {
           clearAdditionalSearchResult={clearCoursesSearch}
           sort={salesSort}
           resetSearch={submitSucceeded}
-          dataRowClass={classes.dataRowClass}
+          dataRowClass="grid-temp-col-3-fr"
           aqlEntity="Product"
           additionalAqlEntity="Course"
           additionalAqlEntityTags={["Course"]}

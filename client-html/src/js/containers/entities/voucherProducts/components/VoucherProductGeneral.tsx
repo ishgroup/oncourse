@@ -27,6 +27,7 @@ import {
  clearMinMaxFee, clearSearchCourses, getMinMaxFee, searchCourses
 } from "../actions";
 import EditInPlaceMoneyField from "../../../../common/components/form/form-fields/EditInPlaceMoneyField";
+import RelatedCoursesCommon from "../../common/components/RelatedCoursesCommon";
 
 interface VoucherProductGeneralProps {
   twoColumn?: boolean;
@@ -166,7 +167,8 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     pendingCourses,
     submitSucceeded,
     getMinMaxFee,
-    dispatch
+    dispatch,
+    form
   } = props;
   const [redemptionIndex, setRedemptionIndex] = useState(null);
   const initialRedemptionIndex = getInitialRedemptionIndex(isNew, values);
@@ -308,6 +310,12 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         selectLabelMark="value"
       />
       <FormField type="multilineText" name="description" label="Web description" />
+      <RelatedCoursesCommon
+        values={values}
+        dispatch={dispatch}
+        form={form}
+        submitSucceeded={submitSucceeded}
+      />
     </div>
   );
 };
