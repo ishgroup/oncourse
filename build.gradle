@@ -14,7 +14,7 @@ buildscript {
 		cayenneVersion = '4.1'
 		jettyVersion = '9.4.33.v20201020'
         mariadbVersion = '2.7.0'
-		derbyVersion = '10.14.2.0'
+		derbyVersion = '10.15.2.0'
 		googleGuiceVersion = '4.2.2'
 		groovyVersion = '2.5.13'
 		bouncycastleVersion = '1.59'
