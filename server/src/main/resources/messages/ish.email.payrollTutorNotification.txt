@@ -1,5 +1,5 @@
 Dear ${record.contact.fullName},
-Your remuneration has been calculated for the gross amount of ${record.fullAmount}.
+Your pay has been processed for the gross amount of ${record.fullAmount}.
 
 <% record.paylines.findAll { it.classCost }.sort { it.dateFor }.each { payLine -> %>
 ------------------------
