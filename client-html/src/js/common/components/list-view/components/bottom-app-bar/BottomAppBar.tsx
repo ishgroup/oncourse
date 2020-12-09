@@ -26,6 +26,7 @@ import { APP_BAR_HEIGHT } from "../../../../../constants/Config";
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
 import christmasBodyBackgroundStars from "../../../../../../images/christmas_header_background.gif";
+import { vImage } from "../../../../utils/common";
 
 const styles = theme => createStyles({
     root: {
@@ -41,7 +42,7 @@ const styles = theme => createStyles({
       position: "relative",
       "&:before": localStorage.getItem("theme") === "christmas" ? {
         content: "''",
-        backgroundImage: `url(${christmasBodyBackgroundStars})`,
+        backgroundImage: `url(${vImage(christmasBodyBackgroundStars)})`,
         position: "absolute",
         top: 0,
         left: 0,

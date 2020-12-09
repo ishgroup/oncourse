@@ -11,12 +11,14 @@ import { green, grey } from "@material-ui/core/colors";
 import getOS from "../utils/getOS";
 import { AppTheme } from "../../model/common/Theme";
 import christmasHeaderBackground from "../../../images/beach-header.jpg";
-import christmasBodyBackground from "../../../images/sparkles.gif";
-import christmasBodyBackgroundStars from "../../../images/icon-stars-black.png";
+// import christmasBodyBackground from "../../../images/christmas_body_background.png";
+import christmasBodyBackground from "../../../images/sparkel.png";
+import christmasBodyBackgroundStars from "../../../images/christmas_header_background.gif";
 import InterRomanVar from "../../../fonts/inter/Inter-Roman.var.woff2";
 import InterItalicVar from "../../../fonts/inter/Inter-Italic.var.woff2";
 import { animateStyles } from "./animateStyles";
 import { bootstrap } from "./bootstrap";
+import { vImage } from "../utils/common";
 
 const customOSScrollbars = getOS() === "Windows"
     ? {
@@ -442,14 +444,31 @@ const globalStyles = (theme: AppTheme) =>
         borderTop: `1px solid ${theme.palette.text.primary}`
       },
       ".christmasBody": {
-        backgroundImage: `url(${christmasBodyBackground})`,
-        backgroundRepeat: "repeat"
+        // backgroundImage: `url(${vImage(christmasBodyBackground)})`,
+        // backgroundRepeat: "no-repeat",
+        // backgroundPosition: "bottom center",
+        // backgroundSize: 320
+        backgroundImage: `url(${vImage(christmasBodyBackground)})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "bottom left",
+        backgroundSize: "60%"
       },
       ".christmasBackground": {
         background: "transparent"
       },
       ".christmasHeader": {
-        backgroundImage: `url(${christmasHeaderBackground})`,
+        "&:before": {
+          content: "''",
+          backgroundImage: `url(${vImage(christmasBodyBackgroundStars)})`,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          height: "100%",
+          width: "100%"
+        }
+      },
+      ".christmasHeaderDashboard": {
+        backgroundImage: `url(${vImage(christmasHeaderBackground)})`,
         backgroundSize: "cover",
         backgroundPosition: "top"
       },

@@ -77,7 +77,7 @@ class DashboardHeader extends React.PureComponent<any, any> {
 } = this.props;
     const isChristmas = localStorage.getItem("theme") === "christmas";
     return (
-      <AppBar className={clsx(classes.appBar, isChristmas && "christmasHeader")}>
+      <AppBar className={clsx(classes.appBar, isChristmas && "christmasHeaderDashboard")}>
         <Toolbar
           classes={{
             gutters: classes.toolBarGutters
