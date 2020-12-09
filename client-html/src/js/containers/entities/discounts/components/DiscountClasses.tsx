@@ -95,8 +95,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
             sort={(a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)}
             resetSearch={submitSucceeded}
             dataRowClass={classes.dataRowClass}
-            aqlEntity="CourseClass"
-            aqlEntityTags={["Course", "CourseClass"]}
+            aqlEntities={["CourseClass"]}
           />
         </div>
         <FormControlLabel

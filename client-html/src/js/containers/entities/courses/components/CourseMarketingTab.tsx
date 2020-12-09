@@ -3,19 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, FieldArray } from "redux-form";
+import React from "react";
+import { FieldArray } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
-import { State } from "../../../../reducers/state";
-import { clearSales, getSales } from "../../sales/actions";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { getPlainCourses, setPlainCourses, setPlainCoursesSearch } from "../actions";
-import { formatRelatedSalables, formattedEntityRelationTypes, salesSort } from "../../common/utils";
-import NestedListRelationCell from "../../common/components/NestedListRelationCell";
+import RelationsCommon from "../../common/components/RelationsCommon";
 
 const CourseMarketingTab: React.FC<any> = props => {
   const {
@@ -25,81 +18,9 @@ const CourseMarketingTab: React.FC<any> = props => {
     form,
     showConfirm,
     values,
-    sales,
-    getSearchResult,
-    clearSearchResult,
-    pending,
-    submitSucceeded,
-    courses,
-    coursesPending,
-    setCoursesSearch,
-    getCourses,
-    clearCoursesSearch,
-    entityRelationTypes
+    rootEntity,
+    submitSucceeded
   } = props;
-
-  const onDeleteAll = useCallback(() => {
-    dispatch(change(form, "relatedlSalables", []));
-  }, [form]);
-
-  const onDelete = useCallback(
-    (saleToDelete: NestedListItem) => {
-      dispatch(
-        change(
-          form,
-          "relatedlSalables",
-          values.relatedlSalables.filter(
-            sale => String(sale.id) !== String(saleToDelete.id) || sale.type !== saleToDelete.entityName
-          )
-        )
-      );
-    },
-    [form, values.relatedlSalables]
-  );
-
-  const onAdd = useCallback(
-    (salesToAdd: NestedListItem[]) => {
-      const salesCombined = (sales || []).concat(courses || []);
-
-      const newSalesList = values.relatedlSalables.concat(
-        salesToAdd.map(v1 => {
-          const sale = salesCombined.find(v2 => String(v2.id) === String(v1.entityId) && v2.type === v1.entityName);
-          return {
-            ...sale, tempId: sale.id, entityFromId: sale.id, relationId: -1
-          };
-        })
-      );
-      newSalesList.sort(salesSort);
-      dispatch(change(form, "relatedlSalables", newSalesList));
-    },
-    [form, sales, courses, values.relatedlSalables]
-  );
-
-  const searchCourses = useCallback(search => {
-    setCoursesSearch(search);
-    getCourses();
-  }, []);
-
-  const listValues = useMemo(() => (values && values.relatedlSalables ? formatRelatedSalables(values.relatedlSalables) : []), [
-    values.relatedlSalables
-  ]);
-
-  const searchValues = useMemo(() => [...(sales ? formatRelatedSalables(sales) : []), ...formatRelatedSalables(courses.filter(c => c.id !== values.id))], [
-    sales,
-    courses,
-    values.id
-  ]);
-
-  const relationTypes = useMemo(() => formattedEntityRelationTypes(entityRelationTypes), [entityRelationTypes]);
-
-  const relationCell = props => (
-    <NestedListRelationCell
-      {...props}
-      relationTypes={relationTypes}
-      dispatch={dispatch}
-      form={form}
-    />
-  );
 
   return (
     <Grid container className="pl-3 pr-3">
@@ -129,54 +50,16 @@ const CourseMarketingTab: React.FC<any> = props => {
       </Grid>
 
       <Grid item xs={twoColumn ? 10 : 12}>
-        <NestedList
-          title={`${listValues.length} Related courses / products`}
-          searchPlaceholder="Find products"
-          additionalSearchPlaceholder="Find courses"
-          formId={values.id}
-          values={listValues}
-          searchValues={searchValues}
-          pending={pending || coursesPending}
-          onAdd={onAdd}
-          onDelete={onDelete}
-          onDeleteAll={onDeleteAll}
-          onSearch={getSearchResult}
-          onAdditionalSearch={searchCourses}
-          clearSearchResult={clearSearchResult}
-          clearAdditionalSearchResult={clearCoursesSearch}
-          sort={salesSort}
-          resetSearch={submitSucceeded}
-          dataRowClass="grid-temp-col-3-fr"
-          aqlEntity="Product"
-          additionalAqlEntity="Course"
-          additionalAqlEntityTags={["Course"]}
-          CustomCell={relationCell}
+        <RelationsCommon
+          values={values}
+          dispatch={dispatch}
+          form={form}
+          submitSucceeded={submitSucceeded}
+          rootEntity={rootEntity}
         />
       </Grid>
     </Grid>
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  sales: state.sales.items,
-  pending: state.sales.pending,
-  courses: state.courses.items,
-  coursesPending: state.courses.loading,
-  entityRelationTypes: state.preferences.entityRelationTypes
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getSearchResult: (search: string) => {
-      if (search) {
-        dispatch(getSales(search));
-      }
-    },
-    clearSearchResult: (pending: boolean) => dispatch(clearSales(pending)),
-    getCourses: (offset?: number) => dispatch(getPlainCourses(offset, null, true)),
-    setCoursesSearch: (search: string) => dispatch(setPlainCoursesSearch(search)),
-    clearCoursesSearch: (loading?: boolean) => {
-      dispatch(setPlainCourses([], null, null, loading));
-    }
-  });
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseMarketingTab);
+export default CourseMarketingTab;

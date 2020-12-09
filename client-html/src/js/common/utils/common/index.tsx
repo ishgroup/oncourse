@@ -42,12 +42,13 @@ export const mapSelectItems = (i): SelectItemDefault => ({ label: i, value: i })
 
 export const getCustomColumnsMap = columns => {
   const colArr: string[] = columns.split(",");
+  const booleanArr = ["true", "false"];
 
   return ({ id, values }) => ({
     id: Number(id),
     ...colArr.reduce((prev, cur, i) => ({
         ...prev,
-        [cur]: values[i]
+        [cur]: booleanArr.includes(values[i]) ? JSON.parse(values[i]) : values[i]
       }), {})
   });
 };

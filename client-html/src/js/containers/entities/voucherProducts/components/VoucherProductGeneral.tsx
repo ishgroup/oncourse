@@ -27,17 +27,12 @@ import {
  clearMinMaxFee, clearSearchCourses, getMinMaxFee, searchCourses
 } from "../actions";
 import EditInPlaceMoneyField from "../../../../common/components/form/form-fields/EditInPlaceMoneyField";
-import RelatedCoursesCommon from "../../common/components/RelatedCoursesCommon";
+import RelationsCommon from "../../common/components/RelationsCommon";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-interface VoucherProductGeneralProps {
-  twoColumn?: boolean;
-  manualLink?: string;
+interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
   currency?: Currency;
-  values?: VoucherProduct;
-  dispatch?: any;
-  form?: string;
-  isNew?: boolean;
   minFee?: number;
   maxFee?: number;
   searchCourses?: (search: string) => void;
@@ -168,7 +163,8 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     submitSucceeded,
     getMinMaxFee,
     dispatch,
-    form
+    form,
+    rootEntity
   } = props;
   const [redemptionIndex, setRedemptionIndex] = useState(null);
   const initialRedemptionIndex = getInitialRedemptionIndex(isNew, values);
@@ -279,8 +275,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
               resetSearch={submitSucceeded}
               searchType="withToggle"
               disabled={values && values.soldVouchersCount > 0}
-              aqlEntity="Course"
-              aqlEntityTags={["Course"]}
+              aqlEntities={["Course"]}
             />
           </div>
           <Typography color="inherit" component="div">
@@ -310,11 +305,12 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         selectLabelMark="value"
       />
       <FormField type="multilineText" name="description" label="Web description" />
-      <RelatedCoursesCommon
+      <RelationsCommon
         values={values}
         dispatch={dispatch}
         form={form}
         submitSucceeded={submitSucceeded}
+        rootEntity={rootEntity}
       />
     </div>
   );

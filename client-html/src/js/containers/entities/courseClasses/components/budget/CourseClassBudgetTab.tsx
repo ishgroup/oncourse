@@ -11,14 +11,13 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 import {
-  arrayInsert, arrayPush, arraySplice, change, initialize
+  arrayInsert, arraySplice, change, initialize
 } from "redux-form";
 import {
  ClassCost, CourseClassTutor, Discount, Tax
 } from "@api/model";
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
-import { map } from "rxjs/operators";
 import uniqid from "uniqid";
 import NestedList from "../../../../../common/components/form/nestedList/NestedList";
 import { stubFunction } from "../../../../../common/utils/common";
@@ -51,7 +50,7 @@ import ClassCostService from "./services/ClassCostService";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { getTutorPayInitial } from "../tutors/utils";
 import { getClassCostTypes } from "../../utils";
-import { BooleanArgFunction, NoArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { getClassFeeTotal, getDiscountAmountExTax } from "./utils";
 
 const styles = (theme: AppTheme) =>
@@ -689,7 +688,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                         onSearch={getSearchResult}
                         clearSearchResult={clearSearchResult}
                         sort={discountSort}
-                        aqlEntity="Discount"
+                        aqlEntities={["Discount"]}
                         secondaryHeading
                         disableAddAll
                       />

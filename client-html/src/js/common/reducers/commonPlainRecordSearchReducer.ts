@@ -36,7 +36,7 @@ const initial = {
 
 export const commonPlainRecordSearchReducer = (
   state: CommonPlainRecordSearchState = initial,
-  action: IAction<any>
+  action: IAction
 ): any => {
   switch (action.type) {
     case SET_COMMON_PLAIN_RECORD_SEARCH: {

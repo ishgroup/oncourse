@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { CorporatePass, Discount, DiscountType } from "@api/model";
+import { CorporatePass, Discount } from "@api/model";
 import { change } from "redux-form";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { transform } from "../../../../common/styles/mixins/common";
 import { State } from "../../../../reducers/state";
 import { clearDiscounts, getDiscounts } from "../../discounts/actions";
 import { discountSort, transformDiscountForNestedList } from "../../discounts/utils";
@@ -68,7 +67,7 @@ class CorporatePassDiscounts extends Component<Props, any> {
             clearSearchResult={clearSearchResult}
             sort={discountSort}
             resetSearch={submitSucceeded}
-            aqlEntity="Discount"
+            aqlEntities={["Discount"]}
             usePaper
           />
         </div>
@@ -86,6 +85,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getSearchResult: (search: string) => dispatch(getDiscounts(search)),
   clearSearchResult: (pending: boolean) => dispatch(clearDiscounts(pending))
 });
+
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps

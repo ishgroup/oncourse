@@ -10,7 +10,7 @@ import {
   GET_PLAIN_QUALIFICATION_ITEMS,
   GET_PLAIN_QUALIFICATION_ITEMS_FULFILLED,
   SET_PLAIN_QUALIFICATION_ITEMS_SEARCH
-} from "../actions/index";
+} from "../actions";
 import { PlainEntityState } from "../../../../model/common/Plain";
 
 export interface QualificationState extends PlainEntityState<Qualification> {}
@@ -32,10 +32,11 @@ export const qualificationReducer = (state: QualificationState = initial, action
     }
 
     case CLEAR_PLAIN_QUALIFICATION_ITEMS: {
+      const { loading } = action.payload;
       return {
         ...state,
         items: [],
-        loading: false
+        loading
       };
     }
 
