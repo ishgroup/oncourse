@@ -23,7 +23,7 @@ import ish.oncourse.server.messaging.AttachmentParam
  * ```
  * message {
  *     template "ish.email.simple"
- *     records enrolments
+ *     record enrolments or records enrolments
  *     from "support@ish.com.au"
  *     anyBinding_1 anyValue_1
  *     anyBinding_2 anyValue_2
@@ -36,7 +36,7 @@ import ish.oncourse.server.messaging.AttachmentParam
 class MessageSpec {
     String templateName
     String fromAddress
-    List records = []
+    List entityRecords = []
 
     Map<String, Object> bindings = [:]
     List<AttachmentParam> attachments = []
@@ -105,16 +105,6 @@ class MessageSpec {
     }
 
 
-    /**
-     * A list of records to message. Obviously the message template needs to be
-     * built to accept a list of this type of object and produce a message from them.
-     *
-     * @param records
-     */
-    @API
-    void records(List records) {
-        this.records = records
-    }
 
 
     /**
@@ -124,7 +114,30 @@ class MessageSpec {
      */
     @API
     void record(Object record) {
-        this.records.add(record)
+        this.entityRecords.add(record)
+    }
+
+
+    /**
+     * A list of records to message. Obviously the message template needs to be
+     * built to accept a list of this type of object and produce a message from them.
+     *
+     * @param records
+     */
+    @API
+    void record(List records) {
+        this.entityRecords = records
+    }
+
+    /**
+     * A list of records to message. Obviously the message template needs to be
+     * built to accept a list of this type of object and produce a message from them.
+     *
+     * @param records
+     */
+    @API
+    void records(List records) {
+        this.entityRecords = records
     }
 
 
