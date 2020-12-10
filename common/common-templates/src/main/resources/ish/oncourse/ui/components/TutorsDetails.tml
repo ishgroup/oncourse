@@ -1,0 +1,42 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <div class="tutors-wrapper">
+        <div class="tutors-list">
+            <t:loop source="tutors" value="tutors">
+                <div class="tutor-item" itemscope itemtype="https://schema.org/Person">
+                <div class="tutor-content">
+                    <div class="tutor-image">
+                        <a href="/tutor/${tutor.angelId}" class="tutor-profile-link nyromodal" itemprop="url">
+
+                            <t:if t:test="${profilePictureUrl}">
+                                <img src="${profilePictureUrl}"  itemprop="image" alt="Photo of ${tutor.contact.fullName}"/>
+                                <p:else>
+                                    <img src="http://www.gravatar.com/avatar?d=mp"  itemprop="image" alt="Photo of Robin Nichols"/>
+                                </p:else>
+                            </t:if>
+                            
+                        </a>
+                    </div>
+                    <div class="tutor-details">
+                        <h3 class="tutor-title" itemprop="name">
+                            <a href="/tutor/${tutor.angelId}" class="tutor-profile-link" itemprop="url">
+                                ${tutor.contact.fullName}
+                            </a>
+                        </h3>
+                        <t:if t:test="tutor.contact.honorific">
+                            <div class="tutor-designation" itemprop="jobTitle"><t:outputraw value="tutor.contact.honorific"/></div>
+                        </t:if>
+                        <div class="tutor-bio" itemprop="description">
+                            <t:outputraw value="resume"/>
+                        </div>
+                        <div class="tutor-link">
+                            <a href="/tutor/${tutor.angelId}" class="tutor-profile-link" itemprop="url">
+                                View profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </t:loop>
+        </div>
+    </div>
+</t:container>
