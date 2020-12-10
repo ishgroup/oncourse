@@ -342,7 +342,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                     result = groovyScriptService.runAndWait(script, scriptParameters)
                 } else {
                     for (CayenneDataObject record : records) {
-                        result = groovyScriptService.runAndWait(script, new ScriptParameters(scriptParameters).add("entity", record).add("record", record))
+                        result = groovyScriptService.runAndWait(script, new ScriptParameters(scriptParameters).fillDefaultParameters(record))
                         if (result.type == FAILURE) {
                             return result
                         }
