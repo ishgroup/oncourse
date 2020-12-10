@@ -13,7 +13,6 @@ import { connect } from "react-redux";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
-import Chip from '@material-ui/core/Chip';
 import Button from "@material-ui/core/Button";
 import {
   Category, CheckoutSaleRelation, ColumnWidth, createStringEnum
@@ -104,7 +103,8 @@ import { ContactInitial } from "../../entities/contacts/Contacts";
 import CheckoutPaymentPage from "./payment/CheckoutPaymentPage";
 import CheckoutItemView from "./items/components/CheckoutItemView";
 import {
-  checkoutClearCourseClassList, checkoutGetClassPaymentPlans,
+  checkoutClearCourseClassList,
+  checkoutGetClassPaymentPlans,
   checkoutGetCourseClassList,
   checkoutGetMembership,
   checkoutGetProduct,
@@ -117,11 +117,10 @@ import CheckoutPromoCodesHeaderField from "./summary/promocode/CheckoutPromoCode
 import CheckoutContactSearch from "./contact/CheckoutContactSearch";
 import CheckoutSummaryComp from "./summary/CheckoutSummary";
 import CheckoutPaymentHeaderField from "./payment/components/CheckoutPaymentHeaderField";
-import { checkoutClearPaymentStatus, checkoutGetActivePaymentMethods, checkoutSetPaymentMethod } from "../actions/checkoutPayment";
-import { checkoutUpdateSummaryClassesDiscounts, checkoutUpdateSummaryPrices } from "../actions/checkoutSummary";
+import { checkoutClearPaymentStatus, checkoutGetActivePaymentMethods } from "../actions/checkoutPayment";
+import { checkoutUpdateSummaryClassesDiscounts } from "../actions/checkoutSummary";
 import CheckoutSummaryHeaderField from "./summary/CheckoutSummaryHeaderField";
 import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from "./summary/CheckoutSummaryList";
-import SaleRelations from "./items/components/SaleRelations";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 export const CONTACT_ENTITY_NAME: string = "Contact";
@@ -865,6 +864,16 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           ));
         }
 
+        const addedRelations = selectedItems.filter(s => s.fromItemRelation
+          && (s.fromItemRelation.id === row.id || s.fromItemRelation.id === row.courseId)
+          && s.fromItemRelation.type.toLowerCase() === row.type);
+
+        if (addedRelations.length) {
+          addedRelations.forEach(rel => {
+            removeItem(rel.id, rel.type);
+          });
+        }
+
         setTimeout(() => {
           checkoutUpdateSummaryClassesDiscounts();
         }, 500);
@@ -880,7 +889,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         onRemove();
       }
     },
-    [selectedCourse, salesRelations, openedItem]
+    [selectedCourse, salesRelations, selectedItems, openedItem]
   );
 
   const debouncedSearchUpdate = React.useCallback<any>(debounce((name, val) => setItemsSearch(val.trim().toLowerCase()), 800), []);
@@ -1343,7 +1352,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
   getRelatedContacts: (search: string) => dispatch(getRelatedContacts(search, CHECKOUT_CONTACT_COLUMNS, true, "lastName,firstName")),
   checkoutUpdateSummaryClassesDiscounts: () => dispatch(checkoutUpdateSummaryClassesDiscounts()),
-  checkoutUpdateSummaryPrices: () => dispatch(checkoutUpdateSummaryPrices()),
   updateSelectedClass: item => dispatch(updateClassItem(item)),
   getClassPaymentPlans: item => dispatch(checkoutGetClassPaymentPlans(item))
 });

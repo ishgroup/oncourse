@@ -29,6 +29,7 @@ export const CHECKOUT_CHANGE_SUMMARY_ITEM_QUANTITY = "checkout/change/summary/it
 export const CHECKOUT_CHANGE_SUMMARY_ITEM_FIELD = "checkout/change/summary/item/field";
 
 export const CHECKOUT_UPDATE_SUMMARY_PRICES = "checkout/update/summary/price";
+export const CHECKOUT_TRIGGER_UPDATE_SUMMARY_PRICES = "checkout/trigger/update/summary/price";
 export const CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED = FULFILLED(CHECKOUT_UPDATE_SUMMARY_PRICES);
 
 export const CHECKOUT_GET_VOUCHER_REDEEMER = "checkout/get/voucher/redeemer";
@@ -128,7 +129,7 @@ export const checkoutUpdateSummaryField = (field: keyof CheckoutSummary, value: 
 });
 
 export const checkoutUpdateSummaryPrices = () => ({
-  type: CHECKOUT_UPDATE_SUMMARY_PRICES
+  type: CHECKOUT_TRIGGER_UPDATE_SUMMARY_PRICES
 });
 
 export const checkoutSetDisableDiscounts = (disable: boolean) => ({
