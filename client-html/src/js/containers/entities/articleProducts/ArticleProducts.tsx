@@ -85,7 +85,7 @@ const findRelatedGroup: any[] = [
     list: "audit",
     expression: "entityIdentifier == ArticleProduct and entityId"
   },
-  { title: "Courses", list: "course", expression: "productRelations.toEntityAngelId" },
+  { title: "Courses", list: "course", expression: "allRelatedProducts.id" },
   {
     title: "Contact purchased",
     list: "contact",

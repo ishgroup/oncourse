@@ -133,17 +133,17 @@ const findRelatedGroup: any[] = [
       {
         title: "Related articles",
         list: "product",
-        expression: "courseRelations.fromEntityIdentifier is COURSE and courseRelations.fromEntityAngelId"
+        expression: "allRelatedCourses.id"
       },
       {
         title: "Related memberships",
         list: "membership",
-        expression: "courseRelations.fromEntityIdentifier is COURSE and courseRelations.fromEntityAngelId"
+        expression: "allRelatedCourses.id"
       },
       {
         title: "Related vouchers",
         list: "voucher",
-        expression: "courseRelations.fromEntityIdentifier is COURSE and courseRelations.fromEntityAngelId"
+        expression: "allRelatedCourses.id"
       }
     ]
   },
