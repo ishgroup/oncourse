@@ -46,6 +46,15 @@ const SaleRelations: React.FC<Props> = ({ relations, cartItems, onSelect }) => {
     return result;
   }, [relations, cartItems]);
 
+  const onAdd = relation => {
+    const type = relation.type.toLowerCase();
+    const selected = { ...relation.cartItem };
+    if (type === "course") {
+      selected.id = selected.courseId;
+    }
+    onSelect(selected, type);
+  };
+
   return (
     <div>
       {Object.keys(groupedRelations).map(k => (
@@ -57,7 +66,7 @@ const SaleRelations: React.FC<Props> = ({ relations, cartItems, onSelect }) => {
                 <NestedListRow
                   key={r.id}
                   type="search"
-                  onClick={() => onSelect(r.cartItem, r.type.toLowerCase())}
+                  onClick={() => onAdd(r)}
                   item={{
                     link: r.link,
                     primaryText: r.cartItem.name,
@@ -72,7 +81,7 @@ const SaleRelations: React.FC<Props> = ({ relations, cartItems, onSelect }) => {
         </div>
       ))}
     </div>
-);
+  );
 };
 
 export default SaleRelations;

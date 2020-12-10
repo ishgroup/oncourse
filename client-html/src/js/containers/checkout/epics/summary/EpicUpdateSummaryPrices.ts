@@ -20,7 +20,6 @@ const request: EpicUtils.Request = {
   type: CHECKOUT_UPDATE_SUMMARY_PRICES,
   getData: (p, s) => {
     const model = getCheckoutModel(s.checkout, null, {}, true);
-
     return CheckoutService.checkoutSubmitPayment(
       model,
       true,
@@ -39,7 +38,6 @@ const request: EpicUtils.Request = {
   processError: res => {
     if (res && res.data && Array.isArray(res.data) ) {
       const summaryNodesErrors = res.data.filter(d => d.nodeId && d.itemId);
-
       return [
         ...summaryNodesErrors.length ? [
           checkoutUncheckSummaryItems(summaryNodesErrors.map(({ nodeId, itemId }) => ({
