@@ -1,25 +1,21 @@
-import { promiseReject, promiseResolve } from "../../MockAdapter";
 import { ValidationError } from "@api/model";
+import { promiseReject, promiseResolve } from "../../MockAdapter";
 
 export function DataCollectionFormsApiMock() {
   this.returnError = false;
 
   /**
    * Data Collection Forms items
-   **/
-  this.api.onGet("/v1/datacollection/form").reply(config => {
-    return promiseResolve(config, this.db.dataCollectionForms);
-  });
+   * */
+  this.api.onGet("/v1/datacollection/form").reply(config => promiseResolve(config, this.db.dataCollectionForms));
   /**
    * Data Collection Forms field types
-   **/
-  this.api.onGet("v1/datacollection/field/type").reply(config => {
-    return promiseResolve(config, this.db.getFieldTypes(config.params.formType));
-  });
+   * */
+  this.api.onGet("v1/datacollection/field/type").reply(config => promiseResolve(config, this.db.getFieldTypes(config.params.formType)));
   /**
    * Update Data Collection Form with success or error
-   **/
-  this.api.onPut(new RegExp(`v1/datacollection/form/\.+`)).reply(config => {
+   * */
+  this.api.onPut(new RegExp(`v1/datacollection/form/.+`)).reply(config => {
     this.returnError = !this.returnError;
 
     if (this.returnError) {
@@ -39,7 +35,7 @@ export function DataCollectionFormsApiMock() {
   });
   /**
    * Create Data Collection Form
-   **/
+   * */
   this.api.onPost("v1/datacollection/form").reply(config => {
     const data = JSON.parse(config.data);
     this.db.createCollectionForm(data);
@@ -47,8 +43,8 @@ export function DataCollectionFormsApiMock() {
   });
   /**
    * Delete Data Collection Form
-   **/
-  this.api.onDelete(new RegExp(`v1/datacollection/form/\.+`)).reply(config => {
+   * */
+  this.api.onDelete(new RegExp(`v1/datacollection/form/.+`)).reply(config => {
     const id = config.url.split("/")[3];
     this.db.deleteCollectionForm(id);
     return promiseResolve(config, JSON.parse(JSON.stringify(this.db.dataCollectionForms)));

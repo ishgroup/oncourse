@@ -9,14 +9,14 @@ import {
 export const SCRIPT_EDIT_VIEW_FORM_NAME = "ScriptsForm";
 
 export const closureRegexp = new RegExp(
-  /\n?\/\/\s*[a-zA-Z]+\s*closure\s*start([^\/])+\/\/\s*[a-zA-Z]+\s*closure\s*end[\n]?/,
+  /\n?\/\/\s*[a-zA-Z]+\s*closure\s*start([^\\/])+\/\/\s*[a-zA-Z]+\s*closure\s*end[\n]?/,
   "g"
 );
 
 export const closureNameRegexp = /\/\/\s*([a-zA-Z]+)\s*closure/;
 
 export const emailClosureRegexp = new RegExp(
-  /email\s*{\s*([!+=%*?a-zA-Z0-9.,:"'()\\\s@\-\/_]|['"][!+=%*?a-zA-Z0-9.,:"'()\\\s@\-\/_${}]+['"])+}/,
+  /email\s*{\s*([!+=%*?a-zA-Z0-9.,:"'()\\\s@\-/_]|['"][!+=%*?a-zA-Z0-9.,:"'()\\\s@\-/_${}]+['"])+}/,
   "g"
 );
 
@@ -116,7 +116,7 @@ export const getEmailComponent = (body: string): ScriptEmailComponent => {
       if (p === "bindings") {
         const dataItems = match[1].split(",");
 
-        dataItems.forEach((d, i) => {
+        dataItems.forEach(d => {
           const values = d.split(":");
 
           bindingsValues.push({ variable: values[0], data: values[1] });
