@@ -25,8 +25,6 @@ import ViewSwitcher from "./components/ViewSwitcher";
 import { APP_BAR_HEIGHT } from "../../../../../constants/Config";
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
-import christmasBodyBackgroundStars from "../../../../../../images/christmas_header_background.gif";
-import { vImage } from "../../../../utils/common";
 
 const styles = theme => createStyles({
     root: {
@@ -39,16 +37,7 @@ const styles = theme => createStyles({
       justifyContent: "space-between",
       alignItems: "center",
       padding: theme.spacing(2),
-      position: "relative",
-      "&:before": localStorage.getItem("theme") === "christmas" ? {
-        content: "''",
-        backgroundImage: `url(${vImage(christmasBodyBackgroundStars)})`,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        height: "100%",
-        width: "100%"
-      } : {}
+      position: "relative"
     },
     mainLabel: {
       color: theme.palette.primary.contrastText
@@ -234,7 +223,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
           filteredCount={filteredCount}
         />
 
-        <div className={classes.root}>
+        <div className={clsx(classes.root, localStorage.getItem("theme") === "christmas" && "christmasHeader")}>
           <SearchInput
             innerRef={searchComponentNode}
             onQuerySearch={onQuerySearch}
