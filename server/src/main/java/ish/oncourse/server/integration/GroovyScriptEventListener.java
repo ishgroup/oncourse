@@ -48,11 +48,7 @@ public class GroovyScriptEventListener implements OnCourseEventListener {
 
 		for (var script : scriptsToExecute) {
 			var value = transformEventValue(event.getValue());
-			groovyScriptService.runScript(script,
-					ScriptParameters.from(VALUE_BINDING_NAME, value)
-									.add(GroovyScriptService.RECORD_PARAM_NAME, value)
-									.add(GroovyScriptService.ENTITY_PARAM_NAME, value)
-			);
+			groovyScriptService.runScript(script, ScriptParameters.from(VALUE_BINDING_NAME, value).fillDefaultParameters(value));
 		}
 	}
 
