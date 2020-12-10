@@ -178,7 +178,6 @@ const styles = (theme: AppTheme) => createStyles({
 });
 
 interface Props extends Partial<EditViewProps> {
-  fetch?: Fetch;
   openSidebarDrawer?: () => void;
   updateColumnsWidth?: (columnsWidth: ColumnWidth) => void;
   classes?: any;
@@ -283,7 +282,6 @@ const parseContactSearch = (search: string) => {
 
 const CheckoutSelectionForm = React.memo<Props>(props => {
   const {
-    fetch,
     openSidebarDrawer,
     openNestedEditView,
     form,
@@ -1120,7 +1118,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.shoppingCart) })}>
           <div className="appFrame flex-fill root">
             <LoadingIndicator
-              customLoading={activeField !== CheckoutPage.contacts && fetch && fetch.pending ? fetch.pending : customLoading}
+              customLoading={customLoading}
             />
             { !openItemEditView
               && !openedItem
@@ -1273,7 +1271,6 @@ export const RestartButton = connect<any, any, any>(null, dispatch => ({ dispatc
 );
 
 const mapStateToProps = (state: State) => ({
-  fetch: state.fetch,
   value: getFormValues(FORM)(state),
   isContactEditViewDirty: isDirty(CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME)(state),
   contactEditRecord: state.checkout.contactEditRecord,

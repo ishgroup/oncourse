@@ -27,8 +27,11 @@ const request: EpicUtils.Request<any, State, boolean> = {
     state.checkout.summary.list.forEach((l, listIndex) => {
       l.items.forEach((i, itemIndex) => {
         if (i.checked) {
-          const originalPrice = state.checkout.items.find(s => s.id === i.id && s.type === i.type).price as any;
-          totalAmountExDiscount = decimalPlus(totalAmountExDiscount, parseFloat(originalPrice));
+          const originalItem = state.checkout.items.find(s => s.id === i.id && s.type === i.type) as any;
+          if (!originalItem) {
+            return;
+          }
+          totalAmountExDiscount = decimalPlus(totalAmountExDiscount, parseFloat(originalItem.price));
 
           if (i.type === "course") {
             totalEnrolmentsCount++;
@@ -55,7 +58,7 @@ const request: EpicUtils.Request<any, State, boolean> = {
           const discounts = res.map(i => i.discount);
 
           const selectedDiscount = e.classItem && e.classItem.relationDiscount
-            ? discounts.find(d => d.id === e.classItem.relationDiscount.id)
+            ? discounts.find(d => d.id === e.classItem.relationDiscount.id) || discounts[0]
             : discounts[0];
 
           if (!state.checkout.disableDiscounts) {

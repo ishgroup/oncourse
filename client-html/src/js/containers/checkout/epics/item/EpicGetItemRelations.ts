@@ -32,7 +32,11 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_REMOVE_CONTACT
 ).pipe(
-  switchMap(async () => {
+  switchMap(async sourceAction => {
+    if (sourceAction.type === CHECKOUT_ADD_ITEM && sourceAction.payload.item.cartAction) {
+      return null;
+    }
+
     const cartItems = [];
     const suggestItems = [];
 
@@ -171,11 +175,11 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
 
     return { cartItems, suggestItems };
   }),
-  flatMap(data => [{
+  flatMap(data => (data ? [{
       type: CHECKOUT_UPDATE_RELATED_ITEMS,
       payload: data
     },
     checkoutUpdateSummaryClassesDiscounts()
-  ]),
+  ] : [])),
   catchError(data => processError(data, "checkout/get/saleRelations", null, null))
 );
