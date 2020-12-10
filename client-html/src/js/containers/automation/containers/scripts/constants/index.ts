@@ -28,14 +28,14 @@ export const getScriptComponent = (content): ScriptComponent => ({
 
 export const getQueryTemplate = (entity: string, query: string, queryClosureReturnValue: string) =>
   `\n// Query closure start 
-  def ${queryClosureReturnValue} = query {
+  ${queryClosureReturnValue} = query {
     entity "${entity}"
     query "${query.replace(/\\"/g, '"').replace(/"/g, '\\"')}"
   }      
   // Query closure end\n`;
 
 export const getQueryComponent = (body: string): ScriptQueryComponent => {
-  const queryClosureReturnValueMatch = body.match(/def\s+(.+)\s+=\s+query/);
+  const queryClosureReturnValueMatch = body.match(/\s+(.+)\s+=\s+query/);
   const entityMatch = body.match(/entity\s+"(.+)"\s+query/);
   const queryMatch = body.match(/query\s+"(.+)"\s+(context)?/);
 
@@ -43,7 +43,7 @@ export const getQueryComponent = (body: string): ScriptQueryComponent => {
     type: "Query",
     id: uniqid(),
     // queryClosureReturnValue: queryClosureReturnValueMatch && queryClosureReturnValueMatch[1],
-    queryClosureReturnValue: "result",
+    queryClosureReturnValue: "records",
     entity: entityMatch && entityMatch[1],
     query: queryMatch && queryMatch[1].replace(/\\"/g, '"')
   };
@@ -60,7 +60,7 @@ export const getMessageTemplate = (component) => {
     record records
   }      
   // Message closure end\n`;
-}
+};
 
 export const getMessageComponent = (body: string): ScriptMessageComponent => {
   const result: ScriptMessageComponent = {
