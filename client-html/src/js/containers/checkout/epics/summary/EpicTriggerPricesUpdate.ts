@@ -27,7 +27,7 @@ export const EpicTriggerPricesUpdate: Epic<any, any, State> = (action$: ActionsO
       CHECKOUT_UPDATE_RELATED_ITEMS,
       CHECKOUT_TRIGGER_UPDATE_SUMMARY_PRICES
     ),
-    debounce(() => interval(500)),
+    debounce(() => interval(1000)),
     mergeMap(() => {
       if (state$.value.checkout.contacts.length && state$.value.checkout.items.length) {
         return [{
