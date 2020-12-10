@@ -17,7 +17,6 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.query.ObjectSelect;
 
-import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -63,7 +62,10 @@ public class EntityFactory {
             ProductItemPurchasedBy.class,
             ProductItemRedeemableBy.class,
             CourseClassesInvoice.class,
+            AllRelatedCoursesProducts.class,
             AllRelatedCoursesCourses.class,
+            AllRelatedProductsCourses.class,
+            AllRelatedProductsProducts.class,
             AllRelatedContactsContacts.class,
             FromRelatedContactsContacts.class,
             ToRelatedContactsContacts.class,
