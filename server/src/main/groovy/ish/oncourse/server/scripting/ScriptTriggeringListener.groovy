@@ -116,7 +116,7 @@ class ScriptTriggeringListener implements DataChannelSyncFilter {
 	@PreRemove
 	void preRemove(Object entity) {
 		scriptService.getScriptsForEntity(entity.getClass(), LifecycleEvent.PRE_REMOVE).each{script ->
-			scriptService.runAndWait(script, ScriptParameters.from(GroovyScriptService.ENTITY_PARAM_NAME, entity), { ->
+			scriptService.runAndWait(script, new ScriptParameters().fillDefaultParameters(entity), { ->
 				ObjectContext context = (ISHDataContext) cayenneService.getNewContext()
 				context.setReadOnly(true)
 				return context
@@ -132,8 +132,7 @@ class ScriptTriggeringListener implements DataChannelSyncFilter {
 
 		scripts.each { script->
 			if (script != null) {
-				scriptService.runScript(script, ScriptParameters.from(GroovyScriptService.ENTITY_PARAM_NAME, entity)
-																.add(GroovyScriptService.RECORD_PARAM_NAME, entity))
+				scriptService.runScript(script, new ScriptParameters().fillDefaultParameters(entity))
 			}
 		}
 	}
