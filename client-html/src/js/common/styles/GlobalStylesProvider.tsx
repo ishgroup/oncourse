@@ -11,7 +11,6 @@ import { green, grey } from "@material-ui/core/colors";
 import getOS from "../utils/getOS";
 import { AppTheme } from "../../model/common/Theme";
 import christmasHeaderBackground from "../../../images/beach-header.jpg";
-// import christmasBodyBackground from "../../../images/christmas_body_background.png";
 import christmasBodyBackground from "../../../images/sparkel.png";
 import christmasBodyBackgroundStars from "../../../images/christmas_header_background.gif";
 import InterRomanVar from "../../../fonts/inter/Inter-Roman.var.woff2";
@@ -444,10 +443,6 @@ const globalStyles = (theme: AppTheme) =>
         borderTop: `1px solid ${theme.palette.text.primary}`
       },
       ".christmasBody": {
-        // backgroundImage: `url(${vImage(christmasBodyBackground)})`,
-        // backgroundRepeat: "no-repeat",
-        // backgroundPosition: "bottom center",
-        // backgroundSize: 320
         backgroundImage: `url(${vImage(christmasBodyBackground)})`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "bottom left",
