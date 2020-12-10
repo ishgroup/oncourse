@@ -1,0 +1,17 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <div class="grouped-classes">
+        <t:loop source="sitesMap.entrySet()" value="siteEntry">
+            <h3>${siteEntry.key}</h3>
+            <t:loop source="siteEntry.value" value="courseClass">
+                <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
+            </t:loop>
+        </t:loop>
+
+        <t:if test="unassignedClasses.empty" negate="true">
+            <h3>Venue TBA</h3>
+            <t:loop source="unassignedClasses" value="courseClass">
+                <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
+            </t:loop>
+        </t:if>
+    </div>
+</t:container>
