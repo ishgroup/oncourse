@@ -42,6 +42,8 @@ in ish.oncourse.aql.model.EntityFactory in server module.
     </entity>
     <entity name="Product">
         <attribute name="type" ref="ish.common.types.ProductType"/>
+        <attribute name="allRelatedCourses" ref="Course"/>
+        <attribute name="allRelatedProducts" ref="Product"/>
     </entity>
     <entity name="ProductItem">
         <attribute name="redeemedInvoice" ref="Invoice"/>
@@ -58,6 +60,7 @@ in ish.oncourse.aql.model.EntityFactory in server module.
     </entity>
     <entity name="Course">
         <attribute name="allRelatedCourses" ref="Course"/>
+        <attribute name="allRelatedProducts" ref="Product"/>
     </entity>
     <entity name="Contact">
         <attribute name="accountTransactions" ref="AccountTransaction"/>
