@@ -98,12 +98,12 @@ export default (theme: AppTheme) => createStyles({
   menuCorner: {
     width: theme.spacing(2),
     height: theme.spacing(2),
-    borderLeft: "1px solid rgba(255,255,255,0.6)",
-    borderBottom: "1px solid rgba(255,255,255,0.6)",
+    borderLeft: `1px solid ${theme.share.color.itemText}`,
+    borderBottom: `1px solid ${theme.share.color.itemText}`,
     transform: "rotate(45deg)",
     position: "absolute",
     right: "-15px",
-    background: "#302A22",
+    background: theme.share.exportContainer.backgroundColor,
     zIndex: 1202
   },
   hide1024andDown: {
