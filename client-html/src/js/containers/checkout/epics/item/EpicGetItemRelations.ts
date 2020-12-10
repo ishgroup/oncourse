@@ -24,6 +24,7 @@ import {
   CHECKOUT_PRODUCT_COLUMNS,
   CHECKOUT_VOUCHER_COLUMNS
 } from "../../constants";
+import { checkoutUpdateSummaryClassesDiscounts } from "../../actions/checkoutSummary";
 
 export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObservable<any>, state$): any => action$
 .ofType(
@@ -77,7 +78,6 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
             return EntityService.getPlainRecords("Course", "code,name,isTraineeship", `id is ${r.toItem.id}`)
               .then(res => {
                 plainCourse = checkoutCourseMap(res.rows.map(getCustomColumnsMap("code,name,isTraineeship"))[0], true);
-
                 return EntityService.getPlainRecords(
                   "CourseClass",
                   CHECKOUT_COURSE_CLASS_COLUMNS,
@@ -104,6 +104,8 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
                   };
                   r.toItem.link = `/course/${plainCourse.id}`;
                   r.toItem.cartItem.cartAction = r.cartAction;
+                  r.toItem.cartItem.fromItemRelation = r.fromItem;
+                  r.toItem.cartItem.relationDiscount = r.discount;
                   r.toItem.cartItem.checked = true;
                 } else {
                   r.cartAction = null;
@@ -116,6 +118,8 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
                 r.toItem.cartItem = checkoutProductMap(res.rows.map(getCustomColumnsMap(CHECKOUT_MEMBERSHIP_COLUMNS))[0]);
                 processCheckoutSale(r.toItem.cartItem, "membership");
                 r.toItem.cartItem.cartAction = r.cartAction;
+                r.toItem.cartItem.fromItemRelation = r.fromItem;
+                r.toItem.cartItem.relationDiscount = r.discount;
                 r.toItem.cartItem.checked = true;
                 r.toItem.link = `/membership/${r.toItem.cartItem.id}`;
               });
@@ -126,6 +130,8 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
                 r.toItem.cartItem = checkoutVoucherMap(res.rows.map(getCustomColumnsMap(CHECKOUT_VOUCHER_COLUMNS))[0]);
                 processCheckoutSale(r.toItem.cartItem, "voucher");
                 r.toItem.cartItem.cartAction = r.cartAction;
+                r.toItem.cartItem.fromItemRelation = r.fromItem;
+                r.toItem.cartItem.relationDiscount = r.discount;
                 r.toItem.cartItem.checked = true;
                 r.toItem.link = `/voucher/${r.toItem.cartItem.id}`;
               });
@@ -136,6 +142,8 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
                 r.toItem.cartItem = checkoutProductMap(res.rows.map(getCustomColumnsMap(CHECKOUT_PRODUCT_COLUMNS))[0]);
                 processCheckoutSale(r.toItem.cartItem, "product");
                 r.toItem.cartItem.cartAction = r.cartAction;
+                r.toItem.cartItem.fromItemRelation = r.fromItem;
+                r.toItem.cartItem.relationDiscount = r.discount;
                 r.toItem.cartItem.checked = true;
                 r.toItem.link = `/product/${r.toItem.cartItem.id}`;
               });
@@ -166,7 +174,8 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
   flatMap(data => [{
       type: CHECKOUT_UPDATE_RELATED_ITEMS,
       payload: data
-    }
+    },
+    checkoutUpdateSummaryClassesDiscounts()
   ]),
   catchError(data => processError(data, "checkout/get/saleRelations", null, null))
 );

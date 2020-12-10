@@ -47,7 +47,6 @@ export const EpicCheckout = combineEpics(
   EpicCheckoutGetPaymentStatusDetails,
   EpicUpdateSummaryPrices,
   EpicGetPreviousOwing,
-  EpicUpdateSummaryPrices,
   EpicCheckoutGetVoucherToRedeem,
   EpicGetVoucherRedeemer,
   EpicCheckoutGetTrainingPlans

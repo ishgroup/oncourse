@@ -49,20 +49,25 @@ const request: EpicUtils.Request<any, State, boolean> = {
     const items = [];
 
     await enrolments.map(e => () =>
-      CheckoutService.getContactDiscounts(e.contactId, e.classItem.class.id, codes, e.membershipIds, totalEnrolmentsCount, totalAmountExDiscount)
+      CheckoutService
+        .getContactDiscounts(e.contactId, e.classItem.class.id, codes, e.membershipIds, totalEnrolmentsCount, totalAmountExDiscount)
         .then(res => {
           const discounts = res.map(i => i.discount);
 
+          const selectedDiscount = e.classItem && e.classItem.relationDiscount
+            ? discounts.find(d => d.id === e.classItem.relationDiscount.id)
+            : discounts[0];
+
           if (!state.checkout.disableDiscounts) {
             actions.push(
-              change(summmaryForm, `${e.classItem.id}_${e.listIndex}_discount`, discounts[0]),
+              change(summmaryForm, `${e.classItem.id}_${e.listIndex}_discount`, selectedDiscount),
             );
           }
 
           items.push({
             listIndex: e.listIndex,
             itemIndex: e.itemIndex,
-            item: { ...e.classItem, discounts, discount: state.checkout.disableDiscounts ? null : discounts[0] }
+            item: { ...e.classItem, discounts, discount: state.checkout.disableDiscounts ? null : selectedDiscount }
           });
         })
         .catch(res => {

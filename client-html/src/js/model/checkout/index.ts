@@ -88,6 +88,8 @@ export type CheckoutItem = CheckoutCourse & VoucherProduct & MembershipProduct &
   restrictToPayer?: boolean;
   expireNever?: string;
   cartAction?: EntityRelationCartAction;
+  relationDiscount?: Discount;
+  fromItemRelation?: Sale;
 };
 
 export interface CheckoutState {
