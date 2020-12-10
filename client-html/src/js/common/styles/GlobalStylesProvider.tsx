@@ -17,7 +17,6 @@ import InterRomanVar from "../../../fonts/inter/Inter-Roman.var.woff2";
 import InterItalicVar from "../../../fonts/inter/Inter-Italic.var.woff2";
 import { animateStyles } from "./animateStyles";
 import { bootstrap } from "./bootstrap";
-import { vImage } from "../utils/common";
 
 const customOSScrollbars = getOS() === "Windows"
     ? {
@@ -443,7 +442,7 @@ const globalStyles = (theme: AppTheme) =>
         borderTop: `1px solid ${theme.palette.text.primary}`
       },
       ".christmasBody": {
-        backgroundImage: `url(${vImage(christmasBodyBackground)})`,
+        backgroundImage: `url(${christmasBodyBackground})`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "bottom left",
         backgroundSize: "60%"
@@ -454,7 +453,7 @@ const globalStyles = (theme: AppTheme) =>
       ".christmasHeader": {
         "&:before": {
           content: "''",
-          backgroundImage: `url(${vImage(christmasBodyBackgroundStars)})`,
+          backgroundImage: `url(${christmasBodyBackgroundStars})`,
           position: "absolute",
           top: 0,
           left: 0,
@@ -463,7 +462,7 @@ const globalStyles = (theme: AppTheme) =>
         }
       },
       ".christmasHeaderDashboard": {
-        backgroundImage: `url(${vImage(christmasHeaderBackground)})`,
+        backgroundImage: `url(${christmasHeaderBackground})`,
         backgroundSize: "cover",
         backgroundPosition: "top"
       },

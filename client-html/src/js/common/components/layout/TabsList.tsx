@@ -14,23 +14,12 @@ import ListItem from "@material-ui/core/ListItem";
 import createStyles from "@material-ui/core/styles/createStyles";
 import { RouteComponentProps, withRouter } from "react-router";
 import { APP_BAR_HEIGHT } from "../../../constants/Config";
-import christmasBodyBackgroundStars from "../../../../images/christmas_header_background.gif";
-import { vImage } from "../../utils/common";
 
 const styles = theme => createStyles({
     listContainer: {
       flexDirection: "column",
       backgroundColor: theme.tabList.listContainer.backgroundColor,
-      padding: theme.spacing(4),
-      "&:before": localStorage.getItem("theme") === "christmas" ? {
-        content: "''",
-        backgroundImage: `url(${vImage(christmasBodyBackgroundStars)})`,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        height: "100%",
-        width: "100%"
-      } : {}
+      padding: theme.spacing(4)
     },
     listContainerInner: {
       marginBottom: theme.spacing(8)
@@ -210,7 +199,11 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
       </Grid>
       {itemProps.twoColumn && (
         <Grid item xs={layoutArray[2].xs} className={classes.scrollContainer}>
-          <div className={clsx("relative", classes.listContainer, customAppBar ? "appBarContainer" : "h-100")}>
+          <div className={clsx("relative",
+            classes.listContainer,
+            customAppBar ? "appBarContainer" : "h-100",
+            localStorage.getItem("theme") === "christmas" && "christmasHeader")}
+          >
             <div className={classes.listContainerInner}>
               {items.map((i, index) => (
                 <ListItem
