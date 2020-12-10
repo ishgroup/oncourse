@@ -80,6 +80,7 @@ class GroovyScriptService {
     // TODO remove useless binding (value, entity)
     public static final String ENTITY_PARAM_NAME = "entity"
     public static final String RECORD_PARAM_NAME = "record"
+    public static final String RECORDS_PARAM_NAME = "records"
     public static final String SCRIPT_CONTEXT_PROPERTY = "script_context"
 
     private static final String GROOVY_SCRIPT_ENGINE = "groovy"
@@ -201,6 +202,7 @@ class GroovyScriptService {
         bindings.put(PREFERENCE_SERVICE, preferenceService)
         bindings.put(EMAIL_SERVICE, emailService)
         bindings.put(QUERY_SERVICE, queryService)
+        bindings.put(RECORDS_PARAM_NAME, [])
 
         bindings.put(RUN_QUERY, new MethodClosure(queryService, RUN_QUERY))
         bindings.put(SEND_EMAIL, new MethodClosure(emailService, SEND_EMAIL))

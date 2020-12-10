@@ -18,6 +18,14 @@ public class ScriptParameters {
 
 	ScriptParameters() { }
 
+	public ScriptParameters fillDefaultParameters(Object entity) {
+		parameters.add(new ScriptParameter<>(GroovyScriptService.ENTITY_PARAM_NAME, entity));
+		parameters.add(new ScriptParameter<>(GroovyScriptService.RECORD_PARAM_NAME, entity));
+		parameters.add(new ScriptParameter<>(GroovyScriptService.RECORDS_PARAM_NAME, Collections.singletonList(entity)));
+
+		return this;
+	}
+
 	public ScriptParameters(ScriptParameters parameters) { this.parameters = parameters.parameters; }
 
 	public static ScriptParameters empty() {
