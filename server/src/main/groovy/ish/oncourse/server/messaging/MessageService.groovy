@@ -169,7 +169,7 @@ class MessageService {
 		build.setResolveStrategy(Closure.DELEGATE_FIRST)
 		build.call()
 
-		if (!messageSpec.records.isEmpty()) {
+		if (!messageSpec.entityRecords.isEmpty()) {
 			sendMessage(messageSpec)
 		}
 	}
@@ -183,7 +183,7 @@ class MessageService {
 		ObjectContext context = template.getContext()
 		Map<String, Object> bindings = messageSpec.bindings
 		List<CayenneDataObject> records = []
-		String entityName = (messageSpec.records[0] as CayenneDataObject).entityName.capitalize()
+		String entityName = (messageSpec.entityRecords[0] as CayenneDataObject).entityName.capitalize()
 		String templateEntityName = template.entity?.capitalize()
 		if (templateEntityName != null && entityName != templateEntityName) {
 			Property<Long> property = getEntityTransformationProperty(entityName, templateEntityName)
@@ -191,10 +191,10 @@ class MessageService {
 				throw new IllegalArgumentException("$template.name is not valid for $entityName records")
 			}
 			Class<? extends CayenneDataObject> clazz = EntityUtil.entityClassForName(templateEntityName)
-			List<Long> ids = messageSpec.records.collect { (it as CayenneDataObject).id }
+			List<Long> ids = messageSpec.entityRecords.collect { (it as CayenneDataObject).id }
 			records = ObjectSelect.query(clazz).where(property.in(ids)).select(context)
 		} else {
-			records = messageSpec.records.collect { it as CayenneDataObject } as List<CayenneDataObject>
+			records = messageSpec.entityRecords.collect { it as CayenneDataObject } as List<CayenneDataObject>
 		}
 
 
