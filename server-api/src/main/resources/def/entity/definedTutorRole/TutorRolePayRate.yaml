@@ -4,7 +4,7 @@ properties:
     type: integer
     format: int64
   type:
-    $ref: '../../enum/RepetitionType.yaml'
+    $ref: '../../entity/courseClass/ClassCostRepetitionType.yaml'
   validFrom:
     type: string
     format: date

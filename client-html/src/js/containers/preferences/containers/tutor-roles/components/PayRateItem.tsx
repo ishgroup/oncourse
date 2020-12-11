@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Tooltip from "@material-ui/core/Tooltip";
-import { RepetitionType } from "@api/model";
+import { ClassCostRepetitionType } from "@api/model";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import {
@@ -16,8 +16,9 @@ import {
   parseFieldPercent,
   preventNegativeOrLogEnter
 } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { mapSelectItems } from "../../../../../common/utils/common";
 
-const repetitionTypes = Object.keys(RepetitionType).map(rate => ({ value: rate, label: rate }));
+const repetitionTypes = Object.keys(ClassCostRepetitionType).filter(t => t !== "Discount").map(mapSelectItems);
 
 const validatePercentage = value => (!value && value !== 0 ? "Field is mandatory" : undefined);
 

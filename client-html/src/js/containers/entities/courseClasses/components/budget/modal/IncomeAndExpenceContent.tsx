@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import Collapse from "@material-ui/core/Collapse";
 import { change } from "redux-form";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { Contact, PayRateType } from "@api/model";
+import { Contact, ClassCostRepetitionType } from "@api/model";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { Divider } from "@material-ui/core";
@@ -90,7 +90,7 @@ const IncomeAndExpenceContent: React.FC<Props> = ({
     [values.perUnitAmountExTax, taxes]
   );
 
-  const onRepetitionChange = useCallback<any>((val: PayRateType, v, prev: PayRateType) => {
+  const onRepetitionChange = useCallback<any>((val: ClassCostRepetitionType, v, prev: ClassCostRepetitionType) => {
     if (val === "Per unit") {
       dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "unitCount", 1));
     }
