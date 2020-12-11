@@ -85,7 +85,7 @@ public class TutorsDetails extends ISHCommon {
             List<Long> ids = ObjectSelect.query(Taggable.class)
                     .where(Taggable.ENTITY_IDENTIFIER.eq("Contact"))
                     .and(Taggable.COLLEGE.eq(webSiteService.getCurrentCollege()))
-                    .and(TaggableTag.TAG.dot(Tag.NAME).eq(tagName))
+                    .and(Taggable.TAGGABLE_TAGS.dot(TaggableTag.TAG).dot(Tag.NAME).eq(tagName))
                     .column(Taggable.ENTITY_WILLOW_ID).select(cayenneService.newContext());
 
             if (ids.isEmpty()) {
@@ -108,7 +108,7 @@ public class TutorsDetails extends ISHCommon {
             }
 
             tutors = ObjectSelect.query(Contact.class)
-                    .where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, randomIds))
+                    .where(ExpressionFactory.inDbExp(Contact.ID_PK_COLUMN, randomIds))
                     .and(Contact.TUTOR.isNotNull())
                     .select(cayenneService.newContext())
                     .stream().map(Contact::getTutor)

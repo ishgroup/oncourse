@@ -34,10 +34,10 @@ public class TutorsTextileRenderer extends AbstractRenderer {
             parameters.put(TextileUtil.TEXTILE_TUTORS_TAG_NAME_PARAM, tagName);
         }
         if (StringUtils.trimToNull(id) != null) {
-            parameters.put(TextileUtil.TEXTILE_TUTORS_TAG_NAME_PARAM, Long.valueOf(id));
+            parameters.put(TextileUtil.TEXTILE_TUTORS_TUTOR_ID_PARAM, Long.valueOf(id));
         }
         if (StringUtils.trimToNull(count) != null) {
-            parameters.put(TextileUtil.TEXTILE_TUTORS_TAG_NAME_PARAM, Integer.valueOf(count));
+            parameters.put(TextileUtil.TEXTILE_TUTORS_COUNT_PARAM, Integer.valueOf(count));
         }
 
 

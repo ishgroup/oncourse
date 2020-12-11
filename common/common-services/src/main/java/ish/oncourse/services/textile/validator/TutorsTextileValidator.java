@@ -20,7 +20,7 @@ public class TutorsTextileValidator extends AbstractTextileValidator {
     protected void specificTextileValidate(String tag, ValidationErrors errors) {
         Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
         String tagName = tagParams.get(TutorsTextileAttributes.TAG_NAME.getValue());
-        String id = tagParams.get(TutorsTextileAttributes.TAG_NAME.getValue());
+        String id = tagParams.get(TutorsTextileAttributes.ID.getValue());
 
         if (tagName == null && id == null) {
             errors.addFailure("Tag name or single tutor id should be provided",

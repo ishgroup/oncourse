@@ -73,7 +73,7 @@ public enum TextileType {
 			LocationTextileAttribute.getAttrValues()),
 
 	TUTORS("\\{tutors([^}]*)}", "\\{tutors(.+?((" +
-			"name:" + STR_WHITESPACE + ")" +
+			"tagName:" + STR_WHITESPACE + ")" +
 			"|(id:" + DIGIT_IN_QUOTS + ")" +
 			"|(count:" + DIGIT_IN_QUOTS + ")" +
 			")){0,3}}",
