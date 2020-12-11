@@ -104,7 +104,7 @@ const getCurrentInputString = (input, formTags: Tag[]) => {
 const SimpleTagList: React.FC<Props> = props => {
   const {
    input, tags, classes, meta, label = "Tags", disabled, className, fieldClasses = {}
-} = props;
+  } = props;
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -286,7 +286,7 @@ const SimpleTagList: React.FC<Props> = props => {
         handleAdd={onTagAdd}
       />
     </div>
-), [menuTags, onTagAdd]);
+  ), [menuTags, onTagAdd]);
 
   return (
     <div className={className} id={input.name}>
