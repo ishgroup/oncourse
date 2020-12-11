@@ -2,7 +2,7 @@
     <div class="tutors-wrapper">
         <div class="tutors-list">
             <t:loop source="tutors" value="tutors">
-                <div class="tutor-item" itemscope itemtype="https://schema.org/Person">
+                <div class="tutor-item" itemscope="" itemtype="https://schema.org/Person">
                 <div class="tutor-content">
                     <div class="tutor-image">
                         <a href="/tutor/${tutor.angelId}" class="tutor-profile-link nyromodal" itemprop="url">
