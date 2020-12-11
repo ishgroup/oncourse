@@ -89,6 +89,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   const [selectAll, setSelectAll] = useState(false);
   const [bulkEditFields, setBulkEditFields] = useState(null);
   const [selectedKeyCode, setSelectedKeyCode] = useState(null);
+  const [usedKeys, setUsedKeys] = useState({});
 
   useEffect(() => {
     if (rootEntity) {
@@ -147,7 +148,8 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
     const field = getBulkEditFieldData();
     let fieldProps = {};
 
-    if (field.hasOwnProperty("defaultValue")) {
+    if (field.hasOwnProperty("defaultValue") && !usedKeys[field.keyCode]) {
+      setUsedKeys({ ...usedKeys, [field.keyCode]: true})
       dispatch(change("BulkEditForm", field.keyCode, field.defaultValue));
     }
 
@@ -211,12 +213,11 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           <Typography variant="body2" color="inherit" className="pb-1" classes={{ root: classes.listItemsText }}>
             {`The following tags will be ${field.keyCode === "bulkTag" ? "added to" : "removed from"} the records...`}
           </Typography>
-
           <FormField
             type="tags"
             name={field.keyCode}
             tags={tags}
-            validate={tags && tags.length ? validateTagList : undefined}
+            validate={validateTagList}
             {...fieldProps}
           />
         </>
