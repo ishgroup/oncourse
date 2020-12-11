@@ -13,7 +13,7 @@ properties:
   className:
     type: string
   type:
-    $ref: '../enum/PayRateType.yaml'
+    $ref: '../entity/courseClass/ClassCostRepetitionType.yaml'
     required: true
   budgetedQuantity:
     type: number

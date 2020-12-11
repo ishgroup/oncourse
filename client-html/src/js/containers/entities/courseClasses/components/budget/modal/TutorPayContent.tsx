@@ -9,7 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { createStyles, withStyles } from "@material-ui/core/styles";
-import { PayRateType } from "@api/model";
+import { ClassCostRepetitionType } from "@api/model";
 import { Collapse, Divider } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import LockOpen from "@material-ui/icons/LockOpen";
@@ -125,7 +125,7 @@ const TutorPayContent: React.FC<Props> = ({
     [values.perUnitAmountExTax, values.repetitionType, currencySymbol]
   );
 
-  const onRepetitionChange = useCallback<any>((val: PayRateType, v, prev: PayRateType) => {
+  const onRepetitionChange = useCallback<any>((val: ClassCostRepetitionType, v, prev: ClassCostRepetitionType) => {
     if (val === "Per unit") {
       dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "unitCount", 1));
     }

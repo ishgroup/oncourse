@@ -14,7 +14,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import { connect } from "react-redux";
 import {
- Tax, Account, PayRateType
+ Tax, Account, ClassCostRepetitionType
 } from "@api/model";
 import Button from "../../../../../../common/components/buttons/Button";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
@@ -26,7 +26,7 @@ import { ClassCostExtended, CourseClassExtended } from "../../../../../../model/
 import TutorPayContent from "./TutorPayContent";
 import { mapSelectItems } from "../../../../../../common/utils/common";
 
-export const PayRateTypes = Object.keys(PayRateType).map(mapSelectItems);
+export const PayRateTypes = Object.keys(ClassCostRepetitionType).filter(t => t !== "Discount").map(mapSelectItems);
 
 interface CourseClassCostModalProps {
   opened?: boolean;
