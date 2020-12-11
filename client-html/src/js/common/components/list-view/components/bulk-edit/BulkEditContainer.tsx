@@ -144,12 +144,16 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
 
   const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), [tags]);
 
-  const renderBulkEditField = () => {
+  const BulkEditFieldRendered = useMemo(() => {
+    if (!selectedKeyCode) {
+      return null;
+    }
+
     const field = getBulkEditFieldData();
     let fieldProps = {};
 
     if (field.hasOwnProperty("defaultValue") && !usedKeys[field.keyCode]) {
-      setUsedKeys({ ...usedKeys, [field.keyCode]: true})
+      setUsedKeys({ ...usedKeys, [field.keyCode]: true });
       dispatch(change("BulkEditForm", field.keyCode, field.defaultValue));
     }
 
@@ -233,7 +237,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           {...fieldProps}
         />
       );
-  };
+  }, [entityTags, rootEntity, usedKeys, validateTagList, bulkEditFields, selectedKeyCode]);
 
   return (
     <Drawer
@@ -303,7 +307,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
             <form autoComplete="off" onSubmit={handleSubmit(onSave)} className={classes.form}>
               <Grid container className={classes.formContent}>
                 <Grid item xs={12}>
-                  {selectedKeyCode && renderBulkEditField()}
+                  {BulkEditFieldRendered}
                 </Grid>
               </Grid>
 
