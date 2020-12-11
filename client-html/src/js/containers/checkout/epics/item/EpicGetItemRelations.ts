@@ -4,6 +4,7 @@ import {
 } from "rxjs/operators";
 import { CheckoutSaleRelation } from "@api/model";
 import uniqid from "uniqid";
+import { closestIndexTo } from "date-fns";
 import {
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_ADD_ITEM,
@@ -94,7 +95,9 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
               })
               .then(res => {
                 if (res.rows.length) {
-                  const plainClass = [res.rows[0]].map(checkoutCourseClassMap)[0];
+                  const classIndex = closestIndexTo(new Date(), res.rows.map(r => new Date(r.values[4])));
+                  const plainClass = [res.rows[classIndex]].map(checkoutCourseClassMap)[0];
+
                   r.toItem.cartItem = {
                     ...plainCourse,
                     courseId: plainCourse.id,
