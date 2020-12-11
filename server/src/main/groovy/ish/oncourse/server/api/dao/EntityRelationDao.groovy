@@ -52,7 +52,9 @@ class EntityRelationDao implements CayenneLayer<EntityRelation> {
     static List<EntityRelation> getRelatedToOrEqual(ObjectContext context, String entityName, Long entityId) {
         ObjectSelect.query(EntityRelation)
                 .or(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(entityName).andExp(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(entityId)),
-                        EntityRelation.RELATION_TYPE.dot(EntityRelationType.FROM_NAME).eq(EntityRelation.RELATION_TYPE.dot(EntityRelationType.TO_NAME))
+                        EntityRelation.RELATION_TYPE.dot(EntityRelationType.FROM_NAME).eq(EntityRelation.RELATION_TYPE.dot(EntityRelationType.TO_NAME)).andExp(
+                                EntityRelation.TO_ENTITY_IDENTIFIER.eq(entityName).andExp(EntityRelation.TO_ENTITY_ANGEL_ID.eq(entityId))
+                        )
                 )
                 .select(context)
     }
