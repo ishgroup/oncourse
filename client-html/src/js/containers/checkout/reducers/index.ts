@@ -282,6 +282,16 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
 
       return {
         ...state,
+        summary: {
+          ...state.summary,
+          list: state.summary.list.map(li => ({
+            ...li,
+            items: li.items.map(i =>
+              (i.id === changedItem.id
+                ? { ...changedItem }
+                : i))
+          }))
+        },
         items
       };
     }
