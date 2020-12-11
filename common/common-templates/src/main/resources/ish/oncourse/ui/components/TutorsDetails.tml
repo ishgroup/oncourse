@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
     <div class="tutors-wrapper">
         <div class="tutors-list">
-            <t:loop source="tutors" value="tutors">
+            <t:loop source="tutors" value="tutor">
                 <div class="tutor-item" itemscope="" itemtype="https://schema.org/Person">
                 <div class="tutor-content">
                     <div class="tutor-image">
