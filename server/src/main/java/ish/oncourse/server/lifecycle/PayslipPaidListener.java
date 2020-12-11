@@ -24,6 +24,6 @@ public class PayslipPaidListener extends AbstractPropertyChangeListener<Payslip,
 
     @Override
     protected void run(ObjectId id) {
-        service.postEvent(SystemEvent.valueOf(SystemEventType.PAYSLIP_APPROVED, id));
+        service.postEvent(SystemEvent.valueOf(SystemEventType.PAYSLIP_PAID, id));
     }
 }
