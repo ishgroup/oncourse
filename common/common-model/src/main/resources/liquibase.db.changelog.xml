@@ -138,58 +138,72 @@
 	</changeSet>
 
 	<changeSet id="13" author="rostislav" runOnChange="false" runAlways="false" context="production">
-		<preConditions>
-			<columnExists tableName="EntityRelation" columnName="fromEntityIdentifier" />
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="EntityRelation" columnName="fromEntityIdentifierTemp"/>
+			</not>
 		</preConditions>
-		<modifyDataType tableName="EntityRelation" columnName="fromEntityIdentifier" newDataType="VARCHAR(100)" />
+		<addColumn tableName="EntityRelation">
+			<column name="fromEntityIdentifierTemp" type="VARCHAR(100)" />
+		</addColumn>
 	</changeSet>
 
 	<changeSet id="14" author="rostislav" runOnChange="false" runAlways="false" context="production">
-		<preConditions>
-			<columnExists tableName="EntityRelation" columnName="toEntityIdentifier" />
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="EntityRelation" columnName="toEntityIdentifierTemp"/>
+			</not>
 		</preConditions>
-		<modifyDataType tableName="EntityRelation" columnName="toEntityIdentifier" newDataType="VARCHAR(100)" />
+		<addColumn tableName="EntityRelation">
+			<column name="toEntityIdentifierTemp" type="VARCHAR(100)" />
+		</addColumn>
 	</changeSet>
 
 	<changeSet id="15" author="rostislav" runOnChange="false" runAlways="false" context="production">
-		<preConditions>
-			<columnExists tableName="EntityRelation" columnName="fromEntityIdentifier" />
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="EntityRelation" columnName="fromEntityIdentifierTemp"/>
 		</preConditions>
 		<update tableName="EntityRelation">
-			<column name="fromEntityIdentifier" value="Course" />
-			<where>fromEntityIdentifier="1"</where>
+			<column name="fromEntityIdentifierTemp" value="Course" />
+			<where>fromEntityIdentifier=1</where>
 		</update>
 	</changeSet>
 
 	<changeSet id="16" author="rostislav" runOnChange="false" runAlways="false" context="production">
-		<preConditions>
-			<columnExists tableName="EntityRelation" columnName="fromEntityIdentifier" />
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="EntityRelation" columnName="toEntityIdentifierTemp"/>
 		</preConditions>
 		<update tableName="EntityRelation">
-			<column name="fromEntityIdentifier" value="Product" />
-			<where>fromEntityIdentifier="2"</where>
+			<column name="toEntityIdentifierTemp" value="Course" />
+			<where>toEntityIdentifier=1</where>
 		</update>
 	</changeSet>
 
 	<changeSet id="17" author="rostislav" runOnChange="false" runAlways="false" context="production">
-		<preConditions>
-			<columnExists tableName="EntityRelation" columnName="toEntityIdentifier" />
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="EntityRelation" columnName="toEntityIdentifierTemp"/>
 		</preConditions>
 		<update tableName="EntityRelation">
-			<column name="toEntityIdentifier" value="Course" />
-			<where>toEntityIdentifier="1"</where>
+			<column name="toEntityIdentifierTemp" value="Product" />
+			<where>toEntityIdentifier=2</where>
 		</update>
 	</changeSet>
 
 	<changeSet id="18" author="rostislav" runOnChange="false" runAlways="false" context="production">
-		<preConditions>
-			<columnExists tableName="EntityRelation" columnName="toEntityIdentifier" />
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="EntityRelation" columnName="fromEntityIdentifier"/>
 		</preConditions>
-		<update tableName="EntityRelation">
-			<column name="toEntityIdentifier" value="Product" />
-			<where>toEntityIdentifier="2"</where>
-		</update>
+		<dropNotNullConstraint tableName="EntityRelation" columnName="fromEntityIdentifier" columnDataType="SMALLINT" />
 	</changeSet>
+
+	<changeSet id="19" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="EntityRelation" columnName="toEntityIdentifier"/>
+		</preConditions>
+		<dropNotNullConstraint tableName="EntityRelation" columnName="toEntityIdentifier" columnDataType="SMALLINT" />
+	</changeSet>
+
+
 
 
 </databaseChangeLog>
