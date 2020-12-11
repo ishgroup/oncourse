@@ -44,7 +44,7 @@ public class TutorsDetails extends ISHCommon {
     private CourseClass courseClass;
 
     @Parameter
-    private Long id;
+    private Long tutorId;
 
     @Parameter
     private String tagName;
@@ -60,9 +60,9 @@ public class TutorsDetails extends ISHCommon {
 
     @SetupRender
     void beginRender() {
-        if (id != null) {
+        if (tutorId != null) {
             tutors = ObjectSelect.query(Tutor.class)
-                    .where(Tutor.ANGEL_ID.eq(id))
+                    .where(Tutor.ANGEL_ID.eq(tutorId))
                     .and(Tutor.COLLEGE.eq(webSiteService.getCurrentCollege()))
                     .select(cayenneService.newContext());
         } else if (course != null) {

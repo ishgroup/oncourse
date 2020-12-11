@@ -141,6 +141,8 @@ public class RichtextConverter implements IRichtextConverter {
                 return new AttachmentTextileRenderer(binaryDataService, pageRenderer);
             case LOCATION:
                 return new LocationTextileRenderer(pageRenderer, cayenneService);
+            case TUTORS:
+                return new TutorsTextileRenderer(pageRenderer);                
             default:
                 throw new IllegalArgumentException(String.format("Type $s is not supported", type));
         }
