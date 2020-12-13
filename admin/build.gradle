@@ -10,51 +10,54 @@ ext {
 }
 
 dependencies {
+	implementation 'javax.xml.ws:jaxws-api:2.3.1'
+	implementation 'javax.jws:javax.jws-api:1.1'
+
 	/**
 	 * tapestry dependencies
 	 */
-	compile "org.apache.tapestry:tapestry-core:$tapestryVersion"
-	compile "org.apache.tapestry:plastic:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry5-annotations:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry-ioc:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry-json:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry-spring:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry-upload:$tapestryVersion"
+	implementation "org.apache.tapestry:tapestry-core:$tapestryVersion"
+	implementation "org.apache.tapestry:plastic:$tapestryVersion"
+	implementation "org.apache.tapestry:tapestry5-annotations:$tapestryVersion"
+	implementation "org.apache.tapestry:tapestry-ioc:$tapestryVersion"
+	implementation "org.apache.tapestry:tapestry-json:$tapestryVersion"
+	implementation "org.apache.tapestry:tapestry-spring:$tapestryVersion"
+	implementation "org.apache.tapestry:tapestry-upload:$tapestryVersion"
 
 	testCompile ("org.apache.tapestry:tapestry-test:$tapestryVersion") {
 		exclude group: 'org.seleniumhq.selenium.server', module: 'selenium-server'
 	}
 
-	compile project(':common:common-model')
-	compile (project(':common:common-services'))  {
+	implementation project(':common:common-model')
+	implementation (project(':common:common-services'))  {
 		exclude group: 'axis', module: 'axis'
 	}
-	compile (project(':common:webservices-usi')) {
+	implementation (project(':common:webservices-usi')) {
 		exclude group: 'axis'
 		exclude group: 'org.apache.cxf'
 		exclude group: 'org.springframework'
 		exclude group: 'ish.oncourse.willow'
 	}
 
-	compile ('org.apache.cxf:cxf-rt-frontend-jaxws:2.6.6') {
+	implementation ('org.apache.cxf:cxf-rt-frontend-jaxws:2.6.6') {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
 
-	compile 'org.apache.cxf:cxf-rt-ws-security:2.6.6'
-	compile 'org.apache.cxf:cxf-rt-transports-http:2.6.6'
-	compile 'xalan:xalan:2.7.2'
-	compile 'wsdl4j:wsdl4j:1.6.3'
+	implementation 'org.apache.cxf:cxf-rt-ws-security:2.6.6'
+	implementation 'org.apache.cxf:cxf-rt-transports-http:2.6.6'
+	implementation 'xalan:xalan:2.7.2'
+	implementation 'wsdl4j:wsdl4j:1.6.3'
 
-	compile 'org.reflections:reflections:0.9.11'
-	compile 'commons-dbcp:commons-dbcp:1.4'
-	compile 'commons-pool:commons-pool:1.5.6'
+	implementation 'org.reflections:reflections:0.9.11'
+	implementation 'commons-dbcp:commons-dbcp:1.4'
+	implementation 'commons-pool:commons-pool:1.5.6'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
-	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
+	testImplementation project(path: ':common:common-test', configuration: 'testFixtures')
 
-	testCompile project(':common:test-functions')
+	testImplementation project(':common:test-functions')
 }
 
 
