@@ -5,7 +5,7 @@
 
 def run(args) {
 
-    def result = query {
+    records = query {
            entity "Course"
            query "isShownOnWeb and currentlyOffered"
            context args.context
@@ -13,9 +13,9 @@ def run(args) {
 
     def today = new Date()
 
-    result.removeAll { c -> c.tags.find { t -> t.name == "AlwaysOn" }  }
+    records.removeAll { c -> c.tags.find { t -> t.name == "AlwaysOn" }  }
 
-    result.each { Course c ->
+    records.each { Course c ->
         def recentOfFutureClasses =  c.courseClasses.findAll { cc ->
             !cc.isCancelled && cc.startDateTime != null && (cc.startDateTime > today ||  (today - cc.startDateTime) <= 22)
         }
