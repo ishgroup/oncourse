@@ -95,14 +95,6 @@ public class ContextUtils {
 	 */
 	private static void createTablesForDataSourceByParams(DataSource dataSource, DataMap map, Map<String, Boolean> params) throws Exception {
 		DataDomain domain = cayenneRuntime.getDataDomain();
-		List<Relationship> entityRelationshipsToRemove = new ArrayList<Relationship>();
-		entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationToProduct"));
-		entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationFromProduct"));
-		entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationToCourse"));
-		entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationFromCourse"));
-		for (Relationship rel : entityRelationshipsToRemove) {
-			map.getDbEntity("EntityRelation").removeRelationship(rel.getName());
-		}
 
 		List<Relationship> customFieldRelationships = new ArrayList<>();
 		customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedContact"));
@@ -121,10 +113,6 @@ public class ContextUtils {
 		generator.setShouldCreatePKSupport(isParamsEmpty || Boolean.TRUE.equals(params.get(SHOULD_CREATE_PK_SUPPORT)));
 
 		generator.runGenerator(dataSource);
-
-		for (Relationship rel : entityRelationshipsToRemove) {
-			map.getDbEntity("EntityRelation").addRelationship(rel);
-		}
 
 		for (Relationship rel : customFieldRelationships) {
 			map.getDbEntity("CustomField").addRelationship(rel);
