@@ -14,8 +14,8 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import ish.oncourse.server.api.dao.DefinedTutorRoleDao
 import ish.oncourse.server.api.dao.PayRateDao
+import ish.oncourse.server.api.v1.model.ClassCostRepetitionTypeDTO
 import ish.oncourse.server.api.v1.model.DefinedTutorRoleDTO
-import ish.oncourse.server.api.v1.model.RepetitionTypeDTO
 import ish.oncourse.server.api.v1.model.TutorRolePayRateDTO
 import ish.oncourse.server.cayenne.DefinedTutorRole
 import ish.oncourse.server.cayenne.PayRate
@@ -26,7 +26,6 @@ import org.apache.commons.lang3.StringUtils
 import java.time.ZoneOffset
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
-import static ish.oncourse.server.api.v1.function.TutorRoleFunctions.REPETITION_TYPE_MAP
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
 class TutorRoleApiService extends EntityApiService<DefinedTutorRoleDTO, DefinedTutorRole, DefinedTutorRoleDao> {
@@ -52,7 +51,7 @@ class TutorRoleApiService extends EntityApiService<DefinedTutorRoleDTO, DefinedT
             tutorRoleDTO.payRates = definedTutorRole.payRates.collect { PayRate payRate ->
                 new TutorRolePayRateDTO().with { rate ->
                     rate.id = payRate.id
-                    rate.type = REPETITION_TYPE_MAP[payRate.type]
+                    rate.type = ClassCostRepetitionTypeDTO.values()[0].fromDbType(payRate.type)
                     rate.validFrom = payRate.validFrom?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDate()
                     rate.rate = payRate.rate?.toBigDecimal()
                     rate.oncostRate = payRate.oncostRate
@@ -95,8 +94,6 @@ class TutorRoleApiService extends EntityApiService<DefinedTutorRoleDTO, DefinedT
         tutorRoleDTO.payRates.eachWithIndex { TutorRolePayRateDTO payRate, int i ->
             if (!payRate.type) {
                 validator.throwClientErrorException(id, "payRates[$i].type", 'Type is required.')
-            } else if (payRate.type == RepetitionTypeDTO.DISCOUNT) {
-                validator.throwClientErrorException(id, "payRates[$i].type", "Incorrect type for pay rate: $payRate.type")
             }
 
             if (!payRate.validFrom) {
@@ -133,14 +130,14 @@ class TutorRoleApiService extends EntityApiService<DefinedTutorRoleDTO, DefinedT
                     payRateDao.newObject(context)
             rate.definedTutorRole = definedTutorRole
             if (definedTutorRole.newRecord || rate.newRecord ||
-                    (rate.type == REPETITION_TYPE_MAP.getByValue(payRate.type) &&
+                    (rate.type == payRate.type.getDbType() &&
                             rate.validFrom?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDate() == payRate.validFrom) &&
                     rate.description == trimToNull(payRate.notes) &&
                     rate.rate == toMoneyValue(payRate.rate) &&
                     rate.oncostRate == toMoneyValue(payRate.oncostRate)) {
                 rate.editedByUser =  context.localObject(systemUserService.currentUser)
             }
-            rate.type = REPETITION_TYPE_MAP.getByValue(payRate.type)
+            rate.type = payRate.type.getDbType()
             rate.validFrom = payRate.validFrom?.atStartOfDay(ZoneOffset.UTC)?.toDate()
             rate.rate = toMoneyValue(payRate.rate)
             rate.oncostRate = toMoneyValue(payRate.oncostRate)

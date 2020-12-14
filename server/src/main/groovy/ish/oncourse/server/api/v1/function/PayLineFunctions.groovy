@@ -11,11 +11,9 @@
 
 package ish.oncourse.server.api.v1.function
 
-import ish.common.types.ClassCostRepetitionType
 import ish.math.Money
-import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.v1.model.PayLineDTO
-import ish.oncourse.server.api.v1.model.PayRateTypeDTO
+import ish.oncourse.server.api.v1.model.ClassCostRepetitionTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.ClassCost
 import ish.oncourse.server.cayenne.PayLine
@@ -28,15 +26,6 @@ import java.time.LocalDate
 
 class PayLineFunctions {
 
-    private static final BidiMap<ClassCostRepetitionType, PayRateTypeDTO> payRateBidiMap = new BidiMap<ClassCostRepetitionType, PayRateTypeDTO>() {{
-        put(ClassCostRepetitionType.FIXED, PayRateTypeDTO.FIXED)
-        put(ClassCostRepetitionType.PER_SESSION, PayRateTypeDTO.PER_SESSION)
-        put(ClassCostRepetitionType.PER_ENROLMENT, PayRateTypeDTO.PER_ENROLMENT)
-        put(ClassCostRepetitionType.PER_UNIT, PayRateTypeDTO.PER_UNIT)
-        put(ClassCostRepetitionType.PER_TIMETABLED_HOUR, PayRateTypeDTO.PER_TIMETABLED_HOUR)
-        put(ClassCostRepetitionType.PER_STUDENT_CONTACT_HOUR, PayRateTypeDTO.PER_STUDENT_CONTACT_HOUR)
-    }}
-
     static PayLineDTO toRestPayLine(PayLine dbPayLine) {
         new PayLineDTO().with { payLine ->
             payLine.id = dbPayLine.id
@@ -45,7 +34,7 @@ class PayLineFunctions {
             if (dbPayLine.classCost) {
                 ClassCost classCost = dbPayLine.classCost
                 payLine.className = "${classCost.courseClass.uniqueCode} ${classCost.courseClass.course.name}"
-                payLine.type = payRateBidiMap[classCost.repetitionType]
+                payLine.type = ClassCostRepetitionTypeDTO.values()[0].fromDbType(classCost.repetitionType)
             }
 
             payLine.budgetedQuantity = dbPayLine.budgetedQuantity
