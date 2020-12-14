@@ -104,12 +104,18 @@ const getCurrentInputString = (input, formTags: Tag[]) => {
 const SimpleTagList: React.FC<Props> = props => {
   const {
    input, tags, classes, meta, label = "Tags", disabled, className, fieldClasses = {}
-} = props;
+  } = props;
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [currentInputString, setCurrentInputString] = useState("");
+
+  useEffect(() => {
+    if (meta.invalid && !isEditing) {
+      setIsEditing(true);
+    }
+  }, [meta.invalid]);
 
   const inputNode = useRef<any>();
   const tagMenuNode = useRef<any>();
@@ -154,22 +160,22 @@ const SimpleTagList: React.FC<Props> = props => {
   };
 
   const onTagAdd = (tag: MenuTag) => {
-      const updated = [...input.value];
+    const updated = [...input.value];
 
-      const index = updated.findIndex(t => t.id === tag.tagBody.id);
+    const index = updated.findIndex(t => t.id === tag.tagBody.id);
 
-      if (index !== -1) {
-        updated.splice(index, 1);
-      } else {
-        updated.push(tag.tagBody);
-      }
+    if (index !== -1) {
+      updated.splice(index, 1);
+    } else {
+      updated.push(tag.tagBody);
+    }
 
-      input.onChange(updated);
+    input.onChange(updated);
 
-      setTimeout(() => {
-        inputNode.current.focus();
-      }, 100);
-    };
+    setTimeout(() => {
+      inputNode.current.focus();
+    }, 100);
+  };
 
   const filterOptions = item => !item.children.length && !input.value.some(v => v.id === item.tagBody.id) && item.tagBody.name
     .toLowerCase()
@@ -286,13 +292,13 @@ const SimpleTagList: React.FC<Props> = props => {
         handleAdd={onTagAdd}
       />
     </div>
-), [menuTags, onTagAdd]);
+  ), [menuTags, onTagAdd]);
 
   return (
     <div className={className} id={input.name}>
       <div
         className={clsx("relative", {
-        "d-none": !(isEditing || meta.invalid),
+        "d-none": !isEditing,
         "pointer-events-none": disabled
       })}
       >
@@ -351,7 +357,7 @@ const SimpleTagList: React.FC<Props> = props => {
       </div>
       <div
         className={clsx(classes.textField, {
-        "d-none": isEditing || meta.invalid,
+        "d-none": isEditing,
         "pointer-events-none": disabled || !tags || !tags.length
       })}
       >

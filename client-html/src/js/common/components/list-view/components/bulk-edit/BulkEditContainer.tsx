@@ -89,6 +89,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   const [selectAll, setSelectAll] = useState(false);
   const [bulkEditFields, setBulkEditFields] = useState(null);
   const [selectedKeyCode, setSelectedKeyCode] = useState(null);
+  const [usedKeys, setUsedKeys] = useState({});
 
   useEffect(() => {
     if (rootEntity) {
@@ -143,11 +144,16 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
 
   const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), [tags]);
 
-  const renderBulkEditField = () => {
+  const BulkEditFieldRendered = useMemo(() => {
+    if (!selectedKeyCode) {
+      return null;
+    }
+
     const field = getBulkEditFieldData();
     let fieldProps = {};
 
-    if (field.hasOwnProperty("defaultValue")) {
+    if (field.hasOwnProperty("defaultValue") && !usedKeys[field.keyCode]) {
+      setUsedKeys({ ...usedKeys, [field.keyCode]: true });
       dispatch(change("BulkEditForm", field.keyCode, field.defaultValue));
     }
 
@@ -211,12 +217,11 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           <Typography variant="body2" color="inherit" className="pb-1" classes={{ root: classes.listItemsText }}>
             {`The following tags will be ${field.keyCode === "bulkTag" ? "added to" : "removed from"} the records...`}
           </Typography>
-
           <FormField
             type="tags"
             name={field.keyCode}
             tags={tags}
-            validate={tags && tags.length ? validateTagList : undefined}
+            validate={validateTagList}
             {...fieldProps}
           />
         </>
@@ -232,7 +237,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           {...fieldProps}
         />
       );
-  };
+  }, [entityTags, rootEntity, usedKeys, validateTagList, bulkEditFields, selectedKeyCode]);
 
   return (
     <Drawer
@@ -302,7 +307,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
             <form autoComplete="off" onSubmit={handleSubmit(onSave)} className={classes.form}>
               <Grid container className={classes.formContent}>
                 <Grid item xs={12}>
-                  {selectedKeyCode && renderBulkEditField()}
+                  {BulkEditFieldRendered}
                 </Grid>
               </Grid>
 

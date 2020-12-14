@@ -63,7 +63,7 @@ const BudgetCostModal = React.memo<CourseClassCostModalProps & InjectedFormProps
     classFee
   }) => {
     const incomeAccounts = useMemo(() => accounts.filter(a => a.type === "income"), [accounts]);
-    const activeTutorRoles = useMemo(() => (tutorRoles ? tutorRoles.filter(t => t.active === "true") : []), [
+    const activeTutorRoles = useMemo(() => (tutorRoles ? tutorRoles.filter(t => t.active) : []), [
       tutorRoles
     ]);
 

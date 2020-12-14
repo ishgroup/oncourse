@@ -55,6 +55,7 @@ const Initial: ArticleProduct = {
   feeExTax: null,
   id: 0,
   incomeAccountId: null,
+  relatedSellables: [],
   name: null,
   taxId: null,
   totalFee: 0,

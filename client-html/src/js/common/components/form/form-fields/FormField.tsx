@@ -111,7 +111,7 @@ const FormField:React.FC<BaseProps> = React.forwardRef<any, BaseProps>(({
   required,
   validate,
   ...rest
-}, ref) => {
+  }, ref) => {
   const validateResolver = useMemo(() => {
     const result = [];
     if (required) {

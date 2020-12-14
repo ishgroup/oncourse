@@ -65,7 +65,8 @@ const Initial: MembershipProduct = {
   name: null,
   status: "Can be purchased in office & online",
   taxId: null,
-  totalFee: 0
+  totalFee: 0,
+  relatedSellables: [],
 };
 
 const filterGroups: FilterGroup[] = [

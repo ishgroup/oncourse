@@ -740,7 +740,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="number"
-              label="Maximun days to complete"
+              label="Maximum days to complete"
               name="maximumDays"
               min="1"
               max="99"
