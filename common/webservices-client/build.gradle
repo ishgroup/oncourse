@@ -4,8 +4,8 @@ dependencies {
     implementation group: 'javax.xml.ws', name: 'jaxws-api', version: '2.3.1'
     implementation group: 'javax.jws', name: 'javax.jws-api', version: '1.1'
 
-    implementation group: 'org.apache.cxf', name: 'cxf-rt-bindings-soap', version: '3.4.0'
-    implementation group: 'org.apache.cxf', name: 'cxf-rt-ws-rm', version: '3.4.0'
+    implementation group: 'org.apache.cxf', name: 'cxf-rt-bindings-soap', version: '3.4.1'
+    implementation group: 'org.apache.cxf', name: 'cxf-rt-ws-rm', version: '3.4.1'
 }
 
 jar {
