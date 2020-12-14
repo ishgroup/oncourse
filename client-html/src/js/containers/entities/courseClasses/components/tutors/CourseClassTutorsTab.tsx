@@ -87,7 +87,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
   }) => {
     const [expanded, setExpanded] = useState(null);
 
-    const activeTutorRoles = useMemo(() => (tutorRoles ? tutorRoles.filter(t => t.active === "true") : []), [
+    const activeTutorRoles = useMemo(() => (tutorRoles ? tutorRoles.filter(t => t.active) : []), [
       tutorRoles
     ]);
 
