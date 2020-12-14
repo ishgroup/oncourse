@@ -31,6 +31,9 @@ export const mapMessageAvailableFrom = (entity: MessageTemplateEntityName) => {
     case "PaymentOut":
       return ["Payments Out"];
 
+    case "Payslip":
+      return ["Tutor Pay"];
+
     case "ProductItem":
       return ["Sales"];
 
