@@ -242,7 +242,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
 
       if (list.length > 0 && item.type !== "voucher") {
         list = list.map(li => {
-          if (item.type === "course" && li.contact.isCompany === true) {
+          if (item.type === "course" && li.contact.isCompany) {
             return li;
           }
           return {
