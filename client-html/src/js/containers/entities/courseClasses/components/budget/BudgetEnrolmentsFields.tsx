@@ -112,6 +112,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
           }}
           classes={{ textField: "text-end", fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
+          rightAligned
         />
         {seatedCapacityWarnings.min && <WarningMessage warning={seatedCapacityWarnings.min} />}
       </Grid>
@@ -131,6 +132,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
           }}
           classes={{ textField: "text-end", fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
+          rightAligned
         />
         {seatedCapacityWarnings.max && <WarningMessage warning={seatedCapacityWarnings.max} />}
       </Grid>
@@ -151,6 +153,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
           }}
           classes={{ textField: "text-end", fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
+          rightAligned
         />
       </Grid>
       <Grid item xs={2} className={clsx("d-flex justify-content-end", classes.rowItemCol4)}>
