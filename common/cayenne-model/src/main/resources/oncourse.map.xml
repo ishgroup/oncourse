@@ -593,13 +593,11 @@
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
-		<db-attribute name="fromEntityIdentifier" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="fromEntityIdentifierTemp" type="VARCHAR" length="100" isMandatory="true"/>
+		<db-attribute name="fromEntityIdentifier" type="VARCHAR" length="100" isMandatory="true"/>
 		<db-attribute name="fromRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
-		<db-attribute name="toEntityIdentifier" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="toEntityIdentifierTemp" type="VARCHAR" length="100" isMandatory="true"/>
+		<db-attribute name="toEntityIdentifier" type="VARCHAR" length="100" isMandatory="true"/>
 		<db-attribute name="toRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="typeId" type="BIGINT"/>
 	</db-entity>
@@ -2020,10 +2018,10 @@
 	<obj-entity name="EntityRelation" className="ish.oncourse.model.EntityRelation" dbEntityName="EntityRelation" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="fromEntityIdentifier" type="java.lang.String" db-attribute-path="fromEntityIdentifierTemp"/>
+		<obj-attribute name="fromEntityIdentifier" type="java.lang.String" db-attribute-path="fromEntityIdentifier"/>
 		<obj-attribute name="fromEntityWillowId" type="java.lang.Long" db-attribute-path="fromRecordId"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-		<obj-attribute name="toEntityIdentifier" type="java.lang.String" db-attribute-path="toEntityIdentifierTemp"/>
+		<obj-attribute name="toEntityIdentifier" type="java.lang.String" db-attribute-path="toEntityIdentifier"/>
 		<obj-attribute name="toEntityWillowId" type="java.lang.Long" db-attribute-path="toRecordId"/>
 		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
