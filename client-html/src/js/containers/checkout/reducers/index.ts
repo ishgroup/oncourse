@@ -1165,9 +1165,12 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
           list: state.summary.list.map(li => ({
             ...li,
             items: items.map(it => {
+              if (it.type === "course" && li.contact.isCompany) {
+                return null;
+              }
               const cartItem = cartItems.find(ci => ci.contactIds.includes(li.contact.id));
               return { ...it, checked: cartItem ? true : it.checked };
-            })
+            }).filter(it => it)
           }))
         },
         salesRelations: suggestItems
