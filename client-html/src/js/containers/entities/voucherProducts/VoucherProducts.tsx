@@ -53,6 +53,7 @@ const Initial: VoucherProduct = {
   feeExTax: 0,
   liabilityAccountId: null,
   maxCoursesRedemption: null,
+  relatedSellables: [],
   name: null,
   status: "Can be purchased in office & online",
   value: 0
