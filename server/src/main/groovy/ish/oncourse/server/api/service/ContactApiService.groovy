@@ -155,6 +155,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
     @Inject
     private PaymentInDao paymentInDao
 
+    @Inject
+    private ProductItemApiService productItemApiService
+
     private static final Logger logger = LogManager.logger
 
 
@@ -208,14 +211,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
                         toRestDocumentMinimized(d, d.currentVersion.id, preferenceController)
                     }
             dto.tags = cayenneModel.tags.collect{ toRestTagMinimized(it) }
-            dto.memberships = cayenneModel.memberships.collect { it ->
-                    SaleDTO sale = new SaleDTO()
-                    sale.name = it.product.name
-                    sale.id = it.id
-                    sale.expiryDate = LocalDateUtils.dateToValue(it.expiryDate)
-                    sale.type = SaleTypeDTO.MEMBERSHIP
-                    sale
-                }
+            dto.memberships = cayenneModel.memberships.collect {  productItemApiService.toRestModel(it) }
             dto.profilePicture = getProfilePicture(cayenneModel)
 
             dto.relations += cayenneModel.toContacts.collect{ toRestToContactRelation(it as ContactRelation) }

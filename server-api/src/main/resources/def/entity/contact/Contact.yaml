@@ -177,7 +177,7 @@ properties:
   memberships:
     type: array
     items:
-      $ref: '../Sale.yaml'
+      $ref: '../productItem/ProductItem.yaml'
   profilePicture:
     $ref: '../Document.yaml'
   relations:
