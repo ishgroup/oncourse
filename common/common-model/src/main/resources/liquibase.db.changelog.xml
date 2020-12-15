@@ -231,6 +231,34 @@
 		<sql>UPDATE EntityRelation SET toEntityIdentifier = toEntityIdentifierTemp</sql>
 	</changeSet>
 
+	<changeSet id="24" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="EntityRelation" columnName="fromEntityIdentifier"/>
+		</preConditions>
+		<addNotNullConstraint tableName="EntityRelation" columnName="fromEntityIdentifier" columnDataType="VARCHAR(100)" />
+	</changeSet>
+
+	<changeSet id="25" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="EntityRelation" columnName="toEntityIdentifier"/>
+		</preConditions>
+		<addNotNullConstraint tableName="EntityRelation" columnName="toEntityIdentifier" columnDataType="VARCHAR(100)" />
+	</changeSet>
+
+	<changeSet id="26" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="EntityRelation" columnName="fromEntityIdentifierTemp"/>
+		</preConditions>
+		<dropColumn tableName="EntityRelation" columnName="fromEntityIdentifierTemp" />
+	</changeSet>
+
+	<changeSet id="27" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="EntityRelation" columnName="toEntityIdentifierTemp"/>
+		</preConditions>
+		<dropColumn tableName="EntityRelation" columnName="toEntityIdentifierTemp" />
+	</changeSet>
+
 
 
 
