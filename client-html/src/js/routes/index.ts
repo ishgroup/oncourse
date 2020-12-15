@@ -170,6 +170,30 @@ export const routes: MainRoute[] = [
     group: "Preferences"
   },
   {
+    title: "Data collection forms",
+    path: "/preferences/collectionForms/",
+    url: "/preferences/collectionForms/",
+    main: PreferencesApp,
+    routes: preferencesRoutes,
+    group: "Preferences"
+  },
+  {
+    title: "Data collection rules",
+    path: "/preferences/collectionRules/",
+    url: "/preferences/collectionRules/",
+    main: PreferencesApp,
+    routes: preferencesRoutes,
+    group: "Preferences"
+  },
+  {
+    title: "Tutor pay rates",
+    path: "/preferences/tutorRoles/",
+    url: "/preferences/tutorRoles/",
+    main: PreferencesApp,
+    routes: preferencesRoutes,
+    group: "Preferences"
+  },
+  {
     title: "Audit Logging",
     path: "/audit/:id?",
     url: "/audit",
@@ -383,6 +407,55 @@ export const routes: MainRoute[] = [
     title: "Automation",
     path: "/automation",
     url: "/automation",
+    main: Automation,
+    group: "Preferences"
+  },
+  {
+    title: "Import templates",
+    path: "/automation/import-templates",
+    url: "/automation/import-templates",
+    main: Automation,
+    group: "Preferences"
+  },
+  {
+    title: "Export templates",
+    path: "/automation/export-templates",
+    url: "/automation/export-templates",
+    main: Automation,
+    group: "Preferences"
+  },
+  {
+    title: "Message templates",
+    path: "/automation/email-templates",
+    url: "/automation/email-templates",
+    main: Automation,
+    group: "Preferences"
+  },
+  {
+    title: "PDF backgrounds",
+    path: "/automation/pdf-backgrounds",
+    url: "/automation/pdf-backgrounds",
+    main: Automation,
+    group: "Preferences"
+  },
+  {
+    title: "PDF reports",
+    path: "/automation/pdf-reports",
+    url: "/automation/pdf-reports",
+    main: Automation,
+    group: "Preferences"
+  },
+  {
+    title: "Integrations",
+    path: "/automation/integrations",
+    url: "/automation/integrations",
+    main: Automation,
+    group: "Preferences"
+  },
+  {
+    title: "Scripts",
+    path: "/automation/script",
+    url: "/automation/script",
     main: Automation,
     group: "Preferences"
   },
