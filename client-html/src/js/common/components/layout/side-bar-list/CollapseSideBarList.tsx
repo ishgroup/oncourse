@@ -168,8 +168,11 @@ const CollapseMenuListBase = React.memo<Props>(
     }, [search, data, activeFiltersConditions]);
 
     useEffect(() => {
-      if (history.location.pathname === basePath.substring(0, basePath.length - 1) && filtered.length) {
+      if (history.location.pathname.replaceAll('/', '') === basePath.replaceAll('/', '') && filtered.length) {
         history.push(linkCondition ? linkCondition(filtered[0]) : basePath + filtered[0].id);
+        if (collapsed) setCollapsed(false);
+      } else if (history.location.pathname.replaceAll('/', '').includes(basePath.replaceAll('/', ''))) {
+        if (collapsed) setCollapsed(false);
       }
     }, [history.location.pathname, basePath, linkCondition, filtered]);
 
