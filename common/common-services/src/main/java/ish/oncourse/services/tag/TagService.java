@@ -47,7 +47,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	 */
 	@Override
 	public Tag getTagGroupByName(String name) {
-		final List<Tag> tags = findByQualifier(getSiteQualifier().andExp(Tag.NAME.eq(name)).andExp(
+		final List<Tag> tags = findByQualifier(getSiteQualifier().andExp(Tag.NAME.eq(name).orExp(Tag.SHORT_NAME.eq(name))).andExp(
 				Tag.IS_TAG_GROUP.eq(Boolean.TRUE)));
 		return (tags.size() > 0) ? tags.get(0) : null;
 	}
