@@ -7,6 +7,7 @@ configurations {
 
 ext {
 	tapestryVersion = '5.5.0'
+	adminCxfVersion = '2.6.6'
 }
 
 dependencies {
@@ -39,13 +40,13 @@ dependencies {
 		exclude group: 'ish.oncourse.willow'
 	}
 
-	implementation ('org.apache.cxf:cxf-rt-frontend-jaxws:2.6.6') {
+	implementation ("org.apache.cxf:cxf-rt-frontend-jaxws:$adminCxfVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
 
-	implementation 'org.apache.cxf:cxf-rt-ws-security:2.6.6'
-	implementation 'org.apache.cxf:cxf-rt-transports-http:2.6.6'
+	implementation "org.apache.cxf:cxf-rt-ws-security:$adminCxfVersion"
+	implementation "org.apache.cxf:cxf-rt-transports-http:$adminCxfVersion"
 	implementation 'xalan:xalan:2.7.2'
 	implementation 'wsdl4j:wsdl4j:1.6.3'
 
