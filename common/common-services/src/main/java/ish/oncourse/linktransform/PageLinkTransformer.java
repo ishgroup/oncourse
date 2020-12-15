@@ -400,6 +400,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
     }
 
     private boolean isCheckoutRedirect() {
+		if (requestGlobals.getHTTPServletRequest() == null) {
+			return false;
+		}
 		String query = requestGlobals.getHTTPServletRequest().getQueryString();
 		return query != null && query.contains(CHECKOUT_STATUS) && query.contains(CHECKOUT_SESSION_ID);
 
