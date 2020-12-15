@@ -161,7 +161,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       const { contact, isPayer, checkItems = true } = action.payload;
       const contacts = [...state.contacts, { ...contact }];
 
-      const items = [...state.items].filter(i => !(contact.isCompany && i.type === "course")).filter(i => i.type !== "voucher");
+      const items = [...state.items].filter(i => !(contact.isCompany && i.type === "course") && i.type !== "voucher");
 
       if (!checkItems) {
         items.forEach(i => {

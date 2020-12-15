@@ -101,6 +101,25 @@ export const processCheckoutContactId = (contactId, onSelectHandler, dispatch) =
     .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to get related contact"));
 };
 
+export const mapPlainCourseFromUrlId = (plainCourse, plainClass): CheckoutCourse => ({
+  ...plainCourse,
+  checked: true,
+  paymentPlans: [],
+  priceExTax: 0,
+  tax: 0,
+  taxAmount: 0,
+  type: "course",
+  courseId: plainCourse.id,
+  id: uniqid(),
+  price: plainClass.price,
+  priceOverriden: null,
+  discount: null,
+  discounts: [],
+  discountExTax: 0,
+  studyReason: "Not stated",
+  class: { ...plainClass }
+});
+
 export const processCheckoutCourseClassId = (
   courseClassId,
   onSelectHandler,
@@ -130,24 +149,8 @@ export const processCheckoutCourseClassId = (
 
       onSelectHandler(plainCourse, "course", true);
 
-      // @ts-ignore
-      const updatedCourse: CheckoutCourse = {
-        ...plainCourse,
-        paymentPlans: [],
-        priceExTax: 0,
-        tax: 0,
-        taxAmount: 0,
-        type: "course",
-        courseId: plainCourse.id,
-        id: uniqid(),
-        price: plainClass.price,
-        priceOverriden: null,
-        discount: null,
-        discounts: [],
-        discountExTax: 0,
-        studyReason: "Not stated",
-        class: { ...plainClass }
-      };
+      const updatedCourse = mapPlainCourseFromUrlId(plainCourse, plainClass);
+
       addSelectedItem(updatedCourse);
       updateSelectedClass(updatedCourse);
       getClassPaymentPlans(updatedCourse);
