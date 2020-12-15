@@ -5,7 +5,6 @@
 
 import React, { useCallback, useEffect } from "react";
 import {
-  Category,
   Contact,
   ProductItem, ProductItemPayment,
   ProductItemStatus,
@@ -20,7 +19,6 @@ import FormField from "../../../../common/components/form/form-fields/FormField"
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { getMainRouteUrl } from "../../../../routes/routesMapping";
 import { State } from "../../../../reducers/state";
 import {
   clearContacts, clearContactsSearch, getContacts, setContactsSearch
@@ -30,6 +28,7 @@ import Uneditable from "../../../../common/components/form/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { contactLabelCondition } from "../../contacts/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { buildUrl, productUrl } from "../utils";
 
 interface SalesGeneralViewProps {
   classes?: any;
@@ -55,19 +54,6 @@ const nameLabel = (type: ProductType) => {
       return "Voucher name";
     default:
       return "Product name";
-  }
-};
-
-const buildUrl = (id: number | string, category: Category) => getMainRouteUrl(category) + `/${id}`;
-
-const productUrl = (productItem: ProductItem) => {
-  switch (productItem.productType) {
-    case ProductType.Membership:
-      return buildUrl(productItem.productId, "Memberships");
-    case ProductType.Voucher:
-      return buildUrl(productItem.productId, "Voucher Types");
-    default:
-      return undefined;
   }
 };
 
@@ -125,7 +111,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
   }, [getContacts]);
   const contactUrl = buildUrl(redeemableById, "Contacts");
 
-  const formatSaleDate = useCallback(value => formatDate(new Date(value), EEE_D_MMM_YYYY), []);
+  const formatSaleDate = useCallback(value => (value ? formatDate(new Date(value), EEE_D_MMM_YYYY) : null), []);
 
   const openLink = useCallback(() => {
     openInternalLink(contactUrl);

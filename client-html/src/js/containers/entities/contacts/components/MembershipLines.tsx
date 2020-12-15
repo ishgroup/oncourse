@@ -8,34 +8,58 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid/Grid";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
+import { buildUrl, productUrl } from "../../sales/utils";
 
-const MembershipHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
-  const { row } = props;
-
-  return (
-    <div className="w-100 d-grid gridTemplateColumns-1fr">
-      <div>
-        <Typography variant="subtitle2" noWrap>
-          {row.name}
-        </Typography>
-      </div>
+export const MembershipHeader: React.FunctionComponent<any> = ({ row }) => (
+  <div className="w-100 d-grid gridTemplateColumns-1fr">
+    <div>
+      <Typography variant="subtitle2" noWrap>
+        {row.productName}
+      </Typography>
     </div>
-  );
-});
+  </div>
+);
 
-export const MembershipHeader = MembershipHeaderBase;
-
-export const MembershipContent: React.FunctionComponent<any> = React.memo((props: any) => {
-  const { row, item } = props;
-
+export const MembershipContent: React.FunctionComponent<any> = ({ row, item, twoColumn }) => {
+  const gridSpacing = twoColumn ? 4 : 6;
   return (
     <Grid container>
-      <Grid item xs={12}>
-        <Uneditable value={row.name} label="Name" url={`/sale/${row.id}`} />
+      <Grid item xs={gridSpacing}>
+        <Uneditable
+          value={row.productName}
+          label="Membership name"
+          url={productUrl(row)}
+        />
       </Grid>
-      <Grid item xs={12}>
-        <FormField type="date" name={`${item}.expiryDate`} label="Expires" disabled />
+      <Grid item xs={gridSpacing}>
+        <Uneditable
+          value={row.purchasedByName}
+          label="Purchased by"
+          url={buildUrl(row.purchasedById, "Contacts")}
+        />
+      </Grid>
+      <Grid item xs={gridSpacing}>
+        <FormField type="date" name={`${item}.purchasedOn`} label="Purchased on" disabled />
+      </Grid>
+      <Grid item xs={gridSpacing}>
+        <FormField type="date" name={`${item}.validFrom`} label="Valid from" disabled />
+      </Grid>
+      <Grid item xs={gridSpacing}>
+        <FormField type="date" name={`${item}.expiresOn`} label="Valid to" disabled />
+      </Grid>
+      <Grid item xs={gridSpacing}>
+        <Uneditable
+          value={row.purchasePrice}
+          label="Purchase price"
+          money
+        />
+      </Grid>
+      <Grid item xs={gridSpacing}>
+        <Uneditable
+          value={row.status}
+          label="Status"
+        />
       </Grid>
     </Grid>
-  );
-});
+);
+};

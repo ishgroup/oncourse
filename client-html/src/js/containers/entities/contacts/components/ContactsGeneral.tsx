@@ -676,6 +676,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             FieldsContent={MembershipContent}
             HeaderContent={MembershipHeader}
             syncErrors={syncErrors}
+            twoColumn={twoColumn}
             accordion
           />
         </Grid>

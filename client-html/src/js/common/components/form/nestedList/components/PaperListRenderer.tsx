@@ -123,7 +123,11 @@ class PaperPanel extends PureComponent<PaperPanelProps, PaperPanelState> {
       if (caption.length === panelCaptionMaximumLength) {
         return caption;
       }
-      const newCaption = caption + panelItems.find(el => el.id === pi).description + (i < items.length - 1 ? ", " : "");
+      const panelItem = panelItems.find(el => el.id === pi);
+
+      const newCaption = panelItem
+        ? caption + panelItem.description + (i < items.length - 1 ? ", " : "")
+        : "";
       if (newCaption.length > panelCaptionMaximumLength) {
         return newCaption.substr(0, panelCaptionMaximumLength - 3) + "...";
       }

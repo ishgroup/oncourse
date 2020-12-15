@@ -192,9 +192,9 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
             if (result.before(membership.createdOn)) {
                 result = membership.createdOn
             }
-            dateToValue(result)
+            return dateToValue(result)
         }
-        null
+        return null
     }
 
     private static Long getPurchasedBy(ProductTypeDTO productTypeDTO, ProductItem productItem) {
