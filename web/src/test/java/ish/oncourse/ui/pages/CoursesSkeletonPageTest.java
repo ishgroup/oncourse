@@ -12,11 +12,13 @@ import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.test.PageTester;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
+@Ignore
 public class CoursesSkeletonPageTest extends ServiceTest {
 
 	private static Logger logger = LogManager.getLogger();
