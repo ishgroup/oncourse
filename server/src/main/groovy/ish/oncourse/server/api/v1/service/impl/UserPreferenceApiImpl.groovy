@@ -23,16 +23,11 @@ import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.api.v1.model.UserPreferenceDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.UserPreferenceApi
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.ContactDuplicate
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.preference.UserPreferenceService
 import static ish.oncourse.server.preference.UserPreferenceService.JOIN_DELIMETER
 import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.services.ISystemUserService
-import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
-import org.apache.commons.lang3.StringUtils
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
@@ -41,17 +36,20 @@ import javax.ws.rs.core.Response
 class UserPreferenceApiImpl implements UserPreferenceApi {
 
 
-    private static final List<CategoryDTO> ALWAYS_AVAILABLE = [CategoryDTO.CONTACTS, CategoryDTO.STUDENTS, CategoryDTO.TUTORS, CategoryDTO.COMPANIES, CategoryDTO.COURSES, CategoryDTO.CLASSES, CategoryDTO.UNITS_OF_COMPETENCY, CategoryDTO.QUALIFICATIONS,
-                                                               CategoryDTO.TRAINEESHIP_COURSES, CategoryDTO.TRAINEESHIPS,
-                                                               CategoryDTO.SITES, CategoryDTO.ROOMS, CategoryDTO.DOCUMENTS, CategoryDTO.TAGS, CategoryDTO.SALES, CategoryDTO.MEMBERSHIPS, CategoryDTO.PRODUCTS, CategoryDTO.VOUCHER_TYPES,
-                                                               CategoryDTO.ASSESSMENT_TASKS,
-                                                               CategoryDTO.CHANGE_MY_PASSWORD, CategoryDTO.ONCOURSE_NEWS, CategoryDTO.SEND_SUPPORT_REQUEST_, CategoryDTO.RELEASE_NOTES, CategoryDTO.COMMUNITY_SUPPORT, CategoryDTO.DOCUMENTATION, CategoryDTO.AUTOMATION]
+    private static final List<CategoryDTO> ALWAYS_AVAILABLE = [CategoryDTO.CONTACTS, CategoryDTO.STUDENTS, CategoryDTO.TUTORS, CategoryDTO.COMPANIES, CategoryDTO.COURSES, CategoryDTO.CLASSES,
+                                                               CategoryDTO.UNITS_OF_COMPETENCY, CategoryDTO.QUALIFICATIONS, CategoryDTO.TRAINEESHIP_COURSES, CategoryDTO.TRAINEESHIPS,
+                                                               CategoryDTO.SITES, CategoryDTO.ROOMS, CategoryDTO.DOCUMENTS, CategoryDTO.TAGS, CategoryDTO.SALES, CategoryDTO.MEMBERSHIPS,
+                                                               CategoryDTO.PRODUCTS, CategoryDTO.VOUCHER_TYPES, CategoryDTO.ASSESSMENT_TASKS, CategoryDTO.CHANGE_MY_PASSWORD,
+                                                               CategoryDTO.ONCOURSE_NEWS, CategoryDTO.SEND_SUPPORT_REQUEST_, CategoryDTO.RELEASE_NOTES, CategoryDTO.COMMUNITY_SUPPORT, CategoryDTO.DOCUMENTATION,
+                                                               CategoryDTO.AUTOMATION, CategoryDTO.IMPORT_TEMPLATES, CategoryDTO.EXPORT_TEMPLATES, CategoryDTO.MESSAGE_TEMPLATES, CategoryDTO.SCRIPTS,
+                                                               CategoryDTO.PDF_BACKGROUNDS, CategoryDTO.PDF_REPORTS, CategoryDTO.INTEGRATIONS, CategoryDTO.TUTOR_PAY_RATES,
+                                                               CategoryDTO.DATA_COLLECTION_FORMS, CategoryDTO.DATA_COLLECTION_RULES]
 
-    private static final List<CategoryDTO> PERMISSIBLE_CATEGORIES = [CategoryDTO.CHECKOUT_QUICK_ENROL_, CategoryDTO.CERTIFICATES, CategoryDTO.WAITING_LISTS, CategoryDTO.ENROLMENTS, CategoryDTO.INVOICES, CategoryDTO.PAYMENTS_IN,
+    private static final List<CategoryDTO> PERMISSIBLE_CATEGORIES = [CategoryDTO.CHECKOUT_QUICK_ENROL_, CategoryDTO.CERTIFICATES, CategoryDTO.WAITING_LISTS, CategoryDTO.ENROLMENTS, CategoryDTO.INVOICES,
                                                                      CategoryDTO.PAYMENTS_OUT, CategoryDTO.ACCOUNTS, CategoryDTO.TRANSACTIONS, CategoryDTO.TUTOR_PAY, CategoryDTO.DEPOSIT_BANKING,
-                                                                     CategoryDTO.DISCOUNTS, CategoryDTO.CORPORATE_PASS, CategoryDTO.STUDENT_FEEDBACK,
-                                                                     CategoryDTO.EXPORT_AVETMISS_8_,
-                                                                     CategoryDTO.APPLICATIONS, CategoryDTO.BANKING_DEPOSITS, CategoryDTO.MESSAGES, CategoryDTO.FINALISE_PERIOD, CategoryDTO.OUTCOMES, CategoryDTO.AUDIT_LOGGING, CategoryDTO.FUNDING_CONTRACT,
+                                                                     CategoryDTO.DISCOUNTS, CategoryDTO.CORPORATE_PASS, CategoryDTO.STUDENT_FEEDBACK, CategoryDTO.AUDIT_LOGGING,
+                                                                     CategoryDTO.EXPORT_AVETMISS_8_, CategoryDTO.PAYMENTS_IN, CategoryDTO.FUNDING_CONTRACT,
+                                                                     CategoryDTO.APPLICATIONS, CategoryDTO.BANKING_DEPOSITS, CategoryDTO.MESSAGES, CategoryDTO.FINALISE_PERIOD, CategoryDTO.OUTCOMES,
                                                                      CategoryDTO.TIMETABLE, CategoryDTO.PRIOR_LEARNINGS, CategoryDTO.BATCH_PAYMENT_IN ]
 
 
