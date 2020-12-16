@@ -14,9 +14,9 @@ import { areEqual } from "react-window";
 import { format } from "date-fns";
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import CreditCard from "@material-ui/icons/CreditCard";
 import Grid from "@material-ui/core/Grid";
@@ -137,7 +137,7 @@ const ContactItem = memo<ContactItemProps>(({
       ref={forwardedRef}
       className="p-0-5"
     >
-      <ExpansionPanel
+      <Accordion
         expanded={expanded || item.processing}
         onChange={() => setExpanded(!expanded)}
         TransitionProps={{
@@ -150,7 +150,7 @@ const ContactItem = memo<ContactItemProps>(({
         }}
 
       >
-        <ExpansionPanelSummary
+        <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           classes={{
           root: clsx("m-0", classes.panelSummary),
@@ -213,8 +213,8 @@ const ContactItem = memo<ContactItemProps>(({
             </div>
 
           </Grid>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        </AccordionSummary>
+        <AccordionDetails>
           <Grid container>
             {item.items.map((i, index) => (
               <Grid key={i.id} item xs={12} className={clsx("d-flex", classes.tableTab)}>
@@ -263,8 +263,8 @@ const ContactItem = memo<ContactItemProps>(({
               </Grid>
             </Grid>
           </Grid>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        </AccordionDetails>
+      </Accordion>
     </div>
 );
 }, areEqual);

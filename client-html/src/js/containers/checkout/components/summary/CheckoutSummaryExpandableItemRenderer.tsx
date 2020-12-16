@@ -9,11 +9,11 @@ import { change } from "redux-form";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Chip from "@material-ui/core/Chip";
 import Tooltip from "@material-ui/core/Tooltip";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Grid from "@material-ui/core/Grid";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
 import FormField from "../../../../common/components/form/form-fields/FormField";
@@ -191,14 +191,14 @@ export const SummaryItemRow = React.memo<any>(props => {
   }, [item, listIndex, header]);
 
   return isProduct ? headerContent : (
-    <ExpansionPanel
+    <Accordion
       expanded={expanded}
       onChange={handleChange}
       classes={{ root: classes.summaryPanelRoot, expanded: classes.panelExpanded }}
       className={clsx(classes.panel, classes.tableTab)}
 
     >
-      <ExpansionPanelSummary
+      <AccordionSummary
         classes={{
           root: classes.expansionSummaryRoot,
           content: classes.expansionSummaryContent,
@@ -207,13 +207,13 @@ export const SummaryItemRow = React.memo<any>(props => {
         expandIcon={<ExpandMoreIcon />}
       >
         {headerContent}
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
+      </AccordionSummary>
+      <AccordionDetails>
         <Grid container>
           {bodyContent}
         </Grid>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
   );
 });
 
@@ -270,12 +270,12 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
 
   return (
     <div className={classes.root}>
-      <ExpansionPanel
+      <Accordion
         expanded={expanded}
         onChange={handleChange}
         className={classes.panel}
       >
-        <ExpansionPanelSummary className={classes.summaryExpansionPanel} expandIcon={<ExpandMoreIcon />}>
+        <AccordionSummary className={classes.summaryExpansionPanel} expandIcon={<ExpandMoreIcon />}>
           <Grid container className="centeredFlex">
             <div className="centeredFlex flex-fill">
               <div className="heading mr-2">{header}</div>
@@ -362,8 +362,8 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
             </Typography>
                 )}
           </Grid>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        </AccordionSummary>
+        <AccordionDetails>
           <Grid container>
             {items.map((item, index) => {
                   const itemOriginalPrice = originalItems.find(i => i.id === item.id).price;
@@ -432,8 +432,8 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
               </Grid>
             </Grid>
           </Grid>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        </AccordionDetails>
+      </Accordion>
     </div>
   );
 });

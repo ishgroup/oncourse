@@ -59,7 +59,6 @@ const _common = (dirname, options) => {
         path.resolve(dirname, "build/generated-sources"),
         path.resolve(dirname, "src/images")
       ],
-      alias: { 'react-dom': '@hot-loader/react-dom' },
       extensions: [".ts", ".tsx", ".js"],
       plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(dirname, './tsconfig.dev.json') })]
     },

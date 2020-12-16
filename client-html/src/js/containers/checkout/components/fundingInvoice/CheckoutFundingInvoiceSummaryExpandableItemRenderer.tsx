@@ -7,9 +7,9 @@ import React from "react";
 import { change } from "redux-form";
 import debounce from "lodash.debounce";
 import clsx from "clsx";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -37,12 +37,12 @@ const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(prop
 
   return (
     <div className={classes.root}>
-      <ExpansionPanel
+      <Accordion
         expanded={expanded}
         onChange={handleChange}
         className={classes.panel}
       >
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Grid container className="centeredFlex">
             <div className="centeredFlex flex-fill">
               <div className="heading mr-2">{header}</div>
@@ -53,8 +53,8 @@ const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(prop
               </Typography>
             )}
           </Grid>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        </AccordionSummary>
+        <AccordionDetails>
           <Grid container>
             {items && items.map((item, index) => (
               <CheckoutFundingInvoiceSummaryRow
@@ -69,8 +69,8 @@ const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(prop
               />
             ))}
           </Grid>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        </AccordionDetails>
+      </Accordion>
     </div>
   );
 });

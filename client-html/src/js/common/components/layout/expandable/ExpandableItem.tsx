@@ -4,11 +4,11 @@
  */
 
 import React from "react";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Collapse from "@material-ui/core/Collapse";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { AppTheme } from "../../../../model/common/Theme";
@@ -70,7 +70,7 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
 } = props;
 
   return (
-    <ExpansionPanel
+    <Accordion
       expanded={expanded}
       TransitionProps={{ unmountOnExit: true, mountOnEnter: true }}
       classes={{
@@ -79,7 +79,7 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
           && clsx(classes.expansionPanelRoot, keepPaper ? classes.expansionPanelPaper : classes.expansionPanelNoPaper)
       }}
     >
-      <ExpansionPanelSummary
+      <AccordionSummary
         classes={{
           root: classes.expansionPanelSummayRoot,
           content: classes.summaryContent,
@@ -96,11 +96,11 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
         <div className="flex-fill" />
 
         {buttonsContent}
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails onClick={stopEventPropagation} className={classes.expansionPanelDetails}>
+      </AccordionSummary>
+      <AccordionDetails onClick={stopEventPropagation} className={classes.expansionPanelDetails}>
         {detailsContent}
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
   );
 };
 export default withStyles(styles)(ExpandableItem);

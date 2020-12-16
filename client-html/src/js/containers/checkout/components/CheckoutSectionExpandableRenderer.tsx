@@ -7,10 +7,10 @@ import React from "react";
 import clsx from "clsx";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Accordion from "@material-ui/core/Accordion";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { AppTheme } from "../../../model/common/Theme";
@@ -73,7 +73,7 @@ const CheckoutSectionExpandableRenderer = React.memo<Props>(props => {
   }, []);
 
   return (
-    <ExpansionPanel
+    <Accordion
       expanded={expanded || false}
       onChange={handleExpanded}
       TransitionProps={{ mountOnEnter: true }}
@@ -81,7 +81,7 @@ const CheckoutSectionExpandableRenderer = React.memo<Props>(props => {
       classes={{ root: classes.expansionPanelRoot }}
       disabled={disabled}
     >
-      <ExpansionPanelSummary
+      <AccordionSummary
         classes={{
           root: classes.expansionPanelSummaryRoot,
           content: clsx(classes.expansionPanelSummaryContent, showArrow && expanded && "selectedItemArrow"),
@@ -92,15 +92,15 @@ const CheckoutSectionExpandableRenderer = React.memo<Props>(props => {
         <div className={clsx(classes.headerRoot, "centeredFlex")}>
           <div className="heading flex-fill">{title}</div>
         </div>
-      </ExpansionPanelSummary>
+      </AccordionSummary>
       {children && (
-        <ExpansionPanelDetails className="p-0">
+        <AccordionDetails className="p-0">
           <Card classes={{ root: classes.fieldCardRoot }} elevation={0}>
             <CardContent classes={{ root: classes.contentRoot }}>{children}</CardContent>
           </Card>
-        </ExpansionPanelDetails>
+        </AccordionDetails>
       )}
-    </ExpansionPanel>
+    </Accordion>
   );
 });
 

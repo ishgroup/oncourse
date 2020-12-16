@@ -5,9 +5,9 @@
 
 import React, { useCallback, useMemo } from "react";
 import clsx from "clsx";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Delete from "@material-ui/icons/Delete";
@@ -198,7 +198,7 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
 
   return rowsValues.items.length || showEmpty ? (
     <div className={classes.root}>
-      <ExpansionPanel
+      <Accordion
         expanded={expanded}
         onChange={handleChange}
         className={classes.panel}
@@ -207,7 +207,7 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
           mountOnEnter: true
         }}
       >
-        <ExpansionPanelSummary
+        <AccordionSummary
           classes={{
             root: classes.panelSumRoot,
             focused: classes.panelSumFocus
@@ -239,8 +239,8 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
               </>
             )}
           </Grid>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        </AccordionSummary>
+        <AccordionDetails>
           <Grid container>
             {rowsValues.items.map((item, i) => (
               <BudgetItemRow
@@ -278,8 +278,8 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
               <Grid item xs={1} className="pt-1 summaryTopBorder" />
             </Grid>
           </Grid>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        </AccordionDetails>
+      </Accordion>
     </div>
   ) : null;
 };

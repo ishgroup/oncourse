@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from "@material-ui/core";
+import { ExpansionPanel, AccordionSummary, AccordionDetails } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import DragIndicator from "@material-ui/icons/DragIndicator";
 import Typography from "@material-ui/core/Typography";
@@ -88,7 +88,7 @@ const CardBase = props => {
       //   ) as any
       // }
     >
-      <ExpansionPanelSummary
+      <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         classes={{
           root: classes.summaryRoot,
@@ -119,8 +119,8 @@ const CardBase = props => {
             </IconButton>
           )}
         </div>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails
+      </AccordionSummary>
+      <AccordionDetails
         onClick={onDetailsClick}
         classes={{
           root: clsx("relative", classes.panelDetailsRoot)
@@ -128,7 +128,7 @@ const CardBase = props => {
         className={noPadding ? "p-0" : classes.panelDetailsPadding}
       >
         {children}
-      </ExpansionPanelDetails>
+      </AccordionDetails>
     </ExpansionPanel>
   );
 };

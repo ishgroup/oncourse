@@ -17,10 +17,10 @@ import { Dispatch } from "redux";
 import { change } from "redux-form";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Accordion from "@material-ui/core/ExpansionPanel";
 import { EnrolmentStudyReason } from "@api/model";
 import debounce from "lodash.debounce";
 import { showConfirm } from "../../../../../common/actions";
@@ -133,13 +133,13 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
   );
 
   return (
-    <ExpansionPanel
+    <Accordion
       expanded={expanded}
       onChange={handleChange}
       classes={{ root: classes.summaryPanelRoot, expanded: classes.panelExpanded }}
       className={clsx(classes.panel, classes.tableTab)}
     >
-      <ExpansionPanelSummary
+      <AccordionSummary
         classes={{
           root: classes.expansionSummaryRoot,
           content: classes.expansionSummaryContent,
@@ -172,8 +172,8 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
             {!expanded && formatCurrency(item.price ? item.price : "0.00", currencySymbol)}
           </Grid>
         </Grid>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
+      </AccordionSummary>
+      <AccordionDetails>
         <Grid container>
           {item.class.isVet && (
             <Grid item xs={12}>
@@ -233,8 +233,8 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
             </Grid>
           </Grid>
         </Grid>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
   );
 });
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Provider } from "react-redux";
 import { configure } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import { StateObservable } from "redux-observable";
 import { Subject } from "rxjs";
 import TestStore from "../js/constants/Store";

@@ -5,9 +5,9 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 import clsx from "clsx";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Launch from "@material-ui/icons/Launch";
@@ -76,7 +76,7 @@ const BudgetInvoiceItemRenderer = React.memo<Partial<BudgetExpandableProps>>(
 
     return rowsValues.items.length ? (
       <div className={classes.root}>
-        <ExpansionPanel
+        <Accordion
           expanded={expanded}
           onChange={handleChange}
           className={classes.panel}
@@ -85,7 +85,7 @@ const BudgetInvoiceItemRenderer = React.memo<Partial<BudgetExpandableProps>>(
             mountOnEnter: true
           }}
         >
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Grid container direction="row">
               <Grid item xs={5}>
                 <div className="secondaryHeading">{header}</div>
@@ -104,8 +104,8 @@ const BudgetInvoiceItemRenderer = React.memo<Partial<BudgetExpandableProps>>(
                 </>
               )}
             </Grid>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          </AccordionSummary>
+          <AccordionDetails>
             <Grid container>
               {rowsValues.items.map((item, i) => (
                 <BudgetInvoiceItemRow key={i} value={item.value} currencySymbol={currencySymbol} classes={classes} />
@@ -124,8 +124,8 @@ const BudgetInvoiceItemRenderer = React.memo<Partial<BudgetExpandableProps>>(
                 <Grid item xs={1} className="pt-1 summaryTopBorder" />
               </Grid>
             </Grid>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+          </AccordionDetails>
+        </Accordion>
       </div>
     ) : null;
   }

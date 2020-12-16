@@ -4,9 +4,9 @@
  */
 
 import React, { useCallback, useEffect, useState } from "react";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 import Delete from "@material-ui/icons/Delete";
@@ -106,14 +106,14 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
         const field = fields.get(index);
 
         return (
-          <ExpansionPanel
+          <Accordion
             key={field.id || index}
             expanded={Boolean(fieldsWithError[index]) || Boolean(expanded[index])}
             onChange={() => onChangeBase(index)}
             defaultExpanded={!field.id}
             TransitionProps={{ unmountOnExit: true }}
           >
-            <ExpansionPanelSummary
+            <AccordionSummary
               classes={{
                 expandIcon: classes.expandIcon,
                 content: classes.summaryContent
@@ -132,10 +132,10 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
                   <Delete fontSize="inherit" />
                 </IconButton>
               )}
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails className="pb-0">
+            </AccordionSummary>
+            <AccordionDetails className="pb-0">
               <FieldsContent item={item} classes={classes} row={field} rows={rows} twoColumn={twoColumn} />
-            </ExpansionPanelDetails>
+            </AccordionDetails>
             {onViewMore && (
               <ExpansionPanelActions>
                 {field.id && (
@@ -149,7 +149,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
                 )}
               </ExpansionPanelActions>
             )}
-          </ExpansionPanel>
+          </Accordion>
         );
       })}
     </div>

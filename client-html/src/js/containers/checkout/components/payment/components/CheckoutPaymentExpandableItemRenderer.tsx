@@ -6,9 +6,9 @@
 import IconButton from "@material-ui/core/IconButton";
 import Share from "@material-ui/icons/Share";
 import React from "react";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import Accordion from "@material-ui/core/ExpansionPanel";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -117,7 +117,7 @@ const CheckoutPaymentExpandableItemRenderer = React.memo<Props>(props => {
   return (
     <>
       <div className={classes.successExpansionPanelRoot}>
-        <ExpansionPanel
+        <Accordion
           expanded={expanded}
           onChange={handleChange}
           className="box-shadow-none w-100"
@@ -126,14 +126,14 @@ const CheckoutPaymentExpandableItemRenderer = React.memo<Props>(props => {
             mountOnEnter: true
           }}
         >
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Grid container className="centeredFlex">
               <div className="centeredFlex flex-fill">
                 <div className="heading mr-2">{header}</div>
               </div>
             </Grid>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          </AccordionSummary>
+          <AccordionDetails>
             {children || (
               <Grid container>
                 {items && items.filter(item => item.checked).map((item, i) => (
@@ -154,8 +154,8 @@ const CheckoutPaymentExpandableItemRenderer = React.memo<Props>(props => {
                 ))}
               </Grid>
             )}
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+          </AccordionDetails>
+        </Accordion>
       </div>
     </>
   );

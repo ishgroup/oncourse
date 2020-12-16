@@ -474,14 +474,16 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             filterOptions={filterItems}
             ListboxComponent={ListBoxAdapter as any}
             PopperComponent={PopperAdapter as any}
-            renderInput={params => (
+            renderInput={({
+             InputLabelProps, InputProps, inputProps, ...params
+            }) => (
               <FormControl
                 {...params}
                 error={meta && meta.invalid}
               >
                 {labelContent && <InputLabel>{labelContent}</InputLabel>}
                 <Input
-                  {...params.InputProps}
+                  {...InputProps}
                   placeholder={placeholder}
                   autoFocus={inline}
                   onChange={handleInputChange}
@@ -494,7 +496,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                     underline: fieldClasses.underline
                   }}
                   inputProps={{
-                    ...params.inputProps,
+                    ...inputProps,
                     value: searchValue
                   }}
                 />
