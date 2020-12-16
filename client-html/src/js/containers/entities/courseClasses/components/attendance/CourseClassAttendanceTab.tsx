@@ -796,6 +796,8 @@ const CourseClassAttendanceTab = React.memo<Props>(
         stepItems,
         stepItems.length,
         values.studentAttendance,
+        values.tutorAttendance,
+        values.trainingPlan,
         animateDays
       ]
     );
@@ -920,6 +922,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
         form,
         modulesToAttend,
         selectedItems,
+        values.trainingPlan,
         values.sessions,
         values.sessions && values.sessions.length,
         values.assessments,
