@@ -79,4 +79,21 @@ class AqlTestIT extends CayenneIshTestCase {
         assertEquals(1, contacts.size())
         assertEquals("1abc", contacts.get(0).uniqueCode)
     }
+
+    @Test
+    void testMessagesIsEmpty() {
+        CompilationResult result = aqlService
+                .compile("messages is empty",
+                        Contact.class, cayenneContext)
+        assertTrue(result.getCayenneExpression().isPresent())
+        assertTrue(result.getErrors().isEmpty())
+
+        List<Contact> contacts = ObjectSelect.query(Contact)
+                .where(result.getCayenneExpression().get())
+                .orderBy(Contact.UNIQUE_CODE.asc())
+                .select(cayenneContext)
+        assertEquals(2, contacts.size())
+        assertEquals("2abc", contacts.get(0).uniqueCode)
+        assertEquals("2abcd", contacts.get(1).uniqueCode)
+    }
 }
