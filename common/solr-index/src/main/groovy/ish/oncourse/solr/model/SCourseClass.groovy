@@ -62,4 +62,6 @@ class SCourseClass {
 
     @Field('siteId')
     List<Long> siteId = []
+    
+    Integer duration
 }

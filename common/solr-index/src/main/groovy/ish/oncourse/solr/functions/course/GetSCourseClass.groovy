@@ -19,6 +19,7 @@ import static ish.oncourse.linktransform.PageIdentifier.Render
 import static ish.oncourse.solr.ReindexConstants.*
 import static ish.oncourse.solr.SolrProperty.WEBAPP_LOCATION
 import static ish.oncourse.solr.functions.course.DateFunctions.toTimeZone
+import static java.time.temporal.ChronoUnit.DAYS
 
 /**
  * User: akoiro
@@ -43,7 +44,8 @@ class GetSCourseClass {
         scc.classEnd = getEndDate(type)
         scc.classCode = "${context.courseClass.course.code}-${context.courseClass.code}"
         scc.price = context.courseClass.feeExGst.toPlainString()
-
+        scc.duration = getDuration(type)
+        
         List<SSession> sessions = toSSessions(context.courseClass, this.context.sessions)
         scc.when.addAll(sessions.collect {"${it.dayName} ${it.dayType} ${it.dayTime}"}.unique())
         
@@ -66,6 +68,20 @@ class GetSCourseClass {
         }
         
         return scc
+    }
+    
+    private Integer getDuration(ClassType type) {
+        switch (type) {
+            case ClassType.distantLearning:
+                return -1
+            case ClassType.withOutSessions:
+                return null
+            case ClassType.regular:
+                //Note that formula is (end-start+1)
+                return DAYS.between(context.courseClass.startDate.toLocalDate(),  context.courseClass.endDate.toLocalDate()).intValue() + 1
+            default:
+                throw new IllegalArgumentException("Unsupported type:  $type ")
+        }
     }
 
     private Date getStartDate(ClassType type) {

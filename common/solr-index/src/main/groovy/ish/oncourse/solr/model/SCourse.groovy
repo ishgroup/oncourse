@@ -70,7 +70,10 @@ class SCourse {
 
     @Field('tagId')
     List<Long> tagId = []
-
+    
+    @Field('duration')
+    List<Integer> duration = []
+    
     List<SCourseClass> classes = []
 
 }

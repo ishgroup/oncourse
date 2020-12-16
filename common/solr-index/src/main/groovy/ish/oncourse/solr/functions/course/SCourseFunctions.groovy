@@ -89,6 +89,9 @@ class SCourseFunctions {
                 if (!sc.classEnd.contains(scc.classEnd)) sc.classEnd.add(scc.classEnd)
                 if (!sc.price.contains(scc.price)) sc.price.add(scc.price)
                 if (!sc.classCode.contains(scc.classCode)) sc.classCode.add(scc.classCode)
+                if (scc.duration && !(scc.duration in sc.duration)) {
+                    sc.duration << scc.duration
+                }
                 addSessions(sc, scc)
                 addContacts(sc, scc)
                 addSites(sc, scc)
