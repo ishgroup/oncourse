@@ -37,7 +37,7 @@ const styles = (theme: AppTheme) =>
 
 const FilterItem = props => {
   const {
-    classes, label, checked, onChange, index, onDelete, id, deletable, rootEntity, expression
+    classes, label, checked, onChange, index, onDelete, id, isPrivate, deletable, rootEntity, expression
   } = props;
 
   return (
@@ -71,7 +71,7 @@ const FilterItem = props => {
 
       {deletable && (
         <Tooltip title="Delete Filter">
-          <IconButton className={classes.deleteButton} onClick={() => onDelete(id, rootEntity, checked)}>
+          <IconButton className={classes.deleteButton} onClick={() => onDelete(id, rootEntity, checked, isPrivate)}>
             <Delete fontSize="inherit" color="secondary" />
           </IconButton>
         </Tooltip>

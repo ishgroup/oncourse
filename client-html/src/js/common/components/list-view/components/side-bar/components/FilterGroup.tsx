@@ -14,8 +14,8 @@ interface Props {
 
 const FilterGroupComp = (props: Props) => {
   const {
- title, onUpdate, filters, groupIndex, deleteFilter, rootEntity 
-} = props;
+   title, onUpdate, filters, groupIndex, deleteFilter, rootEntity
+  } = props;
 
   return (
     <>
@@ -27,6 +27,7 @@ const FilterGroupComp = (props: Props) => {
           id={i.id}
           checked={i.active}
           expression={i.expression}
+          isPrivate={i.showForCurrentOnly}
           onDelete={deleteFilter}
           rootEntity={rootEntity}
           index={groupIndex + "/" + index}
