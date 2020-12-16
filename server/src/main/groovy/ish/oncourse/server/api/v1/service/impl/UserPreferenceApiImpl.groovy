@@ -41,19 +41,19 @@ class UserPreferenceApiImpl implements UserPreferenceApi {
                                                                CategoryDTO.SITES, CategoryDTO.ROOMS, CategoryDTO.DOCUMENTS, CategoryDTO.TAGS, CategoryDTO.SALES, CategoryDTO.MEMBERSHIPS,
                                                                CategoryDTO.PRODUCTS, CategoryDTO.VOUCHER_TYPES, CategoryDTO.ASSESSMENT_TASKS, CategoryDTO.CHANGE_MY_PASSWORD,
                                                                CategoryDTO.ONCOURSE_NEWS, CategoryDTO.SEND_SUPPORT_REQUEST_, CategoryDTO.RELEASE_NOTES, CategoryDTO.COMMUNITY_SUPPORT, CategoryDTO.DOCUMENTATION,
-                                                               CategoryDTO.AUTOMATION, CategoryDTO.IMPORT_TEMPLATES, CategoryDTO.EXPORT_TEMPLATES, CategoryDTO.MESSAGE_TEMPLATES, CategoryDTO.SCRIPTS,
-                                                               CategoryDTO.PDF_BACKGROUNDS, CategoryDTO.PDF_REPORTS, CategoryDTO.INTEGRATIONS, CategoryDTO.TUTOR_PAY_RATES,
-                                                               CategoryDTO.DATA_COLLECTION_FORMS, CategoryDTO.DATA_COLLECTION_RULES]
+                                                               CategoryDTO.AUTOMATION]
 
     private static final List<CategoryDTO> PERMISSIBLE_CATEGORIES = [CategoryDTO.CHECKOUT_QUICK_ENROL_, CategoryDTO.CERTIFICATES, CategoryDTO.WAITING_LISTS, CategoryDTO.ENROLMENTS, CategoryDTO.INVOICES,
                                                                      CategoryDTO.PAYMENTS_OUT, CategoryDTO.ACCOUNTS, CategoryDTO.TRANSACTIONS, CategoryDTO.TUTOR_PAY, CategoryDTO.DEPOSIT_BANKING,
                                                                      CategoryDTO.DISCOUNTS, CategoryDTO.CORPORATE_PASS, CategoryDTO.STUDENT_FEEDBACK, CategoryDTO.AUDIT_LOGGING,
                                                                      CategoryDTO.EXPORT_AVETMISS_8_, CategoryDTO.PAYMENTS_IN, CategoryDTO.FUNDING_CONTRACT,
                                                                      CategoryDTO.APPLICATIONS, CategoryDTO.BANKING_DEPOSITS, CategoryDTO.MESSAGES, CategoryDTO.FINALISE_PERIOD, CategoryDTO.OUTCOMES,
-                                                                     CategoryDTO.TIMETABLE, CategoryDTO.PRIOR_LEARNINGS, CategoryDTO.BATCH_PAYMENT_IN ]
+                                                                     CategoryDTO.TIMETABLE, CategoryDTO.PRIOR_LEARNINGS, CategoryDTO.BATCH_PAYMENT_IN, CategoryDTO.IMPORT_TEMPLATES, CategoryDTO.EXPORT_TEMPLATES, CategoryDTO.MESSAGE_TEMPLATES, CategoryDTO.SCRIPTS,
+                                                                     CategoryDTO.PDF_BACKGROUNDS, CategoryDTO.PDF_REPORTS ]
 
 
-    private static final List<CategoryDTO> ADMIN_ONLY = [CategoryDTO.PREFERENCES, CategoryDTO.SECURITY]
+    private static final List<CategoryDTO> ADMIN_ONLY = [CategoryDTO.PREFERENCES, CategoryDTO.SECURITY, CategoryDTO.INTEGRATIONS,
+                                                         CategoryDTO.DATA_COLLECTION_FORMS, CategoryDTO.DATA_COLLECTION_RULES, CategoryDTO.TUTOR_PAY_RATES]
 
     @Inject
     private UserPreferenceService usePrefService

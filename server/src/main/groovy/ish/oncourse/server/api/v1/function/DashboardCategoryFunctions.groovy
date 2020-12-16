@@ -49,8 +49,12 @@ class DashboardCategoryFunctions {
                     (TIMETABLE): { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.SESSION, Mask.VIEW)},
                     (PRIOR_LEARNINGS): { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.CONTACT, Mask.VIEW)},
                     (BATCH_PAYMENT_IN): { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.INVOICE, Mask.CREATE)},
-
-
+                    (IMPORT_TEMPLATES): { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.SPECIAL_IMPORT, Mask.VIEW)},
+                    (EXPORT_TEMPLATES): { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.EXPORT_TEMPLATE, Mask.VIEW)},
+                    (MESSAGE_TEMPLATES): { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.EMAIL_TEMPLATE, Mask.VIEW)},
+                    (SCRIPTS): { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.SCRIPT_TEMPLATE, Mask.VIEW)},
+                    (PDF_BACKGROUNDS): { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.REPORT, Mask.VIEW)},
+                    (PDF_REPORTS): { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.REPORT, Mask.VIEW)}
             ]
 
     static boolean isPermitted(CategoryDTO category, IPermissionService permissionService) {
