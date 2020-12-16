@@ -153,10 +153,10 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
             }
         } else if (entity instanceof EntityRelation) {
             if (propertyName.equals("fromEntityIdentifier")) {
-                return ((EntityRelation) entity).getFromEntityIdentifier().getDatabaseValue();
+                return ((EntityRelation) entity).getFromEntityIdentifier();
             }
             if (propertyName.equals("toEntityIdentifier")) {
-                return ((EntityRelation) entity).getToEntityIdentifier().getDatabaseValue();
+                return ((EntityRelation) entity).getToEntityIdentifier();
             }
 
         } else if (entity instanceof CourseClass) {
