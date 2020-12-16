@@ -98,3 +98,52 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: QueuedTransaction
             validate: true
+
+  - changeSet:
+      id: 50-5
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+          - changeSetExecuted:
+              id: 50-5
+              author: rostislav
+              changeLogFile: database/50.upgrade.yml
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.AddToQueueRecords",
+          "entityName": "Contact",
+          "selectQuery": "select id, willowId from Contact where isMale = 2"
+        }
+  - changeSet:
+      id: 56-7
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+          - changeSetExecuted:
+              id: 56-7
+              author: rostislav
+              changeLogFile: database/56.upgrade.yml
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.AddToQueueRecords",
+          "entityName": "EntityRelationType",
+          "selectQuery": "select id, willowId from EntityRelationType"
+        }
+  - changeSet:
+      id: 56-8
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+          - changeSetExecuted:
+              id: 56-8
+              author: rostislav
+              changeLogFile: database/56.upgrade.yml
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.AddToQueueRecords",
+          "entityName": "EntityRelation",
+          "selectQuery": "select id, willowId from EntityRelation"
+        }
