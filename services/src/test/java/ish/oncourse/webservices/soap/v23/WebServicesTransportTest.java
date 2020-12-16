@@ -1,12 +1,9 @@
-package ish.oncourse.webservices.soap.v21;
+package ish.oncourse.webservices.soap.v23;
 
-import ish.oncourse.webservices.soap.v21.ReplicationFault;
-import ish.oncourse.webservices.soap.v21.ReplicationPortType;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.PortHelper;
+
+import ish.oncourse.webservices.soap.v23.ReplicationPortType;
 import ish.oncourse.webservices.util.Sent2WillowInterceptor;
-import ish.oncourse.webservices.util.SupportedVersions;
-import ish.oncourse.webservices.v21.stubs.replication.*;
+import ish.oncourse.webservices.v23.stubs.replication.*;
 import ish.oncourse.webservices.v7.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v7.stubs.reference.ReferenceStub;
 import org.apache.cxf.endpoint.Client;
@@ -36,20 +33,20 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 	@Test
 	public void testReplicationPortType_authenticate() throws Exception {
 
-		ish.oncourse.webservices.soap.v21.ReplicationPortType replicationPortType = getReplicationPortType();
+		ish.oncourse.webservices.soap.v23.ReplicationPortType replicationPortType = getReplicationPortType();
 		replicationPortType.authenticate(getSecurityCode(), getCommunicationKey());
 	}
 
 	@Test
 	public void testReplicationPortType_confirmExecution() throws Exception {
 
-		ish.oncourse.webservices.soap.v21.ReplicationPortType replicationPortType = getReplicationPortType();
+		ish.oncourse.webservices.soap.v23.ReplicationPortType replicationPortType = getReplicationPortType();
 		replicationPortType.confirmExecution(getCommunicationKey(), "confirmExecution");
 	}
 
 	@Test
 	public void testReplicationPortType_getRecords() throws Exception {
-		ish.oncourse.webservices.soap.v21.ReplicationPortType replicationPortType = getReplicationPortType();
+		ish.oncourse.webservices.soap.v23.ReplicationPortType replicationPortType = getReplicationPortType();
 		ReplicationRecords replicationRecords = replicationPortType.getRecords();
 		assertNotNull(replicationRecords);
 		TransactionGroup transactionGroup = replicationRecords.getGroups().get(0);
@@ -58,7 +55,7 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 
 	@Test
 	public void testReplicationPortType_sendRecords() throws Exception {
-		ish.oncourse.webservices.soap.v21.ReplicationPortType replicationPortType = getReplicationPortType();
+		ish.oncourse.webservices.soap.v23.ReplicationPortType replicationPortType = getReplicationPortType();
 		ReplicationRecords replicationRecords = new ReplicationRecords();
 		ReplicationResult replicationResult = replicationPortType.sendRecords(replicationRecords);
 		assertNotNull(replicationResult);
@@ -67,7 +64,7 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 
 	@Test
 	public void testReplicationPortType_sendResults() throws Exception {
-		ish.oncourse.webservices.soap.v21.ReplicationPortType replicationPortType = getReplicationPortType();
+		ish.oncourse.webservices.soap.v23.ReplicationPortType replicationPortType = getReplicationPortType();
 		ReplicationResult replicationRecords = new ReplicationResult();
 		int result = replicationPortType.sendResults(replicationRecords);
 		assertEquals(Integer.MAX_VALUE,result);
@@ -94,41 +91,10 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 	}
 
 	@Test
-	public void test_processRefund() throws Throwable {
-		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
-		TransactionGroup transactionGroupResult = getPaymentPortType().processRefund(transactionGroup);
-		assertTransactionGroup(transactionGroupResult);
-	}
-
-	@Test
-	public void test_getPaymentStatus() throws JAXBException, ish.oncourse.webservices.soap.v21.ReplicationFault, InterruptedException {
-		TransactionGroup transactionGroupResult = getPaymentPortType().getPaymentStatus("PaymentStatus");
-		assertTransactionGroup(transactionGroupResult);
-	}
-
-	@Test
-	public void test_processPayment() throws Throwable {
-		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
-		GenericParametersMap  parametersMap = PortHelper.createParametersMap(SupportedVersions.V21);
-		TransactionGroup transactionGroupResult = getPaymentPortType().processPayment(transactionGroup, (ParametersMap) parametersMap);
-		assertTransactionGroup(transactionGroupResult);
-	}
-
-	@Test
 	public void test_getVouchers() throws Throwable {
 		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
 		TransactionGroup transactionGroupResult = getPaymentPortType().getVouchers(transactionGroup);
 		assertTransactionGroup(transactionGroupResult);
 	}
-
-    @Test
-    public void test() {
-        try {
-            getPaymentPortType().getPaymentStatus("PaymentStatus");
-            assertTrue(sent2WillowInterceptor.isSent());
-        } catch (ReplicationFault replicationFault) {
-            throw new RuntimeException(replicationFault);
-        }
-    }
-
+	
 }

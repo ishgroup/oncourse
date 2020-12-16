@@ -1,7 +1,7 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.webservices.soap.v21;
+package ish.oncourse.webservices.soap.v23;
 
 import ish.common.types.*;
 import ish.math.Money;
@@ -12,7 +12,7 @@ import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.v21.stubs.replication.*;
+import ish.oncourse.webservices.v23.stubs.replication.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

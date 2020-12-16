@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.soap.v21;
+package ish.oncourse.webservices.soap.v23;
 
 import ish.oncourse.model.College;
 import ish.oncourse.webservices.soap.TestConstants;

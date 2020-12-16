@@ -1,5 +1,6 @@
-package ish.oncourse.webservices.soap.v21;
+package ish.oncourse.webservices.soap.v23;
 
+import ish.oncourse.webservices.soap.v21.AbstractTransportTest;
 import ish.oncourse.webservices.soap.v21.PaymentPortType;
 import ish.oncourse.webservices.soap.v21.ReplicationFault;
 import ish.oncourse.webservices.v21.stubs.replication.ParametersMap;
@@ -14,29 +15,29 @@ import static org.junit.Assert.assertNotNull;
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v21.PaymentPortType", serviceName = "ReplicationService", portName = "PaymentPortType", targetNamespace = "http://repl.v21.soap.webservices.oncourse.ish/")
 public class TestPaymentPortTypeImpl implements PaymentPortType {
 	@Override
-	public TransactionGroup processRefund(@WebParam(partName = "paymentOut", name = "paymentOut", targetNamespace = "") TransactionGroup transactionGroup) throws ish.oncourse.webservices.soap.v21.ReplicationFault {
+	public TransactionGroup processRefund(@WebParam(partName = "paymentOut", name = "paymentOut", targetNamespace = "") TransactionGroup transactionGroup) throws ReplicationFault {
 		return transactionGroup;
 	}
 
 	@Override
-	public TransactionGroup getPaymentStatus(@WebParam(partName = "sessionId", name = "sessionId", targetNamespace = "") String s) throws ish.oncourse.webservices.soap.v21.ReplicationFault {
+	public TransactionGroup getPaymentStatus(@WebParam(partName = "sessionId", name = "sessionId", targetNamespace = "") String s) throws ReplicationFault {
 		assertEquals("PaymentStatus",s);
 
 		try {
 			return AbstractTransportTest.createTransactionGroupWithAllStubs();
 		} catch (Throwable throwable) {
-			throw new ish.oncourse.webservices.soap.v21.ReplicationFault("",throwable);
+			throw new ReplicationFault("",throwable);
 		}
 	}
 
 	@Override
-	public TransactionGroup processPayment(@WebParam(partName = "transaction", name = "transaction", targetNamespace = "") TransactionGroup transactionGroup, @WebParam(partName = "paymentModel", name = "paymentModel", targetNamespace = "") ParametersMap parametersMap) throws ish.oncourse.webservices.soap.v21.ReplicationFault {
+	public TransactionGroup processPayment(@WebParam(partName = "transaction", name = "transaction", targetNamespace = "") TransactionGroup transactionGroup, @WebParam(partName = "paymentModel", name = "paymentModel", targetNamespace = "") ParametersMap parametersMap) throws ReplicationFault {
 		assertNotNull(parametersMap);
 		return transactionGroup;
 	}
 
 	@Override
-	public TransactionGroup getVouchers(@WebParam(partName = "transactionRequest", name = "transactionRequest", targetNamespace = "") TransactionGroup group) throws ish.oncourse.webservices.soap.v21.ReplicationFault {
+	public TransactionGroup getVouchers(@WebParam(partName = "transactionRequest", name = "transactionRequest", targetNamespace = "") TransactionGroup group) throws ReplicationFault {
 		return group;
 	}
 

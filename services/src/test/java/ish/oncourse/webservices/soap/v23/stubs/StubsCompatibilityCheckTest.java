@@ -1,8 +1,8 @@
-package ish.oncourse.webservices.soap.v21.stubs;
+package ish.oncourse.webservices.soap.v23.stubs;
 
 import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v21.stubs.replication.*;
+import ish.oncourse.webservices.v23.stubs.replication.*;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -97,7 +97,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		contactParameters.add(new ReplicationStubFieldParameter("givenName", String.class));
 		contactParameters.add(new ReplicationStubFieldParameter("homePhoneNumber", String.class));
 		contactParameters.add(new ReplicationStubFieldParameter("company", Boolean.class));
-		contactParameters.add(new ReplicationStubFieldParameter("male", Boolean.class));
+		contactParameters.add(new ReplicationStubFieldParameter("gender", Integer.class));
 		contactParameters.add(new ReplicationStubFieldParameter("marketingViaEmailAllowed", Boolean.class));
 		contactParameters.add(new ReplicationStubFieldParameter("marketingViaPostAllowed", Boolean.class));
 		contactParameters.add(new ReplicationStubFieldParameter("marketingViaSMSAllowed", Boolean.class));

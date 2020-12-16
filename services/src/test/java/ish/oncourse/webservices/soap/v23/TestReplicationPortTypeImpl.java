@@ -1,10 +1,7 @@
-package ish.oncourse.webservices.soap.v21;
+package ish.oncourse.webservices.soap.v23;
 
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.soap.v21.AuthFailure;
-import ish.oncourse.webservices.soap.v21.ReplicationFault;
-import ish.oncourse.webservices.soap.v21.ReplicationPortType;
-import ish.oncourse.webservices.v21.stubs.replication.*;
+import ish.oncourse.webservices.v23.stubs.replication.*;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -19,7 +16,7 @@ import static org.junit.Assert.assertNotNull;
 public class TestReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Override
-	public ReplicationResult sendRecords(@WebParam(partName = "records", name = "records", targetNamespace = "") ReplicationRecords replicationRecords) throws ish.oncourse.webservices.soap.v21.ReplicationFault {
+	public ReplicationResult sendRecords(@WebParam(partName = "records", name = "records", targetNamespace = "") ReplicationRecords replicationRecords) throws ReplicationFault {
 		assertNotNull(replicationRecords);
 		ReplicationResult replicationResult = new ReplicationResult();
 		replicationResult.getReplicatedRecord().add((ReplicatedRecord) ReplicationUtils.toReplicatedRecord(new SiteStub(), true));
@@ -33,13 +30,13 @@ public class TestReplicationPortTypeImpl implements ReplicationPortType {
 	}
 
 	@Override
-	public ReplicationRecords getRecords() throws ish.oncourse.webservices.soap.v21.ReplicationFault {
+	public ReplicationRecords getRecords() throws ReplicationFault {
 
 		TransactionGroup transactionGroup = null;
 		try {
 			transactionGroup = AbstractTransportTest.createTransactionGroupWithAllStubs();
 		} catch (Throwable throwable) {
-			throw new ish.oncourse.webservices.soap.v21.ReplicationFault("",throwable);
+			throw new ReplicationFault("",throwable);
 		}
 
 		ReplicationRecords replicationRecords = new ReplicationRecords();
@@ -54,12 +51,12 @@ public class TestReplicationPortTypeImpl implements ReplicationPortType {
 	}
 
 	@Override
-	public TransactionGroup getRecordByInstruction(String s) throws ish.oncourse.webservices.soap.v21.ReplicationFault {
+	public TransactionGroup getRecordByInstruction(String s) throws ReplicationFault {
 		TransactionGroup transactionGroup = null;
 		try {
 			transactionGroup = AbstractTransportTest.createTransactionGroupWithAllStubs();
 		} catch (Throwable throwable) {
-			throw new ish.oncourse.webservices.soap.v21.ReplicationFault("",throwable);
+			throw new ReplicationFault("",throwable);
 		}
 		return transactionGroup;
 	}
