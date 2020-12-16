@@ -96,31 +96,4 @@ class AqlTestIT extends CayenneIshTestCase {
         assertEquals("2abc", contacts.get(0).uniqueCode)
         assertEquals("2abcd", contacts.get(1).uniqueCode)
     }
-
-    @Test
-    void testStudentEnrollmentsIsEmpty() {
-        CompilationResult result1 = aqlService
-                .compile("studentEnrolments is empty",
-                        Contact.class, cayenneContext)
-        assertTrue(result1.getCayenneExpression().isPresent())
-        assertTrue(result1.getErrors().isEmpty())
-
-        List<Contact> contacts = ObjectSelect.query(Contact)
-                .where(result1.getCayenneExpression().get())
-                .orderBy(Contact.UNIQUE_CODE.asc())
-                .select(cayenneContext)
-        assertEquals(2, contacts.size())
-
-        CompilationResult result2 = aqlService
-                .compile("student.enrolments is empty",
-                        Contact.class, cayenneContext)
-        assertTrue(result2.getCayenneExpression().isPresent())
-        assertTrue(result2.getErrors().isEmpty())
-
-        List<Contact> contacts2 = ObjectSelect.query(Contact)
-                .where(result2.getCayenneExpression().get())
-                .orderBy(Contact.UNIQUE_CODE.asc())
-                .select(cayenneContext)
-        assertEquals(contacts, contacts2)
-    }
 }
