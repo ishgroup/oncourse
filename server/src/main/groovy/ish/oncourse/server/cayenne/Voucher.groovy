@@ -13,6 +13,7 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.ConfirmationStatus
 import ish.common.types.PaymentSource
+import ish.common.types.ProductStatus
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
@@ -105,6 +106,14 @@ class Voucher extends _Voucher {
 	protected void postAdd() {
 		super.postAdd()
 		setConfirmationStatus(ConfirmationStatus.NOT_SENT)
+	}
+
+	@Override
+	protected void preUpdate() {
+		super.preUpdate()
+		if (isFullyRedeemed()) {
+			setStatus(ProductStatus.REDEEMED)
+		}
 	}
 
 	/**
