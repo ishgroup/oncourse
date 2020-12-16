@@ -51,6 +51,10 @@ public class SolrQueryBuilder {
 	static final String FILTER_TEMPLATE_tagId = "tagId:%d";
 	static final String FILTER_TEMPLATE_siteId = "siteId:%d";
 	static final String FILTER_TEMPLATE_tutorId = "tutorId:%d";
+	static final String FILTER_TEMPLATE_duration_eq = "duration:%d";
+	static final String FILTER_TEMPLATE_duration_lt = "duration:[* TO %d]";
+	static final String FILTER_TEMPLATE_duration_gt = "duration:[%d TO *]";
+	static final String FILTER_TEMPLATE_duration_self_paced= "duration:\"-1\"";
 	static final String FILTER_TEMPLATE_between = FIELD_class_start + ":[%s TO %s]";
 
 	static final String FILTER_TEMPLATE_geofilt = "{!geofilt score=distance sfield=course_loc pt=%s d=%s}";
@@ -134,7 +138,9 @@ public class SolrQueryBuilder {
 
 		appendFilterTutorId(filters);
 		appendAnd(filters);
-
+		
+		appendFilterDuration(filters);
+		appendAnd(filters);
 
 		clearLastAnd(filters);
 
@@ -165,6 +171,27 @@ public class SolrQueryBuilder {
 		if (params.getTutorId() != null) {
 			Long tutorId = params.getTutorId();
 			filters.add(String.format(FILTER_TEMPLATE_tutorId, tutorId));
+		}
+	}
+
+	private void appendFilterDuration(ArrayList<String> filters) {
+		Duration duration = params.getDuration();
+
+		if (duration != null) {
+			if (duration.isSelfPaced()) {
+				filters.add(FILTER_TEMPLATE_duration_self_paced);
+			} else {
+				switch (duration.getCondition()) {
+					case QE:
+						filters.add(String.format(FILTER_TEMPLATE_duration_eq, duration.getDays()));
+						break;
+					case LT:
+						filters.add(String.format(FILTER_TEMPLATE_duration_lt, duration.getDays()));
+					case GT:
+						filters.add(String.format(FILTER_TEMPLATE_duration_gt, duration.getDays()));
+						break;
+				}
+			}
 		}
 	}
 

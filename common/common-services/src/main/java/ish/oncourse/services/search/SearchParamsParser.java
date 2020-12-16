@@ -6,6 +6,7 @@ import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.courseclass.GetHideOnWebClassAge;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.solr.query.Duration;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.solr.query.Suburb;
 import org.apache.commons.lang3.StringUtils;
@@ -114,6 +115,10 @@ public class SearchParamsParser
                     case tutorId:
                         searchParams.setTutorId(parseLong(parameter));
                         value = searchParams.getTutorId();
+                        break;
+                    case duration:
+                        searchParams.setDuration(Duration.valueOf(parameter));
+                        value = searchParams.getDuration();
                         break;
                     default:
                         logger.warn("Parser is not defined for SearchParam {}", name);
