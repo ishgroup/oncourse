@@ -52,6 +52,7 @@ class OperatorConverter implements Converter<AqlParser.OperatorPredicateContext>
         converters.put(TypeClassifier.AUDIT, new AuditOpConverter());
         converters.put(TypeClassifier.SCRIPT, new ScriptOpConverter());
         converters.put(TypeClassifier.SYSTEM_USER, new SystemUserOpConverter());
+        converters.put(TypeClassifier.PERSISTENT, new PersistentOpConverter());
     }
 
     @Override
@@ -73,6 +74,27 @@ class OperatorConverter implements Converter<AqlParser.OperatorPredicateContext>
             ctx.reportError(op.operator().start.getLine(), op.operator().start.getCharPositionInLine(),
                     "Unsupported operator '" + op.operator().getText() + "' for " + typeClassifier.getReadableName() + " type");
             return null;
+        }
+
+        // could compare with null only persistent objects
+        if(typeClassifier == TypeClassifier.PERSISTENT) {
+            if(!(op.termOp() instanceof AqlParser.SingleTermContext)) {
+                ctx.reportError(op.operator().start.getLine(), op.operator().start.getCharPositionInLine(),
+                        "Only comparison with NULL is supported for the Persistent type");
+                return null;
+            }
+            AqlParser.SingleTermContext termContext = (AqlParser.SingleTermContext) op.termOp();
+            if(!(termContext.term() instanceof AqlParser.ValueTermContext)) {
+                ctx.reportError(op.operator().start.getLine(), op.operator().start.getCharPositionInLine(),
+                        "Only comparison with NULL is supported for the Persistent type");
+                return null;
+            }
+            AqlParser.ValueTermContext valueTermContext = (AqlParser.ValueTermContext)termContext.term();
+            if(!(valueTermContext.value() instanceof AqlParser.NullContext)) {
+                ctx.reportError(op.operator().start.getLine(), op.operator().start.getCharPositionInLine(),
+                        "Only comparison with NULL is supported for the Persistent type");
+                return null;
+            }
         }
 
         return node;
@@ -348,6 +370,18 @@ class OperatorConverter implements Converter<AqlParser.OperatorPredicateContext>
                 case EQ:
                 case NE:
                     return new LazySystemUserComparisonNode(op);
+            }
+            return null;
+        }
+    }
+
+    private static class PersistentOpConverter implements Function<Op, SimpleNode> {
+        @Override
+        public SimpleNode apply(Op op) {
+            switch (op) {
+                case EQ:
+                case NE:
+                    return new LazyRelationshipComparisonNode(op);
             }
             return null;
         }

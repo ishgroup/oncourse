@@ -177,7 +177,7 @@ SEPARATOR   : '.' ;
 BooleanLiteral: 'true' | 'false';
 
 // The Null Literal
-NullLiteral: 'null';
+NullLiteral: 'null' | 'empty';
 
 Identifier: Letter LetterOrDigit*;
 fragment Letter: [a-zA-Z_];

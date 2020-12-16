@@ -644,6 +644,13 @@ class AntlrAqlServiceTest {
     }
 
     @Test
+    void testEmptyToMany() {
+        CompilationResult result = service
+                .compile("contact.address is empty", null, getMockContext())
+        assertValid("contact.address = null", result)
+    }
+
+    @Test
     void testNegativeInt() {
         CompilationResult result = service
                 .compile("contact.path = -1"
