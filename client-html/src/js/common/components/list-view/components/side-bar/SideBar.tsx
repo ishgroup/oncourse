@@ -29,8 +29,8 @@ const styles = theme =>
 
 const SideBar: React.FC<any> = props => {
   const {
- classes, onChangeFilters, filterGroups, deleteFilter, rootEntity, savingFilter, fetching
-} = props;
+   classes, onChangeFilters, filterGroups, deleteFilter, rootEntity, savingFilter, fetching
+  } = props;
 
   const hasCustomFilters = filterGroups.some(i => i.title === "Custom Filters");
 
