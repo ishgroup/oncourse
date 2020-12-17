@@ -1,7 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
     <div class="grouped-classes">
         <t:loop source="sitesMap.entrySet()" value="siteEntry">
-            <h3>${siteEntry.key}</h3>
+            <h3>
+                <a href="/site/${siteEntry.key.angelId}">${siteEntry.key.name} </a>
+            </h3>
             <t:loop source="siteEntry.value" value="courseClass">
                 <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
             </t:loop>
