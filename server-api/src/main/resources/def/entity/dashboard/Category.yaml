@@ -64,3 +64,10 @@ enum:
   - Data collection forms
   - Data collection rules
   - Tutor pay rates
+  - Holidays
+  - Payment types
+  - Tax types
+  - Concession types
+  - Contact relation types
+  - Sellable items relation types
+  - Custom fields

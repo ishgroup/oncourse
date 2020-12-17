@@ -52,8 +52,10 @@ class UserPreferenceApiImpl implements UserPreferenceApi {
                                                                      CategoryDTO.PDF_BACKGROUNDS, CategoryDTO.PDF_REPORTS ]
 
 
-    private static final List<CategoryDTO> ADMIN_ONLY = [CategoryDTO.PREFERENCES, CategoryDTO.SECURITY, CategoryDTO.INTEGRATIONS,
-                                                         CategoryDTO.DATA_COLLECTION_FORMS, CategoryDTO.DATA_COLLECTION_RULES, CategoryDTO.TUTOR_PAY_RATES]
+    private static final List<CategoryDTO> ADMIN_ONLY = [CategoryDTO.PREFERENCES, CategoryDTO.SECURITY, CategoryDTO.INTEGRATIONS, CategoryDTO.HOLIDAYS,
+                                                         CategoryDTO.DATA_COLLECTION_FORMS, CategoryDTO.DATA_COLLECTION_RULES, CategoryDTO.TUTOR_PAY_RATES,
+                                                         CategoryDTO.PAYMENT_TYPES, CategoryDTO.TAX_TYPES, CategoryDTO.CONCESSION_TYPES,
+                                                         CategoryDTO.CONTACT_RELATION_TYPES, CategoryDTO.SELLABLE_ITEMS_RELATION_TYPES, CategoryDTO.CUSTOM_FIELDS]
 
     @Inject
     private UserPreferenceService usePrefService
