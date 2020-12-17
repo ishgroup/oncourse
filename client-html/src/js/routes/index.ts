@@ -250,7 +250,7 @@ export const routes: MainRoute[] = [
     group: "Preferences"
   },
   {
-    title: "Funding contracts",
+    title: "Funding Contract",
     path: "/preferences/fundingContracts",
     url: "/preferences/fundingContracts",
     main: PreferencesApp,
