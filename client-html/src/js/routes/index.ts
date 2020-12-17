@@ -171,24 +171,88 @@ export const routes: MainRoute[] = [
   },
   {
     title: "Data collection forms",
-    path: "/preferences/collectionForms/",
-    url: "/preferences/collectionForms/",
+    path: "/preferences/collectionForms",
+    url: "/preferences/collectionForms",
     main: PreferencesApp,
     routes: preferencesRoutes,
     group: "Preferences"
   },
   {
     title: "Data collection rules",
-    path: "/preferences/collectionRules/",
-    url: "/preferences/collectionRules/",
+    path: "/preferences/collectionRules",
+    url: "/preferences/collectionRules",
     main: PreferencesApp,
     routes: preferencesRoutes,
     group: "Preferences"
   },
   {
     title: "Tutor pay rates",
-    path: "/preferences/tutorRoles/",
-    url: "/preferences/tutorRoles/",
+    path: "/preferences/tutorRoles",
+    url: "/preferences/tutorRoles",
+    main: PreferencesApp,
+    routes: preferencesRoutes,
+    group: "Preferences"
+  },
+  {
+    title: "Holidays",
+    path: "/preferences/holidays",
+    url: "/preferences/holidays",
+    main: PreferencesApp,
+    routes: preferencesRoutes,
+    group: "Preferences"
+  },
+  {
+    title: "Payment types",
+    path: "/preferences/paymentTypes",
+    url: "/preferences/paymentTypes",
+    main: PreferencesApp,
+    routes: preferencesRoutes,
+    group: "Preferences"
+  },
+  {
+    title: "Tax types",
+    path: "/preferences/taxTypes",
+    url: "/preferences/taxTypes",
+    main: PreferencesApp,
+    routes: preferencesRoutes,
+    group: "Preferences"
+  },
+  {
+    title: "Concession types",
+    path: "/preferences/concessionTypes",
+    url: "/preferences/concessionTypes",
+    main: PreferencesApp,
+    routes: preferencesRoutes,
+    group: "Preferences"
+  },
+  {
+    title: "Contact relation types",
+    path: "/preferences/contactRelationTypes",
+    url: "/preferences/contactRelationTypes",
+    main: PreferencesApp,
+    routes: preferencesRoutes,
+    group: "Preferences"
+  },
+  {
+    title: "Sellable items relation types",
+    path: "/preferences/sellableItemsRelationTypes",
+    url: "/preferences/sellableItemsRelationTypes",
+    main: PreferencesApp,
+    routes: preferencesRoutes,
+    group: "Preferences"
+  },
+  {
+    title: "Custom fields",
+    path: "/preferences/customFields",
+    url: "/preferences/customFields",
+    main: PreferencesApp,
+    routes: preferencesRoutes,
+    group: "Preferences"
+  },
+  {
+    title: "Funding contracts",
+    path: "/preferences/fundingContracts",
+    url: "/preferences/fundingContracts",
     main: PreferencesApp,
     routes: preferencesRoutes,
     group: "Preferences"
