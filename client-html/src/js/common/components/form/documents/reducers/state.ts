@@ -6,4 +6,5 @@ export interface DocumentsState {
   tags: Tag[];
   documentFile: File;
   searchDocuments: any;
+  viewDocument: boolean;
 }

@@ -96,7 +96,7 @@ const DocumentInfo = props => {
   const { classes } = props;
   return (
     <div className="flex-column flex-fill overflow-hidden pr-1">
-      <Typography className={clsx("text-truncate", classes.infoName)}>
+      <Typography className={clsx("text-truncate word-break-all", classes.infoName)}>
         {props.name}
       </Typography>
       <Typography className={classes.miniGrayText}>
@@ -115,6 +115,7 @@ interface Props {
   classes: any;
   item: Document;
   editItem: () => void;
+  viewItem: () => void;
 }
 
 class DocumentHeader extends React.PureComponent<Props, any> {
@@ -161,9 +162,9 @@ class DocumentHeader extends React.PureComponent<Props, any> {
     });
   };
 
-  openFullDocumentView = e => {
-    const { editItem } = this.props;
-    editItem();
+  openDocumentView = e => {
+    const { viewItem } = this.props;
+    viewItem();
     this.onCloseMoreMenu(e);
   };
 
@@ -266,10 +267,10 @@ class DocumentHeader extends React.PureComponent<Props, any> {
             anchorEl={openMoreMenu}
             onClose={this.onCloseMoreMenu}
           >
-            <MenuItem onClick={this.openFullDocumentView}>
+            <MenuItem onClick={this.openDocumentView}>
               Document info
             </MenuItem>
-            <MenuItem onClick={this.openFullDocumentView}>
+            <MenuItem onClick={this.openDocumentView}>
               Permissions
             </MenuItem>
             <MenuItem onClick={this.unlinkItem} className="errorColor">

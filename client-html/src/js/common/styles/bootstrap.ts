@@ -371,6 +371,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".text-pre-line": {
     whiteSpace: "pre-line"
   },
+  ".word-break-all": {
+    wordBreak: "break-all"
+  },
   ".h-100": {
     height: "100%"
   },
