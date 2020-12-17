@@ -53,7 +53,7 @@ public class TutorsDetails extends ISHCommon {
     private Integer count;
 
     @Property
-    private List<Tutor> tutors;
+    private Set<Tutor> tutors;
 
     @Property
     private Tutor tutor;
@@ -61,19 +61,19 @@ public class TutorsDetails extends ISHCommon {
     @SetupRender
     void beginRender() {
         if (tutorId != null) {
-            tutors = ObjectSelect.query(Tutor.class)
+            tutors = new HashSet<>(ObjectSelect.query(Tutor.class)
                     .where(Tutor.ANGEL_ID.eq(tutorId))
                     .and(Tutor.COLLEGE.eq(webSiteService.getCurrentCollege()))
-                    .select(cayenneService.newContext());
+                    .select(cayenneService.newContext()));
         } else if (course != null) {
             tutors = course.getCourseClasses()
                     .stream().map(CourseClass::getTutorRoles)
                     .flatMap(Collection::stream).map(TutorRole::getTutor)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
         } else if (courseClass != null) {
             tutors = courseClass.getTutorRoles()
                     .stream().map(TutorRole::getTutor)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
         } else if (tagName != null) {
             //Count can be no higher than 12 and defaults to 3 if no count is provided.
             if (count == null || count < 1 ) {
@@ -112,7 +112,7 @@ public class TutorsDetails extends ISHCommon {
                     .and(Contact.TUTOR.isNotNull())
                     .select(cayenneService.newContext())
                     .stream().map(Contact::getTutor)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
                     
         }
 
