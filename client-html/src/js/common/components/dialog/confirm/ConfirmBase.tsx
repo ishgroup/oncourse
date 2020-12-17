@@ -18,12 +18,12 @@ import { ConfirmState } from "../../../../model/common/Confirm";
 
 const ConfirmBase: React.FunctionComponent<ConfirmState> = props => {
   const {
- open, onCancel, title, confirmMessage, onConfirm, cancelButtonText, confirmButtonText
-} = props;
+   open, onCancel, title, confirmMessage, onConfirm, cancelButtonText, confirmButtonText
+  } = props;
 
   return (
     <Dialog open={open} onClose={onCancel}>
-      {title && <DialogTitle id="alert-dialog-title">{title}</DialogTitle>}
+      {title && <DialogTitle id="alert-dialog-title" className="heading">{title}</DialogTitle>}
       {confirmMessage && (
         <DialogContent>
           <DialogContentText id="alert-dialog-description">{confirmMessage}</DialogContentText>
