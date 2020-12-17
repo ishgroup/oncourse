@@ -258,13 +258,16 @@ const christmasThemePalette = {
     default: "#fff"
   },
   error: {
- light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
-},
+    light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
+  },
   text: {
     primary: "#111111",
     secondary: "#111111",
     disabled: "rgba(34, 34, 34, 0.38)",
     hint: "rgba(34, 34, 34, 0.38)"
+  },
+  action: {
+    disabled: "rgba(255, 255, 255, 0.26)"
   }
 };
 

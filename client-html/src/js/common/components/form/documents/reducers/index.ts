@@ -1,13 +1,21 @@
 import { IAction } from "../../../../actions/IshAction";
 import { DocumentsState } from "./state";
-import { CLEAR_EDITING_DOCUMENT, SET_EDITING_DOCUMENT, SET_DOCUMENT_FILE, SET_SEARCH_DOCUMENTS } from "../actions";
+import {
+  CLEAR_EDITING_DOCUMENT, SET_EDITING_DOCUMENT, SET_DOCUMENT_FILE, SET_SEARCH_DOCUMENTS
+} from "../actions";
 
 class DocumentsInitialState implements DocumentsState {
   editingFormName: null;
+
   editingDocument: null;
+
   documentFile: null;
+
   searchDocuments: null;
+
   tags: [];
+
+  viewDocument: false;
 }
 
 export const documentReducer = (state: DocumentsState = new DocumentsInitialState(), action: IAction<any>): any => {

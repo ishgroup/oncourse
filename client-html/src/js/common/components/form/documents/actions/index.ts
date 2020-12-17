@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { _toRequestType } from "../../../../actions/ActionUtils";
 import { Document } from "@api/model";
+import { _toRequestType } from "../../../../actions/ActionUtils";
 import { DocumentExtended } from "../../../../../model/common/Documents";
 
 export const CREATE_DOCUMENT = _toRequestType("post/list/entity/document");
@@ -27,7 +27,9 @@ export const SET_SEARCH_DOCUMENTS = "set/searchDocuments";
 
 export const createDocument = (document: Document, form: string, documentPath: string, index: number) => ({
   type: CREATE_DOCUMENT,
-  payload: { document, form, documentPath, index }
+  payload: {
+    document, form, documentPath, index
+  }
 });
 
 export const createAvatarDocument = (document: DocumentExtended, form: string, documentPath: string) => ({
@@ -52,12 +54,14 @@ export const searchDocumentByName = (documentName: string, editingFormName: stri
 
 export const clearEditingDocument = () => ({
   type: CLEAR_EDITING_DOCUMENT,
-  payload: { editingDocument: null, editingFormName: null, documentFile: null }
+  payload: {
+    editingDocument: null, editingFormName: null, documentFile: null, viewDocument: false
+  }
 });
 
-export const setEditingDocument = (editingDocument: Document, editingFormName: string) => ({
+export const setEditingDocument = (editingDocument: Document, editingFormName: string, viewDocument: boolean = false) => ({
   type: SET_EDITING_DOCUMENT,
-  payload: { editingDocument, editingFormName }
+  payload: { editingDocument, editingFormName, viewDocument }
 });
 
 export const setDocumentFile = (documentFile: File) => ({

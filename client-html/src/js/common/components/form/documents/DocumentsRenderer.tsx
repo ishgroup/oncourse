@@ -159,7 +159,7 @@ class DocumentsRenderer extends React.PureComponent<any, DocumentsRendererState>
 
   componentDidUpdate(prevProps) {
     const {
-     editingDocument, editingFormName, form, fields, tags
+     editingDocument, editingFormName, form, fields, tags, viewDocument
     } = this.props;
 
     if (!prevProps.editingDocument && editingDocument && editingFormName === form) {
@@ -177,7 +177,7 @@ class DocumentsRenderer extends React.PureComponent<any, DocumentsRendererState>
         this.setState({
           editingDocumentIndex: isNew ? allDocuments.length : matchDocIndex,
           editingDocumentPath: isNew ? `${fields.name}[${allDocuments.length}]` : `${fields.name}[${matchDocIndex}]`,
-          editingDocumentType: "edit",
+          editingDocumentType: viewDocument ? "view" : "edit",
           openAddDialog: false,
           isNewEditingDocument: isNew
         });
@@ -215,6 +215,12 @@ class DocumentsRenderer extends React.PureComponent<any, DocumentsRendererState>
     const { setEditingDocument, form } = this.props;
 
     setEditingDocument(document, form);
+  };
+
+  setViewItem = (document: Document) => {
+    const { setEditingDocument, form } = this.props;
+
+    setEditingDocument(document, form, true);
   };
 
   searchDocumentItem = (inputDocument: File) => {
@@ -318,7 +324,14 @@ class DocumentsRenderer extends React.PureComponent<any, DocumentsRendererState>
         <Grid container spacing={3} wrap="wrap">
           {renderedItems && renderedItems.map((item, index) => (
             <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id} className={classes.documentGridItem}>
-              <DocumentItem entity={entity} index={index} item={item} editItem={this.setEditingItem} unlink={this.unlinkDocument} />
+              <DocumentItem
+                entity={entity}
+                index={index}
+                item={item}
+                editItem={this.setEditingItem}
+                viewItem={this.setViewItem}
+                unlink={this.unlinkDocument}
+              />
             </Grid>
           ))}
         </Grid>
@@ -330,17 +343,21 @@ class DocumentsRenderer extends React.PureComponent<any, DocumentsRendererState>
 const mapStateToProps = (state: State) => ({
   editingDocument: state.documents.editingDocument,
   editingFormName: state.documents.editingFormName,
+  viewDocument: state.documents.viewDocument,
   tags: state.tags.entityTags["Document"]
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     clearEditingDocument: () => dispatch(clearEditingDocument()),
     clearSearchDocuments: () => dispatch(setSearchDocuments(null)),
-    setEditingDocument: (document: Document, editingFormName: string) => dispatch(setEditingDocument(document, editingFormName)),
+    setEditingDocument: (document: Document, editingFormName: string, viewDocument: boolean = false) =>
+      dispatch(setEditingDocument(document, editingFormName, viewDocument)),
     setDocumentFile: (file: File) => dispatch(setDocumentFile(file)),
     getDocumentTags: () => dispatch(getEntityTags("Document")),
-    searchExistingDocument: (inputDocument: File, editingFormName: string) => dispatch(searchDocumentByHash(inputDocument, editingFormName)),
-    createDocument: (document: Document, form: string, documentPath: string, index: number) => dispatch(createDocument(document, form, documentPath, index))
+    searchExistingDocument: (inputDocument: File, editingFormName: string) =>
+      dispatch(searchDocumentByHash(inputDocument, editingFormName)),
+    createDocument: (document: Document, form: string, documentPath: string, index: number) =>
+      dispatch(createDocument(document, form, documentPath, index))
   });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DocumentsRenderer));

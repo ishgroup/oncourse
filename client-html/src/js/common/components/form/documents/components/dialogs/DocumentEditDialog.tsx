@@ -37,7 +37,7 @@ import Button from "../../../../buttons/Button";
 import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "../../../../../utils/dates/format";
 import { getAvailableOptions, getDocumentShareSummary, getDocumentVersion } from "../utils";
 
-export type DocumentDialogType = "edit" | "create";
+export type DocumentDialogType = "edit" | "create" | "view";
 
 interface Props {
   opened: boolean;
@@ -101,7 +101,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
     dispatch(change(form, `${itemPath}.access`, val ? "Link" : "Private"));
   }
 
-  renderCreateType(lastVersion, validUrl) {
+  renderCreateType(lastVersion, validUrl, readOnly: boolean = false) {
     const {
       classes, item, itemPath, tags, onClose, entity
     } = this.props;
@@ -141,6 +141,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
               name={`${itemPath}.name`}
               label="Name"
               required
+              disabled={readOnly}
             />
           </div>
         </div>
@@ -170,6 +171,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
                     <Switch
                       checked={tutorsAndStudents}
                       onChange={this.onPortalSharingChange}
+                      disabled={readOnly}
                     />
                   )}
                   label="Shared in portal"
@@ -182,43 +184,43 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
               )}
               title="Skills onCourse"
             />
-            {!contactRelated
-                && (
-                <>
-                  {availableOptions["Tutor&Student"]
-                  && (
-                    <Collapse in={tutorsAndStudents}>
-                      <CardContent>
-                        <FormControlLabel
-                          classes={{
-                            root: "checkbox",
-                            label: "ml-0"
-                          }}
-                          control={(
-                            <StyledCheckbox
-                              checked={tutorsAndStudents}
-                              onChange={this.onTutorsChange}
-                            />
-                          )}
-                          label="Show to tutors"
-                        />
-                        <FormControlLabel
-                          classes={{
-                            root: "checkbox"
-                          }}
-                          control={(
-                            <StyledCheckbox
-                              checked={item.access === "Tutors and enrolled students"}
-                              onChange={this.onTutorsAndStudentsChange}
-                            />
-                          )}
-                          label="Show to students"
-                        />
-                      </CardContent>
-                    </Collapse>
-                  )}
-                </>
-)}
+            {!contactRelated && (
+              <>
+                {availableOptions["Tutor&Student"] && (
+                  <Collapse in={tutorsAndStudents}>
+                    <CardContent>
+                      <FormControlLabel
+                        classes={{
+                          root: "checkbox",
+                          label: "ml-0"
+                        }}
+                        control={(
+                          <StyledCheckbox
+                            checked={tutorsAndStudents}
+                            onChange={this.onTutorsChange}
+                            disabled={readOnly}
+                          />
+                        )}
+                        label="Show to tutors"
+                      />
+                      <FormControlLabel
+                        classes={{
+                          root: "checkbox"
+                        }}
+                        control={(
+                          <StyledCheckbox
+                            checked={item.access === "Tutors and enrolled students"}
+                            onChange={this.onTutorsAndStudentsChange}
+                            disabled={readOnly}
+                          />
+                        )}
+                        label="Show to students"
+                      />
+                    </CardContent>
+                  </Collapse>
+                )}
+              </>
+            )}
           </div>
         )}
 
@@ -239,6 +241,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
                   <Switch
                     checked={["Link", "Public"].includes(item.access)}
                     onChange={this.onLinkChange}
+                    disabled={readOnly}
                   />
                 )}
                 label="Shared by link"
@@ -253,37 +256,35 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
           />
         </div>
 
-        {isCourseOnly
-        && (
+        {isCourseOnly && (
           <div className="flex-fill mb-2">
             <CardHeader
               classes={{
-              root: "p-0",
-              action: "mt-0",
-              title: "heading"
-            }}
+                root: "p-0",
+                action: "mt-0",
+                title: "heading"
+              }}
               action={(
                 <FormControlLabel
                   classes={{
-                  root: "switchWrapper",
-                  label: "switchLabel"
-                }}
+                    root: "switchWrapper",
+                    label: "switchLabel"
+                  }}
                   control={(
                     <Switch
-                      checked={
-                      item.access === "Public"
-                    }
+                      checked={item.access === "Public"}
                       onChange={this.onWebsiteChange}
+                      disabled={readOnly}
                     />
-                )}
+                  )}
                   label="Shared with website visitors"
                 />
-            )}
+              )}
               avatar={(
                 <Avatar className="activeAvatar">
                   <Language />
                 </Avatar>
-            )}
+              )}
               title="Website"
             />
           </div>
@@ -295,6 +296,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
             name={`${itemPath}.tags`}
             tags={tags}
             rerenderOnEveryChange
+            disabled={readOnly}
           />
         </div>
 
@@ -306,6 +308,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
               label="Description"
               multiline
               fullWidth
+              disabled={readOnly}
             />
           </Grid>
         </Grid>
@@ -314,9 +317,11 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
           <Button variant="text" color="primary" onClick={onClose}>
             Cancel
           </Button>
-          <Button variant="text" disabled={!item.name} className="documentsSubmitButton" onClick={this.onAdd}>
-            Add
-          </Button>
+          {!readOnly && (
+            <Button variant="text" disabled={!item.name} className="documentsSubmitButton" onClick={this.onAdd}>
+              Add
+            </Button>
+          )}
         </DialogActions>
       </>
     );
@@ -513,6 +518,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
                 <div className={clsx(classes.contentWrapper, "relative overflow-hidden paperBackgroundColor")}>
                   {type === "edit" && this.renderEditType(lastVersion, validUrl)}
                   {type === "create" && this.renderCreateType(lastVersion, validUrl)}
+                  {type === "view" && this.renderCreateType(lastVersion, validUrl, true)}
                 </div>
               )}
             </>
