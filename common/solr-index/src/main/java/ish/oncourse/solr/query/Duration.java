@@ -12,7 +12,7 @@ public class Duration {
     private static final String  SELF_PACED_CONDITION = "selfpaced";
     private Integer days;
     private Condition condition;
-    private Boolean selfPaced;
+    private Boolean selfPaced = false;
 
     private Duration() {}
     

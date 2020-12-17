@@ -52,7 +52,7 @@ public class SolrQueryBuilder {
 	static final String FILTER_TEMPLATE_siteId = "siteId:%d";
 	static final String FILTER_TEMPLATE_tutorId = "tutorId:%d";
 	static final String FILTER_TEMPLATE_duration_eq = "duration:%d";
-	static final String FILTER_TEMPLATE_duration_lt = "duration:[* TO %d]";
+	static final String FILTER_TEMPLATE_duration_lt = "duration:[0 TO %d]";
 	static final String FILTER_TEMPLATE_duration_gt = "duration:[%d TO *]";
 	static final String FILTER_TEMPLATE_duration_self_paced= "duration:\"-1\"";
 	static final String FILTER_TEMPLATE_between = FIELD_class_start + ":[%s TO %s]";
