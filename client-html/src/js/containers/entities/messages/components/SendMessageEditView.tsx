@@ -232,6 +232,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
   }, [htmlRef.current]);
 
   const [preview, setPreview] = useState(null);
+  const [isMarketing, setIsMarketing] = useState(false)
 
   const [suppressed, setSuppressed] = useState({
     withdrawnStudents: false,
@@ -420,9 +421,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
           <Switch onChange={(e, v) => setSelected(prev => ({ ...prev, [recipientsName]: v }))} checked={selected[recipientsName]} />
         </div>
         <Typography variant="body2">
-          {`${totalCounter[recipientsName].total} total (${
-            totalCounter[recipientsName].withoutDestinationSize} without ${
-            isEmailView ? "email or with undeliverable email" : "mobile phone or with undeliverable mobile phone"})`}
+          {`Skipping ${totalCounter[recipientsName].withoutDestinationSize} without ${
+            isEmailView ? "email or with undeliverable email" : "mobile phone or with undeliverable mobile phone"}`}
         </Typography>
         <FormControlLabel
           className="mb-2"
@@ -524,6 +524,18 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
             {isEmailView && (
               <FormField type="text" name="fromAddress" label="From address" />
             )}
+
+            <FormControlLabel
+              className="mb-2"
+              control={(
+                <StyledCheckbox
+                  checked={isMarketing}
+                  onChange={() => setIsMarketing(!isMarketing)}
+                  color="secondary"
+                />
+              )}
+              label="This is a marketing message"
+            />
 
             <br />
 
