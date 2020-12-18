@@ -22,6 +22,7 @@ import CourseClassAssessmentService from "../components/assessments/services/Cou
 import { getClassCostFee } from "../components/budget/utils";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { TimetableSession } from "../../../../model/timetable";
+import CourseClassAttendanceService from "../components/attendance/services/CourseClassAttendanceService";
 
 export const courseClassLabelCondition = (data: any) => data && `${data["course.name"]} ${data["course.code"]}-${data.code}`;
 
@@ -320,6 +321,66 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
       }
 
       return CourseClassAssessmentService.createCourseClassAssessment(assessmentBody).then(() => {
+        unprocessedAsyncActions.splice(
+          unprocessedAsyncActions.findIndex(u => u.id === a.id),
+          1
+        );
+      });
+    })
+    .reduce(async (a, b) => {
+      await a;
+      await b();
+    }, Promise.resolve());
+
+  const tutorAttendanceActions = unprocessedAsyncActions.filter(
+    a => a.entity === "TutorAttendance" && a.method === "POST"
+  );
+
+  await tutorAttendanceActions
+    .map(a => () => {
+      const { id, tutorAttendance } = a.actionBody.payload;
+
+      return CourseClassAttendanceService.updateTutorAttendance(id, tutorAttendance).then(() => {
+        unprocessedAsyncActions.splice(
+          unprocessedAsyncActions.findIndex(u => u.id === a.id),
+          1
+        );
+      });
+    })
+    .reduce(async (a, b) => {
+      await a;
+      await b();
+    }, Promise.resolve());
+
+  const sessionModuleActions = unprocessedAsyncActions.filter(
+    a => a.entity === "SessionModule" && a.method === "POST"
+  );
+
+  await sessionModuleActions
+    .map(a => () => {
+      const { id, trainingPlans } = a.actionBody.payload;
+
+      return CourseClassAttendanceService.updateTrainingPlans(id, trainingPlans).then(() => {
+        unprocessedAsyncActions.splice(
+          unprocessedAsyncActions.findIndex(u => u.id === a.id),
+          1
+        );
+      });
+    })
+    .reduce(async (a, b) => {
+      await a;
+      await b();
+    }, Promise.resolve());
+
+  const studentAttendanceActions = unprocessedAsyncActions.filter(
+    a => a.entity === "StudentAttendance" && a.method === "POST"
+  );
+
+  await studentAttendanceActions
+    .map(a => () => {
+      const { id, studentAttendance } = a.actionBody.payload;
+
+      return CourseClassAttendanceService.updateStudentAttendance(id, studentAttendance).then(() => {
         unprocessedAsyncActions.splice(
           unprocessedAsyncActions.findIndex(u => u.id === a.id),
           1
