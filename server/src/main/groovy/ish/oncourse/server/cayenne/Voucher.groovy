@@ -108,14 +108,6 @@ class Voucher extends _Voucher {
 		setConfirmationStatus(ConfirmationStatus.NOT_SENT)
 	}
 
-	@Override
-	protected void preUpdate() {
-		super.preUpdate()
-		if (isFullyRedeemed()) {
-			setStatus(ProductStatus.REDEEMED)
-		}
-	}
-
 	/**
 	 * @return voucher code user is required to enter to use it
 	 */

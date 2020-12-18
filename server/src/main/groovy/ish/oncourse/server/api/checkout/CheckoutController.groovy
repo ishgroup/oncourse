@@ -714,6 +714,10 @@ class CheckoutController {
                         processedEnrolments.add(enrolment)
                     }
         }
+
+        if (voucher.fullyRedeemed) {
+            voucher.status = ProductStatus.REDEEMED
+        }
     }
 
 
@@ -755,6 +759,10 @@ class CheckoutController {
 
         if (vPaymentIn.amount != amountVoucher) {
             result << new CheckoutValidationErrorDTO(itemId: voucher.id, propertyName: "redeemedVouchers",  error:  "Redeemed voucher amount isn't correct.")
+        }
+
+        if (voucher.fullyRedeemed) {
+            voucher.status = ProductStatus.REDEEMED
         }
     }
 
