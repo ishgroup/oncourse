@@ -56,11 +56,14 @@ import { ScriptApiMock } from "./api/automation/ScriptApiMock";
 import { ExportTemplateApiMock } from "./api/automation/ExportTemplateApiMock";
 import { ReportApiMock } from "./api/automation/ReportApiMock";
 import { ReportOverlayApiMock } from "./api/automation/ReportOverlayApiMock";
+import { AccessApiMock } from "./api/common/AccessApiMock";
+import { EmailTemplateApiMock } from "./api/automation/EmailTemplateApiMock";
 
 export const initMockDB = () => new MockAdapter();
 
 export class MockAdapter {
   public api = new axiosMockAdapter(defaultAxios);
+
   public db: MockDB = CreateMockDB();
 
   constructor() {
@@ -91,6 +94,7 @@ export class MockAdapter {
     listApiMock.apply(this);
     filterApiMock.apply(this);
     TagApiMock.apply(this);
+    AccessApiMock.apply(this);
 
     // Dashboard
     dashboardApiMock.apply(this);
@@ -130,6 +134,7 @@ export class MockAdapter {
     ExportTemplateApiMock.apply(this);
     ReportApiMock.apply(this);
     ReportOverlayApiMock.apply(this);
+    EmailTemplateApiMock.apply(this);
 
     // Timetable
     TimetableApiMock.apply(this);
