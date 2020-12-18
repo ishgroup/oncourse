@@ -22,7 +22,7 @@ export const getFundingInvoice = (fundingInvoice: CheckoutFundingInvoiceItem): I
 export const calculateFundingInvoice = (summaryList: CheckoutSummaryListItem[]): CheckoutFundingInvoice => {
   let item: CheckoutFundingInvoiceItem = null;
   const enrolledStudents = summaryList.filter(l =>
-    l.contact.isCompany === "false"
+    !l.contact.isCompany
     && l.items.some(i => i.checked && i.type === "course" && i.class.relatedFundingSourceId !== null));
 
   if (enrolledStudents.length === 1) {
