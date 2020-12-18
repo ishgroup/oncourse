@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 58
+      author: rostislav
+      comment: set correct status to redeemed vouchers
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: ProductItem
+      changes:
+        - customChange: {
+            "class": "ish.oncourse.server.upgrades.liquibase.change.SetCorrectStatusToRedeemedVouchers"
+        }

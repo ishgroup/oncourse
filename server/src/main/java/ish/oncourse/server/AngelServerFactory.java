@@ -109,7 +109,10 @@ public class AngelServerFactory {
 
             // Create DB schema
             LOGGER.warn("Creating database schema");
-            schemaUpdateService.run();
+            schemaUpdateService.updateSchema();
+
+            LOGGER.warn("Upgrade data");
+            schemaUpdateService.upgradeData();
 
             if (licenseService.isAdmin_password_reset()) {
                 resetAdminPassword(cayenneService.getNewContext());
