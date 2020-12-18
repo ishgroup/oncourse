@@ -24,11 +24,10 @@ import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import StaticGoogleMap from "../../../../common/components/google-maps/StaticGoogleMap";
 import CoordinatesValueUpdater from "../../../../common/components/google-maps/CoordinatesValueUpdater";
-import { getEntityTags } from "../../../tags/actions";
-import { getCountries, getTimezones } from "../../../preferences/actions";
 import { validateDeleteRoom } from "../../rooms/actions";
 import { openInternalLink } from "../../../../common/utils/links";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
+import { openRoomLink } from "../../rooms/utils";
 
 const validateRooms = (value: Room[]) => {
   let error;
@@ -39,6 +38,8 @@ const validateRooms = (value: Room[]) => {
 
   return error;
 };
+
+const openRoom = (entity, id) => openRoomLink(id);
 
 const SitesRoomFields = props => {
   const { item } = props;
@@ -73,33 +74,6 @@ class SitesGeneral extends React.PureComponent<any, any> {
   state = {
     addressString: null
   };
-
-  componentDidMount() {
-    const { isNested } = this.props;
-
-    if (isNested) {
-      const {
-        getNestedEditViewTags,
-        getNestedEditViewCountries,
-        getNestedEditViewTimezones,
-        tags,
-        countries,
-        timezones
-      } = this.props;
-
-      if (!tags || !tags.length) {
-        getNestedEditViewTags();
-      }
-
-      if (!countries || !countries.length) {
-        getNestedEditViewCountries();
-      }
-
-      if (!timezones || !timezones.length) {
-        getNestedEditViewTimezones();
-      }
-    }
-  }
 
   onCalendarClick = () => {
     const { values } = this.props;
@@ -157,7 +131,6 @@ class SitesGeneral extends React.PureComponent<any, any> {
       tags,
       countries,
       timezones,
-      openNestedEditView,
       syncErrors
     } = this.props;
 
@@ -300,7 +273,7 @@ class SitesGeneral extends React.PureComponent<any, any> {
                   FieldsContent={SitesRoomFields}
                   onAdd={this.addRoom}
                   onDelete={this.deleteRoom}
-                  onViewMore={openNestedEditView}
+                  onViewMore={openRoom}
                   count={values.rooms && values.rooms.length}
                   validate={validateRooms}
                   syncErrors={syncErrors}
@@ -321,10 +294,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getNestedEditViewTags: () => dispatch(getEntityTags("Site")),
-    getNestedEditViewCountries: () => dispatch(getCountries()),
-    getNestedEditViewTimezones: () => dispatch(getTimezones()),
-    validateDeleteRoom: (id: string, callback: any) => dispatch(validateDeleteRoom(id, callback))
-  });
+  validateDeleteRoom: (id: string, callback: any) => dispatch(validateDeleteRoom(id, callback))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(SitesGeneral);

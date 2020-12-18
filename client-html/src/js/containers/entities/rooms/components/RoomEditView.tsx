@@ -42,27 +42,25 @@ const RoomEditView = props => {
   } = props;
 
   return (
-    <>
-      <TabsList
-        items={values ? items : []}
-        itemProps={{
-          isNew,
-          isNested,
-          nestedIndex,
-          values,
-          classes,
-          dispatch,
-          dirty,
-          form,
-          twoColumn,
-          openNestedEditView,
-          showConfirm,
-          manualLink,
-          rootEntity
-        }}
-      />
-    </>
-  );
+    <TabsList
+      items={values ? items : []}
+      itemProps={{
+      isNew,
+      isNested,
+      nestedIndex,
+      values,
+      classes,
+      dispatch,
+      dirty,
+      form,
+      twoColumn,
+      openNestedEditView,
+      showConfirm,
+      manualLink,
+      rootEntity
+    }}
+    />
+);
 };
 
 export default RoomEditView;

@@ -10,17 +10,15 @@ import ScreenShare from "@material-ui/icons/ScreenShare";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
-import { getEntityTags } from "../../../tags/actions";
-import { getSites } from "../../sites/actions";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { openInternalLink } from "../../../../common/utils/links";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
+import { openSiteLink } from "../../sites/utils";
 
 const normalizeSeatedCapacity = value => ((value && value >= 0) || value === 0 ? Number(value) : null);
 
@@ -30,22 +28,6 @@ const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] =>
     : [{ xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }]);
 
 class RoomsGeneral extends React.PureComponent<any, any> {
-  componentDidMount() {
-    const {
- getNestedEditViewTags, getNestedEditViewSites, isNested, tags, sites
-} = this.props;
-
-    if (isNested) {
-      if (!tags || !tags.length) {
-        getNestedEditViewTags();
-      }
-
-      if (!sites || !sites.length) {
-        getNestedEditViewSites();
-      }
-    }
-  }
-
   validateTagList = (value, allValues, props) => {
     const { tags } = this.props;
 
@@ -78,7 +60,6 @@ class RoomsGeneral extends React.PureComponent<any, any> {
       form,
       tags,
       sites,
-      openNestedEditView,
       twoColumn
     } = this.props;
 
@@ -146,7 +127,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
                         <LinkAdornment
                           link="true"
                           disabled={!values.siteId}
-                          clickHandler={() => openNestedEditView("Site", values.siteId)}
+                          clickHandler={() => openSiteLink(values.siteId)}
                         />
                       )
                     }
@@ -194,13 +175,4 @@ const mapStateToProps = (state: State) => ({
   sites: state.sites.items
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getNestedEditViewTags: () => {
-      dispatch(getEntityTags("Room"));
-    },
-    getNestedEditViewSites: () => {
-      dispatch(getSites(0, "name,localTimezone"));
-    }
-  });
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(RoomsGeneral);
+export default connect<any, any, any>(mapStateToProps, null)(RoomsGeneral);

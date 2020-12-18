@@ -21,7 +21,6 @@ import {
   clearListState,
   getFilters,
  } from "../../../common/components/list-view/actions";
-import RoomEditView from "../rooms/components/RoomEditView";
 import { getCountries, getTimezones } from "../../preferences/actions";
 import { State } from "../../../reducers/state";
 import { getUserPreferences } from "../../../common/actions";
@@ -91,10 +90,6 @@ const findRelatedGroup: any[] = [
   { title: "Rooms", list: "room", expression: "site.id" },
   { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.room.site.id" }
 ];
-
-const nestedEditFields = {
-  Room: props => <RoomEditView {...props} />
-};
 
 const secondaryColumnCondition = rows => {
   if (rows["isVirtual"] && rows["isVirtual"] === "true") {
@@ -185,7 +180,6 @@ class Sites extends React.Component<any, any> {
             asyncBlurFields: ["notes[].message"]
           }}
           EditViewContent={SiteEditView}
-          nestedEditFields={nestedEditFields}
           getEditRecord={getSiteRecord}
           rootEntity="Site"
           onInit={this.onInit}

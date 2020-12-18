@@ -22,13 +22,8 @@ import {
   getFilters,
  } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
-import SiteEditView from "../sites/components/SiteEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-
-const nestedEditFields = {
-  Site: props => <SiteEditView {...props} />
-};
 
 const manualLink = getManualLink("sitesRooms_rooms");
 
@@ -112,7 +107,6 @@ class Rooms extends React.Component<any, any> {
           }}
           updateTableModel={updateTableModel}
           EditViewContent={RoomEditView}
-          nestedEditFields={nestedEditFields}
           getEditRecord={getRoomRecord}
           rootEntity="Room"
           onInit={onInit}
