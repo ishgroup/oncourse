@@ -11,13 +11,11 @@
 
 package ish.security;
 
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.time.Instant;
+import java.util.Arrays;
 
 /**
  * Old password hashing and verification.
@@ -45,8 +43,7 @@ public class PasswordUtil {
 		PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, hash.length * 8);
 		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 		byte[] testHash = skf.generateSecret(spec).getEncoded();
-
-		return hash == testHash;
+		return Arrays.equals(hash, testHash);
 	}
 
 	/**
