@@ -111,7 +111,7 @@ databaseChangeLog:
               changeLogFile: database/50.upgrade.yml
       changes:
         - customChange: {
-          "class": "ish.oncourse.commercial.upgrades.liquibase.change.AddToQueueRecords",
+          "class": "ish.oncourse.commercial.replication.upgrades.liquibase.change.AddToQueueRecords",
           "entityName": "Contact",
           "selectQuery": "select id, willowId from Contact where isMale = 2"
         }
@@ -127,7 +127,7 @@ databaseChangeLog:
               changeLogFile: database/56.upgrade.yml
       changes:
         - customChange: {
-          "class": "ish.oncourse.commercial.upgrades.liquibase.change.AddToQueueRecords",
+          "class": "ish.oncourse.commercial.replication.upgrades.liquibase.change.AddToQueueRecords",
           "entityName": "EntityRelationType",
           "selectQuery": "select id, willowId from EntityRelationType"
         }
@@ -143,7 +143,7 @@ databaseChangeLog:
               changeLogFile: database/56.upgrade.yml
       changes:
         - customChange: {
-          "class": "ish.oncourse.commercial.upgrades.liquibase.change.AddToQueueRecords",
+          "class": "ish.oncourse.commercial.replication.upgrades.liquibase.change.AddToQueueRecords",
           "entityName": "EntityRelation",
           "selectQuery": "select id, willowId from EntityRelation"
         }

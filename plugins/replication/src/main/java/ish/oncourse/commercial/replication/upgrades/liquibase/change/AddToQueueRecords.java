@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-package ish.oncourse.commercial.upgrades.liquibase.change;
+package ish.oncourse.commercial.replication.upgrades.liquibase.change;
 
 import ish.oncourse.server.upgrades.liquibase.change.IshTaskChange;
 import ish.util.SecurityUtil;
