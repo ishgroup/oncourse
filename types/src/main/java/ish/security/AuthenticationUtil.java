@@ -24,7 +24,7 @@ import java.time.temporal.ChronoUnit;
 public class AuthenticationUtil {
 
 	private static final int ITERATIONS = 3;
-	private static final int MEMORY = 2 ^ 15; // 32Mb RAM
+	private static final int MEMORY = 32768; // 32Mb RAM
 	private static final int THREADS = 8;
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationUtil.class);
 	private static final PasswordEncoder encoder = new Argon2PasswordEncoder(16, 32, THREADS, MEMORY, ITERATIONS);
@@ -33,7 +33,7 @@ public class AuthenticationUtil {
 		Instant start = Instant.now();
 		String hash = encoder.encode(password);
 		Instant end = Instant.now();
-		LOGGER.info("Calculated password hash in {} ms", ChronoUnit.MILLIS.between(start, end));
+		LOGGER.warn("Calculated password hash in {} ms", ChronoUnit.MILLIS.between(start, end));
 		return hash;
 	}
 
