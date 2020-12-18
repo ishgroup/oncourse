@@ -129,7 +129,7 @@ class AuthenticationFunctions {
     static String checkInternalAuth(SystemUser user, String password) {
 
         if (AuthenticationUtil.checkPassword(password, user.password)) {
-            if (AuthenticationUtil.upgradeEncoding(password)) {
+            if (AuthenticationUtil.upgradeEncoding(user.password)) {
                 user.password = AuthenticationUtil.generatePasswordHash(password)
             }
             return null
