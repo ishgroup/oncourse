@@ -1,3 +1,25 @@
+import {
+  Account,
+  Holiday,
+  Audit,
+  AvetmissExportOutcome,
+  AvetmissExportSettings,
+  ConcessionType,
+  ContactRelationType,
+  CustomFieldType,
+  DataCollectionForm,
+  DataCollectionRule,
+  FieldType,
+  Filter,
+  PaymentType,
+  StatisticData,
+  Tax,
+  UserPreference,
+  Currency,
+  ColumnWidth,
+  WaitingList,
+  Country, PermissionResponse, EmailTemplate
+} from "@api/model";
 import { mockPreferences } from "./data/preferences";
 import { mockIntegrations } from "./data/integrations";
 import { mockDataCollectionForms } from "./data/dataCollectionForms";
@@ -26,28 +48,6 @@ import { mockRooms } from "./data/entities/rooms";
 import { mockCourseClasses } from "./data/entities/courseClasses";
 import { mockTimetable } from "./data/timetable";
 
-import {
-  Account,
-  Holiday,
-  Audit,
-  AvetmissExportOutcome,
-  AvetmissExportSettings,
-  ConcessionType,
-  ContactRelationType,
-  CustomFieldType,
-  DataCollectionForm,
-  DataCollectionRule,
-  FieldType,
-  Filter,
-  PaymentType,
-  StatisticData,
-  Tax,
-  UserPreference,
-  Currency,
-  ColumnWidth,
-  WaitingList,
-  Country
-} from "@api/model";
 import { mockCurrency } from "./data/currency";
 import { mockColumnsSettings } from "./data/columns";
 import { mockTimezones } from "./data/timezones";
@@ -78,69 +78,133 @@ import { mockSales } from "./data/entities/sales";
 import { mockExportTemplates } from "./data/automation/exportTemplates";
 import { mockReports } from "./data/automation/reports";
 import { mockReportOverlays } from "./data/automation/reportOverlays";
+import { mockAccessApi } from "./data/accessApi";
+import { mockEmailTemplates } from "./data/automation/emailTemplates";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
 export class MockDB {
   integrations: any;
+
   preference: any;
+
   userPreferences: UserPreference[];
+
   scripts: any;
+
   exportTemplates: any;
+
   reportOverlays: any;
+
   reports: any;
+
+  emailTemplates: EmailTemplate[];
+
   listExport: any;
+
   dataCollectionFormFieldTypes: FieldType[];
+
   dataCollectionForms: DataCollectionForm[];
+
   dataCollectionRules: DataCollectionRule[];
+
   holiday: Holiday[];
+
   account: Account[];
+
   audit: Audit[];
+
   paymentTypes: PaymentType[];
+
   taxTypes: Tax[];
+
   concessionTypes: ConcessionType[];
+
   contactRelationTypes: ContactRelationType[];
+
   customFields: CustomFieldType[];
+
   filters: Filter[];
+
   evetmissExport: any;
+
   exportOutcomes: AvetmissExportOutcome[];
+
   exportSettings: AvetmissExportSettings;
+
   dashboardStatistics: StatisticData;
+
   currency: Currency;
+
   columnsSettings: ColumnWidth;
+
   timezones: string[];
+
   tags: any;
+
   waitingLists: WaitingList[];
+
   contacts: any;
+
   courses: any;
+
   sites: any;
+
   countries: Country[];
+
   rooms: any;
+
   courseClasses: any;
+
   timetable: any;
+
   traineeships: any;
+
   traineeshipCourses: any;
+
   qualifications: any;
+
   assessments: any;
+
   outcomes: any;
+
   modules: any;
+
   enrolments: any;
+
   articleProducts: any;
+
   invoices: any;
+
   paymentsIn: any;
+
   paymentsOut: any;
+
   corporatePasses: any;
+
   accountTransactions: any;
+
   payslips: any;
+
   bankings: any;
+
   discounts: any;
+
   applications: any;
+
   certificates: any;
+
   surveys: any;
+
   messages: any;
+
   voucherProducts: any;
+
   membershipProducts: any;
+
   sales: any;
+
+  accessApi: PermissionResponse;
 
   constructor() {
     this.init();
@@ -167,6 +231,7 @@ export class MockDB {
     this.exportTemplates = mockExportTemplates.call(this);
     this.reports = mockReports.call(this);
     this.reportOverlays = mockReportOverlays.call(this);
+    this.emailTemplates = mockEmailTemplates.call(this);
 
     //  Preferences columns
     this.columnsSettings = mockColumnsSettings.call(this);
@@ -188,6 +253,7 @@ export class MockDB {
     // Common
     this.filters = mockFilters.call(this);
     this.tags = mockTags.call(this);
+    this.accessApi = mockAccessApi.call(this);
 
     // Currency
     this.currency = mockCurrency.call(this);

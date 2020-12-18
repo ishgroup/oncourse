@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { promiseResolve } from "../../MockAdapter";
 import { Sorting, DataResponse } from "@api/model";
+import { promiseResolve } from "../../MockAdapter";
 
 export function listApiMock() {
   /**
@@ -24,6 +24,9 @@ export function listApiMock() {
     }
     if (entity === "ExportTemplate") {
       return promiseResolve(config, this.db.getExportTemplates());
+    }
+    if (entity === "EmailTemplate") {
+      return promiseResolve(config, this.db.getEmailTemplates());
     }
     if (entity === "Report") {
       return promiseResolve(config, this.db.getReports());
@@ -260,6 +263,10 @@ export function listApiMock() {
 
       case "ExportTemplate": {
         return promiseResolve(config, this.db.getPlainExportTemplates());
+      }
+
+      case "EmailTemplate": {
+        return promiseResolve(config, this.db.getPlainEmailTemplates());
       }
 
       case "Report": {
