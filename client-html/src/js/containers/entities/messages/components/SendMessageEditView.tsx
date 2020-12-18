@@ -234,13 +234,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
   const [preview, setPreview] = useState(null);
   const [isMarketing, setIsMarketing] = useState(true)
 
-  const [suppressed, setSuppressed] = useState({
-    withdrawnStudents: false,
-    activeStudents: false,
-    students: false,
-    tutors: false,
-    other: false
-  });
+  const [suppressed, setSuppressed] = useState(false)
 
   const [selected, setSelected] = useState({
     withdrawnStudents: false,
@@ -259,12 +253,12 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
   }, [selected && selected.activeStudents]);
 
   useEffect(() => {
-    dispatch(change(form, "sendToSuppressWithdrawnStudents", suppressed.withdrawnStudents));
-  }, [suppressed && suppressed.withdrawnStudents]);
-
-  useEffect(() => {
-    dispatch(change(form, "sendToSuppressActiveStudents", suppressed.activeStudents));
-  }, [suppressed && suppressed.activeStudents]);
+    dispatch(change(form, "sendToSuppressWithdrawnStudents", suppressed));
+    dispatch(change(form, "sendToSuppressActiveStudents", suppressed));
+    dispatch(change(form, "sendToSuppressStudents", suppressed));
+    dispatch(change(form, "sendToSuppressTutors", suppressed));
+    dispatch(change(form, "sendToSuppressOtherContacts", suppressed));
+  }, [suppressed]);
 
   useEffect(() => {
     dispatch(change(form, "sendToStudents", selected.students));
@@ -277,18 +271,6 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
   useEffect(() => {
     dispatch(change(form, "sendToOtherContacts", selected.other));
   }, [selected && selected.other]);
-
-  useEffect(() => {
-    dispatch(change(form, "sendToSuppressStudents", suppressed.students));
-  }, [suppressed && suppressed.students]);
-
-  useEffect(() => {
-    dispatch(change(form, "sendToSuppressTutors", suppressed.tutors));
-  }, [suppressed && suppressed.tutors]);
-
-  useEffect(() => {
-    dispatch(change(form, "sendToSuppressOtherContacts", suppressed.other));
-  }, [suppressed && suppressed.other]);
 
   const isEmailView = useMemo(() => values.messageType === "Email", [values.messageType]);
 
@@ -408,7 +390,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
       return null;
     }
 
-    const totalHeaderCount = suppressed[recipientsName]
+    const totalHeaderCount = suppressed
       ? totalCounter[recipientsName].sendSize + totalCounter[recipientsName].suppressToSendSize
       : totalCounter[recipientsName].sendSize;
 
@@ -428,29 +410,16 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
                   isEmailView ? "email or with undeliverable email" : "mobile phone or with undeliverable mobile phone"}`}
               </Typography>
             )}
-            {totalCounter[recipientsName].suppressToSendSize !== 0 && (
+            {isMarketing && totalCounter[recipientsName].suppressToSendSize !== 0 && (
               <Typography variant="body2">
                 {`Skipping ${totalCounter[recipientsName].suppressToSendSize} not accepting marketing material`}
               </Typography>
             )}
-            <FormControlLabel
-              className="mb-2"
-              control={(
-                <StyledCheckbox
-                  checked={suppressed[recipientsName]}
-                  onChange={
-                    (e, v) => setSuppressed(prev => ({ ...prev, [recipientsName]: v }))
-                  }
-                  color="secondary"
-                />
-              )}
-              label={`Send to ${totalCounter[recipientsName].suppressToSendSize} suppressed`}
-            />
           </>
         ) : null}
       </Fragment>
     );
-  }), [totalCounter, suppressed, selected]);
+  }), [isMarketing, totalCounter, suppressed, selected]);
 
   useEffect(() => {
     let recipientsCount = 0;
@@ -459,7 +428,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
       if (totalCounter[k] && selected[k]) {
         recipientsCount += totalCounter[k].sendSize;
 
-        if (suppressed[k]) {
+        if (suppressed) {
           recipientsCount += totalCounter[k].suppressToSendSize;
         }
       }
@@ -541,7 +510,10 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
               control={(
                 <StyledCheckbox
                   checked={isMarketing}
-                  onChange={() => setIsMarketing(!isMarketing)}
+                  onChange={() => {
+                    setIsMarketing(!isMarketing)
+                    setSuppressed(!suppressed)
+                  }}
                   color="secondary"
                 />
               )}
