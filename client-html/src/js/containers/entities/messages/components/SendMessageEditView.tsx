@@ -232,7 +232,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
   }, [htmlRef.current]);
 
   const [preview, setPreview] = useState(null);
-  const [isMarketing, setIsMarketing] = useState(false)
+  const [isMarketing, setIsMarketing] = useState(true)
 
   const [suppressed, setSuppressed] = useState({
     withdrawnStudents: false,
@@ -420,23 +420,32 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
           </Typography>
           <Switch onChange={(e, v) => setSelected(prev => ({ ...prev, [recipientsName]: v }))} checked={selected[recipientsName]} />
         </div>
-        <Typography variant="body2">
-          {`Skipping ${totalCounter[recipientsName].withoutDestinationSize} without ${
-            isEmailView ? "email or with undeliverable email" : "mobile phone or with undeliverable mobile phone"}`}
-        </Typography>
-        <FormControlLabel
-          className="mb-2"
-          control={(
-            <StyledCheckbox
-              checked={suppressed[recipientsName]}
-              onChange={
-                (e, v) => setSuppressed(prev => ({ ...prev, [recipientsName]: v }))
-              }
-              color="secondary"
+        {selected[recipientsName] ? (
+          <>
+            <Typography variant="body2">
+              {totalCounter[recipientsName].withoutDestinationSize !== 0 && `Skipping 
+                ${totalCounter[recipientsName].withoutDestinationSize} without ${
+                isEmailView ? "email or with undeliverable email" : "mobile phone or with undeliverable mobile phone"}`}
+            </Typography>
+            <Typography variant="body2">
+              {totalCounter[recipientsName].suppressToSendSize !== 0 && `Skipping 
+                ${totalCounter[recipientsName].suppressToSendSize} not accepting marketing material`}
+            </Typography>
+            <FormControlLabel
+              className="mb-2"
+              control={(
+                <StyledCheckbox
+                  checked={suppressed[recipientsName]}
+                  onChange={
+                    (e, v) => setSuppressed(prev => ({ ...prev, [recipientsName]: v }))
+                  }
+                  color="secondary"
+                />
+              )}
+              label={`Send to ${totalCounter[recipientsName].suppressToSendSize} suppressed`}
             />
-          )}
-          label={`Send to ${totalCounter[recipientsName].suppressToSendSize} suppressed`}
-        />
+          </>
+        ) : null}
       </Fragment>
     );
   }), [totalCounter, suppressed, selected]);
