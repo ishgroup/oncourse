@@ -422,15 +422,17 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
         </div>
         {selected[recipientsName] ? (
           <>
-            <Typography variant="body2">
-              {totalCounter[recipientsName].withoutDestinationSize !== 0 && `Skipping 
-                ${totalCounter[recipientsName].withoutDestinationSize} without ${
-                isEmailView ? "email or with undeliverable email" : "mobile phone or with undeliverable mobile phone"}`}
-            </Typography>
-            <Typography variant="body2">
-              {totalCounter[recipientsName].suppressToSendSize !== 0 && `Skipping 
-                ${totalCounter[recipientsName].suppressToSendSize} not accepting marketing material`}
-            </Typography>
+            {totalCounter[recipientsName].withoutDestinationSize !== 0 && (
+              <Typography variant="body2">
+                {`Skipping ${totalCounter[recipientsName].withoutDestinationSize} without ${
+                  isEmailView ? "email or with undeliverable email" : "mobile phone or with undeliverable mobile phone"}`}
+              </Typography>
+            )}
+            {totalCounter[recipientsName].suppressToSendSize !== 0 && (
+              <Typography variant="body2">
+                {`Skipping ${totalCounter[recipientsName].suppressToSendSize} not accepting marketing material`}
+              </Typography>
+            )}
             <FormControlLabel
               className="mb-2"
               control={(
