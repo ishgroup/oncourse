@@ -3,13 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { generateArraysOfRecords } from "../../mockUtils";
 import { Sorting } from "@api/model";
+import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockScripts() {
-  this.getScripts = () => {
-    return this.scripts;
-  };
+  this.getScripts = () => this.scripts;
 
   this.getScript = id => {
     const row = this.scripts.rows.find(row => row.id == id);
@@ -27,21 +25,21 @@ export function mockScripts() {
         }
       },
       content:
-        "  def enrolment = args.entity\n" +
-        "\n" +
-        "   email {\n" +
-        '      template "Enrolment Confirmation"\n' +
-        "      bindings enrolment: enrolment\n" +
-        '      to "blake@acwa.asn.au"\n' +
-        '      if (enrolment.courseClass.course.hasTag("ACWA Events", true)==true){\n' +
-        '        from ("acwa@acwa.asn.au", "ACWA Events")\n' +
-        "      }\n" +
-        '      else if (enrolment.courseClass.course.hasTag("Disability Justice Project", true)==true){\n' +
-        '        from ("training@disabilityjustice.edu.au", "Disability Justice Project")\n' +
-        "      }\n" +
-        "    }\n" +
-        "    \n" +
-        "    args.context.commitChanges()",
+        "  def enrolment = args.entity\n"
+        + "\n"
+        + "   email {\n"
+        + '      template "Enrolment Confirmation"\n'
+        + "      bindings enrolment: enrolment\n"
+        + '      to "blake@acwa.asn.au"\n'
+        + '      if (enrolment.courseClass.course.hasTag("ACWA Events", true)==true){\n'
+        + '        from ("acwa@acwa.asn.au", "ACWA Events")\n'
+        + "      }\n"
+        + '      else if (enrolment.courseClass.course.hasTag("Disability Justice Project", true)==true){\n'
+        + '        from ("training@disabilityjustice.edu.au", "Disability Justice Project")\n'
+        + "      }\n"
+        + "    }\n"
+        + "    \n"
+        + "    args.context.commitChanges()",
       lastRun: [
         "2018-06-04T05:20:48.000Z",
         "2018-06-04T05:14:40.000Z",
@@ -146,9 +144,13 @@ export function mockScripts() {
   response.pageSize = 10;
   response.search = "";
   response.count = rows.length;
+  response.filterColumnWidth = 200;
+  response.filteredCount = 3;
+  response.layout = "Three column";
   response.sort = response.columns.map(col => ({
     attribute: col.attribute,
-    ascending: true
+    ascending: true,
+    complexAttribute: []
   })) as Sorting[];
 
   return response;

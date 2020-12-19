@@ -18,7 +18,10 @@ import {
   Currency,
   ColumnWidth,
   WaitingList,
-  Country, PermissionResponse, EmailTemplate
+  Country,
+  PermissionResponse,
+  EmailTemplate,
+  ImportModel
 } from "@api/model";
 import { mockPreferences } from "./data/preferences";
 import { mockIntegrations } from "./data/integrations";
@@ -80,6 +83,7 @@ import { mockReports } from "./data/automation/reports";
 import { mockReportOverlays } from "./data/automation/reportOverlays";
 import { mockAccessApi } from "./data/accessApi";
 import { mockEmailTemplates } from "./data/automation/emailTemplates";
+import { mockImportTemplates } from "./data/automation/importTemplates";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -99,6 +103,8 @@ export class MockDB {
   reports: any;
 
   emailTemplates: EmailTemplate[];
+
+  importTemplates: ImportModel[];
 
   listExport: any;
 
@@ -232,6 +238,7 @@ export class MockDB {
     this.reports = mockReports.call(this);
     this.reportOverlays = mockReportOverlays.call(this);
     this.emailTemplates = mockEmailTemplates.call(this);
+    this.importTemplates = mockImportTemplates.call(this);
 
     //  Preferences columns
     this.columnsSettings = mockColumnsSettings.call(this);

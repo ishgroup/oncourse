@@ -58,6 +58,7 @@ import { ReportApiMock } from "./api/automation/ReportApiMock";
 import { ReportOverlayApiMock } from "./api/automation/ReportOverlayApiMock";
 import { AccessApiMock } from "./api/common/AccessApiMock";
 import { EmailTemplateApiMock } from "./api/automation/EmailTemplateApiMock";
+import { ImportTemplateApiMock } from "./api/automation/ImportTemplateApiMock";
 
 export const initMockDB = () => new MockAdapter();
 
@@ -135,6 +136,7 @@ export class MockAdapter {
     ReportApiMock.apply(this);
     ReportOverlayApiMock.apply(this);
     EmailTemplateApiMock.apply(this);
+    ImportTemplateApiMock.apply(this);
 
     // Timetable
     TimetableApiMock.apply(this);
@@ -158,7 +160,11 @@ export const promiseResolve = (config, data = {}) => {
   console.log(`%c Api request to: /${config.url}`, "color: #bada55");
   console.log(`%c Api request method: ${config.method}`, "color: #bada55");
   console.log(`%c request params:`, "color: #bada55");
-  console.log(config.data && [parseJson(config.data)]);
+  if (config.method === "get") {
+    console.log(config.params);
+  } else {
+    console.log(config.data && [parseJson(config.data)]);
+  }
   console.log(`%c response params:`, "color: #bada55");
   console.log([data]);
   console.log("%c ----------------", "color: black");
@@ -169,7 +175,13 @@ export const promiseResolve = (config, data = {}) => {
 // Reject function with logger
 export const promiseReject = (config, data = {}) => {
   console.log(`%c Api request ${config.method} to: /${config.url}`, "color: red");
-  console.log(`%c request params: ${config.data}`, "color: red");
+  console.log(`%c request params:`, "color: #bada55");
+  if (config.method === "get") {
+    console.log(config.params);
+  } else {
+    console.log(config.data && [parseJson(config.data)]);
+  }
+  console.log(`%c request params:`, "color: #bada55");
   return [400, data];
 };
 
