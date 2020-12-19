@@ -10,10 +10,10 @@ export function listApiMock() {
   /**
    * List items
    * */
-  this.api.onPost("/v1/list").reply(config => {
+  this.api.onAny("/v1/list").reply(config => {
     const {
-       offset, pageSize, search
-    } = JSON.parse(config.data);
+      offset, pageSize, search
+    } = config.method === "get" ? config.params : JSON.parse(config.data);
 
     const {
       entity
@@ -27,6 +27,9 @@ export function listApiMock() {
     }
     if (entity === "EmailTemplate") {
       return promiseResolve(config, this.db.getEmailTemplates());
+    }
+    if (entity === "Import") {
+      return promiseResolve(config, this.db.getImportTemplates());
     }
     if (entity === "Report") {
       return promiseResolve(config, this.db.getReports());
@@ -267,6 +270,10 @@ export function listApiMock() {
 
       case "EmailTemplate": {
         return promiseResolve(config, this.db.getPlainEmailTemplates());
+      }
+
+      case "Import": {
+        return promiseResolve(config, this.db.getPlainImportTemplates());
       }
 
       case "Report": {
