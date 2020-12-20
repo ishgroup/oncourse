@@ -80,7 +80,7 @@ import org.apache.cayenne.PersistentObject
  * }
  * ```
  */
-@API
+@Deprecated
 @CompileStatic
 class EmailSpec {
 
@@ -108,7 +108,6 @@ class EmailSpec {
 	 *
 	 * @param templateName name of the email template
      */
-	@API
 	void template(String templateName) {
 		this.templateName = templateName
 	}
@@ -118,7 +117,6 @@ class EmailSpec {
 	 *
 	 * @param email email from address
      */
-	@API
 	void from(String email) {
 		this.fromAddress = email
 	}
@@ -129,7 +127,6 @@ class EmailSpec {
 	 *
 	 * @param recipients contact records who will receive the email
      */
-	@API
 	@CompileStatic(TypeCheckingMode.SKIP)
 	void to(Contact... recipients) {
 		recipients.each { r -> this.recipients[r] = r.replacementEmail ?: r.email }
@@ -140,7 +137,6 @@ class EmailSpec {
 	 *
 	 * @param bindings binding mappings required for rendering email template
      */
-	@API
 	void bindings(Map<String, Object> bindings) {
 		this.bindings = bindings
 	}
@@ -150,7 +146,6 @@ class EmailSpec {
 	 *
 	 * @param user user who created the email
      */
-	@API
 	void createdBy(SystemUser user) {
 		this.createdBy = user
 	}
@@ -161,7 +156,6 @@ class EmailSpec {
 	 * @param email email from address
 	 * @param name name of the sender
 	 */
-	@API
 	void from(String email, String name) {
 		this.fromAddress = email
 		this.fromName = name
@@ -174,8 +168,7 @@ class EmailSpec {
 	 * @param key a string key which identifies the script or event which creates this message
 	 * @param object key is attached to a specific object (for example an enrolment or student)
 	 */
-	@API
-    void key(String key, PersistentObject... object){
+	void key(String key, PersistentObject... object){
 		this.creatorKey = MessageUtils.generateCreatorKey(key, object)
 	}
 
@@ -184,7 +177,6 @@ class EmailSpec {
 	 *
 	 * @param collision check type. Can be 'accept' (this is the default and means the key is ignored), 'drop' (which will silently drop the message) and 'error' (which will drop the message and log an error to the audit log).
 	 */
-	@API
 	void keyCollision(String collision){
 		this.keyCollision = KeyCollision.valueOf(collision)
 	}
@@ -194,7 +186,6 @@ class EmailSpec {
 	 *
 	 * @param recipients email addresses of the email recipients
 	 */
-	@API
 	void to(String... recipients) {
 		this.toList.addAll(recipients)
 	}
@@ -204,7 +195,6 @@ class EmailSpec {
 	 *
 	 * @param recipients email addresses of the CC recipients
 	 */
-	@API
 	void cc(String... recipients) {
 		this.ccList = recipients.toList()
 	}
@@ -214,7 +204,6 @@ class EmailSpec {
 	 *
 	 * @param recipients email address of the BCC recipients
 	 */
-	@API
 	void bcc(String... recipients) {
 		this.bccList = recipients.toList()
 	}
@@ -224,7 +213,6 @@ class EmailSpec {
 	 *
 	 * @param subject email subject
 	 */
-	@API
 	void subject(String subject) {
 		this.subject = subject
 	}
@@ -235,7 +223,6 @@ class EmailSpec {
 	 *
 	 * @param content plain text content of the email
 	 */
-	@API
 	void content(String content) {
 		this.content = content
 	}
@@ -245,7 +232,6 @@ class EmailSpec {
 	 *
 	 * @param multipartType multipart message type
 	 */
-	@API
 	void multipartType(String multipartType) {
 		this.multipartType = multipartType
 	}
@@ -256,7 +242,6 @@ class EmailSpec {
 	 * @param contentType MIME type of the attachment
 	 * @param content MIME type of the attachment
 	 */
-	@API
 	void attachment(String contentType, Object content) {
 		this.attachments << AttachmentParam.valueOf(null, contentType, content)
 	}
@@ -268,7 +253,6 @@ class EmailSpec {
 	 * @param contentType MIME type of the attachment
 	 * @param content attachment object
 	 */
-	@API
 	void attachment(String fileName, String contentType, Object content) {
 		this.attachments << AttachmentParam.valueOf(fileName, contentType, content)
 	}
@@ -278,7 +262,6 @@ class EmailSpec {
 	 *
 	 * @param attachment attachment properties map, e.g. [fileName: 'example.txt', type: 'text/plain', content: 'test text']
 	 */
-	@API
 	void attachment(Map<String, Object> attachment) {
 		this.attachments << AttachmentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
 	}
