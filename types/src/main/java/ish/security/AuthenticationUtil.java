@@ -23,7 +23,7 @@ import java.time.temporal.ChronoUnit;
 
 public class AuthenticationUtil {
 
-	private static final int ITERATIONS = 3;
+	private static final int ITERATIONS = 9;
 	private static final int MEMORY = 32768; // 32Mb RAM
 	private static final int THREADS = 8;
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationUtil.class);
@@ -42,7 +42,12 @@ public class AuthenticationUtil {
 	 */
 	public static boolean checkPassword(String password, String hash) {
 		if (hash.startsWith("$")) {
-			return encoder.matches(password, hash);
+			Instant start = Instant.now();
+			boolean result = encoder.matches(password, hash);
+			Instant end = Instant.now();
+			LOGGER.warn("Matches password hash in {} ms", ChronoUnit.MILLIS.between(start, end));
+			return result;
+			
 		} else {
 			try {
 				return PasswordUtil.validateOldPassword(password, hash);
