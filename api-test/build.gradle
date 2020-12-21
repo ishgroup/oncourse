@@ -14,7 +14,7 @@ apply plugin: 'java'
 
 dependencies {
     implementation 'org.dbunit:dbunit:2.6.0'
-    implementation "org.apache.derby:derby:$derbyVersion"
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.1'
 
     testImplementation "com.sun.activation:javax.activation:$javaxActivationVersion"
     testImplementation 'com.intuit.karate:karate-junit4:0.9.5'
@@ -23,31 +23,36 @@ dependencies {
     testImplementation 'org.glassfish.jersey.connectors:jersey-jetty-connector:2.26'
     testImplementation "org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion"
     testImplementation "org.eclipse.jetty:jetty-client:$jettyVersion"
-    testImplementation "org.apache.derby:derby:$derbyVersion"
 }
 
 sourceCompatibility = 11
 targetCompatibility = 11
 
-task copyEmptyDb(type: Copy) {
+task copyConfig(type: Copy) {
     from("$rootDir/api-test/src/test/resources/") {
         include 'onCourse.yml'
     }
     into "$rootDir/server/build"
-
-    from zipTree(file("$rootDir/api-test/src/test/resources/onCourse.iocdata.empty.zip"))
-    into "$rootDir/server/build"
+    def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
+    expand(dbUrl: dbUrl)
 }
 
-task prepareTestDb(dependsOn: [copyEmptyDb], type: JavaExec) {
+task prepareTestDb(type: JavaExec) {
     main = 'ish.oncourse.api.test.task.PrepareTestDb'
     classpath = sourceSets.test.runtimeClasspath
-    args = ["jdbc:derby:$rootDir/server/build/onCourse.iocdata/onCourse;create=true", "$rootDir/api-test/src/test/resources/test-dataset.xml"]
+    def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
+
+    args = [dbUrl, "$rootDir/api-test/src/test/resources/test-dataset.xml"]
 }
 
 test {
-    dependsOn "prepareTestDb"
+    
+    tasks.getByName('prepareTestDb').mustRunAfter(':server:startDaemon').mustRunAfter('copyConfig')
+
+    dependsOn "copyConfig" 
     dependsOn ":server:startDaemon"
+    dependsOn "prepareTestDb"
+    
     // pull cucumber options into the cucumber jvm
     systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
     // pull karate options into the jvm

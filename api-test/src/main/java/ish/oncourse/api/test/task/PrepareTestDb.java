@@ -27,15 +27,7 @@ public class PrepareTestDb {
 
     private static final int DB_URL_ARG_INDEX = 0;
     private static final int DATASET_PATH_ARG_INDEX = 1;
-
-    private static final String[] ALTERED_TABLES_NAMES = {"SITE", "ACCOUNTTRANSACTION", "SYSTEMUSER", "CONTACT",
-            "STUDENT", "ROOM", "QUALIFICATION", "PREFERENCE", "COURSE", "COURSECLASS", "TUTOR", "COURSECLASSTUTOR",
-            "COURSESESSION", "SESSIONCOURSECLASSTUTOR", "ATTENDANCE", "MODULE", "CLASSCOST", "ENROLMENT",
-            "INVOICE", "INVOICELINE", "INVOICEDUEDATE", "OUTCOME", "PAYMENTIN", "PAYMENTINLINE", "FUNDINGUPLOAD", "FUNDINGUPLOAD_OUTCOME"
-            , "ACLROLE", "ACLACCESSKEY", "NODE", "NODEREQUIREMENT"};
-
-    private static final String ALTER_TABLE_STATEMENT_PATTERN = "ALTER TABLE {table} ALTER COLUMN ID RESTART WITH 1000";
-
+    
     // Args structure:
     // args[0] - db url
     // args[1] - path to dataset file
@@ -47,19 +39,8 @@ public class PrepareTestDb {
             InputStream st = new FileInputStream(args[DATASET_PATH_ARG_INDEX]);
             var dataSet = new FlatXmlDataSetBuilder().setColumnSensing(true).build(st);
             DatabaseOperation.REFRESH.execute(testDatabaseConnection, dataSet);
-            alterAutoIncrement(connection);
-            testDatabaseConnection.close();
         } else {
             throw new RuntimeException("Test data wasn't inserted. Invalid parameters count!");
-        }
-    }
-
-    // This is a workaround for cayenne-autoincrementing, because our test data
-    // crosses with cayenne inserted data, so we set cayenne start id's to some values
-    private static void alterAutoIncrement(Connection connection) throws SQLException {
-        for (var tableName : ALTERED_TABLES_NAMES) {
-            var sql = ALTER_TABLE_STATEMENT_PATTERN.replace("{table}", tableName);
-            connection.createStatement().execute(sql);
         }
     }
 }

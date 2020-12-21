@@ -20,8 +20,6 @@ apply plugin: 'application'
 apply plugin: 'com.github.psxpaul.execfork'
 
 configurations {
-	apiTest
-
 	// exclude these here since they are pulled in in various ways
 	all*.exclude group: "org.slf4j", module: "slf4j-simple"
 	all*.exclude module: "hessian"
@@ -176,10 +174,6 @@ jar {
 	archiveFileName = 'onCourseServer.jar'
 }
 
-dependencies {
-	apiTest "org.apache.derby:derbyclient:$derbyVersion"
-	apiTest "org.apache.derby:derbynet:$derbyVersion"
-}
 
 test {
 	// the database tests interfere with each other if run in parallel
@@ -208,22 +202,18 @@ test {
 	}
 }
 
-task copyTestDb(type: Copy) {
-    from("$rootDir/api-test/src/test/resources/") {
-        include 'onCourse.cfg'
-    }
-    into "$buildDir/"
+task startDaemon(dependsOn: [classes], type: JavaExecFork) {
 
-    from zipTree(file("$rootDir/api-test/src/test/resources/onCourse.iocdata.zip"))
-    into "$buildDir/"
-}
-task startDaemon(dependsOn: [classes, processResources], type: JavaExecFork) {
-	classpath = files(sourceSets.main.runtimeClasspath.plus(configurations.apiTest.findAll { it.name.contains("derby") }))
+	doFirst {
+		//do not assemble client-html
+		mkdir 'build/resources/main/static'
+	}
+	classpath = sourceSets.main.runtimeClasspath
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true']
-	jvmArgs = ['-Xmx2048m', '-XX:+HeapDumpOnOutOfMemoryError', "-DdisableReplication=true", "-DdisableTransactionCheck=true"]
+	jvmArgs = ['-Xmx2048m', '-XX:+HeapDumpOnOutOfMemoryError']
 	workingDir = "$buildDir"
-    waitForOutput = 'Server ready for client connections'
+	waitForOutput = 'Server ready for client connections'
 	timeout = 60 * 20
 }
 

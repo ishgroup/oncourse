@@ -1,9 +1,3 @@
-jdbc:
-  angel:
-    driverClassName: org.apache.derby.jdbc.EmbeddedDriver
-    initialSize: 1
-    rollbackOnReturn: true
-    defaultAutoCommit: false
 
 db:
-  uri: 'jdbc:derby:onCourse.iocdata/onCourse;create=true'
+  uri: '${dbUrl}'
