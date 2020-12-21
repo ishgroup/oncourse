@@ -3,13 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { generateArraysOfRecords } from "../../mockUtils";
 import { Sorting } from "@api/model";
+import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockExportTemplates() {
-  this.getExportTemplates = () => {
-    return this.exportTemplates;
-  };
+  this.getExportTemplates = () => this.exportTemplates;
 
   this.getExportTemplate = id => {
     console.log(this.exportTemplates);
@@ -21,24 +19,24 @@ export function mockExportTemplates() {
       enabled: row.values[2],
       entity: "Account",
       body:
-        "records.each { Invoice i ->" +
-        "\n" +
-        "\tcsv << [\n" +
-        '\t\t\t"modifiedOn"      : i.modifiedOn?.format("yyyy-MM-dd\'T\'HH:mm:ssXXX"),"\n' +
-        '\t\t\t"createdOn"       : i.createdOn?.format("yyyy-MM-dd\'T\'HH:mm:ssXXX"),\n' +
-        '\t\t\t"contactLastName" : i.contact.lastName,"\n' +
-        '\t\t\t"contactFirstName": i.contact.firstName,\n' +
-        '\t\t\t"courseclassID": i.invoiceLines.enrolment.courseClass.course.name : null,\n' +
-        '\t\t\t"total"           : i.total?.toPlainString(),\n' +
-        '\t\t\t"totalIncTax"     : i.totalIncTax?.toPlainString(),\n' +
-        '\t\t\t"totalTax"        : i.totalTax?.toPlainString(),\n' +
-        '\t\t\t"amountOwing"     : i.amountOwing?.toPlainString(),\n' +
-        '\t\t\t"billToAddress"   : i.billToAddress,\n' +
-        '\t\t\t"dateDue"         : i.dateDue?.format("yyyy-MM-dd"),\n' +
-        '\t\t\t"description"     : i.description,\n' +
-        '\t\t\t"invoiceDate"     : i.invoiceDate?.format("yyyy-MM-dd")\n' +
-        "\t]\n" +
-        "}",
+        "records.each { Invoice i ->"
+        + "\n"
+        + "\tcsv << [\n"
+        + '\t\t\t"modifiedOn"      : i.modifiedOn?.format("yyyy-MM-dd\'T\'HH:mm:ssXXX"),"\n'
+        + '\t\t\t"createdOn"       : i.createdOn?.format("yyyy-MM-dd\'T\'HH:mm:ssXXX"),\n'
+        + '\t\t\t"contactLastName" : i.contact.lastName,"\n'
+        + '\t\t\t"contactFirstName": i.contact.firstName,\n'
+        + '\t\t\t"courseclassID": i.invoiceLines.enrolment.courseClass.course.name : null,\n'
+        + '\t\t\t"total"           : i.total?.toPlainString(),\n'
+        + '\t\t\t"totalIncTax"     : i.totalIncTax?.toPlainString(),\n'
+        + '\t\t\t"totalTax"        : i.totalTax?.toPlainString(),\n'
+        + '\t\t\t"amountOwing"     : i.amountOwing?.toPlainString(),\n'
+        + '\t\t\t"billToAddress"   : i.billToAddress,\n'
+        + '\t\t\t"dateDue"         : i.dateDue?.format("yyyy-MM-dd"),\n'
+        + '\t\t\t"description"     : i.description,\n'
+        + '\t\t\t"invoiceDate"     : i.invoiceDate?.format("yyyy-MM-dd")\n'
+        + "\t]\n"
+        + "}",
       variables: [],
       options: [],
       outputType: "xml",

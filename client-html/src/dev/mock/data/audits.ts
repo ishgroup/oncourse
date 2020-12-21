@@ -5,28 +5,28 @@ export function mockAudits() {
   this.getAudit = (id: number): Audit => {
     const row = this.audit.rows.find(row => row.id == id);
     return {
-      entityIdentifier: row.values[0],
+      id: row.id,
+      systemUser: row.values[0],
       created: row.values[1],
-      message: row.values[2],
+      entityIdentifier: row.values[2],
       action: row.values[3],
       entityId: row.values[4],
+      message: "test message",
     };
   };
 
-  this.getAudits = () => {
-    return this.audit;
-  };
+  this.getAudits = () => this.audit;
 
   const rows: Audit[] = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "systemUser", type: "string" },
-    { name: "message", type: "string" },
-    { name: "action", type: "string" },
     { name: "created", type: "Datetime" },
+    { name: "entityIdentifier", type: "string" },
+    { name: "action", type: "string" },
     { name: "entityId", type: "string" },
   ]).map(l => ({
     id: l.id,
-    values: [l.systemUser, l.created, l.message, l.action, l.entityId]
+    values: [l.systemUser, l.created, l.entityIdentifier, l.action, l.entityId]
   }));
 
   const columns = [
