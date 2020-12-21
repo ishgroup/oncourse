@@ -305,12 +305,12 @@ export function listApiMock() {
 
   this.api.onGet("/v1/list/export/template").reply(config => {
     const { entityName } = config.params;
-    return promiseResolve(config, this.db.getExportTemplate(entityName));
+    return promiseResolve(config, this.db.listExportTemplate(entityName));
   });
 
   this.api.onGet("/v1/list/option/email/template").reply(config => {
     const { entityName } = config.params;
 
-    return promiseResolve(config, this.db.getEmailTemplate(entityName));
+    return promiseResolve(config, this.db.listEmailTemplate(entityName));
   });
 }

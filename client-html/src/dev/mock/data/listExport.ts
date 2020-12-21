@@ -1,9 +1,8 @@
-import { generateArraysOfRecords } from "../mockUtils";
 import { Report, ExportTemplate } from "@api/model";
+import { generateArraysOfRecords } from "../mockUtils";
 
 export function mockListExport() {
-  this.getPdfTemplate = (entityName: string) => {
-    return generateArraysOfRecords(1, [
+  this.getPdfTemplate = (entityName: string) => generateArraysOfRecords(1, [
       { name: "activeEnrolments", type: "boolean" },
       { name: "backgroundId", type: "number" },
       { name: "description", type: "string" },
@@ -25,30 +24,24 @@ export function mockListExport() {
         variables: []
       })
     );
-  };
   
-  this.getCsvTemplate = (entityName: string) => {
-    return generateArraysOfRecords(1, [
+  this.getCsvTemplate = (entityName: string) => generateArraysOfRecords(1, [
       { name: "id", type: "number" },
       { name: "name", type: "string" }
     ]).map(l => ({
       id: l.id,
       name: `${entityName} Logging CSV export`
     }));
-  };
 
-  this.getXmlTemplate = (entityName: string) => {
-    return generateArraysOfRecords(1, [
+  this.getXmlTemplate = (entityName: string) => generateArraysOfRecords(1, [
       { name: "id", type: "number" },
       { name: "name", type: "string" }
     ]).map(l => ({
       id: l.id,
       name: `${entityName} XML export`
     }));
-  };
 
-  this.getEmailTemplate = (entityName: string) => {
-    return generateArraysOfRecords(1, [
+  this.listEmailTemplate = (entityName: string) => generateArraysOfRecords(1, [
       { name: "id", type: "number" },
       { name: "name", type: "string" },
       { name: "entity", type: "string" },
@@ -63,10 +56,8 @@ export function mockListExport() {
       plainBody: l.plainBody,
       htmlBody: l.htmlBody
     }));
-  };
 
-  this.getExportTemplate = (entityName: string) => {
-    return generateArraysOfRecords(1, [
+  this.listExportTemplate = (entityName: string) => generateArraysOfRecords(1, [
       { name: "body", type: "string" },
       { name: "createdOn", type: "Datetime" },
       { name: "description", type: "string" },
@@ -95,5 +86,4 @@ export function mockListExport() {
         variables: []
       })
     );
-  };
 }
