@@ -18,7 +18,7 @@ import ish.oncourse.server.scripting.api.TemplateService
 class GetSubject {
 
     private TemplateService templateService
-    private String templateName
+    private String templateIdentifier
     private Map<String, Object> bindings
     private String subject
 
@@ -32,14 +32,14 @@ class GetSubject {
         getSubject
     }
 
-    static GetSubject valueOf(TemplateService templateService, String templateName, Map<String, Object> bindings) {
-        valueOf(templateService, templateName, bindings, null)
+    static GetSubject valueOf(TemplateService templateService, String templateIdentifier, Map<String, Object> bindings) {
+        valueOf(templateService, templateIdentifier, bindings, null)
     }
 
-    static GetSubject valueOf(TemplateService templateService, String templateName, Map<String, Object> bindings, String subject) {
+    static GetSubject valueOf(TemplateService templateService, String templateIdentifier, Map<String, Object> bindings, String subject) {
         GetSubject getSubject = new GetSubject()
         getSubject.templateService = templateService
-        getSubject.templateName = templateName
+        getSubject.templateIdentifier = templateIdentifier
         getSubject.bindings = bindings
         getSubject.subject = subject
         getSubject
@@ -47,6 +47,6 @@ class GetSubject {
 
 
     String get() {
-        templateName ? templateService.renderSubject(templateName, bindings) : subject ?: ''
+        templateIdentifier ? templateService.renderSubject(templateIdentifier, bindings) : subject ?: ''
     }
 }
