@@ -1,4 +1,4 @@
-export type ScriptComponentType = "Script" | "Import" | "Query" | "Email" | "Message";
+export type ScriptComponentType = "Script" | "Import" | "Query" | "Email" | "Message" | "Report";
 
 export interface ScriptComponent {
   type: ScriptComponentType;
@@ -35,5 +35,11 @@ export interface ScriptEmailComponent extends ScriptComponent {
 export interface ScriptMessageComponent extends ScriptComponent {
   template?: string;
   from?: string;
+  record?: string;
+}
+
+export interface ScriptReportComponent extends ScriptComponent {
+  report?: string;
+  background?: string;
   record?: string;
 }
