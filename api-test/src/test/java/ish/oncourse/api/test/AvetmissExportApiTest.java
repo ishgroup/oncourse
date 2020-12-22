@@ -9,8 +9,6 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(Karate.class)
-@CucumberOptions(tags = "~@ignore", features = "classpath:ish/oncourse/api/test/export")
 public class AvetmissExportApiTest {
 
     @Test

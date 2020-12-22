@@ -125,27 +125,5 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
         And match $.errorMessage == "Sorry, you have no permissions to edit avetmiss export. Please contact your administrator"
 
 
-
-#    Scenario: (-) Export avetmiss8 with empty request
-#
-#        * def avetmissExport = {}
-#
-#        Given path ishPath
-#        And request avetmissExport
-#        When method PUT
-#        Then status 200
-#
-#        * def processId = $
-#
-#        Given path ishPathControl + '/' + processId
-#        When method GET
-#        Then status 200
-#
-#        * match $ == {"status":"#ignore","message":null}
-#
-#        Given path ishPath + '/' + processId
-#        When method GET
-#        Then status 200
-#        And match $ contains '.txt'
-
+        
 
