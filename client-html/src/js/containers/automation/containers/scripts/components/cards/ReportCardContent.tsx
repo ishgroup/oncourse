@@ -61,6 +61,13 @@ const ReportCardContent = props => {
     <Grid container>
       <Grid item xs={12}>
         <FormField
+          type="text"
+          name={`${name}.fileName`}
+          label="File Name"
+          required
+        />
+
+        <FormField
           type="select"
           name={`${name}.report`}
           label="Report"
