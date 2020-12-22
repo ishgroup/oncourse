@@ -41,4 +41,4 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
     - name: Run tests
-      run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://localhost/angel_api_test
+      run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1/angel_api_test
