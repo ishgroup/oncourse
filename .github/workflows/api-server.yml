@@ -17,7 +17,7 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: angel_api_test
         ports:
-          - 3306
+          - 13306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
@@ -41,4 +41,4 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
     - name: Run tests
-      run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angel_api_test
+      run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angel_api_test?user=root
