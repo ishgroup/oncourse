@@ -58,9 +58,11 @@ public class GroupedCourseClassesList  extends ISHCommon {
 
     @SetupRender
     public void beforeRender() {
-        unassignedClasses =  courseClasses.stream().filter(cc -> cc.getRoom() == null).sorted().collect(Collectors.toList());
+        unassignedClasses =  courseClasses.stream().filter(cc -> cc.getRoom() == null)
+                .sorted(Comparator.comparing(CourseClass::getStartDate, Comparator.nullsFirst(Date::compareTo)))
+                .collect(Collectors.toList());
 
-        sitesMap= courseClasses.stream().filter(cc -> cc.getRoom() != null)
+        sitesMap = courseClasses.stream().filter(cc -> cc.getRoom() != null)
                 .collect(Collectors.groupingBy(cc -> cc.getRoom().getSite(), () -> new TreeMap<>(Comparator.comparing(_Site::getName)), Collectors.toList()));
         
     }
