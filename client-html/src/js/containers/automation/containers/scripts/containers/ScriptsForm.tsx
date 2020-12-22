@@ -39,7 +39,7 @@ import { setScriptComponents } from "../actions";
 import { ScriptComponentType } from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { getQueryComponent, getScriptComponent, getMessageComponent } from "../constants";
+import { getQueryComponent, getScriptComponent, getMessageComponent, getReportComponent } from "../constants";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -132,6 +132,8 @@ interface Props {
   onDelete?: any;
   formsState?: any;
   emailTemplates?: CommonListItem[];
+  pdfReports?: CommonListItem[];
+  pdfBackgrounds?: CommonListItem[];
 }
 
 const getInitComponentBody = (componentName: ScriptComponentType) => {
@@ -144,6 +146,9 @@ const getInitComponentBody = (componentName: ScriptComponentType) => {
     }
     case "Message": {
       return getMessageComponent("");
+    }
+    case "Report": {
+      return getReportComponent("");
     }
     default:
       return null;
@@ -171,7 +176,9 @@ const ScriptsForm = React.memo<Props>(props => {
     onDelete,
     isNew,
     formsState,
-    emailTemplates
+    emailTemplates,
+    pdfReports,
+    pdfBackgrounds,
   } = props;
 
   const [isValidQuery, setIsValidQuery] = useState<boolean>(true);
@@ -433,6 +440,8 @@ const ScriptsForm = React.memo<Props>(props => {
                   isValidQuery={isValidQuery}
                   onInternalSaveClick={onInternalSaveClick}
                   emailTemplates={emailTemplates}
+                  pdfReports={pdfReports}
+                  pdfBackgrounds={pdfBackgrounds}
                 />
 
                 <FormField
