@@ -59,6 +59,7 @@ export const getMessageTemplate = (component) => {
   message {
     ${parsedString}
     record records
+    attachment file
   }      
   // Message closure end\n`;
 };
@@ -93,7 +94,7 @@ export const getReportTemplate = (component) => {
     e[0] === 'id' ? '' : `${result} ${e[0]} "${e[1]}"\n`), '');
 
   return `\n// Report closure start 
-  def reportData = report {
+  file = report {
     ${parsedString}
     record records
   }      
