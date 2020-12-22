@@ -214,7 +214,7 @@ task startDaemon(dependsOn: [classes], type: JavaExecFork) {
 	jvmArgs = ['-Xmx2048m', '-XX:+HeapDumpOnOutOfMemoryError']
 	workingDir = "$buildDir"
 	waitForOutput = 'Server ready for client connections'
-	timeout = 60 * 20
+	timeout = 60 * 3
 }
 
 tasks.withType(CreateStartScripts).each { task ->
