@@ -39,7 +39,6 @@ export interface ScriptMessageComponent extends ScriptComponent {
 }
 
 export interface ScriptReportComponent extends ScriptComponent {
-  fileName?: string;
   report?: string;
   background?: string;
   record?: string;
