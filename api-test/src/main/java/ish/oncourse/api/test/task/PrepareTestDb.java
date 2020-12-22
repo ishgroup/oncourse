@@ -14,6 +14,7 @@ package ish.oncourse.api.test.task;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 
@@ -33,11 +34,11 @@ public class PrepareTestDb {
     // args[1] - path to dataset file
     public static void main(String[] args) throws Exception {
         if (args.length == 2) {
-            var connection = DriverManager.getConnection(args[DB_URL_ARG_INDEX]);
+            Connection connection = DriverManager.getConnection(args[DB_URL_ARG_INDEX]);
             IDatabaseConnection testDatabaseConnection = new DatabaseConnection(connection, null);
             testDatabaseConnection.getConfig().setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true);
             InputStream st = new FileInputStream(args[DATASET_PATH_ARG_INDEX]);
-            var dataSet = new FlatXmlDataSetBuilder().setColumnSensing(true).build(st);
+            FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().setCaseSensitiveTableNames(false).setColumnSensing(true).build(st);
             DatabaseOperation.REFRESH.execute(testDatabaseConnection, dataSet);
         } else {
             throw new RuntimeException("Test data wasn't inserted. Invalid parameters count!");
