@@ -74,7 +74,7 @@ const MessageCardContent = React.memo<any>(props => {
   const changeEmailTemplate = async (item) => {
     const emailTemplate = await getEmailTemplate(item.id)
 
-    emailTemplate.variables && emailTemplate.variables.forEach(e => {
+    emailTemplate && emailTemplate.variables && emailTemplate.variables.forEach(e => {
       if (e.type === "Checkbox") {
         dispatch(change(SCRIPT_EDIT_VIEW_FORM_NAME, `${name}.${e.name}`, false));
       }

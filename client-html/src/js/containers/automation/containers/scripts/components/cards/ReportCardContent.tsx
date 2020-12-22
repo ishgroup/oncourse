@@ -43,7 +43,7 @@ const ReportCardContent = props => {
   const changePdfReport = async (item) => {
     const pdfReport = await getPdfReport(item.id)
 
-    pdfReport.variables && pdfReport.variables.forEach(e => {
+    pdfReport && pdfReport.variables && pdfReport.variables.forEach(e => {
       if (e.type === "Checkbox") {
         dispatch(change(SCRIPT_EDIT_VIEW_FORM_NAME, `${name}.${e.name}`, false));
       }
