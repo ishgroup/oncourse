@@ -184,6 +184,8 @@ const ScriptsForm = React.memo<Props>(props => {
     history,
     nextLocation,
     setNextLocation,
+    pdfReports,
+    pdfBackgrounds,
   } = props;
 
   const [isValidQuery, setIsValidQuery] = useState<boolean>(true);

@@ -91,6 +91,8 @@ const mapStateToProps = (state: State) => ({
   pdfReports: state.automation.pdfReport.pdfReports,
   pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds,
   nextLocation: state.nextLocation,
+  pdfReports: state.automation.pdfReport.pdfReports,
+  pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
