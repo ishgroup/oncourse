@@ -20,7 +20,7 @@ import ish.oncourse.server.scripting.api.TemplateService
 class GetEmailHtmlBody {
 
     private TemplateService templateService
-    private String templateName
+    private String templateIdentifier
     private Map<String, Object> bindings
 
     private MessagePerson messagePerson
@@ -33,10 +33,10 @@ class GetEmailHtmlBody {
         new GetEmailHtmlBody()
     }
 
-    static GetEmailHtmlBody valueOf(TemplateService templateService, String templateName, Map<String, Object> bindings) {
+    static GetEmailHtmlBody valueOf(TemplateService templateService, String templateIdentifier, Map<String, Object> bindings) {
         GetEmailHtmlBody getEmailHtmlBody = new GetEmailHtmlBody()
         getEmailHtmlBody.templateService = templateService
-        getEmailHtmlBody.templateName = templateName
+        getEmailHtmlBody.templateIdentifier = templateIdentifier
         getEmailHtmlBody.bindings = bindings
         getEmailHtmlBody
     }
@@ -57,8 +57,8 @@ class GetEmailHtmlBody {
             return html
         }
 
-        if (templateName && templateService) {
-            EmailTemplate template = templateService.loadTemplate(templateName)
+        if (templateIdentifier && templateService) {
+            EmailTemplate template = templateService.loadTemplate(templateIdentifier)
             return templateService.renderHtml(template, bindings)
         }
 
