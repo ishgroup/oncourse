@@ -120,6 +120,17 @@ class ScriptAddMenu extends React.Component<any, any> {
                     Message
                   </Typography>
                 </MenuItem>
+
+                <MenuItem
+                  button
+                  className={classes.listItemPadding}
+                  data-component="Report"
+                  onClick={this.addComponent}
+                >
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Report
+                  </Typography>
+                </MenuItem>
               </div>
             </div>
           </div>

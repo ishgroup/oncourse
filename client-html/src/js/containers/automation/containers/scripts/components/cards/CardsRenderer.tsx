@@ -11,6 +11,10 @@ import ScriptCard from "./CardBase";
 import EmailCardContent from "./EmailCardContent";
 import QueryCardContent from "./QueryCardContent";
 import MessageCardContent from "./MessageCardContent";
+import ReportCardContent from "./ReportCardContent";
+import Grid from "@material-ui/core/Grid";
+import { getType } from "../../utils";
+import { FormControlLabel } from "@material-ui/core";
 
 const onDragEnd = ({ destination, source, fields }) => {
   if (destination && destination.index !== source.index) {
@@ -29,7 +33,9 @@ const CardsRenderer = props => {
     isInternal,
     isValidQuery,
     onInternalSaveClick,
-    emailTemplates
+    emailTemplates,
+    pdfReports,
+    pdfBackgrounds,
   } = props;
 
   const onDelete = (e, index, fields, showConfirm) => {
@@ -46,6 +52,36 @@ const CardsRenderer = props => {
       fields.remove(index);
     }, "Script component will be deleted permanently");
   };
+
+  const renderVariables = (variables, name) => {
+    return (<>
+      {variables.map(elem => (
+        elem.type === "Checkbox" ? (
+          <Grid key={getType(elem.type) + elem.label} item xs={12}>
+            <FormControlLabel
+              control={
+                <FormField
+                  type={elem.type.toLowerCase()}
+                  name={`${name}.${elem.name}`}
+                  label={elem.label}
+                />
+              }
+              label={elem.label}
+            />
+          </Grid>
+        ) : (
+          <Grid key={getType(elem.type) + elem.label} item xs={12}>
+            <FormField
+              type={getType(elem.type)}
+              name={`${name}.${elem.name}`}
+              label={elem.label}
+              required
+            />
+          </Grid>
+        )
+      ))}
+    </>)
+  }
 
   return (
     <DragDropContext onDragEnd={args => onDragEnd({ ...args, fields })}>
@@ -130,6 +166,7 @@ const CardsRenderer = props => {
                               onValidateQuery={onValidateQuery}
                               isValidQuery={isValidQuery}
                               emailTemplates={emailTemplates}
+                              renderVariables={renderVariables}
                             />
                           </ScriptCard>
                         </div>
@@ -137,6 +174,36 @@ const CardsRenderer = props => {
                     </Draggable>
                   );
                 }
+
+                case "Report": {
+                  return (
+                    <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
+                      {provided => (
+                        <div ref={provided.innerRef} {...provided.draggableProps}>
+                          <ScriptCard
+                            heading="Report"
+                            className="mb-3"
+                            onDelete={!isInternal ? e => onDelete(e, index, fields, showConfirm) : null}
+                            dragHandlerProps={provided.dragHandleProps}
+                            expanded
+                            onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                          >
+                            <ReportCardContent
+                              dispatch={dispatch}
+                              field={component}
+                              name={item}
+                              classes={classes}
+                              pdfReports={pdfReports}
+                              pdfBackgrounds={pdfBackgrounds}
+                              renderVariables={renderVariables}
+                            />
+                          </ScriptCard>
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                }
+
                 case "Email": {
                   return (
                     <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>

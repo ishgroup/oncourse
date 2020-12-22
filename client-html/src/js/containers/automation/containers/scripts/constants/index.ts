@@ -3,7 +3,8 @@ import {
   ScriptComponent,
   ScriptEmailComponent,
   ScriptQueryComponent,
-  ScriptMessageComponent
+  ScriptMessageComponent,
+  ScriptReportComponent,
 } from "../../../../../model/scripts";
 
 export const SCRIPT_EDIT_VIEW_FORM_NAME = "ScriptsForm";
@@ -65,6 +66,43 @@ export const getMessageTemplate = (component) => {
 export const getMessageComponent = (body: string): ScriptMessageComponent => {
   const result: ScriptMessageComponent = {
     type: "Message",
+    id: uniqid()
+  };
+
+  if (!body) return result;
+
+  const entries = body.match(/\n?(.*")\n/gi);
+
+  entries.forEach(e => {
+    const matchedKey = e.match(/(.*?)\"/);
+    const key = matchedKey ? matchedKey[1].trim() : "";
+
+    if (!key) return;
+
+    const matchedValue = e.replace(key, '').trim();
+    const value = matchedValue.slice(1, matchedValue.length-1);
+    result[key] = value === "false" ? false : value;
+  });
+
+  return result
+};
+
+export const getReportTemplate = (component) => {
+  const entries = Object.entries(component);
+  const parsedString = entries.reduce((result, e) => (
+    e[0] === 'id' ? '' : `${result} ${e[0]} "${e[1]}"\n`), '');
+
+  return `\n// Report closure start 
+  def reportData = report {
+    ${parsedString}
+    record records
+  }      
+  // Report closure end\n`;
+};
+
+export const getReportComponent = (body: string): ScriptReportComponent => {
+  const result: ScriptReportComponent = {
+    type: "Report",
     id: uniqid()
   };
 

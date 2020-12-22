@@ -10,14 +10,12 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlined from "@material-ui/icons/LockOutlined";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {EmailTemplateApi} from "@api/model";
-import {FormControlLabel} from "@material-ui/core";
 
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
 import {AppTheme} from "../../../../../../model/common/Theme";
 import {State} from "../../../../../../reducers/state";
 import {ADMIN_EMAIL_KEY} from "../../../../../../constants/Config";
 import {DefaultHttpService} from "../../../../../../common/services/HttpService";
-import {getType} from "../../utils";
 import {SCRIPT_EDIT_VIEW_FORM_NAME} from "../../constants";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
@@ -33,7 +31,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
 
 const MessageCardContent = React.memo<any>(props => {
   const {
-    name, emailTemplates, customPreferencesFields, field, dispatch
+    name, emailTemplates, customPreferencesFields, field, dispatch, renderVariables
   } = props;
 
   const [emailVariables, setEmailVariables] = useState([]);
@@ -57,7 +55,7 @@ const MessageCardContent = React.memo<any>(props => {
     let emailTemplate;
 
     try {
-      const emailTemplate = await emailTemplateService.get(id);
+      emailTemplate = await emailTemplateService.get(id);
       emailTemplate && setEmailVariables(emailTemplate.variables);
     } catch (e) {
       console.warn(e)
@@ -106,33 +104,8 @@ const MessageCardContent = React.memo<any>(props => {
           />
         </Grid>
 
-        {
-          emailVariables.map(elem => (
-            elem.type === "Checkbox" ? (
-              <Grid key={getType(elem.type) + elem.label} item xs={12}>
-                <FormControlLabel
-                  control={
-                    <FormField
-                      type={elem.type.toLowerCase()}
-                      name={`${name}.${elem.name}`}
-                      label={elem.label}
-                    />
-                  }
-                  label={elem.label}
-                />
-              </Grid>
-            ) : (
-              <Grid key={getType(elem.type) + elem.label} item xs={12}>
-                <FormField
-                  type={getType(elem.type)}
-                  name={`${name}.${elem.name}`}
-                  label={elem.label}
-                  required
-                />
-              </Grid>
-            )
-          ))
-        }
+        {renderVariables(emailVariables, name)}
+
       </Grid>
     </Grid>
   );

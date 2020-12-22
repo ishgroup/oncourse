@@ -35,6 +35,8 @@ const ScriptsBase = React.memo<any>(props => {
     history,
     scripts,
     emailTemplates,
+    pdfReports,
+    pdfBackgrounds,
     match: {
       params: { id }
     },
@@ -71,6 +73,8 @@ const ScriptsBase = React.memo<any>(props => {
       isNew={isNew}
       form={SCRIPT_EDIT_VIEW_FORM_NAME}
       emailTemplates={emailTemplates}
+      pdfReports={pdfReports}
+      pdfBackgrounds={pdfBackgrounds}
       history={history}
       {...rest}
     />
@@ -85,6 +89,8 @@ const mapStateToProps = (state: State) => ({
   scripts: state.automation.script.scripts,
   emailTemplates: state.automation.emailTemplate.emailTemplates,
   nextLocation: state.nextLocation,
+  pdfReports: state.automation.pdfReport.pdfReports,
+  pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

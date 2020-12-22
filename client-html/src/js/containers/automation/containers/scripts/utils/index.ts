@@ -14,6 +14,8 @@ import {
   getScriptComponent,
   getMessageTemplate,
   getMessageComponent,
+  getReportComponent,
+  getReportTemplate,
   importsRegexp
 } from "../constants/index";
 
@@ -30,6 +32,9 @@ const getClosureComponent = (body: string) => {
       }
       case "Message": {
         return getMessageComponent(body);
+      }
+      case "Report": {
+        return getReportComponent(body);
       }
     }
   }
@@ -103,6 +108,9 @@ const getComponentBody = (component: any) => {
     }
     case "Message": {
       return getMessageTemplate(component);
+    }
+    case "Report": {
+      return getReportTemplate(component);
     }
     default:
       return null;
