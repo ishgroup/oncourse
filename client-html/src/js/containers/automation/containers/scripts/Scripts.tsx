@@ -73,6 +73,8 @@ const ScriptsBase = React.memo<any>(props => {
       isNew={isNew}
       form={SCRIPT_EDIT_VIEW_FORM_NAME}
       emailTemplates={emailTemplates}
+      pdfReports={pdfReports}
+      pdfBackgrounds={pdfBackgrounds}
       history={history}
       pdfReports={pdfReports}
       pdfBackgrounds={pdfBackgrounds}
@@ -93,6 +95,8 @@ const mapStateToProps = (state: State) => ({
   pdfReports: state.automation.pdfReport.pdfReports,
   pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds,
   nextLocation: state.nextLocation,
+  pdfReports: state.automation.pdfReport.pdfReports,
+  pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

@@ -85,6 +85,7 @@ const ReportCardContent = props => {
           label="Background"
           items={pdfBackgroundsItems}
           className="d-flex mt-2"
+          required
           allowEmpty
         />
 
