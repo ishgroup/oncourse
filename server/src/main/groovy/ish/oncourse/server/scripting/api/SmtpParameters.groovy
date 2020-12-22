@@ -11,10 +11,7 @@
 
 package ish.oncourse.server.scripting.api
 
-import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.messaging.AttachmentParam
-
-import static ish.oncourse.server.scripting.api.SMTPMessage.*
 
 /**
  * Created by anarut on 8/17/16.
@@ -32,7 +29,7 @@ class SmtpParameters {
     List<String> bccList
     String multipartType
     List<AttachmentParam> attachments
-    String templateName
+    String templateIdentifier
     Map<String, Object> bindings
 
      SmtpParameters(EmailSpec spec) {
@@ -47,7 +44,23 @@ class SmtpParameters {
         bccList = spec.bccList
         multipartType = spec.multipartType
         attachments = spec.attachments
-        templateName = spec.templateName
+         templateIdentifier = spec.templateName
+        bindings = spec.bindings
+    }
+
+    SmtpParameters(MessageSpec spec) {
+        fromAddress = spec.fromAddress
+        fromName = spec.fromName
+        subject = spec.subject
+        content = spec.content
+        creatorKey = spec.creatorKey
+        keyCollision = spec.keyCollision
+        toList = spec.toList
+        ccList = spec.ccList
+        bccList = spec.bccList
+        multipartType = spec.multipartType
+        attachments = spec.attachments
+        templateIdentifier = spec.templateIdentifier
         bindings = spec.bindings
     }
 
@@ -58,18 +71,5 @@ class SmtpParameters {
         
         multipartType = spec.multipartType
         attachments = spec.attachments
-    }
-
-
-    SmtpParameters(String fromAddress, String fromName, List<String> bccList,  String to, String templateName,
-                   Map<String, Object> bindings,  List<AttachmentParam> attachments) {
-        this.fromAddress = fromAddress
-        this.fromName = fromName
-        this.toList = [to]
-        this.bccList = bccList
-        this.templateName = templateName
-        this.bindings = bindings
-        this.multipartType = DEFAULT_MULTIPART_TYPE
-        this.attachments = attachments
     }
 }
