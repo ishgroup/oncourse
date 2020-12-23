@@ -9,7 +9,6 @@ Feature: re-usable feature to performance of full payment cycle and delete all o
     * def ishPathList = 'list'
     * def ishPathPlain = 'list/plain'
     * def ishPathEntity = 'list/entity/'
-    * def ishPathPaymentType = 'preference/payment/type'
     * def fun =
       """
         function(list, sum, i) {
@@ -59,16 +58,11 @@ Feature: re-usable feature to performance of full payment cycle and delete all o
     Then status 200
     And def currentOwing = parseFloat(response.invoice.amountOwing)
     And def payNow = currentOwing + previousOwing + previousCredits
-
-    Given path ishPathPaymentType
-    When method GET
-    Then status 200
-    And def paymentTypeId = get[0] response[?(@.name == 'Cash')].id
-    * print paymentTypeId
+    
 
     And set checkoutModel.payNow = payNow
     And set checkoutModel.payForThisInvoice = currentOwing
-    And set checkoutModel.paymentMethodId = paymentTypeId
+    And set checkoutModel.paymentMethodId = 1
     * if (contactId == 18) checkoutModel.previousInvoices = { 37: 750 }
 
     * print checkoutModel

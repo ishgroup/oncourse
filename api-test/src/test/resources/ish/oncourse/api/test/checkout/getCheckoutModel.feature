@@ -51,7 +51,7 @@ Feature: re-usable feature to getting checkout model
       """
         {
           "payerId": #(payerId),
-          "paymentMethodId": 0,
+          "paymentMethodId": 1,
           "payNow": 0,
           "merchantReference": "",
           "contactNodes": #(contactNodes),

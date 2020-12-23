@@ -7,11 +7,6 @@ Feature: Validations on invoices amount after payment
     * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
     * def ishPath = 'checkout'
     * def ishPathEntity = 'list/entity/'
-    * def ishPathPaymentType = 'preference/payment/type'
-    Given path ishPathPaymentType
-    When method GET
-    Then status 200
-    And def paymentTypeId = get[0] response[?(@.name == 'Cash')].id
 
 
   Scenario: Buy membership, check invoice line amount with membership cost
@@ -21,7 +16,7 @@ Feature: Validations on invoices amount after payment
       | 0 | 30        | 30        | null     | []        | {"first": 1006,"second": null} | {"id": null, "value": 0} | []      |
     * call read('getCheckoutModel.feature') checkoutModelTable
 
-    * set checkoutModel.paymentMethodId = paymentTypeId
+    * set checkoutModel.paymentMethodId = 1
     * set checkoutModel.payNow = 66.0
     * set checkoutModel.payForThisInvoice = 66.0
 
@@ -54,7 +49,7 @@ Feature: Validations on invoices amount after payment
       | 0 | 30        | 30        | null     | []        | {"first": null,"second": null} | {"id": null, "value": 0} | []      |
     * call read('getCheckoutModel.feature') checkoutModelTable
 
-    * set checkoutModel.paymentMethodId = paymentTypeId
+    * set checkoutModel.paymentMethodId = 1
     * set checkoutModel.payNow = 50.0
     * set checkoutModel.payForThisInvoice = 50.0
     * checkoutModel.contactNodes[0].vouchers.add({ "productId":1009, "validTo":"2021-05-07", "value":0, "restrictToPayer":false })
@@ -90,7 +85,7 @@ Feature: Validations on invoices amount after payment
       | 0 | 30        | 30        | null     | []        | {"first": null,"second": null} | {"id": null, "value": 0} | [{productId: 1004, quantity: 2}] |
     * call read('getCheckoutModel.feature') checkoutModelTable
 
-    * set checkoutModel.paymentMethodId = paymentTypeId
+    * set checkoutModel.paymentMethodId = 1
     * set checkoutModel.payNow = 264.0
     * set checkoutModel.payForThisInvoice = 264.0
 
@@ -124,7 +119,7 @@ Feature: Validations on invoices amount after payment
       | 0 | 30        | 30        | null     | [{"classId":15,"appliedDiscountId":null,"studyReason":"To get a job"}] | {"first": null,"second": null} | {"id": null, "value": 0} | []      |
     * call read('getCheckoutModel.feature') checkoutModelTable
 
-    * set checkoutModel.paymentMethodId = paymentTypeId
+    * set checkoutModel.paymentMethodId = 1
     * set checkoutModel.payNow = 250.0
     * set checkoutModel.payForThisInvoice = 250.0
 
