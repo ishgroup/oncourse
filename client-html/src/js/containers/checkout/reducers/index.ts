@@ -21,10 +21,6 @@ import {
   CHECKOUT_UPDATE_CONTACT, CHECKOUT_UPDATE_RELATED_ITEMS
 } from "../actions";
 import {
-  CHECKOUT_FUNDING_INVOICE_ADD_COMPANY,
-  CHECKOUT_FUNDING_INVOICE_TRACK_AMOUNT_OWING
-} from "../actions/checkoutFundingInvoice";
-import {
   listPreviousInvoices,
   setSummaryListWithDefaultPayer,
   modifySummaryLisItem,
@@ -80,7 +76,6 @@ import {
   CHECKOUT_UPDATE_SUMMARY_ITEMS,
   CHECKOUT_UPDATE_PROMO, CHECKOUT_UPDATE_SUMMARY_LIST_ITEMS, CHECKOUT_SET_DISABLE_DISCOUNTS
 } from "../actions/checkoutSummary";
-import { calculateFundingInvoice } from "../utils/fundingInvoice";
 
 const initial: CheckoutState = {
   step: 0,
@@ -132,11 +127,6 @@ const initial: CheckoutState = {
   checkCourseClassEmpty: false,
   hasErrors: false,
   disableDiscounts: false,
-  fundingInvoice: {
-    companies: [],
-    item: null,
-    trackAmountOwing: false
-  },
   salesRelations: []
 };
 
@@ -186,8 +176,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       return {
         ...state,
         summary,
-        contacts,
-        fundingInvoice: calculateFundingInvoice(summary.list)
+        contacts
       };
     }
 
@@ -208,8 +197,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
         ...state,
         summary,
         contacts,
-        relatedContacts: contacts.length > 0 ? [...state.relatedContacts] : [],
-        fundingInvoice: calculateFundingInvoice(summary.list)
+        relatedContacts: contacts.length > 0 ? [...state.relatedContacts] : []
       };
     }
 
@@ -229,8 +217,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
           ...state.summary,
           list
         },
-        contacts,
-        fundingInvoice: calculateFundingInvoice(list)
+        contacts
       };
     }
 
@@ -265,8 +252,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       return {
         ...state,
         summary,
-        items,
-        fundingInvoice: calculateFundingInvoice(list)
+        items
       };
     }
 
@@ -463,8 +449,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       return {
         ...state,
         summary,
-        items,
-        fundingInvoice: calculateFundingInvoice(list)
+        items
       };
     }
 
@@ -1179,31 +1164,6 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
           }))
         },
         salesRelations: suggestItems
-      };
-    }
-
-    case CHECKOUT_FUNDING_INVOICE_ADD_COMPANY: {
-      const { company } = action.payload;
-      const fundingInvoiceCompany = [...state.fundingInvoice.companies];
-      if (fundingInvoiceCompany.length > 0) fundingInvoiceCompany[0] = { ...company };
-      else fundingInvoiceCompany.push({ ...company });
-
-      return {
-        ...state,
-        fundingInvoice: {
-          ...state.fundingInvoice,
-          companies: fundingInvoiceCompany
-        }
-      };
-    }
-
-    case CHECKOUT_FUNDING_INVOICE_TRACK_AMOUNT_OWING: {
-      return {
-        ...state,
-        fundingInvoice: {
-          ...state.fundingInvoice,
-          trackAmountOwing: !state.fundingInvoice.trackAmountOwing
-        }
       };
     }
 

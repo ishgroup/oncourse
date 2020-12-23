@@ -3,17 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Enrolment, Invoice } from "@api/model";
+import {
+ Contact, Enrolment, Invoice, InvoicePaymentPlan, TrainingPlan
+} from "@api/model";
 import { CheckoutSummaryListItem } from "./index";
 
 export type CheckoutFundingInvoiceItem = Enrolment & Invoice & {
   enrolment: CheckoutSummaryListItem;
-  fundingProviderId?: number;
-  trainingPlans?: any[];
 }
 
 export interface CheckoutFundingInvoice {
-  companies?: any[];
-  item?: CheckoutFundingInvoiceItem;
-  trackAmountOwing?: boolean;
+  active: boolean;
+  company: Contact;
+  item: CheckoutFundingInvoiceItem;
+  trackAmountOwing: boolean;
+  relatedFundingSourceId: number;
+  fundingProviderId: number;
+  vetPurchasingContractID: string;
+  trainingPlans: TrainingPlan[];
+  paymentPlans: InvoicePaymentPlan[];
+  total: number;
 }

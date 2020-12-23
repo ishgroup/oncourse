@@ -105,7 +105,6 @@ export interface CheckoutState {
   payment?: CheckoutPayment;
   hasErrors?: boolean;
   disableDiscounts?: boolean;
-  fundingInvoice?: CheckoutFundingInvoice;
   salesRelations?: CheckoutSaleRelation[];
 }
 

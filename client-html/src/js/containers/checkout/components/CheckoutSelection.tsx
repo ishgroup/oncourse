@@ -67,7 +67,7 @@ import {
   processCheckoutSale,
   processCheckoutWaitingListIds
 } from "../utils";
-import CheckoutFundingInvoice from "./fundingInvoice/CheckoutFundingInvoice";
+import CheckoutFundingInvoiceForm from "./fundingInvoice/CheckoutFundingInvoiceForm";
 import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./fundingInvoice/CheckoutFundingInvoiceSummaryList";
 import CheckoutFundingThisInvoice from "./fundingInvoice/CheckoutFundingThisInvoice";
 import HeaderField from "./HeaderField";
@@ -121,6 +121,7 @@ import { checkoutClearPaymentStatus, checkoutGetActivePaymentMethods } from "../
 import { checkoutUpdateSummaryClassesDiscounts } from "../actions/checkoutSummary";
 import CheckoutSummaryHeaderField from "./summary/CheckoutSummaryHeaderField";
 import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from "./summary/CheckoutSummaryList";
+import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 export const CONTACT_ENTITY_NAME: string = "Contact";
@@ -232,7 +233,9 @@ interface Props extends Partial<EditViewProps> {
   fundingInvoiceInvalid?: boolean;
   finalTotal?: number;
   summary?: CheckoutSummary;
-  isEnabledFundingInvoice?: boolean;
+  fundingInvoiceValues?: {
+    fundingInvoices: CheckoutFundingInvoice[];
+  };
   salesRelations?: CheckoutSaleRelation[];
 }
 
@@ -338,7 +341,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     summarryInvalid,
     summary,
     invalid,
-    isEnabledFundingInvoice,
+    fundingInvoiceValues,
     fundingInvoiceInvalid,
     salesRelations
   } = props;
@@ -979,10 +982,16 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [selectedCourse]
   );
 
-  const handleFundingInvoiceClick = React.useCallback(() => {
+  const handleFundingInvoiceClick = () => {
     handleChangeStep(CheckoutCurrentStep.fundingInvoice);
     setActiveField(CheckoutPage.fundingInvoiceSummary);
-  }, []);
+    dispatch(change(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM,
+      "fundingInvoices",
+      fundingInvoiceValues.fundingInvoices.map((f, ind) => ({
+        ...f,
+        active: ind === 0
+      }))));
+  };
 
   return (
     <div className={clsx("root", classes.root)}>
@@ -1068,18 +1077,15 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                   />
                 </CheckoutSectionExpandableRenderer>
 
-                {isEnabledFundingInvoice && selectedItems.filter(i => i.checked).length > 0 && (
-                <CheckoutSectionExpandableRenderer
-                  title="Funding Invoice"
-                  expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}
-                  onExpanded={handleFundingInvoiceClick}
-                  disabled={paymentProcessStatus === "success"}
-                >
-                  <CheckoutFundingThisInvoice
-                    setActiveField={setActiveField}
-                    activeField={activeField}
-                  />
-                </CheckoutSectionExpandableRenderer>
+                {fundingInvoiceValues.fundingInvoices.length && selectedItems.filter(i => i.checked).length > 0 && (
+                  <CheckoutSectionExpandableRenderer
+                    title="Funding Invoices"
+                    expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}
+                    onExpanded={handleFundingInvoiceClick}
+                    disabled={paymentProcessStatus === "success"}
+                  >
+                    <CheckoutFundingThisInvoice dispatch={dispatch} />
+                  </CheckoutSectionExpandableRenderer>
                  )}
 
                 <CheckoutSectionExpandableRenderer
@@ -1210,7 +1216,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           />
         </div>
         <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice) })}>
-          <CheckoutFundingInvoice
+          <CheckoutFundingInvoiceForm
             activeField={activeField}
             titles={titles}
           />
@@ -1294,7 +1300,7 @@ const mapStateToProps = (state: State) => ({
   hasErrors: state.checkout.hasErrors,
   summarryInvalid: isInvalid(SUMMARRY_FORM)(state),
   fundingInvoiceInvalid: isInvalid(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state),
-  isEnabledFundingInvoice: Boolean(state.checkout.fundingInvoice.item)
+  fundingInvoiceValues: getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
