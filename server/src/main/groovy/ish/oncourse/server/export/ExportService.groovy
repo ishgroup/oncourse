@@ -146,6 +146,6 @@ class ExportService {
         build.setResolveStrategy(Closure.DELEGATE_FIRST)
         build.call()
 
-        return performExport(exportSpec.templateKeyCode, exportSpec.records).toString()
+        return performExport(exportSpec.templateKeyCode, exportSpec.entityRecords).toString()
 	}
 }
