@@ -78,6 +78,7 @@ class GroovyScriptService {
     private static final Logger logger = LogManager.getLogger(GroovyScriptService.class)
 
     // TODO remove useless binding (value, entity)
+    public static final String FILE_PARAM_NAME = "file"
     public static final String ENTITY_PARAM_NAME = "entity"
     public static final String RECORD_PARAM_NAME = "record"
     public static final String RECORDS_PARAM_NAME = "records"
@@ -203,6 +204,7 @@ class GroovyScriptService {
         bindings.put(EMAIL_SERVICE, emailService)
         bindings.put(QUERY_SERVICE, queryService)
         bindings.put(RECORDS_PARAM_NAME, [])
+        bindings.put(FILE_PARAM_NAME, null)
 
         bindings.put(RUN_QUERY, new MethodClosure(queryService, RUN_QUERY))
         bindings.put(SEND_EMAIL, new MethodClosure(emailService, SEND_EMAIL))
