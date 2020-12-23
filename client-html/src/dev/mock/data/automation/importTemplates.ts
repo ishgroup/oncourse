@@ -81,21 +81,21 @@ export function mockImportTemplates() {
 
   this.createImportTemplate = item => {
     const data = JSON.parse(item);
-    const emailTemplates = this.emailTemplates;
-    const totalRows = emailTemplates.rows;
+    const importTemplates = this.importTemplates;
+    const totalRows = importTemplates.rows;
 
     data.id = totalRows.length + 1;
 
-    emailTemplates.rows.push({
+    importTemplates.rows.push({
       id: data.id,
       values: [data.name, data.keyCode, data.enabled]
     });
 
-    this.emailTemplates = emailTemplates;
+    this.importTemplates = importTemplates;
   };
 
   this.removeImportTemplate = id => {
-    this.emailTemplates.rows = this.emailTemplates.rows.filter(a => a.id !== id);
+    this.importTemplates.rows = this.importTemplates.rows.filter(a => a.id !== id);
   };
 
   const rows = generateArraysOfRecords(20, [
