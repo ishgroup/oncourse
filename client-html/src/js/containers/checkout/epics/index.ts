@@ -8,7 +8,7 @@ import { EpicCheckoutGetContact } from "./contact/EpicCheckoutGetContact";
 import { EpicCheckoutCreateContact } from "./contact/EpicCheckoutCreateContact";
 import { EpicCheckoutGetRelatedContacts } from "./contact/EpicCheckoutGetRelatedContacts";
 import { EpicCheckoutUpdateContact } from "./contact/EpicCheckoutUpdateContact";
-import { EpicCheckoutGetTrainingPlans } from "./fundingInvoice/EpicCheckoutGetTrainingPlans";
+import { EpicTriggerFundingInvoiceCalculate } from "./fundingInvoice/EpicTriggerFundingInvoiceCalculate";
 import { EpicGetCourseClassList } from "./item/EpicCheckoutGetCourseClassList";
 import { EpicCheckoutGetMemberShip } from "./item/EpicCheckoutGetMembership";
 import { EpicCheckoutGetProduct } from "./item/EpicCheckoutGetProduct";
@@ -49,5 +49,5 @@ export const EpicCheckout = combineEpics(
   EpicGetPreviousOwing,
   EpicCheckoutGetVoucherToRedeem,
   EpicGetVoucherRedeemer,
-  EpicCheckoutGetTrainingPlans
+  EpicTriggerFundingInvoiceCalculate
 );

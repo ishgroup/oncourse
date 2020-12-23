@@ -155,7 +155,7 @@ const useHeaderTypoStyles = makeStyles(() => ({
 }));
 
 interface HeaderFieldTypoProps {
-  title: string;
+  title: React.ReactNode;
   amount: number;
   currencySymbol: string;
   disabled?: boolean;

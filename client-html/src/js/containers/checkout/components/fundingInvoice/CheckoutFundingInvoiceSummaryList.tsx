@@ -7,7 +7,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
-  FieldArray, getFormValues
+  change,
+  FieldArray
 } from "redux-form";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -18,7 +19,7 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { validateSingleMandatoryField, validateVetPurchasingContractIdentifier } from "../../../../common/utils/validation";
-import { CheckoutFundingInvoiceItem } from "../../../../model/checkout/fundingInvoice";
+import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
@@ -61,10 +62,9 @@ const trainingPlansColumns: NestedTableColumn[] = [
 
 interface Props {
   classes?: any;
-  formValues?: CheckoutFundingInvoiceItem;
   dispatch?: any;
   syncErrors?: any;
-  item?: CheckoutFundingInvoiceItem;
+  fundingInvoice?: CheckoutFundingInvoice;
   currency?: any;
   selectedCompanies?: any[];
   setCompaniesSearch?: (value: string) => void;
@@ -73,43 +73,41 @@ interface Props {
   listCompanies?: any[];
   companiesLoading?: boolean;
   companiesRowCount?: number;
-  addSelectedCompany?: (company: any) => void;
   form?: string;
+  selectedItemIndex?: number;
 }
 
 const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
   const {
     classes,
-    formValues,
     dispatch,
     syncErrors,
     currency,
-    item,
-    selectedCompanies,
+    fundingInvoice,
     setCompaniesSearch,
     onClearCompaniesSearch,
     getCompanies,
     listCompanies,
     companiesLoading,
     companiesRowCount,
-    addSelectedCompany,
-    form
+    form,
+    selectedItemIndex
   } = props;
 
-  const onChangeCompany = React.useCallback(value => {
-    addSelectedCompany(value);
-  }, []);
+  const onChangeCompany = company => {
+    dispatch(change(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM, `fundingInvoices[${selectedItemIndex}].company`, company));
+  };
 
   return (
     <Grid container className="align-content-between">
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"
-          name="fundingProviderId"
+          name={`fundingInvoices[${selectedItemIndex}].fundingProviderId`}
           label="Funding provider"
           selectValueMark="id"
           selectLabelCondition={contactLabelCondition}
-          defaultDisplayValue={selectedCompanies.length && getContactName(selectedCompanies[0])}
+          defaultDisplayValue={fundingInvoice.company && getContactName(fundingInvoice.company)}
           items={listCompanies || []}
           onSearchChange={setCompaniesSearch}
           onLoadMoreRows={getCompanies}
@@ -122,8 +120,8 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           labelAdornment={(
             <LinkAdornment
               linkHandler={openContactLink}
-              link={formValues && formValues.fundingProviderId}
-              disabled={!formValues || !formValues.fundingProviderId}
+              link={fundingInvoice && fundingInvoice.fundingProviderId}
+              disabled={!fundingInvoice || !fundingInvoice.fundingProviderId}
             />
           )}
           validate={validateSingleMandatoryField}
@@ -132,7 +130,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
       <Grid item xs={6}>
         <FormField
           type="text"
-          name="vetPurchasingContractID"
+          name={`fundingInvoices[${selectedItemIndex}].vetPurchasingContractID`}
           label="Purchasing contract identifier (NSW Commitment ID)"
           validate={validateVetPurchasingContractIdentifier}
           fullWidth
@@ -141,29 +139,30 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
       <Grid item xs={12} className="pb-3">
         <CheckoutFundingInvoiceSummaryExpandableItemRenderer
           classes={classes}
-          header={getContactName(item.enrolment.contact)}
-          items={item.enrolment.items}
-          itemTotal={formValues ? formValues.total : 0}
+          header={getContactName(fundingInvoice.item.enrolment.contact)}
+          items={fundingInvoice.item.enrolment.items}
+          itemTotal={fundingInvoice ? fundingInvoice.total : 0}
           currencySymbol={currency && currency.shortCurrencySymbol}
           dispatch={dispatch}
-          paymentPlans={formValues ? formValues.paymentPlans : []}
+          paymentPlans={fundingInvoice ? fundingInvoice.paymentPlans : []}
+          selectedItemIndex={selectedItemIndex}
           form={form}
         />
       </Grid>
       <Grid container>
-        {formValues && formValues.paymentPlans && (
+        {fundingInvoice && fundingInvoice.paymentPlans && (
           <Grid item sm={6} className="pr-2">
             <CheckoutFundingInvoicePaymentPlans
-              name="paymentPlans"
+              name={`fundingInvoices[${selectedItemIndex}].paymentPlans`}
               currency={currency}
               syncErrors={syncErrors}
               form={CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM}
               dispatch={dispatch}
-              total={formValues ? formValues.total : 0}
+              total={fundingInvoice ? fundingInvoice.total : 0}
             />
           </Grid>
         )}
-        {formValues && formValues.trainingPlans && formValues.trainingPlans.length > 0 && (
+        {fundingInvoice && fundingInvoice.trainingPlans && fundingInvoice.trainingPlans.length > 0 && (
           <Grid item sm={6}>
             <div className="centeredFlex">
               <Typography className="heading pt-1 pb-1">
@@ -171,7 +170,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
               </Typography>
             </div>
             <FieldArray
-              name="trainingPlans"
+              name={`fundingInvoices[${selectedItemIndex}].trainingPlans`}
               className="saveButtonTableOffset"
               component={NestedTable}
               columns={trainingPlansColumns}
@@ -188,8 +187,6 @@ const getCompaniesPlainRecord = state => getCommonPlainRecordFromState(state, fu
 
 const mapStateToProps = (state: State) => ({
   currency: state.currency,
-  formValues: getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state),
-  selectedCompanies: state.checkout.fundingInvoice.companies,
   listCompanies: getCompaniesPlainRecord(state).items,
   companiesLoading: getCompaniesPlainRecord(state).loading,
   companiesRowCount: getCompaniesPlainRecord(state).rowsCount

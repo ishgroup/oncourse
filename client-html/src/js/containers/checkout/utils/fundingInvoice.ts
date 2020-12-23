@@ -4,10 +4,9 @@
  */
 
 import { Invoice } from "@api/model";
-import { CheckoutSummaryListItem } from "../../../model/checkout";
-import { CheckoutFundingInvoice, CheckoutFundingInvoiceItem } from "../../../model/checkout/fundingInvoice";
+import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
 
-export const getFundingInvoice = (fundingInvoice: CheckoutFundingInvoiceItem): Invoice => {
+export const getFundingInvoice = (fundingInvoice: CheckoutFundingInvoice): Invoice => {
   let invoice: Invoice = null;
   if (fundingInvoice) {
     invoice = {};
@@ -17,26 +16,4 @@ export const getFundingInvoice = (fundingInvoice: CheckoutFundingInvoiceItem): I
     invoice.customerReference = fundingInvoice.vetPurchasingContractID;
   }
   return invoice;
-};
-
-export const calculateFundingInvoice = (summaryList: CheckoutSummaryListItem[]): CheckoutFundingInvoice => {
-  let item: CheckoutFundingInvoiceItem = null;
-  const enrolledStudents = summaryList.filter(l =>
-    !l.contact.isCompany
-    && l.items.some(i => i.checked && i.type === "course" && i.class.relatedFundingSourceId !== null));
-
-  if (enrolledStudents.length === 1) {
-    item = {
-      enrolment: {
-        ...enrolledStudents[0],
-        items: [enrolledStudents[0].items.find(i => i.type === "course" && i.checked)]
-      }
-    };
-  }
-
-  return {
-    companies: [],
-    item,
-    trackAmountOwing: Boolean(item)
-  };
 };

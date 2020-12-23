@@ -290,8 +290,8 @@ export const getCheckoutModel = (
             studyReason: i.studyReason,
             totalOverride: i.priceOverriden,
             appliedVoucherId: i.voucherId,
-            fundingInvoice: pricesOnly || !state.fundingInvoice.item ? null : getFundingInvoice(fundingInvoice),
-            relatedFundingSourceId: pricesOnly || !state.fundingInvoice.item ? null : fundingInvoice.relatedFundingSourceId
+            // fundingInvoice: pricesOnly || !state.fundingInvoice.item ? null : getFundingInvoice(fundingInvoice),
+            // relatedFundingSourceId: pricesOnly || !state.fundingInvoice.item ? null : fundingInvoice.relatedFundingSourceId
           })),
 
       memberships: l.items.filter(i => i.checked && i.type === "membership")
@@ -483,7 +483,7 @@ export const checkoutCourseClassMap = ({ id, values }): CheckoutCourseClass => {
     isVet: JSON.parse(values[14]),
     isSelfPaced: JSON.parse(values[15]),
     message: values[16],
-    relatedFundingSourceId: values[17],
+    relatedFundingSourceId: JSON.parse(values[17]),
     sessionIds: JSON.parse(values[18]),
     fundingProviderId: values[19] ? Number(values[19]) : null,
     vetPurchasingContractID: values[20]

@@ -23,6 +23,7 @@ import { formatCurrency } from "../../../../common/utils/numbers/numbersNormaliz
 import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "../../../entities/invoices/components/InvoicePaymentPlanComponents";
 import { paymentPlanStyles } from "../../../entities/invoices/styles/paymentPlanStyles";
 import { sortInvoicePaymentPlans } from "../../../entities/invoices/utils";
+import { getDeepValue } from "../../../../common/utils/common";
 
 interface PaymentPlansProps {
   classes?: any;
@@ -77,12 +78,18 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
   }, [fields, dueDate]);
 
   const error = useMemo(
-    () =>
-      syncErrors && syncErrors[fields.name] && (
-        <Typography color="error" variant="body2" className="text-pre-wrap" paragraph>
-          {syncErrors[fields.name]._error}
-        </Typography>
-      ),
+    () => {
+      const value = getDeepValue(syncErrors, fields.name);
+
+      if (value) {
+        return (
+          <Typography color="error" variant="body2" className="text-pre-wrap" paragraph>
+            {value._error}
+          </Typography>
+        );
+      }
+      return null;
+    },
     [syncErrors, fields.name]
   );
 

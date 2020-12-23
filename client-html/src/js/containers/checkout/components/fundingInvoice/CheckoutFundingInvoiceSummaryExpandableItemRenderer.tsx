@@ -15,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { formatCurrency, normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
+import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 
 const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(props => {
   const {
@@ -26,7 +27,8 @@ const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(prop
     itemTotal,
     currencySymbol,
     paymentPlans,
-    form
+    form,
+    selectedItemIndex
   } = props;
 
   const [expanded, setExpanded] = React.useState(true);
@@ -62,10 +64,12 @@ const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(prop
                 index={index}
                 listIndex={listIndex}
                 item={item}
+                items={items}
                 classes={classes}
                 dispatch={dispatch}
                 paymentPlans={paymentPlans}
                 form={form}
+                selectedItemIndex={selectedItemIndex}
               />
             ))}
           </Grid>
@@ -77,21 +81,19 @@ const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(prop
 
 const CheckoutFundingInvoiceSummaryRow = React.memo<any>(props => {
   const {
-    classes, dispatch, listIndex, index, item, paymentPlans, form
+    classes, dispatch, listIndex, index, item, items, paymentPlans, form, selectedItemIndex
   } = props;
 
   const handlePriceChange = React.useCallback<any>(debounce((e, price) => {
-    dispatch(change(form, "paymentPlans[0].amount", price));
+    const totalAmount = items.reduce((p, c, ind) => decimalPlus(p, ind === index ? price : c.total || 0), 0);
+    dispatch(change(form, `fundingInvoices[${selectedItemIndex}].paymentPlans[0].amount`, totalAmount));
+    dispatch(change(form, `fundingInvoices[${selectedItemIndex}].total`, totalAmount));
     if (paymentPlans && paymentPlans.length) {
       dispatch(change(form,
-        `paymentPlans[${paymentPlans.length - 1}].amount`,
-        price));
+        `fundingInvoices[${selectedItemIndex}].paymentPlans[${paymentPlans.length - 1}].amount`,
+        totalAmount));
     }
-  }, 500), [listIndex, index, paymentPlans]);
-
-  React.useEffect(() => {
-    dispatch(change(form, "total", 0));
-  }, [item.id]);
+  }, 500), [listIndex, index, paymentPlans, selectedItemIndex, items]);
 
   return (
     <Grid item xs={12} container alignItems="center" direction="row" className={clsx(classes.tableTabRow, classes.tableTab)}>
@@ -103,7 +105,7 @@ const CheckoutFundingInvoiceSummaryRow = React.memo<any>(props => {
       <Grid item container xs={3} justify="flex-end">
         <FormField
           type="money"
-          name="total"
+          name={`fundingInvoices[${selectedItemIndex}].item.enrolment.items[${index}].total`}
           label="Price"
           className="pl-2 text-end"
           onChange={handlePriceChange}
