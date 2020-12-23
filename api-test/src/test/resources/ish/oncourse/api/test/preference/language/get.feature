@@ -19,9 +19,9 @@ Feature: Main feature for all GET requests with path 'preference/language'
         """
         [
         {"id":206,"absCode":null,"isActive":true,"name":"England"},
+        {"id":358,"absCode":null,"isActive":true,"name":"Belorussian"},
         {"id":756,"absCode":null,"isActive":true,"name":"Russian"},
-        {"id":1178,"absCode":null,"isActive":true,"name":"Aboriginal"},
-        {"id":358,"absCode":null,"isActive":true,"name":"Belorussian"}
+        {"id":1178,"absCode":null,"isActive":true,"name":"Aboriginal"}
         ]
         """
 
@@ -49,8 +49,8 @@ Feature: Main feature for all GET requests with path 'preference/language'
         """
         [
         {"id":206,"absCode":null,"isActive":true,"name":"England"},
+        {"id":358,"absCode":null,"isActive":true,"name":"Belorussian"},
         {"id":756,"absCode":null,"isActive":true,"name":"Russian"},
         {"id":1178,"absCode":null,"isActive":true,"name":"Aboriginal"},
-        {"id":358,"absCode":null,"isActive":true,"name":"Belorussian"}
         ]
         """

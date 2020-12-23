@@ -31,25 +31,25 @@ Feature: Main feature for all DELETE requests with path 'preference/payment/type
         
     Scenario: (-) Delete system paymentType /Reverse, Zero, Contra, Voucher paymentTypes/
 #       Try to delete 'Reverse' (id:10) system paymentType
-        Given path ishPath + '/10'
+        Given path ishPath + '/11'
         When method DELETE
         Then status 400
         And match response.errorMessage == "System payment type can not be deleted"
         
 #       Try to delete 'Zero' (id:5) system paymentType
-        Given path ishPath + '/5'
+        Given path ishPath + '/6'
         When method DELETE
         Then status 400
         And match response.errorMessage == "System payment type can not be deleted"
 
 #       Try to delete 'Contra' (id:7) system paymentType
-        Given path ishPath + '/7'
+        Given path ishPath + '/8'
         When method DELETE
         Then status 400
         And match response.errorMessage == "System payment type can not be deleted"
         
 #       Try to delete 'Voucher' (id:8) system paymentType
-        Given path ishPath + '/8'
+        Given path ishPath + '/9'
         When method DELETE
         Then status 400
         And match response.errorMessage == "System payment type can not be deleted"
