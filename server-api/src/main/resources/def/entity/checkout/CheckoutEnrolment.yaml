@@ -33,9 +33,6 @@ properties:
     type: integer
     format: int64
     required: false
-  fundingInvoice:
-    required: false
-    $ref: '../invoice/Invoice.yaml'
   studyReason:
     $ref: '../enrolment/EnrolmentStudyReason.yaml'
 
