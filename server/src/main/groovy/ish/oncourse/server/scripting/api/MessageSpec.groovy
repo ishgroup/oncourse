@@ -23,18 +23,63 @@ import org.apache.cayenne.PersistentObject
 
 
 /**
- * Use a script to generate a message.
+ * Message sending API. Allows to create email or SMS.
+ * You can render email content from the templates which are stored into onCourse or a text string.
+ * The recipients are generated from entity records which are specified in closure.
+ * But you also can add extra emails which will receive message with attachment.
+ * If there is no attachment and specify template identifier, the message is stored inside the onCourse database. Otherwise, no.
+ *
+ * Simple usage example:
+ * ```
+ * message {
+ *     template keyCodeOfMessageTemplate
+ *     record records
+ *     from "admin@example.com"
+ * }
+ * ```
+ * The above example will render the template with the specified keyCode and will pass the entity records to that template.
+ * It will send that message to the contacts which will be get from the records.
+ *
+ * You can optionally also pass a from address if you don't want to use the default email.from preference.
+ *
+ * ```
+ * message {
+ *     template keyCodeOfMessageTemplate
+ *     record records
+ *     anyBinding_1 anyValue_1
+ *     anyBinding_2 anyValue_2
+ * }
+ * ```
+ * If the template has a variables they must be specified as a list of variables in closure.
+ *
+ *
+ * You can send emails with an attached file or pass your own content of message, without storing this data inside onCourse.
+ *
+ * Usage example:
+ * ```
+ *  message {
+ *      record records
+ *      from "admin@example.com"
+ *      to "extrarecipient@example.com"
+ *      cc "ccrecipient@example.com"
+ *      bcc "bccrecipient@example.com"
+ *      subject "test email"
+ *      content "test email content"
+ *      attachment "accounts.csv", "text/csv", account_csv_data
+ *  }
+ * ```
+ * The only lines which are required are "record", "subject" and "content" or "record", "template" and "bindings"
+ *
+ *
+ * Message collision functionality. Allows to skip sending messages automatically if contact have already received message with specified key.
  *
  * Usage example:
  * ```
  * message {
- *     template "ish.email.simple"
- *     record enrolments or records enrolments
- *     from "support@ish.com.au"
- *     bcc "bcc@ish.com.au"
- *     anyBinding_1 anyValue_1
- *     anyBinding_2 anyValue_2
- *     ....
+ *     template keyCodeOfMessageTemplate
+ *     record records
+ *     key "ABC", records
+ *     keyCollision "drop"
  * }
  * ```
  */
@@ -97,7 +142,7 @@ class MessageSpec {
 
 
     /**
-     * A direct record to message.
+     * A direct entity record to message.
      *
      * @param record
      */
@@ -247,6 +292,7 @@ class MessageSpec {
      *
      * @param file a file
      */
+    @API
     void attachment(File file) {
         if (file) {
             this.attachments << AttachmentParam.valueOf(file.getName() , null, file )
@@ -261,6 +307,7 @@ class MessageSpec {
      * @param contentType MIME type of the attachment
      * @param content MIME type of the attachment
      */
+    @API
     void attachment(String contentType, Object content) {
         this.attachments << AttachmentParam.valueOf(null ,contentType, content)
     }
@@ -274,6 +321,7 @@ class MessageSpec {
      * @param contentType MIME type of the attachment
      * @param content attachment object
      */
+    @API
     void attachment(String fileName, String contentType, Object content) {
         this.attachments << AttachmentParam.valueOf(fileName, contentType, content)
     }
@@ -285,6 +333,7 @@ class MessageSpec {
      *
      * @param attachment attachment properties map, e.g. [fileName: 'example.txt', type: 'text/plain', content: 'test text']
      */
+    @API
     void attachment(Map<String, Object> attachment) {
         this.attachments << AttachmentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
     }
