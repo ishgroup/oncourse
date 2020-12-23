@@ -7,8 +7,7 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   change,
-  FieldArray,
-  getFormValues
+  FieldArray
 } from "redux-form";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -70,8 +69,8 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
     syncErrors,
     currency,
     fundingInvoice,
-    form,
-    selectedItemIndex
+    selectedItemIndex,
+    form
   } = props;
 
   const onChangeCompany = company => {
@@ -83,8 +82,8 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"
-          name={`fundingInvoices[${selectedItemIndex}].fundingProviderId`}
           entity="FundingInvoiceCompany"
+          name={`fundingInvoices[${selectedItemIndex}].fundingProviderId`}
           label="Funding provider"
           selectValueMark="id"
           selectLabelCondition={contactLabelCondition}
@@ -159,8 +158,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  currency: state.currency,
-  formValues: getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state),
+  currency: state.currency
 });
 
 export default connect<any, any, any>(
