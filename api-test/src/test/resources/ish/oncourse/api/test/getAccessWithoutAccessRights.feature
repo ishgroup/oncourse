@@ -70,7 +70,7 @@ Feature: Try to GET entities without access rights
 
         * def concessionTypeArray = [{name: 'SomeName', requireExpary: false, requireNumber: false, allowOnWeb: true}]
         * def someContactRelationType = [{"relationName":"relationName","reverseRelationName":"reverseRelationName#1","portalAccess":true}]
-        * def someFieldType = [{"name":"fieldType#1","defaultValue":"someValue","fieldKey":"fieldKey1","mandatory":false,"sortOrder":0,"entityType":"Enrolment"}]
+        * def someFieldType = [{dataType:"Text","name":"fieldType#1","defaultValue":"someValue","fieldKey":"fieldKey1","mandatory":false,"sortOrder":0,"entityType":"Enrolment"}]
         * def somePaymentTypeArray = [{name: 'someName', active: true, reconcilable: true, bankedAuto: true, accountId: "1", undepositAccountId: "1", type: "Other"}]
         * def someTaxTypeArray = [{code: 'someName#1', rate: '0.15', gst: true, payableAccountId: 2, receivableAccountId: 4, description: 'someDescription'}]
 
