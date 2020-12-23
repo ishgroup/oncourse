@@ -62,7 +62,7 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
         "purchasePrice":50.00,
         "status":"Active",
         "payments":[],
-        "validFrom":null,
+        "validFrom":"2028-01-01",
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
