@@ -62,23 +62,19 @@ class GetContent {
     }
 
     Multipart get() throws MessagingException {
-        // default subtype of MultiPart is "mixed": displays plain text and html; with "alternative" the text part is only displayed if the HTML part is not
-        // possible
 
-        Multipart multipart = new MimeMultipart(StringUtils.isNotBlank(getEmailHtmlBody.get()) ? ALTERNATIVE_MULTIPART_TYPE : MIXED_MULTIPART_TYPE)
-
-        if (StringUtils.isNotBlank(getEmailPlainBody.get())) {
-            BodyPart textPart = new MimeBodyPart()
-            textPart.text = getEmailPlainBody.get()
-
-            multipart.addBodyPart(textPart)
-        }
+        Multipart multipart = new MimeMultipart()
 
         if (StringUtils.isNotBlank(getEmailHtmlBody.get())) {
             BodyPart htmlPart = new MimeBodyPart()
             htmlPart.setContent(getEmailHtmlBody.get(), TEXT_HTML)
 
             multipart.addBodyPart(htmlPart)
+        } else if (StringUtils.isNotBlank(getEmailPlainBody.get())) {
+            BodyPart textPart = new MimeBodyPart()
+            textPart.text = getEmailPlainBody.get()
+
+            multipart.addBodyPart(textPart)
         }
 
         attachmentParams.each { param ->
@@ -88,7 +84,11 @@ class GetContent {
                 part.fileName = param.fileName
             }
 
-            part.setContent(param.content, param.type)
+            if (param.content instanceof File) {
+                part.attachFile(param.content as File)
+            } else {
+                part.setContent(param.content, param.type)
+            }
 
             multipart.addBodyPart(part)
         }

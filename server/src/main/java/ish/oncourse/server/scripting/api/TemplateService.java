@@ -101,17 +101,6 @@ public class TemplateService {
 		return createPlainTemplate(template).make(putBaseBindings(bindings)).toString();
 	}
 
-	public String addSubject(EmailTemplate template, Map<String, Object> plainBindings, Map<String, Object> htmlBindings) {
-		Template subjectTemplate = createSubjectTemplate(template);
-		if (subjectTemplate == null) {
-			return null;
-		}
-		String subject = subjectTemplate.make(plainBindings).toString();
-		plainBindings.put(SUBJECT, subject);
-		htmlBindings.put(SUBJECT, subject);
-		return subject;
-	}
-
 	public Template createSubjectTemplate(EmailTemplate template) {
 		if (template.getSubject() == null) {
 			return null;
@@ -119,9 +108,22 @@ public class TemplateService {
 		return createTemplate(template.getSubject());
 	}
 
+	public String addSubject(EmailTemplate template, Map<String, Object> plainBindings, Map<String, Object> htmlBindings) {
+		Template subjectTemplate = createSubjectTemplate(template);
+		if (subjectTemplate == null) {
+			return null;
+		}
+		String subject = subjectTemplate.make(plainBindings).toString();
+		plainBindings.put(SUBJECT, subject);
+		if (htmlBindings != null) {
+			htmlBindings.put(SUBJECT, subject);
+		}
+		return subject;
+	}
+
 	public String renderSubject(String templateName, Map<String, Object> bindings) {
 		var emailTemplate = loadTemplate(templateName);
-		return renderTemplate(emailTemplate.getSubject(), bindings);
+		return renderSubject(emailTemplate, bindings);
 	}
 
 	public String renderSubject(EmailTemplate template, Map<String, Object> bindings) {
@@ -129,11 +131,7 @@ public class TemplateService {
 	}
 
 	public String renderTemplate(String template, Map<String, Object> bindings) {
-		try {
-			return templateEngine.createTemplate(template).make(putBaseBindings(bindings)).toString();
-		} catch (ClassNotFoundException | IOException e) {
-			throw new RuntimeException("Can't render template.", e);
-		}
+		return createTemplate(template).make(putBaseBindings(bindings)).toString();
 	}
 
 	public EmailTemplate loadTemplate(String search) {
