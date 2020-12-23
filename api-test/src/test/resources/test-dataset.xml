@@ -1725,8 +1725,8 @@ This is the home page for your college web site. ish onCourse is able to synchro
 
 
     <!-- AUDIT -->
-    <Audit  ID="1" CREATED="2019-06-03 19:33:54.412000000" SYSTEMUSERID="1" ENTITYID="1" ENTITYNAME="SystemUser" ACTION="UPDATE"/>
-    <Audit  ID="2" CREATED="2019-06-03 19:33:54.413000000" SYSTEMUSERID="1" ENTITYID="1004" ENTITYNAME="Preference" ACTION="CREATE"/>
+    <Audit  ID="1" CREATED="2019-06-03 19:33:54.412000000" SYSTEMUSERID="1" ENTITYID="1" ENTITYNAME="PaymentIn" ACTION="CREATE" message="Entity created: PaymentIn"/>
+    <Audit  ID="2" CREATED="2019-06-03 19:33:54.413000000" SYSTEMUSERID="1" ENTITYID="1004" ENTITYNAME="Preference" ACTION="CREATE" message="Entity created: Transaction Detail"/>
     <Audit  ID="3" CREATED="2019-06-03 19:34:08.549000000" SYSTEMUSERID="1" ENTITYID="2" ENTITYNAME="Tax" ACTION="UPDATE"/>
 
 

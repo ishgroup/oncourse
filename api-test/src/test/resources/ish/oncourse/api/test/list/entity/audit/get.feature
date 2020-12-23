@@ -31,12 +31,12 @@ Feature: Main feature for all GET requests with path 'list/entity/audit'
         """
         {
         "id":1,
-        "message":"Entity updated: database.used",
-        "action":"UPDATE",
+        "message":"Entity created: PaymentIn",
+        "action":"CREATE",
         "systemUser":"onCourse Administrator",
         "entityId":"1",
-        "entityIdentifier":"SystemUser",
-        "created":"2019-06-03T09:33:54.412Z"
+        "entityIdentifier":"PaymentIn",
+        "created":"#ignore"
         }
         """
 
@@ -94,7 +94,7 @@ Feature: Main feature for all GET requests with path 'list/entity/audit'
         """
         {
         "id":2,
-        "message":"Entity created: account.default.debtors.id",
+        "message":"Entity created: Transaction Detail",
         "action":"CREATE",
         "systemUser":"onCourse Administrator",
         "entityId":"1004",
@@ -155,18 +155,3 @@ Feature: Main feature for all GET requests with path 'list/entity/audit'
         And match $.errorMessage == "Sorry, you have no permissions to get audits. Please contact your administrator"
 
 
-
-#    Scenario: (-) Get not existing audit record
-#
-#        Given path ishPath + "/999999"
-#        When method GET
-#        Then status 400
-#        And match $.errorMessage == "Record with id:999999 doesn't exist"
-#
-#
-#
-#    Scenario: (-) Get existing audit record without id in path
-#
-#        Given path ishPath
-#        When method GET
-#        Then status 405
