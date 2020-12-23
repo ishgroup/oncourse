@@ -24,6 +24,11 @@ properties:
     required: true
     items:
       $ref: './CheckoutArticle.yaml'
+  fundingInvoices:
+    required: false
+    type: array
+    items:
+      $ref: '../invoice/Invoice.yaml'
   sendConfirmation:
     type: boolean
     required: true
