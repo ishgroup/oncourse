@@ -6,21 +6,14 @@ Feature: performance of payment with previous credits and previous owings
     * url 'https://127.0.0.1:8182/a/v1'
     * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
     * def ishPath = 'checkout'
-    * def ishPathPaymentType = 'preference/payment/type'
     * table checkoutModelTable
       | i | payerId   | firstId   | secondId | enrolment                                                             | membershipIds                  | voucherData              | product |
       | 0 | 4         | 4         | null     | [{"classId": 6,"appliedDiscountId": null,"studyReason":"Not stated"}] | {"first": null,"second": null} | {"id": null, "value": 0} | []      |
     * call read('getCheckoutModel.feature') checkoutModelTable
-    Given path ishPathPaymentType
-    When method GET
-    Then status 200
-    And def paymentTypeId = get[0] response[?(@.name == 'Cash')].id
-    And set checkoutModel.paymentMethodId = paymentTypeId
-
-
+    
   Scenario: right payment with credits and owings
 
-    * set checkoutModel.paymentMethodId = 0
+    * set checkoutModel.paymentMethodId = 1
     * set checkoutModel.payNow = 110
     * set checkoutModel.payForThisInvoice = 220
     * set checkoutModel.previousInvoices = { 38: -220, 39: 110 }
