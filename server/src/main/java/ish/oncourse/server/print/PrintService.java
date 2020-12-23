@@ -21,12 +21,14 @@ import ish.print.PrintRequest;
 import ish.print.PrintResult;
 import ish.print.PrintResult.ResultType;
 import ish.print.PrintTransformationsFactory;
-import ish.print.transformations.PrintTransformation;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.rmi.server.UID;
 import java.util.Date;
 import java.util.Map;
@@ -109,14 +111,23 @@ public class PrintService {
 		return result;
 	}
 
-	public byte[] report(@DelegatesTo(ReportSpec.class) Closure cl) {
-		var reportSpec = new ReportSpec();
+	public Object report(@DelegatesTo(ReportSpec.class) Closure cl) throws IOException {
+		ReportSpec reportSpec = new ReportSpec();
 		var build = cl.rehydrate(reportSpec, cl, this);
 		build.setResolveStrategy(Closure.DELEGATE_FIRST);
 		build.call();
 
+		if (reportSpec.getFileName() == null) {
+			return report(reportSpec);
+		}
+		File reportFile = new File(reportSpec.getFileName());
+		FileUtils.writeByteArrayToFile(reportFile, report(reportSpec));
+		return reportFile;
+	}
+
+	public byte[] report(ReportSpec reportSpec) {
 		var request = new PrintRequest();
-		request.setRecords(reportSpec.getRecords());
+		request.setRecords(reportSpec.getEntityRecords());
 		request.setReportCode(reportSpec.getKeyCode());
 		request.setBackground(reportSpec.getBackground());
 		request.addParameters(reportSpec.getParam());
@@ -125,8 +136,8 @@ public class PrintService {
 			request.setEntity(reportSpec.getEntity());
 		} else {
 			// try guessing entity class by first record
-			if (reportSpec.getRecords() != null && !reportSpec.getRecords().isEmpty()) {
-				var record = reportSpec.getRecords().get(0);
+			if (reportSpec.getEntityRecords() != null && !reportSpec.getEntityRecords().isEmpty()) {
+				var record = reportSpec.getEntityRecords().get(0);
 				request.setEntity(record.getClass().getSimpleName());
 			} else {
 				throw new IllegalArgumentException("No records specified.");
@@ -147,7 +158,7 @@ public class PrintService {
 		}
 
 		try {
-			var result = print(request).get();
+			PrintResult result = print(request).get();
 
 			if (ResultType.FAILED.equals(result.getResultType())) {
 				return result.getError() != null ? result.getError().getBytes() : null;

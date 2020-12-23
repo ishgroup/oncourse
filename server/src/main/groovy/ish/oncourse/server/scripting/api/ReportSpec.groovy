@@ -42,12 +42,23 @@ import ish.oncourse.API
 @API
 class ReportSpec {
 
+	String fileName
 	String keyCode
 	String entity
-	List records
+	List entityRecords = []
 	String background
 	Map param  = [:]
 	Boolean generatePreview = false
+
+	/**
+	 * Specify the filename of the final file with a fulfilled report
+	 *
+	 * @param fileName fileName of the file with the report
+	 */
+	@API
+	void fileName(String fileName) {
+		this.fileName = fileName
+	}
 
 	/**
 	 * Pass the keycode of the report template in onCourse you want to run.
@@ -64,6 +75,28 @@ class ReportSpec {
 	}
 
 	/**
+	 * Pass a record to the report engine. This record will be iterated through in the report engine
+	 * to produce the report output.
+	 *
+	 * @param record record which is included in the report
+	 */
+	@API
+	void record(Object record) {
+		this.entityRecords.add(record)
+	}
+
+	/**
+	 * Pass a record to the report engine. This record will be iterated through in the report engine
+	 * to produce the report output.
+	 *
+	 * @param record record which is included in the report
+	 */
+	@API
+	void record(List records) {
+		this.entityRecords = records
+	}
+
+	/**
 	 * Pass a list of records to the report engine. These records will be iterated through in the report engine
      * to produce the report output.
      *
@@ -71,7 +104,7 @@ class ReportSpec {
 	 */
 	@API
 	void records(List records) {
-		this.records = records
+		this.entityRecords = records
 	}
 
 	/**
@@ -80,8 +113,8 @@ class ReportSpec {
 	 * @param record record which is included in the report
 	 */
 	@API
-	void records(Object... record) {
-		this.records = Arrays.asList(record)
+	void records(Object... records) {
+		this.entityRecords = Arrays.asList(records)
 	}
 
 	/**
