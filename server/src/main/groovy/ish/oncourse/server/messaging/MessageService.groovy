@@ -20,7 +20,13 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.service.EmailTemplateApiService
 import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
+import ish.oncourse.server.scripting.api.MessageBuilder
+import ish.oncourse.server.scripting.api.MessageForSmtp
+import ish.oncourse.server.scripting.api.NeedToSendEmail
 import ish.oncourse.server.scripting.api.SmtpParameters
+import ish.oncourse.server.services.AuditService
+
+import java.util.function.Function
 
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getEntityTransformationProperty
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getRecipientsListFromEntity
@@ -49,15 +55,17 @@ class MessageService {
 	TemplateService templateService
 	EmailTemplateApiService templateApiService
 	MailDeliveryService mailDeliveryService
+	AuditService auditService;
 
     @Inject
     MessageService(ICayenneService cayenneService, PreferenceController preferenceController, TemplateService templateService,
-				   EmailTemplateApiService templateApiService, MailDeliveryService mailDeliveryService) {
+				   EmailTemplateApiService templateApiService, MailDeliveryService mailDeliveryService, AuditService auditService) {
 		this.cayenneService = cayenneService
         this.preferenceController = preferenceController
         this.templateService = templateService
         this.templateApiService = templateApiService
 		this.mailDeliveryService = mailDeliveryService
+		this.auditService = auditService
     }
 
 	def sendMessage(SendMessageRequest request) {
@@ -170,15 +178,21 @@ class MessageService {
 		build.call()
 
 		if (!messageSpec.entityRecords.isEmpty()) {
-			sendMessage(messageSpec)
+			Function<Contact, Boolean> collision = messageSpec.creatorKey ? { c -> true } :
+					{ contact -> NeedToSendEmail.valueOf(auditService, messageSpec.keyCollision, messageSpec.creatorKey, cayenneService.getNewContext(), contact).get() }
+
+			messageSpec.fromAddress = messageSpec.fromAddress?:preferenceController.emailFromAddress
+			messageSpec.fromName = messageSpec.fromName?:preferenceController.emailFromName
+
+			sendMessage(messageSpec, collision)
 		}
 	}
 
 
-	void sendMessage(MessageSpec messageSpec) {
-		EmailTemplate template = templateService.loadTemplate(messageSpec.templateName)
+	void sendMessage(MessageSpec messageSpec, Function<Contact, Boolean> collision) {
+		EmailTemplate template = templateService.loadTemplate(messageSpec.templateIdentifier)
 		if (!template) {
-			throw new IllegalArgumentException("No template with keyCode ${messageSpec.templateName} found.")
+			throw new IllegalArgumentException("No template with identifier ${messageSpec.templateIdentifier} found.")
 		}
 		ObjectContext context = template.getContext()
 		Map<String, Object> bindings = messageSpec.bindings
@@ -212,41 +226,23 @@ class MessageService {
 					bindings.put(templateEntityName.uncapitalize(), recipient)
 					bindings.put(templateService.RECORD, recipient)
 				}
-				
-				Message message = null
 
-				switch (template.type) {
-					case MessageType.EMAIL:
+				if (messageSpec.attachments.empty && messageSpec.content == null) {
+					if (collision.apply(recipient)) {
+						Message message = MessageBuilder.valueOf(templateService, messageSpec, template, bindings, context).build()
+						createMessagePerson(message, context.localObject(recipient), template.type)
+					}
+				} else if (recipient.email) {
+					if (collision.apply(null)) {
 
-						String subject = templateService.renderSubject(template, bindings)
-						bindings.put(templateService.SUBJECT, subject)
-						
-						
-						if (messageSpec.attachments.empty) {
-							message = context.newObject(Message.class)
-							message.emailSubject = subject
-							message.emailBody = templateService.renderPlain(template, bindings)
-							message.emailHtmlBody = templateService.renderHtml(template, bindings)
-							message.emailFrom = messageSpec.fromAddress?:preferenceController.emailFromAddress
-							
-						} else if (recipient.email) {
+						SmtpParameters parameters = new SmtpParameters(messageSpec)
+						parameters.toList.add(recipient.email)
 
-							SmtpParameters parameters = new SmtpParameters(
-									messageSpec.fromAddress?:preferenceController.emailFromAddress,
-									preferenceController.emailFromName,
-									messageSpec.bccList,
-									recipient.email,
-									template.keyCode, bindings, messageSpec.attachments )
-							mailDeliveryService.sendEmail(MailDeliveryParamBuilder.valueOf(parameters, templateService).build());
-						}
-						break
-					case MessageType.SMS:
-						message = context.newObject(Message.class)
-						message.smsText = templateService.renderPlain(template, bindings)
-						break
-				}
-				if (message) {
-					createMessagePerson(message, context.localObject(recipient), template.type)
+						MailDeliveryParam mailDeliveryParam = MailDeliveryParamBuilder.valueOf(parameters, templateService).build()
+						mailDeliveryService.sendEmail(mailDeliveryParam)
+
+						MessageForSmtp.valueOf(context, parameters.getCreatorKey(), mailDeliveryParam).create()
+					}
 				}
 			}
 			if (++counter == 50) {
