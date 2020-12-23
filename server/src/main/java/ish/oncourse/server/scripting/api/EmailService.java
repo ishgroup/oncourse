@@ -13,24 +13,14 @@ package ish.oncourse.server.scripting.api;
 import com.google.inject.Inject;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
-import ish.messaging.MessageParameter;
-import ish.messaging.MessageSendingResult;
-import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Contact;
-import ish.oncourse.server.cayenne.EmailTemplate;
-import ish.oncourse.server.cayenne.SystemUser;
-import ish.oncourse.server.messaging.MailDeliveryParam;
 import ish.oncourse.server.messaging.MailDeliveryService;
-import ish.oncourse.server.scripting.ScriptParameters;
 import ish.oncourse.server.services.AuditService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.SelectById;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.MessagingException;
-import java.util.Map;
 import java.util.function.Function;
 
 public class EmailService {
@@ -111,42 +101,5 @@ public class EmailService {
 		var parameters = new SmtpParameters(smtpSpec);
 		var param = MailDeliveryParamBuilder.valueOf(parameters, templateService).build();
 		mailDeliveryService.sendEmail(param);
-	}
-
-	/**
-	 * Queues email messages basing on the specification passed in {@link MessageParameter}.
-	 *
-	 * @param messageParameter - specification of emails and recipients
-	 * @return - message sending result containing messages which were not sent
-	 */
-	public MessageSendingResult queueMessage(MessageParameter messageParameter) {
-		var result = new MessageSendingResult();
-
-		for (var entry : messageParameter.getRecordRecipientMap().entrySet()) {
-			var emailMessage = create(messageParameter.getMessageTemplateName());
-
-			emailMessage.bind(ScriptParameters.from(StringUtils.uncapitalize(messageParameter.getEntity()),
-					getRecord(messageParameter.getEntity(), entry.getKey(), emailMessage.getTemplate().getObjectContext()))
-					.asMap());
-
-			var recipient = SelectById.query(Contact.class, entry.getValue()).selectOne(emailMessage.getTemplate().getObjectContext());
-			var createdBy = SelectById.query(SystemUser.class, messageParameter.getUserId()).selectOne(emailMessage.getTemplate().getObjectContext());
-
-			emailMessage.createdBy(createdBy);
-			emailMessage.to(recipient);
-			emailMessage.from(preferenceController.getEmailFromAddress());
-
-			if (!emailMessage.send()) {
-				result.addUnsentMessage(entry.getKey(), entry.getValue());
-			}
-		}
-		return result;
-	}
-
-	private PersistentObjectI getRecord(String entityName, Long recordId, ObjectContext context) {
-		var entityClass = context.getEntityResolver()
-				.getClassDescriptor(entityName).getEntity().getJavaClass();
-
-		return (PersistentObjectI) SelectById.query(entityClass, recordId).selectOne(context);
 	}
 }
