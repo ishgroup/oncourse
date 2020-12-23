@@ -27,7 +27,7 @@ import ish.oncourse.API
 @API
 class ExportSpec {
 	String templateKeyCode
-    List records = []
+    List entityRecords = []
 
     /**
      * Pass the keycode of the export template you want to use
@@ -47,7 +47,7 @@ class ExportSpec {
      */
     @API
 	def records(List records) {
-		this.records = records
+		this.entityRecords = records
 	}
 
     /**
@@ -57,6 +57,27 @@ class ExportSpec {
      */
     @API
 	def records(Object... records) {
-		this.records = records.toList()
+		this.entityRecords = records.toList()
+	}
+
+	/**
+	 * A list of records to export.
+	 * This is the same as 'records', but this needs to handling a export card which is added in Script API
+	 *
+	 * @param records
+	 */
+	@API
+	def record(List records) {
+		this.entityRecords = records
+	}
+
+	/**
+	 * You can also pass one record to export.
+	 *
+	 * @param record
+	 */
+	@API
+	def record(Object record) {
+		this.entityRecords.add(record)
 	}
 }
