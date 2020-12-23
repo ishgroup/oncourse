@@ -69,7 +69,7 @@ const ReportCardContent = props => {
 
         <FormField
           type="select"
-          name={`${name}.report`}
+          name={`${name}.keycode`}
           label="Report"
           items={pdfReportsItems}
           className="d-flex mt-2"
