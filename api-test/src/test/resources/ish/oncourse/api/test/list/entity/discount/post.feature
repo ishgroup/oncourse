@@ -92,7 +92,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "studentPostcode":"123456",
         "discountConcessionTypes":[{"id":2,"name":"Student","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"}],
         "discountMemberships":[{"productId":1003,"productName":"Membership#1","productSku":"SKU01","contactRelations":[]}],
-        "discountCourseClasses":[{"id":3,"name":"Course1","code":"course1-3","active":true,"type":"Class","expiryDate":null}],
+        "discountCourseClasses":
+            [
+            {"expiryDate":null,"entityToId":null,"code":"course1-3","entityFromId":null,"name":"Course1","active":true,"relationId":null,"id":3,"type":"Class"}
+            ],
         "addByDefault":true,
         "minEnrolments":2,
         "minValue":50.00,
@@ -198,7 +201,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "studentPostcode":"1234567890",
         "discountConcessionTypes":[{"id":3,"name":"Pensioner","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"}],
         "discountMemberships":[{"productId":1003,"productName":"Membership#1","productSku":"SKU01","contactRelations":[]}],
-        "discountCourseClasses":[{"id":3,"name":"Course1","code":"course1-3","active":true,"type":"Class","expiryDate":null}],
+        "discountCourseClasses":
+            [
+            {"expiryDate":null,"entityToId":null,"code":"course1-3","entityFromId":null,"name":"Course1","active":true,"relationId":null,"id":3,"type":"Class"}
+            ],
         "addByDefault":true,
         "minEnrolments":0,
         "minValue":0.00,
@@ -303,7 +309,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "studentPostcode":null,
         "discountConcessionTypes":[{"id":3,"name":"Pensioner","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"}],
         "discountMemberships":[{"productId":1003,"productName":"Membership#1","productSku":"SKU01","contactRelations":[]}],
-        "discountCourseClasses":[{"id":3,"name":"Course1","code":"course1-3","active":true,"type":"Class","expiryDate":null}],
+        "discountCourseClasses":
+            [
+            {"expiryDate":null,"entityToId":null,"code":"course1-3","entityFromId":null,"name":"Course1","active":true,"relationId":null,"id":3,"type":"Class"}
+            ],
         "addByDefault":true,
         "minEnrolments":10,
         "minValue":100.00,
