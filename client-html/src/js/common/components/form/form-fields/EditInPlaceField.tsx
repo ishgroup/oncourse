@@ -407,7 +407,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         ));
       }
 
-      const match = value && items.find(
+      const match = value !== null && value !== undefined && items.find(
         item => (returnType === "object" ? item[selectValueMark] === value[selectValueMark] : item[selectValueMark] === value)
       );
 
