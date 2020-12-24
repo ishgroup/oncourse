@@ -68,21 +68,71 @@ Feature: Main feature for all GET requests with path 'list/entity/contact'
         "memberships":[],
         "profilePicture":null,
         "relations":[],
-        "financialData":[
-            {"date":"2018-11-29","amount":1800.0,"balance":1800.0,"referenceNumber":"1","relatedEntityId":1,"description":"Invoice (office)","owing":0.0,"type":"Invoice","createdOn":"#ignore","status":"Success"},
-            {"date":"2018-11-29","amount":1800.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":1,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"#ignore","status":"Success"},
-            {"date":"2019-04-12","amount":350.0,"balance":350.0,"referenceNumber":"4","relatedEntityId":3,"description":"Invoice (office)","owing":0.0,"type":"Invoice","createdOn":"#ignore","status":"Success"},
-            {"date":"2019-04-12","amount":350.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":3,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"#ignore","status":"Success"},
-            {"date":"2019-04-12","amount":450.0,"balance":450.0,"referenceNumber":"5","relatedEntityId":4,"description":"Invoice (office)","owing":0.0,"type":"Invoice","createdOn":"#ignore","status":"Success"},
-            {"date":"2019-04-12","amount":450.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":4,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"#ignore","status":"Success"}
-            ],
+        "financialData":[{"date":"2018-11-29","amount":1800.0,"balance":1800.0,"referenceNumber":"1","relatedEntityId":1,"description":"Invoice (office)","owing":0.0,"type":"Invoice","createdOn":"2018-11-28T14:01:15.000Z","status":"Success"},{"date":"2018-11-29","amount":1800.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":1,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"2018-11-28T14:01:15.000Z","status":"Success"},{"date":"2019-04-12","amount":350.0,"balance":350.0,"referenceNumber":"4","relatedEntityId":3,"description":"Invoice (office)","owing":0.0,"type":"Invoice","createdOn":"2019-04-12T12:32:52.000Z","status":"Success"},{"date":"2019-04-12","amount":350.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":3,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"2019-04-12T12:32:52.000Z","status":"Success"},{"date":"2019-04-12","amount":450.0,"balance":450.0,"referenceNumber":"5","relatedEntityId":4,"description":"Invoice (office)","owing":0.0,"type":"Invoice","createdOn":"2019-04-12T12:33:41.000Z","status":"Success"},{"date":"2019-04-12","amount":450.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":4,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"2019-04-12T12:33:41.000Z","status":"Success"}],        "createdOn":"#ignore",
+        "modifiedOn":"#ignore",
+        "messages":[],
+        "rules":[]
+        }
+        """
+
+
+
+    Scenario: (+) Get Contact tutor by admin
+
+        Given path ishPath + '/1'
+        When method GET
+        Then status 200
+        And match $ contains
+        """
+        {
+        "id":1,
+        "student":null,
+        "tutor":{"id":1,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":4,"futureClasseCount":1,"selfPacedclassesCount":#number,"unscheduledClasseCount":0,"passedClasseCount":1,"cancelledClassesCount":#number},
+        "abn":null,
+        "birthDate":"1972-05-01",
+        "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
+        "fax":null,
+        "isCompany":false,
+        "gender":"Male",
+        "message":null,
+        "homePhone":null,
+        "mobilePhone":"444555666",
+        "workPhone":null,
+        "postcode":"5000",
+        "state":"SA",
+        "street":"address str.",
+        "suburb":"Adelaide",
+        "tfn":null,
+        "deliveryStatusEmail":"#number",
+        "deliveryStatusSms":0,
+        "deliveryStatusPost":0,
+        "allowPost":true,
+        "allowSms":true,
+        "allowEmail":true,
+        "uniqueCode":"XykjWMd3zJ7KUX2n",
+        "honorific":null,
+        "title":null,
+        "email":"tutor1@gmail.com",
+        "firstName":"tutor1",
+        "lastName":"tutor1",
+        "middleName":null,
+        "invoiceTerms":null,
+        "taxId":null,
+        "customFields":{},
+        "documents":[],
+        "tags":[],
+        "memberships":[],
+        "profilePicture":null,
+        "relations":[],
+        "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "messages":[],
         "rules":[]
         }
         """
-        
+
+
 
     Scenario: (+) Get Contact company by admin
 
@@ -231,11 +281,7 @@ Feature: Main feature for all GET requests with path 'list/entity/contact'
         "memberships":[],
         "profilePicture":null,
         "relations":[],
-        "financialData":[
-            {"date":"2018-11-29","amount":1800.0,"balance":1800.0,"referenceNumber":"2","relatedEntityId":2,"description":"Invoice (office)","owing":0.0,"type":"Invoice","createdOn":"#ignore","status":"Success"},
-            {"date":"2018-11-29","amount":1800.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":2,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"#ignore","status":"Success"},
-            {"date":"2022-08-01","amount":300.0,"balance":300.0,"referenceNumber":"12","relatedEntityId":11,"description":"Invoice (office)","owing":300.0,"type":"Invoice","createdOn":"#ignore","status":"Success"}
-        ],
+        "financialData":[{"date":"2018-11-29","amount":1800.0,"balance":1800.0,"referenceNumber":"2","relatedEntityId":2,"description":"Invoice (office)","owing":0.0,"type":"Invoice","createdOn":"2018-11-28T14:03:36.000Z","status":"Success"},{"date":"2018-11-29","amount":1800.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":2,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"2018-11-28T14:03:36.000Z","status":"Success"},{"date":"2022-08-01","amount":300.0,"balance":300.0,"referenceNumber":"12","relatedEntityId":11,"description":"Invoice (office)","owing":300.0,"type":"Invoice","createdOn":"2019-07-02T15:35:09.000Z","status":"Success"}],
         "rules":[]
         }
         """
