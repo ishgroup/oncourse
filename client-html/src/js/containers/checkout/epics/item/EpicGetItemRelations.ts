@@ -126,6 +126,7 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
                         r.toItem.cartItem.fromItemRelation = r.fromItem;
                         r.toItem.cartItem.relationDiscount = r.discount;
                         r.toItem.cartItem.checked = true;
+                        r.toItem.type = "course";
                       } else {
                         r.cartAction = null;
                       }
@@ -141,6 +142,7 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
                       r.toItem.cartItem.relationDiscount = r.discount;
                       r.toItem.cartItem.checked = true;
                       r.toItem.link = `/membership/${r.toItem.cartItem.id}`;
+                      r.toItem.type = "membership";
                     });
                 }
                 case "Voucher": {
@@ -153,6 +155,7 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
                       r.toItem.cartItem.relationDiscount = r.discount;
                       r.toItem.cartItem.checked = true;
                       r.toItem.link = `/voucher/${r.toItem.cartItem.id}`;
+                      r.toItem.type = "voucher";
                     });
                 }
                 case "Product": {
@@ -165,6 +168,7 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
                       r.toItem.cartItem.relationDiscount = r.discount;
                       r.toItem.cartItem.checked = true;
                       r.toItem.link = `/product/${r.toItem.cartItem.id}`;
+                      r.toItem.type = "product";
                     });
                 }
                 default:
