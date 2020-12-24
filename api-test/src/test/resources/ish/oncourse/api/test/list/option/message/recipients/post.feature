@@ -21,11 +21,13 @@ Feature: Main feature for all GET requests with path 'list/option/message/recipi
         Then status 200
         And match $ ==
             """
-            {
-            "students":{"sendSize":"#number","suppressToSendSize":"#number","withoutDestinationSize":"#number"},
-            "tutors":{"sendSize":"#number","suppressToSendSize":"#number","withoutDestinationSize":"#number"},
-            "other":{"sendSize":"#number","suppressToSendSize":"#number","withoutDestinationSize":"#number"}
-            }
+             {
+             "other":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
+             "tutors":{"sendSize":2,"withoutDestinationSize":0,"suppressToSendSize":0},
+             "withdrawnStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
+             "students":{"sendSize":17,"withoutDestinationSize":1,"suppressToSendSize":0},
+             "activeStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0}
+             }
             """
 
 #       <---> for type 'Sms':
@@ -38,9 +40,11 @@ Feature: Main feature for all GET requests with path 'list/option/message/recipi
         And match $ ==
             """
             {
-            "students":{"sendSize":"#number","suppressToSendSize":"#number","withoutDestinationSize":"#number"},
-            "tutors":{"sendSize":"#number","suppressToSendSize":"#number","withoutDestinationSize":"#number"},
-            "other":{"sendSize":"#number","suppressToSendSize":"#number","withoutDestinationSize":"#number"}
+            "other":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
+            "tutors":{"sendSize":2,"withoutDestinationSize":0,"suppressToSendSize":0},
+            "withdrawnStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
+            "students":{"sendSize":17,"withoutDestinationSize":1,"suppressToSendSize":0},
+            "activeStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0}
             }
             """
 
@@ -71,9 +75,11 @@ Feature: Main feature for all GET requests with path 'list/option/message/recipi
         And match $ ==
             """
             {
-            "students":{"sendSize":"#number","suppressToSendSize":"#number","withoutDestinationSize":"#number"},
-            "tutors":{"sendSize":"#number","suppressToSendSize":"#number","withoutDestinationSize":"#number"},
-            "other":{"sendSize":"#number","suppressToSendSize":"#number","withoutDestinationSize":"#number"}
+            "other":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
+            "tutors":{"sendSize":1,"withoutDestinationSize":0,"suppressToSendSize":0},
+            "withdrawnStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
+            "students":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
+            "activeStudents":{"sendSize":3,"withoutDestinationSize":0,"suppressToSendSize":0}
             }
             """
 
