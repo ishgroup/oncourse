@@ -864,7 +864,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
 
         const addedRelations = selectedItems.filter(s => s.fromItemRelation
           && (s.fromItemRelation.id === row.id || s.fromItemRelation.id === row.courseId)
-          && s.fromItemRelation.type.toLowerCase() === row.type);
+          && s.fromItemRelation.type === row.type);
 
         if (addedRelations.length) {
           addedRelations.forEach(rel => {
