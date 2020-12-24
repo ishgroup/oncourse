@@ -14,7 +14,6 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.FundingSourceDao
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
 import static ish.oncourse.server.api.function.EntityFunctions.validateEntityExistence
 import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
@@ -27,7 +26,6 @@ import ish.oncourse.server.api.v1.model.FundingSourceDTO
 import ish.oncourse.server.api.v1.service.FundingContractApi
 import ish.oncourse.server.cayenne.FundingSource
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect
 
 class FundingContractApiImpl implements FundingContractApi {
 
