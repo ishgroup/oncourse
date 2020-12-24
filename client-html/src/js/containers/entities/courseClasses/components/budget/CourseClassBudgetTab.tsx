@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import {
   arrayInsert, arraySplice, change, initialize
 } from "redux-form";
+import { isAfter, isBefore, isEqual } from 'date-fns';
 import {
  ClassCost, CourseClassTutor, Discount, Tax
 } from "@api/model";
@@ -51,7 +52,8 @@ import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-han
 import { getTutorPayInitial } from "../tutors/utils";
 import { getClassCostTypes } from "../../utils";
 import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { getClassFeeTotal, getDiscountAmountExTax } from "./utils";
+import { dateForCompare, getClassFeeTotal, getDiscountAmountExTax } from "./utils";
+import PreferencesService from "../../../../preferences/services/PreferencesService";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -346,11 +348,32 @@ const CourseClassBudgetTab = React.memo<Props>(
     );
 
     const openAddTutorModal = useCallback(
-      (tutor: CourseClassTutor) => {
-        const role = tutorRoles.find(r => r.id === tutor.roleId);
-        const onCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
-        const perUnitAmountExTax = (role && role["currentPayrate.rate"]) ? parseFloat(role["currentPayrate.rate"]) : 0;
+      async (tutor: CourseClassTutor) => {
+        const fullRole = await PreferencesService.getTutorRole(tutor.roleId);
 
+        let payRate
+        if (values.startDateTime && fullRole.payRates.length) {
+          fullRole.payRates.some((e) => {
+            if (isEqual(dateForCompare(e.validFrom, "yyyy-MM"),
+              dateForCompare(values.startDateTime, "yyyy-MM"))) {
+              payRate = e
+              return true
+            }
+
+            if (isBefore(dateForCompare(e.validFrom, "yyyy-MM"),
+              dateForCompare(values.startDateTime, "yyyy-MM"))) {
+              if (!payRate || isAfter(dateForCompare(e.validFrom, "yyyy-MM"),
+                dateForCompare(payRate.validFrom, "yyyy-MM"))) {
+                payRate = e
+              }
+            }
+            return false
+          })
+        }
+
+        const role = tutorRoles.find(r => r.id === tutor.roleId);
+        const onCostRate = payRate ? payRate.oncostRate : 0;
+        const perUnitAmountExTax = payRate ? payRate.rate : 0;
         const initial: ClassCost = getTutorPayInitial(tutor, values.id, values.taxId, role, perUnitAmountExTax);
 
         setCourseClassBudgetModalOpened(true, isNaN(onCostRate) ? 0 : onCostRate);

@@ -6,7 +6,7 @@
 import {
  ClassCost, CourseClassPaymentPlan, Discount, Tax 
 } from "@api/model";
-import { differenceInMinutes, subMinutes } from "date-fns";
+import {differenceInMinutes, format, subMinutes} from "date-fns";
 import Decimal from "decimal.js-light";
 import {
  decimalDivide, decimalMinus, decimalMul, decimalPlus 
@@ -163,3 +163,5 @@ export const getClassFeeTotal = (costs: ClassCost[], taxes: Tax[]) => {
   const studentFee = costs.find(c => c.invoiceToStudent);
   return studentFee ? getFeeWithTaxAmount(studentFee.perUnitAmountExTax, getCurrentTax(taxes, studentFee.taxId)) : 0;
 };
+
+export const dateForCompare = (date: string, customFormat: string) => new Date(format(new Date(date), customFormat))
