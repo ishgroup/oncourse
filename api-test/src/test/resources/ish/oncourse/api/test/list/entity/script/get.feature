@@ -23,6 +23,7 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
 
         Given path ishPathList
         And param entity = 'Script'
+        And param pageSize = 1000
         When method GET
         Then status 200
         * def row = get[0] response.rows[?(@.values[0] == 'VET Course completion survey')]
