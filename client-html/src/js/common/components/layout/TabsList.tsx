@@ -70,8 +70,8 @@ const SCROLL_TARGET_ID = "TabsListScrollTarget";
 const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (twoColumn ? [{ xs: 10 }, { xs: 12 }, { xs: 2 }] : [{ xs: 12 }, { xs: 12 }, { xs: 2 }]);
 
 const TabsList = React.memo<Props & RouteComponentProps>(({
- classes, items, customLabels, customAppBar, itemProps = {}, history, location
-}) => {
+   classes, items, customLabels, customAppBar, itemProps = {}, history, location
+  }) => {
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<ScrollNodes>({});
 
