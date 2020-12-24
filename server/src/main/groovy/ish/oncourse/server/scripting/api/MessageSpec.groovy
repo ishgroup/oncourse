@@ -246,7 +246,7 @@ class MessageSpec {
     @API
     @CompileStatic(TypeCheckingMode.SKIP)
     void to(Contact... recipients) {
-        this.toList.addAll(recipients.each { it.replacementEmail ?: it.email } as List<String>)
+        this.toList.addAll(recipients.each { it.email } as List<String>)
     }
 
 

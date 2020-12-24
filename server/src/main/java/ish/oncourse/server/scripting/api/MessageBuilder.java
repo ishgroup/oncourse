@@ -1,6 +1,5 @@
 package ish.oncourse.server.scripting.api;
 
-import ish.oncourse.server.cayenne.Contact;
 import ish.oncourse.server.cayenne.EmailTemplate;
 import ish.oncourse.server.cayenne.Message;
 import org.apache.cayenne.ObjectContext;
@@ -13,7 +12,6 @@ public class MessageBuilder {
     private MessageSpec messageSpec;
     private EmailTemplate template;
     private Map<String, Object> bindings;
-    private Contact recipient;
     private ObjectContext context;
 
     private MessageBuilder() {}
@@ -35,6 +33,9 @@ public class MessageBuilder {
     }
 
     public Message build() {
+        if (template == null) {
+            throw new IllegalArgumentException("There is not found template.");
+        }
         Message message;
         switch (template.getType()) {
             case EMAIL:
