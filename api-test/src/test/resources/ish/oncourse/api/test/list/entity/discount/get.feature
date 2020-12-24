@@ -79,8 +79,8 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "discountMemberships":#ignore,
         "discountCourseClasses":
             [
-            {"id":3,"name":"Course1","code":"course1-3","active":true,"type":"Class","expiryDate":null},
-            {"id":2,"name":"Course1","code":"course1-2","active":true,"type":"Class","expiryDate":null}
+            {"expiryDate":null,"entityToId":null,"code":"course1-3","entityFromId":null,"name":"Course1","active":true,"relationId":null,"id":3,"type":"Class"},
+            {"expiryDate":null,"entityToId":null,"code":"course1-2","entityFromId":null,"name":"Course1","active":true,"relationId":null,"id":2,"type":"Class"}
             ],
         "addByDefault":false,
         "minEnrolments":1,
@@ -138,7 +138,10 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "studentPostcode":null,
         "discountConcessionTypes":[],
         "discountMemberships":#ignore,
-        "discountCourseClasses":[{"id":3,"name":"Course1","code":"course1-3","active":true,"type":"Class","expiryDate":null}],
+        "discountCourseClasses":
+            [
+            {"expiryDate":null,"entityToId":null,"code":"course1-3","entityFromId":null,"name":"Course1","active":true,"relationId":null,"id":3,"type":"Class"}
+            ],
         "addByDefault":false,
         "minEnrolments":1,
         "minValue":0.00,
