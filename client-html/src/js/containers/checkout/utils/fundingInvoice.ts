@@ -6,14 +6,23 @@
 import { Invoice } from "@api/model";
 import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
 
-export const getFundingInvoice = (fundingInvoice: CheckoutFundingInvoice): Invoice => {
-  let invoice: Invoice = null;
-  if (fundingInvoice) {
-    invoice = {};
-    invoice.contactId = fundingInvoice.fundingProviderId;
-    invoice.paymentPlans = fundingInvoice.paymentPlans.filter(pp => pp.amount);
-    invoice.total = fundingInvoice.total;
-    invoice.customerReference = fundingInvoice.vetPurchasingContractID;
-  }
-  return invoice;
+export const getFundingInvoices = (fundingInvoices: CheckoutFundingInvoice[]): Invoice[] => {
+  const invoices: Invoice[] = [];
+  fundingInvoices.forEach(fi => {
+    const invoice: Invoice = {};
+    invoice.contactId = fi.fundingProviderId;
+    invoice.paymentPlans = fi.paymentPlans.filter(pp => pp.amount);
+    invoice.total = fi.total;
+    invoice.customerReference = fi.vetPurchasingContractID;
+    invoice.relatedFundingSourceId = fi.relatedFundingSourceId;
+    invoice.invoiceLines = [];
+    fi.item.enrolment.items.forEach(ei => {
+      invoice.invoiceLines.push({
+        finalPriceToPayIncTax: ei.totalFee,
+        courseClassId: ei.class.id
+      });
+    });
+    invoices.push(invoice);
+  });
+  return invoices;
 };

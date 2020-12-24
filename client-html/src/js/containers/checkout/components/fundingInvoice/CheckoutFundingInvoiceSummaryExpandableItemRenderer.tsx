@@ -85,7 +85,7 @@ const CheckoutFundingInvoiceSummaryRow = React.memo<any>(props => {
   } = props;
 
   const handlePriceChange = React.useCallback<any>(debounce((e, price) => {
-    const totalAmount = items.reduce((p, c, ind) => decimalPlus(p, ind === index ? price : c.total || 0), 0);
+    const totalAmount = items.reduce((p, c, ind) => decimalPlus(p, ind === index ? price : c.totalFee || 0), 0);
     dispatch(change(form, `fundingInvoices[${selectedItemIndex}].paymentPlans[0].amount`, totalAmount));
     dispatch(change(form, `fundingInvoices[${selectedItemIndex}].total`, totalAmount));
     if (paymentPlans && paymentPlans.length) {
@@ -105,7 +105,7 @@ const CheckoutFundingInvoiceSummaryRow = React.memo<any>(props => {
       <Grid item container xs={3} justify="flex-end">
         <FormField
           type="money"
-          name={`fundingInvoices[${selectedItemIndex}].item.enrolment.items[${index}].total`}
+          name={`fundingInvoices[${selectedItemIndex}].item.enrolment.items[${index}].totalFee`}
           label="Price"
           className="pl-2 text-end"
           onChange={handlePriceChange}

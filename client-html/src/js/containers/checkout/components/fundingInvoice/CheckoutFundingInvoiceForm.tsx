@@ -43,6 +43,16 @@ interface Props extends DecoratedFormProps {
   fundingInvoices?: CheckoutFundingInvoice[];
 }
 
+const validateFundingInvoices = (fundingInvoices: CheckoutFundingInvoice[]) => {
+  let error;
+  fundingInvoices?.forEach(fi => {
+    if (!fi.fundingProviderId) {
+      error = "Funding provider required";
+    }
+  });
+  return error;
+};
+
 const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
   const {
     classes,
@@ -56,30 +66,6 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
   } = props;
 
   const selectedItemIndex = fundingInvoices.findIndex(i => i.active);
-  const prevSelectedItem = usePrevious(selectedItemIndex);
-
-  useEffect(() => {
-    if (fundingInvoices.length && prevSelectedItem !== selectedItemIndex) {
-      const itemClass = fundingInvoices[selectedItemIndex].item.enrolment.items[0].class;
-
-      dispatch(change(form, `fundingInvoices[${selectedItemIndex}].relatedFundingSourceId`, Number(itemClass.relatedFundingSourceId)));
-      dispatch(change(form, `fundingInvoices[${selectedItemIndex}].fundingProviderId`, itemClass.fundingProviderId));
-      dispatch(change(form, `fundingInvoices[${selectedItemIndex}].vetPurchasingContractID`, itemClass.vetPurchasingContractID));
-
-      if (itemClass.fundingProviderId) {
-        EntityService.getPlainRecords(
-          "Contact",
-          CHECKOUT_CONTACT_COLUMNS,
-          `id is ${itemClass.fundingProviderId}`
-        ).then(res => {
-          const contacts = res.rows.map(getCustomColumnsMap(CHECKOUT_CONTACT_COLUMNS));
-          if (contacts[0]) {
-            dispatch(change(form, `fundingInvoices[${selectedItemIndex}].company`, contacts[0]));
-          }
-        });
-      }
-    }
-  }, [selectedItemIndex]);
 
   return (
     <div className="appFrame flex-fill root">
@@ -88,6 +74,7 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
       </CustomAppBar>
       <div className="appBarContainer w-100">
         <form autoComplete="off">
+          <FormField type="stub" name="fundingInvoices" validate={validateFundingInvoices} />
           {selectedItemIndex !== -1 && (
             <div className="p-3">
               <div className="centeredFlex">
@@ -145,7 +132,7 @@ const mapStateToProps = (state: State) => ({
   contracts: state.export.contracts,
 });
 
-export default reduxForm<any, any>({
+export default reduxForm<{ fundingInvoices?: CheckoutFundingInvoice[] }, any>({
   form: CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM,
   initialValues: {
     fundingInvoices: []
