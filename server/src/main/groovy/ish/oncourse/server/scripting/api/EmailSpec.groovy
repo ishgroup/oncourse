@@ -129,7 +129,7 @@ class EmailSpec {
      */
 	@CompileStatic(TypeCheckingMode.SKIP)
 	void to(Contact... recipients) {
-		recipients.each { r -> this.recipients[r] = r.replacementEmail ?: r.email }
+		recipients.each { r -> this.recipients[r] = r.email }
 	}
 
 	/**
