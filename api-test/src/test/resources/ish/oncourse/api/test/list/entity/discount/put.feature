@@ -135,7 +135,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "studentPostcode":"123456upd",
         "discountConcessionTypes":[{"id":3,"name":"Pensioner","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"}],
         "discountMemberships":[],
-        "discountCourseClasses":[{"id":3,"name":"Course1","code":"course1-3","active":true,"type":"Class","expiryDate":null}],
+        "discountCourseClasses":
+            [
+            {"expiryDate":null,"entityToId":null,"code":"course1-3","entityFromId":null,"name":"Course1","active":true,"relationId":null,"id":3,"type":"Class"}
+            ],
         "addByDefault":false,
         "minEnrolments":2,
         "minValue":5.00,
@@ -284,7 +287,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "studentPostcode":"abc",
         "discountConcessionTypes":[{"id":2,"name":"Student","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"}],
         "discountMemberships":[],
-        "discountCourseClasses":[{"id":2,"name":"Course1","code":"course1-2","active":true,"type":"Class","expiryDate":null}],
+        "discountCourseClasses":
+            [
+            {"expiryDate":null,"entityToId":null,"code":"course1-2","entityFromId":null,"name":"Course1","active":true,"relationId":null,"id":2,"type":"Class"}
+            ],
         "addByDefault":true,
         "minEnrolments":10,
         "minValue":222.00,
@@ -431,7 +437,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "studentPostcode":null,
         "discountConcessionTypes":[],
         "discountMemberships":[],
-        "discountCourseClasses":[{"id":6,"name":"Course4","code":"course4-1","active":true,"type":"Class","expiryDate":null}],
+        "discountCourseClasses":
+            [
+            {"expiryDate":null,"entityToId":null,"code":"course4-1","entityFromId":null,"name":"Course4","active":true,"relationId":null,"id":6,"type":"Class"}
+            ],
         "addByDefault":true,
         "minEnrolments":5,
         "minValue":205.00,
@@ -589,7 +598,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "studentPostcode":"123456upd",
         "discountConcessionTypes":[{"id":3,"name":"Pensioner","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"}],
         "discountMemberships":[],
-        "discountCourseClasses":[{"id":3,"name":"Course1","code":"course1-3","active":true,"type":"Class","expiryDate":null}],
+        "discountCourseClasses":
+            [
+            {"expiryDate":null,"entityToId":null,"code":"course1-3","entityFromId":null,"name":"Course1","active":true,"relationId":null,"id":3,"type":"Class"}
+            ],
         "addByDefault":false,
         "minEnrolments":2,
         "minValue":5.00,
