@@ -34,6 +34,7 @@ import ish.oncourse.server.entity.mixins.MixinHelper
 import ish.oncourse.server.export.ExportService
 import ish.oncourse.server.imports.ImportService
 import ish.oncourse.server.lifecycle.InvoiceLineInitHelper
+import ish.oncourse.server.messaging.MessageService
 import ish.oncourse.server.quality.QualityService
 import ish.oncourse.server.querying.QueryService
 import ish.oncourse.server.services.ISchedulerService
@@ -75,6 +76,7 @@ class TestModule implements Module {
         binder.bind(AqlService.class).to(AntlrAqlService.class)
         binder.bind(QueryService.class).in(Scopes.SINGLETON)
         binder.bind(GroovyScriptService.class).in(Scopes.SINGLETON)
+        binder.bind(MessageService.class).in(Scopes.SINGLETON)
 
         // dummy scheduler service for tests
 		binder.bind(ISchedulerService.class).toInstance(new TestSchedulerService())

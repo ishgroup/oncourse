@@ -53,17 +53,15 @@ class MessageService {
 	ICayenneService cayenneService
     PreferenceController preferenceController
 	TemplateService templateService
-	EmailTemplateApiService templateApiService
 	MailDeliveryService mailDeliveryService
-	AuditService auditService;
+	AuditService auditService
 
     @Inject
     MessageService(ICayenneService cayenneService, PreferenceController preferenceController, TemplateService templateService,
-				   EmailTemplateApiService templateApiService, MailDeliveryService mailDeliveryService, AuditService auditService) {
+				   MailDeliveryService mailDeliveryService, AuditService auditService) {
 		this.cayenneService = cayenneService
         this.preferenceController = preferenceController
         this.templateService = templateService
-        this.templateApiService = templateApiService
 		this.mailDeliveryService = mailDeliveryService
 		this.auditService = auditService
     }
@@ -191,14 +189,11 @@ class MessageService {
 
 	void sendMessage(MessageSpec messageSpec, Function<Contact, Boolean> collision) {
 		EmailTemplate template = templateService.loadTemplate(messageSpec.templateIdentifier)
-		if (!template) {
-			throw new IllegalArgumentException("No template with identifier ${messageSpec.templateIdentifier} found.")
-		}
-		ObjectContext context = template.getContext()
-		Map<String, Object> bindings = messageSpec.bindings
+		ObjectContext context = template ? template.getContext() : cayenneService.newContext
+
 		List<CayenneDataObject> records = []
 		String entityName = (messageSpec.entityRecords[0] as CayenneDataObject).entityName.capitalize()
-		String templateEntityName = template.entity?.capitalize()
+		String templateEntityName = template?.entity?.capitalize()
 		if (templateEntityName != null && entityName != templateEntityName) {
 			Property<Long> property = getEntityTransformationProperty(entityName, templateEntityName)
 			if (!property) {
@@ -213,6 +208,7 @@ class MessageService {
 
 
 		int counter = 0
+		Map<String, Object> bindings = messageSpec.bindings
 		records.each { record ->
 			List<Contact> recipients = getRecipientsListFromEntity(record)
 
@@ -222,8 +218,8 @@ class MessageService {
 				bindings.put(templateService.RECORD, record)
 				bindings.put(templateService.TO, recipient)
 
-				if (templateEntityName != null && templateEntityName.equalsIgnoreCase("Contact")) {
-					bindings.put(templateEntityName.uncapitalize(), recipient)
+				if (templateEntityName != null && templateEntityName.equalsIgnoreCase("contact")) {
+					bindings.put("contact", recipient)
 					bindings.put(templateService.RECORD, recipient)
 				}
 
