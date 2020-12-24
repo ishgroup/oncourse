@@ -1077,7 +1077,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                   />
                 </CheckoutSectionExpandableRenderer>
 
-                {fundingInvoiceValues.fundingInvoices.length && selectedItems.filter(i => i.checked).length > 0 && (
+                {Boolean(fundingInvoiceValues.fundingInvoices.length && selectedItems.filter(i => i.checked).length > 0) && (
                   <CheckoutSectionExpandableRenderer
                     title="Funding Invoices"
                     expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}

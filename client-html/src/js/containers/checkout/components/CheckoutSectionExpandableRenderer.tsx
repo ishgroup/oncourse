@@ -65,12 +65,12 @@ export interface Props {
 
 const CheckoutSectionExpandableRenderer = React.memo<Props>(props => {
   const {
- expanded, classes, title, children, onExpanded, showArrow, disabled
-} = props;
+   expanded, classes, title, children, onExpanded, showArrow, disabled
+  } = props;
 
-  const handleExpanded = React.useCallback(() => {
+  const handleExpanded = () => {
     if (onExpanded) onExpanded();
-  }, []);
+  };
 
   return (
     <Accordion

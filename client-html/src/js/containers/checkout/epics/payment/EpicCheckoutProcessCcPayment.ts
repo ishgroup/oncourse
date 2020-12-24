@@ -18,7 +18,7 @@ import {
   checkoutSetPaymentProcessing
 } from "../../actions/checkoutPayment";
 import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList";
-import {CHECKOUT_SUMMARY_FORM} from "../../components/summary/CheckoutSummaryList";
+import { CHECKOUT_SUMMARY_FORM } from "../../components/summary/CheckoutSummaryList";
 import CheckoutService from "../../services/CheckoutService";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getCheckoutModel } from "../../utils";
@@ -30,7 +30,7 @@ const request: EpicUtils.Request<any, State, { xValidateOnly: boolean, xPaymentS
   }, s) => {
     const checkoutModel = getCheckoutModel(
       s.checkout,
-      (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(s) as any),
+      (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(s) as any).fundingInvoices,
       (getFormValues(CHECKOUT_SUMMARY_FORM)(s) as any)
     );
     return CheckoutService.checkoutSubmitPayment(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);

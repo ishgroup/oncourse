@@ -25,9 +25,9 @@ import {
   CheckoutState,
   CheckoutSummaryListItem
 } from "../../../model/checkout";
-import { CheckoutFundingInvoiceItem } from "../../../model/checkout/fundingInvoice";
+import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
 import { CheckoutCurrentStep } from "../constants";
-import { getFundingInvoice } from "./fundingInvoice";
+import { getFundingInvoices } from "./fundingInvoice";
 
 export const filterPastClasses = courseClasses => {
   const today = new Date();
@@ -183,7 +183,7 @@ export const mergeInvoicePaymentPlans = (paymentPlans: InvoicePaymentPlan[]) => 
 
 export const getCheckoutModel = (
   state: CheckoutState,
-  fundingInvoice: CheckoutFundingInvoiceItem,
+  fundingInvoices: CheckoutFundingInvoice[],
   summaryValues: any = {},
   pricesOnly?: boolean
 ): CheckoutModel => {
@@ -290,8 +290,6 @@ export const getCheckoutModel = (
             studyReason: i.studyReason,
             totalOverride: i.priceOverriden,
             appliedVoucherId: i.voucherId,
-            // fundingInvoice: pricesOnly || !state.fundingInvoice.item ? null : getFundingInvoice(fundingInvoice),
-            // relatedFundingSourceId: pricesOnly || !state.fundingInvoice.item ? null : fundingInvoice.relatedFundingSourceId
           })),
 
       memberships: l.items.filter(i => i.checked && i.type === "membership")
@@ -305,7 +303,10 @@ export const getCheckoutModel = (
         productId: i.id,
         quantity: i.quantity
       })),
+
       sendConfirmation: l.sendEmail,
+
+      fundingInvoices: fundingInvoices && getFundingInvoices(fundingInvoices.filter(fi => fi.item.enrolment.contact.id === l.contact.id))
     })),
 
     sendInvoice: payerItem && payerItem.sendInvoice,

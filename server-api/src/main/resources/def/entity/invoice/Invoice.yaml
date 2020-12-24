@@ -13,6 +13,9 @@ properties:
   invoiceNumber:
     type: integer
     format: int64
+  relatedFundingSourceId:
+    type: integer
+    format: int64
   billToAddress:
     type: string
   shippingAddress:
