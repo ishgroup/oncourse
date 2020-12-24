@@ -11,9 +11,7 @@ import {
 import Grid from "@material-ui/core/Grid";
 import { compareAsc, format as formatDate } from "date-fns";
 import { Currency, PaymentMethod } from "@api/model";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../../../common/components/form/form-fields/FormField";
-import EntityService from "../../../../common/services/EntityService";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
@@ -325,37 +323,6 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
   const handlePaymentMethodChange = methodId => {
     const { accountId } = paymentOutMethods.find(method => method.id === methodId);
-
-    if (methodId === 2 && values.invoices && values.invoices.length === 1) {
-      const invoiceId = values.invoices[0].id;
-
-      EntityService.getPlainRecords("Enrolment", "id", `invoiceLines.invoice.id is ${invoiceId}`)
-        .then(res => {
-          const ids = res.rows.map(r => Number(r.id));
-          if (ids && ids.length === 1) {
-            EntityService.getPlainRecords(
-              "PaymentIn",
-              "amount",
-              // eslint-disable-next-line max-len
-              `status is SUCCESS and paymentMethod.type = CREDIT_CARD`
-            )
-            .then(res => {
-              const row = res.rows[0];
-              if (row) {
-                const amount = parseFloat(row.values[0]);
-                const refundableId = Number(row.id);
-
-                if (typeof amount === "number") {
-                  dispatch(change(form, "amount", initialTotalOwing + amount > 0 ? Math.abs(initialTotalOwing) : amount));
-                  dispatch(change(form, "refundableId", refundableId));
-                }
-              }
-            });
-          }
-        })
-        .catch(res => instantFetchErrorHandler(dispatch, res));
-    }
-
     dispatch(change(form, "account", getAccountById(accountItems, accountId)));
   };
 
