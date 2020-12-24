@@ -1152,9 +1152,13 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       }
 
       const items = [...state.items];
+      const voucherItems = [...state.summary.voucherItems];
 
       cartItems.forEach(c => {
         items.push(c.toItem.cartItem);
+        if (c.toItem.type === "voucher") {
+          voucherItems.push(c.toItem.cartItem);
+        }
       });
 
       return {
@@ -1162,9 +1166,10 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
         items,
         summary: {
           ...state.summary,
+          voucherItems,
           list: state.summary.list.map(li => ({
             ...li,
-            items: items.map(it => {
+            items: items.filter(fi => fi.type !== "voucher").map(it => {
               if (it.type === "course" && li.contact.isCompany) {
                 return null;
               }
