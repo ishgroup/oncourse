@@ -10,7 +10,7 @@
 /**
  * CONTEXT for api requests
  */
-export const CONTEXT: string = "https://192.168.225.99:8182/a/";
+export const CONTEXT: string = "/a/";
 
 /**
  * 'X-Origin' header for all api requests, this header contains original college site host name
