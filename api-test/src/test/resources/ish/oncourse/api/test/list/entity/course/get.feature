@@ -28,44 +28,7 @@ Feature: Main feature for all GET requests with path 'list/entity/course'
         Then status 200
         And match $ ==
         """
-        {
-            "id":1,
-            "createdOn":"#ignore",
-            "modifiedOn":"#ignore",
-            "name":"Course1",
-            "code":"course1",
-            "tags":[],
-            "enrolmentType":"Open enrolment",
-            "allowWaitingLists":true,
-            "dataCollectionRuleId":102,
-            "dataCollectionRuleName":"Accredited course",
-            "status":"Enabled and visible online",
-            "brochureDescription":null,
-            "currentClassesCount":1,
-            "futureClasseCount":1,
-            "selfPacedclassesCount":0,
-            "unscheduledClasseCount":0,
-            "passedClasseCount":1,
-            "cancelledClassesCount":"#number",
-            "studentWaitingListCount":0,
-            "hasEnrolments":true,
-            "webDescription":null,
-            "documents":[],
-            "relatedlSalables":[],
-            "qualificationId":1,
-            "qualNationalCode":"UEE30807",
-            "qualTitle":"Electrotechnology Electrician",
-            "qualLevel":"Certificate III in",
-            "isSufficientForQualification":false,
-            "isVET":true,
-            "fieldOfEducation":"0313",
-            "reportableHours":0.0,
-            "modules":[],
-            "customFields":{},
-            "rules":[],
-            "isTraineeship":false,
-            "currentlyOffered":true
-        }
+       {"relatedSellables":[],"code":"course1","qualificationId":1,"documents":[],"isTraineeship":false,"customFields":{},"hasEnrolments":true,"rules":[],"fieldOfEducation":"0313","createdOn":"2018-11-28T13:52:27.000Z","modifiedOn":"2018-11-28T13:59:02.000Z","studentWaitingListCount":0,"reportableHours":0,"dataCollectionRuleId":102,"id":1,"selfPacedclassesCount":0,"webDescription":null,"passedClasseCount":1,"isVET":true,"cancelledClassesCount":0,"currentClassesCount":1,"qualNationalCode":"UEE30807","allowWaitingLists":true,"modules":[],"tags":[],"qualLevel":"Certificate III in","enrolmentType":"Open enrolment","isSufficientForQualification":false,"brochureDescription":null,"currentlyOffered":true,"name":"Course1","dataCollectionRuleName":"Accredited course","futureClasseCount":1,"unscheduledClasseCount":0,"qualTitle":"Electrotechnology Electrician","status":"Enabled and visible online"}
         """
 
 
@@ -77,44 +40,7 @@ Feature: Main feature for all GET requests with path 'list/entity/course'
         Then status 200
         And match $ ==
         """
-        {
-        "id":2,
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
-        "name":"Course2",
-        "code":"course2",
-        "tags":[],
-        "enrolmentType":"Open enrolment",
-        "allowWaitingLists":true,
-        "dataCollectionRuleId":102,
-        "dataCollectionRuleName":"Accredited course",
-        "status":"Enabled and visible online",
-        "brochureDescription":null,
-        "currentClassesCount":2,
-        "futureClasseCount":0,
-        "selfPacedclassesCount":0,
-        "unscheduledClasseCount":0,
-        "passedClasseCount":0,
-        "cancelledClassesCount":"#number",
-        "studentWaitingListCount":2,
-        "hasEnrolments":true,
-        "webDescription":null,
-        "documents":[],
-        "relatedlSalables":[],
-        "qualificationId":null,
-        "qualNationalCode":null,
-        "qualTitle":null,
-        "qualLevel":null,
-        "isSufficientForQualification":false,
-        "isVET":false,
-        "fieldOfEducation":null,
-        "reportableHours":0.0,
-        "modules":[],
-        "customFields":{},
-        "rules":[],
-        "isTraineeship":false,
-        "currentlyOffered":true
-        }
+        {"relatedSellables":[],"code":"course2","qualificationId":null,"documents":[],"isTraineeship":false,"customFields":{},"hasEnrolments":true,"rules":[],"fieldOfEducation":null,"createdOn":"2019-04-12T11:13:21.000Z","modifiedOn":"2019-04-12T11:16:15.000Z","studentWaitingListCount":2,"reportableHours":0,"dataCollectionRuleId":102,"id":2,"selfPacedclassesCount":0,"webDescription":null,"passedClasseCount":0,"isVET":false,"cancelledClassesCount":0,"currentClassesCount":2,"qualNationalCode":null,"allowWaitingLists":true,"modules":[],"tags":[],"qualLevel":null,"enrolmentType":"Open enrolment","isSufficientForQualification":false,"brochureDescription":null,"currentlyOffered":true,"name":"Course2","dataCollectionRuleName":"Accredited course","futureClasseCount":0,"unscheduledClasseCount":0,"qualTitle":null,"status":"Enabled and visible online"}
         """
 
 
@@ -175,44 +101,3 @@ Feature: Main feature for all GET requests with path 'list/entity/course'
         Given path ishPath + '/4'
         When method GET
         Then status 200
-        And match $ ==
-        """
-        {
-        "id":4,
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
-        "name":"Course4",
-        "code":"course4",
-        "tags":[],
-        "enrolmentType":"Enrolment by application",
-        "allowWaitingLists":true,
-        "dataCollectionRuleId":102,
-        "dataCollectionRuleName":"Accredited course",
-        "status":"Enabled and visible online",
-        "brochureDescription":null,
-        "currentClassesCount":0,
-        "futureClasseCount":"#number",
-        "selfPacedclassesCount":0,
-        "unscheduledClasseCount":"#number",
-        "passedClasseCount":0,
-        "cancelledClassesCount":"#number",
-        "studentWaitingListCount":0,
-        "hasEnrolments":true,
-        "webDescription":null,
-        "documents":[],
-        "relatedlSalables":[],
-        "qualificationId":3,
-        "qualNationalCode":"10218NAT",
-        "qualTitle":"Aboriginal Language/s v2",
-        "qualLevel":"Certificate I in",
-        "isSufficientForQualification":true,
-        "isVET":true,
-        "fieldOfEducation":"0915",
-        "reportableHours":12.0,
-        "modules":[{"creditPoints":null,"expiryDays":null,"fieldOfEducation":null,"id":3,"isCustom":null,"type":"UNIT OF COMPETENCY","isOffered":true,"nationalCode":"AUM1001A","nominalHours":"#number","specialization":null,"title":"Manage personal career goals","createdOn":null,"modifiedOn":null}],
-        "customFields":{},
-        "rules":[],
-        "isTraineeship":false,
-        "currentlyOffered":true
-        }
-        """

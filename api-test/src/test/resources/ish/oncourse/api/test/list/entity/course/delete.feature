@@ -31,7 +31,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/course'
         "customFields":{},
         "tags":[],
         "documents":[],
-        "relatedlSalables":[],
+        "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
         "isTraineeship":false
@@ -85,7 +85,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/course'
         "customFields":{},
         "tags":[],
         "documents":[],
-        "relatedlSalables":[],
+        "relatedSellables":[],
         "modules":[],
         "qualificationId":3,
         "dataCollectionRuleId":"102",
@@ -141,7 +141,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/course'
         "customFields":{},
         "tags":[],
         "documents":[],
-        "relatedlSalables":[],
+        "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
         "isTraineeship":false
@@ -207,7 +207,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/course'
         "customFields":{},
         "tags":[],
         "documents":[],
-        "relatedlSalables":[],
+        "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
         "isTraineeship":false
