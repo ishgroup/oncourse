@@ -26,8 +26,9 @@ import org.apache.cayenne.PersistentObject
  * Message sending API. Allows to create email or SMS.
  * You can render email content from the templates which are stored into onCourse or a text string.
  * The recipients are generated from entity records which are specified in closure.
- * But you also can add extra emails which will receive message with attachment.
- * If there is no attachment and specify template identifier, the message is stored inside the onCourse database. Otherwise, no.
+ * But you also can specify emails which will receive message with attachment or custom content.
+ * If there is no attachment and specify template identifier and entity records, the message is stored inside the onCourse database.
+ * Otherwise, no.
  *
  * Simple usage example:
  * ```
@@ -50,7 +51,7 @@ import org.apache.cayenne.PersistentObject
  *     anyBinding_2 anyValue_2
  * }
  * ```
- * If the template has a variables they must be specified as a list of variables in closure.
+ * If the template has a variables they must be specified as a list of variables.
  *
  *
  * You can send emails with an attached file or pass your own content of message, without storing this data inside onCourse.
@@ -58,9 +59,8 @@ import org.apache.cayenne.PersistentObject
  * Usage example:
  * ```
  *  message {
- *      record records
  *      from "admin@example.com"
- *      to "extrarecipient@example.com"
+ *      to "torecipient@example.com"
  *      cc "ccrecipient@example.com"
  *      bcc "bccrecipient@example.com"
  *      subject "test email"
@@ -68,7 +68,7 @@ import org.apache.cayenne.PersistentObject
  *      attachment "accounts.csv", "text/csv", account_csv_data
  *  }
  * ```
- * The only lines which are required are "record", "subject" and "content" or "record", "template" and "bindings"
+ * The only lines which are required are "to", "subject" and "content" or "record", "template" and "bindings"
  *
  *
  * Message collision functionality. Allows to skip sending messages automatically if contact have already received message with specified key.
