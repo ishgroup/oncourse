@@ -5,22 +5,22 @@ List<CourseClass> classes = query {
     query ""
 }
 
-classes.each { courseClass ->
+classes.each { cclass ->
     //conditions to send 'Class Confirmed' messages to students
-    if (courseClass.getSuccessAndQueuedEnrolments().size() >= courseClass.getMinimumPlaces() && courseClass.actualTotalProfit >= expectedProfit) {
-        courseClass.getSuccessAndQueuedEnrolments().each { enrolment ->
-            email {
+    if (cclass.getSuccessAndQueuedEnrolments().size() >= cclass.getMinimumPlaces() && cclass.actualTotalProfit >= expectedProfit) {
+        cclass.getSuccessAndQueuedEnrolments().each { enrolment ->
+            message {
                 template classConfirmedTemplate
-                key "send-class-confirmed", courseClass
+                record enrolment
+                key "send-class-confirmed", cclass
                 keyCollision "drop"
-                to enrolment.student.contact
-                bindings courseClass: courseClass, contact: enrolment.student.contact
+                courseClass cclass
             }
         }
     }
     //send notification to admin
     else {
-        def creatorKey = MessageUtils.generateCreatorKey("send-class-confirmed", courseClass)
+        def creatorKey = MessageUtils.generateCreatorKey("send-class-confirmed", cclass)
 
         Message lastStudentMessage = query {
             entity "Message"
@@ -33,7 +33,7 @@ classes.each { courseClass ->
 
             //Attention! Set your own 'adminPrefix'
             String prefix = adminPrefix ?: "class no viable ${preference.email.from}"
-            String messageUniqueKey = MessageUtils.generateCreatorKey(prefix, courseClass)
+            String messageUniqueKey = MessageUtils.generateCreatorKey(prefix, cclass)
             Message lastAdminMessage = query {
                 entity "Message"
                 query "creatorKey is \"${messageUniqueKey}\""
@@ -43,12 +43,12 @@ classes.each { courseClass ->
 
             if (!lastAdminMessage || lastAdminMessage.createdOn < lastStudentMessage.createdOn) {
 
-                email {
+                message {
                     from preference.email.from
                     to preference.email.admin
                     subject emailSubjectToAdmin
                     key messageUniqueKey
-                    content "Due to enrolment cancellations or other class changes ${courseClass.code} ${courseClass.course.name}, is no longer viable. It has already been confirmed as running via emails to the students. Please investigate. "
+                    content "Due to enrolment cancellations or other class changes ${cclass.code} ${cclass.course.name}, is no longer viable. It has already been confirmed as running via emails to the students. Please investigate. "
                 }
             }
         }

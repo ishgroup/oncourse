@@ -1,11 +1,10 @@
-def enrolment = record
-if (enrolment.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+if (record.confirmationStatus == ConfirmationStatus.NOT_SENT) {
 
     message {
         template enrolmentConfirmationTemplate
-        record enrolment
+        record record
     }
 
-    enrolment.setConfirmationStatus(ConfirmationStatus.SENT)
+    record.setConfirmationStatus(ConfirmationStatus.SENT)
     context.commitChanges()
 }
