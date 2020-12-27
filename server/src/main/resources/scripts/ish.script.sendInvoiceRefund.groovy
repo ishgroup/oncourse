@@ -1,10 +1,9 @@
-def paymentOut = record
-if (paymentOut.status == PaymentStatus.SUCCESS && paymentOut.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+if (record.status == PaymentStatus.SUCCESS && record.confirmationStatus == ConfirmationStatus.NOT_SENT) {
     message {
         template refundAdviceTemplate
-        record paymentOut
+        record record
     }
 
-    paymentOut.setConfirmationStatus(ConfirmationStatus.SENT)
+    record.setConfirmationStatus(ConfirmationStatus.SENT)
     context.commitChanges()
 }

@@ -2,7 +2,7 @@ def startOfDate = Calendar.getInstance().getTime().clearTime() - 1
 
 def sessions = query {
     entity "Session"
-    query "(startDatetime is yesterday or startDatetime is today) and courseClass.isCancelled is false and courseClass.isActive is true"
+    query "startDatetime is yesterday and courseClass.isCancelled is false and courseClass.isActive is true"
 }
 
 if (tagName != null && tagName != "") {
@@ -39,7 +39,7 @@ if (!sessionsWithUnmarkedAttendance.empty) {
 
     }
 
-    email {
+    message {
         from preference.email.from
         subject 'Notification of unmarked attendance'
         to preference.email.admin
