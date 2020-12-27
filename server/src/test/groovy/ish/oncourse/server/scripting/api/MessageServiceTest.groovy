@@ -63,9 +63,7 @@ class MessageServiceTest extends CayenneIshTestCase {
         messageSpec.bindings.put("money", "100")
         messageSpec.createdBy(systemUser)
 
-        Function<Contact, Boolean> collision = { c -> true }
-
-        messageService.sendMessage(messageSpec, collision)
+        messageService.sendMessage(messageSpec)
 
         List<Message> messages = ObjectSelect.query(Message).prefetch(Message.MESSAGE_PERSONS.joint()).select(context)
         List<MessagePerson> messagePeople = ObjectSelect.query(MessagePerson).select(context)
@@ -101,9 +99,7 @@ class MessageServiceTest extends CayenneIshTestCase {
         messageSpec.bindings.put("text", "Thank you!")
         messageSpec.createdBy(systemUser)
 
-        Function<Contact, Boolean> collision = { c -> true }
-
-        messageService.sendMessage(messageSpec, collision)
+        messageService.sendMessage(messageSpec)
 
         List<Message> messages = ObjectSelect.query(Message).prefetch(Message.MESSAGE_PERSONS.joint()).select(context)
         List<MessagePerson> messagePeople = ObjectSelect.query(MessagePerson).select(context)
@@ -135,29 +131,23 @@ class MessageServiceTest extends CayenneIshTestCase {
         doNothing().when(mailDeliveryService).sendEmail(mailDeliveryParamCapture.capture())
 
         MessageService messageService = new MessageService(cayenneService, preferenceController, templateService, mailDeliveryService, auditService)
-        ObjectContext context = cayenneService.newContext
-
-        List<Enrolment> enrolments = ObjectSelect.query(Enrolment).where(Enrolment.ID.in([1l, 2l, 3l])).select(context)
-        Function<Contact, Boolean> collision = { c -> true }
-
 
         MessageSpec messageSpec = new MessageSpec()
 
-        messageSpec.records(enrolments)
         messageSpec.subject("Hello World")
         messageSpec.content("That is content.")
         messageSpec.from("fromEmail@gmail.com", "test college")
-        messageSpec.to("extraEmail@gmail.com")
+        messageSpec.to("toEmail@gmail.com")
         messageSpec.cc("ccEmail@gmail.com")
         messageSpec.bcc("bccEmail@gmail.com")
         messageSpec.attachment("attachText", "text/plain", "Example of attachment")
 
-        messageService.sendMessage(messageSpec, collision)
+        messageService.sendMessage(messageSpec)
 
         MailDeliveryParam mailDeliveryParamValue = mailDeliveryParamCapture.getValue()
         assertNotNull(mailDeliveryParamValue)
         assertEquals("Hello World", mailDeliveryParamValue.getSubject.get())
-        assertEquals(2, mailDeliveryParamValue.getAddressesTO.get().size())
+        assertEquals(1, mailDeliveryParamValue.getAddressesTO.get().size())
         assertEquals(1, mailDeliveryParamValue.getAddressesCC.get().size())
         assertEquals(1, mailDeliveryParamValue.getAddressesBCC.get().size())
 

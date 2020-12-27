@@ -39,6 +39,16 @@ public class SendEmailViaSmtp {
         return creator;
     }
 
+    public static SendEmailViaSmtp valueOf(SmtpParameters smtpParameters, ObjectContext context, TemplateService templateService, MailDeliveryService mailDeliveryService, Function<Contact, Boolean> collision){
+        var creator = new SendEmailViaSmtp();
+        creator.parameters = smtpParameters;
+        creator.templateService = templateService;
+        creator.mailDeliveryService = mailDeliveryService;
+        creator.context = context;
+        creator.collision = collision;
+        return creator;
+    }
+
     public void send() throws MessagingException {
         if (collision.apply(null)) {
             var param = MailDeliveryParamBuilder.valueOf(parameters, templateService).build();

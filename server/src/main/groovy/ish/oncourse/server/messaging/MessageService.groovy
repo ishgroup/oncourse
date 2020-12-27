@@ -23,6 +23,7 @@ import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
 import ish.oncourse.server.scripting.api.MessageBuilder
 import ish.oncourse.server.scripting.api.MessageForSmtp
 import ish.oncourse.server.scripting.api.NeedToSendEmail
+import ish.oncourse.server.scripting.api.SendEmailViaSmtp
 import ish.oncourse.server.scripting.api.SmtpParameters
 import ish.oncourse.server.services.AuditService
 
@@ -175,9 +176,17 @@ class MessageService {
 		build.setResolveStrategy(Closure.DELEGATE_FIRST)
 		build.call()
 
-		if (!messageSpec.entityRecords.isEmpty()) {
-			Function<Contact, Boolean> collision = messageSpec.creatorKey ? { c -> true } :
-					{ contact -> NeedToSendEmail.valueOf(auditService, messageSpec.keyCollision, messageSpec.creatorKey, cayenneService.getNewContext(), contact).get() }
+		sendMessage(messageSpec)
+	}
+
+	void sendMessage(MessageSpec messageSpec) throws MessagingException {
+		Function<Contact, Boolean> collision = messageSpec.creatorKey ? { c -> true } :
+				{ contact -> NeedToSendEmail.valueOf(auditService, messageSpec.keyCollision, messageSpec.creatorKey, cayenneService.getNewContext(), contact).get() }
+
+		if (messageSpec.entityRecords.isEmpty()) {
+			SmtpParameters parameters = new SmtpParameters(messageSpec)
+			SendEmailViaSmtp.valueOf(parameters, cayenneService.newContext, templateService, mailDeliveryService, collision).send()
+		} else {
 
 			messageSpec.fromAddress = messageSpec.fromAddress?:preferenceController.emailFromAddress
 			messageSpec.fromName = messageSpec.fromName?:preferenceController.emailFromName
@@ -229,16 +238,10 @@ class MessageService {
 						createMessagePerson(message, context.localObject(recipient), template.type)
 					}
 				} else if (recipient.email) {
-					if (collision.apply(null)) {
+					SmtpParameters parameters = new SmtpParameters(messageSpec)
+					parameters.toList.add(recipient.email)
 
-						SmtpParameters parameters = new SmtpParameters(messageSpec)
-						parameters.toList.add(recipient.email)
-
-						MailDeliveryParam mailDeliveryParam = MailDeliveryParamBuilder.valueOf(parameters, templateService).build()
-						mailDeliveryService.sendEmail(mailDeliveryParam)
-
-						MessageForSmtp.valueOf(context, parameters.getCreatorKey(), mailDeliveryParam).create()
-					}
+					SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision).send()
 				}
 			}
 			if (++counter == 50) {
