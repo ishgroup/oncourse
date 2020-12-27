@@ -1,4 +1,4 @@
-Dear ${record.courseClassTutor.tutor.contact.firstName},
-Just a reminder that your class for ${record.session.courseClass.course.name} starts on ${record.session.startDatetime.format( 'h:mm a EEEE d MMMM yyyy zzzz', record.session.timeZone)} at ${record.session.displayableLocation}
-You are currently expecting ${record.session.courseClass.successAndQueuedEnrolments.size()} students. This number may change if there are further enrolments.
+Dear ${tutorAttendance.courseClassTutor.tutor.contact.firstName},
+Just a reminder that your class for ${tutorAttendance.session.courseClass.course.name} starts on ${tutorAttendance.session.startDatetime.format( 'h:mm a EEEE d MMMM yyyy zzzz', tutorAttendance.session.timeZone)} at ${tutorAttendance.session.displayableLocation}
+You are currently expecting ${tutorAttendance.session.courseClass.successAndQueuedEnrolments.size()} students. This number may change if there are further enrolments.
 The class roll and other class information can be accessed at https://skillsoncourse.com.au/portal/login

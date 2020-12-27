@@ -1,10 +1,9 @@
-def paymentIn = record
-if (paymentIn.status == PaymentStatus.SUCCESS && paymentIn.confirmationStatus == ConfirmationStatus.NOT_SENT && !Money.ZERO.equals(paymentIn.amount)) {
+if (record.status == PaymentStatus.SUCCESS && record.confirmationStatus == ConfirmationStatus.NOT_SENT && !Money.ZERO.equals(record.amount)) {
     message {
         template paymentReceiptTemplate
-        record paymentIn
+        record record
     }
 
-    paymentIn.setConfirmationStatus(ConfirmationStatus.SENT)
+    record.setConfirmationStatus(ConfirmationStatus.SENT)
     context.commitChanges()
 }

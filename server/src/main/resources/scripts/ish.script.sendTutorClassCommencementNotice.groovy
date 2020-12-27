@@ -7,11 +7,11 @@ if (send_before_each_session) {
     }
     // Query closure end
 
-    records.each { tutorAttendance ->
-        email {
+    records.each { attandance ->
+        message {
             template sessionCommencementTemplate
-            to tutorAttendance.courseClassTutor.tutor.contact
-            bindings record: tutorAttendance
+            to attandance.courseClassTutor.tutor.contact
+            tutorAttendance attandance
         }
     }
 
@@ -23,11 +23,11 @@ if (send_before_each_session) {
     }
     // Query closure end
 
-    records.each { courseClassTutor ->
-        email {
+    records.each { cctutor ->
+        message {
             template classCommencementTemplate
-            to courseClassTutor.tutor.contact
-            bindings record: courseClassTutor
+            to cctutor.tutor.contact
+            courseClassTutor cctutor
         }
     }
 }

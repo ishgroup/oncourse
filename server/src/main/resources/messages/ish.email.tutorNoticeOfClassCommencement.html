@@ -10,9 +10,9 @@ ${render(header_keycode)}
                         <table cellpadding="0" cellspacing="0" width="100%" class="table-border-separate">
                             <tr>
                                 <td class="mini-block pull-left" valign="top">
-                                    Dear ${record.tutor.contact.firstName},<br /><br />
-                                    Just a reminder that your class for ${record.courseClass.course.name} starts on ${record.courseClass.startDateTime.format( 'h:mm a EEEE d MMMM yyyy zzzz', record.courseClass.timeZone)} at ${record.courseClass.displayableLocation}<br />
-                                    You are currently expecting ${record.courseClass.successAndQueuedEnrolments.size()} students. This number may change if there are further enrolments.<br />
+                                    Dear ${courseClassTutor.tutor.contact.firstName},<br /><br />
+                                    Just a reminder that your class for ${courseClassTutor.courseClass.course.name} starts on ${courseClassTutor.courseClass.startDateTime.format( 'h:mm a EEEE d MMMM yyyy zzzz', courseClassTutor.courseClass.timeZone)} at ${courseClassTutor.courseClass.displayableLocation}<br />
+                                    You are currently expecting ${courseClassTutor.courseClass.successAndQueuedEnrolments.size()} students. This number may change if there are further enrolments.<br />
                                     The class roll and other class information can be accessed at <a href="https://skillsoncourse.com.au/portal/login"><span>https://skillsoncourse.com.au/portal/login</span></a>
                                 </td>
                             </tr>

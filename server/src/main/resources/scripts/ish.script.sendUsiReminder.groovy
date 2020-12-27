@@ -8,7 +8,7 @@ message {
     records enrolmentsWithoutUsi
 }
 
-email {
+message {
     from preference.email.admin
     subject 'USI reminder email notification'
     to preference.email.admin

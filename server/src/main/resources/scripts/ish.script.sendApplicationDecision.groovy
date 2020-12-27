@@ -1,21 +1,19 @@
-def application = record
+if (record.confirmationStatus == ConfirmationStatus.NOT_SENT) {
 
-if (application.confirmationStatus == ConfirmationStatus.NOT_SENT) {
-
-    if (application.status == ApplicationStatus.OFFERED) {
+    if (record.status == ApplicationStatus.OFFERED) {
         message {
             template applicationAcceptedTemplate
-            record application
+            record record
         }
-    } else if (application.status == ApplicationStatus.REJECTED) {
+    } else if (record.status == ApplicationStatus.REJECTED) {
         message {
             template applicationRejectedTemplate
-            record application
+            record record
         }
     } else {
         return
     }
 
-    application.setConfirmationStatus(ConfirmationStatus.SENT)
+    record.setConfirmationStatus(ConfirmationStatus.SENT)
     context.commitChanges()
 }

@@ -39,16 +39,17 @@ students.removeAll { s ->
  */
 students*.contact.flatten().each { student ->
 
-    email {
+    message {
         template alertStudentsTemplate
-        bindings student: student, tutor: ccTutor.contact, courseClass: record
-        to student
+        record student
+        tutor ccTutor.contact
+        courseClass record
         key "alert students of related classes", record
         keyCollision "drop"
     }
 }
 
-email {
+message {
     to preference.email.admin
     subject 'marketing: students updated about upcoming class'
     content "${students.size()} prior students who attended ${ccTutor.getContact().getName(true)}\'s were notified about the upcoming class ${record?.firstSession?.startDatetime?.format("dd/MM/yyyy")} ${record.course.name}."

@@ -1,7 +1,6 @@
-def payslip = record
-if (PayslipPayType.EMPLOYEE == payslip.payType) {
+if (PayslipPayType.EMPLOYEE == record.payType) {
     message {
         template tutorNoticeTemplate
-        record payslip
+        record record
     }
 }

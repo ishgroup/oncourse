@@ -1,10 +1,9 @@
-def voucher = record
-if (voucher.status == ProductStatus.ACTIVE && voucher.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+if (record.status == ProductStatus.ACTIVE && record.confirmationStatus == ConfirmationStatus.NOT_SENT) {
     message {
         template voucherEmailTemplate
-        record voucher
+        record record
     }
 
-    voucher.setConfirmationStatus(ConfirmationStatus.SENT)
+    record.setConfirmationStatus(ConfirmationStatus.SENT)
     context.commitChanges()
 }
