@@ -1,5 +1,5 @@
 if (PaymentSource.SOURCE_WEB.equals(record.invoiceLine.invoice.source)) {
-    email {
+    message {
         to preference.email.admin
         from preference.email.admin
         subject "${record.product.name} purchased"

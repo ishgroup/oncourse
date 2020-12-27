@@ -4,7 +4,13 @@ def contactList = query {
 }
 
 contactList.findAll { contact -> contact.totalOwing > 0 }.each { contact ->
-    email {
+    def reportData = report {
+        keycode certificateReportTemplate
+        records Arrays.asList(contact)
+        background certificateReportBackground
+    }
+
+    message {
         from preference.email.from
         to contact.email
         subject "Account statement"
@@ -13,10 +19,6 @@ contactList.findAll { contact -> contact.totalOwing > 0 }.each { contact ->
 						   + "If you need to speak about this statement or use another payment method, please contact us on ${Preferences.get("avetmiss.phone")}. \n\n" \
                            + "Regards,\n" \
 						   + "${preference.college.name}"
-        attachment "Statement_Report.pdf", "application/pdf", report {
-            keycode certificateReportTemplate
-            records Arrays.asList(contact)
-            background certificateReportBackground
-        }
+        attachment "Statement_Report.pdf", "application/pdf", reportData
     }
 }

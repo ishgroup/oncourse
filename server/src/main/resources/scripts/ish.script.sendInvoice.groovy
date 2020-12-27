@@ -1,13 +1,11 @@
-def invoice = record
-
-if (invoice.confirmationStatus == ConfirmationStatus.NOT_SENT) {
-    if (!Money.ZERO.equals(invoice.totalIncTax)) {
+if (record.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+    if (!Money.ZERO.equals(record.totalIncTax)) {
         message {
             template invoiceTemplate
-            record invoice
+            record record
         }
     }
 
-    invoice.setConfirmationStatus(ConfirmationStatus.SENT)
+    record.setConfirmationStatus(ConfirmationStatus.SENT)
     context.commitChanges()
 }
