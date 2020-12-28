@@ -26,7 +26,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         Given path ishPath + '/6'
         When method GET
         Then status 200
-        And match $ == [{"moduleId":3,"moduleName":"AUM1001A","sessionIds":[43],"temporarySessionIds":[],"assessmentIds":[],"temporaryAssessmentIds":[]}]
+        And match $ == [{"moduleTitle":"Manage personal career goals","assessmentIds":[],"temporarySessionIds":[],"moduleName":"AUM1001A","moduleId":3,"sessionIds":[43],"temporaryAssessmentIds":[]}]
 
 #       <--->  Scenario have been finished. Now change back object to default:
         Given path ishPath + '/6'
@@ -60,7 +60,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         Given path ishPath + '/6'
         When method GET
         Then status 200
-        And match $ == [{"moduleId":3,"moduleName":"AUM1001A","sessionIds":[43],"temporarySessionIds":[],"assessmentIds":[],"temporaryAssessmentIds":[]}]
+        And match $ == [{"moduleTitle":"Manage personal career goals","assessmentIds":[],"temporarySessionIds":[],"moduleName":"AUM1001A","moduleId":3,"sessionIds":[43],"temporaryAssessmentIds":[]}]
 
 #       <--->  Scenario have been finished. Now change back object to default:
         Given path ishPath + '/6'
