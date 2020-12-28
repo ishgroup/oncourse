@@ -62,7 +62,8 @@ Feature: Main feature for all GET requests with path 'list/entity/articleProduct
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedSellables":[]
         }
         """
 
@@ -99,7 +100,8 @@ Feature: Main feature for all GET requests with path 'list/entity/articleProduct
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedSellables":[]
         }
         """
 
