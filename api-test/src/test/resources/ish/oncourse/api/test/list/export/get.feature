@@ -379,24 +379,6 @@ Feature: Main feature for all GET requests with path 'list/export'
         * print "id = " + priorLearningXmlExportId
 
 
-#        Given path ishPathTemplate
-#        And param entityName = 'ArticleProduct'
-#        When method GET
-#        Then status 200
-#        * def articleProductXmlExportId = get[0] response[?(@.name == '')].id
-#        * print "id = " + articleProductXmlExportId
-#
-#        Given path ishPathTemplate
-#        And param entityName = 'MembershipProduct'
-#        When method GET
-#        Then status 200
-#        * def membershipProductXmlExportId = get[0] response[?(@.name == '')].id
-#        * print "id = " + membershipProductXmlExportId
-
-#       <----->
-
-
-
 
     Scenario: (+) Export CSV by admin
 

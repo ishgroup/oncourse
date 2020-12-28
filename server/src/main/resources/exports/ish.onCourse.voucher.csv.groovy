@@ -9,7 +9,7 @@ records.each { Voucher v ->
             "invoice"         : v.invoiceLine.invoice.invoiceNumber,
             "purchasedBy"     : v.invoiceLine.invoice.contact?.fullName,
             "productName"     : v.product.name,
-            "redeemableBy"    : v.redeemableBy?.contact?.fullName,
+            "redeemableBy"    : v.redeemableBy?.fullName,
             "valueOnPurchase" : v.valueOnPurchase,
             "redemptionValueRemaining" : v.redemptionValue,
             "source"          : v.source,
