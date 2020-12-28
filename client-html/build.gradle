@@ -39,7 +39,7 @@ task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'ge
 }
 
 task jest(type: YarnTask, dependsOn: 'queryGrammar') {
-    args = ['test', '--runInBand']
+    args = ['test']
 }
 
 test.dependsOn(jest)
