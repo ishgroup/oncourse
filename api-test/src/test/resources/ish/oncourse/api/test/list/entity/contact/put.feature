@@ -227,7 +227,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         "invoiceTerms":22,
         "taxId":2,
         "customFields":{"cf1":"qwertyUPD","cf2":"asdfghUPD"},
-        "documents":"#ignore",
+        "documents":[{"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":null,"tags":[],"attachmentRelations":[],"versionId":null,"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"22 b","added":"#ignore","createdBy":null,"id":200,"mimeType":null,"url":null}],"name":"defaultPrivateDocument","id":200}],
         "tags":[{"id":233,"name":"contacts1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "memberships":[],
         "profilePicture":null,
@@ -244,7 +244,202 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         Given path ishPath + '/' + id
         When method DELETE
         Then status 204
-        
+
+
+
+    Scenario: (+) Update contact Tutor by admin
+
+#       <----->  Add a new entity to update and define its id:
+        * def newContact =
+        """
+        {
+        "student":null,
+        "tutor":
+            {
+              "dateFinished":"2025-01-01",
+              "dateStarted":"2018-02-02",
+              "familyNameLegal":"familyNameLegal2",
+              "givenNameLegal":"givenNameLegal2",
+              "payrollRef":"some payrollRef",
+              "resume":"some resume",
+              "wwChildrenCheckedOn":"2018-03-03",
+              "wwChildrenExpiry":"2024-04-04",
+              "wwChildrenRef":"some wwChildrenRef",
+              "wwChildrenStatus":"Interim barred"
+            },
+        "abn":"12345678901",
+        "birthDate":"1991-07-20",
+        "country":{"id":1},
+        "fax":"0431048488",
+        "isCompany":false,
+        "gender":"Male",
+        "message":"Student has hearing disability",
+        "homePhone":"0431048487",
+        "mobilePhone":"0431048488",
+        "workPhone":"0431048489",
+        "postcode":"2011",
+        "state":"NSW",
+        "street":"72-86 William St",
+        "suburb":"Woolloomooloo",
+        "tfn":"172665394",
+        "deliveryStatusEmail":0,
+        "deliveryStatusSms":0,
+        "deliveryStatusPost":0,
+        "allowPost":true,
+        "allowSms":true,
+        "allowEmail":true,
+        "honorific":"Dr",
+        "title":"Vice President of Marketing",
+        "email":"testContact@gmail.com",
+        "firstName":"John102",
+        "lastName":"Smith102",
+        "middleName":"Fitzgerald",
+        "invoiceTerms":10,
+        "taxId":1,
+        "customFields":{"cf1":"qwerty","cf2":"asdfgh"},
+        "documents":null,
+        "tags":[],
+        "memberships":[],
+        "profilePicture":null,
+        "relations":[],
+        "financialData":[]
+        }
+        """
+
+        Given path ishPath
+        And request newContact
+        When method POST
+        Then status 200
+
+        Given path ishPathPlain
+        And param entity = 'Contact'
+        And param columns = 'lastName'
+        When method GET
+        Then status 200
+
+        * def id = get[0] response.rows[?(@.values == ["Smith102"])].id
+        * print "id = " + id
+
+        Given path ishPath + '/' + id
+        When method GET
+        Then status 200
+
+        * def tutorId = get[0] response.tutor.id
+        * print "tutorId = " + tutorId
+#       <--->
+
+        * def contactToUpdate =
+        """
+        {
+        "id":"#(id)",
+        "student":null,
+        "tutor":{"id":"#(tutorId)","dateFinished":"2025-01-05","dateStarted":"2015-02-05","familyNameLegal":"familyNameLegal2UPD","givenNameLegal":"givenNameLegal2UPD","payrollRef":"some payrollRefUPD","resume":"some resume UPD","wwChildrenCheckedOn":"2015-03-05","wwChildrenExpiry":"2025-04-05","wwChildrenRef":"some wwChildrenRefUPD","wwChildrenStatus":"Cleared"},
+        "abn":"12345678000",
+        "birthDate":"1995-07-25",
+        "country":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},
+        "fax":"0431048000",
+        "isCompany":false,
+        "gender":"Female",
+        "message":"Student has hearing disability UPD",
+        "homePhone":"0431048000",
+        "mobilePhone":"0431048000",
+        "workPhone":"0431048000",
+        "postcode":"2015",
+        "state":"UPD",
+        "street":"72-86 William StUPD",
+        "suburb":"WoolloomoolooUPD",
+        "tfn":"172665000",
+        "deliveryStatusEmail":0,
+        "deliveryStatusSms":0,
+        "deliveryStatusPost":0,
+        "allowPost":true,
+        "allowSms":true,
+        "allowEmail":true,
+        "honorific":"Dr UPD",
+        "title":"Vice President of Marketing UPD",
+        "email":"testContactUPD@gmail.com",
+        "firstName":"John102UPD",
+        "lastName":"Smith102UPD",
+        "middleName":"FitzgeraldUPD",
+        "invoiceTerms":"50",
+        "taxId":2,
+        "customFields":{"cf2":"","cf1":"qwertyUPD"},
+        "documents":[{"id":200}],
+        "tags":[{"id":233}],
+        "memberships":[],
+        "profilePicture":null,
+        "relations":[{"relationId":-1,"contactToId":null,"contactToName":null,"contactFromName":"stud1, stud1","contactFromId":2}],
+        "financialData":[],
+        "createdOn":null,
+        "modifiedOn":null,
+        "messages":[]
+        }
+        """
+
+        Given path ishPath + '/' + id
+        And request contactToUpdate
+        When method PUT
+        Then status 204
+
+        Given path ishPath + '/' + id
+        When method GET
+        Then status 200
+        And match $ contains
+        """
+        {
+        "id":"#(~~id)",
+        "student":null,
+        "tutor":{"id":"#(~~tutorId)","dateFinished":"2025-01-05","dateStarted":"2015-02-05","familyNameLegal":"familyNameLegal2UPD","givenNameLegal":"givenNameLegal2UPD","payrollRef":"some payrollRefUPD","resume":"some resume UPD","wwChildrenCheckedOn":"2015-03-05","wwChildrenExpiry":"2025-04-05","wwChildrenRef":"some wwChildrenRefUPD","wwChildrenStatus":"Cleared","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "abn":"12345678000",
+        "birthDate":"1995-07-25",
+        "country":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},
+        "fax":"0431048000",
+        "isCompany":false,
+        "gender":"Female",
+        "message":"Student has hearing disability UPD",
+        "homePhone":"0431048000",
+        "mobilePhone":"0431048000",
+        "workPhone":"0431048000",
+        "postcode":"2015",
+        "state":"UPD",
+        "street":"72-86 William StUPD",
+        "suburb":"WoolloomoolooUPD",
+        "tfn":"172665000",
+        "deliveryStatusEmail":0,
+        "deliveryStatusSms":0,
+        "deliveryStatusPost":0,
+        "allowPost":true,
+        "allowSms":true,
+        "allowEmail":true,
+        "uniqueCode":"#ignore",
+        "honorific":"Dr UPD",
+        "title":"Vice President of Marketing UPD",
+        "email":"testContactUPD@gmail.com",
+        "firstName":"John102UPD",
+        "lastName":"Smith102UPD",
+        "middleName":"FitzgeraldUPD",
+        "invoiceTerms":50,
+        "taxId":2,
+        "customFields":{"cf1":"qwertyUPD"},
+        "documents":"#ignore",
+        "tags":[{"id":233,"name":"contacts1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "memberships":[],
+        "profilePicture":null,
+        "relations":[{"id":"#number","contactFromId":2,"contactFromName":"stud1","contactToId":null,"contactToName":null,"relationId":-1}],
+        "financialData":[],
+        "createdOn":null,
+        "modifiedOn":null,
+        "messages":[],
+        "rules":[]
+        }
+        """
+
+#       <--->  Scenario have been finished. Now remove created object from DB:
+        Given path ishPath + '/' + id
+        When method DELETE
+        Then status 204
+
+
 
     Scenario: (+) Update contact Company by admin
 
@@ -388,7 +583,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         "middleName":null,
         "invoiceTerms":50,
         "taxId":1,
-        "customFields":{"cf2":null,"cf1":"qwertyUPD"},
+        "customFields":{"cf1":"qwertyUPD"},
         "documents":"#ignore",
         "tags":[{"id":233,"name":"contacts1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "memberships":[],
@@ -1382,7 +1577,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         {
         "id":"#(~~id)",
         "student":null,
-        "tutor":{"defaultPayType":null,"id":"#(~~tutorId)","dateFinished":"2025-01-05","dateStarted":"2015-02-05","familyNameLegal":"familyNameLegal4UPD","givenNameLegal":"givenNameLegal4UPD","payrollRef":"some payrollRefUPD","resume":"some resume UPD","wwChildrenCheckedOn":"2015-03-05","wwChildrenExpiry":"2025-04-05","wwChildrenRef":"some wwChildrenRefUPD","wwChildrenStatus":"Cleared","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"id":"#(~~tutorId)","dateFinished":"2025-01-05","dateStarted":"2015-02-05","familyNameLegal":"familyNameLegal4UPD","givenNameLegal":"givenNameLegal4UPD","payrollRef":"some payrollRefUPD","resume":"some resume UPD","wwChildrenCheckedOn":"2015-03-05","wwChildrenExpiry":"2025-04-05","wwChildrenRef":"some wwChildrenRefUPD","wwChildrenStatus":"Cleared","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
         "abn":"12345678000",
         "birthDate":"1995-07-25",
         "country":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},
@@ -1413,7 +1608,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         "middleName":"FitzgeraldUPD",
         "invoiceTerms":50,
         "taxId":2,
-        "customFields":{"cf2":null,"cf1":"qwertyUPD"},
+        "customFields":{"cf1":"qwertyUPD"},
         "documents":"#ignore",
         "tags":[{"id":233,"name":"contacts1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "memberships":[],
