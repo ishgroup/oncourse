@@ -10,12 +10,18 @@
  */
 package ish.oncourse.server.services;
 
+import java.sql.Connection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.google.inject.Inject;
 import ish.oncourse.server.ICayenneService;
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.query.SQLExec;
 import org.apache.cayenne.query.SQLSelect;
+import org.apache.cayenne.tx.TransactionDescriptor;
+import org.apache.cayenne.tx.TransactionManager;
+import org.apache.cayenne.tx.TransactionPropagation;
 
 /**
  * {@link IAutoIncrementService} implementation that uses stored procedure
@@ -60,8 +66,27 @@ public class ClusteredAutoincrementService implements IAutoIncrementService {
     }
 
     private long nextId(String name) {
-        return SQLSelect.scalarQuery("{call sequence_value('$tableName', $batchSize)}", Long.class)
-                .paramsArray(name, DEFAULT_BATCH_SIZE)
-                .selectOne(cayenneService.getNewNonReplicatingContext());
+        DataContext context = cayenneService.getNewNonReplicatingContext();
+        TransactionManager transactionManager = cayenneService.getServerRuntime().getInjector()
+                .getInstance(TransactionManager.class);
+
+        // Always use clean transaction with exact isolation level to ensure sequence integrity
+        TransactionDescriptor descriptor = new TransactionDescriptor(
+                Connection.TRANSACTION_REPEATABLE_READ,
+                TransactionPropagation.REQUIRES_NEW
+        );
+
+        return transactionManager.performInTransaction(() -> {
+            // Select with row lock + update
+            long currentValue = SQLSelect
+                    .scalarQuery("SELECT nextId FROM SequenceSupport " +
+                            "WHERE tableName = '$tableName' FOR UPDATE", Long.class)
+                    .paramsArray(name)
+                    .selectOne(context);
+            SQLExec.query("UPDATE SequenceSupport SET nextId = nextId + $batchsize WHERE tableName = '$tname'")
+                    .paramsArray(DEFAULT_BATCH_SIZE, name)
+                    .execute(context);
+            return currentValue;
+        }, descriptor);
     }
 }

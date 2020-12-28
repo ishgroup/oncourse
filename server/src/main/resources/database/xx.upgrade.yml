@@ -31,21 +31,8 @@ databaseChangeLog:
                   type: BIGINT(20)
 
   - changeSet:
-      id: 57-2
-      author: ntimofeev
-      preConditions:
-        - onFail: MARK_RAN
-      changes:
-        - createProcedure:
-            procedureName: sequence_value
-            path: data/sequence_value.sql
-            relativeToChangelogFile: true
-
-  - changeSet:
       id: 57-3
       author: ntimofeev
       changes:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.ClusteredAutoincrementServiceInit
-
-
