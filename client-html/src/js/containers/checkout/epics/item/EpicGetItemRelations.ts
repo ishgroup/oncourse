@@ -98,7 +98,7 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
                       return EntityService.getPlainRecords(
                         "CourseClass",
                         CHECKOUT_COURSE_CLASS_COLUMNS,
-                        `course.id is ${r.toItem.id} and isActive is true`,
+                        `course.id is ${r.toItem.id} and isCancelled is false and isActive is true`,
                         null,
                         0,
                         "startDateTime",

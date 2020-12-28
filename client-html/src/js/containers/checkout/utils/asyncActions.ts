@@ -39,7 +39,7 @@ export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep,
             return EntityService.getPlainRecords(
               "CourseClass",
               CHECKOUT_COURSE_CLASS_COLUMNS,
-              `course.id is ${courseId} and isActive is true and ( (startDateTime < tomorrow and endDateTime >= today and isCancelled is false) or (startDateTime >= tomorrow and endDateTime >= tomorrow and isCancelled is false) )`,
+              `course.id is ${courseId} and isCancelled is false and isActive is true and ( (startDateTime < tomorrow and endDateTime >= today and isCancelled is false) or (startDateTime >= tomorrow and endDateTime >= tomorrow and isCancelled is false) )`,
               null,
               0,
               "startDateTime",
