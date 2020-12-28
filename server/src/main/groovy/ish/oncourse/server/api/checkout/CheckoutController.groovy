@@ -11,10 +11,8 @@
 
 package ish.oncourse.server.api.checkout
 
-import com.google.inject.Inject
 import groovy.transform.CompileStatic
-import ish.common.types.ConfirmationStatus
-import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
+import ish.oncourse.server.cayenne.FundingSource
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
 import ish.common.types.EnrolmentStatus
@@ -36,8 +34,6 @@ import ish.oncourse.server.api.service.CourseClassApiService
 import ish.oncourse.server.api.service.InvoiceApiService
 import ish.oncourse.server.api.service.MembershipProductApiService
 import ish.oncourse.server.api.service.VoucherProductApiService
-import ish.oncourse.server.api.v1.function.NoteFunctions
-import ish.oncourse.server.api.v1.function.TaxFunctions
 import static ish.oncourse.server.api.v1.function.TaxFunctions.nonSupplyTax
 import ish.oncourse.server.api.v1.model.CheckoutArticleDTO
 import ish.oncourse.server.api.v1.model.CheckoutEnrolmentDTO
@@ -60,7 +56,6 @@ import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceDueDate
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.InvoiceLineDiscount
-import ish.oncourse.server.cayenne.InvoiceNoteRelation
 import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.PaymentIn
@@ -84,11 +79,12 @@ import static java.math.BigDecimal.ZERO
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
+
+import static org.apache.commons.lang3.StringUtils.trimToNull
 
 @CompileStatic
 class CheckoutController {
@@ -107,7 +103,7 @@ class CheckoutController {
 
     private CheckoutModelDTO checkout
 
-    private Tax taxOveeride
+    private Tax taxOverride
     private Account prepaidFeesAccount
     private Contact payer
     private ObjectContext context
@@ -146,7 +142,7 @@ class CheckoutController {
         this.context = cayenneService.newContext
         this.prepaidFeesAccount = AccountUtil.getDefaultPrepaidFeesAccount(context, Account)
         this.payer = contactApiService.getEntityAndValidateExistence(context, checkout.payerId)
-        this.taxOveeride = payer.taxOverride
+        this.taxOverride = payer.taxOverride
 
         initInvoice()
         initPayment()
@@ -170,6 +166,9 @@ class CheckoutController {
             } else {
                 node.enrolments.each { dto -> processEnrolment(dto, contact, confirmation) }
             }
+            if (node.fundingInvoices) {
+                node.fundingInvoices.each { dto -> createFundingInvoice(dto) }
+            }
         }
 
         processRedeemedVouchers()
@@ -185,9 +184,6 @@ class CheckoutController {
         CourseClass courseClass = courseClassApiService.getEntityAndValidateExistence(context, dto.classId)
         Enrolment enrolment = createEnrolment(contact, courseClass, sendEmail, dto.studyReason?.dbType?:StudyReason.STUDY_REASON_NOT_STATED)
 
-        if(dto.fundingInvoice && dto.fundingInvoice.total > 0) {
-            createFundingInvoice(dto.fundingInvoice, enrolment, dto.relatedFundingSourceId)
-        }
         if (dto.appliedDiscountId) {
             applyDiscount(dto.totalOverride, enrolment.originalInvoiceLine, courseClass, CayenneFunctions.getRecordById(context, Discount, dto.appliedDiscountId))
         }
@@ -258,7 +254,7 @@ class CheckoutController {
             membership.expiryDate = LocalDateUtils.valueToDate(dto.validTo)
         }
 
-        invoiceLine.tax = taxOveeride ?: membershipProduct.tax
+        invoiceLine.tax = taxOverride ?: membershipProduct.tax
         invoiceLine.quantity = ONE
         invoiceLine.discountEachExTax = Money.ZERO
         invoiceLine.priceEachExTax = membershipProduct.priceExTax
@@ -289,7 +285,7 @@ class CheckoutController {
             article.confirmationStatus = sendEmail ? NOT_SENT : DO_NOT_SEND
         }
 
-        invoiceLine.tax = taxOveeride ?: articleProduct.tax
+        invoiceLine.tax = taxOverride ?: articleProduct.tax
         invoiceLine.priceEachExTax = articleProduct.priceExTax
         invoiceLine.discountEachExTax = Money.ZERO
         invoiceLine.quantity = dto.quantity
@@ -349,7 +345,7 @@ class CheckoutController {
             invoice.source  = SOURCE_ONCOURSE
             invoice.confirmationStatus = checkout.sendInvoice ? NOT_SENT : DO_NOT_SEND
             invoice.contact = payer
-            if (StringUtils.trimToNull(payer.getAddress()) != null) {
+            if (trimToNull(payer.getAddress()) != null) {
                 invoice.setBillToAddress(payer.getAddress())
             }
             invoice.dateDue = LocalDate.now()
@@ -501,38 +497,45 @@ class CheckoutController {
         }
     }
 
-    private void createFundingInvoice(InvoiceDTO dto, Enrolment enrolment, Long fundingSourceId) {
-        Invoice fundingInvoice =  context.newObject(Invoice)
-        invoiceApiService.toCayenneModel(dto, fundingInvoice)
-        enrolment.vetPurchasingContractID = fundingInvoice.customerReference
+    private void createFundingInvoice(InvoiceDTO dto) {
+        Invoice fundingInvoice = context.newObject(Invoice)
+        fundingInvoice.contact = contactApiService.getEntityAndValidateExistence(context, dto.contactId)
         fundingInvoice.invoiceDate = LocalDate.now()
-        if (StringUtils.trimToNull(invoice.contact.getAddress()) != null) {
-            fundingInvoice.setBillToAddress(payer.getAddress())
-        }
-        enrolment.relatedFundingSource = fundingSourceDao.getById(context, fundingSourceId)
-
-        if (enrolment.relatedFundingSource) {
-            enrolment.relatedFundingSource.fundingProvider = fundingInvoice.contact
-        }
-
+        fundingInvoice.source = SOURCE_ONCOURSE
+        fundingInvoice.createdByUser = context.localObject(systemUserService.currentUser)
+        fundingInvoice.customerReference = trimToNull(dto.customerReference)
         fundingInvoice.confirmationStatus = DO_NOT_SEND
-        InvoiceLine invoiceLine = context.newObject(InvoiceLine)
-        invoiceLine.invoice = fundingInvoice
-        invoiceLine.enrolment = enrolment
-        invoiceLine.courseClass = enrolment.courseClass
-        invoiceLine.quantity = ONE
-        invoiceLine.tax = nonSupplyTax(context)
-        invoiceLine.priceEachExTax = new Money(dto.total)
-        invoiceLine.sortOrder = 0
-        invoiceLine.account = enrolment.courseClass.incomeAccount
-        invoiceLine.prepaidFeesAccount = prepaidFeesAccount
-        invoiceLine.discountEachIncTax = Money.ZERO
-        invoiceLine.title = "Funding provided for the enrolment of ${enrolment.student.contact.getFullName()} " +
-                "in ${enrolment.courseClass.uniqueCode} ${enrolment.courseClass.course.name} " +
-                "commencing ${enrolment.courseClass.startDateTime?.format('dd-MM-yyyy', enrolment.courseClass.timeZone)}"
-        invoiceLine.description = invoiceLine.title
+        if (trimToNull(invoice.contact.getAddress()) != null) {
+            fundingInvoice.billToAddress = payer.address
+        }
+        invoiceApiService.updateInvoiceDueDates(fundingInvoice, dto.paymentPlans)
 
-        invoiceLine.recalculateTaxEach()
+        FundingSource relatedFundingSource = fundingSourceDao.getById(context, dto.relatedFundingSourceId)
+        dto.invoiceLines.each { dtoLine ->
+            Enrolment enrolment = invoice.invoiceLines*.enrolment.find { dtoLine.courseClassId == it.courseClass.id }
+            enrolment.vetPurchasingContractID = fundingInvoice.customerReference
+            enrolment.relatedFundingSource = relatedFundingSource
+            if (enrolment.relatedFundingSource) {
+                enrolment.relatedFundingSource.fundingProvider = fundingInvoice.contact
+            }
+
+            InvoiceLine invoiceLine = context.newObject(InvoiceLine)
+            invoiceLine.invoice = fundingInvoice
+            invoiceLine.enrolment = enrolment
+            invoiceLine.courseClass = enrolment.courseClass
+            invoiceLine.quantity = ONE
+            invoiceLine.tax = nonSupplyTax(context)
+            invoiceLine.priceEachExTax = new Money(dtoLine.finalPriceToPayIncTax)
+            invoiceLine.sortOrder = 0
+            invoiceLine.account = enrolment.courseClass.incomeAccount
+            invoiceLine.prepaidFeesAccount = prepaidFeesAccount
+            invoiceLine.discountEachIncTax = Money.ZERO
+            invoiceLine.title = "Funding provided for the enrolment of ${enrolment.student.contact.getFullName()} " +
+                    "in ${enrolment.courseClass.uniqueCode} ${enrolment.courseClass.course.name} " +
+                    "commencing ${enrolment.courseClass.startDateTime?.format('dd-MM-yyyy', enrolment.courseClass.timeZone)}"
+            invoiceLine.description = invoiceLine.title
+            invoiceLine.recalculateTaxEach()
+        }
         fundingInvoice.updateAmountOwing()
     }
 
@@ -561,7 +564,7 @@ class CheckoutController {
         invoiceLine.invoice = invoice
         invoiceLine.enrolment = enrolment
         invoiceLine.quantity = ONE
-        invoiceLine.tax = taxOveeride?:courseClass.tax as Tax
+        invoiceLine.tax = taxOverride?:courseClass.tax as Tax
         invoiceLine.priceEachExTax = courseClass.feeExGst
         invoiceLine.sortOrder = 0
         invoiceLine.account = courseClass.incomeAccount
@@ -587,7 +590,7 @@ class CheckoutController {
         if (totalOverride != null) {
 
             Money total = Money.valueOf(totalOverride)
-            BigDecimal taxRate = (taxOveeride?:courseClass.tax).rate
+            BigDecimal taxRate = (taxOverride?:courseClass.tax).rate
 
             invoiceLine.discountEachExTax = invoiceLine.priceEachExTax.subtract(total.divide(Money.ONE.add(taxRate)))
             invoiceLine.taxEach = total.subtract(invoiceLine.priceEachExTax.subtract(invoiceLine.discountEachExTax))
@@ -665,7 +668,7 @@ class CheckoutController {
 
 
     private Voucher getRedeemedVoucherAndValidate(String id) {
-        if (!StringUtils.trimToNull(id)) {
+        if (!trimToNull(id)) {
             result << new CheckoutValidationErrorDTO(itemId: Long.valueOf(id), propertyName: "redeemedVouchers",  error:  "Redeemed voucher id required")
         }
 

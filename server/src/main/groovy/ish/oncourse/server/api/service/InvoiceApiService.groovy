@@ -49,7 +49,6 @@ import ish.oncourse.server.services.TransactionLockedService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.InvoiceUtil
 import static ish.util.InvoiceUtil.calculateTaxEachForInvoiceLine
-import ish.util.LocalDateUtils
 import static ish.util.LocalDateUtils.dateToTimeValue
 import ish.util.MoneyUtil
 import ish.util.PaymentMethodUtil
@@ -61,7 +60,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.LocalDate
-import java.time.ZoneOffset
 
 class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao> {
 
@@ -336,7 +334,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
         }
     }
 
-    private void updateInvoiceDueDates(Invoice invoice, List<InvoicePaymentPlanDTO> paymentPlanDTOs) {
+    void updateInvoiceDueDates(Invoice invoice, List<InvoicePaymentPlanDTO> paymentPlanDTOs) {
         List<InvoicePaymentPlanDTO> invoiceDueDates = paymentPlanDTOs.findAll { it.entityName == InvoiceDueDate.simpleName }
         List<Long> invoiceDueDatesToSave = invoiceDueDates*.id.findAll()
         invoice.context.deleteObjects(invoice.invoiceDueDates.findAll { !invoiceDueDatesToSave.contains(it.id) })
