@@ -449,7 +449,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             !selectedCourse
             || (selectedCourse && typeof selectedCourse.courseId === "number" && selectedCourse.courseId !== item.courseId)
           ) {
-            checkoutGetCourseClassList(`course.id is ${item.courseId} AND isCancelled is false`);
+            checkoutGetCourseClassList(`course.id is ${item.courseId} and isCancelled is false and isActive is true`);
           }
           setOpenClassListView(true);
           onCloseItemView();
