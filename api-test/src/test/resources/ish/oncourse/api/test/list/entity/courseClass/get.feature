@@ -93,7 +93,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "canceledEnrolmentsCount":0,
         "failedEnrolmentsCount":0,
         "tags":[{"id":230,"name":"class2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":"#ignore","modified":"#ignore","requirements":[],"childTags":[]}],
-        "documents":[{"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":"#ignore","tags":[],"attachmentRelations":[{"entityId":1,"label":"course1-1","entity":"Class"},{"entityId":24,"label":"tutorA mergeA","entity":"Contact"},{"entityId":22,"label":"studentB B mergeB","entity":"Contact"}],"versionId":null,"modifiedOn":"#ignore","removed":false,"attachedRecordsCount":null,"versions":[{"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}],"name":"defaultPrivateDocument","id":200}],
+        "documents":"#ignore",
         "isTraineeship":false,
         "customFields":{}
         }

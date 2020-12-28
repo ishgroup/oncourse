@@ -341,41 +341,6 @@ Feature: Main feature for all POST requests with path 'user'
 
 
 
-    Scenario: (+) Create new User with valid (100 chars: special and non-latin) firstName/lastName
-
-        * def timeStamp = Date.now()
-        * def newUser = 'user_' + timeStamp
-
-        * def someUser = { "active":true,"login":"#(newUser)","firstName":"§!@#$%^&*()_+=-[];:|><?фбдčéžгнек§!@#$%^&*()_+=-[];:|><?фбдčéžгнек§!@#$%^&*()_+=-[];:|><?фбдčéžгнек!","lastName":"§!@#$%^&*()_+=-[];:|><?фбдčéžгнек§!@#$%^&*()_+=-[];:|><?фбдčéžгнек§!@#$%^&*()_+=-[];:|><?фбдčéžгнек!","administrationCentre":200,"email":"testMail1@gmail.com","admin":true,"accessEditor":false,"tfaEnabled":false,"password":"12345","passwordUpdateRequired":false }
-
-        Given path ishPath
-        And request someUser
-        When method POST
-        Then status 204
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match response[*].login contains "#(newUser)"
-
-        * def list = karate.jsonPath(response, "[?(@.login=='" + newUser + "')]")
-        * match each list[*].firstName == '§!@#$%^&*()_+=-[];:|><?фбдčéžгнек§!@#$%^&*()_+=-[];:|><?фбдčéžгнек§!@#$%^&*()_+=-[];:|><?фбдčéžгнек!'
-        * match each list[*].lastName == '§!@#$%^&*()_+=-[];:|><?фбдčéžгнек§!@#$%^&*()_+=-[];:|><?фбдčéžгнек§!@#$%^&*()_+=-[];:|><?фбдčéžгнек!'
-
-#       <----->  Check Log in
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: "#(newUser)", password: '12345', kickOut: 'true', skipTfa: 'true'}
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
-#       <----->
-
-
-
     Scenario: (-) Create new User with not unique 'login'
 
         * def timeStamp = Date.now()
