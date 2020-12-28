@@ -64,7 +64,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "soldVouchersCount":0,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedSellables":[]
         }
         """
 
@@ -123,7 +124,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "corporatePasses":[{"id":1001,"contactFullName":"company #1"}],
         "soldVouchersCount":0,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedSellables":[]
         }
         """
 
@@ -182,7 +184,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "corporatePasses":[{"id":1001,"contactFullName":"company #1"}],
         "soldVouchersCount":0,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedSellables":[]
         }
         """
 
@@ -254,7 +257,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "corporatePasses":[{"id":1001,"contactFullName":"company #1"}],
         "soldVouchersCount":0,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedSellables":[]
         }
         """
 
