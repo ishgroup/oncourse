@@ -65,7 +65,8 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedSellables":[]
         }
         """
 
@@ -105,7 +106,8 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedSellables":[]
         }
         """
 
