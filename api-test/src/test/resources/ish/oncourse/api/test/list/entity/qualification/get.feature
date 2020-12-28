@@ -36,8 +36,8 @@ Feature: Main feature for all GET requests with path 'list/entity/qualification'
                 "rows":
                     [
                         {"id":"3","values":["10218NAT","Aboriginal Language/s v2","Certificate I in",null,"true"]},
-                        {"id":"2","values":["21364VIC","Workforce Re-entry Skills","Course in","0.0","false"]},
-                        {"id":"4","values":["90946NSW","Building Studies, Technology","Advanced Diploma of","0.0","true"]},
+                        {"id":"2","values":["21364VIC","Workforce Re-entry Skills","Course in","0","false"]},
+                        {"id":"4","values":["90946NSW","Building Studies, Technology","Advanced Diploma of","0","true"]},
                         {"id":"1","values":["UEE30807","Electrotechnology Electrician","Certificate III in",null,"false"]}
                     ],
                 "filteredCount":null,"layout":"Three column","filterColumnWidth":200
@@ -83,8 +83,8 @@ Feature: Main feature for all GET requests with path 'list/entity/qualification'
                 "rows":
                     [
                         {"id":"3","values":["10218NAT","Aboriginal Language/s v2","Certificate I in",null,"true"]},
-                        {"id":"2","values":["21364VIC","Workforce Re-entry Skills","Course in","0.0","false"]},
-                        {"id":"4","values":["90946NSW","Building Studies, Technology","Advanced Diploma of","0.0","true"]},
+                        {"id":"2","values":["21364VIC","Workforce Re-entry Skills","Course in","0","false"]},
+                        {"id":"4","values":["90946NSW","Building Studies, Technology","Advanced Diploma of","0","true"]},
                         {"id":"1","values":["UEE30807","Electrotechnology Electrician","Certificate III in",null,"false"]}
                     ],
                 "filteredCount":null,"layout":"Three column","filterColumnWidth":200
