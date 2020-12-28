@@ -16,7 +16,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass/tr
         Given path ishPath + '/6'
         When method GET
         Then status 200
-        And match $ contains [{"moduleId":3,"moduleName":"AUM1001A","sessionIds":[39,40,41,42],"temporarySessionIds":[],"assessmentIds":[],"temporaryAssessmentIds":[]}]
+        And match $ contains [{"moduleTitle":"Manage personal career goals","assessmentIds":[],"temporarySessionIds":[],"moduleName":"AUM1001A","moduleId":3,"sessionIds":[39,40,41,42],"temporaryAssessmentIds":[]}]
 
 
 
@@ -37,7 +37,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass/tr
         Given path ishPath + '/6'
         When method GET
         Then status 200
-        And match $ contains [{"moduleId":3,"moduleName":"AUM1001A","sessionIds":[39,40,41,42],"temporarySessionIds":[],"assessmentIds":[],"temporaryAssessmentIds":[]}]
+        And match $ contains [{"moduleTitle":"Manage personal career goals","assessmentIds":[],"temporarySessionIds":[],"moduleName":"AUM1001A","moduleId":3,"sessionIds":[39,40,41,42],"temporaryAssessmentIds":[]}]
 
 
 
