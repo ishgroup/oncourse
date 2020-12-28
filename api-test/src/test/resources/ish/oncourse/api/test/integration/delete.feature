@@ -18,7 +18,7 @@ Feature: Main feature for all DELETE requests with path 'integration'
         
 #       Prepare new concession type to delete it
 #       <--->
-        * def integration = {name: 'someName', type: {type: 'myob'}}
+        * def integration = {name: 'someName', type: 6}
         Given path ishPath
         And request integration
         When method POST
