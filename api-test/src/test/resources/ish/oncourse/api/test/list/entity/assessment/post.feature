@@ -54,25 +54,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         "tags":[{"id":195,"name":"Journal","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "active":true,
         "description":"some description 1",
-        "documents":
-        [
-            {"shared":true,
-            "thumbnail":null,
-            "access":"Private",
-            "added":"#ignore",
-            "description":"Private description",
-            "createdOn":"#ignore","tags":[],
-            "attachmentRelations":"#ignore", 
-            "versionId":null,
-            "modifiedOn":"#ignore",
-            "removed":false,
-            "attachedRecordsCount":null,
-            "versions":
-                [
-                    {"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}
-                ],
-            "name":"defaultPrivateDocument",
-            "id":200}]
+        "documents":[{"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":"#ignore","tags":[],"attachmentRelations":[{"relatedContacts":[],"entityId":1004,"label":"create assessment 1","entity":"Assessment"},{"relatedContacts":[{"name":"studentB B mergeB","id":21}],"entityId":21,"label":"studentB B mergeB","entity":"Contact"},{"relatedContacts":[{"name":"stud12","id":18}],"entityId":1009,"label":"post2, stud12","entity":"PriorLearning"},{"relatedContacts":[{"name":"stud12","id":18}],"entityId":1008,"label":"post1, stud12","entity":"PriorLearning"},{"relatedContacts":[{"name":"stud12","id":18}],"entityId":1004,"label":"get2, stud12","entity":"PriorLearning"},{"relatedContacts":[{"name":"stud12","id":18}],"entityId":1003,"label":"get1, stud12","entity":"PriorLearning"},{"relatedContacts":[],"entityId":18,"label":"course4-101","entity":"Class"},{"relatedContacts":[],"entityId":17,"label":"course4-100","entity":"Class"},{"relatedContacts":[],"entityId":1,"label":"course1-1","entity":"Class"},{"relatedContacts":[{"name":"tutorB mergeB","id":24}],"entityId":24,"label":"tutorB mergeB","entity":"Contact"}],"versionId":null,"modifiedOn":"#ignore","removed":false,"attachedRecordsCount":null,"versions":[{"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}],"name":"defaultPrivateDocument","id":200}]
         }
         """
 

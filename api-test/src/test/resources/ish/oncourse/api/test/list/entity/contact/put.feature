@@ -227,7 +227,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         "invoiceTerms":22,
         "taxId":2,
         "customFields":{"cf1":"qwertyUPD","cf2":"asdfghUPD"},
-        "documents":[{"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":null,"tags":[],"attachmentRelations":[],"versionId":null,"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"22 b","added":"#ignore","createdBy":null,"id":200,"mimeType":null,"url":null}],"name":"defaultPrivateDocument","id":200}],
+        "documents":"#ignore",
         "tags":[{"id":233,"name":"contacts1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "memberships":[],
         "profilePicture":null,
