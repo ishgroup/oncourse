@@ -22,6 +22,7 @@ import java.security.KeyStore;
 import java.util.Date;
 
 import static ish.oncourse.server.security.KeystoreGenerator.KEYSTORE;
+import static ish.oncourse.server.security.KeystoreGenerator.KEYSTORE_PASSWORD;
 
 @DisallowConcurrentExecution
 public class CertificateUpdateWatcher implements Job {
@@ -50,7 +51,10 @@ public class CertificateUpdateWatcher implements Job {
 
     private void updateCertificate() throws Exception {
         var keyStore = KeystoreGenerator.getClientServerKeystore();
-        sslContextFactory.reload(sslContextFactory -> sslContextFactory.setKeyStore(keyStore));
+        sslContextFactory.reload(sslContextFactory -> {
+            sslContextFactory.setKeyStorePassword(KEYSTORE_PASSWORD);
+            sslContextFactory.setKeyStore(keyStore);
+        });
     }
 
 }
