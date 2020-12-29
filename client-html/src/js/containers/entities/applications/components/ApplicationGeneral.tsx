@@ -140,6 +140,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           onClearRows={clearCourses}
           loading={coursesLoading}
           remoteRowCount={coursesRowsCount}
+          selectLabelCondition={courseFilterCondition}
           disabled={!isNew}
           itemRenderer={CourseItemRenderer}
           rowHeight={55}
