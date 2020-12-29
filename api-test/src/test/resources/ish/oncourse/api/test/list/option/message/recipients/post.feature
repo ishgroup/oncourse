@@ -25,7 +25,7 @@ Feature: Main feature for all GET requests with path 'list/option/message/recipi
              "other":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
              "tutors":{"sendSize":2,"withoutDestinationSize":0,"suppressToSendSize":0},
              "withdrawnStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
-             "students":{"sendSize":17,"withoutDestinationSize":1,"suppressToSendSize":0},
+             "students":{"sendSize": 16,"withoutDestinationSize":1,"suppressToSendSize":0},
              "activeStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0}
              }
             """
@@ -43,7 +43,7 @@ Feature: Main feature for all GET requests with path 'list/option/message/recipi
             "other":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
             "tutors":{"sendSize":2,"withoutDestinationSize":0,"suppressToSendSize":0},
             "withdrawnStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
-            "students":{"sendSize":17,"withoutDestinationSize":1,"suppressToSendSize":0},
+            "students":{"sendSize": 16,"withoutDestinationSize":1,"suppressToSendSize":0},
             "activeStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0}
             }
             """
