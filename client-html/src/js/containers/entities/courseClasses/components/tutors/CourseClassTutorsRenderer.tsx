@@ -14,13 +14,7 @@ interface Props extends WrappedFieldArrayProps {
   onDeleteTutor: any;
   onTutorIdChangeBase: any;
   onRoleIdChangeBase: any;
-  getTutors: any;
-  clearTutors: any;
-  setTutorsSearch: any;
-  tutors: any;
   activeTutorRoles: any;
-  tutorsLoading: any;
-  tutorsRowsCount: any;
   addTutorWage: any;
   currencySymbol: any;
   latestSession: any;
@@ -37,13 +31,7 @@ const CourseClassTutorsRenderer = React.memo<Props>(props => {
     onDeleteTutor,
     onTutorIdChangeBase,
     onRoleIdChangeBase,
-    getTutors,
-    clearTutors,
-    setTutorsSearch,
-    tutors,
     activeTutorRoles,
-    tutorsLoading,
-    tutorsRowsCount,
     addTutorWage,
     latestSession,
     budget
@@ -73,13 +61,7 @@ const CourseClassTutorsRenderer = React.memo<Props>(props => {
             onDelete={onDelete}
             onTutorIdChange={onTutorIdChange}
             onRoleIdChange={onRoleIdChange}
-            getTutors={getTutors}
-            clearTutors={clearTutors}
-            setTutorsSearch={setTutorsSearch}
-            tutors={tutors}
             tutorRoles={activeTutorRoles}
-            tutorsLoading={tutorsLoading}
-            tutorsRowsCount={tutorsRowsCount}
             openTutorWage={openTutorWage}
             expandedIndex={expanded}
             latestSession={latestSession}

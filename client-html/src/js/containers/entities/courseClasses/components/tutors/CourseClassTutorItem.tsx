@@ -18,7 +18,7 @@ import FormField from "../../../../../common/components/form/form-fields/FormFie
 import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { AppTheme } from "../../../../../model/common/Theme";
-import { EEE_D_MMM_YYYY } from "../../../../../common/utils/dates/format";
+import { DD_MM_YYYY_SLASHED, EEE_D_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../../contacts/utils";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../../contacts/components/ContactSelectItemRenderer";
@@ -62,14 +62,8 @@ const CourseClassTutorItem: React.FC<Props> = ({
   onChange,
   onDelete,
   tutor,
-  tutors,
   tutorRoles,
   classes,
-  setTutorsSearch,
-  getTutors,
-  clearTutors,
-  tutorsLoading,
-  tutorsRowsCount,
   onTutorIdChange,
   onRoleIdChange,
   openTutorWage,
@@ -85,6 +79,8 @@ const CourseClassTutorItem: React.FC<Props> = ({
     e.stopPropagation();
     openTutorWage(tutor);
   };
+
+  const today = format(new Date(), DD_MM_YYYY_SLASHED);
 
   return (
     <ExpandableItem
@@ -154,6 +150,8 @@ const CourseClassTutorItem: React.FC<Props> = ({
               name={`tutors[${index}].contactId`}
               props={{
                 label: "Contact",
+                entity: "Contact",
+                aqlFilter: `isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`,
                 selectValueMark: "id",
                 selectLabelCondition: contactLabelCondition,
                 defaultDisplayValue: defaultContactName(tutor.tutorName),
@@ -161,12 +159,6 @@ const CourseClassTutorItem: React.FC<Props> = ({
                   <LinkAdornment linkHandler={openContactLink} link={tutor.contactId} disabled={!tutor.contactId} />
                 ),
                 itemRenderer: ContactSelectItemRenderer,
-                onSearchChange: setTutorsSearch,
-                onLoadMoreRows: getTutors,
-                onClearRows: clearTutors,
-                items: tutors,
-                loading: tutorsLoading,
-                remoteRowCount: tutorsRowsCount,
                 onInnerValueChange: onTutorIdChange,
                 disabled: tutor.id,
                 rowHeight: 48

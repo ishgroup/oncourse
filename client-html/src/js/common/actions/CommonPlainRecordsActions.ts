@@ -21,8 +21,8 @@ export const setCommonPlainSearch = (
 ) => ({
   type: SET_COMMON_PLAIN_RECORD_SEARCH,
   payload: {
- key, search, entity, actions 
-}
+   key, search, entity, actions
+  }
 });
 
 export const getCommonPlainRecords = (
@@ -34,8 +34,8 @@ export const getCommonPlainRecords = (
 ) => ({
   type: GET_COMMON_PLAIN_RECORDS,
   payload: {
- key, offset, columns, ascending, sort 
-}
+   key, offset, columns, ascending, sort
+  }
 });
 
 export const clearCommonPlainSearch = (key: string) => ({
