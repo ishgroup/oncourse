@@ -63,7 +63,6 @@ export const CLEAR_USI_VERIFICATION_RESULT = "clear/contacts/usiVerificationResu
 export const CLEAR_CONTACT_EDUCATION = "clear/contact/education";
 
 export const GET_CONTACTS_MESSAGE_DATA = _toRequestType("get/contacts/messageData");
-export const GET_CONTACTS_MESSAGE_DATA_FULFILLED = FULFILLED(GET_CONTACTS_MESSAGE_DATA);
 
 export const CLEAR_CONTACTS = "clear/contact";
 
@@ -139,17 +138,7 @@ export const getContactCertificates = (contactId: number) => ({
 
 export const setContactsSearch = (search: string) => ({
   type: SET_CONTACTS_SEARCH,
-  payload: { search: search ? `~"${search}"` : "" }
-});
-
-export const setStudentsSearch = (search: string) => ({
-  type: SET_CONTACTS_SEARCH,
-  payload: { search: search ? `isStudent == true and ~"${search}"` : "isStudent == true" }
-});
-
-export const setTutorsSearch = (search: string) => ({
-  type: SET_CONTACTS_SEARCH,
-  payload: { search: search ? `isTutor == true and ${search}` : "isTutor == true" }
+  payload: { search }
 });
 
 export const clearContactsSearch = () => ({

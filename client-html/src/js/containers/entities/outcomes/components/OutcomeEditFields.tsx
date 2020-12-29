@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import Grid from "@material-ui/core/Grid";
 import { change } from "redux-form";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import LockOpen from "@material-ui/icons/LockOpen";
@@ -41,7 +40,6 @@ import FundingUploadService from "../../../avetmiss-export/services/FundingUploa
 import { defaultContactName } from "../../contacts/utils";
 import { openModuleLink } from "../../modules/utils";
 import { State } from "../../../../reducers/state";
-import { clearModuleItems, getModules, setModuleSearch } from "../../modules/actions";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 
@@ -94,19 +92,12 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   const {
     twoColumn,
     values,
-    modules,
-    setModuleSearch,
-    getModules,
-    clearModuleSearch,
-    modulesRowsCount,
-    modulesLoading,
     form,
     dispatch,
     getFieldName,
     className,
     isPriorLearningBinded,
     isNew,
-    clearModules,
     access
   } = props;
 
@@ -115,11 +106,6 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   isPriorLearning = isPriorLearningBinded;
 
   const fundingUploadAccess = access[fundingUploadsPath] && access[fundingUploadsPath]["GET"];
-
-  useEffect(() => {
-    setModuleSearch("");
-    return () => clearModuleSearch();
-  }, [getModules]);
 
   useEffect(() => {
     if (values.id && fundingUploadAccess) {
@@ -197,6 +183,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               type="remoteDataSearchSelect"
               name={getFieldName("moduleCode")}
               label="Module code"
+              entity="Module"
               selectValueMark="nationalCode"
               selectLabelMark="nationalCode"
               defaultDisplayValue={values && values.moduleCode}
@@ -207,13 +194,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                   disabled={values && !values.moduleId}
                 />
               )}
-              items={modules || []}
               onInnerValueChange={onModuleCodeChange}
-              onSearchChange={setModuleSearch}
-              onLoadMoreRows={getModules}
-              onClearRows={clearModules}
-              remoteRowCount={modulesRowsCount}
-              loading={modulesLoading}
               disabled={values && values.hasCertificate}
               allowEmpty
               fullWidth
@@ -222,6 +203,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="remoteDataSearchSelect"
+              entity="Module"
               name={getFieldName("moduleName")}
               label="Module name"
               selectValueMark="title"
@@ -234,13 +216,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                   disabled={values && !values.moduleId}
                 />
               )}
-              items={modules || []}
               onInnerValueChange={onModuleNameChange}
-              onSearchChange={setModuleSearch}
-              onLoadMoreRows={getModules}
-              onClearRows={clearModules}
-              remoteRowCount={modulesRowsCount}
-              loading={modulesLoading}
               allowEmpty
               disabled={values && values.hasCertificate}
               fullWidth
@@ -416,17 +392,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  modules: state.modules.items,
-  modulesLoading: state.modules.loading,
-  modulesRowsCount: state.modules.rowsCount,
   access: state.access
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getModules: (offset?: number) => dispatch(getModules(offset, "nationalCode,title,nominalHours", true, 100)),
-  clearModules: () => dispatch(clearModuleItems()),
-  setModuleSearch: (search: string) => dispatch(setModuleSearch(`~"${search}"`)),
-  clearModuleSearch: () => dispatch(setModuleSearch(""))
-});
-
-export default connect<any, any, OutcomeEditFieldsProps>(mapStateToProps, mapDispatchToProps)(OutcomeEditFields);
+export default connect<any, any, OutcomeEditFieldsProps>(mapStateToProps)(OutcomeEditFields);

@@ -20,8 +20,7 @@ import {
   Enrolment,
   FundingSource,
   ClassFundingSource,
-  Tag,
-  Contact
+  Tag
 } from "@api/model";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../reducers/state";
@@ -38,15 +37,12 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
-import { clearContacts, getContacts, setContactsSearch } from "../../contacts/actions";
 import { setSelectedContact } from "../../invoices/actions";
 import { courseClassLabelCondition, openCourseClassLink } from "../../courseClasses/utils";
-import { clearPlainCourseClasses, getPlainCourseClasses, setPlainCourseClassSearch } from "../../courseClasses/actions";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { AnyArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
-import { SelectItemDefault } from "../../../../model/entities/common";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 
 const validateCricosConfirmation = value => validateCharacter(value, 32, "Confirmation of Enrolment");
@@ -63,19 +59,7 @@ interface Props extends Partial<EditViewProps> {
   values?: Enrolment;
   contracts?: FundingSource[];
   tags?: Tag[];
-  contacts?: Contact[];
-  contactsLoading?: boolean;
-  contactsRowsCount?: number;
-  getContacts?: AnyArgFunction;
-  setContactsSearch?: StringArgFunction;
   setSelectedContact?: AnyArgFunction;
-  courseClasses?: SelectItemDefault[];
-  courseClassesLoading?: boolean;
-  courseClassesRowsCount?: number;
-  getCourseClasses?: AnyArgFunction;
-  setCourseClassesSearch?: StringArgFunction;
-  clearCourseClasses?: AnyArgFunction;
-  clearContacts?: AnyArgFunction;
 }
 
 const EnrolmentGeneralTab: React.FC<Props> = props => {
@@ -87,25 +71,13 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
     twoColumn,
     values,
     dispatch,
-    contacts,
-    contactsLoading,
-    contactsRowsCount,
-    getContacts,
-    setContactsSearch,
     setSelectedContact,
-    courseClasses,
-    courseClassesLoading,
-    courseClassesRowsCount,
-    getCourseClasses,
-    setCourseClassesSearch,
     contracts,
     manualLink,
     rootEntity,
     onCloseClick,
     invalid,
-    dirty,
-    clearCourseClasses,
-    clearContacts
+    dirty
   } = props;
 
   const onContactChange = useCallback(
@@ -195,6 +167,8 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         <Grid item xs={twoColumn ? 4 : 12}>
           <FormField
             type="remoteDataSearchSelect"
+            entity="Contact"
+            aqlFilter="isStudent is true"
             name="studentContactId"
             label="Student"
             selectValueMark="id"
@@ -207,12 +181,6 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
                 disabled={!values.studentContactId}
               />
             )}
-            items={contacts || []}
-            onSearchChange={setContactsSearch}
-            onLoadMoreRows={getContacts}
-            onClearRows={clearContacts}
-            loading={contactsLoading}
-            remoteRowCount={contactsRowsCount}
             onInnerValueChange={onContactChange}
             itemRenderer={ContactSelectItemRenderer}
             disabled={!isNew}
@@ -224,6 +192,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         <Grid item xs={twoColumn ? 8 : 12}>
           <FormField
             type="remoteDataSearchSelect"
+            entity="CourseClass"
             name="courseClassId"
             label="Class"
             selectValueMark="id"
@@ -236,12 +205,6 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
                 disabled={!values.courseClassId}
               />
             )}
-            items={courseClasses || []}
-            onSearchChange={setCourseClassesSearch}
-            onLoadMoreRows={getCourseClasses}
-            onClearRows={clearCourseClasses}
-            loading={courseClassesLoading}
-            remoteRowCount={courseClassesRowsCount}
             disabled={!isNew}
             required
           />
@@ -469,29 +432,11 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Enrolment"],
-  contacts: state.contacts.items,
-  contactsLoading: state.contacts.loading,
-  contactsRowsCount: state.contacts.rowsCount,
-  courseClasses: state.courseClasses.items,
-  courseClassesLoading: state.courseClasses.loading,
-  courseClassesRowsCount: state.courseClasses.rowsCount,
   contracts: state.export.contracts
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getContacts: (offset?: number) => dispatch(
-        getContacts(
-          offset,
-          "firstName,lastName,email,birthDate,street,suburb,state,postcode,invoiceTerms,taxOverride.id",
-          true
-        )
-      ),
-    setContactsSearch: (search: string) => dispatch(setContactsSearch(search)),
-    clearContacts: () => dispatch(clearContacts()),
-    setSelectedContact: (selectedContact: any) => dispatch(setSelectedContact(selectedContact)),
-    getCourseClasses: (offset?: number) => dispatch(getPlainCourseClasses(offset, "course.name,course.code,code", true)),
-    setCourseClassesSearch: (search: string) => dispatch(setPlainCourseClassSearch(search)),
-    clearCourseClasses: () => dispatch(clearPlainCourseClasses())
-  });
+  setSelectedContact: (selectedContact: any) => dispatch(setSelectedContact(selectedContact)),
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EnrolmentGeneralTab);

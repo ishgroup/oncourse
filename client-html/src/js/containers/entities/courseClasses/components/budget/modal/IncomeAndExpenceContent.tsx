@@ -8,16 +8,9 @@ import Grid from "@material-ui/core/Grid";
 import Collapse from "@material-ui/core/Collapse";
 import { change } from "redux-form";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { Contact, ClassCostRepetitionType } from "@api/model";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
+import { ClassCostRepetitionType } from "@api/model";
 import { Divider } from "@material-ui/core";
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
-import { State } from "../../../../../../reducers/state";
-import {
- clearContacts, clearContactsSearch, getContacts, setContactsSearch
-} from "../../../../contacts/actions";
-import { AnyArgFunction, NoArgFunction, StringArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { contactLabelCondition, openContactLink } from "../../../../contacts/utils";
 import { LinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
@@ -29,31 +22,15 @@ import { PayRateTypes } from "./BudgetCostModal";
 import { greaterThanNullValidation } from "../../../../../../common/utils/validation";
 import { normalizeNumberToZero } from "../../../../../../common/utils/numbers/numbersNormalizing";
 
-interface Props extends BudgetCostModalContentProps {
-  contacts?: Contact[];
-  contactsLoading?: boolean;
-  contactsRowsCount?: number;
-  getContacts?: AnyArgFunction;
-  setContactsSearch?: StringArgFunction;
-  clearContactsSearch?: NoArgFunction;
-  clearContacts?: AnyArgFunction;
-}
-
 const getFeeIncTax = (exTax, taxes, taxId) => decimalMul(exTax, decimalPlus(1, getCurrentTax(taxes, taxId).rate));
 
-const IncomeAndExpenceContent: React.FC<Props> = ({
+const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
   taxes,
   values,
-  contacts,
-  contactsLoading,
-  contactsRowsCount,
-  getContacts,
-  setContactsSearch,
   dispatch,
   costLabel,
   hasMinMaxFields,
-  hasCountField,
-  clearContacts
+  hasCountField
 }) => {
   const isIncome = useMemo(() => values.flowType === "Income", [values.flowType]);
 
@@ -113,6 +90,7 @@ const IncomeAndExpenceContent: React.FC<Props> = ({
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"
+          entity="Contact"
           name="contactId"
           label="Contact"
           selectValueMark="id"
@@ -121,12 +99,6 @@ const IncomeAndExpenceContent: React.FC<Props> = ({
           labelAdornment={
             <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
           }
-          items={contacts}
-          onSearchChange={setContactsSearch}
-          onLoadMoreRows={getContacts}
-          onClearRows={clearContacts}
-          loading={contactsLoading}
-          remoteRowCount={contactsRowsCount}
           itemRenderer={ContactSelectItemRenderer}
           rowHeight={55}
           allowEmpty
@@ -214,17 +186,4 @@ const IncomeAndExpenceContent: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  contacts: state.contacts.items,
-  contactsLoading: state.contacts.loading,
-  contactsRowsCount: state.contacts.rowsCount
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getContacts: (offset?: number) => dispatch(getContacts(offset, null, true)),
-    setContactsSearch: (search: string) => dispatch(setContactsSearch(search)),
-    clearContactsSearch: () => dispatch(clearContactsSearch()),
-    clearContacts: () => dispatch(clearContacts())
-  });
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(IncomeAndExpenceContent);
+export default IncomeAndExpenceContent;

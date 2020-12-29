@@ -5,32 +5,23 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import {
-  change,
-  FieldArray
+  FieldArray, getFormValues
 } from "redux-form";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { getCommonPlainRecordFromState } from "../../../../common/actions/CommonPlainRecordsActions";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { validateSingleMandatoryField, validateVetPurchasingContractIdentifier } from "../../../../common/utils/validation";
-import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
+import { CheckoutFundingInvoiceItem } from "../../../../model/checkout/fundingInvoice";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import ContactSelectItemRenderer from "../../../entities/contacts/components/ContactSelectItemRenderer";
 import { contactLabelCondition, getContactName, openContactLink } from "../../../entities/contacts/utils";
-import {
-  fundingInvoicePlainSearchCompanyKey,
-  getFundingInvoiceCompanies,
-  onClearFundingInvoiceCompaniesSearch,
-  setFundingInvoiceCompaniesSearch
-} from "../../actions/checkoutFundingInvoice";
 import { summaryListStyles } from "../../styles/summaryListStyles";
 import CheckoutFundingInvoicePaymentPlans from "./CheckoutFundingInvoicePaymentPlans";
 import CheckoutFundingInvoiceSummaryExpandableItemRenderer from "./CheckoutFundingInvoiceSummaryExpandableItemRenderer";
@@ -62,66 +53,52 @@ const trainingPlansColumns: NestedTableColumn[] = [
 
 interface Props {
   classes?: any;
+  formValues?: CheckoutFundingInvoiceItem;
   dispatch?: any;
   syncErrors?: any;
-  fundingInvoice?: CheckoutFundingInvoice;
+  item?: CheckoutFundingInvoiceItem;
   currency?: any;
   selectedCompanies?: any[];
-  setCompaniesSearch?: (value: string) => void;
-  onClearCompaniesSearch?: () => void;
-  getCompanies?: (offset: number) => void;
-  listCompanies?: any[];
-  companiesLoading?: boolean;
-  companiesRowCount?: number;
+  addSelectedCompany?: (company: any) => void;
   form?: string;
-  selectedItemIndex?: number;
 }
 
 const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
   const {
     classes,
+    formValues,
     dispatch,
     syncErrors,
     currency,
-    fundingInvoice,
-    setCompaniesSearch,
-    onClearCompaniesSearch,
-    getCompanies,
-    listCompanies,
-    companiesLoading,
-    companiesRowCount,
-    form,
-    selectedItemIndex
+    item,
+    selectedCompanies,
+    addSelectedCompany,
+    form
   } = props;
 
-  const onChangeCompany = company => {
-    dispatch(change(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM, `fundingInvoices[${selectedItemIndex}].company`, company));
-  };
+  const onChangeCompany = React.useCallback(value => {
+    addSelectedCompany(value);
+  }, []);
 
   return (
     <Grid container className="align-content-between">
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"
-          name={`fundingInvoices[${selectedItemIndex}].fundingProviderId`}
+          entity="FundingInvoiceCompany"
+          name="fundingProviderId"
           label="Funding provider"
           selectValueMark="id"
           selectLabelCondition={contactLabelCondition}
-          defaultDisplayValue={fundingInvoice.company && getContactName(fundingInvoice.company)}
-          items={listCompanies || []}
-          onSearchChange={setCompaniesSearch}
-          onLoadMoreRows={getCompanies}
-          onClearRows={onClearCompaniesSearch}
-          loading={companiesLoading}
-          remoteRowCount={companiesRowCount}
+          defaultDisplayValue={selectedCompanies.length && getContactName(selectedCompanies[0])}
           itemRenderer={ContactSelectItemRenderer}
           onInnerValueChange={onChangeCompany}
           rowHeight={55}
           labelAdornment={(
             <LinkAdornment
               linkHandler={openContactLink}
-              link={fundingInvoice && fundingInvoice.fundingProviderId}
-              disabled={!fundingInvoice || !fundingInvoice.fundingProviderId}
+              link={formValues && formValues.fundingProviderId}
+              disabled={!formValues || !formValues.fundingProviderId}
             />
           )}
           validate={validateSingleMandatoryField}
@@ -130,7 +107,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
       <Grid item xs={6}>
         <FormField
           type="text"
-          name={`fundingInvoices[${selectedItemIndex}].vetPurchasingContractID`}
+          name="vetPurchasingContractID"
           label="Purchasing contract identifier (NSW Commitment ID)"
           validate={validateVetPurchasingContractIdentifier}
           fullWidth
@@ -139,30 +116,29 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
       <Grid item xs={12} className="pb-3">
         <CheckoutFundingInvoiceSummaryExpandableItemRenderer
           classes={classes}
-          header={getContactName(fundingInvoice.item.enrolment.contact)}
-          items={fundingInvoice.item.enrolment.items}
-          itemTotal={fundingInvoice ? fundingInvoice.total : 0}
+          header={getContactName(item.enrolment.contact)}
+          items={item.enrolment.items}
+          itemTotal={formValues ? formValues.total : 0}
           currencySymbol={currency && currency.shortCurrencySymbol}
           dispatch={dispatch}
-          paymentPlans={fundingInvoice ? fundingInvoice.paymentPlans : []}
-          selectedItemIndex={selectedItemIndex}
+          paymentPlans={formValues ? formValues.paymentPlans : []}
           form={form}
         />
       </Grid>
       <Grid container>
-        {fundingInvoice && fundingInvoice.paymentPlans && (
+        {formValues && formValues.paymentPlans && (
           <Grid item sm={6} className="pr-2">
             <CheckoutFundingInvoicePaymentPlans
-              name={`fundingInvoices[${selectedItemIndex}].paymentPlans`}
+              name="paymentPlans"
               currency={currency}
               syncErrors={syncErrors}
               form={CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM}
               dispatch={dispatch}
-              total={fundingInvoice ? fundingInvoice.total : 0}
+              total={formValues ? formValues.total : 0}
             />
           </Grid>
         )}
-        {fundingInvoice && fundingInvoice.trainingPlans && fundingInvoice.trainingPlans.length > 0 && (
+        {formValues && formValues.trainingPlans && formValues.trainingPlans.length > 0 && (
           <Grid item sm={6}>
             <div className="centeredFlex">
               <Typography className="heading pt-1 pb-1">
@@ -170,7 +146,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
               </Typography>
             </div>
             <FieldArray
-              name={`fundingInvoices[${selectedItemIndex}].trainingPlans`}
+              name="trainingPlans"
               className="saveButtonTableOffset"
               component={NestedTable}
               columns={trainingPlansColumns}
@@ -183,22 +159,12 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
   );
 });
 
-const getCompaniesPlainRecord = state => getCommonPlainRecordFromState(state, fundingInvoicePlainSearchCompanyKey);
-
 const mapStateToProps = (state: State) => ({
   currency: state.currency,
-  listCompanies: getCompaniesPlainRecord(state).items,
-  companiesLoading: getCompaniesPlainRecord(state).loading,
-  companiesRowCount: getCompaniesPlainRecord(state).rowsCount
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setCompaniesSearch: (search: string) => dispatch(setFundingInvoiceCompaniesSearch(search)),
-  onClearCompaniesSearch: () => dispatch(onClearFundingInvoiceCompaniesSearch()),
-  getCompanies: (offset: number) => dispatch(getFundingInvoiceCompanies(offset)),
+  formValues: getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state),
+  selectedCompanies: state.checkout.fundingInvoice.companies
 });
 
 export default connect<any, any, any>(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(withStyles((theme: AppTheme) => ({ ...summaryListStyles(theme), ...styles(theme) }))(CheckoutFundingInvoiceSummaryList));

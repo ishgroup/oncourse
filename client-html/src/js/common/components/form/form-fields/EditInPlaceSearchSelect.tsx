@@ -58,6 +58,13 @@ const searchStyles = theme => createStyles({
       maxWidth: "calc(100% * 1.4)"
     }
   },
+  option: {
+    whiteSpace: "nowrap",
+    "& > span:last-child": {
+      overflow: "hidden",
+      textOverflow: "ellipsis"
+    }
+  },
   inline: {
     fontSize: "inherit"
   },
@@ -514,6 +521,9 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                 ? <CircularProgress size={24} thickness={4} className={fieldClasses ? fieldClasses.loading : undefined} />
                 : stubComponent()
             }
+            classes={{
+              option: itemRenderer ? null : classes.option
+            }}
             disableListWrap
             openOnFocus
             blurOnSelect

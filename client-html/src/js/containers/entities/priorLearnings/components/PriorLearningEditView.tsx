@@ -9,17 +9,11 @@ import {
   arrayInsert, arrayRemove, change, FieldArray
 } from "redux-form";
 import {
- Contact, Outcome, PriorLearning, Qualification
+  Outcome, PriorLearning, Qualification
 } from "@api/model";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import {
-  clearContacts, clearContactsSearch, getContacts, setStudentsSearch
-} from "../../contacts/actions";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import {
   contactLabelCondition, defaultContactName, getContactFullName, openContactLink
@@ -30,24 +24,10 @@ import MinifiedEntitiesList from "../../../../common/components/form/minifiedEnt
 import { OutcomesContentLine, OutcomesHeaderLine } from "./OutcomesLines";
 import EntityService from "../../../../common/services/EntityService";
 import { openQualificationLink } from "../../qualifications/utils";
-import { clearPlainQualificationItems, getPlainQualifications, setPlainQualificationSearch } from "../../qualifications/actions";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { OutcomeInitial } from "../../outcomes/Outcomes";
 
 interface PriorLearningEditViewProps extends EditViewProps<PriorLearning> {
   classes?: any;
-  contacts?: any[];
-  setContactsSearch?: any;
-  getContacts?: any;
-  contactsLoading?: boolean;
-  contactsRowsCount?: number;
-  qualifications?: Contact[];
-  qualificationsLoading?: boolean;
-  qualificationsRowsCount?: number;
-  getQualifications?: AnyArgFunction;
-  setQualificationsSearch?: AnyArgFunction;
-  clearQualifications?: AnyArgFunction;
-  clearContacts?: AnyArgFunction;
 }
 
 const validateOutcomes = (values: Outcome[]) => {
@@ -62,23 +42,11 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
     classes,
     twoColumn,
     values,
-    contacts,
-    setContactsSearch,
-    getContacts,
-    contactsLoading,
-    contactsRowsCount,
     dispatch,
     form,
     showConfirm,
     isNew,
-    qualifications,
-    qualificationsLoading,
-    qualificationsRowsCount,
-    getQualifications,
-    setQualificationsSearch,
-    syncErrors,
-    clearQualifications,
-    clearContacts
+    syncErrors
   } = props;
 
   useEffect(() => {
@@ -89,28 +57,23 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
       contactId = Number(contactId);
 
       if (contactId && !isNaN(contactId)) {
-          EntityService.getPlainRecords("Contact", "firstName,lastName,email,birthDate", `id is ${contactId}`, 1).then(
-            res => {
-              if (res.rows.length > 0) {
-                dispatch(change(form, "contactId", contactId));
-                dispatch(
-                  change(
-                    form,
-                    "contactName",
-                    contactLabelCondition({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
-                  )
-                );
-              }
+        EntityService.getPlainRecords("Contact", "firstName,lastName,email,birthDate", `id is ${contactId}`, 1).then(
+          res => {
+            if (res.rows.length > 0) {
+              dispatch(change(form, "contactId", contactId));
+              dispatch(
+                change(
+                  form,
+                  "contactName",
+                  contactLabelCondition({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
+                )
+              );
             }
-          );
+          }
+        );
       }
     }
   }, [isNew]);
-
-  useEffect(() => {
-    setContactsSearch("");
-    return () => clearContactsSearch();
-  }, []);
 
   const outcomesCount = useMemo(() => (values && values.outcomes ? values.outcomes.length : 0), [
     values && values.outcomes
@@ -161,18 +124,14 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
             type="remoteDataSearchSelect"
             name="contactId"
             label="Student"
+            entity="Contact"
+            aqlFilter="isStudent is true"
             selectValueMark="id"
             selectLabelCondition={getContactFullName}
             defaultDisplayValue={values && defaultContactName(values.contactName)}
             labelAdornment={
               <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
             }
-            items={contacts || []}
-            onSearchChange={setContactsSearch}
-            onLoadMoreRows={getContacts}
-            onClearRows={clearContacts}
-            loading={contactsLoading}
-            remoteRowCount={contactsRowsCount}
             itemRenderer={ContactSelectItemRenderer}
             required
             rowHeight={55}
@@ -184,6 +143,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
             type="remoteDataSearchSelect"
             name="qualificationName"
             label="Qualification"
+            entity="Qualification"
             selectValueMark="title"
             selectLabelMark="title"
             onInnerValueChange={onQualificationTitleChange}
@@ -194,12 +154,6 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
                 disabled={!values.qualificationId}
               />
             )}
-            items={qualifications || []}
-            onSearchChange={setQualificationsSearch}
-            onLoadMoreRows={getQualifications}
-            onClearRows={clearQualifications}
-            loading={qualificationsLoading}
-            remoteRowCount={qualificationsRowsCount}
             rowHeight={36}
           />
         </Grid>
@@ -211,6 +165,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
             label="National code"
             selectValueMark="nationalCode"
             selectLabelMark="nationalCode"
+            entity="Qualification"
             onInnerValueChange={onQualificationCodeChange}
             labelAdornment={(
               <LinkAdornment
@@ -219,12 +174,6 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
                 disabled={!values.qualificationNationalCode}
               />
             )}
-            items={qualifications || []}
-            onSearchChange={setQualificationsSearch}
-            onLoadMoreRows={getQualifications}
-            onClearRows={clearQualifications}
-            loading={qualificationsLoading}
-            remoteRowCount={qualificationsRowsCount}
             rowHeight={36}
           />
         </Grid>
@@ -282,24 +231,4 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
   ) : null;
 };
 
-const mapStateToProps = (state: State) => ({
-  contacts: state.contacts.items,
-  contactsSearch: state.contacts.search,
-  contactsLoading: state.contacts.loading,
-  contactsRowsCount: state.contacts.rowsCount,
-  qualifications: state.qualification.items,
-  qualificationsLoading: state.qualification.loading,
-  qualificationsRowsCount: state.qualification.rowsCount
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getContacts: (offset?: number) => dispatch(getContacts(offset, null, true)),
-    clearContacts: () => dispatch(clearContacts()),
-    setContactsSearch: (search: string) => dispatch(setStudentsSearch(search)),
-    clearContactsSearch: () => dispatch(clearContactsSearch()),
-    getQualifications: (offset?: number) => dispatch(getPlainQualifications(offset, "", true)),
-    clearQualifications: () => dispatch(clearPlainQualificationItems()),
-    setQualificationsSearch: (search: string) => dispatch(setPlainQualificationSearch(`~"${search}"`))
-  });
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PriorLearningEditView);
+export default PriorLearningEditView;

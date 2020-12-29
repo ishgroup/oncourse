@@ -5,14 +5,9 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
-import {
-  clearContacts, clearContactsSearch, getContacts, setStudentsSearch
-} from "../../contacts/actions";
-import { getPlainCourses, setPlainCourses, setPlainCoursesSearch } from "../../courses/actions";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
@@ -21,11 +16,6 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 
 class WaitingListGeneral extends React.PureComponent<any, any> {
-  componentDidMount() {
-    const { setContactsSearch } = this.props;
-    setContactsSearch();
-  }
-
   componentWillUnmount() {
     this.props.clearContactsSearch();
   }
@@ -39,20 +29,8 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
     const {
       values,
       tags,
-      contacts,
-      setContactsSearch,
-      getContacts,
-      contactsLoading,
-      contactsRowsCount,
-      courses,
-      setCoursesSearch,
-      getCourses,
-      coursesLoading,
-      coursesRowsCount,
       dispatch,
-      form,
-      clearContacts,
-      clearCourses
+      form
     } = this.props;
 
     return (
@@ -60,6 +38,8 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
         <div className="pt-2">
           <FormField
             type="remoteDataSearchSelect"
+            entity="Contact"
+            aqlFilter="isStudent is true"
             name="contactId"
             label="Student"
             selectValueMark="id"
@@ -68,12 +48,6 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             labelAdornment={
               <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
             }
-            items={contacts || []}
-            onSearchChange={setContactsSearch}
-            onLoadMoreRows={getContacts}
-            onClearRows={clearContacts}
-            loading={contactsLoading}
-            remoteRowCount={contactsRowsCount}
             itemRenderer={ContactSelectItemRenderer}
             rowHeight={55}
             required
@@ -90,6 +64,8 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
         <FormField type="number" name="studentCount" label="Number of students" />
         <FormField
           type="remoteDataSearchSelect"
+          entity="Course"
+          aqlFilter="allowWaitingLists is true"
           name="courseId"
           label="Course"
           selectValueMark="id"
@@ -97,12 +73,6 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
           selectFilterCondition={courseFilterCondition}
           defaultDisplayValue={values && values.courseName}
           labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
-          items={courses || []}
-          onSearchChange={setCoursesSearch}
-          onLoadMoreRows={getCourses}
-          loading={coursesLoading}
-          onClearRows={clearCourses}
-          remoteRowCount={coursesRowsCount}
           itemRenderer={CourseItemRenderer}
           rowHeight={55}
           required
@@ -122,24 +92,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["WaitingList"],
-  contacts: state.contacts.items,
-  contactsSearch: state.contacts.search,
-  contactsLoading: state.contacts.loading,
-  contactsRowsCount: state.contacts.rowsCount,
-  courses: state.courses.items,
-  coursesSearch: state.courses.search,
-  coursesLoading: state.courses.loading,
-  coursesRowsCount: state.courses.rowsCount
+  courses: state.courses.items
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getContacts: (offset?: number) => dispatch(getContacts(offset, null, true)),
-  clearContacts: () => dispatch(clearContacts()),
-  setContactsSearch: (search: string) => dispatch(setStudentsSearch(search)),
-  clearContactsSearch: () => dispatch(clearContactsSearch()),
-  getCourses: (offset?: number) => dispatch(getPlainCourses(offset, "code,name", true)),
-  clearCourses: () => dispatch(setPlainCourses([])),
-  setCoursesSearch: (search: string) => dispatch(setPlainCoursesSearch(`~"${search}" and allowWaitingLists is true`))
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(WaitingListGeneral);
+export default connect<any, any, any>(mapStateToProps)(WaitingListGeneral);
