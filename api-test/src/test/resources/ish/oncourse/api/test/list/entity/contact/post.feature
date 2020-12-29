@@ -177,7 +177,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         "invoiceTerms":10,
         "taxId":1,
         "customFields":{"cf1":"qwerty","cf2":"asdfgh"},
-        "documents":[{"attachedRecordsCount":"#ignore", "id":201,"name":"defaultPublicDocument","versionId":null,"added":"2019-02-14T13:41:08.499Z","tags":[],"thumbnail":null,"versions":[{"id":201,"added":"2019-02-14T13:41:08.499Z","createdBy":null,"fileName":null,"mimeType":null,"size":"21 b","url":null,"thumbnail":null}],"description":"Public description","access":"Public","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
+        "documents":"#ignore",
         "tags":[{"id":234,"name":"contacts2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "memberships":[],
         "profilePicture":null,

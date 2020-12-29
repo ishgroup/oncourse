@@ -86,16 +86,12 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "taxId":1,
         "customFields":{"cf1":"bb","cf2":"b"},
         "documents":
-            [
-            {"attachedRecordsCount":"#ignore","id":201,"name":"defaultPublicDocument","versionId":null,"added":"2019-02-14T13:41:08.499Z","tags":[],"thumbnail":null,"versions":[{"id":201,"added":"2019-02-14T13:41:08.499Z","createdBy":null,"fileName":null,"mimeType":null,"size":"21 b","url":null,"thumbnail":null}],"description":"Public description","access":"Public","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"},
-            {"attachedRecordsCount":"#ignore","id":200,"name":"defaultPrivateDocument","versionId":null,"added":"2019-02-14T13:40:12.639Z","tags":[],"thumbnail":null,"versions":[{"id":200,"added":"2019-02-14T13:40:12.639Z","createdBy":null,"fileName":null,"mimeType":null,"size":"22 b","url":null,"thumbnail":null}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}
-            ],
+        [
+            {"shared":true,"thumbnail":null,"access":"Public","added":"#ignore","description":"Public description","createdOn":null,"tags":[],"attachmentRelations":[],"versionId":null,"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"21 b","added":"#ignore","createdBy":null,"id":201,"mimeType":null,"url":null}],"name":"defaultPublicDocument","id":201},
+            {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":null,"tags":[],"attachmentRelations":[],"versionId":null,"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"22 b","added":"#ignore","createdBy":null,"id":200,"mimeType":null,"url":null}],"name":"defaultPrivateDocument","id":200}
+        ],
         "tags":[{"id":234,"name":"contacts2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
-        "memberships":
-            [
-            {"id":1011,"name":"Membership for mergeA","code":null,"active":null,"type":"Membership","expiryDate":"2020-01-01"},
-            {"id":1012,"name":"Membership for mergeB","code":null,"active":null,"type":"Membership","expiryDate":"2020-01-01"}
-            ],
+        "memberships":"#ignore",
         "profilePicture":null,
         "relations":[{"id":"#number","contactFromId":null,"contactFromName":null,"contactToId":26,"contactToName":"tutorC mergeC","relationId":-1}],
         "financialData":
@@ -181,9 +177,9 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "tags":[],
         "memberships":
             [
-            {"id":1013,"name":"Membership for mergeB","code":null,"active":null,"type":"Membership","expiryDate":"2020-01-01"},
-            {"id":1014,"name":"Membership for mergeA","code":null,"active":null,"type":"Membership","expiryDate":"2020-01-01"}
-            ],
+                {"redeemableByName":null,"productId":1008,"payments":[],"redeemableById":null,"purchasePrice":150.0,"validFrom":"2019-09-21","productName":"Membership for mergeB","purchasedByName":"studentC mergeC","purchasedById":23,"valueRemaining":null,"expiresOn":"2020-01-01","id":1013,"purchasedOn":"2019-09-21","productType":"Membership","voucherCode":null,"status":"Expired"},
+                {"redeemableByName":null,"productId":1007,"payments":[],"redeemableById":null,"purchasePrice":60.0,"validFrom":"2019-09-21","productName":"Membership for mergeA","purchasedByName":"studentC mergeC","purchasedById":23,"valueRemaining":null,"expiresOn":"2020-01-01","id":1014,"purchasedOn":"2019-09-21","productType":"Membership","voucherCode":null,"status":"Expired"}
+            ], 
         "profilePicture":null,
         "relations":
             [
@@ -264,7 +260,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "invoiceTerms":null,
         "taxId":2,
         "customFields":{"cf1":"Co1","cf2":"Co1"},
-        "documents":[{"attachedRecordsCount":"#ignore","id":201,"name":"defaultPublicDocument","versionId":null,"added":"2019-02-14T13:41:08.499Z","tags":[],"thumbnail":null,"versions":[{"id":201,"added":"2019-02-14T13:41:08.499Z","createdBy":null,"fileName":null,"mimeType":null,"size":"21 b","url":null,"thumbnail":null}],"description":"Public description","access":"Public","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
+        "documents":"#ignore",
         "tags":[{"id":233,"name":"contacts1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "memberships":[],
         "profilePicture":null,
@@ -397,7 +393,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "invoiceTerms":66,
         "taxId":1,
         "customFields":{"cf2":"tB","cf1":"tB"},
-        "documents":[{"attachedRecordsCount":"#ignore","id":200,"name":"defaultPrivateDocument","versionId":null,"added":"2019-02-14T13:40:12.639Z","tags":[],"thumbnail":null,"versions":[{"id":200,"added":"2019-02-14T13:40:12.639Z","createdBy":null,"fileName":null,"mimeType":null,"size":"22 b","url":null,"thumbnail":null}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
+        "documents":"#ignore",
         "tags":[{"id":234,"name":"contacts2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "memberships":[],
         "profilePicture":null,

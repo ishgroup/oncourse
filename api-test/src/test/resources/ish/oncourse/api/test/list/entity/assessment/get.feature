@@ -36,7 +36,7 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
         "active":true,
         "description":"some description",
         "documents":[],
-        "createdOn": "2019-09-11T12:45:19.440Z",
+        "createdOn": "#ignore",
         "modifiedOn": "#ignore"
         }
         """
@@ -100,7 +100,7 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
         "tags":[],
         "active":true,
         "description":"some description",
-        "createdOn": "2019-09-11T12:48:27.866Z",
+        "createdOn": "#ignore",
         "modifiedOn": "#ignore",
         "documents":
             [{
@@ -108,7 +108,7 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
             "id":201,
             "name":"defaultPublicDocument",
             "versionId":null,
-            "added":"2019-02-14T13:41:08.499Z",
+            "added":"#ignore",
             "tags":[],
             "thumbnail":null,
             "versions":[{"id":201,"added":"2019-02-14T13:41:08.499Z","createdBy":"onCourse Administrator","fileName":"defaultPublicDocument.txt","mimeType":"text/plain","size":"21 b","url":null,"thumbnail":null}],
