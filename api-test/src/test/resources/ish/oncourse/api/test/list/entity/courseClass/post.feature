@@ -157,7 +157,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "canceledEnrolmentsCount": 0,
         "failedEnrolmentsCount": 0,
         "tags": [{"id": 231,"name": "class1","status": null,"system": null,"urlPath": null,"content": null,"color": null,"weight": null,"taggedRecordsCount": null,"childrenCount": null,"created": "#ignore","modified": "#ignore","requirements": [],"childTags": []}],
-        "documents": [{"shared":true,"thumbnail":null,"access":"Private","added":"2019-02-14T13:40:12.639Z","description":"Private description","createdOn":"2019-02-14T13:40:58.100Z","tags":[],"attachmentRelations":"#ignore","versionId":null,"modifiedOn":"#ignore","removed":false,"attachedRecordsCount":"#ignore","versions":[{"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"2019-02-14T13:40:12.639Z","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}],"name":"defaultPrivateDocument","id":200}],
+        "documents": [
+        {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":"#ignore","tags":[],"attachmentRelations":"#ignore","versionId":null,"modifiedOn":"#ignore","removed":false,"attachedRecordsCount":"#ignore","versions":[{"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}],"name":"defaultPrivateDocument","id":200}
+        ],
         "isTraineeship": false,
         "customFields": {}
         }
@@ -190,7 +192,6 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "customFields":{},
         "tags":[{"id":227}],
         "documents":[{"id":200}],
-        "relatedlSalables":[{"id":1001,"name":"product1","code":"prd1","type":"Product","active":true}],
         "modules":[{"id":3}],
         "dataCollectionRuleId":"101",
         "brochureDescription":"some description",
@@ -794,7 +795,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "canceledEnrolmentsCount": 0,
         "failedEnrolmentsCount": 0,
         "tags": [{"id": 231,"name": "class1","status": null,"system": null,"urlPath": null,"content": null,"color": null,"weight": null,"taggedRecordsCount": null,"childrenCount": null,"created": "#ignore","modified": "#ignore","requirements": [],"childTags": []}],
-        "documents": [{"shared":true,"thumbnail":null,"access":"Private","added":"2019-02-14T13:40:12.639Z","description":"Private description","createdOn":"2019-02-14T13:40:58.100Z","tags":[],"attachmentRelations":"#ignore","versionId":null,"modifiedOn":"#ignore","removed":false,"attachedRecordsCount":null,"versions":[{"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"2019-02-14T13:40:12.639Z","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}],"name":"defaultPrivateDocument","id":200}],
+        "documents":"#iignore",
         "isTraineeship": false,
         "customFields": {}
         }
