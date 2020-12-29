@@ -3,21 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { change } from "redux-form";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
 import { Contact } from "@api/model";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { defaultContactName, getContactFullName, openContactLink } from "../utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "./ContactSelectItemRenderer";
-import { State } from "../../../../reducers/state";
-import {
- clearContacts, clearContactsSearch, getContacts, setContactsSearch
-} from "../actions";
 
 const RelationsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
   const { row, relationTypes } = props;
@@ -38,32 +32,20 @@ const RelationsHeaderBase: React.FunctionComponent<any> = React.memo((props: any
 
 export const RelationsHeader = RelationsHeaderBase;
 
-export const RelationsContentBase: React.FunctionComponent<any> = React.memo((props: any) => {
+export const RelationsContent: React.FunctionComponent<any> = React.memo((props: any) => {
   const {
     row,
     classes,
     relationTypes,
     item,
-    contacts,
-    contactsLoading,
-    contactsRowsCount,
-    getContacts,
-    setContactsSearch,
-    clearContactsSearch,
     form,
     dispatch,
-    contactFullName,
-    clearContacts
+    contactFullName
   } = props;
 
   const { relationId } = row;
 
   const isReverseRelation = String(relationId).includes("r");
-
-  useEffect(() => {
-    setContactsSearch("");
-    return () => clearContactsSearch();
-  }, []);
 
   const getUniqueRelationTypeItems = useCallback(() => {
     let uniqueLabels = [];
@@ -109,6 +91,7 @@ export const RelationsContentBase: React.FunctionComponent<any> = React.memo((pr
       <Grid item xs={12} className={classes.select1}>
         <FormField
           type="remoteDataSearchSelect"
+          entity="Contact"
           name={`${item}.relatedContactId`}
           label="Related contact"
           selectValueMark="id"
@@ -118,12 +101,6 @@ export const RelationsContentBase: React.FunctionComponent<any> = React.memo((pr
           labelAdornment={
             <LinkAdornment linkHandler={openContactLink} link={row.relatedContactId} disabled={!row.relatedContactId} />
           }
-          items={contacts || []}
-          onSearchChange={setContactsSearch}
-          onLoadMoreRows={getContacts}
-          onClearRows={clearContacts}
-          loading={contactsLoading}
-          remoteRowCount={contactsRowsCount}
           itemRenderer={ContactSelectItemRenderer}
           rowHeight={55}
           required
@@ -145,18 +122,3 @@ export const RelationsContentBase: React.FunctionComponent<any> = React.memo((pr
     </Grid>
   );
 });
-
-const mapStateToProps = (state: State) => ({
-  contacts: state.contacts.items,
-  contactsLoading: state.contacts.loading,
-  contactsRowsCount: state.contacts.rowsCount
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getContacts: (offset?: number) => dispatch(getContacts(offset, null, true)),
-    clearContacts: () => dispatch(clearContacts()),
-    setContactsSearch: (search: string) => dispatch(setContactsSearch(search)),
-    clearContactsSearch: () => dispatch(clearContactsSearch())
-  });
-
-export const RelationsContent = connect<any, any, any>(mapStateToProps, mapDispatchToProps)(RelationsContentBase);

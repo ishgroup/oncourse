@@ -13,17 +13,13 @@ import {
 } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import { ClassCost, CourseClassTutor, DefinedTutorRole } from "@api/model";
-import { format } from "date-fns";
 import uniqid from "uniqid";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { ClassCostExtended, CourseClassExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { State } from "../../../../../reducers/state";
-import { clearContacts, getContacts, setTutorsSearch } from "../../../contacts/actions";
-import { StringArgFunction, NumberArgFunction } from "../../../../../model/common/CommonFunctions";
-import { ContactsState } from "../../../contacts/reducers";
+import { StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { contactLabelCondition } from "../../../contacts/utils";
 import CourseClassTutorsRenderer from "./CourseClassTutorsRenderer";
-import { DD_MM_YYYY_SLASHED } from "../../../../../common/utils/dates/format";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import CourseClassTutorService from "./services/CourseClassTutorService";
@@ -36,12 +32,7 @@ import history from "../../../../../constants/History";
 
 export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {
   values?: CourseClassExtended;
-  getTutors?: NumberArgFunction;
-  setTutorsSearch?: StringArgFunction;
   setTutorNamesWarnings?: (warnings: StringKeyAndValueObject) => void;
-  tutors?: ContactsState["items"];
-  tutorsLoading?: boolean;
-  tutorsRowsCount?: number;
   tutorRoles?: any;
   tutorNamesWarnings?: StringKeyAndValueObject;
   currencySymbol?: string;
@@ -49,7 +40,6 @@ export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {
   setCourseClassBudgetModalOpened?: (opened: boolean, onCostRate?: number) => void;
   expandedBudget?: string[];
   expandBudgetItem?: StringArgFunction;
-  clearTutors?: any;
 }
 
 const TutorInitial: CourseClassTutor = {
@@ -66,11 +56,6 @@ const TutorInitial: CourseClassTutor = {
 const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
   ({
     values,
-    getTutors,
-    setTutorsSearch,
-    tutors,
-    tutorsLoading,
-    tutorsRowsCount,
     tutorRoles,
     twoColumn,
     dispatch,
@@ -82,8 +67,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
     tutorNamesWarnings,
     setCourseClassBudgetModalOpened,
     expandedBudget,
-    expandBudgetItem,
-    clearTutors
+    expandBudgetItem
   }) => {
     const [expanded, setExpanded] = useState(null);
 
@@ -233,12 +217,6 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
             activeTutorRoles={activeTutorRoles}
             addTutorWage={addTutorWage}
             tutorNamesWarnings={tutorNamesWarnings}
-            tutorsLoading={tutorsLoading}
-            tutorsRowsCount={tutorsRowsCount}
-            getTutors={getTutors}
-            clearTutors={clearTutors}
-            setTutorsSearch={setTutorsSearch}
-            tutors={tutors}
             currencySymbol={currencySymbol}
             latestSession={latestSession}
             budget={values.budget}
@@ -249,22 +227,12 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
   }
 );
 
-const today = format(new Date(), DD_MM_YYYY_SLASHED);
-
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getTutors: (offset?: number) => dispatch(
-        getContacts(offset, "firstName,lastName,email,birthDate,tutor.dateFinished,tutor.wwChildrenStatus", true)
-      ),
-    clearTutors: () => dispatch(clearContacts()),
-    setTutorsSearch: (search: string) => dispatch(setTutorsSearch(`(tutor.dateFinished > ${today} or tutor.dateFinished is null) and ~"${search}"`)),
-    setTutorNamesWarnings: warnings => dispatch(setCourseClassTutorNamesWarnings(warnings)),
-    setCourseClassBudgetModalOpened: (opened, onCostRate) => dispatch(setCourseClassBudgetModalOpened(opened, onCostRate))
-  });
+  setTutorNamesWarnings: warnings => dispatch(setCourseClassTutorNamesWarnings(warnings)),
+  setCourseClassBudgetModalOpened: (opened, onCostRate) => dispatch(setCourseClassBudgetModalOpened(opened, onCostRate))
+});
 
 const mapStateToProps = (state: State) => ({
-  tutors: state.contacts.items,
-  tutorsLoading: state.contacts.loading,
-  tutorsRowsCount: state.contacts.rowsCount,
   tutorNamesWarnings: state.courseClass.tutorNamesWarnings,
   latestSession: state.courseClass.latestSession,
   tutorRoles: state.preferences.tutorRoles,

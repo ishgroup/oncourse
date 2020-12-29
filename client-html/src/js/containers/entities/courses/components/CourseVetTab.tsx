@@ -13,18 +13,15 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { Module, Qualification } from "@api/model";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../reducers/state";
-import { clearPlainQualificationItems, getPlainQualifications, setPlainQualificationSearch } from "../../qualifications/actions";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import QualificationListItemRenderer from "../../qualifications/components/QualificationListItemRenderer";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { QualificationState } from "../../qualifications/reducers";
 import {
   AnyArgFunction,
   BooleanArgFunction,
-  NumberArgFunction,
   StringArgFunction
 } from "../../../../model/common/CommonFunctions";
 import { clearModuleItems, getModules, setModuleSearch } from "../../modules/actions";
@@ -37,17 +34,11 @@ const getQualificationLabel = (qal: Qualification) => `${qal.title}, ${qal.natio
 
 interface CourseVetTab extends EditViewProps<CourseExtended> {
   classes?: any;
-  qualifications?: QualificationState["items"];
-  qualificationsLoading?: boolean;
-  qualificationsRowsCount?: QualificationState["rowsCount"];
-  setQualificationsSearch?: StringArgFunction;
-  getPlainQualifications?: NumberArgFunction;
   setModuleSearch?: StringArgFunction;
   getModules?: AnyArgFunction;
   modulesPending?: boolean;
   moduleItems?: ModulesState["items"];
   clearModuleSearch?: BooleanArgFunction;
-  clearPlainQualificationItems?: any;
 }
 
 const transformModule = (module: Module): NestedListItem => ({
@@ -67,19 +58,13 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
     values,
     dispatch,
     form,
-    qualifications,
-    qualificationsLoading,
-    qualificationsRowsCount,
-    setQualificationsSearch,
-    getPlainQualifications,
     getModules,
     setModuleSearch,
     classes,
     submitSucceeded,
     moduleItems,
     modulesPending,
-    clearModuleSearch,
-    clearPlainQualificationItems
+    clearModuleSearch
   } = props;
 
   const onQualificationCodeChange = useCallback(
@@ -161,17 +146,12 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
           type="remoteDataSearchSelect"
+          entity="Qualification"
           name="qualificationId"
           label="Qualification"
           selectValueMark="id"
           defaultDisplayValue={values.qualTitle}
           labelAdornment={<LinkAdornment link={values.qualificationId} linkHandler={openQualificationLink} />}
-          items={qualifications || []}
-          onSearchChange={setQualificationsSearch}
-          onLoadMoreRows={getPlainQualifications}
-          onClearRows={clearPlainQualificationItems}
-          loading={qualificationsLoading}
-          remoteRowCount={qualificationsRowsCount}
           onInnerValueChange={onQualificationCodeChange}
           itemRenderer={QualificationListItemRenderer}
           selectLabelCondition={getQualificationLabel}
@@ -257,20 +237,14 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  qualifications: state.qualification.items,
-  qualificationsLoading: state.qualification.loading,
-  qualificationsRowsCount: state.qualification.rowsCount,
   modulesPending: state.modules.loading,
   moduleItems: state.modules.items
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getPlainQualifications: (offset?: number) => dispatch(getPlainQualifications(offset, "", true)),
-    clearPlainQualificationItems: () => dispatch(clearPlainQualificationItems()),
-    setQualificationsSearch: (search: string) => dispatch(setPlainQualificationSearch(`~"${search}"`)),
-    getModules: (offset?: number) => dispatch(getModules(offset, "nationalCode,title,nominalHours", true)),
-    setModuleSearch: (search: string) => dispatch(setModuleSearch(search)),
-    clearModuleSearch: (loading: boolean) => dispatch(clearModuleItems(loading))
-  });
+  getModules: (offset?: number) => dispatch(getModules(offset, "nationalCode,title,nominalHours", true)),
+  setModuleSearch: (search: string) => dispatch(setModuleSearch(search)),
+  clearModuleSearch: (loading: boolean) => dispatch(clearModuleItems(loading))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseVetTab);

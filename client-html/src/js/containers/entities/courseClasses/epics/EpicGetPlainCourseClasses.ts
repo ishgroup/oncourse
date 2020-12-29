@@ -21,17 +21,15 @@ const defaultCourseMap = ({ id, values }) => ({
 const request: EpicUtils.Request<any, any, any> = {
   type: GET_PLAIN_COURSE_CLASSES,
   hideLoadIndicator: true,
-  getData: ({ offset, columns, ascending }, { courseClasses: { search } }) => {
-    return EntityService.getPlainRecords(
+  getData: ({ offset, columns, ascending }, { courseClasses: { search } }) => EntityService.getPlainRecords(
       "CourseClass",
       columns || "course.name,course.code,code,feeIncGst",
-      search ? `~"${search}"` : null,
+      search,
       100,
       offset,
       "",
       ascending
-    );
-  },
+    ),
   processData: ({ rows, offset, pageSize }, s, { columns }) => {
     const items: CourseClass[] = rows.map(columns ? getCustomColumnsMap(columns) : defaultCourseMap);
 

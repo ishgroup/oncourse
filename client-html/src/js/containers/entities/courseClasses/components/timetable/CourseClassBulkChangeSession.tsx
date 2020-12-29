@@ -28,7 +28,6 @@ import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../../reducers/state";
 import { defaultContactName } from "../../../contacts/utils";
-import { getSites, setPlainSites, setPlainSitesSearch } from "../../../sites/actions";
 import { getPlainRooms } from "../../../rooms/actions";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { stubFunction } from "../../../../../common/utils/common";
@@ -106,12 +105,6 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
     selection,
     getRooms,
     rooms,
-    sites,
-    setSitesSearch,
-    sitesLoading,
-    sitesRowsCount,
-    getSites,
-    clearSites,
     bulkValues,
     sessions
   } = props;
@@ -305,17 +298,12 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
                       type="remoteDataSearchSelect"
                       name="siteId"
                       label="Site"
+                      entity="Site"
                       selectValueMark="id"
                       selectLabelMark="name"
                       selectLabelCondition={siteRoomLabel}
                       defaultDisplayValue={initial.site}
-                      items={sites}
                       onInnerValueChange={onSiteIdChange}
-                      onSearchChange={setSitesSearch}
-                      onLoadMoreRows={getSites}
-                      onClearRows={clearSites}
-                      loading={sitesLoading}
-                      remoteRowCount={sitesRowsCount}
                       rowHeight={36}
                     />
                   </Grid>
@@ -467,11 +455,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   init: () => {
     dispatch(initialize(COURSE_CLASS_BULK_UPDATE_FORM, initialValues));
   },
-  setSitesSearch: (search?: string) => dispatch(setPlainSitesSearch(`~"${search}"`)),
-  getSites: (offset?: number, search?: string) => {
-    dispatch(getSites(offset, "name,localTimezone", null, null, search));
-  },
-  clearSites: () => dispatch(setPlainSites([])),
   getRooms: (search: string) => {
     dispatch(getPlainRooms(null, null, null, null, search));
   }
@@ -479,9 +462,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: State) => ({
   bulkValues: getFormValues(COURSE_CLASS_BULK_UPDATE_FORM)(state),
-  sites: state.sites.items,
-  sitesLoading: state.sites.loading,
-  sitesRowsCount: state.sites.rowsCount,
   rooms: state.rooms.items,
   tutors: state.courseClassesBulkSession.tutors,
   selection: state.courseClassesBulkSession.selection

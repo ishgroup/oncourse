@@ -3,18 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { Application, ApplicationStatus, CourseEnrolmentType } from "@api/model";
-import { Dispatch } from "redux";
+import { Application, ApplicationStatus } from "@api/model";
 import { Grid } from "@material-ui/core";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { State } from "../../../../reducers/state";
-import { getPlainCourses, setPlainCourses, setPlainCoursesSearch } from "../../courses/actions";
-import {
- clearContacts, clearContactsSearch, getContacts, setStudentsSearch
-} from "../../contacts/actions";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
@@ -22,30 +17,11 @@ import { contactLabelCondition, defaultContactName, openContactLink } from "../.
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-interface ApplicationGeneralProps {
+interface ApplicationGeneralProps extends EditViewProps<Application> {
   classes?: any;
-  manualLink?: string;
-  twoColumn?: boolean;
   tags?: any;
-  showConfirm?: any;
-  values?: Application;
-  courses?: any[];
-  setCoursesSearch?: any;
-  getCourses?: any;
-  coursesLoading?: boolean;
-  coursesRowsCount?: number;
-  contacts?: any[];
-  setContactsSearch?: any;
-  getContacts?: any;
-  contactsLoading?: boolean;
-  contactsRowsCount?: number;
-  isNew?: boolean;
-  clearContactsSearch?: any;
-  dispatch?: any;
-  form?: string;
-  clearContacts?: any;
-  clearCourses?: any;
 }
 
 const statusItems = Object.keys(ApplicationStatus)
@@ -61,39 +37,21 @@ const validateNonNegative = value => (value < 0 ? "Must be non negative" : undef
 
 const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
   const {
-    classes,
     twoColumn,
     tags,
     values,
-    courses,
-    getCourses,
-    setCoursesSearch,
-    coursesLoading,
-    coursesRowsCount,
-    contacts,
-    getContacts,
-    setContactsSearch,
-    clearContactsSearch,
-    contactsLoading,
-    contactsRowsCount,
     isNew,
     dispatch,
-    form,
-    clearContacts,
-    clearCourses
+    form
   } = props;
-
-  useEffect(() => {
-    setContactsSearch("");
-
-    return () => clearContactsSearch();
-  }, []);
 
   return (
     <div className="generalRoot">
       <div className="mt-2">
         <FormField
           type="remoteDataSearchSelect"
+          entity="Contact"
+          aqlFilter="isStudent is true"
           name="contactId"
           label="Student"
           selectValueMark="id"
@@ -107,12 +65,6 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
               disabled={!values || !values.contactId}
             />
           )}
-          items={contacts || []}
-          onSearchChange={setContactsSearch}
-          onLoadMoreRows={getContacts}
-          onClearRows={clearContacts}
-          loading={contactsLoading}
-          remoteRowCount={contactsRowsCount}
           itemRenderer={ContactSelectItemRenderer}
           rowHeight={55}
           required
@@ -121,11 +73,14 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
       <div>
         <FormField
           type="remoteDataSearchSelect"
+          entity="Course"
+          aqlFilter="enrolmentType is ENROLMENT_BY_APPLICATION"
           name="courseId"
           label="Course"
           selectValueMark="id"
           selectLabelMark="name"
           selectFilterCondition={courseFilterCondition}
+          selectLabelCondition={courseFilterCondition}
           defaultDisplayValue={values && values.courseName}
           labelAdornment={(
             <LinkAdornment
@@ -134,13 +89,6 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
               disabled={!values || !values.courseId}
             />
           )}
-          items={courses || []}
-          onSearchChange={setCoursesSearch}
-          onLoadMoreRows={getCourses}
-          onClearRows={clearCourses}
-          loading={coursesLoading}
-          remoteRowCount={coursesRowsCount}
-          selectLabelCondition={courseFilterCondition}
           disabled={!isNew}
           itemRenderer={CourseItemRenderer}
           rowHeight={55}
@@ -205,25 +153,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
 };
 
 const mapStateToProps = (state: State) => ({
-  tags: state.tags.entityTags["Application"],
-  courses: state.courses.items,
-  coursesSearch: state.courses.search,
-  coursesLoading: state.courses.loading,
-  coursesRowsCount: state.courses.rowsCount,
-  contacts: state.contacts.items,
-  contactsSearch: state.contacts.search,
-  contactsLoading: state.contacts.loading,
-  contactsRowsCount: state.contacts.rowsCount
+  tags: state.tags.entityTags["Application"]
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getCourses: (offset?: number) => dispatch(getPlainCourses(offset, "code,name", true)),
-    clearCourses: () => dispatch(setPlainCourses([])),
-    setCoursesSearch: (search: string) => dispatch(setPlainCoursesSearch(`~"${search}"`, CourseEnrolmentType["Enrolment by application"])),
-    getContacts: (offset?: number) => dispatch(getContacts(offset, null, true)),
-    clearContacts: () => dispatch(clearContacts()),
-    setContactsSearch: (search: string) => dispatch(setStudentsSearch(search)),
-    clearContactsSearch: () => dispatch(clearContactsSearch())
-  });
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ApplicationGeneral);
+export default connect<any, any, any>(mapStateToProps)(ApplicationGeneral);

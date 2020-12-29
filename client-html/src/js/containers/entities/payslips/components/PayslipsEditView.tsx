@@ -21,7 +21,6 @@ import { getListNestedEditRecord } from "../../../../common/components/list-view
 import { getEntityTags } from "../../../tags/actions";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import PayslipPaylineRenderrer from "./PayslipPaylineRenderrer";
-import { clearContacts, getContacts, setTutorsSearch } from "../../contacts/actions";
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
@@ -124,15 +123,8 @@ class PayslipsEditView extends React.PureComponent<any, any> {
       isNew,
       values,
       tags,
-      tutors,
-      tutorsLoading,
-      tutorsRowsCount,
-      getTutors,
-      setTutorsSearch,
       twoColumn,
-      showConfirm,
-      currency,
-      clearTutors
+      currency
     } = this.props;
 
     const total = values && values.paylines.reduce(this.calculateTotal, 0);
@@ -152,6 +144,8 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                 <Grid item xs={12}>
                   <FormField
                     type="remoteDataSearchSelect"
+                    entity="Contact"
+                    aqlFilter="isTutor is true"
                     name="tutorId"
                     label="Tutor"
                     selectValueMark="id"
@@ -160,12 +154,6 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                     labelAdornment={
                       <LinkAdornment linkHandler={openContactLink} link={values.tutorId} disabled={!values.tutorId} />
                     }
-                    items={tutors || []}
-                    onSearchChange={setTutorsSearch}
-                    onLoadMoreRows={getTutors}
-                    onClearRows={clearTutors}
-                    loading={tutorsLoading}
-                    remoteRowCount={tutorsRowsCount}
                     disabled={!isNew}
                     onInnerValueChange={this.onTutorIdChange}
                     itemRenderer={ContactSelectItemRenderer}
@@ -176,12 +164,12 @@ class PayslipsEditView extends React.PureComponent<any, any> {
 
                 <Grid item xs={12}>
                   <FormField
-                      type="select"
-                      name="payType"
-                      label="Pay type"
-                      items={payslipPayTypes}
-                      disabled={values && values.status === "Paid/Exported"}
-                      required
+                    type="select"
+                    name="payType"
+                    label="Pay type"
+                    items={payslipPayTypes}
+                    disabled={values && values.status === "Paid/Exported"}
+                    required
                   />
                 </Grid>
 
@@ -281,10 +269,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Payslip"],
-  currency: state.currency,
-  tutors: state.contacts.items,
-  tutorsLoading: state.contacts.loading,
-  tutorsRowsCount: state.contacts.rowsCount
+  currency: state.currency
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -292,9 +277,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getNestedEditViewTags: () => {
     dispatch(getEntityTags("Payslip"));
   },
-  getTutors: (offset?: number) => dispatch(getContacts(offset, null, true)),
-  clearTutors: () => dispatch(clearContacts()),
-  setTutorsSearch: (search: string) => dispatch(setTutorsSearch(`~"${search}"`))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PayslipsEditView);

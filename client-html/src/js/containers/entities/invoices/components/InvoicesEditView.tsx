@@ -11,7 +11,7 @@ import {
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
- Contact, Currency, Account, Tax
+ Currency, Account, Tax
 } from "@api/model";
 import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -21,7 +21,6 @@ import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { validateSingleMandatoryField, validateMinMaxDate } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
 import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
-import { clearContacts, getContacts, setContactsSearch } from "../../contacts/actions";
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
@@ -30,7 +29,7 @@ import { InvoiceLines, HeaderContent } from "./InvoiceLines";
 import { formatToDateOnly } from "../../../../common/utils/dates/datesNormalizing";
 import { EditViewProps } from "../../../../model/common/ListView";
 import InvoicePaymentPlans from "./InvoicePaymentPlans";
-import { AnyArgFunction, NumberArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { InvoiceLineWithTotal, InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { setSelectedContact } from "../actions";
@@ -39,11 +38,6 @@ import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation
 import { usePrevious } from "../../../../common/utils/hooks";
 
 interface Props extends EditViewProps {
-  contacts: Contact[];
-  setContactsSearch: StringArgFunction;
-  getContacts: NumberArgFunction;
-  contactsLoading: boolean;
-  contactsRowsCount: number;
   currency: Currency;
   accounts: Account[];
   taxes: Tax[];
@@ -52,7 +46,6 @@ interface Props extends EditViewProps {
   defaultTerms: number;
   setSelectedContact: AnyArgFunction;
   selectedContact: any;
-  clearContacts?: AnyArgFunction;
 }
 
 const sortAccounts = (a: Account, b: Account) => (a.description[0].toLowerCase() > b.description[0].toLowerCase() ? 1 : -1);
@@ -63,11 +56,6 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
     values,
     dispatch,
     twoColumn,
-    contacts,
-    setContactsSearch,
-    getContacts,
-    contactsLoading,
-    contactsRowsCount,
     form,
     currency,
     syncErrors,
@@ -75,8 +63,7 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
     taxes,
     defaultTerms,
     setSelectedContact,
-    selectedContact,
-    clearContacts
+    selectedContact
   } = props;
 
   const prevId = usePrevious(values.id);
@@ -263,6 +250,7 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
       <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
           type="remoteDataSearchSelect"
+          entity="Contact"
           name="contactId"
           label="Invoice to"
           selectValueMark="id"
@@ -271,12 +259,6 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
           labelAdornment={
             <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
           }
-          items={contacts || []}
-          onSearchChange={setContactsSearch}
-          onLoadMoreRows={getContacts}
-          onClearRows={clearContacts}
-          loading={contactsLoading}
-          remoteRowCount={contactsRowsCount}
           onInnerValueChange={onContactChange}
           itemRenderer={ContactSelectItemRenderer}
           disabled={!isNew}
@@ -427,27 +409,15 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
 const mapStateToProps = (state: State) => ({
   accounts: state.accounts.items,
   currency: state.currency,
-  contacts: state.contacts.items,
-  contactsLoading: state.contacts.loading,
-  contactsRowsCount: state.contacts.rowsCount,
   taxes: state.taxes.items,
   defaultTerms: state.invoices.defaultTerms,
   selectedContact: state.invoices.selectedContact
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    openNestedEditView: (entity: string, id: number) => dispatch(getListNestedEditRecord(entity, id)),
-    getContacts: (offset?: number) => dispatch(
-        getContacts(
-          offset,
-          "firstName,lastName,email,birthDate,street,suburb,state,postcode,invoiceTerms,taxOverride.id",
-          true
-        )
-      ),
-    clearContacts: () => dispatch(clearContacts()),
-    setContactsSearch: (search: string) => dispatch(setContactsSearch(search)),
-    setSelectedContact: (selectedContact: any) => dispatch(setSelectedContact(selectedContact))
-  });
+  openNestedEditView: (entity: string, id: number) => dispatch(getListNestedEditRecord(entity, id)),
+  setSelectedContact: (selectedContact: any) => dispatch(setSelectedContact(selectedContact))
+});
 
 const Connected = connect<any, any, any>(mapStateToProps, mapDispatchToProps)(InvoiceEditView);
 

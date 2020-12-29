@@ -5,22 +5,11 @@
 
 import { Epic } from "redux-observable";
 
-import { Course, CourseEnrolmentType } from "@api/model";
+import { Course } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { GET_PLAIN_COURSES, setPlainCourses } from "../actions";
 import { getCustomColumnsMap } from "../../../../common/utils/common";
-
-const getEnrolmentTypeCriteria = (enrolmentType: string): string => {
-  switch (enrolmentType) {
-    case CourseEnrolmentType["Open enrolment"]:
-      return "enrolmentType is OPEN_FOR_ENROLMENT and ";
-    case CourseEnrolmentType["Enrolment by application"]:
-      return "enrolmentType is ENROLMENT_BY_APPLICATION and ";
-    default:
-      return "";
-  }
-};
 
 const defaultCourseMap = ({ id, values }) => ({
   id: Number(id),
@@ -35,10 +24,10 @@ const request: EpicUtils.Request<any, any, {offset?: number, columns?: string, a
   hideLoadIndicator: true,
   getData: ({
  offset, columns, ascending, pageSize
-}, { courses: { search, enrolmentTypeSearch } }) => EntityService.getPlainRecords(
+}, { courses: { search } }) => EntityService.getPlainRecords(
       "Course",
       columns || "code,name,currentlyOffered,isShownOnWeb",
-      search ? `${getEnrolmentTypeCriteria(enrolmentTypeSearch)} ${search}` : null,
+      search,
       pageSize || 100,
       offset,
       "",

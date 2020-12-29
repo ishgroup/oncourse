@@ -40,7 +40,7 @@ import {
   getDuplicateCourseClassesSessions
 } from "../../actions";
 import {
- BooleanArgFunction, NoArgFunction, NumberArgFunction, StringArgFunction
+ BooleanArgFunction, NoArgFunction
 } from "../../../../../model/common/CommonFunctions";
 import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
 import DuplicateCourseClassTimetable from "./DuplicateCourseClassTimetable";
@@ -67,12 +67,7 @@ interface Props {
   sessions?: TimetableSession[];
   disableClose?: boolean;
   hasZeroWages?: boolean;
-  courses?: any;
-  getCourses?: NumberArgFunction;
-  setCoursesSearch?: StringArgFunction;
   clearCourses?: any;
-  coursesLoading?: boolean;
-  coursesRowsCount?: number;
 }
 
 const initialValues: CourseClassDuplicate & { toDate: string } = {
@@ -110,13 +105,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
     values,
     invalid,
     disableClose,
-    hasZeroWages,
-    courses,
-    setCoursesSearch,
-    getCourses,
-    clearCourses,
-    coursesLoading,
-    coursesRowsCount
+    hasZeroWages
   } = props;
 
   const [months, setMonths] = useState<TimetableMonth[]>([]);
@@ -449,6 +438,8 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       Change course for all classes to
                       <FormField
                         type="remoteDataSearchSelect"
+                        entity="Course"
+                        aqlFilter="currentlyOffered is true"
                         name="courseId"
                         selectValueMark="id"
                         selectLabelMark="name"
@@ -456,12 +447,6 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                         selectLabelCondition={v => v.name}
                         selectFilterCondition={courseFilterCondition}
                         validate={changeCourse ? validateSingleMandatoryField : undefined}
-                        items={courses || []}
-                        onSearchChange={setCoursesSearch}
-                        onLoadMoreRows={getCourses}
-                        onClearRows={clearCourses}
-                        loading={coursesLoading}
-                        remoteRowCount={coursesRowsCount}
                         itemRenderer={CourseItemRenderer}
                         fullWidth
                         rowHeight={55}
@@ -519,7 +504,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     clearTimetable: () => dispatch(clearDuplicateCourseClassesSessions()),
     getCourses: (offset?: number) => dispatch(getPlainCourses(offset, "code,name,nextAvailableCode,reportableHours,isTraineeship", true)),
     clearCourses: () => dispatch(setPlainCourses([])),
-    setCoursesSearch: (search: string) => dispatch(setPlainCoursesSearch(search ? `~"${search}" and currentlyOffered is true` : "")),
+    setCoursesSearch: (search: string) => dispatch(setPlainCoursesSearch(search ? `~"${search}" and` : "")),
 });
 
 export default reduxForm({

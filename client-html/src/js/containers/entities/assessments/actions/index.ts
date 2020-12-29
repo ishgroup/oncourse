@@ -55,11 +55,6 @@ export const setAssessmentSearch = (search: string) => ({
   payload: { search }
 });
 
-export const clearAssessmentSearch = () => ({
-  type: SET_ASSESSMENT_SEARCH,
-  payload: { search: "" }
-});
-
 export const clearAssessmentItems = () => ({
   type: CLEAR_ASSESSMENT_ITEMS,
 });

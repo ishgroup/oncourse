@@ -20,7 +20,6 @@ import { validateSingleMandatoryField } from "../../../../common/utils/validatio
 import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
 import { formatCurrency, normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../reducers/state";
-import { getPlainCourses, setPlainCourses, setPlainCoursesSearch } from "../../courses/actions";
 import {
   getInvoiceLineCourse,
   getInvoiceLineEnrolments,
@@ -125,11 +124,6 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
     dispatch,
     form,
     taxes,
-    courses,
-    coursesLoading,
-    coursesRowsCount,
-    setCoursesSearch,
-    getCourses,
     selectedLineCourse,
     getInvoiceLineCourse,
     clearInvoiceLineCourse,
@@ -138,7 +132,6 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
     clearInvoiceLineEnrolments,
     incomeAndCosAccounts,
     courseClasses,
-    clearCourses,
     selectedContact
   } = props;
 
@@ -420,6 +413,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           <Grid item xs={12}>
             <FormField
               type="remoteDataSearchSelect"
+              entity="Course"
               name={`${item}.courseName`}
               label="Course"
               selectValueMark="name"
@@ -429,12 +423,6 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
               labelAdornment={
                 <LinkAdornment link={row.courseId} linkHandler={courseLinkHandler} disabled={!row.courseId} />
               }
-              items={courses}
-              onSearchChange={setCoursesSearch}
-              onLoadMoreRows={getCourses}
-              onClearRows={clearCourses}
-              loading={coursesLoading}
-              remoteRowCount={coursesRowsCount}
               onInnerValueChange={onCourseNameChange}
               disabled={!isNew}
               itemRenderer={CourseItemRenderer}
@@ -549,9 +537,6 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 });
 
 const mapStateToProps = (state: State) => ({
-  courses: state.courses.items,
-  coursesLoading: state.courses.loading,
-  coursesRowsCount: state.courses.rowsCount,
   courseClasses: state.invoices.selectedLineCourseClasses,
   selectedLineCourse: state.invoices.selectedLineCourse,
   selectedLineEnrolments: state.invoices.selectedLineEnrolments,
@@ -559,13 +544,10 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getCourses: (offset?: number) => dispatch(getPlainCourses(offset, "code,name", true)),
-    clearCourses: () => dispatch(setPlainCourses([])),
-    setCoursesSearch: (search: string) => dispatch(setPlainCoursesSearch(`~"${search}"`)),
-    getInvoiceLineCourse: (id: number) => dispatch(getInvoiceLineCourse(id)),
-    getInvoiceLineEnrolments: (courseClassId: number) => dispatch(getInvoiceLineEnrolments(courseClassId)),
-    clearInvoiceLineCourse: () => dispatch(setInvoiceLineCourse(null, [])),
-    clearInvoiceLineEnrolments: () => dispatch(setInvoiceLineEnrolments(null))
-  });
+  getInvoiceLineCourse: (id: number) => dispatch(getInvoiceLineCourse(id)),
+  getInvoiceLineEnrolments: (courseClassId: number) => dispatch(getInvoiceLineEnrolments(courseClassId)),
+  clearInvoiceLineCourse: () => dispatch(setInvoiceLineCourse(null, [])),
+  clearInvoiceLineEnrolments: () => dispatch(setInvoiceLineEnrolments(null))
+});
 
 export const InvoiceLines = connect<any, any, any>(mapStateToProps, mapDispatchToProps)(InvoiceLineBase);

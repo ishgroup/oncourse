@@ -49,7 +49,7 @@ const CheckoutContactSearch = React.memo<Props>(props => {
   } = props;
 
   const onSetContactsSearch = React.useCallback<any>(debounce((name, value) => {
-    setContactsSearch(value);
+    setContactsSearch(value ? `~"${value}"` : "");
     if (value) {
       getContacts(0);
     }

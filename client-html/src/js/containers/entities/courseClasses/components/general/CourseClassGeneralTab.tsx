@@ -23,12 +23,8 @@ import { validateTagsList } from "../../../../../common/components/form/simpleTa
 import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
 import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
-import {
- getPlainCourses, setPlainCourses, setPlainCoursesSearch
-} from "../../../courses/actions";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../../model/common/ListView";
-import { NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
@@ -44,17 +40,11 @@ import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   tags?: Tag[];
-  getCourses?: NumberArgFunction;
-  setCoursesSearch?: StringArgFunction;
   showMessage?: (message: AppMessage) => void;
-  courses?: any;
-  coursesLoading?: boolean;
-  coursesRowsCount?: number;
   classes?: any;
   clearActionsQueue?: any;
   enrolments?: any;
   tutorRoles?: any;
-  clearCourses?: any;
 }
 
 const CourseClassGeneralTab = React.memo<Props>(
@@ -62,11 +52,6 @@ const CourseClassGeneralTab = React.memo<Props>(
     tags,
     twoColumn,
     values,
-    getCourses,
-    setCoursesSearch,
-    courses,
-    coursesLoading,
-    coursesRowsCount,
     isNew,
     manualLink,
     rootEntity,
@@ -77,8 +62,7 @@ const CourseClassGeneralTab = React.memo<Props>(
     form,
     showMessage,
     toogleFullScreenEditView,
-    tutorRoles,
-     clearCourses
+    tutorRoles
   }) => {
     const [classCodeError, setClassCodeError] = useState(null);
     const [showAllWeeks, setShowAllWeeks] = useState(false);
@@ -186,17 +170,12 @@ const CourseClassGeneralTab = React.memo<Props>(
     const courseIdField = (
       <FormField
         type="remoteDataSearchSelect"
+        entity="Course"
         name="courseId"
         selectValueMark="id"
         selectLabelMark="name"
         selectFilterCondition={courseFilterCondition}
         defaultDisplayValue={values && values.courseName}
-        items={courses || []}
-        onSearchChange={setCoursesSearch}
-        onLoadMoreRows={getCourses}
-        onClearRows={clearCourses}
-        loading={coursesLoading}
-        remoteRowCount={coursesRowsCount}
         itemRenderer={CourseItemRenderer}
         disabled={!isNew}
         props={twoColumn ? courseIdFieldTwoColumnProps : courseIdFieldThreecolumnProps}
@@ -446,9 +425,6 @@ const CourseClassGeneralTab = React.memo<Props>(
 );
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getCourses: (offset?: number) => dispatch(getPlainCourses(offset, "code,name,nextAvailableCode,reportableHours,isTraineeship", true)),
-  clearCourses: () => dispatch(setPlainCourses([])),
-  setCoursesSearch: (search: string) => dispatch(setPlainCoursesSearch(search ? `~"${search}"` : "")),
   showMessage: message => dispatch(showMessage(message))
 });
 

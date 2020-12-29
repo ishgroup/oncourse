@@ -48,7 +48,9 @@ export const LinkAdornment: React.FC<Props> = ({
   );
 };
 
-export const SettingsAdornment: React.FC<Props> = ({ link, linkHandler, clickHandler, className, disabled }) => {
+export const SettingsAdornment: React.FC<Props> = ({
+ link, linkHandler, clickHandler, className, disabled 
+}) => {
   const onClick = useCallback(e => (clickHandler ? clickHandler(e) : linkHandler(link)), [
     link,
     linkHandler,
