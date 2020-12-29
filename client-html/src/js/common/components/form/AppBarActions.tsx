@@ -34,6 +34,7 @@ interface FormSettingsAction {
   icon: React.ReactNode;
   tooltip: string;
   confirmText?: string;
+  confirmButtonText?: string;
   disabled?: boolean;
   tooltipError?: boolean;
 }
@@ -41,15 +42,15 @@ interface FormSettingsAction {
 interface Props {
   actions: FormSettingsAction[];
   classes?: any;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 const AppBarActions = React.memo<Props>(({ actions, classes, openConfirm }) => {
   const [opened, setOpened] = useState<boolean>(false);
 
-  const onClickAction = useCallback((action, confirmText) => {
+  const onClickAction = useCallback((action, confirmText, confirmButtonText) => {
     if (confirmText) {
-      openConfirm(action, confirmText);
+      openConfirm(action, confirmText, confirmButtonText);
       setOpened(false);
       return;
     }
@@ -97,7 +98,7 @@ const AppBarActions = React.memo<Props>(({ actions, classes, openConfirm }) => {
             FabProps={{
               disabled: item.disabled
             }}
-            onClick={() => onClickAction(item.action, item.confirmText)}
+            onClick={() => onClickAction(item.action, item.confirmText, item.confirmButtonText)}
           />
         ))}
       </SpeedDial>
@@ -107,7 +108,7 @@ const AppBarActions = React.memo<Props>(({ actions, classes, openConfirm }) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
   };
 };
 

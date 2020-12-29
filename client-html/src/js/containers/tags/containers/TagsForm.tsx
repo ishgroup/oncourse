@@ -55,7 +55,7 @@ interface Props {
   tags?: FormTag[];
   isNew?: boolean;
   redirectOnDelete?: () => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 interface FormProps extends Props {
@@ -331,7 +331,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       dispatch(change("TagsForm", "childTags", clone.childTags));
     };
 
-    openConfirm(onConfirm, message);
+    openConfirm(onConfirm, message, "DELETE");
   };
 
   removeRequirement = index => {
@@ -442,7 +442,8 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
                         action: () => this.onDelete(rootTag.id),
                         icon: <DeleteForever />,
                         confirmText: "Tag will be deleted permanently",
-                        tooltip: "Delete Tag"
+                        tooltip: "Delete Tag",
+                        confirmButtonText: "DELETE"
                       }
                     ]}
                   />
