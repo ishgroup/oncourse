@@ -40,7 +40,7 @@ interface Props {
   onDelete: (id: string) => void;
   form: string;
   onUpdate: (concessionTypes: ConcessionType[]) => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 class ConcessionTypesBaseForm extends React.Component<Props, any> {
