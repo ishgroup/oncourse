@@ -8,7 +8,6 @@ import com.intuit.karate.Config;
 import com.intuit.karate.ScriptValue;
 import com.intuit.karate.core.ScenarioContext;
 import com.intuit.karate.http.*;
-import com.intuit.karate.http.jersey.LoggingInterceptor;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
