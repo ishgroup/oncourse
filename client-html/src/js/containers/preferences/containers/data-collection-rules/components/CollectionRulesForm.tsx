@@ -274,7 +274,8 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                       icon: <DeleteForever />,
 
                       tooltip: "Delete form",
-                      confirmText: "Rule will be deleted permanently"
+                      confirmText: "Rule will be deleted permanently",
+                      confirmButtonText: "DELETE"
                     }
                   ]}
                 />

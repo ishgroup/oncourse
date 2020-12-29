@@ -125,7 +125,8 @@ const PdfBackgroundsForm = React.memo<Props>(
                     icon: <DeleteForever />,
                     confirm: true,
                     tooltip: "Delete PDF background",
-                    confirmText: "PDF background will be deleted permanently"
+                    confirmText: "PDF background will be deleted permanently",
+                    confirmButtonText: "DELETE"
                   }
                 ]}
               />

@@ -152,7 +152,8 @@ const ImportTemplatesForm = React.memo<Props>(
                     icon: <DeleteForever />,
                     confirm: true,
                     tooltip: "Delete import template",
-                    confirmText: "Import template will be deleted permanently"
+                    confirmText: "Import template will be deleted permanently",
+                    confirmButtonText: "DELETE"
                   },
                   {
                     action: handleRun,

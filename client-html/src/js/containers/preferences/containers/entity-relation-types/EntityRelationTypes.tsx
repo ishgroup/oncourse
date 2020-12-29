@@ -31,7 +31,7 @@ interface Props {
     discounts: Discount[];
     timestamps: Date[];
     fetch: Fetch;
-    openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+    openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 class EntityRelationTypes extends React.Component<Props, any> {
@@ -93,7 +93,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
         updateEntityRelationTypes: (entityRelationTypes: EntityRelationType[]) =>
             dispatch(updateEntityRelationTypes(entityRelationTypes)),
         deleteEntityRelationType: (id: string) => dispatch(deleteEntityRelationType(id)),
-        openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+        openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
     };
 };
 

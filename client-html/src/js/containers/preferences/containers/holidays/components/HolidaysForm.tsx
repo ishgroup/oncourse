@@ -56,7 +56,7 @@ interface Props {
   dispatch: any;
   getFormState: any;
   handleSubmit: any;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 class HolidaysBaseForm extends React.Component<Props, any> {
@@ -181,7 +181,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from holidays list");
+    openConfirm(onConfirm, "This item will be removed from holidays list", "DELETE");
   };
 
   render() {

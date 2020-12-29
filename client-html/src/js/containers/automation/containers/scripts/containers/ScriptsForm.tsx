@@ -356,7 +356,8 @@ const ScriptsForm = React.memo<Props>(props => {
                       action: handleDelete,
                       icon: <DeleteForever />,
                       tooltip: "Delete script",
-                      confirmText: "Script component will be deleted permanently"
+                      confirmText: "Script component will be deleted permanently",
+                      confirmButtonText: "DELETE"
                     }
                   ]}
                 />

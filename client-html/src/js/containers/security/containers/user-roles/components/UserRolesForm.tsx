@@ -151,7 +151,8 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
                         action: () => this.onDelete(id),
                         icon: <DeleteForever />,
                         tooltip: "Delete User Role",
-                        confirmText: "User Role will be deleted permanently"
+                        confirmText: "User Role will be deleted permanently",
+                        confirmButtonText: "DELETE"
                       }
                     ]}
                   />
