@@ -64,7 +64,7 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         }
         """
 
-        And match $.linkedSalables contains [{"id":1,"name":"Course1","code":"course1-1","active":false,"type":"Class","expiryDate":null}]
+        And match $.linkedSalables contains [{"expiryDate":null,"entityToId":null,"code":"course1-1","entityFromId":null,"name":"Course1","active":false,"relationId":null,"id":1,"type":"Class"}]
 
 
 
@@ -102,7 +102,7 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         }
         """
 
-        And match $.linkedSalables contains [{"id":1003,"name":"Membership#1","code":"SKU01","active":true,"type":"Membership","expiryDate":null},{"id":1001,"name":"product1","code":"prd1","active":true,"type":"Product","expiryDate":null},{"id":1002,"name":"voucherType1","code":"VOU1","active":true,"type":"Voucher","expiryDate":null}]
+        And match $.linkedSalables contains [{"expiryDate":null,"entityToId":null,"code":"SKU01","entityFromId":null,"name":"Membership#1","active":true,"relationId":null,"id":1003,"type":"Membership"},{"expiryDate":null,"entityToId":null,"code":"prd1","entityFromId":null,"name":"product1","active":true,"relationId":null,"id":1001,"type":"Product"},{"expiryDate":null,"entityToId":null,"code":"VOU1","entityFromId":null,"name":"voucherType1","active":true,"relationId":null,"id":1002,"type":"Voucher"}]
 
 
 
