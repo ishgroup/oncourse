@@ -97,7 +97,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     getAccounts: () => dispatch(getPlainAccounts()),
     updatePaymentTypes: (paymentTypes: PaymentMethod[]) => dispatch(updatePaymentTypes(paymentTypes)),
     deletePaymentType: (id: string) => dispatch(deletePaymentType(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
   };
 };
 

@@ -32,7 +32,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     onInit: () => dispatch(getHolidays()),
     onSave: (items: HoldayItemModel[]) => dispatch(saveHolidays(items)),
     onDelete: (id: number) => dispatch(deleteHolidaysItem(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
   });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Holidays);

@@ -37,7 +37,7 @@ interface Props {
   assetAccounts: any;
   touched: any;
   reset: () => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 class PaymentTypesBaseForm extends React.Component<Props, any> {
@@ -151,13 +151,13 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from funding contracts list");
+    openConfirm(onConfirm, "This item will be removed from funding contracts list", "DELETE");
   };
 
   render() {
     const {
- classes, handleSubmit, data, assetAccounts, dirty, created, modified, invalid
-} = this.props;
+     classes, handleSubmit, data, assetAccounts, dirty, created, modified, invalid
+    } = this.props;
 
     return (
       <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>

@@ -226,7 +226,8 @@ const PdfReportsForm = React.memo<Props>(
                     icon: <DeleteForever />,
                     confirm: true,
                     tooltip: "Delete PDF template",
-                    confirmText: "PDF template will be deleted permanently"
+                    confirmText: "PDF template will be deleted permanently",
+                    confirmButtonText: "DELETE"
                   }
                 ]}
               />

@@ -679,7 +679,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
     openConfirm(() => {
       onDelete(id);
-    }, "Record will be permanently deleted. This action can not be undone");
+    }, "Record will be permanently deleted. This action can not be undone",
+      "DELETE");
   };
 
   onDeleteFilter = (id: number, entity: string, checked: boolean) => {

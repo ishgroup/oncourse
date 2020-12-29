@@ -77,7 +77,8 @@ class SecurityLevels extends React.Component<any, any> {
                     action: () => {},
                     icon: <DeleteForever />,
 
-                    confirmText: "Form will be deleted permanently"
+                    confirmText: "Form will be deleted permanently",
+                    confirmButtonText: "DELETE"
                   }
                 ]}
               />

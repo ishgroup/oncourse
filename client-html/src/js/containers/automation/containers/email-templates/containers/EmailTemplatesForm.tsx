@@ -173,7 +173,8 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   icon: <DeleteForever />,
                   confirm: true,
                   tooltip: "Delete message template",
-                  confirmText: "Message template will be deleted permanently"
+                  confirmText: "Message template will be deleted permanently",
+                  confirmButtonText: "DELETE"
                 }
               ]}
             />

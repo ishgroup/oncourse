@@ -23,7 +23,7 @@ interface Props {
   data: ContactRelationType[];
   timestamps: Date[];
   fetch: Fetch;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 class ContactRelationTypes extends React.Component<Props, any> {
@@ -75,7 +75,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     updateContactRelationTypes: (contactRelationTypes: ContactRelationType[]) =>
       dispatch(updateContactRelationTypes(contactRelationTypes)),
     deleteContactRelationType: (id: string) => dispatch(deleteContactRelationType(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
   };
 };
 

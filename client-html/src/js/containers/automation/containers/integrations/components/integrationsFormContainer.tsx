@@ -56,7 +56,7 @@ interface Props {
   onUpdate: (id: string, item: Integration) => void;
   onCreate: (item: Integration) => void;
   onDelete: (id: string) => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
   classes: any;
   dispatch: any;
   formName: any;
@@ -115,8 +115,8 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
 
   handleDelete = () => {
     const {
- onDelete, history, integrations, openConfirm
-} = this.props;
+     onDelete, history, integrations, openConfirm
+    } = this.props;
 
     const item = this.state.integrationItem;
 
@@ -148,7 +148,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
         });
     };
 
-    openConfirm(onConfirm, item && `${item.name} will be removed from integrations list`);
+    openConfirm(onConfirm, item && `${item.name} will be removed from integrations list`, "DELETE");
   };
 
   validateNameField = value => {
@@ -246,7 +246,8 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
                 {
                   action: this.handleDelete,
                   icon: <DeleteForever />,
-                  tooltip: "Delete Integration"
+                  tooltip: "Delete Integration",
+                  confirmButtonText: "DELETE"
                 }
               ]}
             />
@@ -335,7 +336,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     onUpdate: (id: string, item: Integration) => dispatch(updateIntegration(id, item)),
     onCreate: (item: Integration) => dispatch(createIntegration(item)),
     onDelete: (id: string) => dispatch(deleteIntegrationItem(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
   });
 
 export default connect<any, any, any>(

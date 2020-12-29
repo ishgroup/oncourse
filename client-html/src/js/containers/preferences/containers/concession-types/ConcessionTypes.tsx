@@ -23,7 +23,7 @@ interface Props {
   data: ConcessionType[];
   timestamps: Date[];
   fetch: Fetch;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 class ConcessionTypes extends React.Component<Props, any> {
@@ -74,7 +74,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     getTypes: () => dispatch(getConcessionTypes()),
     updateConcessionTypes: (taxTypes: ConcessionType[]) => dispatch(updateConcessionTypes(taxTypes)),
     deleteConcessionType: (id: string) => dispatch(deleteConcessionType(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
   };
 };
 

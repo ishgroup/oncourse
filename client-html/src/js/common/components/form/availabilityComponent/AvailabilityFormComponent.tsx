@@ -36,7 +36,7 @@ const deleteRule = (dispatch: any, showConfirm: any, form: string, field: any, i
   showConfirm(
     () => dispatch(arrayRemove(form, "rules", index)),
     "This item will be removed from Availability Rules list",
-    "AGREE"
+    "DELETE"
   );
 };
 

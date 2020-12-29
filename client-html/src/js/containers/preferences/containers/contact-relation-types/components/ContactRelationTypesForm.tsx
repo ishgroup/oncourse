@@ -34,7 +34,7 @@ interface Props {
   invalid: boolean;
   onDelete: (id: string) => void;
   onUpdate: (contactRelationTypes: ContactRelationType[]) => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 class ContactRelationTypesBaseForm extends React.Component<Props, any> {
@@ -143,7 +143,7 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from types list");
+    openConfirm(onConfirm, "This item will be removed from types list", "DELETE");
   };
 
   render() {
