@@ -506,7 +506,7 @@ const CourseClassBudgetTab = React.memo<Props>(
             }
           },
           "Budget item will be deleted permanently",
-          "Agree"
+          "DELETE"
         );
       },
       [values.budget, form]

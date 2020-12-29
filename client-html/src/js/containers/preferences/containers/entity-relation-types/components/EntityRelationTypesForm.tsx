@@ -35,7 +35,7 @@ interface Props {
   invalid: boolean;
   onDelete: (id: string) => void;
   onUpdate: (entityRelationTypes: EntityRelationType[]) => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 class EntityRelationTypesBaseForm extends React.Component<Props, any> {
@@ -148,7 +148,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from types list");
+    openConfirm(onConfirm, "This item will be removed from types list", "DELETE");
   };
 
   render() {

@@ -99,7 +99,8 @@ const TutorRolesForm = React.memo<Props>(
                   icon: <DeleteForever />,
                   confirm: true,
                   tooltip: "Delete tutor role",
-                  confirmText: "Role will be deleted permanently"
+                  confirmText: "Role will be deleted permanently",
+                  confirmButtonText: "DELETE"
                 }
               ]}
             />

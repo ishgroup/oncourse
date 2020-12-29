@@ -27,7 +27,7 @@ interface Props {
   accounts: Account[];
   timestamps: Date[];
   fetch: Fetch;
-  openConfirm: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 class TaxTypes extends React.Component<Props, any> {
@@ -96,7 +96,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     getAccounts: () => dispatch(getPlainAccounts()),
     updateTaxTypes: (taxTypes: Tax[]) => dispatch(updateTaxTypes(taxTypes)),
     deleteTaxType: (id: string) => dispatch(deleteTaxType(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
   };
 };
 

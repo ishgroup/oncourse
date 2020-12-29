@@ -46,7 +46,7 @@ interface Props {
   initialized: boolean;
   hasLicence: boolean;
   timestamps: Date[];
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
   fetch?: Fetch;
 }
 
@@ -168,13 +168,13 @@ class FundingContractsForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from funding contracts list");
+    openConfirm(onConfirm, "This item will be removed from funding contracts list", "DELETE");
   };
 
   render() {
     const {
- values, dirty, invalid, handleSubmit, hasLicence, timestamps
-} = this.props;
+     values, dirty, invalid, handleSubmit, hasLicence, timestamps
+    } = this.props;
 
     return (
       <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>

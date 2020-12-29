@@ -144,7 +144,8 @@ const ExportTemplatesForm = React.memo<Props>(
                     icon: <DeleteForever />,
                     confirm: true,
                     tooltip: "Delete export template",
-                    confirmText: "Export template will be deleted permanently"
+                    confirmText: "Export template will be deleted permanently",
+                    confirmButtonText: "DELETE"
                   }
                 ]}
               />

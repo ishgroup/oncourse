@@ -475,7 +475,8 @@ class CollectionFormContainer extends React.Component<any, any> {
                           icon: <DeleteForever />,
 
                           confirmText: "Form will be deleted permanently",
-                          tooltip: "Delete form"
+                          tooltip: "Delete form",
+                          confirmButtonText: "DELETE"
                         },
                         {
                           action: () => {

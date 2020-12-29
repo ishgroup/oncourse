@@ -36,7 +36,7 @@ interface Props {
   liabilityAccounts: any;
   dirty: boolean;
   invalid: boolean;
-  openConfirm: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 class TaxTypesBaseForm extends React.Component<Props, any> {
@@ -150,7 +150,7 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from types list");
+    openConfirm(onConfirm, "This item will be removed from types list", "DELETE");
   };
 
   render() {

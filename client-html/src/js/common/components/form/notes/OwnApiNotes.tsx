@@ -79,8 +79,8 @@ const OwnApiNotes = React.memo<Props>(
             dispatch(removeActionsFromQueue([{ entity: "Note", id: deletedNote.temporaryId }]));
             dispatch(change(form, "notes", updatedNotes));
           },
-          "This note will be removed.",
-          "REMOVE"
+          "This note will be deleted permanently.",
+          "DELETE"
         );
       },
       [values.notes]
