@@ -50,6 +50,7 @@ class AttendanceDao implements ClassRelatedDao<Attendance> {
                 .where(Attendance.SESSION.dot(Session.COURSE_CLASS).dot(CourseClass.ID).eq(courseClassId))
                 .and(Attendance.STUDENT.dot(Student.ID).in(studentIds))
                 .prefetch(Attendance.STUDENT.dot(Student.CONTACT).joint())
+                .orderBy(Attendance.ID.asc())
                 .select(context)
     }
 }
