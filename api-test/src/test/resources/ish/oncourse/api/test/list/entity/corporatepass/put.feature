@@ -185,13 +185,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "expiryDate":null,
         "invoiceEmail":"co2@gmail.com",
         "linkedDiscounts":[{"id":1001,"name":"discount1","discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.100,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableOnWeb":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"limitPreviousEnrolment":null}],
-        "linkedSalables":
-            [
-            {"id":4,"name":"Course2","code":"course2-1","active":true,"type":"Class","expiryDate":null},
-            {"id":1003,"name":"Membership#1","code":"SKU01","active":true,"type":"Membership","expiryDate":null},
-            {"id":1001,"name":"product1","code":"prd1","active":true,"type":"Product","expiryDate":null},
-            {"id":1002,"name":"voucherType1","code":"VOU1","active":true,"type":"Voucher","expiryDate":null}
-            ],
+        "linkedSalables":[{"expiryDate":null,"entityToId":null,"code":"course2-1","entityFromId":null,"name":"Course2","active":true,"relationId":null,"id":4,"type":"Class"},{"expiryDate":null,"entityToId":null,"code":"SKU01","entityFromId":null,"name":"Membership#1","active":true,"relationId":null,"id":1003,"type":"Membership"},{"expiryDate":null,"entityToId":null,"code":"prd1","entityFromId":null,"name":"product1","active":true,"relationId":null,"id":1001,"type":"Product"},{"expiryDate":null,"entityToId":null,"code":"VOU1","entityFromId":null,"name":"voucherType1","active":true,"relationId":null,"id":1002,"type":"Voucher"}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"
         }
