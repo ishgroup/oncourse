@@ -1,3 +1,5 @@
+![Server test](https://github.com/ishgroup/oncourse/workflows/Server%20test/badge.svg)  ![API test](https://github.com/ishgroup/oncourse/workflows/API%20test/badge.svg)  ![Client test](https://github.com/ishgroup/oncourse/workflows/Client%20test/badge.svg)
+
 # onCourse
 
 An open source ERP, ticketing, ecommerce and CRM system crafted for organisations who deliver training or any other event offerrings.
