@@ -6,18 +6,13 @@
 import React, { useCallback, useMemo, useRef } from "react";
 import { Dispatch } from "redux";
 import { change, Field } from "redux-form";
-import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { differenceInDays } from "date-fns";
 import { Assessment, AssessmentClass, CourseClassTutor } from "@api/model";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
-import { State } from "../../../../../reducers/state";
 import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import {
-  clearAssessmentItems, clearAssessmentSearch, getAssessments, setAssessmentSearch
-} from "../../../assessments/actions";
 import { AnyArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { stubComponent } from "../../../../../common/utils/common";
 import { defaultContactName } from "../../../contacts/utils";
@@ -43,12 +38,6 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     form,
     row,
     rows,
-    assessments,
-    assessmentsLoading,
-    assessmentsRowsCount,
-    getAssessments,
-    clearAssessmentItems,
-    setAssessmentSearch,
     item,
     tutors,
     twoColumn,
@@ -120,10 +109,9 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     });
   }, [tutors, row.contactIds]);
 
-  const availableAssestments = useMemo(() => assessments.filter(a => !rows.find(r => r.assessmentId === a.id)), [
-    assessments,
-    rows
-  ]);
+  const rowsIds = rows.map(r => r.assessmentId).filter(r => r);
+
+  const assessmentAql = `active is true${rowsIds.length ? ` and id not (${rowsIds.toString()})` : ""}`;
 
   return (
     <Grid container className="pb-3">
@@ -132,17 +120,13 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
           <Field name={`${item}.contactIds`} component={tutorsFieldStub} />
           <FormField
             type="remoteDataSearchSelect"
+            entity="Assessment"
+            aqlFilter={assessmentAql}
             name={`${item}.assessmentCode`}
             label="Code"
             selectValueMark="code"
             selectLabelMark="code"
-            items={availableAssestments || []}
             onInnerValueChange={onCodeChange}
-            onSearchChange={setAssessmentSearch}
-            onLoadMoreRows={getAssessments}
-            onClearRows={clearAssessmentItems}
-            remoteRowCount={assessmentsRowsCount}
-            loading={assessmentsLoading}
             rowHeight={36}
             fullWidth
             required
@@ -151,17 +135,13 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
             type="remoteDataSearchSelect"
+            entity="Assessment"
+            aqlFilter={assessmentAql}
             name={`${item}.assessmentName`}
             label="Name"
             selectValueMark="name"
             selectLabelMark="name"
-            items={availableAssestments || []}
             onInnerValueChange={onNameChange}
-            onSearchChange={setAssessmentSearch}
-            onLoadMoreRows={getAssessments}
-            onClearRows={clearAssessmentItems}
-            remoteRowCount={assessmentsRowsCount}
-            loading={assessmentsLoading}
             rowHeight={36}
             fullWidth
             required
@@ -196,17 +176,4 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  assessments: state.assessments.items,
-  assessmentsLoading: state.assessments.loading,
-  assessmentsRowsCount: state.assessments.rowsCount
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getAssessments: (offset?: number) => dispatch(getAssessments(offset, null, true)),
-    clearAssessmentItems: () => dispatch(clearAssessmentItems()),
-    setAssessmentSearch: (search: string) => dispatch(setAssessmentSearch(`active is true ${search ? `and ~"${search}"` : ""}`)),
-    clearAssessmentSearch: () => dispatch(clearAssessmentSearch())
-  });
-
-export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(CourseClassAssessmentItem);
+export default CourseClassAssessmentItem;

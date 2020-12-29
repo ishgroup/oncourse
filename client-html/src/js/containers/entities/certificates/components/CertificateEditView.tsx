@@ -27,36 +27,19 @@ import { validateSingleMandatoryField } from "../../../../common/utils/validatio
 import { AnyArgFunction, NumberArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
-import {
- clearContacts, clearContactsSearch, getContacts, setStudentsSearch
-} from "../../contacts/actions";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
-import { clearPlainQualificationItems, getPlainQualifications, setPlainQualificationSearch } from "../../qualifications/actions";
 import { openQualificationLink } from "../../qualifications/utils";
 import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from "../actions";
 
 interface Props extends EditViewProps {
   status?: string;
-  contacts?: Contact[];
-  contactsLoading?: boolean;
-  contactsRowsCount?: number;
-  setContactsSearch?: AnyArgFunction;
-  getContacts?: AnyArgFunction;
-  qualifications?: Contact[];
-  qualificationsLoading?: boolean;
-  qualificationsRowsCount?: number;
-  getQualifications?: AnyArgFunction;
-  setQualificationsSearch?: AnyArgFunction;
-  clearContactsSearch?: AnyArgFunction;
   getCertificateOutcomes?: NumberArgFunction;
   clearCertificateOutcomes?: AnyArgFunction;
   setCertificateOutcomesSearch?: StringArgFunction;
   studentOutcomes?: CertificateOutcome[];
   studentOutcomesLoading?: boolean;
   classes?: any;
-  clearContacts?: AnyArgFunction;
-  clearQualifications?: AnyArgFunction;
 }
 
 const styles = createStyles(({ spacing }: Theme) => ({
@@ -103,38 +86,20 @@ const validateOutcomes = value => (!value || value.length ? undefined : "At leas
 const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => {
   const {
     values,
-    contacts,
-    getContacts,
-    setContactsSearch,
-    getQualifications,
-    contactsLoading,
-    contactsRowsCount,
-    setQualificationsSearch,
     twoColumn,
     isNew,
     dispatch,
     form,
     classes,
-    qualifications,
-    qualificationsLoading,
-    qualificationsRowsCount,
-    clearContactsSearch,
     getCertificateOutcomes,
     clearCertificateOutcomes,
     studentOutcomes,
     studentOutcomesLoading,
     setCertificateOutcomesSearch,
-    submitSucceeded,
-    clearContacts,
-    clearQualifications
+    submitSucceeded
   } = props;
 
   const listRef = useRef(null);
-
-  useEffect(() => {
-    setContactsSearch("");
-    return () => clearContactsSearch();
-  }, []);
 
   useEffect(() => {
     if (isNew && window.location.search) {
@@ -315,6 +280,8 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
       <Grid item xs={12} className={clsx(classes.select1, "pb-1")}>
         <FormField
           type="remoteDataSearchSelect"
+          entity="Contact"
+          aqlFilter="isStudent is true"
           name="studentContactId"
           label="Student name"
           selectValueMark="id"
@@ -328,12 +295,6 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
               disabled={!values.studentContactId}
             />
           )}
-          items={contacts || []}
-          onSearchChange={setContactsSearch}
-          onLoadMoreRows={getContacts}
-          onClearRows={clearContacts}
-          loading={contactsLoading}
-          remoteRowCount={contactsRowsCount}
           disabled={!isNew}
           itemRenderer={ContactSelectItemRenderer}
           rowHeight={55}
@@ -350,6 +311,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
       <Grid item xs={twoColumn ? 3 : 12} className={classes.select2}>
         <FormField
           type="remoteDataSearchSelect"
+          entity="Qualification"
           name="nationalCode"
           label="National code"
           selectValueMark="nationalCode"
@@ -363,12 +325,6 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
               disabled={!values.qualificationId}
             />
           )}
-          items={qualifications || []}
-          onSearchChange={setQualificationsSearch}
-          onLoadMoreRows={getQualifications}
-          onClearRows={clearQualifications}
-          loading={qualificationsLoading}
-          remoteRowCount={qualificationsRowsCount}
           allowEmpty={!values.isQualification}
           disabled={!!values.printedOn}
         />
@@ -377,6 +333,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
       <Grid item xs={twoColumn ? 3 : 12} className={classes.select3}>
         <FormField
           type="remoteDataSearchSelect"
+          entity="Qualification"
           name="title"
           label="Qualification"
           selectValueMark="title"
@@ -390,12 +347,6 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
               disabled={!values.qualificationId}
             />
           )}
-          items={qualifications || []}
-          onSearchChange={setQualificationsSearch}
-          onLoadMoreRows={getQualifications}
-          onClearRows={clearQualifications}
-          loading={qualificationsLoading}
-          remoteRowCount={qualificationsRowsCount}
           disabled={!!values.printedOn}
           allowEmpty={!values.isQualification}
         />
@@ -509,28 +460,15 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 });
 
 const mapStateToProps = (state: State) => ({
-  contacts: state.contacts.items,
-  contactsLoading: state.contacts.loading,
-  contactsRowsCount: state.contacts.rowsCount,
-  qualifications: state.qualification.items,
-  qualificationsLoading: state.qualification.loading,
-  qualificationsRowsCount: state.qualification.rowsCount,
   studentOutcomes: state.certificates.outcomes.items,
   studentOutcomesLoading: state.certificates.outcomes.loading
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getContacts: (offset?: number) => dispatch(getContacts(offset, null, true)),
-    setContactsSearch: (search: string) => dispatch(setStudentsSearch(search)),
-    clearContactsSearch: () => dispatch(clearContactsSearch()),
-    clearContacts: () => dispatch(clearContacts()),
-    getQualifications: (offset?: number) => dispatch(getPlainQualifications(offset, "", true)),
-    clearQualifications: () => dispatch(clearPlainQualificationItems()),
-    setQualificationsSearch: (search: string) => dispatch(setPlainQualificationSearch(`~"${search}"`)),
-    getCertificateOutcomes: (studentId: number) => dispatch(getCertificateOutcomes(studentId)),
-    clearCertificateOutcomes: (loading?: boolean) => dispatch(clearCertificateOutcomes(loading)),
-    setCertificateOutcomesSearch: (search: string) => dispatch(setCertificateOutcomesSearch(search))
-  });
+  getCertificateOutcomes: (studentId: number) => dispatch(getCertificateOutcomes(studentId)),
+  clearCertificateOutcomes: (loading?: boolean) => dispatch(clearCertificateOutcomes(loading)),
+  setCertificateOutcomesSearch: (search: string) => dispatch(setCertificateOutcomesSearch(search))
+});
 
 const Connected = connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CertificateEditView));
 

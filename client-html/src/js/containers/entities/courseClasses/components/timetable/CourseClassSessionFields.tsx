@@ -18,7 +18,7 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { FormControl, FormHelperText } from "@material-ui/core";
 import clsx from "clsx";
-import { ClashType, SessionWarning, Site } from "@api/model";
+import { ClashType, SessionWarning } from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
@@ -32,8 +32,7 @@ import { defaultContactName } from "../../../contacts/utils";
 import { openSiteLink } from "../../../sites/utils";
 import { openRoomLink } from "../../../rooms/utils";
 import { getPlainRooms } from "../../../rooms/actions";
-import { AnyArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { getSites, setPlainSites, setPlainSitesSearch } from "../../../sites/actions";
+import { StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { TimetableSession } from "../../../../../model/timetable";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 
@@ -44,16 +43,10 @@ interface Props {
   tutors: CourseClassTutorExtended[];
   classes: any;
   session?: TimetableSession;
-  sites?: Site[];
   rooms?: SelectItemDefault[];
-  setSitesSearch?: StringArgFunction;
-  getSites?: AnyArgFunction;
   getRooms?: StringArgFunction;
-  sitesLoading?: boolean;
-  sitesRowsCount?: number;
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
-  clearSites?: any;
   prevTutorsState?: any;
 }
 const siteRoomLabel = site => site.name;
@@ -69,17 +62,11 @@ const CourseClassSessionFields: React.FC<Props> = ({
   dispatch,
   session,
   rooms,
-  sitesLoading,
-  sitesRowsCount,
-  setSitesSearch,
-  getSites,
   getRooms,
   tutors,
   triggerDebounseUpdate,
   classes,
-  sites,
   warnings,
-  clearSites,
   prevTutorsState
 }) => {
   const isMounted = useRef(false);
@@ -362,6 +349,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"
+          entity="Site"
           name={`sessions[${session.index}].siteId`}
           label="Site"
           selectValueMark="id"
@@ -369,13 +357,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           selectLabelCondition={siteRoomLabel}
           defaultDisplayValue={session.site}
           labelAdornment={<LinkAdornment linkHandler={openSiteLink} link={session.siteId} disabled={!session.siteId} />}
-          items={sites}
           onInnerValueChange={onSiteIdChange}
-          onSearchChange={setSitesSearch}
-          onLoadMoreRows={getSites}
-          onClearRows={clearSites}
-          loading={sitesLoading}
-          remoteRowCount={sitesRowsCount}
           className={warningTypes.Site.length ? "errorColor" : undefined}
           rowHeight={36}
           allowEmpty
@@ -421,21 +403,13 @@ const CourseClassSessionFields: React.FC<Props> = ({
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    setSitesSearch: (search?: string) => dispatch(setPlainSitesSearch(`~"${search}"`)),
-    getSites: (offset?: number, search?: string) => {
-      dispatch(getSites(offset, "name,localTimezone", null, null, search));
-    },
-    clearSites: () => dispatch(setPlainSites([])),
-    getRooms: (search: string) => {
-      dispatch(getPlainRooms(null, null, null, null, search));
-    }
-  });
+  getRooms: (search: string) => {
+    dispatch(getPlainRooms(null, null, null, null, search));
+  }
+});
 
 const mapStateToProps = (state: State, ownProps: Props) => ({
-  sites: state.sites.items,
   rooms: state.rooms.items,
-  sitesLoading: state.sites.loading,
-  sitesRowsCount: state.sites.rowsCount,
   session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {}
 });
 

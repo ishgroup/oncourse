@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseEnrolmentType, Course } from "@api/model";
+import { Course } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 
 export const GET_PLAIN_COURSES = _toRequestType("get/plain/courses");
@@ -40,14 +40,9 @@ export const getPlainCourses = (offset?: number, columns?: string, ascending?: b
   }
 });
 
-export const setPlainCoursesSearch = (search: string, enrolmentTypeSearch: CourseEnrolmentType = null) => ({
+export const setPlainCoursesSearch = (search: string) => ({
   type: SET_PLAIN_COURSES_SEARCH,
-  payload: { search, enrolmentTypeSearch }
-});
-
-export const clearPlainCoursesSearch = () => ({
-  type: CLEAR_PLAIN_COURSES_SEARCH,
-  payload: { search: "", items: [] }
+  payload: { search }
 });
 
 export const setPlainCourses = (items: Course[], offset?: number, pageSize?: number, loading?: boolean) => ({

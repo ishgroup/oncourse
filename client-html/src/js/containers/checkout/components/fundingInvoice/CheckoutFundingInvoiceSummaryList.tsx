@@ -5,7 +5,6 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import {
   FieldArray, getFormValues
 } from "redux-form";
@@ -13,7 +12,6 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { getCommonPlainRecordFromState } from "../../../../common/actions/CommonPlainRecordsActions";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
@@ -24,12 +22,6 @@ import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import ContactSelectItemRenderer from "../../../entities/contacts/components/ContactSelectItemRenderer";
 import { contactLabelCondition, getContactName, openContactLink } from "../../../entities/contacts/utils";
-import {
-  fundingInvoicePlainSearchCompanyKey,
-  getFundingInvoiceCompanies,
-  onClearFundingInvoiceCompaniesSearch,
-  setFundingInvoiceCompaniesSearch
-} from "../../actions/checkoutFundingInvoice";
 import { summaryListStyles } from "../../styles/summaryListStyles";
 import CheckoutFundingInvoicePaymentPlans from "./CheckoutFundingInvoicePaymentPlans";
 import CheckoutFundingInvoiceSummaryExpandableItemRenderer from "./CheckoutFundingInvoiceSummaryExpandableItemRenderer";
@@ -67,12 +59,6 @@ interface Props {
   item?: CheckoutFundingInvoiceItem;
   currency?: any;
   selectedCompanies?: any[];
-  setCompaniesSearch?: (value: string) => void;
-  onClearCompaniesSearch?: () => void;
-  getCompanies?: (offset: number) => void;
-  listCompanies?: any[];
-  companiesLoading?: boolean;
-  companiesRowCount?: number;
   addSelectedCompany?: (company: any) => void;
   form?: string;
 }
@@ -86,12 +72,6 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
     currency,
     item,
     selectedCompanies,
-    setCompaniesSearch,
-    onClearCompaniesSearch,
-    getCompanies,
-    listCompanies,
-    companiesLoading,
-    companiesRowCount,
     addSelectedCompany,
     form
   } = props;
@@ -105,17 +85,12 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"
+          entity="FundingInvoiceCompany"
           name="fundingProviderId"
           label="Funding provider"
           selectValueMark="id"
           selectLabelCondition={contactLabelCondition}
           defaultDisplayValue={selectedCompanies.length && getContactName(selectedCompanies[0])}
-          items={listCompanies || []}
-          onSearchChange={setCompaniesSearch}
-          onLoadMoreRows={getCompanies}
-          onClearRows={onClearCompaniesSearch}
-          loading={companiesLoading}
-          remoteRowCount={companiesRowCount}
           itemRenderer={ContactSelectItemRenderer}
           onInnerValueChange={onChangeCompany}
           rowHeight={55}
@@ -184,24 +159,12 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
   );
 });
 
-const getCompaniesPlainRecord = state => getCommonPlainRecordFromState(state, fundingInvoicePlainSearchCompanyKey);
-
 const mapStateToProps = (state: State) => ({
   currency: state.currency,
   formValues: getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state),
-  selectedCompanies: state.checkout.fundingInvoice.companies,
-  listCompanies: getCompaniesPlainRecord(state).items,
-  companiesLoading: getCompaniesPlainRecord(state).loading,
-  companiesRowCount: getCompaniesPlainRecord(state).rowsCount
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setCompaniesSearch: (search: string) => dispatch(setFundingInvoiceCompaniesSearch(search)),
-  onClearCompaniesSearch: () => dispatch(onClearFundingInvoiceCompaniesSearch()),
-  getCompanies: (offset: number) => dispatch(getFundingInvoiceCompanies(offset)),
+  selectedCompanies: state.checkout.fundingInvoice.companies
 });
 
 export default connect<any, any, any>(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(withStyles((theme: AppTheme) => ({ ...summaryListStyles(theme), ...styles(theme) }))(CheckoutFundingInvoiceSummaryList));
