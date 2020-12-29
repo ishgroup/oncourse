@@ -11,7 +11,10 @@ export const getFundingInvoices = (fundingInvoices: CheckoutFundingInvoice[]): I
   fundingInvoices.forEach(fi => {
     const invoice: Invoice = {};
     invoice.contactId = fi.fundingProviderId;
-    invoice.paymentPlans = fi.paymentPlans.filter(pp => pp.amount);
+    invoice.paymentPlans = fi.paymentPlans.filter(pp => pp.amount).map(pp => ({
+      ...pp,
+      id: null
+    }));
     invoice.total = fi.total;
     invoice.customerReference = fi.vetPurchasingContractID;
     invoice.relatedFundingSourceId = fi.relatedFundingSourceId;
