@@ -71,7 +71,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/assessment'
         "tags":[{"id":188,"name":"Short answer","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "active":false,
         "description":"some description 21UPD",
-        "documents":[{"attachedRecordsCount":"#ignore", "id":201,"name":"defaultPublicDocument","versionId":null,"added":"2019-02-14T13:41:08.499Z","tags":[],"thumbnail":null,"versions":[{"id":201,"added":"2019-02-14T13:41:08.499Z","createdBy":"onCourse Administrator","fileName":"defaultPublicDocument.txt","mimeType":"text/plain","size":"21 b","url":null,"thumbnail":null}],"description":"Public description","access":"Public","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}]
+        "documents":"#ignore"
         }
         """
 
@@ -681,7 +681,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/assessment'
         "tags":[{"id":188,"name":"Short answer","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "active":false,
         "description":"some description 22UPD",
-        "documents":[{"attachedRecordsCount":"#ignore", "id":201,"name":"defaultPublicDocument","versionId":null,"added":"2019-02-14T13:41:08.499Z","tags":[],"thumbnail":null,"versions":[{"id":201,"added":"2019-02-14T13:41:08.499Z","createdBy":"onCourse Administrator","fileName":"defaultPublicDocument.txt","mimeType":"text/plain","size":"21 b","url":null,"thumbnail":null}],"description":"Public description","access":"Public","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}]
+        "documents":"#ignore"
         }
         """
 

@@ -60,7 +60,7 @@ Feature: Main feature for all GET requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
+        "corporatePasses":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[]
@@ -98,7 +98,7 @@ Feature: Main feature for all GET requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
+        "corporatePasses":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[]

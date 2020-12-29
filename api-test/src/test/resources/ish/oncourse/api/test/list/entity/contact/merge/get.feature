@@ -54,7 +54,10 @@ Feature: Main feature for all GET requests with path 'list/entity/contact/merge'
             {"key":"Tutor.wwChildrenCheckedOn","label":"Ww children checked on","a":"#present","b":"#present"},
             {"key":"Tutor.wwChildrenExpiry","label":"Ww children expiry","a":"#present","b":"#present"},
             {"key":"Tutor.wwChildrenRef","label":"Ww children ref","a":"555","b":"111"},
-            {"key":"Tutor.wwChildrenStatus","label":"Ww children status","a":"Barred","b":"Application in progress"}
+            {"key":"Tutor.wwChildrenStatus","label":"Ww children status","a":"Barred","b":"Application in progress"},
+            {"key":"Tutor.payType", "label":"Pay type", "a":"employee", "b":"employee"
+    
+  },
             ],
         "infoLines":
             [
@@ -68,155 +71,6 @@ Feature: Main feature for all GET requests with path 'list/entity/contact/merge'
             ]
         }
         """
-
-
-
-    Scenario: (+) Get Merge data for tutor and tutor
-
-        Given path ishPath
-        And param contactA = 24
-        And param contactB = 25
-        When method GET
-        Then status 200
-        And match $ ==
-        """
-        {
-        "mergeLines":
-            [
-            {"key":"Contact.abn","label":"Abn","a":"555","b":null},
-            {"key":"Contact.birthDate","label":"Birth date","a":"1972-05-05","b":"1972-05-06"},
-            {"key":"Contact.email","label":"Email","a":"merge4@gmail.com","b":"merge5@gmail.com"},
-            {"key":"Contact.fax","label":"Fax","a":"tA","b":null},
-            {"key":"Contact.firstName","label":"First name","a":"tutorA","b":"tutorB"},
-            {"key":"Contact.homePhone","label":"Home phone","a":"tA","b":null},
-            {"key":"Contact.honorific","label":"Honorific","a":"tA","b":null},
-            {"key":"Contact.invoiceTerms","label":"Invoice terms","a":null,"b":"66"},
-            {"key":"Contact.lastName","label":"Last name","a":"mergeA","b":"mergeB"},
-            {"key":"Contact.message","label":"Message","a":"tA","b":null},
-            {"key":"Contact.mobilePhone","label":"Mobile phone","a":"444555333","b":"444555334"},
-            {"key":"Contact.postcode","label":"Postcode","a":"5003","b":"5004"},
-            {"key":"Contact.state","label":"State","a":"SC","b":"SD"},
-            {"key":"Contact.street","label":"Street","a":"address str3","b":"address str4"},
-            {"key":"Contact.suburb","label":"Suburb","a":"Adelaide3","b":"Adelaide4"},
-            {"key":"Contact.tfn","label":"Tfn","a":"555","b":null},
-            {"key":"Contact.title","label":"Title","a":"tA","b":"tB"},
-            {"key":"Contact.workPhone","label":"Work phone","a":"tA","b":null},
-            {"key":"Contact.gender","label":"Gender","a":"Male","b":"Female"},
-            {"key":"Contact.taxOverride","label":"Tax Override","a":null,"b":"GST"},
-            {"key":"Contact.country","label":"Country","a":"Australia","b":"Australia"},
-            {"key":"tags","label":"Tags","a":"#contacts1","b":"#contacts2"},
-            {"key":"customField.cf2","label":"contact field2","a":"tA","b":"tB"},
-            {"key":"customField.cf1","label":"contact field1","a":"tA","b":"tB"},
-            {"key":"Tutor.dateFinished","label":"Date finished","a":"#present","b":null},
-            {"key":"Tutor.dateStarted","label":"Date started","a":"#present","b":null},
-            {"key":"Tutor.payrollRef","label":"Payroll ref","a":"555","b":null},
-            {"key":"Tutor.resume","label":"Resume","a":"tA","b":"tB"},
-            {"key":"Tutor.wwChildrenCheckedOn","label":"Ww children checked on","a":"#present","b":null},
-            {"key":"Tutor.wwChildrenExpiry","label":"Ww children expiry","a":"#present","b":null},
-            {"key":"Tutor.wwChildrenRef","label":"Ww children ref","a":"555","b":null},
-            {"key":"Tutor.wwChildrenStatus","label":"Ww children status","a":"Barred","b":"Not checked"}
-            ],
-        "infoLines":
-            [
-            {"label":null,"a":"Tutor","b":"Tutor"},
-            {"label":"Created","a":"#present","b":"#present"},
-            {"label":"Modified","a":"#present","b":"#present"},
-            {"label":"Last enrolled","a":"","b":""},
-            {"label":"Invoices","a":"#present","b":"#present"},
-            {"label":"Enrolments","a":"","b":""},
-            {"label":"USI","a":"","b":""}
-            ]
-        }
-        """
-
-
-
-    Scenario: (+) Get Merge data for student/tutor and student/tutor
-
-        Given path ishPath
-        And param contactA = 21
-        And param contactB = 22
-        When method GET
-        Then status 200
-        And match $ ==
-        """
-        {
-        "mergeLines":
-            [
-            {"key":"Contact.abn","label":"Abn","a":"111","b":"222"},
-            {"key":"Contact.birthDate","label":"Birth date","a":"1995-05-04","b":"1999-05-05"},
-            {"key":"Contact.email","label":"Email","a":"merge1@gmail.com","b":"merge2@gmail.com"},
-            {"key":"Contact.fax","label":"Fax","a":"a","b":"b"},
-            {"key":"Contact.firstName","label":"First name","a":"studentA","b":"studentB"},
-            {"key":"Contact.homePhone","label":"Home phone","a":"a","b":"b"},
-            {"key":"Contact.honorific","label":"Honorific","a":"a","b":"b"},
-            {"key":"Contact.invoiceTerms","label":"Invoice terms","a":"10","b":"22"},
-            {"key":"Contact.lastName","label":"Last name","a":"mergeA","b":"mergeB"},
-            {"key":"Contact.message","label":"Message","a":"a","b":"message B"},
-            {"key":"Contact.middleName","label":"Middle name","a":"A","b":"B"},
-            {"key":"Contact.mobilePhone","label":"Mobile phone","a":"444662210","b":"444662211"},
-            {"key":"Contact.postcode","label":"Postcode","a":"5000","b":"5001"},
-            {"key":"Contact.state","label":"State","a":"SA","b":"SB"},
-            {"key":"Contact.street","label":"Street","a":"address str1","b":"address str2"},
-            {"key":"Contact.suburb","label":"Suburb","a":"Adelaide1","b":"Adelaide2"},
-            {"key":"Contact.tfn","label":"Tfn","a":"111","b":"222"},
-            {"key":"Contact.title","label":"Title","a":"sA","b":"sB"},
-            {"key":"Contact.workPhone","label":"Work phone","a":"a","b":"b"},
-            {"key":"Contact.gender","label":"Gender","a":"Male","b":"Female"},
-            {"key":"Contact.taxOverride","label":"Tax Override","a":"N","b":"GST"},
-            {"key":"Contact.country","label":"Country","a":"Australia","b":"United States of America"},
-            {"key":"Student.studentNumber","label":"Student number","a":"15","b":"16"},
-            {"key":"Student.chessn","label":"Chessn","a":"a","b":null},
-            {"key":"Student.citizenship","label":"Citizenship","a":"Australian citizen","b":"No information"},
-            {"key":"Student.clientIndustryEmployment","label":"Client industry employment","a":"Agriculture, Forestry and Fishing (A)","b":"Retail Trade (G)"},
-            {"key":"Student.clientOccupationIdentifier","label":"Client occupation identifier","a":"Manager (1)","b":"Not Stated"},
-            {"key":"Student.disabilityType","label":"Disability type","a":"Physical","b":"Mental illness"},
-            {"key":"Student.englishProficiency","label":"Proficiency in spoken English","a":"Very Well","b":"Not Well"},
-            {"key":"Student.feeHelpEligible","label":"Fee help eligible","a":"Yes","b":"No"},
-            {"key":"Student.highestSchoolLevel","label":"Highest school level","a":"Year 9","b":"Year 10"},
-            {"key":"Student.indigenousStatus","label":"Indigenous status","a":"Aboriginal","b":"Neither"},
-            {"key":"Student.isOverseasClient","label":"Overseas","a":"Yes","b":"No"},
-            {"key":"Student.isStillAtSchool","label":"Still at school","a":"Yes","b":"No"},
-            {"key":"Student.labourForceStatus","label":"Employment category","a":"Full-time employee","b":"Unemployed - seeking full-time work"},
-            {"key":"Student.medicalInsurance","label":"Overseas health care cover","a":"a","b":null},
-            {"key":"Student.passportNumber","label":"Passport number","a":"a","b":null},
-            {"key":"Student.priorEducationCode","label":"Prior educational achievement","a":"Diploma level","b":"Certificate I"},
-            {"key":"Student.specialNeeds","label":"Special needs","a":null,"b":"BBB"},
-            {"key":"Student.specialNeedsAssistance","label":"Disability support requested","a":"Yes","b":"No"},
-            {"key":"Student.townOfBirth","label":"Town of birth","a":"a","b":"b"},
-            {"key":"Student.uniqueLearnerIndentifier","label":"Government student number (VIC/QLD)","a":"aaa","b":"bbb"},
-            {"key":"Student.visaExpiryDate","label":"Visa expiry date","a":"#present","b":null},
-            {"key":"Student.visaNumber","label":"Visa number","a":"a","b":null},
-            {"key":"Student.visaType","label":"Visa type","a":"a","b":null},
-            {"key":"Student.yearSchoolCompleted","label":"Achieved in year","a":"2016","b":null},
-            {"key":"Student.countryOfBirth","label":"Country of birth","a":"Australia","b":"United States of America"},
-            {"key":"Student.countryOfResidency","label":"Country of residency","a":"Australia","b":"Poland"},
-            {"key":"tags","label":"Tags","a":"#contacts1","b":"#contacts2"},
-            {"key":"customField.cf2","label":"contact field2","a":"aa","b":"b"},
-            {"key":"customField.cf1","label":"contact field1","a":"aa","b":"bb"},
-            {"key":"Tutor.dateFinished","label":"Date finished","a":"#present","b":"#present"},
-            {"key":"Tutor.dateStarted","label":"Date started","a":"#present","b":"#present"},
-            {"key":"Tutor.payrollRef","label":"Payroll ref","a":"111","b":"222"},
-            {"key":"Tutor.resume","label":"Resume","a":"Resume A","b":"Resume B"},
-            {"key":"Tutor.wwChildrenCheckedOn","label":"Ww children checked on","a":"#present","b":null},
-            {"key":"Tutor.wwChildrenExpiry","label":"Ww children expiry","a":"#present","b":"#present"},
-            {"key":"Tutor.wwChildrenRef","label":"Ww children ref","a":"111","b":"222"},
-            {"key":"Tutor.wwChildrenStatus","label":"Ww children status","a":"Application in progress","b":"Not checked"}
-            ],
-        "infoLines":
-            [
-            {"label":null,"a":"Tutor, student","b":"Tutor, student"},
-            {"label":"Created","a":"#present","b":"#present"},
-            {"label":"Modified","a":"#present","b":"#present"},
-            {"label":"Last enrolled","a":"#present","b":"#present"},
-            {"label":"Invoices","a":"#present","b":"#present"},
-            {"label":"Enrolments","a":"#present","b":"#present"},
-            {"label":"USI","a":"2222222222","b":""}
-            ]
-        }
-        """
-
-
 
     Scenario: (+) Get Merge data for company and company
 
@@ -260,80 +114,6 @@ Feature: Main feature for all GET requests with path 'list/entity/contact/merge'
             ]
         }
         """
-
-
-
-    Scenario: (+) Get Merge data by notadmin with access rights
-
-#       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
-#       <--->
-
-        Given path ishPath
-        And param contactA = 24
-        And param contactB = 21
-        When method GET
-        Then status 200
-        And match $ ==
-        """
-        {
-        "mergeLines":
-            [
-            {"key":"Contact.abn","label":"Abn","a":"555","b":"111"},
-            {"key":"Contact.birthDate","label":"Birth date","a":"1972-05-05","b":"1995-05-04"},
-            {"key":"Contact.email","label":"Email","a":"merge4@gmail.com","b":"merge1@gmail.com"},
-            {"key":"Contact.fax","label":"Fax","a":"tA","b":"a"},
-            {"key":"Contact.firstName","label":"First name","a":"tutorA","b":"studentA"},
-            {"key":"Contact.homePhone","label":"Home phone","a":"tA","b":"a"},
-            {"key":"Contact.honorific","label":"Honorific","a":"tA","b":"a"},
-            {"key":"Contact.invoiceTerms","label":"Invoice terms","a":null,"b":"10"},
-            {"key":"Contact.lastName","label":"Last name","a":"mergeA","b":"mergeA"},
-            {"key":"Contact.message","label":"Message","a":"tA","b":"a"},
-            {"key":"Contact.middleName","label":"Middle name","a":null,"b":"A"},
-            {"key":"Contact.mobilePhone","label":"Mobile phone","a":"444555333","b":"444662210"},
-            {"key":"Contact.postcode","label":"Postcode","a":"5003","b":"5000"},
-            {"key":"Contact.state","label":"State","a":"SC","b":"SA"},
-            {"key":"Contact.street","label":"Street","a":"address str3","b":"address str1"},
-            {"key":"Contact.suburb","label":"Suburb","a":"Adelaide3","b":"Adelaide1"},
-            {"key":"Contact.tfn","label":"Tfn","a":"555","b":"111"},
-            {"key":"Contact.title","label":"Title","a":"tA","b":"sA"},
-            {"key":"Contact.workPhone","label":"Work phone","a":"tA","b":"a"},
-            {"key":"Contact.gender","label":"Gender","a":"Male","b":"Male"},
-            {"key":"Contact.taxOverride","label":"Tax Override","a":null,"b":"N"},
-            {"key":"Contact.country","label":"Country","a":"Australia","b":"Australia"},
-            {"key":"tags","label":"Tags","a":"#contacts1","b":"#contacts1"},
-            {"key":"customField.cf2","label":"contact field2","a":"tA","b":"aa"},
-            {"key":"customField.cf1","label":"contact field1","a":"tA","b":"aa"},
-            {"key":"Tutor.dateFinished","label":"Date finished","a":"#present","b":"#present"},
-            {"key":"Tutor.dateStarted","label":"Date started","a":"#present","b":"#present"},
-            {"key":"Tutor.payrollRef","label":"Payroll ref","a":"555","b":"111"},
-            {"key":"Tutor.resume","label":"Resume","a":"tA","b":"Resume A"},
-            {"key":"Tutor.wwChildrenCheckedOn","label":"Ww children checked on","a":"#present","b":"#present"},
-            {"key":"Tutor.wwChildrenExpiry","label":"Ww children expiry","a":"#present","b":"#present"},
-            {"key":"Tutor.wwChildrenRef","label":"Ww children ref","a":"555","b":"111"},
-            {"key":"Tutor.wwChildrenStatus","label":"Ww children status","a":"Barred","b":"Application in progress"}
-            ],
-        "infoLines":
-            [
-            {"label":null,"a":"Tutor","b":"Tutor, student"},
-            {"label":"Created","a":"#present","b":"#present"},
-            {"label":"Modified","a":"#present","b":"#present"},
-            {"label":"Last enrolled","a":"","b":"#present"},
-            {"label":"Invoices","a":"#present","b":"#present"},
-            {"label":"Enrolments","a":"","b":"#present"},
-            {"label":"USI","a":"","b":"2222222222"}
-            ]
-        }
-        """
-
 
 
     Scenario: (-) Get Merge data by notadmin without access rights
