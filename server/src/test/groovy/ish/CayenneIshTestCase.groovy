@@ -249,7 +249,6 @@ abstract class CayenneIshTestCase extends IshTestCase {
 	 * Remove all records from db tables.
 	 */
 	protected static void wipeTables() {
-		wipeTablesMariadb()
 		if (testEnvMariadb()) {
 			wipeTablesMariadb()
 		} else {
@@ -305,8 +304,8 @@ abstract class CayenneIshTestCase extends IshTestCase {
 
 			executeStatement(connection, "SET foreign_key_checks = 1;")
 
-			shutdownCayenne()
-			createInjectors()
+//			shutdownCayenne()
+//			createInjectors()
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to wipe tables.", e)
 		} finally {
