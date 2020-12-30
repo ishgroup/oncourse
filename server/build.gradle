@@ -174,32 +174,24 @@ jar {
 	archiveFileName = 'onCourseServer.jar'
 }
 
+task expandConfig(type: Copy) {
+	def dbUrl = project.hasProperty('dbUrl') ?
+			project.getProperty('dbUrl') :
+			'jdbc:mariadb://127.0.0.1:3306/angelTest_trunk?user=root&password=12345'
+
+	from("$rootDir/server/src/main/resources/") {
+		include 'application-test-local-mariadb.yml'
+	}
+	into "$rootDir/server/build/resources/main"
+	expand(dbUrl: dbUrl)
+}
 
 test {
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
-
-	def dbTests = project.hasProperty('databaseConfig') ? databaseConfig : "derby-test"
-	systemProperty 'databaseName', project.hasProperty('buildername') ? buildername : "angelTest_trunk"
-
-	logger.lifecycle("will run tests in '${dbTests}' mode")
-
-	switch (dbTests) {
-		case "derby-test":
-			systemProperty 'yamlTestConfig', 'application-test-derby.yml'
-			exclude '**/db/Mysql*.class'
-			break
-
-		case "mariadb-local":
-			systemProperty 'yamlTestConfig', 'application-test-local-mariadb.yml'
-			exclude '**/db/Derby*.class'
-			break
-
-		case "mysql-test":
-			systemProperty 'yamlTestConfig', 'application-test-mariadb.yml'
-			exclude '**/db/Derby*.class'
-			break
-	}
+	dependsOn "expandConfig"
+	boolean local = project.hasProperty('local') ? project.getProperty('local') : true
+	systemProperty 'yamlTestConfig', local ? 'application-test-local-mariadb.yml' : 'application-test-mariadb.yml'
 }
 
 task startDaemon(dependsOn: [classes], type: JavaExecFork) {
