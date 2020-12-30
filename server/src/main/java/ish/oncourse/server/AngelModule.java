@@ -56,9 +56,13 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.utils.ConnectionProvider;
+import org.quartz.utils.DBConnectionManager;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -204,6 +208,14 @@ public class AngelModule extends ConfigModule {
         // reduce default thread priority for jobs from 5 to 3
         System.setProperty("org.quartz.threadPool.threadPriority", "3");
 
+        // provide connection via Cayenne datasource
+        DBConnectionManager.getInstance().addConnectionProvider("quarz-cayenne-ds", new CayenneConnectionProvider(injector));
+        // configure DB job store suitable for the cluster
+        System.setProperty("org.quartz.jobStore.driverDelegateClass", "org.quartz.impl.jdbcjobstore.StdJDBCDelegate");
+        System.setProperty("org.quartz.jobStore.class", "org.quartz.impl.jdbcjobstore.JobStoreTX");
+        System.setProperty("org.quartz.jobStore.isClustered", "true");
+        System.setProperty("org.quartz.jobStore.dataSource", "quarz-cayenne-ds");
+
         SchedulerFactory sf = new StdSchedulerFactory();
         Scheduler scheduler = null;
         try {
@@ -253,6 +265,29 @@ public class AngelModule extends ConfigModule {
             );
           
             ref.extender.module().configure(binder);
+        }
+    }
+
+    private static class CayenneConnectionProvider implements ConnectionProvider {
+        private final Injector injector;
+
+        public CayenneConnectionProvider(Injector injector) {
+            this.injector = injector;
+        }
+
+        @Override
+        public Connection getConnection() throws SQLException {
+            return injector.getInstance(ICayenneService.class).getDataSource().getConnection();
+        }
+
+        @Override
+        public void shutdown() throws SQLException {
+            // noop
+        }
+
+        @Override
+        public void initialize() throws SQLException {
+            // noop
         }
     }
 }
