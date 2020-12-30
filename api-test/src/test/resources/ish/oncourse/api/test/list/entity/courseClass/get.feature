@@ -89,7 +89,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "failedOutcomesCount":#number,
         "withdrawnOutcomesCount":0,
         "otherOutcomesCount":0,
-        "successAndQueuedEnrolmentsCount":4,
+        "successAndQueuedEnrolmentsCount":#number,
         "canceledEnrolmentsCount":0,
         "failedEnrolmentsCount":0,
         "tags":[{"id":230,"name":"class2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":"#ignore","modified":"#ignore","requirements":[],"childTags":[]}],

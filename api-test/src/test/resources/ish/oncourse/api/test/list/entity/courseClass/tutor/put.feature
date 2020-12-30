@@ -11,7 +11,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/tu
 
 
 
-    Scenario: (+) Update existing Tutor by admin (Tutor can not be changed)
+    Scenario: (+) Update existing Tutor by admin (change confirmedOn only)
 
 #       <----->  Add a new entity for deleting and get id:
         * def newTutor =
@@ -53,7 +53,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/tu
         Given path ishPath + '/' + id
         And request tutorToUpdate
         When method PUT
-        Then status 400
+        Then status 204
         
 #       <--->  Scenario have been finished. Now remove created object from DB:
         Given path ishPath + '/' + id

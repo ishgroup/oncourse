@@ -40,11 +40,10 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         Given path ishPath + '/6'
         When method GET
         Then status 200
-        And match $ contains only
+        And match $ contains
             """
             [
-              {"id":6,"classId":6,"contactId":6,"roleId":6,"tutorName":"tutor3","roleName":"Helper","confirmedOn":null,"isInPublicity":true},
-              {"id":"#(~~id)","classId":6,"contactId":5,"roleId":2,"tutorName":"tutor2","roleName":"Lecturer","confirmedOn":"2018-01-01","isInPublicity":true}
+                 {"id":"#(~~id)","classId":6,"contactId":5,"roleId":2,"tutorName":"tutor2","roleName":"Lecturer","confirmedOn":"2018-01-01","isInPublicity":true}
             ]
             """
 #       <--->  Scenario have been finished. Now remove created object from DB:

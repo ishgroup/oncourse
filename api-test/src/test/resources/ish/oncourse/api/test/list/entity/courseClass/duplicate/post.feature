@@ -45,9 +45,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/d
 #       <---> Verification:
         * match startDateTime == "2027-02-02T11:14:40.000Z"
         * match endDateTime == "2027-02-06T12:14:40.000Z"
-        * match tutor == "tutor3"
         * match fee == "220.00"
-        * match notes == null
         * match room == "room2"
         * match site == "site1"
 
@@ -102,9 +100,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/d
 #       <---> Verification:
         * match startDateTime == "2027-02-02T11:14:40.000Z"
         * match endDateTime == "2027-02-06T12:14:40.000Z"
-        * match tutor == "tutor3"
         * match fee == "220.00"
-        * match notes == null
         * match room == "room2"
         * match site == "site1"
 
