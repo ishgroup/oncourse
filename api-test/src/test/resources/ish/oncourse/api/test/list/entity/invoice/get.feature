@@ -58,40 +58,6 @@ Feature: Main feature for all GET requests with path 'list/entity/invoice'
         """
 
 
-
-    Scenario: (+) Get invoice with source == web
-
-        Given path ishPath + '/19'
-        When method GET
-        Then status 200
-        And match $ ==
-        """
-        {
-        "id":19,
-        "contactId":15,
-        "contactName":"stud9",
-        "customerReference":null,
-        "invoiceNumber":20,
-        "billToAddress":"PO Box 13 Forestville null2087",
-        "shippingAddress":null,
-        "invoiceDate":"2008-03-25",
-        "dateDue":"2008-03-25",
-        "overdue":-149.00,
-        "invoiceLines":[{"id":120,"title":"Enrolment: Robert Fenton","quantity":1.00,"unit":null,"incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":-135.45,"discountEachExTax":0.00,"taxEach":-13.55,"finalPriceToPayIncTax":null,"taxId":1,"taxName":"Australian GST","description":"Refund for enrolment : Course: Complete Keyboard Player for Beginners (ARMU5-1)","courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment":null,"voucher":null,"article":null,"membership":null,"contactId":null}],
-        "total":-149.00,
-        "amountOwing":-149.0,
-        "publicNotes":null,
-        "paymentPlans":[{"id":19,"date":"2008-03-25","type":"Credit note web","successful":true,"amount":-149.00,"entityName":"Invoice"}],
-        "source":"web",
-        "createdByUser":null,
-        "sendEmail":false,
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
-        }
-        """
-
-
-
     Scenario: (-) Get not existing invoice
 
         Given path ishPath + "/9999"

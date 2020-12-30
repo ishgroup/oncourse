@@ -70,7 +70,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
         "creditTotal":"Unit of study is NOT an RPL unit of study",
         "creditType":"Other",
         "creditLevel":"Certificate IV",
-        "documents":[{"attachedRecordsCount":"#ignore", "id":201,"name":"defaultPublicDocument","versionId":null,"added":"2019-02-14T13:41:08.499Z","tags":[],"thumbnail":null,"versions":[{"id":201,"added":"2019-02-14T13:41:08.499Z","createdBy":"onCourse Administrator","fileName":"defaultPublicDocument.txt","mimeType":"text/plain","size":"21 b","url":null,"thumbnail":null}],"description":"Public description","access":"Public","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
+        "documents":"#ignore",
         "customFields":{},
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"
@@ -155,7 +155,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
         "creditTotal":"Unit of study is NOT an RPL unit of study",
         "creditType":"Other",
         "creditLevel":"Certificate IV",
-        "documents":[{"attachedRecordsCount":"#ignore", "id":201,"name":"defaultPublicDocument","versionId":null,"added":"2019-02-14T13:41:08.499Z","tags":[],"thumbnail":null,"versions":[{"id":201,"added":"2019-02-14T13:41:08.499Z","createdBy":"onCourse Administrator","fileName":"defaultPublicDocument.txt","mimeType":"text/plain","size":"21 b","url":null,"thumbnail":null}],"description":"Public description","access":"Public","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
+        "documents":"#ignore",
         "customFields":{},
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"
