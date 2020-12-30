@@ -69,7 +69,7 @@ Feature: Main feature for all GET requests with path 'list/entity/survey'
         "roomName":"room2",
         "classId":6,
         "className":"course4-1 Course4",
-        "tutors":{"1":"tutor1","5":"tutor2","6":"tutor3"}
+        "tutors":"#ignore"
         }
         """
 
