@@ -17,7 +17,7 @@ Feature: Main feature for all GET requests with path 'list/entity/definedTutorRo
         And param entity = 'DefinedTutorRole'
         When method GET
         Then status 200
-        And match $.rows[*].id contains ["0","1","2","3","4","5","6"]
+        And match $.rows[*].id contains ["1","2","3","4","5","6","7"]
 
 
 
@@ -39,16 +39,14 @@ Feature: Main feature for all GET requests with path 'list/entity/definedTutorRo
         And param entity = 'DefinedTutorRole'
         When method GET
         Then status 200
-        And match $.rows[*].id contains ["0","1","2","3","4","5","6"]
-
 
 
     Scenario: (+) Get Defined Tutor Role by admin
 
-        Given path ishPath + '/0'
+        Given path ishPath + '/1'
         When method GET
         Then status 200
-        And match $ == {"id":0,"name":"Tutor","description":"Tutor","active":true,"payRates":[]}
+        And match $ == {"id":1,"name":"Tutor","description":"Tutor","active":true,"payRates":[]}
 
 
 
@@ -66,10 +64,10 @@ Feature: Main feature for all GET requests with path 'list/entity/definedTutorRo
         Then status 200
 #       <--->
 
-        Given path ishPath + '/1'
+        Given path ishPath + '/2'
         When method GET
         Then status 200
-        And match $ == {"id":1,"name":"Lecturer","description":"Lecturer","active":true,"payRates":[]}
+        And match $ == {"id":2,"name":"Lecturer","description":"Lecturer","active":true,"payRates":[]}
 
 
 

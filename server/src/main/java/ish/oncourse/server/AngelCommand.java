@@ -103,7 +103,7 @@ public class AngelCommand extends CommandWithMetadata {
         } catch (Exception e) {
             return CommandOutcome.failed(1, e);
         }
-        logger.warn("Server ready for client connections");
+        logger.error("Server ready for client connections");
 
         return CommandOutcome.succeeded();
     }
