@@ -3,13 +3,13 @@ import { debounce, mergeMap } from "rxjs/operators";
 import { interval } from "rxjs";
 import { format } from "date-fns";
 import uniqid from "uniqid";
-import { change, getFormValues, initialize } from "redux-form";
+import { change } from "redux-form";
 import { State } from "../../../../reducers/state";
 import {
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_ADD_ITEM,
   CHECKOUT_REMOVE_CONTACT,
-  CHECKOUT_REMOVE_ITEM,
+  CHECKOUT_REMOVE_ITEM, CHECKOUT_TOGGLE_SUMMARY_ITEM,
   CHECKOUT_UPDATE_CONTACT
 } from "../../actions";
 import CourseClassAttendanceService
@@ -132,27 +132,14 @@ export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action
       CHECKOUT_ADD_CONTACT,
       CHECKOUT_REMOVE_CONTACT,
       CHECKOUT_UPDATE_CONTACT,
-      CHECKOUT_REMOVE_ITEM
+      CHECKOUT_REMOVE_ITEM,
+      CHECKOUT_TOGGLE_SUMMARY_ITEM
     ),
     debounce(() => interval(500)),
     mergeMap(async () => {
-      const formValues = getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state$.value) as any;
+      const fundingInvoicesUpdated = [];
 
-      const fundingInvoicesUpdated = state$.value.checkout.contacts.length
-      && state$.value.checkout.contacts.length === 1
-      && state$.value.checkout.items.length
-        ? [...formValues.fundingInvoices]
-        : [];
-
-      const fundingInvoicesClassIds = [];
       const added = {};
-
-      formValues.fundingInvoices.forEach(f => {
-        added[f.relatedFundingSourceId] = true;
-        f.item.enrolment.items.forEach(item => {
-          fundingInvoicesClassIds.push(item.class.id);
-        });
-      });
 
       const summaryList = state$.value.checkout.summary.list;
 
@@ -162,18 +149,12 @@ export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action
         await items.map(i => async () => {
           if (i.checked
             && i.type === "course"
-            && !fundingInvoicesClassIds.includes(i.class.id)
             && i.class.relatedFundingSourceId !== null
           ) {
             if (added[i.class.relatedFundingSourceId]) {
               const sourceInvoice = fundingInvoicesUpdated
                 .find(r => r.relatedFundingSourceId === i.class.relatedFundingSourceId);
-
-              sourceInvoice.item.enrolment.items = sourceInvoice.item.enrolment.items.filter(si => si.type === "course"
-                && si.class.relatedFundingSourceId === i.class.relatedFundingSourceId);
-
               sourceInvoice.item.enrolment.items.push(i);
-
               await getAndMergePlans(sourceInvoice);
             } else {
               const newInvoice: CheckoutFundingInvoice = {
@@ -182,9 +163,7 @@ export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action
                 item: {
                   enrolment: {
                     ...summaryList[0],
-                    items: summaryList[0].items.filter(si => si.checked
-                      && si.type === "course"
-                      && si.class.relatedFundingSourceId === i.class.relatedFundingSourceId)
+                    items: [i]
                   }
                 },
                 trackAmountOwing: true,

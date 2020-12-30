@@ -166,6 +166,3 @@ export const setPlainPreviousCreditSearch = id => setCommonPlainSearch(
 
 export const getPlainPreviousCreditRecords = () =>
   getCommonPlainRecords("PreviousCredit", 0, "invoiceNumber,amountOwing,invoiceDate,dateDue");
-
-export const getPlainPreviousOwingRecords = () =>
-  getCommonPlainRecords("PreviousOwing", 0, "invoiceNumber,amountOwing,invoiceDate,dateDue");
