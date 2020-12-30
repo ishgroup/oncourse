@@ -16,6 +16,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         * def newPayslip =
         """
         {
+        "payType":"Employee",
         "tutorId":5,
         "tutorFullName":"tutor2, tutor2",
         "publicNotes":"some public notes",
@@ -43,6 +44,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         And match $ ==
         """
         {
+        "payType":"Employee",
         "id":"#number",
         "publicNotes":"some public notes",
         "privateNotes":"some private notes",
@@ -81,6 +83,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         * def newPayslip =
         """
         {
+        "payType":"Employee",
         "tutorId":5,
         "tutorFullName":"tutor2, tutor2",
         "publicNotes":"some public notes2",
@@ -108,6 +111,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         And match $ ==
         """
         {
+        "payType":"Employee",
         "id":"#number",
         "publicNotes":"some public notes2",
         "privateNotes":"some private notes2",
@@ -133,126 +137,4 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         Given path ishPath + '/' + id
         When method DELETE
         Then status 204
-
-
-
-    Scenario: (-) Create new payslip by notadmin without access rights
-
-#       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
-#       <--->
-
-        * def newPayslip =
-        """
-        {
-        "tutorId":1,
-        "tutorFullName":"tutor1, tutor1",
-        "publicNotes":"some public notes",
-        "privateNotes":"some private notes",
-        "tags":[{"id":218}],
-        "paylines":[{"description":"someDescription10","value":77,"quantity":1}]
-        }
-        """
-
-        Given path ishPath
-        And request newPayslip
-        When method POST
-        Then status 403
-        And match $.errorMessage == "Sorry, you have no permissions to create tutor pay. Please contact your administrator"
-
-
-
-    Scenario: (-) Create new payslip with empty Tutor
-
-        * def newPayslip =
-        """
-        {
-        "tutorId":null,
-        "tutorFullName":null,
-        "publicNotes":"some public notes",
-        "privateNotes":"some private notes",
-        "tags":[{"id":218}],
-        "paylines":[{"description":"someDescription10","value":77,"quantity":1}]
-        }
-        """
-
-        Given path ishPath
-        And request newPayslip
-        When method POST
-        Then status 400
-        And match $.errorMessage == "Tutor is required."
-
-
-
-    Scenario: (-) Create new payslip with not existing Tutor
-
-        * def newPayslip =
-        """
-        {
-        "tutorId":100,
-        "tutorFullName":"tutor100, tutor100",
-        "publicNotes":"some public notes",
-        "privateNotes":"some private notes",
-        "tags":[{"id":218}],
-        "paylines":[{"description":"someDescription10","value":77,"quantity":1}]
-        }
-        """
-
-        Given path ishPath
-        And request newPayslip
-        When method POST
-        Then status 400
-        And match $.errorMessage == "Contact with id:100 doesn't exist"
-
-
-
-    Scenario: (-) Create new payslip with empty Description
-
-        * def newPayslip =
-        """
-        {
-        "tutorId":1,
-        "tutorFullName":"tutor1, tutor1",
-        "publicNotes":"some public notes",
-        "privateNotes":"some private notes",
-        "tags":[{"id":218}],
-        "paylines":[{"description":"","value":77,"quantity":1}]
-        }
-        """
-
-        Given path ishPath
-        And request newPayslip
-        When method POST
-        Then status 400
-        And match $.errorMessage == "Description is required."
-
-
-
-    Scenario: (-) Create new payslip with empty Amount
-
-        * def newPayslip =
-        """
-        {
-        "tutorId":1,
-        "tutorFullName":"tutor1, tutor1",
-        "publicNotes":"some public notes",
-        "privateNotes":"some private notes",
-        "tags":[{"id":218}],
-        "paylines":[{"description":"someDescription10","value":null,"quantity":1}]
-        }
-        """
-
-        Given path ishPath
-        And request newPayslip
-        When method POST
-        Then status 400
-        And match $.errorMessage == "Amount is required."
+        

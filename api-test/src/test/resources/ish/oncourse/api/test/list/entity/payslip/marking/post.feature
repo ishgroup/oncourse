@@ -18,6 +18,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
         * def newPayslip =
         """
         {
+        "payType":"Employee",
         "tutorId":5,
         "tutorFullName":"tutor2, tutor2",
         "publicNotes":"some public notes",

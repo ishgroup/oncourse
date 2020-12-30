@@ -162,7 +162,7 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         "publicTransportDirections":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A204A208A212A216A220A224A228A232A236A240A244A248A252A256A",
         "specialInstructions":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A204A208A212A216A220A224A228A232A236A240A244A248A252A256A",
         "tags":[],
-        "rooms":[],
+        "rooms":[{"documents":[],"rules":[],"siteTimeZone":null,"createdOn":null,"tags":[],"modifiedOn":null,"directions":null,"seatedCapacity":0,"name":"testSite_2A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A150","siteId":207,"kioskUrl":null,"id":8,"facilities":null}],
         "documents":[],
         "rules":[],
         "createdOn":"#ignore",
@@ -174,110 +174,7 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         Given path ishPath + '/' + id
         When method DELETE
         Then status 204
-
-
-
-    Scenario: (+) Create Site by notadmin with access rights
-
-#       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
-#       <--->
-
-        * def newSite =
-        """
-        {
-        "isAdministrationCentre":true,
-        "isVirtual":true,
-        "isShownOnWeb":true,
-        "kioskUrl":null,
-        "name":"someSite2",
-        "street":"Frome Rd",
-        "suburb":"Adelaide",
-        "state":"SA",
-        "postcode":"5000",
-        "country":{"id":1,"name":"Australia"},
-        "timezone":"Australia/Sydney",
-        "longitude":138.60569150,
-        "latitude":-34.91638480,
-        "drivingDirections":"someDrivingDirections",
-        "publicTransportDirections":"somePublicTransportDirections",
-        "specialInstructions":"someSpecialInstructions",
-        "tags":[{"id":208,"name":"1","status":"Private","system":false,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":0,"childrenCount":0,"requirements":[],"childTags":[]}],
-        "rooms":[],
-        "documents":[],
-        "rules":[]
-        }
-        """
-
-        Given path ishPath
-        And request newSite
-        When method POST
-        Then status 204
-
-        Given path ishPathList
-        And param entity = 'Site'
-        When method GET
-        Then status 200
-        And match $.rows[*].values[*] contains ["someSite2","Adelaide","5000","true"]
-
-        * def id = get[0] response.rows[?(@.values == ["someSite2","Adelaide","5000","true"])].id
-
-#       <---> Assertion:
-        Given path ishPath + "/" + id
-        When method GET
-        Then status 200
-
-        And match $ contains
-        """
-        {
-        "isAdministrationCentre":true,
-        "isVirtual":true,
-        "isShownOnWeb":true,
-        "kioskUrl":null,
-        "name":"someSite2",
-        "street":"Frome Rd",
-        "suburb":"Adelaide",
-        "state":"SA",
-        "postcode":"5000",
-        "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
-        "timezone":"Australia/Sydney",
-        "longitude":138.60569150,
-        "latitude":-34.91638480,
-        "drivingDirections":"someDrivingDirections",
-        "publicTransportDirections":"somePublicTransportDirections",
-        "specialInstructions":"someSpecialInstructions",
-        "tags":[{"id":208,"name":"1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
-        "rooms":[],
-        "documents":[],
-        "rules":[],
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
-        }
-        """
-
-#       <--->  Scenario have been finished. Now find and remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
-
-        Given path ishPath + '/' + id
-        When method DELETE
-        Then status 204
-
-
+        
 
     Scenario: (-) Create Site by notadmin without access rights
 
