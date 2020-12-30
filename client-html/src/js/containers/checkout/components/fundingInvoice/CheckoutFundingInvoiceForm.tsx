@@ -4,29 +4,21 @@
  */
 
 import { Collapse } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import {
-  change,
   DecoratedFormProps, getFormSyncErrors, getFormValues, reduxForm
 } from "redux-form";
 import clsx from "clsx";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormField from "../../../../common/components/form/form-fields/FormField";
-import { Switch } from "../../../../common/components/form/form-fields/Switch";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
-import { NoArgFunction } from "../../../../model/common/CommonFunctions";
 import { State } from "../../../../reducers/state";
 import { formatFundingSourceId } from "../../../entities/common/utils";
 import { AppBarTitle, } from "../CheckoutSelection";
 import CheckoutFundingInvoiceSummaryList, { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./CheckoutFundingInvoiceSummaryList";
-import { usePrevious } from "../../../../common/utils/hooks";
-import EntityService from "../../../../common/services/EntityService";
-import { CHECKOUT_CONTACT_COLUMNS } from "../../constants";
-import { getCustomColumnsMap } from "../../../../common/utils/common";
 
 const styles = createStyles(() => ({
   fundingInvoiceSourceId: {
