@@ -68,6 +68,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
     dispatch,
     syncErrors,
     currency,
+    selectedItemIndex
     fundingInvoice,
     selectedItemIndex,
     form
@@ -82,8 +83,8 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"
+          name={`fundingInvoices[${selectedItemIndex}].fundingProviderId`}
           entity="FundingInvoiceCompany"
-          name="fundingProviderId"
           label="Funding provider"
           selectValueMark="id"
           selectLabelCondition={contactLabelCondition}
