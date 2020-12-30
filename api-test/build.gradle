@@ -31,6 +31,7 @@ targetCompatibility = 11
 task copyConfig(type: Copy) {
     from("$rootDir/api-test/src/test/resources/") {
         include 'onCourse.yml'
+        include 'logSetup.xml'
     }
     into "$rootDir/server/build"
     def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'

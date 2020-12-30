@@ -112,7 +112,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/definedTuto
 
     Scenario: (-) Delete Tutor Role with relation
 
-        Given path ishPath + '/3'
+        Given path ishPath + '/4'
         When method DELETE
         Then status 400
         And match $.errorMessage == "Cannot delete defined tutor role attached to tutor."
