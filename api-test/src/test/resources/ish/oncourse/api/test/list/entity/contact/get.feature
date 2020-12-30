@@ -87,7 +87,7 @@ Feature: Main feature for all GET requests with path 'list/entity/contact'
         {
         "id":1,
         "student":null,
-        "tutor":{"id":1,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":4,"futureClasseCount":1,"selfPacedclassesCount":#number,"unscheduledClasseCount":0,"passedClasseCount":1,"cancelledClassesCount":#number},
+        "tutor":{"defaultPayType":null,id":1,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":4,"futureClasseCount":1,"selfPacedclassesCount":#number,"unscheduledClasseCount":0,"passedClasseCount":1,"cancelledClassesCount":#number},
         "abn":null,
         "birthDate":"1972-05-01",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},

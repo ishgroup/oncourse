@@ -62,13 +62,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
             "added":"2019-02-14T13:40:13.000Z",
             "description":"Private description",
             "createdOn":"#ignore","tags":[],
-            "attachmentRelations":
-                [
-                    {"relatedContacts":[],"entityId":1004,"label":"create assessment 1","entity":"Assessment"},
-                    {"relatedContacts":[],"entityId":1,"label":"course1-1","entity":"Class"},
-                    {"relatedContacts":[{"name":"tutorA mergeA","id":24}],"entityId":24,"label":"tutorA mergeA","entity":"Contact"},
-                    {"relatedContacts":[{"name":"studentB B mergeB","id":22}],"entityId":22,"label":"studentB B mergeB","entity":"Contact"}
-                ],
+            "attachmentRelations":"#ignore", 
             "versionId":null,
             "modifiedOn":"#ignore",
             "removed":false,
