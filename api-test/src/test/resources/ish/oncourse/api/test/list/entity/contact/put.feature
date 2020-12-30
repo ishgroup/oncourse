@@ -389,7 +389,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         {
         "id":"#(~~id)",
         "student":null,
-        "tutor":{"id":"#(~~tutorId)","dateFinished":"2025-01-05","dateStarted":"2015-02-05","familyNameLegal":"familyNameLegal2UPD","givenNameLegal":"givenNameLegal2UPD","payrollRef":"some payrollRefUPD","resume":"some resume UPD","wwChildrenCheckedOn":"2015-03-05","wwChildrenExpiry":"2025-04-05","wwChildrenRef":"some wwChildrenRefUPD","wwChildrenStatus":"Cleared","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"defaultPayType":null,id":"#(~~tutorId)","dateFinished":"2025-01-05","dateStarted":"2015-02-05","familyNameLegal":"familyNameLegal2UPD","givenNameLegal":"givenNameLegal2UPD","payrollRef":"some payrollRefUPD","resume":"some resume UPD","wwChildrenCheckedOn":"2015-03-05","wwChildrenExpiry":"2025-04-05","wwChildrenRef":"some wwChildrenRefUPD","wwChildrenStatus":"Cleared","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
         "abn":"12345678000",
         "birthDate":"1995-07-25",
         "country":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},
@@ -1577,7 +1577,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         {
         "id":"#(~~id)",
         "student":null,
-        "tutor":{"id":"#(~~tutorId)","dateFinished":"2025-01-05","dateStarted":"2015-02-05","familyNameLegal":"familyNameLegal4UPD","givenNameLegal":"givenNameLegal4UPD","payrollRef":"some payrollRefUPD","resume":"some resume UPD","wwChildrenCheckedOn":"2015-03-05","wwChildrenExpiry":"2025-04-05","wwChildrenRef":"some wwChildrenRefUPD","wwChildrenStatus":"Cleared","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"defaultPayType":null,"id":"#(~~tutorId)","dateFinished":"2025-01-05","dateStarted":"2015-02-05","familyNameLegal":"familyNameLegal4UPD","givenNameLegal":"givenNameLegal4UPD","payrollRef":"some payrollRefUPD","resume":"some resume UPD","wwChildrenCheckedOn":"2015-03-05","wwChildrenExpiry":"2025-04-05","wwChildrenRef":"some wwChildrenRefUPD","wwChildrenStatus":"Cleared","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
         "abn":"12345678000",
         "birthDate":"1995-07-25",
         "country":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},

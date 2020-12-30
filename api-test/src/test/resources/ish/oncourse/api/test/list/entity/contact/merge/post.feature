@@ -22,7 +22,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         And request mergeRequest
         When method POST
         Then status 200
-        And match $ == 21
+        And match $ == '21'
 
 #       <---> Assertion:
         Given path ishPathContact + '/21'
@@ -36,6 +36,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             {"id":15,"countryOfBirth":{"id":2,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"United States of America","saccCode":null},"disabilityType":"Mental illness","labourForceStatus":"Unemployed seeking full time","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":16,"countryOfResidency":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[{"id":1001,"number":"2","type":{"id":2,"name":"Student","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"},"expiresOn":"2024-10-01","created":"#ignore","modified":"#ignore"},{"id":1002,"number":"5","type":{"id":3,"name":"Pensioner","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"},"expiresOn":"2019-09-12","created":"#ignore","modified":"#ignore"}]},
         "tutor":
             {
+            "defaultPayType":"Employee",    
             "id":7,
             "dateFinished":"2026-10-07",
             "dateStarted":"2019-08-08",
@@ -94,22 +95,14 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "memberships":"#ignore",
         "profilePicture":null,
         "relations":[{"id":"#number","contactFromId":null,"contactFromName":null,"contactToId":26,"contactToName":"tutorC mergeC","relationId":-1}],
-        "financialData":
-            [
-            {"relatedEntityId":17,"type":"PaymentIn","description":"Cash payment payment in (office)","date":"2019-09-20","createdOn":"2019-09-20T13:57:10.310Z","referenceNumber":null,"status":"Success","owing":null,"amount":260.00,"balance":-260.00},
-            {"relatedEntityId":29,"type":"Invoice","description":"Invoice (office)","date":"2019-09-20","createdOn":"2019-09-20T13:57:10.400Z","referenceNumber":"30","status":"Success","owing":0.00,"amount":260.00,"balance":0.00},
-            {"relatedEntityId":18,"type":"PaymentIn","description":"Cash payment payment in (office)","date":"2019-09-20","createdOn":"2019-09-20T13:58:09.201Z","referenceNumber":null,"status":"Success","owing":null,"amount":300.00,"balance":-300.00},
-            {"relatedEntityId":30,"type":"Invoice","description":"Invoice (office)","date":"2019-09-20","createdOn":"2019-09-20T13:58:09.207Z","referenceNumber":"31","status":"Success","owing":0.00,"amount":300.00,"balance":0.00},
-            {"relatedEntityId":19,"type":"PaymentIn","description":"Cash payment payment in (office)","date":"2019-09-20","createdOn":"2019-09-20T13:58:45.890Z","referenceNumber":null,"status":"Success","owing":null,"amount":165.00,"balance":-165.00},
-            {"relatedEntityId":31,"type":"Invoice","description":"Invoice (office)","date":"2019-09-20","createdOn":"2019-09-20T13:58:45.892Z","referenceNumber":"32","status":"Success","owing":0.00,"amount":165.00,"balance":0.00}
-            ],
+        "financialData":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "messages":
             [
-            {"messageId":1006,"createdOn":"2019-09-20T11:23:52.427Z","sentOn":null,"subject":"a","creatorKey":null,"status":"Queued","type":"Email"},
-            {"messageId":1007,"createdOn":"2019-09-20T11:24:07.706Z","sentOn":null,"subject":"b","creatorKey":null,"status":"Queued","type":"Email"},
-            {"messageId":1013,"createdOn":"2019-09-20T11:27:41.805Z","sentOn":null,"subject":"a","creatorKey":null,"status":"Queued","type":"Email"}
+            {"messageId":1006,"createdOn":"#ignore","sentOn":null,"subject":"a","creatorKey":null,"status":"Queued","type":"Email"},
+            {"messageId":1007,"createdOn":"#ignore","sentOn":null,"subject":"b","creatorKey":null,"status":"Queued","type":"Email"},
+            {"messageId":1013,"createdOn":"#ignore","sentOn":null,"subject":"a","creatorKey":null,"status":"Queued","type":"Email"}
             ],
         "rules":[{"id":"1001","description":"bbbbb-bb","startDate":"2019-09-20","endDate":"2019-10-01","startDateTime":null,"endDateTime":null,"repeat":"year","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]
         }
@@ -130,7 +123,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         And request mergeRequest
         When method POST
         Then status 200
-        And match $ == 23
+        And match $ == '23'
 
 #       <---> Assertion:
         Given path ishPathContact + '/23'
@@ -141,7 +134,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         {
         "id":23,
         "student":{"id":17,"countryOfBirth":null,"disabilityType":"Not stated","labourForceStatus":"Not stated","englishProficiency":"Not stated","highestSchoolLevel":"Not stated","indigenousStatus":"Not stated","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Not stated","specialNeeds":null,"yearSchoolCompleted":null,"studentNumber":17,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":null,"usi":"3333333333","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":null,"specialNeedsAssistance":false,"clientIndustryEmployment":"Not Stated","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[]},
-        "tutor":{"id":6,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":1,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"defaultPayType":"Employee","id":6,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":1,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
         "abn":null,
         "birthDate":"1995-05-06",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
@@ -188,20 +181,25 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             {"id":"#number","contactFromId":24,"contactFromName":"tutorA mergeA","contactToId":null,"contactToName":null,"relationId":1},
             {"id":"#number","contactFromId":27,"contactFromName":"mergeCompanyA","contactToId":null,"contactToName":null,"relationId":1}
             ],
-        "financialData":
-            [
-            {"relatedEntityId":20,"type":"PaymentIn","description":"Cash payment payment in (office)","date":"2019-09-20","createdOn":"2019-09-20T13:59:38.975Z","referenceNumber":null,"status":"Success","owing":null,"amount":400.00,"balance":-400.00},
-            {"relatedEntityId":32,"type":"Invoice","description":"Invoice (office)","date":"2019-09-20","createdOn":"2019-09-20T13:59:38.978Z","referenceNumber":"33","status":"Success","owing":0.00,"amount":400.00,"balance":0.00},
-            {"relatedEntityId":21,"type":"PaymentIn","description":"Cash payment payment in (office)","date":"2019-09-20","createdOn":"2019-09-20T14:00:56.234Z","referenceNumber":null,"status":"Success","owing":null,"amount":231.00,"balance":-231.00},
-            {"relatedEntityId":33,"type":"Invoice","description":"Invoice (office)","date":"2019-09-20","createdOn":"2019-09-20T14:00:56.235Z","referenceNumber":"34","status":"Success","owing":0.00,"amount":231.00,"balance":0.00}
-            ],
+        "financialData":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "messages":[],
         "rules":[]
         }
         """
-
+        
+        And match $.financialData contains only
+        """
+        [
+        {"date":"2019-09-20","amount":400.0,"balance":400.0,"referenceNumber":"33","relatedEntityId":32,"description":"Invoice (office)","owing":0.0,"type":"Invoice","createdOn":"#ignore","status":"Success"},
+        {"date":"2019-09-20","amount":400.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":20,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"#ignore","status":"Success"},
+        {"date":"2019-09-20","amount":231.0,"balance":231.0,"referenceNumber":"34","relatedEntityId":33,"description":"Invoice (office)","owing":0.0,"type":"Invoice","createdOn":"#ignore","status":"Success"},
+        {"date":"2019-09-20","amount":231.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":21,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"#ignore","status":"Success"}
+        ]
+        """
+        
+        
         Given path ishPathContact + '/26'
         When method GET
         Then status 400
@@ -217,7 +215,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         And request mergeRequest
         When method POST
         Then status 200
-        And match $ == 27
+        And match $ == '27'
 
 #       <---> Assertion:
         Given path ishPathContact + '/27'
@@ -274,8 +272,8 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "modifiedOn":"#ignore",
         "messages":
             [
-            {"messageId":1011,"createdOn":"2019-09-20T11:26:28.106Z","sentOn":null,"subject":"co1","creatorKey":null,"status":"Queued","type":"Email"},
-            {"messageId":1012,"createdOn":"2019-09-20T11:26:48.424Z","sentOn":null,"subject":"co2","creatorKey":null,"status":"Queued","type":"Email"}
+            {"messageId":1011,"createdOn":"#ignore","sentOn":null,"subject":"co1","creatorKey":null,"status":"Queued","type":"Email"},
+            {"messageId":1012,"createdOn":"#ignore","sentOn":null,"subject":"co2","creatorKey":null,"status":"Queued","type":"Email"}
             ],
         "rules":[{"id":"1003","description":"Co2","startDate":"2019-09-20","endDate":"2019-09-20","startDateTime":null,"endDateTime":null,"repeat":"month","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2019-08-01","created":"#ignore","modified":"#ignore"}]
         }
@@ -331,7 +329,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         And request mergeRequest
         When method POST
         Then status 200
-        And match $ == 24
+        And match $ == '24'
 
 #       <---> Assertion:
         Given path ishPathContact + '/24'
@@ -344,6 +342,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "student":null,
         "tutor":
             {
+            "defaultPayType":"Employee",
             "id":4,
             "dateFinished":null,
             "dateStarted":null,
@@ -403,11 +402,11 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "modifiedOn":"#ignore",
         "messages":
             [
-            {"messageId":1008,"createdOn":"2019-09-20T11:24:54.338Z","sentOn":null,"subject":"ta","creatorKey":null,"status":"Queued","type":"Email"},
-            {"messageId":1009,"createdOn":"2019-09-20T11:25:42.930Z","sentOn":null,"subject":"tB","creatorKey":null,"status":"Queued","type":"Email"},
-            {"messageId":1010,"createdOn":"2019-09-20T11:26:03.980Z","sentOn":null,"subject":"tb2","creatorKey":null,"status":"Queued","type":"Email"}
+            {"messageId":1008,"createdOn":"#ignore","sentOn":null,"subject":"ta","creatorKey":null,"status":"Queued","type":"Email"},
+            {"messageId":1009,"createdOn":"#ignore","sentOn":null,"subject":"tB","creatorKey":null,"status":"Queued","type":"Email"},
+            {"messageId":1010,"createdOn":"#ignore","sentOn":null,"subject":"tb2","creatorKey":null,"status":"Queued","type":"Email"}
             ],
-        "rules":[{"id":"1002","description":"tA","startDate":null,"endDate":null,"startDateTime":"2019-09-20T11:16:59.659Z","endDateTime":"2019-09-20T12:16:59.659Z","repeat":"week","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]}
+        "rules":[{"id":"1002","description":"tA","startDate":null,"endDate":null,"startDateTime":"#ignore","endDateTime":"#ignore","repeat":"week","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]}
         }
         """
 
