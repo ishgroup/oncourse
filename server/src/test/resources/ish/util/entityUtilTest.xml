@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Account id="5" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1" />
+	<Account id="5" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1" taxId="[NULL]"/>
 	<Account id="6" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="3"/>
-	<Account id="7" accountCode="accEnrl" description="Test asset account" isEnabled="1" type="1" />
+	<Account id="7" accountCode="accEnrl" description="Test asset account" isEnabled="1" type="1" taxId="[NULL]"/>
 	<Account id="8" accountCode="accDebt" description="Test income account" isEnabled="1" type="4" taxId="3"/>
-	<Account id="9" accountCode="accFees" description="Test fees account" isEnabled="1" type="2" />
-	<Account id="10" accountCode="accLiab" description="Test liability account" isEnabled="1" type="2"/>
-	<Account id="12" accountCode="accDisc" description="Test discount account" isEnabled="1" type="5"/>
+	<Account id="9" accountCode="accFees" description="Test fees account" isEnabled="1" type="2" taxId="[NULL]"/>
+	<Account id="10" accountCode="accLiab" description="Test liability account" isEnabled="1" type="2" taxId="[NULL]"/>
+	<Account id="12" accountCode="accDisc" description="Test discount account" isEnabled="1" type="5" taxId="[NULL]"/>
 	
 	<Country id="1"	name="Country1" />
 	<Country id="2"	name="Country2" />
@@ -35,5 +35,7 @@
 	<Room id="10" name="Test Room1" seatedCapacity="15" siteId="4" />
 	<Room id="11" name="Test Room2" seatedCapacity="25" siteId="4" />
 	<Room id="12" name="Test Room3" seatedCapacity="35" siteId="4" />
-	<Room id="13" name="Test Room4" seatedCapacity="45" siteId="4" />	
+	<Room id="13" name="Test Room4" seatedCapacity="45" siteId="4" />
+
+	<SYSTEMUSER CREATEDON="2012-06-20 10:22:44.0" FIRSTNAME="onCourse" ID="1" LOGIN="admin" MODIFIEDON="2020-12-15 02:01:57.0" PASSWORD="d033e22ae348aeb566fc214aec3585c4da997" SURNAME="Administrator" ISACTIVE="1" ISADMIN="1" EMAIL="admin@example.edu" DEFAULTADMINISTRATIONCENTREID="1" CANEDITTARA="0" CANEDITCMS="0" WILLOWID="84" PASSWORDUPDATEREQUIRED="0"/>
 </dataset>

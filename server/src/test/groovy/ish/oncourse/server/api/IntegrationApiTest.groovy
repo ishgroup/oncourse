@@ -31,9 +31,10 @@ class IntegrationApiTest extends CayenneIshTestCase {
         List<IntegrationPropDTO> fields = [new IntegrationPropDTO(key: MyobIntegration.MYOB_BASE_URL, value: 'http://myob.com'),
                                            new IntegrationPropDTO(key: MyobIntegration.MYOB_USER, value: 'user'),
                                            new IntegrationPropDTO(key: MyobIntegration.MYOB_PASSWORD, value: 'pass'),
+                                           new IntegrationPropDTO(key: MyobIntegration.MYOB_REFRESH_TOKEN, value: 'token'),
 
         ]
-        IntegrationDTO data = new IntegrationDTO(name: 'integration', type: new BigDecimal(7), props: fields)
+        IntegrationDTO data = new IntegrationDTO(name: 'integration', type: new BigDecimal(6), props: fields)
 
         integrationApi.create(data)
 

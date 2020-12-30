@@ -17,7 +17,6 @@ import static junit.framework.TestCase.assertNotNull
 import static junit.framework.TestCase.assertTrue
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.SelectQuery
-import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
@@ -33,16 +32,9 @@ class EntityUtilTest extends CayenneIshTestCase {
 
         InputStream st = EntityUtilTest.class.getClassLoader().getResourceAsStream("ish/util/entityUtilTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        Date start1 = DateUtils.addDays(new Date(), -2)
-        Date start2 = DateUtils.addDays(new Date(), -2)
-        rDataSet.addReplacementObject("[start_date1]", start1)
-        rDataSet.addReplacementObject("[start_date2]", start2)
-        rDataSet.addReplacementObject("[end_date1]", DateUtils.addHours(start1, 2))
-        rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
-
-        executeDatabaseOperation(rDataSet)
+        ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet)
+        replacementDataSet.addReplacementObject("[NULL]", null)
+        executeDatabaseOperation(replacementDataSet)
     }
 
 

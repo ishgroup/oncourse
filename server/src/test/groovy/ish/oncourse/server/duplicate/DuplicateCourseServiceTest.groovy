@@ -18,6 +18,7 @@ import ish.oncourse.server.cayenne.CourseCourseRelation
 import ish.oncourse.server.cayenne.CourseModule
 import ish.oncourse.server.cayenne.CourseProductRelation
 import ish.oncourse.server.cayenne.Document
+import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Module
@@ -59,17 +60,7 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
         course.setReportableHours(new BigDecimal(10))
         course.setFieldConfigurationSchema(scheme)
 
-        CourseCourseRelation courseCourseRelation = context.newObject(CourseCourseRelation.class)
-        courseCourseRelation.setFromCourse(course)
-        courseCourseRelation.setToCourse(relatedCourse)
-        courseCourseRelation.setRelationType(getRelationType(context))
-
         Product product = createProduct(context)
-
-        CourseProductRelation productRelation = context.newObject(CourseProductRelation.class)
-        productRelation.setFromCourse(course)
-        productRelation.setToProduct(product)
-        productRelation.setRelationType(getRelationType(context))
 
         Module module = context.newObject(Module.class)
         module.setType(ModuleType.MODULE)
@@ -92,6 +83,23 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
         courseAttachmentRelation.setDocument(document)
         courseAttachmentRelation.setDocumentVersion(null)
         courseAttachmentRelation.setSpecialType(null)
+
+        context.commitChanges()
+
+        EntityRelation courseCourseRelation = context.newObject(EntityRelation.class)
+        courseCourseRelation.setRelationType(getRelationType(context))
+        courseCourseRelation.setFromEntityIdentifier(Course.simpleName)
+        courseCourseRelation.setFromEntityAngelId(course.id)
+        courseCourseRelation.setToEntityIdentifier(Course.simpleName)
+        courseCourseRelation.setToEntityAngelId(relatedCourse.id)
+
+
+        EntityRelation productRelation = context.newObject(EntityRelation.class)
+        productRelation.setRelationType(getRelationType(context))
+        productRelation.setFromEntityIdentifier(Course.simpleName)
+        productRelation.setFromEntityAngelId(course.id)
+        productRelation.setToEntityIdentifier(Product.simpleName)
+        productRelation.setToEntityAngelId(product.id)
 
         context.commitChanges()
 
@@ -130,26 +138,26 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
         assertEquals(true, duplicatedCourse.getAllowWaitingLists())
         assertEquals(course.getReportableHours(), duplicatedCourse.getReportableHours())
 
-        List<CourseCourseRelation> courseCourseRelations = ObjectSelect.query(CourseCourseRelation.class)
-                .where(CourseCourseRelation.FROM_COURSE.eq(duplicatedCourse))
-                .and(CourseCourseRelation.TO_COURSE.eq(relatedCourse))
+        List<EntityRelation> courseCourseRelations = ObjectSelect.query(EntityRelation.class)
+                .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(duplicatedCourse.id))
+                .and(EntityRelation.TO_ENTITY_ANGEL_ID.eq(relatedCourse.id))
                 .select(context)
         assertEquals(1, courseCourseRelations.size())
         assertNotNull(courseCourseRelations.get(0).getCreatedOn())
         assertNotNull(courseCourseRelations.get(0).getModifiedOn())
-        assertEquals(duplicatedCourse, courseCourseRelations.get(0).getFromCourse())
-        assertEquals(relatedCourse, courseCourseRelations.get(0).getToCourse())
+        assertEquals(duplicatedCourse.id, courseCourseRelations.get(0).getFromEntityAngelId())
+        assertEquals(relatedCourse.id, courseCourseRelations.get(0).getToEntityAngelId())
 
 
-        List<CourseProductRelation> courseProductRelations = ObjectSelect.query(CourseProductRelation.class)
-                .where(CourseProductRelation.FROM_COURSE.eq(duplicatedCourse))
-                .and(CourseProductRelation.TO_PRODUCT.eq(product))
+        List<EntityRelation> courseProductRelations = ObjectSelect.query(EntityRelation.class)
+                .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(duplicatedCourse.id))
+                .and(EntityRelation.TO_ENTITY_ANGEL_ID.eq(product.id))
                 .select(context)
         assertEquals(1, courseProductRelations.size())
         assertNotNull(courseProductRelations.get(0).getCreatedOn())
         assertNotNull(courseProductRelations.get(0).getModifiedOn())
-        assertEquals(duplicatedCourse, courseProductRelations.get(0).getFromCourse())
-        assertNotNull(courseProductRelations.get(0).getToProduct())
+        assertEquals(duplicatedCourse.id, courseProductRelations.get(0).getFromEntityAngelId())
+        assertEquals(product.id, courseProductRelations.get(0).getToEntityAngelId())
 
 
         List<CourseAttachmentRelation> courseAttachmentRelations = ObjectSelect.query(CourseAttachmentRelation.class)

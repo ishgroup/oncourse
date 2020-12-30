@@ -41,10 +41,12 @@ class CourseTest extends CayenneIshTestCase {
 
         context.commitChanges()
 
-        CourseCourseRelation ccr = context.newObject(CourseCourseRelation.class)
-        ccr.setRelationType(getRelationType(context))
-        ccr.setFromCourse(course1)
-        ccr.setToCourse(course2)
+        EntityRelation courseCourseRelation = context.newObject(EntityRelation.class)
+        courseCourseRelation.setRelationType(getRelationType(context))
+        courseCourseRelation.setFromEntityAngelId(course1.id)
+        courseCourseRelation.setFromEntityIdentifier(Course.simpleName)
+        courseCourseRelation.setToEntityAngelId(course2.id)
+        courseCourseRelation.setToEntityIdentifier(Course.simpleName)
 
         try {
 			context.commitChanges()
@@ -54,109 +56,15 @@ class CourseTest extends CayenneIshTestCase {
         }
 
 		//verify the relatioships
-		assertEquals("", course1.getToCourses().size(), 1)
-        assertEquals("", course1.getFromCourses().size(), 0)
+		assertEquals(course1.relatedToCourses.size(), 1)
+        assertEquals(course1.relatedFromCourses.size(), 0)
 
 
-        assertEquals("", course2.getToCourses().size(), 0)
-        assertEquals("", course2.getFromCourses().size(), 1)
+        assertEquals(course2.relatedToCourses.size(), 0)
+        assertEquals(course2.relatedFromCourses.size(), 1)
 
-        assertTrue(course1.getToCourses().get(0).getFromCourse().equalsIgnoreContext(course1))
-        assertTrue(course1.getToCourses().get(0).getToCourse().equalsIgnoreContext(course2))
-
-    }
-
-	/**
-	 * test create course-course relationship, assigning one of the relationships from inside the relation object
-	 */
-	@Test
-    void testCourseCourses2() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext context = cayenneService.getNewNonReplicatingContext()
-
-        FieldConfigurationScheme scheme = DataGenerator.valueOf(context).getFieldConfigurationScheme()
-
-        //setup courses
-		Course course1 = context.newObject(Course.class)
-        course1.setName("Course 2-1")
-        course1.setCode("C21")
-        course1.setFieldConfigurationSchema(scheme)
-
-        Course course2 = context.newObject(Course.class)
-        course2.setName("Course 2-2")
-        course2.setCode("C22")
-        course2.setFieldConfigurationSchema(scheme)
-
-        context.commitChanges()
-
-        CourseCourseRelation ccr = context.newObject(CourseCourseRelation.class)
-        ccr.setRelationType(getRelationType(context))
-        ccr.setToCourse(course2)
-        course1.addToToCourses(ccr)
-
-        try {
-			context.commitChanges()
-        } catch (Exception e) {
-			e.printStackTrace()
-            fail("the course-course relationship cannot be created.")
-        }
-
-		//verify the relatioships
-		assertEquals("", course1.getToCourses().size(), 1)
-        assertEquals("", course1.getFromCourses().size(), 0)
-
-        assertEquals("", course2.getToCourses().size(), 0)
-        assertEquals("", course2.getFromCourses().size(), 1)
-
-        assertTrue(course1.getToCourses().get(0).getFromCourse().equalsIgnoreContext(course1))
-        assertTrue(course1.getToCourses().get(0).getToCourse().equalsIgnoreContext(course2))
-
-    }
-
-	/**
-	 * test create course-course relationship, assigning both relationships from outside the relation object
-	 */
-	@Test
-    void testCourseCourses3() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext context = cayenneService.getNewNonReplicatingContext()
-
-        FieldConfigurationScheme scheme = DataGenerator.valueOf(context).getFieldConfigurationScheme()
-
-        //setup courses
-		Course course1 = context.newObject(Course.class)
-        course1.setName("Course 3-1")
-        course1.setCode("C31")
-        course1.setFieldConfigurationSchema(scheme)
-
-        Course course2 = context.newObject(Course.class)
-        course2.setName("Course 3-2")
-        course2.setCode("C32")
-        course2.setFieldConfigurationSchema(scheme)
-
-        context.commitChanges()
-
-        CourseCourseRelation ccr = context.newObject(CourseCourseRelation.class)
-        ccr.setRelationType(getRelationType(context))
-        course1.addToToCourses(ccr)
-        course2.addToFromCourses(ccr)
-
-        try {
-			context.commitChanges()
-        } catch (Exception e) {
-			e.printStackTrace()
-            fail("the course-course relationship cannot be created.")
-        }
-
-		//verify the relatioships
-		assertEquals("", course1.getToCourses().size(), 1)
-        assertEquals("", course1.getFromCourses().size(), 0)
-
-        assertEquals("", course2.getToCourses().size(), 0)
-        assertEquals("", course2.getFromCourses().size(), 1)
-
-        assertTrue(course1.getToCourses().get(0).getFromCourse().equalsIgnoreContext(course1))
-        assertTrue(course1.getToCourses().get(0).getToCourse().equalsIgnoreContext(course2))
+        assertTrue(course1.relatedToCourses[0].equalsIgnoreContext(course2))
+        assertTrue(course2.relatedFromCourses[0].equalsIgnoreContext(course1))
 
     }
 
@@ -176,17 +84,19 @@ class CourseTest extends CayenneIshTestCase {
         t.setReceivableFromAccount(AccountUtil.getDefaultStudentEnrolmentsAccount(context, Account.class))
         t.setPayableToAccount(AccountUtil.getDefaultTaxAccount(context, Account.class))
 
-        ArticleProduct p1 = context.newObject(ArticleProduct.class)
-        p1.setName("Product 1")
-        p1.setSku("P1")
-        p1.setTax(t)
+        ArticleProduct product1 = context.newObject(ArticleProduct.class)
+        product1.setName("Product 1")
+        product1.setSku("P1")
+        product1.setTax(t)
 
         context.commitChanges()
 
-        CourseProductRelation cpr = context.newObject(CourseProductRelation.class)
-        cpr.setRelationType(getRelationType(context))
-        cpr.setFromCourse(course1)
-        cpr.setToProduct(p1)
+        EntityRelation courseProductRelation = context.newObject(EntityRelation.class)
+        courseProductRelation.setRelationType(getRelationType(context))
+        courseProductRelation.setFromEntityIdentifier(Course.simpleName)
+        courseProductRelation.setFromEntityAngelId(course1.id)
+        courseProductRelation.setToEntityIdentifier(Product.simpleName)
+        courseProductRelation.setToEntityAngelId(product1.id)
 
         try {
 			context.commitChanges()
@@ -195,11 +105,11 @@ class CourseTest extends CayenneIshTestCase {
             fail("the course-product relationship cannot be created.")
         }
 
-		assertEquals("", course1.getToCourses().size(), 0)
-        assertEquals("", course1.getFromCourses().size(), 0)
-        assertEquals("", course1.getProductToRelations().size(), 1)
+		assertEquals(course1.relatedToCourses.size(), 0)
+        assertEquals(course1.relatedFromCourses.size(), 0)
+        assertEquals(course1.relatedProducts.size(), 1)
 
-        assertTrue(course1.getProductToRelations().get(0).getFromCourse().equalsIgnoreContext(course1))
+        assertTrue(course1.relatedToProducts[0].equalsIgnoreContext(product1))
 
     }
 
@@ -226,10 +136,12 @@ class CourseTest extends CayenneIshTestCase {
 
         context.commitChanges()
 
-        ProductCourseRelation prc = context.newObject(ProductCourseRelation.class)
-        prc.setRelationType(getRelationType(context))
-        prc.setToCourse(course)
-        prc.setFromProduct(product)
+        EntityRelation productCourseRelation = context.newObject(EntityRelation.class)
+        productCourseRelation.setRelationType(getRelationType(context))
+        productCourseRelation.setToEntityIdentifier(Course.simpleName)
+        productCourseRelation.setToEntityAngelId(course.id)
+        productCourseRelation.setFromEntityIdentifier(Product.simpleName)
+        productCourseRelation.setFromEntityAngelId(product.id)
 
         try {
             context.commitChanges()
@@ -238,17 +150,13 @@ class CourseTest extends CayenneIshTestCase {
             fail("the course-product relationship cannot be created.")
         }
 
-        assertEquals("", course.getToCourses().size(), 0)
-        assertEquals("", course.getFromCourses().size(), 0)
-        assertEquals("", course.getProductToRelations().size(), 0)
-        assertEquals("", course.getProductFromRelations().size(), 1)
-        assertEquals("", product.getCourseToRelations().size(), 0)
-        assertEquals("", product.getCourseFromRelations().size(), 1)
+        assertEquals(course.relatedCourses.size(), 0)
+        assertEquals(course.relatedToProducts.size(), 0)
+        assertEquals(course.relatedFromProducts.size(), 1)
+        assertEquals(product.relatedCourses.size(), 1)
 
-        assertTrue(course.getProductFromRelations().get(0).getToCourse().equalsIgnoreContext(course))
-        assertTrue(course.getProductFromRelations().get(0).getFromProduct().equalsIgnoreContext(product))
-        assertTrue(product.getCourseFromRelations().get(0).getToCourse().equalsIgnoreContext(course))
-        assertTrue(product.getCourseFromRelations().get(0).getFromProduct().equalsIgnoreContext(product))
+        assertTrue(course.relatedFromProducts[0].equalsIgnoreContext(product))
+        assertTrue(product.relatedCourses[0].equalsIgnoreContext(course))
 
     }
 
@@ -270,24 +178,31 @@ class CourseTest extends CayenneIshTestCase {
         toCourse.setCode("CtoMain")
         toCourse.setFieldConfigurationSchema(scheme)
 
-        CourseCourseRelation fromMainToCourse = context.newObject(CourseCourseRelation.class)
-        fromMainToCourse.setRelationType(getRelationType(context))
-        fromMainToCourse.setFromCourse(mainCourse)
-        fromMainToCourse.setToCourse(toCourse)
-
         context.commitChanges()
+
+        EntityRelation fromMainToCourse = context.newObject(EntityRelation.class)
+        fromMainToCourse.setRelationType(getRelationType(context))
+        fromMainToCourse.setFromEntityIdentifier(Course.simpleName)
+        fromMainToCourse.setFromEntityAngelId(mainCourse.id)
+        fromMainToCourse.setToEntityIdentifier(Course.simpleName)
+        fromMainToCourse.setToEntityAngelId(toCourse.id)
+
+
 
         Course fromCourse = context.newObject(Course.class)
         fromCourse.setName("Course from main course")
         fromCourse.setCode("CfromMain")
         fromCourse.setFieldConfigurationSchema(scheme)
 
-        CourseCourseRelation fromCourseToMain = context.newObject(CourseCourseRelation.class)
-        fromCourseToMain.setRelationType(getRelationType(context))
-        fromCourseToMain.setFromCourse(fromCourse)
-        fromCourseToMain.setToCourse(mainCourse)
-
         context.commitChanges()
+
+        EntityRelation fromCourseToMain = context.newObject(EntityRelation.class)
+        fromCourseToMain.setRelationType(getRelationType(context))
+        fromCourseToMain.setFromEntityIdentifier(Course.simpleName)
+        fromCourseToMain.setFromEntityAngelId(fromCourse.id)
+        fromCourseToMain.setToEntityIdentifier(Course.simpleName)
+        fromCourseToMain.setToEntityAngelId(mainCourse.id)
+
 
         Tax tax = context.newObject(Tax.class)
         tax.setTaxCode("tax")
@@ -300,12 +215,14 @@ class CourseTest extends CayenneIshTestCase {
         fromProduct.setSku("PfromMain")
         fromProduct.setTax(tax)
 
-        ProductCourseRelation fromProductToMain = context.newObject(ProductCourseRelation.class)
-        fromProductToMain.setRelationType(getRelationType(context))
-        fromProductToMain.setToCourse(mainCourse)
-        fromProductToMain.setFromProduct(fromProduct)
-
         context.commitChanges()
+
+        EntityRelation fromProductToMain = context.newObject(EntityRelation.class)
+        fromProductToMain.setRelationType(getRelationType(context))
+        fromProductToMain.setToEntityIdentifier(Course.simpleName)
+        fromProductToMain.setFromEntityIdentifier(Product.simpleName)
+        fromProductToMain.setToEntityAngelId(mainCourse.id)
+        fromProductToMain.setFromEntityAngelId(fromProduct.id)
 
 
         ArticleProduct toProduct = context.newObject(ArticleProduct.class)
@@ -313,10 +230,14 @@ class CourseTest extends CayenneIshTestCase {
         toProduct.setSku("PtoMain")
         toProduct.setTax(tax)
 
-        CourseProductRelation fromMainToProduct = context.newObject(CourseProductRelation.class)
+        context.commitChanges()
+
+        EntityRelation fromMainToProduct = context.newObject(EntityRelation.class)
         fromMainToProduct.setRelationType(getRelationType(context))
-        fromMainToProduct.setFromCourse(mainCourse)
-        fromMainToProduct.setToProduct(toProduct)
+        fromMainToProduct.setFromEntityIdentifier(Course.simpleName)
+        fromMainToProduct.setFromEntityAngelId(mainCourse.id)
+        fromMainToProduct.setToEntityIdentifier(Product.simpleName)
+        fromMainToProduct.setToEntityAngelId(toProduct.id)
 
         context.commitChanges()
 
