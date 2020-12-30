@@ -55,12 +55,13 @@ public class SchedulerService implements ISchedulerService {
 
 		var aJob = JobBuilder.newJob(provider).withIdentity(id, groupId).build();
 
-		var aTrigger = TriggerBuilder.newTrigger().withIdentity(id + TRIGGER_POSTFIX, groupId)
-			.withSchedule(simpleSchedule().withIntervalInSeconds(intervalInSeconds).repeatForever()).build();
-
-		scheduler.scheduleJob(aJob, aTrigger);
-		if (startNow) {
-			scheduler.triggerJob(aTrigger.getJobKey());
+		if(!scheduler.checkExists(aJob.getKey())) {
+			var aTrigger = TriggerBuilder.newTrigger().withIdentity(id + TRIGGER_POSTFIX, groupId)
+					.withSchedule(simpleSchedule().withIntervalInSeconds(intervalInSeconds).repeatForever()).build();
+			scheduler.scheduleJob(aJob, aTrigger);
+			if (startNow) {
+				scheduler.triggerJob(aTrigger.getJobKey());
+			}
 		}
 	}
 
@@ -77,12 +78,14 @@ public class SchedulerService implements ISchedulerService {
 
 		var aJob = JobBuilder.newJob(provider).withIdentity(id, groupId).build();
 
-		var aTrigger = TriggerBuilder.newTrigger().withIdentity(id + TRIGGER_POSTFIX, groupId)
-			.withSchedule(CronScheduleBuilder.cronSchedule(cron).inTimeZone(TimeZoneUtil.getTimeZone(timeZoneId))).build();
+		if(!scheduler.checkExists(aJob.getKey())) {
+			var aTrigger = TriggerBuilder.newTrigger().withIdentity(id + TRIGGER_POSTFIX, groupId)
+					.withSchedule(CronScheduleBuilder.cronSchedule(cron).inTimeZone(TimeZoneUtil.getTimeZone(timeZoneId))).build();
 
-		scheduler.scheduleJob(aJob, aTrigger);
-		if (startNow) {
-			scheduler.triggerJob(aTrigger.getJobKey());
+			scheduler.scheduleJob(aJob, aTrigger);
+			if (startNow) {
+				scheduler.triggerJob(aTrigger.getJobKey());
+			}
 		}
 	}
 
