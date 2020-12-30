@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 57-1
+      id: 58-1
       author: ntimofeev
       preConditions:
         - onFail: MARK_RAN
@@ -31,7 +31,7 @@ databaseChangeLog:
                   type: BIGINT(20)
 
   - changeSet:
-      id: 57-3
+      id: 58-2
       author: ntimofeev
       changes:
         - customChange:
