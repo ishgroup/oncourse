@@ -135,7 +135,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
          And param entity = 'Payslip'
          When method GET
          Then status 200
-         And match $.rows[4].values[3] == "Completed"
+         And match $.rows[4].values[3] == "New"
 
 
 
@@ -152,7 +152,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
          And param entity = 'Payslip'
          When method GET
          Then status 200
-         And match $.rows[5].values[3] == "Approved"
+         And match $.rows[5].values[3] == "Completed"
 
 
 
