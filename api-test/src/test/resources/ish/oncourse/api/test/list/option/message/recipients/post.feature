@@ -9,48 +9,6 @@ Feature: Main feature for all GET requests with path 'list/option/message/recipi
         * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
 
 
-
-    Scenario: (+) Get recipients ids to send by admin
-
-#       <---> for type 'Email':
-        Given path ishPath
-        And param entity = 'Contact'
-        And param messageType = 'Email'
-        And request {"search":"firstName contains \"stud\"","pageSize":50,"offset":0,"filter":"","tagGroups":[]}
-        When method POST
-        Then status 200
-        And match $ ==
-            """
-             {
-             "other":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
-             "tutors":{"sendSize":2,"withoutDestinationSize":0,"suppressToSendSize":0},
-             "withdrawnStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
-             "students":{"sendSize": 16,"withoutDestinationSize":1,"suppressToSendSize":0},
-             "activeStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0}
-             }
-            """
-
-#       <---> for type 'Sms':
-        Given path ishPath
-        And param entity = 'Contact'
-        And param messageType = 'Sms'
-        And request {"search":"firstName contains \"stud\"","pageSize":50,"offset":0,"filter":"","tagGroups":[]}
-        When method POST
-        Then status 200
-        And match $ ==
-            """
-            {
-            "other":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
-            "tutors":{"sendSize":2,"withoutDestinationSize":0,"suppressToSendSize":0},
-            "withdrawnStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
-            "students":{"sendSize": 16,"withoutDestinationSize":1,"suppressToSendSize":0},
-            "activeStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0}
-            }
-            """
-
-
-
-
     Scenario: (+) Get recipients ids to send by notadmin with access rights
 
 #       <--->  Login as notadmin

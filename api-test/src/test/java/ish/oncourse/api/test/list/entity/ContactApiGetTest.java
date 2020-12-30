@@ -18,12 +18,11 @@ import org.apache.logging.log4j.Logger;
 import static org.junit.Assert.assertEquals;
 
 public class ContactApiGetTest {
-    Logger logger = LogManager.getLogger();
     @Test
     public void test() {
         Results results = Runner.path("classpath:ish/oncourse/api/test/list/entity/contact/get.feature").tags("~@ignore").parallel(1);
         if ( results.getFailCount()>0) {
-            logger.error(results.getErrorMessages());
+            System.out.println(results.getErrorMessages());
         }
         assertEquals(results.getErrorMessages(), results.getFailCount(), 0);
     }

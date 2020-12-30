@@ -74,65 +74,7 @@ Feature: Main feature for all GET requests with path 'list/entity/contact'
         "rules":[]
         }
         """
-
-
-
-    Scenario: (+) Get Contact tutor by admin
-
-        Given path ishPath + '/1'
-        When method GET
-        Then status 200
-        And match $ contains
-        """
-        {
-        "id":1,
-        "student":null,
-        "tutor":{"defaultPayType":null,id":1,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":4,"futureClasseCount":1,"selfPacedclassesCount":#number,"unscheduledClasseCount":0,"passedClasseCount":1,"cancelledClassesCount":#number},
-        "abn":null,
-        "birthDate":"1972-05-01",
-        "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
-        "fax":null,
-        "isCompany":false,
-        "gender":"Male",
-        "message":null,
-        "homePhone":null,
-        "mobilePhone":"444555666",
-        "workPhone":null,
-        "postcode":"5000",
-        "state":"SA",
-        "street":"address str.",
-        "suburb":"Adelaide",
-        "tfn":null,
-        "deliveryStatusEmail":"#number",
-        "deliveryStatusSms":0,
-        "deliveryStatusPost":0,
-        "allowPost":true,
-        "allowSms":true,
-        "allowEmail":true,
-        "uniqueCode":"XykjWMd3zJ7KUX2n",
-        "honorific":null,
-        "title":null,
-        "email":"tutor1@gmail.com",
-        "firstName":"tutor1",
-        "lastName":"tutor1",
-        "middleName":null,
-        "invoiceTerms":null,
-        "taxId":null,
-        "customFields":{},
-        "documents":[],
-        "tags":[],
-        "memberships":[],
-        "profilePicture":null,
-        "relations":[],
-        "financialData":[],
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
-        "messages":[],
-        "rules":[]
-        }
-        """
-
-
+        
 
     Scenario: (+) Get Contact company by admin
 
