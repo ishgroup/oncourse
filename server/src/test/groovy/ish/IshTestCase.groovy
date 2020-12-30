@@ -57,8 +57,6 @@ abstract class IshTestCase {
 
     private static final Logger logger = LogManager.getLogger()
 
-    public static final String ANGEL_VERSION = "3.x-test"
-
     @ClassRule
 	public static BQTestFactory testFactory = new BQTestFactory()
 
@@ -78,12 +76,7 @@ abstract class IshTestCase {
         }
 
 		createInjectors()
-
-        if (testEnvDerby()) {
-			cleanUpDerby()
-        } else if (testEnvMariadb()) {
-			cleanUpMySql()
-        }
+        cleanUpMySql()
 //        LiquibaseJavaContext.fill(injector);
     }
 
@@ -97,14 +90,10 @@ abstract class IshTestCase {
     static void createInjectors() throws Exception {
 
         final String yamlTestConfig = System.getProperty("yamlTestConfig")
-        final String databaseName = System.getProperty("databaseName")
 
-        if (yamlTestConfig.contains(MARIADB) || yamlTestConfig.contains(MYSQL)) {
-            databaseType = MARIADB
-        } else if (yamlTestConfig.contains(DERBY)) {
-			databaseType = DERBY
-        }
+        databaseType = MARIADB
 
+//        url: jdbc:mariadb://localhost/angelTest_trunk?autocommit=true&useUnicode=true&characterEncoding=utf8
 
         BQTestFactory.Builder builder = testFactory
                 .app(String.format("--config=classpath:%s", yamlTestConfig))
@@ -122,7 +111,7 @@ abstract class IshTestCase {
                             void beforeStartup(String name, String jdbcUrl) {
                                 ManagedDataSourceStarter dataSourceStarter = starters.get("angel-test-creation")
                                 if(dataSourceStarter != null) {
-                                    createSchemaIfNoExist(dataSourceStarter)
+                                    createMariaDbSchema(dataSourceStarter)
                                 }
                             }
                         })
@@ -144,11 +133,11 @@ abstract class IshTestCase {
                 })
 				.module(TestModule.class)
                 .module(ApiCayenneLayerModule.class)
-        
+
         testModules.each {
             builder.module(it)
         }
-        
+
         injector = builder.createRuntime()
 
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
@@ -162,10 +151,6 @@ abstract class IshTestCase {
         new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(ish.TestModule)
     }
 
-    static boolean testEnvDerby() {
-		return databaseType.equalsIgnoreCase(DERBY)
-    }
-
     static boolean testEnvMariadb() {
 		return databaseType.equalsIgnoreCase(MARIADB)
     }
@@ -176,10 +161,7 @@ abstract class IshTestCase {
 
         DatabaseConfig config = dbConnection.getConfig()
         config.setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true)
-
-        if (testEnvMariadb()) {
-			config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory())
-        }
+        config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory())
 
 		return dbConnection
     }
@@ -192,247 +174,6 @@ abstract class IshTestCase {
 
 		// need to stop stop CayenneService in order to dispose connection pool created for it
 		shutdownCayenne()
-    }
-
-	protected static void cleanUpDerby() {
-		Connection connection = null
-        try {
-			final String clean = "SELECT\n" +
-					"'ALTER TABLE '||S.SCHEMANAME||'.'||T.TABLENAME||' DROP CONSTRAINT '||C.CONSTRAINTNAME \n" +
-					"FROM\n" +
-					"    SYS.SYSCONSTRAINTS C,\n" +
-					"    SYS.SYSSCHEMAS S,\n" +
-					"    SYS.SYSTABLES T\n" +
-					"WHERE\n" +
-					"    C.SCHEMAID = S.SCHEMAID\n" +
-					"AND\n" +
-					"    C.TABLEID = T.TABLEID\n" +
-					"AND\n" +
-					"S.SCHEMANAME = 'APP'\n" +
-					"UNION\n" +
-					"SELECT 'DROP TABLE ' || schemaname ||'.' || tablename \n" +
-					"FROM SYS.SYSTABLES\n" +
-					"INNER JOIN SYS.SYSSCHEMAS ON SYS.SYSTABLES.SCHEMAID = SYS.SYSSCHEMAS.SCHEMAID\n" +
-					"where schemaname='APP'"
-
-
-            connection = dataSource.getConnection()
-            connection.setAutoCommit(true)
-
-            final List<String> qrList = new ArrayList<>()
-            final Statement stmt = connection.createStatement()
-            final ResultSet rs = stmt.executeQuery(clean)
-
-            while (rs.next()) {
-				qrList.add(rs.getString(1))
-            }
-			rs.close()
-            stmt.close()
-
-            if (qrList.isEmpty()) {
-				return
-            }
-
-			for (final String sql : qrList) {
-				tryStatement(sql)
-            }
-
-			// for some reason those 5 tables do not drop by themselves in 10% cases:
-			tryStatement(qrList.find{ it.contains("SYSTEMUSER")})
-            tryStatement(qrList.find{ it.contains("ACLROLE")})
-            tryStatement(qrList.find{ it.contains("SITE")})
-            tryStatement(qrList.find{ it.contains("COUNTRY")})
-            tryStatement(qrList.find{ it.contains("TAX")})
-            tryStatement(qrList.find{ it.contains("ACCOUNT")})
-            tryStatement(qrList.find{ it.contains("ACCOUNTTRANSACTION")})
-            //
-//			tryStatement("DROP FUNCTION IFNULL");
-
-		} catch (Exception e) {
-			throw new RuntimeException("cleaning derby database failed", e)
-        } finally {
-			if (connection != null) {
-				try {
-					connection.close()
-                } catch (SQLException e) {
-					e.printStackTrace()
-                }
-			}
-		}
-	}
-
-    protected static void truncateDerby() {
-        Connection connection = null
-        try {
-            final String clean =
-                    "SELECT 'TRUNCATE TABLE ' || schemaname ||'.' || tablename \n" +
-                    "FROM SYS.SYSTABLES\n" +
-                    "INNER JOIN SYS.SYSSCHEMAS ON SYS.SYSTABLES.SCHEMAID = SYS.SYSSCHEMAS.SCHEMAID\n" +
-                    "where schemaname='APP'"
-
-
-            connection = dataSource.getConnection()
-            connection.setAutoCommit(true)
-
-            final List<String> qrList = new LinkedList<>()
-            final Statement stmt = connection.createStatement()
-            final ResultSet rs = stmt.executeQuery(clean)
-
-            while (rs.next()) {
-                qrList.add(rs.getString(1))
-            }
-            rs.close()
-            stmt.close()
-
-            if (qrList.isEmpty()) {
-                return
-            }
-
-            while(qrList.size() > 0) {
-                Connection conn = null
-                try {
-                    conn = dataSource.getConnection()
-                    conn.setAutoCommit(true)
-                    Statement st = conn.createStatement()
-                    st.execute(qrList.get(0))
-                    st.close()
-                    qrList.remove(0)
-                } catch (Exception e) {
-                    // nothing
-                    String errMsg = e.getMessage()
-                    if (errMsg.contains('is dependent on that object')) {
-                        String[] arr = errMsg.split("'".toString())
-                        String name = arr[arr.size() - 2]
-                        int i = qrList.findIndexOf {it.contains(name)}
-                        String tmp = qrList.get(i)
-                        qrList.remove(i)
-                        qrList.add(0, tmp)
-                    } else {
-                        logger.warn(errMsg)
-                        break
-                    }
-                } finally {
-                    if (conn != null) {
-                        try {
-                            conn.close()
-                        } catch (SQLException e) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("cleaning derby database failed", e)
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close()
-                } catch (SQLException e) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
-    protected static void cleanUpDerbyHierarchically() {
-        Connection connection = null
-        try {
-            final String clean = "SELECT\n" +
-                    "'ALTER TABLE '||S.SCHEMANAME||'.'||T.TABLENAME||' DROP CONSTRAINT '||C.CONSTRAINTNAME \n" +
-                    "FROM\n" +
-                    "    SYS.SYSCONSTRAINTS C,\n" +
-                    "    SYS.SYSSCHEMAS S,\n" +
-                    "    SYS.SYSTABLES T\n" +
-                    "WHERE\n" +
-                    "    C.SCHEMAID = S.SCHEMAID\n" +
-                    "AND\n" +
-                    "    C.TABLEID = T.TABLEID\n" +
-                    "AND\n" +
-                    "S.SCHEMANAME = 'APP'\n" +
-                    "UNION\n" +
-                    "SELECT 'DROP TABLE ' || schemaname ||'.' || tablename \n" +
-                    "FROM SYS.SYSTABLES\n" +
-                    "INNER JOIN SYS.SYSSCHEMAS ON SYS.SYSTABLES.SCHEMAID = SYS.SYSSCHEMAS.SCHEMAID\n" +
-                    "where schemaname='APP'"
-
-
-            connection = dataSource.getConnection()
-            connection.setAutoCommit(true)
-
-            final List<String> qrList = new LinkedList<>()
-            final Statement stmt = connection.createStatement()
-            final ResultSet rs = stmt.executeQuery(clean)
-
-            while (rs.next()) {
-                qrList.add(rs.getString(1))
-            }
-            rs.close()
-            stmt.close()
-
-            if (qrList.isEmpty()) {
-                return
-            }
-
-            // create list of DROP CONSTRAINT and DROP TABLE instrucitons
-            // execute first record every time and remove from list
-            // if any fails with SQL exception '..constraint SQL000001..is depended on that object' find query in list with that DROP CONSTRAINT
-            // and move to first position, iterate again and again while size of queries list > 0
-
-            while(qrList.size() > 0) {
-                Connection conn = null
-                try {
-                    conn = dataSource.getConnection()
-                    conn.setAutoCommit(true)
-                    Statement st = conn.createStatement()
-                    st.execute(qrList.get(0))
-                    st.close()
-                    qrList.remove(0)
-                } catch (Exception e) {
-                    // nothing
-                    String errMsg = e.getMessage()
-                    if (errMsg.contains('is dependent on that object')) {
-                        String[] arr = errMsg.split("'".toString())
-                        String name = arr[arr.size() - 2]
-                        int i = qrList.findIndexOf {it.contains(name)}
-                        String tmp = qrList.get(i)
-                        qrList.remove(i)
-                        qrList.add(0, tmp)
-                    } else {
-                        logger.warn(errMsg)
-                        break
-                    }
-                } finally {
-                    if (conn != null) {
-                        try {
-                            conn.close()
-                        } catch (SQLException e) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("cleaning derby database failed", e)
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close()
-                } catch (SQLException e) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
-    private static void createSchemaIfNoExist(ManagedDataSourceStarter dataSourceStarter) {
-        switch (databaseType) {
-            case MYSQL:
-                createMariaDbSchema(dataSourceStarter)
-                break
-            case MARIADB:
-                createMariaDbSchema(dataSourceStarter)
-                break
-        }
     }
 
     private static void createMariaDbSchema(ManagedDataSourceStarter dataSourceStarter) {
@@ -534,15 +275,6 @@ abstract class IshTestCase {
 			}
 		}
 	}
-
-    static OutputStream disableDerbyLogFile() {
-		return new OutputStream() {
-			@Override
-            void write(int b) throws IOException {
-
-			}
-		}
-    }
 
 	protected static File getResourceAsFile(final String relativePath) {
 		logger.entry(relativePath)

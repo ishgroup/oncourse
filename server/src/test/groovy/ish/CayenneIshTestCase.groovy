@@ -238,17 +238,6 @@ abstract class CayenneIshTestCase extends IshTestCase {
 		}
 
 		datamap.getDbEntity("BinaryRelation").getAttribute("documentId").setMandatory(true)
-
-//		if (testEnvDerby()) {
-//			ObjectContext context = cayenneService.getNewContext();
-//			SQLSelect.dataRowQuery("CREATE FUNCTION IFNULL\n" +
-//					"(  value DECIMAL(10,2) , result DECIMAL(10,2)  )\n" +
-//					"RETURNS DECIMAL(10,2)\n" +
-//					"PARAMETER STYLE JAVA\n" +
-//					"NO SQL LANGUAGE JAVA\n" +
-//					"EXTERNAL NAME \'ish.oncourse.server.db.ISHDerbyFunctions.IFNULL\'").select(context);
-//
-//		}
 	}
 
 	// -------- util methods --------
@@ -260,12 +249,74 @@ abstract class CayenneIshTestCase extends IshTestCase {
 	 * Remove all records from db tables.
 	 */
 	protected static void wipeTables() {
-		if (testEnvDerby()) {
-			wipeTablesDerby()
-		} else if (testEnvMariadb()) {
+		wipeTablesMariadb()
+		if (testEnvMariadb()) {
 			wipeTablesMariadb()
 		} else {
 			fail("Not recognised database: "+databaseType)
+		}
+	}
+
+	protected static void resetAutoIncrement() {
+
+		String template
+		if (testEnvMariadb()) {
+			template = RESET_AUTO_INCREMENT_TEMPLATE_MYSQL
+		} else {
+			return
+		}
+
+		try {
+			ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+			DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
+			DataMap dataMap = domain.getDataMap("AngelMap")
+
+			Connection connection = getTestDatabaseConnection().getConnection()
+
+			for (DbEntity entity : dataMap.getDbEntities()) {
+				if ("ACLRoleSystemUser".equals(entity.getName()) || "StudentNumber".equals(entity.getName())) {
+					continue
+				}
+				Statement stmt = connection.createStatement()
+				stmt.execute(String.format(template, entity.getName(), NEXT_ID))
+				stmt.close()
+			}
+		} catch(Exception e) {
+			e.printStackTrace()
+		}
+	}
+
+	private static void wipeTablesMariadb() {
+		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+
+		DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
+		DataMap dataMap = domain.getDataMap("AngelMap")
+
+		Connection connection = null
+		try {
+
+			connection = dataSource.getConnection()
+			connection.setAutoCommit(true)
+
+			executeStatement(connection, "SET foreign_key_checks = 0;")
+			for (DbEntity entity : dataMap.getDbEntities()) {
+				executeStatement(connection, String.format("TRUNCATE %s;", entity.getName()))
+			}
+
+			executeStatement(connection, "SET foreign_key_checks = 1;")
+
+			shutdownCayenne()
+			createInjectors()
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to wipe tables.", e)
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close()
+				} catch (SQLException e) {
+					logger.warn("Filed to close connection.", e)
+				}
+			}
 		}
 	}
 
@@ -331,72 +382,6 @@ where schemaname='APP'"""
 					connection.close()
 				} catch (SQLException e) {
 					e.printStackTrace()
-				}
-			}
-		}
-	}
-	
-	
-	protected static void resetAutoIncrement() {
-
-		String template
-		if (testEnvDerby()) {
-			return
-		} else if (testEnvMariadb()) {
-			template = RESET_AUTO_INCREMENT_TEMPLATE_MYSQL
-		} else {
-			return
-		}
-		
-		try {
-			ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-			DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
-			DataMap dataMap = domain.getDataMap("AngelMap")
-
-			Connection connection = getTestDatabaseConnection().getConnection()
-
-			for (DbEntity entity : dataMap.getDbEntities()) {
-				if ("ACLRoleSystemUser".equals(entity.getName()) || "StudentNumber".equals(entity.getName())) {
-					continue
-				}
-				Statement stmt = connection.createStatement()
-				stmt.execute(String.format(template, entity.getName(), NEXT_ID))
-				stmt.close()
-			}
-		} catch(Exception e) {
-			e.printStackTrace()
-		}
-	}
-
-	private static void wipeTablesMariadb() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-
-		DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
-		DataMap dataMap = domain.getDataMap("AngelMap")
-
-		Connection connection = null
-		try {
-
-			connection = dataSource.getConnection()
-			connection.setAutoCommit(true)
-
-			executeStatement(connection, "SET foreign_key_checks = 0;")
-			for (DbEntity entity : dataMap.getDbEntities()) {
-				executeStatement(connection, String.format("TRUNCATE %s;", entity.getName()))
-			}
-
-			executeStatement(connection, "SET foreign_key_checks = 1;")
-
-			shutdownCayenne()
-			createInjectors()
-		} catch (Exception e) {
-			throw new RuntimeException("Failed to wipe tables.", e)
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close()
-				} catch (SQLException e) {
-					logger.warn("Filed to close connection.", e)
 				}
 			}
 		}

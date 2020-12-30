@@ -6,9 +6,7 @@ jetty:
 
 jdbc:
   angel-test:
-    url: jdbc:mysql://localhost/angelTest_trunk?autocommit=true&useUnicode=true&characterEncoding=utf8
-    username: root
-    password:
+    url: ${dbUrl}
     driverClassName: org.mariadb.jdbc.Driver
     testWhileIdle: true
     validationQuery: SELECT 1
@@ -23,26 +21,7 @@ jdbc:
     jmxEnabled: true
 
   angel-test-creation:
-    url: jdbc:mysql://localhost:3306?autocommit=true&useUnicode=true&characterEncoding=utf8
-    username: root
-    password:
-    driverClassName: org.mariadb.jdbc.Driver
-    testWhileIdle: true
-    validationQuery: SELECT 1
-    validationInterval: 30000
-    timeBetweenEvictionRunsMillis: 3000
-    maxActive: 100
-    maxIdle: 5
-    minIdle: 2
-    removeAbandonedTimeout: 300
-    removeAbandoned: true
-    logAbandoned: true
-    jmxEnabled: true
-
-  angel-test-local:
-    url: jdbc:mysql://127.0.0.1/oncourse_test?autocommit=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-    username: root
-    password:
+    url: ${dbUrl}
     driverClassName: org.mariadb.jdbc.Driver
     testWhileIdle: true
     validationQuery: SELECT 1
