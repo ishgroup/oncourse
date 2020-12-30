@@ -20,7 +20,7 @@ import Grid from "@material-ui/core/Grid";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Accordion from "@material-ui/core/ExpansionPanel";
+import Accordion from "@material-ui/core/Accordion";
 import { EnrolmentStudyReason } from "@api/model";
 import debounce from "lodash.debounce";
 import { showConfirm } from "../../../../../common/actions";
