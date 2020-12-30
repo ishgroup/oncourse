@@ -16,7 +16,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass/tu
         Given path ishPath + '/1'
         When method GET
         Then status 200
-        And match $ == [{"id":1,"classId":1,"contactId":1,"roleId":3,"tutorName":"tutor1","roleName":"Coordinator","confirmedOn":null,"isInPublicity":true}]
+        And match $ == [{"id":1,"classId":1,"contactId":1,"roleId":4,"tutorName":"tutor1","roleName":"Coordinator","confirmedOn":null,"isInPublicity":true}]
 
 
 
@@ -37,13 +37,9 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass/tu
         Given path ishPath + '/6'
         When method GET
         Then status 200
-        And match $ == [{"id":6,"classId":6,"contactId":6,"roleId":5,"tutorName":"tutor3","roleName":"Helper","confirmedOn":null,"isInPublicity":true}]
-
-
 
     Scenario: (-) Get not existing CourseClass tutor
 
         Given path ishPath + '/99999'
         When method GET
         Then status 400
-        And match $.errorMessage == "Class with id = '99999' doesn't exist."
