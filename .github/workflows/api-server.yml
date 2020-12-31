@@ -21,6 +21,10 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+    - uses: actions/set-timezone-action@v1.1
+      with:
+        timezoneLinux: "Australia/Sydney"
+        
     - uses: actions/checkout@v2
 
     - name: Set up JDK
