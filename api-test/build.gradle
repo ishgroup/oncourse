@@ -14,7 +14,7 @@ apply plugin: 'java'
 
 dependencies {
     implementation 'org.dbunit:dbunit:2.6.0'
-    implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.1'
+    implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
 
     testImplementation "com.sun.activation:javax.activation:$javaxActivationVersion"
     testImplementation 'com.intuit.karate:karate-junit4:0.9.6'
