@@ -185,11 +185,22 @@ abstract class CayenneIshTestCase extends IshTestCase {
 		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedContact"))
 		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedEnrolment"))
 		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedCourse"))
+		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedCourseClass"))
 		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedApplication"))
 		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedWaitingList"))
 		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedSurvey"))
 		for (Relationship rel : customFieldRelationships) {
 			datamap.getDbEntity("CustomField").removeRelationship(rel.getName())
+		}
+
+		List<Relationship> automationBindingsRelationships = new ArrayList<>()
+		automationBindingsRelationships.add(datamap.getDbEntity("AutomationBinding").getRelationship("emailTemplate"))
+		automationBindingsRelationships.add(datamap.getDbEntity("AutomationBinding").getRelationship("exportTemplate"))
+		automationBindingsRelationships.add(datamap.getDbEntity("AutomationBinding").getRelationship("import"))
+		automationBindingsRelationships.add(datamap.getDbEntity("AutomationBinding").getRelationship("report"))
+		automationBindingsRelationships.add(datamap.getDbEntity("AutomationBinding").getRelationship("script"))
+		automationBindingsRelationships.each { rel ->
+			datamap.getDbEntity("AutomationBinding").removeRelationship(rel.getName())
 		}
 
 		// avoid generating not null db constraint on BinaryRelation.documentId column - this is needed
@@ -235,6 +246,10 @@ abstract class CayenneIshTestCase extends IshTestCase {
 
 		for (Relationship rel : customFieldRelationships) {
 			datamap.getDbEntity("CustomField").addRelationship(rel)
+		}
+
+		automationBindingsRelationships.each { rel ->
+			datamap.getDbEntity("AutomationBinding").addRelationship(rel)
 		}
 
 		datamap.getDbEntity("BinaryRelation").getAttribute("documentId").setMandatory(true)
