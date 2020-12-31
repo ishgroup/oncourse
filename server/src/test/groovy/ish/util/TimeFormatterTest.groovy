@@ -12,7 +12,7 @@ import org.junit.Test
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotSame
 
-class TimeFormatterTest extends IshTestCase {
+class TimeFormatterTest  {
 
 	private static HashMap<String, GregorianCalendar> dateList = new HashMap<>()
 

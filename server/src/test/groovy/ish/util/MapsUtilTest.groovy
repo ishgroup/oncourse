@@ -8,7 +8,7 @@ import ish.IshTestCase
 import org.junit.Test
 import static org.junit.Assert.*
 
-class MapsUtilTest extends IshTestCase {
+class MapsUtilTest {
 
 	@Test
     void testGetKeyForValue() throws Exception {

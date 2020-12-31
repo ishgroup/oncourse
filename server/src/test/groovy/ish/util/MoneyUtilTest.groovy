@@ -8,14 +8,15 @@ import ish.IshTestCase
 import ish.math.Money
 import org.junit.Test
 
+import static org.junit.Assert.assertEquals
+
 /**
  */
-class MoneyUtilTest extends IshTestCase {
+class MoneyUtilTest  {
 	private static HashMap<Money, Money> listOne = new HashMap<>()
     private static HashMap<Money, Money> listTwo = new HashMap<>()
 
-    void setUp() throws Exception {
-		super.setUp()
+    static {
 
         listOne.put(new Money("10"), new Money("11"))
         listOne.put(new Money("15"), new Money("16.5"))
