@@ -218,6 +218,10 @@ const completeSuggestions = (
       variants = [];
       break;
     }
+    case "NullLiteral": {
+      variants = ["empty"];
+      break;
+    }
   }
   return variants.map(i => ({
     token,
