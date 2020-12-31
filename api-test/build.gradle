@@ -46,34 +46,18 @@ task prepareTestDb(type: JavaExec) {
     args = [dbUrl, "$rootDir/api-test/src/test/resources/test-dataset.xml"]
 }
 
-ext {
-    testFailed = false
-}
-
 test {
     testLogging {
         events "failed", "standardOut"
     }
     
-    afterSuite { desc, result ->
-        if (result.resultType == TestResult.ResultType.FAILURE) {
-            testFailed = true
-        }
-    }
-    
-    doLast {
-        if (testFailed) {
-            throw new Exception("tests failed, exit code == 1")
-        }
-    } 
-    
     tasks.getByName('prepareTestDb').mustRunAfter(':server:startDaemon').mustRunAfter('copyConfig')
-
-    dependsOn "copyConfig" 
-    dependsOn ":server:startDaemon"
-    dependsOn "prepareTestDb"
-    // pull cucumber options into the cucumber jvm
-    systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
+//
+//    dependsOn "copyConfig" 
+//    dependsOn ":server:startDaemon"
+//    dependsOn "prepareTestDb"
+//    // pull cucumber options into the cucumber jvm
+//    systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
     // pull karate options into the jvm
     systemProperty "karate.env", System.properties.getProperty("karate.env")
     // ensure tests are always run
