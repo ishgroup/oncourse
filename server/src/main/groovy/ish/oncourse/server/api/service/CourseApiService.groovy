@@ -26,6 +26,7 @@ import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.QualificationDao
+import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.util.EntityUtil
 import org.apache.cayenne.query.SelectById
@@ -477,5 +478,12 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             }
         }
         action
+    }
+
+    @Override
+    void remove(Course course, ObjectContext context) {
+        context.deleteObjects(EntityRelationDao.getRelatedFrom(course.context, Course.simpleName, course.id))
+        context.deleteObjects(EntityRelationDao.getRelatedTo(course.context, Course.simpleName, course.id))
+        context.deleteObject(course)
     }
 }
