@@ -7,7 +7,7 @@ import org.junit.Test
 
 import java.util.regex.Pattern
 
-class SecurityUtilTest extends IshTestCase {
+class SecurityUtilTest  {
 	private static final String ILLEGAL_VOUCHER_CODE_CHARACTERS = "[^01LlOoIi]+"
     private static final Pattern VOUCHER_CODE_PATTERN = Pattern.compile(ILLEGAL_VOUCHER_CODE_CHARACTERS)
 

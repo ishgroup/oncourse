@@ -5,11 +5,10 @@
 
 package ish.util
 
-import ish.IshTestCase
 import org.junit.Test
 import static org.junit.Assert.*
 
-class DateFormatterTest extends IshTestCase {
+class DateFormatterTest {
 
 	@Test
     void testFormatDate() {
