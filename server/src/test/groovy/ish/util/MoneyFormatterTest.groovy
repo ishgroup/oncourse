@@ -4,12 +4,10 @@
  */
 package ish.util
 
-import ish.CayenneIshTestCase
-import ish.IshTestCase
 import ish.math.Money
 import org.junit.Test
 
-class MoneyFormatterTest extends CayenneIshTestCase {
+class MoneyFormatterTest {
 
 	private static HashMap<String, Money> listOne = new HashMap<>()
     private static HashMap<String, String> listTwo = new HashMap<>()

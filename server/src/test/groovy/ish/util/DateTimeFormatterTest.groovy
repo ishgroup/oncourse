@@ -10,7 +10,7 @@ import static org.junit.Assert.*
 import org.junit.BeforeClass
 import org.junit.Test
 
-class DateTimeFormatterTest extends IshTestCase {
+class DateTimeFormatterTest {
 
 	private static HashMap<String, GregorianCalendar> dateList = new HashMap<>()
     private static HashMap<String, String> dateList2 = new HashMap<>()

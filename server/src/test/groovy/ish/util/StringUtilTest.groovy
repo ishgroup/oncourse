@@ -8,7 +8,7 @@ import ish.IshTestCase
 import org.junit.Test
 import static org.junit.Assert.*
 
-class StringUtilTest extends IshTestCase {
+class StringUtilTest  {
 
 	@Test
     void testPadFieldStringInput() {
