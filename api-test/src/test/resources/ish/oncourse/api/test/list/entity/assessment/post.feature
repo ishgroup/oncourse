@@ -59,7 +59,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
             {"shared":true,
             "thumbnail":null,
             "access":"Private",
-            "added":"2019-02-14T13:40:13.000Z",
+            "added":"#ignore",
             "description":"Private description",
             "createdOn":"#ignore","tags":[],
             "attachmentRelations":"#ignore", 
@@ -69,7 +69,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
             "attachedRecordsCount":null,
             "versions":
                 [
-                    {"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"2019-02-14T13:40:13.000Z","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}
+                    {"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}
                 ],
             "name":"defaultPrivateDocument",
             "id":200}]
