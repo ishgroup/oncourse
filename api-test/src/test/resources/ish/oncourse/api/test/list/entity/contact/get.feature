@@ -234,7 +234,7 @@ Feature: Main feature for all GET requests with path 'list/entity/contact'
         "financialData":[
             {"date":"2018-11-29","amount":1800.0,"balance":1800.0,"referenceNumber":"2","relatedEntityId":2,"description":"Invoice (office)","owing":0.0,"type":"Invoice","createdOn":"#ignore","status":"Success"},
             {"date":"2018-11-29","amount":1800.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":2,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"#ignore","status":"Success"},
-            {"date":"2022-08-01","amount":300.0,"balance":300.0,"referenceNumber":"12","relatedEntityId":11,"description":"Invoice (office)","owing":300.0,"type":"Invoice","createdOn":"#ignore",status":"Success"}
+            {"date":"2022-08-01","amount":300.0,"balance":300.0,"referenceNumber":"12","relatedEntityId":11,"description":"Invoice (office)","owing":300.0,"type":"Invoice","createdOn":"#ignore","status":"Success"}
         ],
         "rules":[]
         }
