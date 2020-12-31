@@ -47,13 +47,16 @@ task prepareTestDb(type: JavaExec) {
 }
 
 test {
-    
+    testLogging {
+        events "failed", "standardOut"
+    }
+
     tasks.getByName('prepareTestDb').mustRunAfter(':server:startDaemon').mustRunAfter('copyConfig')
 
     dependsOn "copyConfig" 
     dependsOn ":server:startDaemon"
     dependsOn "prepareTestDb"
-    
+//    
     // pull cucumber options into the cucumber jvm
     systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
     // pull karate options into the jvm
