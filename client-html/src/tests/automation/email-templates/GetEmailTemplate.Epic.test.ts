@@ -21,8 +21,7 @@ describe("Get email template epic tests", () => {
         return [
           {
             type: GET_EMAIL_TEMPLATE_FULFILLED
-          },
-          initialize(EMAIL_TEMPLATES_FORM_NAME, emailTemplate)
+          }
         ];
       }
     }));
