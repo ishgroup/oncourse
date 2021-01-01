@@ -1,7 +1,7 @@
 .svn
 .gradle
-.idea
 .settings
+.idea/workspace.xml
 **/node_modules/
 **/build/
 server/onCourse.yml
