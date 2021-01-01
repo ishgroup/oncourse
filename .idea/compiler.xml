@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="1.8">
+      <module name="angel.buildSrc" target="11" />
+      <module name="angel.buildSrc.main" target="11" />
+      <module name="angel.buildSrc.test" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
