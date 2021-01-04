@@ -193,7 +193,8 @@ public class DuplicateCourseClass {
                     }
                 }
 
-                if (request.isCopyTrainingPlans()) {
+                //copy training plan only in case if new class has the same course with old one
+                if (request.getCourseId() == null && request.isCopyTrainingPlans()) {
                     for (var module : oldSession.getModules()) {
                         var sessionModule = context.newObject(SessionModule.class);
                         sessionModule.setSession(newSession);
