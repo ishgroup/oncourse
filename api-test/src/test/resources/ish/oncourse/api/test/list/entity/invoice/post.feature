@@ -640,7 +640,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "description":"some invoice description",
             "courseClassId":1,
             "classCode":"1",
-            "enrolmentId":1,
+            "enrolmentId":115,
             "enrolledStudent":"stud1",
             "courseId":null
             }],
@@ -702,7 +702,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "courseName":"Course1",
             "courseCode":"course1",
             "classCode":"1",
-            "enrolmentId":1,
+            "enrolmentId":115,
             "enrolledStudent":"stud1",
             "courseId":1,
             "enrolment": null,
