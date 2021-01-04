@@ -103,7 +103,7 @@ class MoneyUtilTest  {
 
         for (Money input : listOne.keySet()) {
 			// System.out.println("testFormatValue input: " + input);
-			Money output = MoneyUtil.getPriceIncTax(input, new BigDecimal(1), Money.ZERO)
+			Money output = MoneyUtil.getPriceIncTax(input, new BigDecimal("0.1"), Money.ZERO)
             // System.out.println("testFormatValue output: " + output);
 			assertEquals(listOne.get(input).doubleValue(), output.doubleValue(), 0.001)
         }
@@ -118,7 +118,7 @@ class MoneyUtilTest  {
             BigDecimal taxRate = new BigDecimal("1.1")
             Money ex = inc.divide(taxRate)
             // System.out.println("testFormatValue input: " + inc);
-			Money output = MoneyUtil.calculateTaxAdjustment(inc, ex, new BigDecimal(1))
+			Money output = MoneyUtil.calculateTaxAdjustment(inc, ex, new BigDecimal("0.1"))
             // System.out.println("testFormatValue input: " + inc + " ... " + output);
 
 			assertEquals(taxajd.doubleValue(), output.doubleValue(), 0.001)
