@@ -53,7 +53,8 @@ Feature: Main feature for all GET requests with path 'list/entity/invoice'
         "createdByUser":"admin",
         "sendEmail":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 
@@ -119,7 +120,8 @@ Feature: Main feature for all GET requests with path 'list/entity/invoice'
         "createdByUser":"admin",
         "sendEmail":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 
