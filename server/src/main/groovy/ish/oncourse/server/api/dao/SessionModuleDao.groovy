@@ -33,7 +33,7 @@ class SessionModuleDao implements ClassRelatedDao<SessionModule> {
         return ObjectSelect.query(SessionModule)
                 .where(SessionModule.SESSION.dot(Session.COURSE_CLASS).eq(courseClass))
                 .and(SessionModule.MODULE.eq(module))
-                .orderBy(Session.ID.asc())
+                .orderBy(SessionModule.SESSION.dot(Session.ID).asc())
                 .select(context)
     }
 
