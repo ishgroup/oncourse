@@ -9,9 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        java: [11, 15]
+#    strategy:
+#      matrix:
+#        java: [11, 15]
 
     services:
       mysql:
@@ -35,7 +35,8 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: ${{ matrix.java }}
+#        java-version: ${{ matrix.java }}
+        java-version: 11
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
