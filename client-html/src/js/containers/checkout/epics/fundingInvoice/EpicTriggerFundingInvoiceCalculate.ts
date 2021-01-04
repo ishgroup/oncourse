@@ -1,9 +1,10 @@
 import { ActionsObservable, Epic, ofType } from "redux-observable";
 import { debounce, mergeMap } from "rxjs/operators";
 import { interval } from "rxjs";
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import uniqid from "uniqid";
 import { change } from "redux-form";
+import { Session, TrainingPlan } from "@api/model";
 import { State } from "../../../../reducers/state";
 import {
   CHECKOUT_ADD_CONTACT,
@@ -22,10 +23,11 @@ import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "../../components/fun
 import EntityService from "../../../../common/services/EntityService";
 import { CHECKOUT_CONTACT_COLUMNS } from "../../constants";
 import { getCustomColumnsMap } from "../../../../common/utils/common";
+import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
 
 const getAndMergePlans = async (fundingInvoice: CheckoutFundingInvoice) => {
-  let plans = [];
-  let sessions = [];
+  let plans: TrainingPlan[] = [];
+  let sessions: Session[] = [];
 
   await fundingInvoice.item.enrolment.items.map(item => () =>
     CourseClassAttendanceService.getTrainingPlans(item.class.id).then(plansRes =>
@@ -37,73 +39,88 @@ const getAndMergePlans = async (fundingInvoice: CheckoutFundingInvoice) => {
     await b();
   }, Promise.resolve());
 
+  sessions.forEach(s => {
+    if (s.siteTimezone) {
+      s.start = appendTimezone(new Date(s.start), s.siteTimezone).toISOString();
+    }
+  });
+
+  plans.forEach(pl => {
+    pl.sessionIds = pl.sessionIds.map(sId => sessions.find(s => s.id === sId).start) as any;
+    pl.sessionIds.sort((a, b) => (new Date(a) > new Date(b) ? 1 : -1));
+  });
+
+  const checkedDates: any = {};
+
+  sessions = sessions.filter(s => {
+    let formatted: any = new Date(s.start);
+    formatted.setHours(0, 0, 0, 0);
+    formatted = formatted.toISOString();
+
+    if (checkedDates[formatted]) {
+      return false;
+    }
+    checkedDates[formatted] = true;
+    return true;
+  });
+
+  const checkedIds: any = {};
+  const commencedIds = [];
+  const completedIds = [];
   const trainingPlans = [];
   const trainingPlansBase = [];
 
-  if (plans.length) {
-    const units = sessions.map(({ id, start }) => ({
-      id,
-      start
-    }));
+  sessions.forEach(({ start }, index) => {
+    const sDate = new Date(start);
+    const sDateFormatted = format(sDate, D_MMM_YYYY);
 
-    units.sort((a, b) => (new Date(a.start) > new Date(b.start) ? 1 : -1));
+    plans.forEach(plan => {
+      if (!checkedIds[plan.moduleId]) {
+        checkedIds[plan.moduleId] = 0;
+      }
 
-    const checkedIds: any = {};
-    const commencedIds = [];
-    const completedIds = [];
+      plan.sessionIds.forEach(pStart => {
+        const checkCompleted = () => {
+          if (checkedIds[plan.moduleId] > 0
+            && checkedIds[plan.moduleId] === plan.sessionIds.length
+            && !completedIds.includes(plan.moduleId)) {
+            completedIds.push(plan.moduleId);
+          }
+        };
 
-    units.forEach(({ id, start }, index) => {
-      const sDate = new Date(start);
-      const sDateFormatted = format(sDate, D_MMM_YYYY);
-
-      plans.forEach(plan => {
-        if (!checkedIds[plan.moduleId]) {
-          checkedIds[plan.moduleId] = 0;
+        if (index !== sessions.length - 1) {
+          checkCompleted();
         }
 
-        plan.sessionIds.forEach(psid => {
-          const checkCompleted = () => {
-            if (checkedIds[plan.moduleId] > 0
-              && checkedIds[plan.moduleId] === plan.sessionIds.length
-              && !completedIds.includes(plan.moduleId)) {
-              completedIds.push(plan.moduleId);
-            }
-          };
-
-          if (index !== units.length - 1) {
-            checkCompleted();
+        if (isSameDay(new Date(pStart), new Date(start))) {
+          if (!commencedIds.includes(plan.moduleId)) {
+            commencedIds.push(plan.moduleId);
           }
+          checkedIds[plan.moduleId]++;
+        }
 
-          if (psid === id) {
-            if (!commencedIds.includes(plan.moduleId)) {
-              commencedIds.push(plan.moduleId);
-            }
-            checkedIds[plan.moduleId]++;
-          }
-
-          if (index === units.length - 1) {
-            checkCompleted();
-          }
-        });
-      });
-
-      trainingPlansBase.push({
-        date: sDateFormatted,
-        unitsCommenced: commencedIds.length,
-        unitsCompleted: completedIds.length
+        if (index === sessions.length - 1) {
+          checkCompleted();
+        }
       });
     });
 
-    trainingPlansBase.sort((a, b) => (new Date(a.date) > new Date(b.date) ? 1 : -1));
-
-    trainingPlansBase.forEach((tp, index, arr) => {
-      const prev = arr[index - 1];
-
-      if (!prev || !(prev.unitsCommenced === tp.unitsCommenced && prev.unitsCompleted === tp.unitsCompleted)) {
-        trainingPlans.push(tp);
-      }
+    trainingPlansBase.push({
+      date: sDateFormatted,
+      unitsCommenced: commencedIds.length,
+      unitsCompleted: completedIds.length
     });
-  }
+  });
+
+  trainingPlansBase.sort((a, b) => (new Date(a.date) > new Date(b.date) ? 1 : -1));
+
+  trainingPlansBase.forEach((tp, index, arr) => {
+    const prev = arr[index - 1];
+
+    if (!prev || !(prev.unitsCommenced === tp.unitsCommenced && prev.unitsCompleted === tp.unitsCompleted)) {
+      trainingPlans.push(tp);
+    }
+  });
 
   let paymentPlans = [...fundingInvoice.paymentPlans];
 
