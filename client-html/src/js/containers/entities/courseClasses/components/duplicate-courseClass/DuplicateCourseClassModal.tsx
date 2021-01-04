@@ -133,6 +133,15 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
     }
   }, [earliest]);
 
+  const onChangeCourseSelect = (e, v) => {
+    if (v) {
+      dispatch(change(DUPLICATE_COURSE_CLASS_FORM, "copyTrainingPlans", false));
+    } else {
+      dispatch(change(DUPLICATE_COURSE_CLASS_FORM, "courseId", null));
+    }
+    setChangeCourse(v);
+  };
+
   const debounceUpdateDaysOffset = useCallback<any>(
     debounce((offset, start) => {
       if (sessions.length) {
@@ -369,7 +378,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     root: "checkbox"
                   }}
                   control={(
-                    <FormField type="checkbox" name="copyTrainingPlans" color="secondary" disabled={fetching} />
+                    <FormField type="checkbox" name="copyTrainingPlans" color="secondary" disabled={fetching || changeCourse} />
                   )}
                   label="Training plan"
                 />
@@ -430,7 +439,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   control={(
                     <StyledCheckbox
                       checked={changeCourse}
-                      onChange={(e, v) => setChangeCourse(v)}
+                      onChange={onChangeCourseSelect}
                     />
                   )}
                   label={(
