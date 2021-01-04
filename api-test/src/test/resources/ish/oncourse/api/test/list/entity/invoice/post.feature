@@ -30,7 +30,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         "overdue":0,
         "contactName":"stud1 stud1",
         "contactId":2,
-        "total":210
+        "total":210,
+        "relatedFundingSourceId":null
         }
         """
 
@@ -104,7 +105,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         "createdByUser":"admin",
         "sendEmail":true,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 
@@ -193,7 +195,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         "createdByUser":"admin",
         "sendEmail":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 
@@ -263,7 +266,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         "createdByUser":"admin",
         "sendEmail":true,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 
@@ -333,7 +337,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         "createdByUser":"admin",
         "sendEmail":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 
@@ -725,7 +730,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         "createdByUser":"UserWithRightsCreate",
         "sendEmail":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 

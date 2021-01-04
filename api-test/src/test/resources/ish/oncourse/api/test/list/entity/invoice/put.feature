@@ -81,7 +81,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "createdByUser":"admin",
         "sendEmail":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 
@@ -173,7 +174,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "createdByUser":"admin",
         "sendEmail":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 
@@ -385,7 +387,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.0,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.0,"discountEachExTax":0.0,"taxEach":0.0,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.0,"amountOwing":300.0,"publicNotes":"some public notes","paymentPlans":[{"id":11,"date":"2019-07-03","type":"Invoice office","successful":true,"amount":300.0,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.0,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.0,"entityName":"InvoiceDueDate"}],"source":"office","createdByUser":"admin","sendEmail":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 
@@ -433,7 +436,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.0,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.0,"discountEachExTax":0.0,"taxEach":0.0,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.0,"amountOwing":300.0,"publicNotes":"some public notes","paymentPlans":[{"id":11,"date":"2019-07-03","type":"Invoice office","successful":true,"amount":300.0,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.0,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.0,"entityName":"InvoiceDueDate"}],"source":"office","createdByUser":"admin","sendEmail":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 
@@ -482,7 +486,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "dateDue":"2022-08-10","overdue":0.0,"invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.0,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.0,"discountEachExTax":0.0,"taxEach":0.0,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.0,"amountOwing":300.0,"publicNotes":"some public notes","paymentPlans":[{"id":11,"date":"2019-07-03","type":"Invoice office","successful":true,"amount":300.0,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.0,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.0,"entityName":"InvoiceDueDate"}],"source":"office","createdByUser":"admin","sendEmail":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "relatedFundingSourceId":null
         }
         """
 
