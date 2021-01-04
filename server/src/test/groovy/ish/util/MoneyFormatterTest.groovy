@@ -7,12 +7,14 @@ package ish.util
 import ish.math.Money
 import org.junit.Test
 
+import static junit.framework.TestCase.assertEquals
+
 class MoneyFormatterTest {
 
 	private static HashMap<String, Money> listOne = new HashMap<>()
     private static HashMap<String, String> listTwo = new HashMap<>()
 
-    void setUp() throws Exception {
+    static  {
         listOne.put('15', new Money('15'))
         listOne.put('15.5', new Money('15.5'))
         listOne.put('15.05', new Money('15.05'))
