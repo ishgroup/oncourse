@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 public class ContactMergeApiTest {
     @Test
     public void test() {
-        Results results = Runner.path(  "classpath:ish/oncourse/api/test/list/entity/contact/merge/").tags("~@ignore").parallel(1);
+        Results results = Runner.path(  "classpath:ish/oncourse/api/test/list/entity/contact/merge/get.feature", "classpath:ish/oncourse/api/test/list/entity/contact/merge/post.feature").tags("~@ignore").parallel(1);
         assertEquals(results.getErrorMessages(), results.getFailCount(), 0);
     }
 }
