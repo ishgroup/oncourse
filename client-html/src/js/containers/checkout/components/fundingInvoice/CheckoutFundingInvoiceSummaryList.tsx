@@ -68,7 +68,6 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
     dispatch,
     syncErrors,
     currency,
-    selectedItemIndex
     fundingInvoice,
     selectedItemIndex,
     form
