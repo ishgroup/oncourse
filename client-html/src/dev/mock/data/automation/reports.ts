@@ -3,16 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { generateArraysOfRecords } from "../../mockUtils";
 import { Sorting } from "@api/model";
+import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockReports() {
-  this.getReports = () => {
-    return this.reports;
-  };
+  this.getReports = () => this.reports;
 
   this.getReport = id => {
-    console.log(this.reports);
     const row = this.reports.rows.find(row => row.id == id);
     return {
       id: row.id,
@@ -49,7 +46,6 @@ export function mockReports() {
 
     const response = { rows, columns } as any;
     response.entity = "Report";
-    response.columns = [];
     response.count = null;
     response.filterColumnWidth = null;
     response.filteredCount = null;
