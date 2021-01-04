@@ -62,7 +62,6 @@ class AccountTransactionUtilTest extends CayenneIshTestCase {
         rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
 
         executeDatabaseOperation(rDataSet)
-//		this.setup();
 	}
 
 	/**

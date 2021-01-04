@@ -44,16 +44,7 @@ class ClassCostUtilTest extends CayenneIshTestCase {
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
         builder.setColumnSensing(true)
         FlatXmlDataSet dataSet = builder.build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        Date start1 = DateUtils.addDays(new Date(), -2)
-        Date start2 = DateUtils.addDays(new Date(), -2)
-        rDataSet.addReplacementObject("[start_date1]", start1)
-        rDataSet.addReplacementObject("[start_date2]", start2)
-        rDataSet.addReplacementObject("[end_date1]", DateUtils.addHours(start1, 2))
-        rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
-
-        executeDatabaseOperation(rDataSet)
+        executeDatabaseOperation(dataSet)
     }
 
 	@Test

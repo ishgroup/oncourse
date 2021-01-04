@@ -15,6 +15,9 @@ import ish.oncourse.server.cayenne.ExportTemplate
 import ish.oncourse.server.cayenne.ExportTemplateAutomationBinding
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.upgrades.DataPopulation
+
+import java.time.LocalDate
+
 import static junit.framework.TestCase.assertEquals
 import static junit.framework.TestCase.fail
 import org.apache.cayenne.ObjectContext
@@ -41,6 +44,7 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
     private static final String UTC_TIMEZONE_ID = "UTC"
 
     private static final String PAYSLIP_MICROPAY_KEYCODE = "ish.onCourse.payslipMicropay.csv"
+    private static final String SS_BULK_UPLOAD_KEYCODE = "ish.onCourse.ssBulkUpload.csv"
     private static final String LINE_SEPARATOR = StringUtils.LF
 
     private String exportCode
@@ -154,6 +158,9 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
             for (int i = 0; i < sampleExportSplit.length; i++) {
 				//skipped comparison the first line for payslip Micropay export from the unit test
 				//because it contains the current data
+                if (SS_BULK_UPLOAD_KEYCODE.equals(exportCode)) {
+                    sampleExportSplit[i] = sampleExportSplit[i].replace("diff", (LocalDate.now().getYear() - 2014).toString())
+                }
 				if (!(PAYSLIP_MICROPAY_KEYCODE.equals(exportCode) && i == 0)) {
 					assertEquals(sampleExportSplit[i].trim(), resultExportSplit[i].trim())
                 }
