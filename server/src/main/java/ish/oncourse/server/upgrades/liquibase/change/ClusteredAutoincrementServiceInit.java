@@ -24,11 +24,11 @@ public class ClusteredAutoincrementServiceInit extends IshTaskChange {
             try(var statement = connection.createStatement()) {
                 statement.execute(
                         "INSERT INTO `SequenceSupport` (`tableName`, `nextId`) " +
-                        "SELECT 'student', coalesce(max(`studentNumber`) + 1, 0) FROM `Student`"
+                        "SELECT 'student', coalesce(max(`studentNumber`) + 1, 1) FROM `Student`"
                 );
                 statement.execute(
                         "INSERT INTO `SequenceSupport` (`tableName`, `nextId`) " +
-                        "SELECT 'invoice', coalesce(max(`invoiceNumber`) + 1, 0) FROM `Invoice`"
+                        "SELECT 'invoice', coalesce(max(`invoiceNumber`) + 1, 1) FROM `Invoice`"
                 );
             }
             connection.commit();
