@@ -31,6 +31,8 @@ import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.Ignore
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.fail
@@ -44,6 +46,7 @@ import java.time.LocalDate
 /**
  * executes multiple print jobs at the same time simulating multiple users
  */
+@Ignore
 class ConcurrentReportPrintingTest extends CayenneIshTestCase {
 	private static final Logger logger = LogManager.getLogger()
 
