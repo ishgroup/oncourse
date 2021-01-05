@@ -40,19 +40,10 @@ import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.payroll.PayrollService;
 import ish.oncourse.server.print.PrintService;
 import ish.oncourse.server.quality.QualityService;
-import ish.oncourse.server.services.ISchedulerService;
-import ish.oncourse.server.services.SchedulerService;
+import ish.oncourse.server.services.*;
 import ish.oncourse.server.report.IReportService;
 import ish.oncourse.server.report.ReportService;
 import ish.oncourse.server.scripting.GroovyScriptService;
-import ish.oncourse.server.services.AuditService;
-import ish.oncourse.server.services.AutoIncrementService;
-import ish.oncourse.server.services.BackupJob;
-import ish.oncourse.server.services.CustomFieldTypeService;
-import ish.oncourse.server.services.IAutoIncrementService;
-import ish.oncourse.server.services.ISystemUserService;
-import ish.oncourse.server.services.StatsService;
-import ish.oncourse.server.services.TransactionLockedService;
 import ish.oncourse.server.users.SystemUserService;
 
 /**
@@ -106,7 +97,7 @@ public class ServiceModule implements Module {
 		binder.bind(InvoiceLineService.class).in(Scopes.SINGLETON);
 		binder.bind(EnrolmentService.class).in(Scopes.SINGLETON);
 		binder.bind(DocumentService.class).in(Scopes.SINGLETON);
-		binder.bind(IAutoIncrementService.class).to(AutoIncrementService.class).in(Scopes.SINGLETON);
+		binder.bind(IAutoIncrementService.class).to(ClusteredAutoincrementService.class).in(Scopes.SINGLETON);
 		binder.bind(TransactionLockedService.class).in(Scopes.SINGLETON);
 		binder.bind(CustomFieldTypeService.class).in(Scopes.SINGLETON);
 		binder.bind(ISystemUserService.class).to(SystemUserService.class).in(Scopes.SINGLETON);
