@@ -5,6 +5,7 @@
 
 import { Sorting } from "@api/model";
 import { generateArraysOfRecords } from "../../mockUtils";
+import { getScriptComponent } from "../../../../js/containers/automation/containers/scripts/constants";
 
 export function mockScripts() {
   this.getScripts = () => this.scripts;
@@ -15,6 +16,8 @@ export function mockScripts() {
       id: row.id,
       name: row.values[1],
       enabled: row.values[2],
+      keyCode: null,
+      entity: null,
       description: "test script",
       trigger: {
         type: "Schedule",
@@ -40,6 +43,22 @@ export function mockScripts() {
         + "    }\n"
         + "    \n"
         + "    args.context.commitChanges()",
+      body:
+        "  def enrolment = args.entity\n"
+        + "\n"
+        + "   email {\n"
+        + "      template \"Enrolment Confirmation\"\n"
+        + "      bindings enrolment: enrolment\n"
+        + "      to \"blake@acwa.asn.au\"\n"
+        + "      if (enrolment.courseClass.course.hasTag(\"ACWA Events\", true)==true){\n"
+        + "        from (\"acwa@acwa.asn.au\", \"ACWA Events\")\n"
+        + "      }\n"
+        + "      else if (enrolment.courseClass.course.hasTag(\"Disability Justice Project\", true)==true){\n"
+        + "        from (\"training@disabilityjustice.edu.au\", \"Disability Justice Project\")\n"
+        + "      }\n"
+        + "    }\n"
+        + "    \n"
+        + "    args.context.commitChanges()",
       lastRun: [
         "2018-06-04T05:20:48.000Z",
         "2018-06-04T05:14:40.000Z",
@@ -50,7 +69,27 @@ export function mockScripts() {
         "2018-03-16T10:31:37.000Z"
       ],
       created: "2018-01-16T08:51:46.000Z",
-      modified: "2019-10-10T10:00:15.000Z"
+      modified: "2019-10-10T10:00:15.000Z",
+      variables: [],
+      options: [],
+      components: [getScriptComponent(
+        "  def enrolment = args.entity\n"
+        + "\n"
+        + "   email {\n"
+        + "      template \"Enrolment Confirmation\"\n"
+        + "      bindings enrolment: enrolment\n"
+        + "      to \"blake@acwa.asn.au\"\n"
+        + "      if (enrolment.courseClass.course.hasTag(\"ACWA Events\", true)==true){\n"
+        + "        from (\"acwa@acwa.asn.au\", \"ACWA Events\")\n"
+        + "      }\n"
+        + "      else if (enrolment.courseClass.course.hasTag(\"Disability Justice Project\", true)==true){\n"
+        + "        from (\"training@disabilityjustice.edu.au\", \"Disability Justice Project\")\n"
+        + "      }\n"
+        + "    }\n"
+        + "    \n"
+        + "    args.context.commitChanges()"
+      )],
+      imports: null
     };
   };
 
@@ -58,10 +97,11 @@ export function mockScripts() {
     const rows = generateArraysOfRecords(20, [
       { name: "id", type: "number" },
       { name: "name", type: "string" },
-      { name: "enabled", type: "string" }
+      { name: "enabled", type: "string" },
+      { name: "keyCode", type: "string" }
     ]).map(l => ({
       id: l.id,
-      values: [l.name, l.enabled]
+      values: [l.name, l.enabled, l.keyCode]
     }));
 
     const columns = [];
