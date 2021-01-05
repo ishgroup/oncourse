@@ -155,7 +155,7 @@ export class MockAdapter {
 }
 
 // Resolve function with logger
-export const promiseResolve = (config, data = {}) => {
+export const promiseResolve = (config, data = {}, headers = {}) => {
   console.log("%c ----------------", "color: black");
   console.log(`%c Api request to: /${config.url}`, "color: #bada55");
   console.log(`%c Api request method: ${config.method}`, "color: #bada55");
@@ -169,11 +169,11 @@ export const promiseResolve = (config, data = {}) => {
   console.log([data]);
   console.log("%c ----------------", "color: black");
 
-  return [200, data];
+  return [200, data, headers];
 };
 
 // Reject function with logger
-export const promiseReject = (config, data = {}) => {
+export const promiseReject = (config, data = {}, headers = {}) => {
   console.log(`%c Api request ${config.method} to: /${config.url}`, "color: red");
   console.log(`%c request params:`, "color: #bada55");
   if (config.method === "get") {
@@ -182,7 +182,7 @@ export const promiseReject = (config, data = {}) => {
     console.log(config.data && [parseJson(config.data)]);
   }
   console.log(`%c request params:`, "color: #bada55");
-  return [400, data];
+  return [400, data, headers];
 };
 
 const parseJson = data => {
