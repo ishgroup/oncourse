@@ -161,6 +161,7 @@ abstract class IshTestCase {
 
         DatabaseConfig config = dbConnection.getConfig()
         config.setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true)
+        config.setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false)
         config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory())
 
 		return dbConnection
