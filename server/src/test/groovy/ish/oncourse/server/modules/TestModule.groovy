@@ -41,10 +41,10 @@ import ish.oncourse.server.report.IReportService
 import ish.oncourse.server.report.ReportService
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.services.AuditService
-import ish.oncourse.server.services.AutoIncrementService
 import ish.oncourse.server.services.CustomFieldTypeService
 import ish.oncourse.server.services.IAutoIncrementService
 import ish.oncourse.server.services.ISystemUserService
+import ish.oncourse.server.services.TestAutoIncrementService
 import ish.oncourse.server.services.TestSchedulerService
 import ish.oncourse.server.services.TestSystemUserService
 import ish.oncourse.server.upgrades.DataPopulation
@@ -92,7 +92,7 @@ class TestModule implements Module {
         binder.bind(CertificateService.class).in(Scopes.SINGLETON)
         binder.bind(StudentService.class).in(Scopes.SINGLETON)
         binder.bind(InvoiceLineService.class).in(Scopes.SINGLETON)
-        binder.bind(IAutoIncrementService.class).to(AutoIncrementService.class).in(Scopes.SINGLETON)
+        binder.bind(IAutoIncrementService.class).to(TestAutoIncrementService.class).in(Scopes.SINGLETON)
         binder.bind(CertificateServiceTest.class).in(Scopes.SINGLETON)
         binder.bind(ISystemUserService.class).to(TestSystemUserService.class).in(Scopes.SINGLETON)
 

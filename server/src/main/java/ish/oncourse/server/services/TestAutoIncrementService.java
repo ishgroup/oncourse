@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly;
 
 
-public class AutoIncrementService implements IAutoIncrementService {
+public class TestAutoIncrementService implements IAutoIncrementService {
 
 	private AtomicLong studentNumber;
 	private AtomicLong invoiceNumber;
@@ -31,7 +31,7 @@ public class AutoIncrementService implements IAutoIncrementService {
 	private AtomicBoolean initialized = new AtomicBoolean();
 	
 	@Inject
-	public AutoIncrementService(ICayenneService  cayenneService) {
+	public TestAutoIncrementService(ICayenneService  cayenneService) {
 		this.cayenneService = cayenneService;
 	}
 	
