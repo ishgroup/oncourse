@@ -25,7 +25,7 @@ export const parseIntegrations = (integrations: Integration[]): IntegrationSchem
     const fields: any = {};
 
     integration.props.forEach(prop => {
-      fields[prop.key] = prop.value;
+      if (prop) fields[prop.key] = prop.value;
     });
 
     schema.fields = fields;
