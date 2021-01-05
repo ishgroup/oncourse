@@ -4,6 +4,7 @@
  */
 
 import { AnyArgFunction } from "./CommonFunctions";
+import { ReactNode } from "react";
 
 export interface ConfirmState {
   open: boolean;
@@ -14,6 +15,8 @@ export interface ConfirmState {
   cancelButtonText?: string;
   confirmText?: string;
   confirmButtonText?: string;
+  onCancelCustom?: AnyArgFunction;
+  confirmCustomComponent?: ReactNode;
 }
 
 export type ShowConfirmCaller = (
@@ -22,5 +25,7 @@ export type ShowConfirmCaller = (
   confirmButtonText?: string,
   onCancel?: any,
   title?: string,
-  cancelButtonText?: string
+  cancelButtonText?: string,
+  onCancelCustom?: any,
+  confirmCustomComponent?: ReactNode,
 ) => any;

@@ -14,7 +14,8 @@ const Initial: ConfirmState = {
   title: "Are you sure?",
   confirmMessage: null,
   cancelButtonText: "Cancel",
-  confirmButtonText: "Agree"
+  confirmButtonText: "Agree",
+  onCancelCustom: null,
 };
 
 export const confirmReducer = (state: ConfirmState = { ...Initial }, action: IAction<any>): ConfirmState => {
