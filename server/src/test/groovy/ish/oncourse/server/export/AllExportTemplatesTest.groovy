@@ -133,7 +133,7 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
 	@Test
     void testExport() throws Exception {
 		// exclude exports for Script entity - IshTestCase updates scripts from resources after table wipe
-		if (!entityName.equals("Script") && exportCode!= 'ish.oncourse.agedDebtorCsvExport.csv') {
+		if (!entityName.equals("Script")) {
 			ExportParameter param = new ExportParameter()
 
             param.setEntity(entityName)
