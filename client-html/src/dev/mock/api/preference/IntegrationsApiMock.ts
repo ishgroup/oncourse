@@ -20,7 +20,7 @@ export function IntegrationsApiMock(mock) {
   this.api.onPost("/v1/integration").reply(config => {
     const data = JSON.parse(config.data);
     this.db.createIntegration(data);
-    return promiseResolve(config, JSON.parse(JSON.stringify(this.db.getIntegrations())));
+    return promiseResolve(config, this.db.getIntegrations());
   });
 
   this.api.onPut(new RegExp(`v1/integration/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
@@ -28,6 +28,6 @@ export function IntegrationsApiMock(mock) {
   this.api.onDelete(new RegExp(`v1/integration/\\d+`)).reply(config => {
     const id = config.url.split("/")[2];
     this.db.removeIntegration(id);
-    return promiseResolve(config, JSON.parse(JSON.stringify(this.db.integrations)));
+    return promiseResolve(config, this.db.getIntegrations());
   });
 }
