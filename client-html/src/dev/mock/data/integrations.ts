@@ -6,6 +6,7 @@
 import { Integration, IntegrationProp } from "@api/model";
 
 export function mockIntegrations(): Integration[] {
+  this.getIntegrations = () => this.integrations;
   this.updateIntegration = (id, item) => {
     const listItem = this.integrations.find(int => int.id === id);
 
@@ -14,7 +15,10 @@ export function mockIntegrations(): Integration[] {
   };
 
   this.createIntegration = item => {
-    item.id = item.name;
+    item.id = (this.integrations.length + 1).toString();
+    item.verificationCode = null;
+    item.created = new Date().toISOString();
+    item.modified = new Date().toISOString();
     this.integrations.push(item);
   };
 
@@ -33,7 +37,10 @@ export function mockIntegrations(): Integration[] {
         { key: "password", value: "Consulrisk_12" } as IntegrationProp,
         { key: "serviceName", value: "newint" } as IntegrationProp,
         { key: "courseTag", value: "Moodle" } as IntegrationProp
-      ]
+      ],
+      verificationCode: null,
+      created: new Date().toISOString(),
+      modified: new Date().toISOString()
     },
     {
       type: 2,
@@ -43,7 +50,10 @@ export function mockIntegrations(): Integration[] {
       props: [
         { key: "apiKey", value: "09f3e95ea51a25d32aa1d2b3c3e766a3-us11" } as IntegrationProp,
         { key: "listId", value: "557374a712" } as IntegrationProp
-      ]
+      ],
+      verificationCode: null,
+      created: new Date().toISOString(),
+      modified: new Date().toISOString()
     },
     {
       type: 3,
@@ -56,7 +66,10 @@ export function mockIntegrations(): Integration[] {
         { key: "courseTag", value: "Moodle" } as IntegrationProp,
         { key: "sendOnEnrolmentSuccess", value: "true" } as IntegrationProp,
         { key: "sendOnEnrolmentCompletion", value: "true" } as IntegrationProp
-      ]
+      ],
+      verificationCode: null,
+      created: new Date().toISOString(),
+      modified: new Date().toISOString()
     },
     {
       type: 6,
@@ -66,13 +79,19 @@ export function mockIntegrations(): Integration[] {
         { key: "baseUrl", value: "http://localhost:8888/moodle29/" } as IntegrationProp,
         { key: "user", value: "admin" } as IntegrationProp,
         { key: "password", value: "Consulrisk_12" } as IntegrationProp
-      ]
+      ],
+      verificationCode: null,
+      created: new Date().toISOString(),
+      modified: new Date().toISOString()
     },
     {
       type: 5,
       id: "w5w45435",
       name: "Xero Integration",
-      props: []
+      props: [],
+      verificationCode: null,
+      created: new Date().toISOString(),
+      modified: new Date().toISOString()
     }
   ];
 }

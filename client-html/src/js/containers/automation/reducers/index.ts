@@ -7,7 +7,6 @@ import { IAction } from "../../../common/actions/IshAction";
 import {
   GET_INTEGRATIONS_FULFILLED,
   UPDATE_INTEGRATION_ITEM_FULFILLED,
-  CREATE_INTEGRATION_ITEM_FULFILLED,
   DELETE_INTEGRATION_ITEM_FULFILLED,
   GET_MYOB_AUTH_URL_REQUEST,
   GET_MYOB_AUTH_URL_FULFILLED
@@ -75,7 +74,6 @@ export const automationReducer = (state: AutomationState = Initial, action: IAct
   switch (action.type) {
     case GET_INTEGRATIONS_FULFILLED:
     case UPDATE_INTEGRATION_ITEM_FULFILLED:
-    case CREATE_INTEGRATION_ITEM_FULFILLED:
     case DELETE_INTEGRATION_ITEM_FULFILLED: {
       const { integrations } = action.payload;
 
