@@ -116,7 +116,7 @@ const ContactEditView = props => {
           </span>
         ) : null),
        [twoColumn, values.financialData]
-);
+    );
 
     if (isStudent) {
       activeItems = [...activeItems, ...studentItems];
