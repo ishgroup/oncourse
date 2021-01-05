@@ -68,8 +68,8 @@ export function mockScripts() {
         "2018-04-17T06:57:43.000Z",
         "2018-03-16T10:31:37.000Z"
       ],
-      created: "2018-01-16T08:51:46.000Z",
-      modified: "2019-10-10T10:00:15.000Z",
+      createdOn: "2018-01-16T08:51:46.000Z",
+      modifiedOn: "2019-10-10T10:00:15.000Z",
       variables: [],
       options: [],
       components: [getScriptComponent(
