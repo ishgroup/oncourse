@@ -314,7 +314,7 @@ class InvoiceTest extends CayenneIshTestCase {
 
         newContext.commitChanges()
 
-//        assertNotNull("Check invoiceNumber ", invoice.getInvoiceNumber())
+        assertNotNull("Check invoiceNumber ", invoice.getInvoiceNumber())
 
         Invoice invoice2 = newContext.newObject(Invoice.class)
 
