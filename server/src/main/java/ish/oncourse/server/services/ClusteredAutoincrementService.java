@@ -23,6 +23,8 @@ import org.apache.cayenne.tx.TransactionDescriptor;
 import org.apache.cayenne.tx.TransactionManager;
 import org.apache.cayenne.tx.TransactionPropagation;
 
+import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly;
+
 /**
  * {@link IAutoIncrementService} implementation that uses stored procedure
  * to atomically get next batch of Ids for students and invoices.
@@ -51,6 +53,9 @@ public class ClusteredAutoincrementService implements IAutoIncrementService {
     }
 
     private Long getNextIdFromPool(Queue<Long> pool, String name) {
+        if (validateOnly.get() != null && validateOnly.get()) {
+            return 100L;
+        }
         Long id;
         while((id = pool.poll()) == null)  {
             fillInPool(pool, name);
