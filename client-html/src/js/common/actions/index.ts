@@ -133,7 +133,9 @@ export const showConfirm: ShowConfirmCaller = (
   confirmButtonText,
   onCancel,
   title,
-  cancelButtonText
+  cancelButtonText,
+  onCancelCustom,
+  confirmCustomComponent
 ) => {
   const payload = {
     title,
@@ -141,7 +143,9 @@ export const showConfirm: ShowConfirmCaller = (
     onConfirm,
     confirmMessage,
     confirmButtonText,
-    cancelButtonText
+    cancelButtonText,
+    onCancelCustom,
+    confirmCustomComponent
   };
 
   return {
