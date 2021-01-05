@@ -325,7 +325,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
     onClearCompaniesSearch: () => dispatch(onClearFundingInvoiceCompaniesSearch()),
     getCompanies: (offset: number) => dispatch(getFundingInvoiceCompanies(offset)),
     // Course:
-    getCourses: (offset?: number) => dispatch(getPlainCourses(offset, "code,name", true)),
+    getCourses: (offset?: number) => dispatch(getPlainCourses(offset, "code,name,reportableHours,nextAvailableCode", true)),
     clearCourses: () => dispatch(setPlainCourses([])),
     setCoursesSearch: (search: string) => dispatch(setPlainCoursesSearch(getSearch(search))),
     // CourseClass:
