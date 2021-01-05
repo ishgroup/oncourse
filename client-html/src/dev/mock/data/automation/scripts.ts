@@ -143,7 +143,7 @@ export function mockScripts() {
     { name: "nextRun", type: "string" }
   ]).map(l => ({
     id: l.id,
-    values: [l.id, l.name, l.enabled, l.nextRun]
+    values: [l.name, l.enabled, l.nextRun]
   }));
 
   const columns = [

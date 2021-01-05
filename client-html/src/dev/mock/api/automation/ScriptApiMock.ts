@@ -4,6 +4,9 @@ export function ScriptApiMock(mock) {
   this.api.onGet(new RegExp(`v1/list/entity/script/execute/\\d+`))
     .reply(config => promiseResolve(config, null, { "content-type": "application/pdf" }));
 
+  this.api.onPost("v1/list/entity/script/execute")
+    .reply(config => promiseResolve(config, "4n5pxq24kriob12ogd"));
+
   this.api.onGet(new RegExp(`v1/list/entity/script/\\d+`)).reply(config => {
     const params = config.url.split("/");
     const id = params[params.length - 1];
