@@ -188,8 +188,9 @@ task expandConfig(type: Copy) {
 
 test {
 	testLogging {
-		events "failed", "standardOut"
+		exceptionFormat = 'full'
 	}
+	
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
 	dependsOn "expandConfig"
