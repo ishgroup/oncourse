@@ -140,7 +140,9 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
 
         List<EntityRelation> courseCourseRelations = ObjectSelect.query(EntityRelation.class)
                 .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(duplicatedCourse.id))
+                .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
                 .and(EntityRelation.TO_ENTITY_ANGEL_ID.eq(relatedCourse.id))
+                .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
                 .select(context)
         assertEquals(1, courseCourseRelations.size())
         assertNotNull(courseCourseRelations.get(0).getCreatedOn())
@@ -151,7 +153,9 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
 
         List<EntityRelation> courseProductRelations = ObjectSelect.query(EntityRelation.class)
                 .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(duplicatedCourse.id))
+                .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
                 .and(EntityRelation.TO_ENTITY_ANGEL_ID.eq(product.id))
+                .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Product.simpleName))
                 .select(context)
         assertEquals(1, courseProductRelations.size())
         assertNotNull(courseProductRelations.get(0).getCreatedOn())
