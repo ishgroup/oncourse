@@ -39,11 +39,17 @@ const getAndMergePlans = async (fundingInvoice: CheckoutFundingInvoice) => {
     await b();
   }, Promise.resolve());
 
+  if (!plans.length || !sessions.length) {
+    return;
+  }
+
   sessions.forEach(s => {
     if (s.siteTimezone) {
       s.start = appendTimezone(new Date(s.start), s.siteTimezone).toISOString();
     }
   });
+
+  sessions.sort((a, b) => (new Date(a.start) > new Date(b.start) ? 1 : -1));
 
   plans.forEach(pl => {
     pl.sessionIds = pl.sessionIds.map(sId => sessions.find(s => s.id === sId).start) as any;
@@ -111,8 +117,6 @@ const getAndMergePlans = async (fundingInvoice: CheckoutFundingInvoice) => {
       unitsCompleted: completedIds.length
     });
   });
-
-  trainingPlansBase.sort((a, b) => (new Date(a.date) > new Date(b.date) ? 1 : -1));
 
   trainingPlansBase.forEach((tp, index, arr) => {
     const prev = arr[index - 1];
