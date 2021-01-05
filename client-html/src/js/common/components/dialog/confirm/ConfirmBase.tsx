@@ -18,7 +18,15 @@ import { ConfirmState } from "../../../../model/common/Confirm";
 
 const ConfirmBase: React.FunctionComponent<ConfirmState> = props => {
   const {
-   open, onCancel, title, confirmMessage, onConfirm, cancelButtonText, confirmButtonText
+    open,
+    onCancel,
+    title,
+    confirmMessage,
+    onConfirm,
+    cancelButtonText,
+    confirmButtonText,
+    onCancelCustom,
+    confirmCustomComponent
   } = props;
 
   return (
@@ -31,14 +39,15 @@ const ConfirmBase: React.FunctionComponent<ConfirmState> = props => {
       )}
 
       <DialogActions>
-        <Button onClick={onCancel} color="primary">
+        <Button onClick={onCancelCustom ? onCancelCustom : onCancel} color="primary">
           {cancelButtonText}
         </Button>
-        {onConfirm && (
+        {onConfirm && !confirmCustomComponent && (
           <Button onClick={() => onConfirm()} variant="contained" color="primary">
             {confirmButtonText}
           </Button>
         )}
+        {confirmCustomComponent && confirmCustomComponent}
       </DialogActions>
     </Dialog>
   );

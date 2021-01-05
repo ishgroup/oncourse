@@ -18,14 +18,23 @@ interface Props {
 }
 
 const ConfirmProvider = React.memo<Props>(({ stateProps, closeConfirm }) => {
-  const { onCancel, onConfirm, ...rest } = stateProps;
+  const { onCancel, onConfirm, onCancelCustom, confirmCustomComponent, ...rest } = stateProps;
 
   const onCancelHandler = useCallback(() => {
     if (onCancel) {
       onCancel();
     }
+
     closeConfirm();
   }, [onCancel]);
+
+  const onCancelCustomHandler = useCallback(() => {
+    if (onCancelCustom) {
+      onCancelCustom();
+    }
+
+    closeConfirm();
+  }, [onCancelCustom]);
 
   const onConfirmHandler = useCallback(
     typeof onConfirm === "function"
@@ -37,7 +46,13 @@ const ConfirmProvider = React.memo<Props>(({ stateProps, closeConfirm }) => {
     [onConfirm]
   );
 
-  return <ConfirmBase {...rest} onCancel={onCancelHandler} onConfirm={onConfirmHandler} />;
+  return <ConfirmBase
+    {...rest}
+    onCancel={onCancelHandler}
+    onConfirm={onConfirmHandler}
+    onCancelCustom={onCancelCustom ? onCancelCustomHandler : null}
+    confirmCustomComponent={confirmCustomComponent}
+  />;
 });
 
 const mapStateToProps = (state: State) => ({
