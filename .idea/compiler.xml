@@ -7,4 +7,7 @@
       <module name="angel.buildSrc.test" target="11" />
     </bytecodeTargetLevel>
   </component>
+  <component name="TypeScriptCompiler">
+    <option name="nodeInterpreterTextField" value="$PROJECT_DIR$/client-html/build/nodejs/node-v12.19.0-darwin-x64/bin/node" />
+  </component>
 </project>

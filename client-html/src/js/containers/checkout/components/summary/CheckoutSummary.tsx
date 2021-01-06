@@ -3,15 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
+import { Invoice } from "@api/model";
 import { usePrevious } from "../../../../common/utils/hooks";
 import { BooleanArgFunction, NumberArgFunction } from "../../../../model/common/CommonFunctions";
 import { State } from "../../../../reducers/state";
 import { CheckoutSummaryListItem as SummaryList } from "../../../../model/checkout";
 import {
-  checkoutGetPreviousOwing,
+  checkoutGetPreviousOwing, checkoutSetPreviousCredit,
   checkoutUpdateSummaryClassesDiscounts,
   checkoutUpdateSummaryPrices,
   getPlainPreviousCreditRecords,
@@ -25,9 +26,11 @@ interface Props {
   checkoutStep?: number;
   activeField: any;
   selectedDiscount?: any;
+  checkoutSetPreviousCredit?: any;
   openDiscountView?: boolean;
   selectedContacts?: any[];
   summaryList?: SummaryList[];
+  plainInvoices?: Invoice[];
   setPreviousCreditSearch?: NumberArgFunction;
   getPreviousCreditRecords?: () => void;
   getPreviousOwingRecords?: NumberArgFunction;
@@ -43,12 +46,20 @@ const CheckoutSummary = React.memo<Props>(props => {
     selectedDiscount,
     selectedContacts,
     summaryList,
+    plainInvoices,
     setPreviousCreditSearch,
+    checkoutSetPreviousCredit,
     getPreviousCreditRecords,
     getPreviousOwingRecords,
     checkoutUpdateSummaryPrices,
     checkoutUpdateSummaryClassesDiscounts
   } = props;
+
+  useEffect(() => {
+    if (plainInvoices.length) {
+      checkoutSetPreviousCredit(plainInvoices);
+    }
+  }, [plainInvoices]);
 
   const getPreviousInvoices = React.useCallback((payerIndex = -1) => {
     if (selectedContacts.length > 0) {
@@ -96,11 +107,13 @@ const CheckoutSummary = React.memo<Props>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  summaryList: state.checkout.summary.list
+  summaryList: state.checkout.summary.list,
+  plainInvoices: state?.plainSearchRecords["Invoice"]?.items || []
 });
 
 const mapDispatchToProps = dispatch => ({
   setPreviousCreditSearch: id => dispatch(setPlainPreviousCreditSearch(id)),
+  checkoutSetPreviousCredit: items => dispatch(checkoutSetPreviousCredit(items)),
   getPreviousCreditRecords: () => dispatch(getPlainPreviousCreditRecords()),
   getPreviousOwingRecords: id => dispatch(checkoutGetPreviousOwing(id)),
   checkoutUpdateSummaryPrices: () => dispatch(checkoutUpdateSummaryPrices()),
