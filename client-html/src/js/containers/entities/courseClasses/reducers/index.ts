@@ -13,19 +13,13 @@ import {
   GET_DUPLICATE_COURSE_CLASSES_SESSIONS,
   SET_DUPLICATE_COURSE_CLASSES_SESSIONS,
   GET_COURSE_CLASS_ENROLMENTS,
-  GET_PLAIN_COURSE_CLASSES,
-  GET_PLAIN_COURSE_CLASSES_FULFILLED,
-  SET_PLAIN_COURSE_CLASSES_SEARCH,
   DUPLICATE_COURSE_CLASS,
   DUPLICATE_COURSE_CLASS_FULFILLED,
-  CLEAR_PLAIN_COURSE_CLASSES_SEARCH,
   SET_COURSE_CLASS_LATEST_SESSION,
   SET_COURSE_CLASS_BUDGET_MODAL_OPENED,
-  GET_PLAIN_COURSE_CLASSES_BY_ID_FULFILLED,
-  GET_PLAIN_COURSE_CLASSES_BY_ID,
-  SET_COURSE_CLASS_SESSIONS_WARNINGS, CLEAR_PLAIN_COURSE_CLASSES, SET_DUPLICATE_COURSE_CLASSES_BUDGET
+  SET_COURSE_CLASS_SESSIONS_WARNINGS, SET_DUPLICATE_COURSE_CLASSES_BUDGET
 } from "../actions/index";
-import { CoruseClassesSate, CourseClassBulkSession } from "./state";
+import { CourseClassBulkSession } from "./state";
 import { StringKeyAndValueObject } from "../../../../model/common/CommomObjects";
 import { SET_COURSE_CLASS_TUTOR_NAMES_WARNINGS } from "../components/tutors/actions";
 import {
@@ -151,76 +145,6 @@ export const courseClassReducer = (state: CourseClassState = initial, action: IA
         ...state,
         budgetModalOpened: opened,
         defaultOnCostRate: opened ? onCostRate : null
-      };
-    }
-
-    default:
-      return state;
-  }
-};
-
-const courseClassesInitial: CoruseClassesSate = {
-  items: [],
-  search: "",
-  loading: false,
-  rowsCount: 5000,
-  checkEmpty: false
-};
-
-export const courseClassesReducer = (state: CoruseClassesSate = courseClassesInitial, action: IAction<any>): any => {
-  switch (action.type) {
-    case GET_PLAIN_COURSE_CLASSES: {
-      return {
-        ...state,
-        loading: true
-      };
-    }
-
-    case GET_PLAIN_COURSE_CLASSES_BY_ID: {
-      return {
-        ...state,
-        loading: true
-      };
-    }
-
-    case CLEAR_PLAIN_COURSE_CLASSES: {
-      return {
-        ...state,
-        loading: false,
-        items: []
-      };
-    }
-
-    case GET_PLAIN_COURSE_CLASSES_FULFILLED: {
-      const { items, offset, pageSize } = action.payload;
-      const updated = offset ? state.items.concat(items) : items;
-
-      return {
-        ...state,
-        loading: false,
-        items: updated,
-        rowsCount: pageSize < 100 ? pageSize : 5000
-      };
-    }
-
-    case GET_PLAIN_COURSE_CLASSES_BY_ID_FULFILLED: {
-      const { items, offset, pageSize } = action.payload;
-      const updated = offset ? state.items.concat(items) : items;
-
-      return {
-        ...state,
-        loading: false,
-        items: updated,
-        rowsCount: pageSize < 100 ? pageSize : 5000,
-        checkEmpty: updated.length <= 0
-      };
-    }
-
-    case CLEAR_PLAIN_COURSE_CLASSES_SEARCH:
-    case SET_PLAIN_COURSE_CLASSES_SEARCH: {
-      return {
-        ...state,
-        ...action.payload
       };
     }
 
