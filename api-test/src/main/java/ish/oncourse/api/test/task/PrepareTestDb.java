@@ -40,6 +40,18 @@ public class PrepareTestDb {
             InputStream st = new FileInputStream(args[DATASET_PATH_ARG_INDEX]);
             FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().setCaseSensitiveTableNames(false).setColumnSensing(true).build(st);
             DatabaseOperation.REFRESH.execute(testDatabaseConnection, dataSet);
+
+            try(var statement = connection.createStatement()) {
+                statement.execute("UPDATE `SequenceSupport` " +
+                                        "set `nextId` =  (SELECT max(`invoiceNumber`) + 1 FROM `Invoice`) " +
+                                        "WHERE `tableName` = 'invoice'");
+                
+                statement.execute("UPDATE `SequenceSupport` " +
+                        "set `nextId` =  (SELECT max(`studentNumber`) + 1 FROM `Student`) " +
+                        "WHERE `tableName` = 'student'");
+
+            }
+            
         } else {
             throw new RuntimeException("Test data wasn't inserted. Invalid parameters count!");
         }
