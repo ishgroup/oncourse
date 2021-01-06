@@ -11,8 +11,8 @@ import { CheckoutSummary } from "../../../../model/checkout";
 import { CHECKOUT_CONTACT_COLUMNS } from "../../constants";
 import SelectedContactRenderer from "./SelectedContactRenderer";
 import HeaderField from "../HeaderField";
-import { getContacts, setContactsSearch } from "../../../entities/contacts/actions";
 import { CheckoutPage } from "../CheckoutSelection";
+import {getCommonPlainRecords, setCommonPlainSearch} from "../../../../common/actions/CommonPlainRecordsActions";
 
 export interface Props {
   setActiveField: (field: string) => void;
@@ -87,9 +87,10 @@ const CheckoutContactSearch = React.memo<Props>(props => {
   );
 });
 
+
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getContacts: (offset?: number) => dispatch(getContacts(offset, CHECKOUT_CONTACT_COLUMNS, true, "lastName,firstName", 65000)),
-    setContactsSearch: (search: string) => dispatch(setContactsSearch(search))
-  });
+  getContacts: (offset?: number) => dispatch(getCommonPlainRecords("Contact", offset, CHECKOUT_CONTACT_COLUMNS, true, "lastName,firstName", 65000)),
+  setContactsSearch: (search: string) => dispatch( setCommonPlainSearch("Contact", search))
+});
 
 export default connect<any, any, any>(null, mapDispatchToProps)(CheckoutContactSearch);

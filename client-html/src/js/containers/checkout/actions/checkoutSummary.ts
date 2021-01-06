@@ -158,11 +158,9 @@ export const checkoutUpdatePromo = ({ discountItem, vouchersItem }: { discountIt
 });
 
 export const setPlainPreviousCreditSearch = id => setCommonPlainSearch(
-  "PreviousCredit",
-  `contact.id is ${id} and amountOwing<0`,
   "Invoice",
-  checkoutSetPreviousCredit
+  `contact.id is ${id} and amountOwing<0`
 );
 
 export const getPlainPreviousCreditRecords = () =>
-  getCommonPlainRecords("PreviousCredit", 0, "invoiceNumber,amountOwing,invoiceDate,dateDue");
+  getCommonPlainRecords("Invoice", 0, "invoiceNumber,amountOwing,invoiceDate,dateDue");
