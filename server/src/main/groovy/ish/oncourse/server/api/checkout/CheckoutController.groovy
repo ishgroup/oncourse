@@ -324,11 +324,11 @@ class CheckoutController {
             //else set the initial value as $0
             voucher.redemptionValue = new Money(dto.value)
         }
-        voucher.valueOnPurchase = product.priceExTax ?: voucher.redemptionValue
+        voucher.valueOnPurchase = product.priceExTax != null ? product.priceExTax : voucher.redemptionValue
         voucher.redeemedCourseCount = 0
 
         invoiceLine.quantity = ONE
-        invoiceLine.priceEachExTax = product.priceExTax ?: voucher.redemptionValue
+        invoiceLine.priceEachExTax = product.priceExTax != null ? product.priceExTax : voucher.redemptionValue
         invoiceLine.discountEachExTax = Money.ZERO
         invoiceLine.tax = nonSupplyTax(context)
         invoiceLine.account = product.liabilityAccount
