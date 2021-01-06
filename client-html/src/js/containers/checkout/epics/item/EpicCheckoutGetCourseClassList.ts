@@ -15,14 +15,14 @@ const request: EpicUtils.Request<any, any, any> = {
   getData: ({
     search
   }) => EntityService.getPlainRecords(
-        "CourseClass",
-        CHECKOUT_COURSE_CLASS_COLUMNS,
-        search,
-        null,
-        0,
-        "startDateTime",
-        true
-      ),
+    "CourseClass",
+    CHECKOUT_COURSE_CLASS_COLUMNS,
+    search,
+    null,
+    0,
+    "startDateTime",
+    true
+  ),
   processData: ({ rows }) => {
     const courseClasses = rows.map(checkoutCourseClassMap);
     return [

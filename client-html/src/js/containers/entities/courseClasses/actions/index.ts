@@ -42,20 +42,9 @@ export const SET_COURSE_CLASS_ENROLMENTS = "set/courseClass/enrolments";
 export const CANCEL_COURSE_CLASS = _toRequestType("cancel/courseClass");
 export const CANCEL_COURSE_CLASS_FULFILLED = FULFILLED(CANCEL_COURSE_CLASS);
 
-export const GET_PLAIN_COURSE_CLASSES = _toRequestType("get/plain/courseClass");
-export const GET_PLAIN_COURSE_CLASSES_FULFILLED = FULFILLED(GET_PLAIN_COURSE_CLASSES);
-
-export const CLEAR_PLAIN_COURSE_CLASSES = "clear/plain/courseClass";
-
-export const SET_PLAIN_COURSE_CLASSES_SEARCH = _toRequestType("set/plain/courseClass/search");
-export const CLEAR_PLAIN_COURSE_CLASSES_SEARCH = _toRequestType("clear/plain/courseClass/search");
-
 export const SET_COURSE_CLASS_LATEST_SESSION = "set/courseClass/latestSession";
 
 export const SET_COURSE_CLASS_BUDGET_MODAL_OPENED = "set/courseClass/budget/modal";
-
-export const GET_PLAIN_COURSE_CLASSES_BY_ID = _toRequestType("get/plain/courseClass/id");
-export const GET_PLAIN_COURSE_CLASSES_BY_ID_FULFILLED = FULFILLED(GET_PLAIN_COURSE_CLASSES_BY_ID);
 
 export const duplicateCourseClass = (values: CourseClassDuplicate, onComplete?: any) => ({
   type: DUPLICATE_COURSE_CLASS,
@@ -111,23 +100,8 @@ export const cancelCourseClass = (values: CancelCourseClass) => ({
   payload: values
 });
 
-export const getPlainCourseClasses = (offset?: number, columns?: string, ascending?: boolean) => ({
-  type: GET_PLAIN_COURSE_CLASSES,
-  payload: { offset, columns, ascending }
-});
-
-export const setPlainCourseClassSearch = (search: string) => ({
-  type: SET_PLAIN_COURSE_CLASSES_SEARCH,
-  payload: { search }
-});
-
 export const getCourseClassTags = () => ({
   type: GET_COURSE_CLASS_TAGS
-});
-
-export const clearPlainCourseClassSearch = () => ({
-  type: CLEAR_PLAIN_COURSE_CLASSES_SEARCH,
-  payload: { search: "", items: [], checkEmpty: false }
 });
 
 export const setCourseClassLatestSession = (latestSession: Date) => ({
@@ -148,17 +122,6 @@ export const getCourseClassSessionsWarnings = (classId: number, sessions: Sessio
 export const setCourseClassSessionsWarnings = (sessionWarnings?: SessionWarning[]) => ({
   type: SET_COURSE_CLASS_SESSIONS_WARNINGS,
   payload: { sessionWarnings }
-});
-
-export const getPlainCourseClassesById = (offset?: number, columns?: string, sortings?: string, ascending?: boolean) => ({
-  type: GET_PLAIN_COURSE_CLASSES_BY_ID,
-  payload: {
- offset, columns, sortings, ascending
-}
-});
-
-export const clearPlainCourseClasses = () => ({
-  type: CLEAR_PLAIN_COURSE_CLASSES
 });
 
 export const getDuplicateCourseClassesBudget = (id: number) => ({

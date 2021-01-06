@@ -5,34 +5,34 @@
 
 import { IAction } from "../actions/IshAction";
 import {
+  CLEAR_COMMON_PLAIN_RECORDS,
   GET_COMMON_PLAIN_RECORDS,
   GET_COMMON_PLAIN_RECORDS_FULFILLED,
   SET_COMMON_PLAIN_RECORD_SEARCH
 } from "../actions/CommonPlainRecordsActions";
 
 export interface CommonPlainSearchEntity {
-  entity?: string;
   items?: any[];
   search?: string;
   loading?: boolean;
   rowsCount?: number;
-  actions?: (items: any[], offset?: number, pageSize?: number) => any;
 }
 
 export interface CommonPlainRecordSearchState {
   [key: string]: CommonPlainSearchEntity;
 }
 
-const initial = {
-  "": {
-    entity: "",
+const availableEntities = ["Assessment", "Qualification", "Module", "Contact", "Site", "Course", "CourseClass", "Enrolment"];
+
+const initial = availableEntities.reduce((p, c) => {
+  p[c] = {
     items: [],
     search: "",
     loading: false,
-    rowsCount: 0,
-    actions: null
-  }
-};
+    rowsCount: 5000,
+  };
+  return p;
+}, {});
 
 export const commonPlainRecordSearchReducer = (
   state: CommonPlainRecordSearchState = initial,
@@ -40,33 +40,29 @@ export const commonPlainRecordSearchReducer = (
 ): any => {
   switch (action.type) {
     case SET_COMMON_PLAIN_RECORD_SEARCH: {
-      const entity = action.payload.entity ? action.payload.entity : action.payload.key;
       return {
         ...state,
         ...{
           [action.payload.key]: {
-            entity,
-            items: [],
-            search: action.payload.search,
-            loading: false,
-            rowsCount: 0,
-            actions: action.payload.actions
+            ...state[action.payload.key],
+            search: action.payload.search
           }
         }
       };
     }
+
     case GET_COMMON_PLAIN_RECORDS: {
-      const { key } = action.payload;
       return {
         ...state,
         ...{
-          [key]: {
-            ...state[key],
+          [action.payload.key]: {
+            ...state[action.payload.key],
             loading: true
           }
         }
       };
     }
+
     case GET_COMMON_PLAIN_RECORDS_FULFILLED: {
       const {
         key, items, offset, pageSize
@@ -85,6 +81,22 @@ export const commonPlainRecordSearchReducer = (
         }
       };
     }
+
+    case CLEAR_COMMON_PLAIN_RECORDS: {
+      return {
+        ...state,
+        ...{
+          [action.payload.key]: {
+            ...state[action.payload.key],
+            items: [],
+            search: "",
+            loading: false,
+            rowsCount: 5000
+          }
+        }
+      };
+    }
+
     default:
       return state;
   }

@@ -20,7 +20,6 @@ import {
 } from "redux-form";
 import { getUserPreferences } from "../../../../../common/actions";
 import {
-  getCommonPlainRecordFromState,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../../common/actions/CommonPlainRecordsActions";
@@ -272,7 +271,7 @@ const mapStateToProps = (state: State) => ({
   value: getFormValues(FORM)(state),
   accounts: state.accounts.items,
   taxes: state.taxes.items,
-  enrolmentPlainRecord: getCommonPlainRecordFromState(state, "Enrolment"),
+  enrolmentPlainRecord: state.plainSearchRecords["Enrolment"],
   defaultIncomeAccountId: state.userPreferences[ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID]
 });
 

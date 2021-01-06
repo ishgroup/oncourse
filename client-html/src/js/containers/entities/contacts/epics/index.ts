@@ -4,7 +4,6 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicGetContacts } from "./EpicGetContacts";
 import { EpicCreateContact } from "./EpicCreateContact";
 import { EpicGetContact } from "./EpicGetContact";
 import { EpicGetMergeContacts } from "./EpicGetMergeContacts";
@@ -25,7 +24,6 @@ import { EpicGetContactsStoredCC } from "./EpicGetContactsStoredCC";
 export const EpicContacts = combineEpics(
   EpicDeleteContact,
   EpicCreateContact,
-  EpicGetContacts,
   EpicGetMergeContacts,
   EpicPostMergeContacts,
   EpicGetContact,

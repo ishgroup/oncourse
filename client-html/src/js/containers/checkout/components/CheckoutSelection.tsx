@@ -35,7 +35,6 @@ import { AppTheme } from "../../../model/common/Theme";
 import { studentInitial } from "../../entities/contacts/components/ContactsGeneral";
 import { getCountries, getLanguages, updateColumnsWidth } from "../../preferences/actions";
 import {
-  clearContactsSearch,
   getContactsConcessionTypes,
   getContactsRelationTypes,
   getContactsTaxTypes,
@@ -55,7 +54,6 @@ import {
   CheckoutCurrentStep
 } from "../constants";
 import {
-  calculateVoucherOrMembershipExpiry,
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
@@ -122,6 +120,7 @@ import { checkoutUpdateSummaryClassesDiscounts } from "../actions/checkoutSummar
 import CheckoutSummaryHeaderField from "./summary/CheckoutSummaryHeaderField";
 import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from "./summary/CheckoutSummaryList";
 import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
+import {clearCommonPlainRecords} from "../../../common/actions/CommonPlainRecordsActions";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 export const CONTACT_ENTITY_NAME: string = "Contact";
@@ -638,7 +637,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
   }, []);
 
   React.useEffect(() => {
-    if (contactsSearch && contactsSearch.length > 0) {
+    if (checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.shoppingCart) && contactsSearch && contactsSearch.length > 0) {
       setCheckDirtyContactViewOnFocus(true);
       contacts.splice(0, 0, {
         type: "create",
@@ -1191,18 +1190,19 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
               />
             )}
 
-            {openClassListView && courseClasses && (
+            {openClassListView && Boolean(courseClasses.length) && (
               <EnrolCourseClassView
                 course={selectedCourse}
                 onClose={onCloseClassList}
                 onClassSelect={onClassSelect}
                 selectedItems={selectedItems}
+                courseClasses={courseClasses}
               />
             )}
 
             {openItemEditView && itemEditRecord && (
-            <CheckoutItemView openedItem={openedItem} onClose={onCloseItemView} summary={summary} />
-              )}
+              <CheckoutItemView openedItem={openedItem} onClose={onCloseItemView} summary={summary} />
+            )}
           </div>
         </div>
         <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.summary) })}>
@@ -1282,18 +1282,18 @@ const mapStateToProps = (state: State) => ({
   contactEditRecord: state.checkout.contactEditRecord,
   itemEditRecord: state.checkout.itemEditRecord,
   salesRelations: state.checkout.salesRelations,
-  contacts: state.contacts.items,
-  contactsSearch: state.contacts.search,
-  contactsLoading: state.contacts.loading,
+  contacts: state.plainSearchRecords["Contact"].items,
+  contactsSearch: state.plainSearchRecords["Contact"].search,
+  contactsLoading: state.plainSearchRecords["Contact"].loading,
   courses: state.courses.items,
   coursesSearch: state.courses.search,
-  contactsRowsCount: state.contacts.rowsCount,
+  contactsRowsCount: state.plainSearchRecords["Contact"].rowsCount,
   products: state.articleProducts.items,
   vouchers: state.voucherProducts.items,
   membershipProducts: state.membershipProducts.items,
   selectedContacts: state.checkout.contacts,
   selectedItems: state.checkout.items,
-  courseClasses: state.courseClasses.items,
+  courseClasses: state.checkout.courseClasses,
   relatedContacts: state.checkout.relatedContacts,
   paymentProcessStatus: state.checkout.payment.process.status,
   summary: state.checkout.summary,
@@ -1318,7 +1318,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setListEditRecord(null));
     dispatch(checkoutClearContactEditRecord());
   },
-  clearContactsSearch: () => dispatch(clearContactsSearch()),
+  clearContactsSearch: () => dispatch(clearCommonPlainRecords("Contact")),
   getContactRecord: (id: number) => dispatch(checkoutGetContact(id)),
   getCountries: () => dispatch(getCountries()),
   getLanguages: () => dispatch(getLanguages()),
