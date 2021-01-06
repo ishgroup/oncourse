@@ -8,10 +8,10 @@ describe("Get avetmiss export ID epic tests", () => {
       type: GET_AVETMISS8_EXPORT_ID
     },
     epic: EpicGetAvetmiss8ExportID,
-    processData: () => [
+    processData: mockedApi => [
       {
         type: GET_AVETMISS8_EXPORT_ID_FULFILLED,
-        payload: { exportID: "0e8eb6ef-5ea9-452c-bc07-396a301bef8a" }
+        payload: { exportID: mockedApi.db.outcomesID }
       }
     ]
   }));
