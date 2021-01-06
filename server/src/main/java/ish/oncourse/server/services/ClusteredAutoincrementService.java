@@ -70,7 +70,7 @@ public class ClusteredAutoincrementService implements IAutoIncrementService {
         }
     }
 
-    private long nextId(String name) {
+    long nextId(String name) {
         DataContext context = cayenneService.getNewNonReplicatingContext();
         TransactionManager transactionManager = cayenneService.getServerRuntime().getInjector()
                 .getInstance(TransactionManager.class);
