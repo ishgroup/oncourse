@@ -23,7 +23,8 @@ import FormField from "../../../../../common/components/form/form-fields/FormFie
 import { State } from "../../../../../reducers/state";
 import Button from "../../../../../common/components/buttons/Button";
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
-import { cancelCourseClass, setPlainCourseClassSearch } from "../../actions";
+import { cancelCourseClass } from "../../actions";
+import {clearCommonPlainRecords, setCommonPlainSearch} from "../../../../../common/actions/CommonPlainRecordsActions";
 
 interface Props extends InjectedFormProps {
   opened: boolean;
@@ -52,15 +53,16 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
   }
 
   onClose = () => {
-    const { setDialogOpened, reset } = this.props;
+    const { setDialogOpened, clearCourseClassSearch, reset } = this.props;
     setDialogOpened(false);
+    clearCourseClassSearch();
     reset();
   };
 
   onSubmit = (values: any) => {
     const {
- setDialogOpened, cancelCourseClass, closeMenu, selection, clearCourseClassSearch
-} = this.props;
+     setDialogOpened, cancelCourseClass, closeMenu, selection, clearCourseClassSearch
+    } = this.props;
     const cancel = {
       classIds: selection,
       refundManualInvoices: values.refundManualInvoices,
@@ -101,8 +103,8 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
 
   render() {
     const {
- opened, handleSubmit, fetching, invalid, selectedClass, value
-} = this.props;
+     opened, handleSubmit, fetching, invalid, selectedClass, value
+    } = this.props;
     const errMsg = this.getErrorMsg(selectedClass);
     const enrolmentCount = this.getEnrolmentCount(selectedClass);
 
@@ -197,13 +199,13 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   value: getFormValues(FORM)(state),
-  selectedClass: state.courseClasses.items
+  selectedClass: state.plainSearchRecords["CourseClass"].items
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    cancelCourseClass: (values: CancelCourseClass) => dispatch(cancelCourseClass(values)),
-    clearCourseClassSearch: () => dispatch(setPlainCourseClassSearch(""))
-  });
+  cancelCourseClass: (values: CancelCourseClass) => dispatch(cancelCourseClass(values)),
+  clearCourseClassSearch: () => dispatch(clearCommonPlainRecords("CourseClass"))
+});
 
 const CancelCourseClassModal = reduxForm({
   form: FORM,

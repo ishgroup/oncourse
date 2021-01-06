@@ -5,34 +5,29 @@
 
 import {
   ConcessionType,
-  Contact,
   ContactRelationType,
   Tax,
   UsiVerificationResult
 } from "@api/model";
 import { IAction } from "../../../../common/actions/IshAction";
 import {
-  CLEAR_CONTACT_EDUCATION, CLEAR_CONTACTS,
+  CLEAR_CONTACT_EDUCATION,
   CLEAR_USI_VERIFICATION_RESULT,
   CLOSE_MERGE_CONTACTS_SUCCESS,
   GET_CONTACT_CERTIFICATES_FULFILLED,
   GET_CONTACT_ENROLMENTS_FULFILLED,
   GET_CONTACT_OUTCOMES_FULFILLED,
   GET_CONTACT_PRIOR_LEARNINGS_FULFILLED,
-  GET_CONTACTS,
   GET_CONTACTS_CONCESSION_TYPES_FULFILLED,
-  GET_CONTACTS_FULFILLED,
   GET_CONTACTS_RELATION_TYPES_FULFILLED, GET_CONTACTS_STORED_CC_FULFILLED,
   GET_CONTACTS_TAX_TYPES_FULFILLED,
   POST_MERGE_CONTACTS_FULFILLED,
-  SET_CONTACTS_SEARCH,
   VERIFY_USI,
   VERIFY_USI_FULFILLED,
   VERIFY_USI_REJECTED
 } from "../actions";
-import { PlainEntityState } from "../../../../model/common/Plain";
 
-export interface ContactsState extends PlainEntityState<Contact> {
+export interface ContactsState {
   education: any;
   usiVerificationResult: UsiVerificationResult;
   verifyingUSI: boolean;
@@ -49,10 +44,6 @@ export interface ContactsState extends PlainEntityState<Contact> {
 
 const initial: ContactsState = {
   taxTypes: [],
-  items: [],
-  search: "",
-  loading: false,
-  rowsCount: 10000,
   mergeContactsSuccessOpen: false,
   contactsRelationTypes: null,
   contactsConcessionTypes: null,
@@ -63,34 +54,6 @@ const initial: ContactsState = {
 
 export const contactsReducer = (state: ContactsState = initial, action: IAction<any>): any => {
   switch (action.type) {
-    case GET_CONTACTS: {
-      return {
-        ...state,
-        loading: true
-      };
-    }
-
-    case CLEAR_CONTACTS: {
-      return {
-        ...state,
-        items: [],
-        loading: false
-      };
-    }
-
-    case GET_CONTACTS_FULFILLED: {
-      const { items, offset, pageSize } = action.payload;
-
-      const updated = offset ? state.items.concat(items) : items;
-
-      return {
-        ...state,
-        loading: false,
-        items: updated,
-        rowsCount: pageSize < 100 ? pageSize : 5000
-      };
-    }
-
     case VERIFY_USI: {
       return {
         ...state,
@@ -202,13 +165,6 @@ export const contactsReducer = (state: ContactsState = initial, action: IAction<
       return {
         ...state,
         taxTypes
-      };
-    }
-
-    case SET_CONTACTS_SEARCH: {
-      return {
-        ...state,
-        ...action.payload
       };
     }
 

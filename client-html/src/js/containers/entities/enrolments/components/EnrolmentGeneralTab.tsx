@@ -44,6 +44,7 @@ import { mapSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
+import Uneditable from "../../../../common/components/form/Uneditable";
 
 const validateCricosConfirmation = value => validateCharacter(value, 32, "Confirmation of Enrolment");
 
@@ -190,23 +191,9 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         </Grid>
 
         <Grid item xs={twoColumn ? 8 : 12}>
-          <FormField
-            type="remoteDataSearchSelect"
-            entity="CourseClass"
-            name="courseClassId"
-            label="Class"
-            selectValueMark="id"
-            selectLabelCondition={courseClassLabelCondition}
-            defaultDisplayValue={values && values.courseClassName}
-            labelAdornment={(
-              <LinkAdornment
-                linkHandler={openCourseClassLink}
-                link={values.courseClassId}
-                disabled={!values.courseClassId}
-              />
-            )}
-            disabled={!isNew}
-            required
+          <Uneditable
+            value={values && values.courseClassName}
+            url={`class/${values.courseClassId}`}
           />
         </Grid>
 

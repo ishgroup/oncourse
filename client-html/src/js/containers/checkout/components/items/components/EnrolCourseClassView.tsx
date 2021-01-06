@@ -54,7 +54,6 @@ const EnrolCourseClassView = React.memo<any>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  courseClasses: state.checkout.courseClasses,
   isClassesEmpty: state.checkout.checkCourseClassEmpty,
   currencySymbol: state.currency && state.currency.shortCurrencySymbol
 });
