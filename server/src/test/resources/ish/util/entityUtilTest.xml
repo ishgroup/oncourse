@@ -37,5 +37,5 @@
 	<Room id="12" name="Test Room3" seatedCapacity="35" siteId="4" />
 	<Room id="13" name="Test Room4" seatedCapacity="45" siteId="4" />
 
-	<SYSTEMUSER CREATEDON="2012-06-20 10:22:44.0" FIRSTNAME="onCourse" ID="1" LOGIN="admin" MODIFIEDON="2020-12-15 02:01:57.0" PASSWORD="d033e22ae348aeb566fc214aec3585c4da997" SURNAME="Administrator" ISACTIVE="1" ISADMIN="1" EMAIL="admin@example.edu" DEFAULTADMINISTRATIONCENTREID="1" CANEDITTARA="0" CANEDITCMS="0" WILLOWID="84" PASSWORDUPDATEREQUIRED="0"/>
+	<SystemUser createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1" login="admin" modifiedOn="2020-12-15 02:01:57.0" password="d033e22ae348aeb566fc214aec3585c4da997" surName="Administrator" isActive="1" isAdmin="1" email="admin@example.edu" defaultAdministrationCentreId="1" canEdiTtara="0" canEditCMS="0" willowId="84" passwordUpdateRequired="0"/>
 </dataset>
