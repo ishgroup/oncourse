@@ -43,7 +43,7 @@ import { AutomationState } from "../containers/automation/reducers";
 import { PaymentOutState } from "../containers/entities/paymentsOut/reducers/state";
 import { ShareState } from "../model/common/Share";
 import { CourseClassState } from "../containers/entities/courseClasses/reducers";
-import { CoruseClassesSate, CourseClassBulkSession } from "../containers/entities/courseClasses/reducers/state";
+import { CourseClassBulkSession } from "../containers/entities/courseClasses/reducers/state";
 import { ModulesState } from "../containers/entities/modules/reducers/state";
 import { AssessmentsState } from "../containers/entities/assessments/reducers/state";
 import { ConfirmState } from "../model/common/Confirm";
@@ -62,7 +62,6 @@ export interface State {
   automation: AutomationState;
   confirm: ConfirmState;
   courseClass: CourseClassState;
-  courseClasses: CoruseClassesSate;
   courseClassesBulkSession: CourseClassBulkSession;
   preferences: PreferencesState;
   userPreferences: UserPreferencesState;

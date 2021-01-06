@@ -14,8 +14,6 @@ import { EpicGetDuplicateCourseClassesSessions } from "./EpicGetDuplicateCourseC
 import { EpicGetCourseClass } from "./EpicGetCourseClass";
 import { EpicGetCourseClassEnrolments } from "./EpicGetCourseClassEnrolments";
 import { EpicCancelCourseClass } from "./EpicCancelCourseClass";
-import { EpicGetPlainCourseClasses } from "./EpicGetPlainCourseClasses";
-import { EpicGetPlainCourseClassesById } from "./EpicGetPlainCourseClassById";
 import { EpicGetCourseClassTags } from "./EpicGetCourseClassTags";
 import { EpicUpdateCourseClass } from "./EpicUpdateCourseClass";
 import { EpicCreateCourseClass } from "./EpicCreateCourseClass";
@@ -34,8 +32,6 @@ export const EpicCourseClass = combineEpics(
   EpicGetCourseClass,
   EpicGetCourseClassEnrolments,
   EpicCancelCourseClass,
-  EpicGetPlainCourseClasses,
-  EpicGetPlainCourseClassesById,
   EpicGetCourseClassTags,
   EpicUpdateCourseClass,
   EpicCreateCourseClass,

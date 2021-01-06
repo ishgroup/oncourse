@@ -57,7 +57,6 @@ import { confirmReducer } from "../common/reducers/confirmReducer";
 import { paymentOutReducer } from "../containers/entities/paymentsOut/reducers";
 import {
   courseClassesBulkSessionReducer,
-  courseClassesReducer,
   courseClassReducer
 } from "../containers/entities/courseClasses/reducers";
 import { modulesReducer } from "../containers/entities/modules/reducers";
@@ -75,7 +74,6 @@ export const combinedReducers = combineReducers({
   automation: automationReducer,
   confirm: confirmReducer,
   courseClass: courseClassReducer,
-  courseClasses: courseClassesReducer,
   courseClassesBulkSession: courseClassesBulkSessionReducer,
   preferences: preferencesReducer,
   userPreferences: userPreferencesReducer,

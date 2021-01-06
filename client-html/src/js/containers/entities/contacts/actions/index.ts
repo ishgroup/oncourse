@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Contact, MergeRequest, SearchQuery } from "@api/model";
+import { Contact, MergeRequest } from "@api/model";
 import { _toRequestType, FULFILLED, REJECTED } from "../../../../common/actions/ActionUtils";
 
 export const GET_MERGE_CONTACTS = _toRequestType("get/mergeContacts");
@@ -15,9 +15,6 @@ export const DELETE_CONTACT = _toRequestType("delete/contact");
 
 export const POST_MERGE_CONTACTS = _toRequestType("post/mergeContacts");
 export const POST_MERGE_CONTACTS_FULFILLED = FULFILLED(POST_MERGE_CONTACTS);
-
-export const GET_CONTACTS = _toRequestType("get/contacts");
-export const GET_CONTACTS_FULFILLED = FULFILLED(GET_CONTACTS);
 
 export const GET_CONTACT = _toRequestType("get/contact");
 export const GET_CONTACT_FULFILLED = FULFILLED(GET_CONTACT);
@@ -51,8 +48,6 @@ export const GET_CONTACT_OUTCOMES_FULFILLED = FULFILLED(GET_CONTACT_OUTCOMES);
 export const GET_CONTACT_CERTIFICATES = _toRequestType("get/contact/certificates");
 export const GET_CONTACT_CERTIFICATES_FULFILLED = FULFILLED(GET_CONTACT_CERTIFICATES);
 
-export const SET_CONTACTS_SEARCH = "set/contacts/search";
-
 export const CLOSE_MERGE_CONTACTS_SUCCESS = "close/contacts/mergeContactsSuccess";
 
 export const VERIFY_USI = _toRequestType("verify/contacts/usi");
@@ -64,8 +59,6 @@ export const CLEAR_CONTACT_EDUCATION = "clear/contact/education";
 
 export const GET_CONTACTS_MESSAGE_DATA = _toRequestType("get/contacts/messageData");
 
-export const CLEAR_CONTACTS = "clear/contact";
-
 export const postMergeContacts = (request: MergeRequest) => ({
   type: POST_MERGE_CONTACTS,
   payload: request
@@ -74,17 +67,6 @@ export const postMergeContacts = (request: MergeRequest) => ({
 export const getMergeContacts = (contactA: string, contactB: string) => ({
   type: GET_MERGE_CONTACTS,
   payload: { contactA, contactB }
-});
-
-export const getContacts = (offset?: number, columns?: string, ascending?: boolean, sort?: string, pageSize?: number) => ({
-  type: GET_CONTACTS,
-  payload: {
-    offset, columns, ascending, sort, pageSize
-  }
-});
-
-export const clearContacts = () => ({
-  type: CLEAR_CONTACTS
 });
 
 export const getContact = (id: number) => ({
@@ -136,16 +118,6 @@ export const getContactCertificates = (contactId: number) => ({
   payload: contactId
 });
 
-export const setContactsSearch = (search: string) => ({
-  type: SET_CONTACTS_SEARCH,
-  payload: { search }
-});
-
-export const clearContactsSearch = () => ({
-  type: SET_CONTACTS_SEARCH,
-  payload: { search: "", items: [] }
-});
-
 export const closeMergeContactsSuccess = () => ({
   type: CLOSE_MERGE_CONTACTS_SUCCESS
 });
@@ -171,13 +143,4 @@ export const verifyUSI = (firstName: string, lastName: string, birthDate: string
 
 export const clearUSIVerificationResult = () => ({
   type: CLEAR_USI_VERIFICATION_RESULT
-});
-
-export const clearContactEducation = () => ({
-  type: CLEAR_CONTACT_EDUCATION
-});
-
-export const getContactsMessageData = (searchQuery: SearchQuery, selection: string[]) => ({
-  type: GET_CONTACTS_MESSAGE_DATA,
-  payload: { filteredSearch: searchQuery, selection }
 });
