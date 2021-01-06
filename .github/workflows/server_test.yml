@@ -26,14 +26,15 @@ jobs:
     name: Java ${{ matrix.java }} server test
 
     steps:
-    - name: en_AU.UTF-8
+    - name: Set locale
       run: |
         sudo locale-gen en_AU.UTF-8
-        sudo update-locale LANG=en_AU.UTF-8
-#    - name: Setup timezone
-#      uses: zcong1993/setup-timezone@v1.1.1
-#      with:
-#        timezone: "Australia/Sydney"
+        sudo update-locale LC_ALL=en_AU.UTF-8
+        echo locale
+    - name: Setup timezone
+      uses: zcong1993/setup-timezone@v1.1.1
+      with:
+        timezone: "Australia/Sydney"
     - uses: actions/checkout@v2
 
     - name: Set up JDK
