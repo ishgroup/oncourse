@@ -5,29 +5,28 @@ import {
   AvetmissExportSettings,
   AvetmissExportType
 } from "@api/model";
+import { format, subDays } from "date-fns";
 import { getRandomInt, generateArraysOfRecords } from "../mockUtils";
+import { YYYY_MM_DD_MINUSED } from "../../../js/common/utils/dates/format";
 
 const types = Object.keys(AvetmissExportType) as AvetmissExportType[];
 const statuses = Object.keys(AvetmissExportOutcomeStatus) as AvetmissExportOutcomeStatus[];
 const categories = Object.keys(AvetmissExportOutcomeCategory) as AvetmissExportOutcomeCategory[];
 
 export function mockAvetmissExportOutcomes(): AvetmissExportOutcome[] {
-  this.getExportOutcomes = () => {
-    return [...Array(120)].map((i, n) => ({
-      ids: [n],
-      type: types[getRandomInt(0, types.length - 1)],
-      status: statuses[getRandomInt(0, statuses.length - 1)],
-      category: categories[getRandomInt(0, categories.length - 1)]
-    }));
-  };
+  this.outcomesID = "0e8eb6ef-5ea9-452c-bc07-396a301bef8a";
+  this.getExportOutcomes = () => [...Array(120)].map((i, n) => ({
+    ids: [n],
+    type: types[getRandomInt(0, types.length - 1)],
+    status: statuses[getRandomInt(0, statuses.length - 1)],
+    category: categories[getRandomInt(0, categories.length - 1)]
+  }));
 
   return [];
 }
 
 export function mockAvetmissExportSettings(): AvetmissExportSettings {
-  this.getExportSettings = () => {
-    return this.exportSettings;
-  };
+  this.getExportSettings = () => this.exportSettings;
 
   return {
     flavour: "NCVER (Standard AVETMISS)",
@@ -45,7 +44,9 @@ export function mockAvetmissExportSettings(): AvetmissExportSettings {
       "Non VET"
     ],
     includeLinkedOutcomes: false,
-    fundingContracts: []
+    fundingContracts: [],
+    outcomesStart: format(subDays(new Date(), 1), YYYY_MM_DD_MINUSED),
+    outcomesEnd: format(new Date(), YYYY_MM_DD_MINUSED)
   };
 }
 
@@ -75,23 +76,21 @@ export function mockAvetmissExport() {
     return response;
   };
 
-  this.getAvetmissExportUploads = () => {
-    return generateArraysOfRecords(50, [
-      { name: "id", type: "number" },
-      { name: "created", type: "Datetime" },
-      { name: "status", type: "string" },
-      { name: "systemUser", type: "string" },
-      { name: "outcomesCount", type: "number" },
-      { name: "settings", type: "string" },
-      { name: "lastSettings", type: "boolean" },
-    ]).map(l => ({
-      id: l.id,
-      created: l.created,
-      status: "unknown",
-      systemUser: l.systemUser,
-      outcomesCount: l.outcomesCount,
-      settings: null,
-      lastSettings: true,
-    }));
-  }
+  this.getAvetmissExportUploads = () => generateArraysOfRecords(50, [
+    { name: "id", type: "number" },
+    { name: "created", type: "Datetime" },
+    { name: "status", type: "string" },
+    { name: "systemUser", type: "string" },
+    { name: "outcomesCount", type: "number" },
+    { name: "settings", type: "string" },
+    { name: "lastSettings", type: "boolean" },
+  ]).map(l => ({
+    id: l.id,
+    created: l.created,
+    status: "unknown",
+    systemUser: l.systemUser,
+    outcomesCount: l.outcomesCount,
+    settings: null,
+    lastSettings: true,
+  }));
 }
