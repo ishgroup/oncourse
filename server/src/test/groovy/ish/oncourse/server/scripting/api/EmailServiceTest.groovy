@@ -144,19 +144,17 @@ class EmailServiceTest extends CayenneIshTestCase {
 
 
 		// 8) the same creatorKey and 'error' collision
-		//expected: all contacts already have such message (same creatorKey), nobody will get this message. Audit records will be created (reason - 'error' rule) for every contact. Count of message_Person records will stay 6. Audit records will become 2.
+		//expected: all contacts already have such message (same creatorKey), nobody will get this message. Audit records will be created (reason - 'error' rule) for every contact. Count of message_Person records will stay 6.
 		spec.keyCollision("error")
 		emailService.createEmail(spec)
 		assertEquals(6, ObjectSelect.query(MessagePerson.class).selectCount(context))
-		assertEquals(2, ObjectSelect.query(Audit.class).selectCount(context))
 
 
 		// 9) with unique creationKey and error collision
-		//expected: all contacts will get a message, cause nobody have the message with creatorKey. Count of message_Person records will become 8. Audit records count will stay the same - 2.
+		//expected: all contacts will get a message, cause nobody have the message with creatorKey. Count of message_Person records will become 8. 
         spec.key("newTestKey")
 		spec.keyCollision("error")
 		emailService.createEmail(spec)
 		assertEquals(8, ObjectSelect.query(MessagePerson.class).selectCount(context))
-		assertEquals(2, ObjectSelect.query(Audit.class).selectCount(context))
 	}
 }
