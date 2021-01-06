@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<COUNTRY ID="1" ISOCODEALPHA3="AU" ISOCODENUMERIC="123" NAME="Australia" SACCCODE="1101"/>
+	<Country ID="1" ISOCODEALPHA3="AU" ISOCODENUMERIC="123" NAME="Australia" SACCCODE="1101"/>
 
 	<Note id="100" note="firstCourseNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
 	<Note id="200" note="secondCourseNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
