@@ -3,7 +3,7 @@ import { promiseResolve } from "../../MockAdapter";
 export function AvetmissExportApiMock(mock) {
   this.api.onPut("/v1/export/avetmiss8/outcomes").reply(config => promiseResolve(config, this.db.outcomesID));
 
-  this.api.onGet(`v1/control/${this.db.outcomesID}`).reply(config => promiseResolve(config, { status: "Finished", message: null }));
+  this.api.onGet(`v1/control/${this.db.outcomesID}`).reply(config => promiseResolve(config, this.db.getExportProcess()));
 
   this.api.onGet(`/v1/export/avetmiss8/outcomes/${this.db.outcomesID}`).reply(config => promiseResolve(config, this.db.getExportOutcomes()));
 

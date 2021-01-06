@@ -22,6 +22,8 @@ export function mockAvetmissExportOutcomes(): AvetmissExportOutcome[] {
     category: categories[getRandomInt(0, categories.length - 1)]
   }));
 
+  this.getExportProcess = () => ({ status: "Finished", message: null });
+
   return [];
 }
 
