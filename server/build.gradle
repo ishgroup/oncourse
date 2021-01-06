@@ -190,6 +190,12 @@ test {
 	testLogging {
 		exceptionFormat = 'full'
 	}
+
+	doFirst {
+		println 'user.country:' + System.getProperty('user.country')
+		println 'user.language:' + System.getProperty('user.language')
+		println 'Locale.getDefault():' + Locale.getDefault()
+	}
 	
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
