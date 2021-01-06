@@ -47,13 +47,7 @@ class FillInvoiceLineTest {
                 Money discountIncTax = MoneyUtil.getPriceIncTax(discountExTax, taxRate, Money.ZERO)
                 Money taxEach = InvoiceUtil.calculateTaxEachForInvoiceLine(priceEx, discountExTax, taxRate, taxAdjustment)
                 // assume that the price inc - discount inc equals price summed from the invoice line
-                String message = String.format("%s = s% - %s + %s",
-                        priceInc.toString(),
-                        priceEx.toString(),
-                        discountExTax.toString(),
-                        taxEach.toString()
-                )
-                assertEquals(message, priceInc.subtract(discountIncTax),
+                assertEquals("$priceInc = $priceEx - $discountExTax + $taxEach", priceInc.subtract(discountIncTax),
                         priceEx.subtract(discountExTax).add(taxEach))
             }
 
