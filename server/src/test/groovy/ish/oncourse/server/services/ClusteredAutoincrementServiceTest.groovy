@@ -35,6 +35,11 @@ class ClusteredAutoincrementServiceTest {
                 .thenReturn(context)
 
         service = spy(new ClusteredAutoincrementService(cayenne))
+
+        doReturn(123L).when(service)
+                .nextId("student")
+        doReturn(12L).when(service)
+                .nextId("invoice")
     }
 
     @Test
@@ -58,13 +63,13 @@ class ClusteredAutoincrementServiceTest {
         long nextId
 
         nextId = service.nextInvoiceNumber
-        assertEquals(123L, nextId)
+        assertEquals(12L, nextId)
 
         nextId = service.nextInvoiceNumber
-        assertEquals(124L, nextId)
+        assertEquals(13L, nextId)
 
         nextId = service.nextInvoiceNumber
-        assertEquals(125L, nextId)
+        assertEquals(14L, nextId)
 
         verify(service, times(1)).nextId(anyString())
     }
