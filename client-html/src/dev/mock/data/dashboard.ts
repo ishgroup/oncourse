@@ -1,58 +1,66 @@
-import { StatisticData } from "@api/model";
+import { Category, CategoryItem, StatisticData } from "@api/model";
 
-export function mockDashboardStatistics(): StatisticData {
-  this.getStatistic = () => {
-    return this.dashboardStatistics;
-  };
+export function mockDashboard() {
+  this.getStatistic = (): StatisticData => ({
+      enrolmentsChartLine: [2, 3, 4, 8, 2, 2],
+      revenueChartLine: [1, 5, 2, 5, 4, 3],
+      studentsCount: 232,
+      moneyCount: 500,
+      latestEnrolments: [
+        {
+          title: "Spanish 103 (Level 2)",
+          info: "2019-03-18T10:00:25.764Z",
+          link: "/swing/enrolments/196234"
+        },
+        {
+          title: "Spanish 102 (Level 1)",
+          info: "2019-03-18T10:00:25.764Z",
+          link: "/swing/enrolments/196235"
+        },
+        {
+          title: "Children's book illustration",
+          info: "2019-03-18T10:00:25.764Z",
+          link: "/swing/enrolments/196236"
+        },
+        {
+          title: "University preparation",
+          info: "2019-03-18T10:00:25.764Z",
+          link: "/swing/enrolments/196237"
+        }
+      ],
+      latestWaitingLists: [
+        {
+          title: "French 101 (Beginners)",
+          info: "F101 220",
+          link: "/waitingList?search=course.id=1"
+        },
+        {
+          title: "Changing your thinking",
+          info: "CYTH 144",
+          link: "/waitingList?search=course.id=2"
+        },
+        {
+          title: "Archeology & Artifacts Works",
+          info: "AWNM 125",
+          link: "/waitingList?search=course.id=3"
+        }
+      ],
+      openedClasses: 42,
+      inDevelopmentClasses: 4,
+      cancelledClasses: 34,
+      completedClasses: 128,
+      commencedClasses: 95
+    });
 
-  return {
-    enrolmentsChartLine: [2, 3, 4, 8, 2, 2],
-    revenueChartLine: [1, 5, 2, 5, 4, 3],
-    studentsCount: 232,
-    moneyCount: 500,
-    latestEnrolments: [
-      {
-        title: "Spanish 103 (Level 2)",
-        info: "2019-03-18T10:00:25.764Z",
-        link: "/swing/enrolments/196234"
-      },
-      {
-        title: "Spanish 102 (Level 1)",
-        info: "2019-03-18T10:00:25.764Z",
-        link: "/swing/enrolments/196235"
-      },
-      {
-        title: "Children's book illustration",
-        info: "2019-03-18T10:00:25.764Z",
-        link: "/swing/enrolments/196236"
-      },
-      {
-        title: "University preparation",
-        info: "2019-03-18T10:00:25.764Z",
-        link: "/swing/enrolments/196237"
-      }
-    ],
-    latestWaitingLists: [
-      {
-        title: "French 101 (Beginners)",
-        info: "F101 220",
-        link: "/waitingList?search=course.id=1"
-      },
-      {
-        title: "Changing your thinking",
-        info: "CYTH 144",
-        link: "/waitingList?search=course.id=2"
-      },
-      {
-        title: "Archeology & Artifacts Works",
-        info: "AWNM 125",
-        link: "/waitingList?search=course.id=3"
-      }
-    ],
-    openedClasses: 42,
-    inDevelopmentClasses: 4,
-    cancelledClasses: 34,
-    completedClasses: 128,
-    commencedClasses: 95
+  this.getDashboardFeeds = () => "{  \"title\": \"onCourse dashboard feed\",  \"entry\": [      {      \"id\": \"f5591b91da2591e3034c6e6c976359e3\",      \"title\": \"Christmas\",      \"published\": \"2020-12-15T00:00:00+11:00\",      \"event\": \"\",      \"duration\": \"\",      \"content\": \"<p>Happy holidays from everyone here at ish. Its been a wild year but we’ve enjoyed helping many of you transition to online learning.</p> <p>If the Christmas colours are scrooging you out, you can switch back to your regular programming with the icon to the top right of this dashboard. Your mood can be as dark or festive as you like. Once you turn your back on Christmas, there is no coming back!</p> <p>We’ll be working through the holidays for the most part, but our usual support will be delayed for non-urgent things until the 11 January.</p>\",      \"excerpt\": \"Happy holidays from everyone here at ish. Its been a wild year but we’ve enjoyed helping many of you transition to online learning. If the Christmas colours are scrooging you out, you can switch back to your regular programming with the icon to the top right of this dashboard. Your mood can be as dark or festive as you like. Once you turn your back on Christmas, there is no coming back! We’ll be working through the holidays for the most part, but our usual support will be delayed for non-urgent things until the 11 January.\",      \"tags\": []    },      {      \"id\": \"3eab5135e861f62a03f9acc2eb1eeb16\",      \"title\": \"Collecting better student info webinar\",      \"published\": \"2020-12-04T00:00:00+11:00\",      \"event\": \"2020-12-11T12:00:00+11:00\",      \"duration\": \"30\",      \"content\": \"<p>Our next webinar will focus on data collection rules in onCourse and how you can collect custom information about your students and their needs.</p> <p>Use this information for VET compliance, to learn more about your students or better understand how to deliver your courses.</p> <p><a href=\\\"https://meet.google.com/tvk-zimy-rmd\\\">Join us at this link</a>, 5 minutes before the session starts.</p>\",      \"excerpt\": \"Our next webinar will focus on data collection rules in onCourse and how you can collect custom information about your students and their needs. Use this information for VET compliance, to learn more about your students or better understand how to deliver your courses. Join us at this link, 5 minutes before the session starts.\",      \"tags\": []    },      {      \"id\": \"d7389239f020528ca9f9c0d699231019\",      \"title\": \"onCourse documents and permissions webinar\",      \"published\": \"2020-11-19T00:00:00+11:00\",      \"event\": \"2020-12-04T12:00:00+11:00\",      \"duration\": \"30\",      \"content\": \"<p>Our next webinar will focus on the document management portion of onCourse, including:</p> <ul> <li>adding new documents</li> <li>how documents can be used</li> <li>explaining document permissions &amp; sharing</li> <li>document audit history</li> <li>handling deleted documents</li> </ul> <p><a href=\\\"https://meet.google.com/tvk-zimy-rmd\\\">Join us at this link</a>, 5 minutes before the session starts.</p>\",      \"excerpt\": \"Our next webinar will focus on the document management portion of onCourse, including: adding new documents how documents can be used explaining document permissions &amp;amp; sharing document audit history handling deleted documents Join us at this link, 5 minutes before the session starts.\",      \"tags\": []    },      {      \"id\": \"47c2a53f8f7e7839c3f5d830fc40569a\",      \"title\": \"onCourse course relationships webinar\",      \"published\": \"2020-11-19T00:00:00+11:00\",      \"event\": \"2020-11-27T12:00:00+11:00\",      \"duration\": \"30\",      \"content\": \"<p>Course relationships are a major new feature in onCourse 53. They will allow you to create powerful new packaging or ordering of courses and products including:</p> <ul> <li>pre-requisites</li> <li>co-requisites</li> <li>rolling intakes</li> <li>audition fees</li> <li>special pricing bundles</li> <li>course progression</li> </ul> <p>Join us on this webinar for a group discussion about how you could use this feature to market courses in new ways, save data entry effort and offer programmes of study.</p> <p><a href=\\\"https://meet.google.com/tvk-zimy-rmd\\\">Join us at this link</a>, 5 minutes before the session starts.</p>\",      \"excerpt\": \"Course relationships are a major new feature in onCourse 53. They will allow you to create powerful new packaging or ordering of courses and products including: pre-requisites co-requisites rolling intakes audition fees special pricing bundles course progression Join us on this webinar for a group discussion about how you could use this feature to market courses in new ways, save data entry effort and offer programmes of study. Join us at this link, 5 minutes before the session starts.\",      \"tags\": []    },      {      \"id\": \"55d1946e70324e868a357edf43b305f0\",      \"title\": \"ish support - squish returns\",      \"published\": \"2020-11-18T00:00:00+11:00\",      \"event\": \"\",      \"duration\": \"\",      \"content\": \"<p>Squish is back!</p> <p>The upgrade of our task tracking server wasn’t smooth, but Atlassian have resolved the issues and you can <a href=\\\"https://ish-group.atlassian.net\\\">now log in again.</a></p> <p>You’ll need to reset your password when you first try to log in, since they were not able to be migrated in the move. Apologies for the inconvenience over the last week.</p>\",      \"excerpt\": \"Squish is back! The upgrade of our task tracking server wasn’t smooth, but Atlassian have resolved the issues and you can now log in again. You’ll need to reset your password when you first try to log in, since they were not able to be migrated in the move. Apologies for the inconvenience over the last week.\",      \"tags\": []    },      {      \"id\": \"51b554f722f6d4614cb9a5111d9195d2\",      \"title\": \"Important - rich text changes\",      \"published\": \"2020-10-27T00:00:00+11:00\",      \"event\": \"\",      \"duration\": \"\",      \"content\": \"<p>Rich text markup in onCourse is changing.</p> <p>Last week we rolled out some changes to the website #editor that make it easier for you to customise your website content by offering you a choice between three types of markup; legacy, rich text and advanced (html). Rich Text mode offers a very easy-to-use WYSIWYG mode that should help users enter their content in a faster and easier manner, while legacy retains the old behaviour. HTML mode is recommended for advanced users only who wish to use markup in the description fields directly.</p> <p>Right now we’ve only upgraded Sites with the new feature. You can see the changes by opening a <a href=\\\"/site\\\">Sites record</a> and clicking any of the description fields.</p> <p><em>IMPORTANT</em> - If you change the type from ‘legacy’ to ‘rich text’ you’ll need to update your content so that it uses the correct markup. onCourse will not convert your content for you. For example, in legacy mode headings are created with “h2. “ and with rich text mode they are created with “## “</p> <p>If using a WYSIWYG editor sounds appealing to you then set the mode to ‘rich text’ and convert your content to the new markdown syntax. If you’re unfamiliar with markdown you can use the WYSIWYG editor to help with this and simply edit your content using the formatting tools. We have a <a href=\\\"https://www.ish.com.au/onCourse/doc/web/#richText-md\\\">handy guide</a> in our manual you can reference at any time.</p>\",      \"excerpt\": \"Rich text markup in onCourse is changing. Last week we rolled out some changes to the website #editor that make it easier for you to customise your website content by offering you a choice between three types of markup; legacy, rich text and advanced (html). Rich Text mode offers a very easy-to-use WYSIWYG mode that should help users enter their content in a faster and easier manner, while legacy retains the old behaviour. HTML mode is recommended for advanced users only who wish to use markup in the description fields directly. Right now we’ve only upgraded Sites with the new feature. You can see the changes by opening a Sites record and clicking any of the description fields. IMPORTANT - If you change the type from ‘legacy’ to ‘rich text’ you’ll need to update your content so that it uses the correct markup. onCourse will not convert your content for you. For example, in legacy mode headings are created with “h2. “ and with rich text mode they are created with “## “ If using a WYSIWYG editor sounds appealing to you then set the mode to ‘rich text’ and convert your content to the new markdown syntax. If you’re unfamiliar with markdown you can use the WYSIWYG editor to help with this and simply edit your content using the formatting tools. We have a handy guide in our manual you can reference at any time.\",      \"tags\": []    },      {      \"id\": \"02ec72e20bad93d1d195b8f6a6b5b5a9\",      \"title\": \"Where is the Training Plan?\",      \"published\": \"2020-10-26T00:00:00+11:00\",      \"event\": \"\",      \"duration\": \"\",      \"content\": \"<p>If you’re an RTO, you’ll want to know that we’ve moved the Training Plan within Class records from the Attendance section to the VET section. Not only that, we’ve also implemented into the date column the ability to check/uncheck all records, just like you can do with the outcome rows.</p> <p>We hope this will help those of you who work within this area of onCourse each day to organise your classes faster and with greater ease.</p>\",      \"excerpt\": \"If you’re an RTO, you’ll want to know that we’ve moved the Training Plan within Class records from the Attendance section to the VET section. Not only that, we’ve also implemented into the date column the ability to check/uncheck all records, just like you can do with the outcome rows. We hope this will help those of you who work within this area of onCourse each day to organise your classes faster and with greater ease.\",      \"tags\": []    },      {      \"id\": \"acc873fbec51389065b92c550846effb\",      \"title\": \"WYSIWYG website editor\",      \"published\": \"2020-10-19T00:00:00+11:00\",      \"event\": \"\",      \"duration\": \"\",      \"content\": \"<p>The website #editor is now even easier to use. We’ve added a new preview mode for pages and blocks in which you can style text with simple menu options.</p> <p>By default all your pages will be in “legacy” mode so as to not disrupt any existing styling, but we encourage you to switch to the new “rich text” mode which is built on a markdown editor. For advanced users there is also an html mode which ensures the tools don’t get in the way of the html you are crafting.</p> <p>We believe this new feature will make it much easier for you to style up your website just the way you want.</p> <p>We also plan on rolling these changes out in to onCourse as well, so you’ll eventually be able to update web descriptions using a selected markup. As always, we’d love to hear any feedback you have on this as we are working on this right now. You can <a href=\\\"https://github.com/ishgroup/onCourse-roadmap/issues/10\\\">do so on our roadmap.</a></p>\",      \"excerpt\": \"The website #editor is now even easier to use. We’ve added a new preview mode for pages and blocks in which you can style text with simple menu options. By default all your pages will be in “legacy” mode so as to not disrupt any existing styling, but we encourage you to switch to the new “rich text” mode which is built on a markdown editor. For advanced users there is also an html mode which ensures the tools don’t get in the way of the html you are crafting. We believe this new feature will make it much easier for you to style up your website just the way you want. We also plan on rolling these changes out in to onCourse as well, so you’ll eventually be able to update web descriptions using a selected markup. As always, we’d love to hear any feedback you have on this as we are working on this right now. You can do so on our roadmap.\",      \"tags\": []    },      {      \"id\": \"5764211e73f999ceecc403e2dcb6534b\",      \"title\": \"Terms and conditions website changes\",      \"published\": \"2020-09-20T00:00:00+10:00\",      \"event\": \"\",      \"duration\": \"\",      \"content\": \"<p>Your onCourse website checkout process is changing slightly this week. In August we upgraded the credit card panel to a more modern implementation, which then required that the Terms &amp; Conditions checkbox has to be ticked before the credit card is entered.</p> <p>To avoid confusion, we’ve now moved the T&amp;C checkbox higher up the page and hidden the payment panel until the user has ticked the checkbox. It cannot then be unticked.</p> <p><a href=\\\"https://invis.io/WBYTN8RU96M#/432174420_Accept_T-C_preview\\\">Take a look at at 10 second video of the new payment process.</a></p>\",      \"excerpt\": \"Your onCourse website checkout process is changing slightly this week. In August we upgraded the credit card panel to a more modern implementation, which then required that the Terms &amp;amp; Conditions checkbox has to be ticked before the credit card is entered. To avoid confusion, we’ve now moved the T&amp;amp;C checkbox higher up the page and hidden the payment panel until the user has ticked the checkbox. It cannot then be unticked. Take a look at at 10 second video of the new payment process.\",      \"tags\": []    },      {      \"id\": \"33e0cfdcbfbaef15d0fdbc140d7b34b1\",      \"title\": \"Portal Roadmap\",      \"published\": \"2020-09-17T00:00:00+10:00\",      \"event\": \"\",      \"duration\": \"\",      \"content\": \"<p>We are excited to launch our new skillsOnCourse portal project. The existing portal is the third generation and its time for a new iteration with exciting new features. Some highlights could include:</p> <ul> <li>More LMS features around assessment submissions</li> <li>CRICOS features</li> <li>Native phone apps</li> <li>CPD tracking</li> <li>Advertising</li> <li>Much much more…</li> </ul> <p>Please head over to our <a href=\\\"https://github.com/ishgroup/onCourse-roadmap/projects/2\\\">public tracker</a> where we’ve outlined some key features. Please vote for features with the emoji icon, make comments to let us know how you want to use the feature and even create new feature ideas.</p> <p>You need to tell us about the way you want to use the portal to get what you need. Our public roadmap is a step towards our goal of open sourcing onCourse and making our development processes more collaborative and open. But this only works if you get involved. Don’t wait for other people to drive features in the direction they want.</p> <p>Every user of onCourse is welcome to contribute. We talk to managers all the time, and this is your opportunity to shape the tools you use every day regardless of your job description. Ask your tutors to contribute too!</p>\",      \"excerpt\": \"We are excited to launch our new skillsOnCourse portal project. The existing portal is the third generation and its time for a new iteration with exciting new features. Some highlights could include: More LMS features around assessment submissions CRICOS features Native phone apps CPD tracking Advertising Much much more… Please head over to our public tracker where we’ve outlined some key features. Please vote for features with the emoji icon, make comments to let us know how you want to use the feature and even create new feature ideas. You need to tell us about the way you want to use the portal to get what you need. Our public roadmap is a step towards our goal of open sourcing onCourse and making our development processes more collaborative and open. But this only works if you get involved. Don’t wait for other people to drive features in the direction they want. Every user of onCourse is welcome to contribute. We talk to managers all the time, and this is your opportunity to shape the tools you use every day regardless of your job description. Ask your tutors to contribute too!\",      \"tags\": []    }    ]}";
+
+  this.getCategories = () => {
+    const categories: CategoryItem[] = Object.keys(Category).map((c: Category) => ({
+      url: "/",
+      category: c,
+      favorite: false
+    }));
+
+    return { categories, upgradePlanLink: "https://www.ish.com.au/oncourse/signup?securityKey=123456" };
   };
 }
