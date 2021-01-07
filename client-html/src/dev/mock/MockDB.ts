@@ -40,7 +40,7 @@ import { mockScripts } from "./data/automation/scripts";
 import { mockListExport } from "./data/listExport";
 import { mockAvetmissExport, mockAvetmissExportOutcomes, mockAvetmissExportSettings } from "./data/avetmissExport";
 import { mockFilters } from "./data/filters";
-import { mockDashboardStatistics } from "./data/dashboard";
+import { mockDashboard } from "./data/dashboard";
 import { mockUserPreferences } from "./data/userPreferences";
 import { mockTags } from "./data/tags";
 import { mockWaitingLists } from "./data/entities/waitingLists";
@@ -138,7 +138,7 @@ export class MockDB {
 
   exportSettings: AvetmissExportSettings;
 
-  dashboardStatistics: StatisticData;
+  dashboard: any;
 
   currency: Currency;
 
@@ -266,7 +266,7 @@ export class MockDB {
     this.currency = mockCurrency.call(this);
 
     // Dashboard
-    this.dashboardStatistics = mockDashboardStatistics.call(this);
+    this.dashboard = mockDashboard.call(this);
 
     // Timezones
     this.timezones = mockTimezones.call(this);
