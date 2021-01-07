@@ -63,4 +63,869 @@ export function mockDashboard() {
 
     return { categories, upgradePlanLink: "https://www.ish.com.au/oncourse/signup?securityKey=123456" };
   };
+
+  this.getDashboardSearchResult = () => [
+    {
+      "entity": "CourseClass",
+      "items": [
+        {
+          "id": 2349,
+          "name": "VET tester vtest-1"
+        },
+        {
+          "id": 2348,
+          "name": "Art Prize Test (Kids) ART001-1"
+        },
+        {
+          "id": 2296,
+          "name": "Animal Welfare Officer Skill Set SKATEST-5"
+        },
+        {
+          "id": 2285,
+          "name": "Pottery Class Test POT001-8"
+        },
+        {
+          "id": 2284,
+          "name": "Pottery Class Test POT001-7"
+        },
+        {
+          "id": 2283,
+          "name": "Pottery Class Test POT001-6"
+        },
+        {
+          "id": 2282,
+          "name": "Pottery Class Test POT001-5"
+        },
+        {
+          "id": 2281,
+          "name": "Pottery Class Test POT001-4"
+        },
+        {
+          "id": 2280,
+          "name": "Pottery Class Test POT001-3"
+        },
+        {
+          "id": 2279,
+          "name": "Pottery Class Test POT001-2"
+        },
+        {
+          "id": 2278,
+          "name": "Pottery Class Test POT001-1"
+        },
+        {
+          "id": 2205,
+          "name": "Test Course for On-line Enrolment Simulation TEST-21"
+        },
+        {
+          "id": 2130,
+          "name": "Test Course for On-line Enrolment Simulation TEST-20"
+        },
+        {
+          "id": 2122,
+          "name": "Animal Welfare Officer Skill Set SKATEST-3"
+        },
+        {
+          "id": 2107,
+          "name": "Module Testing MTST-2"
+        },
+        {
+          "id": 2062,
+          "name": "Test Course for On-line Enrolment Simulation TEST-14"
+        },
+        {
+          "id": 2049,
+          "name": "Test Course for On-line Enrolment Simulation TEST-16"
+        },
+        {
+          "id": 1995,
+          "name": "Test Course for On-line Enrolment Simulation TEST-13"
+        },
+        {
+          "id": 1989,
+          "name": "Test Course for On-line Enrolment Simulation TEST-11"
+        },
+        {
+          "id": 1986,
+          "name": "Test Course for On-line Enrolment Simulation TEST-12"
+        },
+        {
+          "id": 1921,
+          "name": "Animal Welfare Officer Skill Set SKATEST-4"
+        },
+        {
+          "id": 1903,
+          "name": "Test Course for On-line Enrolment Simulation TEST-17"
+        },
+        {
+          "id": 1857,
+          "name": "Test Course for On-line Enrolment Simulation TEST-19"
+        },
+        {
+          "id": 1821,
+          "name": "Test Course for On-line Enrolment Simulation TEST-15"
+        },
+        {
+          "id": 1793,
+          "name": "Test Course for On-line Enrolment Simulation TEST-18"
+        },
+        {
+          "id": 1764,
+          "name": "Animal Welfare Officer Skill Set SKATEST-2"
+        },
+        {
+          "id": 1620,
+          "name": "Animal Welfare Officer Skill Set SKATEST-1"
+        },
+        {
+          "id": 1460,
+          "name": "Module Testing MTST-1"
+        },
+        {
+          "id": 1007,
+          "name": "certificate in software testing sss-1"
+        },
+        {
+          "id": 487,
+          "name": "Test Course for On-line Enrolment Simulation TEST-08"
+        },
+        {
+          "id": 476,
+          "name": "Test Course for On-line Enrolment Simulation TEST-06"
+        },
+        {
+          "id": 463,
+          "name": "Test Course for On-line Enrolment Simulation TEST-07"
+        },
+        {
+          "id": 460,
+          "name": "Test Course for On-line Enrolment Simulation TEST-09"
+        },
+        {
+          "id": 440,
+          "name": "Test Course for On-line Enrolment Simulation TEST-10"
+        },
+        {
+          "id": 354,
+          "name": "Test Course for On-line Enrolment Simulation TEST-04"
+        },
+        {
+          "id": 335,
+          "name": "Test Course for On-line Enrolment Simulation TEST-05"
+        },
+        {
+          "id": 228,
+          "name": "Test Course for On-line Enrolment Simulation TEST-03"
+        },
+        {
+          "id": 224,
+          "name": "Test Course for On-line Enrolment Simulation TEST-02"
+        },
+        {
+          "id": 221,
+          "name": "Test Course for On-line Enrolment Simulation TEST-01"
+        }
+      ]
+    },
+    {
+      "entity": "Contact",
+      "items": [
+        {
+          "id": 3330,
+          "name": "Test TEst123 "
+        },
+        {
+          "id": 3329,
+          "name": "Test "
+        },
+        {
+          "id": 3327,
+          "name": "My Test "
+        },
+        {
+          "id": 3310,
+          "name": "payer test #8157"
+        },
+        {
+          "id": 3278,
+          "name": "Credit Card Test #8147"
+        },
+        {
+          "id": 3276,
+          "name": "James Testing #8145"
+        },
+        {
+          "id": 3265,
+          "name": "Jim Tester #8134"
+        },
+        {
+          "id": 3258,
+          "name": "test #8127"
+        },
+        {
+          "id": 3257,
+          "name": "Test #8126"
+        },
+        {
+          "id": 3252,
+          "name": "Tony Tester #8120"
+        },
+        {
+          "id": 3249,
+          "name": "jim tester #8117"
+        },
+        {
+          "id": 3212,
+          "name": "Jimmy Testing #8081"
+        },
+        {
+          "id": 3211,
+          "name": "Jimmy Tester #8080"
+        },
+        {
+          "id": 3196,
+          "name": "Joe Tester #8065"
+        },
+        {
+          "id": 3179,
+          "name": "Tester Test #8049"
+        },
+        {
+          "id": 3168,
+          "name": "Natalli Test #8039"
+        },
+        {
+          "id": 3167,
+          "name": "Natallia Test #8038"
+        },
+        {
+          "id": 3065,
+          "name": "Megan Test mobile #6916"
+        },
+        {
+          "id": 3064,
+          "name": "Megan Test test #6915"
+        },
+        {
+          "id": 3060,
+          "name": "temp c test #6911"
+        },
+        {
+          "id": 3041,
+          "name": "Megan Test #6883"
+        },
+        {
+          "id": 2927,
+          "name": "Test Company Pty Ltd "
+        },
+        {
+          "id": 2919,
+          "name": "test #6768"
+        },
+        {
+          "id": 2905,
+          "name": "Test "
+        },
+        {
+          "id": 2897,
+          "name": "test "
+        },
+        {
+          "id": 2891,
+          "name": "test #6749"
+        },
+        {
+          "id": 2803,
+          "name": "bob test #6638"
+        },
+        {
+          "id": 2549,
+          "name": "tom test #6384"
+        },
+        {
+          "id": 2548,
+          "name": "james test #6382"
+        },
+        {
+          "id": 2547,
+          "name": "john test #6383"
+        },
+        {
+          "id": 1842,
+          "name": "new test #5697"
+        },
+        {
+          "id": 1446,
+          "name": "Discount Test #5298"
+        },
+        {
+          "id": 1404,
+          "name": "testing test #5259"
+        },
+        {
+          "id": 1049,
+          "name": "tesdfsdfsf test #4883"
+        },
+        {
+          "id": 903,
+          "name": "Test76 #4738"
+        },
+        {
+          "id": 902,
+          "name": "Test75 #4737"
+        },
+        {
+          "id": 102,
+          "name": "test #5"
+        }
+      ]
+    },
+    {
+      "entity": "Course",
+      "items": [
+        {
+          "id": 840,
+          "name": "Art Prize Test (Kids) ART001"
+        },
+        {
+          "id": 822,
+          "name": "Pottery Class Test POT001"
+        },
+        {
+          "id": 813,
+          "name": "Course Name Test 555666"
+        },
+        {
+          "id": 680,
+          "name": "Animal Welfare Officer Skill Set SKATEST"
+        },
+        {
+          "id": 541,
+          "name": "VET tester vtest"
+        },
+        {
+          "id": 480,
+          "name": "Module Testing MTST"
+        },
+        {
+          "id": 462,
+          "name": "certificate in software testing sss"
+        },
+        {
+          "id": 218,
+          "name": "Test Course for On-line Enrolment Simulation TEST"
+        }
+      ]
+    },
+    {
+      "entity": "Enrolment",
+      "items": [
+        {
+          "id": 3873,
+          "name": "Discount Test #5298 VETC-05"
+        },
+        {
+          "id": 3866,
+          "name": "Natalli Test #8039 VETC-01"
+        },
+        {
+          "id": 3865,
+          "name": "john test #6383 TAGS-25"
+        },
+        {
+          "id": 3862,
+          "name": "james test #6382 CERT-08"
+        },
+        {
+          "id": 3860,
+          "name": "payer test #8157 ENRL-14"
+        },
+        {
+          "id": 3857,
+          "name": "payer test #8157 TAGS-25"
+        },
+        {
+          "id": 3852,
+          "name": "john test #6383 CERT-01"
+        },
+        {
+          "id": 3851,
+          "name": "Jimmy Tester #8080 CERT-01"
+        },
+        {
+          "id": 3850,
+          "name": "Natallia Test #8038 CERT-02"
+        },
+        {
+          "id": 3849,
+          "name": "tom test #6384 CERT-02"
+        },
+        {
+          "id": 3848,
+          "name": "bob test #6638 CERT-07"
+        },
+        {
+          "id": 3847,
+          "name": "Natalli Test #8039 CERT-07"
+        },
+        {
+          "id": 3846,
+          "name": "james test #6382 CERT-02"
+        },
+        {
+          "id": 3845,
+          "name": "Megan Test test #6915 CERT-02"
+        },
+        {
+          "id": 3784,
+          "name": "Credit Card Test #8147 BJ1-11"
+        },
+        {
+          "id": 3780,
+          "name": "Credit Card Test #8147 act-act26"
+        },
+        {
+          "id": 3779,
+          "name": "Credit Card Test #8147 ThinkIn-4"
+        },
+        {
+          "id": 3778,
+          "name": "Credit Card Test #8147 CHC2-21"
+        },
+        {
+          "id": 3767,
+          "name": "Jim Tester #8134 BUDG-42"
+        },
+        {
+          "id": 3766,
+          "name": "Jim Tester #8134 CHC2-24"
+        },
+        {
+          "id": 3758,
+          "name": "Test #8126 LPWJ-7"
+        },
+        {
+          "id": 3731,
+          "name": "Tony Tester #8120 POT001-7"
+        },
+        {
+          "id": 3608,
+          "name": "Joe Tester #8065 CAT0001-3"
+        },
+        {
+          "id": 3579,
+          "name": "bob test #6638 TAGS-30"
+        },
+        {
+          "id": 3578,
+          "name": "bob test #6638 RP-1"
+        },
+        {
+          "id": 3274,
+          "name": "test #6768 CLAS-26"
+        },
+        {
+          "id": 3081,
+          "name": "bob test #6638 RSASYD-14"
+        },
+        {
+          "id": 2729,
+          "name": "tom test #6384 CLAS-16"
+        },
+        {
+          "id": 2728,
+          "name": "james test #6382 CLAS-16"
+        },
+        {
+          "id": 1880,
+          "name": "new test #5697 CERT-03"
+        },
+        {
+          "id": 1484,
+          "name": "testing test #5259 TRAIN-2"
+        },
+        {
+          "id": 1089,
+          "name": "tesdfsdfsf test #4883 INST-05"
+        },
+        {
+          "id": 962,
+          "name": "Test76 #4738 GOGL-03"
+        },
+        {
+          "id": 961,
+          "name": "Test75 #4737 GOGL-04"
+        },
+        {
+          "id": 598,
+          "name": "test #5 ENRL-05"
+        },
+        {
+          "id": 510,
+          "name": "test #5 ENRL-07"
+        }
+      ]
+    },
+    {
+      "entity": "Invoice",
+      "items": [
+        {
+          "id": 5311,
+          "name": "Discount Test, #2787"
+        },
+        {
+          "id": 5307,
+          "name": "Natalli Test, #2717"
+        },
+        {
+          "id": 5306,
+          "name": "john test, #2672"
+        },
+        {
+          "id": 5303,
+          "name": "james test, #2649"
+        },
+        {
+          "id": 5300,
+          "name": "john test, #2587"
+        },
+        {
+          "id": 5299,
+          "name": "Natallia Test, #2585"
+        },
+        {
+          "id": 5298,
+          "name": "Natalli Test, #2583"
+        },
+        {
+          "id": 5297,
+          "name": "james test, #2576"
+        },
+        {
+          "id": 5272,
+          "name": "bob test, #2477"
+        },
+        {
+          "id": 5264,
+          "name": "Jim Tester, #2472"
+        },
+        {
+          "id": 5176,
+          "name": "Credit Card Test, #2440"
+        },
+        {
+          "id": 5175,
+          "name": "Credit Card Test, #2439"
+        },
+        {
+          "id": 5174,
+          "name": "Credit Card Test, #2438"
+        },
+        {
+          "id": 5172,
+          "name": "Credit Card Test, #2436"
+        },
+        {
+          "id": 5171,
+          "name": "Credit Card Test, #2435"
+        },
+        {
+          "id": 5170,
+          "name": "Credit Card Test, #2434"
+        },
+        {
+          "id": 5169,
+          "name": "Credit Card Test, #2433"
+        },
+        {
+          "id": 5168,
+          "name": "Credit Card Test, #2432"
+        },
+        {
+          "id": 5167,
+          "name": "Credit Card Test, #2431"
+        },
+        {
+          "id": 5154,
+          "name": "Jim Tester, #2418"
+        },
+        {
+          "id": 5153,
+          "name": "Jim Tester, #2417"
+        },
+        {
+          "id": 5152,
+          "name": "Jim Tester, #2416"
+        },
+        {
+          "id": 5135,
+          "name": "Test, #2399"
+        },
+        {
+          "id": 5104,
+          "name": "Tony Tester, #2368"
+        },
+        {
+          "id": 5043,
+          "name": "Jimmy Testing, #2307"
+        },
+        {
+          "id": 4923,
+          "name": "test, #2025"
+        },
+        {
+          "id": 4902,
+          "name": "bob test, #1972"
+        },
+        {
+          "id": 4863,
+          "name": "Discount Test, #1738"
+        },
+        {
+          "id": 4859,
+          "name": "Test, #2033"
+        },
+        {
+          "id": 4816,
+          "name": "john test, #1921"
+        },
+        {
+          "id": 4812,
+          "name": "test, #2047"
+        },
+        {
+          "id": 4791,
+          "name": "Test Company Pty Ltd, #2055"
+        },
+        {
+          "id": 4767,
+          "name": "Natalli Test, #2238"
+        },
+        {
+          "id": 4756,
+          "name": "tesdfsdfsf test, #1639"
+        },
+        {
+          "id": 4691,
+          "name": "james test, #1922"
+        },
+        {
+          "id": 4665,
+          "name": "Megan Test, #2167"
+        },
+        {
+          "id": 4652,
+          "name": "new test, #1812"
+        },
+        {
+          "id": 4637,
+          "name": "Megan Test test, #2190"
+        },
+        {
+          "id": 4577,
+          "name": "Megan Test mobile, #2191"
+        },
+        {
+          "id": 4560,
+          "name": "temp c test, #2186"
+        },
+        {
+          "id": 4534,
+          "name": "testing test, #1730"
+        },
+        {
+          "id": 4530,
+          "name": "test, #1458"
+        },
+        {
+          "id": 4484,
+          "name": "Test76, #1609"
+        },
+        {
+          "id": 4442,
+          "name": "tom test, #1923"
+        },
+        {
+          "id": 4384,
+          "name": "Tester Test, #2249"
+        },
+        {
+          "id": 4312,
+          "name": "Test75, #1608"
+        },
+        {
+          "id": 4280,
+          "name": "test, #2019"
+        },
+        {
+          "id": 4234,
+          "name": "Natallia Test, #2237"
+        },
+        {
+          "id": 4208,
+          "name": "Joe Tester, #2266"
+        },
+        {
+          "id": 4184,
+          "name": "bob test, #1448"
+        },
+        {
+          "id": 4149,
+          "name": "Joe Tester, #1412"
+        },
+        {
+          "id": 4103,
+          "name": "bob test, #1363"
+        },
+        {
+          "id": 4102,
+          "name": "bob test, #1362"
+        },
+        {
+          "id": 3837,
+          "name": "test, #1130"
+        },
+        {
+          "id": 2300,
+          "name": "new test, #640"
+        },
+        {
+          "id": 1744,
+          "name": "testing test, #504"
+        },
+        {
+          "id": 1161,
+          "name": "Test75, #309"
+        },
+        {
+          "id": 1143,
+          "name": "Test76, #307"
+        },
+        {
+          "id": 1142,
+          "name": "Test75, #306"
+        },
+        {
+          "id": 753,
+          "name": "test, #166"
+        },
+        {
+          "id": 752,
+          "name": "test, #165"
+        },
+        {
+          "id": 597,
+          "name": "test, #91"
+        },
+        {
+          "id": 596,
+          "name": "test, #90"
+        }
+      ]
+    },
+    {
+      "entity": "Document",
+      "items": [
+        {
+          "id": 1836,
+          "name": "test1"
+        },
+        {
+          "id": 1822,
+          "name": "Test Movie File"
+        },
+        {
+          "id": 1820,
+          "name": "Test PDF"
+        },
+        {
+          "id": 1818,
+          "name": "Test Image"
+        },
+        {
+          "id": 1598,
+          "name": "TEST-16_Jackson_Jackson_Statement_of_Completion_LINKEDIN-1.pdf"
+        },
+        {
+          "id": 1597,
+          "name": "TEST-16_Buchanan_Amanda_Statement_of_Completion_LINKEDIN-1.pdf"
+        },
+        {
+          "id": 1497,
+          "name": "TEST-16_Jackson_Jackson_Statement_of_Completion_LINKEDIN-1.pdf"
+        },
+        {
+          "id": 1496,
+          "name": "TEST-16_Buchanan_Amanda_Statement_of_Completion_LINKEDIN-1.pdf"
+        },
+        {
+          "id": 1365,
+          "name": "TEST-16_Jackson_Jackson_Statement_of_Completion_4.pdf"
+        },
+        {
+          "id": 1364,
+          "name": "TEST-16_Buchanan_Amanda_Statement_of_Completion_4.pdf"
+        },
+        {
+          "id": 1270,
+          "name": "TEST-16_Jackson_Jackson_Statement_of_Completion_3.pdf"
+        },
+        {
+          "id": 1269,
+          "name": "TEST-16_Buchanan_Amanda_Statement_of_Completion_3.pdf"
+        },
+        {
+          "id": 1175,
+          "name": "TEST-16_Jackson_Jackson_Statement_of_Completion_2.pdf"
+        },
+        {
+          "id": 1174,
+          "name": "TEST-16_Buchanan_Amanda_Statement_of_Completion_2.pdf"
+        },
+        {
+          "id": 1080,
+          "name": "TEST-16_Jackson_Jackson_Statement_of_Completion_1.pdf"
+        },
+        {
+          "id": 1079,
+          "name": "TEST-16_Buchanan_Amanda_Statement_of_Completion_1.pdf"
+        },
+        {
+          "id": 985,
+          "name": "TEST-16_Jackson_Jackson_Statement_of_Completion.pdf"
+        },
+        {
+          "id": 984,
+          "name": "TEST-16_Buchanan_Amanda_Statement_of_Completion.pdf"
+        },
+        {
+          "id": 890,
+          "name": "TEST-16_Jackson_Jackson_Statement_of_Completion.pdf"
+        },
+        {
+          "id": 889,
+          "name": "TEST-16_Buchanan_Amanda_Statement_of_Completion.pdf"
+        },
+        {
+          "id": 812,
+          "name": "Test PDF"
+        },
+        {
+          "id": 738,
+          "name": "test"
+        },
+        {
+          "id": 516,
+          "name": "test"
+        },
+        {
+          "id": 381,
+          "name": "Test Upload of Excel"
+        },
+        {
+          "id": 380,
+          "name": "Test upload of word doc"
+        }
+      ]
+    }
+  ];
 }
