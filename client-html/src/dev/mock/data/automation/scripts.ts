@@ -14,8 +14,8 @@ export function mockScripts() {
     const row = this.scripts.rows.find(row => row.id == id);
     return {
       id: row.id,
-      name: row.values[1],
-      enabled: row.values[2],
+      name: row.values[0],
+      enabled: row.values[1],
       keyCode: null,
       entity: null,
       description: "test script",
