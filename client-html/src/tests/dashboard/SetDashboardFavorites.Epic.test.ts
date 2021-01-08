@@ -5,7 +5,7 @@ import {
 } from "../../js/containers/dashboard/actions";
 import { EpicSetDashboardFavorites } from "../../js/containers/dashboard/epics/EpicSetDashboardFavorites";
 
-describe("Get dashboard favorites epic tests", () => {
+describe("Set dashboard favorites epic tests", () => {
   it("SetDashboardFavorites should returns correct values", () => DefaultEpic({
     action: setDashboardFavorites([]),
     epic: EpicSetDashboardFavorites,
