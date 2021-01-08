@@ -7,15 +7,11 @@ export function AccountApiMock(mock) {
     return promiseResolve(config, this.db.getAccount(id));
   });
 
-  this.api.onPut(new RegExp(`v1/list/entity/account/\\d+`)).reply(config => {
-    return promiseResolve(config, JSON.parse(config.data));
-  });
+  this.api.onPut(new RegExp(`v1/list/entity/account/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
 
-  this.api.onPost("/v1/list/entity/account").reply(config => {
-    return promiseResolve(config, JSON.parse(config.data));
-  });
+  this.api.onPost("/v1/list/entity/account").reply(config => promiseResolve(config, JSON.parse(config.data)));
 
-  this.api.onGet(new RegExp(`v1/list/entity/account/depositAccounts`)).reply(config => {
-    return promiseResolve(config, this.db.getAccounts());
-  });
+  this.api.onGet(new RegExp(`v1/list/entity/account/depositAccounts`)).reply(config => promiseResolve(config, this.db.getAccounts()));
+
+  this.api.onDelete(new RegExp(`v1/list/entity/account/\\d+`)).reply(config => promiseResolve(config, {}));
 }
