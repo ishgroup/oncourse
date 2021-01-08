@@ -20,4 +20,9 @@ export function EmailTemplateApiMock() {
     this.db.removeEmailTemplate(id);
     return promiseResolve(config, this.db.getEmailTemplates());
   });
+
+  this.api.onGet("/v1/list/entity/emailTemplate/template").reply(config => {
+    const entityName = config.params.entityName;
+    return promiseResolve(config, this.db.getEmailTemplatesByEntityName(entityName));
+  });
 }

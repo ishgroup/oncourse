@@ -97,6 +97,15 @@ export function mockEmailTemplates() {
   this.removeEmailTemplate = id => {
     this.emailTemplates.rows = this.emailTemplates.rows.filter(a => a.id !== id);
   };
+  
+  this.getEmailTemplatesByEntityName = entityName => {
+    switch (entityName) {
+      case "Account": 
+        return [];
+      default: 
+        return [];
+    }
+  };
 
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
