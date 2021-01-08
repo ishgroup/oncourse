@@ -2,9 +2,7 @@ import { AccountType, Account } from "@api/model";
 import { generateArraysOfRecords } from "../mockUtils";
 
 export function mockAccounts(): Account[] {
-  this.getAccounts = () => {
-    return this.account;
-  };
+  this.getAccounts = () => this.account;
 
   this.getPlainAccounts = () => {
     const rows = generateArraysOfRecords(20, [
@@ -60,6 +58,14 @@ export function mockAccounts(): Account[] {
 
     this.accounts = accounts;
   };
+
+  this.createNewAccount = () => ({
+    accountCode: "accountCode21",
+    description: "description 21",
+    isEnabled: true,
+    tax: null,
+    type: "asset",
+  });
 
   this.removeAccount = id => {
     this.accounts = this.accounts.rows.filter(m => m.id !== id);
