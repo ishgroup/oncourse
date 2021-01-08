@@ -33,12 +33,12 @@ export function mockAccounts(): Account[] {
     const row = this.getAccountList().rows.find(row => row.id == id);
     return {
       accountCode: row.values[0],
-      createdOn: new Date().toISOString(),
+      createdOn: "2021-01-08T12:59:54.833Z",
       description: row.values[3],
       id: row.id,
       isDefaultAccount: true,
       isEnabled: true,
-      modifiedOn: new Date().toISOString(),
+      modifiedOn: "2021-01-08T12:59:54.833Z",
       tax: null,
       type: row.values[2]
     };
