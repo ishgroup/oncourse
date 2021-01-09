@@ -313,4 +313,9 @@ export function listApiMock() {
 
     return promiseResolve(config, this.db.listEmailTemplate(entityName));
   });
+
+  this.api.onGet("/v1/list/entity/note").reply(config => {
+    const { entityName } = config.params;
+    return promiseResolve(config, this.db.getNotesByEntityName(entityName));
+  });
 }
