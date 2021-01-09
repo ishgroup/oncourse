@@ -1,9 +1,7 @@
 import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockApplications() {
-  this.getApplications = () => {
-    return this.applications;
-  };
+  this.getApplications = () => this.applications;
 
   this.getApplication = id => {
     const row = this.applications.rows.find(row => row.id == id);
@@ -43,6 +41,27 @@ export function mockApplications() {
 
     this.applications = applications;
   };
+
+  this.mockedCreateApplication = () => ({
+    id: 21,
+    source: "source 21",
+    studentName: "studentName 21",
+    courseName: "courseName 21",
+    createdOn: "2021-01-09T11:42:23.549Z",
+    applicationDate: "2021-01-09T11:42:23.549Z",
+    enrolBy: "2021-01-09T11:42:23.549Z",
+    modifiedOn: "2021-01-09T11:42:23.549Z",
+    status: "Withdrawn",
+    feeOverride: "feeOverride 21",
+    contactId: 1,
+    courseId: 1,
+    createdBy: null,
+    customFields: {},
+    documents: [],
+    notes: [],
+    reason: "Your application has been approved as being eligible to pay the second qualification fee.",
+    tags: [this.getTag(1)]
+  });
 
   this.removeApplication = id => {
     this.applications.rows = this.applications.rows.filter(a => a.id !== id);
@@ -125,8 +144,7 @@ export function mockApplications() {
   response.filterColumnWidth = 200;
   response.layout = "Three column";
   response.pageSize = 20;
-  response.search =
-    "( ((status == NEW) and ((enrolBy >= today) or (enrolBy == null))) or ((status == IN_PROGRESS) and ((enrolBy >= today) or (enrolBy == null))) or ((status == OFFERED) and ((enrolBy >= today) or (enrolBy == null))) or ((status == ACCEPTED)) or ((status == REJECTED)) or ((status == WITHDRAWN)) )";
+  response.search = "( ((status == NEW) and ((enrolBy >= today) or (enrolBy == null))) or ((status == IN_PROGRESS) and ((enrolBy >= today) or (enrolBy == null))) or ((status == OFFERED) and ((enrolBy >= today) or (enrolBy == null))) or ((status == ACCEPTED)) or ((status == REJECTED)) or ((status == WITHDRAWN)) )";
   response.count = rows.length;
   response.filteredCount = rows.length;
   response.sort = [{ attribute: "source", ascending: true, complexAttribute: [] }];
