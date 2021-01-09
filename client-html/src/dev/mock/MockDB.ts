@@ -84,6 +84,7 @@ import { mockReportOverlays } from "./data/automation/reportOverlays";
 import { mockAccessApi } from "./data/accessApi";
 import { mockEmailTemplates } from "./data/automation/emailTemplates";
 import { mockImportTemplates } from "./data/automation/importTemplates";
+import { mockNotes } from "./data/notes";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -212,6 +213,8 @@ export class MockDB {
 
   accessApi: PermissionResponse;
 
+  notes: any;
+
   constructor() {
     this.init();
   }
@@ -231,6 +234,7 @@ export class MockDB {
     this.contactRelationTypes = mockContactRelationTypes.call(this);
     this.customFields = mockCustomFields.call(this);
     this.listExport = mockListExport.call(this);
+    this.notes = mockNotes.call(this);
 
     //  Automation
     this.scripts = mockScripts.call(this);
