@@ -21,7 +21,8 @@ import {
   Country,
   PermissionResponse,
   EmailTemplate,
-  ImportModel
+  ImportModel,
+  EntityRelationType
 } from "@api/model";
 import { mockPreferences } from "./data/preferences";
 import { mockIntegrations } from "./data/integrations";
@@ -84,6 +85,7 @@ import { mockReportOverlays } from "./data/automation/reportOverlays";
 import { mockAccessApi } from "./data/accessApi";
 import { mockEmailTemplates } from "./data/automation/emailTemplates";
 import { mockImportTemplates } from "./data/automation/importTemplates";
+import { mockEntityRelationTypes } from "./data/entityRelationTypes";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -127,6 +129,8 @@ export class MockDB {
   concessionTypes: ConcessionType[];
 
   contactRelationTypes: ContactRelationType[];
+
+  entityRelationTypes: EntityRelationType[];
 
   customFields: CustomFieldType[];
 
@@ -229,6 +233,7 @@ export class MockDB {
     this.taxTypes = mockTaxTypes.call(this);
     this.concessionTypes = mockConcessionTypes.call(this);
     this.contactRelationTypes = mockContactRelationTypes.call(this);
+    this.entityRelationTypes = mockEntityRelationTypes.call(this);
     this.customFields = mockCustomFields.call(this);
     this.listExport = mockListExport.call(this);
 
