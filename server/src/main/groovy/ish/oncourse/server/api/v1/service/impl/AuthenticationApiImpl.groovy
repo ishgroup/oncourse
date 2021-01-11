@@ -103,6 +103,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
                 checkLdapAuth(user, details.password, prefController) :
                 checkInternalAuth(user, details.password)
         if (errorMessage) {
+            sessionManager.disableUserAfterIncorrectLoginAttempts(user, prefController.numberOfLoginAttempts, request)
             LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, errorMessage)
             throwUnauthorizedException(content)
         }
