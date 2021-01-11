@@ -17,13 +17,13 @@ import { getPlainCourses, setPlainCourses, setPlainCoursesSearch } from "../../c
 import { BooleanArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
 import NestedListRelationCell from "./NestedListRelationCell";
 import { clearSales, getSales } from "../../sales/actions";
-import {
-  clearPlainQualificationItems,
-  getPlainQualifications,
-  setPlainQualificationSearch
-} from "../../qualifications/actions";
 import { clearModuleItems, getModules, setModuleSearch } from "../../modules/actions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../common/actions/CommonPlainRecordsActions";
 
 interface Props {
   values: any;
@@ -210,8 +210,8 @@ const mapStateToProps = (state: State) => ({
   coursesPending: state.courses.loading,
   sales: state.sales.items,
   salesPending: state.sales.pending,
-  qualifications: state.qualification.items,
-  qualificationsPending: state.qualification.loading,
+  qualifications: state.plainSearchRecords["Qualification"].items,
+  qualificationsPending: state.plainSearchRecords["Qualification"].loading,
   modules: state.modules.items,
   modulesPending: state.modules.loading,
   entityRelationTypes: state.preferences.entityRelationTypes
@@ -219,10 +219,10 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchQualifications: search => {
-    dispatch(setPlainQualificationSearch(search));
-    dispatch(getPlainQualifications(null, "", true, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(setCommonPlainSearch("Qualification", search));
+    dispatch(getCommonPlainRecords("Qualification", 0, "nationalCode,title,level,fieldOfEducation,isOffered", true, null, PLAIN_LIST_MAX_PAGE_SIZE));
   },
-  clearQualificationsSearch: (loading?: boolean) => dispatch(clearPlainQualificationItems(loading)),
+  clearQualificationsSearch: (loading?: boolean) => dispatch(clearCommonPlainRecords("Qualification", loading)),
   searchModules: search => {
     dispatch(setModuleSearch(search));
     dispatch(getModules(null, "nationalCode,title,nominalHours,isOffered", true));

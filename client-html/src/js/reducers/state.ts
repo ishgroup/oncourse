@@ -33,7 +33,6 @@ import { CustomFieldTypesState } from "../containers/entities/customFieldTypes/r
 import { TaxesState } from "../containers/entities/taxes/reducers";
 import { ListState } from "../model/common/ListView";
 import { ContactsState } from "../containers/entities/contacts/reducers";
-import { QualificationState } from "../containers/entities/qualifications/reducers";
 import { CertificatesState } from "../containers/entities/certificates/reducers";
 import { MembershipProductState } from "../containers/entities/membershipProducts/reducers/state";
 import { VoucherProductState } from "../containers/entities/voucherProducts/reducers/state";
@@ -50,8 +49,6 @@ import { ConfirmState } from "../model/common/Confirm";
 import { ActionsQueueState } from "../model/common/ActionsQueue";
 import { AppMessage } from "../model/common/Message";
 import { ArticleProductState } from "../containers/entities/articleProducts/reducers/state";
-import { PlainEntityState } from "../model/common/Plain";
-import { SelectItemDefault } from "../model/entities/common";
 import { CheckoutState } from "../model/checkout";
 import { SwipeableDrawer } from "../model/common/drawer/SwipeableDrawerModel";
 import { EnrolmentsState } from "../containers/entities/enrolments/reducers/state";
@@ -84,7 +81,6 @@ export interface State {
   share: ShareState;
   lastLocation: string;
   sites: SiteState;
-  rooms: PlainEntityState<SelectItemDefault>;
   googleApiResponse: GoogleApiResponse;
   documents: DocumentsState;
   dashboard: DashboardState;
@@ -101,7 +97,6 @@ export interface State {
   sales: SaleState;
   quickSearchConcessionType: QuickSearchConcessionTypesState;
   quickSearchCorporatePass: QuickSearchCorporatePassState;
-  qualification: QualificationState;
   timetable: TimetableState;
   customFieldTypes: CustomFieldTypesState;
   membershipProducts: MembershipProductState;
