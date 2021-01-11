@@ -58,8 +58,8 @@ class CreateVoucher {
             price = voucherProduct.priceExTax
             (1..v.quantity).each {
                 Voucher voucher = createVoucher(college, status, voucherProduct, confirmationStatus)
-                voucher.redemptionValue = voucherProduct.value ?: price
-                voucher.valueOnPurchase = price
+                voucher.redemptionValue = voucherProduct.value != null ? voucherProduct.value : price
+                voucher.valueOnPurchase = voucherProduct.value != null ? voucherProduct.value : price
                 vouchers << voucher
             }
         }
