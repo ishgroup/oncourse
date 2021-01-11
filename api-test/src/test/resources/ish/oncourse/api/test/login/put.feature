@@ -177,7 +177,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
 
         #       <-----> Try to login to user with wrong password
-        * def loginBody = {login: 'disableAfterIncorrectLoginAttempts', password: 'abracadabra', kickOut: 'true', skipTfa: 'true'}
+        * def loginBody = {login: 'incorrectCred', password: 'abracadabra', kickOut: 'true', skipTfa: 'true'}
         Given path ishPath
         And request loginBody
         When method PUT
@@ -185,7 +185,7 @@ Feature: Main feature for all PUT requests with path 'login'
         And match response.errorMessage == 'User or password incorrect.'
 
         #       <-----> Try to login to user again, user isn't active, login is impossible
-        * def loginBody = {login: 'disableAfterIncorrectLoginAttempts', password: 'abracadabra', kickOut: 'true', skipTfa: 'true'}
+        * def loginBody = {login: 'incorrectCred', password: 'abracadabra', kickOut: 'true', skipTfa: 'true'}
         Given path ishPath
         And request loginBody
         When method PUT
