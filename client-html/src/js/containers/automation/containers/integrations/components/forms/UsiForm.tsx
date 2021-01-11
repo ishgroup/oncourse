@@ -44,12 +44,13 @@ class XeroBaseForm extends React.Component<any, any> {
       dirty,
       handleSubmit,
       onSubmit,
-      usiSoftwareId
+      usiSoftwareId,
+      form
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm when={dirty} />}
+        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>{appBarContent}</CustomAppBar>
         <Typography component="div" variant="body2">
           <div>

@@ -90,6 +90,8 @@ export const EXECUTE_ACTIONS_QUEUE = "execute/actionsQueue";
 
 export const CLEAR_ACTIONS_QUEUE = "clear/actionsQueue";
 
+export const NEXT_LOCATION = 'nextLocation';
+
 export const addActionToQueue = (
   actionBody: IAction,
   method: ApiMethods,
@@ -259,3 +261,8 @@ export const showMessage = (message: AppMessage) => ({
 export const clearMessage = () => ({
   type: CLEAR_MESSAGE
 });
+
+export const setNextLocation = (nextLocation: string) => ({
+  type: NEXT_LOCATION,
+  payload: nextLocation
+})

@@ -45,12 +45,12 @@ class CollegeBaseForm extends React.Component<any, any> {
 
   render() {
     const {
- classes, handleSubmit, onSave, dirty, secKey, timezones, data, invalid
-} = this.props;
+     classes, handleSubmit, onSave, dirty, secKey, timezones, data, invalid, form
+    } = this.props;
 
     return (
       <form className="container" onSubmit={handleSubmit(onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

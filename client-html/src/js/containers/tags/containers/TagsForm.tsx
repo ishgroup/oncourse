@@ -63,6 +63,7 @@ interface FormProps extends Props {
   classes: any;
   dispatch: any;
   className: string;
+  form: string;
   handleSubmit: any;
   dirty: boolean;
   asyncValidating: boolean;
@@ -411,13 +412,14 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       closeTagEditView,
       isNew,
       openConfirm,
-      dispatch
+      dispatch,
+      form
     } = this.props;
 
     return (
       <>
         <form onSubmit={handleSubmit(this.onSave)} className={className}>
-          {!this.disableConfirm && dirty && <RouteChangeConfirm when={dirty} />}
+          {!this.disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
           <CustomAppBar>
             <Grid container>

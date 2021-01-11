@@ -38,8 +38,16 @@ interface Props extends InjectedFormProps {
 
 const PdfBackgroundsForm = React.memo<Props>(
   ({
- dirty, handleSubmit, isNew, invalid, values, onCreate, onUpdate, onDelete
-}) => {
+     dirty,
+     handleSubmit,
+     isNew,
+     invalid,
+     values,
+     onCreate,
+     onUpdate,
+     onDelete,
+     form
+    }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [fileIsChosen, setFileIsChosen] = useState(false);
     const [chosenFileName, setChosenFileName] = useState(null);
@@ -101,7 +109,7 @@ const PdfBackgroundsForm = React.memo<Props>(
         <form onSubmit={handleSubmit(handleSave)}>
           <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
           {(dirty || isNew || fileIsChosen) && (
-            <RouteChangeConfirm when={(dirty || isNew || fileIsChosen) && !disableRouteConfirm} />
+            <RouteChangeConfirm form={form} when={(dirty || isNew || fileIsChosen) && !disableRouteConfirm} />
           )}
 
           <CustomAppBar>

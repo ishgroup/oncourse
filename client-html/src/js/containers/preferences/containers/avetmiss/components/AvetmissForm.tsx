@@ -55,12 +55,12 @@ class AvetmissBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSave, dirty, data, enums, invalid
+      handleSubmit, onSave, dirty, data, enums, invalid, form
     } = this.props;
 
     return (
       <form className="container" onSubmit={handleSubmit(onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

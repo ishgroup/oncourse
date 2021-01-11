@@ -102,6 +102,7 @@ interface FormProps extends Props {
   dispatch: any;
   className: string;
   newPassword: string;
+  form: string;
   updateUser: (user: User) => void;
   resetUserPassword: (id: number) => void;
   disableUser2FA: (id: number) => void;
@@ -262,14 +263,15 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       passwordComplexityFlag,
       asyncValidating,
       invalid,
-      newPassword
+      newPassword,
+      form
     } = this.props;
 
     const { validPassword, showMessage, messageText } = this.state;
 
     return (
       <form onSubmit={handleSubmit(this.onSave)} className={className}>
-        {!isNew && dirty && <RouteChangeConfirm when={dirty} />}
+        {!isNew && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <Message opened={showMessage} isSuccess text={messageText} clearMessage={this.clearMessage} />
 

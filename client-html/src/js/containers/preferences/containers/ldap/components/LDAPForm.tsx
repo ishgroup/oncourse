@@ -71,7 +71,7 @@ class LDAPBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSave, values, licence, testLdapConnection, dirty, data
+      handleSubmit, onSave, values, licence, testLdapConnection, dirty, data, form
     } = this.props;
 
     const simpleAuthEnabled = values && values[this.formModel.LdapSimpleAuthentication.uniqueKey] === "true";
@@ -79,7 +79,7 @@ class LDAPBaseForm extends React.Component<any, any> {
 
     return (
       <form className="container" onSubmit={handleSubmit(onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <ConfirmBase
           title=""

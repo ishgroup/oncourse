@@ -93,5 +93,5 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 export default reduxForm({
   form: EMAIL_TEMPLATES_FORM_NAME,
-  onSubmitFail
+  onSubmitFail,
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EmailTemplates));

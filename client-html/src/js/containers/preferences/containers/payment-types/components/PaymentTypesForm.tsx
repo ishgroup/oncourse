@@ -36,6 +36,7 @@ interface Props {
   onUpdate: (paymentTypes: PaymentMethod[]) => void;
   assetAccounts: any;
   touched: any;
+  form: string;
   reset: () => void;
   openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
@@ -156,12 +157,12 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, handleSubmit, data, assetAccounts, dirty, created, modified, invalid
+     classes, handleSubmit, data, assetAccounts, dirty, created, modified, invalid, form
     } = this.props;
 
     return (
       <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

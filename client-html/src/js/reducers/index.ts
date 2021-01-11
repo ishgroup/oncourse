@@ -23,6 +23,7 @@ import { AvetmissExportReducer } from "../containers/avetmiss-export/reducers";
 import { processReducer } from "../common/reducers/processReducer";
 import { listReducer } from "../common/components/list-view/reducers/listReducer";
 import { lastLocationReducer } from "../common/reducers/lastLocationReducer";
+import { setNextLocationReducer } from "../common/reducers/nextLocation";
 import { fetchReducer } from "../common/reducers/fetchReducer";
 import { shareReducer } from "../common/components/list-view/components/share/reducers";
 import { siteReducer } from "../containers/entities/sites/reducers";
@@ -95,6 +96,7 @@ export const combinedReducers = combineReducers({
   list: listReducer,
   share: shareReducer,
   lastLocation: lastLocationReducer,
+  nextLocation: setNextLocationReducer,
   sites: siteReducer,
   rooms: roomReducer,
   googleApiResponse: googleApiReducer,

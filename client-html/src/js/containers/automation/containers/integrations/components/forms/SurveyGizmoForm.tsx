@@ -29,12 +29,12 @@ class SurveyGizmoBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     classes, appBarContent, handleSubmit, onSubmit, dirty
+     classes, appBarContent, handleSubmit, onSubmit, dirty, form
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm when={dirty} />}
+        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>{appBarContent}</CustomAppBar>
 
         <FormField name="fields.user" label="User" type="text" fullWidth />

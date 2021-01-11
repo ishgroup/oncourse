@@ -108,13 +108,13 @@ class SettingsForm extends React.Component<any, any> {
 
   render() {
     const {
-      enums, handleSubmit, onSave, dirty, data
+      enums, handleSubmit, onSave, dirty, data, form
     } = this.props;
     const { enablePasswordScheduleField, enableTOTPScheduleField } = this.state;
 
     return (
       <form className="container" onSubmit={handleSubmit(onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

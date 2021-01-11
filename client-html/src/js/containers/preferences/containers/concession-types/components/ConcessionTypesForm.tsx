@@ -33,6 +33,7 @@ interface Props {
   dirty: boolean;
   invalid: boolean;
   onDelete: (id: string) => void;
+  form: string;
   onUpdate: (concessionTypes: ConcessionType[]) => void;
   openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
@@ -148,12 +149,12 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-      classes, handleSubmit, data, dirty, created, modified, invalid
+      classes, handleSubmit, data, dirty, created, modified, invalid, form
     } = this.props;
 
     return (
       <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

@@ -30,8 +30,8 @@ class MYOBBaseForm extends React.Component<any, any> {
 
   render() {
     const {
- handleSubmit, onSubmit, appBarContent, dirty, item
-} = this.props;
+     handleSubmit, onSubmit, appBarContent, dirty, item, form
+    } = this.props;
     const configured = item && item.id;
 
     const configuredLabel = "MYOB access has been set up. Press ‘Configure’ to restart the configuration process.";
@@ -39,7 +39,7 @@ class MYOBBaseForm extends React.Component<any, any> {
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm when={dirty} />}
+        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>{appBarContent}</CustomAppBar>
         <FormField name="fields.baseUrl" label="Base URL" type="text" fullWidth />
         <FormField name="fields.user" label="User" type="text" fullWidth />

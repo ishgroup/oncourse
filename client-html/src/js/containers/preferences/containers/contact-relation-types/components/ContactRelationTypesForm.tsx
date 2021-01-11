@@ -32,6 +32,7 @@ interface Props {
   handleSubmit: any;
   dirty: boolean;
   invalid: boolean;
+  form: string;
   onDelete: (id: string) => void;
   onUpdate: (contactRelationTypes: ContactRelationType[]) => void;
   openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
@@ -148,12 +149,12 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-      classes, handleSubmit, data, dirty, created, modified, invalid
+      classes, handleSubmit, data, dirty, created, modified, invalid, form
     } = this.props;
 
     return (
       <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

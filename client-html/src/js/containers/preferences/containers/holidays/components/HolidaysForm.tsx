@@ -54,6 +54,7 @@ interface Props {
   invalid: boolean;
   dirty: boolean;
   dispatch: any;
+  form: string;
   getFormState: any;
   handleSubmit: any;
   openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
@@ -186,14 +187,14 @@ class HolidaysBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-      classes, handleSubmit, values, dirty, invalid, timestamps, dispatch
+      classes, handleSubmit, values, dirty, invalid, timestamps, dispatch, form
     } = this.props;
     const created = timestamps && timestamps[0];
     const modified = timestamps && timestamps[1];
 
     return (
       <form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

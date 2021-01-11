@@ -418,7 +418,7 @@ class CollectionFormContainer extends React.Component<any, any> {
 
   render() {
     const {
-      classes, dispatch, values, handleSubmit, match, dirty, history, valid
+      classes, dispatch, values, handleSubmit, match, dirty, history, valid, form
     } = this.props;
 
     const { disableConfirm } = this.state;
@@ -433,7 +433,7 @@ class CollectionFormContainer extends React.Component<any, any> {
       <div className={clsx(classes.mainContainer, "overflow-hidden")}>
         <div className="h-100 overflow-y-auto" ref={this.getFormRef}>
           <form className="container p-3" onSubmit={handleSubmit(this.onSave)}>
-            {!disableConfirm && dirty && <RouteChangeConfirm when={dirty} />}
+            {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
             <CustomAppBar>
               <Grid
                 container

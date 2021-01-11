@@ -36,14 +36,15 @@ class VetStudentLoans extends React.Component<any, any> {
       dirty,
       handleSubmit,
       onSubmit,
-      values
+      values,
+      form
     } = this.props;
 
     const hasNameAndID = values && values.fields.deviceName && values.fields.organisationId;
 
     return values ? (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm when={dirty} />}
+        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>{appBarContent}</CustomAppBar>
         <FormField
           name="fields.deviceName"

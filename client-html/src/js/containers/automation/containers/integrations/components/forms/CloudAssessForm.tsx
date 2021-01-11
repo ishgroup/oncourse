@@ -28,12 +28,12 @@ class CloudAssessBaseForm extends React.Component<any, any> {
 
   render() {
     const {
- handleSubmit, onSubmit, appBarContent, dirty
-} = this.props;
+     handleSubmit, onSubmit, appBarContent, dirty, form
+    } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm when={dirty} />}
+        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>{appBarContent}</CustomAppBar>
 
         <FormField type="text" name="fields.username" label="Username" fullWidth />
