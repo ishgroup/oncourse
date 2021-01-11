@@ -257,6 +257,31 @@ class SettingsForm extends React.Component<any, any> {
           </Grid>
 
           <Grid item xs={12} sm={8} className="mt-3">
+            <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
+              Disable account after
+              <FormField
+                  type="number"
+                  name={this.formModel.SecurityNumberIncorrectLoginAttempts.uniqueKey}
+                  formatting="inline"
+                  min="1"
+                  max="999"
+                  placeholder="5"
+                  step="1"
+                  onChange={(e, v) => {
+                    if (Number(v) === 0) e.preventDefault();
+                  }}
+                  onKeyPress={ev => {
+                    if (ev.key.match(/[+\-e]/)) {
+                      ev.preventDefault();
+                    }
+                  }}
+                  hidePlaceholderInEditMode
+              />
+              incorrect login attempts
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12} sm={8} className="mt-3">
             <Typography className="heading">Two factor authentication</Typography>
 
             <Field
