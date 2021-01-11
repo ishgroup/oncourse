@@ -66,8 +66,13 @@ public class TutorsDetails extends ISHCommon {
                     .and(Tutor.COLLEGE.eq(webSiteService.getCurrentCollege()))
                     .select(cayenneService.newContext()));
         } else if (course != null) {
-            tutors = course.getCourseClasses()
-                    .stream().map(CourseClass::getTutorRoles)
+            Date now = new Date(); 
+            tutors = course.getCourseClasses().stream()
+                    .filter(clazz -> !clazz.isCancelled() 
+                            && clazz.getIsWebVisible()
+                            && (clazz.getIsDistantLearningCourse() || (clazz.getEndDate() != null && clazz.getEndDate().after(now)))
+                    )
+                    .map(CourseClass::getTutorRoles)
                     .flatMap(Collection::stream).map(TutorRole::getTutor)
                     .collect(Collectors.toSet());
         } else if (courseClass != null) {
