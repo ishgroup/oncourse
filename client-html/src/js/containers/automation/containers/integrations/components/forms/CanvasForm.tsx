@@ -76,7 +76,7 @@ class CanvasBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSubmit, appBarContent, dirty, item, values
+     handleSubmit, onSubmit, appBarContent, dirty, item, values, form
     } = this.props;
 
     const { loading } = this.state;
@@ -85,7 +85,7 @@ class CanvasBaseForm extends React.Component<any, any> {
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm when={dirty} />}
+        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>{appBarContent}</CustomAppBar>
 
         <FormField disabled={configured} type="text" name="fields.baseUrl" label="Base url" fullWidth />

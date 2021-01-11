@@ -96,4 +96,5 @@ export interface State {
   checkout: CheckoutState;
   enrolments: EnrolmentsState;
   plainSearchRecords: CommonPlainRecordSearchState;
+  nextLocation: string;
 }

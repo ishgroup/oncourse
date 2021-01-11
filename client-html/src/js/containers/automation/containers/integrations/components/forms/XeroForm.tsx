@@ -92,7 +92,7 @@ class XeroBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      appBarContent, dirty, handleSubmit, values, item
+      appBarContent, dirty, handleSubmit, values, item, form
     } = this.props;
     const { hideConfig, loading } = this.state;
 
@@ -100,7 +100,7 @@ class XeroBaseForm extends React.Component<any, any> {
 
     return (
       <form onSubmit={handleSubmit(this.beforeSubmit)}>
-        {dirty && <RouteChangeConfirm when={dirty} />}
+        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>{appBarContent}</CustomAppBar>
 
         {item.id ? (

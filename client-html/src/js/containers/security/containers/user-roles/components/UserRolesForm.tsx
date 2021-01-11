@@ -122,12 +122,13 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
       isNew,
       validateUniqueNames,
       submitSucceeded,
-      hasLicense
+      hasLicense,
+      form
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(this.onSave)} className={className}>
-        {!this.disableConfirm && !submitSucceeded && dirty && <RouteChangeConfirm when={dirty && hasLicense} />}
+        {!this.disableConfirm && !submitSucceeded && dirty && <RouteChangeConfirm form={form} when={dirty && hasLicense} />}
 
         <Grid container spacing={2}>
           <CustomAppBar>
