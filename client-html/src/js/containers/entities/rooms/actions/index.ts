@@ -5,16 +5,9 @@
 
 import { Room } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
-import { SelectItemDefault } from "../../../../model/entities/common";
 
 export const GET_ROOM_ITEM = _toRequestType("get/room");
 export const GET_ROOM_ITEM_FULFILLED = FULFILLED(GET_ROOM_ITEM);
-
-export const GET_PLAIN_ROOMS = _toRequestType("get/plain/rooms");
-
-export const SET_PLAIN_ROOMS = "set/plain/rooms";
-
-export const SET_PLAIN_ROOMS_SEARCH = "set/plain/rooms/search";
 
 export const DELETE_ROOM_ITEM = _toRequestType("delete/room");
 export const DELETE_ROOM_ITEM_FULFILLED = FULFILLED(DELETE_ROOM_ITEM);
@@ -53,29 +46,3 @@ export const createRoom = (room: Room) => ({
   payload: { room }
 });
 
-export const getPlainRooms = (
-  offset?: number,
-  columns?: string,
-  ascending?: boolean,
-  sort?: string,
-  search?: string
-) => ({
-  type: GET_PLAIN_ROOMS,
-  payload: {
-    offset,
-    columns,
-    ascending,
-    sort,
-    search
-  }
-});
-
-export const setPlainRooms = (items: SelectItemDefault[], offset?: number, pageSize?: number) => ({
-  type: SET_PLAIN_ROOMS,
-  payload: { items, offset, pageSize }
-});
-
-export const setPlainRoomsSearch = (search: string) => ({
-  type: SET_PLAIN_ROOMS_SEARCH,
-  payload: { search }
-});

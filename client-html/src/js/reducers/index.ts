@@ -45,7 +45,6 @@ import {
 } from "../containers/entities/common/reducers";
 import { customFieldTypesReducer } from "../containers/entities/customFieldTypes/reducers";
 import { taxesReducer } from "../containers/entities/taxes/reducers";
-import { qualificationReducer } from "../containers/entities/qualifications/reducers";
 import { certificatesReducer } from "../containers/entities/certificates/reducers";
 import { membershipProductReducer } from "../containers/entities/membershipProducts/reducers";
 import { voucherProductReducer } from "../containers/entities/voucherProducts/reducers";
@@ -63,7 +62,6 @@ import { assessmentsReducer } from "../containers/entities/assessments/reducers"
 import { actionsQueueReducer } from "../common/reducers/actionsQueueReducer";
 import { messageReducer } from "../common/reducers/messageReducer";
 import { articleProductsReducer } from "../containers/entities/articleProducts/reducers";
-import { roomReducer } from "../containers/entities/rooms/reducers";
 import { checkoutReducer } from "../containers/checkout/reducers";
 import { swipeableDrawerReducer } from "../common/components/layout/swipeable-sidebar/reducers";
 import { enrolmentsReducer } from "../containers/entities/enrolments/reducers";
@@ -94,7 +92,6 @@ export const combinedReducers = combineReducers({
   share: shareReducer,
   lastLocation: lastLocationReducer,
   sites: siteReducer,
-  rooms: roomReducer,
   googleApiResponse: googleApiReducer,
   documents: documentReducer,
   dashboard: dashboardReducer,
@@ -113,7 +110,6 @@ export const combinedReducers = combineReducers({
   timetable: timetableReducer,
   quickSearchConcessionType: quickSearchConcessionTypeReducer,
   quickSearchCorporatePass: quickSearchCorporatePassReducer,
-  qualification: qualificationReducer,
   customFieldTypes: customFieldTypesReducer,
   membershipProducts: membershipProductReducer,
   voucherProducts: voucherProductReducer,

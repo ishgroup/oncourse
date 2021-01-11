@@ -15,7 +15,6 @@ import {
   createRoom, getRoom, removeRoom, updateRoom
 } from "./actions";
 import RoomEditView from "./components/RoomEditView";
-import { getSites } from "../sites/actions";
 import {
   setListEditRecord,
   clearListState,
@@ -24,6 +23,7 @@ import {
 import { getListTags } from "../../tags/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
 
 const manualLink = getManualLink("sitesRooms_rooms");
 
@@ -126,7 +126,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setListEditRecord(Initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
-  getSites: () => dispatch(getSites(0, "name,localTimezone")),
+  getSites: () => dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone")),
   getFilters: () => dispatch(getFilters("Room")),
   getTags: () => {
     dispatch(getListTags("Room"));

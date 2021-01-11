@@ -28,12 +28,12 @@ import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../../reducers/state";
 import { defaultContactName } from "../../../contacts/utils";
-import { getPlainRooms } from "../../../rooms/actions";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { stubFunction } from "../../../../../common/utils/common";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
 import EditInPlaceDurationField from "../../../../../common/components/form/form-fields/EditInPlaceDurationField";
 import { courseClassCloseBulkUpdateModal } from "./actions";
+import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
 
 const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
 
@@ -130,8 +130,8 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
 
   useEffect(() => {
     if (initial.siteId && !initial.roomId && rooms.length) {
-      dispatch(change(form, "roomId", rooms[0].value));
-      dispatch(change(form, "room", rooms[0].label));
+      dispatch(change(form, "roomId", rooms[0].id));
+      dispatch(change(form, "room", rooms[0].name));
     }
   }, [rooms]);
 
@@ -301,6 +301,7 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
                       entity="Site"
                       selectValueMark="id"
                       selectLabelMark="name"
+                      aqlColumns="name,localTimezone"
                       selectLabelCondition={siteRoomLabel}
                       defaultDisplayValue={initial.site}
                       onInnerValueChange={onSiteIdChange}
@@ -312,6 +313,8 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
                       type="select"
                       name="roomId"
                       label="Room"
+                      selectValueMark="id"
+                      selectLabelMark="name"
                       defaultValue={initial.room}
                       items={rooms || []}
                       disabled={!initial.siteId}
@@ -456,13 +459,14 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(initialize(COURSE_CLASS_BULK_UPDATE_FORM, initialValues));
   },
   getRooms: (search: string) => {
-    dispatch(getPlainRooms(null, null, null, null, search));
+    dispatch(setCommonPlainSearch("Room", search));
+    dispatch(getCommonPlainRecords("Room", 0, "name"));
   }
 });
 
 const mapStateToProps = (state: State) => ({
   bulkValues: getFormValues(COURSE_CLASS_BULK_UPDATE_FORM)(state),
-  rooms: state.rooms.items,
+  rooms: state.plainSearchRecords["Room"].items,
   tutors: state.courseClassesBulkSession.tutors,
   selection: state.courseClassesBulkSession.selection
 });

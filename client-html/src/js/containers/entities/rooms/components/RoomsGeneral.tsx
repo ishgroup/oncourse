@@ -172,7 +172,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Room"],
-  sites: state.sites.items
+  sites: state.plainSearchRecords["Site"].items
 });
 
 export default connect<any, any, any>(mapStateToProps, null)(RoomsGeneral);
