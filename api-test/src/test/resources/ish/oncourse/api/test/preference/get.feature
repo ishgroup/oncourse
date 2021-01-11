@@ -20,6 +20,13 @@ Feature: Main feature for all GET requests with path 'preference/'
         And match response[0].valueString == 'true'
 
         Given path ishPath
+        And param search = 'security.number.login.attempts'
+        When method GET
+        Then status 200
+        And match response[0].uniqueKey == 'security.number.login.attempts'
+        And match response[0].valueString == '5'
+
+        Given path ishPath
         And param search = 'security.password.complexity'
         When method GET
         Then status 200
