@@ -202,7 +202,7 @@ const PdfReportsForm = React.memo<Props>(
 
           <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialodSave} />
 
-          {(dirty || isNew) && <RouteChangeConfirm when={(dirty || isNew) && !disableRouteConfirm} />}
+          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
 
           <CustomAppBar>
             <FormField

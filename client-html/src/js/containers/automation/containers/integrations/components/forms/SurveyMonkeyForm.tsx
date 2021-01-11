@@ -29,12 +29,12 @@ class SurveyMonkeyBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      appBarContent, handleSubmit, onSubmit, dirty
+      appBarContent, handleSubmit, onSubmit, dirty, form
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm when={dirty} />}
+        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>{appBarContent}</CustomAppBar>
 
         <FormField name="fields.apiKey" label="API key" type="text" fullWidth />

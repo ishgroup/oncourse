@@ -35,6 +35,7 @@ interface Props {
   assetAccounts: any;
   liabilityAccounts: any;
   dirty: boolean;
+  form: string;
   invalid: boolean;
   openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
@@ -155,12 +156,12 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, handleSubmit, data, assetAccounts, liabilityAccounts, dirty, created, modified, invalid
+     classes, handleSubmit, data, assetAccounts, liabilityAccounts, dirty, created, modified, invalid, form
     } = this.props;
 
     return (
       <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

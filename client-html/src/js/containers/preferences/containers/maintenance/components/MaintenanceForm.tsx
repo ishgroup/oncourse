@@ -57,7 +57,7 @@ class MaintenanceBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      classes, handleSubmit, onSave, values, dirty, data, enums, invalid
+      classes, handleSubmit, onSave, values, dirty, data, enums, invalid, form
     } = this.props;
 
     const disableBackupFields = values && values[this.formModel.BackupEnabled.uniqueKey] === "false";
@@ -68,7 +68,7 @@ class MaintenanceBaseForm extends React.Component<any, any> {
 
     return (
       <form className="container" onSubmit={handleSubmit(onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

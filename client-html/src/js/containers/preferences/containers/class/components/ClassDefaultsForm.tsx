@@ -45,12 +45,12 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
 
   render() {
     const {
- handleSubmit, onSave, dirty, enums, data
-} = this.props;
+     handleSubmit, onSave, dirty, enums, data, form
+    } = this.props;
 
     return (
       <form className="container" onSubmit={handleSubmit(onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

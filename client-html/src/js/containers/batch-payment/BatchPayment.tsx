@@ -410,7 +410,8 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   invalid,
   dispatch,
   currencySymbol,
-  values
+  values,
+  form
 }) => {
   const [contactsLoading, setContactsLoading] = useState(false);
   const [filterByStoreCard, setFilterByStoreCard] = useState(true);
@@ -488,7 +489,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
 
   return (
     <form className="appBarContainer" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
-      <RouteChangeConfirm when={dirty} />
+      <RouteChangeConfirm form={form} when={dirty} />
       <LoadingIndicator appBarOffset transparentBackdrop customLoading={contactsLoading} />
 
       <CustomAppBar>
