@@ -58,6 +58,28 @@ Feature: Main feature for all POST requests with path 'preference/'
 #       <----->
 
 
+    Scenario: (+) Change "Number of allowed login attempts"
+
+        Given path ishPath
+        And request [{ uniqueKey: 'security.number.login.attempts', valueString: '10' }]
+        When method POST
+        Then status 204
+
+        Given path ishPath
+        And param search = 'security.number.login.attempts'
+        When method GET
+        Then status 200
+        And match response[0].uniqueKey == 'security.number.login.attempts'
+        And match response[0].valueString == '10'
+
+#       <-----> Scenario have been finished. Change value to default:
+        Given path ishPath
+        And request [{ uniqueKey: 'security.number.login.attempts', valueString: '5' }]
+        When method POST
+        Then status 204
+#       <----->
+
+
     Scenario: (+) Change "Require better password"
 
         Given path ishPath
@@ -181,6 +203,11 @@ Feature: Main feature for all POST requests with path 'preference/'
 
         Given path ishPath
         And request [{ uniqueKey: 'security.auto.disable.inactive.account', valueString: 'false' }]
+        When method POST
+        Then status 403
+
+        Given path ishPath
+        And request [{ uniqueKey: 'security.number.login.attempts', valueString: '10' }]
         When method POST
         Then status 403
 
