@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.integration.canvas
 
+import groovy.json.JsonException
 import groovy.json.JsonSlurper
 import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
@@ -35,7 +36,7 @@ class CanvasIntegration implements PluginTrait {
     public static final String CANVAS_CLIENT_SECRET_KEY = "clientSecret"
     public static final String CANVAS_ACCOUNT_ID_KEY = "accountId"
     public static final String CANVAS_REFRESH_TOKEN = "refreshToken"
-    public static final String CANVAS_REDIRECT_URL = "rediretcUrl"
+    public static final String CANVAS_REDIRECT_URL = "redirectUrl"
 
 
     String baseUrl
@@ -308,8 +309,14 @@ class CanvasIntegration implements PluginTrait {
                     code: props[(IntegrationApiImpl.VERIFICATION_CODE)]
                     ]
             response.success = { resp, Map data ->
-                String token =  new JsonSlurper().parseText(data.keySet()[0])['refresh_token']
-                configuration.setProperty(CANVAS_REFRESH_TOKEN, token)
+                try {
+                    String token = new JsonSlurper().parseText(data.keySet()[0])['refresh_token']
+                    configuration.setProperty(CANVAS_REFRESH_TOKEN, token)
+                } catch (JsonException ignore) {
+                    logger.error(data.toString())
+                    throw new RuntimeException(data.toString())
+                }
+                
             }
             response.failure = { HttpResponseDecorator resp  ->
                 String error = resp.responseBase.entity.content.getText("UTF-8")
