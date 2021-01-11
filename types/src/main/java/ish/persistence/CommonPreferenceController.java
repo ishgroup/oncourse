@@ -1762,6 +1762,8 @@ public abstract class CommonPreferenceController {
 			return getTwoFactorAuthStatus();
 		} else if (TFA_EXPIRY_PERIOD.equals(key)) {
 			return getTwoFactorAuthExpiryPeriod();
+		} else if (NUMBER_OF_LOGIN_ATTEMPTS.equals(key)) {
+			return getNumberOfLoginAttempts();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -1973,6 +1975,8 @@ public abstract class CommonPreferenceController {
 			setTwoFactorAuthStatus((TwoFactorAuthorizationStatus) value);
 		} else if (TFA_EXPIRY_PERIOD.equals(key)) {
 			setTwoFactorAuthExpiryPeriod((Integer) value);
+		} else if (NUMBER_OF_LOGIN_ATTEMPTS.equals(key)) {
+			setNumberOfLoginAttempts((Integer) value);
 		}
 	}
 
@@ -2166,6 +2170,7 @@ public abstract class CommonPreferenceController {
 
 	private static final boolean DEF_INACTIVE_ACCOUNT = true;
 	private static final boolean DEF_PASSWORD_COMPLEXITY = false;
+	private static final Integer DEF_NUMBER_LOGIN_ATTEMPTS = 5;
 	private static final TwoFactorAuthorizationStatus DEF_TFA_STATUS = TwoFactorAuthorizationStatus.DISABLED;
 
 	public boolean getAutoDisableInactiveAccounts() {
@@ -2174,7 +2179,16 @@ public abstract class CommonPreferenceController {
 	}
 
 	public void setAutoDisableInactiveAccounts(boolean value) {
-		setValue(AUTO_DISABLE_INACTIVE_ACCOUNT, false,Boolean.toString(value));
+		setValue(AUTO_DISABLE_INACTIVE_ACCOUNT, false, Boolean.toString(value));
+	}
+
+	public Integer getNumberOfLoginAttempts() {
+		String value = getValue(NUMBER_OF_LOGIN_ATTEMPTS, false);
+		return value == null ? DEF_NUMBER_LOGIN_ATTEMPTS : Integer.valueOf(value);
+	}
+
+	public void setNumberOfLoginAttempts(Integer value) {
+		setValue(NUMBER_OF_LOGIN_ATTEMPTS, false, value == null ? null : Integer.toString(value));
 	}
 
 	public boolean getPasswordComplexity() {

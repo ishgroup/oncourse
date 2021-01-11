@@ -592,4 +592,12 @@ public interface Preferences {
 	 */
 	@API
 	String TFA_EXPIRY_PERIOD = "security.tfa.expiry.period";
+
+	/**
+	 * Automatically disable accounts after <x> incorrect login attempts. 5 by default
+	 *
+	 * @param prefKey security.number.login.attempts
+	 */
+	@API
+	String NUMBER_OF_LOGIN_ATTEMPTS = "security.number.login.attempts";
 }
