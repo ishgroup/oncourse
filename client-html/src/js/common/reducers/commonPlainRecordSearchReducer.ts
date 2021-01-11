@@ -22,7 +22,7 @@ export interface CommonPlainRecordSearchState {
   [key: string]: CommonPlainSearchEntity;
 }
 
-const availableEntities = ["Assessment", "Qualification", "Module", "Contact", "Site", "Course", "CourseClass", "Enrolment"];
+const availableEntities = ["Assessment", "Qualification", "Module", "Contact", "Site", "Room", "Course", "CourseClass", "Enrolment"];
 
 const initial = availableEntities.reduce((p, c) => {
   p[c] = {
@@ -90,7 +90,7 @@ export const commonPlainRecordSearchReducer = (
             ...state[action.payload.key],
             items: [],
             search: "",
-            loading: false,
+            loading: action.payload.loading || false,
             rowsCount: 5000
           }
         }

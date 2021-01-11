@@ -9,13 +9,11 @@ import { EpicUpdateRoom } from "./EpicUpdateRoom";
 import { EpicCreateRoom } from "./EpicCreateRoom";
 import { EpicDeleteRoom } from "./EpicDeleteRoom";
 import { EpicValidateDeleteRoom } from "./EpicValidateDeleteRoom";
-import { EpicGetRooms } from "./EpicGetRooms";
 
 export const EpicRoom = combineEpics(
   EpicGetRoom,
   EpicUpdateRoom,
   EpicCreateRoom,
   EpicDeleteRoom,
-  EpicGetRooms,
   EpicValidateDeleteRoom
 );

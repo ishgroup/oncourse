@@ -34,8 +34,8 @@ export const getCommonPlainRecords = (
   }
 });
 
-export const clearCommonPlainRecords = (key: string) => ({
+export const clearCommonPlainRecords = (key: string, loading?: boolean) => ({
   type: CLEAR_COMMON_PLAIN_RECORDS,
-  payload: { key }
+  payload: { key, loading }
 });
 
