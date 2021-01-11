@@ -26,7 +26,7 @@ const request: EpicUtils.Request<any, any, Contact> = {
       lastName: p.lastName,
       email: p.email,
       birthDate: p.birthDate,
-      isCompany: p.isCompany.toString(),
+      isCompany: p.isCompany,
       invoiceTerms: p.invoiceTerms ? p.invoiceTerms.toString() : null,
       relations: p.relations && p.relations.length ? p.relations.map(r => ({
         id: r.id,
