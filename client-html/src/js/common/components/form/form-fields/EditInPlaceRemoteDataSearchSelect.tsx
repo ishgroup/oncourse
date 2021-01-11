@@ -11,18 +11,6 @@ import EditInPlaceSearchSelect from "./EditInPlaceSearchSelect";
 import { AnyArgFunction, NumberArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { State } from "../../../../reducers/state";
 import {
-  clearPlainQualificationItems,
-  getPlainQualifications, setPlainQualificationSearch
-} from "../../../../containers/entities/qualifications/actions";
-import { clearModuleItems, getModules, setModuleSearch } from "../../../../containers/entities/modules/actions";
-import { getSites, setPlainSites, setPlainSitesSearch } from "../../../../containers/entities/sites/actions";
-import { getPlainCourses, setPlainCourses, setPlainCoursesSearch } from "../../../../containers/entities/courses/actions";
-import {
-  clearAssessmentItems,
-  getAssessments,
-  setAssessmentSearch
-} from "../../../../containers/entities/assessments/actions";
-import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
@@ -60,6 +48,7 @@ const EntityResolver: React.FC<any> = (
   {
     entity,
     aqlFilter,
+    aqlColumns,
     ...rest
   }
 ) => {
@@ -83,14 +72,23 @@ const getDefaultColumns = entity => {
       return "course.name,course.code,code,feeIncGst";
     case "Contact":
       return "firstName,lastName,email,birthDate,street,suburb,state,postcode,invoiceTerms,taxOverride.id";
+    case "Site":
+      return "name,localTimezone";
   }
-  return null;
+  return "";
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
   const getSearch = search => (search ? `~"${search}"${ownProps.aqlFilter ? ` and ${ownProps.aqlFilter}` : ""}` : "");
   return {
-    onLoadMoreRows: (offset?: number) => dispatch(getCommonPlainRecords(ownProps.entity, offset, getDefaultColumns(ownProps.entity), true)),
+    onLoadMoreRows: (offset?: number) => dispatch(
+      getCommonPlainRecords(
+        ownProps.entity,
+        offset,
+        ownProps.aqlColumns || getDefaultColumns(ownProps.entity),
+        true
+      )
+    ),
     onSearchChange: (search: string) => dispatch(setCommonPlainSearch(ownProps.entity, getSearch(search))),
     onClearRows: () => dispatch(clearCommonPlainRecords(ownProps.entity))
   };
