@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import {
- reduxForm, initialize, getFormValues
+  reduxForm, initialize, getFormValues, change, touch
 } from "redux-form";
 import { connect } from "react-redux";
 import Typography from "@material-ui/core/Typography";
@@ -39,10 +39,11 @@ class CanvasBaseForm extends React.Component<any, any> {
 
       if (code && state) {
         const newValues = { ...JSON.parse(state) };
-        newValues.fields.verificationCode = code;
         newValues.fields.redirectUrl = window.location.origin;
 
         dispatch(initialize("CanvasForm", newValues));
+        dispatch(change("CanvasForm", "fields.verificationCode", code));
+
         canSave(true);
       }
     }
@@ -80,7 +81,7 @@ class CanvasBaseForm extends React.Component<any, any> {
 
     const { loading } = this.state;
 
-    const configured = values && values.verificationCode;
+    const configured = values && values.fields.verificationCode;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
