@@ -139,7 +139,9 @@ class IntegrationApiImpl implements IntegrationApi {
         configuration.modifiedOn = new Date()
 
         Map<String, String> props = data.props.collectEntries {[(it.key): it.value]}
-        props[(VERIFICATION_CODE)] = data.verificationCode
+        if (data.verificationCode) {
+            props[(VERIFICATION_CODE)] = data.verificationCode
+        }
 
         Method onSave = PluginService.onSave(configuration.type)
         if (onSave) {
