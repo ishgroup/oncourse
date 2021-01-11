@@ -489,6 +489,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
 
   return (
     <form className="appBarContainer" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
+      <RouteChangeConfirm form={form} when={dirty} />
       <LoadingIndicator appBarOffset transparentBackdrop customLoading={contactsLoading} />
 
       <CustomAppBar>

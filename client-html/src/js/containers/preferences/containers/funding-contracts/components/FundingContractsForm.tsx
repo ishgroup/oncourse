@@ -187,7 +187,7 @@ class FundingContractsForm extends React.Component<Props, any> {
     const {
      values, dirty, invalid, handleSubmit, hasLicence, timestamps, form
     } = this.props;
-console.log('invalid', invalid)
+
     return (
       <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
