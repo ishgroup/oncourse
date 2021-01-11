@@ -45,6 +45,7 @@ interface Props {
   handleSubmit: any;
   initialized: boolean;
   hasLicence: boolean;
+  form: string;
   timestamps: Date[];
   openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
   fetch?: Fetch;
@@ -173,12 +174,12 @@ class FundingContractsForm extends React.Component<Props, any> {
 
   render() {
     const {
-     values, dirty, invalid, handleSubmit, hasLicence, timestamps
+     values, dirty, invalid, handleSubmit, hasLicence, timestamps, form
     } = this.props;
 
     return (
       <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

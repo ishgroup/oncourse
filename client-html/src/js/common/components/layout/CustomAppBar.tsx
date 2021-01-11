@@ -28,8 +28,8 @@ const styles: any = theme => ({
 
 const CustomAppBar = props => {
   const {
- classes, children, noDrawer, width, openDrawer 
-} = props;
+   classes, children, noDrawer, width, openDrawer
+  } = props;
 
   const isSmallScreen = !isWidthUp("md", width);
 

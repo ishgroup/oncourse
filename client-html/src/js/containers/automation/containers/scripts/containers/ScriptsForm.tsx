@@ -330,7 +330,7 @@ const ScriptsForm = React.memo<Props>(props => {
       <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField />
 
       <form onSubmit={handleSubmit(handleSave)}>
-        {(dirty || isNew) && <RouteChangeConfirm when={!disableRouteConfirm && (dirty || isNew)} />}
+        {(dirty || isNew) && <RouteChangeConfirm form={form} when={!disableRouteConfirm && (dirty || isNew)} />}
         <CustomAppBar fullWidth noDrawer>
           <Grid container>
             <Grid item xs={12} className={clsx("centeredFlex", "relative")}>
