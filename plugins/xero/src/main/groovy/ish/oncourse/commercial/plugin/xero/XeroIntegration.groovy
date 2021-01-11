@@ -194,7 +194,15 @@ Review all the other employee settings and ensure they are correct.
 			]
 
 			response.failure = { resp, result ->
+				
 				logger.error(result.toString())
+				emailService.email {
+					subject('onCourse->Xero manual journal export failed')
+					content("$narration \n Reason: $result")
+					from (preferenceController.emailFromAddress)
+					to (preferenceController.emailAdminAddress)
+				}
+				
 				throw new RuntimeException(result.toString())
 			}
 			response.success = { resp, result ->
