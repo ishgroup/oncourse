@@ -37,6 +37,17 @@ export function mockAssessments() {
     this.assessments = assessments;
   };
 
+  this.createNewAssessment = () => ({
+    id: 21,
+    code: "code 21",
+    name: "name 21",
+    description: "test description",
+    active: true,
+    documents: [],
+    notes: [],
+    tags: [this.getTag(1)]
+  });
+
   this.removeAssessment = id => {
     this.assessments = this.assessments.rows.filter(a => a.id !== id);
   };
