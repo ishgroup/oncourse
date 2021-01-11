@@ -131,6 +131,7 @@ class PreferenceFunctions {
             case BACKUP_TIMEOFDAY:
             case PASSWORD_EXPIRY_PERIOD:
             case TFA_EXPIRY_PERIOD:
+            case NUMBER_OF_LOGIN_ATTEMPTS:
                 return Integer.valueOf(value)
             case CLASS_DEFAULTS_DELIVERY_MODE:
                 return TypesUtil.getEnumForDatabaseValue(Integer.valueOf(value), DeliveryMode)
