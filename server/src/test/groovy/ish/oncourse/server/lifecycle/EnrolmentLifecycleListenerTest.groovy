@@ -5,6 +5,8 @@
 package ish.oncourse.server.lifecycle
 
 import ish.CayenneIshTestCase
+import ish.common.types.ConfirmationStatus
+import ish.common.types.CourseClassAttendanceType
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
 import ish.common.types.StudyReason
@@ -125,6 +127,8 @@ class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
         enrol1.setVetFeeIndicator(false)
         enrol1.setVetIsFullTime(false)
         enrol1.setStatus(EnrolmentStatus.IN_TRANSACTION)
+        enrol1.setConfirmationStatus(ConfirmationStatus.NOT_SENT)
+        enrol1.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
 
         Enrolment enrol2 = context.newObject(Enrolment.class)
         enrol2.setStudent(student2)
@@ -135,6 +139,8 @@ class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
         enrol2.setVetFeeIndicator(false)
         enrol2.setVetIsFullTime(false)
         enrol2.setStatus(EnrolmentStatus.IN_TRANSACTION)
+        enrol2.setConfirmationStatus(ConfirmationStatus.NOT_SENT)
+        enrol2.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
 
         context.commitChanges()
 
