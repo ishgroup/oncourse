@@ -10,7 +10,7 @@ import {
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_ADD_ITEM,
   CHECKOUT_REMOVE_CONTACT,
-  CHECKOUT_REMOVE_ITEM, CHECKOUT_TOGGLE_SUMMARY_ITEM,
+  CHECKOUT_REMOVE_ITEM, CHECKOUT_TOGGLE_SUMMARY_ITEM, CHECKOUT_UPDATE_CLASS_ITEM,
   CHECKOUT_UPDATE_CONTACT
 } from "../../actions";
 import CourseClassAttendanceService
@@ -154,7 +154,8 @@ export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action
       CHECKOUT_REMOVE_CONTACT,
       CHECKOUT_UPDATE_CONTACT,
       CHECKOUT_REMOVE_ITEM,
-      CHECKOUT_TOGGLE_SUMMARY_ITEM
+      CHECKOUT_TOGGLE_SUMMARY_ITEM,
+      CHECKOUT_UPDATE_CLASS_ITEM
     ),
     debounce(() => interval(500)),
     mergeMap(async () => {
