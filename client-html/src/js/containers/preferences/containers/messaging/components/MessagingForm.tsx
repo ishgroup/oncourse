@@ -71,14 +71,15 @@ class MessagingBaseForm extends React.Component<any, any> {
       smsCount,
       dirty,
       data,
-      invalid
+      invalid,
+      form
     } = this.props;
 
     const emailBounceEnabled = values && values[this.formModel.EmailBounceEnabled.uniqueKey] === "true";
 
     return (
       <form className="container" onSubmit={handleSubmit(onSave)}>
-        <RouteChangeConfirm when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>

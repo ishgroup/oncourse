@@ -97,6 +97,7 @@ interface FormProps extends Props {
   classes: any;
   dispatch: any;
   className: string;
+  form: string;
   updateUser: (user: User) => void;
   resetUserPassword: (id: number) => void;
   disableUser2FA: (id: number) => void;
@@ -247,14 +248,15 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       dirty,
       validateUniqueNames,
       isNew,
-      invalid
+      invalid,
+      form
     } = this.props;
 
     const { showMessage, messageText } = this.state;
 
     return (
       <form onSubmit={handleSubmit(this.onSave)} className={className}>
-        {!isNew && dirty && <RouteChangeConfirm when={dirty} />}
+        {!isNew && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <Message opened={showMessage} isSuccess text={messageText} clearMessage={this.clearMessage} />
 

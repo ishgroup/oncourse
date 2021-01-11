@@ -51,6 +51,7 @@ interface Props {
   handleSubmit: any;
   dirty: boolean;
   invalid: boolean;
+  form: string;
   onDelete: (id: string) => void;
   onUpdate: (customFields: CustomFieldType[]) => void;
   openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
@@ -171,7 +172,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
 
   render() {
     const {
-      classes, handleSubmit, data, dirty, dispatch, created, modified, invalid
+      classes, handleSubmit, data, dirty, dispatch, created, modified, invalid, form
     } = this.props;
 
     const { fieldToDelete } = this.state;
@@ -180,7 +181,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
       <>
         <CustomFieldsDeleteDialog setFieldToDelete={this.setFieldToDelete} item={fieldToDelete} onConfirm={this.onDeleteConfirm} />
         <form className={classes.container} noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-          <RouteChangeConfirm when={dirty} />
+          <RouteChangeConfirm form={form} when={dirty} />
           <CustomAppBar>
             <Grid container>
               <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
