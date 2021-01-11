@@ -10,8 +10,13 @@ import { Dispatch } from "redux";
 import { Site } from "@api/model";
 import { Grid } from "@material-ui/core";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { getSites, setPlainSites } from "../../sites/actions";
 import { State } from "../../../../reducers/state";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../common/actions/CommonPlainRecordsActions";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 class WaitingListSites extends React.PureComponent<any, any> {
   sitesToNestedListItems = (sites: Site[]) =>
@@ -89,13 +94,16 @@ class WaitingListSites extends React.PureComponent<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  foundQuickSearchSites: state.sites.items,
-  pendingQuickSearchSites: state.sites.loading
+  foundQuickSearchSites: state.plainSearchRecords["Site"].items,
+  pendingQuickSearchSites: state.plainSearchRecords["Site"].loading
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getQuickSearchSites: (search: string) => dispatch(getSites(null, "name,suburb,postcode", null, null, search)),
-    clearSites: () => dispatch(setPlainSites([]))
+    getQuickSearchSites: (search: string) => {
+      dispatch(setCommonPlainSearch( "Site", search));
+      dispatch(getCommonPlainRecords("Site", 0, "name,suburb,postcode", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    },
+    clearSites: () => dispatch(clearCommonPlainRecords("Site"))
   });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(WaitingListSites);
