@@ -1,5 +1,4 @@
 import { initialize } from "redux-form";
-import { mockedAPI } from "../../TestEntry";
 import { DefaultEpic } from "../../common/Default.Epic";
 import { getArticleProduct } from "../../../js/containers/entities/articleProducts/actions";
 import { EpicGetArticleProduct } from "../../../js/containers/entities/articleProducts/epics/EpicGetArticleProduct";
@@ -10,8 +9,8 @@ describe("Get article product epic tests", () => {
   it("EpicGetArticleProduct should returns correct values", () => DefaultEpic({
     action: getArticleProduct("1"),
     epic: EpicGetArticleProduct,
-    processData: () => {
-      const articleProduct = mockedAPI.db.getArticleProduct(1);
+    processData: mockedApi => {
+      const articleProduct = mockedApi.db.getArticleProduct(1);
       return [
         {
           type: SET_LIST_EDIT_RECORD,

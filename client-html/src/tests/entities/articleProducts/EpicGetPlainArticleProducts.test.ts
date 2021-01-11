@@ -1,5 +1,4 @@
 import { ArticleProduct } from "@api/model";
-import { mockedAPI } from "../../TestEntry";
 import { DefaultEpic } from "../../common/Default.Epic";
 import {
   GET_PLAIN_ARTICLE_PRODUCT_ITEMS_FULFILLED,
@@ -15,8 +14,8 @@ describe("Get plain article products epic tests", () => {
   it("EpicGetPlainArticleProducts should returns correct values", () => DefaultEpic({
     action: getPlainArticleProducts(),
     epic: EpicGetPlainArticleProducts,
-    processData: () => {
-      const response = mockedAPI.db.getPlainArticleProductList();
+    processData: mockedApi => {
+      const response = mockedApi.db.getPlainArticleProductList();
       const rows = response.rows;
       const columns = null;
       const offset = 0;
