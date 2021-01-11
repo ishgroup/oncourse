@@ -13,7 +13,6 @@ import {
   PaymentMethod, Sale,
   VoucherProduct
 } from "@api/model";
-import { CheckoutFundingInvoice } from "./fundingInvoice";
 
 export type CheckoutEntity = "contact"
   | "course"
@@ -135,7 +134,7 @@ export interface CheckoutContact extends CheckoutListRow {
   lastName: string;
   email: string;
   birthDate: string;
-  isCompany: string;
+  isCompany: boolean;
   invoiceTerms: string;
   relations: CheckoutContactRelation[];
   message?: string;
