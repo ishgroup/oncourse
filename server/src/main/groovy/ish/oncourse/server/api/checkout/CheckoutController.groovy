@@ -324,7 +324,7 @@ class CheckoutController {
             //else set the initial value as $0
             voucher.redemptionValue = new Money(dto.value)
         }
-        voucher.valueOnPurchase = product.priceExTax != null ? product.priceExTax : voucher.redemptionValue
+        voucher.valueOnPurchase = voucher.redemptionValue
         voucher.redeemedCourseCount = 0
 
         invoiceLine.quantity = ONE
