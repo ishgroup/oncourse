@@ -296,7 +296,7 @@ class CanvasIntegration implements PluginTrait {
         configuration.setProperty(CANVAS_CLIENT_SECRET_KEY,props[CANVAS_CLIENT_SECRET_KEY])
         configuration.setProperty(CANVAS_ACCOUNT_ID_KEY,props[CANVAS_ACCOUNT_ID_KEY])
 
-        new RESTClient(props[CANVAS_BASE_URL_KEY]).request(Method.POST, ContentType.URLENC) {
+        new RESTClient("https://" + props[CANVAS_BASE_URL_KEY]).request(Method.POST, ContentType.URLENC) {
             headers.Accept = 'application/json'
 
             uri.path = '/login/oauth2/token'
