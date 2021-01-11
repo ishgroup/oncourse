@@ -17,6 +17,8 @@ import groovy.transform.CompileStatic
 import io.bootique.jetty.servlet.DefaultServletEnvironment
 import static ish.oncourse.cayenne.SystemUserInterface.DEFAULT_ISH_USER
 import ish.oncourse.server.CayenneService
+
+import static ish.oncourse.server.api.servlet.AngelSessionDataStore.ATTEMPT_NUMBER
 import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
 import static ish.oncourse.server.api.servlet.AngelSessionDataStore.IS_LOGIN
 import ish.oncourse.server.cayenne.SystemUser
@@ -78,12 +80,37 @@ class SessionManager implements ISessionManager {
                 .intValue()
     }
 
+    void disableUserAfterIncorrectLoginAttempts(SystemUser user, Integer allowedNumberOfAttempts, HttpServletRequest request) {
+        Session session = request.session as Session
+
+        Map<Long, Integer> map = session.getAttribute(ATTEMPT_NUMBER) != null ?
+                session.getAttribute(ATTEMPT_NUMBER) as Map<Long, Integer> :
+                [(user.id) : 0]
+
+        int doneNumberOfAttempts = ++(map[user.id]?:0 as int)
+        if (allowedNumberOfAttempts <= doneNumberOfAttempts) {
+            disableUserAccount(user)
+        }
+        map[user.id] = doneNumberOfAttempts
+
+        session.setAttribute(ATTEMPT_NUMBER, map)
+    }
+
+    static void disableUserAccount(SystemUser user) {
+        user.isActive = Boolean.FALSE
+        user.context.commitChanges()
+    }
+
     void createUserSession(SystemUser user, Integer timeoutSec, HttpServletRequest request) {
 
         Session session = request.session as Session
         session.setAttribute(USER_ATTRIBUTE, user)
         session.setAttribute(IS_LOGIN, true)
         session.setMaxInactiveInterval(timeoutSec)
+
+        if (session.getAttribute(ATTEMPT_NUMBER) && session.getAttribute(ATTEMPT_NUMBER)[user.login]) {
+            (session.getAttribute(ATTEMPT_NUMBER) as Map<String, Integer>).remove(user.login)
+        }
 
         logger.warn("User '$user.login' logged in from '$request.remoteAddr' via browser.")
     }
