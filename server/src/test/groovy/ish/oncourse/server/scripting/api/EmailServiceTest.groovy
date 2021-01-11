@@ -35,12 +35,7 @@ class EmailServiceTest extends CayenneIshTestCase {
 		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
 		builder.setColumnSensing(true)
 		FlatXmlDataSet dataSet = builder.build(st)
-
-		ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-		rDataSet.addReplacementObject("[null]", null)
-
-		resetAutoIncrement()
-		executeDatabaseOperation(rDataSet)
+		executeDatabaseOperation(dataSet)
 	}
 
 
