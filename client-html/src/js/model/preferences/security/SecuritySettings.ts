@@ -6,6 +6,12 @@ export const SecurityAutoDisableInactiveAccount: PreferenceSchema = {
   editable: true
 };
 
+export const SecurityNumberIncorrectLoginAttempts: PreferenceSchema = {
+  uniqueKey: "security.number.login.attempts",
+  mandatory: false,
+  editable: true
+};
+
 export const SecurityPasswordComplexity: PreferenceSchema = {
   uniqueKey: "security.password.complexity",
   mandatory: true,
