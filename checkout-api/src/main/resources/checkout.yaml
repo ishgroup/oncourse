@@ -1235,6 +1235,8 @@ definitions:
       - TAGGROUP_S
       - TAGGROUP_M
       - MAILINGLIST
+      - MONEY
+      - URL
   field.Field:
     type: object
     requred:

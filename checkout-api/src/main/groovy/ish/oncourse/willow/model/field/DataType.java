@@ -41,7 +41,11 @@ public enum DataType {
   
   TAGGROUP_M("TAGGROUP_M"),
   
-  MAILINGLIST("MAILINGLIST");
+  MAILINGLIST("MAILINGLIST"),
+  
+  MONEY("MONEY"),
+  
+  URL("URL");
 
   private String value;
 

@@ -19,6 +19,8 @@ export const DataType = createStringEnum([
   'TAGGROUP_S',
   'TAGGROUP_M',
   'MAILINGLIST',
+  'MONEY',
+  'URL',
 ]);
 
 export type DataType = keyof typeof DataType;
