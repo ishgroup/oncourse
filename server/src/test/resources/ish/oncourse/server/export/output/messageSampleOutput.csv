@@ -1,7 +1,7 @@
 id,contacts,createdOn,createdBy,emailFrom,emailSubject,emailHtmlBody,emailBody,smsText,postDescription
-1000,,7-8-2019 19:30:13,notadmin,sales@gmail.com,Invoice 8 Payment Reminder,test@test1,some body 1,sms,post
-1001,,7-8-2019 19:30:15,notadmin,sales@gmail.com,Invoice 10 Payment Reminder,test@test2,some body 2,sms,post
-1002,,7-8-2019 19:30:16,notadmin,sales@gmail.com,Invoice 12 Payment Reminder,test@test3,some body 3,sms,post
-1003,,7-8-2019 19:30:17,notadmin,sales@gmail.com,Invoice 13 Payment Reminder,test@test4,some body 4,sms,post
-1004,,7-8-2019 19:30:17,notadmin,sales@gmail.com,Invoice 14 Payment Reminder,test@test5,some body 5,sms,post
-1005,,7-8-2019 19:30:18,notadmin,sales@gmail.com,Invoice 15 Payment Reminder,test@test6,some body 6,sms,post
+1000,,7-8-2019 19:30:13,notadmin@gmail.com,sales@gmail.com,Invoice 8 Payment Reminder,test@test1,some body 1,sms,post
+1001,,7-8-2019 19:30:15,notadmin@gmail.com,sales@gmail.com,Invoice 10 Payment Reminder,test@test2,some body 2,sms,post
+1002,,7-8-2019 19:30:16,notadmin@gmail.com,sales@gmail.com,Invoice 12 Payment Reminder,test@test3,some body 3,sms,post
+1003,,7-8-2019 19:30:17,notadmin@gmail.com,sales@gmail.com,Invoice 13 Payment Reminder,test@test4,some body 4,sms,post
+1004,,7-8-2019 19:30:17,notadmin@gmail.com,sales@gmail.com,Invoice 14 Payment Reminder,test@test5,some body 5,sms,post
+1005,,7-8-2019 19:30:18,notadmin@gmail.com,sales@gmail.com,Invoice 15 Payment Reminder,test@test6,some body 6,sms,post
