@@ -59,6 +59,7 @@ import { ReportOverlayApiMock } from "./api/automation/ReportOverlayApiMock";
 import { AccessApiMock } from "./api/common/AccessApiMock";
 import { EmailTemplateApiMock } from "./api/automation/EmailTemplateApiMock";
 import { ImportTemplateApiMock } from "./api/automation/ImportTemplateApiMock";
+import { EntityRelationTypesApiMock } from "./api/preference/EntityRelationTypesApiMock";
 
 export const initMockDB = () => new MockAdapter();
 
@@ -80,6 +81,7 @@ export class MockAdapter {
     TaxTypesApiMock.apply(this);
     ConcessionTypesApiMock.apply(this);
     ContactRelationTypesApiMock.apply(this);
+    EntityRelationTypesApiMock.apply(this);
     CustomFieldApiMock.apply(this);
 
     // User Preferences
