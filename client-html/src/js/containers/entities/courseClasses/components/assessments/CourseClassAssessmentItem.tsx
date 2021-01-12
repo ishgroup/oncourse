@@ -13,7 +13,6 @@ import { Assessment, AssessmentClass, CourseClassTutor } from "@api/model";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { AnyArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { stubComponent } from "../../../../../common/utils/common";
 import { defaultContactName } from "../../../contacts/utils";
 
@@ -25,12 +24,6 @@ interface Props {
   twoColumn?: boolean;
   row?: AssessmentClass;
   rows?: AssessmentClass[];
-  assessments?: AssessmentClass[];
-  assessmentsLoading?: boolean;
-  assessmentsRowsCount?: number;
-  getAssessments?: AnyArgFunction;
-  setAssessmentSearch?: StringArgFunction;
-  clearAssessmentItems?: AnyArgFunction;
 }
 
 const CourseClassAssessmentItem: React.FC<Props> = props => {

@@ -24,11 +24,17 @@ import { State } from "../../../../reducers/state";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import {
- clearMinMaxFee, clearSearchCourses, getMinMaxFee, searchCourses
+ getMinMaxFee, clearMinMaxFee
 } from "../actions";
 import EditInPlaceMoneyField from "../../../../common/components/form/form-fields/EditInPlaceMoneyField";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../common/actions/CommonPlainRecordsActions";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -317,8 +323,11 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  searchCourses: (search: string) => dispatch(searchCourses(search)),
-  clearCourses: (pending: boolean) => dispatch(clearSearchCourses(pending)),
+  searchCourses: (search: string) => {
+    dispatch(setCommonPlainSearch("Course", search));
+    dispatch(getCommonPlainRecords("Course", 0, "code,name", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+  },
+  clearCourses: (pending: boolean) => dispatch(clearCommonPlainRecords("Course", pending)),
   getMinMaxFee: (ids: string) => dispatch(getMinMaxFee(ids))
 });
 
@@ -327,8 +336,8 @@ const mapStateToProps = (state: State) => ({
   currency: state.currency,
   minFee: state.voucherProducts.minFee,
   maxFee: state.voucherProducts.maxFee,
-  foundCourses: state.voucherProducts.foundCourses,
-  pendingCourses: state.voucherProducts.pendingCourses
+  foundCourses: state.plainSearchRecords["Course"].items,
+  pendingCourses: state.plainSearchRecords["Course"].loading
 });
 
 export default connect<any, any, any>(
