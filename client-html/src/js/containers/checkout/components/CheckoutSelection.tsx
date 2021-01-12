@@ -47,7 +47,9 @@ import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
 import { latestActivityStorageHandler } from "../../../common/utils/storage";
 import { getCustomFieldTypes } from "../../entities/customFieldTypes/actions";
 import {
-  CHECKOUT_CONTACT_COLUMNS, CHECKOUT_MEMBERSHIP_COLUMNS, CHECKOUT_PRODUCT_COLUMNS, CHECKOUT_VOUCHER_COLUMNS,
+  CHECKOUT_CONTACT_COLUMNS,
+  CHECKOUT_MEMBERSHIP_COLUMNS, CHECKOUT_PRODUCT_COLUMNS,
+  CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep
 } from "../constants";
 import {
