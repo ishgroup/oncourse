@@ -9,9 +9,14 @@ import NestedList, {
   NestedListItem,
   NestedListPanelItem
 } from "../../../../common/components/form/nestedList/NestedList";
-import { clearDiscountsSearch, searchDiscounts } from "../actions";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../common/actions/CommonPlainRecordsActions";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 interface MembershipDiscountsProps extends EditViewProps<MembershipProduct>{
   foundDiscounts?: MembershipDiscount[];
@@ -127,14 +132,27 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
 };
 
 const mapStateToProps = (state: State) => ({
-  foundDiscounts: state.membershipProducts.discountItems,
-  discountsPending: state.membershipProducts.discountsPending,
-  contactRelationTypes: state.membershipProducts.contactRelationTypes
+  foundDiscounts: state.plainSearchRecords["Discount"].items
+    .map(d => ({ discountId: d.id, discountName: d.name }))
+    .sort((a, b) => {
+      if (a.discountId < b.discountId) {
+        return -1;
+      }
+      if (a.discountId > b.discountId) {
+        return 1;
+      }
+      return 0;
+    }),
+  discountsPending: state.plainSearchRecords["Discount"].loading,
+  contactRelationTypes: state.plainSearchRecords["ContactRelationType"].items.map(r => ({ id: r.id, description: r.toContactName }))
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  searchDiscounts: (search: string) => dispatch(searchDiscounts(search)),
-  clearDiscountsSearch: (pending: boolean) => dispatch(clearDiscountsSearch(pending))
+  searchDiscounts: (search: string) => {
+    dispatch(setCommonPlainSearch("Discount", `${search} and (validTo == null or validTo >= today)`));
+    dispatch(getCommonPlainRecords("Discount", 0, "name", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+  },
+  clearDiscountsSearch: (pending: boolean) => dispatch(clearCommonPlainRecords("Discount", pending))
 });
 
 export default connect<any, any, any>(

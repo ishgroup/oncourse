@@ -61,7 +61,15 @@ export const formatRelatedSalables = (relatedItems, type?: SaleType) => relatedI
     link: entityName === SaleType.Class
       ? `/${Classes.path}?search=id is ${entityId}`
       : `/${entityForLink(entityName)}/${entityId}`,
-    active: typeof r.active === "boolean" ? r.active : typeof r.isOffered === "boolean" ? r.isOffered : true,
+    active: typeof r.active === "boolean"
+      ? r.active
+      : typeof r.isOffered === "boolean"
+        ? r.isOffered
+        : typeof r.currentlyOffered === "boolean"
+          ? r.currentlyOffered
+          : typeof r.isShownOnWeb === "boolean"
+            ? r.isShownOnWeb
+            : true,
     ...r
   };
 });

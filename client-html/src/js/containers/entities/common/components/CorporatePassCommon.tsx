@@ -11,7 +11,12 @@ import { change } from "redux-form";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
-import { clearQuickSearchCorporatePasses, quickSearchCorporatePasses } from "../actions";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../common/actions/CommonPlainRecordsActions";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 const styles = createStyles(({ spacing }: AppTheme) => ({
   root: {
@@ -43,15 +48,15 @@ class VoucherProductCorporatePasses extends React.PureComponent<any, any> {
       values, dispatch, form, foundCorporatePassItems, path
     } = this.props;
     const passes = values[path].concat(
-      items.map(item => foundCorporatePassItems.find(c => item.id === c.id))
+      items.map(item => foundCorporatePassItems.find(c => item.entityId === c.id))
     );
     dispatch(change(form, path, passes));
   };
 
   onDeleteCorporatePass = (item: NestedListItem) => {
     const {
- values, dispatch, form, path
-} = this.props;
+     values, dispatch, form, path
+    } = this.props;
     const passes = values[path].filter(c => item.entityId !== c.id);
     dispatch(change(form, path, passes));
   };
@@ -86,7 +91,7 @@ class VoucherProductCorporatePasses extends React.PureComponent<any, any> {
             titleCaption={titleCaption}
             searchPlaceholder="Add corporate pass"
             values={corporatePassItems}
-            searchValues={foundCorporatePassItems ? corporatePassToNestedListItem(foundCorporatePassItems) : []}
+            searchValues={corporatePassToNestedListItem(foundCorporatePassItems)}
             onSearch={searchCorporatePasses}
             clearSearchResult={clearCorporatePasses}
             pending={pending}
@@ -106,13 +111,16 @@ class VoucherProductCorporatePasses extends React.PureComponent<any, any> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  searchCorporatePasses: (search: string) => dispatch(quickSearchCorporatePasses(search)),
-  clearCorporatePasses: (pending: boolean) => dispatch(clearQuickSearchCorporatePasses(pending))
+  searchCorporatePasses: (search: string) => {
+    dispatch(setCommonPlainSearch("CorporatePass", `${search ? `${search} and ` : ""}(expiryDate is null or expiryDate >= today)`));
+    dispatch(getCommonPlainRecords("CorporatePass", 0, "contact.fullName", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+  },
+  clearCorporatePasses: (pending: boolean) => dispatch(clearCommonPlainRecords("CorporatePass", pending))
 });
 
 const mapStateToProps = (state: State) => ({
-  foundCorporatePassItems: state.quickSearchCorporatePass.items,
-  pending: state.quickSearchCorporatePass.pending
+  foundCorporatePassItems: state.plainSearchRecords["CorporatePass"].items.map(i => ({ id: i.id, contactFullName: i["contact.fullName"] })),
+  pending: state.plainSearchRecords["CorporatePass"].loading
 });
 
 export default connect<any, any, any>(

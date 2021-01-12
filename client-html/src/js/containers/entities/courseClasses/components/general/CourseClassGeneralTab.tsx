@@ -430,11 +430,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["CourseClass"],
-  tutorRoles: state.preferences.tutorRoles,
-  courses: state.courses.items,
-  coursesSearch: state.courses.search,
-  coursesLoading: state.courses.loading,
-  coursesRowsCount: state.courses.rowsCount
+  tutorRoles: state.preferences.tutorRoles
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseClassGeneralTab);
