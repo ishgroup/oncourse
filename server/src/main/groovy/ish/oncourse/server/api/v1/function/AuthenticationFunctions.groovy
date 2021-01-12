@@ -21,7 +21,6 @@ import ish.oncourse.server.cayenne.ACLRole
 import ish.oncourse.server.cayenne.SystemUser
 import ish.security.AuthenticationUtil
 import ish.security.LdapAuthConnection
-import ish.util.Constants
 import static ish.util.Constants.TOTP_COOKIE_NAME
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -29,9 +28,6 @@ import org.apache.commons.lang3.ArrayUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.eclipse.jetty.http.HttpCookie
-import org.eclipse.jetty.server.Request
-import org.eclipse.jetty.server.Response
 
 import javax.naming.NamingException
 import javax.naming.ldap.LdapName
@@ -69,6 +65,15 @@ class AuthenticationFunctions {
         }
 
         objectSelect.selectOne(context)
+    }
+
+    static void updateLoginAttemptNumber(SystemUser user, Integer allowedNumberOfAttempts, Integer newAttemptNumber = null) {
+        user.loginAttemptNumber = newAttemptNumber ?: ++(user.loginAttemptNumber)
+
+        if (allowedNumberOfAttempts <= user.loginAttemptNumber) {
+            user.isActive = Boolean.FALSE
+        }
+        user.context.commitChanges()
     }
 
     static String checkLdapAuth(SystemUser user, String password, PreferenceController prefController) {
