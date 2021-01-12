@@ -190,7 +190,7 @@ Feature: Main feature for all PUT requests with path 'login'
         And request loginBody
         When method PUT
         Then status 401
-        And match response.errorMessage == 'Invalid login / password'
+        And match response.errorMessage == 'Invalid email / password'
 
         #       <-----> Return value to default
         * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
@@ -341,7 +341,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 400
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Login / password data must be specified'
+        And match response.errorMessage == 'Email / password data must be specified'
 
 
 
@@ -353,7 +353,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 400
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Login / password data must be specified'
+        And match response.errorMessage == 'Email / password data must be specified'
 
 
 
@@ -376,7 +376,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 400
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Login / password data must be specified'
+        And match response.errorMessage == 'Email / password data must be specified'
 
 
 
@@ -399,7 +399,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 400
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Login / password data must be specified'
+        And match response.errorMessage == 'Email / password data must be specified'
 
 
 
@@ -431,7 +431,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 401
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Invalid login / password'
+        And match response.errorMessage == 'Invalid email / password'
 
 
 
@@ -443,7 +443,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 401
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Invalid login / password'
+        And match response.errorMessage == 'Invalid email / password'
 
 
 #    Scenario: (-) Authorize as admin without 2fa when "2FA required for admin users" is enabled
