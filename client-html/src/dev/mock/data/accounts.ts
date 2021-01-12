@@ -2,9 +2,7 @@ import { AccountType, Account } from "@api/model";
 import { generateArraysOfRecords } from "../mockUtils";
 
 export function mockAccounts(): Account[] {
-  this.getAccounts = () => {
-    return this.account;
-  };
+  this.getAccounts = () => this.account;
 
   this.getPlainAccounts = () => {
     const rows = generateArraysOfRecords(20, [
@@ -35,12 +33,12 @@ export function mockAccounts(): Account[] {
     const row = this.getAccountList().rows.find(row => row.id == id);
     return {
       accountCode: row.values[0],
-      createdOn: new Date().toISOString(),
+      createdOn: "2021-01-08T12:59:54.833Z",
       description: row.values[3],
       id: row.id,
       isDefaultAccount: true,
       isEnabled: true,
-      modifiedOn: new Date().toISOString(),
+      modifiedOn: "2021-01-08T12:59:54.833Z",
       tax: null,
       type: row.values[2]
     };
@@ -60,6 +58,14 @@ export function mockAccounts(): Account[] {
 
     this.accounts = accounts;
   };
+
+  this.createNewAccount = () => ({
+    accountCode: "accountCode21",
+    description: "description 21",
+    isEnabled: true,
+    tax: null,
+    type: "asset",
+  });
 
   this.removeAccount = id => {
     this.accounts = this.accounts.rows.filter(m => m.id !== id);

@@ -41,7 +41,7 @@ import { mockScripts } from "./data/automation/scripts";
 import { mockListExport } from "./data/listExport";
 import { mockAvetmissExport, mockAvetmissExportOutcomes, mockAvetmissExportSettings } from "./data/avetmissExport";
 import { mockFilters } from "./data/filters";
-import { mockDashboardStatistics } from "./data/dashboard";
+import { mockDashboard } from "./data/dashboard";
 import { mockUserPreferences } from "./data/userPreferences";
 import { mockTags } from "./data/tags";
 import { mockWaitingLists } from "./data/entities/waitingLists";
@@ -86,6 +86,7 @@ import { mockAccessApi } from "./data/accessApi";
 import { mockEmailTemplates } from "./data/automation/emailTemplates";
 import { mockImportTemplates } from "./data/automation/importTemplates";
 import { mockEntityRelationTypes } from "./data/entityRelationTypes";
+import { mockNotes } from "./data/notes";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -142,7 +143,7 @@ export class MockDB {
 
   exportSettings: AvetmissExportSettings;
 
-  dashboardStatistics: StatisticData;
+  dashboard: any;
 
   currency: Currency;
 
@@ -216,6 +217,8 @@ export class MockDB {
 
   accessApi: PermissionResponse;
 
+  notes: any;
+
   constructor() {
     this.init();
   }
@@ -236,6 +239,7 @@ export class MockDB {
     this.entityRelationTypes = mockEntityRelationTypes.call(this);
     this.customFields = mockCustomFields.call(this);
     this.listExport = mockListExport.call(this);
+    this.notes = mockNotes.call(this);
 
     //  Automation
     this.scripts = mockScripts.call(this);
@@ -271,7 +275,7 @@ export class MockDB {
     this.currency = mockCurrency.call(this);
 
     // Dashboard
-    this.dashboardStatistics = mockDashboardStatistics.call(this);
+    this.dashboard = mockDashboard.call(this);
 
     // Timezones
     this.timezones = mockTimezones.call(this);
