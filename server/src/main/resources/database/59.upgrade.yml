@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 59-1
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: SystemUser
+              columnName: loginAttemptNumber
+      changes:
+        - addColumn:
+            tableName: SystemUser
+            columns:
+              - column:
+                  name: loginAttemptNumber
+                  type: SMALLINT
+                  value: 0
+  - changeSet:
+      id: 59-2
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: SystemUser
+            columnName: loginAttemptNumber
+      changes:
+        - addNotNullConstraint:
+            columnDataType: SMALLINT
+            columnName: loginAttemptNumber
+            tableName: SystemUser
+            validate: true
