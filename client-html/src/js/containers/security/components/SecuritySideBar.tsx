@@ -33,11 +33,9 @@ const SecuritySideBar = React.memo<any>(
     const usersItems = useMemo(
       () =>
         users
-        && users.map(({
- id, login, active, tfaEnabled
-}) => ({
+        && users.map(({ id, email, active, tfaEnabled }) => ({
           id,
-          name: login,
+          name: email ? email : "No email",
           grayOut: !active,
           hasIcon: tfaEnabled
         })),
