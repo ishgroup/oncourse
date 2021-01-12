@@ -1418,6 +1418,7 @@
 		<db-attribute name="surname" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="token" type="VARCHAR" length="16"/>
 		<db-attribute name="tokenScratchCodes" type="CLOB"/>
+		<db-attribute name="loginAttemptNumber" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Tax">
@@ -2880,6 +2881,7 @@
 		<obj-attribute name="sessionId" type="java.lang.String" db-attribute-path="sessionId"/>
 		<obj-attribute name="token" type="java.lang.String" db-attribute-path="token"/>
 		<obj-attribute name="tokenScratchCodes" type="java.lang.String" db-attribute-path="tokenScratchCodes"/>
+		<obj-attribute name="loginAttemptNumber" type="java.lang.Integer" db-attribute-path="loginAttemptNumber"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="Tag" className="ish.oncourse.server.cayenne.Tag" clientClassName="ish.oncourse.cayenne.Tag" dbEntityName="Node" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
