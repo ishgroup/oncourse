@@ -78,7 +78,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
     LoginResponseDTO login(LoginRequestDTO details) {
         //login and password always required
         if (!details.login || !details.password) {
-            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Login / password data must be specified')
+            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Email / password data must be specified')
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(content).build())
         }
 
@@ -88,7 +88,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         SystemUser user = getSystemUserByLogin(details.login, context, prefController.autoDisableInactiveAccounts)
 
         if (!user) {
-            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Invalid login / password')
+            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Invalid email / password')
             throwUnauthorizedException(content)
         }
 
@@ -160,7 +160,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         switch (prefController.twoFactorAuthStatus) {
             case DISABLED:
                 if (!details.skipTfa && noDataForTFA) {
-                    LoginResponseDTO content = createAuthenticationContent(TFA_OPTIONAL, '', totpService.generateKey(user.login).url)
+                    LoginResponseDTO content = createAuthenticationContent(TFA_OPTIONAL, '', totpService.generateKey(user.email).url)
                     throwUnauthorizedException(content)
                 }
                 break
@@ -177,7 +177,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         }
 
         if (errorMessage) {
-            LoginResponseDTO content = createAuthenticationContent(TFA_REQUIRED, errorMessage, totpService.generateKey(user.login).url)
+            LoginResponseDTO content = createAuthenticationContent(TFA_REQUIRED, errorMessage, totpService.generateKey(user.email).url)
             throwUnauthorizedException(content)
         }
 

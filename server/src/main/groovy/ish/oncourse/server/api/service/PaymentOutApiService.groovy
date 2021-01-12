@@ -107,7 +107,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
             it.privateNotes = cayenneModel.privateNotes
             it.createdOn =  dateToTimeValue(cayenneModel.createdOn)
             it.modifiedOn = dateToTimeValue(cayenneModel.modifiedOn)
-            it.createdBy = cayenneModel.createdBy?.login
+            it.createdBy = cayenneModel.createdBy?.email
             it.administrationCenterId = cayenneModel.administrationCentre?.id
             it.administrationCenterName = cayenneModel.administrationCentre?.name
             it
