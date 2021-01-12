@@ -13,11 +13,9 @@ import { Dispatch } from "redux";
 import { State } from "../../../../reducers/state";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { formatRelatedSalables, formattedEntityRelationTypes, salesSort } from "../utils";
-import { getPlainCourses, setPlainCourses, setPlainCoursesSearch } from "../../courses/actions";
 import { BooleanArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
 import NestedListRelationCell from "./NestedListRelationCell";
 import { clearSales, getSales } from "../../sales/actions";
-import { clearModuleItems, getModules, setModuleSearch } from "../../modules/actions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import {
   clearCommonPlainRecords,
@@ -84,7 +82,7 @@ const RelationsCommon: React.FC<Props> = (
 
   const searchValues = useMemo(() => [
     ...courses
-      ? formatRelatedSalables(rootEntity === "Course" ? courses.filter(c => c.id !== values.id) : courses)
+      ? formatRelatedSalables(rootEntity === "Course" ? courses.filter(c => c.id !== values.id) : courses, "Course")
       : [],
     ...sales
       ? formatRelatedSalables(["VoucherProduct", "MembershipProduct", "ArticleProduct"].includes(rootEntity)
@@ -206,14 +204,14 @@ const RelationsCommon: React.FC<Props> = (
 };
 
 const mapStateToProps = (state: State) => ({
-  courses: state.courses.items,
-  coursesPending: state.courses.loading,
+  courses: state.plainSearchRecords["Course"].items,
+  coursesPending: state.plainSearchRecords["Course"].loading,
   sales: state.sales.items,
   salesPending: state.sales.pending,
   qualifications: state.plainSearchRecords["Qualification"].items,
   qualificationsPending: state.plainSearchRecords["Qualification"].loading,
-  modules: state.modules.items,
-  modulesPending: state.modules.loading,
+  modules: state.plainSearchRecords["Module"].items,
+  modulesPending: state.plainSearchRecords["Module"].loading,
   entityRelationTypes: state.preferences.entityRelationTypes
 });
 
@@ -224,10 +222,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   clearQualificationsSearch: (loading?: boolean) => dispatch(clearCommonPlainRecords("Qualification", loading)),
   searchModules: search => {
-    dispatch(setModuleSearch(search));
-    dispatch(getModules(null, "nationalCode,title,nominalHours,isOffered", true));
+    dispatch(setCommonPlainSearch("Module", search));
+    dispatch(getCommonPlainRecords("Module", 0, "nationalCode,title,nominalHours,isOffered", true, null, PLAIN_LIST_MAX_PAGE_SIZE));
   },
-  clearModuleSearch: (loading?: boolean) => dispatch(clearModuleItems(loading)),
+  clearModuleSearch: (loading?: boolean) => dispatch(clearCommonPlainRecords("Module", loading)),
   searchSales: (search: string) => {
     if (search) {
       dispatch(getSales(search));
@@ -235,12 +233,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   clearSalesSearch: (loading?: boolean) => dispatch(clearSales(loading)),
   searchCourses: (search: string) => {
-    dispatch(setPlainCoursesSearch(search));
-    dispatch(getPlainCourses(null, null, true));
+    dispatch(setCommonPlainSearch("Course", search));
+    dispatch(getCommonPlainRecords("Course", 0, "code,name,currentlyOffered,isShownOnWeb", true, null, PLAIN_LIST_MAX_PAGE_SIZE));
   },
-  clearCoursesSearch: (loading?: boolean) => {
-    dispatch(setPlainCourses([], null, null, loading));
-  }
+  clearCoursesSearch: (loading?: boolean) => dispatch(clearCommonPlainRecords("Course", loading))
 });
 
 export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(RelationsCommon);

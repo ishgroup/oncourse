@@ -16,7 +16,6 @@ import { plainContactRelationTypePath, plainCorporatePassPath } from "../../../c
 import {
   createMembershipProduct,
   getMembershipProduct,
-  getMembershipProductContactRelationTypes,
   updateMembershipProduct
 } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
@@ -27,9 +26,10 @@ import { getPlainTaxes } from "../taxes/actions";
 import { State } from "../../../reducers/state";
 import { getIncomeAccounts } from "../accounts/actions";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
-import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../constants/Config";
+import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getEntityRelationTypes } from "../../preferences/actions";
+import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
 
 interface MembershipProductsProps {
   getMembershipProductRecord?: () => void;
@@ -195,7 +195,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getMembershipProductContactRelationTypes: () => {
     dispatch(checkPermissions({ path: plainContactRelationTypePath, method: "GET" },
-     [getMembershipProductContactRelationTypes()]));
+     [
+       getCommonPlainRecords("ContactRelationType", 0, "toContactName", true, null, PLAIN_LIST_MAX_PAGE_SIZE)
+     ]));
   },
   getDefaultIncomeAccount: () => dispatch(getUserPreferences([ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID])),
   getTaxes: () => dispatch(getPlainTaxes()),
