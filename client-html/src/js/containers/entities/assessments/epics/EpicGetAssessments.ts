@@ -6,13 +6,13 @@
 import { Epic } from "redux-observable";
 
 import { Assessment } from "@api/model";
-import {clearActionsQueue} from "../../../../common/actions";
+import { clearActionsQueue } from "../../../../common/actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { GET_ASSESSMENT_ITEMS, GET_ASSESSMENT_ITEMS_FULFILLED } from "../actions";
 import { getCustomColumnsMap } from "../../../../common/utils/common";
 
-const defaultModuleMap = ({ id, values }) => ({
+export const defaultAssessmentMap = ({ id, values }) => ({
   id: Number(id),
   code: values[0],
   name: values[1]
@@ -25,7 +25,7 @@ const request: EpicUtils.Request<any, any, any> = {
     return EntityService.getPlainRecords("Assessment", columns || "code,name", search, 100, offset, "", ascending);
   },
   processData({ rows, offset, pageSize }, s, { columns }) {
-    const items: Assessment[] = rows.map(columns ? getCustomColumnsMap(columns) : defaultModuleMap);
+    const items: Assessment[] = rows.map(columns ? getCustomColumnsMap(columns) : defaultAssessmentMap);
 
     return [
       {
