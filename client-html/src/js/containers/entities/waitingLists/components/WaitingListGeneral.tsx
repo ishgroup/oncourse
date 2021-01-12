@@ -92,7 +92,6 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["WaitingList"],
-  courses: state.courses.items
 });
 
 export default connect<any, any, any>(mapStateToProps)(WaitingListGeneral);

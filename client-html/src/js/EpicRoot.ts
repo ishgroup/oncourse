@@ -34,7 +34,6 @@ import { EpicBankings } from "./containers/entities/bankings/epics";
 import { EpicContacts } from "./containers/entities/contacts/epics";
 import { EpicCourses } from "./containers/entities/courses/epics";
 import { EpicCourseClass } from "./containers/entities/courseClasses/epics";
-import { EpicRecords } from "./containers/entities/common/epics";
 import { EpicDiscounts } from "./containers/entities/discounts/epics";
 import { EpicEditDocument } from "./containers/entities/documents/epics";
 import { EpicSales } from "./containers/entities/sales/epics";
@@ -99,7 +98,6 @@ const importSet = new Set([
   EpicContacts,
   EpicCourses,
   EpicCourseClass,
-  EpicRecords,
   EpicDiscounts,
   EpicEditDocument,
   EpicSales,

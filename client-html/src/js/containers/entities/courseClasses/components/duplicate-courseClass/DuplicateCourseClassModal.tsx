@@ -31,7 +31,6 @@ import FormField from "../../../../../common/components/form/form-fields/FormFie
 import { State } from "../../../../../reducers/state";
 import Button from "../../../../../common/components/buttons/Button";
 import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
-import { getPlainCourses, setPlainCourses, setPlainCoursesSearch } from "../../../courses/actions";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
 import { courseFilterCondition } from "../../../courses/utils";
 import {
@@ -499,10 +498,6 @@ const mapStateToProps = (state: State) => ({
   fetching: state.courseClass.timetable.fetching,
   earliest: state.courseClass.timetable.earliest,
   sessions: state.courseClass.timetable.sessions,
-  courses: state.courses.items,
-  coursesSearch: state.courses.search,
-  coursesLoading: state.courses.loading,
-  coursesRowsCount: state.courses.rowsCount,
   hasZeroWages: state.courseClass.timetable.hasZeroWages
 });
 
@@ -510,10 +505,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     duplicateCourseClass: (values: CourseClassDuplicate, onComplete) =>
       dispatch(duplicateCourseClass(values, onComplete)),
     getSessions: request => dispatch(getDuplicateCourseClassesSessions(request)),
-    clearTimetable: () => dispatch(clearDuplicateCourseClassesSessions()),
-    getCourses: (offset?: number) => dispatch(getPlainCourses(offset, "code,name,nextAvailableCode,reportableHours,isTraineeship", true)),
-    clearCourses: () => dispatch(setPlainCourses([])),
-    setCoursesSearch: (search: string) => dispatch(setPlainCoursesSearch(search ? `~"${search}" and` : "")),
+    clearTimetable: () => dispatch(clearDuplicateCourseClassesSessions())
 });
 
 export default reduxForm({

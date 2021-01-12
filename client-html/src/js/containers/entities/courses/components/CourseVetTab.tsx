@@ -24,11 +24,15 @@ import {
   BooleanArgFunction,
   StringArgFunction
 } from "../../../../model/common/CommonFunctions";
-import { clearModuleItems, getModules, setModuleSearch } from "../../modules/actions";
-import { ModulesState } from "../../modules/reducers/state";
 import { openQualificationLink } from "../../qualifications/utils";
 import { CourseExtended } from "../../../../model/entities/Course";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../common/actions/CommonPlainRecordsActions";
+import {PLAIN_LIST_MAX_PAGE_SIZE} from "../../../../constants/Config";
 
 const getQualificationLabel = (qal: Qualification) => `${qal.title}, ${qal.nationalCode}`;
 
@@ -37,7 +41,7 @@ interface CourseVetTab extends EditViewProps<CourseExtended> {
   setModuleSearch?: StringArgFunction;
   getModules?: AnyArgFunction;
   modulesPending?: boolean;
-  moduleItems?: ModulesState["items"];
+  moduleItems?: Module[];
   clearModuleSearch?: BooleanArgFunction;
 }
 
@@ -237,14 +241,16 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  modulesPending: state.modules.loading,
-  moduleItems: state.modules.items
+  modulesPending: state.plainSearchRecords["Module"].loading,
+  moduleItems: state.plainSearchRecords["Module"].items
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getModules: (offset?: number) => dispatch(getModules(offset, "nationalCode,title,nominalHours", true)),
-  setModuleSearch: (search: string) => dispatch(setModuleSearch(search)),
-  clearModuleSearch: (loading: boolean) => dispatch(clearModuleItems(loading))
+  getModules: (offset?: number) => {
+    dispatch(getCommonPlainRecords("Module", offset, "nationalCode,title,nominalHours", true, null, PLAIN_LIST_MAX_PAGE_SIZE));
+  },
+  setModuleSearch: (search: string) => dispatch(setCommonPlainSearch("Module", search)),
+  clearModuleSearch: (loading: boolean) => dispatch(clearCommonPlainRecords("Module", loading))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseVetTab);

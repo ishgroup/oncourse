@@ -26,7 +26,6 @@ import history from "../../../constants/History";
 import {
   CheckoutCourse, CheckoutCourseClass, CheckoutSummary
 } from "../../../model/checkout";
-import { Fetch } from "../../../model/common/Fetch";
 import { State } from "../../../reducers/state";
 import ResizableWrapper from "../../../common/components/layout/resizable/ResizableWrapper";
 import Drawer from "../../../common/components/layout/Drawer";
@@ -49,8 +48,6 @@ import { latestActivityStorageHandler } from "../../../common/utils/storage";
 import { getCustomFieldTypes } from "../../entities/customFieldTypes/actions";
 import {
   CHECKOUT_CONTACT_COLUMNS,
-  CHECKOUT_MEMBERSHIP_COLUMNS, CHECKOUT_PRODUCT_COLUMNS,
-  CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep
 } from "../constants";
 import {
@@ -75,15 +72,6 @@ import EnrolItemListView from "./items/EnrolItemListView";
 import SelectedItemRenderer from "./items/components/SelectedItemRenderer";
 import EnrolCourseClassView from "./items/components/EnrolCourseClassView";
 import {
-  getPlainArticleProducts, setPlainArticleProductSearch
-} from "../../entities/articleProducts/actions";
-import {
-  getPlainVoucherProducts, setPlainVoucherProductSearch
-} from "../../entities/voucherProducts/actions";
-import {
-  getPlainMembershipProducts, setPlainMembershipProductSearch
-} from "../../entities/membershipProducts/actions";
-import {
   addContact,
   removeContact,
   updateContact,
@@ -96,7 +84,6 @@ import {
 import {
   checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts
 } from "../actions/checkoutContact";
-import { getPlainCourses, setPlainCoursesSearch } from "../../entities/courses/actions";
 import { ContactInitial } from "../../entities/contacts/Contacts";
 import CheckoutPaymentPage from "./payment/CheckoutPaymentPage";
 import CheckoutItemView from "./items/components/CheckoutItemView";
@@ -120,7 +107,11 @@ import { checkoutUpdateSummaryClassesDiscounts } from "../actions/checkoutSummar
 import CheckoutSummaryHeaderField from "./summary/CheckoutSummaryHeaderField";
 import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from "./summary/CheckoutSummaryList";
 import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
-import {clearCommonPlainRecords} from "../../../common/actions/CommonPlainRecordsActions";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../common/actions/CommonPlainRecordsActions";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 export const CONTACT_ENTITY_NAME: string = "Contact";
@@ -575,10 +566,10 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
   };
 
   React.useEffect(() => {
-    dispatch(setPlainCoursesSearch("currentlyOffered is true"));
-    dispatch(setPlainArticleProductSearch("isOnSale is true"));
-    dispatch(setPlainVoucherProductSearch("isOnSale is true"));
-    dispatch(setPlainMembershipProductSearch("isOnSale is true"));
+    dispatch(setCommonPlainSearch("Course", "currentlyOffered is true"));
+    dispatch(setCommonPlainSearch("ArticleProduct", "isOnSale is true"));
+    dispatch(setCommonPlainSearch("VoucherProduct", "isOnSale is true"));
+    dispatch(setCommonPlainSearch("MembershipProduct", "isOnSale is true"));
     getCourses();
     getProducts();
     getVouchers();
@@ -1285,12 +1276,12 @@ const mapStateToProps = (state: State) => ({
   contacts: state.plainSearchRecords["Contact"].items,
   contactsSearch: state.plainSearchRecords["Contact"].search,
   contactsLoading: state.plainSearchRecords["Contact"].loading,
-  courses: state.courses.items,
-  coursesSearch: state.courses.search,
+  courses: state.plainSearchRecords["Course"].items,
+  coursesSearch: state.plainSearchRecords["Course"].search,
   contactsRowsCount: state.plainSearchRecords["Contact"].rowsCount,
-  products: state.articleProducts.items,
-  vouchers: state.voucherProducts.items,
-  membershipProducts: state.membershipProducts.items,
+  products: state.plainSearchRecords["ArticleProduct"].items,
+  vouchers: state.plainSearchRecords["VoucherProduct"].items,
+  membershipProducts: state.plainSearchRecords["MembershipProduct"].items,
   selectedContacts: state.checkout.contacts,
   selectedItems: state.checkout.items,
   courseClasses: state.checkout.courseClasses,
@@ -1330,12 +1321,15 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
   openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string, onCancel?: any) =>
     dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel)),
-  getCourses: (offset?: number) => dispatch(getPlainCourses(offset, "code,name,isTraineeship", true, PLAIN_LIST_MAX_PAGE_SIZE)),
-  getProducts: (offset?: number) => dispatch(getPlainArticleProducts(offset, CHECKOUT_PRODUCT_COLUMNS, true, PLAIN_LIST_MAX_PAGE_SIZE)),
+  getCourses: (offset?: number) => dispatch(
+    getCommonPlainRecords("Course", offset, "code,name,isTraineeship", true, null, PLAIN_LIST_MAX_PAGE_SIZE)
+  ),
+  getProducts: (offset?: number) =>
+    dispatch(getCommonPlainRecords("ArticleProduct", offset, "sku,name,price_with_tax", true, null, PLAIN_LIST_MAX_PAGE_SIZE)),
   getVouchers: (offset?: number) =>
-    dispatch(getPlainVoucherProducts(offset, CHECKOUT_VOUCHER_COLUMNS, true, PLAIN_LIST_MAX_PAGE_SIZE)),
+    dispatch(getCommonPlainRecords("VoucherProduct", offset, "sku,name,priceExTax", true, null, PLAIN_LIST_MAX_PAGE_SIZE)),
   getMembershipProducts: (offset?: number) => dispatch(
-    getPlainMembershipProducts(offset, CHECKOUT_MEMBERSHIP_COLUMNS, true, PLAIN_LIST_MAX_PAGE_SIZE)
+    getCommonPlainRecords("MembershipProduct", offset, "sku,name,price_with_tax", true, null, PLAIN_LIST_MAX_PAGE_SIZE)
   ),
   addSelectedContact: contact => dispatch(addContact(contact)),
   removeContact: index => dispatch(removeContact(index)),

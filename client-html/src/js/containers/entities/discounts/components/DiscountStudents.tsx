@@ -20,11 +20,16 @@ import NestedList, {
   NestedListPanelItem
 } from "../../../../common/components/form/nestedList/NestedList";
 import { State } from "../../../../reducers/state";
-import { clearQuickSearchConcessionTypes, quickSearchConcessionTypes } from "../../common/actions";
 import { clearMembershipSearch, searchMemberships } from "../actions";
 import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
 import { greaterThanZeroIncludeValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../common/actions/CommonPlainRecordsActions";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 interface DiscountStudentsProps {
   classes: any;
@@ -83,6 +88,8 @@ const styles = createStyles(({ spacing }: Theme) => ({
     gridColumnGap: spacing(2)
   }
 }));
+
+const validatePostcode = value => (value && value.length > 500 ? "Up to 500 chars" : undefined)
 
 class DiscountStudents extends React.PureComponent<DiscountStudentsProps, DiscountStudentsState> {
   constructor(props) {
@@ -290,7 +297,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
             type="text"
             name="studentPostcode"
             label="Postcode"
-            validate={value => (value && value.length > 500 ? "Up to 500 chars" : undefined)}
+            validate={validatePostcode}
           />
 
           <FormControlLabel
@@ -352,16 +359,19 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
 }
 
 const mapStateToProps = (state: State) => ({
-  foundConcessionTypes: state.quickSearchConcessionType.items,
-  concessionTypePending: state.quickSearchConcessionType.pending,
+  foundConcessionTypes: state.plainSearchRecords["ConcessionType"].items.map(i => ({ id: i.id, name: i.name, allowOnWeb: i.isEnabled })),
+  concessionTypePending: state.plainSearchRecords["ConcessionType"].loading,
   foundMemberships: state.discounts.membershipItems,
   membershipPending: state.discounts.pending,
   contactRelationTypes: state.discounts.contactRelationTypes
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  searchConcessionTypes: (search: string) => dispatch(quickSearchConcessionTypes(search)),
-  clearConcessionTypeSearch: (pending: boolean) => dispatch(clearQuickSearchConcessionTypes(pending)),
+  searchConcessionTypes: (search: string) => {
+    dispatch(setCommonPlainSearch("ConcessionType", search));
+    dispatch(getCommonPlainRecords("ConcessionType", 0, "name,isEnabled", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+  },
+  clearConcessionTypeSearch: (pending: boolean) => dispatch(clearCommonPlainRecords("ConcessionType", pending)),
   searchMemberships: (search: string) => dispatch(searchMemberships(search)),
   clearMembershipSearch: (pending: boolean) => dispatch(clearMembershipSearch(pending))
 });
