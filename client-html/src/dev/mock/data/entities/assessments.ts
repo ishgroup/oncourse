@@ -9,7 +9,7 @@ export function mockAssessments() {
   this.getAssessments = () => this.assessments;
 
   this.getAssessment = id => {
-    const row = this.assessments.rows.find(row => row.id === id);
+    const row = this.assessments.rows.find(row => row.id == id);
     return {
       id: row.id,
       code: row.values[0],
