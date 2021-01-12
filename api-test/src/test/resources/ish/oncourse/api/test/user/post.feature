@@ -135,7 +135,7 @@ Feature: Main feature for all POST requests with path 'user'
         When method PUT
         Then status 401
         And match response.loginStatus == "Invalid credentials"
-        And match response.errorMessage == "Invalid login / password"
+        And match response.errorMessage == "Invalid email / password"
 #       <----->
 
 
