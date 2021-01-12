@@ -23,10 +23,45 @@ databaseChangeLog:
         - onFail: MARK_RAN
         - columnExists:
             tableName: SystemUser
-            columnName: loginAttemptNumber
+            columnName: login
       changes:
-        - addNotNullConstraint:
-            columnDataType: SMALLINT
-            columnName: loginAttemptNumber
+        - dropNotNullConstraint:
+            columnDataType: VARCHAR(20)
+            columnName: login
             tableName: SystemUser
-            validate: true
+  - changeSet:
+      id: 59-3
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: SystemUser
+              columnName: invitationToken
+      changes:
+        - addColumn:
+            tableName: SystemUser
+            columns:
+              - column:
+                  name: invitationToken
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: true
+  - changeSet:
+      id: 59-4
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: SystemUser
+              columnName: invitationTokenExpiryDate
+      changes:
+        - addColumn:
+            tableName: SystemUser
+            columns:
+              - column:
+                  name: invitationTokenExpiryDate
+                  type: DATE
+                  constraints:
+                    nullable: true
