@@ -53,8 +53,9 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
       const isCurrent = nextLocation.pathname === location.pathname;
 
       if (this.props.when && !isCurrent) {
-        setNextLocation(nextLocation.pathname)
-        const isInvalidForm = isInvalid(form)
+        nextLocation.pathname && setNextLocation(nextLocation.pathname);
+
+        const isInvalidForm = isInvalid(form);
 
         const confirmButton = (
           <Button
