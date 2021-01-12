@@ -22,7 +22,24 @@ export interface CommonPlainRecordSearchState {
   [key: string]: CommonPlainSearchEntity;
 }
 
-const availableEntities = ["Assessment", "Qualification", "Module", "Contact", "Site", "Room", "Course", "CourseClass", "Enrolment"];
+const availableEntities = [
+  "Assessment",
+  "ArticleProduct",
+  "Discount",
+  "Qualification",
+  "Module",
+  "MembershipProduct",
+  "Contact",
+  "Site",
+  "Room",
+  "Course",
+  "CourseClass",
+  "Enrolment",
+  "ConcessionType",
+  "CorporatePass",
+  "ContactRelationType",
+  "VoucherProduct"
+];
 
 const initial = availableEntities.reduce((p, c) => {
   p[c] = {
