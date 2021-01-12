@@ -74,15 +74,6 @@ import EnrolItemListView from "./items/EnrolItemListView";
 import SelectedItemRenderer from "./items/components/SelectedItemRenderer";
 import EnrolCourseClassView from "./items/components/EnrolCourseClassView";
 import {
-  getPlainArticleProducts, setPlainArticleProductSearch
-} from "../../entities/articleProducts/actions";
-import {
-  getPlainVoucherProducts, setPlainVoucherProductSearch
-} from "../../entities/voucherProducts/actions";
-import {
-  getPlainMembershipProducts, setPlainMembershipProductSearch
-} from "../../entities/membershipProducts/actions";
-import {
   addContact,
   removeContact,
   updateContact,
