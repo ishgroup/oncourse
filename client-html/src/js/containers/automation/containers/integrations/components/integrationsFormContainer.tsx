@@ -32,7 +32,7 @@ import {
   createIntegration,
   deleteIntegrationItem
 } from "../../../actions";
-import { showConfirm } from "../../../../../common/actions";
+import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import { getByType } from "../utils";
 
 const styles = theme => createStyles({
@@ -62,6 +62,8 @@ interface Props {
   formName: any;
   dirty: boolean;
   invalid: boolean;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void
 }
 
 class FormContainer extends React.Component<Props & RouteComponentProps<any>, any> {
@@ -180,7 +182,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     this.isPending = true;
 
     const {
-     onUpdate, onCreate, history, dispatch, formName
+     onUpdate, onCreate, history, dispatch, formName, nextLocation, setNextLocation
     } = this.props;
     const encodedID = encodeURIComponent(integration.id);
     const data: Integration = parseIntegrationSchema(integration);
@@ -199,7 +201,12 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     })
       .then(() => {
         dispatch(initialize(formName, this.state.integrationItem));
-        history.push(`/automation/integrations/edit/${integration.type}/${encodeURIComponent(integration.name)}`);
+        if (nextLocation) {
+          history.push(nextLocation);
+          setNextLocation('')
+        } else {
+          history.push(`/automation/integrations/edit/${integration.type}/${encodeURIComponent(integration.name)}`);
+        }
       })
       .catch(error => {
         this.isPending = false;
@@ -328,7 +335,8 @@ const mapStateToProps = (state: State) => ({
   formName: getFormName(state.form),
   dirty: isDirty(getFormName(state.form))(state),
   invalid: isInvalid(getFormName(state.form))(state),
-  fetch: state.fetch
+  fetch: state.fetch,
+  nextLocation: state.nextLocation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -336,7 +344,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     onUpdate: (id: string, item: Integration) => dispatch(updateIntegration(id, item)),
     onCreate: (item: Integration) => dispatch(createIntegration(item)),
     onDelete: (id: string) => dispatch(deleteIntegrationItem(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
+    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText)),
+    setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
   });
 
 export default connect<any, any, any>(
