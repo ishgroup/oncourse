@@ -1,9 +1,7 @@
 import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockArticleProducts() {
-  this.getArticleProducts = () => {
-    return this.articleProducts;
-  };
+  this.getArticleProducts = () => this.articleProducts;
 
   this.getArticleProduct = id => {
     const row = this.articleProducts.rows.find(row => row.id == id);
@@ -60,11 +58,25 @@ export function mockArticleProducts() {
 
     articleProducts.rows.push({
       id: data.id,
-      values: [data.name, data.code, data.totalFee, data.number_sold]
+      values: [data.name, data.code, data.totalFee, 10]
     });
 
     this.articleProducts = articleProducts;
   };
+
+  this.mockedCreateArticleProduct = () => ({
+    "code": "qq50",
+    "corporatePasses": [],
+    "description": "This is a no refundable fee for students wishing to apply for courses which have an application and assessment process\n  {render:\"textile\"}",
+    "feeExTax": 45.45,
+    "id": 0,
+    "incomeAccountId": 15,
+    "relatedSellables": [],
+    "name": "$50 Application",
+    "taxId": 1,
+    "totalFee": 50,
+    "status": "Can be purchased in office & online"
+  });
 
   this.removeArticleProduct = id => {
     this.articleProducts.rows = this.articleProducts.rows.filter(a => a.id !== id);
