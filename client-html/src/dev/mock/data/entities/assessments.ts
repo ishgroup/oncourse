@@ -22,6 +22,32 @@ export function mockAssessments() {
     };
   };
 
+  this.getPlainAssessmentList = () => {
+    const rows = generateArraysOfRecords(20, [
+      { name: "id", type: "number" },
+      { name: "code", type: "string" },
+      { name: "name", type: "string" }
+    ]).map(l => ({
+      id: l.id,
+      values: [l.code, l.name]
+    }));
+
+    const columns = [];
+
+    const response = { rows, columns } as any;
+
+    response.entity = "Assessment";
+    response.offset = 0;
+    response.filterColumnWidth = null;
+    response.layout = null;
+    response.pageSize = rows.length;
+    response.search = null;
+    response.count = null;
+    response.sort = [];
+
+    return response;
+  };
+
   this.createAssessment = item => {
     const data = JSON.parse(item);
     const { assessments } = this;

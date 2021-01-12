@@ -201,7 +201,7 @@ export function listApiMock() {
       }
 
       case "Assessment": {
-        return promiseResolve(config, this.db.getAssessments());
+        return promiseResolve(config, this.db.getPlainAssessmentList());
       }
 
       case "Outcome": {
