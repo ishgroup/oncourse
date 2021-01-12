@@ -55,9 +55,9 @@ class Users extends React.Component<any, any> {
   validateUniqueNames = (val, all, props) => {
     const { users } = this.props;
 
-    const matches = users.filter(i => i.login === val.trim() && props.user.id !== i.id);
+    const matches = users.filter(i => i.email === val.trim() && props.user.id !== i.id);
 
-    return matches.length > 0 ? "User login must be unique" : undefined;
+    return matches.length > 0 ? "User email must be unique" : undefined;
   };
 
   componentWillUnmount() {
@@ -80,12 +80,14 @@ class Users extends React.Component<any, any> {
     const currentUser = isNew
       ? {
           administrationCentre: sites && sites.length && sites[0].id,
-          admin: true,
+          admin: false,
           active: true,
           accessEditor: false,
           passwordUpdateRequired: false
         }
       : users && users.find(item => item.id.toString() === id);
+
+    const oldEmail = isNew ? null : users && users.find(item => item.id.toString() === id).email;
 
     return sites ? (
       <UsersForm
@@ -94,6 +96,7 @@ class Users extends React.Component<any, any> {
         sites={sites}
         isNew={isNew}
         passwordComplexityFlag={passwordComplexityFlag}
+        oldEmail={oldEmail}
         validateUniqueNames={this.validateUniqueNames}
       />
     ) : null;

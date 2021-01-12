@@ -94,6 +94,7 @@ interface Props {
   validateUniqueNames?: any;
   passwordComplexityFlag?: string;
   isNew?: boolean;
+  oldEmail?: string;
   openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
 }
 
@@ -273,6 +274,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       dirty,
       validateUniqueNames,
       isNew,
+      oldEmail,
       passwordComplexityFlag,
       asyncValidating,
       invalid,
@@ -293,12 +295,13 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
             <Grid item xs={12} className="centeredFlex">
               <FormField
                 type="headerText"
-                name="login"
-                placeholder="Login"
+                name="email"
+                placeholder="Email"
                 margin="none"
                 className={classes.HeaderTextField}
                 listSpacing={false}
                 validate={validateUniqueNames}
+                disabled={!isNew}
                 required
               />
 
@@ -385,13 +388,15 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               validate={validateSingleMandatoryField}
             />
 
-            <FormField
-              type="text"
-              name="email"
-              label="Email"
-              required
-              fullWidth
-            />
+            {!isNew && !oldEmail && (
+              <FormField
+                type="text"
+                name="email"
+                label="Email"
+                required
+                fullWidth
+              />
+            )}
 
             {!isNew && (
               <Uneditable
@@ -469,10 +474,8 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                       color="primary"
                       className={classes.cardSwitch}
                       onChange={(e, v) => {
-                        if (v && values.role) {
+                        if (v) {
                           dispatch(change("UsersForm", "role", null));
-                        } else {
-                          dispatch(change("UsersForm", "role", userRoles[0].id));
                         }
                       }}
                     />
@@ -491,6 +494,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                     selectLabelMark="name"
                     items={userRoles || []}
                     fullWidth
+                    allowEmpty
                     sort
                   />
                 </Collapse>
