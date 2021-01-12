@@ -7,7 +7,7 @@ xml.data() {
 			date(bnk.settlementDate?.format("d-M-y HH:mm:ss"))
 			type(bnk.type)
 			site(bnk.adminSite?.name)
-			user(bnk.createdBy?.login)
+			user(bnk.createdBy?.email)
 			total(bnk.total?.toPlainString())
 		}
 	}

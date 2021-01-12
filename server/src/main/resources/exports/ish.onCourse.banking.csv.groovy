@@ -4,7 +4,7 @@ records.each { Banking banking ->
 			"Date"       : banking.settlementDate?.format("d-M-y HH:mm:ss"),
 			"Type"       : banking.type,
 			"Site"       : banking.adminSite?.name,
-			"User"       : banking.createdBy?.login,
+			"User"       : banking.createdBy?.email,
 			"Total"      : banking.total?.toPlainString(),
 	]
 }

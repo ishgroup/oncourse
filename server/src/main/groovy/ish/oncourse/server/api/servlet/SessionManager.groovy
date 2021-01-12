@@ -86,7 +86,7 @@ class SessionManager implements ISessionManager {
         session.setAttribute(IS_LOGIN, true)
         session.setMaxInactiveInterval(timeoutSec)
 
-        logger.warn("User '$user.login' logged in from '$request.remoteAddr' via browser.")
+        logger.warn("User '${user.email?:user.login}' logged in from '$request.remoteAddr' via browser.")
     }
 
     void logout(HttpServletRequest request) {
@@ -114,7 +114,7 @@ class SessionManager implements ISessionManager {
             try {
                 SystemUser user = session.getAttribute(USER_ATTRIBUTE) as SystemUser
                 SESSION_ATTRIBUTES.remove(user.id)
-                logger.warn("User {} logged out.", user?.login)
+                logger.warn("User {} logged out.", user?.email?:user?.login)
 
             } catch (Exception e) {
                 logger.catching(e)

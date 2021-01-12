@@ -133,7 +133,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
             invoiceDTO.paymentPlans.addAll(invoice.paymentOutLines.collect { toRestPaymentPlan(it) }.sort { it.date })
 
             invoiceDTO.source = invoice.source.displayName
-            invoiceDTO.createdByUser = invoice.createdByUser?.login
+            invoiceDTO.createdByUser = invoice.createdByUser?.email
             invoiceDTO.sendEmail = invoice.confirmationStatus == ConfirmationStatus.NOT_SENT
             invoiceDTO.createdOn = dateToTimeValue(invoice.createdOn)
             invoiceDTO.modifiedOn = dateToTimeValue(invoice.modifiedOn)

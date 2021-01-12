@@ -214,7 +214,7 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
                 .append('-- REVOKED ON ')
                 .append( LocalDate.now().toString())
                 .append(' BY ')
-                .append(systemUserService.currentUser.login)
+                .append(systemUserService.currentUser.email)
                 .append(' --')
                 .append(System.getProperty('line.separator'))
                 .append(trimToNull(reason))

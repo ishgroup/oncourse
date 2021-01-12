@@ -79,7 +79,7 @@ class AuthenticationFunctions {
     static String checkLdapAuth(SystemUser user, String password, PreferenceController prefController) {
         try {
             LdapAuthConnection ldapConnection = LdapAuthConnection.valueOf(prefController)
-            LdapName ldapUser = ldapConnection.findUser(user.login)
+            LdapName ldapUser = ldapConnection.findUser(user.email)
 
             if (!ldapUser) {
                 return 'LDAP user not found.'
@@ -120,7 +120,7 @@ class AuthenticationFunctions {
             LdapName group = ldapConnection.findGroup(role.name)
 
             if (prefController.ldapGroupPosixStyle) {
-                if (ldapConnection.authorisePosixUser(user.login, group)) {
+                if (ldapConnection.authorisePosixUser(user.email, group)) {
                     user.addToAclRoles(role)
                 }
             } else {
