@@ -1,5 +1,5 @@
 import * as React from "react";
-import { mount } from "enzyme";
+import { createMount } from "@material-ui/core/test-utils";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../js/common/components/list-view/constants";
 import ListEditView from "../../js/common/components/list-view/components/edit-view/EditView";
 import { mockedAPI, TestEntry } from "../TestEntry";
@@ -17,11 +17,21 @@ export const mockedEditView: ({
   entity, EditView, record, render
 }) => {
   const initialValues = record(mockedAPI);
+  let mount;
+
+  beforeAll(() => {
+    mount = createMount();
+  });
+
+  afterAll(() => {
+    mount.cleanUp();
+  });
 
   const defaultProps = {
-    EditViewContent: EditView,
+    EditViewContent: props => <EditView {...props} />,
     rootEntity: entity,
     initialValues,
+    values: initialValues,
     form: LIST_EDIT_VIEW_FORM_NAME,
     hasSelected: true,
     creatingNew: false
@@ -31,11 +41,13 @@ export const mockedEditView: ({
 
   window.performance.getEntriesByName = jest.fn(() => []);
 
-  const wrapper = mount(
-    <TestEntry>
-      <MockedEditView />
-    </TestEntry>
-  );
+  it(`${entity} components should render with given values`, () => {
+    const wrapper = mount(
+      <TestEntry>
+        <MockedEditView />
+      </TestEntry>
+    );
 
-  render(wrapper, initialValues);
+    render(wrapper, initialValues);
+  });
 };
