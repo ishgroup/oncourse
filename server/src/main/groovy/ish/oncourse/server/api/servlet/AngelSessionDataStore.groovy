@@ -35,7 +35,6 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
 
     public static final String USER_ATTRIBUTE = "USER_ATTRIBUTE"
     public static final String IS_LOGIN = "login"
-    public static final String ATTEMPT_NUMBER = "attempt_number"
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor()
     private static final Logger logger = LogManager.getLogger()

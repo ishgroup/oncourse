@@ -103,7 +103,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
                 checkLdapAuth(user, details.password, prefController) :
                 checkInternalAuth(user, details.password)
         if (errorMessage) {
-            sessionManager.disableUserAfterIncorrectLoginAttempts(user, prefController.numberOfLoginAttempts, request)
+            updateLoginAttemptNumber(user, prefController.numberOfLoginAttempts)
             LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, errorMessage)
             throwUnauthorizedException(content)
         }
@@ -219,6 +219,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
         user.lastLoginOn = new Date()
         user.passwordUpdateRequired = false
+        user.loginAttemptNumber = 0
 
         if (details.newPassword) {
             user.password = AuthenticationUtil.generatePasswordHash(details.newPassword)

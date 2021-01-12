@@ -26,8 +26,6 @@ public interface ISessionManager {
 
     Integer getLoggedInUsersCount(Date timeoutThreshold);
 
-    void disableUserAfterIncorrectLoginAttempts(SystemUser user, Integer allowedNumberOfAttempts, HttpServletRequest request);
-
     void createUserSession(SystemUser user, Integer timeoutSec, HttpServletRequest request);
 
     void logout(HttpServletRequest request);
