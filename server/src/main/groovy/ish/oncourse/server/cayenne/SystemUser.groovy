@@ -251,6 +251,6 @@ class SystemUser extends _SystemUser implements ISystemUser, Queueable {
 
 	@Override
 	String getSummaryDescription() {
-		return getLogin()
+		return getEmail()
 	}
 }

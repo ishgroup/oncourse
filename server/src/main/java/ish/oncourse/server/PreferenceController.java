@@ -225,7 +225,7 @@ public class PreferenceController extends CommonPreferenceController {
 		var preference = getPreference(Preferences.DATA_WED_VERSION, false);
 
 		if (systemUser.getLastLoginOn() == null || systemUser.getLastLoginOn().compareTo(preference.getModifiedOn()) < 0) {
-			showReleaseNotes.put(systemUser.getLogin(), true);
+			showReleaseNotes.put(systemUser.getEmail(), true);
 		}
 	}
 

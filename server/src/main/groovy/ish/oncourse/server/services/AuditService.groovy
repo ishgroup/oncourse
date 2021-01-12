@@ -92,7 +92,7 @@ class AuditService {
 
     private String defaultMessage(AuditAction action, CayenneDataObject object) {
         return systemUserService.currentUser ?
-                action.displayName + " by " + systemUserService.currentUser.login + ": " + object.getSummaryDescription() :
+                action.displayName + " by " + systemUserService.currentUser.email + ": " + object.getSummaryDescription() :
                 action.displayName + ": " + object.getSummaryDescription()
     }
 
