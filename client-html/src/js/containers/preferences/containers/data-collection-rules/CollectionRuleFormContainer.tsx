@@ -124,7 +124,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     onUpdate: (id: string, rule: DataCollectionRule) => dispatch(updateDataCollectionRule(id, rule)),
     onDelete: (id: string) => dispatch(removeDataCollectionRule(id)),
     onAddNew: (rule: DataCollectionRule) => dispatch(createDataCollectionRule(rule)),
-    initialize: (initData) => dispatch(initialize("CollectionRulesForm", initData)),
+    initialize: initData => dispatch(initialize("CollectionRulesForm", initData)),
     setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
   };
 };
