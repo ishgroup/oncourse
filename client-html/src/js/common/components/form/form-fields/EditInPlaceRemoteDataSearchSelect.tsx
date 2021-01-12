@@ -74,6 +74,14 @@ const getDefaultColumns = entity => {
       return "firstName,lastName,email,birthDate,street,suburb,state,postcode,invoiceTerms,taxOverride.id";
     case "Site":
       return "name,localTimezone";
+    case "Qualification":
+      return "nationalCode,title,level,fieldOfEducation,isOffered";
+    case "Course":
+      return "code,name,currentlyOffered,isShownOnWeb";
+    case "Assessment":
+      return "code,name";
+    case "Module":
+      return "nationalCode,title";
   }
   return "";
 };
