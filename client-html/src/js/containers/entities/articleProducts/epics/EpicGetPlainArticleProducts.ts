@@ -10,7 +10,7 @@ import { GET_PLAIN_ARTICLE_PRODUCT_ITEMS, GET_PLAIN_ARTICLE_PRODUCT_ITEMS_FULFIL
 import EntityService from "../../../../common/services/EntityService";
 import { getCustomColumnsMap } from "../../../../common/utils/common";
 
-const defaultArticleProductMap = ({ id, values }) => ({
+export const defaultArticleProductMap = ({ id, values }) => ({
   id: Number(id),
   code: values[0],
   name: values[1],
