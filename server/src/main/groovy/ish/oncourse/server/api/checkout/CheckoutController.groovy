@@ -512,7 +512,7 @@ class CheckoutController {
 
         FundingSource relatedFundingSource = fundingSourceDao.getById(context, dto.relatedFundingSourceId)
         dto.invoiceLines.each { dtoLine ->
-            Enrolment enrolment = invoice.invoiceLines*.enrolment.find { dtoLine.courseClassId == it.courseClass.id }
+            Enrolment enrolment = invoice.invoiceLines*.enrolment.find { it && it.courseClass.id == dtoLine.courseClassId }
             enrolment.vetPurchasingContractID = fundingInvoice.customerReference
             enrolment.relatedFundingSource = relatedFundingSource
             if (enrolment.relatedFundingSource) {
