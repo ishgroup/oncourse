@@ -335,7 +335,9 @@ class MessageSpec {
      */
     @API
     void attachment(Map<String, Object> attachment) {
-        this.attachments << AttachmentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
+        if (attachment) {
+            this.attachments << AttachmentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
+        }
     }
 
 
