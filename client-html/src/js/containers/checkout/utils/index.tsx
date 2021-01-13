@@ -306,7 +306,9 @@ export const getCheckoutModel = (
 
       sendConfirmation: l.sendEmail,
 
-      fundingInvoices: fundingInvoices && getFundingInvoices(fundingInvoices.filter(fi => fi.item.enrolment.contact.id === l.contact.id))
+      fundingInvoices: fundingInvoices && getFundingInvoices(
+        fundingInvoices.filter(fi => fi.trackAmountOwing && fi.item.enrolment.contact.id === l.contact.id)
+      )
     })),
 
     sendInvoice: payerItem && payerItem.sendInvoice,
