@@ -433,7 +433,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       response = defaultDisplayValue;
     }
 
-    return input.value ? response : <span className={clsx("overflow-hidden placeholderContent", classes.editable)}>No value</span>;
+    return ![null, undefined, ''].includes(input.value) ? response : <span className={clsx("overflow-hidden placeholderContent", classes.editable)}>No value</span>;
   }, [formattedDisplayValue, selectLabelCondition, alwaysDisplayDefault, returnType, defaultDisplayValue, selectLabelMark, input, classes]);
 
   const labelContent = useMemo(() => (labelAdornment ? (

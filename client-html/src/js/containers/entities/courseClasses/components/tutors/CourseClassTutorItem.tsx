@@ -88,7 +88,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
       onChange={onChange}
       buttonsContent={(
         <div className="centeredFlex zIndex1">
-          <Button color="primary" onClick={onWageClick} disabled={!tutor.roleId || !tutor.contactId}>
+          <Button color="primary" onClick={onWageClick} disabled={(!tutor.roleId && tutor.roleId !== 0) || !tutor.contactId}>
             {hasWage ? "Edit pay" : "Add pay"}
           </Button>
           <IconButton onClick={onDeleteClick}>
@@ -180,9 +180,13 @@ const CourseClassTutorItem: React.FC<Props> = ({
               items={tutorRoles}
               onInnerValueChange={onRoleIdChange}
               disabled={tutor.id || hasWage}
-              labelAdornment={
-                <LinkAdornment linkHandler={openTutorRoleLink} link={tutor.roleId} disabled={!tutor.roleId} />
-              }
+              labelAdornment={(
+                <LinkAdornment
+                  linkHandler={openTutorRoleLink}
+                  link={tutor.roleId}
+                  disabled={!tutor.roleId && tutor.roleId !== 0}
+                />
+              )}
               alwaysDisplayDefault
               required
             />
