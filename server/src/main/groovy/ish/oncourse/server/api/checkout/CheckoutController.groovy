@@ -498,45 +498,47 @@ class CheckoutController {
     }
 
     private void createFundingInvoice(InvoiceDTO dto) {
-        Invoice fundingInvoice = context.newObject(Invoice)
-        fundingInvoice.contact = contactApiService.getEntityAndValidateExistence(context, dto.contactId)
-        fundingInvoice.invoiceDate = LocalDate.now()
-        fundingInvoice.source = SOURCE_ONCOURSE
-        fundingInvoice.createdByUser = context.localObject(systemUserService.currentUser)
-        fundingInvoice.customerReference = trimToNull(dto.customerReference)
-        fundingInvoice.confirmationStatus = DO_NOT_SEND
-        if (trimToNull(invoice.contact.getAddress()) != null) {
-            fundingInvoice.billToAddress = payer.address
-        }
-        invoiceApiService.updateInvoiceDueDates(fundingInvoice, dto.paymentPlans)
-
-        FundingSource relatedFundingSource = fundingSourceDao.getById(context, dto.relatedFundingSourceId)
-        dto.invoiceLines.each { dtoLine ->
-            Enrolment enrolment = invoice.invoiceLines*.enrolment.find { it && it.courseClass.id == dtoLine.courseClassId }
-            enrolment.vetPurchasingContractID = fundingInvoice.customerReference
-            enrolment.relatedFundingSource = relatedFundingSource
-            if (enrolment.relatedFundingSource) {
-                enrolment.relatedFundingSource.fundingProvider = fundingInvoice.contact
+        if (dto.total > 0) {
+            Invoice fundingInvoice = context.newObject(Invoice)
+            fundingInvoice.contact = contactApiService.getEntityAndValidateExistence(context, dto.contactId)
+            fundingInvoice.invoiceDate = LocalDate.now()
+            fundingInvoice.source = SOURCE_ONCOURSE
+            fundingInvoice.createdByUser = context.localObject(systemUserService.currentUser)
+            fundingInvoice.customerReference = trimToNull(dto.customerReference)
+            fundingInvoice.confirmationStatus = DO_NOT_SEND
+            if (trimToNull(invoice.contact.getAddress()) != null) {
+                fundingInvoice.billToAddress = payer.address
             }
+            invoiceApiService.updateInvoiceDueDates(fundingInvoice, dto.paymentPlans)
 
-            InvoiceLine invoiceLine = context.newObject(InvoiceLine)
-            invoiceLine.invoice = fundingInvoice
-            invoiceLine.enrolment = enrolment
-            invoiceLine.courseClass = enrolment.courseClass
-            invoiceLine.quantity = ONE
-            invoiceLine.tax = nonSupplyTax(context)
-            invoiceLine.priceEachExTax = new Money(dtoLine.finalPriceToPayIncTax)
-            invoiceLine.sortOrder = 0
-            invoiceLine.account = enrolment.courseClass.incomeAccount
-            invoiceLine.prepaidFeesAccount = prepaidFeesAccount
-            invoiceLine.discountEachIncTax = Money.ZERO
-            invoiceLine.title = "Funding provided for the enrolment of ${enrolment.student.contact.getFullName()} " +
-                    "in ${enrolment.courseClass.uniqueCode} ${enrolment.courseClass.course.name} " +
-                    "commencing ${enrolment.courseClass.startDateTime?.format('dd-MM-yyyy', enrolment.courseClass.timeZone)}"
-            invoiceLine.description = invoiceLine.title
-            invoiceLine.recalculateTaxEach()
+            FundingSource relatedFundingSource = fundingSourceDao.getById(context, dto.relatedFundingSourceId)
+            dto.invoiceLines.findAll { it.finalPriceToPayIncTax > 0 }.each { dtoLine ->
+                Enrolment enrolment = invoice.invoiceLines*.enrolment.find { it && it.courseClass.id == dtoLine.courseClassId }
+                enrolment.vetPurchasingContractID = fundingInvoice.customerReference
+                enrolment.relatedFundingSource = relatedFundingSource
+                if (enrolment.relatedFundingSource) {
+                    enrolment.relatedFundingSource.fundingProvider = fundingInvoice.contact
+                }
+
+                InvoiceLine invoiceLine = context.newObject(InvoiceLine)
+                invoiceLine.invoice = fundingInvoice
+                invoiceLine.enrolment = enrolment
+                invoiceLine.courseClass = enrolment.courseClass
+                invoiceLine.quantity = ONE
+                invoiceLine.tax = nonSupplyTax(context)
+                invoiceLine.priceEachExTax = new Money(dtoLine.finalPriceToPayIncTax)
+                invoiceLine.sortOrder = 0
+                invoiceLine.account = enrolment.courseClass.incomeAccount
+                invoiceLine.prepaidFeesAccount = prepaidFeesAccount
+                invoiceLine.discountEachIncTax = Money.ZERO
+                invoiceLine.title = "Funding provided for the enrolment of ${enrolment.student.contact.getFullName()} " +
+                        "in ${enrolment.courseClass.uniqueCode} ${enrolment.courseClass.course.name} " +
+                        "commencing ${enrolment.courseClass.startDateTime?.format('dd-MM-yyyy', enrolment.courseClass.timeZone)}"
+                invoiceLine.description = invoiceLine.title
+                invoiceLine.recalculateTaxEach()
+            }
+            fundingInvoice.updateAmountOwing()
         }
-        fundingInvoice.updateAmountOwing()
     }
 
     private Enrolment createEnrolment(Contact contact, CourseClass courseClass, Boolean sendEmail, StudyReason reason) {
