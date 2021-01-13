@@ -35,7 +35,7 @@ export const LinkAdornment: React.FC<Props> = ({
   return (
     <span className={className}>
       <IconButton
-        disabled={disabled || !link}
+        disabled={disabled || (!link && link !== 0)}
         onClick={onClick}
         color={linkColor}
         classes={{
