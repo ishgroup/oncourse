@@ -50,7 +50,7 @@ public class AddSuperUser {
 		
 		WillowUser user = context.newObject(WillowUser.class);
 		user.setEmail(newUserEmailValue);
-		final String hashedPassword = SecurityUtil.hashPassword(newUserPasswordValue);
+//		final String hashedPassword = SecurityUtil.hashPassword(newUserPasswordValue);
 		user.setPassword(newUserPasswordValue);//TODO: migrate when found logic which will update old passwords
 		user.setFirstName(newUserFirstNameValue);
 		user.setLastName(newUserLastNameValue);
