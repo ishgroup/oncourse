@@ -22,4 +22,6 @@ export function BankingApiMock(mock) {
   });
 
   this.api.onGet(new RegExp(`v1/list/entity/banking/depositPayments/\\d+/\\d+`)).reply(config => promiseResolve(config, this.db.getDepositPayment()));
+
+  this.api.onPost("v1/list/entity/banking/reconcile").reply(config => promiseResolve(config, {}));
 }
