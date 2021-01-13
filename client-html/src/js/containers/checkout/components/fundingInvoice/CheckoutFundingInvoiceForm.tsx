@@ -38,7 +38,7 @@ interface Props extends DecoratedFormProps {
 const validateFundingInvoices = (fundingInvoices: CheckoutFundingInvoice[]) => {
   let error;
   fundingInvoices?.forEach(fi => {
-    if (!fi.fundingProviderId) {
+    if (fi.trackAmountOwing && !fi.fundingProviderId) {
       error = "Funding provider required";
     }
   });
