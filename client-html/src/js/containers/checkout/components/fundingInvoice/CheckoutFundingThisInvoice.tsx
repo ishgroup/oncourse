@@ -40,6 +40,7 @@ const CheckoutFundingThisInvoice: React.FC<Props> = (
     <div className="pl-2 pr-2">
       {fundingInvoiceValues.fundingInvoices.map((f, index) => (
         <HeaderFieldTypo
+          key={f.fundingProviderId}
           title={f.company ? getContactName(f.company) : <span className="errorColor">Not set</span>}
           activeField={f.active ? CheckoutPage.fundingInvoiceSummary : null}
           field={CheckoutPage.fundingInvoiceSummary}
