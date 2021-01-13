@@ -6,6 +6,7 @@
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
 import {
   reduxForm, initialize
 } from "redux-form";
@@ -347,6 +348,6 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
 
 const CollectionRulesForm = reduxForm({
   form: "CollectionRulesForm"
-})(withStyles(styles)(CollectionRulesBaseForm) as any);
+})(withStyles(styles)(withRouter(CollectionRulesBaseForm)) as any);
 
 export default CollectionRulesForm;
