@@ -1,19 +1,21 @@
+import { Banking } from "@api/model";
 import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockBankings() {
-  this.getBankings = () => {
-    return this.bankings;
-  };
+  this.getBankings = () => this.bankings;
 
   this.getBanking = id => {
     const row = this.bankings.rows.find(row => row.id == id);
     return {
       id: row.id,
-      reconciledStatus: row.values[0],
+      reconciledStatus: "N/A",
       settlementDate: row.values[1],
-      adminSite: row.values[3],
+      adminSite: "online",
+      administrationCenterId: 200,
       createdBy: row.values[4],
       total: row.values[5],
+      createdOn: "2016-06-28T10:56:46.000Z",
+      modifiedOn: "2016-06-28T11:26:13.000Z",
       payments: [
         {
           amount: 20,
@@ -55,7 +57,7 @@ export function mockBankings() {
     const totalRows = bankings.rows;
 
     data.id = totalRows.length + 1;
-    console.log(data);
+
     bankings.rows.push({
       id: data.id,
       values: [data.reconciledStatus, data.settlementDate, data.adminSite, data.createdBy, data.total]
@@ -64,12 +66,53 @@ export function mockBankings() {
     this.bankings = bankings;
   };
 
+  this.createBankingMock = (): Banking => ({
+    id: 21,
+    reconciledStatus: "N/A",
+    settlementDate: "2016-06-28",
+    adminSite: "online",
+    administrationCenterId: 200,
+    createdBy: "onCourse Administrator",
+    total: 40,
+    payments: [
+      {
+        amount: 20,
+        contactId: 3326,
+        contactName: "James, Parent",
+        created: "2018-08-21",
+        id: "p4108",
+        paymentDate: "2018-08-21",
+        paymentId: 4108,
+        paymentMethodName: "Credit card",
+        paymentTypeName: "payment in",
+        reconcilable: true,
+        reconciled: true,
+        source: "web",
+        status: "Success"
+      },
+      {
+        amount: 500,
+        contactId: 3318,
+        contactName: "Miller, James",
+        created: "2018-08-17",
+        id: "p4068",
+        paymentDate: "2018-08-17",
+        paymentId: 4068,
+        paymentMethodName: "Credit card",
+        paymentTypeName: "payment in",
+        reconcilable: true,
+        reconciled: false,
+        source: "web",
+        status: "Success"
+      }
+    ]
+  });
+
   this.removeBanking = id => {
     this.bankings.rows = this.bankings.rows.filter(a => a.id !== id);
   };
 
-  this.getDepositPayment = () => {
-    return [
+  this.getDepositPayment = () => [
       {
         amount: 32835,
         contactId: 3085,
@@ -146,7 +189,6 @@ export function mockBankings() {
         status: "Success"
       }
     ];
-  };
 
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
