@@ -123,7 +123,7 @@ public class TemplateService {
 
 	public String renderSubject(String templateName, Map<String, Object> bindings) {
 		var emailTemplate = loadTemplate(templateName);
-		return renderSubject(emailTemplate, bindings);
+		return addSubject(emailTemplate, bindings, null);
 	}
 
 	public String renderSubject(EmailTemplate template, Map<String, Object> bindings) {
