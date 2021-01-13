@@ -7,9 +7,7 @@ export function BankingApiMock(mock) {
     return promiseResolve(config, this.db.getBanking(id));
   });
 
-  this.api.onPut(new RegExp(`v1/list/entity/banking/\\d+`)).reply(config => {
-    return promiseResolve(config, JSON.parse(config.data));
-  });
+  this.api.onPut(new RegExp(`v1/list/entity/banking/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
 
   this.api.onPost("v1/list/entity/banking").reply(config => {
     this.db.createBanking(config.data);
@@ -23,7 +21,5 @@ export function BankingApiMock(mock) {
     return promiseResolve(config, this.db.getBankings());
   });
 
-  this.api.onGet(new RegExp(`v1/list/entity/banking/depositPayments/\\d+/\\d+`)).reply(config => {
-    return promiseResolve(config, this.db.getDepositPayment());
-  });
+  this.api.onGet(new RegExp(`v1/list/entity/banking/depositPayments/\\d+/\\d+`)).reply(config => promiseResolve(config, this.db.getDepositPayment()));
 }
