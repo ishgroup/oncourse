@@ -292,12 +292,18 @@ class CanvasIntegration implements PluginTrait {
 
     @OnSave
     static void onSave(IntegrationConfiguration configuration, Map<String, String> props) {
-        configuration.setProperty(CANVAS_BASE_URL_KEY,props[CANVAS_BASE_URL_KEY])
+        
+        String baseUrl = props[CANVAS_BASE_URL_KEY].trim()
+        if (!baseUrl.startsWith("https://")) {
+            baseUrl = "https://" + baseUrl
+        }
+            
+        configuration.setProperty(CANVAS_BASE_URL_KEY,baseUrl)
         configuration.setProperty(CANVAS_CLIENT_TOKEN_KEY,props[CANVAS_CLIENT_TOKEN_KEY])
         configuration.setProperty(CANVAS_CLIENT_SECRET_KEY,props[CANVAS_CLIENT_SECRET_KEY])
         configuration.setProperty(CANVAS_ACCOUNT_ID_KEY,props[CANVAS_ACCOUNT_ID_KEY])
 
-        new RESTClient("https://" + props[CANVAS_BASE_URL_KEY]).request(Method.POST, ContentType.URLENC) {
+        new RESTClient(baseUrl).request(Method.POST, ContentType.URLENC) {
             headers.Accept = 'application/json'
 
             uri.path = '/login/oauth2/token'
