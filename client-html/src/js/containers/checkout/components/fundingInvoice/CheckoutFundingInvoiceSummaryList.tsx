@@ -16,7 +16,7 @@ import Typography from "@material-ui/core/Typography";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { validateSingleMandatoryField, validateVetPurchasingContractIdentifier } from "../../../../common/utils/validation";
+import { validateVetPurchasingContractIdentifier } from "../../../../common/utils/validation";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { AppTheme } from "../../../../model/common/Theme";
@@ -98,7 +98,6 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
               disabled={!fundingInvoice || !fundingInvoice.fundingProviderId}
             />
           )}
-          validate={validateSingleMandatoryField}
         />
       </Grid>
       <Grid item xs={6}>
