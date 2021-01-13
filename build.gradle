@@ -3,7 +3,7 @@ buildscript {
 		cayenneVersion = '4.1.B2'
 		ehcacheVersion = '3.4.0'
 		log4j2Version = '2.12.0'
-        typesVersion = '53.1'
+        typesVersion = '58'
 		solrVersion = '7.1.0'
 		groovyVersion = '2.5.9'
         mariadbVersion = '2.4.1'
@@ -14,6 +14,7 @@ buildscript {
     }
 
 	repositories {
+        mavenCentral()
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
@@ -96,6 +97,7 @@ allprojects {
     }
 
     repositories {
+        mavenCentral()
         maven {
             url 'https://repo.ish.com.au/content/groups/public'
         }

@@ -7,7 +7,6 @@ import ish.oncourse.model.College
 import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WillowUser
 import ish.oncourse.services.authentication.AuthenticationResult
-import ish.oncourse.services.authentication.CheckBasicAuth
 import ish.oncourse.services.authentication.IAuthenticationService
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.services.RequestService
@@ -17,11 +16,7 @@ import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang.StringUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
-import org.eclipse.jetty.server.Request
 
 import javax.servlet.http.Cookie
 
@@ -180,13 +175,7 @@ class AuthenticationService implements IAuthenticationService {
     }
 
     private boolean tryAuthenticate(SystemUser user, String password) {
-        if (AuthenticationUtil.isValidPasswordHash(user.password)) {
-            // normal authenticatioin procedure
-            return AuthenticationUtil.checkPassword(password, user.password)
-        }
-
-        // fallback to old password hashing mechanism
-        return AuthenticationUtil.checkOldPassword(password, user.password)
+        return AuthenticationUtil.checkPassword(password,user.password)
     }
     
     

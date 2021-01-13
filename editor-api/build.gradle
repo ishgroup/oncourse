@@ -33,6 +33,10 @@ dependencies {
 
     // JAX-B dependencies for JDK 11
     implementation 'javax.xml.ws:jaxws-api:2.3.1'
+
+    //argon2 crypto algorithm
+    implementation "org.bouncycastle:bcprov-jdk15on:1.67"
+
 }
 
 test {
