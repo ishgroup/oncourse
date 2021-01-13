@@ -36,13 +36,16 @@ interface Props extends DecoratedFormProps {
 }
 
 const validateFundingInvoices = (fundingInvoices: CheckoutFundingInvoice[]) => {
-  let error;
-  fundingInvoices?.forEach(fi => {
+  let errors;
+  fundingInvoices?.forEach((fi, index) => {
     if (fi.trackAmountOwing && !fi.fundingProviderId) {
-      error = "Funding provider required";
+      if (!Array.isArray(errors)) {
+        errors = [];
+      }
+      errors[index] = { fundingProviderId: "Funding provider is required" };
     }
   });
-  return error;
+  return errors;
 };
 
 const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
