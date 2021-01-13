@@ -45,7 +45,7 @@ const CheckoutFundingThisInvoice: React.FC<Props> = (
           activeField={f.active ? CheckoutPage.fundingInvoiceSummary : null}
           field={CheckoutPage.fundingInvoiceSummary}
           onClick={() => setActive(index)}
-          amount={f.total || 0}
+          amount={f.trackAmountOwing ? f.total || 0 : 0}
           currencySymbol={currencySymbol}
           caption=""
           className="pt-1 pb-2"
