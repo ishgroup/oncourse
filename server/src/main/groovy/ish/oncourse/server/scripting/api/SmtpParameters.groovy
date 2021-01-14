@@ -72,4 +72,13 @@ class SmtpParameters {
         this.multipartType = DEFAULT_MULTIPART_TYPE
         this.attachments = attachments
     }
+
+
+    SmtpParameters(String fromAddress, String fromName, String to, String subject, String content) {
+        this.fromAddress = fromAddress
+        this.fromName = fromName
+        this.toList = [to]
+        this.subject = subject
+        this.content = content
+    }
 }
