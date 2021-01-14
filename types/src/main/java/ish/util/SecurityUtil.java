@@ -29,6 +29,7 @@ public final class SecurityUtil {
 	public static final int VOUCHER_CODE_LENGTH = 8;
 	public static final int USI_SOFTWARE_ID_LENGTH = 9;
 	public static final int CERTIFICATE_CODE_LENGTH = 11;
+	public static final int INVITATION_CODE_LENGTH = 32;
 	public static final String CERTIFICATE_NAME_SPACE = "c";
 
 	private static SecureRandom random = new SecureRandom();
@@ -73,6 +74,16 @@ public final class SecurityUtil {
 
 	public static String generateCertificateCode() {
 		return  String.format("%s%s",CERTIFICATE_NAME_SPACE, (RandomStringUtils.random(CERTIFICATE_CODE_LENGTH, 0, voucherCodeLegalChars.length(), false, false, voucherCodeLegalChars.toCharArray(), random)));
+	}
+
+	public static String generateUserInvitationToken() {
+		return RandomStringUtils.random(INVITATION_CODE_LENGTH,
+				0,
+				humanReadableChars.length(),
+				false,
+				false,
+				humanReadableChars.toCharArray(),
+				random);
 	}
 
 	public static String generateUSISoftwareId() {
