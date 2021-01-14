@@ -41,5 +41,6 @@ include ':admin',
 	':editor-api',
 	':checkout',
     ':checkout-api',
-		':usi'
-
+	':usi'
+	':billing',
+	':billing-api'

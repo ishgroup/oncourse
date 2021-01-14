@@ -1,0 +1,45 @@
+swagger: '2.0'
+info:
+  title: onCourse Billing API
+  description: An API for interacting with the billing system
+  contact:
+    name: ish group pty ltd
+    url: http://ish.com.au
+    email: support@ish.com.au
+  license:
+    name: Proprietary
+  version: v1
+
+
+schemes:
+  - https
+produces:
+  - application/json
+
+securityDefinitions:
+  loginAuth:
+    type: basic
+    description: HTTP Basic Authentication
+#
+#  token:
+#    type: apiKey
+#    name: ESESSIONID
+#    description: User's session token
+#    in: header
+
+# Require all requests to require a token unless otherwise stated
+#security:
+#  - token: []
+
+host: siteKey.oncourse.cc
+basePath: /billing/v1
+
+tags:
+  - name: Auth
+    description: |
+      These methods allow you to log into the editor API, retrieve a session token and log out again. None
+      of the other methods will work without a session token passed in an HTTP header.
+  - name: Menu
+    description: |
+      Menus are a navigation device for your website and can link to internal pages or out to externally hosted
+      pages. Menus are hierarchical and ordered.
