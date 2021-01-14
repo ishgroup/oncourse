@@ -161,6 +161,8 @@ public abstract class _WaitingList extends ExpandableCayenneDataObject {
         return (List<WaitingListSite>)readProperty("waitingListSites");
     }
 
+    protected abstract void onPrePersist();
+
     @Override
     public Object readPropertyDirectly(String propName) {
         if(propName == null) {

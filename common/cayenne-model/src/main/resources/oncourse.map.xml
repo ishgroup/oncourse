@@ -2673,6 +2673,7 @@
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="potentialStudents" type="java.lang.Integer" db-attribute-path="potentialStudents"/>
+		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
 	<obj-entity name="WaitingListCustomField" superEntityName="CustomField" className="ish.oncourse.model.WaitingListCustomField">
 		<qualifier><![CDATA[entityName = "WaitingList"]]></qualifier>
