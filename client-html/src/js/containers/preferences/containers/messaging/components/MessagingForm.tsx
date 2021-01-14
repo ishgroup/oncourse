@@ -11,7 +11,7 @@ import { ExitToApp } from "@material-ui/icons";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import {
-  reduxForm, initialize, getFormValues
+  Form, reduxForm, initialize, getFormValues
 } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
@@ -78,7 +78,7 @@ class MessagingBaseForm extends React.Component<any, any> {
     const emailBounceEnabled = values && values[this.formModel.EmailBounceEnabled.uniqueKey] === "true";
 
     return (
-      <form className="container" onSubmit={handleSubmit(onSave)}>
+      <Form className="container" onSubmit={handleSubmit(onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
@@ -273,7 +273,7 @@ class MessagingBaseForm extends React.Component<any, any> {
             />
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }

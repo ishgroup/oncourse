@@ -8,7 +8,9 @@ import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
+import { withRouter } from "react-router";
 import {
+  Form,
   arrayInsert,
   arrayRemove,
   FieldArray,
@@ -21,6 +23,7 @@ import { connect } from "react-redux";
 import { FundingSource } from "@api/model";
 import isEqual from "lodash.isequal";
 import Fab from "@material-ui/core/Fab";
+import { Dispatch } from "redux";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -33,6 +36,7 @@ import * as Model from "../../../../../model/preferences/Licences";
 import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
+import { setNextLocation } from "../../../../../common/actions";
 
 interface Props {
   values: any;
@@ -49,6 +53,9 @@ interface Props {
   timestamps: Date[];
   openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
   fetch?: Fetch;
+  history?: any;
+  nextLocation?: string;
+  setNextLocation?: (nextLocation: string) => void;
 }
 
 const Initial: FundingSource = {
@@ -124,7 +131,12 @@ class FundingContractsForm extends React.Component<Props, any> {
       this.props.onSave(this.getTouchedAndNew(value.fundingContracts), this.props.hasLicence ? "POST" : "PATCH");
     })
       .then(() => {
+        const { nextLocation, history, setNextLocation } = this.props;
+
         this.props.dispatch(initialize("FundingContractsForm", { fundingContracts: this.props.fundingContracts }));
+
+        nextLocation && history.push(nextLocation);
+        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -178,7 +190,7 @@ class FundingContractsForm extends React.Component<Props, any> {
     } = this.props;
 
     return (
-      <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
@@ -238,7 +250,7 @@ class FundingContractsForm extends React.Component<Props, any> {
             )}
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
@@ -249,9 +261,14 @@ const mapStateToProps = (state: State) => ({
   timestamps: state.preferences.fundingContracts && getTimestamps(state.preferences.fundingContracts),
   fetch: state.fetch,
   hasLicence:
-    state.preferences.licences && state.preferences.licences[Model.LicenseFundingContract.uniqueKey] === "true"
+    state.preferences.licences && state.preferences.licences[Model.LicenseFundingContract.uniqueKey] === "true",
+  nextLocation: state.nextLocation
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 export default reduxForm({ onSubmitFail, form: "FundingContractsForm" })(
-  connect<any, any, any>(mapStateToProps, null)(FundingContractsForm)
+  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(FundingContractsForm))
 ) as React.ComponentClass<any>;
