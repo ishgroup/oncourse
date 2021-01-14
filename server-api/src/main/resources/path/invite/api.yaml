@@ -1,0 +1,22 @@
+get:
+  operationId: getUserByInvitation
+  description: Get a user by invitation token which is not expired
+  tags:
+    - User
+  parameters:
+    - name: invitationToken
+      in: path
+      type: string
+      description: Invitation token
+      required: true
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/User.yaml'
+    '400':
+      description: Bad request error.
+      schema:
+        type: string
+    default:
+      description: Unexpected error
