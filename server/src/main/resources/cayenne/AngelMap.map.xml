@@ -1411,7 +1411,7 @@
 		<db-attribute name="lastLoginOn" type="TIMESTAMP"/>
 		<db-attribute name="login" type="VARCHAR" length="20"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
-		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="password" type="VARCHAR" length="128"/>
 		<db-attribute name="passwordLastChanged" type="DATE"/>
 		<db-attribute name="passwordUpdateRequired" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="sessionId" type="VARCHAR" length="256"/>
@@ -1420,7 +1420,7 @@
 		<db-attribute name="tokenScratchCodes" type="CLOB"/>
 		<db-attribute name="loginAttemptNumber" type="SMALLINT"/>
 		<db-attribute name="invitationToken" type="VARCHAR" length="32"/>
-		<db-attribute name="invitationTokenExpiryDate" type="DATE"/>
+		<db-attribute name="invitationTokenExpiryDate" type="TIMESTAMP"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Tax">
@@ -2885,7 +2885,7 @@
 		<obj-attribute name="tokenScratchCodes" type="java.lang.String" db-attribute-path="tokenScratchCodes"/>
 		<obj-attribute name="loginAttemptNumber" type="java.lang.Integer" db-attribute-path="loginAttemptNumber"/>
 		<obj-attribute name="invitationToken" type="java.lang.String" db-attribute-path="invitationToken"/>
-		<obj-attribute name="invitationTokenExpiryDate" type="java.time.LocalDate" db-attribute-path="invitationTokenExpiryDate"/>
+		<obj-attribute name="invitationTokenExpiryDate" type="java.util.Date" db-attribute-path="invitationTokenExpiryDate"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="Tag" className="ish.oncourse.server.cayenne.Tag" clientClassName="ish.oncourse.cayenne.Tag" dbEntityName="Node" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">

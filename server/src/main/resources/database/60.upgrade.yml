@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 59-1
+      id: 60-1
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -17,7 +17,7 @@ databaseChangeLog:
                   type: SMALLINT
                   value: 0
   - changeSet:
-      id: 59-2
+      id: 60-2
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -30,7 +30,7 @@ databaseChangeLog:
             columnName: login
             tableName: SystemUser
   - changeSet:
-      id: 59-3
+      id: 60-3
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -48,7 +48,7 @@ databaseChangeLog:
                   constraints:
                     nullable: true
   - changeSet:
-      id: 59-4
+      id: 60-4
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -62,6 +62,19 @@ databaseChangeLog:
             columns:
               - column:
                   name: invitationTokenExpiryDate
-                  type: DATE
+                  type: DATETIME
                   constraints:
                     nullable: true
+  - changeSet:
+      id: 60-5
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: SystemUser
+            columnName: password
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: VARCHAR(128)
+            columnName: password
+            tableName: SystemUser
