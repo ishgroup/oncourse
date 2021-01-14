@@ -293,17 +293,9 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
         <CustomAppBar>
           <Grid container>
             <Grid item xs={12} className="centeredFlex">
-              <FormField
-                type="headerText"
-                name="email"
-                placeholder="Email"
-                margin="none"
-                className={classes.HeaderTextField}
-                listSpacing={false}
-                validate={validateUniqueNames}
-                disabled={!isNew}
-                required
-              />
+              <Typography color="inherit" className="appHeaderFontSize pl-2" noWrap>
+                {values.email ? values.email : "No email"}
+              </Typography>
 
               <div className="flex-fill" />
 
@@ -315,12 +307,14 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               />
 
               <FormSubmitButton
-                disabled={!dirty}
+                disabled={!dirty && !isNew && !values.inviteAgain}
                 invalid={invalid || (isNew && passwordComplexityFlag === "true" && !validPassword)}
+                text={isNew ? "Invite" : values.inviteAgain ? "Resend invite" : "Save"}
               />
             </Grid>
           </Grid>
         </CustomAppBar>
+
         <FormControlLabel
           control={<FormField type="switch" name="active" color="primary" />}
           label="Active"
@@ -346,57 +340,57 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               required
               fullWidth
             />
-            {isNew && (
-              <div className="centeredFlex mb-2">
-                <FormField
-                  type="text"
-                  name="password"
-                  label="Password"
-                  validate={this.validatePassword}
-                  onChange={() => {
-                    if (this.state.validPassword && passwordComplexityFlag === "true") {
-                      this.setState({
-                        validPassword: false
-                      });
-                    }
-                    this.onPasswordChange();
-                  }}
-                  disabled={asyncValidating}
-                  className="flex-fill"
-                  clearOnUnmount
-                  fullWidth
-                  required
-                />
-                {asyncValidating && (
-                  <CircularProgress
-                    size={24}
-                    classes={{
-                      root: classes.loader
-                    }}
-                  />
-                )}
-              </div>
-            )}
+
+            {/*{isNew && (*/}
+            {/*  <div className="centeredFlex mb-2">*/}
+            {/*    <FormField*/}
+            {/*      type="text"*/}
+            {/*      name="password"*/}
+            {/*      label="Password"*/}
+            {/*      validate={this.validatePassword}*/}
+            {/*      onChange={() => {*/}
+            {/*        if (this.state.validPassword && passwordComplexityFlag === "true") {*/}
+            {/*          this.setState({*/}
+            {/*            validPassword: false*/}
+            {/*          });*/}
+            {/*        }*/}
+            {/*        this.onPasswordChange();*/}
+            {/*      }}*/}
+            {/*      disabled={asyncValidating}*/}
+            {/*      className="flex-fill"*/}
+            {/*      clearOnUnmount*/}
+            {/*      fullWidth*/}
+            {/*      required*/}
+            {/*    />*/}
+            {/*    {asyncValidating && (*/}
+            {/*      <CircularProgress*/}
+            {/*        size={24}*/}
+            {/*        classes={{*/}
+            {/*          root: classes.loader*/}
+            {/*        }}*/}
+            {/*      />*/}
+            {/*    )}*/}
+            {/*  </div>*/}
+            {/*)}*/}
 
             <FormField
-              type="select"
-              name="administrationCentre"
-              label="Bank cash/cheques to site"
-              fullWidth
-              autoWidth={false}
-              items={sites || []}
-              validate={validateSingleMandatoryField}
-            />
-
-            {!isNew && !oldEmail && (
-              <FormField
                 type="text"
                 name="email"
                 label="Email"
+                validate={validateUniqueNames}
                 required
                 fullWidth
-              />
-            )}
+            />
+
+            <FormField
+                type="select"
+                name="administrationCentre"
+                label="Bank cash/cheques to site"
+                fullWidth
+                autoWidth={false}
+                items={sites || []}
+                validate={validateSingleMandatoryField}
+            />
 
             {!isNew && (
               <Uneditable
@@ -406,15 +400,17 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               />
             )}
 
-            <FormControlLabel
-              control={<FormField type="switch" name="passwordUpdateRequired" color="primary" />}
-              label="Require password update"
-              labelPlacement="start"
-              className={classes.passwordUpdateSection}
-              classes={{
-                root: "switchWrapper mb-0"
-              }}
-            />
+            {!isNew && (
+              <FormControlLabel
+                control={<FormField type="switch" name="passwordUpdateRequired" color="primary" />}
+                label="Require password update"
+                labelPlacement="start"
+                className={classes.passwordUpdateSection}
+                classes={{
+                  root: "switchWrapper mb-0"
+                }}
+              />
+            )}
 
             {!isNew && (
               <div className={classes.resetSection}>
