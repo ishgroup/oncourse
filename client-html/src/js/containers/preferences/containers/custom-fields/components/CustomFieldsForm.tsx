@@ -1,11 +1,14 @@
 import * as React from "react";
 import ClassNames from "clsx";
+import { withRouter } from "react-router";
 import Grid from "@material-ui/core/Grid";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 import { withStyles, createStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import {
- FieldArray, reduxForm, SubmissionError, arrayRemove, change
+  Form, FieldArray, reduxForm, SubmissionError, arrayRemove, change
 } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import isEqual from "lodash.isequal";
@@ -23,6 +26,8 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { getCustomFields } from "../../../actions";
 import { Fetch } from "../../../../../model/common/Fetch";
+import { State } from "../../../../../reducers/state";
+import { setNextLocation } from "../../../../../common/actions";
 
 const manualLink = getManualLink("generalPrefs_customFields");
 
@@ -55,6 +60,9 @@ interface Props {
   onDelete: (id: string) => void;
   onUpdate: (customFields: CustomFieldType[]) => void;
   openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  history?: any,
+  nextLocation?: string,
+  setNextLocation?: (nextLocation: string) => void,
 }
 
 class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
@@ -109,7 +117,12 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
+        const { nextLocation, history, setNextLocation } = this.props;
+
         this.props.dispatch(getCustomFields());
+
+        nextLocation && history.push(nextLocation);
+        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -180,7 +193,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     return (
       <>
         <CustomFieldsDeleteDialog setFieldToDelete={this.setFieldToDelete} item={fieldToDelete} onConfirm={this.onDeleteConfirm} />
-        <form className={classes.container} noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+        <Form className={classes.container} onSubmit={handleSubmit(this.onSave)} noValidate autoComplete="off">
           <RouteChangeConfirm form={form} when={dirty} />
           <CustomAppBar>
             <Grid container>
@@ -232,15 +245,23 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
             )}
             </Grid>
           </Grid>
-        </form>
+        </Form>
       </>
 );
   }
 }
 
+const mapStateToProps = (state: State) => ({
+  nextLocation: state.nextLocation
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+});
+
 const CustomFieldsForm = reduxForm({
   onSubmitFail,
   form: "CustomFieldsForm"
-})(withStyles(theme => ({ ...formCommonStyles(theme), ...styles() }))(CustomFieldsBaseForm) as any);
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(theme => ({ ...formCommonStyles(theme), ...styles() }))(withRouter(CustomFieldsBaseForm) as any)));
 
 export default CustomFieldsForm;

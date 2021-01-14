@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Dispatch } from "redux";
 import {
-  change, FieldArray, getFormValues, initialize, reduxForm, SubmissionError
+  Form, change, FieldArray, getFormValues, initialize, reduxForm, SubmissionError
 } from "redux-form";
 import RouteChangeConfirm from "../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../common/components/form/AppBarActions";
@@ -32,6 +32,7 @@ import { State } from "../../../../reducers/state";
 import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../actions";
 import renderCollectionFormFields from "./components/CollectionFormFieldsRenderer";
 import CollectionFormFieldTypesMenu from "./components/CollectionFormFieldTypesMenu";
+import { setNextLocation } from "../../../../common/actions";
 
 const manualLink = getManualLink("dataCollection");
 
@@ -306,6 +307,7 @@ class CollectionFormContainer extends React.Component<any, any> {
       }
     })
       .then(() => {
+        const { nextLocation, history, setNextLocation } = this.props;
         const updated = this.props.collectionForms.find(item => item.name === value.form.name);
         const items = this.parseFormData(updated);
         const updatedData = {
@@ -314,7 +316,14 @@ class CollectionFormContainer extends React.Component<any, any> {
         };
         this.skipValidation = true;
         this.props.dispatch(initialize("DataCollectionForm", updatedData));
-        history.push(`/preferences/collectionForms/edit/${formatted.type}/${encodeURIComponent(updated.id)}`);
+
+        if (nextLocation) {
+          nextLocation && history.push(nextLocation);
+          setNextLocation('');
+        } else {
+          history.push(`/preferences/collectionForms/edit/${formatted.type}/${encodeURIComponent(updated.id)}`);
+        }
+
         this.skipValidation = false;
       })
       .catch(error => {
@@ -432,7 +441,7 @@ class CollectionFormContainer extends React.Component<any, any> {
     return (
       <div className={clsx(classes.mainContainer, "overflow-hidden")}>
         <div className="h-100 overflow-y-auto" ref={this.getFormRef}>
-          <form className="container p-3" onSubmit={handleSubmit(this.onSave)}>
+          <Form className="container p-3" onSubmit={handleSubmit(this.onSave)}>
             {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
             <CustomAppBar>
               <Grid
@@ -550,7 +559,7 @@ class CollectionFormContainer extends React.Component<any, any> {
                 </Grid>
               </Grid>
             </Grid>
-          </form>
+          </Form>
         </div>
       </div>
     );
@@ -560,13 +569,15 @@ class CollectionFormContainer extends React.Component<any, any> {
 const mapStateToProps = (state: State) => ({
   collectionForms: state.preferences.dataCollectionForms,
   values: getFormValues("DataCollectionForm")(state),
-  fetch: state.fetch
+  fetch: state.fetch,
+  nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (id, form) => dispatch(updateDataCollectionForm(id, form)),
   onCreate: form => dispatch(createDataCollectionForm(form)),
-  onDelete: id => dispatch(deleteDataCollectionForm(id))
+  onDelete: id => dispatch(deleteDataCollectionForm(id)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 const DataCollectionForm = reduxForm({

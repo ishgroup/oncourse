@@ -10,8 +10,11 @@ import { withStyles, createStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
+import { Dispatch } from "redux";
 import isEqual from "lodash.isequal";
+import { withRouter } from "react-router";
 import {
+  Form,
   FieldArray,
   getFormValues,
   reduxForm,
@@ -33,6 +36,7 @@ import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu
 import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { setNextLocation } from "../../../../../common/actions";
 
 const styles = theme =>
   createStyles({
@@ -57,7 +61,10 @@ interface Props {
   form: string;
   getFormState: any;
   handleSubmit: any;
+  history: any;
   openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  nextLocation?: string,
+  setNextLocation?: (nextLocation: string) => void,
 }
 
 class HolidaysBaseForm extends React.Component<Props, any> {
@@ -137,7 +144,11 @@ class HolidaysBaseForm extends React.Component<Props, any> {
       this.props.onSave(this.getTouchedAndNew(value.holidays));
     })
       .then(() => {
+        const { history, nextLocation, setNextLocation } = this.props;
         this.props.dispatch(initialize("HolidaysForm", { holidays: this.props.holidays }));
+
+        nextLocation && history.push(nextLocation);
+        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -193,7 +204,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
     const modified = timestamps && timestamps[1];
 
     return (
-      <form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
@@ -246,7 +257,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
             )}
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
@@ -255,12 +266,17 @@ const mapStateToProps = (state: State) => ({
   timestamps: state.preferences.holidays && getTimestamps(state.preferences.holidays),
   holidays: state.preferences.holidays,
   values: getFormValues("HolidaysForm")(state),
-  fetch: state.fetch
+  fetch: state.fetch,
+  nextLocation: state.nextLocation
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 const HolidaysForm = reduxForm({
   onSubmitFail,
   form: "HolidaysForm"
-})(connect<any, any, any>(mapStateToProps, null)(withStyles(styles)(HolidaysBaseForm)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(HolidaysBaseForm))));
 
 export default HolidaysForm;
