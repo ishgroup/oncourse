@@ -14,8 +14,6 @@ const request: EpicUtils.Request<any, any, any> = {
   type: GET_USERS_REQUEST,
   getData: () => UserService.getUsers(),
   processData: (users: User[]) => {
-    users.sort((a, b) => (a.login[0].toLowerCase() > b.login[0].toLowerCase() ? 1 : -1));
-
     return [
       {
         type: GET_USERS_REQUEST_FULFILLED,
