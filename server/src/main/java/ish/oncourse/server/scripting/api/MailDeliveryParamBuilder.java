@@ -21,6 +21,10 @@ public class MailDeliveryParamBuilder {
 
     }
 
+    public static MailDeliveryParamBuilder valueOf(SmtpParameters parameters){
+        return valueOf(parameters, null);
+    }
+
     public static MailDeliveryParamBuilder valueOf(SmtpParameters parameters, TemplateService templateService){
         var mailDeliveryParamBuilder = new MailDeliveryParamBuilder();
         mailDeliveryParamBuilder.parameters = parameters;
