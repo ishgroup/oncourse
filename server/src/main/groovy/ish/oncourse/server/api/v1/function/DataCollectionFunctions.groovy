@@ -13,6 +13,8 @@ package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
 import ish.common.types.DataType
+import ish.oncourse.server.cayenne.WaitingList
+
 import static ish.common.types.DataType.LIST
 import static ish.common.types.DataType.MAP
 import static ish.common.types.DataType.TEXT
@@ -55,6 +57,7 @@ import java.time.ZoneOffset
 class DataCollectionFunctions {
 
     private static final List<FieldTypeDTO> VISIBLE_FIELDS
+    private static final List<FieldTypeDTO> WAITING_LIST_FIELDS
     private static final Map<DataCollectionTypeDTO, Class<? extends FieldConfiguration>> CONFIGURATION_MAP
 
     static {
@@ -64,6 +67,8 @@ class DataCollectionFunctions {
                                YEAR_SCHOOL_COMPLETED, ENGLISH_PROFICIENCY, INDIGENOUS_STATUS, HIGHEST_SCHOOL_LEVEL, IS_STILL_AT_SCHOOL,
                                PRIOR_EDUCATION_CODE, LABOUR_FORCE_STATUS, DISABILITY_TYPE, SPECIAL_NEEDS, MIDDLE_NAME, HONORIFIC, TITLE ]
                                 .collect { new FieldTypeDTO(uniqueKey: it.key, label: it.displayName)}
+        
+            WAITING_LIST_FIELDS = [DETAIL, STUDENTS_COUNT].collect { new FieldTypeDTO(uniqueKey: it.key, label: it.displayName)}
         }
 
     static {
@@ -112,6 +117,10 @@ class DataCollectionFunctions {
                     .collect{new FieldTypeDTO(uniqueKey: "${TAG_PATTERN}${it.pathName}", label: it.name)}
 
             fieldTypes += VISIBLE_FIELDS
+            
+            if (WaitingList.simpleName == formType) {
+                fieldTypes += WAITING_LIST_FIELDS
+            }
             fieldTypes += tagFieldTypes
         }
 
