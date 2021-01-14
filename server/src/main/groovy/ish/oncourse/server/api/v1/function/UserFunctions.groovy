@@ -54,6 +54,7 @@ class UserFunctions {
                 user.role = systemUser.aclRoles[0].id
             }
             user.passwordUpdateRequired = systemUser.passwordUpdateRequired
+            user.inviteAgain = systemUser.invitationTokenExpiryDate && systemUser.invitationTokenExpiryDate < new Date()
             user.created = systemUser.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             user.modified = systemUser.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             user
@@ -92,54 +93,48 @@ class UserFunctions {
 
     static ValidationErrorDTO validateForUpdate(ObjectContext context, UserDTO user, boolean complexity) {
         if (user.id && !SelectById.query(SystemUser, user.id).selectOne(context)) {
-            return new ValidationErrorDTO(user.id?.toString(), SystemUser.LOGIN.name, "User doesn't exist.")
+            return new ValidationErrorDTO(user.id?.toString(), SystemUser.EMAIL.name, "User doesn't exist.")
         }
 
-        if (!user.login?.trim()) {
-            return new ValidationErrorDTO(user.id?.toString(), SystemUser.LOGIN.name, "Login should be set.")
-        } else if (user.login.length() > 20) {
-            return new ValidationErrorDTO(user.id?.toString(), SystemUser.LOGIN.name, "The maximum length is 20.")
+        if (!user.email?.trim()) {
+            return new ValidationErrorDTO(user.id?.toString(), SystemUser.EMAIL.name, "Email should be set.")
+        } else if (user.email.length() > 128) {
+            return new ValidationErrorDTO(user.id?.toString(), SystemUser.EMAIL.name, "The maximum email length is 128.")
         }
 
 
         if (!user.firstName?.trim()) {
             return new ValidationErrorDTO(user.id?.toString(), SystemUser.FIRST_NAME.name, "First name should be set.")
         } else if (user.firstName.length() > 100) {
-            return new ValidationErrorDTO(user.id?.toString(), SystemUser.FIRST_NAME.name, "The maximum length is 100.")
+            return new ValidationErrorDTO(user.id?.toString(), SystemUser.FIRST_NAME.name, "The maximum first name length is 100.")
         }
 
         if (!user.lastName?.trim()) {
             return new ValidationErrorDTO(user.id?.toString(), SystemUser.LAST_NAME.name, "Last name should be set.")
         } else if (user.lastName.length() > 100) {
-            return new ValidationErrorDTO(user.id?.toString(), SystemUser.LAST_NAME.name, "The maximum length is 100.")
+            return new ValidationErrorDTO(user.id?.toString(), SystemUser.LAST_NAME.name, "The maximum last name length is 100.")
         }
 
-        if (user.email && user.email.length() > 128) {
-            return new ValidationErrorDTO(user.id?.toString(), SystemUser.EMAIL.name, "The maximum length is 128.")
-        }
-
-        if (!user.id) {
+        if (user.id && !user.inviteAgain) {
             if (user.password) {
                 String errorMessage = validateUserPassword(user.login, user.password, complexity)
                 if (errorMessage) {
                     return new ValidationErrorDTO(user.id?.toString(), SystemUser.PASSWORD.name, errorMessage)
                 }
-            } else {
-                return new ValidationErrorDTO(user.id?.toString(), SystemUser.PASSWORD.name, "Password should be set for new user.")
             }
         } else {
             if (user.password) {
-                return new ValidationErrorDTO(user.id?.toString(), SystemUser.PASSWORD.name, "Password cannot be updated for existing users.")
+                return new ValidationErrorDTO(user.id?.toString(), SystemUser.PASSWORD.name, "Password cannot be created for new users.")
             }
         }
 
         SystemUser systemUser = ObjectSelect.query(SystemUser)
-                .where(SystemUser.LOGIN.eq(user.login))
+                .where(SystemUser.EMAIL.eq(user.email))
                 .selectOne(context)
 
 
         if (systemUser != null && systemUser.id != user.id) {
-            return new ValidationErrorDTO(user.id?.toString(), SystemUser.LOGIN.name, "Login should be unique.")
+            return new ValidationErrorDTO(user.id?.toString(), SystemUser.EMAIL.name, "Email should be unique.")
         }
 
         Site site = ObjectSelect.query(Site)

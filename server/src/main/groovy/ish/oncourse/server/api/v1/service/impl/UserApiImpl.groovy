@@ -16,6 +16,10 @@ import com.nulabinc.zxcvbn.Strength
 import com.nulabinc.zxcvbn.Zxcvbn
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.license.LicenseService
+import ish.oncourse.server.messaging.MailDeliveryService
+import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
+import ish.oncourse.server.scripting.api.SmtpParameters
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.UserFunctions.toDbSystemUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.toRestUser
@@ -36,12 +40,18 @@ import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.time.LocalDate
 
+import static ish.util.SecurityUtil.generateUserInvitationToken
+
 class UserApiImpl implements UserApi {
 
     @Inject
     private ICayenneService cayenneService
     @Inject
+    private LicenseService licenseService
+    @Inject
     private SystemUserService systemUserService
+    @Inject
+    private MailDeliveryService mailDeliveryService
     @Inject
     private PreferenceController preferenceController
 
@@ -50,10 +60,24 @@ class UserApiImpl implements UserApi {
         ObjectSelect.query(SystemUser)
                 .prefetch(SystemUser.ACL_ROLES.joint())
                 .prefetch(SystemUser.DEFAULT_ADMINISTRATION_CENTRE.joint())
-                .orderBy(SystemUser.IS_ACTIVE.asc())
-                .orderBy(SystemUser.LOGIN.asc())
+                .orderBy(SystemUser.IS_ACTIVE.desc())
+                .orderBy(SystemUser.EMAIL.asc())
                 .select(cayenneService.newContext)
                 .collect { toRestUser(it) }
+    }
+
+    UserDTO getUserByInvitation(String invitationToken) {
+        SystemUser dbUser = ObjectSelect.query(SystemUser)
+                .where(SystemUser.INVITATION_TOKEN.eq(invitationToken))
+                .selectOne(cayenneService.newContext)
+        if (!dbUser) {
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity('User not found').build())
+        }
+        if (LocalDate.now() > dbUser.invitationTokenExpiryDate) {
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity('Sorry, but invitation was expired').build())
+        }
+
+        toRestUser(dbUser)
     }
 
     @Override
@@ -91,7 +115,12 @@ class UserApiImpl implements UserApi {
             context.rollbackChanges()
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
-        toDbSystemUser(context, user)
+        SystemUser dbUser = toDbSystemUser(context, user)
+        if (!user.id || user.inviteAgain) {
+            String invitationToken = sendInvitationToNewUser(dbUser)
+            dbUser.invitationToken = invitationToken
+            dbUser.invitationTokenExpiryDate = new Date() + 1
+        }
 
         context.commitChanges()
     }
@@ -143,5 +172,27 @@ class UserApiImpl implements UserApi {
         user.tokenScratchCodes
 
         context.commitChanges()
+    }
+
+    private String sendInvitationToNewUser(SystemUser user) {
+        String collegeKey = licenseService.getSecurity_key()
+        if (!collegeKey) {
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity('College key is not set').build())
+        }
+        String invitationToken = generateUserInvitationToken()
+        String subject = "Welcome to onCourse!"
+        String messageText =
+                """
+                ${user.fullName} has given you access to the ish onCourse application for ${preferenceController.collegeName}. Please click here to accept this invitation.
+
+                https://${collegeKey}.cloud.oncourse.cc/invite/${invitationToken}
+
+                This invitation will expire in 24 hours.
+                """
+
+        SmtpParameters parameters = new SmtpParameters(preferenceController.emailFromAddress, preferenceController.emailFromName, user.email, subject, messageText)
+        mailDeliveryService.sendEmail(MailDeliveryParamBuilder.valueOf(parameters).build())
+
+        return invitationToken
     }
 }
