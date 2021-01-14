@@ -26,7 +26,11 @@ class FieldBuilder<T> {
             
             switch (getByKey(field.property)) {
                 case SPECIAL_NEEDS:
+                case DETAIL:
                     f.dataType = DataType.LONG_STRING
+                    break
+                case STUDENTS_COUNT:
+                    f.dataType = DataType.INTEGER
                     break
                 case EMAIL_ADDRESS:
                     f.dataType = DataType.EMAIL

@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.field
 
+import ish.oncourse.common.field.ContextType
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.Course
 import ish.oncourse.model.Field
@@ -16,7 +17,7 @@ class GetWaitingListFields {
 
     List<FieldHeading> get() {
         FieldConfiguration configuration = course.fieldConfigurationScheme?.waitingListFieldConfiguration?: new GetDefaultFieldConfiguration(course.college, course.objectContext).get()
-        Set<Field> waitingListFields = configuration.fields.findAll { f -> FieldProperty.getByKey(f.property) == FieldProperty.CUSTOM_FIELD_WAITING_LIST }.toSet()
+        Set<Field> waitingListFields = configuration.fields.findAll { f -> FieldProperty.getByKey(f.property).contextType == ContextType.WAITING_LIST  }.toSet()
         return FieldHelper.valueOf(waitingListFields).buildFieldHeadings()
     }
 }
