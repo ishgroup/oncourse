@@ -47,6 +47,8 @@ properties:
     format: date
   passwordUpdateRequired:
     type: boolean
+  inviteAgain:
+    type: boolean
   created:
     type: string
     format: date-time
