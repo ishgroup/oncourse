@@ -43,7 +43,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         And match $ contains
             """
             [
-                {"confirmedOn":"2018-01-01","classId":6,"tutorName":"tutor2","contactId":5,"roleId":1,"isInPublicity":true,"roleName":"Tutor","id":22}       
+                {"confirmedOn":"2018-01-01","classId":6,"tutorName":"tutor2","contactId":5,"roleId":1,"isInPublicity":true,"roleName":"Tutor","id":#ignore}       
             ]
             """
 #       <--->  Scenario have been finished. Now remove created object from DB:
