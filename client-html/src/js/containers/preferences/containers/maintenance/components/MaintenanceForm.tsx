@@ -9,7 +9,7 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import { FormControlLabel } from "@material-ui/core";
 import {
-  reduxForm, initialize, getFormValues
+  Form, reduxForm, initialize, getFormValues
 } from "redux-form";
 import isEmpty from "lodash.isempty";
 import { connect } from "react-redux";
@@ -67,7 +67,7 @@ class MaintenanceBaseForm extends React.Component<any, any> {
         || values[this.formModel.DatabaseUsed.uniqueKey] === "derby");
 
     return (
-      <form className="container" onSubmit={handleSubmit(onSave)}>
+      <Form className="container" onSubmit={handleSubmit(onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
@@ -189,7 +189,7 @@ class MaintenanceBaseForm extends React.Component<any, any> {
             </Grid>
           )}
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
