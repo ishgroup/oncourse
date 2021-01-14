@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import com.sun.istack.NotNull
 import ish.common.types.KeyCode
 import ish.messaging.ISystemUser
 import ish.oncourse.API
@@ -18,13 +19,11 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._SystemUser
 import org.apache.cayenne.validation.BeanValidationFailure
 import org.apache.cayenne.validation.ValidationResult
+import org.apache.commons.lang3.StringUtils
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
-import java.util.Date
-import java.util.List
-import java.util.Map
 
 /**
  * These objects represent people who are allowed to log into onCourse.
@@ -252,5 +251,28 @@ class SystemUser extends _SystemUser implements ISystemUser, Queueable {
 	@Override
 	String getSummaryDescription() {
 		return getEmail()
+	}
+	String getFullName() {
+		getFullName(Boolean.TRUE)
+	}
+
+	/**
+	 * @param firstNameFirst flag which specify that first name is first or not
+	 * @return full name of system user
+	 */
+	@NotNull
+	@API
+	String getFullName(boolean firstNameFirst) {
+		StringBuilder builder = new StringBuilder()
+
+		if (firstNameFirst) {
+			if (StringUtils.isNotBlank(getFirstName())) { builder.append(getFirstName()) }
+			if (StringUtils.isNotBlank(getLastName())) { builder.append(StringUtils.SPACE).append(getLastName()) }
+		} else {
+			if (StringUtils.isNotBlank(getLastName())) { builder.append(getLastName()) }
+			if (StringUtils.isNotBlank(getFirstName())) { builder.append(StringUtils.SPACE).append(getFirstName()) }
+		}
+
+		builder.toString()
 	}
 }
