@@ -55,6 +55,9 @@ public enum FieldProperty {
 	TUTOR_SCORE(ContextType.SURVEY, "Tutor score", "tutorScore"),
 	COMMENT(ContextType.SURVEY, "Comment", "comment"),
 
+	DETAIL(ContextType.WAITING_LIST, "Student notes","detail"),
+	STUDENTS_COUNT(ContextType.WAITING_LIST,"Number of students", "potentialStudents"),
+	
 
 	CUSTOM_FIELD_CONTACT(ContextType.CONTACT, "Custom Field ", CUSTOM_FIELD_PROPERTY_PATTERN   + ContextType.CONTACT.getIdentifier()),
 	CUSTOM_FIELD_STUDENT(ContextType.STUDENT, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.STUDENT.getIdentifier()),
@@ -63,8 +66,8 @@ public enum FieldProperty {
 	CUSTOM_FIELD_APPLICATION(ContextType.APPLICATION, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.APPLICATION.getIdentifier()),
 	CUSTOM_FIELD_WAITING_LIST(ContextType.WAITING_LIST, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.WAITING_LIST.getIdentifier()),
 	CUSTOM_FIELD_SURVEY(ContextType.SURVEY, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.SURVEY.getIdentifier()),
-	CUSTOM_FIELD_COURSE_CLASS(ContextType.COURSE_CLASS, "Custom field", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.COURSE_CLASS.getIdentifier())
-,
+	CUSTOM_FIELD_COURSE_CLASS(ContextType.COURSE_CLASS, "Custom field", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.COURSE_CLASS.getIdentifier()),
+	
 	TAG(ContextType.CONTACT, "Tag field", TAG_PATTERN),
 	S_TAG_GROUP(ContextType.CONTACT, "Single tag field", TAG_S_PATTERN),
 	M_TAG_GROUP(ContextType.CONTACT, "Multiple tag filed", TAG_M_PATTERN),
