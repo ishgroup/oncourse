@@ -18,9 +18,6 @@ class ValidateWaitingList extends Validate<WaitingList> {
     }
 
     ValidateWaitingList validate(WaitingList waitingList) {
-        if (waitingList.studentsCount < 1 || waitingList.studentsCount > 30) {
-            errors << 'You should enter numbers from 1 to 30. If you have larger groups please add the details in the notes.'
-        }
         validate(new GetCourse(context, college, waitingList.courseId).get(), new GetContact(context, college, waitingList.contactId).get().student)
     }
 

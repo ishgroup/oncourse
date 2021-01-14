@@ -30,8 +30,6 @@ class CreateWaitingList {
         // Need to keep newly created Student/Contact records in single replication group
         contact.modified = new Date()
         waitingList.course = new GetCourse(context, college, w.courseId).get()
-        waitingList.detail = w.detail
-        waitingList.potentialStudents = w.studentsCount.intValue()
 
         (w.fieldHeadings.fields.flatten() as List<Field>).each { f  ->
             String value = StringUtils.trimToNull(f.value)

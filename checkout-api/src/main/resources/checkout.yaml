@@ -1505,8 +1505,6 @@ definitions:
     requred:
     - contactId
     - courseId
-    - studentsCount
-    - detail
     - warnings
     - errors
     - selected
@@ -1515,10 +1513,6 @@ definitions:
       contactId:
         type: string
       courseId:
-        type: string
-      studentsCount:
-        type: number
-      detail:
         type: string
       warnings:
         type: array
