@@ -11,10 +11,11 @@
 
 package ish.oncourse.server.api.v1.function
 
+import com.nulabinc.zxcvbn.Zxcvbn
 import groovy.transform.CompileStatic
+import ish.oncourse.server.api.dao.UserDao
+
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.v1.function.AuthenticationFunctions.validateComplexPassword
-import static ish.oncourse.server.api.v1.function.AuthenticationFunctions.validatePassword
 import ish.oncourse.server.api.v1.model.UserDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.ACLRole
@@ -86,10 +87,29 @@ class UserFunctions {
         systemUser
     }
 
-    static String validateUserPassword(String login, String password, boolean complexity) {
-        complexity ? validateComplexPassword(password) : validatePassword(login, password)
+    static String validateUserPassword(String email, String login, String password, boolean complexity) {
+        complexity ? validateComplexPassword(password) : validatePassword(email, login, password)
     }
 
+    static String validatePassword(String email, String login, String newPassword) {
+        if (email == newPassword) {
+            return 'You must enter password which is different to email.'
+        }
+
+        if (login == newPassword) {
+            return 'You must enter password which is different to login.'
+        }
+
+        if (newPassword?.length() < 5) {
+            return 'You must enter a password that is at least 5 characters long.'
+        }
+
+        null
+    }
+
+    static String validateComplexPassword(String password) {
+        new Zxcvbn().measure(password).score < 2 ? 'Password does not satisfy complexity restrictions.' : null
+    }
 
     static ValidationErrorDTO validateForUpdate(ObjectContext context, UserDTO user, boolean complexity) {
         if (user.id && !SelectById.query(SystemUser, user.id).selectOne(context)) {
@@ -117,7 +137,7 @@ class UserFunctions {
 
         if (user.id && !user.inviteAgain) {
             if (user.password) {
-                String errorMessage = validateUserPassword(user.login, user.password, complexity)
+                String errorMessage = validateUserPassword(user.email, user.login, user.password, complexity)
                 if (errorMessage) {
                     return new ValidationErrorDTO(user.id?.toString(), SystemUser.PASSWORD.name, errorMessage)
                 }
@@ -128,9 +148,7 @@ class UserFunctions {
             }
         }
 
-        SystemUser systemUser = ObjectSelect.query(SystemUser)
-                .where(SystemUser.EMAIL.eq(user.email))
-                .selectOne(context)
+        SystemUser systemUser = UserDao.getByEmail(context, user.email)
 
 
         if (systemUser != null && systemUser.id != user.id) {
