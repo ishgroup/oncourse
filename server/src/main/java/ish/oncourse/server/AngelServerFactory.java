@@ -16,6 +16,7 @@ import io.bootique.annotation.BQConfig;
 import ish.math.Country;
 import ish.math.CurrencyFormat;
 import ish.oncourse.common.ResourcesUtil;
+import ish.oncourse.server.api.dao.UserDao;
 import ish.oncourse.server.cayenne.Site;
 import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.db.SchemaUpdateService;
@@ -23,9 +24,17 @@ import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.EmailDequeueJob;
-import ish.oncourse.server.services.*;
+import ish.oncourse.server.messaging.MailDeliveryService;
+import ish.oncourse.server.services.ISchedulerService;
 import ish.oncourse.server.report.JRRuntimeConfig;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
+import ish.oncourse.server.services.BackupJob;
+import ish.oncourse.server.services.ChristmasThemeDisableJob;
+import ish.oncourse.server.services.ChristmasThemeEnableJob;
+import ish.oncourse.server.services.DelayedEnrolmentIncomePostingJob;
+import ish.oncourse.server.services.FundingContractUpdateJob;
+import ish.oncourse.server.services.InvoiceOverdueUpdateJob;
+import ish.oncourse.server.services.VoucherExpiryJob;
 import ish.persistence.Preferences;
 import ish.security.AuthenticationUtil;
 import ish.util.RuntimeUtil;
@@ -33,15 +42,24 @@ import ish.util.SecurityUtil;
 import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.Random;
+import java.util.stream.Stream;
 
+import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToSystemUser;
 import static ish.oncourse.server.services.ISchedulerService.*;
 import static ish.persistence.Preferences.ACCOUNT_CURRENCY;
 
@@ -50,6 +68,7 @@ import static ish.persistence.Preferences.ACCOUNT_CURRENCY;
 public class AngelServerFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(AngelServerFactory.class);
 
+    public final static String SYSTEM_USERS_FILE = "createAdminUsers.txt";
     public static boolean QUIT_SIGNAL_CAUGHT = false;
                // specify if repliation in debug mode
 
@@ -97,7 +116,8 @@ public class AngelServerFactory {
                       Scheduler scheduler, RegisterMBean registerMBean,
                       LicenseService licenseService,
                       CayenneService cayenneService,
-                      PluginService pluginService) {
+                      PluginService pluginService,
+                      MailDeliveryService mailDeliveryService) {
         try {
 
             // Create DB schema
@@ -106,6 +126,12 @@ public class AngelServerFactory {
 
             LOGGER.warn("Upgrade data");
             schemaUpdateService.upgradeData();
+
+            createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(), prefController, mailDeliveryService);
+
+            if (licenseService.isAdmin_password_reset()) {
+                resetAdminPassword(cayenneService.getNewContext());
+            }
 
             
         } catch (Throwable e) {
@@ -219,6 +245,76 @@ public class AngelServerFactory {
         pluginService.onStart();
 
         LOGGER.warn("Server ready");
+    }
+
+    public void resetAdminPassword(DataContext context) {
+
+        var admin = ObjectSelect.query(SystemUser.class).
+                where(SystemUser.LOGIN.eq("admin")).
+                selectOne(context);
+
+        if (admin == null) {
+            admin = UserDao.createSystemUser(context, Boolean.TRUE);
+            admin.setLogin("admin");
+            admin.setLastName("onCourse");
+            admin.setFirstName("Administrator");
+            admin.setDefaultAdministrationCentre(Site.getDefaultSite(context));
+        }
+
+        var password = SecurityUtil.generateRandomPassword(6);
+        admin.setPassword(AuthenticationUtil.generatePasswordHash(password));
+
+        context.commitChanges();
+
+        LOGGER.warn("\n******************************************************************************************************************************\n" +
+                "Administrator password reset command found in onCourse.yml \n" +
+                "********** Account with name \"admin\" now has password \"{}\" \n" +
+                "********** onCourse Server will now shut down. Remove the line starting \"admin_password_reset\" before restarting \n" +
+                "******************************************************************************************************************************\n", password);
+
+        crashServer();
+    }
+
+    private void createSystemUsers(DataContext context, String collegeKey, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
+        if (collegeKey == null) {
+            LOGGER.warn("College key is not set! Specify your college key in onCourse.yml, please.");
+            crashServer();
+        }
+        Path systemUsersFile = Paths.get(SYSTEM_USERS_FILE);
+        try {
+            Stream<String> lines = Files.lines(systemUsersFile);
+            lines.forEach(line -> {
+                String[] lineData = line.split(" ");
+
+                if (lineData.length == 3) {
+                    String email = lineData[2].substring(1, lineData[2].length() - 1);
+                    SystemUser user = UserDao.getByEmail(context, email);
+                    if (user != null) {
+                        LOGGER.warn("System user {} already added.", line);
+                        return;
+                    }
+
+                    user = UserDao.createSystemUser(context, Boolean.TRUE);
+                    user.setFirstName(lineData[0]);
+                    user.setLastName(lineData[1]);
+                    user.setEmail(email);
+
+                    String invitationToken = sendInvitationEmailToSystemUser(user, preferenceController, mailDeliveryService, collegeKey);
+                    user.setInvitationToken(invitationToken);
+                    user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
+
+                    context.commitChanges();
+
+                    LOGGER.warn("System user {} have added successfully.", line);
+                }
+            });
+
+            if (systemUsersFile.toFile().delete()) {
+                LOGGER.warn("File with system users have deleted successfully!");
+            }
+        } catch (NoSuchFileException ignored) {
+            LOGGER.warn("File with system users not found.");
+        }
     }
 
     private void initJRGroovyCompiler() {
