@@ -22,4 +22,6 @@ export function CertificateApiMock(mock) {
   });
 
   this.api.onPost("v1/list/entity/certificate/revoke").reply(config => promiseResolve(config, {}));
+
+  this.api.onPost("v1/list/entity/certificate/validation").reply(config => promiseResolve(config, this.db.validateCertificateStatus()));
 }
