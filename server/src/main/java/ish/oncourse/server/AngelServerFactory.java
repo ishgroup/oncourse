@@ -49,7 +49,6 @@ import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.mail.MessagingException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -60,18 +59,15 @@ import java.util.Date;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToNewSystemUser;
+import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToSystemUser;
 import static ish.oncourse.server.services.ISchedulerService.*;
 import static ish.persistence.Preferences.ACCOUNT_CURRENCY;
-import static ish.validation.ValidationUtil.isValidEmailAddress;
 
 
 @BQConfig
 public class AngelServerFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(AngelServerFactory.class);
 
-    public final static String TXT_SYSTEM_USERS_FILE = "createAdminUsers.txt";
-    public final static String CSV_SYSTEM_USERS_FILE = "createAdminUsers.csv";
     public static boolean QUIT_SIGNAL_CAUGHT = false;
                // specify if repliation in debug mode
 
@@ -136,7 +132,7 @@ public class AngelServerFactory {
                 resetAdminPassword(cayenneService.getNewContext());
             }
 
-            
+
         } catch (Throwable e) {
             // total failure, some of the essential services cannot be
             // started
@@ -279,72 +275,45 @@ public class AngelServerFactory {
     }
 
     private void createSystemUsers(DataContext context, String collegeKey, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
-        Path systemUsersFile = Paths.get(CSV_SYSTEM_USERS_FILE);
-        if (!systemUsersFile.toFile().exists()) {
-            systemUsersFile = Paths.get(TXT_SYSTEM_USERS_FILE);
-        }
-        Stream<String> lines;
-        try {
-             lines = Files.lines(systemUsersFile);
-        } catch (NoSuchFileException ignored) {
-            LOGGER.warn("File with system users not found.");
-            return;
-        }
         if (collegeKey == null) {
             LOGGER.warn("College key is not set! Specify your college key in onCourse.yml, please.");
             crashServer();
         }
-        lines.forEach(line -> {
-            String[] lineData = line.split("(, )+|([ ,\t])+");
+        Path systemUsersFile = Paths.get(SYSTEM_USERS_FILE);
+        try {
+            Stream<String> lines = Files.lines(systemUsersFile);
+            lines.forEach(line -> {
+                String[] lineData = line.split(" ");
 
-            if (lineData.length == 3) {
-                String email = parseEmail(lineData[2]);
-                if (email == null) {
-                    LOGGER.warn("Specified email for user {} is not valid.", line);
-                    return;
-                }
-                SystemUser user = UserDao.getByEmail(context, email);
-                if (user != null) {
-                    LOGGER.warn("System user {} already added.", line);
-                    return;
-                }
+                if (lineData.length == 3) {
+                    String email = lineData[2].substring(1, lineData[2].length() - 1);
+                    SystemUser user = UserDao.getByEmail(context, email);
+                    if (user != null) {
+                        LOGGER.warn("System user {} already added.", line);
+                        return;
+                    }
 
-                user = UserDao.createSystemUser(context, Boolean.TRUE);
-                user.setFirstName(lineData[0]);
-                user.setLastName(lineData[1]);
-                user.setEmail(email);
+                    user = UserDao.createSystemUser(context, Boolean.TRUE);
+                    user.setFirstName(lineData[0]);
+                    user.setLastName(lineData[1]);
+                    user.setEmail(email);
 
-                try {
-                    String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey);
+                    String invitationToken = sendInvitationEmailToSystemUser(user, preferenceController, mailDeliveryService, collegeKey);
                     user.setInvitationToken(invitationToken);
                     user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
-                } catch (MessagingException ex) {
-                    LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", line);
-                    return;
+
+                    context.commitChanges();
+
+                    LOGGER.warn("System user {} have added successfully.", line);
                 }
+            });
 
-                context.commitChanges();
-
-                LOGGER.warn("System user {} have added successfully.", line);
+            if (systemUsersFile.toFile().delete()) {
+                LOGGER.warn("File with system users have deleted successfully!");
             }
-        });
-
-        if (systemUsersFile.toFile().delete()) {
-            LOGGER.warn("File with system users have deleted successfully!");
+        } catch (NoSuchFileException ignored) {
+            LOGGER.warn("File with system users not found.");
         }
-    }
-
-    private String parseEmail(String specifiedEmail) {
-        if (specifiedEmail.startsWith("<")) {
-            specifiedEmail = specifiedEmail.substring(1);
-        }
-        if (specifiedEmail.endsWith(">")) {
-            specifiedEmail = specifiedEmail.substring(0, specifiedEmail.length()-1);
-        }
-        if (isValidEmailAddress(specifiedEmail)) {
-            return specifiedEmail;
-        }
-        return null;
     }
 
     private void initJRGroovyCompiler() {
