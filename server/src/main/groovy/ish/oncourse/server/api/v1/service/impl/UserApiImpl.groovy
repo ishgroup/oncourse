@@ -19,11 +19,8 @@ import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.UserDao
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.MailDeliveryService
-
-import javax.mail.MessagingException
-
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToNewSystemUser
+import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToSystemUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.toDbSystemUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.toRestUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.validateForUpdate
@@ -89,18 +86,24 @@ class UserApiImpl implements UserApi {
     }
 
     @Override
-    void resetPassword(Long id) {
+    String resetPassword(Long id) {
         ObjectContext context = cayenneService.newContext
         SystemUser user = getRecordById(context, SystemUser, id)
         if (!user) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity('User not found').build())
         }
-        sendInvitationToUser(user)
-        user.password = null
-        user.passwordLastChanged = null
-        user.loginAttemptNumber = 0
 
+        String newPassword = RandomStringUtils.random(10, true, true)
+
+        while (validateUserPassword(user.email, user.login, newPassword, preferenceController.passwordComplexity)) {
+            newPassword = RandomStringUtils.random(10, true, true)
+        }
+
+        user.password = AuthenticationUtil.generatePasswordHash(newPassword)
+        user.passwordLastChanged = LocalDate.now()
         context.commitChanges()
+
+        newPassword
     }
 
     @Override
@@ -114,7 +117,9 @@ class UserApiImpl implements UserApi {
         }
         SystemUser dbUser = toDbSystemUser(context, user)
         if (!user.id || user.inviteAgain) {
-            sendInvitationToUser(dbUser)
+            String invitationToken = sendInvitationToNewUser(dbUser)
+            dbUser.invitationToken = invitationToken
+            dbUser.invitationTokenExpiryDate = new Date() + 1
         }
 
         context.commitChanges()
@@ -182,21 +187,14 @@ class UserApiImpl implements UserApi {
         dbUser
     }
 
-    private void sendInvitationToUser(SystemUser whoBeChanged) {
-        SystemUser whoChange = systemUserService.currentUser
-        String collegeKey = licenseService.getCollege_key()
+    private String sendInvitationToNewUser(SystemUser user) {
+        String collegeKey = licenseService.getSecurity_key()
         if (!collegeKey) {
             ValidationErrorDTO error = new ValidationErrorDTO()
             error.setErrorMessage('College key is not set')
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
-        try {
-            whoBeChanged.invitationToken = sendInvitationEmailToNewSystemUser(whoChange, whoBeChanged, preferenceController, mailDeliveryService, collegeKey)
-        } catch (MessagingException | IllegalArgumentException ex) {
-            ValidationErrorDTO error = new ValidationErrorDTO()
-            error.setErrorMessage(ex.message)
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
-        }
-        whoBeChanged.invitationTokenExpiryDate = new Date() + 1
+
+        return sendInvitationEmailToSystemUser(user, preferenceController, mailDeliveryService, collegeKey)
     }
 }
