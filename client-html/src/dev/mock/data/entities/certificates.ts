@@ -44,16 +44,28 @@ export function mockCertificates() {
     };
   };
 
-  this.getPlainCertificates = () => {
-    const rows = generateArraysOfRecords(20, [
-      { name: "id", type: "number" },
-      { name: "revokedOn", type: "Datetime" }
-    ]).map(l => ({
-      id: l.id,
-      values: [l.revokedOn]
-    }));
-
-    const columns = [];
+  this.getPlainCertificates = params => {
+    let rows;
+    const searchedColumns = params.columns.split(",");
+    let columns = [];
+    if (searchedColumns.includes("revokedOn")) {
+      rows = generateArraysOfRecords(1, [
+        { name: "id", type: "number" },
+        { name: "revokedOn", type: "Datetime" }
+      ]).map(l => ({
+        id: l.id,
+        values: [null]
+      }));
+      columns = searchedColumns;
+    } else {
+      rows = generateArraysOfRecords(20, [
+        { name: "id", type: "number" },
+        { name: "revokedOn", type: "Datetime" }
+      ]).map(l => ({
+        id: l.id,
+        values: [l.revokedOn]
+      }));
+    }
 
     const response = { rows, columns } as any;
 
