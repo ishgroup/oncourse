@@ -16,6 +16,7 @@ import com.nulabinc.zxcvbn.Strength
 import com.nulabinc.zxcvbn.Zxcvbn
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.api.dao.UserDao
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.MailDeliveryService
 import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
@@ -57,27 +58,27 @@ class UserApiImpl implements UserApi {
 
     @Override
     List<UserDTO> get() {
-        ObjectSelect.query(SystemUser)
-                .prefetch(SystemUser.ACL_ROLES.joint())
-                .prefetch(SystemUser.DEFAULT_ADMINISTRATION_CENTRE.joint())
-                .orderBy(SystemUser.IS_ACTIVE.desc())
-                .orderBy(SystemUser.EMAIL.asc())
-                .select(cayenneService.newContext)
+        UserDao.getList(cayenneService.newContext)
                 .collect { toRestUser(it) }
     }
 
-    UserDTO getUserByInvitation(String invitationToken) {
-        SystemUser dbUser = ObjectSelect.query(SystemUser)
-                .where(SystemUser.INVITATION_TOKEN.eq(invitationToken))
-                .selectOne(cayenneService.newContext)
-        if (!dbUser) {
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity('User not found').build())
-        }
-        if (LocalDate.now() > dbUser.invitationTokenExpiryDate) {
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity('Sorry, but invitation was expired').build())
+    String getUserEmailByInvitation(String invitationToken) {
+        SystemUser dbUser = getUserByInvitation(invitationToken)
+        dbUser.email
+    }
+
+    void createPassword(String invitationToken, String password) {
+        SystemUser dbUser = getUserByInvitation(invitationToken)
+        String errorMessage = validateUserPassword(dbUser.email, dbUser.login, password, preferenceController.passwordComplexity)
+        if (errorMessage) {
+            ValidationErrorDTO error = new ValidationErrorDTO(dbUser.id?.toString(), SystemUser.PASSWORD.name, errorMessage)
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
 
-        toRestUser(dbUser)
+        dbUser.password = AuthenticationUtil.generatePasswordHash(password)
+        dbUser.passwordLastChanged = LocalDate.now()
+
+        dbUser.context.commitChanges()
     }
 
     @Override
@@ -95,7 +96,7 @@ class UserApiImpl implements UserApi {
 
         String newPassword = RandomStringUtils.random(10, true, true)
 
-        while (validateUserPassword(user.login, newPassword, preferenceController.passwordComplexity)) {
+        while (validateUserPassword(user.email, user.login, newPassword, preferenceController.passwordComplexity)) {
             newPassword = RandomStringUtils.random(10, true, true)
         }
 
@@ -132,7 +133,7 @@ class UserApiImpl implements UserApi {
 
         SystemUser user = context.localObject(systemUserService.currentUser)
 
-        String errorMessage = validateUserPassword(user.login, password, preferenceController.passwordComplexity)
+        String errorMessage = validateUserPassword(user.email, user.login, password, preferenceController.passwordComplexity)
 
         if (errorMessage) {
             ValidationErrorDTO error = new ValidationErrorDTO(
@@ -172,6 +173,19 @@ class UserApiImpl implements UserApi {
         user.tokenScratchCodes
 
         context.commitChanges()
+    }
+
+    private SystemUser getUserByInvitation(String invitationToken) {
+        SystemUser dbUser = UserDao.getByInvitation(cayenneService.newContext, invitationToken)
+        if (!dbUser) {
+            ValidationErrorDTO error = new ValidationErrorDTO(dbUser.id?.toString(), SystemUser.INVITATION_TOKEN.name, 'User not found')
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
+        }
+        if (new Date() > dbUser.invitationTokenExpiryDate) {
+            ValidationErrorDTO error = new ValidationErrorDTO(dbUser.id?.toString(), SystemUser.INVITATION_TOKEN_EXPIRY_DATE.name, 'Sorry, but invitation was expired')
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
+        }
+        dbUser
     }
 
     private String sendInvitationToNewUser(SystemUser user) {
