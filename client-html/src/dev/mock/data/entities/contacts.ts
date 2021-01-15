@@ -6,84 +6,121 @@ export function mockContacts() {
   this.getContact = id => {
     const row = this.contacts.rows.find(row => row.id == id);
     return {
-      id: row.id,
-      firstName: "FirstName",
-      lastName: "LastName",
-      middleName: null,
-      email: "test@test.com",
-      title: null,
-      deliveryStatusEmail: 0,
-      deliveryStatusSms: 0,
-      deliveryStatusPost: 0,
-      allowPost: true,
-      allowSms: true,
-      allowEmail: true,
-      uniqueCode: "LhRKB0bcvVBAGW14",
-      abn: null,
-      notes: [
+      "id": row.id,
+      "student": null,
+      "tutor": {
+        "id": row.id,
+        "dateFinished": null,
+        "dateStarted": null,
+        "familyNameLegal": null,
+        "givenNameLegal": null,
+        "payrollRef": "ABC123",
+        "resume": "Rex is ishâ€™s frontline support person, and he loves the challenge of solving clientsâ€™ problems of all sizes: from holding the hands of those with minimal technical experience to solving the most complex technical problems.Rex completed his Bachelor of Computer Engineering at the University of New South Wales, and has Systems Administration experience with Macs, Windows and Linux machines aplenty. His versatility and wide skill base, along with his good understanding of software design and programming make Rex an invaluable part of our team.",
+        "wwChildrenCheckedOn": null,
+        "wwChildrenExpiry": null,
+        "wwChildrenRef": null,
+        "wwChildrenStatus": "Not checked",
+        "currentClassesCount": 0,
+        "futureClasseCount": 1,
+        "selfPacedclassesCount": 0,
+        "unscheduledClasseCount": 0,
+        "passedClasseCount": 71,
+        "cancelledClassesCount": 2,
+        "defaultPayType": null
+      },
+      "abn": null,
+      "birthDate": null,
+      "country": null,
+      "fax": null,
+      "isCompany": false,
+      "gender": null,
+      "message": null,
+      "homePhone": null,
+      "mobilePhone": null,
+      "workPhone": null,
+      "postcode": null,
+      "state": null,
+      "street": null,
+      "suburb": null,
+      "tfn": null,
+      "deliveryStatusEmail": 0,
+      "deliveryStatusSms": 0,
+      "deliveryStatusPost": 0,
+      "allowPost": true,
+      "allowSms": true,
+      "allowEmail": true,
+      "uniqueCode": "m7jRCfA9QvurnJ6G",
+      "honorific": null,
+      "title": null,
+      "email": "test@test.com",
+      "firstName": "FirstName",
+      "lastName": "LastName",
+      "middleName": null,
+      "invoiceTerms": null,
+      "taxId": null,
+      "customFields": {
+
+      },
+      "documents": [
+
+      ],
+      tags: [this.getTag(1)],
+      "memberships": [
+
+      ],
+      "profilePicture": null,
+      "relations": [
+
+      ],
+      "financialData": [
         {
-          id: 1,
-          created: "2019-11-15T12:27:19.000Z",
-          modified: "2019-11-15T12:27:19.000Z",
-          message: "Merged student 6872 by onCourse Administrator on Fri 15 Nov 2019 5:57pm",
-          createdBy: "onCourse Administrator",
-          modifiedBy: null,
-          entityName: "Contact",
-          entityId: 2
+          "relatedEntityId": 4476,
+          "type": "Invoice",
+          "description": "Invoice (office)",
+          "date": "2018-04-17",
+          "createdOn": "2018-04-17T12:18:05.000Z",
+          "referenceNumber": "1451",
+          "status": "Success",
+          "owing": 0.00,
+          "amount": 0.00,
+          "balance": 0.00
         }
       ],
-      memberships: [],
-      concessions: [],
-      profilePicture: null,
-      relations: [],
-      financialData: [
+      "createdOn": null,
+      "modifiedOn": null,
+      "messages": [
         {
-          relatedEntityId: 1,
-          type: "Invoice",
-          description: "Invoice (web)",
-          date: "2016-10-31",
-          referenceNumber: "1104",
-          status: "Success",
-          owing: 335,
-          amount: 335,
-          balance: 335
+          "messageId": 2336,
+          "createdOn": "2017-02-14T07:09:28.000Z",
+          "sentOn": "2017-02-14T07:09:47.000Z",
+          "subject": "Template message",
+          "creatorKey": null,
+          "status": "Sent",
+          "type": "Email"
         },
         {
-          relatedEntityId: 1,
-          type: "Invoice",
-          description: "Invoice (office)",
-          date: "2018-04-17",
-          referenceNumber: "1450",
-          status: "Success",
-          owing: 0,
-          amount: 0,
-          balance: 335
-        }
-      ],
-      messages: [
-        {
-          messageId: 1,
-          createdOn: "2017-02-14T07:09:28.000Z",
-          sentOn: "2017-02-14T07:09:47.000Z",
-          subject: "Template message",
-          creatorKey: null,
-          status: null,
-          type: null
+          "messageId": 3411,
+          "createdOn": "2018-04-17T12:18:05.000Z",
+          "sentOn": "2018-04-17T12:18:45.000Z",
+          "subject": "Happy birthday",
+          "creatorKey": null,
+          "status": "Sent",
+          "type": "Email"
         },
         {
-          messageId: 2,
-          createdOn: "2018-03-20T07:10:00.000Z",
-          sentOn: "2018-03-20T07:10:45.000Z",
-          subject: "CCE Class Cancelled Student",
-          creatorKey: null,
-          status: null,
-          type: null
+          "messageId": 6742,
+          "createdOn": "2018-08-21T05:36:51.000Z",
+          "sentOn": "2018-08-21T05:37:50.000Z",
+          "subject": "Voucher is about to Expire",
+          "creatorKey": null,
+          "status": "Sent",
+          "type": "Email"
         }
       ],
-      taxId: null,
-      customFields: {},
-      documents: [],
-      tags: [this.getTag(1)]
+      "rules": [
+
+      ],
+      "removeCChistory": null
     };
   };
 
