@@ -61,6 +61,7 @@ import ish.oncourse.server.api.dao.ScriptDao
 import ish.oncourse.server.api.dao.SurveyDao
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.api.dao.UnavailableRuleDao
+import ish.oncourse.server.api.dao.UserDao
 import ish.oncourse.server.api.dao.VoucherProductCourseDao
 import ish.oncourse.server.api.dao.VoucherProductDao
 import ish.oncourse.server.api.dao.WaitingListDao
@@ -133,6 +134,7 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(ClassCostDao).in(Scopes.SINGLETON)
 
         binder.bind(UnavailableRuleDao).in(Scopes.SINGLETON)
+        binder.bind(UserDao).in(Scopes.SINGLETON)
         binder.bind(WaitingListDao).in(Scopes.SINGLETON)
 
     }
