@@ -7,9 +7,7 @@ export function CertificateApiMock(mock) {
     return promiseResolve(config, this.db.getCertificate(id));
   });
 
-  this.api.onPut(new RegExp(`v1/list/entity/certificate/\\d+`)).reply(config => {
-    return promiseResolve(config, JSON.parse(config.data));
-  });
+  this.api.onPut(new RegExp(`v1/list/entity/certificate/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
 
   this.api.onPost("v1/list/entity/certificate").reply(config => {
     this.db.createCertificate(config.data);
@@ -22,4 +20,6 @@ export function CertificateApiMock(mock) {
     this.db.removeCertificate(id);
     return promiseResolve(config, this.db.getCertificates());
   });
+
+  this.api.onPost("v1/list/entity/certificate/revoke").reply(config => promiseResolve(config, {}));
 }
