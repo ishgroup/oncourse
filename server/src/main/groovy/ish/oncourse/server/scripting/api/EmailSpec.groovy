@@ -129,7 +129,15 @@ class EmailSpec {
      */
 	@CompileStatic(TypeCheckingMode.SKIP)
 	void to(Contact... recipients) {
-		recipients.each { r -> this.recipients[r] = r.email }
+		recipients.each { r ->
+			String email
+			try {
+				email = r.replacementEmail ?: r.email
+			} catch (MissingPropertyException ignored) {
+				email = r.email
+			}
+			this.recipients[r] = email
+		}
 	}
 
 	/**
