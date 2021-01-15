@@ -148,6 +148,25 @@ export function mockCertificates() {
     this.certificates.rows = this.certificates.rows.filter(a => a.id !== id);
   };
 
+  this.validateCertificateUSIRequest = () => ({
+    "search": "id == \"260\"",
+    "filter": "",
+    "tagGroups": [
+
+    ],
+    "sorting": [
+      {
+        "attribute": "awardedOn",
+        "ascending": true,
+        "complexAttribute": [
+
+        ]
+      }
+    ]
+  });
+
+  this.validateCertificateStatus = () => "One of selected users has no USI.";
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "studentName", type: "string" },
