@@ -784,8 +784,6 @@ export class MockDB {
       courseId: this.waitingCourses.entities.waitingCourses[courseId].id,
       errors: errors ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
       warnings: warnings ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
-      studentsCount: 1,
-      detail: '',
       selected: !errors,
     };
   }

@@ -439,7 +439,6 @@ export class BuildWaitingCoursesResult {
       name: n.name,
       courses: n.courses.map(c => ({
         name: state.cart.waitingCourses.entities[c.courseId].name,
-        count: c.studentsCount,
       })),
     }));
 

@@ -22,12 +22,7 @@ class WaitingListComp extends React.Component<Props, any> {
     super(props);
 
     this.state = {
-      studentsCount: props.waitingList.studentsCount,
-      details: props.waitingList.detail,
-      errors: {
-        studentsCount: false,
-        details: false,
-      },
+      errors: {},
     };
   }
 
@@ -51,27 +46,14 @@ class WaitingListComp extends React.Component<Props, any> {
     this.setState({errors: {...this.state.errors, [key]: false}});
     const value = e.target.value;
 
-    if (key === 'studentsCount' && (value > 0 && value <= 30 || value === '')) {
-      this.setState({
-        [key]: value,
-      });
-    } else {
-      this.setState({
-        [key]: value,
-      });
-    }
+    this.setState({
+      [key]: value,
+    });
+    
   }
   onBlurField(key) {
     const {onUpdate} = this.props;
 
-    if (key === 'studentsCount' && !(this.state[key] > 0 && this.state[key] <= 30)) {
-      this.setState({
-        [key]: this.props.waitingList.studentsCount,
-        errors: {...this.state.errors, [key]: true},
-      });
-
-      return;
-    }
 
     this.setState({
       errors: {...this.state.errors, [key]: false},
@@ -82,7 +64,7 @@ class WaitingListComp extends React.Component<Props, any> {
 
   public render(): JSX.Element {
     const {waitingList, product, contact, onChange, onChangeFields} = this.props;
-    const {studentsCount, detail, errors} = this.state;
+    const {errors} = this.state;
 
     const divClass = classnames("row waitingList", {disabled: !waitingList.selected});
     const name = `application-${contact.id}-${waitingList.courseId}`;
@@ -104,37 +86,6 @@ class WaitingListComp extends React.Component<Props, any> {
           onChange={onChange}
           fullWidth={true}
         >
-          {waitingList.selected &&
-            <fieldset>
-              <TextField
-                input={{
-                  value: studentsCount,
-                  name: `${waitingList.contactId}-${waitingList.courseId}-studentsCount`,
-                  onChange: e => this.onChangeField(e, 'studentsCount'),
-                  onBlur: () => this.onBlurField('studentsCount'),
-                }}
-                meta={{
-                  invalid: errors.studentsCount,
-                  touched: true,
-                  error: "You should enter numbers from 1 to 30. If you have larger groups please add the details in the notes.",
-                }}
-                required={true}
-                label="Students count"
-                type="number"
-              />
-              <TextAreaField
-                input={{
-                  value: detail,
-                  name: `${waitingList.contactId}-${waitingList.courseId}-detail`,
-                  onChange: e => this.onChangeField(e, 'detail'),
-                  onBlur: () => this.onBlurField('detail'),
-                }}
-                required={false}
-                label="Detail"
-                type="text"
-              />
-            </fieldset>
-          }
 
         </ItemWrapper>
 

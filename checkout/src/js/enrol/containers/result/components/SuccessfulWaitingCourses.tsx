@@ -17,7 +17,7 @@ export class SuccessfulWaitingCourses extends React.Component<Props, any> {
           <div key={index}>
             The student <b>{c.name}</b> was successfully added to waiting list for course <br/>
             {c.courses.map((w, index) => (
-              <p key={index}>{w.name} ({w.count} potential {w.count > 1 ? 'places' : 'place'})</p>
+              <p key={index}>{w.name}</p>
             ))}
           </div>
         ))}
