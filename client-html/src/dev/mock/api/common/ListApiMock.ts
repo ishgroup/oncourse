@@ -233,7 +233,7 @@ export function listApiMock() {
       }
 
       case "Certificate": {
-        return promiseResolve(config, this.db.getPlainCertificates());
+        return promiseResolve(config, this.db.getPlainCertificates(config.params));
       }
 
       case "Qualification": {
