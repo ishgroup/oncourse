@@ -28,6 +28,7 @@ class ApiFilter implements Filter {
 
     private static final String LOGIN_PATH_INFO = '/v1/login'
     private static final String CHECK_PASSWORD_INFO = '/v1/user/checkPassword/'
+    private static final String INVITATION = '/v1/invite/'
     private static final String X_VALIDATE_ONLY = 'x-validate-only'
     private static final String XVALIDATEONLY = 'XValidateOnly'
 
@@ -60,6 +61,11 @@ class ApiFilter implements Filter {
         } else if (hasErrors(request, response) || !permissionService.authorize(request, response)) {
             return
         }
+        if (request.pathInfo == LOGIN_PATH_INFO || request.pathInfo.contains(CHECK_PASSWORD_INFO) || request.pathInfo.contains(INVITATION)) {
+            allowCrossOriginRequest(response)
+        } else if (hasErrors(request, response) || !permissionService.authorize(request, response)) {
+            return
+        }
 
         chain.doFilter(request, response)
     }
@@ -75,3 +81,4 @@ class ApiFilter implements Filter {
         response.addHeader('Access-Control-Allow-Headers', 'Content-Type, Ish-JXBrowser-Header')
     }
 }
+
