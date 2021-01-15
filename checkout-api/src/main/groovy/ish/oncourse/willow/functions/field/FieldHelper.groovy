@@ -68,7 +68,7 @@ class FieldHelper {
         fields.each { f ->                                                            // sort out each field
             if (contact) {
                 FieldProperty property = FieldProperty.getByKey(f.property)
-                if (!credentialProperty.contains(property) && !extendedCustomFields.contains(property)) {
+                if (property.contextType in [ContextType.CONTACT, ContextType.STUDENT] && !credentialProperty.contains(property) && !extendedCustomFields.contains(property)) {
                     if (!property.key.startsWith(PropertyGetSetFactory.TAG_PATTERN) &&
                             !property.key.startsWith(PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN)) {
                         PropertyGetSet getSet = factory.get(f, getContext.call(property.contextType, contact))
