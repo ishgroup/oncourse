@@ -246,7 +246,15 @@ class MessageSpec {
     @API
     @CompileStatic(TypeCheckingMode.SKIP)
     void to(Contact... recipients) {
-        this.toList.addAll(recipients.each { it.email } as List<String>)
+        recipients.each { r ->
+            String email
+            try {
+                email = r.replacementEmail ?: r.email
+            } catch (MissingPropertyException ignored) {
+                email = r.email
+            }
+            this.toList.add(email)
+        }
     }
 
 
