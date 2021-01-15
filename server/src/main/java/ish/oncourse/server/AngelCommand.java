@@ -24,6 +24,7 @@ import ish.oncourse.server.http.HttpFactory;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
+import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.services.ISchedulerService;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Server;
@@ -48,6 +49,7 @@ public class AngelCommand extends CommandWithMetadata {
     final private Provider<HttpFactory> httpFactoryProvider;
     final private Provider<LicenseService> licenseServiceProvider;
     final private Provider<PluginService> pluginServiceProvider;
+    final private Provider<MailDeliveryService> mailDeliveryServiceProvider;
 
     private static final Logger logger = LoggerFactory.getLogger(AngelCommand.class);
 
@@ -55,7 +57,7 @@ public class AngelCommand extends CommandWithMetadata {
     public AngelCommand(Provider<Server> serverProvider,
                         Provider<AngelServerFactory> serverFactoryProvider,
                         Provider<PreferenceController> prefControllerProvider,
-                        Provider<SchemaUpdateService>  schemaUpdateServiceProvider,
+                        Provider<SchemaUpdateService> schemaUpdateServiceProvider,
                         Provider<ISchedulerService> schedulerServiceProvider,
                         Provider<Scheduler> schedulerProvider,
                         Provider<RegisterMBean> registerMBeanProvider,
@@ -63,7 +65,7 @@ public class AngelCommand extends CommandWithMetadata {
                         Provider<BugsnagFactory> bugsnagFactoryProvider,
                         Provider<HttpFactory> httpFactoryProvider,
                         Provider<LicenseService> licenseServiceProvider,
-                        Provider<PluginService> pluginServiceProvider) {
+                        Provider<PluginService> pluginServiceProvider, Provider<MailDeliveryService> mailDeliveryServiceProvider) {
         super(CommandMetadata.builder(AngelCommand.class).description("Run onCourse server.").build());
         this.serverProvider = serverProvider;
         this.cayenneServiceProvider = cayenneServiceProvider;
@@ -77,6 +79,7 @@ public class AngelCommand extends CommandWithMetadata {
         this.httpFactoryProvider = httpFactoryProvider;
         this.licenseServiceProvider = licenseServiceProvider;
         this.pluginServiceProvider = pluginServiceProvider;
+        this.mailDeliveryServiceProvider = mailDeliveryServiceProvider;
     }
 
     @Override
@@ -92,7 +95,8 @@ public class AngelCommand extends CommandWithMetadata {
                     registerMBeanProvider.get(),
                     licenseServiceProvider.get(),
                     cayenneService,
-                    pluginServiceProvider.get()
+                    pluginServiceProvider.get(),
+                    mailDeliveryServiceProvider.get()
                     );
 
             Server server = serverProvider.get();

@@ -13,7 +13,11 @@ package ish.oncourse.server.api.v1.function
 
 import com.nulabinc.zxcvbn.Zxcvbn
 import groovy.transform.CompileStatic
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.UserDao
+import ish.oncourse.server.messaging.MailDeliveryService
+import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
+import ish.oncourse.server.scripting.api.SmtpParameters
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.model.UserDTO
@@ -30,6 +34,8 @@ import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
 import java.time.ZoneOffset
+
+import static ish.util.SecurityUtil.generateUserInvitationToken
 
 @CompileStatic
 class UserFunctions {
@@ -176,5 +182,23 @@ class UserFunctions {
         }
 
         null
+    }
+
+    static String sendInvitationEmailToSystemUser(SystemUser user, PreferenceController preferenceController, MailDeliveryService mailDeliveryService, String collegeKey) {
+        String invitationToken = generateUserInvitationToken()
+        String subject = "Welcome to onCourse!"
+        String messageText =
+                """
+${user.fullName} has given you access to the ish onCourse application for ${preferenceController.collegeName}. Please click here to accept this invitation.
+
+https://${collegeKey}.cloud.oncourse.cc/invite/${invitationToken}
+
+This invitation will expire in 24 hours.
+                """
+
+        SmtpParameters parameters = new SmtpParameters(preferenceController.emailFromAddress, preferenceController.emailFromName, user.email, subject, messageText)
+        mailDeliveryService.sendEmail(MailDeliveryParamBuilder.valueOf(parameters).build())
+
+        return invitationToken
     }
 }
