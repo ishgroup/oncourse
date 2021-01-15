@@ -1,7 +1,5 @@
 package ish.oncourse.webservices.replication.v22.updaters;
 
-import ish.common.types.EntityRelationIdentifier;
-import ish.common.types.TypesUtil;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.EntityRelation;
 import ish.oncourse.model.Product;
