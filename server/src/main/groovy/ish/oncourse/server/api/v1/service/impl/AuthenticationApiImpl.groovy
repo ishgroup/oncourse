@@ -22,6 +22,8 @@ import ish.oncourse.server.api.servlet.ISessionManager
 import static ish.oncourse.server.api.v1.function.AuthenticationFunctions.*
 import ish.oncourse.server.api.v1.model.LoginRequestDTO
 import ish.oncourse.server.api.v1.model.LoginResponseDTO
+
+import static ish.oncourse.server.api.v1.function.UserFunctions.validateUserPassword
 import static ish.oncourse.server.api.v1.model.LoginStatusDTO.CONCURRENT_SESSIONS_FOUND
 import static ish.oncourse.server.api.v1.model.LoginStatusDTO.FORCED_PASSWORD_UPDATE
 import static ish.oncourse.server.api.v1.model.LoginStatusDTO.INVALID_CREDENTIALS
@@ -122,7 +124,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         }
 
         //check password complexity
-        errorMessage = complexityRequired ? validateComplexPassword(passToCheck) : validatePassword(user.login, passToCheck)
+        errorMessage = validateUserPassword(user.email, user.login, passToCheck, complexityRequired)
         if (errorMessage) {
             LoginResponseDTO content = createAuthenticationContent(WEAK_PASSWORD, errorMessage)
             content.passwordComlexity = complexityRequired

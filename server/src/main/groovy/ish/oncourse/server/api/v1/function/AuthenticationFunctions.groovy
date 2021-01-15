@@ -133,11 +133,13 @@ class AuthenticationFunctions {
 
     static String checkInternalAuth(SystemUser user, String password) {
 
-        if (AuthenticationUtil.checkPassword(password, user.password)) {
-            if (AuthenticationUtil.upgradeEncoding(user.password)) {
-                user.password = AuthenticationUtil.generatePasswordHash(password)
+        if (!user.password) {
+            if (AuthenticationUtil.checkPassword(password, user.password)) {
+                if (AuthenticationUtil.upgradeEncoding(user.password)) {
+                    user.password = AuthenticationUtil.generatePasswordHash(password)
+                }
+                return null
             }
-            return null
         }
 
         return 'User or password incorrect.'
@@ -164,22 +166,6 @@ class AuthenticationFunctions {
         }
 
         'Invalid token'
-    }
-
-    static String validatePassword(String login, String newPassword) {
-        if (login == newPassword) {
-            return 'You must enter password which is different to login.'
-        }
-
-        if (newPassword?.length() < 5) {
-            return 'You must enter a password that is at least 5 characters long.'
-        }
-
-        null
-    }
-
-    static String validateComplexPassword(String password) {
-        new Zxcvbn().measure(password).score < 2 ? 'Password does not satisfy complexity restrictions.' : null
     }
 
     static boolean validateCookieToken(String cookieToken, String password, String secret) {
