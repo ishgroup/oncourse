@@ -8,8 +8,10 @@
 
 package ish.oncourse.server.api.dao
 
+import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.SystemUser
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
@@ -17,6 +19,17 @@ class UserDao implements CayenneLayer<SystemUser> {
     @Override
     SystemUser newObject(ObjectContext context) {
         context.newObject(SystemUser)
+    }
+
+    static SystemUser createSystemUser(DataContext context, Boolean isAdmin) {
+        context.newObject(SystemUser).with { user ->
+            user.canEditCMS = Boolean.TRUE
+            user.canEditTara = Boolean.TRUE
+            user.isActive = Boolean.TRUE
+            user.isAdmin = isAdmin
+            user.setDefaultAdministrationCentre(Site.getDefaultSite(context))
+            user
+        }
     }
 
     @Override

@@ -19,9 +19,8 @@ import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.UserDao
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.MailDeliveryService
-import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
-import ish.oncourse.server.scripting.api.SmtpParameters
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToSystemUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.toDbSystemUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.toRestUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.validateForUpdate
@@ -34,14 +33,12 @@ import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.users.SystemUserService
 import ish.security.AuthenticationUtil
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.RandomStringUtils
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.time.LocalDate
 
-import static ish.util.SecurityUtil.generateUserInvitationToken
 
 class UserApiImpl implements UserApi {
 
@@ -193,22 +190,11 @@ class UserApiImpl implements UserApi {
     private String sendInvitationToNewUser(SystemUser user) {
         String collegeKey = licenseService.getSecurity_key()
         if (!collegeKey) {
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity('College key is not set').build())
+            ValidationErrorDTO error = new ValidationErrorDTO()
+            error.setErrorMessage('College key is not set')
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
-        String invitationToken = generateUserInvitationToken()
-        String subject = "Welcome to onCourse!"
-        String messageText =
-                """
-                ${user.fullName} has given you access to the ish onCourse application for ${preferenceController.collegeName}. Please click here to accept this invitation.
 
-                https://${collegeKey}.cloud.oncourse.cc/invite/${invitationToken}
-
-                This invitation will expire in 24 hours.
-                """
-
-        SmtpParameters parameters = new SmtpParameters(preferenceController.emailFromAddress, preferenceController.emailFromName, user.email, subject, messageText)
-        mailDeliveryService.sendEmail(MailDeliveryParamBuilder.valueOf(parameters).build())
-
-        return invitationToken
+        return sendInvitationEmailToSystemUser(user, preferenceController, mailDeliveryService, collegeKey)
     }
 }
