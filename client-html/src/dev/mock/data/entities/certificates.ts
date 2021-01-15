@@ -1,9 +1,7 @@
 import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockCertificates() {
-  this.getCertificates = () => {
-    return this.certificates;
-  };
+  this.getCertificates = () => this.certificates;
 
   this.getCertificate = id => {
     const row = this.certificates.rows.find(row => row.id == id);
@@ -95,6 +93,44 @@ export function mockCertificates() {
 
     this.certificates = certificates;
   };
+
+  this.createNewCertificate = (id = 21) => ({
+    id,
+    studentName: `studentName ${id}`,
+    isQualification: true,
+    nationalCode: `nationalCode ${id}`,
+    level: `level ${id}`,
+    title: `title ${id}`,
+    "number": 10,
+    awardedOn: "2013-04-16",
+    printedOn: "2013-04-16",
+    issuedOn: "2013-04-16",
+    createdOn: "2013-04-16T05:29:36.000Z",
+    modifiedOn: "2013-04-16T05:29:36.000Z",
+    revokedOn: null,
+    code: "cNwB7eb4yFsy",
+    expiryDate: null,
+    outcomes: [
+      {
+        code: "TAAENV402B",
+        id: 1,
+        issueDate: null,
+        name: "Foster and promote an inclusive learning culture"
+      },
+      {
+        code: "TAAENV401B",
+        id: 2,
+        issueDate: null,
+        name: "Work effectively in vocational education and training"
+      }
+    ],
+    privateNotes: null,
+    publicNotes: null,
+    qualificationId: 1,
+    studentContactId: 1,
+    studentDateOfBirth: "1986-05-16",
+    studentSuburb: "Newtown"
+  });
 
   this.removeCertificate = id => {
     this.certificates.rows = this.certificates.rows.filter(a => a.id !== id);
