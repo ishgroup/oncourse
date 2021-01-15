@@ -77,6 +77,8 @@ class UserApiImpl implements UserApi {
 
         dbUser.password = AuthenticationUtil.generatePasswordHash(password)
         dbUser.passwordLastChanged = LocalDate.now()
+        dbUser.invitationToken = null
+        dbUser.invitationTokenExpiryDate = null
 
         dbUser.context.commitChanges()
     }
@@ -178,7 +180,7 @@ class UserApiImpl implements UserApi {
     private SystemUser getUserByInvitation(String invitationToken) {
         SystemUser dbUser = UserDao.getByInvitation(cayenneService.newContext, invitationToken)
         if (!dbUser) {
-            ValidationErrorDTO error = new ValidationErrorDTO(dbUser.id?.toString(), SystemUser.INVITATION_TOKEN.name, 'User not found')
+            ValidationErrorDTO error = new ValidationErrorDTO(invitationToken, SystemUser.INVITATION_TOKEN.name, 'User not found')
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
         if (new Date() > dbUser.invitationTokenExpiryDate) {
