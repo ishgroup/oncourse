@@ -1,9 +1,7 @@
 import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockContacts() {
-  this.getContacts = () => {
-    return this.contacts;
-  };
+  this.getContacts = () => this.contacts;
 
   this.getContact = id => {
     const row = this.contacts.rows.find(row => row.id == id);
@@ -103,6 +101,87 @@ export function mockContacts() {
 
     this.contacts = contacts;
   };
+
+  this.createNewContact = (id = 21) => ({
+    id,
+    firstName: "FirstName",
+    lastName: "LastName",
+    middleName: null,
+    email: "test@test.com",
+    title: null,
+    deliveryStatusEmail: 0,
+    deliveryStatusSms: 0,
+    deliveryStatusPost: 0,
+    allowPost: true,
+    allowSms: true,
+    allowEmail: true,
+    uniqueCode: "LhRKB0bcvVBAGW14",
+    abn: null,
+    notes: [
+      {
+        id: 1,
+        created: "2019-11-15T12:27:19.000Z",
+        modified: "2019-11-15T12:27:19.000Z",
+        message: "Merged student 6872 by onCourse Administrator on Fri 15 Nov 2019 5:57pm",
+        createdBy: "onCourse Administrator",
+        modifiedBy: null,
+        entityName: "Contact",
+        entityId: 2
+      }
+    ],
+    memberships: [],
+    concessions: [],
+    profilePicture: null,
+    relations: [],
+    financialData: [
+      {
+        relatedEntityId: 1,
+        type: "Invoice",
+        description: "Invoice (web)",
+        date: "2016-10-31",
+        referenceNumber: "1104",
+        status: "Success",
+        owing: 335,
+        amount: 335,
+        balance: 335
+      },
+      {
+        relatedEntityId: 1,
+        type: "Invoice",
+        description: "Invoice (office)",
+        date: "2018-04-17",
+        referenceNumber: "1450",
+        status: "Success",
+        owing: 0,
+        amount: 0,
+        balance: 335
+      }
+    ],
+    messages: [
+      {
+        messageId: 1,
+        createdOn: "2017-02-14T07:09:28.000Z",
+        sentOn: "2017-02-14T07:09:47.000Z",
+        subject: "Template message",
+        creatorKey: null,
+        status: null,
+        type: null
+      },
+      {
+        messageId: 2,
+        createdOn: "2018-03-20T07:10:00.000Z",
+        sentOn: "2018-03-20T07:10:45.000Z",
+        subject: "CCE Class Cancelled Student",
+        creatorKey: null,
+        status: null,
+        type: null
+      }
+    ],
+    taxId: null,
+    customFields: {},
+    documents: [],
+    tags: [this.getTag(1)]
+  });
 
   this.removeContact = id => {
     this.contacts.rows = this.contacts.rows.filter(a => a.id !== id);
