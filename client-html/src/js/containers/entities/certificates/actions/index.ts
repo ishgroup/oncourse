@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { Certificate, CertificateValidationRequest } from "@api/model";
+import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 
 export const GET_CERTIFICATE_ITEM = _toRequestType("get/certificate");
 export const GET_CERTIFICATE_ITEM_FULFILLED = FULFILLED(GET_CERTIFICATE_ITEM);
