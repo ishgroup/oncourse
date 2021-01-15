@@ -184,8 +184,10 @@ class MessageService {
 				{ contact -> NeedToSendEmail.valueOf(auditService, messageSpec.keyCollision, messageSpec.creatorKey, cayenneService.getNewContext(), contact).get() }
 
 		if (messageSpec.entityRecords.isEmpty()) {
-			SmtpParameters parameters = new SmtpParameters(messageSpec)
-			SendEmailViaSmtp.valueOf(parameters, cayenneService.newContext, templateService, mailDeliveryService, collision).send()
+			if (!messageSpec.toList.isEmpty() && (messageSpec.content != null || !messageSpec.attachments.isEmpty())) {
+				SmtpParameters parameters = new SmtpParameters(messageSpec)
+				SendEmailViaSmtp.valueOf(parameters, cayenneService.newContext, templateService, mailDeliveryService, collision).send()
+			}
 		} else {
 
 			messageSpec.fromAddress = messageSpec.fromAddress?:preferenceController.emailFromAddress
