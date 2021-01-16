@@ -5,7 +5,7 @@ import {
 } from "../../../js/containers/entities/contacts/actions";
 import { EpicGetContactsRelationTypes } from "../../../js/containers/entities/contacts/epics/EpicGetContactsRelationTypes";
 
-describe("Get contact relation types types epic tests", () => {
+describe("Get contact relation types epic tests", () => {
   it("EpicGetContactsRelationTypes should returns correct values", () => DefaultEpic({
     action: getContactsRelationTypes(),
     epic: EpicGetContactsRelationTypes,
