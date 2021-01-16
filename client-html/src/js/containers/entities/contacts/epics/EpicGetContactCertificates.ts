@@ -10,6 +10,22 @@ import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_CONTACT_CERTIFICATES, GET_CONTACT_CERTIFICATES_FULFILLED } from "../actions";
 import EntityService from "../../../../common/services/EntityService";
 
+export const contactCertificatesMap = ({ values, id }) => {
+  const fullQualification = values[0] === "true";
+  const qualificationLevel = values[6];
+  const qualificationName = qualificationLevel ? `${qualificationLevel} ${values[2]}` : values[2];
+
+  return {
+    id: Number(id),
+    fullQualification,
+    nationalCode: values[1],
+    qualificationName,
+    certificateNumber: values[3],
+    createdOn: values[4],
+    lastPrintedOn: values[5]
+  };
+};
+
 const request: EpicUtils.Request<any, any, any> = {
   type: GET_CONTACT_CERTIFICATES,
   hideLoadIndicator: true,
@@ -23,21 +39,7 @@ const request: EpicUtils.Request<any, any, any> = {
       true
     ),
   processData: (response: DataResponse) => {
-    const certificates = response.rows.map(({ values, id }) => {
-      const fullQualification = values[0] === "true";
-      const qualificationLevel = values[6];
-      const qualificationName = qualificationLevel ? `${qualificationLevel} ${values[2]}` : values[2];
-
-      return {
-        id: Number(id),
-        fullQualification,
-        nationalCode: values[1],
-        qualificationName,
-        certificateNumber: values[3],
-        createdOn: values[4],
-        lastPrintedOn: values[5]
-      };
-    });
+    const certificates = response.rows.map(contactCertificatesMap);
 
     return [
       {
