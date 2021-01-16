@@ -22,4 +22,6 @@ export function ContactApiMock(mock) {
   });
 
   this.api.onGet("v1/list/entity/contact/merge").reply(config => promiseResolve(config, this.db.getMergeContacts()));
+
+  this.api.onPost("v1/list/entity/contact/merge").reply(config => promiseResolve(config, "22"));
 }
