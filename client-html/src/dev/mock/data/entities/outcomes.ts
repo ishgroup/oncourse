@@ -1,20 +1,20 @@
 import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockOutcomes() {
-  this.getOutcomes = () => {
-    return this.outcomes;
-  };
+  this.getOutcomes = () => this.outcomes;
 
   this.getPlainOutcomes = () => {
     const rows = generateArraysOfRecords(20, [
       { name: "id", type: "number" },
-      { name: "createdOn", type: "Datetime" },
+      { name: "nationalCode", type: "string" },
+      { name: "course", type: "string" },
       { name: "status", type: "string" },
-      { name: "moduleName", type: "string" },
-      { name: "moduleCode", type: "string" }
+      { name: "startDate", type: "Datetime" },
+      { name: "endDate", type: "Datetime" },
+      { name: "deliveryMode", type: "string" }
     ]).map(l => ({
       id: l.id,
-      values: [l.createdOn, "RCC granted (53)", l.moduleName, l.moduleCode]
+      values: [l.nationalCode, l.course, "RCC granted (53)", "2018-04-17T12:18:05.000Z", "2018-04-17T12:18:05.000Z", "Online"]
     }));
 
     const columns = [];
