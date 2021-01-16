@@ -1,9 +1,7 @@
 import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockEnrolments() {
-  this.getEnrolments = () => {
-    return this.enrolments;
-  };
+  this.getEnrolments = () => this.enrolments;
 
   this.getEnrolment = id => {
     const row = this.enrolments.rows.find(row => row.id == id);
@@ -68,6 +66,36 @@ export function mockEnrolments() {
 
   this.removeEnrolment = id => {
     this.enrolments = this.enrolments.rows.filter(a => a.id !== id);
+  };
+
+  this.getPlainEnrolments = () => {
+    const rows = generateArraysOfRecords(20, [
+      { name: "id", type: "number" },
+      { name: "invoiceNumber", type: "number" },
+      { name: "createdOn", type: "Datetime" },
+      { name: "uniqueCode", type: "string" },
+      { name: "courseName", type: "string" },
+      { name: "status", type: "string" }
+    ]).map(l => ({
+      id: l.id,
+      values: [l.invoiceNumber, "2021-01-16T06:31:09.463Z", l.uniqueCode, l.courseName, l.status]
+    }));
+
+    const columns = [];
+
+    const response = { rows, columns } as any;
+
+    response.entity = "Enrolment";
+    response.offset = 0;
+    response.filterColumnWidth = null;
+    response.layout = null;
+    response.pageSize = 20;
+    response.search = null;
+    response.count = rows.length;
+    response.filteredCount = rows.length;
+    response.sort = [];
+
+    return response;
   };
 
   const rows = generateArraysOfRecords(20, [
