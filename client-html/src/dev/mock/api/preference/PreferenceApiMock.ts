@@ -3,7 +3,7 @@ import { promiseResolve } from "../../MockAdapter";
 export function preferenceApiMock() {
   /**
    * Preferences
-   **/
+   * */
   this.api.onGet("/v1/preference").reply(config => {
     const query = config.params.search;
 
@@ -13,14 +13,12 @@ export function preferenceApiMock() {
   });
   /**
    * Preferences columns
-   **/
-  this.api.onGet("/v1/preference/column").reply(config => {
-    return promiseResolve(config, this.db.columnsSettings);
-  });
+   * */
+  this.api.onGet("/v1/preference/column").reply(config => promiseResolve(config, this.db.columnsSettings));
 
   /**
    * Mock Preferences save success
-   **/
+   * */
   this.api.onPost("/v1/preference").reply(config => {
     const data = JSON.parse(config.data);
     this.db.savePreferences(data);
@@ -30,24 +28,23 @@ export function preferenceApiMock() {
 
   /**
    * Accounts
-   **/
-  this.api.onGet("v1/preference/account").reply(config => {
-    return promiseResolve(config, this.db.getAccounts());
-  });
+   * */
+  this.api.onGet("v1/preference/account").reply(config => promiseResolve(config, this.db.getAccounts()));
   /**
    * Timezones
-   **/
+   * */
 
-  this.api.onGet("v1/preference/timezone").reply(config => {
-    return promiseResolve(config, this.db.timezones);
-  });
+  this.api.onGet("v1/preference/timezone").reply(config => promiseResolve(config, this.db.timezones));
 
   /**
    * Countries
-   **/
-  this.api.onGet("/v1/preference/country").reply(config => {
-    return promiseResolve(config, this.db.countries);
-  });
+   * */
+  this.api.onGet("/v1/preference/country").reply(config => promiseResolve(config, this.db.countries));
+
+  /**
+   * Languages
+   * */
+  this.api.onGet("/v1/preference/language").reply(config => promiseResolve(config, this.db.getLanguages()));
 
   this.api.onGet("v1/preference/messagequeued").reply(config => {
     if (config.params.type === "sms") {
@@ -60,7 +57,5 @@ export function preferenceApiMock() {
     return promiseResolve(config, 666);
   });
 
-  this.api.onGet("/v1/preference/lockedDate").reply(config => {
-    return promiseResolve(config, this.db.preferencesLockedDate());
-  });
+  this.api.onGet("/v1/preference/lockedDate").reply(config => promiseResolve(config, this.db.preferencesLockedDate()));
 }
