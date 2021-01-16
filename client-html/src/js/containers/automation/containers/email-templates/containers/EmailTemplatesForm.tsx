@@ -160,8 +160,8 @@ const EmailTemplatesForm: React.FC<Props> = props => {
         hasNameField
       />
 
-      <Form onSubmit={handleSubmit ? handleSubmit(handleSave) : stubFunction}>
-        {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+      <Form onSubmit={handleSubmit(handleSave)}>
+        {(dirty || isNew) && <RouteChangeConfirm when={(dirty || isNew) && !disableRouteConfirm} />}
 
         <CustomAppBar>
           <FormField
