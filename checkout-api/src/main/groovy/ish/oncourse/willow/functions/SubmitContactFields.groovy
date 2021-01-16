@@ -5,8 +5,10 @@ import ish.oncourse.cayenne.FieldInterface
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.common.field.PropertyGetSet
 import ish.oncourse.common.field.PropertyGetSetFactory
-import ish.oncourse.model.*
-import ish.oncourse.services.tag.GetRequirementForType
+import ish.oncourse.model.College
+import ish.oncourse.model.Contact
+import ish.oncourse.model.Tag
+import ish.oncourse.model.WebSite
 import ish.oncourse.services.tag.GetTagByPath
 import ish.oncourse.services.tag.LinkTagToQueueable
 import ish.oncourse.util.contact.CommonContactValidator
@@ -20,7 +22,8 @@ import org.apache.commons.lang3.StringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import static ish.oncourse.common.field.PropertyGetSetFactory.*
+import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_M_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_S_PATTERN
 import static ish.oncourse.willow.functions.field.FieldHelper.getContext
 import static ish.oncourse.willow.model.field.DataType.TAGGROUP_M
 import static ish.oncourse.willow.model.field.DataType.TAGGROUP_S
@@ -93,7 +96,7 @@ class SubmitContactFields {
                 return
             }
 
-            FieldError error = new FieldValueValidator(property, property.key, objectContext, college, isDefaultCountry).validate(value)
+            FieldError error = new FieldValueValidator(property, f.key, objectContext, college, isDefaultCountry).validate(value)
             if (error) {
                 errors.fieldsErrors << error
             } else {
@@ -105,10 +108,6 @@ class SubmitContactFields {
 
     private boolean isTagProperty(Field f) {
         f.key.startsWith(TAG_S_PATTERN) || f.key.startsWith(TAG_M_PATTERN)
-    }
-
-    private String getRootTagName(Field f) {
-        f.key.replace(TAG_PATTERN, StringUtils.EMPTY)
     }
 
     private void applyTagsField(Field f) {
@@ -136,30 +135,6 @@ class SubmitContactFields {
                 logger.error "Contact willowId:${contact.id} tried to apply tag but tag path is not found.".toString()
             }
         }
-    }
-
-    private List<FieldError> validateTagGroup(String rootTagName, List<String> selectedTags) {
-        List<FieldError> errors = new ArrayList<>()
-
-        Tag rootTag = GetTagByPath
-                .valueOf(contact.objectContext, webSite, rootTagName)
-                .get()
-
-        if (rootTag) {
-            TagGroupRequirement rootReq = GetRequirementForType.valueOf(rootTag, Contact.class.simpleName).get()
-            if (rootReq) {
-                if (selectedTags == null || selectedTags.isEmpty()) {
-                    errors << new FieldError(name: rootTagName, error: "No one value selected.")
-                } else if (!rootReq.allowsMultipleTags && selectedTags.size() > 1) {
-                    errors << new FieldError(name: rootTagName, error: "Only one value should be selected.")
-                }
-            } else {
-                logger.error "Contact willowId:${contact.id} tried to apply tags [${StringUtils.join(selectedTags,',')}] but tag group requirement not found.".toString()
-            }
-        } else {
-            logger.error "Contact willowId:${contact.id} tried to apply tags [${StringUtils.join(selectedTags,',')}] but root tag not found.".toString()
-        }
-        errors
     }
 
     private setAutoFillValues(FieldProperty property, String value, Contact contact) {

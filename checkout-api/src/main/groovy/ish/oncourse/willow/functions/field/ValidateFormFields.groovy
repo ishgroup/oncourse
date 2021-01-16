@@ -1,36 +1,41 @@
 package ish.oncourse.willow.functions.field
 
+import ish.oncourse.common.field.FieldProperty
+import ish.oncourse.model.College
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.FieldError
-import ish.oncourse.willow.model.field.DataType
 import ish.oncourse.willow.model.field.Field
 import ish.oncourse.willow.model.field.FieldHeading
-import org.apache.commons.lang3.StringUtils
+import org.apache.cayenne.ObjectContext
+import org.apache.commons.lang3.StringUtils 
 
-class ValidateCustomFields {
+class ValidateFormFields {
 
     private List<FieldHeading> actual
     private List<FieldHeading> expected
     private String className
     private String formName
-
+    private ObjectContext context
+    private College college
 
     private List<FieldError> fieldErrors = []
     private CommonError commonError
     
-    private ValidateCustomFields(){}
+    private ValidateFormFields(){}
     
-    static ValidateCustomFields valueOf(List<FieldHeading> actual, List<FieldHeading> expected, String className, String formName) {
-        ValidateCustomFields validate = new ValidateCustomFields()
+    static ValidateFormFields valueOf(List<FieldHeading> actual, List<FieldHeading> expected, String className, String formName, ObjectContext context, College college) {
+        ValidateFormFields validate = new ValidateFormFields()
         validate.className = className
         validate.expected = expected
         validate.actual = actual
         validate.formName = formName
+        validate.context = context
+        validate.college = college
         validate
     }
 
 
-    ValidateCustomFields validate() {
+    ValidateFormFields validate() {
         List<Field> actualFields = actual.fields.flatten() as List<Field>
         for (Field f : expected.fields.flatten() as List<Field>) { 
             List<Field> correspondingFields = actualFields.findAll { it.key == f.key }
@@ -43,11 +48,16 @@ class ValidateCustomFields {
             }
             Field correspondingField = correspondingFields[0]
             String value = StringUtils.trimToNull(correspondingField.value)
-            if (value && f.dataType == DataType.ENUM && !f.enumItems.collect { it.key }.contains(value)) {
-                fieldErrors << new FieldError(name: f.key, error: "Please select ${f.name} value for $className from the drop-down list")
-            } else if (!value && f.mandatory) {
+            if (!value && f.mandatory) {
                 fieldErrors << new FieldError(name: f.key, error: "${f.name} for $className is required")
+            } else if (value) {
+                Object objValue = new FieldValueParser(f, context).parse().value
+                FieldError error = new FieldValueValidator(FieldProperty.getByKey(f.key), f.key, context, college).validate(value)
+                if (error) {
+                    fieldErrors << error
+                }
             }
+            
         }
         return this
     }

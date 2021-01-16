@@ -16,7 +16,7 @@ import ish.oncourse.services.preference.IsCreditNoteEnabled
 import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.corporatepass.ValidateCorporatePass
 import ish.oncourse.willow.functions.field.GetWaitingListFields
-import ish.oncourse.willow.functions.field.ValidateCustomFields
+import ish.oncourse.willow.functions.field.ValidateFormFields
 import ish.oncourse.willow.functions.voucher.ProcessRedeemedVouchers
 import ish.oncourse.willow.model.checkout.Amount
 import ish.oncourse.willow.model.checkout.Application
@@ -27,7 +27,6 @@ import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.checkout.Membership
 import ish.oncourse.willow.model.checkout.Voucher
-import ish.oncourse.willow.model.checkout.VoucherPayment
 import ish.oncourse.willow.model.checkout.WaitingList
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
@@ -239,7 +238,7 @@ class ProcessCheckoutModel {
         }
         
         if (e.selected && e.errors.empty) {
-            ValidateCustomFields validateCustomFields = ValidateCustomFields.valueOf(e.fieldHeadings, processClass.enrolment.fieldHeadings, className, 'Enrolment')
+            ValidateFormFields validateCustomFields = ValidateFormFields.valueOf(e.fieldHeadings, processClass.enrolment.fieldHeadings, className, 'Enrolment', context, college)
             validateCustomFields.validate()
             if (validateCustomFields.commonError) {
                 model.error = validateCustomFields.commonError
@@ -279,7 +278,7 @@ class ProcessCheckoutModel {
             a.warnings += processClass.application.warnings
             if (a.selected && a.errors.empty) {
 
-                ValidateCustomFields validateCustomFields = ValidateCustomFields.valueOf(a.fieldHeadings, processClass.application.fieldHeadings, className, 'Application')
+                ValidateFormFields validateCustomFields = ValidateFormFields.valueOf(a.fieldHeadings, processClass.application.fieldHeadings, className, 'Application', context, college)
                 validateCustomFields.validate()
                 if (validateCustomFields.commonError) {
                     model.error = validateCustomFields.commonError
@@ -306,7 +305,7 @@ class ProcessCheckoutModel {
             if (w.errors.empty) {
                 Course course = new GetCourse(context, college, w.courseId).get()
                 List<FieldHeading> expectedHeadings = new GetWaitingListFields(course).get()
-                ValidateCustomFields validateCustomFields = ValidateCustomFields.valueOf(w.fieldHeadings, expectedHeadings, course.name, 'Waiting List').validate()
+                ValidateFormFields validateCustomFields = ValidateFormFields.valueOf(w.fieldHeadings, expectedHeadings, course.name, 'Waiting List', context, college).validate()
                 if (validateCustomFields.commonError) {
                     model.error = validateCustomFields.commonError
                 }

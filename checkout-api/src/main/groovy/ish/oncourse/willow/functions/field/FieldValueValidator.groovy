@@ -90,7 +90,16 @@ class FieldValueValidator {
             case FieldProperty.YEAR_SCHOOL_COMPLETED:
                 stringError = validateYearSchoolCompleted(value as Integer)
                 break
+            case FieldProperty.STUDENTS_COUNT:
+                Integer studentsCount = value as Integer
+                if (studentsCount < 1 || studentsCount > 30) {
+                    stringError << 'You should enter numbers from 1 to 30. If you have larger groups please add the details in the notes.'
+                }
+                break
             case FieldProperty.CUSTOM_FIELD_CONTACT:
+            case FieldProperty.CUSTOM_FIELD_ENROLMENT:
+            case FieldProperty.CUSTOM_FIELD_APPLICATION:
+            case FieldProperty.CUSTOM_FIELD_WAITING_LIST:
                 ProcessCustomFieldType processor = new ProcessCustomFieldType(fieldKey, context, college).process()
                 if (ENUM == processor.dataType && !processor.items.collect { it.key }.contains(value)) {
                     stringError = 'Please select a value from the drop-down list'

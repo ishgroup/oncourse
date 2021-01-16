@@ -3,7 +3,6 @@ package ish.oncourse.model;
 import ish.oncourse.common.field.*;
 import ish.oncourse.model.auto._WaitingList;
 import ish.oncourse.utils.QueueableObjectUtils;
-import ish.util.SecurityUtil;
 
 import static ish.oncourse.common.field.PropertyGetSetFactory.GET;
 import static ish.oncourse.common.field.PropertyGetSetFactory.SET;

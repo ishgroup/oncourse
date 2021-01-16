@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import ish.common.types.TypesUtil
 import ish.common.types.YesNoOptions
 import ish.oncourse.common.field.FieldProperty
+import ish.oncourse.common.field.PropertyGetSetFactory
 import ish.oncourse.model.Country
 import ish.oncourse.model.Language
 import ish.oncourse.util.FormatUtils
@@ -22,22 +23,7 @@ import org.slf4j.LoggerFactory
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
-import static ish.oncourse.willow.model.field.DataType.BOOLEAN
-import static ish.oncourse.willow.model.field.DataType.CHOICE
-import static ish.oncourse.willow.model.field.DataType.COUNTRY
-import static ish.oncourse.willow.model.field.DataType.DATE
-import static ish.oncourse.willow.model.field.DataType.DATETIME
-import static ish.oncourse.willow.model.field.DataType.EMAIL
-import static ish.oncourse.willow.model.field.DataType.ENUM
-import static ish.oncourse.willow.model.field.DataType.INTEGER
-import static ish.oncourse.willow.model.field.DataType.LANGUAGE
-import static ish.oncourse.willow.model.field.DataType.LONG_STRING
-import static ish.oncourse.willow.model.field.DataType.PHONE
-import static ish.oncourse.willow.model.field.DataType.POSTCODE
-import static ish.oncourse.willow.model.field.DataType.STRING
-import static ish.oncourse.willow.model.field.DataType.SUBURB
-import static ish.oncourse.willow.model.field.DataType.TAGGROUP_M
-import static ish.oncourse.willow.model.field.DataType.TAGGROUP_S
+import static ish.oncourse.willow.model.field.DataType.*
 
 @CompileStatic
 class FieldValueParser {
@@ -57,6 +43,12 @@ class FieldValueParser {
     ParseResult parse() {
         ParseResult result = new ParseResult()
         if (StringUtils.trimToNull(field.value) || field.itemValue) {
+
+            if (field.key.startsWith(PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN)) {
+                result.value = field.value
+                return result
+            }
+            
             switch (field.dataType) {
                 case EMAIL:
                 case LONG_STRING:
@@ -116,9 +108,7 @@ class FieldValueParser {
                     }
                     break
                 case ENUM:
-                    if (field.key.startsWith(FieldProperty.CUSTOM_FIELD_CONTACT.key)) {
-                        result.value = field.value
-                    } else if (org.apache.commons.lang.StringUtils.isNumeric(field.value)) {
+                     if (org.apache.commons.lang.StringUtils.isNumeric(field.value)) {
                         result.value = TypesUtil.getEnumForDatabaseValue(field.value, this.class.classLoader.loadClass("ish.common.types.$field.enumType") as Class< ?extends ExtendedEnumeration>)
                         if (FieldProperty.IS_STILL_AT_SCHOOL.key == field.key) {
                             result.value = (result as YesNoOptions).booleanValue
