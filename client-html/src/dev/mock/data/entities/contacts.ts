@@ -261,6 +261,11 @@ export function mockContacts() {
     this.contacts.rows = this.contacts.rows.filter(a => a.id !== id);
   };
 
+  this.getVerifyUSI = () => ({
+    "errorMessage": "Invalid USI code format.",
+    "verifyStatus": "Invalid format"
+  });
+
   this.getContactsPlainList = () => {
     const rows = generateArraysOfRecords(20, [
       { name: "id", type: "number" },
