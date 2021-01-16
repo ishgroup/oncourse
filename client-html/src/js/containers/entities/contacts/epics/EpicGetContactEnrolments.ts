@@ -5,10 +5,19 @@
 
 import { Epic } from "redux-observable";
 
+import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_CONTACT_ENROLMENTS, GET_CONTACT_ENROLMENTS_FULFILLED } from "../actions";
-import { DataResponse } from "@api/model";
 import EntityService from "../../../../common/services/EntityService";
+
+export const contactEnrolmentMap = ({ values, id }) => ({
+  id: Number(id),
+  invoiceNumber: values[0],
+  createdOn: values[1],
+  uniqueCode: values[2],
+  courseName: values[3],
+  status: values[4]
+});
 
 const request: EpicUtils.Request<any, any, any> = {
   type: GET_CONTACT_ENROLMENTS,
@@ -24,14 +33,7 @@ const request: EpicUtils.Request<any, any, any> = {
       true
     ),
   processData: (response: DataResponse) => {
-    const enrolments = response.rows.map(({ values, id }) => ({
-      id: Number(id),
-      invoiceNumber: values[0],
-      createdOn: values[1],
-      uniqueCode: values[2],
-      courseName: values[3],
-      status: values[4]
-    }));
+    const enrolments = response.rows.map(contactEnrolmentMap);
 
     return [
       {
