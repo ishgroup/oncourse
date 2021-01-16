@@ -528,6 +528,41 @@ export function mockContacts() {
     ]
   });
 
+  this.submitMergeContacts = () => ({
+    "contactA": "42",
+    "contactB": "102",
+    "data": {
+      "Contact.birthDate": "B",
+      "Contact.email": "B",
+      "Contact.fax": "B",
+      "Contact.firstName": "B",
+      "Contact.gender": "B",
+      "Contact.homePhone": "B",
+      "Contact.lastName": "B",
+      "Contact.message": "B",
+      "Contact.mobilePhone": "B",
+      "Contact.postcode": "B",
+      "Contact.street": "B",
+      "Contact.suburb": "B",
+      "Contact.workPhone": "B",
+      "Student.studentNumber": "B",
+      "Student.citizenship": "B",
+      "Student.clientIndustryEmployment": "B",
+      "Student.clientOccupationIdentifier": "B",
+      "Student.disabilityType": "B",
+      "Student.englishProficiency": "B",
+      "Student.feeHelpEligible": "B",
+      "Student.highestSchoolLevel": "B",
+      "Student.indigenousStatus": "B",
+      "Student.isOverseasClient": "B",
+      "Student.isStillAtSchool": "B",
+      "Student.labourForceStatus": "B",
+      "Student.priorEducationCode": "B",
+      "Student.specialNeedsAssistance": "B",
+      "tags": "B"
+    }
+  });
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "firstName", type: "string" },
