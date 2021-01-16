@@ -7,8 +7,9 @@ import PlayArrow from "@material-ui/icons/PlayArrow";
 import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
+import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { initialize, InjectedFormProps } from "redux-form";
+import { Form, initialize, InjectedFormProps } from "redux-form";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import FileCopy from "@material-ui/icons/FileCopy";
 import Grid from "@material-ui/core/Grid/Grid";
@@ -33,6 +34,8 @@ import { validateKeycode } from "../../../utils";
 import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import ExecuteImportModal from "../components/ExecuteImportModal";
+import { State } from "../../../../../reducers/state";
+import { setNextLocation } from "../../../../../common/actions";
 
 const manualUrl = getManualLink("advancedSetup_Import");
 const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityId == ${id}`;
@@ -40,16 +43,20 @@ const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityI
 interface Props extends InjectedFormProps {
   isNew: boolean;
   values: any;
+  history: any;
   dispatch: Dispatch;
   onCreate: (template: ImportModel) => void;
   onUpdateInternal: (template: ImportModel) => void;
   onUpdate: (template: ImportModel) => void;
   onDelete: NumberArgFunction;
+  nextLocation?: string,
+  setNextLocation?: (nextLocation: string) => void,
 }
 
 const ImportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values, dispatch, onCreate, onUpdate, onUpdateInternal, onDelete
+    dirty, form, handleSubmit, isNew, invalid, values, dispatch,
+     onCreate, onUpdate, onUpdateInternal, onDelete, nextLocation, history, setNextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
@@ -63,7 +70,7 @@ const ImportTemplatesForm = React.memo<Props>(
       setModalOpened(true);
     }, []);
 
-    const onDialodSave = useCallback(
+    const onDialogSave = useCallback(
       ({ keyCode }) => {
         setDisableRouteConfirm(true);
         onCreate({ ...values, id: null, keyCode });
@@ -110,6 +117,13 @@ const ImportTemplatesForm = React.memo<Props>(
       }
     }, [values.id, prevId, disableRouteConfirm]);
 
+    useEffect(() => {
+      if (!dirty && nextLocation) {
+        history.push(nextLocation);
+        setNextLocation('');
+      }
+    }, [nextLocation, dirty]);
+
     const handleRun = () => {
       setImportIdSelected(values.id);
       setExecMenuOpened(true);
@@ -117,7 +131,7 @@ const ImportTemplatesForm = React.memo<Props>(
 
     return (
       <>
-        <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialodSave} />
+        <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialogSave} />
         <ExecuteImportModal
           opened={execMenuOpened}
           onClose={() => {
@@ -127,7 +141,7 @@ const ImportTemplatesForm = React.memo<Props>(
           importId={importIdSelected}
         />
 
-        <form onSubmit={handleSubmit(handleSave)}>
+        <Form onSubmit={handleSubmit(handleSave)}>
           {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
 
           <CustomAppBar>
@@ -304,10 +318,19 @@ const ImportTemplatesForm = React.memo<Props>(
               </div>
             </Grid>
           </Grid>
-        </form>
+        </Form>
       </>
     );
   }
 );
 
-export default props => (props.values ? <ImportTemplatesForm {...props} /> : null);
+const mapStateToProps = (state: State) => ({
+  nextLocation: state.nextLocation
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+});
+
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(props => (props.values
+  ? <ImportTemplatesForm {...props} /> : null));

@@ -87,7 +87,7 @@ class FundingContractsForm extends React.Component<Props, any> {
     if (!this.isPending) {
       return;
     }
-    if (nextProps.fetch && !nextProps.fetch.success) {
+    if (nextProps.fetch && nextProps.fetch.success === false) {
       this.rejectPromise(nextProps.fetch.formError);
     }
     if (nextProps.fetch && nextProps.fetch.success) {
@@ -131,9 +131,8 @@ class FundingContractsForm extends React.Component<Props, any> {
       this.props.onSave(this.getTouchedAndNew(value.fundingContracts), this.props.hasLicence ? "POST" : "PATCH");
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
-
-        this.props.dispatch(initialize("FundingContractsForm", { fundingContracts: this.props.fundingContracts }));
+        const { nextLocation, history, setNextLocation, dispatch } = this.props;
+        dispatch(initialize("FundingContractsForm", { fundingContracts: this.props.fundingContracts }));
 
         nextLocation && history.push(nextLocation);
         setNextLocation('');
@@ -188,7 +187,7 @@ class FundingContractsForm extends React.Component<Props, any> {
     const {
      values, dirty, invalid, handleSubmit, hasLicence, timestamps, form
     } = this.props;
-
+console.log('invalid', invalid)
     return (
       <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />

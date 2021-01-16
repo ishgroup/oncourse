@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import {
  getFormInitialValues, getFormValues, initialize, reduxForm
 } from "redux-form";
+import { withRouter } from "react-router";
 import { ScheduleType, Script, TriggerType } from "@api/model";
 import { Dispatch } from "redux";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
@@ -19,7 +20,7 @@ import {
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "./constants";
 import { ApiMethods } from "../../../../model/common/apiHandlers";
 import { mapSelectItems } from "../../../../common/utils/common";
-import { showConfirm } from "../../../../common/actions";
+import { setNextLocation, showConfirm } from "../../../../common/actions";
 
 const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);
 
@@ -74,6 +75,7 @@ const ScriptsBase = React.memo<any>(props => {
       emailTemplates={emailTemplates}
       pdfReports={pdfReports}
       pdfBackgrounds={pdfBackgrounds}
+      history={history}
       {...rest}
     />
   );
@@ -86,6 +88,7 @@ const mapStateToProps = (state: State) => ({
   initialValues: getFormInitialValues(SCRIPT_EDIT_VIEW_FORM_NAME)(state),
   scripts: state.automation.script.scripts,
   emailTemplates: state.automation.emailTemplate.emailTemplates,
+  nextLocation: state.nextLocation,
   pdfReports: state.automation.pdfReport.pdfReports,
   pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds
 });
@@ -95,10 +98,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: number, script: Script, method?: ApiMethods) => dispatch(saveScriptItem(id, script, method)),
   onCreate: (script: Script) => dispatch(createScriptItem(script)),
   onDelete: (id: number) => dispatch(deleteScriptItem(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 export default reduxForm({
   form: SCRIPT_EDIT_VIEW_FORM_NAME,
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ScriptsBase));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(ScriptsBase)));
