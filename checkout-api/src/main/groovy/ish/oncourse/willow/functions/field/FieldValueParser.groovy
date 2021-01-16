@@ -123,12 +123,12 @@ class FieldValueParser {
                 default:
                     result.value = null
                     logger.error("unsupported type for field value: $field")
-                    result.error << "unsupported type for field value: ${field.name}".toString()
+                    result.error = "unsupported type for field value: ${field.name}".toString()
             }
 
         } else if (field.mandatory) {
             logger.error("${field.name} required: ${field}")
-            result.error << new FieldError(name: field.key, error: "${field.name} is required")
+            result.error = new FieldError(name: field.key, error: "${field.name} is required")
         }
         result
     }

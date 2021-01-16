@@ -93,7 +93,7 @@ class FieldValueValidator {
             case FieldProperty.STUDENTS_COUNT:
                 Integer studentsCount = value as Integer
                 if (studentsCount < 1 || studentsCount > 30) {
-                    stringError << 'You should enter numbers from 1 to 30. If you have larger groups please add the details in the notes.'
+                    stringError = 'You should enter numbers from 1 to 30. If you have larger groups please add the details in the notes.'
                 }
                 break
             case FieldProperty.CUSTOM_FIELD_CONTACT:
