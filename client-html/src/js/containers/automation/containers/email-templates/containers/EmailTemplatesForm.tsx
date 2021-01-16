@@ -11,10 +11,10 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { FileCopy } from "@material-ui/icons";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import React, {
- useCallback, useEffect, useMemo, useState
+  useCallback, useEffect, useMemo, useState
 } from "react";
 import { Dispatch } from "redux";
-import { initialize, InjectedFormProps } from "redux-form";
+import { Form, initialize, InjectedFormProps } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
@@ -48,6 +48,9 @@ interface Props extends InjectedFormProps {
   onDelete: NumberArgFunction;
   validateTemplateCopyName: StringArgFunction;
   validateNewTemplateName: StringArgFunction;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
 }
 
 const validatePlainBody = (v, allValues) => ((allValues.type !== 'Email' || !allValues.body) ? validateSingleMandatoryField(v) : undefined);
@@ -70,7 +73,10 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     onUpdateInternal,
     onDelete,
     validateTemplateCopyName,
-    validateNewTemplateName
+    validateNewTemplateName,
+    history,
+    nextLocation,
+    setNextLocation,
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -137,6 +143,13 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     }
   }, [values.id, prevId, disableRouteConfirm]);
 
+  useEffect(() => {
+    if (!dirty && nextLocation) {
+      history.push(nextLocation);
+      setNextLocation('');
+    }
+  }, [nextLocation, dirty]);
+
   return (
     <>
       <SaveAsNewAutomationModal
@@ -147,7 +160,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
         hasNameField
       />
 
-      <form onSubmit={handleSubmit(handleSave)}>
+      <Form onSubmit={handleSubmit(handleSave)}>
         {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
 
         <CustomAppBar>
@@ -331,7 +344,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
             </div>
           </Grid>
         </Grid>
-      </form>
+      </Form>
     </>
   );
 };

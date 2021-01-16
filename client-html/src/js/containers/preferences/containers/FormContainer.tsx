@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { SystemPreference } from "@api/model";
 import { SubmissionError, initialize } from "redux-form";
-import { withRouter } from "react-router";
+import { withRouter, RouteComponentProps } from "react-router";
 import createStyles from "@material-ui/core/styles/createStyles";
 import * as college from "../../../model/preferences/College";
 import * as ldap from "../../../model/preferences/Ldap";
@@ -42,6 +42,7 @@ interface Props {
   data: any;
   form: any;
   formName: string;
+  history: any;
   onInit?: (category) => void;
   onSubmit?: (category: Categories, fields) => void;
   accounts?: any;
@@ -59,7 +60,6 @@ interface Props {
   skipOnInit?: boolean;
   fetch?: Fetch;
   openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
-  history?: any,
   nextLocation?: string,
   setNextLocation?: (nextLocation: string) => void,
 }
@@ -76,7 +76,7 @@ const FieldsModel = {
   security
 };
 
-class FormContainer extends React.Component<Props, any> {
+class FormContainer extends React.Component<Props & RouteComponentProps, any> {
   private resolveValidation;
   private rejectValidation;
   private isValidating: boolean = false;
