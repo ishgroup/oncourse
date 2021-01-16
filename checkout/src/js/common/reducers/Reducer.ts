@@ -9,6 +9,11 @@ export const configReducer = (state: WillowConfig = new WillowConfig({}), action
   switch (action.type) {
     case Actions.UPDATE_WILLOW_CONFIG:
       return action.payload;
+    case Actions.UPDATE_PAYMENT_SUCCESS_URL:
+      return {
+        ...state,
+        paymentSuccessURL: action.payload
+      }
     default:
       return state;
   }

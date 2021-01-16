@@ -1,8 +1,9 @@
-import {_toRequestType, FULFILLED} from "../../../../common/actions/ActionUtils";
+import {_toRequestType} from "../../../../common/actions/ActionUtils";
 import {ContactNode, Contact, PurchaseItem} from "../../../../model";
 
 import {ContactNodeToState, ItemToState, State} from "../reducers/State";
 import {IAction} from "../../../../actions/IshAction";
+import {ContactProps} from "../components";
 
 export const ADD_CONTACT_TO_SUMMARY: string = _toRequestType("checkout/summary/add/contact/to/summary");
 
@@ -24,6 +25,13 @@ export const UPDATE_ITEM: string = "checkout/summary/update/item";
 
 export const REMOVE_ITEM_FROM_SUMMARY: string = "checkout/remove/summary/item";
 export const REMOVE_CONTACT_FROM_SUMMARY: string = "checkout/remove/summury/contact";
+
+export const SET_RESULT_DETAILS = "checkout/result/set/details";
+
+export const setResultDetails = (resultDetails: ContactProps[]) => ({
+  type: SET_RESULT_DETAILS,
+  payload: {resultDetails}
+})
 
 export const addContactToSummary = (contact: Contact, uncheckItems = false): IAction<{contact: Contact, uncheckItems?: boolean}> => {
   return {
@@ -95,7 +103,6 @@ export const updateEnrolmentFields = (form, type) => {
 };
 
 export const removeItemFromSummary = (type, id) => {
-
   return {
     type: REMOVE_ITEM_FROM_SUMMARY,
     payload: {type, id},
@@ -103,7 +110,6 @@ export const removeItemFromSummary = (type, id) => {
 };
 
 export const removeContactFromSummary = contactId => {
-
   return {
     type: REMOVE_CONTACT_FROM_SUMMARY,
     payload: {contactId},

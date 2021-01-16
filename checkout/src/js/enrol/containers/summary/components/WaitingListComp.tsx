@@ -14,6 +14,7 @@ export interface Props {
   onChange?: (item, contact) => void;
   onChangeFields?: (form, type) => any;
   onUpdate: (prop) => void;
+  readonly?: boolean;
 }
 
 class WaitingListComp extends React.Component<Props, any> {
@@ -49,7 +50,7 @@ class WaitingListComp extends React.Component<Props, any> {
     this.setState({
       [key]: value,
     });
-    
+
   }
   onBlurField(key) {
     const {onUpdate} = this.props;
@@ -63,7 +64,7 @@ class WaitingListComp extends React.Component<Props, any> {
   }
 
   public render(): JSX.Element {
-    const {waitingList, product, contact, onChange, onChangeFields} = this.props;
+    const {waitingList, product, contact, onChange, onChangeFields, readonly} = this.props;
     const {errors} = this.state;
 
     const divClass = classnames("row waitingList", {disabled: !waitingList.selected});
@@ -85,11 +86,12 @@ class WaitingListComp extends React.Component<Props, any> {
           contact={contact}
           onChange={onChange}
           fullWidth={true}
+          readonly={readonly}
         >
 
         </ItemWrapper>
 
-        <EnrolmentFieldsForm
+        {!readonly && <EnrolmentFieldsForm
           headings={waitingList.fieldHeadings}
           classId={waitingList.courseId}
           selected={waitingList.selected}
@@ -97,7 +99,7 @@ class WaitingListComp extends React.Component<Props, any> {
           onSubmit={() => undefined}
           initialValues={this.getFieldInitialValues(waitingList.fieldHeadings)}
           onUpdate={form => onChangeFields(form, 'waitingLists')}
-        />
+        />}
       </div>
     );
   }

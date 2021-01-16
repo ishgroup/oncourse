@@ -17,6 +17,7 @@ export interface Props {
   courseClass: CourseClass;
   onChange?: (item, contact) => void;
   onChangeFields?: (form, type) => any;
+  readonly?: boolean;
 }
 
 class EnrolmentComp extends React.Component<Props, any> {
@@ -37,7 +38,7 @@ class EnrolmentComp extends React.Component<Props, any> {
   }
 
   public render(): JSX.Element {
-    const { enrolment, courseClass, contact, onChange, onChangeFields } = this.props;
+    const { enrolment, courseClass, contact, onChange, onChangeFields, readonly } = this.props;
     const divClass = classnames("row", "enrolmentItem", { disabled: !enrolment.selected });
     const name = `enrolment-${contact.id}-${enrolment.classId}`;
     const title: string = `${courseClass.course.name}`;
@@ -59,13 +60,14 @@ class EnrolmentComp extends React.Component<Props, any> {
           item={enrolment}
           contact={contact}
           onChange={onChange}
+          readonly={readonly}
         >
           <ClassDetails courseClass={courseClass} />
 
         </ItemWrapper>
-        {!error && enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment} />}
+        {!readonly && !error && enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment} />}
 
-        <EnrolmentFieldsForm
+        {!readonly && <EnrolmentFieldsForm
           headings={enrolment.fieldHeadings}
           classId={enrolment.classId}
           selected={enrolment.selected}
@@ -73,7 +75,7 @@ class EnrolmentComp extends React.Component<Props, any> {
           onSubmit={() => undefined}
           initialValues={this.getFieldInitialValues(enrolment.fieldHeadings)}
           onUpdate={form => onChangeFields(form, 'enrolments')}
-        />
+        />}
       </div>
     );
   }

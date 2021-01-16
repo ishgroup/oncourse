@@ -50,6 +50,8 @@ export class ConfirmOrderDialog extends React.Component<Props, {}> {
       ];
     }
 
+    const checkoutLink = checkoutPath + "?sourcePath=" + window.location.href;
+
     return (
       <div className="confirmOrderDialog dialogContainer" onClick={stopPropagation}>
         <div className="confirm-message">
@@ -57,7 +59,7 @@ export class ConfirmOrderDialog extends React.Component<Props, {}> {
           {classDescription}
         </div>
         <p className="confirm-proseed">
-          <a href={checkoutPath} className="button">Proceed to Checkout</a>
+          <a href={checkoutLink} className="button">Proceed to Checkout</a>
         </p>
         <p className="confirm-close-wrapper">
           <a className="button closeButton" onClick={close}>Continue browsing</a>

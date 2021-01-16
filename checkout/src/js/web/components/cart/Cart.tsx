@@ -37,6 +37,8 @@ class Cart extends React.Component<Props, State> {
     const countClasses = classes.result.length;
     const count = countClasses + products.result.length + waitingCourses.result.length;
 
+    const checkoutLink = checkoutPath + "?sourcePath=" + window.location.href;
+
     return (
       <div className="short-list" id="shortlist">
         <div className="shortlistInfo" id="info">
@@ -60,7 +62,7 @@ class Cart extends React.Component<Props, State> {
                 return <CartCourseItem key={courseId} item={waitingCourses.entities[courseId]} remove={removeWaitingCourse}/>;
               })}
               <li className="shortListOrderEnrol">
-                <a className="shortlistLinkEnrol" href={checkoutPath}>{countClasses ? "Enrol" : "Purchase"}</a>
+                <a className="shortlistLinkEnrol" href={checkoutLink}>{countClasses ? "Enrol" : "Purchase"}</a>
               </li>
             </ul>
             <div className="closeButton" onClick={this.toggleShortList}>X</div>
@@ -74,7 +76,7 @@ class Cart extends React.Component<Props, State> {
                 <a>{(this.state.showShortList ? "Hide" : "Show") + " Shortlist"}</a>
               </li>
               <li className="shortlistActionEnrol">
-                <a href={checkoutPath}>{countClasses ? "Enrol" : "Purchase"}</a>
+                <a href={checkoutLink}>{countClasses ? "Enrol" : "Purchase"}</a>
               </li>
             </ul>
           </div>,

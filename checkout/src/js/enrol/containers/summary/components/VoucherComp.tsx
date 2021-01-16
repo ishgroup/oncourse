@@ -13,6 +13,7 @@ export interface Props {
   onPriceValueChange?: (val: number) => any;
   onQuantityValueChange?: (val: number) => any;
   updateCheckoutModel?: () => void;
+  readonly?: boolean;
 }
 
 
@@ -72,7 +73,7 @@ class VoucherComp extends React.PureComponent<Props, State> {
   }
 
   public render(): JSX.Element {
-    const { voucher, product, contact, onChange } = this.props;
+    const { voucher, product, contact, onChange, readonly } = this.props;
     const divClass = classnames("row", "enrolmentItem", { disabled: !voucher.selected });
     const warning = voucher.warnings && voucher.warnings.length ? this.props.voucher.warnings[0] : null;
     const error = voucher.warnings && voucher.errors.length ? this.props.voucher.errors[0] : null;
@@ -91,11 +92,11 @@ class VoucherComp extends React.PureComponent<Props, State> {
           quantity={this.state.quantity}
           onQuantityChange={val => this.updateQuantity(val)}
           onQuantityBlur={val => this.handleQuantityBlur()}
-
+          readonly={readonly}
         >
           <VoucherDetails voucher={voucher} />
         </ItemWrapper>
-        {voucher.selected &&
+        {!readonly && voucher.selected &&
           <div className="col-xs-8 col-md-8 alignright">
             <VoucherPrice
               voucher={voucher}

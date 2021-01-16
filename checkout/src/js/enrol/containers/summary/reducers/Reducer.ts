@@ -39,6 +39,12 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
     case SummaryActions.ItemsLoad:
       return action.payload;
 
+    case SummaryActions.SET_RESULT_DETAILS:
+      return {
+        ...state,
+        ...action.payload
+      }
+
     case RESET_CHECKOUT_STATE:
       return ContactNodeToState([]);
 

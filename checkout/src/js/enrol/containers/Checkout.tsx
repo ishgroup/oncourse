@@ -15,6 +15,7 @@ import {submitAddContact} from "./contact-add/actions/Actions";
 import CheckoutService from "../services/CheckoutService";
 import {FieldSet} from "../../model/field/FieldSet";
 import {IshState} from "../../services/IshState";
+import {updatePaymentSuccessUrl} from "../../common/actions/Actions";
 
 export const isOldIE = () => {
   const ua = window.navigator.userAgent;
@@ -27,6 +28,7 @@ interface Props {
   phase: Phase;
   page: number;
   onInit: () => void;
+  updatePaymentSuccessUrl: (url: string) => void;
   onProceedToPayment: () => void;
   changePhase: (phase) => void;
   isNewContact: boolean;
@@ -42,6 +44,14 @@ export class Checkout extends React.Component<Props, any> {
 
   componentDidMount() {
     this.props.onInit();
+
+    const urlParsms = new URLSearchParams(window.location.search);
+    const sourcePath = urlParsms.get("sourcePath");
+
+    if (sourcePath) {
+      history.replaceState(null,null, window.location.origin + window.location.pathname);
+      this.props.updatePaymentSuccessUrl(sourcePath);
+    }
   }
 
   render() {
@@ -133,6 +143,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     changePhase: phase => {
       dispatch(changePhase(phase));
     },
+    updatePaymentSuccessUrl: url => {
+      dispatch(updatePaymentSuccessUrl(url))
+    }
   };
 };
 

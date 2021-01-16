@@ -13,6 +13,7 @@ export interface Props {
   courseClass: CourseClass;
   onChange?: (item, contact) => void;
   onChangeFields?: (form, type) => any;
+  readonly?: boolean;
 }
 
 class ApplicationComp extends React.Component<Props, any> {
@@ -33,7 +34,7 @@ class ApplicationComp extends React.Component<Props, any> {
   }
 
   public render(): JSX.Element {
-    const {application, courseClass, contact, onChange, onChangeFields} = this.props;
+    const {application, courseClass, contact, onChange, onChangeFields, readonly} = this.props;
     const divClass = classnames("row", "enrolmentItem", {disabled: !application.selected});
     const name = `application-${contact.id}-${application.classId}`;
     const title = <span><span className="checkout-course-type">Application for</span> {courseClass.course.name}</span>;
@@ -46,19 +47,19 @@ class ApplicationComp extends React.Component<Props, any> {
     return (
       <div className={divClass}>
         <ItemWrapper title={title} name={name} error={error} warning={warning} selected={application.selected}
-                     item={application} contact={contact}
+                     item={application} contact={contact} readonly={readonly}
                      onChange={onChange}>
         </ItemWrapper>
 
-        <EnrolmentFieldsForm
+        {!readonly && <EnrolmentFieldsForm
           headings={application.fieldHeadings}
-          classId={application.classId}
+          classId={application.classId}Ω
           selected={application.selected}
           form={`${application.contactId}-${application.classId}`}
           onSubmit={() => undefined}
           initialValues={this.getFieldInitialValues(application.fieldHeadings)}
           onUpdate={form => onChangeFields(form, 'applications')}
-        />
+        />}
       </div>
     );
   }

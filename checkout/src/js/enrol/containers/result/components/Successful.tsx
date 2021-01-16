@@ -1,4 +1,5 @@
 import * as React from "react";
+import SummaryListComp from "./SummaryListComp";
 
 interface Props {
   refId: string;
@@ -16,6 +17,7 @@ export class Successful extends React.Component<Props, any> {
           <strong> {refId}</strong>.</p>
         <p>Each student will shortly receive an enrolment or application confirmation, if a fee was incurred a tax
           invoice will also be sent. If you don't receive these within 24 hours, please contact us.</p>
+        <SummaryListComp />
         <p><strong>Please press continue to view further important information</strong></p>
         <p><a className="link-continue" href={successLink}>Continue</a></p>
       </div>

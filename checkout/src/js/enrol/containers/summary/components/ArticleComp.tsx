@@ -10,6 +10,7 @@ export interface Props {
   product: Product;
   onQuantityValueChange?: (val: number) => any;
   onChange?: (item, contact) => void;
+  readonly?: boolean;
 }
 export interface State {
   quantity: number;
@@ -47,7 +48,7 @@ class ArticleComp extends React.Component<Props, State> {
   }
 
   public render(): JSX.Element {
-    const {article, product, contact, onChange} = this.props;
+    const {article, product, contact, onChange, readonly} = this.props;
     const divClass = classnames("row", "enrolmentItem", {disabled: !article.selected});
     const warning = article.warnings && article.warnings.length ? this.props.article.warnings[0] : null;
     const error = article.warnings && article.errors.length ? this.props.article.errors[0] : null;
@@ -61,10 +62,12 @@ class ArticleComp extends React.Component<Props, State> {
           onChange={onChange}
           quantity={quantity}
           onQuantityChange={this.updateQuantity}
-          onQuantityBlur={this.handleQuantityBlur}>
+          onQuantityBlur={this.handleQuantityBlur}
+          readonly={readonly}
+        >
           <div />
         </ItemWrapper>
-        {article.selected &&
+        {!readonly && article.selected &&
           <div className="col-xs-8 col-md-8 alignright text-right">
             <div className="row">
               <div className="col-xs-24 col-md-24 fee-full fullPrice">

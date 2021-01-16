@@ -2,6 +2,7 @@ import {normalize, schema} from "normalizr";
 
 import {Enrolment, Application, ContactNode, Membership, Voucher, Article, PurchaseItem} from "../../../../model";
 import {WaitingList} from "../../../../model/checkout/WaitingList";
+import {ContactProps} from "../components";
 
 const SEnrolments = new schema.Entity('enrolments', {}, {idAttribute: (e: Enrolment) => `${e.contactId}-${e.classId}`});
 const SApplications = new schema.Entity('applications', {}, {idAttribute: (a: Application) => `${a.contactId}-${a.classId}`});
@@ -45,6 +46,7 @@ export interface State {
     contactNodes: ContactNodesStorage;
     waitingLists: { [key: string]: WaitingList }
   };
+  resultDetails?: ContactProps[],
   fetching?: boolean;
 }
 
@@ -53,7 +55,6 @@ export const ContactNodeToState = (input: ContactNode[]): State => {
 };
 
 export const ItemToState = (input: PurchaseItem): State => {
-
   const node: ContactNode = new ContactNode();
   node.contactId = input.contactId;
   node.enrolments = input instanceof Enrolment ? [input] : [];
@@ -62,6 +63,5 @@ export const ItemToState = (input: PurchaseItem): State => {
   node.articles = input instanceof Article ? [input] : [];
   node.vouchers = input instanceof Voucher ? [input] : [];
   node.waitingLists = input instanceof WaitingList ? [input] : [];
-
   return ContactNodeToState([node]);
 };
