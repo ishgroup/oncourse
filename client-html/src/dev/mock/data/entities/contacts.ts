@@ -7,7 +7,44 @@ export function mockContacts() {
     const row = this.contacts.rows.find(row => row.id == id);
     return {
       "id": row.id,
-      "student": null,
+      "student": {
+        "id": 1,
+        "countryOfBirth": null,
+        "disabilityType": "Not stated",
+        "labourForceStatus": "Not stated",
+        "englishProficiency": "Not stated",
+        "highestSchoolLevel": "Not stated",
+        "indigenousStatus": "Not stated",
+        "isOverseasClient": false,
+        "isStillAtSchool": false,
+        "language": null,
+        "priorEducationCode": "Not stated",
+        "specialNeeds": null,
+        "yearSchoolCompleted": null,
+        "studentNumber": 1,
+        "countryOfResidency": null,
+        "visaNumber": null,
+        "visaType": null,
+        "visaExpiryDate": null,
+        "passportNumber": null,
+        "medicalInsurance": null,
+        "uniqueLearnerIdentifier": null,
+        "usi": null,
+        "usiStatus": "Not supplied",
+        "chessn": null,
+        "feeHelpEligible": false,
+        "citizenship": "No information",
+        "townOfBirth": null,
+        "specialNeedsAssistance": null,
+        "clientIndustryEmployment": "Not Stated",
+        "clientOccupationIdentifier": "Not Stated",
+        "waitingLists": [
+
+        ],
+        "concessions": [
+
+        ]
+      },
       "tutor": {
         "id": row.id,
         "dateFinished": null,
