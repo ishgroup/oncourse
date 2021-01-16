@@ -27,6 +27,13 @@ public class WaitingList extends _WaitingList implements Queueable {
 			setPotentialStudents(1);
 		}
 	}
+
+
+	@Property(value = FieldProperty.CUSTOM_FIELD_WAITING_LIST, type = PropertyGetSetFactory.GET, params = {String.class})
+	public String getCustomFieldValue(String key) {
+		CustomField field = getCustomField(key);
+		return  field == null ? null : field.getValue();
+	}
 	
 	@Override
 	@Property(value = FieldProperty.CUSTOM_FIELD_WAITING_LIST, type = PropertyGetSetFactory.SET, params = {String.class, String.class})
