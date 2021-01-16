@@ -7,7 +7,7 @@ import React, {
   useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import {
-  change, initialize, InjectedFormProps
+  Form, change, initialize, InjectedFormProps
 } from "redux-form";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import FileCopy from "@material-ui/icons/FileCopy";
@@ -50,6 +50,9 @@ interface Props extends InjectedFormProps<Report> {
   onDelete: NumberArgFunction;
   pdfBackgrounds: CommonListItem[];
   openConfirm: (onConfirm: any, confirmMessage?: string) => void;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
 }
 
 const reader = new FileReader();
@@ -86,7 +89,10 @@ const PdfReportsForm = React.memo<Props>(
     onDelete,
     pdfBackgrounds,
     openConfirm,
-    initialValues
+    initialValues,
+    history,
+    nextLocation,
+    setNextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
@@ -194,9 +200,16 @@ const PdfReportsForm = React.memo<Props>(
       }
     }, [values.id, prevId, disableRouteConfirm]);
 
+    useEffect(() => {
+      if (!dirty && nextLocation) {
+        history.push(nextLocation);
+        setNextLocation('');
+      }
+    }, [nextLocation, dirty]);
+
     return (
       <>
-        <form onSubmit={handleSubmit(handleSave)}>
+        <Form onSubmit={handleSubmit(handleSave)}>
           <input type="file" ref={fileRef} className="d-none" onChange={handleUpload} />
           <FormField type="stub" name="body" />
 
@@ -355,7 +368,7 @@ const PdfReportsForm = React.memo<Props>(
               </div>
             </Grid>
           </Grid>
-        </form>
+        </Form>
       </>
     );
   }

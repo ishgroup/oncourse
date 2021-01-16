@@ -6,7 +6,7 @@
 import React, {
  useCallback, useEffect, useRef, useState
 } from "react";
-import { InjectedFormProps } from "redux-form";
+import { Form, InjectedFormProps } from "redux-form";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import Grid from "@material-ui/core/Grid/Grid";
 import { ReportOverlay } from "@api/model";
@@ -34,6 +34,9 @@ interface Props extends InjectedFormProps {
   onUpdate: (fileName: string, id: number, overlay: File) => void;
   onDelete: (id: number) => void;
   openConfirm: (onConfirm: any, confirmMessage?: string) => void;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
 }
 
 const PdfBackgroundsForm = React.memo<Props>(
@@ -46,7 +49,10 @@ const PdfBackgroundsForm = React.memo<Props>(
      onCreate,
      onUpdate,
      onDelete,
-     form
+     form,
+     history,
+     nextLocation,
+     setNextLocation
     }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [fileIsChosen, setFileIsChosen] = useState(false);
@@ -96,6 +102,13 @@ const PdfBackgroundsForm = React.memo<Props>(
       }
     }, [values.id, prevId]);
 
+    useEffect(() => {
+      if (!dirty && nextLocation) {
+        history.push(nextLocation);
+        setNextLocation('');
+      }
+    }, [nextLocation, dirty]);
+
     const handleFileSelect = () => {
       const file = fileRef.current.files[0];
       if (file) {
@@ -106,7 +119,7 @@ const PdfBackgroundsForm = React.memo<Props>(
 
     return (
       <>
-        <form onSubmit={handleSubmit(handleSave)}>
+        <Form onSubmit={handleSubmit(handleSave)}>
           <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
           {(dirty || isNew || fileIsChosen) && (
             <RouteChangeConfirm form={form} when={(dirty || isNew || fileIsChosen) && !disableRouteConfirm} />
@@ -170,7 +183,7 @@ const PdfBackgroundsForm = React.memo<Props>(
               ) : null}
             </Grid>
           </Grid>
-        </form>
+        </Form>
       </>
     );
   }

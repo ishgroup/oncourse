@@ -1,11 +1,12 @@
 import * as React from "react";
 import ClassNames from "clsx";
 import Grid from "@material-ui/core/Grid";
+import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import {
- FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
+  Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
 import { Tax } from "@api/model";
 import isEqual from "lodash.isequal";
@@ -38,6 +39,9 @@ interface Props {
   form: string;
   invalid: boolean;
   openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
 }
 
 class TaxTypesBaseForm extends React.Component<Props, any> {
@@ -63,6 +67,15 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
     if (nextProps.fetch && nextProps.fetch.success) {
       this.resolvePromise();
       this.isPending = false;
+    }
+  }
+
+  componentDidUpdate() {
+    const { dirty, nextLocation, setNextLocation, history } = this.props;
+
+    if (nextLocation && !dirty) {
+      history.push(nextLocation);
+      setNextLocation('');
     }
   }
 
@@ -160,7 +173,7 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
     } = this.props;
 
     return (
-      <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
@@ -216,7 +229,7 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
             </Grid>
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
@@ -224,6 +237,6 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
 const TaxTypesForm = reduxForm({
   onSubmitFail,
   form: "TaxTypesForm"
-})(withStyles(formCommonStyles)(TaxTypesBaseForm) as any);
+})(withStyles(formCommonStyles)(withRouter(TaxTypesBaseForm)) as any);
 
 export default TaxTypesForm;

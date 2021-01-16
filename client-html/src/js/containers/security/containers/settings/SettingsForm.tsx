@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import {
-  change, reduxForm, initialize, getFormValues, Field
+  Form, change, reduxForm, initialize, getFormValues, Field
 } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
@@ -113,7 +113,7 @@ class SettingsForm extends React.Component<any, any> {
     const { enablePasswordScheduleField, enableTOTPScheduleField } = this.state;
 
     return (
-      <form className="container" onSubmit={handleSubmit(onSave)}>
+      <Form className="container" onSubmit={handleSubmit(onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
@@ -293,7 +293,7 @@ class SettingsForm extends React.Component<any, any> {
             />
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
