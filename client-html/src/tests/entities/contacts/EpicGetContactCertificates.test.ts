@@ -1,5 +1,8 @@
 import { DefaultEpic } from "../../common/Default.Epic";
-import { EpicGetContactCertificates } from "../../../js/containers/entities/contacts/epics/EpicGetContactCertificates";
+import {
+  contactCertificatesMap,
+  EpicGetContactCertificates
+} from "../../../js/containers/entities/contacts/epics/EpicGetContactCertificates";
 import {
   GET_CONTACT_CERTIFICATES_FULFILLED,
   getContactCertificates
@@ -11,21 +14,7 @@ describe("Get contact certificates epic tests", () => {
     epic: EpicGetContactCertificates,
     processData: mockedApi => {
       const response = mockedApi.db.getPlainCertificates();
-      const certificates = response.rows.map(({ values, id }) => {
-        const fullQualification = values[0] === "true";
-        const qualificationLevel = values[6];
-        const qualificationName = qualificationLevel ? `${qualificationLevel} ${values[2]}` : values[2];
-
-        return {
-          id: Number(id),
-          fullQualification,
-          nationalCode: values[1],
-          qualificationName,
-          certificateNumber: values[3],
-          createdOn: values[4],
-          lastPrintedOn: values[5]
-        };
-      });
+      const certificates = response.rows.map(contactCertificatesMap);
 
       return [
         {
