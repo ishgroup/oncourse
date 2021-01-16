@@ -19,6 +19,8 @@ import ish.oncourse.server.messaging.MailDeliveryService
 import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
 import ish.oncourse.server.scripting.api.SmtpParameters
 
+import javax.mail.MessagingException
+
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.model.UserDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
@@ -184,7 +186,10 @@ class UserFunctions {
         null
     }
 
-    static String sendInvitationEmailToSystemUser(SystemUser user, PreferenceController preferenceController, MailDeliveryService mailDeliveryService, String collegeKey) {
+    static String sendInvitationEmailToSystemUser(SystemUser user,
+                                                  PreferenceController preferenceController,
+                                                  MailDeliveryService mailDeliveryService,
+                                                  String collegeKey) throws MessagingException {
         String invitationToken = generateUserInvitationToken()
         String subject = "Welcome to onCourse!"
         String messageText =
