@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import { getFormValues, initialize, reduxForm } from "redux-form";
 import { Dispatch } from "redux";
 import { ExportTemplate } from "@api/model";
@@ -71,4 +72,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default reduxForm({
   form: IMPORT_TEMPLATES_FORM_NAME,
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ImportTemplates));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(ImportTemplates)));

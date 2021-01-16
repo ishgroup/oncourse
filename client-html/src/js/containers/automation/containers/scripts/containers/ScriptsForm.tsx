@@ -14,7 +14,7 @@ import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import {
-  arrayInsert, change, FieldArray, initialize
+  Form, arrayInsert, change, FieldArray, initialize
 } from "redux-form";
 import Typography from "@material-ui/core/Typography";
 import { OutputType, TriggerType } from "@api/model";
@@ -117,13 +117,15 @@ interface Props {
   TriggerTypeItems: any;
   ScheduleTypeItems: any;
   hasUpdateAccess: boolean;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
   classes?: any;
   dirty?: boolean;
   created?: Date;
   modified?: Date;
   initialized?: boolean;
   invalid?: boolean;
-  history?: any;
   form?: string;
   openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
   handleSubmit?: any;
@@ -171,7 +173,10 @@ const ScriptsForm = React.memo<Props>(props => {
     onDelete,
     isNew,
     formsState,
-    emailTemplates
+    emailTemplates,
+    history,
+    nextLocation,
+    setNextLocation,
   } = props;
 
   const [isValidQuery, setIsValidQuery] = useState<boolean>(true);
@@ -245,6 +250,13 @@ const ScriptsForm = React.memo<Props>(props => {
       setIsValidQuery(true);
     }
   }, [values && values.id, prevId, isValidQuery]);
+
+  useEffect(() => {
+    if (!dirty && nextLocation) {
+      history.push(nextLocation);
+      setNextLocation('');
+    }
+  }, [nextLocation, dirty]);
 
   const isScheduleTrigger = useMemo(() => Boolean(
     values
@@ -322,7 +334,7 @@ const ScriptsForm = React.memo<Props>(props => {
     <>
       <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField />
 
-      <form onSubmit={handleSubmit(handleSave)}>
+      <Form onSubmit={handleSubmit(handleSave)}>
         {(dirty || isNew) && <RouteChangeConfirm form={form} when={!disableRouteConfirm && (dirty || isNew)} />}
         <CustomAppBar fullWidth noDrawer>
           <Grid container>
@@ -521,7 +533,7 @@ const ScriptsForm = React.memo<Props>(props => {
             </Grid>
           )}
         </div>
-      </form>
+      </Form>
     </>
   );
 });

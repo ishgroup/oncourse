@@ -6,8 +6,9 @@
 import React, { ComponentClass } from "react";
 import { Grid } from "@material-ui/core/";
 import DeleteForever from "@material-ui/icons/DeleteForever";
+import { withRouter } from "react-router";
 import {
-  getFormValues, initialize, reduxForm
+  Form, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -24,6 +25,7 @@ import { State } from "../../../../../reducers/state";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { updateUserRole, removeUserRole } from "../../../actions";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { setNextLocation } from "../../../../../common/actions";
 
 const manualUrl = getManualLink("users_roles");
 
@@ -69,6 +71,15 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
       || (submitSucceeded && !isNew)
     ) {
       this.props.dispatch(initialize("UserRolesForm", { name: dataItem.name, ...initialRights, ...dataItem.rights }));
+    }
+  }
+
+  componentDidUpdate() {
+    const { dirty, nextLocation, setNextLocation, history } = this.props;
+
+    if (nextLocation && !dirty) {
+      history.push(nextLocation);
+      setNextLocation('');
     }
   }
 
@@ -127,7 +138,7 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
     } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.onSave)} className={className}>
+      <Form onSubmit={handleSubmit(this.onSave)} className={className}>
         {!this.disableConfirm && !submitSucceeded && dirty && <RouteChangeConfirm form={form} when={dirty && hasLicense} />}
 
         <Grid container spacing={2}>
@@ -186,20 +197,22 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
               ))}
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("UserRolesForm")(state),
-  fetch: state.fetch
+  fetch: state.fetch,
+  nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    updateUserRole: (userRole: UserRole) => dispatch(updateUserRole(userRole)),
-    removeUserRole: (id: number) => dispatch(removeUserRole(id))
-  });
+  updateUserRole: (userRole: UserRole) => dispatch(updateUserRole(userRole)),
+  removeUserRole: (id: number) => dispatch(removeUserRole(id)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+});
 
 const UserRolesForm = reduxForm({
   form: "UserRolesForm"
@@ -207,7 +220,7 @@ const UserRolesForm = reduxForm({
   connect<any, any, any>(
     mapStateToProps,
     mapDispatchToProps
-  )(UserRolesFormBase)
+  )(withRouter(UserRolesFormBase))
 );
 
 export default UserRolesForm as ComponentClass<any>;

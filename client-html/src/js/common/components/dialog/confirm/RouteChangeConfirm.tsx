@@ -6,7 +6,7 @@
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Dispatch } from "redux";
-import { isInvalid, submit} from "redux-form";
+import { isInvalid, submit } from "redux-form";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import ErrorOutline from "@material-ui/icons/ErrorOutline";
@@ -19,9 +19,9 @@ interface Props {
   message?: string;
   openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string, onCancel?: any, title?: string,
                  cancelButtonText?: string, onCancelCustom?: () => void, confirmCustomComponent?: React.ReactNode) => void;
-  isInvalid?: (form: string) => boolean;
   closeConfirm?: () => void;
-  setNextLocation?: (nextLocation: string) => void
+  setNextLocation?: (nextLocation: string) => void;
+  isInvalid?: (form: string) => boolean;
 }
 
 interface State {
@@ -66,14 +66,16 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
             startIcon={isInvalidForm && <ErrorOutline color="error" />}
             variant="contained"
             color="primary"
+            disabled={isInvalidForm}
             onClick={() => {
-              submitForm(form)
-              closeConfirm()
+              submitForm(form);
+              closeConfirm();
             }}
           >
             SAVE
           </Button>
-        )
+        );
+
         openConfirm(
           undefined,
           message,
@@ -109,7 +111,7 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
 
   onConfirm = () => {
     this.navigateToNextLocation();
-    this.props.setNextLocation('')
+    this.props.setNextLocation('');
   };
 
   render() {
@@ -123,8 +125,10 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string, onCancel?: any, title?: string, cancelButtonText?: string, onCancelCustom?: () => void, confirmCustomComponent?: React.ReactNode) =>
-      dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText, onCancelCustom, confirmCustomComponent)),
+    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string, onCancel?: any, title?: string,
+                  cancelButtonText?: string, onCancelCustom?: () => void, confirmCustomComponent?: React.ReactNode) =>
+      dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText,
+        onCancelCustom, confirmCustomComponent)),
     submitForm: (form: string) => dispatch(submit(form)),
     closeConfirm: () => dispatch(closeConfirm()),
     setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),

@@ -9,8 +9,9 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import {
- getFormValues, startAsyncValidation, initialize, reduxForm, change
+  Form, getFormValues, startAsyncValidation, initialize, reduxForm, change
 } from "redux-form";
+import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { format as formatDate } from "date-fns";
@@ -37,7 +38,7 @@ import Message from "../../../../../common/components/dialog/message/Message";
 import { SelectItemDefault } from "../../../../../model/entities/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../../../../common/utils/dates/format";
-import { showConfirm } from "../../../../../common/actions";
+import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 
 const manualUrl = getManualLink("users");
@@ -113,6 +114,9 @@ interface FormProps extends Props {
   submitSucceeded: boolean;
   fetch: any;
   asyncErrors: any;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
 }
 
 class UsersFormBase extends React.PureComponent<FormProps, any> {
@@ -139,8 +143,8 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
 
   componentWillReceiveProps(nextProps) {
     const {
- user, submitSucceeded, isNew, fetch, asyncErrors, asyncValidating
-} = nextProps;
+     user, submitSucceeded, isNew, fetch, asyncErrors, asyncValidating
+    } = nextProps;
 
     if (user && (!this.props.user || this.props.user.id !== user.id || (submitSucceeded && !isNew))) {
       this.props.dispatch(initialize("UsersForm", user));
@@ -159,6 +163,15 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       this.setState({
         validPassword: true
       });
+    }
+  }
+
+  componentDidUpdate() {
+    const { dirty, nextLocation, setNextLocation, history } = this.props;
+
+    if (nextLocation && !dirty) {
+      history.push(nextLocation);
+      setNextLocation('');
     }
   }
 
@@ -270,7 +283,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
     const { validPassword, showMessage, messageText } = this.state;
 
     return (
-      <form onSubmit={handleSubmit(this.onSave)} className={className}>
+      <Form onSubmit={handleSubmit(this.onSave)} className={className}>
         {!isNew && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <Message opened={showMessage} isSuccess text={messageText} clearMessage={this.clearMessage} />
@@ -497,7 +510,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
           </Grid>
           <Grid item sm={false} md={false} lg={1} xl={6} />
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
@@ -505,19 +518,21 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
 const mapStateToProps = (state: State) => ({
   values: getFormValues("UsersForm")(state),
   newPassword: state.security.newPassword,
-  fetch: state.fetch
+  fetch: state.fetch,
+  nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   updateUser: (user: User) => dispatch(updateUser(user)),
   resetUserPassword: (id: number) => dispatch(resetUserPassword(id)),
   disableUser2FA: (id: number) => dispatch(disableUser2FA(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 const UsersForm = reduxForm({
   form: "UsersForm",
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UsersFormBase)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(UsersFormBase))));
 
 export default UsersForm as ComponentClass<Props>;

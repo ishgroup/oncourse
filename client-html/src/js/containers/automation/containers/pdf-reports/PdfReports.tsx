@@ -8,11 +8,12 @@ import { connect } from "react-redux";
 import {
  getFormInitialValues, getFormValues, initialize, reduxForm 
 } from "redux-form";
+import { withRouter } from "react-router";
 import { Dispatch } from "redux";
 import { ExportTemplate, Report } from "@api/model";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../reducers/state";
-import { showConfirm } from "../../../../common/actions";
+import { setNextLocation, showConfirm } from "../../../../common/actions";
 import PdfReportsForm from "./containers/PdfReportsForm";
 import { usePrevious } from "../../../../common/utils/hooks";
 import {
@@ -55,7 +56,8 @@ const PdfReports = React.memo<any>(props => {
 const mapStateToProps = (state: State) => ({
   values: getFormValues(PDF_REPORT_FORM_NAME)(state),
   initialValues: getFormInitialValues(PDF_REPORT_FORM_NAME)(state),
-  pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds
+  pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds,
+  nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -64,7 +66,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onDelete: (id: number) => dispatch(removeAutomationPdfReport(id)),
   openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
   getPdfReport: (id: number) => dispatch(getAutomationPdfReport(id)),
-  onUpdateInternal: report => dispatch(updateInternalAutomationPdfReport(report))
+  onUpdateInternal: report => dispatch(updateInternalAutomationPdfReport(report)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 const validatePdfReportBody = (values: Report) => {
@@ -81,4 +84,4 @@ export default reduxForm({
   form: PDF_REPORT_FORM_NAME,
   validate: validatePdfReportBody,
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PdfReports));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(PdfReports)));

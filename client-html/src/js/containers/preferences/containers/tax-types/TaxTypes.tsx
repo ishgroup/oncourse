@@ -15,7 +15,7 @@ import TaxTypesForm from "./components/TaxTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { getPlainAccounts } from "../../../entities/accounts/actions";
-import { showConfirm } from "../../../../common/actions";
+import { setNextLocation, showConfirm } from "../../../../common/actions";
 
 interface Props {
   getTypes: () => void;
@@ -28,6 +28,9 @@ interface Props {
   timestamps: Date[];
   fetch: Fetch;
   openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
 }
 
 class TaxTypes extends React.Component<Props, any> {
@@ -37,7 +40,8 @@ class TaxTypes extends React.Component<Props, any> {
   }
 
   render() {
-    const { taxTypes, data, accounts, updateTaxTypes, deleteTaxType, fetch, timestamps, openConfirm } = this.props;
+    const { taxTypes, data, accounts, updateTaxTypes, deleteTaxType, fetch, timestamps, openConfirm,
+      nextLocation, setNextLocation } = this.props;
     const created = timestamps && timestamps[0];
     const modified = timestamps && timestamps[1];
 
@@ -74,6 +78,8 @@ class TaxTypes extends React.Component<Props, any> {
       data,
       fetch,
       taxTypes,
+      nextLocation,
+      setNextLocation,
       onUpdate: updateTaxTypes,
       onDelete: deleteTaxType
     });
@@ -87,7 +93,8 @@ const mapStateToProps = (state: State) => ({
   data: getFormValues("TaxTypesForm")(state),
   taxTypes: state.preferences.taxTypes,
   accounts: state.accounts.items,
-  fetch: state.fetch
+  fetch: state.fetch,
+  nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
@@ -96,6 +103,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     getAccounts: () => dispatch(getPlainAccounts()),
     updateTaxTypes: (taxTypes: Tax[]) => dispatch(updateTaxTypes(taxTypes)),
     deleteTaxType: (id: string) => dispatch(deleteTaxType(id)),
+    setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
     openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
   };
 };

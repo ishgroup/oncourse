@@ -226,7 +226,7 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  nextLocation: state.nextLocation
+  nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
