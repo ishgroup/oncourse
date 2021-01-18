@@ -11,4 +11,11 @@ export function CourseApiMock() {
     this.db.addCourse(config.data);
     return promiseResolve(config, this.db.getPlainCourses());
   });
+
+  this.api.onDelete(new RegExp(`v1/list/entity/course/\\d+`)).reply(config => {
+    const params = config.url.split("/");
+    const id = params[params.length - 1];
+    this.db.removeCourse(id);
+    return promiseResolve(config, this.db.getPlainCourses());
+  });
 }
