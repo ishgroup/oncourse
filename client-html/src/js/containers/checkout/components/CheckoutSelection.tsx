@@ -47,7 +47,7 @@ import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
 import { latestActivityStorageHandler } from "../../../common/utils/storage";
 import { getCustomFieldTypes } from "../../entities/customFieldTypes/actions";
 import {
-  CHECKOUT_CONTACT_COLUMNS,
+  CHECKOUT_CONTACT_COLUMNS, CHECKOUT_MEMBERSHIP_COLUMNS, CHECKOUT_PRODUCT_COLUMNS, CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep
 } from "../constants";
 import {
@@ -1325,11 +1325,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getCommonPlainRecords("Course", offset, "code,name,isTraineeship", true, null, PLAIN_LIST_MAX_PAGE_SIZE)
   ),
   getProducts: (offset?: number) =>
-    dispatch(getCommonPlainRecords("ArticleProduct", offset, "sku,name,price_with_tax", true, null, PLAIN_LIST_MAX_PAGE_SIZE)),
+    dispatch(getCommonPlainRecords("ArticleProduct", offset, CHECKOUT_PRODUCT_COLUMNS, true, null, PLAIN_LIST_MAX_PAGE_SIZE)),
   getVouchers: (offset?: number) =>
-    dispatch(getCommonPlainRecords("VoucherProduct", offset, "sku,name,priceExTax", true, null, PLAIN_LIST_MAX_PAGE_SIZE)),
+    dispatch(getCommonPlainRecords("VoucherProduct", offset, CHECKOUT_VOUCHER_COLUMNS, true, null, PLAIN_LIST_MAX_PAGE_SIZE)),
   getMembershipProducts: (offset?: number) => dispatch(
-    getCommonPlainRecords("MembershipProduct", offset, "sku,name,price_with_tax", true, null, PLAIN_LIST_MAX_PAGE_SIZE)
+    getCommonPlainRecords("MembershipProduct", offset, CHECKOUT_MEMBERSHIP_COLUMNS, true, null, PLAIN_LIST_MAX_PAGE_SIZE)
   ),
   addSelectedContact: contact => dispatch(addContact(contact)),
   removeContact: index => dispatch(removeContact(index)),
