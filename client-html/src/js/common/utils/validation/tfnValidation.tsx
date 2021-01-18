@@ -9,7 +9,7 @@ export const parseTFN = value => value && value.replace(/\D/g, "");
 export const formatTFN = value => value && value.replace(/^(\d{3})(\d{3})(\d{3})$/g, '$1-$2-$3');
 
 export const validateTFN = value => {
-  if (value === undefined || value === null) return undefined;
+  if (value === undefined || value === null || value === "") return undefined;
 
   const tfn = value.replace(/\D/g, "");
 
