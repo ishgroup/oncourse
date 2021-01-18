@@ -1,9 +1,7 @@
 import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockCorporatePasses() {
-  this.getCorporatePasses = () => {
-    return this.corporatePasses;
-  };
+  this.getCorporatePasses = () => this.corporatePasses;
 
   this.getCorporatePass = id => {
     const row = this.corporatePasses.rows.find(row => row.id == id);
@@ -91,6 +89,75 @@ export function mockCorporatePasses() {
 
     this.corporatePasses = corporatePasses;
   };
+
+  this.createNewCorporatePasses = (id = 21) => ({
+    id,
+    contactFullName: `contactFullName ${id}`,
+    invoiceEmail: `test${id}@test.com`,
+    expiryDate: null,
+    contactId: 1,
+    password: "rsa-me",
+    createdOn: "2015-09-03T02:15:31.000Z",
+    modifiedOn: "2019-10-15T12:06:41.000Z",
+    linkedDiscounts: [
+      {
+        id: 1,
+        discountType: "Dollar",
+        discountValue: -20,
+        name: "Corporate Pass Surcharge"
+      },
+      {
+        id: 2,
+        discountType: "Percent",
+        discountPercent: -0.5,
+        name: "CorpPass surchage with disCode"
+      }
+    ],
+    linkedSalables: [
+      {
+        id: 1,
+        active: false,
+        code: "act-act21",
+        name: "Accounting",
+        type: "Class"
+      },
+      {
+        id: 2,
+        active: false,
+        code: "act-act19",
+        name: "Accounting",
+        type: "Class"
+      },
+      {
+        id: 3,
+        active: false,
+        code: "BUDG-14",
+        name: "Budgeting in onCourse",
+        type: "Class"
+      },
+      {
+        id: 4,
+        active: false,
+        code: "CHC2-11",
+        name: "Certificate III in Aged Care Work",
+        type: "Class"
+      },
+      {
+        id: 5,
+        active: false,
+        code: "SPAM-669",
+        name: "Email Filtering and Security",
+        type: "Class"
+      },
+      {
+        id: 6,
+        active: false,
+        code: "Project-1",
+        name: "Project Management",
+        type: "Class"
+      }
+    ]
+  });
 
   this.removeCorporatePass = id => {
     this.corporatePasses = this.corporatePasses.rows.filter(a => a.id !== id);
