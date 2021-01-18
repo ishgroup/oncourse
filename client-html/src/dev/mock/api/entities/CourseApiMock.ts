@@ -12,6 +12,11 @@ export function CourseApiMock() {
     return promiseResolve(config, this.db.getPlainCourses());
   });
 
+  this.api.onPost("v1/list/entity/course/duplicate").reply(config => {
+    this.db.duplicateCourse(JSON.parse(config.data));
+    return promiseResolve(config, this.db.getPlainCourses());
+  });
+
   this.api.onDelete(new RegExp(`v1/list/entity/course/\\d+`)).reply(config => {
     const params = config.url.split("/");
     const id = params[params.length - 1];
