@@ -6,12 +6,48 @@ import java.util.List;
 
 public class WaitingList  {
   
+    private Double studentsCount = null;
+    private String detail = null;
     private String contactId = null;
     private String courseId = null;
     private List<String> warnings = new ArrayList<String>();
     private List<String> errors = new ArrayList<String>();
     private Boolean selected = null;
     private List<FieldHeading> fieldHeadings = new ArrayList<FieldHeading>();
+
+    /**
+     * Get studentsCount
+     * @return studentsCount
+     */
+    public Double getStudentsCount() {
+        return studentsCount;
+    }
+
+    public void setStudentsCount(Double studentsCount) {
+       this.studentsCount = studentsCount;
+    }
+
+    public WaitingList studentsCount(Double studentsCount) {
+      this.studentsCount = studentsCount;
+      return this;
+    }
+
+    /**
+     * Get detail
+     * @return detail
+     */
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+       this.detail = detail;
+    }
+
+    public WaitingList detail(String detail) {
+      this.detail = detail;
+      return this;
+    }
 
     /**
      * Get contactId
@@ -136,6 +172,8 @@ public class WaitingList  {
       StringBuilder sb = new StringBuilder();
       sb.append("class WaitingList {\n");
       
+      sb.append("    studentsCount: ").append(toIndentedString(studentsCount)).append("\n");
+      sb.append("    detail: ").append(toIndentedString(detail)).append("\n");
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    courseId: ").append(toIndentedString(courseId)).append("\n");
       sb.append("    warnings: ").append(toIndentedString(warnings)).append("\n");

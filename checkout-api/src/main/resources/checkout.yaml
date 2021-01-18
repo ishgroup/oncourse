@@ -1509,7 +1509,13 @@ definitions:
     - errors
     - selected
     - fieldHeadings
+    - studentsCount
+    - detail
     properties:
+      studentsCount:
+        type: number
+      detail:
+        type: string
       contactId:
         type: string
       courseId:
