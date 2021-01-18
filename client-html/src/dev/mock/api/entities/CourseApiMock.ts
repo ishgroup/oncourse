@@ -6,4 +6,9 @@ export function CourseApiMock() {
     const id = params[params.length - 1];
     return promiseResolve(config, this.db.getCourse(id));
   });
+
+  this.api.onPost("v1/list/entity/course").reply(config => {
+    this.db.addCourse(config.data);
+    return promiseResolve(config, this.db.getPlainCourses());
+  });
 }
