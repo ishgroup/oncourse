@@ -290,6 +290,10 @@ export function mockCourses() {
     rules: []
   });
 
+  this.removeCourse = id => {
+    this.courses = this.courses.rows.filter(a => a.id !== id);
+  };
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "name", type: "string" },
