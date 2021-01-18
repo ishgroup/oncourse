@@ -17,6 +17,7 @@ import ish.common.types.AttachmentSpecialType
 import ish.common.types.USIFieldStatus
 import ish.common.types.USIVerificationResult
 import ish.oncourse.server.api.v1.model.PayslipPayTypeDTO
+import org.apache.commons.lang3.StringUtils
 
 import static ish.common.types.USIVerificationStatus.VALID
 import ish.common.types.UsiStatus
@@ -249,7 +250,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.state = dto.state
         cayenneModel.street = dto.street
         cayenneModel.suburb = dto.suburb
-        cayenneModel.tfn = dto.tfn
+        cayenneModel.tfn = StringUtils.trimToNull(dto.tfn)
         cayenneModel.deliveryStatusEmail = dto.deliveryStatusEmail
         cayenneModel.deliveryStatusSms = dto.deliveryStatusSms
         cayenneModel.deliveryStatusPost = dto.deliveryStatusPost
