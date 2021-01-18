@@ -9,5 +9,6 @@ export class Enrolment {
   errors?: string[];
   selected?: boolean;
   fieldHeadings?: FieldHeading[];
+  allowRemove?: boolean;
 }
 

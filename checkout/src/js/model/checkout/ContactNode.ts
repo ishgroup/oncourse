@@ -4,6 +4,7 @@ import {Enrolment} from "./../checkout/Enrolment";
 import {Membership} from "./../checkout/Membership";
 import {Voucher} from "./../checkout/Voucher";
 import {WaitingList} from "./../checkout/WaitingList";
+import {Course} from "./../web/Course";
 
 export class ContactNode {
   contactId?: string;
@@ -13,5 +14,6 @@ export class ContactNode {
   memberships?: Membership[];
   vouchers?: Voucher[];
   waitingLists?: WaitingList[];
+  suggestedCourses?: Course[];
 }
 

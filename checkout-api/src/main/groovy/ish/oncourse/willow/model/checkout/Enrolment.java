@@ -14,6 +14,7 @@ public class Enrolment  {
     private List<String> errors = new ArrayList<String>();
     private Boolean selected = null;
     private List<FieldHeading> fieldHeadings = new ArrayList<FieldHeading>();
+    private Boolean allowRemove = null;
 
     /**
      * Get contactId
@@ -149,6 +150,23 @@ public class Enrolment  {
       return this;
     }
 
+    /**
+     * Get allowRemove
+     * @return allowRemove
+     */
+    public Boolean getAllowRemove() {
+        return allowRemove;
+    }
+
+    public void setAllowRemove(Boolean allowRemove) {
+       this.allowRemove = allowRemove;
+    }
+
+    public Enrolment allowRemove(Boolean allowRemove) {
+      this.allowRemove = allowRemove;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -162,6 +180,7 @@ public class Enrolment  {
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
       sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
       sb.append("    fieldHeadings: ").append(toIndentedString(fieldHeadings)).append("\n");
+      sb.append("    allowRemove: ").append(toIndentedString(allowRemove)).append("\n");
       sb.append("}");
       return sb.toString();
     }

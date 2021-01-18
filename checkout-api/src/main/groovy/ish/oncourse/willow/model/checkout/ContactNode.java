@@ -6,6 +6,7 @@ import ish.oncourse.willow.model.checkout.Enrolment;
 import ish.oncourse.willow.model.checkout.Membership;
 import ish.oncourse.willow.model.checkout.Voucher;
 import ish.oncourse.willow.model.checkout.WaitingList;
+import ish.oncourse.willow.model.web.Course;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class ContactNode  {
     private List<Membership> memberships = new ArrayList<Membership>();
     private List<Voucher> vouchers = new ArrayList<Voucher>();
     private List<WaitingList> waitingLists = new ArrayList<WaitingList>();
+    private List<Course> suggestedCourses = new ArrayList<Course>();
 
     /**
      * Get contactId
@@ -168,6 +170,28 @@ public class ContactNode  {
       return this;
     }
 
+    /**
+     * Get suggestedCourses
+     * @return suggestedCourses
+     */
+    public List<Course> getSuggestedCourses() {
+        return suggestedCourses;
+    }
+
+    public void setSuggestedCourses(List<Course> suggestedCourses) {
+       this.suggestedCourses = suggestedCourses;
+    }
+
+    public ContactNode suggestedCourses(List<Course> suggestedCourses) {
+      this.suggestedCourses = suggestedCourses;
+      return this;
+    }
+
+    public ContactNode addSuggestedCoursesItem(Course suggestedCoursesItem) {
+      this.suggestedCourses.add(suggestedCoursesItem);
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -181,6 +205,7 @@ public class ContactNode  {
       sb.append("    memberships: ").append(toIndentedString(memberships)).append("\n");
       sb.append("    vouchers: ").append(toIndentedString(vouchers)).append("\n");
       sb.append("    waitingLists: ").append(toIndentedString(waitingLists)).append("\n");
+      sb.append("    suggestedCourses: ").append(toIndentedString(suggestedCourses)).append("\n");
       sb.append("}");
       return sb.toString();
     }
