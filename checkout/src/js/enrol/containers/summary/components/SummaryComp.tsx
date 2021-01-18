@@ -1,11 +1,10 @@
 import * as React from "react";
 import classnames from "classnames";
-
 import AmountComp from "../../../components/AmountComp";
 import ContactComp, {Props as ContactProps} from "./ContactComp";
 import {Amount, RedeemVoucher, Promotion, PurchaseItem, ConcessionType, Voucher, Article} from "../../../../model";
-import {StudentMembership} from "../../../../model/checkout/StudentMembership";
-import {Concession} from "../../../../model/checkout/concession/Concession";
+import {StudentMembership} from "../../../../model";
+import {Concession} from "../../../../model";
 import {scrollToTop} from "../../../../common/utils/DomUtils";
 
 export interface Props {
@@ -43,13 +42,36 @@ export interface Props {
 export class SummaryComp extends React.Component<Props, any> {
   constructor(props) {
     super(props);
+    this.state = {
+      isAutoSubmitting: false
+    }
   }
 
   componentDidMount() {
+    const { onInit } = this.props;
+
     scrollToTop();
-    
-    if (this.props.onInit) {
-      this.props.onInit();
+
+    if (onInit) {
+      onInit();
+    }
+  }
+
+  componentDidUpdate() {
+    const { contacts, isOnlyWaitingLists, forms, onProceedToJoin } = this.props;
+    const { isAutoSubmitting } = this.state;
+
+    if (!isAutoSubmitting && contacts.length && isOnlyWaitingLists) {
+      const hasNoFormFieldsOrErrors = !contacts.some(c => c.waitingLists.some(wl =>
+        wl.waitingList.fieldHeadings.length || wl.waitingList.errors.length)
+      )
+
+      if(hasNoFormFieldsOrErrors) {
+        this.setState({
+          isAutoSubmitting: true
+        })
+        onProceedToJoin(forms)
+      }
     }
   }
 
@@ -101,28 +123,25 @@ export class SummaryComp extends React.Component<Props, any> {
           <div className="col-xs-24">
             {hasSelected &&
               <div className={classnames("amount-container", {"zero-total": !haveTotal})}>
-
-                  {haveTotal &&
+                {haveTotal &&
                   <AmountComp
-                      amount={amount}
-                      onUpdatePayNow={amount.isEditable ? onUpdatePayNow : undefined}
-                      onAddCode={onAddCode}
-                      onToggleVoucher={onToggleVoucher}
-                      redeemVouchers={redeemVouchers}
-                      promotions={promotions}
+                    amount={amount}
+                    onUpdatePayNow={amount.isEditable ? onUpdatePayNow : undefined}
+                    onAddCode={onAddCode}
+                    onToggleVoucher={onToggleVoucher}
+                    redeemVouchers={redeemVouchers}
+                    promotions={promotions}
                   />
-                  }
-
-                  <ProceedToPayment
-                      buttonLabel={buttonLabel}
-                      disabled={!hasSelected}
-                      onProceedToPayment={onProceed}
-                  />
+                }
+                <ProceedToPayment
+                  buttonLabel={buttonLabel}
+                  disabled={!hasSelected}
+                  onProceedToPayment={onProceed}
+                />
               </div>
             }
           </div>
         </div>
-
       </div>
     );
   }
