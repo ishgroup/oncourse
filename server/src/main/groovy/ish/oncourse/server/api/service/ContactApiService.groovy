@@ -19,6 +19,7 @@ import ish.common.types.USIVerificationResult
 import ish.oncourse.server.api.v1.model.PayslipPayTypeDTO
 import org.apache.commons.lang3.StringUtils
 import ish.oncourse.server.document.DocumentService
+import org.apache.commons.lang3.StringUtils
 
 import static ish.common.types.USIVerificationStatus.VALID
 import ish.common.types.UsiStatus
