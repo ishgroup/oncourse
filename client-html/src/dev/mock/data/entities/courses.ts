@@ -294,6 +294,24 @@ export function mockCourses() {
     this.courses = this.courses.rows.filter(a => a.id !== id);
   };
 
+  this.duplicateCourse = ids => {
+    const courses = this.courses;
+
+    ids.forEach(id => {
+      const item = { ...courses.rows.find(c => c.id == id) };
+      const totalRows = courses.rows;
+
+      item.id = totalRows.length + 1;
+
+      courses.rows.push({
+        id: item.id,
+        values: [item.name, item.code, null, null, 0]
+      });
+    });
+
+    this.courses = courses;
+  };
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "name", type: "string" },
