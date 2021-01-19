@@ -27,7 +27,6 @@ import ish.print.PrintResult;
 import ish.print.PrintResult.ResultType;
 import ish.print.transformations.PrintTransformation;
 import ish.s3.AmazonS3Service;
-import ish.s3.S3Service;
 import ish.util.EntityUtil;
 import ish.util.MapsUtil;
 import net.sf.jasperreports.engine.*;
