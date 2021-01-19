@@ -33,7 +33,6 @@ import ish.oncourse.server.accounting.AccountTransactionService;
 import ish.oncourse.server.db.SanityCheckService;
 import ish.oncourse.server.db.TransactionCheckService;
 import ish.oncourse.server.deduplication.ContactMergeService;
-import ish.oncourse.server.document.DocumentService;
 import ish.oncourse.server.entity.mixins.MixinHelper;
 import ish.oncourse.server.lifecycle.InvoiceLineInitHelper;
 import ish.oncourse.server.messaging.EmailDequeueJob;
@@ -96,7 +95,6 @@ public class ServiceModule implements Module {
 		binder.bind(StudentService.class).in(Scopes.SINGLETON);
 		binder.bind(InvoiceLineService.class).in(Scopes.SINGLETON);
 		binder.bind(EnrolmentService.class).in(Scopes.SINGLETON);
-		binder.bind(DocumentService.class).in(Scopes.SINGLETON);
 		binder.bind(IAutoIncrementService.class).to(ClusteredAutoincrementService.class).in(Scopes.SINGLETON);
 		binder.bind(TransactionLockedService.class).in(Scopes.SINGLETON);
 		binder.bind(CustomFieldTypeService.class).in(Scopes.SINGLETON);
