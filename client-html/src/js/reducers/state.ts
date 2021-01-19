@@ -37,7 +37,6 @@ import { PaymentOutState } from "../containers/entities/paymentsOut/reducers/sta
 import { ShareState } from "../model/common/Share";
 import { CourseClassState } from "../containers/entities/courseClasses/reducers";
 import { CourseClassBulkSession } from "../containers/entities/courseClasses/reducers/state";
-import { AssessmentsState } from "../containers/entities/assessments/reducers/state";
 import { ConfirmState } from "../model/common/Confirm";
 import { ActionsQueueState } from "../model/common/ActionsQueue";
 import { AppMessage } from "../model/common/Message";
@@ -92,7 +91,6 @@ export interface State {
   invoices: InvoicesState;
   paymentsIn: PaymentInState;
   paymentsOut: PaymentOutState;
-  assessments: AssessmentsState;
   actionsQueue: ActionsQueueState;
   message: AppMessage;
   checkout: CheckoutState;
