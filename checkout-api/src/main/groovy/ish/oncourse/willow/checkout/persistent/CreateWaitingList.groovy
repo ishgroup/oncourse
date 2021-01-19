@@ -9,7 +9,8 @@ import ish.oncourse.model.WaitingList
 import ish.oncourse.willow.checkout.functions.GetCourse
 import ish.oncourse.willow.functions.field.FieldValueParser
 import ish.oncourse.willow.model.field.Field
-import org.apache.cayenne.ObjectContext 
+import org.apache.cayenne.ObjectContext
+import org.apache.commons.lang3.StringUtils
 
 class CreateWaitingList {
 
@@ -32,10 +33,17 @@ class CreateWaitingList {
         WaitingList waitingList = context.newObject(WaitingList)
         waitingList.college = college
         waitingList.student = contact.student
+        
         // Put contact record side by side with student into replication queue.
         // Need to keep newly created Student/Contact records in single replication group
         contact.modified = new Date()
         waitingList.course = new GetCourse(context, college, w.courseId).get()
+        if (w.studentsCount != null) {
+            waitingList.potentialStudents = w.studentsCount.intValue()
+        }
+        if (StringUtils.trimToNull(w.detail) != null) {
+            waitingList.detail = w.detail
+        }
         (w.fieldHeadings.fields.flatten() as List<Field>).each { f  ->
             PropertyGetSet getSet = factory.get([getProperty: {f.key}] as FieldInterface, waitingList)
             getSet.set( new FieldValueParser(f, context).parse().value)
