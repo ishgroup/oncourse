@@ -47,6 +47,12 @@ export const POST_AUTHENTICATION_FULFILLED = FULFILLED(POST_AUTHENTICATION_REQUE
 export const POST_UPDATE_PASSWORD_REQUEST = _toRequestType("post/user/updatePassword");
 export const POST_UPDATE_PASSWORD_FULFILLED = FULFILLED(POST_UPDATE_PASSWORD_REQUEST);
 
+export const POST_CREATE_PASSWORD_REQUEST = _toRequestType("post/user/createPassword");
+export const POST_CREATE_PASSWORD_FULFILLED = FULFILLED(POST_CREATE_PASSWORD_REQUEST);
+
+export const GET_EMAIL_BY_TOKEN_REQUEST = _toRequestType("get/user/email");
+export const GET_EMAIL_BY_TOKEN_FULFILLED = FULFILLED(GET_EMAIL_BY_TOKEN_REQUEST);
+
 export const CHECK_PASSWORD_REQUEST = _toRequestType("get/login");
 export const CHECK_PASSWORD_FULFILLED = FULFILLED(CHECK_PASSWORD_REQUEST);
 
@@ -186,6 +192,16 @@ export const updatePasswordRequest = (value: string) => ({
 export const postLoginRequest = (body: LoginRequest, host, port) => ({
   type: POST_AUTHENTICATION_REQUEST,
   payload: { body, host, port }
+});
+
+export const createPasswordRequest = (token: string, password: string) => ({
+  type: POST_CREATE_PASSWORD_REQUEST,
+  payload: { token, password }
+});
+
+export const getEmailByToken = (value: string) => ({
+  type: GET_EMAIL_BY_TOKEN_REQUEST,
+  payload: { value }
 });
 
 export const getScripts = (entity: string) => ({

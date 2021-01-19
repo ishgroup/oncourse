@@ -32,7 +32,7 @@ import NewPasswordField from "./components/NewPasswordField";
 import { FormTextField } from "../../common/components/form/form-fields/TextField";
 import { validateSingleMandatoryField } from "../../common/utils/validation";
 import {
- postLoginRequest, setLoginState, updatePasswordRequest, checkPassword
+  postLoginRequest, setLoginState, updatePasswordRequest, checkPassword, getEmailByToken, createPasswordRequest
 } from "../../common/actions";
 import { isComplexPassRequired } from "../preferences/actions";
 import { State } from "../../reducers/state";
@@ -207,10 +207,17 @@ interface Props extends LoginState {
   isComplexPassRequired: () => void;
   submit: () => void;
   dispatch: (action: Action) => void;
+  getEmailByToken: (value: string) => void;
+  createPasswordRequest: (token: string, password: string) => void;
+  email?: string;
 }
 
 export class LoginPageBase extends React.PureComponent<Props, any> {
   private savedTFAState;
+
+  private isInviteForm: boolean = false;
+
+  private token: string = '';
 
   state = { passwordScore: 0, passwordFeedback: "", openCredits: false };
 
@@ -245,6 +252,15 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
 
     if (prefilled.user != null && prefilled.password != null) {
       props.dispatch(touch("LoginForm", "user"));
+    }
+
+    this.isInviteForm = window.location.pathname.includes('invite');
+  }
+
+  componentDidMount() {
+    if (this.isInviteForm) {
+      this.token = window.location.pathname.match(/(\w+)$/g)[0];
+      this.token && this.props.getEmailByToken(this.token);
     }
   }
 
@@ -292,8 +308,14 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
       isNewPassword,
       isKickOut,
       totpUrl,
-      isOptionalTOTP
+      isOptionalTOTP,
+      createPasswordRequest,
     } = this.props;
+
+    if (this.isInviteForm) {
+      createPasswordRequest(this.token, values.newPassword);
+      return;
+    }
 
     if (isUpdatePassword && isNewPassword) {
       updatePasswordRequest(values.newPassword || values.newPasswordAsync);
@@ -381,7 +403,8 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
       setLoginState,
       asyncValidating,
       complexPass,
-      dispatch
+      dispatch,
+      email
     } = this.props;
 
     const { passwordScore, passwordFeedback, openCredits } = this.state;
@@ -444,7 +467,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                           </>
                         )}
 
-                        {isBasic && (
+                        {isBasic && !this.isInviteForm && (
                           <>
                             <div className={classes.textFieldWrapper}>
                               <Field
@@ -544,6 +567,53 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                           </>
                         )}
 
+                        {this.isInviteForm && (
+                          <>
+                            <div className={classes.textWrapper}>
+                              {email
+                                ? "You have been invited to ish onCourse. Please create a password. Your username is {email}."
+                                : "User not found."}
+                            </div>
+
+                            <div className={classes.textFieldWrapper}>
+                              {strongPasswordValidation || complexPass === "true" ? (
+                                <Field
+                                  name="newPasswordAsync"
+                                  type="password"
+                                  autoComplete="new-password"
+                                  placeholder="New password"
+                                  component={NewPasswordField}
+                                  passwordScore={passwordScore}
+                                  helperText={passwordFeedback}
+                                  fullWidth
+                                />
+                              ) : (
+                                <Field
+                                  name="newPassword"
+                                  type="password"
+                                  autoComplete="new-password"
+                                  placeholder="Password"
+                                  component={FormTextField}
+                                  validate={this.validatePasswordStrengthLight}
+                                  fullWidth
+                                />
+                              )}
+                            </div>
+
+                            <div className={classes.textFieldWrapper}>
+                              <Field
+                                name="passwordConfirm"
+                                type="password"
+                                autoComplete="off"
+                                placeholder="Confirm password"
+                                component={FormTextField}
+                                validate={validatePasswordConfirm}
+                                fullWidth
+                              />
+                            </div>
+                          </>
+                        )}
+
                         {(isEnableTOTP || isOptionalTOTP) && (
                           <Grid container alignItems="flex-start" direction="row-reverse" spacing={3}>
                             <Grid item xs={12} sm={4}>
@@ -594,36 +664,40 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                         <div className={classes.flexDivider} />
 
                         <div className={classes.buttonsContainer}>
-                          <a href="Quit" className={classes.link} draggable={false} tabIndex={-1}>
-                            <Button
-                              type={isOptionalTOTP ? "submit" : "button"}
-                              classes={{
-                                root: classes.declineButton
-                              }}
-                              onClick={
-                                isTOTP && isNewTOTP
-                                  ? e => {
-                                      e.preventDefault();
-                                      dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
-                                      setLoginState(this.savedTFAState);
-                                    }
-                                  : undefined
-                              }
-                            >
-                              {(isBasic
-                                || (isNewPassword && !isUpdatePassword)
-                                || isKickOut
-                                || isEnableTOTP
-                                || (isTOTP && !isNewTOTP))
-                                && "Quit"}
-                              {((isTOTP && isNewTOTP) || (isNewPassword && isUpdatePassword)) && "Cancel"}
-                              {isOptionalTOTP && "Maybe Later"}
-                            </Button>
-                          </a>
+                          {!this.isInviteForm && (
+                            <>
+                              <a href="Quit" className={classes.link} draggable={false} tabIndex={-1}>
+                                <Button
+                                  type={isOptionalTOTP ? "submit" : "button"}
+                                  classes={{
+                                    root: classes.declineButton
+                                  }}
+                                  onClick={
+                                    isTOTP && isNewTOTP
+                                      ? e => {
+                                          e.preventDefault();
+                                          dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
+                                          setLoginState(this.savedTFAState);
+                                        }
+                                      : undefined
+                                  }
+                                >
+                                  {(isBasic
+                                    || (isNewPassword && !isUpdatePassword)
+                                    || isKickOut
+                                    || isEnableTOTP
+                                    || (isTOTP && !isNewTOTP))
+                                    && "Quit"}
+                                  {((isTOTP && isNewTOTP) || (isNewPassword && isUpdatePassword)) && "Cancel"}
+                                  {isOptionalTOTP && "Maybe Later"}
+                                </Button>
+                              </a>
+                            </>
+                          )}
 
                           <Button
                             type="submit"
-                            disabled={!anyTouched || invalid || asyncValidating}
+                            disabled={!anyTouched || invalid || asyncValidating || (this.isInviteForm && !email)}
                             classes={{
                               root: classes.loginButton,
                               disabled: classes.loginButtonDisabled
@@ -644,10 +718,11 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                 : undefined
                             }
                           >
-                            {((isTOTP && !isNewTOTP) || isBasic) && "Login"}
+                            {((isTOTP && !isNewTOTP) || (isBasic && !this.isInviteForm)) && "Login"}
                             {((isTOTP && isNewTOTP) || isEnableTOTP || isOptionalTOTP) && "Enable"}
                             {isNewPassword && "Confirm"}
                             {isKickOut && "Kick out"}
+                            {this.isInviteForm && "Create password"}
                           </Button>
                         </div>
                       </div>
@@ -757,7 +832,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
       dispatch(postLoginRequest(body, host, port)),
     updatePasswordRequest: (value: string) => dispatch(updatePasswordRequest(value)),
     setLoginState: (value: LoginState) => dispatch(setLoginState(value)),
-    isComplexPassRequired: () => dispatch(isComplexPassRequired())
+    isComplexPassRequired: () => dispatch(isComplexPassRequired()),
+    getEmailByToken: (token: string) => dispatch(getEmailByToken(token)),
+    createPasswordRequest: (token: string, password: string) => dispatch(createPasswordRequest(token, password)),
   });
 
 const shouldAsyncValidate = params => {
