@@ -139,8 +139,8 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
 
   componentWillReceiveProps(nextProps) {
     const {
- user, submitSucceeded, isNew, fetch, asyncErrors, asyncValidating
-} = nextProps;
+     user, submitSucceeded, isNew, fetch, asyncErrors, asyncValidating
+    } = nextProps;
 
     if (user && (!this.props.user || this.props.user.id !== user.id || (submitSucceeded && !isNew))) {
       this.props.dispatch(initialize("UsersForm", user));
@@ -260,14 +260,11 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       dirty,
       validateUniqueNames,
       isNew,
-      oldEmail,
-      passwordComplexityFlag,
-      asyncValidating,
       invalid,
       newPassword
     } = this.props;
 
-    const { validPassword, showMessage, messageText } = this.state;
+    const { showMessage, messageText } = this.state;
 
     return (
       <form onSubmit={handleSubmit(this.onSave)} className={className}>
@@ -293,7 +290,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
 
               <FormSubmitButton
                 disabled={!dirty && !isNew && !values.inviteAgain}
-                invalid={invalid || (isNew && passwordComplexityFlag === "true" && !validPassword)}
+                invalid={invalid}
                 text={isNew ? "Invite" : values.inviteAgain ? "Resend invite" : "Save"}
               />
             </Grid>
@@ -359,22 +356,22 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
             {/*)}*/}
 
             <FormField
-                type="text"
-                name="email"
-                label="Email"
-                validate={validateUniqueNames}
-                required
-                fullWidth
+              type="text"
+              name="email"
+              label="Email"
+              validate={validateUniqueNames}
+              required
+              fullWidth
             />
 
             <FormField
-                type="select"
-                name="administrationCentre"
-                label="Bank cash/cheques to site"
-                fullWidth
-                autoWidth={false}
-                items={sites || []}
-                validate={validateSingleMandatoryField}
+              type="select"
+              name="administrationCentre"
+              label="Bank cash/cheques to site"
+              fullWidth
+              autoWidth={false}
+              items={sites || []}
+              validate={validateSingleMandatoryField}
             />
 
             {!isNew && (
@@ -385,7 +382,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               />
             )}
 
-            {!isNew && (
+            {!isNew && !values.inviteAgain && (
               <FormControlLabel
                 control={<FormField type="switch" name="passwordUpdateRequired" color="primary" />}
                 label="Require password update"
@@ -399,9 +396,11 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
 
             {!isNew && (
               <div className={classes.resetSection}>
-                <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onResetPassword}>
-                  Reset password
-                </Button>
+                {!values.inviteAgain && (
+                  <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onResetPassword}>
+                    Reset password
+                  </Button>
+                )}
 
                 {newPassword && (
                   <Typography color="error" variant="caption">

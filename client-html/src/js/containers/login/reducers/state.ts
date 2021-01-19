@@ -14,4 +14,5 @@ export interface LoginState {
   totpUrl?: string;
   passwordChangeMessage?: string;
   passwordComplexity?: PasswordComplexity;
+  email?: string;
 }

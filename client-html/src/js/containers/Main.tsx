@@ -20,7 +20,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {BrowserWarning} from "../common/components/dialog/BrowserWarning";
+import { BrowserWarning } from "../common/components/dialog/BrowserWarning";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import store from "../constants/Store";
 import { loginRoute, routes } from "../routes";

@@ -33,11 +33,10 @@ post:
       description: Invitation token
       required: true
     - name: password
-      in: body
+      in: query
       description: user password for create
       required: true
-      schema:
-        type: string
+      type: string
   responses:
     '204':
       description: Success response.
