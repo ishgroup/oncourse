@@ -11,18 +11,19 @@
 
 package ish.oncourse.server.document
 
-import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import io.bootique.annotation.BQConfigProperty
 import ish.common.types.AttachmentInfoVisibility
 import ish.oncourse.API
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.AttachableTrait
 import ish.oncourse.server.cayenne.AttachmentData
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.scripting.api.DocumentSpec
+import ish.util.RuntimeUtil
+
 import static ish.oncourse.server.scripting.api.DocumentSpec.ATTACH_ACTION
 import static ish.oncourse.server.scripting.api.DocumentSpec.CREATE_ACTION
 import ish.s3.S3Service
@@ -50,24 +51,71 @@ import org.apache.cayenne.query.ObjectSelect
 class DocumentService {
 
 	private ICayenneService cayenneService
-	private PreferenceController prefController
+
+	DocumentService createDocumentService(ICayenneService cayenneService) {
+		this.cayenneService = cayenneService
+		this
+	}
+
+	private String bucketName
+	private String accessKeyId
+	private String accessSecretKey
+	private String storageLimit
+
+	@BQConfigProperty
+	void setBucket(String bucket) {
+		RuntimeUtil.println("S3 bucket name is " + bucket)
+		this.bucketName = bucket
+	}
+
+	@BQConfigProperty
+	void setAccessKeyId(String accessKeyId) {
+		RuntimeUtil.println("S3 access key Id is " + accessKeyId)
+		this.accessKeyId = accessKeyId
+	}
+
+	@BQConfigProperty
+	void setAccessSecretKey(String accessSecretKey) {
+		RuntimeUtil.println("S3 access secret key is " + accessSecretKey)
+		this.accessSecretKey = accessSecretKey
+	}
+
+	@BQConfigProperty
+	void setLimit(String limit) {
+		RuntimeUtil.println("S3 bucket storage will limit to " + limit)
+		this.storageLimit = limit
+	}
+
+	boolean isUsingExternalStorage() {
+		this.accessKeyId == null
+	}
+
+	String getBucketName() {
+		return bucketName
+	}
+
+	String getAccessKeyId() {
+		return accessKeyId
+	}
+
+	String getAccessSecretKey() {
+		return accessSecretKey
+	}
+
+	String getStorageLimit() {
+		return storageLimit
+	}
+
 
 	@API
 	def imageClosure = { String name ->
 		Document doc = ObjectSelect.query(Document).where(Document.NAME.eq(name)).selectFirst(cayenneService.newContext)
 
-		if (doc && doc.fileUUID && prefController.usingExternalStorage) {
+		if (doc && doc.fileUUID && usingExternalStorage) {
 			def url = s3Service.getFileUrl(doc.fileUUID, doc.webVisibility)
 			return "<img src=\"$url\">"
 		}
 		return null
-	}
-
-
-	@Inject
-    DocumentService(ICayenneService cayenneService, PreferenceController prefController) {
-		this.cayenneService = cayenneService
-		this.prefController = prefController
 	}
 
     Document document(@DelegatesTo(DocumentSpec.class) Closure cl) {
@@ -114,7 +162,7 @@ class DocumentService {
         Date now = new Date()
         version.setTimestamp(now)
         doc.setAdded(now)
-        if (prefController.usingExternalStorage) {
+        if (usingExternalStorage) {
 			UploadResult result = s3Service.putFile(content, name, permission)
 
 			doc.setFileUUID(result.getUuid())
@@ -131,9 +179,6 @@ class DocumentService {
 	}
 
 	private S3Service getS3Service() {
-		return new S3Service(
-				prefController.getStorageAccessId(),
-				prefController.getStorageAccessKey(),
-				prefController.getStorageBucketName())
+		return new S3Service(getAccessKeyId(), getAccessSecretKey(), getBucketName())
     }
 }

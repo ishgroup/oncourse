@@ -20,6 +20,7 @@ import ish.oncourse.server.api.ServerApiModule;
 import ish.oncourse.server.api.cxf.CXFModule;
 import ish.oncourse.server.bugsnag.BugsnagModule;
 import ish.oncourse.server.db.DbModule;
+import ish.oncourse.server.document.DocumentModule;
 import ish.oncourse.server.http.HttpModule;
 import ish.oncourse.server.license.LicenseModule;
 import ish.oncourse.server.modules.ApiCayenneLayerModule;
@@ -57,6 +58,7 @@ public class AngelServer {
                 .module(HttpModule.class)
                 .module(DbModule.class)
                 .module(LicenseModule.class)
+                .module(DocumentModule.class)
                 .exec()
                 .exit();
     }
