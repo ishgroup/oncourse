@@ -15,6 +15,7 @@ public class Enrolment  {
     private Boolean selected = null;
     private List<FieldHeading> fieldHeadings = new ArrayList<FieldHeading>();
     private Boolean allowRemove = null;
+    private String relatedClassId = null;
 
     /**
      * Get contactId
@@ -167,6 +168,23 @@ public class Enrolment  {
       return this;
     }
 
+    /**
+     * Get relatedClassId
+     * @return relatedClassId
+     */
+    public String getRelatedClassId() {
+        return relatedClassId;
+    }
+
+    public void setRelatedClassId(String relatedClassId) {
+       this.relatedClassId = relatedClassId;
+    }
+
+    public Enrolment relatedClassId(String relatedClassId) {
+      this.relatedClassId = relatedClassId;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -181,6 +199,7 @@ public class Enrolment  {
       sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
       sb.append("    fieldHeadings: ").append(toIndentedString(fieldHeadings)).append("\n");
       sb.append("    allowRemove: ").append(toIndentedString(allowRemove)).append("\n");
+      sb.append("    relatedClassId: ").append(toIndentedString(relatedClassId)).append("\n");
       sb.append("}");
       return sb.toString();
     }

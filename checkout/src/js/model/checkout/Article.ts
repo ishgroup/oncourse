@@ -8,5 +8,7 @@ export class Article {
   total?: number;
   selected?: boolean;
   quantity?: number;
+  allowRemove?: boolean;
+  relatedClassId?: string;
 }
 

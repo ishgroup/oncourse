@@ -11,5 +11,7 @@ export class Voucher {
   selected?: boolean;
   isEditablePrice?: boolean;
   quantity?: number;
+  allowRemove?: boolean;
+  relatedClassId?: string;
 }
 

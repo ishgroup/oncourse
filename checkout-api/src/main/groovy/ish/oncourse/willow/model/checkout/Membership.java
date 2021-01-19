@@ -11,6 +11,8 @@ public class Membership  {
     private List<String> errors = new ArrayList<String>();
     private Double price = null;
     private Boolean selected = null;
+    private Boolean allowRemove = null;
+    private String relatedClassId = null;
 
     /**
      * Get contactId
@@ -124,6 +126,40 @@ public class Membership  {
       return this;
     }
 
+    /**
+     * Get allowRemove
+     * @return allowRemove
+     */
+    public Boolean getAllowRemove() {
+        return allowRemove;
+    }
+
+    public void setAllowRemove(Boolean allowRemove) {
+       this.allowRemove = allowRemove;
+    }
+
+    public Membership allowRemove(Boolean allowRemove) {
+      this.allowRemove = allowRemove;
+      return this;
+    }
+
+    /**
+     * Get relatedClassId
+     * @return relatedClassId
+     */
+    public String getRelatedClassId() {
+        return relatedClassId;
+    }
+
+    public void setRelatedClassId(String relatedClassId) {
+       this.relatedClassId = relatedClassId;
+    }
+
+    public Membership relatedClassId(String relatedClassId) {
+      this.relatedClassId = relatedClassId;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -136,6 +172,8 @@ public class Membership  {
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
       sb.append("    price: ").append(toIndentedString(price)).append("\n");
       sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
+      sb.append("    allowRemove: ").append(toIndentedString(allowRemove)).append("\n");
+      sb.append("    relatedClassId: ").append(toIndentedString(relatedClassId)).append("\n");
       sb.append("}");
       return sb.toString();
     }

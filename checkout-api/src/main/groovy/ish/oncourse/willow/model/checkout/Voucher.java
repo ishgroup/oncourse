@@ -16,6 +16,8 @@ public class Voucher  {
     private Boolean selected = null;
     private Boolean isEditablePrice = null;
     private Integer quantity = null;
+    private Boolean allowRemove = null;
+    private String relatedClassId = null;
 
     /**
      * Get contactId
@@ -219,6 +221,40 @@ public class Voucher  {
       return this;
     }
 
+    /**
+     * Get allowRemove
+     * @return allowRemove
+     */
+    public Boolean getAllowRemove() {
+        return allowRemove;
+    }
+
+    public void setAllowRemove(Boolean allowRemove) {
+       this.allowRemove = allowRemove;
+    }
+
+    public Voucher allowRemove(Boolean allowRemove) {
+      this.allowRemove = allowRemove;
+      return this;
+    }
+
+    /**
+     * Get relatedClassId
+     * @return relatedClassId
+     */
+    public String getRelatedClassId() {
+        return relatedClassId;
+    }
+
+    public void setRelatedClassId(String relatedClassId) {
+       this.relatedClassId = relatedClassId;
+    }
+
+    public Voucher relatedClassId(String relatedClassId) {
+      this.relatedClassId = relatedClassId;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -236,6 +272,8 @@ public class Voucher  {
       sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
       sb.append("    isEditablePrice: ").append(toIndentedString(isEditablePrice)).append("\n");
       sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
+      sb.append("    allowRemove: ").append(toIndentedString(allowRemove)).append("\n");
+      sb.append("    relatedClassId: ").append(toIndentedString(relatedClassId)).append("\n");
       sb.append("}");
       return sb.toString();
     }

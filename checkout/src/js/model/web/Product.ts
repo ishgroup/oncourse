@@ -32,5 +32,7 @@ export class Product {
    */
   canBuy?: boolean;
   type?: Type;
+  allowRemove?: boolean;
+  relatedClassId?: string;
 }
 

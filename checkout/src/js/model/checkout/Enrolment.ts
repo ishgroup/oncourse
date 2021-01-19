@@ -10,5 +10,6 @@ export class Enrolment {
   selected?: boolean;
   fieldHeadings?: FieldHeading[];
   allowRemove?: boolean;
+  relatedClassId?: string;
 }
 

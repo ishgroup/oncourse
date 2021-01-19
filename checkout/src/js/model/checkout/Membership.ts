@@ -6,5 +6,7 @@ export class Membership {
   errors?: string[];
   price?: number;
   selected?: boolean;
+  allowRemove?: boolean;
+  relatedClassId?: string;
 }
 

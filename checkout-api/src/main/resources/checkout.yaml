@@ -904,6 +904,10 @@ definitions:
         description: Is on sale and is Web visible
       type:
         $ref: '#/definitions/web.product.Type'
+      allowRemove:
+        type: boolean
+      relatedClassId:
+        type: string
   web.Course:
     type: object
     properties:
@@ -1402,6 +1406,8 @@ definitions:
           $ref: '#/definitions/field.FieldHeading'
       allowRemove:
         type: boolean
+      relatedClassId:
+        type: string
   checkout.Application:
     type: object
     requred:
@@ -1462,6 +1468,10 @@ definitions:
         type: boolean
       quantity:
         type: integer
+      allowRemove:
+        type: boolean
+      relatedClassId:
+        type: string
   checkout.Membership:
     type: object
     requred:
@@ -1488,6 +1498,10 @@ definitions:
         type: number
       selected:
         type: boolean
+      allowRemove:
+        type: boolean
+      relatedClassId:
+        type: string
   checkout.Voucher:
     type: object
     requred:
@@ -1529,6 +1543,10 @@ definitions:
         type: boolean
       quantity:
         type: integer
+      allowRemove:
+        type: boolean
+      relatedClassId:
+        type: string
   checkout.WaitingList:
     type: object
     requred:

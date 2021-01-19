@@ -11,6 +11,8 @@ public class Product  {
     private Boolean isPaymentGatewayEnabled = null;
     private Boolean canBuy = null;
     private Type type = null;
+    private Boolean allowRemove = null;
+    private String relatedClassId = null;
 
     /**
      * Internal Unique identifier of product
@@ -131,6 +133,40 @@ public class Product  {
       return this;
     }
 
+    /**
+     * Get allowRemove
+     * @return allowRemove
+     */
+    public Boolean getAllowRemove() {
+        return allowRemove;
+    }
+
+    public void setAllowRemove(Boolean allowRemove) {
+       this.allowRemove = allowRemove;
+    }
+
+    public Product allowRemove(Boolean allowRemove) {
+      this.allowRemove = allowRemove;
+      return this;
+    }
+
+    /**
+     * Get relatedClassId
+     * @return relatedClassId
+     */
+    public String getRelatedClassId() {
+        return relatedClassId;
+    }
+
+    public void setRelatedClassId(String relatedClassId) {
+       this.relatedClassId = relatedClassId;
+    }
+
+    public Product relatedClassId(String relatedClassId) {
+      this.relatedClassId = relatedClassId;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -144,6 +180,8 @@ public class Product  {
       sb.append("    isPaymentGatewayEnabled: ").append(toIndentedString(isPaymentGatewayEnabled)).append("\n");
       sb.append("    canBuy: ").append(toIndentedString(canBuy)).append("\n");
       sb.append("    type: ").append(toIndentedString(type)).append("\n");
+      sb.append("    allowRemove: ").append(toIndentedString(allowRemove)).append("\n");
+      sb.append("    relatedClassId: ").append(toIndentedString(relatedClassId)).append("\n");
       sb.append("}");
       return sb.toString();
     }
