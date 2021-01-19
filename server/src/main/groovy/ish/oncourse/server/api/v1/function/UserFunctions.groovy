@@ -63,7 +63,7 @@ class UserFunctions {
                 user.role = systemUser.aclRoles[0].id
             }
             user.passwordUpdateRequired = systemUser.passwordUpdateRequired
-            user.inviteAgain = systemUser.invitationTokenExpiryDate && systemUser.invitationTokenExpiryDate < new Date()
+            user.inviteAgain = systemUser.password == null
             user.created = systemUser.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             user.modified = systemUser.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             user
