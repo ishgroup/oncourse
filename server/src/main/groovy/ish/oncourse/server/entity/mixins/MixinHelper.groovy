@@ -24,12 +24,10 @@ import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.cayenne.ClassCost
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.CorporatePass
-import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.CourseClassTutor
 import ish.oncourse.server.cayenne.Discount
 import ish.oncourse.server.cayenne.DiscountCourseClass
-import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Invoice
@@ -39,18 +37,13 @@ import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.PriorLearning
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.Session
 import ish.oncourse.server.cayenne.SessionModule
-import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.cayenne.VoucherProduct
 import ish.oncourse.server.cayenne.WaitingList
 import ish.print.PrintableObject
@@ -91,7 +84,6 @@ class MixinHelper {
 		ArticleProduct.mixin(ArticleProductMixin)
 		VoucherProduct.mixin(VoucherProductMixin)
 		ProductItem.mixin(ProductItemMixin)
-		Document.mixin(DocumentMixin)
 		Message.mixin(MessageMixin)
 	}
 
