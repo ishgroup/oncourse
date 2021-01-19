@@ -60,6 +60,7 @@ class DocumentService {
 	private String bucketName
 	private String accessKeyId
 	private String accessSecretKey
+	private String region
 	private String storageLimit
 
 	@BQConfigProperty
@@ -78,6 +79,11 @@ class DocumentService {
 	void setAccessSecretKey(String accessSecretKey) {
 		RuntimeUtil.println("S3 access secret key is " + accessSecretKey)
 		this.accessSecretKey = accessSecretKey
+	}
+
+	@BQConfigProperty
+	void setRegion(String region) {
+		this.region = region
 	}
 
 	@BQConfigProperty
@@ -100,6 +106,10 @@ class DocumentService {
 
 	String getAccessSecretKey() {
 		return accessSecretKey
+	}
+
+	String getRegion() {
+		return region
 	}
 
 	String getStorageLimit() {
