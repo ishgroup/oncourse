@@ -439,6 +439,13 @@ export const routes: MainRoute[] = [
     main: Timetable,
     group: "Common"
   },
+  {
+    title: "Login",
+    path: "/invite/:token",
+    url: "/invite",
+    main: LoginApp,
+    group: "Common"
+  },
   // Products
   {
     title: "Products",
