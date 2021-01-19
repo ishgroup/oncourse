@@ -12,7 +12,7 @@ package ish.s3;
 
 import ish.common.types.AttachmentInfoVisibility;
 import ish.oncourse.common.ResourcesUtil;
-import ish.persistence.CommonPreferenceController;
+import ish.oncourse.server.document.DocumentService;
 import org.jets3t.service.Constants;
 import org.jets3t.service.S3ServiceException;
 import org.jets3t.service.ServiceException;
@@ -52,16 +52,16 @@ public class S3Service {
 
 	private static final String VERSION_ID = "versionId";
 
-	private String bucket;
+	private String bucketName;
 	private AWSCredentials credentials;
 
-	public S3Service(String accessKeyId, String secretKey, String bucket) {
+	public S3Service(String accessKeyId, String secretKey, String bucketName) {
 		this.credentials = new AWSCredentials(accessKeyId, secretKey);
-		this.bucket = bucket;
+		this.bucketName = bucketName;
 	}
 
-	public S3Service(CommonPreferenceController preferenceController) {
-		this(preferenceController.getStorageAccessId(), preferenceController.getStorageAccessKey(), preferenceController.getStorageBucketName());
+	public S3Service(DocumentService documentService) {
+		this(documentService.getAccessKeyId(), documentService.getAccessSecretKey(), documentService.getBucketName());
 	}
 
 	/**
@@ -143,14 +143,14 @@ public class S3Service {
 
 	private void putObject(S3Object s3Object) throws S3ServiceException {
 		IshRestS3Service s3Service = new IshRestS3Service(credentials);
-		s3Service.putObject(bucket, s3Object);
+		s3Service.putObject(bucketName, s3Object);
 	}
 
 	private void putObjects(StorageServiceEventListener listener, S3Object... s3Objects) throws ServiceException {
 		IshRestS3Service s3Service = new IshRestS3Service(credentials);
 		ThreadedS3Service threadedS3Service = new ThreadedS3Service(s3Service, listener);
 
-		threadedS3Service.putObjects(bucket, s3Objects);
+		threadedS3Service.putObjects(bucketName, s3Objects);
 	}
 
 	/**
@@ -181,7 +181,7 @@ public class S3Service {
 		AccessControlList acl = (AttachmentInfoVisibility.PUBLIC.equals(visibility) || AttachmentInfoVisibility.LINK.equals(visibility)) ? AccessControlList.REST_CANNED_PUBLIC_READ : AccessControlList.REST_CANNED_PRIVATE;
 
 		for (String versionId : versionIds) {
-			s3Service.putVersionedObjectAcl(versionId, bucket, key, acl);
+			s3Service.putVersionedObjectAcl(versionId, bucketName, key, acl);
 		}
 	}
 
@@ -207,14 +207,14 @@ public class S3Service {
 
 			// add versionId parameter to URL if needed
 			if (versionId != null) {
-				url = s3Service.createSignedUrl("GET", bucket, key, format("versionId=%s", versionId) , null, expiration.getTime() / 1000, false);
+				url = s3Service.createSignedUrl("GET", bucketName, key, format("versionId=%s", versionId) , null, expiration.getTime() / 1000, false);
 			} else {
-				url = s3Service.createSignedGetUrl(bucket, key, expiration, false);
+				url = s3Service.createSignedGetUrl(bucketName, key, expiration, false);
 			}
 
 		} else {
 			// generate URL without version
-			url = s3Service.createUnsignedObjectUrl(bucket, key, false, true, false);
+			url = s3Service.createUnsignedObjectUrl(bucketName, key, false, true, false);
 
 			// add versionId parameter to URL if needed
 			if (versionId != null) {
@@ -256,7 +256,7 @@ public class S3Service {
 	 */
 	public void removeFile(String key) throws ServiceException {
 		IshRestS3Service s3Service = new IshRestS3Service(credentials);
-		s3Service.deleteObject(bucket, key);
+		s3Service.deleteObject(bucketName, key);
 	}
 
 	/**
@@ -268,7 +268,7 @@ public class S3Service {
 	 */
 	public void removeVersionOfFile(String key, String versionId) throws S3ServiceException {
 		IshRestS3Service s3Service = new IshRestS3Service(credentials);
-		s3Service.deleteVersionedObject(versionId, bucket, key);
+		s3Service.deleteVersionedObject(versionId, bucketName, key);
 	}
 
 	public static class UploadResult {

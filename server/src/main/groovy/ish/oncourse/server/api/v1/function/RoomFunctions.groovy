@@ -14,6 +14,8 @@ package ish.oncourse.server.api.v1.function
 import groovy.transform.CompileStatic
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.function.CayenneFunctions
+import ish.oncourse.server.document.DocumentService
+
 import static ish.oncourse.server.api.function.GetKioskUrl.getKioskUrl
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
@@ -21,13 +23,10 @@ import static ish.oncourse.server.api.v1.function.HolidayFunctions.toRestHoliday
 import static ish.oncourse.server.api.v1.function.HolidayFunctions.updateAvailabilityRules
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import ish.oncourse.server.api.v1.model.NoteDTO
 import ish.oncourse.server.api.v1.model.RoomDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.Note
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.RoomAttachmentRelation
-import ish.oncourse.server.cayenne.RoomNoteRelation
 import ish.oncourse.server.cayenne.RoomTagRelation
 import ish.oncourse.server.cayenne.RoomUnavailableRuleRelation
 import ish.oncourse.server.cayenne.Site
@@ -42,7 +41,7 @@ import java.time.ZoneOffset
 @CompileStatic
 class RoomFunctions {
 
-    static RoomDTO toRestRoom(Room dbRoom, PreferenceController preferenceController) {
+    static RoomDTO toRestRoom(Room dbRoom, PreferenceController preferenceController, DocumentService documentService) {
         new RoomDTO().with { room ->
             room.id = dbRoom.id
             room.name = dbRoom.name
@@ -52,7 +51,7 @@ class RoomFunctions {
             room.facilities = dbRoom.facilities
             room.kioskUrl = getKioskUrl(preferenceController.collegeURL, 'room', dbRoom.id)
             room.tags = dbRoom.tags.collect { toRestTagMinimized(it) }
-            room.documents = dbRoom.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
+            room.documents = dbRoom.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             room.rules = dbRoom.unavailableRuleRelations*.rule.collect{ toRestHoliday(it as UnavailableRule) }
             room.siteTimeZone = dbRoom.site.localTimezone
             room.createdOn = dbRoom.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()

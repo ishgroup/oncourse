@@ -17,11 +17,9 @@ import ish.cancel.EnrolmentCancelationRequest
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.function.GetContactFullName
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.EnrolmentDao
 import ish.oncourse.server.api.dao.FundingSourceDao
-import ish.oncourse.server.api.function.CayenneFunctions
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import ish.oncourse.server.document.DocumentService
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.function.CustomFieldFunctions
 import ish.oncourse.server.api.v1.function.DocumentFunctions
@@ -44,14 +42,11 @@ import ish.oncourse.server.api.v1.model.EnrolmentStudyReasonDTO
 import ish.oncourse.server.api.v1.model.PaymentSourceDTO
 import static ish.oncourse.server.api.validation.EntityValidator.validateLength
 import ish.oncourse.server.cancel.CancelEnrolmentService
-import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.EnrolmentAttachmentRelation
 import ish.oncourse.server.cayenne.EnrolmentCustomField
 import ish.oncourse.server.cayenne.EnrolmentTagRelation
-import ish.oncourse.server.cayenne.FundingSource
 import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
@@ -66,7 +61,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
     private SystemUserService systemUserService
 
     @Inject
-    private PreferenceController preferenceController
+    private DocumentService documentService
 
     @Inject
     private FundingSourceDao fundingSourceDao
@@ -137,7 +132,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.creditType = CREDIT_TYPE_MAP[enrolment.creditType]
             enrolmentDTO.creditLevel = CREDIT_LEVEL_MAP[enrolment.creditLevel]
             enrolmentDTO.customFields = enrolment.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
-            enrolmentDTO.documents = enrolment.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
+            enrolmentDTO.documents = enrolment.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             enrolmentDTO.invoicesCount = enrolment.invoiceLines.invoice.toSet().size()
             enrolmentDTO.outcomesCount = enrolment.outcomes.size()
             enrolmentDTO.createdOn = LocalDateUtils.dateToTimeValue(enrolment.createdOn)
@@ -195,7 +190,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             throw new IllegalAccessError('Forbidden operation - enrolment save')
         }
 
-        Enrolment dbEnrolment = CayenneFunctions.getRecordById(context, Enrolment, id)
+        Enrolment dbEnrolment = getRecordById(context, Enrolment, id)
 
         if ((dto.vetClientID != null && dto.vetClientID.length() > 0 && (dto.vetTrainingContractID == null || dto.vetTrainingContractID.length() == 0)) ||
                 (dto.vetTrainingContractID != null && dto.vetTrainingContractID.length() > 0 && (dto.vetClientID == null || dto.vetClientID.length() == 0))) {

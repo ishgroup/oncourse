@@ -87,7 +87,7 @@ class DocumentService {
 	}
 
 	boolean isUsingExternalStorage() {
-		this.accessKeyId == null
+		this.accessKeyId != null
 	}
 
 	String getBucketName() {

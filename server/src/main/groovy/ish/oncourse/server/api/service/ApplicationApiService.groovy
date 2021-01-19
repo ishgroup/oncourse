@@ -19,11 +19,10 @@ import ish.common.types.CourseEnrolmentType
 import ish.common.types.PaymentSource
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.function.GetContactFullName
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.ApplicationDao
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseDao
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import ish.oncourse.server.document.DocumentService
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.ApplicationFunctions.APPLICATION_SOURCE_MAP
 import static ish.oncourse.server.api.v1.function.ApplicationFunctions.APPLICATION_STATUS_MAP
@@ -57,7 +56,7 @@ class ApplicationApiService extends TaggableApiService<ApplicationDTO, Applicati
     private SystemUserService systemUserService
 
     @Inject
-    private PreferenceController preferenceController
+    private DocumentService documentService
 
     @Inject
     private ContactDao contactDao
@@ -86,7 +85,7 @@ class ApplicationApiService extends TaggableApiService<ApplicationDTO, Applicati
             applicationDTO.createdBy = application.createdByUser ? "$application.createdByUser.firstName $application.createdByUser.lastName" : null
             applicationDTO.reason = application.reason
             applicationDTO.tags =  application.tags.collect { toRestTagMinimized(it) }
-            applicationDTO.documents = application.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
+            applicationDTO.documents = application.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             applicationDTO.customFields = application.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
             applicationDTO.createdOn = application.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             applicationDTO.modifiedOn = application.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()

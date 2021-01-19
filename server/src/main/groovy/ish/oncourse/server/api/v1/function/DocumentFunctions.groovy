@@ -15,9 +15,9 @@ import groovy.transform.CompileStatic
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.api.v1.model.SearchItemDTO
+import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.common.ResourcesUtil.hashFile
-import ish.oncourse.server.PreferenceController
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import ish.oncourse.server.api.v1.model.DocumentAttachmentRelationDTO
@@ -66,7 +66,7 @@ class DocumentFunctions {
 
     private static final Logger logger = LogManager.getLogger(DocumentFunctions)
 
-    static DocumentDTO toRestDocument(Document dbDocument, Long versionId, PreferenceController preferenceController) {
+    static DocumentDTO toRestDocument(Document dbDocument, Long versionId, DocumentService documentService) {
         new DocumentDTO().with { document ->
             document.id = dbDocument.id
             document.name = dbDocument.name
@@ -77,8 +77,8 @@ class DocumentFunctions {
             DocumentVersion dbVersion = versionId ? dbDocument.versions.find { it.id == versionId } : dbDocument.versions.max{ v1, v2 -> v1.timestamp.compareTo(v2.timestamp)}
             document.thumbnail = dbVersion.thumbnail
             S3Service s3Service
-            if (preferenceController.usingExternalStorage) {
-                s3Service = new S3Service(preferenceController)
+            if (documentService.usingExternalStorage) {
+                s3Service = new S3Service(documentService)
             }
             document.versions = dbDocument.versions.collect { toRestDocumentVersion(it, s3Service) }.sort { it.added }.reverse()
 
@@ -93,7 +93,7 @@ class DocumentFunctions {
         }
     }
 
-    static DocumentDTO toRestDocumentMinimized(Document dbDocument, Long versionId, PreferenceController preferenceController) {
+    static DocumentDTO toRestDocumentMinimized(Document dbDocument, Long versionId, DocumentService documentService) {
         new DocumentDTO().with { document ->
             document.id = dbDocument.id
             document.name = dbDocument.name
@@ -103,8 +103,8 @@ class DocumentFunctions {
             document.shared = dbDocument.isShared
             document.removed = dbDocument.isRemoved
             S3Service s3Service = null
-            if (preferenceController.usingExternalStorage) {
-                s3Service = new S3Service(preferenceController)
+            if (documentService.usingExternalStorage) {
+                s3Service = new S3Service(documentService)
             }
             document.versions = dbDocument.versions.collect { toRestDocumentVersionMinimized(it, s3Service) }.sort {it.added}.reverse()
             document
@@ -173,7 +173,7 @@ class DocumentFunctions {
         dbDocument
     }
 
-    static DocumentVersion createDocumentVersion(Document document, byte[] content, String filename, ObjectContext context, PreferenceController preferenceController, SystemUser user) {
+    static DocumentVersion createDocumentVersion(Document document, byte[] content, String filename, ObjectContext context, DocumentService documentService, SystemUser user) {
         Date timestamp = new Date()
         String hash  = SecurityUtil.hashByteArray(content)
         DocumentVersion version = context.newObject(DocumentVersion)
@@ -197,8 +197,8 @@ class DocumentFunctions {
             version.thumbnail = generatePdfPreview(content)
         }
 
-        if (preferenceController.usingExternalStorage) {
-            S3Service s3Service = new S3Service(preferenceController)
+        if (documentService.usingExternalStorage) {
+            S3Service s3Service = new S3Service(documentService)
             version.versionId  =  s3Service.putFile(document.fileUUID, version.fileName, content, document.webVisibility, null)
         } else {
             AttachmentData attachmentData = context.newObject(AttachmentData)
