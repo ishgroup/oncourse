@@ -2,7 +2,7 @@ package ish.oncourse.willow.checkout.functions
 
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
-
+import ish.oncourse.model.CourseClass
 import ish.oncourse.willow.model.checkout.Application
 import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.common.CommonError
@@ -26,6 +26,8 @@ class ProcessClasses {
     List<Enrolment> enrolments = []
     List<Application> applications = []
     
+    List<CourseClass> classesToEnrol = []
+    
     ProcessClasses(ObjectContext context, Contact contact, College college, List<String> classesIds, List<String> promotionIds) {
         this.context = context
         this.contact = contact
@@ -43,10 +45,15 @@ class ProcessClasses {
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classes list contains duplicate entries')).build())
         }
 
+        
         classesIds.each { id ->
             ProcessClass processClass = new ProcessClass(context, contact, college, id, null).process()
             processClass.application && applications << processClass.application
-            processClass.enrolment && enrolments << processClass.enrolment
+            if (processClass.enrolment) {
+                enrolments << processClass.enrolment
+                classesToEnrol << processClass.persistentClass
+            }
+            
         }
         
         this

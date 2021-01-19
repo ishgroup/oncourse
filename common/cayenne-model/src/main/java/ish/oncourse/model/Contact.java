@@ -15,6 +15,7 @@ import ish.validation.ContactValidator;
 import org.apache.cayenne.BaseDataObject;
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.map.ObjRelationship;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.validation.ValidationResult;
 import java.util.ArrayList;
 import java.util.Date;
@@ -485,5 +486,14 @@ public class Contact extends _Contact implements Queueable {
 	public String getMiddleName() {
 		return super.getMiddleName();
 	}
-
+	
+	public boolean isEnrolled(Course course) {
+		if (getStudent() != null) {
+			return ObjectSelect.query(Enrolment.class)
+					.where(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).eq(course))
+					.and(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS))
+					.selectFirst(getObjectContext()) != null;
+		}
+		return false;
+	}
 }

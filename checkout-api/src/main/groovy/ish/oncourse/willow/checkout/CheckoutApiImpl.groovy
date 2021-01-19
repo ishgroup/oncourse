@@ -9,6 +9,7 @@ import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.WebSite
+import ish.oncourse.willow.ContactNodeService
 import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.functions.*
 import ish.oncourse.willow.checkout.functions.v2.ValidatePaymentRequest as V2ValidatePaymentRequest
@@ -48,7 +49,7 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     private CayenneService cayenneService
     private CollegeService collegeService
     private FinancialService financialService
-
+    private ContactNodeService contactNodeService
 
     @Inject
     CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService, FinancialService financialService) {
@@ -71,6 +72,7 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     }
     
     @Override
+    @Deprecated
     ContactNode getContactNode(ContactNodeRequest contactNodeRequest) {
 
         if (contactNodeRequest.classIds.empty 
@@ -106,12 +108,14 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     }
 
     @Override
+    @Deprecated
     PaymentResponse getPaymentStatus(String sessionId) {
         new GetPaymentStatus(cayenneService.newContext(), collegeService.college, sessionId).get()
     }
 
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
+    @Deprecated
     PaymentResponse makePayment(PaymentRequest paymentRequest) {
         ObjectContext context = cayenneService.newContext()
         WebSite webSite = collegeService.webSite
@@ -181,8 +185,14 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     }
 
     @Override
-    ContactNode getContactNodeV2(ContactNodeRequest contactNodeRequest) {
-        getContactNode(contactNodeRequest)
+    ContactNode getContactNodeV2(ContactNodeRequest request) {
+        if (request.classIds.empty
+                && request.products.empty
+                && request.waitingCourseIds.empty) {
+            logger.info('There are no selected items for purchase')
+            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'There are no selected items for purchase')).build())
+        }
+        contactNodeService.getContactNode(request)
     }
 
     @Override
