@@ -14,15 +14,7 @@ package ish.oncourse.server.api.v1.function
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.function.CayenneFunctions
-import static ish.oncourse.server.api.function.GetKioskUrl.getKioskUrl
-import static ish.oncourse.server.api.v1.function.CountryFunctions.toRestCountry
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.toRestHoliday
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.updateAvailabilityRules
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import ish.oncourse.server.api.v1.model.NoteDTO
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.api.v1.model.RoomDTO
 import ish.oncourse.server.api.v1.model.SiteDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
@@ -37,13 +29,22 @@ import ish.oncourse.server.cayenne.UnavailableRule
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
+
 import static org.apache.commons.lang3.StringUtils.trimToNull
+import static ish.oncourse.server.api.function.GetKioskUrl.getKioskUrl
+import static ish.oncourse.server.api.v1.function.CountryFunctions.toRestCountry
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
+import static ish.oncourse.server.api.v1.function.HolidayFunctions.toRestHoliday
+import static ish.oncourse.server.api.v1.function.HolidayFunctions.updateAvailabilityRules
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 
 import java.time.ZoneOffset
 
 class SiteFunctions {
 
-    static SiteDTO toRestSite(ish.oncourse.server.cayenne.Site dbSite, PreferenceController preferenceController) {
+    static SiteDTO toRestSite(Site dbSite, PreferenceController preferenceController, DocumentService documentService) {
         new SiteDTO().with { site ->
             site.id = dbSite.id
             site.isAdministrationCentre = dbSite.isAdministrationCentre
@@ -66,7 +67,7 @@ class SiteFunctions {
             site.specialInstructions = dbSite.specialInstructions
             site.tags = dbSite.tags.collect { toRestTagMinimized(it) }
             site.rooms = dbSite.rooms.collect { RoomFunctions.toRestRoomMinimized(it) }
-            site.documents = dbSite.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
+            site.documents = dbSite.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             site.rules = dbSite.unavailableRuleRelations*.rule.collect{ toRestHoliday(it as UnavailableRule) }
             site.createdOn = dbSite.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             site.modifiedOn = dbSite.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()

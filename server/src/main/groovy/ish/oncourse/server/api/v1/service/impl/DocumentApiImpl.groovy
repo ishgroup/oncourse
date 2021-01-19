@@ -13,7 +13,8 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.document.DocumentService
+
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
 import ish.oncourse.server.api.service.DocumentApiService
@@ -27,7 +28,6 @@ import ish.oncourse.server.api.v1.model.DocumentDTO
 import ish.oncourse.server.api.v1.model.DocumentVersionDTO
 import ish.oncourse.server.api.v1.model.DocumentVisibilityDTO
 import ish.oncourse.server.api.v1.service.DocumentApi
-import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.users.SystemUserService
@@ -46,7 +46,7 @@ class DocumentApiImpl implements DocumentApi {
     private ICayenneService cayenneService
 
     @Inject
-    PreferenceController preferenceController
+    DocumentService documentService
 
     @Inject
     SystemUserService systemUserService
@@ -65,10 +65,10 @@ class DocumentApiImpl implements DocumentApi {
 
         Document dbDocument = createDocument(name, description, visibility, tagIds, shared,  context)
         dbDocument.fileUUID = UUID.randomUUID().toString()
-        DocumentVersion version = createDocumentVersion(dbDocument, content.getBytes(), fileName, context, preferenceController, systemUserService.currentUser)
+        DocumentVersion version = createDocumentVersion(dbDocument, content.getBytes(), fileName, context, documentService, systemUserService.currentUser)
         context.commitChanges()
 
-        return toRestDocument(dbDocument, version.id, preferenceController)
+        return toRestDocument(dbDocument, version.id, documentService)
     }
 
     @Override
@@ -76,17 +76,17 @@ class DocumentApiImpl implements DocumentApi {
         ObjectContext context = cayenneService.newContext
         Document document = getRecordById(context, Document, id)
         S3Service s3Service = null
-        if (preferenceController.usingExternalStorage) {
-            s3Service = new S3Service(preferenceController)
+        if (documentService.usingExternalStorage) {
+            s3Service = new S3Service(documentService)
         }
-        DocumentVersion version = createDocumentVersion(document, content.getBytes(), fileName, context, preferenceController, systemUserService.currentUser)
+        DocumentVersion version = createDocumentVersion(document, content.getBytes(), fileName, context, documentService, systemUserService.currentUser)
         context.commitChanges()
         return toRestDocumentVersion(version, s3Service)
     }
 
     @Override
     DocumentDTO get(Long id) {
-        return toRestDocument(getRecordById(cayenneService.newContext, Document, id), null, preferenceController)
+        return toRestDocument(getRecordById(cayenneService.newContext, Document, id), null, documentService)
     }
 
     @Override
@@ -99,7 +99,7 @@ class DocumentApiImpl implements DocumentApi {
                     .where(Document.VERSIONS.dot(DocumentVersion.HASH).eq(hash))
                     .selectFirst(context)
             if (document) {
-                return toRestDocument(document, null, preferenceController)
+                return toRestDocument(document, null, documentService)
             }
         }
         return null
@@ -118,12 +118,12 @@ class DocumentApiImpl implements DocumentApi {
         Document dbDocument = service.getEntityAndValidateExistence(context, id)
         service.validateModelBeforeSave(documentDto, context, id)
         service.toCayenneModel(documentDto, dbDocument)
-        if (preferenceController.usingExternalStorage && dbDocument.fileUUID != null) {
-            S3Service s3Service = new S3Service(preferenceController)
+        if (documentService.usingExternalStorage && dbDocument.fileUUID != null) {
+            S3Service s3Service = new S3Service(documentService)
             String uuid = dbDocument.getFileUUID()
             dbDocument.versions.each { version ->
                 try {
-                    s3Service .changeVisibility(uuid, [version.versionId], dbDocument.webVisibility)
+                    s3Service.changeVisibility(uuid, [version.versionId], dbDocument.webVisibility)
                 } catch (Exception e) {
                     logger.error("Could not change document visibility uuid: {}, versionId: {}", dbDocument.getId(), version.versionId, e)
                 }

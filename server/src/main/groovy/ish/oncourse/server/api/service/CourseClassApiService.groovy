@@ -18,7 +18,6 @@ import ish.common.types.OutcomeStatus
 import ish.duplicate.ClassDuplicationRequest
 import ish.duplicate.DuplicationResult
 import ish.oncourse.entity.services.CourseClassService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.AssessmentClassDao
 import ish.oncourse.server.api.dao.ClassCostDao
 import ish.oncourse.server.api.dao.CourseClassDao
@@ -27,6 +26,8 @@ import ish.oncourse.server.api.dao.FundingSourceDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.SessionModuleDao
 import ish.oncourse.server.api.dao.SiteDao
+import ish.oncourse.server.document.DocumentService
+
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import ish.oncourse.server.api.v1.function.DocumentFunctions
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
@@ -114,7 +115,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
     private SessionApiService sessionService
 
     @Inject
-    private PreferenceController preferenceController
+    private DocumentService documentService
 
     @Inject
     private CourseApiService courseService
@@ -190,7 +191,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.nominalHours = cc.nominalHours
         dto.classroomHours = cc.classroomHours
         dto.studentContactHours = cc.studentContactHours
-        dto.documents = cc.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
+        dto.documents = cc.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
         dto.customFields = cc.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
 
         List<Enrolment> enrolments = cc.enrolments

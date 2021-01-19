@@ -15,6 +15,7 @@ import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Document;
 import ish.oncourse.server.cayenne.DocumentVersion;
+import ish.oncourse.server.document.DocumentService;
 import ish.s3.S3Service;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
@@ -36,27 +37,24 @@ public class MigrateBinaryDataToS3  {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private PreferenceController preferenceController;
+    private DocumentService documentService;
 
     private boolean shouldRunNextTime = true;
     private ICayenneService cayenneService;
 
-    public MigrateBinaryDataToS3(ICayenneService cayenneService, PreferenceController preferenceController) {
+    public MigrateBinaryDataToS3(ICayenneService cayenneService, DocumentService documentService) {
         this.cayenneService = cayenneService;
-        this.preferenceController = preferenceController;
+        this.documentService = documentService;
     }
 
     protected void runUpgrade() throws Exception {
 
         // if S3 is not configured then skip upgrade for now, will try on the next server restart
-        if (!preferenceController.isUsingExternalStorage()) {
+        if (!documentService.isUsingExternalStorage()) {
             return;
         }
 
-        final var s3Service = new S3Service(
-                preferenceController.getStorageAccessId(),
-                preferenceController.getStorageAccessKey(),
-                preferenceController.getStorageBucketName());
+        final var s3Service = new S3Service(documentService);
 
         final ObjectContext context = cayenneService.getNewContext();
 

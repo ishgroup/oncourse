@@ -488,15 +488,6 @@ public interface Preferences {
 
 
 
-	// **************************************
-	// External storage preferences
-	// **************************************
-	String STORAGE_BUCKET_NAME = "storage.bucket";
-	String STORAGE_ACCESS_ID = "storage.access.id";
-	String STORAGE_ACCESS_KEY = "storage.access.key";
-
-
-
 
 	String AUSKEY_PASSWORD = "auskey.password";
 	String AUSKEY_CERTIFICATE = "auskey.certificate";

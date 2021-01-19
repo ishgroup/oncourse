@@ -14,8 +14,8 @@ import com.google.inject.Inject;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Report;
+import ish.oncourse.server.document.DocumentService;
 import ish.oncourse.server.scripting.api.ReportSpec;
 import ish.print.PrintRequest;
 import ish.print.PrintResult;
@@ -46,7 +46,7 @@ public class PrintService {
 	private static final long WORKER_TTL = 60 * 60 * 1000; // 1 hour
 
 	private ICayenneService cayenneService;
-	private PreferenceController prefController;
+	private DocumentService documentService;
 
 	private final Map<UID, PrintWorker> workerMap;
 
@@ -54,9 +54,9 @@ public class PrintService {
 	private ScheduledExecutorService cleanupThreadExecutor;
 
 	@Inject
-	public PrintService(ICayenneService cayenneService, PreferenceController prefController) {
+	public PrintService(ICayenneService cayenneService, DocumentService documentService) {
 		this.cayenneService = cayenneService;
-		this.prefController = prefController;
+		this.documentService = documentService;
 
 		workerThreadExecutor = Executors.newFixedThreadPool(MAX_THREADS);
 		cleanupThreadExecutor = Executors.newScheduledThreadPool(1);
@@ -75,7 +75,7 @@ public class PrintService {
 	 */
 	public synchronized Future<PrintResult> print(PrintRequest printRequest) {
 		if (!workerMap.containsKey(printRequest.getUID())) {
-			var worker = new PrintWorker(printRequest, cayenneService, prefController);
+			var worker = new PrintWorker(printRequest, cayenneService, documentService);
 			workerMap.put(printRequest.getUID(), worker);
 
 			return workerThreadExecutor.submit(() -> {

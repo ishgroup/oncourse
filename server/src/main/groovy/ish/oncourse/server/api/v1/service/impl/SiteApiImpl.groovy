@@ -14,6 +14,8 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.document.DocumentService
+
 import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
@@ -35,6 +37,9 @@ class SiteApiImpl implements SiteApi {
 
     @Inject
     private ICayenneService cayenneService
+
+    @Inject
+    private DocumentService documentService
 
     @Inject
     private PreferenceController preferenceController
@@ -59,7 +64,7 @@ class SiteApiImpl implements SiteApi {
 
     @Override
     SiteDTO get(Long id) {
-        toRestSite(getRecordById(cayenneService.newContext, Site, id), preferenceController)
+        toRestSite(getRecordById(cayenneService.newContext, Site, id), preferenceController, documentService)
     }
 
     @Override

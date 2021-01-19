@@ -14,6 +14,8 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.document.DocumentService
+
 import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
@@ -40,6 +42,9 @@ class RoomApiImpl implements RoomApi {
     private PreferenceController preferenceController
 
     @Inject
+    private DocumentService documentService
+
+    @Inject
     private SystemUserService systemUserService
 
     @Inject
@@ -60,7 +65,7 @@ class RoomApiImpl implements RoomApi {
 
     @Override
     RoomDTO get(Long id) {
-        toRestRoom(getRecordById(cayenneService.newContext, Room, id), preferenceController)
+        toRestRoom(getRecordById(cayenneService.newContext, Room, id), preferenceController, documentService)
     }
 
     @Override
