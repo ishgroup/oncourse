@@ -52,7 +52,6 @@ import {
   courseClassesBulkSessionReducer,
   courseClassReducer
 } from "../containers/entities/courseClasses/reducers";
-import { assessmentsReducer } from "../containers/entities/assessments/reducers";
 import { actionsQueueReducer } from "../common/reducers/actionsQueueReducer";
 import { messageReducer } from "../common/reducers/messageReducer";
 import { checkoutReducer } from "../containers/checkout/reducers";
@@ -106,7 +105,6 @@ export const combinedReducers = combineReducers({
   invoices: invoicesReducer,
   paymentsIn: paymentInReducer,
   paymentsOut: paymentOutReducer,
-  assessments: assessmentsReducer,
   actionsQueue: actionsQueueReducer,
   message: messageReducer,
   checkout: checkoutReducer,
