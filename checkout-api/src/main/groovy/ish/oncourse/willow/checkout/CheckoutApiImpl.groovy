@@ -11,11 +11,13 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.WebSite
 import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.functions.*
+import ish.oncourse.willow.checkout.functions.v2.ValidatePaymentRequest as V2ValidatePaymentRequest
 import ish.oncourse.willow.checkout.payment.CreatePaymentModel
 import ish.oncourse.willow.checkout.payment.GetPaymentStatus
 import ish.oncourse.willow.checkout.payment.ProcessPaymentModel
+import ish.oncourse.willow.checkout.payment.v2.CreatePaymentModel as V2CreatePaymentModel
+import ish.oncourse.willow.checkout.payment.v2.ProcessPaymentModel as V2ProcessPaymentModel
 import ish.oncourse.willow.checkout.windcave.IPaymentService
-import ish.oncourse.willow.checkout.windcave.PaymentService
 import ish.oncourse.willow.checkout.windcave.PaymentServiceBuilder
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
@@ -25,14 +27,10 @@ import ish.oncourse.willow.model.checkout.payment.PaymentResponse
 import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest as V2PaymentRequest
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse as V2PaymentResponse
 import ish.oncourse.willow.service.CheckoutApi
 import ish.oncourse.willow.service.CheckoutV2Api
-import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest as V2PaymentRequest
-import ish.oncourse.willow.checkout.functions.v2.ValidatePaymentRequest as V2ValidatePaymentRequest
-import ish.oncourse.willow.checkout.payment.v2.CreatePaymentModel as V2CreatePaymentModel
-import ish.oncourse.willow.checkout.payment.v2.ProcessPaymentModel as V2ProcessPaymentModel
-import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse as V2PaymentResponse
-
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
@@ -180,6 +178,11 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
             logger.catching(e)
             throw e
         }
+    }
+
+    @Override
+    ContactNode getContactNodeV2(ContactNodeRequest contactNodeRequest) {
+        getContactNode(contactNodeRequest)
     }
 
     @Override

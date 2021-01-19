@@ -35,6 +35,33 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /v2/getContactNode:
+    post:
+      x-filter:
+        - CollegeInfo
+      operationId: getContactNodeV2
+      summary: Get list of purchases
+      description: Get list of enrolments/applications/product items for certain contact based on selected classes/products
+      tags:
+        - CheckoutV2
+      consumes:
+        - application/json
+      parameters:
+        - name: contactNodeRequest
+          in: body
+          description: Params for request list of products/classes
+          required: true
+          schema:
+            $ref: '#/definitions/checkout.request.ContactNodeRequest'
+      responses:
+        200:
+          description: List of products
+          schema:
+            $ref: '#/definitions/checkout.ContactNode'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /v1/getCheckoutModel:
     post:
       x-filter:
