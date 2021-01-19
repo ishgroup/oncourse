@@ -1,7 +1,7 @@
 import * as React from "react";
 import {IshState} from "../../../../services/IshState";
 import {connect} from "react-redux";
-import {ContactProps} from "../../summary/components";
+import {ContactProps} from "../../summary/components/Index";
 import ContactComp from "../../summary/components/ContactComp";
 
 interface Props {

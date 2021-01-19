@@ -2,7 +2,7 @@ import {normalize, schema} from "normalizr";
 
 import {Enrolment, Application, ContactNode, Membership, Voucher, Article, PurchaseItem} from "../../../../model";
 import {WaitingList} from "../../../../model/checkout/WaitingList";
-import {ContactProps} from "../components";
+import {ContactProps} from "../components/Index";
 
 const SEnrolments = new schema.Entity('enrolments', {}, {idAttribute: (e: Enrolment) => `${e.contactId}-${e.classId}`});
 const SApplications = new schema.Entity('applications', {}, {idAttribute: (a: Application) => `${a.contactId}-${a.classId}`});

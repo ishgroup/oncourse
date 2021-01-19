@@ -3,7 +3,7 @@ import {ContactNode, Contact, PurchaseItem} from "../../../../model";
 
 import {ContactNodeToState, ItemToState, State} from "../reducers/State";
 import {IAction} from "../../../../actions/IshAction";
-import {ContactProps} from "../components";
+import {ContactProps} from "../components/Index";
 
 export const ADD_CONTACT_TO_SUMMARY: string = _toRequestType("checkout/summary/add/contact/to/summary");
 
