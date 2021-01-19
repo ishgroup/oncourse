@@ -1,10 +1,8 @@
-import { generateArraysOfRecords } from "../../mockUtils";
 import { format } from "date-fns";
+import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockInvoices() {
-  this.getInvoices = () => {
-    return this.invoices;
-  };
+  this.getInvoices = () => this.invoices;
 
   this.getInvoice = id => {
     const row = this.invoices.rows.find(row => row.id == id);
@@ -140,6 +138,35 @@ export function mockInvoices() {
 
   this.removeInvoice = id => {
     this.invoices = this.invoices.rows.filter(m => m.id !== id);
+  };
+
+  this.getPlainInvoiceLines = () => {
+    const rows = generateArraysOfRecords(5, [
+      { name: "id", type: "number" },
+      { name: "invoiceNumber", type: "number" },
+      { name: "finalPriceToPayIncTax", type: "number" },
+      { name: "lastName", type: "string" },
+      { name: "firstName", type: "string" },
+      { name: "isCompany", type: "boolean" }
+    ]).map(l => ({
+      id: l.id,
+      values: [l.invoiceNumber, "132.00", l.lastName, l.firstName, false]
+    }));
+
+    const columns = [];
+
+    const response = { rows, columns } as any;
+
+    response.entity = "InvoiceLine";
+    response.offset = 0;
+    response.filterColumnWidth = null;
+    response.layout = null;
+    response.pageSize = 20;
+    response.search = null;
+    response.count = rows.length;
+    response.sort = [];
+
+    return response;
   };
 
   const rows = generateArraysOfRecords(20, [

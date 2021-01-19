@@ -1,9 +1,7 @@
 import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockEnrolments() {
-  this.getEnrolments = () => {
-    return this.enrolments;
-  };
+  this.getEnrolments = () => this.enrolments;
 
   this.getEnrolment = id => {
     const row = this.enrolments.rows.find(row => row.id == id);
@@ -68,6 +66,53 @@ export function mockEnrolments() {
 
   this.removeEnrolment = id => {
     this.enrolments = this.enrolments.rows.filter(a => a.id !== id);
+  };
+
+  this.getPlainEnrolment = params => {
+    const columnList = params.columns.split(",");
+    const ids = params.search.replace(/(id in|\(|\))/g, '').trim().split(",");
+
+    let rows = [];
+
+    if (columnList.length) {
+      if (columnList.includes("status")) {
+        ids.forEach(id => {
+          rows.push({
+            id,
+            values: ["Active"]
+          });
+        });
+      }
+    } else {
+      rows = generateArraysOfRecords(20, [
+        { name: "id", type: "number" },
+        { name: "source", type: "string" },
+        { name: "studentName", type: "string" },
+        { name: "classCode", type: "string" },
+        { name: "courseClassName", type: "string" },
+        { name: "status", type: "string" },
+        { name: "createdOn", type: "Datetime" }
+      ]).map(l => ({
+        id: l.id,
+        values: [l.source, l.studentName, l.classCode, l.courseClassName, l.status, l.createdOn]
+      }));
+    }
+
+    const columns = [];
+
+    const response = { rows, columns } as any;
+
+    response.entity = "Enrolment";
+    response.offset = 0;
+    response.filterColumnWidth = null;
+    response.layout = null;
+    response.pageSize = 20;
+    response.search = null;
+    response.count = rows.length;
+    response.filteredCount = rows.length;
+    response.sort = [];
+
+    return response;
   };
 
   const rows = generateArraysOfRecords(20, [

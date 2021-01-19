@@ -213,7 +213,7 @@ export function listApiMock() {
       }
 
       case "Enrolment": {
-        return promiseResolve(config, this.db.getEnrolments());
+        return promiseResolve(config, this.db.getPlainEnrolment(config.params));
       }
 
       case "ArticleProduct": {
@@ -278,6 +278,10 @@ export function listApiMock() {
 
       case "Report": {
         return promiseResolve(config, this.db.getPlainReports());
+      }
+
+      case "InvoiceLine": {
+        return promiseResolve(config, this.db.getPlainInvoiceLines());
       }
 
       default: {
