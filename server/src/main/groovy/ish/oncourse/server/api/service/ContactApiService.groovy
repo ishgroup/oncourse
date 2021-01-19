@@ -18,6 +18,7 @@ import ish.common.types.USIFieldStatus
 import ish.common.types.USIVerificationResult
 import ish.oncourse.server.api.v1.model.PayslipPayTypeDTO
 import org.apache.commons.lang3.StringUtils
+import ish.oncourse.server.document.DocumentService
 
 import static ish.common.types.USIVerificationStatus.VALID
 import ish.common.types.UsiStatus
@@ -70,8 +71,6 @@ import ish.oncourse.server.api.v1.model.ContactGenderDTO
 import ish.oncourse.server.api.v1.model.ContactRelationDTO
 import ish.oncourse.server.api.v1.model.DocumentDTO
 import ish.oncourse.server.api.v1.model.HolidayDTO
-import ish.oncourse.server.api.v1.model.SaleDTO
-import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.api.v1.model.StudentCitizenshipDTO
 import ish.oncourse.server.api.v1.model.StudentDTO
 import ish.oncourse.server.api.v1.model.TutorDTO
@@ -122,6 +121,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
 
     @Inject
     private LicenseService licenseService
+
+    @Inject
+    private DocumentService documentService
 
     @Inject
     private CountryDao countryDao
@@ -209,7 +211,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
                         doc.attachmentRelations.findAll{ r -> AttachmentSpecialType.PROFILE_PICTURE != r.specialType }
                     }
                     .collect{ d ->
-                        toRestDocumentMinimized(d, d.currentVersion.id, preferenceController)
+                        toRestDocumentMinimized(d, d.currentVersion.id, documentService)
                     }
             dto.tags = cayenneModel.tags.collect{ toRestTagMinimized(it) }
             dto.memberships = cayenneModel.memberships.collect {  productItemApiService.toRestModel(it) }
@@ -688,7 +690,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
     private DocumentDTO getProfilePicture(Contact contact) {
         Document profilePictureDocument = getProfilePictureDocument(contact)
         if (profilePictureDocument) {
-            return toRestDocument(profilePictureDocument, profilePictureDocument.currentVersion.id, preferenceController)
+            return toRestDocument(profilePictureDocument, profilePictureDocument.currentVersion.id, documentService)
         }
         null
     }

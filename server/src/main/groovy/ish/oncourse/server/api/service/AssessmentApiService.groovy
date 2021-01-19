@@ -13,9 +13,8 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.AssessmentDao
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import ish.oncourse.server.document.DocumentService
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import ish.oncourse.server.api.v1.function.TagFunctions
@@ -26,7 +25,6 @@ import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.AssessmentAttachmentRelation
 import ish.oncourse.server.cayenne.AssessmentTagRelation
 import ish.oncourse.server.cayenne.Document
-import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
@@ -37,7 +35,7 @@ import static org.apache.commons.lang3.StringUtils.trimToNull
 class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment, AssessmentDao> {
 
     @Inject
-    private PreferenceController preferenceController
+    private DocumentService documentService
 
     @Inject
     private SystemUserService systemUserService
@@ -56,7 +54,7 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
             assessment.tags = cayenneModel.tags.collect { toRestTagMinimized(it) }
             assessment.active = cayenneModel.active
             assessment.description = cayenneModel.description
-            assessment.documents = cayenneModel.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
+            assessment.documents = cayenneModel.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             assessment.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
             assessment.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
             assessment

@@ -1485,34 +1485,6 @@ public abstract class CommonPreferenceController {
 		setFilePreference(DOCUMENT_IMPORT_PATH, value.getAbsolutePath());
 	}
 
-	public void setStorageBucketName(String value) {
-		setValue(STORAGE_BUCKET_NAME, false, value);
-	}
-
-	public String getStorageBucketName() {
-		return getValue(STORAGE_BUCKET_NAME, false);
-	}
-
-	public void setStorageAccessId(String value) {
-		setValue(STORAGE_ACCESS_ID, false, value);
-	}
-
-	public String getStorageAccessId() {
-		return getValue(STORAGE_ACCESS_ID, false);
-	}
-
-	public void setStorageAccessKey(String value) {
-		setValue(STORAGE_ACCESS_KEY, false, value);
-	}
-
-	public String getStorageAccessKey() {
-		return getValue(STORAGE_ACCESS_KEY, false);
-	}
-
-	public boolean isUsingExternalStorage() {
-		return StringUtils.trimToNull(getStorageAccessId()) != null;
-	}
-
 	public void setAuskeyPassword(String value) {
 		setValue(AUSKEY_PASSWORD, false, value);
 	}

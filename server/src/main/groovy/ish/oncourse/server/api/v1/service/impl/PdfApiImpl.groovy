@@ -15,8 +15,9 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.service.ReportApiService
+import ish.oncourse.server.document.DocumentService
+
 import static ish.oncourse.server.api.v1.function.CommonFunctions.badRequest
 import ish.oncourse.server.api.v1.function.export.CertificatePrintFilter
 import ish.oncourse.server.api.v1.function.export.CertificatePrintPreProcessor
@@ -30,8 +31,6 @@ import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.print.PrintWorker
 import ish.oncourse.server.security.api.IPermissionService
-import ish.oncourse.server.security.api.PermissionServiceFactory
-import ish.oncourse.server.services.ISystemUserService
 import ish.oncourse.server.users.SystemUserService
 import ish.print.PrintRequest
 import ish.print.PrintResult
@@ -64,7 +63,7 @@ class PdfApiImpl implements PdfApi {
     private ExecutorManager executorManager
 
     @Inject
-    private PreferenceController preferenceController
+    private DocumentService documentService
 
     @Inject
     private AqlService aqlService
@@ -115,7 +114,7 @@ class PdfApiImpl implements PdfApi {
                     return result
                 }
 
-                PrintWorker worker = new PrintWorker(request, cayenneService, preferenceController)
+                PrintWorker worker = new PrintWorker(request, cayenneService, documentService)
                 worker.run()
                 worker.result
             }
