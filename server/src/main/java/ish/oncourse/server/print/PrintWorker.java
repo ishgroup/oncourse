@@ -535,10 +535,10 @@ public class PrintWorker implements Runnable {
 					} else {
 						imageData = document.getCurrentVersion().getAttachmentData().getContent();
 					}
-				} else if (documentService.isUsingExternalStorage()) {
-					var s3Service = new AmazonS3Service(documentService);
+				} else if (prefController.isUsingExternalStorage()) {
+					var s3Service = new S3Service(prefController);
 					try {
-						var stringUrl = s3Service.getFileUrl(document.getFileUUID(), document.getCurrentVersion().getVersionId(), document.getWebVisibility());
+						var stringUrl = s3Service.getFileUrl(document.getFileUUID(), document.getWebVisibility(), document.getCurrentVersion().getVersionId());
 						var url = new URL(stringUrl);
 						imageData = IOUtils.toByteArray(url.openStream());
 					} catch (IOException e) {
