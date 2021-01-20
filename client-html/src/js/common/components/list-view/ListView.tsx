@@ -782,14 +782,15 @@ class ListView extends React.PureComponent<Props, ComponentState> {
           root: "saveButtonEditView",
           disabled: "saveButtonEditViewDisabled"
         }}
+        disabled={isInvalid}
         startIcon={isInvalid && <ErrorOutline color="error" />}
         variant="contained"
         color="primary"
         onClick={() => {
-          submitForm()
-          this.ignoreCheckDirtyOnSelection = true
-          setTimeout(afterSubmitButtonHandler, 1000)
-          closeConfirm()
+          submitForm();
+          this.ignoreCheckDirtyOnSelection = true;
+          setTimeout(afterSubmitButtonHandler, 1000);
+          closeConfirm();
         }}
       >
         SAVE
