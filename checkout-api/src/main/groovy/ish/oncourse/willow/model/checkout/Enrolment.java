@@ -9,6 +9,7 @@ public class Enrolment  {
   
     private String contactId = null;
     private String classId = null;
+    private String courseId = null;
     private CourseClassPrice price = null;
     private List<String> warnings = new ArrayList<String>();
     private List<String> errors = new ArrayList<String>();
@@ -48,6 +49,23 @@ public class Enrolment  {
 
     public Enrolment classId(String classId) {
       this.classId = classId;
+      return this;
+    }
+
+    /**
+     * Get courseId
+     * @return courseId
+     */
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+       this.courseId = courseId;
+    }
+
+    public Enrolment courseId(String courseId) {
+      this.courseId = courseId;
       return this;
     }
 
@@ -193,6 +211,7 @@ public class Enrolment  {
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    classId: ").append(toIndentedString(classId)).append("\n");
+      sb.append("    courseId: ").append(toIndentedString(courseId)).append("\n");
       sb.append("    price: ").append(toIndentedString(price)).append("\n");
       sb.append("    warnings: ").append(toIndentedString(warnings)).append("\n");
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");

@@ -1388,6 +1388,8 @@ definitions:
         type: string
       classId:
         type: string
+      courseId:
+        type: string
       price:
         $ref: '#/definitions/web.CourseClassPrice'
       warnings:

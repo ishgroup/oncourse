@@ -6,7 +6,6 @@ import ish.oncourse.common.field.PropertyGetSetFactory;
 import ish.oncourse.model.auto._Course;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
-import org.apache.cayenne.commitlog.CommitLog;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
@@ -14,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Course extends _Course implements Queueable {
@@ -25,7 +25,17 @@ public class Course extends _Course implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
-
+	public List<CourseClass> getAvailableClasses() {
+		return ObjectSelect.query(CourseClass.class)
+				.where(CourseClass.COURSE.eq(this))
+				.and(CourseClass.IS_ACTIVE.isTrue())
+				.and(CourseClass.IS_WEB_VISIBLE.isTrue())
+				.and(CourseClass.CANCELLED.isFalse())
+				.and(CourseClass.IS_DISTANT_LEARNING_COURSE.isTrue().orExp(CourseClass.END_DATE.gt(new Date())))
+				.orderBy(CourseClass.START_DATE.asc())
+				.select(getObjectContext());
+	}
+	
 	// TODO: (ari) what is this entire method doing here. It looks like it is just an anti-optimisation method
 	public List<Module> getModules() {
 		final List<Module> result = new ArrayList<>();

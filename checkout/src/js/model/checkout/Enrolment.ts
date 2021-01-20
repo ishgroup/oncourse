@@ -4,6 +4,7 @@ import {CourseClassPrice} from "./../web/CourseClassPrice";
 export class Enrolment {
   contactId?: string;
   classId?: string;
+  courseId?: string;
   price?: CourseClassPrice;
   warnings?: string[];
   errors?: string[];
