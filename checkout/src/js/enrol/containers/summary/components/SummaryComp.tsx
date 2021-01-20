@@ -6,6 +6,7 @@ import {Amount, RedeemVoucher, Promotion, PurchaseItem, ConcessionType, Voucher,
 import {StudentMembership} from "../../../../model";
 import {Concession} from "../../../../model";
 import {scrollToTop} from "../../../../common/utils/DomUtils";
+import {SummaryListComp} from "../../result/components/SummaryListComp";
 
 export interface Props {
   hasSelected: boolean;
@@ -36,14 +37,18 @@ export interface Props {
   onChangeEnrolmentFields?: (form, type) => any;
   forms?: any;
   isOnlyWaitingLists?: boolean;
+  successLink?: string;
 }
-
 
 export class SummaryComp extends React.Component<Props, any> {
   constructor(props) {
     super(props);
+
+    const urlParams = new URLSearchParams(window.location.search);
+
     this.state = {
-      isAutoSubmitting: false
+      isAutoSubmitting: false,
+      previewMode: urlParams.get("previewMode")
     }
   }
 
@@ -101,8 +106,10 @@ export class SummaryComp extends React.Component<Props, any> {
   render() {
     const {
       contacts, amount, onAddContact, onAddCode, onProceedToPayment, fetching, onAddParent, forms, onProceedToJoin,
-      redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, needParent, isOnlyWaitingLists,
+      redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, needParent, isOnlyWaitingLists, successLink
     } = this.props;
+
+    const { previewMode } = this.state;
 
     const buttonLabel = needParent && !isOnlyWaitingLists ? 'Add Guardian' :
       !Number(amount.total) ? 'Proceed' : 'Proceed to Payment';
@@ -112,7 +119,11 @@ export class SummaryComp extends React.Component<Props, any> {
 
     const haveTotal = !!(amount && Number(amount.total));
 
-    return (
+    return previewMode ? <SummaryListComp
+      contacts={contacts}
+      successLink={successLink}
+      corporatePass={null}
+    /> : (
       <div className="payment-summary">
         <div className={classnames("contacts-summary", {fetching})}>
           {contacts.map(c => c.contact && this.renderContact(c))}

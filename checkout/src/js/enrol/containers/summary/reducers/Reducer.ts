@@ -4,6 +4,7 @@ import {RESET_CHECKOUT_STATE, SHOW_MESSAGES} from "../../../actions/Actions";
 import * as L from "lodash";
 import {IAction} from "../../../../actions/IshAction";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
+import {RESET_PAYMENT_STATE} from "../../payment/actions/Actions";
 
 export const Reducer = (state: State = ContactNodeToState([]), action: IAction<any>): State => {
   const ns: State = L.cloneDeep(state);
@@ -39,14 +40,32 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
     case SummaryActions.ItemsLoad:
       return action.payload;
 
-    case SummaryActions.SET_RESULT_DETAILS:
+    case SummaryActions.SET_RESULT_DETAILS_CONTACTS:
       return {
         ...state,
-        ...action.payload
+        resultDetails: {
+          ...state.resultDetails,
+          contacts: action.payload
+        }
+      }
+
+    case SummaryActions.SET_RESULT_DETAILS_CORPORATE_PASS:
+      return {
+        ...state,
+        resultDetails: {
+          ...state.resultDetails,
+          corporatePass: action.payload
+        }
       }
 
     case RESET_CHECKOUT_STATE:
       return ContactNodeToState([]);
+
+    case RESET_PAYMENT_STATE:
+      return {
+        ...state,
+        resultDetails: {}
+      }
 
     case SummaryActions.SELECT_ITEM_REQUEST:
       return {

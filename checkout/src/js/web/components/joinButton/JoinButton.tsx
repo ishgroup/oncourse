@@ -52,7 +52,7 @@ export class JoinButton extends React.Component<Props, State> {
   }
 
   render() {
-    const {course, isAdded} = this.props;
+    const {course} = this.props;
 
     const content = course && course.id && <a
       href="#"

@@ -109,7 +109,6 @@ export const resetCorporatePass = () => ({
   type: RESET_CORPORATE_PASS,
 });
 
-
 export const setPaymentData = (data: PaymentResponse) => ({
   type: SET_PAYMENT_DATA,
   payload: data,

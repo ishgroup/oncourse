@@ -91,6 +91,7 @@ export const ContactPropsBy = (contactId: string, state: IshState): ContactProps
 
   return {
     contact: state.checkout.contacts.entities.contact[contactId],
+    isPayer: state.checkout.payerId === contactId,
     enrolments: enrolmentIds.map((id: string): EnrolmentProps => EnrolmentPropsBy(enrolments[id], state)),
     applications: applicationIds.map((id: string): ApplicationProps => ApplicationPropsBy(applications[id], state)),
     vouchers: voucherIds.map((id: string): VoucherProps => VoucherPropsBy(vouchers[id], state)),
@@ -119,6 +120,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       fetching: state.checkout.summary.fetching,
       forms: state.form,
       isOnlyWaitingLists: CheckoutService.isOnlyWaitingCourseSelected(state.checkout.summary),
+      successLink: state.config.paymentSuccessURL
     };
   } catch (e) {
     console.log(e);
@@ -129,7 +131,7 @@ export const SummaryPropsBy = (state: IshState): any => {
   }
 };
 
-export const SummaryActionsBy = (dispatch: Dispatch<any>, props): any => {
+export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
   return {
     onSelect: (item: PurchaseItem, selected: boolean): void => {
       dispatch(selectItem(Object.assign(item, {selected})));

@@ -63,9 +63,8 @@ class EnrolmentComp extends React.Component<Props, any> {
           readonly={readonly}
         >
           <ClassDetails courseClass={courseClass} />
-
         </ItemWrapper>
-        {!readonly && !error && enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment} />}
+        {!error && enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment} />}
 
         {!readonly && <EnrolmentFieldsForm
           headings={enrolment.fieldHeadings}

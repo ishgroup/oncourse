@@ -1,6 +1,15 @@
 import {normalize, schema} from "normalizr";
 
-import {Enrolment, Application, ContactNode, Membership, Voucher, Article, PurchaseItem} from "../../../../model";
+import {
+  Enrolment,
+  Application,
+  ContactNode,
+  Membership,
+  Voucher,
+  Article,
+  PurchaseItem,
+  CorporatePass
+} from "../../../../model";
 import {WaitingList} from "../../../../model/checkout/WaitingList";
 import {ContactProps} from "../components/Index";
 
@@ -46,7 +55,10 @@ export interface State {
     contactNodes: ContactNodesStorage;
     waitingLists: { [key: string]: WaitingList }
   };
-  resultDetails?: ContactProps[],
+  resultDetails?: {
+    corporatePass?: CorporatePass;
+    contacts?: ContactProps[];
+  },
   fetching?: boolean;
 }
 

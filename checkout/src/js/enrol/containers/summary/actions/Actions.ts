@@ -1,5 +1,5 @@
 import {_toRequestType} from "../../../../common/actions/ActionUtils";
-import {ContactNode, Contact, PurchaseItem} from "../../../../model";
+import {ContactNode, Contact, PurchaseItem, CorporatePass} from "../../../../model";
 
 import {ContactNodeToState, ItemToState, State} from "../reducers/State";
 import {IAction} from "../../../../actions/IshAction";
@@ -26,11 +26,17 @@ export const UPDATE_ITEM: string = "checkout/summary/update/item";
 export const REMOVE_ITEM_FROM_SUMMARY: string = "checkout/remove/summary/item";
 export const REMOVE_CONTACT_FROM_SUMMARY: string = "checkout/remove/summury/contact";
 
-export const SET_RESULT_DETAILS = "checkout/result/set/details";
+export const SET_RESULT_DETAILS_CONTACTS = "checkout/result/set/details/contacts";
+export const SET_RESULT_DETAILS_CORPORATE_PASS = "checkout/result/set/details/corporatePass";
 
-export const setResultDetails = (resultDetails: ContactProps[]) => ({
-  type: SET_RESULT_DETAILS,
-  payload: {resultDetails}
+export const setResultDetailsCorporatePass = (corporatePass: CorporatePass) => ({
+  type: SET_RESULT_DETAILS_CORPORATE_PASS,
+  payload: corporatePass
+})
+
+export const setResultDetailsContacts = (contacts: ContactProps[]) => ({
+  type: SET_RESULT_DETAILS_CONTACTS,
+  payload: contacts
 })
 
 export const addContactToSummary = (contact: Contact, uncheckItems = false): IAction<{contact: Contact, uncheckItems?: boolean}> => {

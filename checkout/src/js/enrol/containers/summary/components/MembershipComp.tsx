@@ -25,7 +25,7 @@ class MembershipComp extends React.Component<Props, any> {
           onChange={onChange}>
           <div />
         </ItemWrapper>
-        {!readonly && membership.selected &&
+        {membership.selected &&
           <div className="col-xs-8 col-md-8 alignright priceValue">
             <div className="row">
               <div className="col-xs-24 col-md-24 fee-full fullPrice text-right">

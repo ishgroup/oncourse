@@ -67,7 +67,7 @@ class ArticleComp extends React.Component<Props, State> {
         >
           <div />
         </ItemWrapper>
-        {!readonly && article.selected &&
+        {article.selected &&
           <div className="col-xs-8 col-md-8 alignright text-right">
             <div className="row">
               <div className="col-xs-24 col-md-24 fee-full fullPrice">

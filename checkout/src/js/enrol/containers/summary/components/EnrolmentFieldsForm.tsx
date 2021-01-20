@@ -78,5 +78,4 @@ const EnrolmentFieldsForm = reduxForm({
   destroyOnUnmount: false,
 })(EnrolmentFields);
 
-const Container = connect<any, any, any>(state => ({forms: state.form}))(EnrolmentFieldsForm);
-export default Container;
+export default connect<any, any, any>(state => ({forms: state.form}))(EnrolmentFieldsForm) as any;

@@ -11,7 +11,7 @@ import MembershipComp, {Props as MembershipProps} from "./MembershipComp";
 import ArticleComp, {Props as ArticleProps} from "./ArticleComp";
 import {ContactInfo} from "../../../components/ContactInfo";
 import VoucherComp, {Props as VoucherProps} from "./VoucherComp";
-import WaitingListComp, {Props as WaitingListProps} from "./WaitingListComp";
+import WaitingListComp from "./WaitingListComp";
 import {ContactState} from "../../../../services/IshState";
 
 
@@ -35,6 +35,7 @@ export interface Props {
   onRemoveContact?: (contactId) => void;
   onChangeEnrolmentFields?: (form, type) => any;
   readonly?: boolean;
+  isPayer?: boolean;
 }
 
 class ContactComp extends React.Component<Props, any> {
@@ -42,7 +43,7 @@ class ContactComp extends React.Component<Props, any> {
     const {
       contact, enrolments, applications, vouchers, memberships, concessions, onChangeEnrolmentFields,
       articles, onSelect, onPriceValueChange, onQuantityValueChange, onAddConcession, studentMemberships, onChangeParent, waitingLists,
-      onUpdateWaitingCourse, concessionTypes, onRemoveContact, readonly
+      onUpdateWaitingCourse, concessionTypes, onRemoveContact, readonly, isPayer
     } = this.props;
 
     return (
@@ -61,8 +62,28 @@ class ContactComp extends React.Component<Props, any> {
           onChangeParent={onChangeParent}
           onRemoveContact={onRemoveContact}
         />
-        <div className="col-xs-24 checkoutList">
 
+        {isPayer && readonly &&
+          <div className="col-xs-24">
+            <div className="message">
+              <strong>Invoice email sent</strong>
+              <div>
+                Please check your email account or spam folder for invoice email
+              </div>
+            </div>
+          </div>
+        }
+        {readonly && Boolean(enrolments.length) &&
+        <div className="col-xs-24">
+          <div className="message">
+            <strong>Enrolment confirmation sent</strong>
+            <div>
+              Please check your email account or spam folder for your enrolment confirmation and for future course updates
+            </div>
+          </div>
+        </div>
+        }
+        <div className="col-xs-24 checkoutList">
           {enrolments.map((props, index) =>
             props.courseClass && <EnrolmentComp
               key={index} {...props}
@@ -71,7 +92,6 @@ class ContactComp extends React.Component<Props, any> {
               readonly={readonly}
             />,
           )}
-
           {applications.map((props, index) =>
             props.courseClass && <ApplicationComp
               key={index} {...props}
@@ -80,7 +100,6 @@ class ContactComp extends React.Component<Props, any> {
               readonly={readonly}
             />,
           )}
-
           {vouchers.map((props, index) =>
             props.product && <VoucherComp
               key={index} {...props}
@@ -90,7 +109,6 @@ class ContactComp extends React.Component<Props, any> {
               readonly={readonly}
             />,
           )}
-
           {memberships.map((props, index) =>
             props.product && <MembershipComp
               key={index} {...props}
@@ -98,7 +116,6 @@ class ContactComp extends React.Component<Props, any> {
               readonly={readonly}
             />,
           )}
-
           {articles.map((props, index) =>
             props.product && <ArticleComp
               key={index} {...props}
@@ -107,7 +124,6 @@ class ContactComp extends React.Component<Props, any> {
               readonly={readonly}
             />,
           )}
-
           {waitingLists.map((props, index) =>
             props.waitingList && <WaitingListComp
               key={index} {...props}
@@ -117,7 +133,6 @@ class ContactComp extends React.Component<Props, any> {
               readonly={readonly}
             />,
           )}
-
         </div>
       </div>
     );

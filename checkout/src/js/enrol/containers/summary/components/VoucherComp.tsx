@@ -91,12 +91,12 @@ class VoucherComp extends React.PureComponent<Props, State> {
           onChange={onChange}
           quantity={this.state.quantity}
           onQuantityChange={val => this.updateQuantity(val)}
-          onQuantityBlur={val => this.handleQuantityBlur()}
+          onQuantityBlur={() => this.handleQuantityBlur()}
           readonly={readonly}
         >
-          <VoucherDetails voucher={voucher} />
+          <VoucherDetails voucher={voucher}/>
         </ItemWrapper>
-        {!readonly && voucher.selected &&
+        {voucher.selected &&
           <div className="col-xs-8 col-md-8 alignright">
             <VoucherPrice
               voucher={voucher}

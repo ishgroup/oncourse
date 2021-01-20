@@ -19,7 +19,7 @@ import CheckoutService from "../../../services/CheckoutService";
 import {IshState} from "../../../../services/IshState";
 import {Tabs} from "../reducers/State";
 import {PaymentStatus, CorporatePass, Contact, Amount, ValidationError} from "../../../../model";
-import {getAllContactNodesFromBackend} from "../../summary/actions/Actions";
+import {getAllContactNodesFromBackend, setResultDetailsCorporatePass} from "../../summary/actions/Actions";
 
 /**
  * @Deprecated will be remove, now it is used only as example
@@ -229,8 +229,10 @@ const Form = reduxForm({
     if (props.currentTab === Tabs.corporatePass && Number(props.amount.subTotal) !== 0) {
       dispatch(updatePaymentStatus({status: PaymentStatus.IN_PROGRESS}));
       dispatch(submitPaymentCorporatePass(data));
+      dispatch(setResultDetailsCorporatePass(props.corporatePass));
     } else {
       dispatch(processPaymentV2(false));
+      dispatch(setResultDetailsCorporatePass(null));
     }
   },
   onSubmitFail: (errors, dispatch, submitError) => {

@@ -1,12 +1,11 @@
 import * as React from "react";
 
 import {PaymentStatus,PaymentResponse} from "../../../../model";
-import {Successful} from "./Successful";
 import {Failed} from "./Failed";
 import {Undefined} from "./Undefined";
 import {InProgress} from "./InProgress";
-import {SuccessfulByPass} from "./SuccessfulByPass";
 import {SuccessfulWaitingCourses} from "./SuccessfulWaitingCourses";
+import SummaryListComp from "./SummaryListComp";
 
 export interface Props {
   response: PaymentResponse;
@@ -34,15 +33,10 @@ export class ResultComp extends React.Component<Props, any> {
         {response &&
         <div>
           {response.status === PaymentStatus.SUCCESSFUL &&
-          <Successful
-            refId={response.reference}
-            successLink={successLink}
-          />
+          <SummaryListComp />
           }
           {response.status === PaymentStatus.SUCCESSFUL_BY_PASS &&
-          <SuccessfulByPass
-            successLink={successLink}
-          />
+          <SummaryListComp />
           }
 
           {response.status === PaymentStatus.SUCCESSFUL_WAITING_COURSES &&

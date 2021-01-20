@@ -86,25 +86,22 @@ class CreditCardV2Comp extends React.Component<Props, any> {
                   ${Number(amount.ccPayment).toFixed(2)}
                 </span>
               </p>
-
-                <PayerSelect
-                  contacts={contacts}
-                  payer={contacts.find(c => c.id === payerId)}
-                  onChange={onSetPayer}
-                  disabled={voucherPayerEnabled}
-                />
-
-                <PayerAdd
-                  onAddPayer={onAddPayer}
-                  onAddCompany={onAddCompany}
-                  disabled={voucherPayerEnabled}
-                />
-
-                {iframeUrl && <iframe ref={this.iframeRef} frameBorder={0} height="575" width="100%" style={
-                  disabled ? {
-                    opacity: 0.6,
-                    pointerEvents: "none",
-                  } : null}/>}
+              <PayerSelect
+                contacts={contacts}
+                payer={contacts.find(c => c.id === payerId)}
+                onChange={onSetPayer}
+                disabled={voucherPayerEnabled}
+              />
+              <PayerAdd
+                onAddPayer={onAddPayer}
+                onAddCompany={onAddCompany}
+                disabled={voucherPayerEnabled}
+              />
+              {iframeUrl && <iframe ref={this.iframeRef} frameBorder={0} height="575" width="100%" style={
+                disabled ? {
+                  opacity: 0.6,
+                  pointerEvents: "none",
+                } : null}/>}
               </div>
             </fieldset>
           </div>

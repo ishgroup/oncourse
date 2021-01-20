@@ -6,7 +6,7 @@ import {Progress} from "../../../js/enrol/containers/Functions";
 import {Undefined} from "../../../js/enrol/containers/result/components/Undefined";
 import {InProgress} from "../../../js/enrol/containers/result/components/InProgress";
 import {Failed} from "../../../js/enrol/containers/result/components/Failed";
-import {Successful} from "../../../js/enrol/containers/result/components/Successful";
+import SummaryListComp from "../../../js/enrol/containers/result/components/SummaryListComp";
 
 const store = CreateStore();
 RestoreState(store, () => render());
@@ -25,7 +25,7 @@ const render = () => ReactDOM.render(
       reason="Some reason"
       />
       <Progress />
-      <Successful refId={"W1367014"}/>
+      <SummaryListComp />
       <Progress />
       <Undefined />
     </div>
