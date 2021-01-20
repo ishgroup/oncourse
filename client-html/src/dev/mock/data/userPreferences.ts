@@ -1,4 +1,5 @@
 import { PreferenceEnum, UserPreference } from "@api/model";
+import { ACCOUNT_INVOICE_TERMS } from "../../../js/constants/Config";
 
 type mockedUserPreferencesDB = { [key in PreferenceEnum]?: string | number };
 
@@ -9,7 +10,11 @@ export function mockUserPreferences(): mockedUserPreferencesDB {
   });
 
   this.getUserPreferences = (keys: PreferenceEnum[]) => {
-    return keys.map(mapUserPreference);
+    const items = {};
+    keys.forEach((key: PreferenceEnum) => {
+      items[key] = this.userPreferences[key];
+    });
+    return items;
   };
 
   return {
@@ -24,6 +29,7 @@ export function mockUserPreferences(): mockedUserPreferencesDB {
     "license.scripting": "",
     "license.accesscontrol": "",
     "account.default.studentEnrolments.id": "11025",
-    "account.default.voucherLiability.id": "4682"
+    "account.default.voucherLiability.id": "4682",
+    [ACCOUNT_INVOICE_TERMS]: 7
   };
 }
