@@ -7,6 +7,7 @@ public class CorporatePass  {
     private String code = null;
     private String message = null;
     private String email = null;
+    private String name = null;
 
     /**
      * Get id
@@ -76,6 +77,23 @@ public class CorporatePass  {
       return this;
     }
 
+    /**
+     * Get name
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+       this.name = name;
+    }
+
+    public CorporatePass name(String name) {
+      this.name = name;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -86,6 +104,7 @@ public class CorporatePass  {
       sb.append("    code: ").append(toIndentedString(code)).append("\n");
       sb.append("    message: ").append(toIndentedString(message)).append("\n");
       sb.append("    email: ").append(toIndentedString(email)).append("\n");
+      sb.append("    name: ").append(toIndentedString(name)).append("\n");
       sb.append("}");
       return sb.toString();
     }

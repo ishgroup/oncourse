@@ -1925,3 +1925,5 @@ definitions:
         type: string
       email:
         type: string
+      name:
+        type: string

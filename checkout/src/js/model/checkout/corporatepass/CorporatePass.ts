@@ -4,5 +4,6 @@ export class CorporatePass {
   code?: string;
   message?: string;
   email?: string;
+  name?: string;
 }
 

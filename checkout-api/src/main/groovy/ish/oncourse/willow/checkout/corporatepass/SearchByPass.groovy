@@ -57,6 +57,7 @@ class SearchByPass {
                 corpPass.id = pass.id.toString()
                 corpPass.code = pass.password
                 corpPass.email = pass.contact.emailAddress
+                corpPass.name = pass.contact.fullName
                 corpPass.message = "Valid code entered. This transaction will be invoiced to ${pass.contact.fullName} when you press the Confirm Purchase button below. Your details will be forwarded to the relevant manager at ${pass.contact.fullName}."
                 corpPass
             }
