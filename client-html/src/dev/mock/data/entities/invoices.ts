@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockInvoices() {
@@ -14,10 +14,10 @@ export function mockInvoices() {
       contactId: 323,
       contactName: row.values[3],
       createdByUser: "admin",
-      createdOn: "2021-01-20T05:31:37.412Z",
+      createdOn: "2020-01-20T05:31:37.412Z",
       customerReference: null,
       dateDue: format(new Date(row.values[2]), "yyyy-MM-dd"),
-      invoiceDate: format(new Date(row.values[2]), "yyyy-MM-dd"),
+      invoiceDate: format(subDays(new Date(row.values[2]), 5), "yyyy-MM-dd"),
       invoiceLines: [
         {
           id: 461,
@@ -44,7 +44,7 @@ export function mockInvoices() {
         }
       ],
       invoiceNumber: row.values[0],
-      modifiedOn: "2021-01-20T05:31:37.412Z",
+      modifiedOn: "2020-01-20T05:31:37.412Z",
       notes: [],
       overdue: row.values[6],
       paymentPlans: [
@@ -138,6 +138,36 @@ export function mockInvoices() {
 
   this.removeInvoice = id => {
     this.invoices = this.invoices.rows.filter(m => m.id !== id);
+  };
+
+  this.getPlainInvoices = params => {
+    const columnList = params.columns.split(",");
+    let rows = [];
+    const columns = [];
+
+    if (columnList.includes("amountOwing")) {
+      const id = params.search.replace(/\D/g, "");
+      const invoice = this.getInvoice(id);
+      rows.push({
+        id,
+        values: [invoice.contactId, `lastName ${id}`, `firstName ${id}`, invoice.overdue]
+      });
+    } else {
+      rows = this.invoices.rows;
+    }
+
+    const response = { rows, columns } as any;
+
+    response.entity = "Invoice";
+    response.offset = 0;
+    response.filterColumnWidth = null;
+    response.layout = null;
+    response.pageSize = 20;
+    response.search = null;
+    response.count = rows.length;
+    response.sort = [];
+
+    return response;
   };
 
   const rows = generateArraysOfRecords(20, [
