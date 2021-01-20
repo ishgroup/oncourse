@@ -25,12 +25,12 @@ class Users extends React.Component<any, any> {
     },
     users,
     submitSucceeded,
-    formLogin
+    formEmail,
   }) {
     const currentName = this.props.match.params.id;
 
     if (currentName === "new" && submitSucceeded) {
-      const newUser = users.find(item => item.login === formLogin);
+      const newUser = users.find(item => item.email === formEmail);
 
       if (newUser && newUser.id) {
         setTimeout(() => {
@@ -112,7 +112,7 @@ const mapStateToProps = (state: State) => ({
     state.preferences.security &&
     state.preferences.security[SecuritySettingsModel.SecurityPasswordComplexity.uniqueKey],
   submitSucceeded: state.form.UsersForm && state.form.UsersForm.submitSucceeded,
-  formLogin: state.form.UsersForm && state.form.UsersForm.values && state.form.UsersForm.values.login,
+  formEmail: state.form.UsersForm && state.form.UsersForm.values && state.form.UsersForm.values.email,
   newPassword: state.security.newPassword
 });
 

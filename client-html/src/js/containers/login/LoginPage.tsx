@@ -571,7 +571,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                           <>
                             <div className={classes.textWrapper}>
                               {email
-                                ? "You have been invited to ish onCourse. Please create a password. Your username is {email}."
+                                ? `You have been invited to ish onCourse. Please create a password. Your username is ${email}.`
                                 : "User not found."}
                             </div>
 

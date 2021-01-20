@@ -13,11 +13,14 @@ import {
   POST_CREATE_PASSWORD_FULFILLED,
 } from "../../../common/actions";
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
+import history from "../../../constants/History";
 
 const request: EpicUtils.Request<any, any, any> = {
   type: POST_CREATE_PASSWORD_REQUEST,
   getData: payload => LoginService.createPasswordByToken(payload.token, payload.password),
   processData: () => {
+    history.push("/");
+
     return [
       {
         type: POST_CREATE_PASSWORD_FULFILLED
@@ -26,9 +29,6 @@ const request: EpicUtils.Request<any, any, any> = {
         type: FETCH_SUCCESS,
         payload: { message: "Password has been successfully created" }
       },
-      {
-
-      }
     ];
   },
   processError: response => LoginServiceErrorsHandler(response, "Failed to create password")
