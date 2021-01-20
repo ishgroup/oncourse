@@ -36,7 +36,28 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
     this.state = { nextLocation: null };
   }
 
+  shouldComponentUpdate(nextProps: Readonly<Props & RouteComponentProps>): boolean {
+    const {
+      isInvalid,
+      form,
+    } = this.props;
+
+    if (nextProps.form !== form || nextProps.isInvalid(nextProps.form) !== isInvalid(form)) {
+      return true;
+    }
+
+    return false;
+  }
+
   componentDidMount() {
+    this.setUnblockFunction();
+  }
+
+  componentDidUpdate() {
+    this.setUnblockFunction();
+  }
+
+  setUnblockFunction() {
     const {
       message = "You have unsaved changes. Do you want to leave this page and discard them?",
       history,
@@ -46,7 +67,7 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
       form,
       submitForm,
       closeConfirm,
-      setNextLocation
+      setNextLocation,
     } = this.props;
 
     this.unblock = history.block(nextLocation => {
