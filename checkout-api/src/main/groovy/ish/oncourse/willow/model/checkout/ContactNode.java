@@ -1,12 +1,5 @@
 package ish.oncourse.willow.model.checkout;
 
-import ish.oncourse.willow.model.checkout.Application;
-import ish.oncourse.willow.model.checkout.Article;
-import ish.oncourse.willow.model.checkout.Enrolment;
-import ish.oncourse.willow.model.checkout.Membership;
-import ish.oncourse.willow.model.checkout.Voucher;
-import ish.oncourse.willow.model.checkout.WaitingList;
-import ish.oncourse.willow.model.web.Course;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +12,8 @@ public class ContactNode  {
     private List<Membership> memberships = new ArrayList<Membership>();
     private List<Voucher> vouchers = new ArrayList<Voucher>();
     private List<WaitingList> waitingLists = new ArrayList<WaitingList>();
-    private List<Course> suggestedCourses = new ArrayList<Course>();
+    private List<String> suggestedCourseIds = new ArrayList<String>();
+    private List<String> suggestedProductIds = new ArrayList<String>();
 
     /**
      * Get contactId
@@ -171,24 +165,46 @@ public class ContactNode  {
     }
 
     /**
-     * Get suggestedCourses
-     * @return suggestedCourses
+     * Get suggestedCourseIds
+     * @return suggestedCourseIds
      */
-    public List<Course> getSuggestedCourses() {
-        return suggestedCourses;
+    public List<String> getSuggestedCourseIds() {
+        return suggestedCourseIds;
     }
 
-    public void setSuggestedCourses(List<Course> suggestedCourses) {
-       this.suggestedCourses = suggestedCourses;
+    public void setSuggestedCourseIds(List<String> suggestedCourseIds) {
+       this.suggestedCourseIds = suggestedCourseIds;
     }
 
-    public ContactNode suggestedCourses(List<Course> suggestedCourses) {
-      this.suggestedCourses = suggestedCourses;
+    public ContactNode suggestedCourseIds(List<String> suggestedCourseIds) {
+      this.suggestedCourseIds = suggestedCourseIds;
       return this;
     }
 
-    public ContactNode addSuggestedCoursesItem(Course suggestedCoursesItem) {
-      this.suggestedCourses.add(suggestedCoursesItem);
+    public ContactNode addSuggestedCourseIdsItem(String suggestedCourseIdsItem) {
+      this.suggestedCourseIds.add(suggestedCourseIdsItem);
+      return this;
+    }
+
+    /**
+     * Get suggestedProductIds
+     * @return suggestedProductIds
+     */
+    public List<String> getSuggestedProductIds() {
+        return suggestedProductIds;
+    }
+
+    public void setSuggestedProductIds(List<String> suggestedProductIds) {
+       this.suggestedProductIds = suggestedProductIds;
+    }
+
+    public ContactNode suggestedProductIds(List<String> suggestedProductIds) {
+      this.suggestedProductIds = suggestedProductIds;
+      return this;
+    }
+
+    public ContactNode addSuggestedProductIdsItem(String suggestedProductIdsItem) {
+      this.suggestedProductIds.add(suggestedProductIdsItem);
       return this;
     }
 
@@ -205,7 +221,8 @@ public class ContactNode  {
       sb.append("    memberships: ").append(toIndentedString(memberships)).append("\n");
       sb.append("    vouchers: ").append(toIndentedString(vouchers)).append("\n");
       sb.append("    waitingLists: ").append(toIndentedString(waitingLists)).append("\n");
-      sb.append("    suggestedCourses: ").append(toIndentedString(suggestedCourses)).append("\n");
+      sb.append("    suggestedCourseIds: ").append(toIndentedString(suggestedCourseIds)).append("\n");
+      sb.append("    suggestedProductIds: ").append(toIndentedString(suggestedProductIds)).append("\n");
       sb.append("}");
       return sb.toString();
     }

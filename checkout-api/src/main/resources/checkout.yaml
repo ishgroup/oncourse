@@ -1657,10 +1657,14 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/checkout.WaitingList'
-      suggestedCourses:
+      suggestedCourseIds:
         type: array
         items:
-          $ref: '#/definitions/web.Course'
+          type: string
+      suggestedProductIds:
+        type: array
+        items:
+          type: string
   checkout.VoucherPayment:
     type: object
     properties:
