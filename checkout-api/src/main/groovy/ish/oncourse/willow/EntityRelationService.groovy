@@ -76,4 +76,46 @@ class EntityRelationService {
 
     }
 
+    List<Product> getSuggestedProducts(Course course) {
+        ObjectContext context = cayenneService.newContext()
+        List<Product> result = []
+
+        List<EntityRelation> relations = ObjectSelect.query(EntityRelation)
+                .where(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Product.simpleName))
+                .and(EntityRelation.FROM_ENTITY_WILLOW_ID.eq(course.id))
+                .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(SUGGESTION))
+                .select(context)
+
+        relations.each { relation ->
+            Product relatedProduct = SelectById.query(Product, relation.toEntityWillowId).selectOne(context)
+            if (relatedProduct) {
+                result << relatedProduct
+            }
+        }
+
+        return result
+    }
+
+    List<Course> getSuggestedCourses(Course course) {
+
+        ObjectContext context = cayenneService.newContext()
+        List<Course> result = []
+
+        List<EntityRelation> relations = ObjectSelect.query(EntityRelation)
+                .where(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                .and(EntityRelation.FROM_ENTITY_WILLOW_ID.eq(course.id))
+                .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(SUGGESTION))
+                .select(context)
+
+        relations.each { relation ->
+            Course relatedCourse = SelectById.query(Course, relation.toEntityWillowId).selectOne(context)
+            if (relatedCourse) {
+                result << relatedCourse
+            }
+        }
+        return result
+    }
+
 }

@@ -101,14 +101,19 @@ class ContactNodeService {
                         processProduct.voucher && node.vouchers << processProduct.voucher
                     }
                 }
-                
-                
+            }
+            //add suggested items after adding all 'shopping cart' items (since suggested items could be in cart already)
+            shoppingCartCourses.each { shoppingCartCourse ->
+                 node.suggestedCourseIds += relationService.getSuggestedCourses(shoppingCartCourse).findAll { suggestedCurse -> 
+                     !(suggestedCurse.id in shoppingCartCourses*.id || suggestedCurse.id in programCourses*.id)
+                 }.collect { it.id.toString() }
+
+                node.suggestedProductIds += relationService.getSuggestedProducts(shoppingCartCourse).findAll { suggestedProduct ->
+                    !(suggestedProduct.id in shoppingCartProducts*.id || suggestedProduct.id in programProducts*.id)
+                }.collect { it.id.toString() }
             }
         }
-        
-        
         node
-        
     } 
     
 
