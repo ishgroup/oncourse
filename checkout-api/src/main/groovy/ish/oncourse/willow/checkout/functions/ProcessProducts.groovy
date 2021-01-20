@@ -1,15 +1,15 @@
 package ish.oncourse.willow.checkout.functions
 
-
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
+import ish.oncourse.model.Product
 import ish.oncourse.willow.model.checkout.Article
 import ish.oncourse.willow.model.checkout.Membership
 import ish.oncourse.willow.model.checkout.Voucher
 import ish.oncourse.willow.model.checkout.request.ProductContainer
 import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.slf4j.LoggerFactory 
 
 class ProcessProducts {
 
@@ -23,7 +23,10 @@ class ProcessProducts {
     List<Article> articles = []
     List<Membership> memberships = []
     List<Voucher> vouchers = []
-    
+
+    List<Product> productsToPurchase = []
+
+
     ProcessProducts(ObjectContext context, Contact contact, College college, List<ProductContainer> products) {
         this.context = context
         this.contact = contact
@@ -34,6 +37,7 @@ class ProcessProducts {
     ProcessProducts process() {
         products.each { p ->
             ProcessProduct processProduct = new ProcessProduct(context, contact, college, p.productId, p.quantity, null, null).process()
+            productsToPurchase << processProduct.persistentProduct
             processProduct.article && articles << processProduct.article
             processProduct.membership && memberships << processProduct.membership
             processProduct.voucher && vouchers << processProduct.voucher

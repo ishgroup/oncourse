@@ -2,10 +2,7 @@ package ish.oncourse.willow
 
 import com.google.inject.Inject
 import ish.oncourse.api.cayenne.CayenneService
-import ish.oncourse.model.College
-import ish.oncourse.model.Contact
-import ish.oncourse.model.Course
-import ish.oncourse.model.CourseClass
+import ish.oncourse.model.*
 import ish.oncourse.willow.checkout.functions.*
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.Enrolment
@@ -56,28 +53,32 @@ class ContactNodeService {
         node.memberships += processProducts.memberships
         node.vouchers += processProducts.vouchers
 
+        //handle enrolment program
         if (classesController) {
             List<CourseClass> shoppingCartClasses = classesController.classesToEnrol
             Set<Course> shoppingCartCourses = shoppingCartClasses*.course.toSet()
+            
+            Set<Product> shoppingCartProducts = processProducts.productsToPurchase
+
             Set<Course> programCourses = []
+            Set<Product> programProducts = []
 
             shoppingCartCourses.each { shoppingCartCourse ->
                 
-                Map<Course, Boolean> relatedCourses = relationService.getCoursesToAdd(shoppingCartCourse, contact)
-                
-                relatedCourses.each { relatedCourse, allowRemove ->
-                    
+                relationService.getCoursesToAdd(shoppingCartCourse, contact).each { relatedCourse, allowRemove ->
                     if (!(relatedCourse.id in shoppingCartCourses*.id || relatedCourse.id in programCourses*.id)) {
-                        CourseClass availableClass = relatedCourse.getAvailableClasses().find { clazz -> 
+                        programCourses << relatedCourse
+                        
+                        CourseClass availableClass = relatedCourse.getAvailableClasses().find { clazz ->
                             new ValidateEnrolment(context,college).validate(clazz, contact.student).errors.empty
                         }
 
                         Enrolment enrolment = null
-                        
+
                         if (availableClass) {
                             enrolment = new ProcessClass(context, contact, college, availableClass.id.toString(), null).process().enrolment
-                        } 
-                        
+                        }
+
                         if (!enrolment) {
                             enrolment= new Enrolment()
                             enrolment.contactId = contact.id
@@ -87,9 +88,20 @@ class ContactNodeService {
                         enrolment.courseId = relatedCourse.id
                         enrolment.allowRemove = allowRemove
                         enrolment.relatedClassId = shoppingCartClasses.find {clazz -> clazz.course == shoppingCartCourse }.id
-                        node.enrolments << enrolment 
+                        node.enrolments << enrolment
                     }
-                } 
+                }
+                
+                relationService.getProductsToAdd(shoppingCartCourse).each {relatedProduct, allowRemove ->
+                    if (!(relatedProduct.id in shoppingCartProducts*.id || relatedProduct.id in programProducts*.id)) {
+                        programProducts << relatedProduct
+                        ProcessProduct processProduct = new ProcessProduct(context, contact, college, relatedProduct.id.toString(), 1, null, null).process()
+                        processProduct.article && node.articles << processProduct.article
+                        processProduct.membership && node.memberships << processProduct.membership
+                        processProduct.voucher && node.vouchers << processProduct.voucher
+                    }
+                }
+                
                 
             }
         }

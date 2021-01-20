@@ -21,7 +21,7 @@ class EntityRelationService {
         this.collegeService = collegeService
     }
     /**
-     * 
+     *
      * 
      * @param course
      * @param contact
@@ -36,7 +36,6 @@ class EntityRelationService {
                 .where(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
                 .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
                 .and(EntityRelation.FROM_ENTITY_WILLOW_ID.eq(course.id))
-                .and(EntityRelation.RELATION_TYPE.isNotNull())
                 .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(ADD_ALLOW_REMOVAL, ADD_NO_REMOVAL))
                 .select(context)
         
@@ -53,4 +52,28 @@ class EntityRelationService {
         
         return result
     }
+
+    Map<Product,Boolean> getProductsToAdd(Course course) {
+
+        ObjectContext context = cayenneService.newContext()
+        Map<Product,Boolean> result = [:]
+
+        List<EntityRelation> relations = ObjectSelect.query(EntityRelation)
+                .where(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Product.simpleName))
+                .and(EntityRelation.FROM_ENTITY_WILLOW_ID.eq(course.id))
+                .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(ADD_ALLOW_REMOVAL, ADD_NO_REMOVAL))
+                .select(context)
+
+        relations.each { relation ->
+            Product relatedProduct = SelectById.query(Product, relation.toEntityWillowId).selectOne(context)
+            if (relatedProduct) {
+                result[relatedProduct] = ADD_ALLOW_REMOVAL == relation.relationType.shoppingCart
+            }
+        }
+
+        return result
+
+    }
+
 }
