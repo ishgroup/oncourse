@@ -1,7 +1,6 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.*;
-import ish.oncourse.model.auto._TutorRole;
 import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.html.IPlainTextExtractor;
@@ -75,13 +74,11 @@ public class TutorsDetails extends ISHCommon {
                     )
                     .map(CourseClass::getTutorRoles)
                     .flatMap(Collection::stream)
-                    .filter(_TutorRole::getIsConfirmed)
                     .map(TutorRole::getTutor)
                     .filter(tutor -> tutor.getFinishDate() == null || tutor.getFinishDate().after(now))
                     .collect(Collectors.toSet());
         } else if (courseClass != null) {
             tutors = courseClass.getTutorRoles().stream()
-                    .filter(_TutorRole::getIsConfirmed)
                     .map(TutorRole::getTutor)
                     .filter(tutor -> tutor.getFinishDate() == null || tutor.getFinishDate().after(now))
                     .collect(Collectors.toSet());
