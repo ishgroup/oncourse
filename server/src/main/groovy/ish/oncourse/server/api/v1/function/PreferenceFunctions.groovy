@@ -38,9 +38,6 @@ class PreferenceFunctions {
                                                              AUSKEY_CERTIFICATE,
                                                              AUSKEY_PRIVATE_KEY,
                                                              AUSKEY_SALT,
-                                                             STORAGE_BUCKET_NAME,
-                                                             STORAGE_ACCESS_ID,
-                                                             STORAGE_ACCESS_KEY,
                                                              EMAIL_POP3PASSWORD,
                                                              SMTP_PASSWORD]
 
@@ -60,10 +57,7 @@ class PreferenceFunctions {
                                                                LICENSE_FUNDING_CONTRACT,
                                                                AUSKEY_CERTIFICATE,
                                                                AUSKEY_PRIVATE_KEY,
-                                                               AUSKEY_SALT,
-                                                               STORAGE_BUCKET_NAME,
-                                                               STORAGE_ACCESS_ID,
-                                                               STORAGE_ACCESS_KEY,
+                                                               AUSKEY_SALT
                                                              /*USI_SOFTWARE_ID*/]
 
     static String toString(String key, PreferenceController controller) {

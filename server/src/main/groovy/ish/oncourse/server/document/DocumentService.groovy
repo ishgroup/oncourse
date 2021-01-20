@@ -189,6 +189,6 @@ class DocumentService {
 	}
 
 	private S3Service getS3Service() {
-		return new S3Service(getAccessKeyId(), getAccessSecretKey(), getBucketName())
+		return new S3Service(this)
     }
 }
