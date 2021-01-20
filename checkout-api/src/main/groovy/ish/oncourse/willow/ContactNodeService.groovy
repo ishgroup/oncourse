@@ -5,16 +5,15 @@ import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Course
-import ish.oncourse.willow.checkout.functions.GetContact
-import ish.oncourse.willow.checkout.functions.ProcessClasses
-import ish.oncourse.willow.checkout.functions.ProcessProducts
-import ish.oncourse.willow.checkout.functions.ProcessWaitingLists
+import ish.oncourse.model.CourseClass
+import ish.oncourse.willow.checkout.functions.*
 import ish.oncourse.willow.model.checkout.ContactNode
+import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger 
+import org.apache.logging.log4j.Logger
 
 class ContactNodeService {
     
@@ -25,9 +24,10 @@ class ContactNodeService {
     private EntityRelationService relationService
 
     @Inject
-    ContactNodeService(CayenneService cayenneService, CollegeService collegeService) {
+    ContactNodeService(CayenneService cayenneService, CollegeService collegeService, EntityRelationService relationService) {
         this.cayenneService = cayenneService
         this.collegeService = collegeService
+        this.relationService = relationService
     }
     
     ContactNode getContactNode(ContactNodeRequest request) {
@@ -57,13 +57,37 @@ class ContactNodeService {
         node.vouchers += processProducts.vouchers
 
         if (classesController) {
-            Set<Course> shoppingCartCourses = classesController.classesToEnrol*.course.toSet()
+            List<CourseClass> shoppingCartClasses = classesController.classesToEnrol
+            Set<Course> shoppingCartCourses = shoppingCartClasses*.course.toSet()
+            Set<Course> programCourses = []
 
             shoppingCartCourses.each { shoppingCartCourse ->
+                
                 Map<Course, Boolean> relatedCourses = relationService.getCoursesToAdd(shoppingCartCourse, contact)
+                
                 relatedCourses.each { relatedCourse, allowRemove ->
-                    if (!(relatedCourse.id in shoppingCartCourses*.id)) {
-                         //TODO add first available class                         
+                    
+                    if (!(relatedCourse.id in shoppingCartCourses*.id || relatedCourse.id in programCourses*.id)) {
+                        CourseClass availableClass = relatedCourse.getAvailableClasses().find { clazz -> 
+                            new ValidateEnrolment(context,college).validate(clazz, contact.student).errors.empty
+                        }
+
+                        Enrolment enrolment = null
+                        
+                        if (availableClass) {
+                            enrolment = new ProcessClass(context, contact, college, availableClass.id.toString(), null).process().enrolment
+                        } 
+                        
+                        if (!enrolment) {
+                            enrolment= new Enrolment()
+                            enrolment.contactId = contact.id
+                            enrolment.selected = false
+                            enrolment.errors << "There are no classes for course ${relatedCourse.name} available${allowRemove?"":", but they are mandatory"}. Please contact the college to have them resolve this.".toString()
+                        }
+                        enrolment.courseId = relatedCourse.id
+                        enrolment.allowRemove = allowRemove
+                        enrolment.relatedClassId = shoppingCartClasses.find {clazz -> clazz.course == shoppingCartCourse }.id
+                        node.enrolments << enrolment 
                     }
                 } 
                 
@@ -74,4 +98,6 @@ class ContactNodeService {
         node
         
     } 
+    
+
 }

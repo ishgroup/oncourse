@@ -46,7 +46,7 @@ class EntityRelationService {
                 if (relation.relationType.considerHistory && contact.isEnrolled(course)) {
                     //ignore this course since student already has enrolment
                 } else {
-                    result[relatedCourse] = ADD_ALLOW_REMOVAL != relation.relationType.shoppingCart
+                    result[relatedCourse] = ADD_ALLOW_REMOVAL == relation.relationType.shoppingCart
                 }
             }
         }
