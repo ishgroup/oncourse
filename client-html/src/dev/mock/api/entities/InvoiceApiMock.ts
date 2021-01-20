@@ -7,9 +7,7 @@ export function InvoiceApiMock() {
     return promiseResolve(config, this.db.getInvoice(id));
   });
 
-  this.api.onPut(new RegExp(`v1/list/entity/invoice/\\d+`)).reply(config => {
-    return promiseResolve(config, JSON.parse(config.data));
-  });
+  this.api.onPut(new RegExp(`v1/list/entity/invoice/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
 
   this.api.onPost("v1/list/entity/invoice").reply(config => {
     this.db.createInvoice(config.data);
@@ -22,4 +20,6 @@ export function InvoiceApiMock() {
     this.db.removeInvoice(id);
     return promiseResolve(config, this.db.getInvoices());
   });
+
+  this.api.onPost(new RegExp(`v1/list/entity/invoice/contra/\\d+`)).reply(config => promiseResolve(config, {}));
 }
