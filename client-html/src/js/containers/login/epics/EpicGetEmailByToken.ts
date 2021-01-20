@@ -13,6 +13,7 @@ import {
   GET_EMAIL_BY_TOKEN_FULFILLED,
 } from "../../../common/actions";
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
+import history from "../../../constants/History";
 
 const request: EpicUtils.Request<any, any, any> = {
   type: GET_EMAIL_BY_TOKEN_REQUEST,
@@ -28,7 +29,10 @@ const request: EpicUtils.Request<any, any, any> = {
       }
     ];
   },
-  processError: response => LoginServiceErrorsHandler(response, "Failed to get Email")
+  processError: response => {
+    history.push('/pageNotFound');
+    return LoginServiceErrorsHandler(response, "Failed to get Email");
+  }
 };
 
 export const EpicGetEmailByToken: Epic<any, any> = EpicUtils.Create(request);
