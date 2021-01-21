@@ -60,6 +60,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import DocumentShare from "../../../../common/components/form/documents/components/items/DocumentShare";
+import {showMessage} from "../../../../common/actions";
 
 library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile, faCog);
 
@@ -202,7 +203,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
         setLoadingDocVersion(false);
       }).catch(error => {
         setLoadingDocVersion(false);
-        console.error(error);
+        dispatch(showMessage({ message: error.data.errorMessage, success: false }));
       });
     }
   }, [form]);
