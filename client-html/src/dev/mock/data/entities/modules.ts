@@ -1,21 +1,19 @@
 import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockModules() {
-  this.getModules = () => {
-    return this.modules;
-  };
+  this.getModules = () => this.modules;
 
   this.getModule = id => {
     const row = this.modules.rows.find(row => row.id == id);
 
     return {
       id: row.id,
-      createdOn: new Date().toISOString(),
+      createdOn: "2021-01-21T12:22:00.018Z",
       creditPoints: null,
       expiryDays: null,
       fieldOfEducation: "080399",
       isCustom: false,
-      modifiedOn: new Date().toISOString(),
+      modifiedOn: "2021-01-21T12:22:00.018Z",
       nominalHours: 20,
       specialization: null,
       nationalCode: row.values[0],
@@ -39,6 +37,22 @@ export function mockModules() {
 
     this.modules = modules;
   };
+
+  this.createAndUpdateModule = (id = 21) => ({
+    id,
+    createdOn: "2021-01-21T12:22:00.018Z",
+    creditPoints: null,
+    expiryDays: null,
+    fieldOfEducation: "080399",
+    isCustom: false,
+    modifiedOn: "2021-01-21T12:22:00.018Z",
+    nominalHours: 20,
+    specialization: null,
+    nationalCode: `nationalCode ${id}`,
+    title: `title ${id}`,
+    isOffered: false,
+    type: "UNIT OF COMPETENCY"
+  });
 
   this.removeModule = id => {
     this.modules = this.modules.rows.filter(m => m.id !== id);
