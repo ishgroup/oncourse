@@ -68,7 +68,7 @@ class ContactComp extends React.Component<Props, any> {
             <div className="message">
               <strong>Invoice email sent</strong>
               <div>
-                Please check your email account or spam folder for invoice email
+                Please check your email account or spam folder for your tax invoice
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@ class ContactComp extends React.Component<Props, any> {
           <div className="message">
             <strong>Enrolment confirmation sent</strong>
             <div>
-              Please check your email account or spam folder for your enrolment confirmation and for future course updates
+              Please check your email account or spam folder for your enrolment confirmation and for future course updates.
             </div>
           </div>
         </div>
