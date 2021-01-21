@@ -14,4 +14,6 @@ package ish.util;
 public interface Constants {
 
     String TOTP_COOKIE_NAME = "oncourse-skip-tfa";
+
+    String BILLING_APP_LINK = null;
 }
