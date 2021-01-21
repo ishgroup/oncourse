@@ -17,7 +17,6 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Document
 import ish.oncourse.server.document.DocumentService
-import ish.s3.S3Service
 import org.apache.cayenne.query.Ordering
 
 import javax.annotation.Nonnull
@@ -38,7 +37,6 @@ class Document extends _Document implements DocumentTrait, Queueable {
 
 	@Inject
 	private DocumentService documentService
-	private static volatile S3Service s3ServiceSingleton = null
 
 	@Override
 	protected void postAdd() {
@@ -197,28 +195,8 @@ class Document extends _Document implements DocumentTrait, Queueable {
 	 * for non 'Public' documents generate signed link which can be used in next 10 minutes only
 	 */
 	String getLink() {
-		def s3Service = getS3ServiceInstance()
+		def s3Service = getS3ServiceInstance(documentService)
 		return s3Service != null ? s3Service.getFileUrl(getFileUUID(), getWebVisibility()) : ""
-	}
-
-	/**
-	 * Returns S3Service as a singleton
-	 * Uses double checked locking & volatile singleton model
-	 * @return a S3Service instance
-	 */
-	private S3Service getS3ServiceInstance() {
-		S3Service s3Service = s3ServiceSingleton
-		if (s3Service == null) {
-			synchronized (Document.class) {
-				s3Service = s3ServiceSingleton
-				if (s3Service == null) {
-					if (documentService.usingExternalStorage) {
-						s3ServiceSingleton = s3Service = new S3Service(documentService)
-					}
-				}
-			}
-		}
-		return s3Service
 	}
 }
 

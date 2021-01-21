@@ -10,13 +10,11 @@
  */
 package ish.oncourse.server.upgrades;
 
-import ish.oncourse.server.CayenneService;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Document;
 import ish.oncourse.server.cayenne.DocumentVersion;
 import ish.oncourse.server.document.DocumentService;
-import ish.s3.S3Service;
+import ish.s3.AmazonS3Service;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
@@ -24,7 +22,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Migration of BinaryData to S3. The upgrade will run on every server start up until there will be no
@@ -54,7 +51,7 @@ public class MigrateBinaryDataToS3  {
             return;
         }
 
-        final var s3Service = new S3Service(documentService);
+        final var s3Service = new AmazonS3Service(documentService);
 
         final ObjectContext context = cayenneService.getNewContext();
 
@@ -92,7 +89,7 @@ public class MigrateBinaryDataToS3  {
                                             fileUuid,
                                             documentVersion.getFileName(),
                                             documentVersion.getAttachmentData().getContent(),
-                                            document.getWebVisibility(), null);
+                                            document.getWebVisibility());
                                 }
 
                                 logger.warn("Attachment '{}' was successfully uploaded to S3 under fileUUID '{}'",
