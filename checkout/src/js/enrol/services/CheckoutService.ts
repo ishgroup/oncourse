@@ -95,12 +95,7 @@ export class CheckoutService {
   public createOrGetContact = (values: ContactValues, fieldset?: FieldSet): Promise<ContactId> => {
     return this.contactApi.createOrGetContact(BuildCreateContactParams.fromValues(values, fieldset));
   }
-
-
-  public getContactNode = (contact: Contact, cart: CartState): Promise<ContactNode> => {
-    return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromContact(contact, cart));
-  }
-
+  
   public submitCode = (code: string, state: IshState): Promise<CodeResponse> => {
     return this.promotionApi.submitCode(code);
   }
@@ -116,18 +111,7 @@ export class CheckoutService {
   public submitConcession = (payload, props) => {
     return this.contactApi.submitConcession(BuildConcessionRequest.fromValues(payload, props));
   }
-
-  public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {
-    if (item.selected) {
-      const request: ContactNodeRequest = BuildContactNodeRequest.fromPurchaseItem(item, state);
-      return this.checkoutApi.getContactNode(request)
-        .then(data => {
-          return Promise.resolve(ContactNodeService.getPurchaseItem(data, item));
-        });
-    } else {
-      return Promise.resolve(item);
-    }
-  }
+  
 
   public getAmount = (state: IshState): Promise<Amount> => {
     return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state))

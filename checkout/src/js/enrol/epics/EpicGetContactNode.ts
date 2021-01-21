@@ -1,15 +1,15 @@
 import "rxjs";
 import * as Actions from "../containers/summary/actions/Actions";
-import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
 import {Create, Request} from "../../common/epics/EpicUtils";
 import {Contact, ContactNode} from "../../model";
 import {Epic} from "redux-observable";
 import {getAmount, getCheckoutModelFromBackend} from "../actions/Actions";
+import CheckoutServiceV2 from "../services/CheckoutServiceV2";
 
 const request: Request<ContactNode, IshState> = {
   type: Actions.GET_CONTACT_NODE_AND_MODEL_FROM_BACKEND,
-  getData: (payload: {contact: Contact, uncheckItems?: boolean}, state: IshState) => CheckoutService.getContactNode(payload.contact, state.cart),
+  getData: (payload: {contact: Contact, uncheckItems?: boolean}, state: IshState) => CheckoutServiceV2.getContactNode(payload.contact, state.cart),
   processData: (value: ContactNode, state: IshState, payload) => {
 
     if (payload.uncheckItems) {

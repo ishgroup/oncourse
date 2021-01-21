@@ -1,6 +1,9 @@
 import {CheckoutV2Api} from "../../http/CheckoutV2Api";
 import {DefaultHttpService} from "../../common/services/HttpService";
-import {PaymentRequest,PaymentResponse} from "../../model";
+import {Contact, ContactNode, ContactNodeRequest, PaymentRequest, PaymentResponse, PurchaseItem} from "../../model";
+import {CartState, IshState} from "../../services/IshState";
+import {BuildContactNodeRequest} from "./CheckoutService";
+import {ContactNodeService} from "./ContactNodeService";
 
 class CheckoutServiceV2 {
   readonly checkoutApi = new CheckoutV2Api(new DefaultHttpService());
@@ -11,6 +14,22 @@ class CheckoutServiceV2 {
   }
   public getStatus(sessionId: string, payerId: string): Promise<PaymentResponse> {
     return this.checkoutApi.getStatus(sessionId,payerId);
+  }
+  
+  public getContactNode = (contact: Contact, cart: CartState): Promise<ContactNode> => {
+    return this.checkoutApi.getContactNodeV2(BuildContactNodeRequest.fromContact(contact, cart));
+  }
+
+  public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {
+    if (item.selected) {
+      const request: ContactNodeRequest = BuildContactNodeRequest.fromPurchaseItem(item, state);
+      return this.checkoutApi.getContactNodeV2(request)
+          .then(data => {
+            return Promise.resolve(ContactNodeService.getPurchaseItem(data, item));
+          });
+    } else {
+      return Promise.resolve(item);
+    }
   }
 }
 
