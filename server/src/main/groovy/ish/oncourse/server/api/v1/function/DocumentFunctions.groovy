@@ -13,13 +13,12 @@ package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.common.ResourcesUtil
+import ish.oncourse.server.api.dao.DocumentDao
 import ish.oncourse.server.api.v1.model.SearchItemDTO
 import ish.oncourse.server.document.DocumentService
-
-import static ish.oncourse.common.ResourcesUtil.hashFile
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import ish.s3.AmazonS3Service
+import java.nio.file.Files
+import java.nio.file.Path
 import ish.oncourse.server.api.v1.model.DocumentAttachmentRelationDTO
 import ish.oncourse.server.api.v1.model.DocumentDTO
 import ish.oncourse.server.api.v1.model.DocumentVersionDTO
@@ -42,24 +41,28 @@ import ish.oncourse.server.cayenne.PriorLearning
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.SystemUser
-import ish.s3.S3Service
-import static ish.util.ImageHelper.generatePdfPreview
-import static ish.util.ImageHelper.generateThumbnail
-import static ish.util.ImageHelper.imageHeight
-import static ish.util.ImageHelper.imageWidth
-import static ish.util.ImageHelper.isImage
 import ish.util.LocalDateUtils
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToNull
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+
+import static org.apache.commons.lang3.StringUtils.isBlank
+import static org.apache.commons.lang3.StringUtils.trimToNull
+import static ish.util.ImageHelper.generatePdfPreview
+import static ish.util.ImageHelper.generateThumbnail
+import static ish.util.ImageHelper.imageHeight
+import static ish.util.ImageHelper.imageWidth
+import static ish.util.ImageHelper.isImage
+import static ish.oncourse.common.ResourcesUtil.hashFile
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static ish.util.Constants.BILLING_APP_LINK
 
 @CompileStatic
 class DocumentFunctions {
@@ -76,9 +79,9 @@ class DocumentFunctions {
 
             DocumentVersion dbVersion = versionId ? dbDocument.versions.find { it.id == versionId } : dbDocument.versions.max{ v1, v2 -> v1.timestamp.compareTo(v2.timestamp)}
             document.thumbnail = dbVersion.thumbnail
-            S3Service s3Service
+            AmazonS3Service s3Service
             if (documentService.usingExternalStorage) {
-                s3Service = new S3Service(documentService)
+                s3Service = new AmazonS3Service(documentService)
             }
             document.versions = dbDocument.versions.collect { toRestDocumentVersion(it, s3Service) }.sort { it.added }.reverse()
 
@@ -102,16 +105,16 @@ class DocumentFunctions {
             document.access = DocumentVisibilityDTO.values()[0].fromDbType(dbDocument.webVisibility)
             document.shared = dbDocument.isShared
             document.removed = dbDocument.isRemoved
-            S3Service s3Service = null
+            AmazonS3Service s3Service = null
             if (documentService.usingExternalStorage) {
-                s3Service = new S3Service(documentService)
+                s3Service = new AmazonS3Service(documentService)
             }
             document.versions = dbDocument.versions.collect { toRestDocumentVersionMinimized(it, s3Service) }.sort {it.added}.reverse()
             document
         }
     }
 
-    static DocumentVersionDTO toRestDocumentVersion(DocumentVersion dbDocumentVersion, S3Service s3Service = null) {
+    static DocumentVersionDTO toRestDocumentVersion(DocumentVersion dbDocumentVersion, AmazonS3Service s3Service = null) {
         new DocumentVersionDTO().with { dv ->
             dv.id = dbDocumentVersion.id
             dv.added = LocalDateUtils.dateToTimeValue(dbDocumentVersion.timestamp)
@@ -121,20 +124,20 @@ class DocumentFunctions {
             dv.fileName = dbDocumentVersion.fileName
             dv.thumbnail = dbDocumentVersion.thumbnail
             if (s3Service) {
-                dv.url = s3Service.getFileUrl(dbDocumentVersion.document.fileUUID, dbDocumentVersion.document.webVisibility, dbDocumentVersion.versionId)
+                dv.url = s3Service.getFileUrl(dbDocumentVersion.document.fileUUID, dbDocumentVersion.versionId, dbDocumentVersion.document.webVisibility)
             }
             dv
         }
     }
 
-    static DocumentVersionDTO toRestDocumentVersionMinimized(DocumentVersion dbDocumentVersion, S3Service s3Service = null) {
+    static DocumentVersionDTO toRestDocumentVersionMinimized(DocumentVersion dbDocumentVersion, AmazonS3Service s3Service = null) {
         new DocumentVersionDTO().with { dv ->
             dv.id = dbDocumentVersion.id
             dv.added = LocalDateUtils.dateToTimeValue(dbDocumentVersion.timestamp)
             dv.size = getDisplayableSize(dbDocumentVersion.byteSize)
             dv.thumbnail = dbDocumentVersion.thumbnail
             if (s3Service) {
-                dv.url = s3Service.getFileUrl(dbDocumentVersion.document.fileUUID, dbDocumentVersion.document.webVisibility, dbDocumentVersion.versionId)
+                dv.url = s3Service.getFileUrl(dbDocumentVersion.document.fileUUID, dbDocumentVersion.versionId, dbDocumentVersion.document.webVisibility)
             }
             dv
         }
@@ -180,7 +183,7 @@ class DocumentFunctions {
         version.document = document
         version.hash = hash
         version.byteSize = content.length as Long
-        version.mimeType = ResourcesUtil.getMimeType(filename)
+        version.mimeType = Files.probeContentType(Path.of(filename))
         version.timestamp = timestamp
         version.fileName = trimToNull(filename)
         version.createdByUser = context.localObject(user)
@@ -198,8 +201,8 @@ class DocumentFunctions {
         }
 
         if (documentService.usingExternalStorage) {
-            S3Service s3Service = new S3Service(documentService)
-            version.versionId  =  s3Service.putFile(document.fileUUID, version.fileName, content, document.webVisibility, null)
+            AmazonS3Service s3Service = new AmazonS3Service(documentService)
+            version.versionId  =  s3Service.putFile(document.fileUUID, version.fileName, content, document.webVisibility)
         } else {
             AttachmentData attachmentData = context.newObject(AttachmentData)
             attachmentData.content = content
@@ -207,6 +210,16 @@ class DocumentFunctions {
         }
 
         version
+    }
+
+    static ValidationErrorDTO validateStoragePlace(byte[] content, DocumentService documentService, ObjectContext context) {
+        Long currentStorageSize = DocumentDao.getStoredDocumentsSize(context)
+        if (documentService.storageLimit && currentStorageSize + content.length > documentService.storageLimit) {
+            String otherwise = BILLING_APP_LINK ? "add additional storage <a href=\"${BILLING_APP_LINK}\">here.</a>" : "contact ish support, please."
+            String message = "You require additional document storage capacity to save this document. " +
+                    "Either make space by deleting some of your existing documents or ${otherwise}"
+            return new ValidationErrorDTO(null, 'content', message)
+        }
     }
 
     static ValidationErrorDTO validateForSave(byte[] content, String filename, String name, DocumentVisibilityDTO access, List<Long> tags, Boolean shared, ObjectContext context) {

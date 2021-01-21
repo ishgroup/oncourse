@@ -53,17 +53,15 @@ public class S3Service {
 	private static final String VERSION_ID = "versionId";
 
 	private String bucketName;
-	private String region;
 	private AWSCredentials credentials;
 
-	public S3Service(String accessKeyId, String secretKey, String bucketName, String region) {
+	public S3Service(String accessKeyId, String secretKey, String bucketName) {
 		this.credentials = new AWSCredentials(accessKeyId, secretKey);
 		this.bucketName = bucketName;
-		this.region = region;
 	}
 
 	public S3Service(DocumentService documentService) {
-		this(documentService.getAccessKeyId(), documentService.getAccessSecretKey(), documentService.getBucketName(), documentService.getRegion());
+		this(documentService.getAccessKeyId(), documentService.getAccessSecretKey(), documentService.getBucketName());
 	}
 
 	/**
