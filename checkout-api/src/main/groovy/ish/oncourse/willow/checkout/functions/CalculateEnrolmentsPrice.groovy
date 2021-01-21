@@ -4,14 +4,8 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.math.Money
 import ish.oncourse.cayenne.DiscountInterface
-import ish.oncourse.model.College
-import ish.oncourse.model.Contact
-import ish.oncourse.model.CorporatePass
-import ish.oncourse.model.CourseClass
-import ish.oncourse.model.Discount
-import ish.oncourse.model.DiscountCourseClass
+import ish.oncourse.model.*
 import ish.oncourse.services.discount.GetDiscountForEnrolment
-import ish.oncourse.model.Tax
 import ish.oncourse.services.discount.WebDiscountUtils
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import org.apache.cayenne.ObjectContext
@@ -20,6 +14,9 @@ import org.apache.cayenne.query.ObjectSelect
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
+
+import static ish.common.types.EntityRelationCartAction.ADD_ALLOW_REMOVAL
+import static ish.common.types.EntityRelationCartAction.ADD_NO_REMOVAL
 
 @CompileStatic
 class CalculateEnrolmentsPrice {
@@ -126,10 +123,18 @@ class CalculateEnrolmentsPrice {
                 & DiscountCourseClass.COURSE_CLASS.eq(courseClass))
                 & Discount.getCurrentDateFilterForDiscountCourseClass(courseClass.startDate)).
                 select(context)
-
-
+        
+        DiscountCourseClass chosenDiscount
+        
         GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, promotions, corporatePass, enrolmentsToProceed, total, contact.student,  courseClass, taxOverridden?.rate).get()
-        DiscountCourseClass chosenDiscount = discounts.chosenDiscount
+        Discount programDiscount = getProgramDiscount(contact, courseClass)
+        
+        if (programDiscount) {
+            chosenDiscount = discounts.applicableDiscounts.find {(it.discount as Discount).id == programDiscount.id } ?: discounts.chosenDiscount
+        } else {
+            chosenDiscount = discounts.chosenDiscount
+        }
+        
 
         if (chosenDiscount != null) {
             Money fullPrice = price.finalPriceToPayIncTax
@@ -139,5 +144,28 @@ class CalculateEnrolmentsPrice {
             setDiscountedPrice(contact, courseClass, chosenDiscount, discount, price.finalPriceToPayIncTax)
         }
         price
+    }
+    
+    Discount getProgramDiscount(Contact contact, CourseClass courseClass) {
+        Set<Course> contactCourses = enrolmentsToProceed[contact]*.course.toSet()
+        
+        contactCourses.remove(courseClass.course)
+
+        contactCourses.each { programCourse ->
+            
+            EntityRelation relation = ObjectSelect.query(EntityRelation)
+                    .where(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                    .and(EntityRelation.FROM_ENTITY_WILLOW_ID.eq(programCourse.id))
+                    .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                    .and(EntityRelation.TO_ENTITY_WILLOW_ID.eq(courseClass.course.id))
+                    .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.DISCOUNT).isNotNull())
+                    .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(ADD_ALLOW_REMOVAL, ADD_NO_REMOVAL))
+                    .selectFirst(context)
+            if (relation) {
+                return relation.relationType.discount
+            }
+        }
+        
+        return null
     }
 }
