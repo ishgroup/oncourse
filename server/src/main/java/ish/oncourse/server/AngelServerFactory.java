@@ -107,10 +107,6 @@ public class AngelServerFactory {
             LOGGER.warn("Upgrade data");
             schemaUpdateService.upgradeData();
 
-            if (licenseService.isAdmin_password_reset()) {
-                resetAdminPassword(cayenneService.getNewContext());
-            }
-
             
         } catch (Throwable e) {
             // total failure, some of the essential services cannot be
@@ -223,40 +219,6 @@ public class AngelServerFactory {
         pluginService.onStart();
 
         LOGGER.warn("Server ready");
-    }
-
-    public void resetAdminPassword(DataContext context) {
-
-        var admin = ObjectSelect.query(SystemUser.class).
-                where(SystemUser.LOGIN.eq("admin")).
-                selectOne(context);
-
-        if (admin == null) {
-            admin = context.newObject(SystemUser.class);
-            admin.setCanEditCMS(true);
-            admin.setCanEditTara(true);
-            admin.setIsActive(true);
-            admin.setIsAdmin(true);
-            admin.setLogin("admin");
-            admin.setLastName("onCourse");
-            admin.setFirstName("Administrator");
-            admin.setDefaultAdministrationCentre(Site.getDefaultSite(context));
-        }
-
-        admin.setToken(null);
-        admin.setTokenScratchCodes(null);
-
-        var password = SecurityUtil.generateRandomPassword(6);
-        admin.setPassword(AuthenticationUtil.generatePasswordHash(password));
-        context.commitChanges();
-
-        LOGGER.warn("\n******************************************************************************************************************************\n" +
-                "Administrator password reset command found in onCourse.cfg \n" +
-                "********** Account with name \"admin\" now has password \"{}\" \n" +
-                "********** onCourse Server will now shut down. Remove the line starting \"admin_password_reset\" before restarting \n" +
-                "******************************************************************************************************************************\n", password);
-
-        crashServer();
     }
 
     private void initJRGroovyCompiler() {
