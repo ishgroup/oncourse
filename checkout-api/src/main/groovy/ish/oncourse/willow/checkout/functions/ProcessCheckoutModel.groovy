@@ -221,6 +221,11 @@ class ProcessCheckoutModel {
     @CompileStatic(TypeCheckingMode.SKIP)
     Enrolment processEnrolment(Enrolment e, Contact contact) {
         
+        if (!e.classId) {
+            e.selected = false
+            return e
+        }
+        
         e.errors.clear()
         e.warnings.clear()
         
