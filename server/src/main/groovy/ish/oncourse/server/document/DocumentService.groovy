@@ -22,15 +22,16 @@ import ish.oncourse.server.cayenne.AttachmentData
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.scripting.api.DocumentSpec
+import ish.s3.AmazonS3Service
+import ish.s3.AmazonS3Service.UploadResult
 import ish.util.RuntimeUtil
+import org.apache.cayenne.ObjectContext
 
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateStoragePlace
 import static ish.oncourse.server.scripting.api.DocumentSpec.ATTACH_ACTION
 import static ish.oncourse.server.scripting.api.DocumentSpec.CREATE_ACTION
-import ish.s3.S3Service
-import ish.s3.S3Service.UploadResult
 import ish.util.ImageHelper
 import ish.util.SecurityUtil
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 
 /**
@@ -58,10 +59,10 @@ class DocumentService {
 	}
 
 	private String bucketName
-	private String accessKeyId
+	private String accessKeyId = null
 	private String accessSecretKey
 	private String region
-	private String storageLimit
+	private Long storageLimit
 
 	@BQConfigProperty
 	void setBucket(String bucket) {
@@ -89,7 +90,17 @@ class DocumentService {
 	@BQConfigProperty
 	void setLimit(String limit) {
 		RuntimeUtil.println("S3 bucket storage will limit to " + limit)
-		this.storageLimit = limit
+		Long value = Long.valueOf(limit.substring(0, limit.length()-1))
+		String unit = limit.toLowerCase().substring(limit.length()-1)
+		if (unit == 'm') {
+			value =  value * 1024 * 1024
+		} else if (unit == 'g') {
+			value = value * 1024 * 1024 * 1024
+		} else {
+			RuntimeUtil.println("Unsupported type of storage limit: " + limit)
+			value = null
+		}
+		this.storageLimit = value
 	}
 
 	boolean isUsingExternalStorage() {
@@ -112,7 +123,7 @@ class DocumentService {
 		return region
 	}
 
-	String getStorageLimit() {
+	Long getStorageLimit() {
 		return storageLimit
 	}
 
@@ -154,7 +165,8 @@ class DocumentService {
 	}
 
 	Document createDocument(byte[] content, String name, String mimeType, AttachmentInfoVisibility permission, List<AttachableTrait> attach) {
-		DataContext context = cayenneService.newContext
+		ObjectContext context = cayenneService.newContext
+		validateStoragePlace(content, this, context)
 		Document doc = context.newObject(Document)
 		DocumentVersion version =  context.newObject(DocumentVersion)
 		version.setDocument(doc)
