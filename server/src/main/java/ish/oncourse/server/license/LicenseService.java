@@ -26,22 +26,10 @@ public class LicenseService {
 
 
 
-    private Boolean admin_password_reset = false;
-    private Boolean replication_debug = false;
-
-
     @BQConfigProperty
     public void setMax_concurrent_users(int max_concurrent_users) {
         RuntimeUtil.println("server will limit number of concurrent users to " + max_concurrent_users);
         this.max_concurrent_users = max_concurrent_users;
-    }
-
-    @BQConfigProperty
-    public void setReplication_debug(boolean replication_debug) {
-        if (replication_debug) {
-            RuntimeUtil.println("replication debug mode enabled " + max_concurrent_users);
-        }
-        this.replication_debug = replication_debug;
     }
 
     @BQConfigProperty
@@ -61,21 +49,12 @@ public class LicenseService {
     }
 
     @BQConfigProperty
-    public void setAdmin_password_reset(boolean admin_password_reset) {
-        this.admin_password_reset = admin_password_reset;
-    }
-
-    @BQConfigProperty
     public void setUsi_host(String usi_host) {
         this.usi_host = usi_host;
     }
 
     public String getUsi_host() {
         return usi_host;
-    }
-
-    public Boolean isAdmin_password_reset() {
-        return admin_password_reset;
     }
 
     public String getSecurity_key() {
@@ -96,9 +75,5 @@ public class LicenseService {
 
     public Boolean isReplicationDisabled() {
         return security_key == null;
-    }
-
-    public Boolean isReplication_debug() {
-        return replication_debug;
     }
 }
