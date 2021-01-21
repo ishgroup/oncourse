@@ -188,7 +188,7 @@ class UserApiImpl implements UserApi {
     }
 
     private String sendInvitationToNewUser(SystemUser user) {
-        String collegeKey = licenseService.getSecurity_key()
+        String collegeKey = licenseService.getCollege_key()
         if (!collegeKey) {
             ValidationErrorDTO error = new ValidationErrorDTO()
             error.setErrorMessage('College key is not set')
