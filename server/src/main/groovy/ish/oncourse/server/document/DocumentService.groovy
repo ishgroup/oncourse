@@ -200,7 +200,7 @@ class DocumentService {
 		return doc
 	}
 
-	private S3Service getS3Service() {
-		return new S3Service(this)
+	private AmazonS3Service getS3Service() {
+		return new AmazonS3Service(this)
     }
 }

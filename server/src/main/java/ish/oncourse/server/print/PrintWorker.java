@@ -26,6 +26,7 @@ import ish.print.PrintRequest;
 import ish.print.PrintResult;
 import ish.print.PrintResult.ResultType;
 import ish.print.transformations.PrintTransformation;
+import ish.s3.AmazonS3Service;
 import ish.s3.S3Service;
 import ish.util.EntityUtil;
 import ish.util.MapsUtil;
@@ -535,9 +536,9 @@ public class PrintWorker implements Runnable {
 						imageData = document.getCurrentVersion().getAttachmentData().getContent();
 					}
 				} else if (documentService.isUsingExternalStorage()) {
-					var s3Service = new S3Service(documentService);
+					var s3Service = new AmazonS3Service(documentService);
 					try {
-						var stringUrl = s3Service.getFileUrl(document.getFileUUID(), document.getWebVisibility(), document.getCurrentVersion().getVersionId());
+						var stringUrl = s3Service.getFileUrl(document.getFileUUID(), document.getCurrentVersion().getVersionId(), document.getWebVisibility());
 						var url = new URL(stringUrl);
 						imageData = IOUtils.toByteArray(url.openStream());
 					} catch (IOException e) {

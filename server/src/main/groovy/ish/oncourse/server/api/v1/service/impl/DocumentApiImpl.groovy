@@ -14,6 +14,7 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.document.DocumentService
+import ish.s3.AmazonS3Service
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
@@ -37,6 +38,8 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateStoragePlace
 
 class DocumentApiImpl implements DocumentApi {
 
@@ -62,6 +65,7 @@ class DocumentApiImpl implements DocumentApi {
         List<Long> tagIds = tags ? tags.split(',').collect {Long.valueOf(it)} : []
 
         checkForBadRequest(validateForSave(content.getBytes(), fileName, name,  visibility, tagIds, shared, context))
+        checkForBadRequest(validateStoragePlace(content.getBytes(), documentService, context))
 
         Document dbDocument = createDocument(name, description, visibility, tagIds, shared,  context)
         dbDocument.fileUUID = UUID.randomUUID().toString()
@@ -74,10 +78,11 @@ class DocumentApiImpl implements DocumentApi {
     @Override
     DocumentVersionDTO createVersion(Long id, String fileName, File content) {
         ObjectContext context = cayenneService.newContext
+        checkForBadRequest(validateStoragePlace(content.getBytes(), documentService, context))
         Document document = getRecordById(context, Document, id)
-        S3Service s3Service = null
+        AmazonS3Service s3Service = null
         if (documentService.usingExternalStorage) {
-            s3Service = new S3Service(documentService)
+            s3Service = new AmazonS3Service(documentService)
         }
         DocumentVersion version = createDocumentVersion(document, content.getBytes(), fileName, context, documentService, systemUserService.currentUser)
         context.commitChanges()
@@ -119,11 +124,11 @@ class DocumentApiImpl implements DocumentApi {
         service.validateModelBeforeSave(documentDto, context, id)
         service.toCayenneModel(documentDto, dbDocument)
         if (documentService.usingExternalStorage && dbDocument.fileUUID != null) {
-            S3Service s3Service = new S3Service(documentService)
+            AmazonS3Service s3Service = new AmazonS3Service(documentService)
             String uuid = dbDocument.getFileUUID()
             dbDocument.versions.each { version ->
                 try {
-                    s3Service.changeVisibility(uuid, [version.versionId], dbDocument.webVisibility)
+                    s3Service.changeVisibility(uuid, version.versionId, dbDocument.webVisibility)
                 } catch (Exception e) {
                     logger.error("Could not change document visibility uuid: {}, versionId: {}", dbDocument.getId(), version.versionId, e)
                 }
