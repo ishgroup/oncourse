@@ -11,6 +11,7 @@
 
 package ish.oncourse.aql.impl.converter;
 
+import ish.common.util.DisplayableExtendedEnumeration;
 import ish.oncourse.aql.impl.AqlParser;
 import ish.oncourse.aql.impl.CompilationContext;
 import org.apache.cayenne.ExtendedEnumeration;
@@ -27,7 +28,8 @@ class EnumIdentifierConverter implements Converter<AqlParser.IdContext> {
     @Override
     public SimpleNode apply(AqlParser.IdContext id, CompilationContext ctx) {
         var identifier = id.Identifier().getText();
-        var enumClass = (Class<? extends Enum>) ctx.getCurrentPathJavaType();
+        @SuppressWarnings("unchecked")
+        var enumClass = (Class<? extends Enum<?>>) ctx.getCurrentPathJavaType();
         SimpleNode result = getValueForEnumClass(enumClass, identifier);
         if(result != null) {
             return result;
@@ -37,13 +39,18 @@ class EnumIdentifierConverter implements Converter<AqlParser.IdContext> {
         return null;
     }
 
-    static ASTScalar getValueForEnumClass(Class<? extends Enum> enumClass, String identifier) {
-        for (Enum value : enumClass.getEnumConstants()) {
+    static ASTScalar getValueForEnumClass(Class<? extends Enum<?>> enumClass, String identifier) {
+        for (Enum<?> value : enumClass.getEnumConstants()) {
             if (value.name().equals(identifier)) {
                 return new ASTScalar(value);
             }
             if(value instanceof ExtendedEnumeration) {
                 if(((ExtendedEnumeration) value).getDatabaseValue().toString().equals(identifier)) {
+                    return new ASTScalar(value);
+                }
+            }
+            if(value instanceof DisplayableExtendedEnumeration) {
+                if(((DisplayableExtendedEnumeration<?>) value).getDisplayName().equals(identifier)) {
                     return new ASTScalar(value);
                 }
             }

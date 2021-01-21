@@ -14,17 +14,24 @@ package ish.oncourse.aql.model;
 import ish.oncourse.aql.model.attribute.*;
 import ish.oncourse.server.cayenne.CustomFieldType;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.Persistent;
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.query.ObjectSelect;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
  * Factory that produces {@link Entity} objects.
  *
-
  */
 public class EntityFactory {
 
@@ -36,7 +43,7 @@ public class EntityFactory {
 
     /**
      * List of synthetic attributes.
-     * Must be ins sync with data for client here:
+     * Must be in sync with the data for client here:
      *    /buildSrc/apidoc/src/main/resources/au/com/ish/queryLanguageModel/syntheticAttributes.xml
      */
     private static final List<Class<?  extends SyntheticAttributeDescriptor>> SYNTHETIC_ATTRIBUTES = Arrays.asList(
@@ -87,7 +94,7 @@ public class EntityFactory {
 
     private final ObjectContext context;
 
-    private final Map<String, Collection<? extends SyntheticAttributeDescriptor>> syntheticAttributes;
+    private final Map<String, Collection<SyntheticAttributeDescriptor>> syntheticAttributes;
 
     public EntityFactory(ObjectContext context) {
         this.context = Objects.requireNonNull(context);
@@ -103,6 +110,14 @@ public class EntityFactory {
                 .filter(Objects::nonNull)
                 .collect(Collectors.groupingBy(d -> d.getEntityType().getName())));
 
+        PathAliasFactory pathAliasFactory = new PathAliasFactory(this);
+        pathAliasFactory.init();
+    }
+
+    void addSyntheticAttribute(Class<? extends Persistent> entityType, SyntheticAttributeDescriptor descriptor) {
+        syntheticAttributes
+                .computeIfAbsent(entityType.getName(), type -> new ArrayList<>())
+                .add(descriptor);
     }
 
     public Entity createEntity(Class<?> queryRoot) {

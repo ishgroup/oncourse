@@ -10,6 +10,7 @@ import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.SessionTest
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
@@ -122,5 +123,33 @@ class AqlTestIT extends CayenneIshTestCase {
                 .orderBy(Contact.UNIQUE_CODE.asc())
                 .select(cayenneContext)
         assertEquals(contacts, contacts2)
+    }
+
+    @Test
+    void testDisplayableEnum() {
+        CompilationResult result = aqlService
+                .compile("invoices.type is 'Sale order'",
+                        Contact.class, cayenneContext)
+        assertTrue(result.getCayenneExpression().isPresent())
+        assertTrue(result.getErrors().isEmpty())
+
+        List<Contact> contacts = ObjectSelect.query(Contact)
+                .where(result.getCayenneExpression().get())
+                .select(cayenneContext)
+        assertEquals(0, contacts.size())
+    }
+
+    @Test
+    void testCourseClassesAlias() {
+        CompilationResult result = aqlService
+                .compile("isActive = true and classes.createdOn last week",
+                        Course.class, cayenneContext)
+        assertTrue(result.getCayenneExpression().isPresent())
+        assertTrue(result.getErrors().isEmpty())
+
+        List<Course> classes = ObjectSelect.query(Course)
+                .where(result.getCayenneExpression().get())
+                .select(cayenneContext)
+        assertEquals(0, classes.size())
     }
 }
