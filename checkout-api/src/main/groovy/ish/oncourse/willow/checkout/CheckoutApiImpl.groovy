@@ -52,10 +52,11 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     private ContactNodeService contactNodeService
 
     @Inject
-    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService, FinancialService financialService) {
+    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService, FinancialService financialService, ContactNodeService contactNodeService) {
         this.cayenneService = cayenneService
         this.collegeService = collegeService
         this.financialService = financialService
+        this.contactNodeService = contactNodeService
     }
 
     @Override
