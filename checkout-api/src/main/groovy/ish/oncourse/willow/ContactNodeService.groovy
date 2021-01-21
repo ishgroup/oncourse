@@ -57,8 +57,8 @@ class ContactNodeService {
         if (classesController) {
             List<CourseClass> shoppingCartClasses = classesController.classesToEnrol
             Set<Course> shoppingCartCourses = shoppingCartClasses*.course.toSet()
-            
-            Set<Product> shoppingCartProducts = processProducts.productsToPurchase
+
+            List<Product> shoppingCartProducts = processProducts.productsToPurchase
 
             Set<Course> programCourses = []
             Set<Product> programProducts = []
