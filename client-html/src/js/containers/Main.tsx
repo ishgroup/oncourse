@@ -200,7 +200,7 @@ export class MainBase extends React.PureComponent<Props, any> {
       }
     }
 
-    const isLoginFrame = history.location.pathname.match(/login/);
+    const isLoginFrame = history.location.pathname.match(/login/) || history.location.pathname.match(/invite/);
 
     if (!isLogged && !isLoginFrame) {
       isLoggedIn();
@@ -306,7 +306,7 @@ export class MainBase extends React.PureComponent<Props, any> {
               {isLogged ? (
                 routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
               ) : (
-                <RouteWithSubRoutes {...loginRoute} />
+                loginRoute.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
               )}
             </Switch>
             <ConfirmProvider />
