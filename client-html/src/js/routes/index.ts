@@ -94,13 +94,21 @@ export interface RouteGroup {
   routes: MainRoute[];
 }
 
-export const loginRoute: MainRoute = {
-  title: "Login",
-  path: "/login/:condition?/:subcondition?",
-  url: "/login",
-  main: LoginApp,
-  group: "Common"
-};
+export const loginRoute: MainRoute[] = [
+  {
+    title: "Login",
+    path: "/login/:condition?/:subcondition?",
+    url: "/login",
+    main: LoginApp,
+    group: "Common"
+  }, {
+    title: "Login",
+    path: "/invite/:token",
+    url: "/invite",
+    main: LoginApp,
+    group: "Common"
+  },
+];
 
 export const routes: MainRoute[] = [
   // Activity
@@ -431,13 +439,6 @@ export const routes: MainRoute[] = [
     main: Timetable,
     group: "Common"
   },
-  {
-    title: "Login",
-    path: "/invite/:token",
-    url: "/invite",
-    main: LoginApp,
-    group: "Common"
-  },
   // Products
   {
     title: "Products",
@@ -571,7 +572,19 @@ export const routes: MainRoute[] = [
     main: NotFound,
     group: "Common"
   },
-  loginRoute
+  {
+    title: "Login",
+    path: "/login/:condition?/:subcondition?",
+    url: "/login",
+    main: LoginApp,
+    group: "Common"
+  }, {
+    title: "Login",
+    path: "/invite/:token",
+    url: "/invite",
+    main: LoginApp,
+    group: "Common"
+  },
 ];
 
 if (process.env.NODE_ENV === EnvironmentConstants.development) {
