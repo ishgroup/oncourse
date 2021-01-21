@@ -181,6 +181,16 @@ public class AmazonS3Service {
         return url;
     }
 
+    /**
+     * Remove file with specified key.
+     *
+     * @param uniqueKey - key under which file is stored in S3
+     */
+    public void removeFile(String uniqueKey) {
+        DeleteObjectRequest request = new DeleteObjectRequest(bucketName, uniqueKey);
+        s3Client.deleteObject(request);
+    }
+
 
     public static class UploadResult {
 
