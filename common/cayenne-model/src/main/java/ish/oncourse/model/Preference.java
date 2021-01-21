@@ -1,8 +1,8 @@
 package ish.oncourse.model;
 
+import com.sun.tools.javac.util.List;
 import ish.oncourse.model.auto._Preference;
 import ish.oncourse.utils.QueueableObjectUtils;
-import ish.persistence.Preferences;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.validation.ValidationResult;
@@ -11,13 +11,17 @@ public class Preference extends _Preference implements Queueable {
 
 	private static final long serialVersionUID = 8309390847931508840L;
 
+	public static final String STORAGE_BUCKET_NAME = "storage.bucket";
+	public static final String STORAGE_ACCESS_ID = "storage.access.id";
+	public static final String STORAGE_ACCESS_KEY = "storage.access.key";
+
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
 
 	@Override
 	public boolean isAsyncReplicationAllowed() {
-		return getWebSite() == null;
+		return (getWebSite() == null) || (List.of(STORAGE_BUCKET_NAME, STORAGE_ACCESS_ID, STORAGE_ACCESS_KEY).contains(getName()));
 	}
 
 	@Override

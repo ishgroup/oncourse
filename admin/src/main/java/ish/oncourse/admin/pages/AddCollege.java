@@ -5,6 +5,7 @@ import ish.oncourse.admin.pages.college.Billing;
 import ish.oncourse.admin.utils.LicenseFeeUtil;
 import ish.oncourse.admin.utils.PreferenceUtil;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.s3.IS3Service;
 import ish.oncourse.services.system.ICollegeService;
@@ -162,9 +163,9 @@ public class AddCollege {
 		s3Service.createBucket(bucketName);
 		AccessKey key = s3Service.createS3User(newUserName, bucketName);
 
-		PreferenceUtil.createPreference(context, college, Preferences.STORAGE_BUCKET_NAME, bucketName);
-		PreferenceUtil.createPreference(context, college, Preferences.STORAGE_ACCESS_ID, key.getAccessKeyId());
-		PreferenceUtil.createPreference(context, college, Preferences.STORAGE_ACCESS_KEY, key.getSecretAccessKey());
+		PreferenceUtil.createPreference(context, college, Preference.STORAGE_BUCKET_NAME, bucketName);
+		PreferenceUtil.createPreference(context, college, Preference.STORAGE_ACCESS_ID, key.getAccessKeyId());
+		PreferenceUtil.createPreference(context, college, Preference.STORAGE_ACCESS_KEY, key.getSecretAccessKey());
 
 		context.commitChanges();
 	}

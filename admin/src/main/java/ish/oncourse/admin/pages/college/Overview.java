@@ -5,7 +5,6 @@ import ish.oncourse.admin.utils.PreferenceUtil;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.usi.crypto.CryptoUtils;
 import ish.persistence.Preferences;
@@ -27,6 +26,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+
+import static ish.oncourse.model.Preference.STORAGE_BUCKET_NAME;
 
 public class Overview {
 	
@@ -196,7 +197,7 @@ public class Overview {
 
 	public String getBucketName() {
 		Preference bucketPref = PreferenceUtil.getPreference(
-				college.getObjectContext(), college, Preferences.STORAGE_BUCKET_NAME);
+				college.getObjectContext(), college, STORAGE_BUCKET_NAME);
 		if (bucketPref == null || StringUtils.trimToNull(bucketPref.getValueString()) == null) {
 			return null;
 		}
