@@ -23,6 +23,7 @@ import ish.oncourse.server.db.DbModule;
 import ish.oncourse.server.document.DocumentModule;
 import ish.oncourse.server.http.HttpModule;
 import ish.oncourse.server.license.LicenseModule;
+import ish.oncourse.server.messaging.SMTPModule;
 import ish.oncourse.server.modules.ApiCayenneLayerModule;
 import ish.oncourse.server.modules.ApiImplementationModule;
 import ish.oncourse.server.modules.ApiServiceModule;
@@ -59,6 +60,7 @@ public class AngelServer {
                 .module(DbModule.class)
                 .module(LicenseModule.class)
                 .module(DocumentModule.class)
+                .module(SMTPModule.class)
                 .exec()
                 .exit();
     }
