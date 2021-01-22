@@ -29,9 +29,9 @@ const request: EpicUtils.Request<any, any, any> = {
       }
     ];
   },
-  processError: response => {
-    history.push('/pageNotFound');
-    return LoginServiceErrorsHandler(response, "Failed to get Email");
+  processError: () => {
+    history.push('/login');
+    return null;
   }
 };
 
