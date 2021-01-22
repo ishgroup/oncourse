@@ -190,7 +190,7 @@ class UserFunctions {
                                                   PreferenceController preferenceController,
                                                   MailDeliveryService mailDeliveryService,
                                                   String collegeKey) throws MessagingException {
-        String messageStart = currentUser ? "${currentUser.fullName} has given you access" : "You was provided access"
+        String messageStart = currentUser ? "${currentUser.fullName} has given you access" : "You were provided access"
         String invitationToken = generateUserInvitationToken()
         String subject = "Welcome to onCourse!"
         String messageText =
