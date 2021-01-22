@@ -47,6 +47,8 @@ class ProcessCheckoutModel {
     private Money totalProductsAmount = ZERO
 
     private Map<Contact, List<CourseClass>> enrolmentsToProceed  = [:]
+    private Map<Contact, List<Product>> productsToProceed  = [:]
+
     private List<Product> products = []
 
     private Map<CourseClass, Integer> freePlacesMap  = [:]
@@ -81,7 +83,7 @@ class ProcessCheckoutModel {
             return this
         }
 
-        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, corporatePass, taxOverridden).calculate()
+        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, model, enrolmentsToProceed, productsToProceed, checkoutModelRequest.promotionIds, corporatePass, taxOverridden).calculate()
         Money subTotal = totalAmount.subtract( enrolmentsPrice.totalDiscount)
         
         if (!corporatePass) {
@@ -182,7 +184,7 @@ class ProcessCheckoutModel {
 
             if (model.payerId && model.payerId == node.contactId) {
                 contactNode.vouchers.each { v ->
-                    node.vouchers << processVoucher(v)
+                    node.vouchers << processVoucher(v, contact)
                 }
             }
 
@@ -292,6 +294,12 @@ class ProcessCheckoutModel {
                     model.validationErrors.formErrors << fieldError.error
                     model.validationErrors.fieldsErrors << fieldError
                 }
+                List<CourseClass> classes = enrolmentsToProceed.get(contact)
+                if (classes == null) {
+                    classes = new ArrayList<CourseClass>()
+                    enrolmentsToProceed.put(contact, classes)
+                }
+                classes.add(courseClass)
             } else {
                 a.selected = false
             }
@@ -344,6 +352,7 @@ class ProcessCheckoutModel {
                     a.total = processProduct.article.total
                     totalAmount = totalAmount.add(a.total.toMoney())
                     totalProductsAmount = totalProductsAmount.add(a.total.toMoney())
+                    addProduct(contact, processProduct.persistentProduct)
                 } else {
                     a.selected = false
                 }
@@ -368,6 +377,7 @@ class ProcessCheckoutModel {
                     m.price = processProduct.membership.price
                     totalAmount = totalAmount.add(m.price.toMoney())
                     totalProductsAmount = totalProductsAmount.add(m.price.toMoney())
+                    addProduct(contact, processProduct.persistentProduct)
                 } else {
                     m.selected = false
                 }
@@ -377,7 +387,7 @@ class ProcessCheckoutModel {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    Voucher processVoucher(Voucher v) {
+    Voucher processVoucher(Voucher v, Contact contact) {
         v.errors.clear()
         v.warnings.clear()
         if (v.selected) {
@@ -388,11 +398,16 @@ class ProcessCheckoutModel {
                 products << validateVoucher.persistentProduct
                 totalAmount = totalAmount.add(v.total.toMoney())
                 totalProductsAmount = totalProductsAmount.add(v.total.toMoney())
+                addProduct(contact, validateVoucher.persistentProduct)
             } else {
                 v.selected = false 
             }
         }
         return v
+    }
+    
+    private void addProduct(Contact contact, Product product) {
+      productsToProceed.putIfAbsent(contact,[]) << product
     }
 
     private  boolean checkAndBookPlace(CourseClass courseClass) {

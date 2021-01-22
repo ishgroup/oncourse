@@ -26,6 +26,7 @@ class CalculateEnrolmentsPrice {
     Money total
     CheckoutModel model
     Map<Contact, List<CourseClass>> enrolmentsToProceed
+    Map<Contact, List<Product>> productsToProceed
     CorporatePass corporatePass
     
     Money totalDiscount = Money.ZERO
@@ -36,12 +37,13 @@ class CalculateEnrolmentsPrice {
 
     private Tax taxOverridden
     
-    CalculateEnrolmentsPrice(ObjectContext context, College college, Money total, CheckoutModel model, Map<Contact, List<CourseClass>> enrolmentsToProceed, List<String> promotionIds, CorporatePass corporatePass, Tax taxOverridden) {
+    CalculateEnrolmentsPrice(ObjectContext context, College college, Money total, CheckoutModel model, Map<Contact, List<CourseClass>> enrolmentsToProceed, Map<Contact, List<Product>> productsToProceed, List<String> promotionIds, CorporatePass corporatePass, Tax taxOverridden) {
         this.context = context
         this.college = college
         this.total = total
         this.model = model
         this.enrolmentsToProceed = enrolmentsToProceed
+        this.productsToProceed = productsToProceed
         this.corporatePass = corporatePass
         this.taxOverridden = taxOverridden
         promotionIds.each { id ->
@@ -147,25 +149,22 @@ class CalculateEnrolmentsPrice {
     }
     
     Discount getProgramDiscount(Contact contact, CourseClass courseClass) {
-        Set<Course> contactCourses = enrolmentsToProceed[contact]*.course.toSet()
         
-        contactCourses.remove(courseClass.course)
-
-        contactCourses.each { programCourse ->
-            
-            EntityRelation relation = ObjectSelect.query(EntityRelation)
-                    .where(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
-                    .and(EntityRelation.FROM_ENTITY_WILLOW_ID.eq(programCourse.id))
-                    .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
-                    .and(EntityRelation.TO_ENTITY_WILLOW_ID.eq(courseClass.course.id))
-                    .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.DISCOUNT).isNotNull())
-                    .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(ADD_ALLOW_REMOVAL, ADD_NO_REMOVAL))
-                    .selectFirst(context)
-            if (relation) {
-                return relation.relationType.discount
-            }
-        }
+        List<Long> courseIds = enrolmentsToProceed[contact]*.course*.id.unique()
+        courseIds.remove(courseClass.course.id)
+        List<Long> productIds = productsToProceed[contact]*.id
         
-        return null
+        EntityRelation relation = ObjectSelect.query(EntityRelation)
+            .where(
+                    EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName).andExp(EntityRelation.FROM_ENTITY_WILLOW_ID.in(courseIds))
+                            .orExp(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Product.simpleName).andExp(EntityRelation.FROM_ENTITY_WILLOW_ID.in(productIds)))
+            )
+            .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
+            .and(EntityRelation.TO_ENTITY_WILLOW_ID.eq(courseClass.course.id))
+            .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.DISCOUNT).isNotNull())
+            .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(ADD_ALLOW_REMOVAL, ADD_NO_REMOVAL))
+            .selectFirst(context)
+        
+        return relation?.relationType?.discount
     }
 }
