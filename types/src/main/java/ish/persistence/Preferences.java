@@ -146,16 +146,6 @@ public interface Preferences {
 	// **************************************
 	// Messaging
 	// **************************************
-
-	/**
-	 * Outgoing mail server address (SMTP)
-	 *
-	 * @param prefKey email.smtphost
-	 */
-	@API
-	String EMAIL_SMTPHOST = "email.smtphost";
-
-
 	/**
 	 * System administrator email address
 	 *
@@ -211,20 +201,6 @@ public interface Preferences {
 	 */
 	@API
 	String SMS_FROM_ADDRESS = "sms.from";
-
-	/**
-	 * SMTP username
-	 *
-	 * @param prefKey smtp.username
-	 */
-	@API
-	String SMTP_USERNAME = "smtp.username";
-
-	String SMTP_PASSWORD = "smtp.password";
-
-	String SMTP_START_TLS = "mail.smtp.starttls.enable";
-
-	String SMTP_PORT = "mail.smtp.port";
 
 
 
