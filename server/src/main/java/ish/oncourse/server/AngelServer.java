@@ -61,6 +61,7 @@ public class AngelServer {
                 .module(LicenseModule.class)
                 .module(SMTPModule.class)
                 .module(DocumentModule.class)
+                .module(SMTPModule.class)
                 .exec()
                 .exit();
     }
