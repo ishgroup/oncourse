@@ -19,7 +19,7 @@ const request: EpicUtils.Request<any, any, any> = {
   type: POST_CREATE_PASSWORD_REQUEST,
   getData: payload => LoginService.createPasswordByToken(payload.token, payload.password),
   processData: () => {
-    history.push("/");
+    history.push("/login");
 
     return [
       {
