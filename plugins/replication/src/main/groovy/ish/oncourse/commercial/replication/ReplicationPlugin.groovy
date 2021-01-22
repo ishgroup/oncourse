@@ -103,16 +103,14 @@ class ReplicationPlugin {
 
         if (!licenseService.isReplicationDisabled()) {
             
-            int referenceJobScheduleInterval = licenseService.isReplication_debug() ?
-                    DEBUG_REFERENCE_JOB_INTERVAL : PRODUCTION_REFERENCE_JOB_INTERVAL
+            int referenceJobScheduleInterval = PRODUCTION_REFERENCE_JOB_INTERVAL
             schedulerService.schedulePeriodicJob(ReferenceJob.class, REFERENCE_HANDLER_JOB_ID,
                     REPLICATION_JOBS_GROUP_ID, referenceJobScheduleInterval, true, false)
 
 
             // primary replication schedule every 30 sec when in debug and
             // every 1 min when in production mode
-            int primaryReplicationScheduleInterval =  licenseService.isReplication_debug() ?
-                    DEBUG_PRIMARY_REPLICATION_INTERVAL : PRODUCTION_PRIMARY_REPLICATION_INTERVAL
+            int primaryReplicationScheduleInterval = PRODUCTION_PRIMARY_REPLICATION_INTERVAL
 
             // if replication is not disabled by REPLICATION_DISABLED
             // property then check if it is not disabled by preference
