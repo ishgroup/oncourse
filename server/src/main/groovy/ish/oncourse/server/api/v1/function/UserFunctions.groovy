@@ -186,22 +186,23 @@ class UserFunctions {
         null
     }
 
-    static String sendInvitationEmailToSystemUser(SystemUser user,
+    static String sendInvitationEmailToNewSystemUser(SystemUser currentUser, SystemUser newUser,
                                                   PreferenceController preferenceController,
                                                   MailDeliveryService mailDeliveryService,
                                                   String collegeKey) throws MessagingException {
+        String messageStart = currentUser ? "${currentUser.fullName} has given you access" : "You was provided access"
         String invitationToken = generateUserInvitationToken()
         String subject = "Welcome to onCourse!"
         String messageText =
                 """
-${user.fullName} has given you access to the ish onCourse application for ${preferenceController.collegeName}. Please click here to accept this invitation.
+${messageStart} to the ish onCourse application for https://${collegeKey}.cloud.oncourse.cc. Please click here to accept this invitation.
 
 https://${collegeKey}.cloud.oncourse.cc/invite/${invitationToken}
 
 This invitation will expire in 24 hours.
                 """
 
-        SmtpParameters parameters = new SmtpParameters(preferenceController.emailFromAddress, preferenceController.emailFromName, user.email, subject, messageText)
+        SmtpParameters parameters = new SmtpParameters(preferenceController.emailFromAddress, preferenceController.emailFromName, newUser.email, subject, messageText)
         mailDeliveryService.sendEmail(MailDeliveryParamBuilder.valueOf(parameters).build())
 
         return invitationToken
