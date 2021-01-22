@@ -13,5 +13,6 @@ export class Voucher {
   quantity?: number;
   allowRemove?: boolean;
   relatedClassId?: string;
+  relatedProductId?: string;
 }
 

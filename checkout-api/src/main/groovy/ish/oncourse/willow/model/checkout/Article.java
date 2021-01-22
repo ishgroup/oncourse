@@ -15,6 +15,7 @@ public class Article  {
     private Integer quantity = null;
     private Boolean allowRemove = null;
     private String relatedClassId = null;
+    private String relatedProductId = null;
 
     /**
      * Get contactId
@@ -196,6 +197,23 @@ public class Article  {
       return this;
     }
 
+    /**
+     * Get relatedProductId
+     * @return relatedProductId
+     */
+    public String getRelatedProductId() {
+        return relatedProductId;
+    }
+
+    public void setRelatedProductId(String relatedProductId) {
+       this.relatedProductId = relatedProductId;
+    }
+
+    public Article relatedProductId(String relatedProductId) {
+      this.relatedProductId = relatedProductId;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -212,6 +230,7 @@ public class Article  {
       sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
       sb.append("    allowRemove: ").append(toIndentedString(allowRemove)).append("\n");
       sb.append("    relatedClassId: ").append(toIndentedString(relatedClassId)).append("\n");
+      sb.append("    relatedProductId: ").append(toIndentedString(relatedProductId)).append("\n");
       sb.append("}");
       return sb.toString();
     }

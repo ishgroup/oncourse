@@ -17,6 +17,7 @@ public class Enrolment  {
     private List<FieldHeading> fieldHeadings = new ArrayList<FieldHeading>();
     private Boolean allowRemove = null;
     private String relatedClassId = null;
+    private String relatedProductId = null;
 
     /**
      * Get contactId
@@ -203,6 +204,23 @@ public class Enrolment  {
       return this;
     }
 
+    /**
+     * Get relatedProductId
+     * @return relatedProductId
+     */
+    public String getRelatedProductId() {
+        return relatedProductId;
+    }
+
+    public void setRelatedProductId(String relatedProductId) {
+       this.relatedProductId = relatedProductId;
+    }
+
+    public Enrolment relatedProductId(String relatedProductId) {
+      this.relatedProductId = relatedProductId;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -219,6 +237,7 @@ public class Enrolment  {
       sb.append("    fieldHeadings: ").append(toIndentedString(fieldHeadings)).append("\n");
       sb.append("    allowRemove: ").append(toIndentedString(allowRemove)).append("\n");
       sb.append("    relatedClassId: ").append(toIndentedString(relatedClassId)).append("\n");
+      sb.append("    relatedProductId: ").append(toIndentedString(relatedProductId)).append("\n");
       sb.append("}");
       return sb.toString();
     }

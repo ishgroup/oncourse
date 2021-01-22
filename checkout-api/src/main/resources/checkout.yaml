@@ -1410,6 +1410,8 @@ definitions:
         type: boolean
       relatedClassId:
         type: string
+      relatedProductId:
+        type: string
   checkout.Application:
     type: object
     requred:
@@ -1474,6 +1476,8 @@ definitions:
         type: boolean
       relatedClassId:
         type: string
+      relatedProductId:
+        type: string
   checkout.Membership:
     type: object
     requred:
@@ -1504,6 +1508,8 @@ definitions:
         type: boolean
       relatedClassId:
         type: string
+      relatedProductId:
+        type: string  
   checkout.Voucher:
     type: object
     requred:
@@ -1548,6 +1554,8 @@ definitions:
       allowRemove:
         type: boolean
       relatedClassId:
+        type: string
+      relatedProductId:
         type: string
   checkout.WaitingList:
     type: object

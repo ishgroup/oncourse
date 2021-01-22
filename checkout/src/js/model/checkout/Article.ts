@@ -10,5 +10,6 @@ export class Article {
   quantity?: number;
   allowRemove?: boolean;
   relatedClassId?: string;
+  relatedProductId?: string;
 }
 

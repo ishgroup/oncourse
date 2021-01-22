@@ -12,5 +12,6 @@ export class Enrolment {
   fieldHeadings?: FieldHeading[];
   allowRemove?: boolean;
   relatedClassId?: string;
+  relatedProductId?: string;
 }
 

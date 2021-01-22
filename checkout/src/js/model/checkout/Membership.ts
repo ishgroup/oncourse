@@ -8,5 +8,6 @@ export class Membership {
   selected?: boolean;
   allowRemove?: boolean;
   relatedClassId?: string;
+  relatedProductId?: string;
 }
 
