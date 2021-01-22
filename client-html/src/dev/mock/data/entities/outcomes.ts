@@ -53,6 +53,10 @@ export function mockOutcomes() {
     };
   };
 
+  this.removeOutcome = id => {
+    this.outcomes.rows = [...this.outcomes.rows.filter(m => Number(m.id) !== Number(id))];
+  };
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "studentName", type: "string" },
@@ -153,6 +157,9 @@ export function mockOutcomes() {
   response.search = null;
   response.count = rows.length;
   response.sort = [];
+
+  console.log("outcome response");
+  console.log(response);
 
   return response;
 }
