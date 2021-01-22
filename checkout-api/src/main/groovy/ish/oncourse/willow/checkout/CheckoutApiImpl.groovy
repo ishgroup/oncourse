@@ -10,6 +10,7 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.WebSite
 import ish.oncourse.willow.ContactNodeService
+import ish.oncourse.willow.EntityRelationService
 import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.functions.*
 import ish.oncourse.willow.checkout.functions.v2.ValidatePaymentRequest as V2ValidatePaymentRequest
@@ -49,14 +50,14 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     private CayenneService cayenneService
     private CollegeService collegeService
     private FinancialService financialService
-    private ContactNodeService contactNodeService
+    private EntityRelationService relationService
 
     @Inject
-    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService, FinancialService financialService, ContactNodeService contactNodeService) {
+    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService, FinancialService financialService, EntityRelationService relationService) {
         this.cayenneService = cayenneService
         this.collegeService = collegeService
         this.financialService = financialService
-        this.contactNodeService = contactNodeService
+        this.relationService = relationService
     }
 
     @Override
@@ -193,7 +194,7 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
             logger.info('There are no selected items for purchase')
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'There are no selected items for purchase')).build())
         }
-        contactNodeService.getContactNode(request)
+        return new ContactNodeService(cayenneService, collegeService, relationService, request).getContactNode()
     }
 
     @Override

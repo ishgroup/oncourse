@@ -44,7 +44,7 @@ class ContactNodeService {
         this.request = request
     }
     
-    ContactNode getContactNode(ContactNodeRequest request) {
+    ContactNode getContactNode() {
 
         contact = new GetContact(context, college, request.contactId).get(false)
 
