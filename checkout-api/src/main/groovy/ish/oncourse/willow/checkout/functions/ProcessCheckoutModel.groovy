@@ -47,7 +47,7 @@ class ProcessCheckoutModel {
     private Money totalProductsAmount = ZERO
 
     private Map<Contact, List<CourseClass>> enrolmentsToProceed  = [:]
-    private Map<Contact, List<Product>> productsToProceed  = [:]
+    private Map<Contact, List<Product>> productsToProceed  = [:].withDefault{ [] }
 
     private List<Product> products = []
 
@@ -348,11 +348,12 @@ class ProcessCheckoutModel {
                 a.warnings += processProduct.article.warnings
                 if (a.errors.empty) {
                     products << processProduct.persistentProduct
+                    productsToProceed[contact] << processProduct.persistentProduct
+
                     a.price = processProduct.article.price
                     a.total = processProduct.article.total
                     totalAmount = totalAmount.add(a.total.toMoney())
                     totalProductsAmount = totalProductsAmount.add(a.total.toMoney())
-                    addProduct(contact, processProduct.persistentProduct)
                 } else {
                     a.selected = false
                 }
@@ -374,10 +375,11 @@ class ProcessCheckoutModel {
                 m.warnings += processProduct.membership.warnings
                 if (m.errors.empty) {
                     products << processProduct.persistentProduct
+                    productsToProceed[contact] << processProduct.persistentProduct
+
                     m.price = processProduct.membership.price
                     totalAmount = totalAmount.add(m.price.toMoney())
                     totalProductsAmount = totalProductsAmount.add(m.price.toMoney())
-                    addProduct(contact, processProduct.persistentProduct)
                 } else {
                     m.selected = false
                 }
@@ -396,9 +398,10 @@ class ProcessCheckoutModel {
             v.warnings += validateVoucher.warnings
             if (v.errors.empty) {
                 products << validateVoucher.persistentProduct
+                productsToProceed[contact] << validateVoucher.persistentProduct
+
                 totalAmount = totalAmount.add(v.total.toMoney())
                 totalProductsAmount = totalProductsAmount.add(v.total.toMoney())
-                addProduct(contact, validateVoucher.persistentProduct)
             } else {
                 v.selected = false 
             }
@@ -407,7 +410,7 @@ class ProcessCheckoutModel {
     }
     
     private void addProduct(Contact contact, Product product) {
-      productsToProceed.putIfAbsent(contact,[]) << product
+      productsToProceed[contact] << product
     }
 
     private  boolean checkAndBookPlace(CourseClass courseClass) {
