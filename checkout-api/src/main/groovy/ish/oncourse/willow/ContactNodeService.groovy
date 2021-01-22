@@ -64,7 +64,7 @@ class ContactNodeService {
             Set<Product> programProducts = []
 
             shoppingCartCourses.each { shoppingCartCourse ->
-                
+                String relatedClassId = shoppingCartClasses.find {clazz -> clazz.course == shoppingCartCourse }.id.toString()
                 relationService.getCoursesToAdd(shoppingCartCourse, contact).each { relatedCourse, allowRemove ->
                     if (!(relatedCourse.id in shoppingCartCourses*.id || relatedCourse.id in programCourses*.id)) {
                         programCourses << relatedCourse
@@ -87,7 +87,7 @@ class ContactNodeService {
                         }
                         enrolment.courseId = relatedCourse.id
                         enrolment.allowRemove = allowRemove
-                        enrolment.relatedClassId = shoppingCartClasses.find {clazz -> clazz.course == shoppingCartCourse }.id
+                        enrolment.relatedClassId = relatedClassId
                         node.enrolments << enrolment
                     }
                 }
@@ -96,22 +96,25 @@ class ContactNodeService {
                     if (!(relatedProduct.id in shoppingCartProducts*.id || relatedProduct.id in programProducts*.id)) {
                         programProducts << relatedProduct
                         ProcessProduct processProduct = new ProcessProduct(context, contact, college, relatedProduct.id.toString(), 1, null, null).process()
-                        processProduct.article && node.articles << processProduct.article
-                        processProduct.membership && node.memberships << processProduct.membership
-                        processProduct.voucher && node.vouchers << processProduct.voucher
+                        processProduct.article && node.articles << processProduct.article.relatedClassId(relatedClassId).allowRemove(allowRemove)
+                        processProduct.membership && node.memberships << processProduct.membership.relatedClassId(relatedClassId).allowRemove(allowRemove)
+                        processProduct.voucher && node.vouchers << processProduct.voucher.relatedClassId(relatedClassId).allowRemove(allowRemove)
                     }
                 }
             }
+
+
             //add suggested items after adding all 'shopping cart' items (since suggested items could be in cart already)
             shoppingCartCourses.each { shoppingCartCourse ->
-                 node.suggestedCourseIds += relationService.getSuggestedCourses(shoppingCartCourse).findAll { suggestedCurse -> 
-                     !(suggestedCurse.id in shoppingCartCourses*.id || suggestedCurse.id in programCourses*.id)
-                 }.collect { it.id.toString() }
+                node.suggestedCourseIds += relationService.getSuggestedCourses(shoppingCartCourse).findAll { suggestedCurse ->
+                    !(suggestedCurse.id in shoppingCartCourses*.id || suggestedCurse.id in programCourses*.id)
+                }.collect { it.id.toString() }
 
                 node.suggestedProductIds += relationService.getSuggestedProducts(shoppingCartCourse).findAll { suggestedProduct ->
                     !(suggestedProduct.id in shoppingCartProducts*.id || suggestedProduct.id in programProducts*.id)
                 }.collect { it.id.toString() }
             }
+            
         }
         node
     } 
