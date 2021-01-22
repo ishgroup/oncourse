@@ -45,14 +45,13 @@ class MailDeliveryServiceTest {
 
     @Before
     void setup() throws Exception {
-        PreferenceController controller = Mockito.mock(PreferenceController)
-        Mockito.when(controller.emailSMTPHost).thenReturn(SMTP_HOST)
-        Mockito.when(controller.SMTPUsername).thenReturn(SMTP_USERNAME)
-        Mockito.when(controller.SMTPPassword).thenReturn(SMTP_PASSWORD)
-        Mockito.when(controller.SMTPStartTLS).thenReturn(SMTP_START_TLS)
-        Mockito.when(controller.SMTPPort).thenReturn(SMTP_PORT)
-        MailSession mailSession = new MailSession(controller)
-        service = new MailDeliveryService(controller, mailSession, ANGEL_VERSION)
+        SMTPService smtpService = Mockito.mock(SMTPService)
+        Mockito.when(smtpService.host).thenReturn(SMTP_HOST)
+        Mockito.when(smtpService.userName).thenReturn(SMTP_USERNAME)
+        Mockito.when(smtpService.password).thenReturn(SMTP_PASSWORD)
+        Mockito.when(smtpService.port).thenReturn(SMTP_PORT)
+        MailSession mailSession = new MailSession(smtpService)
+        service = new MailDeliveryService(smtpService, mailSession, ANGEL_VERSION)
         fillTestParameters()
     }
 
