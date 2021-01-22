@@ -1,11 +1,12 @@
 package ish.oncourse.model;
 
-import com.sun.tools.javac.util.List;
 import ish.oncourse.model.auto._Preference;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.validation.ValidationResult;
+
+import java.util.Arrays;
 
 public class Preference extends _Preference implements Queueable {
 
@@ -21,7 +22,7 @@ public class Preference extends _Preference implements Queueable {
 
 	@Override
 	public boolean isAsyncReplicationAllowed() {
-		return (getWebSite() == null) || (List.of(STORAGE_BUCKET_NAME, STORAGE_ACCESS_ID, STORAGE_ACCESS_KEY).contains(getName()));
+		return (getWebSite() == null) || Arrays.asList(STORAGE_BUCKET_NAME, STORAGE_ACCESS_ID, STORAGE_ACCESS_KEY).contains(getName());
 	}
 
 	@Override
