@@ -55,9 +55,8 @@ class MessagingBaseForm extends React.Component<any, any> {
     }
   }
 
-  validateEmailFromAddress(value, allValues) {
-    const hasSMTPHostValue = !!allValues[this.formModel.EmailSMTPHost.uniqueKey];
-    return hasSMTPHostValue ? (value ? undefined : "Field is mandatory") : undefined;
+  validateEmailFromAddress(value) {
+    return value ? undefined : "Field is mandatory";
   }
 
   render() {
@@ -150,79 +149,6 @@ class MessagingBaseForm extends React.Component<any, any> {
             />
           </Grid>
 
-          <Hidden xsDown>
-            <Grid item sm={1} lg={1} />
-          </Hidden>
-
-          <Grid item xs={12} sm={5} lg={4}>
-            <FormField
-              type="number"
-              name={this.formModel.SMTPPort.uniqueKey}
-              label="Port, e.g. 25"
-              fullWidth
-            />
-          </Grid>
-
-          <Hidden mdDown>
-            <Grid item lg={3} />
-          </Hidden>
-
-          <Grid item xs={12} sm={5} lg={4}>
-            <FormField
-              type="text"
-              name={this.formModel.EmailSMTPHost.uniqueKey}
-              label="Outgoing mail server address (SMTP)"
-              fullWidth
-            />
-          </Grid>
-
-          <Hidden xsDown>
-            <Grid item sm={1} lg={1} />
-          </Hidden>
-
-          <Grid item xs={12} sm={5} lg={4}>
-            <FormControlLabel
-              classes={{
-                root: "checkbox"
-              }}
-              control={(
-                <FormField
-                  type="checkbox"
-                  name={this.formModel.SMTPStartTLS.uniqueKey}
-                  color="primary"
-                  value="true"
-                  stringValue
-                />
-              )}
-              label="TLS/SSL"
-            />
-          </Grid>
-
-          <Hidden mdDown>
-            <Grid item lg={3} />
-          </Hidden>
-
-          <Grid item xs={12} sm={5} lg={4}>
-            <FormField
-              type="text"
-              name={this.formModel.SMTPUsername.uniqueKey}
-              label="SMTP username (optional)"
-              fullWidth
-            />
-          </Grid>
-
-          <Hidden xsDown>
-            <Grid item sm={1} lg={1} />
-          </Hidden>
-
-          <Grid item xs={12} sm={5} lg={4}>
-            <FormField
-              type="password"
-              name={this.formModel.SMTPPassword.uniqueKey}
-              label="SMTP password (optional)"
-              fullWidth
-            />
-          </Grid>
           <Grid item xs={12} className="mb-1">
             <Typography variant="subtitle1" className="centeredFlex">
               <DynamicText defaultValue="0" text=" Emails queued" value={emailCount} function={emailQueued} />
