@@ -48,38 +48,8 @@ export const EmailPop3Password: PreferenceSchema = {
   editable: true
 };
 
-export const EmailSMTPHost: PreferenceSchema = {
-  uniqueKey: "email.smtphost",
-  mandatory: false,
-  editable: true
-};
-
 export const SMSFromAddress: PreferenceSchema = {
   uniqueKey: "sms.from",
-  mandatory: false,
-  editable: true
-};
-
-export const SMTPPassword: PreferenceSchema = {
-  uniqueKey: "smtp.password",
-  mandatory: false,
-  editable: true
-};
-
-export const SMTPPort: PreferenceSchema = {
-  uniqueKey: "mail.smtp.port",
-  mandatory: false,
-  editable: true
-};
-
-export const SMTPStartTLS: PreferenceSchema = {
-  uniqueKey: "mail.smtp.starttls.enable",
-  mandatory: false,
-  editable: true
-};
-
-export const SMTPUsername: PreferenceSchema = {
-  uniqueKey: "smtp.username",
   mandatory: false,
   editable: true
 };
