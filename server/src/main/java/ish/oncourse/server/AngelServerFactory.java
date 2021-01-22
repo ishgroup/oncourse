@@ -60,7 +60,7 @@ import java.util.Date;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToSystemUser;
+import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToNewSystemUser;
 import static ish.oncourse.server.services.ISchedulerService.*;
 import static ish.persistence.Preferences.ACCOUNT_CURRENCY;
 import static ish.validation.ValidationUtil.isValidEmailAddress;
@@ -315,7 +315,7 @@ public class AngelServerFactory {
                 user.setEmail(email);
 
                 try {
-                    String invitationToken = sendInvitationEmailToSystemUser(user, preferenceController, mailDeliveryService, collegeKey);
+                    String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey);
                     user.setInvitationToken(invitationToken);
                     user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
                 } catch (MessagingException ex) {
