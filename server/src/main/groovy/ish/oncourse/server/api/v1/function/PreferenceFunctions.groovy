@@ -38,8 +38,7 @@ class PreferenceFunctions {
                                                              AUSKEY_CERTIFICATE,
                                                              AUSKEY_PRIVATE_KEY,
                                                              AUSKEY_SALT,
-                                                             EMAIL_POP3PASSWORD,
-                                                             SMTP_PASSWORD]
+                                                             EMAIL_POP3PASSWORD]
 
     public static final List<String> READONLY_PREFERENCES = [  LICENSE_ACCESS_CONTROL,
                                                                LICENSE_LDAP,
