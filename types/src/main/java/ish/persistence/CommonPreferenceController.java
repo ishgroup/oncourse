@@ -453,14 +453,6 @@ public abstract class CommonPreferenceController {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
 
-	public String getEmailSMTPHost() {
-		return getValue(EMAIL_SMTPHOST, false);
-	}
-
-	public void setEmailSMTPHost(String value) {
-		setValue(EMAIL_SMTPHOST, false, value);
-	}
-
 	public String getEmailAdminAddress() {
 		return getValue(EMAIL_ADMIN_ADDRESS, false);
 	}
@@ -536,49 +528,6 @@ public abstract class CommonPreferenceController {
 
 	public void setSMSFromAddress(String value) {
 		setValue(SMS_FROM_ADDRESS, false, value);
-	}
-
-	public String getSMTPUsername() {
-		return getValue(SMTP_USERNAME, false);
-	}
-
-	public void setSMTPUsername(String value) {
-		setValue(SMTP_USERNAME, false, value);
-	}
-
-	public String getSMTPPassword() {
-		return getValue(SMTP_PASSWORD, false);
-	}
-
-	public void setSMTPPassword(String value) {
-		setValue(SMTP_PASSWORD, false, value);
-	}
-
-	public boolean getSMTPStartTLS() {
-		String aPref = getValue(SMTP_START_TLS, false);
-		if (aPref == null) {
-			setSMTPStartTLS(false);
-			return getSMTPStartTLS();
-		}
-		return Boolean.parseBoolean(aPref);
-	}
-
-	public void setSMTPStartTLS(boolean value) {
-		setValue(SMTP_START_TLS, false, Boolean.toString(value));
-	}
-
-	public synchronized int getSMTPPort() {
-		String port = getValue(SMTP_PORT, false);
-		if (port == null) {
-			// set default value
-			setSMTPPort(25);
-			return getSMTPPort();
-		}
-		return Integer.parseInt(port);
-	}
-
-	public void setSMTPPort(int value) {
-		setValue(SMTP_PORT, false, Integer.valueOf(value).toString());
 	}
 
 	public static final Map<String, String> Ldap_SecurityTypes = Maps.asLinkedMap(new String[] {
@@ -1594,12 +1543,8 @@ public abstract class CommonPreferenceController {
 	 * Utility methods
 	 */
 	public boolean hasEmailBeenConfigured() {
-		String smtpHost = getEmailSMTPHost();
 		String fromAddress = getEmailFromAddress();
-		if (smtpHost == null || fromAddress == null || smtpHost.length() == 0 || fromAddress.length() == 0) {
-			return false;
-		}
-		return true;
+		return fromAddress != null && fromAddress.length() != 0;
 	}
 
 	public boolean hasSMSBeenConfigured() {
@@ -1643,8 +1588,6 @@ public abstract class CommonPreferenceController {
 			return getDedupeLastRun();
 		} else if (SERVICES_INFO_REPLICATION_LASTRUN.equals(key)) {
 			return getInfoReplicationLastRun();
-		} else if (EMAIL_SMTPHOST.equals(key)) {
-			return getEmailSMTPHost();
 		} else if (EMAIL_ADMIN_ADDRESS.equals(key)) {
 			return getEmailAdminAddress();
 		} else if (EMAIL_FROM_ADDRESS.equals(key)) {
@@ -1803,14 +1746,6 @@ public abstract class CommonPreferenceController {
 			return getGravatarEnabled();
 		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
 			return getDocumentImportPath();
-		} else if (SMTP_USERNAME.equals(key)) {
-			return getSMTPUsername();
-		} else if (SMTP_PASSWORD.equals(key)) {
-			return getSMTPPassword();
-		} else if (SMTP_START_TLS.equals(key)) {
-			return getSMTPStartTLS();
-		} else if (SMTP_PORT.equals(key)) {
-			return getSMTPPort();
 		} else if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
 			return getOncourseServerDefaultTimezone();
 		} else if (ACCOUNT_INVOICE_TERMS.equals(key)) {
@@ -1870,8 +1805,6 @@ public abstract class CommonPreferenceController {
 			setDedupeLastRun((Date) value);
 		} else if (SERVICES_INFO_REPLICATION_LASTRUN.equals(key)) {
 			setInfoReplicationLastRun((Date) value);
-		} else if (EMAIL_SMTPHOST.equals(key)) {
-			setEmailSMTPHost((String) value);
 		} else if (EMAIL_ADMIN_ADDRESS.equals(key)) {
 			setEmailAdminAddress((String) value);
 		} else if (EMAIL_FROM_ADDRESS.equals(key)) {
@@ -2022,15 +1955,7 @@ public abstract class CommonPreferenceController {
 			setDefaultQEEnrolmentReportKeycode((String)value);
 		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
 			setDocumentImportPath((File) value);
-		} else if (SMTP_USERNAME.equals(key)) {
-			setSMTPUsername((String) value);
-		} else if (SMTP_PASSWORD.equals(key)) {
-			setSMTPPassword((String) value);
-		} else if (SMTP_START_TLS.equals(key)) {
-			setSMTPStartTLS((Boolean) value);
-		} else if (SMTP_PORT.equals(key)) {
-			setSMTPPort((Integer) value);
-		} else if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
+		} else  if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
 			setOncourseServerDefaultTimezone((String) value);
 		} else if (COLLEGE_PAYMENT_INFO.equals(key)) {
 			setPaymentInfo((String) value);

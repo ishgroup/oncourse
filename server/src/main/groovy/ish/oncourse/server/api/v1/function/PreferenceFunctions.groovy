@@ -38,8 +38,7 @@ class PreferenceFunctions {
                                                              AUSKEY_CERTIFICATE,
                                                              AUSKEY_PRIVATE_KEY,
                                                              AUSKEY_SALT,
-                                                             EMAIL_POP3PASSWORD,
-                                                             SMTP_PASSWORD]
+                                                             EMAIL_POP3PASSWORD]
 
     public static final List<String> READONLY_PREFERENCES = [  LICENSE_ACCESS_CONTROL,
                                                                LICENSE_LDAP,
@@ -116,7 +115,6 @@ class PreferenceFunctions {
             case TOOLBAR_COLLAPSE_STATE:
             case LASTLOGIN_SERVER_ISSSL:
             case QE_DEFAULTS_TO_ZERO:
-            case SMTP_START_TLS:
             case AUTO_DISABLE_INACTIVE_ACCOUNT:
             case PASSWORD_COMPLEXITY:
                 return Boolean.valueOf(value)
@@ -129,7 +127,6 @@ class PreferenceFunctions {
             case LASTLOGIN_SERVER_PORT:
             case CLASS_DEFAULTS_MAXIMUM_PLACES:
             case CLASS_DEFAULTS_MINIMUM_PLACES:
-            case SMTP_PORT:
             case ACCOUNT_INVOICE_TERMS:
             case BACKUP_TIMEOFDAY:
             case PASSWORD_EXPIRY_PERIOD:
