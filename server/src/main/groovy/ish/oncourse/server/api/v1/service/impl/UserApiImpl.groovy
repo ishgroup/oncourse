@@ -20,7 +20,7 @@ import ish.oncourse.server.api.dao.UserDao
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.MailDeliveryService
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToSystemUser
+import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToNewSystemUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.toDbSystemUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.toRestUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.validateForUpdate
@@ -187,7 +187,8 @@ class UserApiImpl implements UserApi {
         dbUser
     }
 
-    private String sendInvitationToNewUser(SystemUser user) {
+    private String sendInvitationToNewUser(SystemUser newUser) {
+        SystemUser currentUser = systemUserService.currentUser
         String collegeKey = licenseService.getCollege_key()
         if (!collegeKey) {
             ValidationErrorDTO error = new ValidationErrorDTO()
@@ -195,6 +196,6 @@ class UserApiImpl implements UserApi {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
 
-        return sendInvitationEmailToSystemUser(user, preferenceController, mailDeliveryService, collegeKey)
+        return sendInvitationEmailToNewSystemUser(currentUser, newUser, preferenceController, mailDeliveryService, collegeKey)
     }
 }
