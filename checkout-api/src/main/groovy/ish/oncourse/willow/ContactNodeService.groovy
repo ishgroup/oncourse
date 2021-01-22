@@ -48,7 +48,7 @@ class ContactNodeService {
 
         contact = new GetContact(context, college, request.contactId).get(false)
 
-        ContactNode node = new ContactNode()
+        node = new ContactNode()
         node.contactId = contact.id.toString()
 
         if (!contact.isCompany) {
@@ -77,12 +77,15 @@ class ContactNodeService {
         if (!shoppingCartProducts.empty) {
             addProductRelations()
         }
-
+        
+        //add suggested items after adding all 'shopping cart' items (since suggested items could be in cart already)
+        addSuggestedItems()
+        
         node
     } 
     
     
-    void addCourseRelations() {
+    private void addCourseRelations() {
         
         shoppingCartCourses.each { shoppingCartCourse ->
             String relatedClassId = shoppingCartClasses.find {clazz -> clazz.course == shoppingCartCourse }.id.toString()
@@ -95,8 +98,8 @@ class ContactNodeService {
             }
         }
     }
-    
-    void addProductRelations() {
+
+    private void addProductRelations() {
         shoppingCartProducts.each { shoppingCartProduct ->
             if (contact.student) {
                 relationService.getCoursesToAdd(shoppingCartProduct, contact).each { relatedCourse, allowRemove ->
@@ -109,7 +112,30 @@ class ContactNodeService {
         }
     }
 
-    void addRelatedCourse(Course relatedCourse, Boolean allowRemove, String relatedClassId, String relatedProductId) {
+    private void addSuggestedItems() {
+        shoppingCartCourses.each { shoppingCartCourse ->
+            node.suggestedCourseIds += relationService.getSuggestedCourses(shoppingCartCourse).findAll { suggestedCurse ->
+                !(suggestedCurse.id in shoppingCartCourses*.id || suggestedCurse.id in programCourses*.id)
+            }.collect { it.id.toString() }
+
+            node.suggestedProductIds += relationService.getSuggestedProducts(shoppingCartCourse).findAll { suggestedProduct ->
+                !(suggestedProduct.id in shoppingCartProducts*.id || suggestedProduct.id in programProducts*.id)
+            }.collect { it.id.toString() }
+        }
+
+        shoppingCartProducts.each { shoppingCartProduct ->
+            node.suggestedCourseIds += relationService.getSuggestedCourses(shoppingCartProduct).findAll { suggestedCurse ->
+                !(suggestedCurse.id in shoppingCartCourses*.id || suggestedCurse.id in programCourses*.id)
+            }.collect { it.id.toString() }
+
+            node.suggestedProductIds += relationService.getSuggestedProducts(shoppingCartProduct).findAll { suggestedProduct ->
+                !(suggestedProduct.id in shoppingCartProducts*.id || suggestedProduct.id in programProducts*.id)
+            }.collect { it.id.toString() }
+        }
+
+    }
+
+    private void addRelatedCourse(Course relatedCourse, Boolean allowRemove, String relatedClassId, String relatedProductId) {
         if (!(relatedCourse.id in shoppingCartCourses*.id || relatedCourse.id in programCourses*.id)) {
             programCourses << relatedCourse
 
@@ -138,7 +164,7 @@ class ContactNodeService {
 
     }
 
-    void addRelatedProduct(Product relatedProduct, Boolean allowRemove, String relatedClassId, String relatedProductId) {
+    private void addRelatedProduct(Product relatedProduct, Boolean allowRemove, String relatedClassId, String relatedProductId) {
         if (!(relatedProduct.id in shoppingCartProducts*.id || relatedProduct.id in programProducts*.id)) {
             programProducts << relatedProduct
             ProcessProduct processProduct = new ProcessProduct(context, contact, college, relatedProduct.id.toString(), 1, null, null).process()
@@ -147,32 +173,5 @@ class ContactNodeService {
             processProduct.voucher && node.vouchers << processProduct.voucher.relatedClassId(relatedClassId).relatedProductId(relatedProductId).allowRemove(allowRemove)
         }
     }
-
-    void addSuggestedItems() {
-        //add suggested items after adding all 'shopping cart' items (since suggested items could be in cart already)
-        shoppingCartCourses.each { shoppingCartCourse ->
-            node.suggestedCourseIds += relationService.getSuggestedCourses(shoppingCartCourse).findAll { suggestedCurse ->
-                !(suggestedCurse.id in shoppingCartCourses*.id || suggestedCurse.id in programCourses*.id)
-            }.collect { it.id.toString() }
-
-            node.suggestedProductIds += relationService.getSuggestedProducts(shoppingCartCourse).findAll { suggestedProduct ->
-                !(suggestedProduct.id in shoppingCartProducts*.id || suggestedProduct.id in programProducts*.id)
-            }.collect { it.id.toString() }
-        }
-
-        shoppingCartCourses.each { shoppingCartCourse ->
-            node.suggestedCourseIds += relationService.getSuggestedCourses(shoppingCartCourse).findAll { suggestedCurse ->
-                !(suggestedCurse.id in shoppingCartCourses*.id || suggestedCurse.id in programCourses*.id)
-            }.collect { it.id.toString() }
-
-            node.suggestedProductIds += relationService.getSuggestedProducts(shoppingCartCourse).findAll { suggestedProduct ->
-                !(suggestedProduct.id in shoppingCartProducts*.id || suggestedProduct.id in programProducts*.id)
-            }.collect { it.id.toString() }
-        }
-        
-        
-    }
-    
-    
 
 }
