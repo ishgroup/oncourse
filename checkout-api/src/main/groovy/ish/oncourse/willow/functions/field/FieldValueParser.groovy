@@ -111,7 +111,7 @@ class FieldValueParser {
                      if (org.apache.commons.lang.StringUtils.isNumeric(field.value)) {
                         result.value = TypesUtil.getEnumForDatabaseValue(field.value, this.class.classLoader.loadClass("ish.common.types.$field.enumType") as Class< ?extends ExtendedEnumeration>)
                         if (FieldProperty.IS_STILL_AT_SCHOOL.key == field.key) {
-                            result.value = (result as YesNoOptions).booleanValue
+                            result.value = (result.value as YesNoOptions).booleanValue
                         }
                     } else {
                         result.fieldError = new FieldError(name: field.key, error: "${field.name} is incorrect")
