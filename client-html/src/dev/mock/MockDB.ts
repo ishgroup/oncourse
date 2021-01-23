@@ -22,7 +22,8 @@ import {
   PermissionResponse,
   EmailTemplate,
   ImportModel,
-  EntityRelationType
+  EntityRelationType,
+  Language
 } from "@api/model";
 import { mockPreferences } from "./data/preferences";
 import { mockIntegrations } from "./data/integrations";
@@ -88,6 +89,7 @@ import { mockImportTemplates } from "./data/automation/importTemplates";
 import { mockNotes } from "./data/notes";
 import { mockEntityRelationTypes } from "./data/entityRelationTypes";
 import { mockDocuments } from "./data/entities/documents";
+import { mockLanguages } from "./data/languages";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -222,6 +224,8 @@ export class MockDB {
 
   documents: any;
 
+  languages: Language[];
+
   constructor() {
     this.init();
   }
@@ -243,6 +247,7 @@ export class MockDB {
     this.customFields = mockCustomFields.call(this);
     this.listExport = mockListExport.call(this);
     this.notes = mockNotes.call(this);
+    this.languages = mockLanguages.call(this);
 
     //  Automation
     this.scripts = mockScripts.call(this);

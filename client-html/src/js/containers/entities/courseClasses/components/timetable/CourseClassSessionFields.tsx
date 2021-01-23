@@ -18,7 +18,7 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { FormControl, FormHelperText } from "@material-ui/core";
 import clsx from "clsx";
-import { ClashType, SessionWarning } from "@api/model";
+import { ClashType, Room, SessionWarning } from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
@@ -26,15 +26,14 @@ import EditInPlaceDurationField from "../../../../../common/components/form/form
 import { stubFunction } from "../../../../../common/utils/common";
 import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
 import { State } from "../../../../../reducers/state";
-import { SelectItemDefault } from "../../../../../model/entities/common";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { defaultContactName } from "../../../contacts/utils";
 import { openSiteLink } from "../../../sites/utils";
 import { openRoomLink } from "../../../rooms/utils";
-import { getPlainRooms } from "../../../rooms/actions";
 import { StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { TimetableSession } from "../../../../../model/timetable";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
+import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
 
 interface Props {
   form: string;
@@ -43,7 +42,7 @@ interface Props {
   tutors: CourseClassTutorExtended[];
   classes: any;
   session?: TimetableSession;
-  rooms?: SelectItemDefault[];
+  rooms?: Room[];
   getRooms?: StringArgFunction;
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
@@ -73,8 +72,8 @@ const CourseClassSessionFields: React.FC<Props> = ({
 
   useEffect(() => {
     if (isMounted.current && session.siteId && !session.roomId && rooms.length) {
-      dispatch(change(form, `sessions[${session.index}].roomId`, rooms[0].value));
-      dispatch(change(form, `sessions[${session.index}].room`, rooms[0].label));
+      dispatch(change(form, `sessions[${session.index}].roomId`, rooms[0].id));
+      dispatch(change(form, `sessions[${session.index}].room`, rooms[0].name));
     }
   }, [rooms]);
 
@@ -352,6 +351,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           entity="Site"
           name={`sessions[${session.index}].siteId`}
           label="Site"
+          aqlColumns="name,localTimezone"
           selectValueMark="id"
           selectLabelMark="name"
           selectLabelCondition={siteRoomLabel}
@@ -370,6 +370,8 @@ const CourseClassSessionFields: React.FC<Props> = ({
           type="select"
           name={`sessions[${session.index}].roomId`}
           label="Room"
+          selectValueMark="id"
+          selectLabelMark="name"
           defaultValue={session.room}
           labelAdornment={<LinkAdornment linkHandler={openRoomLink} link={session.roomId} disabled={!session.roomId} />}
           items={rooms || []}
@@ -404,12 +406,13 @@ const CourseClassSessionFields: React.FC<Props> = ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getRooms: (search: string) => {
-    dispatch(getPlainRooms(null, null, null, null, search));
+    dispatch(setCommonPlainSearch("Room", search));
+    dispatch(getCommonPlainRecords("Room", 0, "name"));
   }
 });
 
 const mapStateToProps = (state: State, ownProps: Props) => ({
-  rooms: state.rooms.items,
+  rooms: state.plainSearchRecords["Room"].items,
   session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {}
 });
 

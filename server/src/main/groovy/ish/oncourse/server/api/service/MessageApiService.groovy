@@ -18,8 +18,7 @@ import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.MessageDao
 import ish.oncourse.server.cayenne.Payslip
-
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import ish.oncourse.server.messaging.SMTPService
 import ish.oncourse.server.api.model.RecipientGroupModel
 import ish.oncourse.server.api.model.RecipientsModel
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getEntityTransformationProperty
@@ -34,7 +33,6 @@ import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentOut
 import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.WaitingList
@@ -85,6 +83,8 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     @Inject private TemplateService templateService
 
     @Inject private SystemUserService systemUserService
+
+    @Inject private SMTPService smtpService
 
 
     @Override
@@ -303,9 +303,15 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         addRecipientsToSend(recipientsToSend, recipientsModel.other, request.sendToOtherContacts, request.sendToSuppressOtherContacts)
 
         if (recipientsCount != recipientsToSend.size().toBigDecimal()){
-            logger.error("A real recipients count doesn't equal specified. Specified: {}, Real: {}, MessageType: {}",
+            logger.error("A real recipients number doesn't equal specified. Specified: {}, Real: {}, MessageType: {}",
                     recipientsCount.toString(), recipientsToSend.size().toString(), messageType)
-            validator.throwClientErrorException("recipientsCount", "A real recipients count doesn't equal specified. Specified: ${recipientsCount}, Real: ${recipientsToSend.size()}")
+            validator.throwClientErrorException("recipientsCount", "A real recipients number doesn't equal specified. Specified: ${recipientsCount}, Real: ${recipientsToSend.size()}")
+        }
+        if (smtpService.email_batch && recipientsToSend.size() > smtpService.email_batch) {
+            logger.error("A recipients number higher than allowed by license. License: {}, Real: {}",
+                    smtpService.email_batch, recipientsToSend.size().toString())
+            validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${smtpService.email_batch} emails in one batch. " +
+                    "Please send in smaller batches or upgrade to a plan with a higher limit.\n")
         }
 
         SystemUser user = context.localObject(systemUserService.currentUser)

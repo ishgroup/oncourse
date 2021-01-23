@@ -39,22 +39,22 @@ class MailSession {
     private static final int SMTP_CONNECTION_TIMEOUT_VALUE = 300000
     private static final int SMTP_IO_TIMEOUT_VALUE = 300000
 
-    PreferenceController preferenceController
+    SMTPService smtpService
 
     @Inject
-    MailSession(PreferenceController preferenceController) {
-        this.preferenceController = preferenceController
+    MailSession(SMTPService smtpService) {
+        this.smtpService = smtpService
     }
 
     Session getSession() {
         Properties properties = new Properties()
         properties.put(SMTP_CONNECTION_TIMEOUT, SMTP_CONNECTION_TIMEOUT_VALUE)
         properties.put(SMTP_IO_TIMEOUT, SMTP_IO_TIMEOUT_VALUE)
-        properties.put(SMTP_HOST, preferenceController.emailSMTPHost)
-        properties.put(SMTP_START_TLS, preferenceController.SMTPStartTLS)
-        properties.put(SMTP_PORT, preferenceController.SMTPPort)
+        properties.put(SMTP_HOST, smtpService.host)
+        properties.put(SMTP_PORT, smtpService.port)
+        properties.put(SMTP_START_TLS, Boolean.TRUE)
         if (authNeed) {
-            properties.put(SMTP_AUTH, 'true')
+            properties.put(SMTP_AUTH, Boolean.TRUE)
         }
 
         Session session = Session.getInstance(properties, authNeed ? authenticator : null)
@@ -63,14 +63,14 @@ class MailSession {
     }
 
     private boolean isAuthNeed() {
-        StringUtils.isNotBlank(preferenceController.SMTPUsername) && StringUtils.isNotBlank(preferenceController.SMTPPassword)
+        StringUtils.isNotBlank(smtpService.userName) && StringUtils.isNotBlank(smtpService.password)
     }
 
     private Authenticator getAuthenticator() {
         new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(preferenceController.SMTPUsername, preferenceController.SMTPPassword)
+                return new PasswordAuthentication(smtpService.userName, smtpService.password)
             }
         }
     }

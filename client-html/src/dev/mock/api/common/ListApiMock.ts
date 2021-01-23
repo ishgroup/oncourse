@@ -215,7 +215,7 @@ export function listApiMock() {
       }
 
       case "Enrolment": {
-        return promiseResolve(config, this.db.getEnrolments());
+        return promiseResolve(config, this.db.getPlainEnrolments());
       }
 
       case "ArticleProduct": {
@@ -235,7 +235,7 @@ export function listApiMock() {
       }
 
       case "Certificate": {
-        return promiseResolve(config, this.db.getPlainCertificates());
+        return promiseResolve(config, this.db.getPlainCertificates(config.params));
       }
 
       case "Qualification": {

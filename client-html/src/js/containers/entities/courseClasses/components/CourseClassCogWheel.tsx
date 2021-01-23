@@ -15,10 +15,10 @@ import { State } from "../../../../reducers/state";
 import AvetmissExportModal from "../../../avetmiss-export/components/modal/AvetmissExportModal";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 import PayslipGenerateCogwheelAction from "../../payslips/components/PayslipGenerateCogwheelAction";
-import { getPlainCourseClassesById, setPlainCourseClassSearch } from "../actions";
 import CancelCourseClassModal from "./cancel/CancelCourseClassModal";
 import DuplicateCourseClassModal from "./duplicate-courseClass/DuplicateCourseClassModal";
 import DuplicateTraineeshipModal from "./duplicate-courseClass/DuplicateTraineeshipModal";
+import {getCommonPlainRecords, setCommonPlainSearch} from "../../../../common/actions/CommonPlainRecordsActions";
 
 const CourseClassCogWheel = memo<any>(props => {
   const {
@@ -175,9 +175,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setCourseClassPlainRequest: id => dispatch(setPlainCourseClassSearch(`id is ${id}`)),
+  setCourseClassPlainRequest: id => dispatch(setCommonPlainSearch("CourseClass", `id is ${id}`)),
   getCourseClassPlainRecord: () => dispatch(
-    getPlainCourseClassesById(0, "cancelWarningMessage,course.name,course.code,code,validEnrolmentCount")
+    getCommonPlainRecords("CourseClass", 0, "cancelWarningMessage,course.name,course.code,code,validEnrolmentCount")
   )
 });
 

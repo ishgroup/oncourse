@@ -64,12 +64,7 @@ export function mockPreferences() {
     [Model.EmailPop3Account.uniqueKey]: "test.com.au",
     [Model.EmailPop3Host.uniqueKey]: "test",
     [Model.EmailPop3Password.uniqueKey]: "test",
-    [Model.EmailSMTPHost.uniqueKey]: "test.com.au",
     [Model.SMSFromAddress.uniqueKey]: "+55555555",
-    [Model.SMTPPassword.uniqueKey]: "test",
-    [Model.SMTPPort.uniqueKey]: "25",
-    [Model.SMTPStartTLS.uniqueKey]: false,
-    [Model.SMTPUsername.uniqueKey]: "testuser",
 
     // Class defaults preferences
     [Model.ClassMinPlaces.uniqueKey]: 10,

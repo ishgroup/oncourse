@@ -45,8 +45,11 @@ public class LazyRelationshipComparisonNode extends LazyExpressionNode {
                 return this;
         }
 
+        // make the whole path "outer"
         ASTObjPath path = (ASTObjPath)jjtGetChild(0);
         String outerPath = path.getPath() + "+";
+        outerPath = outerPath.replace(".", "+.");
+        outerPath = outerPath.replace("++", "+");
 
         ExpressionUtil.addChild(node, new ASTObjPath(outerPath), 0);
         ExpressionUtil.addChild(node, new ASTScalar(null), 1);

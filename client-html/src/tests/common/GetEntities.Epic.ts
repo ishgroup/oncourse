@@ -3,36 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ActionsObservable } from "redux-observable";
-import { filter, toArray } from "rxjs/operators";
-import { store } from "../TestEntry";
-import { FETCH_FINISH, FETCH_START } from "../../js/common/actions";
 import {
   GET_RECORDS_REQUEST,
   GET_RECORDS_FULFILLED
 } from "../../js/common/components/list-view/actions";
 import { EpicGetEntities } from "../../js/common/components/list-view/epics/EpicGetEntities";
+import { DefaultEpic } from "./Default.Epic";
 
-export const GetEntities = (entity: string, records: []) => {
-  // Redux action to trigger epic
-  const action$ = ActionsObservable.of({
+export const GetEntities = (entity: string, records: []) => DefaultEpic({
+  action: {
     type: GET_RECORDS_REQUEST,
     payload: { entity, viewAll: false }
-  });
-
-  // Initializing epic instance
-  const epic$ = EpicGetEntities(action$, store, {});
-
-  // Testing epic to be resolved with expected array of actions
-  return expect(
-    epic$
-      .pipe(
-        // Filtering common actions
-        filter(a => ![FETCH_START, FETCH_FINISH].includes(a.type)),
-        toArray()
-      )
-      .toPromise()
-  ).resolves.toEqual([
+  },
+  epic: EpicGetEntities,
+  processData: () => [
     {
       type: GET_RECORDS_FULFILLED,
       payload: {
@@ -47,5 +31,5 @@ export const GetEntities = (entity: string, records: []) => {
         }
       }
     }
-  ]);
-};
+  ]
+});

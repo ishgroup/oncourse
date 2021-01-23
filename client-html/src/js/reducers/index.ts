@@ -35,19 +35,12 @@ import { accountEntityReducer } from "../containers/entities/accounts/reducers";
 import { contactsReducer } from "../containers/entities/contacts/reducers";
 import { userPreferencesReducer } from "../common/reducers/userPreferencesReducer";
 import { bankingReducer } from "../containers/entities/bankings/reducers";
-import { coursesReducer } from "../containers/entities/courses/reducers";
 import { discountsReducer } from "../containers/entities/discounts/reducers";
 import { saleReducer } from "../containers/entities/sales/reducers";
 import { timetableReducer } from "../containers/timetable/reducers";
-import {
-  quickSearchConcessionTypeReducer,
-  quickSearchCorporatePassReducer
-} from "../containers/entities/common/reducers";
 import { customFieldTypesReducer } from "../containers/entities/customFieldTypes/reducers";
 import { taxesReducer } from "../containers/entities/taxes/reducers";
-import { qualificationReducer } from "../containers/entities/qualifications/reducers";
 import { certificatesReducer } from "../containers/entities/certificates/reducers";
-import { membershipProductReducer } from "../containers/entities/membershipProducts/reducers";
 import { voucherProductReducer } from "../containers/entities/voucherProducts/reducers";
 import { invoicesReducer } from "../containers/entities/invoices/reducers";
 import { paymentInReducer } from "../containers/entities/paymentsIn/reducers";
@@ -56,15 +49,10 @@ import { confirmReducer } from "../common/reducers/confirmReducer";
 import { paymentOutReducer } from "../containers/entities/paymentsOut/reducers";
 import {
   courseClassesBulkSessionReducer,
-  courseClassesReducer,
   courseClassReducer
 } from "../containers/entities/courseClasses/reducers";
-import { modulesReducer } from "../containers/entities/modules/reducers";
-import { assessmentsReducer } from "../containers/entities/assessments/reducers";
 import { actionsQueueReducer } from "../common/reducers/actionsQueueReducer";
 import { messageReducer } from "../common/reducers/messageReducer";
-import { articleProductsReducer } from "../containers/entities/articleProducts/reducers";
-import { roomReducer } from "../containers/entities/rooms/reducers";
 import { checkoutReducer } from "../containers/checkout/reducers";
 import { swipeableDrawerReducer } from "../common/components/layout/swipeable-sidebar/reducers";
 import { enrolmentsReducer } from "../containers/entities/enrolments/reducers";
@@ -74,7 +62,6 @@ export const combinedReducers = combineReducers({
   automation: automationReducer,
   confirm: confirmReducer,
   courseClass: courseClassReducer,
-  courseClasses: courseClassesReducer,
   courseClassesBulkSession: courseClassesBulkSessionReducer,
   preferences: preferencesReducer,
   userPreferences: userPreferencesReducer,
@@ -96,7 +83,6 @@ export const combinedReducers = combineReducers({
   share: shareReducer,
   lastLocation: lastLocationReducer,
   sites: siteReducer,
-  rooms: roomReducer,
   googleApiResponse: googleApiReducer,
   documents: documentReducer,
   dashboard: dashboardReducer,
@@ -109,24 +95,16 @@ export const combinedReducers = combineReducers({
   usiSoftwareId: usiSoftwareIdReducer,
   banking: bankingReducer,
   lockedDate: lockedDateReducer,
-  courses: coursesReducer,
   discounts: discountsReducer,
   sales: saleReducer,
   timetable: timetableReducer,
-  quickSearchConcessionType: quickSearchConcessionTypeReducer,
-  quickSearchCorporatePass: quickSearchCorporatePassReducer,
-  qualification: qualificationReducer,
   customFieldTypes: customFieldTypesReducer,
-  membershipProducts: membershipProductReducer,
   voucherProducts: voucherProductReducer,
   invoices: invoicesReducer,
   paymentsIn: paymentInReducer,
   paymentsOut: paymentOutReducer,
-  modules: modulesReducer,
-  assessments: assessmentsReducer,
   actionsQueue: actionsQueueReducer,
   message: messageReducer,
-  articleProducts: articleProductsReducer,
   checkout: checkoutReducer,
   enrolments: enrolmentsReducer,
   plainSearchRecords: commonPlainRecordSearchReducer

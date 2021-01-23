@@ -5,13 +5,15 @@
 
 import { Epic } from "redux-observable";
 
+import { initialize } from "redux-form";
+import {
+ Banking, Payment, PrintRequest, Report 
+} from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import BankingService from "../services/BankingService";
 import { CREATE_BANKING_ITEM, CREATE_BANKING_ITEM_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { initialize } from "redux-form";
-import { Banking, Payment, PrintRequest, Report } from "@api/model";
 import {
   clearListNestedEditRecord,
   GET_RECORDS_REQUEST,
@@ -24,11 +26,9 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 
 const request: EpicUtils.Request<any, State, any> = {
   type: CREATE_BANKING_ITEM,
-  getData: payload => {
-    return BankingService.createBanking(payload.banking);
-  },
+  getData: payload => BankingService.createBanking(payload.banking),
   processData: (value, state, payload) => {
-    const reportId = (state.share.pdfReports as Report[]).find(v => v.name === BankingReport).id;
+    // const reportId = (state.share.pdfReports as Report[]).find(v => v.name === BankingReport).id;
 
     const paymentInIds = payload.banking.payments
       .filter((p: Payment) => p.paymentTypeName === PaymentInType)
@@ -65,9 +65,7 @@ const request: EpicUtils.Request<any, State, any> = {
 
     return actions;
   },
-  processError: data => {
-    return [...FetchErrorHandler(data, "Banking Record was not created")];
-  }
+  processError: data => [...FetchErrorHandler(data, "Banking Record was not created")]
 };
 
 export const EpicCreateBanking: Epic<any, any> = EpicUtils.Create(request);

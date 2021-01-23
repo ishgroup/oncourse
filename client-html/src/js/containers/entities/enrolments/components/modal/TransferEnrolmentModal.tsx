@@ -26,7 +26,6 @@ import { State } from "../../../../../reducers/state";
 import Button from "../../../../../common/components/buttons/Button";
 import { cancelEnrolment, setEnrolmentTransfered } from "../../actions";
 import { openInternalLink } from "../../../../../common/utils/links";
-import { getCommonPlainRecordFromState } from "../../../../../common/actions/CommonPlainRecordsActions";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
 import { useOutcomeWarnings } from "./hooks";
 import { enrolmentModalStyles } from "./styles";
@@ -282,7 +281,7 @@ const mapStateToProps = (state: State) => ({
   isTransfered: state.enrolments.isTransfered,
   accounts: state.accounts.items,
   taxes: state.taxes.items,
-  enrolmentPlainRecord: getCommonPlainRecordFromState(state, "Enrolment"),
+  enrolmentPlainRecord: state.plainSearchRecords["Enrolment"],
   defaultIncomeAccountId: state.userPreferences[ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID]
 });
 

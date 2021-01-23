@@ -55,6 +55,9 @@ public class EmailDequeueJob implements Job {
 	private ICayenneService cayenneService;
 
 	@Inject
+	private SMTPService smtpService;
+
+	@Inject
 	private PreferenceController preferenceController;
 
 	@Inject
@@ -113,7 +116,7 @@ public class EmailDequeueJob implements Job {
 			// javax.mail.IllegalWriteException,
 			returnStatus = MessageStatus.QUEUED;
 			logger.error("Email delivery failed, target email :{} using mail server :{}",
-					aReceiver, PreferenceController.getController().getEmailSMTPHost(), e);
+					aReceiver, smtpService.getHost(), e);
 			theResponse.append(e.getMessage());
 		}
 		return returnStatus;
@@ -213,13 +216,13 @@ public class EmailDequeueJob implements Job {
 		try {
 			logger.debug("email dequeue process started");
 
-			if (StringUtils.isBlank(preferenceController.getEmailSMTPHost())) {
+			if (StringUtils.isBlank(smtpService.getHost())) {
 				logger.debug("no smtp host specified, service wont continue");
 				return;
 			}
 
-			var dequeueingQualifier = ExpressionFactory.matchExp(_MessagePerson.TYPE_PROPERTY, MessageType.EMAIL);
-			dequeueingQualifier = dequeueingQualifier.andExp(ExpressionFactory.matchExp(_MessagePerson.STATUS_PROPERTY, MessageStatus.QUEUED));
+			var dequeueingQualifier = ExpressionFactory.matchExp(MessagePerson.TYPE.getName(), MessageType.EMAIL);
+			dequeueingQualifier = dequeueingQualifier.andExp(ExpressionFactory.matchExp(MessagePerson.STATUS.getName(), MessageStatus.QUEUED));
 
 			final var aContext = this.cayenneService.getNewContext();
 			var messagePersons = currentQueue(dequeueingQualifier, aContext);
