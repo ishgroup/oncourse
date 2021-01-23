@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, removeItemByEntity } from "../../mockUtils";
 
 export function mockAssessments() {
   this.getAssessments = () => this.assessments;
@@ -75,7 +75,7 @@ export function mockAssessments() {
   });
 
   this.removeAssessment = id => {
-    this.assessments = this.assessments.rows.filter(a => a.id !== id);
+    this.assessments = removeItemByEntity(this.assessments, id);
   };
 
   const rows = generateArraysOfRecords(20, [
