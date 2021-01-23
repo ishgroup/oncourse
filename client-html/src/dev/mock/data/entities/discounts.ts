@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, removeItemByEntity } from "../../mockUtils";
 
 export function mockDiscounts() {
   this.getDiscounts = () => this.discounts;
@@ -216,7 +216,7 @@ export function mockDiscounts() {
   });
 
   this.removeDiscount = id => {
-    this.discounts.rows = this.discounts.rows.filter(a => a.id !== id);
+    this.discounts = removeItemByEntity(this.discounts, id);
   };
 
   const rows = generateArraysOfRecords(20, [
