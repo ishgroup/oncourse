@@ -1,7 +1,7 @@
 export const generateArraysOfRecords = (count: number, keys): any => Array.from(Array(count), (_, x) => ({
-    id: x.toString(),
-    ...mockByKeys(x, keys)
-  }));
+  id: x.toString(),
+  ...mockByKeys(x, keys)
+}));
 
 const mockByKeys = (index, keys) => {
   const obj = {};
