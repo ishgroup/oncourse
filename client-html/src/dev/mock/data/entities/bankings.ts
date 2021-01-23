@@ -1,5 +1,5 @@
 import { Banking } from "@api/model";
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, removeItemByEntity } from "../../mockUtils";
 
 export function mockBankings() {
   this.getBankings = () => this.bankings;
@@ -109,7 +109,7 @@ export function mockBankings() {
   });
 
   this.removeBanking = id => {
-    this.bankings.rows = this.bankings.rows.filter(a => a.id !== id);
+    this.bankings = removeItemByEntity(this.bankings, id);
   };
 
   this.getDepositPayment = () => [
