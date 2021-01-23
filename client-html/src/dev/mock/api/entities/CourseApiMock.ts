@@ -1,9 +1,9 @@
 import { promiseResolve } from "../../MockAdapter";
+import { getParamsId } from "../../mockUtils";
 
 export function CourseApiMock() {
   this.api.onGet(new RegExp(`v1/list/entity/course/\\d+`)).reply(config => {
-    const params = config.url.split("/");
-    const id = params[params.length - 1];
+    const id = getParamsId(config);
     return promiseResolve(config, this.db.getCourse(id));
   });
 
@@ -20,9 +20,8 @@ export function CourseApiMock() {
   });
 
   this.api.onDelete(new RegExp(`v1/list/entity/course/\\d+`)).reply(config => {
-    const params = config.url.split("/");
-    const id = params[params.length - 1];
+    const id = getParamsId(config);
     this.db.removeCourse(id);
-    return promiseResolve(config, this.db.getPlainCourses());
+    return promiseResolve(config, {});
   });
 }

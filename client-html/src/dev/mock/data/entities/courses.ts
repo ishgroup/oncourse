@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, removeItemByEntity } from "../../mockUtils";
 
 export function mockCourses() {
   this.getPlainCourses = () => this.courses;
@@ -291,7 +291,7 @@ export function mockCourses() {
   });
 
   this.removeCourse = id => {
-    this.courses = this.courses.rows.filter(a => a.id !== id);
+    this.courses = removeItemByEntity(this.courses, id);
   };
 
   this.duplicateCourse = ids => {
