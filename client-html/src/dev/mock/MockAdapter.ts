@@ -60,6 +60,7 @@ import { AccessApiMock } from "./api/common/AccessApiMock";
 import { EmailTemplateApiMock } from "./api/automation/EmailTemplateApiMock";
 import { ImportTemplateApiMock } from "./api/automation/ImportTemplateApiMock";
 import { EntityRelationTypesApiMock } from "./api/preference/EntityRelationTypesApiMock";
+import { DocumentApiMock } from "./api/entities/DocumentApiMock";
 
 export const initMockDB = () => new MockAdapter();
 
@@ -123,6 +124,7 @@ export class MockAdapter {
     PayslipApiMock.apply(this);
     BankingApiMock.apply(this);
     DiscountApiMock.apply(this);
+    DocumentApiMock.apply(this);
     ApplicationApiMock.apply(this);
     CertificateApiMock.apply(this);
     SurveyApiMock.apply(this);
