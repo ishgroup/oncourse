@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, removeItemByEntity } from "../../mockUtils";
 
 export function mockCorporatePasses() {
   this.getCorporatePasses = () => this.corporatePasses;
@@ -160,7 +160,7 @@ export function mockCorporatePasses() {
   });
 
   this.removeCorporatePass = id => {
-    this.corporatePasses = this.corporatePasses.rows.filter(a => a.id !== id);
+    this.corporatePasses = removeItemByEntity(this.corporatePasses, id);
   };
 
   const rows = generateArraysOfRecords(20, [
