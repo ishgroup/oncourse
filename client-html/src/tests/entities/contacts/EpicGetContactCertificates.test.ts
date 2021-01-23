@@ -13,7 +13,9 @@ describe("Get contact certificates epic tests", () => {
     action: getContactCertificates(1),
     epic: EpicGetContactCertificates,
     processData: mockedApi => {
-      const response = mockedApi.db.getPlainCertificates();
+      const response = mockedApi.db.getPlainCertificates({
+        columns: "isQualification,qualification.nationalCode,qualification.title,certificateNumber,createdOn,printedOn,qualification.level"
+      });
       const certificates = response.rows.map(contactCertificatesMap);
 
       return [
