@@ -1,9 +1,9 @@
 import { promiseResolve } from "../../MockAdapter";
+import { getParamsId } from "../../mockUtils";
 
 export function ContactApiMock(mock) {
   this.api.onGet(new RegExp(`v1/list/entity/contact/\\d+`)).reply(config => {
-    const params = config.url.split("/");
-    const id = params[params.length - 1];
+    const id = getParamsId(config);
     return promiseResolve(config, this.db.getContact(id));
   });
 
@@ -15,10 +15,9 @@ export function ContactApiMock(mock) {
   });
 
   this.api.onDelete(new RegExp(`v1/list/entity/contact/\\d+`)).reply(config => {
-    const params = config.url.split("/");
-    const id = params[params.length - 1];
+    const id = getParamsId(config);
     this.db.removeContact(id);
-    return promiseResolve(config, this.db.getContacts());
+    return promiseResolve(config, {});
   });
 
   this.api.onGet("v1/list/entity/contact/merge").reply(config => promiseResolve(config, this.db.getMergeContacts()));

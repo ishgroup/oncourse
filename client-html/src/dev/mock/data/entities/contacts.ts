@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, removeItemByEntity } from "../../mockUtils";
 
 export function mockContacts() {
   this.getContacts = () => this.contacts;
@@ -258,7 +258,7 @@ export function mockContacts() {
   });
 
   this.removeContact = id => {
-    this.contacts.rows = this.contacts.rows.filter(a => a.id !== id);
+    this.contacts = removeItemByEntity(this.contacts, id);
   };
 
   this.getVerifyUSI = () => ({
@@ -288,7 +288,8 @@ export function mockContacts() {
     response.layout = null;
     response.pageSize = rows.length;
     response.search = null;
-    response.count = null;
+    response.count = rows.length;
+    response.filteredCount = rows.length;
     response.sort = [];
 
     return response;
@@ -318,6 +319,7 @@ export function mockContacts() {
     response.pageSize = rows.length;
     response.search = null;
     response.count = null;
+    response.filteredCount = rows.length;
     response.sort = [];
 
     return response;
@@ -638,6 +640,7 @@ export function mockContacts() {
   response.pageSize = 20;
   response.search = null;
   response.count = rows.length;
+  response.filteredCount = rows.length;
   response.sort = [];
 
   return response;
