@@ -1,9 +1,7 @@
-export const generateArraysOfRecords = (count: number, keys): any => {
-  return Array.from(Array(count), (_, x) => ({
+export const generateArraysOfRecords = (count: number, keys): any => Array.from(Array(count), (_, x) => ({
     id: x.toString(),
     ...mockByKeys(x, keys)
   }));
-};
 
 const mockByKeys = (index, keys) => {
   const obj = {};
@@ -19,6 +17,41 @@ const mockByKeys = (index, keys) => {
   return obj;
 };
 
-export const getRandomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+export const getEntityResponse = (entity = "", rows = [], columnsList = [], res = {}) => {
+  const defaultColumn = {
+    title: "",
+    attribute: "",
+    type: null,
+    sortable: false,
+    visible: true,
+    system: null,
+    width: 200,
+    sortFields: []
+  };
+
+  const columns = [];
+
+  columnsList.forEach(column => {
+    columns.push({
+      ...defaultColumn,
+      ...column
+    });
+  });
+
+  return {
+    rows,
+    columns,
+    entity,
+    offset: 0,
+    filterColumnWidth: 200,
+    layout: "Three column",
+    pageSize: 20,
+    search: null,
+    count: rows.length,
+    filteredCount: rows.length,
+    sort: [],
+    ...res
+  };
 };

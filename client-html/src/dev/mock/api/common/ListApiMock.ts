@@ -87,6 +87,8 @@ export function listApiMock() {
       return promiseResolve(config, this.db.getBankings());
     } if (entity === "Discount") {
       return promiseResolve(config, this.db.getDiscounts());
+    } if (entity === "Document") {
+      return promiseResolve(config, this.db.getDocuments());
     } if (entity === "Application") {
       return promiseResolve(config, this.db.getApplications());
     } if (entity === "Certificate") {
