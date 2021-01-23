@@ -59,6 +59,10 @@ export function mockDocuments() {
     this.documents = documents;
   };
 
+  this.removeDocument = id => {
+    this.documents.rows = this.documents.rows.filter(a => Number(a.id) !== Number(id));
+  };
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "link", type: "string" },
