@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, removeItemByEntity } from "../../mockUtils";
 
 export function mockApplications() {
   this.getApplications = () => this.applications;
@@ -64,7 +64,7 @@ export function mockApplications() {
   });
 
   this.removeApplication = id => {
-    this.applications.rows = this.applications.rows.filter(a => a.id !== id);
+    this.applications = removeItemByEntity(this.applications, id);
   };
 
   const rows = generateArraysOfRecords(20, [

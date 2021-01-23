@@ -22,6 +22,7 @@ export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min 
 export const removeItemByEntity = (entity, id) => {
   entity.rows = [...entity.rows.filter(m => Number(m.id) !== Number(id))];
   entity.count = entity.rows.length;
+  entity.filteredCount = entity.rows.length;
   return entity;
 };
 
