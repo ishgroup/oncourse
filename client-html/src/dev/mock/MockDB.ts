@@ -89,6 +89,7 @@ import { mockImportTemplates } from "./data/automation/importTemplates";
 import { mockNotes } from "./data/notes";
 import { mockEntityRelationTypes } from "./data/entityRelationTypes";
 import { mockLanguages } from "./data/languages";
+import { mockDocuments } from "./data/entities/documents";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -223,6 +224,8 @@ export class MockDB {
 
   languages: Language[];
 
+  documents: any;
+
   constructor() {
     this.init();
   }
@@ -311,6 +314,7 @@ export class MockDB {
     this.payslips = mockPayslips.call(this);
     this.bankings = mockBankings.call(this);
     this.discounts = mockDiscounts.call(this);
+    this.documents = mockDocuments.call(this);
     this.applications = mockApplications.call(this);
     this.certificates = mockCertificates.call(this);
     this.surveys = mockSurvey.call(this);
