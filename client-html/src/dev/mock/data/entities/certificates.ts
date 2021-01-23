@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, removeItemByEntity } from "../../mockUtils";
 
 export function mockCertificates() {
   this.getCertificates = () => this.certificates;
@@ -145,7 +145,7 @@ export function mockCertificates() {
   });
 
   this.removeCertificate = id => {
-    this.certificates.rows = this.certificates.rows.filter(a => a.id !== id);
+    this.certificates = removeItemByEntity(this.certificates, id);
   };
 
   this.validateCertificateUSIRequest = () => ({
