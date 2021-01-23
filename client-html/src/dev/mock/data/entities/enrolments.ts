@@ -68,18 +68,47 @@ export function mockEnrolments() {
     this.enrolments = this.enrolments.rows.filter(a => a.id !== id);
   };
 
-  this.getPlainEnrolments = () => {
-    const rows = generateArraysOfRecords(20, [
-      { name: "id", type: "number" },
-      { name: "invoiceNumber", type: "number" },
-      { name: "createdOn", type: "Datetime" },
-      { name: "uniqueCode", type: "string" },
-      { name: "courseName", type: "string" },
-      { name: "status", type: "string" }
-    ]).map(l => ({
-      id: l.id,
-      values: [l.invoiceNumber, "2021-01-16T06:31:09.463Z", l.uniqueCode, l.courseName, l.status]
-    }));
+  this.getPlainEnrolments = params => {
+    const columnList = params.columns.split(",");
+    const ids = params.search.replace(/(id in|\(|\))/g, '').trim().split(",");
+
+    let rows = [];
+
+    if (columnList.length) {
+      if (columnList.includes("status")) {
+        ids.forEach(id => {
+          rows.push({
+            id,
+            values: ["Active"]
+          });
+        });
+      } else if (columnList.includes("invoiceLine.invoice.invoiceNumber")) {
+        rows = generateArraysOfRecords(20, [
+          { name: "id", type: "number" },
+          { name: "invoiceNumber", type: "number" },
+          { name: "createdOn", type: "Datetime" },
+          { name: "uniqueCode", type: "string" },
+          { name: "courseName", type: "string" },
+          { name: "status", type: "string" }
+        ]).map(l => ({
+          id: l.id,
+          values: [l.invoiceNumber, "2021-01-16T06:31:09.463Z", l.uniqueCode, l.courseName, l.status]
+        }));
+      }
+    } else {
+      rows = generateArraysOfRecords(20, [
+        { name: "id", type: "number" },
+        { name: "source", type: "string" },
+        { name: "studentName", type: "string" },
+        { name: "classCode", type: "string" },
+        { name: "courseClassName", type: "string" },
+        { name: "status", type: "string" },
+        { name: "createdOn", type: "Datetime" }
+      ]).map(l => ({
+        id: l.id,
+        values: [l.source, l.studentName, l.classCode, l.courseClassName, l.status, l.createdOn]
+      }));
+    }
 
     const columns = [];
 
