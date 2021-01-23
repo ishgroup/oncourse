@@ -1,9 +1,7 @@
-export const generateArraysOfRecords = (count: number, keys): any => {
-  return Array.from(Array(count), (_, x) => ({
+export const generateArraysOfRecords = (count: number, keys): any => Array.from(Array(count), (_, x) => ({
     id: x.toString(),
     ...mockByKeys(x, keys)
   }));
-};
 
 const mockByKeys = (index, keys) => {
   const obj = {};
@@ -19,6 +17,15 @@ const mockByKeys = (index, keys) => {
   return obj;
 };
 
-export const getRandomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+export const removeItemByEntity = (entity, id) => {
+  entity.rows = [...entity.rows.filter(m => Number(m.id) !== Number(id))];
+  entity.count = entity.rows.length;
+  return entity;
+};
+
+export const getParamsId = config => {
+  const params = config.url.split("/");
+  return params[params.length - 1];
 };
