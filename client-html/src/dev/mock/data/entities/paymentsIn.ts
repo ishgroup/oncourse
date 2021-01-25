@@ -69,6 +69,52 @@ export function mockPaymentsIn() {
     this.paymentsIn = this.paymentsIn.rows.filter(m => m.id !== id);
   };
 
+  this.getPlainPaymentsIn = () => {
+    const rows = generateArraysOfRecords(20, [
+      { name: "id", type: "number" },
+      { name: "status", type: "string" },
+      { name: "paymentInType", type: "string" },
+      { name: "source", type: "string" },
+      { name: "totalOwing", type: "number" },
+      { name: "reconciled", type: "boolean" },
+      { name: "reversalOf", type: "string" },
+      { name: "reversedBy", type: "string" },
+      { name: "bookingId", type: "number" },
+      { name: "amount", type: "number" },
+      { name: "payerName", type: "string" }
+    ]).map(l => ({
+      id: l.id,
+      values: [
+        "Success",
+        "Credit card",
+        "office",
+        "132.00",
+        "true",
+        l.reversalOf,
+        l.reversedBy,
+        l.bookingId,
+        l.amount * 100,
+        l.payerName
+      ]
+    }));
+
+    const columns = [];
+
+    const response = { rows, columns } as any;
+
+    response.entity = "PaymentIn";
+    response.offset = 0;
+    response.filterColumnWidth = null;
+    response.layout = null;
+    response.pageSize = 20;
+    response.search = null;
+    response.count = rows.length;
+    response.filteredCount = rows.length;
+    response.sort = [];
+
+    return response;
+  };
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "source", type: "string" },
@@ -166,6 +212,7 @@ export function mockPaymentsIn() {
   response.pageSize = 20;
   response.search = null;
   response.count = rows.length;
+  response.filteredCount = rows.length;
   response.sort = [
     {
       attribute: "source",
