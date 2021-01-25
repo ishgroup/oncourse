@@ -261,6 +261,10 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
 
           <Grid container className="p-3 relative">
             <Grid item xs={twoColumn ? 4 : 12}>
+              {Boolean(values.removed) && (
+              <div className={clsx("backgroundText-mixBlendMode paperTextColor", { "fs8": !twoColumn })}>PENDING DELETION</div>
+              )}
+
               <Paper className={clsx("relative cursor-pointer", classes.previewPaper)}>
                 {thumbnail ? (
                   <div
