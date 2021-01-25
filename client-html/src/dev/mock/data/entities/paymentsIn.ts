@@ -1,10 +1,8 @@
-import { generateArraysOfRecords } from "../../mockUtils";
 import { format } from "date-fns";
+import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockPaymentsIn() {
-  this.getPaymentsIn = () => {
-    return this.paymentsIn;
-  };
+  this.getPaymentsIn = () => this.paymentsIn;
 
   this.getPaymentIn = id => {
     const row = this.paymentsIn.rows.find(row => row.id == id);
@@ -12,8 +10,8 @@ export function mockPaymentsIn() {
 
     return {
       id: row.id,
-      createdOn: new Date().toISOString(),
-      modifiedOn: new Date().toISOString(),
+      createdOn: "2020-01-25T05:46:52.854Z",
+      modifiedOn: "2020-01-25T05:46:52.854Z",
       accountInName: row.values[5],
       administrationCenterId: site.id,
       administrationCenterName: site.name,
@@ -26,9 +24,15 @@ export function mockPaymentsIn() {
       datePayed: row.values[6],
       emailConfirmation: false,
       invoices: [
-        { id: 1, dateDue: "2011-08-03", invoiceNumber: 31, amountOwing: 110.0, amount: 110.0 },
-        { id: 2, dateDue: "2011-08-03", invoiceNumber: 32, amountOwing: 0.0, amount: -110.0 },
-        { id: 3, dateDue: "2011-08-04", invoiceNumber: 53, amountOwing: 132.0, amount: 132.0 }
+        {
+          id: 1, dateDue: "2011-08-03", invoiceNumber: 31, amountOwing: 110.0, amount: 110.0
+        },
+        {
+          id: 2, dateDue: "2011-08-03", invoiceNumber: 32, amountOwing: 0.0, amount: -110.0
+        },
+        {
+          id: 3, dateDue: "2011-08-04", invoiceNumber: 53, amountOwing: 132.0, amount: 132.0
+        }
       ],
       payerId: 532,
       payerName: row.values[3],
