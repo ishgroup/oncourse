@@ -267,6 +267,36 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+            
+  /v1/course/classes{courseId}:
+    post:
+      x-filter:
+        - CollegeInfo
+      summary: Get list of available classes by course id
+      operationId: getAvailableClasses
+      description: Get list of available classes by course id
+      tags:
+        - CourseClasses
+      consumes:
+        - application/json
+      parameters:
+        - name: courseId
+          in: path
+          description: course id
+          required: true
+          type: string
+      responses:
+        200:
+          description: List of classes
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/web.CourseClass'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+
   /v1/courses:
     post:
       x-filter:

@@ -14,7 +14,6 @@ import ish.oncourse.model.TaggableTag
 import ish.oncourse.services.application.FindOfferedApplication
 import ish.oncourse.services.course.GetEnrollableClasses
 import ish.oncourse.services.courseclass.CheckClassAge
-import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.willow.checkout.functions.BuildClassPrice
 import ish.oncourse.willow.checkout.functions.GetCourse
 import ish.oncourse.willow.model.web.*
@@ -43,6 +42,14 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
         this.collegeService = collegeService
     }
 
+    List<CourseClass> getAvailableClasses(String courseId) {
+        ObjectContext context = cayenneService.sharedContext()
+        College college = context.localObject(collegeService.college)
+        
+        ish.oncourse.model.Course course = new GetCourse(context, college, courseId).get()
+        return course.availableClasses.collect {toClassDTO(it)}
+    }
+    
     List<CourseClass> getCourseClasses(CourseClassesParams courseClassesParams) {
         ObjectContext context = cayenneService.sharedContext()
         College college = context.localObject(collegeService.college)
@@ -93,45 +100,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                 }
             }
 
-            result << new CourseClass().with {
-                it.id = c.id.toString()
-                it.code = c.code
-                it.course = new Course().with {
-                    it.id = c.course.id.toString()
-                    it.code = c.course.code
-                    it.name = c.course.name
-                    it
-                }
-
-                it.availableEnrolmentPlaces = c.availableEnrolmentPlaces
-
-                if (c.room?.site?.isWebVisible) {
-                    it.room = new Room().with { r ->
-                        r.name = c.room.name
-                        r.site = new Site().with { s ->
-                            s.name = c.room.site.name
-                            s.street = c.room.site.street
-                            s.suburb = c.room.site.suburb
-                            s.postcode = c.room.site.postcode
-                            s
-                        }
-                        r
-                    }
-                }
-
-                it.start = c.startDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
-                it.end = c.endDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
-                it.hasAvailablePlaces = c.hasAvailableEnrolmentPlaces && new CheckClassAge().college(college).courseClass(c).check()
-                it.isFinished = !c.cancelled && c.hasEnded()
-                it.isCancelled = c.cancelled
-                it.distantLearning = c.isDistantLearningCourse
-                it.isAllowByApplication = allowByApplication
-                it.isPaymentGatewayEnabled = true//new IsPaymentGatewayEnabled(college, c.objectContext).get()
-                it.price =  new BuildClassPrice(c, allowByApplication, overridenFee, promotions, contact).build()
-                it.timezone = c.timeZone
-                it.subject = getSubject(c.course)
-                it
-            }
+            result << toClassDTO(c, allowByApplication, overridenFee, promotions, contact)
         }
         result
     }
@@ -163,6 +132,49 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                 .and(Tag.TAGGABLE_TAGS.outer().dot(TaggableTag.TAGGABLE).outer().dot(Taggable.ENTITY_WILLOW_ID).eq(course.id))
                 .select(cayenneService.newContext())
                 .find { NodeSpecialType.SUBJECTS == it.root.specialType }?.name
+    }
+    
+    private CourseClass toClassDTO(ish.oncourse.model.CourseClass c, Boolean allowByApplication = false, Money overridenFee = null, List<ish.oncourse.model.Discount> promotions = [], Contact contact = null ) {
+        new CourseClass().with {
+            it.id = c.id.toString()
+            it.code = c.code
+            it.course = new Course().with {
+                it.id = c.course.id.toString()
+                it.code = c.course.code
+                it.name = c.course.name
+                it
+            }
+
+            it.availableEnrolmentPlaces = c.availableEnrolmentPlaces
+
+            if (c.room?.site?.isWebVisible) {
+                it.room = new Room().with { r ->
+                    r.name = c.room.name
+                    r.site = new Site().with { s ->
+                        s.name = c.room.site.name
+                        s.street = c.room.site.street
+                        s.suburb = c.room.site.suburb
+                        s.postcode = c.room.site.postcode
+                        s
+                    }
+                    r
+                }
+            }
+
+            it.start = c.startDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
+            it.end = c.endDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
+            it.hasAvailablePlaces = c.hasAvailableEnrolmentPlaces && new CheckClassAge().college(collegeService.college).courseClass(c).check()
+            it.isFinished = !c.cancelled && c.hasEnded()
+            it.isCancelled = c.cancelled
+            it.distantLearning = c.isDistantLearningCourse
+            it.isAllowByApplication = allowByApplication
+            it.isPaymentGatewayEnabled = true//new IsPaymentGatewayEnabled(college, c.objectContext).get()
+            it.price =  new BuildClassPrice(c, allowByApplication, overridenFee, promotions, contact).build()
+            it.timezone = c.timeZone
+            it.subject = getSubject(c.course)
+            it
+        }
+        
     }
 }
 
