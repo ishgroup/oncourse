@@ -130,6 +130,8 @@ class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
         enrol1.setConfirmationStatus(ConfirmationStatus.NOT_SENT)
         enrol1.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
 
+        context.commitChanges()
+
         Enrolment enrol2 = context.newObject(Enrolment.class)
         enrol2.setStudent(student2)
         enrol2.setCourseClass(courseClass1)
