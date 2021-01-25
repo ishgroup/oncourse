@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
 
 export function mockEnrolments() {
   this.getEnrolments = () => this.enrolments;
@@ -68,34 +68,57 @@ export function mockEnrolments() {
     this.enrolments = this.enrolments.rows.filter(a => a.id !== id);
   };
 
-  this.getPlainEnrolments = () => {
-    const rows = generateArraysOfRecords(20, [
-      { name: "id", type: "number" },
-      { name: "invoiceNumber", type: "number" },
-      { name: "createdOn", type: "Datetime" },
-      { name: "uniqueCode", type: "string" },
-      { name: "courseName", type: "string" },
-      { name: "status", type: "string" }
-    ]).map(l => ({
-      id: l.id,
-      values: [l.invoiceNumber, "2021-01-16T06:31:09.463Z", l.uniqueCode, l.courseName, l.status]
-    }));
+  this.getPlainEnrolments = params => {
+    const columnList = params.columns.split(",");
+    const ids = params.search.replace(/(id in|\(|\))/g, '').trim().split(",");
 
-    const columns = [];
+    let rows = [];
 
-    const response = { rows, columns } as any;
+    if (columnList.length) {
+      if (columnList.includes("status")) {
+        ids.forEach(id => {
+          rows.push({
+            id,
+            values: ["Active"]
+          });
+        });
+      } else if (columnList.includes("invoiceLine.invoice.invoiceNumber")) {
+        rows = generateArraysOfRecords(20, [
+          { name: "id", type: "number" },
+          { name: "invoiceNumber", type: "number" },
+          { name: "createdOn", type: "Datetime" },
+          { name: "uniqueCode", type: "string" },
+          { name: "courseName", type: "string" },
+          { name: "status", type: "string" }
+        ]).map(l => ({
+          id: l.id,
+          values: [l.invoiceNumber, "2021-01-16T06:31:09.463Z", l.uniqueCode, l.courseName, l.status]
+        }));
+      }
+    } else {
+      rows = generateArraysOfRecords(20, [
+        { name: "id", type: "number" },
+        { name: "source", type: "string" },
+        { name: "studentName", type: "string" },
+        { name: "classCode", type: "string" },
+        { name: "courseClassName", type: "string" },
+        { name: "status", type: "string" },
+        { name: "createdOn", type: "Datetime" }
+      ]).map(l => ({
+        id: l.id,
+        values: [l.source, l.studentName, l.classCode, l.courseClassName, l.status, l.createdOn]
+      }));
+    }
 
-    response.entity = "Enrolment";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = 20;
-    response.search = null;
-    response.count = rows.length;
-    response.filteredCount = rows.length;
-    response.sort = [];
-
-    return response;
+    return getEntityResponse(
+      "Enrolment",
+      rows,
+      [],
+      {
+        filterColumnWidth: null,
+        layout: null
+      }
+    );
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -111,80 +134,53 @@ export function mockEnrolments() {
     values: [l.source, l.studentName, l.classCode, l.courseClassName, l.status, l.createdOn]
   }));
 
-  const columns = [
+  return getEntityResponse(
+    "Enrolment",
+    rows,
+    [
+      {
+        title: "Source",
+        attribute: "source",
+        sortable: true,
+        width: 100
+      },
+      {
+        title: "Name",
+        attribute: "student.contact.fullName",
+        sortable: true
+      },
+      {
+        title: "Class",
+        attribute: "courseClass.uniqueCode",
+        sortable: true,
+        width: 138
+      },
+      {
+        title: "Course name",
+        attribute: "courseClass.course.name",
+        sortable: true
+      },
+      {
+        title: "Status",
+        attribute: "status",
+        sortable: true,
+        width: 100
+      },
+      {
+        title: "Enrolled",
+        attribute: "createdOn",
+        sortable: true,
+        type: "Datetime"
+      }
+    ],
     {
-      title: "Source",
-      attribute: "source",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Name",
-      attribute: "student.contact.fullName",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Class",
-      attribute: "courseClass.uniqueCode",
-      sortable: true,
-      visible: true,
-      width: 138,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Course name",
-      attribute: "courseClass.course.name",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Status",
-      attribute: "status",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Enrolled",
-      attribute: "createdOn",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
+      sort: [
+        {
+          ascending: true,
+          attribute: "source",
+          complexAttribute: []
+        }
+      ]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Enrolment";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = null;
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [
-    {
-      ascending: true,
-      attribute: "source",
-      complexAttribute: []
-    }
-  ];
-
-  return response;
+  );
 }
