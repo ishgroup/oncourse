@@ -38,9 +38,6 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
 
     @Override
     Document toCayenneModel(DocumentDTO restModel, Document cayenneModel) {
-        if (restModel.removed && !cayenneModel.isRemoved) {
-            makeDocumentInactive(cayenneModel)
-        }
         cayenneModel.name = trimToNull(restModel.name)
         cayenneModel.isRemoved = restModel.removed
         cayenneModel.isShared = restModel.shared
@@ -79,13 +76,12 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
         // Is not applicable for this entity
     }
 
-    void makeDocumentInactive(Long docId, ObjectContext context) {
-        makeDocumentInactive(getEntityAndValidateExistence(context, docId))
+    void changeDocumentVisibility(Long docId, ObjectContext context) {
+        changeDocumentVisibility(getEntityAndValidateExistence(context, docId))
     }
 
-    void makeDocumentInactive(Document document) {
-        document.isRemoved = Boolean.TRUE
-        document.context.deleteObjects(document.getAttachmentRelations())
+    static void changeDocumentVisibility(Document document) {
+        document.isRemoved = document.isRemoved ? Boolean.FALSE : Boolean.TRUE
     }
 
     Closure getAction (String key, String value) {

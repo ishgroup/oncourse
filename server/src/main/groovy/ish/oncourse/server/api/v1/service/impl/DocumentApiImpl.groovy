@@ -113,7 +113,7 @@ class DocumentApiImpl implements DocumentApi {
     @Override
     void remove(Long id) {
         ObjectContext context = cayenneService.newContext
-        service.makeDocumentInactive(id, context)
+        service.changeDocumentVisibility(id, context)
         context.commitChanges()
     }
 
