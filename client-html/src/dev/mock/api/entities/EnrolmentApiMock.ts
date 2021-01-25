@@ -7,9 +7,7 @@ export function EnrolmentApiMock(mock) {
     return promiseResolve(config, this.db.getEnrolment(id));
   });
 
-  this.api.onPut(new RegExp(`v1/list/entity/enrolment/\\d+`)).reply(config => {
-    return promiseResolve(config, JSON.parse(config.data));
-  });
+  this.api.onPut(new RegExp(`v1/list/entity/enrolment/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
 
   this.api.onPost("v1/list/entity/enrolment").reply(config => {
     this.db.createEnrolment(config.data);
@@ -22,4 +20,6 @@ export function EnrolmentApiMock(mock) {
     this.db.removeEnrolment(id);
     return promiseResolve(config, this.db.getEnrolments());
   });
+
+  this.api.onPost("v1/list/entity/enrolment/cancel").reply(config => promiseResolve(config, {}));
 }
