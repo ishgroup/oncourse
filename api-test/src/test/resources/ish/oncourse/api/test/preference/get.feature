@@ -101,13 +101,9 @@ Feature: Main feature for all GET requests with path 'preference/'
             | 'LDAP_BIND_USER_PASS' | 'ldap.bind.user.pass' |
             | 'AUSKEY_PASSWORD'     | 'auskey.password'     |
             | 'EMAIL_POP3PASSWORD'  | 'email.pop3.password' |
-            | 'SMTP_PASSWORD'       | 'smtp.password'       |
             | 'AUSKEY_CERTIFICATE'  | 'auskey.certificate'  |
             | 'AUSKEY_PRIVATE_KEY'  | 'auskey.privatekey'   |
             | 'AUSKEY_SALT'         | 'auskey.salt'         |
-            | 'STORAGE_BUCKET_NAME' | 'storage.bucket'      |
-            | 'STORAGE_ACCESS_ID'   | 'storage.access.id'   |
-            | 'STORAGE_ACCESS_KEY'  | 'storage.access.key'  |
 
          * call read('getPassword.feature') passwordPreferences
 
