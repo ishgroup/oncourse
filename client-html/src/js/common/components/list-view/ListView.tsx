@@ -199,6 +199,8 @@ interface Props extends Partial<ListState> {
   getListViewPreferences?: () => void;
   preferences?: UserPreferencesState;
   setListviewMainContentWidth?: (value: string) => void;
+  deleteActionName?: string;
+  deleteWithoutConfirmation?: boolean;
 }
 
 interface ComponentState {
@@ -675,12 +677,16 @@ class ListView extends React.PureComponent<Props, ComponentState> {
   };
 
   onDelete = id => {
-    const { openConfirm, onDelete } = this.props;
+    const { openConfirm, onDelete, deleteWithoutConfirmation } = this.props;
 
-    openConfirm(() => {
+    if (!deleteWithoutConfirmation) {
+      openConfirm(() => {
+            onDelete(id);
+          }, "Record will be permanently deleted. This action can not be undone",
+          "DELETE");
+    } else {
       onDelete(id);
-    }, "Record will be permanently deleted. This action can not be undone",
-      "DELETE");
+    }
   };
 
   onDeleteFilter = (id: number, entity: string, checked: boolean) => {
@@ -909,7 +915,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     openConfirm(() => {
       this.checkDirty(this.onDeleteFilter, args, true);
     }, message, 'DELETE');
-  }
+  };
 
   onChangeFiltersWithDirtyCheck = (...args) => this.checkDirty(this.onChangeFilters, args, true);
 
@@ -981,7 +987,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       createButtonDisabled,
       creatingNew,
       fullScreenEditView,
-      searchQuery
+      searchQuery,
+      deleteActionName
     } = this.props;
 
     const {
@@ -1073,6 +1080,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             querySearch={querySearch}
             threeColumn={threeColumn}
             deleteEnabled={deleteEnabled}
+            deleteActionName={deleteActionName ? deleteActionName : "Delete record"}
             showExportDrawer={showExportDrawer}
             toggleExportDrawer={this.toggleExportDrawer}
             showBulkEditDrawer={showBulkEditDrawer}
