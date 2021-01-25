@@ -103,7 +103,6 @@ class DataCollectionFunctions {
         } else {
             fieldTypes = ObjectSelect.query(CustomFieldType)
                     .where(CustomFieldType.ENTITY_IDENTIFIER.in(Contact.class.simpleName, formType))
-                    .and(CustomFieldType.DATA_TYPE.in(TEXT, LIST, MAP))
                     .orderBy(CustomFieldType.SORT_ORDER.asc())
                     .select(context)
                     .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
