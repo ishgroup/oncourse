@@ -204,6 +204,7 @@ interface Props extends Partial<ListState> {
   setListviewMainContentWidth?: (value: string) => void;
   submitForm?: any;
   closeConfirm?: () => void;
+  deleteActionName?: string;
   deleteWithoutConfirmation?: boolean;
 }
 
@@ -1034,6 +1035,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       creatingNew,
       fullScreenEditView,
       searchQuery,
+      deleteActionName
     } = this.props;
 
     const {
@@ -1125,6 +1127,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             querySearch={querySearch}
             threeColumn={threeColumn}
             deleteEnabled={deleteEnabled}
+            deleteActionName={deleteActionName ? deleteActionName : "Delete record"}
             showExportDrawer={showExportDrawer}
             toggleExportDrawer={this.toggleExportDrawer}
             showBulkEditDrawer={showBulkEditDrawer}
