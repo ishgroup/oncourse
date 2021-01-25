@@ -193,7 +193,7 @@ Feature: Main feature for all POST requests with path 'list/option/message'
         And request sendMessageRequest
         When method POST
         Then status 400
-        And match $.errorMessage == "A real recipients count doesn't equal specified. Specified: 5, Real: 2"
+        And match $.errorMessage == "A real recipients number doesn't equal specified. Specified: 5, Real: 2"
 
 
 
