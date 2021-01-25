@@ -1,11 +1,6 @@
-export const generateArraysOfRecords = (count: number, keys): any => Array.from(Array(count), (_, x) => ({
-  id: x.toString(),
-  ...mockByKeys(x, keys)
-}));
-
 const mockByKeys = (index, keys) => {
   const obj = {};
-  keys.map(item => {
+  keys.forEach(item => {
     let value: any = `${item.name} ${index + 1}`;
 
     if (item.type === "Datetime") value = new Date().toISOString();
@@ -16,6 +11,11 @@ const mockByKeys = (index, keys) => {
 
   return obj;
 };
+
+export const generateArraysOfRecords = (count: number, keys): any => Array.from(Array(count), (_, x) => ({
+  id: x.toString(),
+  ...mockByKeys(x, keys)
+}));
 
 export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
