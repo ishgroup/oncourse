@@ -215,11 +215,15 @@ export function listApiMock() {
       }
 
       case "Enrolment": {
-        return promiseResolve(config, this.db.getPlainEnrolments());
+        return promiseResolve(config, this.db.getPlainEnrolments(config.params));
       }
 
       case "ArticleProduct": {
         return promiseResolve(config, this.db.getPlainArticleProductList());
+      }
+
+      case "InvoiceLine": {
+        return promiseResolve(config, this.db.getPlainInvoiceLines());
       }
 
       case "Account": {

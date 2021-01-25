@@ -1,10 +1,8 @@
-import { generateArraysOfRecords } from "../../mockUtils";
 import { format } from "date-fns";
+import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
 
 export function mockInvoices() {
-  this.getInvoices = () => {
-    return this.invoices;
-  };
+  this.getInvoices = () => this.invoices;
 
   this.getInvoice = id => {
     const row = this.invoices.rows.find(row => row.id == id);
@@ -142,6 +140,30 @@ export function mockInvoices() {
     this.invoices = this.invoices.rows.filter(m => m.id !== id);
   };
 
+  this.getPlainInvoiceLines = () => {
+    const rows = generateArraysOfRecords(5, [
+      { name: "id", type: "number" },
+      { name: "invoiceNumber", type: "number" },
+      { name: "finalPriceToPayIncTax", type: "number" },
+      { name: "lastName", type: "string" },
+      { name: "firstName", type: "string" },
+      { name: "isCompany", type: "boolean" }
+    ]).map(l => ({
+      id: l.id,
+      values: [l.invoiceNumber, "132.00", l.lastName, l.firstName, false]
+    }));
+
+    return getEntityResponse(
+      "InvoiceLine",
+      rows,
+      [],
+      {
+        filterColumnWidth: null,
+        layout: null
+      }
+    );
+  };
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "invoiceNumber", type: "number" },
@@ -156,89 +178,58 @@ export function mockInvoices() {
     values: [l.invoiceNumber, l.source, l.dateDue, l.contactName, 132, 132, 132]
   }));
 
-  const columns = [
+  return getEntityResponse(
+    "Invoice",
+    rows,
+    [
+      {
+        title: "Invoice number",
+        attribute: "invoiceNumber",
+        sortable: true
+      },
+      {
+        title: "Source",
+        attribute: "source",
+        sortable: true
+      },
+      {
+        title: "Date due",
+        attribute: "dateDue",
+        type: "Datetime",
+        sortable: true
+      },
+      {
+        title: "Name",
+        attribute: "contact.fullName",
+        sortable: true,
+        sortFields: ["contact.lastName", "contact.firstName", "contact.middleName"]
+      },
+      {
+        title: "Owing",
+        attribute: "amountOwing",
+        type: "Money",
+        sortable: true
+      },
+      {
+        title: "Total",
+        attribute: "totalIncTax",
+        type: "Money"
+      },
+      {
+        title: "Overdue",
+        attribute: "overdue",
+        type: "Money",
+        sortable: true
+      }
+    ],
     {
-      title: "Invoice number",
-      attribute: "invoiceNumber",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Source",
-      attribute: "source",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Date due",
-      attribute: "dateDue",
-      type: "Datetime",
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Name",
-      attribute: "contact.fullName",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: ["contact.lastName", "contact.firstName", "contact.middleName"]
-    },
-    {
-      title: "Owing",
-      attribute: "amountOwing",
-      type: "Money",
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Total",
-      attribute: "totalIncTax",
-      type: "Money",
-      sortable: false,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Overdue",
-      attribute: "overdue",
-      type: "Money",
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
+      sort: [
+        {
+          attribute: "invoiceNumber",
+          ascending: true,
+          complexAttribute: []
+        }
+      ]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Invoice";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = null;
-  response.count = rows.length;
-  // response.filteredCount = rows.length;
-  response.sort = [
-    {
-      attribute: "invoiceNumber",
-      ascending: true,
-      complexAttribute: []
-    }
-  ];
-
-  return response;
+  );
 }

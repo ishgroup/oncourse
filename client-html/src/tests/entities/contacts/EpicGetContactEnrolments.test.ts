@@ -13,7 +13,10 @@ describe("Get contact enrolments epic tests", () => {
     action: getContactEnrolments(1),
     epic: EpicGetContactEnrolments,
     processData: mockedApi => {
-      const response = mockedApi.db.getPlainEnrolments();
+      const response = mockedApi.db.getPlainEnrolments({
+        columns: "invoiceLine.invoice.invoiceNumber,createdOn,courseClass.uniqueCode,courseClass.course.name,displayStatus",
+        search: "student.contact.id == 1"
+      });
       const enrolments = response.rows.map(contactEnrolmentMap);
 
       return [
