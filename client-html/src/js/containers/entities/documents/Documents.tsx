@@ -122,7 +122,7 @@ const filterGroups: FilterGroup[] = [
         active: true
       },
       {
-        name: "Deleted",
+        name: "Bin",
         expression: isRemoved("true"),
         active: false
       }
@@ -358,6 +358,8 @@ const Documents: React.FC<DocumentProps> = props => {
         customOnCreate={customOnCreate}
         onCreate={onDocumentCreate}
         onDelete={onDelete}
+        deleteActionName="Move to bin"
+        deleteWithoutConfirmation
         onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
