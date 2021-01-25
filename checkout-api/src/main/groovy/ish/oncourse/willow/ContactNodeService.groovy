@@ -136,7 +136,14 @@ class ContactNodeService {
     }
 
     private void addRelatedCourse(Course relatedCourse, Boolean allowRemove, String relatedClassId, String relatedProductId) {
-        if (!(relatedCourse.id in shoppingCartCourses*.id || relatedCourse.id in programCourses*.id)) {
+        
+        List<CourseClass> addedClasses = shoppingCartClasses.findAll {it.course.id == relatedCourse.id }
+        
+        if (!addedClasses.empty) {
+            addedClasses.each { addedClass ->
+                node.enrolments.find { it.classId == addedClass.id.toString()}.relatedProductId(relatedProductId).relatedClassId(relatedClassId)
+            }
+        } else if (!(relatedCourse.id in programCourses*.id)) {
             programCourses << relatedCourse
 
             CourseClass availableClass = relatedCourse.getAvailableClasses().find { clazz ->
@@ -165,7 +172,17 @@ class ContactNodeService {
     }
 
     private void addRelatedProduct(Product relatedProduct, Boolean allowRemove, String relatedClassId, String relatedProductId) {
-        if (!(relatedProduct.id in shoppingCartProducts*.id || relatedProduct.id in programProducts*.id)) {
+
+
+        List<CourseClass> addedProducts = shoppingCartClasses.findAll {it.course.id == relatedProduct.id }
+
+        if (!addedProducts.empty) {
+            addedProducts.each { addedProduct ->
+                node.articles.find { article -> article.productId == addedProduct.id.toString()}?.relatedProductId(relatedProductId)?.relatedClassId(relatedClassId)
+                node.vouchers.find { voucher -> voucher.productId == addedProduct.id.toString()}?.relatedProductId(relatedProductId)?.relatedClassId(relatedClassId)
+                node.memberships.find { membership -> membership.productId == addedProduct.id.toString()}?.relatedProductId(relatedProductId)?.relatedClassId(relatedClassId)
+            }
+        } else if (!(relatedProduct.id in programProducts*.id)) {
             programProducts << relatedProduct
             ProcessProduct processProduct = new ProcessProduct(context, contact, college, relatedProduct.id.toString(), 1, null, null).process()
             processProduct.article && node.articles << processProduct.article.relatedClassId(relatedClassId).relatedProductId(relatedProductId).allowRemove(allowRemove)
