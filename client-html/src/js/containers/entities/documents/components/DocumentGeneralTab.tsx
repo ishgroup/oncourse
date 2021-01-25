@@ -27,7 +27,7 @@ import {
   faCog
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
-import { arrayInsert, Field, } from "redux-form";
+import {arrayInsert, change, Field,} from "redux-form";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -60,7 +60,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import DocumentShare from "../../../../common/components/form/documents/components/items/DocumentShare";
-import {showMessage} from "../../../../common/actions";
+import { showMessage } from "../../../../common/actions";
 
 library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile, faCog);
 
@@ -175,6 +175,10 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
 
   const showMoreDetails = () => {
     setMoreDetailcollapsed(!moreDetailcollapsed);
+  };
+
+  const restoreDocument = () => {
+    dispatch(change(form, "removed", false));
   };
 
   // const versionMenuOpen = e => {
@@ -343,13 +347,20 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
               <Grid item xs={12}>
                 <Field name="description" label="Description" component={EditInPlaceField} multiline fullWidth />
               </Grid>
+              {Boolean(values.removed) && (
               <Grid item xs={12} className="pb-2">
-                <FormControlLabel
-                  className="switchWrapper"
-                  control={<Field name="removed" component={FormSwitch} color="primary" fullWidth />}
-                  label="Deleted"
-                />
+                <Typography variant="body2" className={clsx("d-flex align-items-baseline", classes.textInfo)}>
+                  <span>
+                    This document will be permanently deleted after
+                    { ' ' }
+                    { format(new Date(values.modifiedOn), "d MMMM yy") }
+                  </span>
+                </Typography>
+                <Button variant="outlined" size="medium" color="secondary" onClick={restoreDocument}>
+                  RESTORE
+                </Button>
               </Grid>
+              )}
             </Grid>
 
             <Grid item xs={twoColumn ? 4 : 12} className="mb-3">
