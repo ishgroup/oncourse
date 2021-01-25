@@ -280,6 +280,10 @@ export function listApiMock() {
         return promiseResolve(config, this.db.getPlainReports());
       }
 
+      case "PaymentIn": {
+        return promiseResolve(config, this.db.getPlainPaymentsIn());
+      }
+
       default: {
         return promiseResolve(config, {});
       }
