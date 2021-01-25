@@ -21,12 +21,26 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import java.text.ParseException
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
 
 import static ish.oncourse.willow.model.field.DataType.*
 
 @CompileStatic
 class FieldValueParser {
+
+    public static final String DATE_PATTERN ="yyyy-MM-dd"
+    public static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+
+    public static final DateTimeFormatter DATE_FORMAT = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendPattern(DATE_PATTERN)
+            .toFormatter(Locale.ENGLISH)
+
+    public static final DateTimeFormatter  DATE_TIME_FORMAT = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendPattern(DATE_TIME_PATTERN)
+            .toFormatter(Locale.ENGLISH)
     
     final static Logger logger = LoggerFactory.getLogger(FieldValueParser)
 
@@ -76,23 +90,28 @@ class FieldValueParser {
                     result.value = Boolean.valueOf(field.value)
                     break
                 case DATE:
-                case DATETIME:
+                    Date date 
                     try {
-                        SimpleDateFormat sdf = new SimpleDateFormat(FormatUtils.DATE_FIELD_PARSE_FORMAT)
-                        sdf.setLenient(false)
-
-                        result.value = DateUtils.truncate(sdf.parse(field.value), Calendar.DAY_OF_MONTH)
-
-                    } catch (ParseException e) {
-                        result.value = null
-                        result.fieldError = new FieldError(name: field.key, error: "Enter your ${field.name} in the form DD/MM/YYYY")
+                        date =  Date.parse(field.value, DATE_PATTERN)
+                    } catch (ParseException ignore){
+                        try {
+                            date = Date.parse(field.value,FormatUtils.DATE_FIELD_PARSE_FORMAT)
+                        } catch (ParseException e) {
+                            result.value = null
+                            result.fieldError = new FieldError(name: field.key, error: "Enter your ${field.name} in the form DD/MM/YYYY")
+                        }
                     }
+                    
+                    if (date) {
+                        result.value = DateUtils.truncate(date, Calendar.DAY_OF_MONTH)
+                    }
+                    
                     break
                 case INTEGER:
                     if (org.apache.commons.lang.StringUtils.isNumeric(field.value)) {
                         result.value = Integer.valueOf(field.value)
                     } else {
-                        result.fieldError = new FieldError(name: field.key, error: "Enter your ${field.name} in the form DD/MM/YYYY")
+                        result.fieldError = new FieldError(name: field.key, error: "Enter numeric value for ${field.name}")
                     }
                     break
                 case COUNTRY:
@@ -132,7 +151,6 @@ class FieldValueParser {
         }
         result
     }
-
 
     static Country getCountryBy(String name, ObjectContext context) {
         ObjectSelect.query(Country).where(Country.NAME.eq(name))

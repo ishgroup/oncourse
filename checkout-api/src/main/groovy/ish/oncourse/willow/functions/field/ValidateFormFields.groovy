@@ -51,7 +51,6 @@ class ValidateFormFields {
             if (!value && f.mandatory) {
                 fieldErrors << new FieldError(name: f.key, error: "${f.name} for $className is required")
             } else if (value) {
-                Object objValue = new FieldValueParser(f, context).parse().value
                 FieldError error = new FieldValueValidator(FieldProperty.getByKey(f.key), f.key, context, college).validate(value)
                 if (error) {
                     fieldErrors << error

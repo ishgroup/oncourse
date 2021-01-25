@@ -1,20 +1,27 @@
 package ish.oncourse.willow.functions.field
 
 import groovy.transform.CompileStatic
+import ish.math.Money
 import ish.oncourse.cayenne.StudentInterface
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.College
 import ish.oncourse.util.contact.CommonContactValidator
 import ish.oncourse.utils.PhoneValidator
 import ish.oncourse.willow.model.common.FieldError
+import ish.oncourse.willow.model.field.DataType
 import ish.validation.StudentErrorCode
 import ish.validation.StudentValidator
+import ish.validation.ValidationUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.time.DateUtils
+import org.apache.commons.validator.routines.UrlValidator
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import static ish.oncourse.willow.model.field.DataType.CHOICE
+import static ish.oncourse.willow.model.field.DataType.EMAIL
 import static ish.oncourse.willow.model.field.DataType.ENUM
+import static ish.oncourse.willow.model.field.DataType.MONEY
 import static ish.validation.ContactValidator.Property.*
 
 @CompileStatic
@@ -100,10 +107,7 @@ class FieldValueValidator {
             case FieldProperty.CUSTOM_FIELD_ENROLMENT:
             case FieldProperty.CUSTOM_FIELD_APPLICATION:
             case FieldProperty.CUSTOM_FIELD_WAITING_LIST:
-                ProcessCustomFieldType processor = new ProcessCustomFieldType(fieldKey, context, college).process()
-                if (ENUM == processor.dataType && !processor.items.collect { it.key }.contains(value)) {
-                    stringError = 'Please select a value from the drop-down list'
-                }
+                stringError = validateCustomField(value as String)
                 break
             default:
                 return null
@@ -144,4 +148,64 @@ class FieldValueValidator {
         }
         null
     }
+    
+    private String validateCustomField(String value) {
+        
+        ProcessCustomFieldType processor = new ProcessCustomFieldType(fieldKey, context, college).process()
+        
+        switch (processor.dataType) {
+            case DataType.STRING:
+            case DataType.LONG_STRING:
+            case CHOICE:
+                break
+            case DataType.BOOLEAN:
+                if (!(value in [Boolean.TRUE.toString(), Boolean.FALSE.toString()])) {
+                    return 'Checkbox value is wrong'
+                }
+                break
+            case DataType.DATE:
+                try {
+                    FieldValueParser.DATE_FORMAT.parse(value)
+                } catch (Exception e) {
+                    logger.error('Date format is wrong', e)
+                    return 'Date format is wrong'
+                }
+                break
+            case DataType.DATETIME:
+                try {
+                    FieldValueParser.DATE_TIME_FORMAT.parse(value)
+                } catch (Exception e) {
+                    logger.error('Date time format is wrong', e)
+                    return 'Date time format is wrong'
+                }
+                break
+            case EMAIL:
+                if (!ValidationUtil.isValidEmailAddress(value)) {
+                    return "Wrong email format"
+                }
+                break
+            case DataType.URL:
+                if (new UrlValidator("http", "Https").isValid(value)) {
+                    return 'Wrong url address format'
+                }
+                break
+            case ENUM:
+                if (!processor.items.collect { it.key }.contains(value)) {
+                    'Please select a value from the drop-down list'
+                } 
+                break
+            case MONEY:
+                try {
+                    new Money(value)
+                } catch (NumberFormatException e) {
+                    logger.error('Wrong money format', e)
+                    return  'Wrong money format'
+                }
+                break
+            default:
+                throw new IllegalArgumentException("Unsapported data type ${processor.dataType} for custom fields")
+        }
+        
+    }
+    
 }

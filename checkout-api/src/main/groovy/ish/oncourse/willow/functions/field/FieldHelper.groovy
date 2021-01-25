@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.field
 
+import ish.oncourse.cayenne.FieldInterface
 import ish.oncourse.common.field.ContextType
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.common.field.PropertyGetSet
@@ -8,6 +9,7 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.Field
 import ish.oncourse.model.WebSite
 import ish.oncourse.willow.model.field.FieldHeading
+import org.apache.cayenne.PersistentObject 
 
 class FieldHelper {
 
@@ -111,6 +113,16 @@ class FieldHelper {
         }
         result.each { h ->                                                     // sort fields inside each heading by sortOrdering
             h.fields = h.fields.sort { it.ordering }
+        }
+    }
+    
+    static void populateFields(List<FieldHeading> fieldHeadings, PersistentObject record) {
+        (fieldHeadings.fields.flatten() as List<ish.oncourse.willow.model.field.Field>).each { f  ->
+            Object value =  new FieldValueParser(f, record.objectContext).parse().value
+            if  (value) {
+                PropertyGetSet getSet = factory.get([getProperty: {f.key}] as FieldInterface, record)
+                getSet.set(value)
+            }
         }
     }
 }

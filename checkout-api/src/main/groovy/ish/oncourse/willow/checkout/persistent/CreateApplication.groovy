@@ -3,15 +3,13 @@ package ish.oncourse.willow.checkout.persistent
 import ish.common.types.ApplicationStatus
 import ish.common.types.ConfirmationStatus
 import ish.common.types.PaymentSource
-import ish.common.types.ProductStatus
 import ish.oncourse.model.Application
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
 import ish.oncourse.willow.checkout.functions.GetCourseClass
-import ish.oncourse.willow.model.field.Field
-import org.apache.cayenne.ObjectContext
-import org.apache.commons.lang3.StringUtils
+import ish.oncourse.willow.functions.field.FieldHelper
+import org.apache.cayenne.ObjectContext 
 
 class CreateApplication {
 
@@ -40,12 +38,7 @@ class CreateApplication {
         application.source = PaymentSource.SOURCE_WEB
         application.confirmationStatus = ConfirmationStatus.NOT_SENT
 
-        (a.fieldHeadings.fields.flatten() as List<Field>).each { f  ->
-            String value = StringUtils.trimToNull(f.value)
-            if (value) {
-                application.setCustomFieldValue(f.key.split("\\.")[2], value)
-            }
-        }
+        FieldHelper.populateFields(a.fieldHeadings, application)
         application
     }
     

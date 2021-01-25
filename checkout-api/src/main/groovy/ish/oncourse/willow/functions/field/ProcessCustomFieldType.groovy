@@ -49,6 +49,27 @@ class ProcessCustomFieldType {
                     this.dataType = DataType.STRING
                     this.defaultValue = defaultValue
                     break
+                case ish.common.types.DataType.LONG_TEXT:
+                    this.dataType = DataType.LONG_STRING
+                    break
+                case ish.common.types.DataType.DATE:
+                    this.dataType = DataType.DATE
+                    break
+                case ish.common.types.DataType.DATE_TIME:
+                    this.dataType = DataType.DATETIME
+                    break
+                case ish.common.types.DataType.BOOLEAN:
+                    this.dataType = DataType.BOOLEAN
+                    break
+                case ish.common.types.DataType.MONEY:
+                    this.dataType = DataType.MONEY
+                    break
+                case ish.common.types.DataType.URL:
+                    this.dataType = DataType.URL
+                    break
+                case ish.common.types.DataType.EMAIL:
+                    this.dataType = DataType.EMAIL
+                    break
                 case ish.common.types.DataType.LIST:
 
                     List<CustomFieldItem> choices = new JsonSlurper().parseText(defaultValue).collect { it as CustomFieldItem }
