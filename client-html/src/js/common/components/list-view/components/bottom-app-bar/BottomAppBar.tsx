@@ -190,6 +190,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
       switchLayout,
       threeColumn,
       deleteEnabled,
+      deleteActionName,
       hasShareTypes,
       onCreate,
       findRelated,
@@ -389,7 +390,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                     root: clsx("listItemPadding", classes.cogWheelMenuDelete)
                   }}
                 >
-                  Delete record
+                  {deleteActionName}
                 </MenuItem>
               </Menu>
             </div>
