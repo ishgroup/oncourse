@@ -82,7 +82,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "summaryFee":null,
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":0,
-        "allEnrolmentsCount":4,
+        "allEnrolmentsCount":3,
         "allOutcomesCount":3,
         "inProgressOutcomesCount":#number,
         "passOutcomesCount":#number,
