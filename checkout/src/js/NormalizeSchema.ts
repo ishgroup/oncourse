@@ -7,6 +7,9 @@ export const ClassesListSchema = new schema.Array(ClassesSchema);
 export const WaitingCoursesSchema = new schema.Entity('waitingCourses');
 export const WaitingCoursesListSchema = new schema.Array(WaitingCoursesSchema);
 
+export const InactiveCoursesSchema = new schema.Entity('inactiveCourses');
+export const InactiveCoursesListSchema = new schema.Array(InactiveCoursesSchema);
+
 export const ProductsSchema = new schema.Entity('products');
 export const ProductsListSchema = new schema.Array(ProductsSchema);
 

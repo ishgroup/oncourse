@@ -119,6 +119,9 @@ export class SummaryComp extends React.Component<Props, any> {
 
     const haveTotal = !!(amount && Number(amount.total));
 
+    const relatedClassError = contacts.some(contact =>
+      contact.enrolments.some(enr => !enr.enrolment.classId && enr.enrolment.allowRemove === false))
+
     return previewMode ? <SummaryListComp
       contacts={contacts}
       successLink={successLink}
@@ -146,7 +149,7 @@ export class SummaryComp extends React.Component<Props, any> {
                 }
                 <ProceedToPayment
                   buttonLabel={buttonLabel}
-                  disabled={!hasSelected}
+                  disabled={!hasSelected || relatedClassError}
                   onProceedToPayment={onProceed}
                 />
               </div>

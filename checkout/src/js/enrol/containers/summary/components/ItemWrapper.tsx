@@ -58,7 +58,8 @@ export class ItemWrapper extends React.Component<Props, any> {
                 type="checkbox"
                 name={name}
                 onChange={onChange.bind(this, item, contact)}
-                checked={selected} disabled={!isNil(error)} />
+                checked={selected}
+                disabled={!isNil(error) || item.allowRemove === false} />
             </div>}
 
             {!readonly && <input
@@ -79,11 +80,12 @@ export class ItemWrapper extends React.Component<Props, any> {
           <label style={{ position: "relative" }}>
             {!readonly &&
             <input
-              className="enrolmentSelect"
+               className="enrolmentSelect"
                type="checkbox"
                name={name}
                onChange={onChange.bind(this, item, contact)}
-               checked={selected} disabled={!isNil(error)}
+               checked={selected}
+               disabled={!isNil(error) || item.allowRemove === false}
                style={{
                  position: "absolute",
                  left: "-19px",
@@ -95,7 +97,7 @@ export class ItemWrapper extends React.Component<Props, any> {
           </label>
         }
         {warning && (<span dangerouslySetInnerHTML={{ __html: warning }} />)}
-        {error && <span className="disabled" dangerouslySetInnerHTML={{ __html: error }} />}
+        {error && <span className="disabled error" dangerouslySetInnerHTML={{ __html: error }} />}
         <br />
         {children}
 

@@ -20,7 +20,7 @@ const request: EpicUtils.Request<CodeResponse, IshState> = {
   getData: (payload, state) => (
     CheckoutService.ifCodeExist(payload, state)
       ? Promise.reject({data: 'This code was already added.'})
-      : CheckoutService.submitCode(payload, state)
+      : CheckoutService.submitCode(payload)
   ),
   processData: (value: CodeResponse, state: IshState) => {
     const result = [];

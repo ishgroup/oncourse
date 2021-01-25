@@ -1,8 +1,8 @@
 import * as L from "lodash";
 import {
   ContactFields, ContactFieldsRequest, SubmitFieldsRequest, CreateContactParams, Field, CheckoutModel, Amount,
-  ContactNode, CheckoutModelRequest, ContactNodeRequest, PaymentResponse, PaymentRequest, DataType, Suburb,
-  GetCorporatePassRequest, ContactId, PaymentStatus, Contact, Concession, CodeResponse, FieldSet, PurchaseItem,
+  ContactNode, CheckoutModelRequest, ContactNodeRequest, PaymentResponse, DataType, Suburb,
+  GetCorporatePassRequest, ContactId, PaymentStatus, Contact, Concession, CodeResponse, FieldSet,
 } from "../../model";
 
 import {Injector} from "../../injector";
@@ -12,7 +12,7 @@ import {ContactApi} from "../../http/ContactApi";
 import {CheckoutApi} from "../../http/CheckoutApi";
 import {ContactNodeStorage, State} from "../containers/summary/reducers/State";
 import {
-  PaymentService, CreditCardFormValues,
+  PaymentService,
   CorporatePassFormValues,
 } from "../containers/payment/services/PaymentService";
 import {CheckoutState, Phase} from "../reducers/State";
@@ -23,7 +23,6 @@ import {Observable} from "rxjs/Observable";
 import {of} from "rxjs/observable/of";
 import {getPaymentStatus, updatePaymentStatus} from "../containers/payment/actions/Actions";
 import {changePhase, finishCheckoutProcess} from "../actions/Actions";
-import {ContactNodeService} from "./ContactNodeService";
 import {PromotionApi} from "../../http/PromotionApi";
 import {CorporatePassApi} from "../../http/CorporatePassApi";
 import {toFormKey} from "../../components/form/FieldFactory";
@@ -95,8 +94,8 @@ export class CheckoutService {
   public createOrGetContact = (values: ContactValues, fieldset?: FieldSet): Promise<ContactId> => {
     return this.contactApi.createOrGetContact(BuildCreateContactParams.fromValues(values, fieldset));
   }
-  
-  public submitCode = (code: string, state: IshState): Promise<CodeResponse> => {
+
+  public submitCode = (code: string): Promise<CodeResponse> => {
     return this.promotionApi.submitCode(code);
   }
 
@@ -111,7 +110,7 @@ export class CheckoutService {
   public submitConcession = (payload, props) => {
     return this.contactApi.submitConcession(BuildConcessionRequest.fromValues(payload, props));
   }
-  
+
 
   public getAmount = (state: IshState): Promise<Amount> => {
     return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state))

@@ -1,5 +1,6 @@
 import * as models from "../../model";
 import {inspect} from "util";
+import {Actions} from "../../web/actions/Actions";
 
 export class ContactNodeService {
   /**
@@ -34,5 +35,59 @@ export class ContactNodeService {
     }
 
     throw new Error(`Unsupported purchase item: ${inspect(original, true, 10, true)}`);
+  }
+
+  static getRelationsUpdateActions = (nodes: models.ContactNode[]) => {
+    const actions = [];
+    nodes.forEach(node => {
+      if (node.articles.length) {
+        node.articles.forEach(article => {
+          if (article.relatedClassId || article.relatedProductId) {
+            actions.push({
+              type: Actions.REQUEST_PRODUCT,
+              payload: article.productId,
+            })
+          }
+        })
+      }
+      if (node.vouchers.length) {
+        node.vouchers.forEach(voucher => {
+          if (voucher.relatedClassId || voucher.relatedProductId) {
+            actions.push({
+              type: Actions.REQUEST_PRODUCT,
+              payload: voucher.productId,
+            })
+          }
+        })
+      }
+      if (node.memberships.length) {
+        node.memberships.forEach(membership => {
+          if (membership.relatedClassId || membership.relatedProductId) {
+            actions.push({
+              type: Actions.REQUEST_PRODUCT,
+              payload: membership.productId,
+            })
+          }
+        })
+      }
+      if (node.enrolments.length) {
+        node.enrolments.forEach(enrolment => {
+          if (enrolment.relatedClassId || enrolment.relatedProductId) {
+            if(!enrolment.classId) {
+              actions.push({
+                type: Actions.REQUEST_INACTIVE_COURSE,
+                payload: enrolment.courseId,
+              })
+            } else {
+              actions.push({
+                type: Actions.REQUEST_COURSE_CLASS,
+                payload: enrolment.classId,
+              })
+            }
+          }
+        })
+      }
+    })
+    return actions;
   }
 }

@@ -9,7 +9,7 @@ import {normalize} from "normalizr";
 import uniq from "lodash/uniq";
 import {
   ClassesListSchema,
-  ClassesSchema,
+  ClassesSchema, InactiveCoursesListSchema,
   ProductsListSchema,
   ProductsSchema,
   PromotionsSchema, WaitingCoursesListSchema, WaitingCoursesSchema,
@@ -31,6 +31,7 @@ const {
 export const WebEpic = combineEpics(
   createCoursesEpic(),
   createWaitingCoursesEpic(),
+  createInactiveCoursesEpic(),
   createUpdateCoursesEpic(),
   createProductsEpic(),
   createUpdateProductsEpic(),
@@ -97,6 +98,24 @@ function createWaitingCoursesEpic() {
         .map(payload => normalize(payload, WaitingCoursesListSchema))
         .map(mapPayload(Actions.REQUEST_WAITING_COURSE))
         .catch(mapError(Actions.REQUEST_WAITING_COURSE));
+    });
+}
+
+function createInactiveCoursesEpic() {
+  return (action$, store: Store<IshState>) => action$
+    .ofType(Actions.REQUEST_INACTIVE_COURSE)
+    .bufferTime(100) // batch actions
+    .filter(actions => actions.length)
+    .mergeMap(actions => {
+      const ids: string[] = actions.map(action => action.payload);
+      return Observable
+        .defer(() => courseClassesApi.getCourses({
+          coursesIds: uniq(ids),
+        }))
+        .retry(2) // Retry to times if request has been rejected
+        .map(payload => normalize(payload, InactiveCoursesListSchema))
+        .map(mapPayload(Actions.REQUEST_INACTIVE_COURSE))
+        .catch(mapError(Actions.REQUEST_INACTIVE_COURSE));
     });
 }
 
@@ -308,9 +327,7 @@ function createLegacySyncEpic() {
 
 function checkUrlParamContact() {
   const urlObj = new URL(window.location.href);
-  const urlContact = urlObj.searchParams.get("student");
-
-  return urlContact;
+  return urlObj.searchParams.get("student");
 }
 
 function createContactParams(state: IshState): ContactParams {

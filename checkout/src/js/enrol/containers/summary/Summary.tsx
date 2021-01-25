@@ -29,7 +29,12 @@ import {WaitingList} from "../../../model/checkout/WaitingList";
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => {
   return {
     contact: state.checkout.contacts.entities.contact[e.contactId],
-    courseClass: state.cart.courses.entities[e.classId],
+    courseClass: state.cart.courses.entities[e.classId] ||
+      (e.relatedClassId || e.relatedProductId)
+        ? e.classId
+          ? state.courses.entities[e.classId]
+          : state.inactiveCourses.entities[e.courseId] && { course: state.inactiveCourses.entities[e.courseId] }
+        : null,
     enrolment: e,
   };
 };
@@ -45,7 +50,8 @@ export const ApplicationPropsBy = (a: Application, state: IshState): Application
 export const VoucherPropsBy = (v: Voucher, state: IshState): VoucherProps => {
   return {
     contact: state.checkout.contacts.entities.contact[v.contactId],
-    product: state.cart.products.entities[v.productId],
+    product: state.cart.products.entities[v.productId] ||
+      (v.relatedClassId || v.relatedProductId) ? state.products.entities[v.productId] : null,
     voucher: v,
   };
 };
@@ -53,7 +59,8 @@ export const VoucherPropsBy = (v: Voucher, state: IshState): VoucherProps => {
 export const MembershipPropsBy = (m: Membership, state: IshState): MembershipProps => {
   return {
     contact: state.checkout.contacts.entities.contact[m.contactId],
-    product: state.cart.products.entities[m.productId],
+    product: state.cart.products.entities[m.productId] ||
+      (m.relatedClassId || m.relatedProductId) ? state.products.entities[m.productId] : null,
     membership: m,
   };
 };
@@ -61,7 +68,8 @@ export const MembershipPropsBy = (m: Membership, state: IshState): MembershipPro
 export const ArticlePropsBy = (a: Article, state: IshState): ArticleProps => {
   return {
     contact: state.checkout.contacts.entities.contact[a.contactId],
-    product: state.cart.products.entities[a.productId],
+    product: state.cart.products.entities[a.productId] ||
+      (a.relatedClassId || a.relatedProductId) ? state.products.entities[a.productId] : null,
     article: a,
   };
 };
