@@ -268,7 +268,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
             
-  /v1/course/classes{courseId}:
+  /v1/course/classes/{courseId}:
     post:
       x-filter:
         - CollegeInfo

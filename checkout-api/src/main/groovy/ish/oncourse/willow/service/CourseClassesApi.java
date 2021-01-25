@@ -19,7 +19,7 @@ public interface CourseClassesApi  {
     List<CourseClass> getCourseClasses(CourseClassesParams courseClassesParams);
 
     @POST
-    @Path("/v1/course/classes{courseId}")
+    @Path("/v1/course/classes/{courseId}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
