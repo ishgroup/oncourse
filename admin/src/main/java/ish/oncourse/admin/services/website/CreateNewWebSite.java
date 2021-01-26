@@ -16,7 +16,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 
-import static ish.oncourse.admin.AdminProperty.DEPLOY_SCRIPT_PATH;
+import static ish.oncourse.configuration.Configuration.AdminProperty.DEPLOY_SCRIPT_PATH;
 
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.

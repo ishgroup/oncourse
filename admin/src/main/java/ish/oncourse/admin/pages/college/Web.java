@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ish.oncourse.admin.AdminProperty.S_ROOT;
+import static ish.oncourse.configuration.Configuration.AdminProperty.S_ROOT;
 
 public class Web {
 

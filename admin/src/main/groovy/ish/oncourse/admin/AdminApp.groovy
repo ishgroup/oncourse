@@ -7,7 +7,7 @@ import io.bootique.jdbc.tomcat.JdbcTomcatModuleProvider
 import io.bootique.jetty.JettyModuleProvider
 import ish.oncourse.configuration.Configuration
 
-import static ish.oncourse.admin.AdminProperty.*
+import static ish.oncourse.configuration.Configuration.AdminProperty.*
 
 class AdminApp {
     static void main(String[] args) {

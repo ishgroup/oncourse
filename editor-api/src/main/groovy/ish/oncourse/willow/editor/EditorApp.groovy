@@ -5,6 +5,8 @@ import ish.oncourse.configuration.Configuration
 import ish.oncourse.log4j.IshLog4jModule
 
 import static ish.oncourse.willow.editor.EditorProperty.*
+import static ish.oncourse.configuration.Configuration.AdminProperty.DEPLOY_SCRIPT_PATH
+import static ish.oncourse.configuration.Configuration.AdminProperty.S_ROOT
 
 /**
  * User: akoiro

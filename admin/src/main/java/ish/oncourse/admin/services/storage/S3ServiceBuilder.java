@@ -9,7 +9,7 @@ import ish.oncourse.services.s3.S3Service;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
 
-import static ish.oncourse.admin.AdminProperty.*;
+import static ish.oncourse.configuration.Configuration.AdminProperty.*;
 
 public class S3ServiceBuilder implements ServiceBuilder<IS3Service> {
 

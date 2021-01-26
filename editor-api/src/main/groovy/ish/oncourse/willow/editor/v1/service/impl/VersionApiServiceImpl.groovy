@@ -44,7 +44,7 @@ import java.util.concurrent.Executors
 import static ish.oncourse.cayenne.cache.ICacheEnabledService.CacheDisableReason.PUBLISHER
 import static ish.oncourse.configuration.InitZKRootNode.EDITOR_LOCK_NODE
 import static ish.oncourse.solr.ReindexConstants.*
-import static ish.oncourse.willow.editor.EditorProperty.DEPLOY_SCRIPT_PATH
+import static ish.oncourse.configuration.Configuration.AdminProperty.DEPLOY_SCRIPT_PATH
 import static ish.oncourse.willow.editor.EditorProperty.SERVICES_LOCATION
 import static org.apache.zookeeper.CreateMode.PERSISTENT
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE

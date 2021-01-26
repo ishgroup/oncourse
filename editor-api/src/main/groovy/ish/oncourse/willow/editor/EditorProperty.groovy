@@ -4,8 +4,6 @@ import ish.oncourse.configuration.IProperty
 
 enum EditorProperty implements IProperty {
     EDIT_SCRIPT_PATH('editor_edit', 'editor.script.edit'),
-    DEPLOY_SCRIPT_PATH('editor_deploy', 'editor.script.deploy'),
-    S_ROOT('editor_files', 's.root'),
     SERVICES_LOCATION('services_location', 'services.app.location')
 
 
