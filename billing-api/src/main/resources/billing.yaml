@@ -16,30 +16,54 @@ schemes:
 produces:
   - application/json
 
-securityDefinitions:
-  loginAuth:
-    type: basic
-    description: HTTP Basic Authentication
-#
-#  token:
-#    type: apiKey
-#    name: ESESSIONID
-#    description: User's session token
-#    in: header
-
-# Require all requests to require a token unless otherwise stated
-#security:
-#  - token: []
-
-host: siteKey.oncourse.cc
+host: ish.com.au
 basePath: /billing/v1
 
-tags:
-  - name: Auth
-    description: |
-      These methods allow you to log into the editor API, retrieve a session token and log out again. None
-      of the other methods will work without a session token passed in an HTTP header.
-  - name: Menu
-    description: |
-      Menus are a navigation device for your website and can link to internal pages or out to externally hosted
-      pages. Menus are hierarchical and ordered.
+
+paths:
+  /college:
+    post:
+      operationId: createCollege
+      description: |
+        Create college
+      tags:
+        - Billing
+      consumes:
+        - application/json
+      parameters:
+        - name: college
+          in: body
+          description: College attributes 
+          required: true
+          schema:
+            $ref: '#/definitions/CollegeDTO'
+      responses:
+        '204':
+          description: Success responce
+        '400':
+          description: Login unsuccessful. Invalid login name or password.
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+            
+definitions:
+
+  CollegeDTO:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+        description: user email
+        example: john.smith@gmail.com
+      collegeKey:
+        type: string
+        description: college sub domain
+        example: sttrinians
+        
+  ErrorDTO:
+    type: object
+    properties:
+      message:
+        type: string
+        description: Error description
+        example: College name is required
