@@ -59,7 +59,6 @@ import static ish.util.ImageHelper.generateThumbnail
 import static ish.util.ImageHelper.imageHeight
 import static ish.util.ImageHelper.imageWidth
 import static ish.util.ImageHelper.isImage
-import static ish.oncourse.common.ResourcesUtil.hashFile
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.Constants.BILLING_APP_LINK
@@ -212,6 +211,7 @@ class DocumentFunctions {
         version
     }
 
+
     static ValidationErrorDTO validateStoragePlace(byte[] content, DocumentService documentService, ObjectContext context) {
         Long currentStorageSize = DocumentDao.getStoredDocumentsSize(context)
         if (documentService.storageLimit && currentStorageSize + content.length > documentService.storageLimit) {
@@ -222,7 +222,20 @@ class DocumentFunctions {
         }
     }
 
-    static ValidationErrorDTO validateForSave(byte[] content, String filename, String name, DocumentVisibilityDTO access, List<Long> tags, Boolean shared, ObjectContext context) {
+    static ValidationErrorDTO validateVersionForSave(byte[] content, ObjectContext context) {
+        if (!content && content.length) {
+            return new ValidationErrorDTO(null, 'versions', 'A least one version of document required.')
+        }
+
+        if (getDocumentByHash(content, context)) {
+            return new ValidationErrorDTO(null, 'versions', 'This version of document is already exist.')
+        }
+
+        return null
+    }
+
+
+    static ValidationErrorDTO validateForSave(String filename, String name, DocumentVisibilityDTO access, List<Long> tags, Boolean shared, ObjectContext context) {
         if (isBlank(name)) {
             return new ValidationErrorDTO(null, 'name', 'Name is required.')
         }
@@ -237,84 +250,14 @@ class DocumentFunctions {
             return new ValidationErrorDTO(null, 'shared', 'Attaching to multiple records is required.')
         }
 
-        if (!content && content.length) {
-            return new ValidationErrorDTO(null, 'versions', 'A least one version of document required.')
-        }
-
-        if (checkDocumentHash(content, context)) {
-            return new ValidationErrorDTO(null, 'versions', 'This version of document is already exist.')
-        }
-
         return TagFunctions.validateRelationsForSave(Document, context, tags, TaggableClasses.DOCUMENT)
     }
 
-    static ValidationErrorDTO validateForUpdate(DocumentDTO document, File content, ObjectContext context) {
-        if (isBlank(document.name)) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'name', 'Name is required.')
-        }
-
-        if (!document.access) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'access', 'Access is required.')
-        }
-
-        if (document.shared == null) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'shared', 'Attaching to multiple records is required.')
-        }
-
-        if (!document.versions && document.versions.empty) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'A least one version of document required.')
-        }
-
-        List<DocumentVersionDTO> newVersions = document.versions.findAll { !it.id }
-        if (newVersions.size() > 1) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'Cannot add more than 1 version at once.')
-        } else if (newVersions.size() == 1 && !content) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'File is required for new document version.')
-        } else if (newVersions.empty && content) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'New version is required for new file.')
-        }
-
-        if (newVersions.size() == 1) {
-            if (isBlank(newVersions[0].mimeType)) {
-                return new ValidationErrorDTO(document?.id?.toString(), 'mimeType', 'Mime type is required.')
-            }
-            if (isBlank(newVersions[0].fileName)) {
-                return new ValidationErrorDTO(document?.id?.toString(), 'fileName', 'File name is required.')
-            }
-        }
-
-        if (document.id) {
-            try {
-                String hash = hashFile(content)
-
-                Long count = ObjectSelect.query(DocumentVersion)
-                        .where(DocumentVersion.DOCUMENT.dot(Document.ID).eq(document.id))
-                        .and(DocumentVersion.HASH.eq(hash))
-                        .selectCount(context)
-                if (count > 0) {
-                    return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'This version of document is already exist.')
-                }
-
-            } catch (IOException e) {
-                logger.error("Error reading uploaded file", e)
-                return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'Cannot calculate file hash.')
-            }
-        } else {
-            if (document.versions.size() > 1) {
-                return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'New document cannot contain more than 1 version.')
-            }
-        }
-
-        null
-    }
-
-    static Document checkDocumentHash(byte[] content, ObjectContext context) {
+    static Document getDocumentByHash(byte[] content, ObjectContext context) {
         try {
             String hash = SecurityUtil.hashByteArray(content)
 
-            return ObjectSelect.query(Document)
-                    .where(Document.VERSIONS.dot(DocumentVersion.HASH).eq(hash))
-                    .selectFirst(context)
+            return DocumentDao.getByHash(context, hash)
         } catch (IOException e) {
             logger.error("Error reading uploaded file", e)
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, 'content', 'Cannot calculate file hash.')).build())
