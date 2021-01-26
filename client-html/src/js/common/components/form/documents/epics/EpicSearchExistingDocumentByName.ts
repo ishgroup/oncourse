@@ -38,7 +38,7 @@ const request: EpicUtils.Request<any, any, { documentName: string; editingFormNa
   getData: ({ documentName }) => EntityService.getPlainRecords(
       "Document",
       "link,name,added,currentVersion.byteSize,currentVersion.fileName,isShared,attachedRecordsCount",
-      `~ "${documentName}"`
+      `~ "${documentName}" and isRemoved = false`
     ),
   processData: (plainRecords: DataResponse, state: any, { editingFormName }) => {
     const searchDocuments: DocumentSearchItem[] = plainRecords.rows.map(defaultDocumentMap)
