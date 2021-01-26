@@ -29,6 +29,12 @@ class DocumentDao implements CayenneLayer<Document> {
                 .selectOne(context)
     }
 
+    static Document getByHash(ObjectContext context, String hash) {
+        ObjectSelect.query(Document)
+                .where(Document.VERSIONS.dot(DocumentVersion.HASH).eq(hash))
+                .selectFirst(context)
+    }
+
     static Long getStoredDocumentsSize(ObjectContext context, Document document = null) {
         ObjectSelect select = ObjectSelect.query(DocumentVersion)
         if (document) {
