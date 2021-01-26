@@ -191,7 +191,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.nominalHours = cc.nominalHours
         dto.classroomHours = cc.classroomHours
         dto.studentContactHours = cc.studentContactHours
-        dto.documents = cc.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+        dto.documents = cc.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
         dto.customFields = cc.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
 
         List<Enrolment> enrolments = cc.enrolments

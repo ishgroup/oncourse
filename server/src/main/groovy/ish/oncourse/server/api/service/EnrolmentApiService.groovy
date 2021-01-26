@@ -132,7 +132,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.creditType = CREDIT_TYPE_MAP[enrolment.creditType]
             enrolmentDTO.creditLevel = CREDIT_LEVEL_MAP[enrolment.creditLevel]
             enrolmentDTO.customFields = enrolment.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
-            enrolmentDTO.documents = enrolment.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            enrolmentDTO.documents = enrolment.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             enrolmentDTO.invoicesCount = enrolment.invoiceLines.invoice.toSet().size()
             enrolmentDTO.outcomesCount = enrolment.outcomes.size()
             enrolmentDTO.createdOn = LocalDateUtils.dateToTimeValue(enrolment.createdOn)

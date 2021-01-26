@@ -208,8 +208,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             dto.documents = cayenneModel.documents
                     .findAll{doc ->
                         doc.attachmentRelations.findAll{ r -> AttachmentSpecialType.PROFILE_PICTURE != r.specialType }
-                    }
-                    .collect{ d ->
+                    }.findAll{ doc ->
+                        !doc.isRemoved
+                    }.collect{ d ->
                         toRestDocumentMinimized(d, d.currentVersion.id, documentService)
                     }
             dto.tags = cayenneModel.tags.collect{ toRestTagMinimized(it) }

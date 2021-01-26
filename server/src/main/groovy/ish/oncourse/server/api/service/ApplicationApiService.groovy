@@ -85,7 +85,7 @@ class ApplicationApiService extends TaggableApiService<ApplicationDTO, Applicati
             applicationDTO.createdBy = application.createdByUser ? "$application.createdByUser.firstName $application.createdByUser.lastName" : null
             applicationDTO.reason = application.reason
             applicationDTO.tags =  application.tags.collect { toRestTagMinimized(it) }
-            applicationDTO.documents = application.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            applicationDTO.documents = application.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             applicationDTO.customFields = application.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
             applicationDTO.createdOn = application.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             applicationDTO.modifiedOn = application.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
@@ -164,7 +164,7 @@ class ApplicationApiService extends TaggableApiService<ApplicationDTO, Applicati
     @Override
     void validateModelBeforeRemove(Application application) {
         if (!application.attachmentRelations.empty) {
-            validator.throwClientErrorException(application.id, 'documents', "Cannot delete application with attached documents")
+            validator.throwClientErrorException(application.id, 'documents', "Cannot delete application with attached documents. Check removed documents.")
         }
         if (ApplicationStatus.NEW != application.status) {
             validator.throwClientErrorException(application.id, 'status', "Cannot delete application with not NEW status")

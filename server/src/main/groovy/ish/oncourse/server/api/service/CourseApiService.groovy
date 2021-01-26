@@ -133,7 +133,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.studentWaitingListCount = course.waitingLists.size()
             courseDTO.hasEnrolments = course.courseClasses.find { c -> !c.enrolments.empty} != null
             courseDTO.webDescription = course.webDescription
-            courseDTO.documents = course.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            courseDTO.documents = course.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             courseDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(course.context, Course.simpleName, course.id).collect { it -> toRestFromEntityRelation(it) } +
                     EntityRelationDao.getRelatedTo(course.context, Course.simpleName, course.id).collect { it -> toRestToEntityRelation(it) })
             courseDTO.qualificationId = course.qualification?.id
