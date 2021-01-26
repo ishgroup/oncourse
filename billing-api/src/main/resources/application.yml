@@ -1,0 +1,9 @@
+jetty:
+  context: /billing
+  connectors:
+    - type: willow
+      port: 11090
+      host: 0.0.0.0
+  compactPath: true
+cxf:
+  welcomeText: 'billing REST API'
