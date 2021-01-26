@@ -42,7 +42,7 @@ import {
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import { format } from "date-fns";
+import {addDays, format} from "date-fns";
 import { Document, DocumentVisibility, DocumentVersion } from "@api/model";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import FormField from "../../../../common/components/form/form-fields/FormField";
@@ -353,7 +353,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                   <span>
                     This document will be permanently deleted after
                     { ' ' }
-                    { format(new Date(values.modifiedOn), "d MMMM yy") }
+                    { format(addDays(new Date(values.modifiedOn), 30), "d MMMM yy") }
                   </span>
                 </Typography>
                 <Button variant="outlined" size="medium" color="secondary" onClick={restoreDocument}>
