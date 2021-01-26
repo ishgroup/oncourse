@@ -58,4 +58,9 @@ trait AttachableTrait {
         addToAttachmentRelations(relation)
     }
 
+
+    List<? extends AttachmentRelation> getActiveAttachments() {
+        return attachmentRelations.findAll { !(it as AttachmentRelation).document.isRemoved }
+    }
+
 }
