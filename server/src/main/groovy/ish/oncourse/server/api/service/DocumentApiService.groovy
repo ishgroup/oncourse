@@ -87,7 +87,15 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
     Closure getAction (String key, String value) {
         Closure action = super.getAction(key, value)
         if (!action) {
-            validator.throwClientErrorException(key, "Unsupported attribute")
+            switch (key) {
+                case Document.IS_REMOVED.name:
+                    action = { Document d ->
+                        d.isRemoved = Boolean.valueOf(value)
+                    }
+                    break
+                default:
+                    validator.throwClientErrorException(key, "Unsupported attribute")
+            }
         }
         action
     }
