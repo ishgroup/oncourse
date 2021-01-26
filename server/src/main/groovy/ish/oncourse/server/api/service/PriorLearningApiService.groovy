@@ -66,7 +66,7 @@ class PriorLearningApiService extends EntityApiService<PriorLearningDTO, PriorLe
             dto.qualificationLevel = cayenneModel.qualification?.level
             dto.qualificationName = cayenneModel.qualification?.level ? "${cayenneModel.qualification?.level} ${cayenneModel.qualification?.title}" : cayenneModel.qualification?.title
             dto.outcomes = cayenneModel.outcomes?.collect{o -> OutcomeFunctions.toRestOutcome(o)}
-            dto.documents = cayenneModel.documents?.collect{d -> DocumentFunctions.toRestDocumentMinimized(d, d.currentVersion.id, documentService)}
+            dto.documents = cayenneModel.documents?.findAll{ !it.isRemoved }?.collect{ d -> DocumentFunctions.toRestDocumentMinimized(d, d.currentVersion.id, documentService)}
             dto.notes = cayenneModel.notes
             dto.contactId = cayenneModel.student?.contact?.id
             dto.contactName = cayenneModel.student?.contact?.fullName

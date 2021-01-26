@@ -54,7 +54,7 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
             assessment.tags = cayenneModel.tags.collect { toRestTagMinimized(it) }
             assessment.active = cayenneModel.active
             assessment.description = cayenneModel.description
-            assessment.documents = cayenneModel.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            assessment.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             assessment.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
             assessment.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
             assessment
