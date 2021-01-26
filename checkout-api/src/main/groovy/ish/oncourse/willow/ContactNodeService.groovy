@@ -174,7 +174,7 @@ class ContactNodeService {
     private void addRelatedProduct(Product relatedProduct, Boolean allowRemove, String relatedClassId, String relatedProductId) {
 
 
-        List<CourseClass> addedProducts = shoppingCartClasses.findAll {it.course.id == relatedProduct.id }
+        List<Product> addedProducts = shoppingCartProducts.findAll {it.id == relatedProduct.id }
 
         if (!addedProducts.empty) {
             addedProducts.each { addedProduct ->
