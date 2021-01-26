@@ -76,12 +76,12 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
         // Is not applicable for this entity
     }
 
-    void changeDocumentVisibility(Long docId, ObjectContext context) {
-        changeDocumentVisibility(getEntityAndValidateExistence(context, docId))
+    void makeDocumentInactive(Long docId, ObjectContext context) {
+        makeDocumentInactive(getEntityAndValidateExistence(context, docId))
     }
 
-    static void changeDocumentVisibility(Document document) {
-        document.isRemoved = document.isRemoved ? Boolean.FALSE : Boolean.TRUE
+    static void makeDocumentInactive(Document document) {
+        document.isRemoved = Boolean.TRUE
     }
 
     Closure getAction (String key, String value) {
