@@ -8,6 +8,8 @@ apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/build-api.gradle"
 apply from: "$rootDir/gradle/codegen.gradle"
 
+targetCompatibility = '11'
+sourceCompatibility = '11'
 
 mainClassName = 'ish.oncourse.willow.billing.BillingApp'
 
@@ -19,24 +21,6 @@ dependencies {
     compile project(':common:common-api')
     compile project(':common:common-templates')
     compile project(':common:common-bootique')
-
-    //webdav servlet
-    compile 'io.milton:milton-api:2.6.0.1'
-    compile 'io.milton:milton-server-ce:2.6.0.1'
-
-    compile 'org.apache.commons:commons-compress:1.9'
-    compile 'org.reflections:reflections:0.9.11'
-
-    //js compiler
-    compile 'com.google.javascript:closure-compiler:v20170218'
-    closureCompiler 'com.google.javascript:closure-compiler:v20170218'
-
-    // JAX-B dependencies for JDK 11
-    implementation 'javax.xml.ws:jaxws-api:2.3.1'
-
-    //argon2 crypto algorithm
-    implementation "org.bouncycastle:bcprov-jdk15on:1.67"
-
 }
 
 test {
