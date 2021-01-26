@@ -33,6 +33,7 @@ import ish.oncourse.server.api.dao.DefinedTutorRoleDao
 import ish.oncourse.server.api.dao.DiscountDao
 import ish.oncourse.server.api.dao.DiscountMembershipDao
 import ish.oncourse.server.api.dao.DiscountMembershipRelationTypeDao
+import ish.oncourse.server.api.dao.DocumentDao
 import ish.oncourse.server.api.dao.EmailTemplateDao
 import ish.oncourse.server.api.dao.EnrolmentDao
 import ish.oncourse.server.api.dao.EntityRelationDao
@@ -89,6 +90,7 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(DiscountDao).in(Scopes.SINGLETON)
         binder.bind(DiscountMembershipDao).in(Scopes.SINGLETON)
         binder.bind(DiscountMembershipRelationTypeDao).in(Scopes.SINGLETON)
+        binder.bind(DocumentDao).in(Scopes.SINGLETON)
 
         binder.bind(EmailTemplateDao).in(Scopes.SINGLETON)
         binder.bind(EnrolmentDao).in(Scopes.SINGLETON)
