@@ -51,7 +51,7 @@ class RoomFunctions {
             room.facilities = dbRoom.facilities
             room.kioskUrl = getKioskUrl(preferenceController.collegeURL, 'room', dbRoom.id)
             room.tags = dbRoom.tags.collect { toRestTagMinimized(it) }
-            room.documents = dbRoom.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            room.documents = dbRoom.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             room.rules = dbRoom.unavailableRuleRelations*.rule.collect{ toRestHoliday(it as UnavailableRule) }
             room.siteTimeZone = dbRoom.site.localTimezone
             room.createdOn = dbRoom.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()

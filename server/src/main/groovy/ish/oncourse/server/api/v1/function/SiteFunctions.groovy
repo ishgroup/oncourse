@@ -67,7 +67,7 @@ class SiteFunctions {
             site.specialInstructions = dbSite.specialInstructions
             site.tags = dbSite.tags.collect { toRestTagMinimized(it) }
             site.rooms = dbSite.rooms.collect { RoomFunctions.toRestRoomMinimized(it) }
-            site.documents = dbSite.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            site.documents = dbSite.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             site.rules = dbSite.unavailableRuleRelations*.rule.collect{ toRestHoliday(it as UnavailableRule) }
             site.createdOn = dbSite.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             site.modifiedOn = dbSite.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
