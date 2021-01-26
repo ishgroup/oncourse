@@ -35,6 +35,14 @@ const request: EpicUtils.Request<any, any, { inputDocument: File; editingFormNam
         }
       }];
     }
+    if (editingDocument && editingDocument.removed) {
+      return [{
+          type: SHOW_MESSAGE,
+          payload: {
+              message: "This document was moved to the bin. If you need it, you could restore it and then try again."
+          }
+      }];
+    }
     return editingDocument
       ? [
           {
