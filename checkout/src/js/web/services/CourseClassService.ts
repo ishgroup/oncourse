@@ -1,17 +1,20 @@
 import {CourseClassesParams, CourseClass, Course} from "../../model";
 import {CourseClassesApi} from "../../http/CourseClassesApi";
+import {DefaultHttpService} from "../../common/services/HttpService";
 
-export class CourseClassService {
-  api: CourseClassesApi;
-
-  constructor(api: CourseClassesApi) {
-    this.api = api;
-  }
+class CourseClassServiceBase {
+  private api = new CourseClassesApi(new  DefaultHttpService())
 
   getCourseClasses = (params: CourseClassesParams): Promise<CourseClass[]> => {
     return this.api.getCourseClasses(params);
   }
+
+  getAvailableClasses = (courseId: string): Promise<CourseClass[]> => {
+    return this.api.getAvailableClasses(courseId);
+  }
 }
+
+export const CourseClassService = new CourseClassServiceBase();
 
 /**
  * Convert html properties which was got from HTMLElement with marker HTMLMarkers.ENROL_BUTTON to CourseClass

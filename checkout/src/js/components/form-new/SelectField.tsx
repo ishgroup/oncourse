@@ -32,6 +32,8 @@ interface Props {
   searchable?: boolean;
   fullWidth?: boolean;
   onBlurSelect?: (field) => void;
+  optionRenderer?: (option) => void;
+  valueRenderer?: (option) => void;
 }
 
 /**
@@ -151,6 +153,8 @@ class SelectField extends React.Component<any, any> {
             labelKey={props.labelKey}
             valueKey={props.valueKey}
             searchable={props.searchable}
+            optionRenderer={this.props.optionRenderer}
+            valueRenderer={this.props.valueRenderer}
             clearable={false}
             value={this.props.returnType === 'object' ? this.normalizeObject(props.input.value) : props.input.value && props.input}
             loadOptions={input => input.length > 0 && !showValuesOnInit ? this.loadOptionsDebounce(input) : this.loadOptions(input)}

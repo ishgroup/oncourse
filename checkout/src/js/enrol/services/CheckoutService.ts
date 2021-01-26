@@ -196,9 +196,26 @@ const {
 export class BuildContactNodeRequest {
   static fromPurchaseItem = (item: any, state: IshState): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
+
+    const classIds = [];
+    const products = [];
+
+    if (item.classId) {
+      classIds.push(item.classId)
+    }
+    if (item.relatedClassId) {
+      classIds.push(item.relatedClassId)
+    }
+    if (item.productId) {
+      products.push({productId: item.productId, quantity:1} as ProductContainer)
+    }
+    if (item.relatedProductId) {
+      products.push({productId: item.relatedProductId, quantity:1} as ProductContainer)
+    }
+
     result.contactId = item.contactId;
-    result.classIds = item.classId ? [item.classId] : [];
-    result.products = item.productId ? [{productId: item.productId, quantity:1} as ProductContainer] : [];
+    result.classIds = classIds;
+    result.products = products;
     result.promotionIds = state.cart.promotions.result;
     result.waitingCourseIds = state.cart.waitingCourses.result;
     return result;

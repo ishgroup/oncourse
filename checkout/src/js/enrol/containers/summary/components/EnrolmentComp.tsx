@@ -1,7 +1,6 @@
 import * as React from "react";
 import classnames from "classnames";
 import moment from "moment";
-
 import { Formats } from "../../../../constants/Formats";
 import * as FormatUtils from "../../../../common/utils/FormatUtils";
 import { Enrolment, Contact, CourseClass, CourseClassPrice } from "../../../../model";
@@ -9,6 +8,8 @@ import { ClassHasCommenced } from "../Messages";
 import { ItemWrapper } from "./ItemWrapper";
 import { toFormKey } from "../../../../components/form/FieldFactory";
 import EnrolmentFieldsForm from "./EnrolmentFieldsForm";
+import SelectField from "../../../../components/form-new/SelectField";
+import {CourseClassService} from "../../../../web/services/CourseClassService";
 
 
 export interface Props {
@@ -62,7 +63,10 @@ class EnrolmentComp extends React.Component<Props, any> {
           onChange={onChange}
           readonly={readonly}
         >
-          <ClassDetails courseClass={courseClass} />
+          <ClassDetails
+            courseClass={courseClass}
+            error={error}
+          />
         </ItemWrapper>
         {!error && enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment} />}
 
@@ -111,20 +115,41 @@ const ClassPrice = (props): any => {
   );
 };
 
-const ClassDetails = (props): any => {
-  const { courseClass } = props;
-  const start: string = FormatUtils.formatDate(courseClass.start, Formats.ClassDateFormat, courseClass.timezone);
-  const end: string = FormatUtils.formatDate(courseClass.end, Formats.ClassDateFormat, courseClass.timezone);
-  return (
-    <div>
-      <em>
-        {courseClass.room && <span>{`${courseClass.room.site.name} » `}</span>}
-        {courseClass.distantLearning && <span className="started">Self paced</span>}
-        {start && end &&
-          <span><span className="started">{start}</span>&nbsp;-&nbsp;<span className="ended">{end}</span></span>}
-      </em>
-    </div>
-  );
+interface ClassDetailsProps {
+  courseClass: CourseClass;
+  error: any;
+}
+
+const ClassDetailsLabel = (classItem: CourseClass) => {
+  const start: string = FormatUtils.formatDate(classItem.start, Formats.ClassDateFormat, classItem.timezone);
+  const end: string = FormatUtils.formatDate(classItem.end, Formats.ClassDateFormat, classItem.timezone);
+
+  return <div>
+    <em>
+      {classItem.code && <span>{`${classItem.code} » `}</span>}
+      {classItem.room && <span>{`${classItem.room.site.name} » `}</span>}
+      {classItem.distantLearning && <span className="started">Self paced</span>}
+      {start && end &&
+      <span><span className="started">{start}</span>&nbsp;-&nbsp;<span className="ended">{end}</span></span>}
+    </em>
+  </div>
+}
+
+const ClassDetails = ({ courseClass, error }: ClassDetailsProps) => {
+  return courseClass.id && !error ? (
+    <SelectField
+      returnType="object"
+      searchable={false}
+      input={{
+        onChange: result => console.log(result),
+        value: courseClass
+      }}
+      meta={{}}
+      optionRenderer={ClassDetailsLabel}
+      valueRenderer={ClassDetailsLabel}
+      loadOptions={() => CourseClassService.getAvailableClasses(courseClass.course.id)}
+    />
+  ) : ClassDetailsLabel(courseClass);
 };
 
 
