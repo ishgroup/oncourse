@@ -13,6 +13,7 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.server.api.v1.function.DocumentFunctions
 import ish.oncourse.server.cayenne.glue._DocumentVersion
 
 import javax.annotation.Nonnull
@@ -36,6 +37,14 @@ class DocumentVersion extends _DocumentVersion implements Queueable {
 	@Override
 	Long getByteSize() {
 		return super.getByteSize()
+	}
+
+	/**
+	 * @return displayble size of attachment in bytes
+	 */
+	@API
+	String getDisplayableSize() {
+		return DocumentFunctions.getDisplayableSize(getByteSize())
 	}
 
 	/**
