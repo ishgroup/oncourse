@@ -1,9 +1,9 @@
 import { promiseResolve } from "../../MockAdapter";
+import { getParamsId } from "../../mockUtils";
 
 export function DocumentApiMock(mock) {
   this.api.onGet(new RegExp(`v1/list/entity/document/\\d+`)).reply(config => {
-    const params = config.url.split("/");
-    const id = params[params.length - 1];
+    const id = getParamsId(config);
     return promiseResolve(config, this.db.getDocument(id));
   });
 
@@ -17,8 +17,7 @@ export function DocumentApiMock(mock) {
   this.api.onPut(new RegExp(`v1/list/entity/document/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
 
   this.api.onDelete(new RegExp(`v1/list/entity/document/\\d+`)).reply(config => {
-    const params = config.url.split("/");
-    const id = params[params.length - 1];
+    const id = getParamsId(config);
     this.db.removeDocument(id);
     return promiseResolve(config, {});
   });

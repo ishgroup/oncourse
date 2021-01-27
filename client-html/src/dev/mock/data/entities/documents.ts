@@ -1,4 +1,4 @@
-import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockDocuments() {
   this.getDocuments = () => this.documents;
@@ -60,7 +60,7 @@ export function mockDocuments() {
   };
 
   this.removeDocument = id => {
-    this.documents.rows = this.documents.rows.filter(a => Number(a.id) !== Number(id));
+    this.documents = removeItemByEntity(this.documents, id);
   };
 
   const rows = generateArraysOfRecords(20, [
