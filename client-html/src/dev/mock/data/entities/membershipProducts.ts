@@ -1,9 +1,7 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockMembershipProducts() {
-  this.getMembershipProducts = () => {
-    return this.membershipProducts;
-  };
+  this.getMembershipProducts = () => this.membershipProducts;
 
   this.getMembershipProduct = id => {
     const row = this.membershipProducts.rows.find(row => row.id == id);
@@ -42,7 +40,7 @@ export function mockMembershipProducts() {
   };
 
   this.removeMembershipProduct = id => {
-    this.membershipProducts.rows = this.membershipProducts.rows.filter(a => a.id !== id);
+    this.membershipProducts = removeItemByEntity(this.membershipProducts, id);
   };
 
   this.getMembershipProductPlainList = () => {
@@ -56,20 +54,11 @@ export function mockMembershipProducts() {
       values: [l.code, l.name, l.price]
     }));
 
-    const columns = [];
-
-    const response = { rows, columns } as any;
-
-    response.entity = "MembershipProduct";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = rows.length;
-    response.search = null;
-    response.count = null;
-    response.sort = [];
-
-    return response;
+    return getEntityResponse({
+      entity: "MembershipProduct",
+      rows,
+      plain: true
+    });
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -82,50 +71,30 @@ export function mockMembershipProducts() {
     values: [l.name, l.totalFee, l.code]
   }));
 
-  const columns = [
-    {
-      title: "Name",
-      attribute: "name",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      system: null,
-      sortFields: []
-    },
-    {
-      title: "Price",
-      attribute: "price_with_tax",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Money",
-      system: null,
-      sortFields: []
-    },
-    {
-      title: "SKU",
-      attribute: "sku",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      system: null,
-      sortFields: []
+  return getEntityResponse({
+    entity: "MembershipProduct",
+    rows,
+    columns: [
+      {
+        title: "Name",
+        attribute: "name",
+        sortable: true
+      },
+      {
+        title: "Price",
+        attribute: "price_with_tax",
+        sortable: true,
+        type: "Money"
+      },
+      {
+        title: "SKU",
+        attribute: "sku",
+        sortable: true
+      }
+    ],
+    res: {
+      search: "(isOnSale == true)",
+      sort: [{ attribute: "name", ascending: true, complexAttribute: [] }]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "MembershipProduct";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = "(isOnSale == true)";
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [{ attribute: "name", ascending: true, complexAttribute: [] }];
-
-  return response;
+  });
 }
