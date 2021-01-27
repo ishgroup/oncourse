@@ -58,7 +58,7 @@ export function listApiMock() {
     } if (entity === "TraineeshipCourse") {
       return promiseResolve(config, this.db.getTraineeshipCourses());
     } if (entity === "Course") {
-      return promiseResolve(config, this.db.getPlainCourses());
+      return promiseResolve(config, this.db.getCourses());
     } if (entity === "Qualification") {
       return promiseResolve(config, this.db.getQualifications());
     } if (entity === "Assessment") {
@@ -195,7 +195,7 @@ export function listApiMock() {
       }
 
       case "Course": {
-        return promiseResolve(config, this.db.getPlainCourses());
+        return promiseResolve(config, this.db.getCourses());
       }
 
       case "Site": {
