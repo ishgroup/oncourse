@@ -12,7 +12,7 @@
 import Avatar from "@material-ui/core/Avatar";
 import CardHeader from "@material-ui/core/CardHeader";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import React, { useCallback, useRef } from "react";
+import React, {useCallback, useMemo, useRef} from "react";
 import clsx from "clsx";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -42,7 +42,7 @@ import {
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import {addDays, format} from "date-fns";
+import {addDays, format, isSunday} from "date-fns";
 import { Document, DocumentVisibility, DocumentVersion } from "@api/model";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import FormField from "../../../../common/components/form/form-fields/FormField";
@@ -226,6 +226,17 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     />
   );
 
+  const getDateOfDeleting = useMemo(() => {
+    let dateOfDeleting = addDays(new Date(values.modifiedOn), 30);
+    if (dateOfDeleting < new Date()) {
+      dateOfDeleting = new Date();
+      while (!isSunday(dateOfDeleting)) {
+        dateOfDeleting = addDays(dateOfDeleting, 1);
+      }
+    }
+    return format(dateOfDeleting, "d MMMM yy");
+  },[values.modifiedOn]);
+
   return (
     loadingDocVersion
       ? (
@@ -353,7 +364,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                   <span>
                     This document will be permanently deleted after
                     { ' ' }
-                    { format(addDays(new Date(values.modifiedOn), 30), "d MMMM yy") }
+                    { getDateOfDeleting }
                   </span>
                 </Typography>
                 <Button variant="outlined" size="medium" color="secondary" onClick={restoreDocument}>
