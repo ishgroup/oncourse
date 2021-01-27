@@ -38,6 +38,12 @@ class UserDao implements CayenneLayer<SystemUser> {
                 .selectOne(context)
     }
 
+    static SystemUser getByLogin(ObjectContext context, String login) {
+        ObjectSelect.query(SystemUser)
+                .where(SystemUser.LOGIN.eq(login).orExp(SystemUser.EMAIL.eq(login)))
+                .selectOne(context)
+    }
+
     static SystemUser getByEmail(ObjectContext context, String email) {
         ObjectSelect.query(SystemUser)
                 .where(SystemUser.EMAIL.eq(email))
