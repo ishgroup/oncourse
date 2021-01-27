@@ -13,6 +13,8 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.oncourse.server.api.dao.UserDao
+
 import static ish.common.types.TwoFactorAuthorizationStatus.DISABLED
 import static ish.common.types.TwoFactorAuthorizationStatus.ENABLED_FOR_ADMIN
 import static ish.common.types.TwoFactorAuthorizationStatus.ENABLED_FOR_ALL
@@ -87,10 +89,20 @@ class AuthenticationApiImpl implements AuthenticationApi {
         //associate with system user
         ObjectContext context = cayenneService.newContext
 
-        SystemUser user = getSystemUserByLogin(details.login, context, prefController.autoDisableInactiveAccounts)
+        SystemUser user = UserDao.getByLogin(context, details.login)
 
         if (!user) {
             LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Invalid email / password')
+            throwUnauthorizedException(content)
+        }
+
+        if (user.loginAttemptNumber >= prefController.numberOfLoginAttempts) {
+            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Login access was disabled after too many incorrect login attempts. Please contact onCourse Administrator.')
+            throwUnauthorizedException(content)
+        }
+
+        if (prefController.autoDisableInactiveAccounts && !user.isActive) {
+            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'User is disabled. Please contact onCourse Administrator.')
             throwUnauthorizedException(content)
         }
 
