@@ -22,6 +22,7 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Map;
 
 public class TemplateService {
@@ -40,6 +41,7 @@ public class TemplateService {
 	public static final String COLLEGE_PREFERENCE_SERVICE = "Preference";
 	public static final String PREFERENCES_BINDING = "Preferences";
 	public static final String CONTACT_SERVICE_BINDING = "ContactService";
+	public static final String LOCAL_DATE_NOW = "now";
 	public static final String IMAGE = "image";
 	private static final String JAVA_POUND = "\u00A3";
 	private static final String HTML_POUND = "&pound;";
@@ -148,6 +150,7 @@ public class TemplateService {
 		bindings.put(IMAGE, documentService.getImageClosure());
 		bindings.put(CollegePreferenceService.PREFERENCE_ALIAS, preferenceService.getPrefHelper());
 		bindings.put(COLLEGE_PREFERENCE_SERVICE, preferenceService);
+		bindings.put(LOCAL_DATE_NOW, LocalDate.now());
 		bindings.put(BINDINGS, bindings);
 
 		return bindings;
