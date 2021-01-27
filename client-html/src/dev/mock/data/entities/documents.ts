@@ -80,10 +80,10 @@ export function mockDocuments() {
       l.name, "2011-11-18T11:06:41.000Z", "134.40 kb", "Website", `${l.fileName}.jpg`, "image/jpeg", true]
   }));
 
-  return getEntityResponse(
-    "Document",
+  return getEntityResponse({
+    entity: "Document",
     rows,
-    [
+    columns: [
       {
         title: "Link",
         attribute: "link"
@@ -128,8 +128,8 @@ export function mockDocuments() {
         width: 100
       }
     ],
-    {
+    res: {
       sort: [{ attribute: "name", ascending: true, complexAttribute: [] }]
     }
-  );
+  });
 }
