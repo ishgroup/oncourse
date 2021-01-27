@@ -110,15 +110,11 @@ export function mockEnrolments() {
       }));
     }
 
-    return getEntityResponse(
-      "Enrolment",
+    return getEntityResponse({
+      entity: "Enrolment",
       rows,
-      [],
-      {
-        filterColumnWidth: null,
-        layout: null
-      }
-    );
+      plain: true
+    });
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -134,10 +130,10 @@ export function mockEnrolments() {
     values: [l.source, l.studentName, l.classCode, l.courseClassName, l.status, l.createdOn]
   }));
 
-  return getEntityResponse(
-    "Enrolment",
+  return getEntityResponse({
+    entity: "Enrolment",
     rows,
-    [
+    columns: [
       {
         title: "Source",
         attribute: "source",
@@ -173,7 +169,7 @@ export function mockEnrolments() {
         type: "Datetime"
       }
     ],
-    {
+    res: {
       sort: [
         {
           ascending: true,
@@ -182,5 +178,5 @@ export function mockEnrolments() {
         }
       ]
     }
-  );
+  });
 }

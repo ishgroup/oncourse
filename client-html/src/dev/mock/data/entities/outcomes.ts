@@ -17,10 +17,11 @@ export function mockOutcomes() {
       values: [l.nationalCode, l.course, "RCC granted (53)", "2018-04-17T12:18:05.000Z", "2018-04-17T12:18:05.000Z", "Online"]
     }));
 
-    return getEntityResponse(
-      "Outcome",
-      rows
-    );
+    return getEntityResponse({
+      entity: "Outcome",
+      rows,
+      plain: true
+    });
   };
 
   this.getOutcome = id => {
@@ -62,10 +63,10 @@ export function mockOutcomes() {
     values: [l.studentName, l.name, l.code, l.moduleCode, l.moduleName, l.status, l.startDate, l.endDate]
   }));
 
-  return getEntityResponse(
-    "Outcome",
+  return getEntityResponse({
+    entity: "Outcome",
     rows,
-    [
+    columns: [
       {
         title: "Student Name",
         attribute: "studentName",
@@ -117,5 +118,5 @@ export function mockOutcomes() {
         type: "Datetime"
       }
     ]
-  );
+  });
 }
