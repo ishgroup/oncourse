@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockContacts() {
   this.getContacts = () => this.contacts;
@@ -258,7 +258,7 @@ export function mockContacts() {
   });
 
   this.removeContact = id => {
-    this.contacts.rows = this.contacts.rows.filter(a => a.id !== id);
+    this.contacts = removeItemByEntity(this.contacts, id);
   };
 
   this.getVerifyUSI = () => ({
@@ -278,20 +278,11 @@ export function mockContacts() {
       values: [l.firstName, l.lastName, null, null, null, null, null, null, null, null]
     }));
 
-    const columns = [];
-
-    const response = { rows, columns } as any;
-
-    response.entity = "Contact";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = rows.length;
-    response.search = null;
-    response.count = null;
-    response.sort = [];
-
-    return response;
+    return getEntityResponse({
+      entity: "Contact",
+      rows,
+      plain: true
+    });
   };
 
   this.getPlainPriorLearnings = () => {
@@ -307,20 +298,11 @@ export function mockContacts() {
       values: [l.title, l.externalRef, l.qualNationalCode, l.qualLevel, l.qualName]
     }));
 
-    const columns = [];
-
-    const response = { rows, columns } as any;
-
-    response.entity = "PriorLearning";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = rows.length;
-    response.search = null;
-    response.count = null;
-    response.sort = [];
-
-    return response;
+    return getEntityResponse({
+      entity: "PriorLearning",
+      rows,
+      plain: true
+    });
   };
 
   this.getMergeContacts = () => ({
@@ -581,64 +563,40 @@ export function mockContacts() {
     values: [`${l.lastName} ${l.firstName}`, l.birthDate, l.street, l.suburb, l.studentId]
   }));
 
-  const columns = [
-    {
-      title: "Name",
-      attribute: "fullName",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Birthdate",
-      attribute: "birthDate",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Street",
-      attribute: "street",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Suburb",
-      attribute: "suburb",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Student #",
-      attribute: "studentId",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Contact";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = null;
-  response.count = rows.length;
-  response.sort = [];
-
-  return response;
+  return getEntityResponse({
+    entity: "Contact",
+    rows,
+    columns: [
+      {
+        title: "Name",
+        attribute: "fullName",
+        sortable: true
+      },
+      {
+        title: "Birthdate",
+        attribute: "birthDate",
+        sortable: true,
+        width: 100,
+        type: "Datetime"
+      },
+      {
+        title: "Street",
+        attribute: "street",
+        sortable: true,
+        width: 100
+      },
+      {
+        title: "Suburb",
+        attribute: "suburb",
+        sortable: true,
+        width: 100
+      },
+      {
+        title: "Student #",
+        attribute: "studentId",
+        sortable: true,
+        width: 100
+      }
+    ]
+  });
 }
