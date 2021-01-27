@@ -179,14 +179,6 @@ class Document extends _Document implements DocumentTrait, Queueable {
 		return !super.isRemoved
 	}
 
-	static DocumentVersion getCurrentVersion(Document self) {
-		List<DocumentVersion> versions = self.getVersions()
-
-		Ordering.orderList(versions, Collections.singletonList(DocumentVersion.TIMESTAMP.desc()))
-
-		return versions.get(0)
-	}
-
 	@API
 	/**
 	 * Generates URL to access file.
