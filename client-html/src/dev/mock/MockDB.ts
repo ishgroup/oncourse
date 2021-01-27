@@ -1,5 +1,4 @@
 import {
-  Account,
   Holiday,
   Audit,
   AvetmissExportOutcome,
@@ -12,7 +11,6 @@ import {
   FieldType,
   Filter,
   PaymentType,
-  StatisticData,
   Tax,
   UserPreference,
   Currency,
@@ -122,7 +120,7 @@ export class MockDB {
 
   holiday: Holiday[];
 
-  account: Account[];
+  accounts: any;
 
   audit: Audit[];
 
@@ -271,9 +269,6 @@ export class MockDB {
     // Audits App
     this.audit = mockAudits.call(this);
 
-    // Accounts
-    this.account = mockAccounts.call(this);
-
     // Common
     this.filters = mockFilters.call(this);
     this.tags = mockTags.call(this);
@@ -292,6 +287,7 @@ export class MockDB {
     this.countries = mockCountries.call(this);
 
     // Entities
+    this.accounts = mockAccounts.call(this);
     this.waitingLists = mockWaitingLists.call(this);
     this.contacts = mockContacts.call(this);
     this.courses = mockCourses.call(this);
