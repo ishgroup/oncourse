@@ -73,14 +73,11 @@ export function mockAccounts() {
       values: [l.id, l.description, l.accountCode, AccountType.asset, l.taxId]
     }));
 
-    return getEntityResponse(
-      "Account",
+    return getEntityResponse({
+      entity: "Account",
       rows,
-      {
-        filterColumnWidth: null,
-        layout: null
-      }
-    );
+      plain: true
+    });
   };
 
   this.getAccount = (id: number): Account => {
@@ -138,10 +135,10 @@ export function mockAccounts() {
     values: [`accountCode ${l.accountCode}`, false, AccountType.asset, l.description]
   }));
 
-  return getEntityResponse(
-    "Account",
+  return getEntityResponse({
+    entity: "Account",
     rows,
-    [
+    columns: [
       {
         title: "Code",
         attribute: "accountCode",
@@ -165,7 +162,7 @@ export function mockAccounts() {
         sortable: true
       }
     ],
-    {
+    res: {
       sort: [
         {
           attribute: "accountCode",
@@ -174,5 +171,5 @@ export function mockAccounts() {
         }
       ]
     }
-  );
+  });
 }

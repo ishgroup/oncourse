@@ -80,10 +80,10 @@ export function mockApplications() {
     values: [l.source, l.studentName, l.courseName, l.createdOn, "Withdrawn", l.feeOverride]
   }));
 
-  return getEntityResponse(
-    "Application",
+  return getEntityResponse({
+    entity: "Application",
     rows,
-    [
+    columns: [
       {
         title: "Source",
         attribute: "source",
@@ -121,9 +121,9 @@ export function mockApplications() {
         type: "Money"
       }
     ],
-    {
+    res: {
       search: "( ((status == NEW) and ((enrolBy >= today) or (enrolBy == null))) or ((status == IN_PROGRESS) and ((enrolBy >= today) or (enrolBy == null))) or ((status == OFFERED) and ((enrolBy >= today) or (enrolBy == null))) or ((status == ACCEPTED)) or ((status == REJECTED)) or ((status == WITHDRAWN)) )",
       sort: [{ attribute: "source", ascending: true, complexAttribute: [] }]
     }
-  );
+  });
 }

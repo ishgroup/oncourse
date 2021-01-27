@@ -153,15 +153,11 @@ export function mockInvoices() {
       values: [l.invoiceNumber, "132.00", l.lastName, l.firstName, false]
     }));
 
-    return getEntityResponse(
-      "InvoiceLine",
+    return getEntityResponse({
+      entity: "InvoiceLine",
       rows,
-      [],
-      {
-        filterColumnWidth: null,
-        layout: null
-      }
-    );
+      plain: true
+    });
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -178,10 +174,10 @@ export function mockInvoices() {
     values: [l.invoiceNumber, l.source, l.dateDue, l.contactName, 132, 132, 132]
   }));
 
-  return getEntityResponse(
-    "Invoice",
+  return getEntityResponse({
+    entity: "Invoice",
     rows,
-    [
+    columns: [
       {
         title: "Invoice number",
         attribute: "invoiceNumber",
@@ -222,7 +218,7 @@ export function mockInvoices() {
         sortable: true
       }
     ],
-    {
+    res: {
       sort: [
         {
           attribute: "invoiceNumber",
@@ -231,5 +227,5 @@ export function mockInvoices() {
         }
       ]
     }
-  );
+  });
 }

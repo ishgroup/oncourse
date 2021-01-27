@@ -19,7 +19,9 @@ export const generateArraysOfRecords = (count: number, keys): any => Array.from(
 
 export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-export const getEntityResponse = (entity = "", rows = [], columnsList = [], res = {}) => {
+export const getEntityResponse = ({
+ entity = "", rows = [], columns = [], res = {}, plain = false
+}) => {
   const defaultColumn = {
     title: "",
     attribute: "",
@@ -31,18 +33,18 @@ export const getEntityResponse = (entity = "", rows = [], columnsList = [], res 
     sortFields: []
   };
 
-  const columns = [];
+  const columnsList = [];
 
-  columnsList.forEach(column => {
-    columns.push({
+  columns.forEach(column => {
+    columnsList.push({
       ...defaultColumn,
       ...column
     });
   });
 
-  return {
+  let response = {
     rows,
-    columns,
+    columns: columnsList,
     entity,
     offset: 0,
     filterColumnWidth: 200,
@@ -54,6 +56,12 @@ export const getEntityResponse = (entity = "", rows = [], columnsList = [], res 
     sort: [],
     ...res
   };
+
+  if (plain) {
+    response = { ...response, filterColumnWidth: null, layout: null };
+  }
+
+  return response;
 };
 
 export const removeItemByEntity = (entity, id) => {
