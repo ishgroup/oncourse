@@ -24,9 +24,10 @@ sourceSets {
 
 task swagger (type: Swagger) {
     schema = swaggerSchema
-    schemaVersion = 1
+    apiPackage = servicesPackage
+    dtoPackage = modelPackage
     javaOutput = file("${project.projectDir}/build/generated-sources")
-    jsOutput = file("${rootDir}/editor/build/generated-sources")
+    jsOutput = file("${project.projectDir}/build/generated-sources")
 }
 
 compileGroovy {

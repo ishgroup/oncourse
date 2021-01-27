@@ -20,8 +20,11 @@ class Swagger extends DefaultTask {
     File schema
 
     @Input
-    Integer schemaVersion
-
+    String apiPackage
+    
+    @Input
+    String dtoPackage
+    
     @OutputDirectory
     File javaOutput
 
@@ -40,8 +43,8 @@ class Swagger extends DefaultTask {
                 'sourceFolder': 'src/main/groovy',
                 'implFolder': 'src/main/groovy',
                 'useBeanValidation': false,
-                'modelPackage'  : "ish.oncourse.willow.editor.v${schemaVersion}.model".toString(),
-                'apiPackage'    : "ish.oncourse.willow.editor.v${schemaVersion}.service".toString(),
+                'modelPackage'  : dtoPackage,
+                'apiPackage'    : apiPackage,
                 'supportingFiles': '', // skip scripts and maven files
                 'appVersion'    : project.version,
                 'apiTestTemplateFiles': ['api_test.mustache':'.groovy']
