@@ -23,16 +23,9 @@ import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.EmailDequeueJob;
-import ish.oncourse.server.services.ISchedulerService;
+import ish.oncourse.server.services.*;
 import ish.oncourse.server.report.JRRuntimeConfig;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
-import ish.oncourse.server.services.BackupJob;
-import ish.oncourse.server.services.ChristmasThemeDisableJob;
-import ish.oncourse.server.services.ChristmasThemeEnableJob;
-import ish.oncourse.server.services.DelayedEnrolmentIncomePostingJob;
-import ish.oncourse.server.services.FundingContractUpdateJob;
-import ish.oncourse.server.services.InvoiceOverdueUpdateJob;
-import ish.oncourse.server.services.VoucherExpiryJob;
 import ish.persistence.Preferences;
 import ish.security.AuthenticationUtil;
 import ish.util.RuntimeUtil;
@@ -185,6 +178,13 @@ public class AngelServerFactory {
             schedulerService.scheduleCronJob(ChristmasThemeDisableJob.class,
                     CHRISTMAS_THEME_DISABLE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
                     CHRISTMAS_THEME_DISABLE_JOB_INTERVAL,
+                    prefController.getOncourseServerDefaultTimezone(),
+                    false,
+                    false);
+
+            schedulerService.scheduleCronJob(PermanentlyDeleteDocumentsJob.class,
+                    PERMANENTLY_DELETE_DOCUMENTS_ID, BACKGROUND_JOBS_GROUP_ID,
+                    PERMANENTLY_DELETE_DOCUMENTS_INTERVAL,
                     prefController.getOncourseServerDefaultTimezone(),
                     false,
                     false);
