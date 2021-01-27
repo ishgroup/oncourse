@@ -14,7 +14,7 @@ import {
 } from "./components/Index";
 
 import {SummaryComp} from "./components/SummaryComp";
-import {proceedToPayment, selectItem, updateEnrolmentFields, updateItem} from "./actions/Actions";
+import {proceedToPayment, replaceItem, selectItem, updateEnrolmentFields, updateItem} from "./actions/Actions";
 import {submitPaymentForWaitingCourses} from "../payment/actions/Actions";
 import {
   changePhase, addCode, getCheckoutModelFromBackend, toggleRedeemVoucher, updatePayNow, updateContactAddProcess,
@@ -25,6 +25,7 @@ import {Phase} from "../../reducers/State";
 import {SummaryService} from "./services/SummaryService";
 import CheckoutService from "../../services/CheckoutService";
 import {WaitingList} from "../../../model/checkout/WaitingList";
+import {replaceClassInCart} from "../../../web/actions/Actions";
 
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => {
   return {
@@ -157,6 +158,13 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
       dispatch(updateContactAddProcess({}, Phase.AddContact, contactId));
       dispatch(changePhase(Phase.ChangeParent));
     },
+    replaceClassInCart: (replace,replacement): void => {
+      dispatch(replaceClassInCart(replace,replacement));
+    },
+    onChangeClass: (item1,item2): void => {
+      dispatch(replaceItem(item1,item2));
+      dispatch(getCheckoutModelFromBackend());
+    },
     onProceedToPayment: (forms): void => {
       forms && Object.keys(forms).map(form => dispatch(submit(form)));
 
@@ -172,7 +180,6 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
       if (errors && errors.length) return;
 
       dispatch(submitPaymentForWaitingCourses());
-
     },
     onAddCode: (code: string): void => {
       dispatch(addCode(code));

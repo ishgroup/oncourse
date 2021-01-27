@@ -1,19 +1,32 @@
 import {combineReducers} from "redux";
 import {IshAction} from "../../actions/IshAction";
-import {ContactState, CourseClassCartState, ProductCartState, WaitingCourseClassState} from "../../services/IshState";
+import {
+  ContactState,
+  CourseClassCartState,
+  ProductCartState,
+  ReplaceCourseClassState,
+  WaitingCourseClassState
+} from "../../services/IshState";
 import {Contact} from "../../model";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Actions} from "../actions/Actions";
 import {RESET_CHECKOUT_STATE} from "../../enrol/actions/Actions";
 
-function classesAllIds(state = [], action: IshAction<CourseClassCartState>) {
+function classesAllIds(state = [], action: IshAction<CourseClassCartState & ReplaceCourseClassState>) {
   switch (action.type) {
     case FULFILLED(Actions.ADD_CLASS_TO_CART):
       return [
         ...state,
         ...[action.payload.result]
-          .filter(t => !state.includes(t)), // dedup
+          .filter(t => !state.includes(t)),
       ];
+
+    case FULFILLED(Actions.REPLACE_CLASS_IN_CART):
+      return [
+        ...state,
+        ...[action.payload.replacement.result]
+          .filter(t => !state.includes(t))
+      ].filter(it => it !== action.payload.replace.result);
 
     case FULFILLED(Actions.REMOVE_CLASS_FROM_CART):
       return state.filter(it => it !== action.payload.result);
@@ -26,13 +39,19 @@ function classesAllIds(state = [], action: IshAction<CourseClassCartState>) {
   }
 }
 
-function classesById(state = {}, action: IshAction<CourseClassCartState>) {
+function classesById(state = {}, action: IshAction<CourseClassCartState & ReplaceCourseClassState>) {
   switch (action.type) {
     case FULFILLED(Actions.ADD_CLASS_TO_CART):
       return {
         ...state,
         ...action.payload.entities.classes,
       };
+
+    case FULFILLED(Actions.REPLACE_CLASS_IN_CART):
+      const replaceState = {...state, ...action.payload.replacement.entities.classes};
+      delete replaceState[action.payload.replace.result];
+
+      return replaceState;
 
     case FULFILLED(Actions.REMOVE_CLASS_FROM_CART):
       const nextState = {...state};

@@ -6,10 +6,34 @@ import {IAction} from "../../../../actions/IshAction";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
 import {RESET_PAYMENT_STATE} from "../../payment/actions/Actions";
 
+const ItemsKeys = [
+  "enrolments",
+  "applications",
+  "memberships",
+  "articles",
+  "vouchers",
+  "waitingLists",
+]
+
 export const Reducer = (state: State = ContactNodeToState([]), action: IAction<any>): State => {
   const ns: State = L.cloneDeep(state);
 
   switch (action.type) {
+    case  SummaryActions.REPLACE_ITEM:
+      action.payload.replace.result.forEach(id => {
+        const stateNode: ContactNodeStorage = ns.entities.contactNodes[id];
+        const replaceNode: ContactNodeStorage = action.payload.replace.entities.contactNodes[id];
+        const replacementNode: ContactNodeStorage = action.payload.replacement.entities.contactNodes[id];
+        ItemsKeys.forEach(key => {
+          const index = stateNode[key].indexOf(replaceNode[key][0]);
+          if (index !== -1) {
+            delete ns.entities[key][Object.keys(action.payload.replace.entities[key])[0]];
+            ns.entities[key] = {...ns.entities[key], ...action.payload.replacement.entities[key]};
+            stateNode[key].splice(index,1,replacementNode[key][0]);
+          }
+        })
+      });
+      return ns;
 
     case  SummaryActions.UPDATE_ITEM:
       action.payload.result.forEach(id => {

@@ -42,6 +42,7 @@ export type CourseClassCartState = Normalized<CourseClassCart>;
 export type ProductCartState = Normalized<ProductCart>;
 export type PromotionCartState = Normalized<PromotionCart>;
 export type WaitingCourseClassState = Normalized<WaitingCourseCart>;
+export type ReplaceCourseClassState = { replace: CourseClassCartState, replacement: CourseClassCartState };
 
 // --- Extend backend model
 export interface DiscountState extends Discount {

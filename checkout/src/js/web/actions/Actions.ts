@@ -1,8 +1,13 @@
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {ContactState} from "../../services/IshState";
+import {CourseClass} from "../../model";
+import {IAction} from "../../actions/IshAction";
+
 export const Actions = {
   ADD_CLASS_TO_CART: "ADD_CLASS_TO_CART",
   REMOVE_CLASS_FROM_CART: "REMOVE_CLASS_FROM_CART",
+
+  REPLACE_CLASS_IN_CART: "REPLACE_CLASS_IN_CART",
 
   ADD_WAITING_COURSE_TO_CART: "ADD_WAITING_COURSE_TO_CART",
   REMOVE_WAITING_COURSE_FROM_CART: "REMOVE_WAITING_COURSE_FROM_CART",
@@ -51,6 +56,16 @@ export function hidePopup() {
     type: Actions.HIDE_POPUP,
   };
 }
+
+export const replaceClassInCart = (replace: CourseClass, replacement: CourseClass): IAction<any> => {
+  return {
+    type: Actions.REPLACE_CLASS_IN_CART,
+    payload: {
+      replace,
+      replacement
+    },
+  };
+};
 
 export const addContact = function (contact: ContactState) {
   return {type: FULFILLED(Actions.REQUEST_CONTACT), payload: contact};

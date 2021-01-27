@@ -3,7 +3,7 @@ import classnames from "classnames";
 import moment from "moment";
 import { Formats } from "../../../../constants/Formats";
 import * as FormatUtils from "../../../../common/utils/FormatUtils";
-import { Enrolment, Contact, CourseClass, CourseClassPrice } from "../../../../model";
+import {Enrolment, Contact, CourseClass, CourseClassPrice} from "../../../../model";
 import { ClassHasCommenced } from "../Messages";
 import { ItemWrapper } from "./ItemWrapper";
 import { toFormKey } from "../../../../components/form/FieldFactory";
@@ -17,6 +17,8 @@ export interface Props {
   enrolment: Enrolment;
   courseClass: CourseClass;
   onChange?: (item, contact) => void;
+  onChangeClass?: (classId: string) => void;
+  replaceClassInCart?: (item1: CourseClass, item2: CourseClass) => void;
   onChangeFields?: (form, type) => any;
   readonly?: boolean;
 }
@@ -39,7 +41,7 @@ class EnrolmentComp extends React.Component<Props, any> {
   }
 
   public render(): JSX.Element {
-    const { enrolment, courseClass, contact, onChange, onChangeFields, readonly } = this.props;
+    const { enrolment, courseClass, contact, onChange,onChangeClass, onChangeFields, replaceClassInCart, readonly } = this.props;
     const divClass = classnames("row", "enrolmentItem", { disabled: !enrolment.selected });
     const name = `enrolment-${contact.id}-${enrolment.classId}`;
     const title: string = `${courseClass.course.name}`;
@@ -65,7 +67,10 @@ class EnrolmentComp extends React.Component<Props, any> {
         >
           <ClassDetails
             courseClass={courseClass}
+            enrolment={enrolment}
             error={error}
+            onChangeClass={onChangeClass}
+            replaceClassInCart={replaceClassInCart}
           />
         </ItemWrapper>
         {!error && enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment} />}
@@ -117,6 +122,9 @@ const ClassPrice = (props): any => {
 
 interface ClassDetailsProps {
   courseClass: CourseClass;
+  enrolment: Enrolment;
+  onChangeClass?: (classId: string) => void;
+  replaceClassInCart?: (item1: CourseClass, item2: CourseClass) => void;
   error: any;
 }
 
@@ -135,13 +143,23 @@ const ClassDetailsLabel = (classItem: CourseClass) => {
   </div>
 }
 
-const ClassDetails = ({ courseClass, error }: ClassDetailsProps) => {
+const ClassDetails = ({ courseClass, onChangeClass, enrolment, replaceClassInCart, error }: ClassDetailsProps) => {
   return courseClass.id && !error ? (
     <SelectField
       returnType="object"
       searchable={false}
+      valueKey="id"
+      labelKey="id"
       input={{
-        onChange: result => console.log(result),
+        onChange: result => {
+          if (result.id === courseClass.id) {
+            return;
+          }
+          if (!enrolment.relatedClassId && !enrolment.relatedProductId) {
+            replaceClassInCart(courseClass,result);
+          }
+          onChangeClass(result.id)
+        },
         value: courseClass
       }}
       meta={{}}

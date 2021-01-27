@@ -22,6 +22,7 @@ export const REWRITE_CONTACT_NODE_TO_STATE: string = "checkout/summary/rewrite/C
 export const SELECT_ITEM_REQUEST: string = "checkout/summary/select/item/request";
 
 export const UPDATE_ITEM: string = "checkout/summary/update/item";
+export const REPLACE_ITEM: string = "checkout/summary/replace/item";
 
 export const REMOVE_ITEM_FROM_SUMMARY: string = "checkout/remove/summary/item";
 export const REMOVE_CONTACT_FROM_SUMMARY: string = "checkout/remove/summury/contact";
@@ -61,6 +62,16 @@ export const updateItem = (item: PurchaseItem): IAction<State> => {
   return {
     type: UPDATE_ITEM,
     payload: ItemToState(item),
+  };
+};
+
+export const replaceItem = (replace: PurchaseItem, replacement: PurchaseItem): IAction<any> => {
+  return {
+    type: REPLACE_ITEM,
+    payload: {
+      replace: ItemToState(replace),
+      replacement: ItemToState(replacement)
+    },
   };
 };
 
