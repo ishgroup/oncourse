@@ -1,5 +1,5 @@
 import { Banking } from "@api/model";
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockBankings() {
   this.getBankings = () => this.bankings;
@@ -109,7 +109,7 @@ export function mockBankings() {
   });
 
   this.removeBanking = id => {
-    this.bankings.rows = this.bankings.rows.filter(a => a.id !== id);
+    this.bankings = removeItemByEntity(this.bankings, id);
   };
 
   this.getDepositPayment = () => [
@@ -203,74 +203,41 @@ export function mockBankings() {
     values: [l.reconciledStatus, l.settlementDate, l.type, l.adminSite, l.createdBy, l.total]
   }));
 
-  const columns = [
-    {
-      title: "Reconciled",
-      attribute: "reconciledStatus",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Date",
-      attribute: "settlementDate",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Type",
-      attribute: "type",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Site",
-      attribute: "adminSite.name",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "User",
-      attribute: "createdBy.login",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Total",
-      attribute: "total",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: "Money",
-      sortFields: []
+  return getEntityResponse({
+    entity: "Banking",
+    rows,
+    columns: [
+      {
+        title: "Reconciled",
+        attribute: "reconciledStatus"
+      },
+      {
+        title: "Date",
+        attribute: "settlementDate",
+        sortable: true,
+        type: "Datetime"
+      },
+      {
+        title: "Type",
+        attribute: "type",
+        sortable: true
+      },
+      {
+        title: "Site",
+        attribute: "adminSite.name"
+      },
+      {
+        title: "User",
+        attribute: "createdBy.login"
+      },
+      {
+        title: "Total",
+        attribute: "total",
+        type: "Money"
+      }
+    ],
+    res: {
+      sort: [{ attribute: "settlementDate", ascending: false, complexAttribute: [] }]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Banking";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = "";
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [{ attribute: "settlementDate", ascending: false, complexAttribute: [] }];
-
-  return response;
+  });
 }
