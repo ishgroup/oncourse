@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockAssessments() {
   this.getAssessments = () => this.assessments;
@@ -45,7 +45,11 @@ export function mockAssessments() {
     response.count = null;
     response.sort = [];
 
-    return response;
+    return getEntityResponse({
+      entity: "Assessment",
+      rows,
+      plain: true
+    });
   };
 
   this.createAssessment = item => {
@@ -75,7 +79,7 @@ export function mockAssessments() {
   });
 
   this.removeAssessment = id => {
-    this.assessments = this.assessments.rows.filter(a => a.id !== id);
+    this.assessments = removeItemByEntity(this.assessments, id);
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -87,38 +91,20 @@ export function mockAssessments() {
     values: [l.code, l.name]
   }));
 
-  const columns = [
-    {
-      title: "Code",
-      attribute: "code",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Name",
-      attribute: "name",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Assessment";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = null;
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [];
-
-  return response;
+  return getEntityResponse({
+    entity: "Assessment",
+    rows,
+    columns: [
+      {
+        title: "Code",
+        attribute: "code",
+        sortable: true
+      },
+      {
+        title: "Name",
+        attribute: "name",
+        sortable: true
+      }
+    ]
+  });
 }
