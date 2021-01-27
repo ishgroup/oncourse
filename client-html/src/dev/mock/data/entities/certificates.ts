@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockCertificates() {
   this.getCertificates = () => this.certificates;
@@ -47,7 +47,6 @@ export function mockCertificates() {
   this.getPlainCertificates = params => {
     let rows;
     const searchedColumns = params.columns.split(",");
-    let columns = [];
     if (searchedColumns.includes("revokedOn")) {
       rows = generateArraysOfRecords(1, [
         { name: "id", type: "number" },
@@ -56,7 +55,6 @@ export function mockCertificates() {
         id: l.id,
         values: [null]
       }));
-      columns = searchedColumns;
     } else {
       rows = generateArraysOfRecords(20, [
         { name: "id", type: "number" },
@@ -67,18 +65,11 @@ export function mockCertificates() {
       }));
     }
 
-    const response = { rows, columns } as any;
-
-    response.entity = "Certificate";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = rows.length;
-    response.search = null;
-    response.count = null;
-    response.sort = [];
-
-    return response;
+    return getEntityResponse({
+      entity: "Certificate",
+      rows,
+      plain: true
+    });
   };
 
   this.createCertificate = item => {
@@ -145,7 +136,7 @@ export function mockCertificates() {
   });
 
   this.removeCertificate = id => {
-    this.certificates.rows = this.certificates.rows.filter(a => a.id !== id);
+    this.certificates = removeItemByEntity(this.certificates, id);
   };
 
   this.validateCertificateUSIRequest = () => ({
@@ -193,101 +184,60 @@ export function mockCertificates() {
     ]
   }));
 
-  const columns = [
-    {
-      title: "Student name",
-      attribute: "student.contact.fullName",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: ["student.contact.lastName", "student.contact.firstName", "student.contact.middleName"]
-    },
-    {
-      title: "Full qualification",
-      attribute: "isQualification",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Boolean",
-      sortFields: []
-    },
-    {
-      title: "Qualification code",
-      attribute: "qualification.nationalCode",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Qualification level",
-      attribute: "qualification.level",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Qualification title",
-      attribute: "qualification.title",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Certificate number",
-      attribute: "certificateNumber",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Awarded On",
-      attribute: "awardedOn",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Issued On",
-      attribute: "issuedOn",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Revoked On",
-      attribute: "revokedOn",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
+  return getEntityResponse({
+    entity: "Certificate",
+    rows,
+    columns: [
+      {
+        title: "Student name",
+        attribute: "student.contact.fullName",
+        sortable: true,
+        sortFields: ["student.contact.lastName", "student.contact.firstName", "student.contact.middleName"]
+      },
+      {
+        title: "Full qualification",
+        attribute: "isQualification",
+        sortable: true,
+        type: "Boolean"
+      },
+      {
+        title: "Qualification code",
+        attribute: "qualification.nationalCode"
+      },
+      {
+        title: "Qualification level",
+        attribute: "qualification.level"
+      },
+      {
+        title: "Qualification title",
+        attribute: "qualification.title"
+      },
+      {
+        title: "Certificate number",
+        attribute: "certificateNumber",
+        sortable: true
+      },
+      {
+        title: "Awarded On",
+        attribute: "awardedOn",
+        sortable: true,
+        type: "Datetime"
+      },
+      {
+        title: "Issued On",
+        attribute: "issuedOn",
+        sortable: true,
+        type: "Datetime"
+      },
+      {
+        title: "Revoked On",
+        attribute: "revokedOn",
+        sortable: true,
+        type: "Datetime"
+      }
+    ],
+    res: {
+      sort: [{ attribute: "awardedOn", ascending: true, complexAttribute: [] }]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Certificate";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = "";
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [{ attribute: "awardedOn", ascending: true, complexAttribute: [] }];
-
-  return response;
+  });
 }
