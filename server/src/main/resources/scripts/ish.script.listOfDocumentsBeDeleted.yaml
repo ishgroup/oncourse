@@ -1,0 +1,11 @@
+name: notification with be deleted documents list
+body: ish.script.listOfDocumentsBeDeleted.groovy
+keyCode: ish.script.listOfDocumentsBeDeleted
+enabled: false
+triggerType: CRON
+schedule: 0 0 7 ? * MON *
+description: A notification with list of documents which will be deleted
+options:
+  - name: templateForNotification
+    dataType: MESSAGE_TEMPLATE
+    value: "ish.email.notificationWithDocumentsList"
