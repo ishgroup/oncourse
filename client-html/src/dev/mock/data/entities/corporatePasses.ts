@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockCorporatePasses() {
   this.getCorporatePasses = () => this.corporatePasses;
@@ -160,7 +160,7 @@ export function mockCorporatePasses() {
   });
 
   this.removeCorporatePass = id => {
-    this.corporatePasses = this.corporatePasses.rows.filter(a => a.id !== id);
+    this.corporatePasses = removeItemByEntity(this.corporatePasses, id);
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -174,56 +174,34 @@ export function mockCorporatePasses() {
     values: [l.contactFullName, l.invoiceEmail, l.expiryDate, l.timesUsed]
   }));
 
-  const columns = [
-    {
-      title: "Contact",
-      attribute: "contact.fullName",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: ["contact.lastName", "contact.firstName", "contact.middleName"]
-    },
-    {
-      title: "Email to",
-      attribute: "email",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Expiry date",
-      attribute: "expiryDate",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Used",
-      attribute: "timesUsed",
-      sortable: false,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
+  return getEntityResponse({
+    entity: "CorporatePass",
+    rows,
+    columns: [
+      {
+        title: "Contact",
+        attribute: "contact.fullName",
+        sortFields: ["contact.lastName", "contact.firstName", "contact.middleName"]
+      },
+      {
+        title: "Email to",
+        attribute: "email"
+      },
+      {
+        title: "Expiry date",
+        attribute: "expiryDate",
+        sortable: true,
+        type: "Datetime"
+      },
+      {
+        title: "Used",
+        attribute: "timesUsed",
+        width: 100
+      }
+    ],
+    res: {
+      search: "(expiryDate is null or expiryDate >= today)",
+      sort: [{ attribute: "expiryDate", ascending: true, complexAttribute: [] }]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "CorporatePass";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = "(expiryDate is null or expiryDate >= today)";
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [{ attribute: "expiryDate", ascending: true, complexAttribute: [] }];
-
-  return response;
+  });
 }
