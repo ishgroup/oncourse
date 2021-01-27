@@ -25,6 +25,7 @@ import static ish.oncourse.server.api.v1.function.AuthenticationFunctions.*
 import ish.oncourse.server.api.v1.model.LoginRequestDTO
 import ish.oncourse.server.api.v1.model.LoginResponseDTO
 
+import static ish.oncourse.server.api.v1.function.UserFunctions.updateLoginAttemptNumber
 import static ish.oncourse.server.api.v1.function.UserFunctions.validateUserPassword
 import static ish.oncourse.server.api.v1.model.LoginStatusDTO.CONCURRENT_SESSIONS_FOUND
 import static ish.oncourse.server.api.v1.model.LoginStatusDTO.FORCED_PASSWORD_UPDATE
@@ -118,6 +119,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
                 checkInternalAuth(user, details.password)
         if (errorMessage) {
             updateLoginAttemptNumber(user, prefController.numberOfLoginAttempts)
+            user.context.commitChanges()
             LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, errorMessage)
             throwUnauthorizedException(content)
         }

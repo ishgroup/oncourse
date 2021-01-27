@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.v1.function
 
-import com.nulabinc.zxcvbn.Zxcvbn
 import com.warrenstrange.googleauth.GoogleAuthenticator
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.function.SecurityFunctions
@@ -22,7 +21,6 @@ import ish.oncourse.server.cayenne.SystemUser
 import ish.security.AuthenticationUtil
 import ish.security.LdapAuthConnection
 import static ish.util.Constants.TOTP_COOKIE_NAME
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.ArrayUtils
 import org.apache.commons.lang3.StringUtils
@@ -54,26 +52,6 @@ class AuthenticationFunctions {
             r.totpUrl = totpUrl
             r
         }
-    }
-
-    static SystemUser getSystemUserByLogin(String login, ObjectContext context, boolean disableInactiveAccounts) {
-        ObjectSelect objectSelect = ObjectSelect.query(SystemUser)
-                .where(SystemUser.LOGIN.eq(login).orExp(SystemUser.EMAIL.eq(login)))
-
-        if (disableInactiveAccounts) {
-            objectSelect.and(SystemUser.IS_ACTIVE.isTrue())
-        }
-
-        objectSelect.selectOne(context)
-    }
-
-    static void updateLoginAttemptNumber(SystemUser user, Integer allowedNumberOfAttempts, Integer newAttemptNumber = null) {
-        user.loginAttemptNumber = newAttemptNumber ?: ++(user.loginAttemptNumber)
-
-        if (allowedNumberOfAttempts <= user.loginAttemptNumber) {
-            user.isActive = Boolean.FALSE
-        }
-        user.context.commitChanges()
     }
 
     static String checkLdapAuth(SystemUser user, String password, PreferenceController prefController) {
