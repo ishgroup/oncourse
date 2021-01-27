@@ -55,3 +55,14 @@ export const getEntityResponse = (entity = "", rows = [], columnsList = [], res 
     ...res
   };
 };
+
+export const removeItemByEntity = (entity, id) => {
+  entity.rows = [...entity.rows.filter(m => Number(m.id) !== Number(id))];
+  entity.count = entity.rows.length;
+  return entity;
+};
+
+export const getParamsId = config => {
+  const params = config.url.split("/");
+  return params[params.length - 1];
+};
