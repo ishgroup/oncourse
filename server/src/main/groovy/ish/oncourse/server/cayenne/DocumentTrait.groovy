@@ -21,6 +21,8 @@ trait DocumentTrait {
 
     abstract String getLink()
 
+    abstract DocumentVersion getCurrentVersion()
+
     Integer getAttachedRecordsCount() {
         return attachmentRelations.size()
     }
