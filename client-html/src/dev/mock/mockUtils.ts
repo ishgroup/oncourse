@@ -59,6 +59,7 @@ export const getEntityResponse = (entity = "", rows = [], columnsList = [], res 
 export const removeItemByEntity = (entity, id) => {
   entity.rows = [...entity.rows.filter(m => Number(m.id) !== Number(id))];
   entity.count = entity.rows.length;
+  entity.filteredCount = entity.rows.length;
   return entity;
 };
 
