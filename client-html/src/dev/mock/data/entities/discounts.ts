@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockDiscounts() {
   this.getDiscounts = () => this.discounts;
@@ -216,7 +216,7 @@ export function mockDiscounts() {
   });
 
   this.removeDiscount = id => {
-    this.discounts.rows = this.discounts.rows.filter(a => a.id !== id);
+    this.discounts = removeItemByEntity(this.discounts, id);
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -233,83 +233,55 @@ export function mockDiscounts() {
     values: [l.validFrom, l.validTo, l.name, l.code, l.discountValue, 0.2, "Percent"]
   }));
 
-  const columns = [
-    {
-      title: "Valid from",
-      attribute: "validFrom",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Valid to",
-      attribute: "validTo",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Name",
-      attribute: "name",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Promotional code",
-      attribute: "code",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Discount value",
-      attribute: "discountDollar",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: "Money",
-      sortFields: []
-    },
-    {
-      title: "Discount percent",
-      attribute: "discountPercent",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: "Percent",
-      sortFields: []
-    },
-    {
-      title: "Discount type",
-      attribute: "discountType",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
+  return getEntityResponse({
+    entity: "Discount",
+    rows,
+    columns: [
+      {
+        title: "Valid from",
+        attribute: "validFrom",
+        sortable: true,
+        type: "Datetime"
+      },
+      {
+        title: "Valid to",
+        attribute: "validTo",
+        sortable: true,
+        type: "Datetime"
+      },
+      {
+        title: "Name",
+        attribute: "name",
+        sortable: true
+      },
+      {
+        title: "Promotional code",
+        attribute: "code",
+        sortable: true
+      },
+      {
+        title: "Discount value",
+        attribute: "discountDollar",
+        sortable: true,
+        width: 100,
+        type: "Money"
+      },
+      {
+        title: "Discount percent",
+        attribute: "discountPercent",
+        sortable: true,
+        width: 100,
+        type: "Percent"
+      },
+      {
+        title: "Discount type",
+        attribute: "discountType",
+        sortable: true,
+        width: 100
+      }
+    ],
+    res: {
+      sort: [{ attribute: "validFrom", ascending: true, complexAttribute: [] }]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Discount";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = null;
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [{ attribute: "validFrom", ascending: true, complexAttribute: [] }];
-
-  return response;
+  });
 }
