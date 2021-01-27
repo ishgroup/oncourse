@@ -1,0 +1,6 @@
+The following documents will be permanently deleted from your ish onCourse system after ${now.plusDays(6)}
+
+DOCUMENTS FOR DELETION:
+<% documents.each { d -> %>
+${d.fileName} - ${d.displayableSize}
+<% } %>

@@ -1,0 +1,15 @@
+name: Notification with be deleted documents list
+type: email
+keyCode: ish.email.notificationWithDocumentsList
+txtTemplate: ish.email.notificationWithDocumentsList.txt
+htmlTemplate: ish.email.notificationWithDocumentsList.html
+subject: A list of be deleted documents on Sunday
+entityClass: DocumentVersion
+description: An email with a notification with be deleted documents list on this Sunday
+options:
+  - name: headerKeycode
+    dataType: TEXT
+    value: ish.email.header
+  - name: footerKeycode
+    dataType: TEXT
+    value: ish.email.footer
