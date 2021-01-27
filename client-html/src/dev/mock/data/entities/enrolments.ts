@@ -1,4 +1,4 @@
-import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockEnrolments() {
   this.getEnrolments = () => this.enrolments;
@@ -65,7 +65,7 @@ export function mockEnrolments() {
   };
 
   this.removeEnrolment = id => {
-    this.enrolments = this.enrolments.rows.filter(a => a.id !== id);
+    this.enrolments = removeItemByEntity(this.enrolments, id);
   };
 
   this.getPlainEnrolments = params => {
