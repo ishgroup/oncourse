@@ -1,1 +1,2 @@
 ish.oncourse.api.cxf.CXFModuleProvider
+ish.oncourse.api.jetty.HealthCheckModuleProvider
