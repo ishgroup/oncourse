@@ -23,7 +23,7 @@ class UserService {
     return this.userApi.disableTFA(id);
   }
 
-  public resetPassword(id: number): Promise<string> {
+  public resetPassword(id: number): Promise<any> {
     return this.userApi.resetPassword(id);
   }
 

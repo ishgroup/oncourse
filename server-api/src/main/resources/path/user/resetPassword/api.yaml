@@ -11,8 +11,7 @@ put:
     type: integer
     format: int64
   responses:
-    '200':
-      schema:
-        type: string
-      default:
-        description: Unexpected error
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
