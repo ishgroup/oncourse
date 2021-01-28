@@ -102,6 +102,10 @@ export function mockEmailTemplates() {
     switch (entityName) {
       case "Account": 
         return [];
+      case "Enrolment":
+        return this.getEnrolmentEmailTemplates();
+      case "Contact":
+        return this.getContactEmailTemplates();
       default: 
         return [];
     }
