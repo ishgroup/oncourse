@@ -24,6 +24,7 @@ const FilterGroupComp = (props: Props) => {
         <FilterItem
           key={i.name}
           label={i.name}
+          customLabel={i.customLabel}
           id={i.id}
           checked={i.active}
           expression={i.expression}
