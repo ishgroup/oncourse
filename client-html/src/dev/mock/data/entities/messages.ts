@@ -1,9 +1,7 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockMessage() {
-  this.getMessages = () => {
-    return this.messages;
-  };
+  this.getMessages = () => this.messages;
 
   this.getMessage = id => {
     const row = this.messages.rows.find(row => row.id == id);
@@ -23,7 +21,7 @@ export function mockMessage() {
   };
 
   this.removeMessage = id => {
-    this.messages.rows = this.messages.rows.filter(a => a.id !== id);
+    this.messages = removeItemByEntity(this.messages, id);
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -41,92 +39,52 @@ export function mockMessage() {
     values: [l.createdOn, "Admin", l.recipientsString, "false", "true", "false", l.subject, l.creatorKey]
   }));
 
-  const columns = [
-    {
-      title: "Date time",
-      attribute: "createdOn",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Sent by",
-      attribute: "createdBy.login",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Recipients",
-      attribute: "recipientsString",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "SMS",
-      attribute: "isSms",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: "Boolean",
-      sortFields: []
-    },
-    {
-      title: "Email",
-      attribute: "isEmail",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: "Boolean",
-      sortFields: []
-    },
-    {
-      title: "Post",
-      attribute: "isPost",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: "Boolean",
-      sortFields: []
-    },
-    {
-      title: "Subject",
-      attribute: "emailSubject",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Creator key",
-      attribute: "creatorKey",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
+  return getEntityResponse({
+    entity: "Message",
+    rows,
+    columns: [
+      {
+        title: "Date time",
+        attribute: "createdOn",
+        sortable: true,
+        type: "Datetime"
+      },
+      {
+        title: "Sent by",
+        attribute: "createdBy.login"
+      },
+      {
+        title: "Recipients",
+        attribute: "recipientsString"
+      },
+      {
+        title: "SMS",
+        attribute: "isSms",
+        type: "Boolean"
+      },
+      {
+        title: "Email",
+        attribute: "isEmail",
+        type: "Boolean"
+      },
+      {
+        title: "Post",
+        attribute: "isPost",
+        type: "Boolean"
+      },
+      {
+        title: "Subject",
+        attribute: "emailSubject",
+        sortable: true
+      },
+      {
+        title: "Creator key",
+        attribute: "creatorKey",
+        sortable: true
+      }
+    ],
+    res: {
+      sort: [{ attribute: "createdOn", ascending: true, complexAttribute: [] }]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Message";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = null;
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [{ attribute: "createdOn", ascending: true, complexAttribute: [] }];
-
-  return response;
+  });
 }
