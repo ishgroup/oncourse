@@ -44,7 +44,7 @@ class SmtpParameters {
         bccList = spec.bccList
         multipartType = spec.multipartType
         attachments = spec.attachments
-         templateIdentifier = spec.templateName
+        templateIdentifier = spec.templateName
         bindings = spec.bindings
     }
 
@@ -55,9 +55,9 @@ class SmtpParameters {
         content = spec.content
         creatorKey = spec.creatorKey
         keyCollision = spec.keyCollision
-        toList = spec.toList
-        ccList = spec.ccList
-        bccList = spec.bccList
+        spec.toList.each { toList.add(it) }
+        spec.ccList.each { ccList.add(it) }
+        spec.bccList.each { bccList.add(it) }
         attachments = spec.attachments
         templateIdentifier = spec.templateIdentifier
         bindings = spec.bindings

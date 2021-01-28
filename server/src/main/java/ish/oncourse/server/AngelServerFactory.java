@@ -17,7 +17,6 @@ import ish.math.Country;
 import ish.math.CurrencyFormat;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.dao.UserDao;
-import ish.oncourse.server.cayenne.Site;
 import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.db.SchemaUpdateService;
 import ish.oncourse.server.integration.PluginService;
@@ -36,12 +35,9 @@ import ish.oncourse.server.services.FundingContractUpdateJob;
 import ish.oncourse.server.services.InvoiceOverdueUpdateJob;
 import ish.oncourse.server.services.VoucherExpiryJob;
 import ish.persistence.Preferences;
-import ish.security.AuthenticationUtil;
 import ish.util.RuntimeUtil;
-import ish.util.SecurityUtil;
 import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
 import org.quartz.Scheduler;
@@ -60,7 +56,7 @@ import java.util.Date;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToSystemUser;
+import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToNewSystemUser;
 import static ish.oncourse.server.services.ISchedulerService.*;
 import static ish.persistence.Preferences.ACCOUNT_CURRENCY;
 import static ish.validation.ValidationUtil.isValidEmailAddress;
@@ -70,7 +66,8 @@ import static ish.validation.ValidationUtil.isValidEmailAddress;
 public class AngelServerFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(AngelServerFactory.class);
 
-    public final static String SYSTEM_USERS_FILE = "createAdminUsers.txt";
+    public final static String TXT_SYSTEM_USERS_FILE = "createAdminUsers.txt";
+    public final static String CSV_SYSTEM_USERS_FILE = "createAdminUsers.csv";
     public static boolean QUIT_SIGNAL_CAUGHT = false;
                // specify if repliation in debug mode
 
@@ -130,11 +127,6 @@ public class AngelServerFactory {
             schemaUpdateService.upgradeData();
 
             createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(), prefController, mailDeliveryService);
-
-            if (licenseService.isAdmin_password_reset()) {
-                resetAdminPassword(cayenneService.getNewContext());
-            }
-
 
         } catch (Throwable e) {
             // total failure, some of the essential services cannot be
@@ -249,34 +241,6 @@ public class AngelServerFactory {
         LOGGER.warn("Server ready");
     }
 
-    public void resetAdminPassword(DataContext context) {
-
-        var admin = ObjectSelect.query(SystemUser.class).
-                where(SystemUser.LOGIN.eq("admin")).
-                selectOne(context);
-
-        if (admin == null) {
-            admin = UserDao.createSystemUser(context, Boolean.TRUE);
-            admin.setLogin("admin");
-            admin.setLastName("onCourse");
-            admin.setFirstName("Administrator");
-            admin.setDefaultAdministrationCentre(Site.getDefaultSite(context));
-        }
-
-        var password = SecurityUtil.generateRandomPassword(6);
-        admin.setPassword(AuthenticationUtil.generatePasswordHash(password));
-
-        context.commitChanges();
-
-        LOGGER.warn("\n******************************************************************************************************************************\n" +
-                "Administrator password reset command found in onCourse.yml \n" +
-                "********** Account with name \"admin\" now has password \"{}\" \n" +
-                "********** onCourse Server will now shut down. Remove the line starting \"admin_password_reset\" before restarting \n" +
-                "******************************************************************************************************************************\n", password);
-
-        crashServer();
-    }
-
     private void createSystemUsers(DataContext context, String collegeKey, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
         Path systemUsersFile = Paths.get(CSV_SYSTEM_USERS_FILE);
         if (!systemUsersFile.toFile().exists()) {
@@ -314,7 +278,7 @@ public class AngelServerFactory {
                 user.setEmail(email);
 
                 try {
-                    String invitationToken = sendInvitationEmailToSystemUser(user, preferenceController, mailDeliveryService, collegeKey);
+                    String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey);
                     user.setInvitationToken(invitationToken);
                     user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
                 } catch (MessagingException ex) {
