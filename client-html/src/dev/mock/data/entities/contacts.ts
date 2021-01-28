@@ -550,6 +550,136 @@ export function mockContacts() {
     }
   });
 
+  this.getContactEmailTemplates = () => [
+    {
+      "id": 353,
+      "type": "Sms",
+      "keyCode": "ish.sms.simple",
+      "name": "Simple SMS",
+      "entity": "Contact",
+      "subject": null,
+      "plainBody": "${message}",
+      "body": null,
+      "enabled": true,
+      "variables": [
+        {
+          "name": "message",
+          "label": "Message",
+          "type": "Text",
+          "value": null,
+          "system": null,
+          "valueDefault": null
+        }
+      ],
+      "options": [
+
+      ],
+      "createdOn": "2020-05-16T04:35:44.000Z",
+      "modifiedOn": "2021-01-21T05:14:20.000Z",
+      "description": "Send unformatted SMS"
+    },
+    {
+      "id": 355,
+      "type": "Email",
+      "keyCode": "ish.email.simple",
+      "name": "Simple Email",
+      "entity": "Contact",
+      "subject": "${subjectTxt}",
+      "plainBody": "${body}",
+      "body": "${render(header_keycode)}\n\n<tr>\n    <td align=\"center\" valign=\"top\" width=\"100%\" class=\"bg-color content-padding\">\n        <center>\n            <table cellpadding=\"0\" cellspacing=\"0\" width=\"600\" class=\"w320\">\n                <tr>\n                    <td class=\"mini-block-container\">\n                        <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"table-border-separate\">\n                            <tr>\n                                <td class=\"mini-block pull-left\" valign=\"top\">\n                                    ${body}\n                                </td>\n                            </tr>\n                        </table>\n                    </td>\n                </tr>\n            </table>\n        </center>\n    </td>\n</tr>\n${render(footer_keycode)}\n",
+      "enabled": true,
+      "variables": [
+        {
+          "name": "subjectTxt",
+          "label": "Subject",
+          "type": "Text",
+          "value": null,
+          "system": null,
+          "valueDefault": null
+        },
+        {
+          "name": "body",
+          "label": "Body",
+          "type": "Text",
+          "value": null,
+          "system": null,
+          "valueDefault": null
+        }
+      ],
+      "options": [
+        {
+          "name": "footer_keycode",
+          "label": null,
+          "type": "Text",
+          "value": "ish.email.footer",
+          "system": null,
+          "valueDefault": null
+        },
+        {
+          "name": "header_keycode",
+          "label": null,
+          "type": "Text",
+          "value": "ish.email.header",
+          "system": null,
+          "valueDefault": null
+        }
+      ],
+      "createdOn": "2020-05-16T04:35:44.000Z",
+      "modifiedOn": "2021-01-21T05:14:20.000Z",
+      "description": "Simple email template with minimal styling"
+    },
+    {
+      "id": 360,
+      "type": "Email",
+      "keyCode": "custom.email.simple",
+      "name": "Simple Email New",
+      "entity": "Contact",
+      "subject": "${subjectTxt}",
+      "plainBody": "${body}",
+      "body": "${render(header_keycode,bindings)}\n<!--\n  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au\n  ~ No copying or use of this code is allowed without permission in writing from ish.\n  -->\n\n<tr>\n    <td align=\"center\" valign=\"top\" width=\"100%\" class=\"bg-color content-padding\">\n        <center>\n            <table cellpadding=\"0\" cellspacing=\"0\" width=\"600\" class=\"w320\">\n                <tr>\n                    <td class=\"mini-block-container\">\n                        <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"table-border-separate\">\n                            <tr>\n                                <td class=\"mini-block pull-left\" valign=\"top\">\n                                    ${body}\n                                    \n                                    <br><br>\n                                    <ol>\n                                      <li>test123</li>\n                                      <li>test125</li>\n                                    </ol>\n                                </td>\n                            </tr>\n                        </table>\n                    </td>\n                </tr>\n            </table>\n        </center>\n    </td>\n</tr>\n${render(footer_keycode,bindings)}",
+      "enabled": true,
+      "variables": [
+        {
+          "name": "subjectTxt",
+          "label": "Subject",
+          "type": "Text",
+          "value": null,
+          "system": null,
+          "valueDefault": null
+        },
+        {
+          "name": "body",
+          "label": "Body",
+          "type": "Text",
+          "value": null,
+          "system": null,
+          "valueDefault": null
+        }
+      ],
+      "options": [
+        {
+          "name": "footer_keycode",
+          "label": null,
+          "type": "Text",
+          "value": "ish.email.footer",
+          "system": null,
+          "valueDefault": null
+        },
+        {
+          "name": "header_keycode",
+          "label": null,
+          "type": "Text",
+          "value": "ish.email.header",
+          "system": null,
+          "valueDefault": null
+        }
+      ],
+      "createdOn": "2020-05-25T07:04:17.000Z",
+      "modifiedOn": "2020-05-25T07:05:54.000Z",
+      "description": "Simple email template with minimal styling"
+    }
+  ];
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "firstName", type: "string" },
