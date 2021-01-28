@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockInvoices() {
@@ -17,7 +17,7 @@ export function mockInvoices() {
       createdOn: "2021-01-20T05:31:37.412Z",
       customerReference: null,
       dateDue: format(new Date(row.values[2]), "yyyy-MM-dd"),
-      invoiceDate: format(new Date(row.values[2]), "yyyy-MM-dd"),
+      invoiceDate: format(subDays(new Date(row.values[2]), 5), "yyyy-MM-dd"),
       invoiceLines: [
         {
           id: 461,
@@ -155,6 +155,28 @@ export function mockInvoices() {
 
     return getEntityResponse({
       entity: "InvoiceLine",
+      rows,
+      plain: true
+    });
+  };
+
+  this.getPlainInvoices = params => {
+    const columnList = params.columns.split(",");
+    let rows = [];
+
+    if (columnList.includes("amountOwing")) {
+      const id = params.search.replace(/\D/g, "");
+      const invoice = this.getInvoice(id);
+      rows.push({
+        id,
+        values: [invoice.contactId, `lastName ${id}`, `firstName ${id}`, invoice.overdue]
+      });
+    } else {
+      rows = this.invoices.rows;
+    }
+
+    return getEntityResponse({
+      entity: "Invoice",
       rows,
       plain: true
     });
