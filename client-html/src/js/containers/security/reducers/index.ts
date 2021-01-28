@@ -26,13 +26,6 @@ export const securityReducer = (state: SecurityState = {}, action: IAction<any>)
       };
     }
 
-    case CLEAR_USER_PASSWORD: {
-      return {
-        ...state,
-        newPassword: ""
-      };
-    }
-
     default:
       return state;
   }

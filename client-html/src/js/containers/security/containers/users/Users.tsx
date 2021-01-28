@@ -3,7 +3,6 @@ import UsersForm from "./components/UsersForm";
 import { State } from "../../../../reducers/state";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { clearUserPassword } from "../../actions";
 import * as SecuritySettingsModel from "../../../../model/preferences/security/SecuritySettings";
 import history from "../../../../constants/History";
 import { getAdministrationSites } from "../../../entities/sites/actions";
@@ -112,17 +111,13 @@ const mapStateToProps = (state: State) => ({
     state.preferences.security &&
     state.preferences.security[SecuritySettingsModel.SecurityPasswordComplexity.uniqueKey],
   submitSucceeded: state.form.UsersForm && state.form.UsersForm.submitSucceeded,
-  formEmail: state.form.UsersForm && state.form.UsersForm.values && state.form.UsersForm.values.email,
-  newPassword: state.security.newPassword
+  formEmail: state.form.UsersForm && state.form.UsersForm.values && state.form.UsersForm.values.email
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => {
       dispatch(getAdministrationSites());
-    },
-    clearPassword: () => {
-      dispatch(clearUserPassword());
     }
   };
 };
