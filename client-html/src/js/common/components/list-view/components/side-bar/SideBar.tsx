@@ -2,11 +2,12 @@ import * as React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { createStyles } from "@material-ui/core";
 import clsx from "clsx";
-import FilterGroup from "./components/FilterGroup";
+import FilterGroupComp from "./components/FilterGroup";
 import StubFilterItem from "./components/StubFilterItem";
 import ListTagGroups from "./components/ListTagGroups";
 import HamburgerMenu from "../../../layout/swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../../../layout/swipeable-sidebar/utils";
+import { FilterGroup } from "../../../../../model/common/ListView";
 
 const styles = theme =>
   createStyles({
@@ -27,7 +28,17 @@ const styles = theme =>
     }
   });
 
-const SideBar: React.FC<any> = props => {
+interface Props {
+  classes: any;
+  onChangeFilters: any;
+  filterGroups: FilterGroup[]
+  deleteFilter: any;
+  rootEntity: string;
+  savingFilter: any;
+  fetching: boolean;
+}
+
+const SideBar: React.FC<Props> = props => {
   const {
    classes, onChangeFilters, filterGroups, deleteFilter, rootEntity, savingFilter, fetching
   } = props;
@@ -35,12 +46,16 @@ const SideBar: React.FC<any> = props => {
   const hasCustomFilters = filterGroups.some(i => i.title === "Custom Filters");
 
   const UpdateFilters = (index, value) => {
-    const clone = JSON.parse(JSON.stringify(filterGroups));
-    const groupIndex = index.split("/")[0];
-    const filterIndex = index.split("/")[1];
+    const groupIndex = Number(index.split("/")[0]);
+    const filterIndex = Number(index.split("/")[1]);
 
-    clone[groupIndex].filters[filterIndex].active = value;
-
+    const clone = filterGroups.map((fg, gi) => ({
+      ...fg,
+      filters: fg.filters.map((f, fi) => ({
+        ...f,
+        active: gi === groupIndex && fi === filterIndex ? value : f.active
+      }))
+    }));
     onChangeFilters(clone, "filters");
   };
 
@@ -51,7 +66,7 @@ const SideBar: React.FC<any> = props => {
       </div>
       <nav className={clsx(classes.root, fetching && "disabled")}>
         {filterGroups.map((i, index) => (
-          <FilterGroup
+          <FilterGroupComp
             key={index}
             groupIndex={index}
             deleteFilter={deleteFilter}

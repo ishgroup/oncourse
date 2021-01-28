@@ -37,8 +37,10 @@ const styles = (theme: AppTheme) =>
 
 const FilterItem = props => {
   const {
-    classes, label, checked, onChange, index, onDelete, id, isPrivate, deletable, rootEntity, expression
+    classes, label, checked, onChange, index, onDelete, id, isPrivate, deletable, rootEntity, expression, customLabel
   } = props;
+
+  const renderedLabel = customLabel ? customLabel() : label;
 
   return (
     <div className={classes.root}>
@@ -61,10 +63,10 @@ const FilterItem = props => {
         label={
           expression ? (
             <Tooltip title={expression}>
-              <div className="text-truncate">{label}</div>
+              <div className="text-truncate">{renderedLabel}</div>
             </Tooltip>
           ) : (
-            label
+            renderedLabel
           )
         }
       />
