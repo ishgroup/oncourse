@@ -16,10 +16,6 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { format as formatDate } from "date-fns";
 import IconPhoneLocked from "@material-ui/icons/ScreenLockPortrait";
-import FileCopy from "@material-ui/icons/FileCopy";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import debounce from "lodash.debounce";
 import { User, UserRole } from "@api/model";
 import Button from "../../../../../common/components/buttons/Button";
@@ -95,7 +91,7 @@ interface Props {
   passwordComplexityFlag?: string;
   isNew?: boolean;
   oldEmail?: string;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
 }
 
 interface FormProps extends Props {
@@ -103,7 +99,6 @@ interface FormProps extends Props {
   classes: any;
   dispatch: any;
   className: string;
-  newPassword: string;
   form: string;
   updateUser: (user: User) => void;
   resetUserPassword: (id: number) => void;
@@ -237,7 +232,8 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
 
     openConfirm(() => {
       resetUserPassword(id);
-    }, "Current password will be changed to generated one");
+    }, "Remove existing password and send the user an invite to reset their password."
+    , "Send invite");
   };
 
   onDisable2FA = () => {
@@ -274,8 +270,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       dirty,
       validateUniqueNames,
       isNew,
-      invalid,
-      newPassword,
+      invalid
       form
     } = this.props;
 
@@ -338,38 +333,6 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               fullWidth
             />
 
-            {/*{isNew && (*/}
-            {/*  <div className="centeredFlex mb-2">*/}
-            {/*    <FormField*/}
-            {/*      type="text"*/}
-            {/*      name="password"*/}
-            {/*      label="Password"*/}
-            {/*      validate={this.validatePassword}*/}
-            {/*      onChange={() => {*/}
-            {/*        if (this.state.validPassword && passwordComplexityFlag === "true") {*/}
-            {/*          this.setState({*/}
-            {/*            validPassword: false*/}
-            {/*          });*/}
-            {/*        }*/}
-            {/*        this.onPasswordChange();*/}
-            {/*      }}*/}
-            {/*      disabled={asyncValidating}*/}
-            {/*      className="flex-fill"*/}
-            {/*      clearOnUnmount*/}
-            {/*      fullWidth*/}
-            {/*      required*/}
-            {/*    />*/}
-            {/*    {asyncValidating && (*/}
-            {/*      <CircularProgress*/}
-            {/*        size={24}*/}
-            {/*        classes={{*/}
-            {/*          root: classes.loader*/}
-            {/*        }}*/}
-            {/*      />*/}
-            {/*    )}*/}
-            {/*  </div>*/}
-            {/*)}*/}
-
             <FormField
               type="text"
               name="email"
@@ -415,20 +378,6 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                   <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onResetPassword}>
                     Reset password
                   </Button>
-                )}
-
-                {newPassword && (
-                  <Typography color="error" variant="caption">
-                    Password set to
-                    {' '}
-                    <strong>{newPassword}</strong>
-                    {" "}
-                    <Tooltip title="Copy to clipboard">
-                      <IconButton className={classes.passwordCopy} onClick={() => this.copyToClipBoard(newPassword)}>
-                        <FileCopy color="error" />
-                      </IconButton>
-                    </Tooltip>
-                  </Typography>
                 )}
               </div>
             )}
@@ -516,7 +465,6 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("UsersForm")(state),
-  newPassword: state.security.newPassword,
   fetch: state.fetch,
   nextLocation: state.nextLocation,
 });
@@ -525,7 +473,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   updateUser: (user: User) => dispatch(updateUser(user)),
   resetUserPassword: (id: number) => dispatch(resetUserPassword(id)),
   disableUser2FA: (id: number) => dispatch(disableUser2FA(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
+  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
