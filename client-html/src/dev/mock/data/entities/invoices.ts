@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockInvoices() {
   this.getInvoices = () => this.invoices;
@@ -14,7 +14,7 @@ export function mockInvoices() {
       contactId: 323,
       contactName: row.values[3],
       createdByUser: "admin",
-      createdOn: new Date().toISOString(),
+      createdOn: "2021-01-20T05:31:37.412Z",
       customerReference: null,
       dateDue: format(new Date(row.values[2]), "yyyy-MM-dd"),
       invoiceDate: format(new Date(row.values[2]), "yyyy-MM-dd"),
@@ -44,7 +44,7 @@ export function mockInvoices() {
         }
       ],
       invoiceNumber: row.values[0],
-      modifiedOn: new Date().toISOString(),
+      modifiedOn: "2021-01-20T05:31:37.412Z",
       notes: [],
       overdue: row.values[6],
       paymentPlans: [
@@ -137,7 +137,7 @@ export function mockInvoices() {
   };
 
   this.removeInvoice = id => {
-    this.invoices = this.invoices.rows.filter(m => m.id !== id);
+    this.invoices = removeItemByEntity(this.invoices, id);
   };
 
   this.getPlainInvoiceLines = () => {
