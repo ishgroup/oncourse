@@ -25,7 +25,7 @@ import FormField from "../../../../../common/components/form/form-fields/FormFie
 import { D_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { BooleanArgFunction, NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
 import { CheckoutItem, CheckoutPayment, CheckoutSummary } from "../../../../../model/checkout";
 import { getAccountTransactionLockedDate } from "../../../../preferences/actions";
@@ -75,6 +75,7 @@ interface PaymentHeaderFieldProps {
   formInvalid?: boolean;
   getVoucher?: StringArgFunction;
   removeVoucher?: NumberArgFunction;
+  setDisablePayment?: BooleanArgFunction;
   selectedDiscount?: CheckoutItem;
   setSelectedDiscount?: (item: CheckoutItem) => void;
   lockedDate?: any;
@@ -116,7 +117,8 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     setSelectedDiscount,
     removeVoucher,
     checkoutGetSavedCard,
-    savedCreditCard
+    savedCreditCard,
+    setDisablePayment
   } = props;
 
   const payerContact = useMemo(() => checkoutSummary.list.find(l => l.payer).contact, [checkoutSummary.list]);
@@ -253,8 +255,15 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
   }, 200), [isZeroPayment, paymentMethod]);
 
   const onPayNowFocus = () => {
+    setDisablePayment(true);
     setActiveField(CheckoutPage.default);
     clearSelectedDiscount();
+  };
+
+  const onPayNowBlur = () => {
+    setTimeout(() => {
+      setDisablePayment(false);
+    }, 1500);
   };
 
   const onDueDateChange = useCallback(value => {
@@ -547,6 +556,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           selectedPaymentType={availablePaymentTypes.find(p => p.name === paymentMethod)}
           onPayNowChange={onPayNowChange}
           onPayNowFocus={onPayNowFocus}
+          onPayNowBlur={onPayNowBlur}
           onDueDateChange={onDueDateChange}
           onPayDateChange={onPayDateChange}
           validatePayNow={validatePayNow}
