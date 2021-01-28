@@ -353,6 +353,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
   const [selectedDiscount, setSelectedDiscount] = React.useState(undefined);
   const [openDiscountView, setOpenDiscountView] = React.useState(false);
   const [customLoading, setCustomLoading] = React.useState(false);
+  const [disablePayment, setDisablePayment] = React.useState(false);
   const [itemsSearch, setItemsSearch] = React.useState<string>(null);
 
   const mapedProducts = useMemo(() => products.map(checkoutProductMap), [products]);
@@ -1102,6 +1103,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                     setActiveField={setActiveField}
                     selectedDiscount={selectedDiscount}
                     setSelectedDiscount={setSelectedDiscount}
+                    setDisablePayment={setDisablePayment}
                     formInvalid={invalid}
                   />
                 </CheckoutSectionExpandableRenderer>
@@ -1219,6 +1221,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             activeField={activeField}
             titles={titles}
             selectedDiscount={selectedDiscount}
+            disablePayment={disablePayment}
           />
         </div>
       </div>
