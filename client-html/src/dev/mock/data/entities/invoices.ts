@@ -1,5 +1,5 @@
-import { format, subDays } from "date-fns";
-import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
+import { format } from "date-fns";
+import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
 
 export function mockInvoices() {
   this.getInvoices = () => this.invoices;
@@ -14,10 +14,10 @@ export function mockInvoices() {
       contactId: 323,
       contactName: row.values[3],
       createdByUser: "admin",
-      createdOn: "2021-01-20T05:31:37.412Z",
+      createdOn: new Date().toISOString(),
       customerReference: null,
       dateDue: format(new Date(row.values[2]), "yyyy-MM-dd"),
-      invoiceDate: format(subDays(new Date(row.values[2]), 5), "yyyy-MM-dd"),
+      invoiceDate: format(new Date(row.values[2]), "yyyy-MM-dd"),
       invoiceLines: [
         {
           id: 461,
@@ -44,7 +44,7 @@ export function mockInvoices() {
         }
       ],
       invoiceNumber: row.values[0],
-      modifiedOn: "2021-01-20T05:31:37.412Z",
+      modifiedOn: new Date().toISOString(),
       notes: [],
       overdue: row.values[6],
       paymentPlans: [
@@ -137,7 +137,7 @@ export function mockInvoices() {
   };
 
   this.removeInvoice = id => {
-    this.invoices = removeItemByEntity(this.invoices, id);
+    this.invoices = this.invoices.rows.filter(m => m.id !== id);
   };
 
   this.getPlainInvoiceLines = () => {
@@ -155,28 +155,6 @@ export function mockInvoices() {
 
     return getEntityResponse({
       entity: "InvoiceLine",
-      rows,
-      plain: true
-    });
-  };
-
-  this.getPlainInvoices = params => {
-    const columnList = params.columns.split(",");
-    let rows = [];
-
-    if (columnList.includes("amountOwing")) {
-      const id = params.search.replace(/\D/g, "");
-      const invoice = this.getInvoice(id);
-      rows.push({
-        id,
-        values: [invoice.contactId, `lastName ${id}`, `firstName ${id}`, invoice.overdue]
-      });
-    } else {
-      rows = this.invoices.rows;
-    }
-
-    return getEntityResponse({
-      entity: "Invoice",
       rows,
       plain: true
     });
