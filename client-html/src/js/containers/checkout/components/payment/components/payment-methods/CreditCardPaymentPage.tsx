@@ -30,6 +30,7 @@ interface CreditCardPaymentPageProps {
   summary?: CheckoutSummary;
   payment?: CheckoutPayment;
   isPaymentProcessing?: boolean;
+  disablePayment?: boolean;
   setPaymentSuccess?: BooleanArgFunction;
   currencySymbol?: any;
   iframeUrl?: string;
@@ -44,7 +45,6 @@ interface CreditCardPaymentPageProps {
   paymentInvoice?: any;
   paymentId?: number;
   payerName: string;
-  title: string;
 }
 
 const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
@@ -52,6 +52,7 @@ const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     classes,
     summary,
     isPaymentProcessing,
+    disablePayment,
     setPaymentSuccess,
     currencySymbol,
     iframeUrl,
@@ -64,7 +65,6 @@ const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     checkoutGetPaymentStatusDetails,
     checkoutPaymentSetCustomStatus,
     process,
-    title,
     payerName
   } = props;
 
@@ -106,7 +106,10 @@ const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   }, [summary.payNowTotal, summary.allowAutoPay]);
 
   return (
-    <div className={clsx("p-3 d-flex flex-fill justify-content-center", classes.content)}>
+    <div
+      style={disablePayment ? { pointerEvents: "none" } : null}
+      className={clsx("p-3 d-flex flex-fill justify-content-center", classes.content)}
+    >
       {iframeUrl && !process.status && (
       <div className="flex-column justify-content-center w-100">
         <div className={clsx("centeredFlex justify-content-center", classes.payerLastCardMargin)}>

@@ -24,13 +24,14 @@ interface PaymentPageProps {
   summaryVouchers?: CheckoutDiscount[];
   selectedDiscount?: CheckoutItem;
   isPaymentProcessing?: boolean;
+  disablePayment?: boolean;
   activeField: any;
   titles: any;
 }
 
 const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
   const {
- payment, activeField, titles, summary, selectedDiscount, summaryVouchers, isPaymentProcessing
+ payment, activeField, titles, summary, selectedDiscount, summaryVouchers, isPaymentProcessing, disablePayment
 } = props;
 
   const selectedPaymentType = payment.availablePaymentTypes.find(t => t.name === payment.selectedPaymentType);
@@ -70,6 +71,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
                 isPaymentProcessing={isPaymentProcessing}
                 payerName={payerName}
                 summary={summary}
+                disablePayment={disablePayment}
               />
             )}
 
