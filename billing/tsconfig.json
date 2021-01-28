@@ -1,26 +1,37 @@
 {
   "compilerOptions": {
+    "rootDirs": [
+      "src/js",
+      "src/dev",
+      "src/images",
+      "src/test"
+    ],
+    "outDir": "build/ts",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "strictNullChecks": false,
+    "module": "esnext",
+    "skipLibCheck": true,
     "target": "es5",
+    "jsx": "react",
     "lib": [
       "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+      "esnext",
+      "es5",
+      "es6",
+      "es7"
+    ]
   },
-  "include": [
-    "src"
-  ]
+  "exclude": [
+    "out",
+    "node_modules",
+    "build/resources"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "useCache": true
+  }
 }

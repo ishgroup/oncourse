@@ -1,13 +1,33 @@
 {
   "extends": "tslint-config-airbnb",
   "rules": {
-    "object-curly-spacing": [true, "never"],
-    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"],
-    "max-line-length": [true, 120],
+    "object-curly-spacing": [
+      true,
+      "never"
+    ],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-pascal-case"
+    ],
+    "max-line-length": [
+      true,
+      120
+    ],
     "quotemark": false,
-    "no-consecutive-blank-lines": [true, 2],
-    "space-in-parens": ["error", "never"],
-    "arrow-parens": [true, "ban-single-arg-parens"],
+    "no-consecutive-blank-lines": [
+      true,
+      2
+    ],
+    "space-in-parens": [
+      "error",
+      "never"
+    ],
+    "arrow-parens": [
+      true,
+      "ban-single-arg-parens"
+    ],
     "ter-arrow-parens": false
   }
 }
