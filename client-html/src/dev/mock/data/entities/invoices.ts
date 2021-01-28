@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockInvoices() {
   this.getInvoices = () => this.invoices;
@@ -137,7 +137,7 @@ export function mockInvoices() {
   };
 
   this.removeInvoice = id => {
-    this.invoices = this.invoices.rows.filter(m => m.id !== id);
+    this.invoices = removeItemByEntity(this.invoices, id);
   };
 
   this.getPlainInvoiceLines = () => {
