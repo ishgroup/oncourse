@@ -14,14 +14,4 @@ export function MessageApiMock(mock) {
     this.db.removeMessage(id);
     return promiseResolve(config, {});
   });
-
-  this.api.onPost("v1/list/option/message/recipients").reply(config => {
-    const entity = config.params.entity;
-    return promiseResolve(config, this.db.getRecipientsByEntityName(entity));
-  });
-
-  this.api.onPost("v1/list/option/message").reply(config => {
-    const messageType = config.params.messageType;
-    return promiseResolve(config, this.db.getMessageByType(messageType));
-  });
 }
