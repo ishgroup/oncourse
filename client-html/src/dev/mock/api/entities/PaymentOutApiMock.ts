@@ -1,15 +1,13 @@
 import { promiseResolve } from "../../MockAdapter";
+import { getParamsId } from "../../mockUtils";
 
 export function PaymentOutApiMock() {
   this.api.onGet(new RegExp(`v1/list/entity/paymentOut/\\d+`)).reply(config => {
-    const params = config.url.split("/");
-    const id = params[params.length - 1];
+    const id = getParamsId(config);
     return promiseResolve(config, this.db.getPaymentOut(id));
   });
 
-  this.api.onPut(new RegExp(`v1/list/entity/paymentOut/\\d+`)).reply(config => {
-    return promiseResolve(config, JSON.parse(config.data));
-  });
+  this.api.onPut(new RegExp(`v1/list/entity/paymentOut/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
 
   this.api.onPost("v1/list/entity/paymentOut").reply(config => {
     this.db.createPaymentOut(config.data);
@@ -17,9 +15,8 @@ export function PaymentOutApiMock() {
   });
 
   this.api.onDelete(new RegExp(`v1/list/entity/paymentOut/\\d+`)).reply(config => {
-    const params = config.url.split("/");
-    const id = params[params.length - 1];
+    const id = getParamsId(config);
     this.db.removePaymentOut(id);
-    return promiseResolve(config, this.db.getPaymentsOut());
+    return promiseResolve(config, {});
   });
 }
