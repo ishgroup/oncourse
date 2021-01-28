@@ -17,6 +17,7 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Document
 import ish.oncourse.server.document.DocumentService
+import ish.oncourse.server.license.LicenseService
 import org.apache.cayenne.query.Ordering
 
 import javax.annotation.Nonnull
@@ -37,6 +38,9 @@ class Document extends _Document implements DocumentTrait, Queueable {
 
 	@Inject
 	private DocumentService documentService
+
+	@Inject
+	private LicenseService licenseService
 
 	@Override
 	protected void postAdd() {
@@ -189,6 +193,15 @@ class Document extends _Document implements DocumentTrait, Queueable {
 	String getLink() {
 		def s3Service = getS3ServiceInstance(documentService)
 		return s3Service != null ? s3Service.getFileUrl(getFileUUID(), getWebVisibility()) : ""
+	}
+
+	@API
+	/**
+	 * Generates local URL to document on onCourse if collegeKey is specified in onCourse.yml.
+	 */
+	String getLinkOnCourse() {
+		String collegeKey = licenseService.getCollege_key()
+		return collegeKey != null ? "https://${collegeKey}.cloud.oncourse.cc/document/${id}" : ""
 	}
 }
 
