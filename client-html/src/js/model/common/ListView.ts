@@ -16,6 +16,7 @@ import { MessageData } from "./Message";
 
 export interface CoreFilter extends Filter {
   active?: boolean;
+  customLabel?: React.ReactNode;
 }
 
 export interface FilterGroup {

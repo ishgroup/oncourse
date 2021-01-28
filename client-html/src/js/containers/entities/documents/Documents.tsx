@@ -6,6 +6,7 @@
 import React, { useCallback, useEffect } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
+import Delete from "@material-ui/icons/Delete";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
@@ -123,6 +124,13 @@ const filterGroups: FilterGroup[] = [
       },
       {
         name: "Bin",
+        customLabel: () => (
+          <span className="centeredFlex">
+            Bin
+            {" "}
+            <Delete style={{ fontSize: "18px" }} color="disabled" />
+          </span>
+        ),
         expression: isRemoved("true"),
         active: false
       }
