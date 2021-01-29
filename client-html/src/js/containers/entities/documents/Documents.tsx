@@ -17,7 +17,7 @@ import FileUploaderDialog from "../../../common/components/file-uploader/FileUpl
 import { getInitialDocument } from "../../../common/components/form/documents/components/utils";
 import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
 import { BooleanArgFunction } from "../../../model/common/CommonFunctions";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, ListState } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
 import {
   setListEditRecord,
@@ -33,6 +33,7 @@ import { getEntityTags } from "../../tags/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import {
+  restoreDocument,
   createDocument, getDocument, removeDocument, updateDocument
 } from "./actions";
 import DocumentEditView from "./components/DocumentEditView";
@@ -65,6 +66,7 @@ interface DocumentProps {
   getFilters?: () => void;
   clearListState?: () => void;
   onDelete?: (id: string) => void;
+  onRestore?: (id: string) => void;
   getTags?: () => void;
   onCreate: (document: Document) => void;
   classes?: any;
@@ -75,6 +77,8 @@ interface DocumentProps {
   match?: any;
   fullScreenEditView?: boolean;
   setListFullScreenEditView?: BooleanArgFunction;
+  selection?: ListState["selection"],
+  records?: ListState["records"],
 }
 
 let Initial: Document = {
@@ -224,7 +228,10 @@ const Documents: React.FC<DocumentProps> = props => {
     history,
     location,
     match: { params, url },
-    setListFullScreenEditView
+    setListFullScreenEditView,
+    selection,
+    records,
+    onRestore
   } = props;
 
   const [openFileModal, setOpenFileModal] = React.useState<boolean>(false);
@@ -346,6 +353,17 @@ const Documents: React.FC<DocumentProps> = props => {
     }
   }, [openFileModal, manuallyOpenModal]);
 
+  const deletedSelected = React.useMemo(() => {
+    if (selection.length !== 1) {
+      return false;
+    }
+    const selectedRecord = records.rows.find(r => r.id === selection[0]);
+    const activeColumnIndex = records.columns.findIndex(c => c.attribute === "active");
+    return selectedRecord?.values[activeColumnIndex] === "false";
+  }, [selection, records]);
+
+  const onDeleteHandler = id => (deletedSelected ? onRestore(id) : onDelete(id));
+
   return (
     <>
       <ListView
@@ -365,8 +383,8 @@ const Documents: React.FC<DocumentProps> = props => {
         onInit={onInit}
         customOnCreate={customOnCreate}
         onCreate={onDocumentCreate}
-        onDelete={onDelete}
-        deleteActionName="Move to bin"
+        onDelete={onDeleteHandler}
+        deleteActionName={deletedSelected ? "Restore from Bin" : "Move to bin"}
         deleteWithoutConfirmation
         onSave={onSave}
         findRelated={findRelatedGroup}
@@ -388,7 +406,9 @@ const Documents: React.FC<DocumentProps> = props => {
 };
 
 const mapStateToProps = (state: State) => ({
-  fullScreenEditView: state.list.fullScreenEditView
+  fullScreenEditView: state.list.fullScreenEditView,
+  selection: state.list.selection,
+  records: state.list.records
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -403,6 +423,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: string, document) => dispatch(updateDocument(id, document)),
   onCreate: document => dispatch(createDocument(document)),
   onDelete: (id: string) => dispatch(removeDocument(id)),
+  onRestore: (id: string) => dispatch(restoreDocument({
+    ids: [Number(id)],
+    diff: {
+      isRemoved: "false"
+    }
+  })),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),

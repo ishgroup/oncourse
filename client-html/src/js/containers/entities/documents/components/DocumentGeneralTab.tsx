@@ -9,10 +9,8 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import Avatar from "@material-ui/core/Avatar";
-import CardHeader from "@material-ui/core/CardHeader";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import React, {useCallback, useMemo, useRef} from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import clsx from "clsx";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -27,26 +25,21 @@ import {
   faCog
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
-import {arrayInsert, change, Field,} from "redux-form";
+import { arrayInsert, change, Field, } from "redux-form";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Collapse from "@material-ui/core/Collapse";
 import {
   ExpandMore,
-  OpenWith,
-  History
+  OpenWith
 } from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import {addDays, format, isSunday} from "date-fns";
+import { addDays, format, isSunday } from "date-fns";
 import { Document, DocumentVisibility, DocumentVersion } from "@api/model";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import FormField from "../../../../common/components/form/form-fields/FormField";
-import { FormSwitch } from "../../../../common/components/form/form-fields/Switch";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
@@ -235,7 +228,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
       }
     }
     return format(dateOfDeleting, "d MMMM yy");
-  },[values.modifiedOn]);
+  }, [values.modifiedOn]);
 
   return (
     loadingDocVersion
@@ -277,7 +270,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           <Grid container className="p-3 relative">
             <Grid item xs={twoColumn ? 4 : 12}>
               {Boolean(values.removed) && (
-              <div className={clsx("backgroundText-mixBlendMode paperTextColor", { "fs8": !twoColumn })}>PENDING DELETION</div>
+              <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>PENDING DELETION</div>
               )}
 
               <Paper className={clsx("relative cursor-pointer", classes.previewPaper)}>
@@ -360,7 +353,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
               </Grid>
               {Boolean(values.removed) && (
               <Grid item xs={12} className="pb-2">
-                <Typography variant="body2" className={clsx("d-flex align-items-baseline", classes.textInfo)}>
+                <Typography variant="body2" className={clsx("d-flex align-items-baseline mb-2", classes.textInfo)}>
                   <span>
                     This document will be permanently deleted after
                     { ' ' }

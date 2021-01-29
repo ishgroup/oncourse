@@ -438,24 +438,6 @@ const globalStyles = (theme: AppTheme) =>
         userSelect: "none",
         height: "200px"
       },
-      ".backgroundText-mixBlendMode": {
-        fontSize: theme.spacing(10),
-        textTransform: "uppercase",
-        position: "absolute",
-        top: "210px",
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 0,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        transform: "rotate(-35deg)",
-        fontWeight: theme.typography.fontWeightMedium,
-        mixBlendMode: "difference",
-        userSelect: "none",
-        height: "200px"
-      },
       ".summaryTopBorder": {
         borderTop: `1px solid ${theme.palette.text.primary}`
       },
