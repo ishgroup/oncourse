@@ -28,6 +28,8 @@ import ish.util.SecurityUtil
 import ish.validation.AngelContactValidator
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
+import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.BeanValidationFailure
 import org.apache.cayenne.validation.ValidationResult
 import org.apache.commons.lang3.StringUtils
@@ -685,16 +687,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	}
 
 	/**
-	 * @return contact records which have relationship to this contact
-	 */
-	@Nonnull
-	@API
-	@Override
-	List<ContactRelation> getFromContacts() {
-		return super.getFromContacts()
-	}
-
-	/**
 	 * Remember that a contact's invoices don't necessarily represent what they enrolled in. A contact might be billed
 	 * for someone else's enrolments or other purchases.
 	 *
@@ -778,13 +770,28 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	}
 
 	/**
-	 * @return contact records which this are related from this contact
+	 * @return all contacts related to this one
 	 */
-	@Nonnull
-	@API
-	@Override
-	List<ContactRelation> getToContacts() {
-		return super.getToContacts()
+	@Nonnull @API
+	List<Contact> getRelatedContacts() {
+		return (super.getToContacts()*.getToContact().flatten() +
+				super.getFromContacts()*.getFromContact().flatten())
+				as List<Contact>
+	}
+
+	/**
+	 * Get all related contacts with a specific relationship type name
+	 * @param relationName (eg. 'parent')
+	 * @return
+	 */
+	@Nonnull @API
+	List<Contact> getRelatedContacts(String relationName) {
+		def toContacts = super.getToContacts().findAll{it.relationType.toContactName == relationName}
+		def fromContacts = super.getFromContacts().findAll{it.relationType.fromContactName == relationName}
+
+		return (toContacts*.getToContact().flatten() +
+				fromContacts*.getFromContact().flatten())
+				as List<Contact>
 	}
 
 	/**
