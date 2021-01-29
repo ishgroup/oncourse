@@ -60,6 +60,24 @@ export function mockPaymentsOut() {
     this.paymentsOut = removeItemByEntity(this.paymentsOut, id);
   };
 
+  this.getPlainPaymentsOut = params => {
+    const rows = generateArraysOfRecords(2, [
+      { name: "id", type: "number" },
+      { name: "amount", type: "number" }
+    ]).map(l => ({
+      id: l.id,
+      values: [
+        l.amount * 100
+      ]
+    }));
+
+    return getEntityResponse({
+      entity: "PaymentOut",
+      rows,
+      plain: true
+    });
+  };
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "type", type: "string" },

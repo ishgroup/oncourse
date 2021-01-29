@@ -287,7 +287,11 @@ export function listApiMock() {
       }
 
       case "PaymentIn": {
-        return promiseResolve(config, this.db.getPlainPaymentsIn());
+        return promiseResolve(config, this.db.getPlainPaymentsIn(config.params));
+      }
+
+      case "PaymentOut": {
+        return promiseResolve(config, this.db.getPlainPaymentsOut(config.params));
       }
 
       default: {
