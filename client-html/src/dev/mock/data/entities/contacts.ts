@@ -285,26 +285,6 @@ export function mockContacts() {
     });
   };
 
-  this.getPlainPriorLearnings = () => {
-    const rows = generateArraysOfRecords(20, [
-      { name: "id", type: "number" },
-      { name: "title", type: "string" },
-      { name: "externalRef", type: "string" },
-      { name: "qualNationalCode", type: "string" },
-      { name: "qualLevel", type: "string" },
-      { name: "qualName", type: "string" }
-    ]).map(l => ({
-      id: l.id,
-      values: [l.title, l.externalRef, l.qualNationalCode, l.qualLevel, l.qualName]
-    }));
-
-    return getEntityResponse({
-      entity: "PriorLearning",
-      rows,
-      plain: true
-    });
-  };
-
   this.getMergeContacts = () => ({
     "mergeLines": [
       {
