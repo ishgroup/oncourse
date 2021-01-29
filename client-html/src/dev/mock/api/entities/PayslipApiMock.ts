@@ -19,4 +19,6 @@ export function PayslipApiMock(mock) {
     this.db.removePayslip(id);
     return promiseResolve(config, {});
   });
+
+  this.api.onPost("v1/list/entity/payslip/marking").reply(config => promiseResolve(config, {}));
 }
