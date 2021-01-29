@@ -113,6 +113,27 @@ class NestedList extends React.Component<Props, NestedListState> {
     };
   }
 
+  componentDidMount() {
+    const {
+      entityTags,
+      aqlEntities
+    } = this.props;
+
+    const { selectedAqlEntity } = this.state;
+
+
+    if (aqlEntities && selectedAqlEntity) {
+      const searchTags = entityTags[selectedAqlEntity] && entityTags[selectedAqlEntity].length
+        ? getTagNamesSuggestions(entityTags[selectedAqlEntity])
+          .filter((t, index, self) => self.findIndex(s => s.label === t.label) === index)
+        : [];
+
+      this.setState({
+        searchTags
+      });
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const {
       resetSearch,
