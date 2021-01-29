@@ -7,7 +7,7 @@ export function PaymentOutApiMock() {
     return promiseResolve(config, this.db.getPaymentOut(id));
   });
 
-  this.api.onPut(new RegExp(`v1/list/entity/paymentOut/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
+  this.api.onPut("v1/list/entity/paymentOut").reply(config => promiseResolve(config, JSON.parse(config.data)));
 
   this.api.onPost("v1/list/entity/paymentOut").reply(config => {
     this.db.createPaymentOut(config.data);
