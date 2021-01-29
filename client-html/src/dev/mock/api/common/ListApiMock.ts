@@ -245,7 +245,7 @@ export function listApiMock() {
       }
 
       case "Qualification": {
-        return promiseResolve(config, this.db.getPlainQualifications(config.params));
+        return promiseResolve(config, this.db.getPlainQualifications());
       }
 
       case "PriorLearning": {
@@ -294,10 +294,6 @@ export function listApiMock() {
 
       case "PaymentOut": {
         return promiseResolve(config, this.db.getPlainPaymentsOut(config.params));
-      }
-
-      case "Invoice": {
-        return promiseResolve(config, this.db.getPlainInvoices(config.params));
       }
 
       case "Invoice": {
