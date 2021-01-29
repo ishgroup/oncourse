@@ -61,6 +61,7 @@ import { EmailTemplateApiMock } from "./api/automation/EmailTemplateApiMock";
 import { ImportTemplateApiMock } from "./api/automation/ImportTemplateApiMock";
 import { EntityRelationTypesApiMock } from "./api/preference/EntityRelationTypesApiMock";
 import { DocumentApiMock } from "./api/entities/DocumentApiMock";
+import { PriorLearningApiMock } from "./api/entities/PriorLearningApiMock";
 
 export const initMockDB = () => new MockAdapter();
 
@@ -133,6 +134,7 @@ export class MockAdapter {
     ContactApiMock.apply(this);
     MembershipProductApiMock.apply(this);
     SalesApiMock.apply(this);
+    PriorLearningApiMock.apply(this);
 
     //  Automation
     ScriptApiMock.apply(this);
