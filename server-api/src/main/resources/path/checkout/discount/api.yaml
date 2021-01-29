@@ -9,6 +9,14 @@ get:
       type: integer
       format: int64
       required: true
+    - name: courseIds
+      in: query
+      type: string
+      description: comma separated purchasing courses ids for student in this checkout
+    - name: productIds
+      in: query
+      type: string
+      description: comma separated purchasing products ids for student in this checkout
     - name: classId
       in: query
       type: integer
