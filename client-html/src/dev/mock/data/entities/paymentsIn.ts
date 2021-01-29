@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockPaymentsIn() {
   this.getPaymentsIn = () => this.paymentsIn;
@@ -66,53 +66,66 @@ export function mockPaymentsIn() {
   };
 
   this.removePaymentIn = id => {
-    this.paymentsIn = this.paymentsIn.rows.filter(m => m.id !== id);
+    this.paymentsIn = removeItemByEntity(this.paymentsIn, id);
   };
 
-  this.getPlainPaymentsIn = () => {
-    const rows = generateArraysOfRecords(20, [
-      { name: "id", type: "number" },
-      { name: "status", type: "string" },
-      { name: "paymentInType", type: "string" },
-      { name: "source", type: "string" },
-      { name: "totalOwing", type: "number" },
-      { name: "reconciled", type: "boolean" },
-      { name: "reversalOf", type: "string" },
-      { name: "reversedBy", type: "string" },
-      { name: "bookingId", type: "number" },
-      { name: "amount", type: "number" },
-      { name: "payerName", type: "string" }
-    ]).map(l => ({
-      id: l.id,
-      values: [
-        "Success",
-        "Credit card",
-        "office",
-        "132.00",
-        "true",
-        l.reversalOf,
-        l.reversedBy,
-        l.bookingId,
-        l.amount * 100,
-        l.payerName
-      ]
-    }));
+  this.getPlainPaymentsIn = params => {
+    let rows: any[];
+    const columns = params.columns.split(",");
 
-    const columns = [];
+    if (columns.includes("gatewayReference")) {
+      rows = generateArraysOfRecords(2, [
+        { name: "id", type: "number" },
+        { name: "createdOn", type: "Datetime" },
+        { name: "gatewayReference", type: "string" },
+        { name: "creditCardClientReference", type: "string" },
+        { name: "amount", type: "number" },
+        { name: "privateNotes", type: "string" }
+      ]).map(l => ({
+        id: l.id,
+        values: [
+          "2021-01-28T08:09:37.835Z",
+          "test ref",
+          "cc ref",
+          l.amount * 100,
+          l.privateNotes
+        ]
+      }));
+    } else {
+      rows = generateArraysOfRecords(20, [
+        { name: "id", type: "number" },
+        { name: "status", type: "string" },
+        { name: "paymentInType", type: "string" },
+        { name: "source", type: "string" },
+        { name: "totalOwing", type: "number" },
+        { name: "reconciled", type: "boolean" },
+        { name: "reversalOf", type: "string" },
+        { name: "reversedBy", type: "string" },
+        { name: "bookingId", type: "number" },
+        { name: "amount", type: "number" },
+        { name: "payerName", type: "string" }
+      ]).map(l => ({
+        id: l.id,
+        values: [
+          "Success",
+          "Credit card",
+          "office",
+          "132.00",
+          "true",
+          l.reversalOf,
+          l.reversedBy,
+          l.bookingId,
+          l.amount * 100,
+          l.payerName
+        ]
+      }));
+    }
 
-    const response = { rows, columns } as any;
-
-    response.entity = "PaymentIn";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = 20;
-    response.search = null;
-    response.count = rows.length;
-    response.filteredCount = rows.length;
-    response.sort = [];
-
-    return response;
+    return getEntityResponse({
+      entity: "PaymentIn",
+      rows,
+      plain: true
+    });
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -137,89 +150,58 @@ export function mockPaymentsIn() {
     ]
   }));
 
-  const columns = [
-    {
-      title: "Source",
-      attribute: "source",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Type",
-      attribute: "paymentMethod.name",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Status",
-      attribute: "statusString",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: ["status"]
-    },
-    {
-      title: "Name",
-      attribute: "payer.fullName",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: ["payer.lastName", "payer.firstName", "payer.middleName"]
-    },
-    {
-      title: "Amount",
-      attribute: "amount",
-      type: "Money",
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Account",
-      attribute: "accountIn.accountCode",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Date paid",
-      attribute: "paymentDate",
-      type: "Datetime",
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
+  return getEntityResponse({
+    entity: "PaymentIn",
+    rows,
+    columns: [
+      {
+        title: "Source",
+        attribute: "source",
+        sortable: true
+      },
+      {
+        title: "Type",
+        attribute: "paymentMethod.name",
+        sortable: true
+      },
+      {
+        title: "Status",
+        attribute: "statusString",
+        sortable: true,
+        sortFields: ["status"]
+      },
+      {
+        title: "Name",
+        attribute: "payer.fullName",
+        sortable: true,
+        sortFields: ["payer.lastName", "payer.firstName", "payer.middleName"]
+      },
+      {
+        title: "Amount",
+        attribute: "amount",
+        type: "Money",
+        sortable: true
+      },
+      {
+        title: "Account",
+        attribute: "accountIn.accountCode",
+        sortable: true
+      },
+      {
+        title: "Date paid",
+        attribute: "paymentDate",
+        type: "Datetime",
+        sortable: true
+      }
+    ],
+    res: {
+      sort: [
+        {
+          attribute: "source",
+          ascending: true,
+          complexAttribute: []
+        }
+      ]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "PaymentIn";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = null;
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [
-    {
-      attribute: "source",
-      ascending: true,
-      complexAttribute: []
-    }
-  ];
-
-  return response;
+  });
 }
