@@ -14,8 +14,8 @@ class CheckoutService {
     return this.checkoutApi.submit(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);
   }
 
-  public getContactDiscounts(contactId: number, classId: number, promoIds: string, membershipIds: string, enrolmentsCount: number, purchaseTotal: number): Promise<CourseClassDiscount[]> {
-    return this.checkoutApi.getContactDiscounts(contactId, classId, promoIds, membershipIds, enrolmentsCount, purchaseTotal);
+  public getContactDiscounts(contactId: number, classId: number, courseIds: string, productIds: string, promoIds: string, membershipIds: string, enrolmentsCount: number, purchaseTotal: number): Promise<CourseClassDiscount[]> {
+    return this.checkoutApi.getContactDiscounts(contactId, classId, courseIds, productIds, promoIds, membershipIds, enrolmentsCount, purchaseTotal);
   }
 
   public getSessionStatus(sessionId: string): Promise<SessionStatus> {
