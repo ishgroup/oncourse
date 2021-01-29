@@ -650,7 +650,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	 */
 	@Nonnull
 	@Override
-	// TODO: not sure what it is used for, but this definitely shouldn't be in the public API
 	List<ContactDuplicate> getContactDuplicate() {
 		return super.getContactDuplicate()
 	}
@@ -772,11 +771,11 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	/**
 	 * @return all contacts related to this one
 	 */
-	@Nonnull @API
+	@Nonnull
+	@API
 	List<Contact> getRelatedContacts() {
-		return (super.getToContacts()*.getToContact().flatten() +
-				super.getFromContacts()*.getFromContact().flatten())
-				as List<Contact>
+		return super.getToContacts()*.getToContact() +
+				super.getFromContacts()*.getFromContact()
 	}
 
 	/**
@@ -784,14 +783,13 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	 * @param relationName (eg. 'parent')
 	 * @return
 	 */
-	@Nonnull @API
+	@Nonnull
+	@API
 	List<Contact> getRelatedContacts(String relationName) {
-		def toContacts = super.getToContacts().findAll{it.relationType.toContactName == relationName}
-		def fromContacts = super.getFromContacts().findAll{it.relationType.fromContactName == relationName}
+		def toContacts = super.getToContacts().findAll { it.relationType.fromContactName == relationName }
+		def fromContacts = super.getFromContacts().findAll { it.relationType.toContactName == relationName }
 
-		return (toContacts*.getToContact().flatten() +
-				fromContacts*.getFromContact().flatten())
-				as List<Contact>
+		return toContacts*.getToContact() + fromContacts*.getFromContact()
 	}
 
 	/**
