@@ -1,4 +1,4 @@
-import { Document } from "@api/model";
+import { Diff, Document } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 
 export const GET_DOCUMENT_EDIT = _toRequestType("get/list/entity/document/edit");
@@ -10,13 +10,17 @@ export const DELETE_DOCUMENT_ITEM_FULFILLED = FULFILLED(DELETE_DOCUMENT_ITEM);
 export const UPDATE_DOCUMENT_ITEM = _toRequestType("put/document");
 export const UPDATE_DOCUMENT_ITEM_FULFILLED = FULFILLED(UPDATE_DOCUMENT_ITEM);
 
+export const RESTORE_DOCUMENT = _toRequestType("patch/document");
+
 export const CREATE_DOCUMENT_ITEM = _toRequestType("post/document");
 export const CREATE_DOCUMENT_ITEM_FULFILLED = FULFILLED(CREATE_DOCUMENT_ITEM);
 
 export const GET_DOCUMENT_ITEMS = _toRequestType("get/document");
-export const GET_DOCUMENT_ITEMS_FULFILLED = FULFILLED(GET_DOCUMENT_ITEMS);
 
-export const CLEAR_DOCUMENT_ITEMS = "clear/documents";
+export const restoreDocument = (diff: Diff) => ({
+  type: RESTORE_DOCUMENT,
+  payload: diff
+});
 
 export const getDocument = (id: number) => ({
   type: GET_DOCUMENT_EDIT,
