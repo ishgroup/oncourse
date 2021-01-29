@@ -103,6 +103,8 @@ export function listApiMock() {
       return promiseResolve(config, this.db.getMembershipProducts());
     } if (entity === "ProductItem") {
       return promiseResolve(config, this.db.getProductItems());
+    } if (entity === "PriorLearning") {
+      return promiseResolve(config, this.db.getPriorLearnings());
     }
 
     const list = this.db.getList(entity);
