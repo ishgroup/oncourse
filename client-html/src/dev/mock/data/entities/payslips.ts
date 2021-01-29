@@ -17,21 +17,24 @@ export function mockPayslips() {
           dateFor: "2013-04-29",
           description: "Reimbursement of Prep Printing Costs",
           quantity: 1,
-          value: 50
+          value: 50,
+          deferred: true
         },
         {
           id: 2,
           dateFor: "2013-04-29",
           description: "Reimbursement of Internet Costs",
           quantity: 1,
-          value: 50
+          value: 50,
+          deferred: true
         },
         {
           id: 3,
           dateFor: "2015-08-19",
           description: "Cert IV in Project Management",
           quantity: 1,
-          value: 30
+          value: 30,
+          deferred: true
         }
       ],
       privateNotes: null,
