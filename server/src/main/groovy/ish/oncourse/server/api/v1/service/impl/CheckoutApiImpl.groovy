@@ -154,7 +154,7 @@ class CheckoutApiImpl implements CheckoutApi {
     PaymentInDao paymentInDao
 
     @Override
-    List<CourseClassDiscountDTO> getContactDiscounts(Long contactId, Long classId, String promoIds, String membershipIds, Integer enrolmentsCount, BigDecimal purchaseTotal) {
+    List<CourseClassDiscountDTO> getContactDiscounts(Long contactId, Long classId, String courseIds, String productIds, String promoIds, String membershipIds, Integer enrolmentsCount, BigDecimal purchaseTotal) {
         ObjectContext context = cayenneService.newContext
         CourseClass courseClass = courseClassService.getEntityAndValidateExistence(context, classId)
         Contact contact = contactApiService.getEntityAndValidateExistence(context, contactId)
