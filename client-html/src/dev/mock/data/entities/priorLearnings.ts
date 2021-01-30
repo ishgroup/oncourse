@@ -56,6 +56,27 @@ export function mockPriorLearnings() {
     };
   };
 
+  this.createPriorLearning = item => {
+    const data = JSON.parse(item);
+    const priorLearnings = this.priorLearnings;
+    const totalRows = priorLearnings.rows;
+
+    data.id = totalRows.length + 1;
+
+    priorLearnings.rows.push({
+      id: data.id,
+      values: [
+        `studentName ${data.id}`,
+        null,
+        data.title,
+        null,
+        `nationalCode ${data.id}`
+      ]
+    });
+
+    this.priorLearnings = priorLearnings;
+  };
+
   this.getPlainPriorLearnings = () => {
     const rows = generateArraysOfRecords(20, [
       { name: "id", type: "number" },
