@@ -13,4 +13,12 @@ export function RoomApiMock(mock) {
     this.db.createRoom(config.data);
     return promiseResolve(config, {});
   });
+
+  this.api.onDelete(new RegExp(`v1/list/entity/room/\\d+`)).reply(config => {
+    const id = getParamsId(config);
+    this.db.removeRoom(id);
+    return promiseResolve(config, {});
+  });
+
+  this.api.onDelete(new RegExp(`v1/list/entity/room/validation/\\d+`)).reply(config => promiseResolve(config, {}));
 }
