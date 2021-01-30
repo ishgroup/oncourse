@@ -1,36 +1,7 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockQualifications() {
-  this.getQualifications = () => {
-    return this.qualifications;
-  };
-
-  this.getPlainQualifications = () => {
-    const rows = generateArraysOfRecords(20, [
-      { name: "id", type: "number" },
-      { name: "nationalCode", type: "string" },
-      { name: "title", type: "string" },
-      { name: "level", type: "string" }
-    ]).map(l => ({
-      id: l.id,
-      values: [l.nationalCode, l.title, l.level]
-    }));
-
-    const columns = [];
-
-    const response = { rows, columns } as any;
-
-    response.entity = "Qualification";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = rows.length;
-    response.search = null;
-    response.count = null;
-    response.sort = [];
-
-    return response;
-  };
+  this.getQualifications = () => this.qualifications;
 
   this.getQualification = id => {
     const row = this.qualifications.rows.find(row => row.id == id);
@@ -63,7 +34,25 @@ export function mockQualifications() {
   };
 
   this.removeQualification = id => {
-    this.qualifications = this.qualifications.rows.filter(q => q.id !== id);
+    this.qualifications = removeItemByEntity(this.qualifications, id);
+  };
+
+  this.getPlainQualifications = params => {
+    const rows = generateArraysOfRecords(20, [
+      { name: "id", type: "number" },
+      { name: "nationalCode", type: "string" },
+      { name: "title", type: "string" },
+      { name: "level", type: "string" }
+    ]).map(l => ({
+      id: l.id,
+      values: [l.nationalCode, l.title, l.level]
+    }));
+
+    return getEntityResponse({
+      entity: "Qualification",
+      rows,
+      plain: true
+    });
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -78,71 +67,46 @@ export function mockQualifications() {
     values: [l.nationalCode, l.title, l.qualLevel, 10, false]
   }));
 
-  const columns = [
-    {
-      title: "Code",
-      attribute: "nationalCode",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 400,
-      sortFields: []
-    },
-    {
-      title: "Title",
-      attribute: "title",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Level",
-      attribute: "level",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Hours",
-      attribute: "nominalHours",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Offered",
-      attribute: "isOffered",
-      type: "Boolean",
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
+  return getEntityResponse({
+    entity: "Qualification",
+    rows,
+    columns: [
+      {
+        title: "Code",
+        attribute: "nationalCode",
+        sortable: true,
+        width: 400
+      },
+      {
+        title: "Title",
+        attribute: "title",
+        sortable: true
+      },
+      {
+        title: "Level",
+        attribute: "level",
+        sortable: true
+      },
+      {
+        title: "Hours",
+        attribute: "nominalHours",
+        sortable: true
+      },
+      {
+        title: "Offered",
+        attribute: "isOffered",
+        type: "Boolean",
+        sortable: true
+      }
+    ],
+    res: {
+      sort: [
+        {
+          attribute: "nationalCode",
+          ascending: true,
+          complexAttribute: []
+        }
+      ]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Qualification";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = null;
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [
-    {
-      attribute: "nationalCode",
-      ascending: true,
-      complexAttribute: []
-    }
-  ];
-
-  return response;
+  });
 }
