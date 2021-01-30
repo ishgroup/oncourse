@@ -1,4 +1,4 @@
-import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockPriorLearnings() {
   this.getPriorLearnings = () => this.priorLearnings;
@@ -75,6 +75,10 @@ export function mockPriorLearnings() {
     });
 
     this.priorLearnings = priorLearnings;
+  };
+
+  this.removePriorLearning = id => {
+    this.priorLearnings = removeItemByEntity(this.priorLearnings, id);
   };
 
   this.getPlainPriorLearnings = () => {
