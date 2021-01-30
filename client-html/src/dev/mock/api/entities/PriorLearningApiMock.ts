@@ -6,4 +6,9 @@ export function PriorLearningApiMock() {
     const id = getParamsId(config);
     return promiseResolve(config, this.db.getPriorLearning(id));
   });
+
+  this.api.onPost("v1/list/entity/priorLearning").reply(config => {
+    this.db.createPriorLearning(config.data);
+    return promiseResolve(config, {});
+  });
 }
