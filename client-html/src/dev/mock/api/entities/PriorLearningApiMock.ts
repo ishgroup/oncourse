@@ -11,4 +11,10 @@ export function PriorLearningApiMock() {
     this.db.createPriorLearning(config.data);
     return promiseResolve(config, {});
   });
+
+  this.api.onDelete(new RegExp(`v1/list/entity/priorLearning/\\d+`)).reply(config => {
+    const id = getParamsId(config);
+    this.db.removePriorLearning(id);
+    return promiseResolve(config, {});
+  });
 }
