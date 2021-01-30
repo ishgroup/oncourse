@@ -243,7 +243,7 @@ export function listApiMock() {
       }
 
       case "Qualification": {
-        return promiseResolve(config, this.db.getPlainQualifications());
+        return promiseResolve(config, this.db.getPlainQualifications(config.params));
       }
 
       case "PriorLearning": {
