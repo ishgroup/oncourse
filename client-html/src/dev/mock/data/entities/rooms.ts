@@ -1,4 +1,4 @@
-import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockRooms() {
   this.getRooms = () => this.rooms;
@@ -41,6 +41,10 @@ export function mockRooms() {
     this.rooms = rooms;
     this.rooms.count = data.id;
     this.rooms.filteredCount = data.id;
+  };
+
+  this.removeRoom = id => {
+    this.rooms = removeItemByEntity(this.rooms, id);
   };
 
   const rows = generateArraysOfRecords(20, [
