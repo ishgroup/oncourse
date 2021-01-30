@@ -24,41 +24,18 @@ export function mockSales() {
     };
   };
 
-  this.createProductItem = item => {
-    const data = JSON.parse(item);
-    const sales = this.sales;
-    const totalRows = sales.rows;
-
-    data.id = totalRows.length + 1;
-
-    sales.rows.push({
-      id: data.id,
-      values: [
-        data.productName,
-        data.productType,
-        data.productId,
-        data.expiresOn,
-        "Active",
-        data.purchasedByName,
-        data.purchasedOn
-      ]
-    });
-
-    this.sales = sales;
-  };
-
   this.removeProductItem = id => {
     this.sales = removeItemByEntity(this.sales, id);
   };
 
   this.getPlainProductItemList = () => {
-    const rows = generateArraysOfRecords(20, [
+    const rows = generateArraysOfRecords(1, [
       { name: "id", type: "number" },
       { name: "status", type: "string" },
       { name: "type", type: "string" }
     ]).map(l => ({
       id: l.id,
-      values: [l.active, l.type]
+      values: ["Active", "3"]
     }));
 
     return getEntityResponse({
