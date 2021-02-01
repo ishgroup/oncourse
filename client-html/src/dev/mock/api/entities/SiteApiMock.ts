@@ -13,4 +13,10 @@ export function SiteApiMock(mock) {
     this.db.createSite(config.data);
     return promiseResolve(config, {});
   });
+
+  this.api.onDelete(new RegExp(`v1/list/entity/site/\\d+`)).reply(config => {
+    const id = getParamsId(config);
+    this.db.removeSite(id);
+    return promiseResolve(config, {});
+  });
 }

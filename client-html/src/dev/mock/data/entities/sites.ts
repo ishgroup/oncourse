@@ -1,4 +1,4 @@
-import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockSites() {
   this.getSites = () => this.sites;
@@ -69,6 +69,10 @@ export function mockSites() {
     });
 
     this.sites = sites;
+  };
+
+  this.removeSite = id => {
+    this.sites = removeItemByEntity(this.sites, id);
   };
 
   const rows = generateArraysOfRecords(20, [
