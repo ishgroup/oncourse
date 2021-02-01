@@ -2,12 +2,9 @@ const __common = require('./webpack/__common');
 
 const fs = require('fs');
 const path = require('path');
-const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
-const ZipPlugin = require('zip-webpack-plugin');
-
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || 'development';
@@ -29,7 +26,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
 
   return {
     entry: {
-      editor: [
+      billing: [
         appEntry
       ]
     },
@@ -101,23 +98,6 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           test: /\.(js|html|css|map)$/,
           minRatio: Infinity,
         }),
-      new ZipPlugin({
-        path: '../distribution',
-        filename: 'editor.zip',
-
-        // OPTIONAL: defaults to excluding nothing
-        // can be a string, a RegExp, or an array of strings and RegExps
-        // if a file matches both include and exclude, exclude takes precedence
-        exclude: [/\.js$/, /\.css$/, /\.map$/],
-
-        // OPTIONAL: see https://github.com/thejoshwolfe/yazl#addfilerealpath-metadatapath-options
-        fileOptions: {
-          mtime: new Date(),
-          mode: 0o100664,
-          compress: true,
-          forceZip64Format: false,
-        },
-      })
       );
       break;
     case "development":
