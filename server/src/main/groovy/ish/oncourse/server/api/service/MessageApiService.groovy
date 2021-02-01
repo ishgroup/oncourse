@@ -307,7 +307,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                     recipientsCount.toString(), recipientsToSend.size().toString(), messageType)
             validator.throwClientErrorException("recipientsCount", "A real recipients number doesn't equal specified. Specified: ${recipientsCount}, Real: ${recipientsToSend.size()}")
         }
-        if (smtpService.email_batch && recipientsToSend.size() > smtpService.email_batch) {
+        if (smtpService.email_batch != null && recipientsToSend.size() > smtpService.email_batch) {
             logger.error("A recipients number higher than allowed by license. License: {}, Real: {}",
                     smtpService.email_batch, recipientsToSend.size().toString())
             validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${smtpService.email_batch} emails in one batch. " +
