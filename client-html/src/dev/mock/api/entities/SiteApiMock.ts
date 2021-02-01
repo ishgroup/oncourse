@@ -8,4 +8,9 @@ export function SiteApiMock(mock) {
   });
 
   this.api.onPut(new RegExp(`v1/list/entity/site/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
+
+  this.api.onPost("v1/list/entity/site").reply(config => {
+    this.db.createSite(config.data);
+    return promiseResolve(config, {});
+  });
 }
