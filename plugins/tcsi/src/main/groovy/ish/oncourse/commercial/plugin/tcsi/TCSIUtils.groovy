@@ -27,32 +27,15 @@ class TCSIUtils {
         if (s.contact.dateOfBirth) {
             student["date_of_birth"] = s.contact.dateOfBirth.format(DATE_FORMAT)   // E314
         }
-//        Error: The Term Address Postcode (E319) has been reported for an offshore location.
-//        student["term_address_postcode"] = s.contact.postcode // E319
-//        student["term_address_country_code"] = s.contact.country.saccCode.toString()   // E661
-        
+
         student["student_family_name"] = s.contact.lastName // E402
         student["student_given_name_first"] = s.contact.firstName   // E403
-        student["residential_address_street"] = s.contact.street   // E410
-        student["residential_address_suburb"] = s.contact.suburb   //E469
-        student["residential_address_state"] = s.contact.state  // E470
-        student["residential_address_postcode"] = s.contact.postcode // E320
-
-        if (s.contact.country && !s.contact.country.isAustralia()) {
-            student["residential_address_country_code"] = s.contact.country.saccCode.toString()   //E658
+        
+        if (s.contact.middleName) { //E404
+            student["student_given_name_others"] = s.contact.middleName
         }
         
-        if (s.contact.tfn) {
-            student["tfn"] = s.contact.tfn  // E416
-        }
-        if (s.chessn) {
-            student["chessn"] = s.chessn // 488
-        }
-        if (s.usi) {
-            student["usi"] = s.usi //E584
-        }
-        
-        if (s.contact.gender) {
+        if (s.contact.gender) {  //E315
             switch (s.contact.gender) {
                 case Gender.FEMALE:
                     student["gender_code"] = "F"
@@ -83,37 +66,30 @@ class TCSIUtils {
                     break
             }
         } else {
-            student["atsi_code"] = "9" 
+            student["atsi_code"] = "9"
         }
-        
+
         // E346
         if (s.countryOfBirth) {
             student["country_of_birth_code"] = s.countryOfBirth?.saccCode   // E346
         } else {
             student["country_of_birth_code"] = "9999"
         }
-    
-
-        // E347
-        if (s.countryOfBirth?.isAustralia()) {
-            student["year_of_arrival_in_australia"] = "9998"
-        } else {
-            student["year_of_arrival_in_australia"] = "9999"
-        }
 
         // E348
         if (s.language) {
-            student["language_spoken_at_home_code"] = s.language?.absCode 
+            student["language_spoken_at_home_code"] = s.language?.absCode
         } else {
             student["language_spoken_at_home_code"] = "9999"
         }
-        if (s.yearSchoolCompleted) {
+        
+        if (s.yearSchoolCompleted) { //E572
             student["year_left_school"] = s.yearSchoolCompleted.toString()
         } else {
             student["year_left_school"] = '9999'
         }
 
-        if (s.highestSchoolLevel) {
+        if (s.highestSchoolLevel) { //E612
 
             switch (s.highestSchoolLevel) {
                 case AvetmissStudentSchoolLevel.COMPLETED_YEAR_9:
@@ -136,6 +112,27 @@ class TCSIUtils {
             student["level_left_school"] = '99'
         }
 
+        if (s.contact.country) { 
+            student["term_address_country_code"] = s.contact.country.saccCode.toString() // E661
+            student["residential_address_country_code"] = s.contact.country.saccCode.toString()   //E658
+
+        }
+        student["term_address_postcode"] = s.contact.postcode // E319
+        student["residential_address_postcode"] = s.contact.postcode // E320
+        student["residential_address_street"] = s.contact.street   // E410
+        student["residential_address_suburb"] = s.contact.suburb   //E469
+        student["residential_address_state"] = s.contact.state  // E470
+        
+        if (s.contact.tfn) {
+            student["tfn"] = s.contact.tfn  // E416
+        }
+        if (s.chessn) {
+            student["chessn"] = s.chessn // 488
+        }
+        if (s.usi) {
+            student["usi"] = s.usi //E584
+        }
+        
         student["citizenships"] = []
             
         def citizenship = [:]
