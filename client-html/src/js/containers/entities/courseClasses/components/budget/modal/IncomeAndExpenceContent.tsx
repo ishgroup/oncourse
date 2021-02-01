@@ -34,7 +34,11 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
 }) => {
   const isIncome = useMemo(() => values.flowType === "Income", [values.flowType]);
 
-  const currentTax = useMemo(() => getCurrentTax(taxes, values.taxId), [values.taxId, taxes]);
+  const currentTax = useMemo(() => {
+    let currentTaxItem = getCurrentTax(taxes, values.taxId);
+    if (!currentTaxItem) currentTaxItem = { ...currentTaxItem, rate: 0 };
+    return currentTaxItem;
+  }, [values.taxId, taxes]);
 
   const onFeeIncTaxChange = useCallback(
     value => {
