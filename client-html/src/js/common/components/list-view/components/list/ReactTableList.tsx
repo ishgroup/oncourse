@@ -307,7 +307,7 @@ const Table: React.FC<ListTableProps> = ({
     if (isDragging) {
       setColumnIsDragging(true);
       if (listRef.current && listRef.current.scrollTop) listRef.current.scrollTop = 0;
-      if (tableRef.current && listRef.current.scrollTop) tableRef.current.scrollTop = 0;
+      if (tableRef.current && tableRef.current.scrollTop) tableRef.current.scrollTop = 0;
     }
     return {
       userSelect: 'none',
