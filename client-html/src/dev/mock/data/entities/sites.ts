@@ -7,7 +7,7 @@ export function mockSites() {
     const row = this.sites.rows.find(row => row.id == id);
     return {
       country: this.countries.find(c => c.id == `20${row.id}`),
-      createdOn: new Date().toISOString(),
+      createdOn: "2021-02-01T06:09:45.466Z",
       documents: [],
       drivingDirections: null,
       id: row.id,
@@ -17,20 +17,20 @@ export function mockSites() {
       kioskUrl: `https://ishoncourse.oncourse.cc/site/kiosk/${row.id}`,
       latitude: -33.8863809,
       longitude: 151.2107548,
-      modifiedOn: new Date().toISOString(),
+      modifiedOn: "2021-02-01T06:09:45.466Z",
       name: row.values[0],
       notes: [],
       postcode: row.values[2],
       publicTransportDirections: null,
       rooms: [
         {
-          createdOn: new Date().toISOString(),
+          createdOn: "2021-02-01T06:09:45.466Z",
           directions: null,
           documents: [],
           facilities: null,
           id: row.id,
           kioskUrl: `https://ishoncourse.oncourse.cc/room/kiosk/${row.id}`,
-          modifiedOn: new Date().toISOString(),
+          modifiedOn: "2021-02-01T06:09:45.466Z",
           name: `room ${row.id}`,
           notes: [],
           rules: [],
