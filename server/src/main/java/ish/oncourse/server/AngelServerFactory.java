@@ -254,36 +254,38 @@ public class AngelServerFactory {
         lines.forEach(line -> {
             String[] lineData = line.split("(, )+|([ ,\t])+");
 
-            if (lineData.length == 3) {
-                String email = parseEmail(lineData[2]);
-                if (email == null) {
-                    LOGGER.warn("Specified email for user {} is not valid.", line);
-                    return;
-                }
-                SystemUser user = UserDao.getByEmail(context, email);
-                if (user != null) {
-                    LOGGER.warn("System user {} already added.", line);
-                    return;
-                }
-
-                user = UserDao.createSystemUser(context, Boolean.TRUE);
-                user.setFirstName(lineData[0]);
-                user.setLastName(lineData[1]);
-                user.setEmail(email);
-
-                try {
-                    String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey);
-                    user.setInvitationToken(invitationToken);
-                    user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
-                } catch (MessagingException ex) {
-                    LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", line);
-                    return;
-                }
-
-                context.commitChanges();
-
-                LOGGER.warn("System user {} have added successfully.", line);
+            if (lineData.length != 3) {
+                LOGGER.warn("Incorrect row format. User wasn't created.");
+                return;
             }
+            String email = parseEmail(lineData[2]);
+            if (email == null) {
+                LOGGER.warn("Specified email for user {} is not valid.", line);
+                return;
+            }
+            SystemUser user = UserDao.getByEmail(context, email);
+            if (user != null) {
+                LOGGER.warn("System user {} already added.", line);
+                return;
+            }
+
+            user = UserDao.createSystemUser(context, Boolean.TRUE);
+            user.setFirstName(lineData[0]);
+            user.setLastName(lineData[1]);
+            user.setEmail(email);
+
+            try {
+                String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey);
+                user.setInvitationToken(invitationToken);
+                user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
+            } catch (MessagingException ex) {
+                LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", line);
+                return;
+            }
+
+            context.commitChanges();
+
+            LOGGER.warn("System user {} have added successfully.", line);
         });
 
         if (systemUsersFile.toFile().delete()) {
