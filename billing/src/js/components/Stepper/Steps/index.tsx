@@ -19,3 +19,33 @@ export const Steps = [
   <OrganisationForm/>,
   <FinishPage/>
 ];
+
+export interface TabsListItem {
+  label: string;
+  component: (props: any) => React.ReactNode;
+  labelAdornment?: React.ReactNode;
+  expandable?: boolean;
+}
+
+export const items: TabsListItem[] = [
+  {
+    label: "Site name",
+    component: () => <NameForm/>
+  },
+  {
+    label: "Templates",
+    component: () => <TemplateForm/>
+  },
+  {
+    label: "Contact",
+    component: () => <ContactForm/>
+  },
+  {
+    label: "Organisation",
+    component: () => <OrganisationForm/>
+  },
+  {
+    label: "All done!",
+    component: () => <FinishPage/>
+  },
+];

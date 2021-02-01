@@ -7,7 +7,6 @@ export const initApp = () => {
   ReactDOM.render(
     <React.StrictMode>
       <Billing />
-      <p>Hello React</p>
     </React.StrictMode>,
     document.getElementById("root")
   );
