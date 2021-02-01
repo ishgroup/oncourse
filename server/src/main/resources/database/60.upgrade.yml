@@ -78,3 +78,18 @@ databaseChangeLog:
             columnDataType: VARCHAR(128)
             columnName: password
             tableName: SystemUser
+  - changeSet:
+      id: 60-6
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Document
+      changes:
+        - update:
+            tableName: Document
+            columns:
+              - column:
+                  name: modifiedOn
+                  value: now()
+            where: isRemoved="1"
