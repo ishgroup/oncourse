@@ -51,6 +51,26 @@ export function mockSites() {
     };
   };
 
+  this.createSite = item => {
+    const data = JSON.parse(item);
+    const sites = this.sites;
+    const totalRows = sites.rows;
+
+    data.id = totalRows.length + 1;
+
+    sites.rows.push({
+      id: data.id,
+      values: [
+        data.name,
+        data.suburb,
+        data.postcode,
+        data.isShownOnWeb
+      ]
+    });
+
+    this.sites = sites;
+  };
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "name", type: "string" },
