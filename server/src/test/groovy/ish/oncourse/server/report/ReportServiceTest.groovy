@@ -9,9 +9,9 @@ import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.common.ResourceType
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.cayenne.Site
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.print.PrintWorker
 import ish.print.PrintRequest
@@ -45,7 +45,7 @@ import java.util.List
 class ReportServiceTest extends CayenneIshTestCase {
 	private static final Logger logger = LogManager.getLogger()
 
-    private PreferenceController prefController
+    private DocumentService documentService
     private DataContext context
 
     @BeforeClass
@@ -60,7 +60,7 @@ class ReportServiceTest extends CayenneIshTestCase {
 
 	@Before
     void setup() throws Exception {
-		prefController = injector.getInstance(PreferenceController.class)
+        documentService = injector.getInstance(DocumentService.class)
         context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
     }
 
@@ -222,7 +222,7 @@ class ReportServiceTest extends CayenneIshTestCase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, prefController) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, documentService) {
 
 			@Override
 			protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
@@ -279,7 +279,7 @@ class ReportServiceTest extends CayenneIshTestCase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, prefController) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, documentService) {
 
 			@Override
 			protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
@@ -340,7 +340,7 @@ class ReportServiceTest extends CayenneIshTestCase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, prefController) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, documentService) {
 
 			@Override
 			protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
@@ -394,7 +394,7 @@ class ReportServiceTest extends CayenneIshTestCase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, prefController)
+        PrintWorker worker = new PrintWorker(request, cayenneService, documentService)
 
         worker.run()
 
