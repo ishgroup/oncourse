@@ -5,6 +5,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
+const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || 'development';
@@ -83,26 +84,38 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
   ];
 
-  switch (NODE_ENV) {
-    case "production":
-      plugins.push(
-        new HtmlWebpackPlugin({
-          title: "Billing",
-          template: "src/dev/index.html",
-          favicon: "src/images/favicon.ico",
-          chunksSortMode: 'none'
-        }),
-        new CompressionPlugin({
-          asset: "[path].gz[query]",
-          algorithm: "gzip",
-          test: /\.(js|html|css|map)$/,
-          minRatio: Infinity,
-        }),
-      );
-      break;
-    case "development":
-      break;
-  }
+  plugins.push(
+    new HtmlWebpackPlugin({
+      title: "Billing",
+      template: "src/dev/index.html",
+      favicon: "src/images/favicon.ico",
+      chunksSortMode: 'none'
+    }),
+    new CompressionPlugin({
+      asset: "[path].gz[query]",
+      algorithm: "gzip",
+      test: /\.(js|html|css|map)$/,
+      minRatio: Infinity,
+    }),
+    new ZipPlugin({
+      path: '../distribution',
+      filename: 'billing.zip',
+
+      // OPTIONAL: defaults to excluding nothing
+      // can be a string, a RegExp, or an array of strings and RegExps
+      // if a file matches both include and exclude, exclude takes precedence
+      exclude: [/\.js$/, /\.css$/, /\.map$/],
+
+      // OPTIONAL: see https://github.com/thejoshwolfe/yazl#addfilerealpath-metadatapath-options
+      fileOptions: {
+        mtime: new Date(),
+        mode: 0o100664,
+        compress: true,
+        forceZip64Format: false,
+      },
+    })
+  );
+
   return plugins;
 };
 
