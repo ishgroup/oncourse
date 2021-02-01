@@ -154,18 +154,23 @@ class CheckoutApiImpl implements CheckoutApi {
     PaymentInDao paymentInDao
 
     @Override
-    List<CourseClassDiscountDTO> getContactDiscounts(Long contactId, Long classId, String courseIds, String productIds, String promoIds, String membershipIds, Integer enrolmentsCount, BigDecimal purchaseTotal) {
+    List<CourseClassDiscountDTO> getContactDiscounts(Long contactId, Long classId,
+                                                     String courseIds, String productIds, String promoIds, String membershipIds,
+                                                     Integer enrolmentsCount, BigDecimal purchaseTotal) {
         ObjectContext context = cayenneService.newContext
         CourseClass courseClass = courseClassService.getEntityAndValidateExistence(context, classId)
         Contact contact = contactApiService.getEntityAndValidateExistence(context, contactId)
         if (contact.isCompany) {
             return []
         }
-        List<Discount> promos = promoIds == null || promoIds.empty ? [] : promoIds.split(',').collect { CayenneFunctions.getRecordById(context, Discount, Long.valueOf(it))}
-        List<MembershipProduct> memberships = membershipIds == null || membershipIds.empty ? [] : membershipIds.split(',').collect { membershipApiService.getEntityAndValidateExistence(context,Long.valueOf(it)) }
+        List<Long> courses = courseIds == null || courseIds.empty ? [] : courseIds.split(',').collect { Long.valueOf(it) }
+        List<Long> products = productIds == null || productIds.empty ? [] : productIds.split(',').collect { Long.valueOf(it) }
+        List<Long> promos = promoIds == null || promoIds.empty ? [] : promoIds.split(',').collect { Long.valueOf(it)}
+        List<MembershipProduct> memberships = membershipIds == null || membershipIds.empty ? [] :
+                membershipIds.split(',').collect { membershipApiService.getEntityAndValidateExistence(context,Long.valueOf(it)) }
         Money total = new Money(purchaseTotal)
 
-        List<DiscountCourseClass> discountCourseClasses = courseClass.getAvalibleDiscounts(contact, promos, memberships, enrolmentsCount, total)
+        List<DiscountCourseClass> discountCourseClasses = courseClass.getAvalibleDiscounts(contact, courses, products, promos, memberships, enrolmentsCount, total)
 
         if (discountCourseClasses.empty) {
             return []
