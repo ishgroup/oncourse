@@ -1,1 +1,3 @@
 apply from: "$rootDir/gradle/buildJSApp.gradle"
+
+processResources.dependsOn(":billing-api:swagger")
