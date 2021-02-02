@@ -13,11 +13,11 @@ import {
   generateWaitingCoursesResultData,
 } from "../actions/Actions";
 import CheckoutService, {BuildCheckoutModelRequest, BuildWaitingCoursesResult} from "../../../services/CheckoutService";
-import {PaymentStatus, CorporatePass, PaymentResponse, CheckoutModel} from "../../../../model";
+import {PaymentStatus, CorporatePass, PaymentResponse, CheckoutModel, ContactNode} from "../../../../model";
 import {IshState} from "../../../../services/IshState";
 import {IAction} from "../../../../actions/IshAction";
 import {GetPaymentStatus} from "./EpicGetPaymentStatus";
-import {changePhase, getAmount, togglePayNowVisibility} from "../../../actions/Actions";
+import {changePhase, getAmount, showFormValidation, togglePayNowVisibility} from "../../../actions/Actions";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
 import CheckoutServiceV2 from "../../../services/CheckoutServiceV2";
 import {AxiosResponse} from "axios";
@@ -42,6 +42,17 @@ const SubmitPaymentForWaitingCoursesRequest: Request<any, IshState> = {
       [generateWaitingCoursesResultData(BuildWaitingCoursesResult.fromState(state))],
     );
   },
+  processError: response => {
+    const actions = [];
+
+    response.data.contactNodes.forEach((cn: ContactNode) => {
+      cn.waitingLists.forEach(wl => {
+        actions.push(showFormValidation(response,`${wl.contactId}-${wl.courseId}`))
+      })
+    })
+
+    return actions;
+  }
 };
 
 const SubmitPaymentForWaitingCourses: Epic<any, any> = Create(SubmitPaymentForWaitingCoursesRequest);
@@ -66,7 +77,7 @@ const corporatePassRequest: Request<CorporatePass, IshState> = {
   getData: (payload: any, state: IshState): Promise<CorporatePass> => {
     return CheckoutService.getCorporatePass(payload, state);
   },
-  processData: (response: CorporatePass, state: IshState): IAction<any>[] | Observable<any> => {
+  processData: (response: CorporatePass): IAction<any>[] | Observable<any> => {
     return [
       {type: FULFILLED(GET_CORPORATE_PASS_REQUEST)},
       applyCorporatePass(response),

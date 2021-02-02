@@ -4,13 +4,14 @@ import {Field, DataType, Item} from "../../model";
 import {CheckboxField} from "./CheckboxField";
 import {TextField} from "./TextField";
 import {TextAreaField} from "./TextAreaField";
-import {RadioGroupField} from "./RadioGroupField";
 import {DateField} from "./DateField";
 import SelectField from "../form-new/SelectField";
 import SearchService from "../../enrol/services/SearchService";
 import {connect} from "react-redux";
-import {validateDate} from "../../common/utils/FormControlsValidation";
+import {validateDate, validateDateTime, validateEmail, validateURL} from "../../common/utils/FormControlsValidation";
 import {replaceWithNl} from "../../common/utils/HtmlUtils";
+import {DateTimeField} from "./DateTimeField";
+import {MoneyField} from "./MoneyField";
 
 class FieldFactory extends React.Component<any, any> {
 
@@ -25,11 +26,20 @@ class FieldFactory extends React.Component<any, any> {
       case DataType.POSTCODE:
         return <Form.Field {...props} component={TextField} type="text"/>;
 
+      case DataType.EMAIL:
+        return <Form.Field {...props} component={TextField} validate={validateEmail} type="text"/>;
+
+      case DataType.URL:
+        return <Form.Field {...props} component={TextField} validate={validateURL} type="text"/>;
+
       case DataType.LONG_STRING:
         return <Form.Field {...props} component={TextAreaField} type="text"/>;
 
       case DataType.INTEGER:
         return <Form.Field {...props} component={TextField} type="number"/>;
+
+      case DataType.MONEY:
+        return <Form.Field {...props} component={MoneyField} type="number"/>;
 
       case DataType.ENUM:
         return <Form.Field
@@ -49,6 +59,9 @@ class FieldFactory extends React.Component<any, any> {
           />;
       case DataType.DATE:
         return <Form.Field {...props} component={DateField} validate={validateDate}/>;
+
+      case DataType.DATETIME:
+        return <Form.Field {...props} component={DateTimeField} validate={validateDateTime}/>;
 
       case DataType.COUNTRY:
         return CountryField(props);
@@ -189,14 +202,6 @@ const withOptionNotSet = items => {
     key: null,
     value: "Not set",
   });
-};
-
-const withDefaultItem = items => {
-  const defaultEnumItem = {
-    key: -1,
-    value: 'Please select...',
-  };
-  return [defaultEnumItem].concat(items);
 };
 
 export default FieldFactory;

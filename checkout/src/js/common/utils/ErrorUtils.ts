@@ -1,6 +1,6 @@
 import {isNil} from "lodash";
 import {isUndefined} from "util";
-import {CommonError, ValidationError, CheckoutModel} from "../../model";
+import {CommonError, ValidationError} from "../../model";
 import {AxiosResponse} from "axios";
 
 export const isValidationError = (error: any): boolean => {
@@ -31,12 +31,11 @@ export const commonErrorToValidationError = (error: CommonError):ValidationError
 export const toValidationError = (response: AxiosResponse) => {
   let messages: ValidationError = new ValidationError();
   messages.formErrors = [];
-  messages.fieldsErrors = [];
 
-  if (!response) return messages;
+  if (!response || !response.data) return messages;
 
-  if (isValidationError(response.data)) {
-    messages = Object.assign({}, messages, response.data);
+  if (isValidationError(response.data.validationErrors)) {
+    messages = Object.assign({}, messages, response.data.validationErrors);
   } else if (isCommonError(response.data)) {
     messages.formErrors.push(response.data.message);
   } else if (isPlainTextError(response.data)) {

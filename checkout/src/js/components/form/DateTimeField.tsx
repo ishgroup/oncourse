@@ -4,14 +4,14 @@ import {CommonFieldProps} from "./CommonFieldProps";
 import {WrappedMouseHoverProps} from "./MouseHover";
 import {MaskedField} from "./MaskedField";
 
-export const DateField: React.SFC<DateFieldProps> = props => (
+export const DateTimeField: React.SFC<DateTimeFieldProps> = props => (
   <MaskedField
-    mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
+    mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/," ", /\d/, /\d/, ":", /\d/, /\d/ ]}
     {...props}
   />
 );
 
-export interface DateFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps, WrappedMouseHoverProps {
+export interface DateTimeFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps, WrappedMouseHoverProps {
   type: string;
   required: boolean;
   hint: string;

@@ -1,4 +1,5 @@
 import * as React from "react";
+import MaskedTextInput from "react-text-mask";
 import classnames from "classnames";
 import {WrappedFieldProps} from "redux-form";
 import {CommonFieldProps} from "./CommonFieldProps";
@@ -6,24 +7,21 @@ import {MouseHover, WrappedMouseHoverProps} from "./MouseHover";
 import {showError, ValidateText} from "./ValidateText";
 import {FieldLabel} from "./FieldLabel";
 
-export const TextField: React.SFC<TextFieldProps> = props => (
+export const MaskedField: React.SFC<MaskedFieldProps> = props => (
   <MouseHover component={inputComponent} componentProps={props}/>
 );
 
-function inputComponent(props: any) {
+function inputComponent(props: MaskedFieldProps) {
   const {
     input,
     required,
     label,
-    placeholder,
     type,
+    placeholder,
+    mask
   } = props;
-  const isShowError = showError({...props, meta: props.meta || {}});
 
-  // normalize value if changing from select field to text field
-  if (typeof input.value === "object") {
-    input.value = input.value.value;
-  }
+  const isShowError = showError(props);
 
   return (
     <div>
@@ -35,21 +33,24 @@ function inputComponent(props: any) {
       <span className={classnames({
         valid: !isShowError,
         validate: isShowError,
-        'has-error': isShowError,
+        "has-error": isShowError,
       })}>
-        <input
+        <MaskedTextInput
+          mask={mask}
           {...input}
-          className={classnames('input-fixed', 'contact-field', {'t-error': isShowError})}
+          className={classnames("input-fixed", "contact-field", {"t-error": isShowError})}
           placeholder={placeholder || label}
           type={type}
         />
-        <ValidateText {...props} meta={props.meta || {}}/>
+        <ValidateText {...props}/>
       </span>
     </div>
   );
 }
 
-export interface TextFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps, WrappedMouseHoverProps {
+export interface MaskedFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps, WrappedMouseHoverProps {
   type: string;
   required: boolean;
+  hint: string;
+  mask: (string | RegExp)[]
 }

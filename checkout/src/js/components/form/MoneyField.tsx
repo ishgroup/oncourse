@@ -1,12 +1,13 @@
 import * as React from "react";
 import classnames from "classnames";
+import NumberFormat from "react-number-format";
 import {WrappedFieldProps} from "redux-form";
 import {CommonFieldProps} from "./CommonFieldProps";
 import {MouseHover, WrappedMouseHoverProps} from "./MouseHover";
 import {showError, ValidateText} from "./ValidateText";
 import {FieldLabel} from "./FieldLabel";
 
-export const TextField: React.SFC<TextFieldProps> = props => (
+export const MoneyField: React.SFC<MoneyFieldProps> = props => (
   <MouseHover component={inputComponent} componentProps={props}/>
 );
 
@@ -15,8 +16,7 @@ function inputComponent(props: any) {
     input,
     required,
     label,
-    placeholder,
-    type,
+    placeholder
   } = props;
   const isShowError = showError({...props, meta: props.meta || {}});
 
@@ -37,11 +37,12 @@ function inputComponent(props: any) {
         validate: isShowError,
         'has-error': isShowError,
       })}>
-        <input
+        <NumberFormat
           {...input}
           className={classnames('input-fixed', 'contact-field', {'t-error': isShowError})}
+          prefix={'$ '}
+          thousandSeparator={true}
           placeholder={placeholder || label}
-          type={type}
         />
         <ValidateText {...props} meta={props.meta || {}}/>
       </span>
@@ -49,7 +50,7 @@ function inputComponent(props: any) {
   );
 }
 
-export interface TextFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps, WrappedMouseHoverProps {
+export interface MoneyFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps, WrappedMouseHoverProps {
   type: string;
   required: boolean;
 }

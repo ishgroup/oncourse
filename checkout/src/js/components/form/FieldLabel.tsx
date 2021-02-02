@@ -11,14 +11,6 @@ export function FieldLabel({name, label, required, children, className}: FieldLa
   );
 }
 
-function requiredText(required) {
-  return (
-    <span>
-      {required && <em title="This field is required">*</em>}
-    </span>
-  );
-}
-
 interface FieldLabelProps {
   name: string;
   label: string;

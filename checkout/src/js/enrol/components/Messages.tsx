@@ -3,7 +3,6 @@ import * as L from "lodash";
 import {ValidationError} from "../../model";
 
 const CLASS_ERRORS: string = "validation";
-const CLASS_WARNINGS: string = "message";
 
 /**
  * Shows validation errors
@@ -35,10 +34,6 @@ export class Messages extends React.Component<Props, any> {
         errors = errors.concat(error.formErrors);
       }
 
-      if (!L.isEmpty(error.fieldsErrors)) {
-        const fes = error.fieldsErrors.map(e => e.error);
-        errors = errors.concat(fes);
-      }
       return (
         <div>
           {this.renderMessages(errors, CLASS_ERRORS)}

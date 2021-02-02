@@ -1,4 +1,5 @@
-const EMAIL_REGEX = /^[^@\s]+@[^@\s.]+\..+$/i;
+import {EMAIL_REGEX} from "../../../../constants/Validation";
+import {validateEmail} from "../../../../common/utils/FormControlsValidation";
 
 export const validateContact = (values: any): any => {
   const errors: any = {};
@@ -11,8 +12,8 @@ export const validateContact = (values: any): any => {
   }
   if (!values.email) {
     errors.email = "The student's email is required.";
-  } else if (!EMAIL_REGEX.test(values.email)) {
-    errors.email = "The email address does not appear to be valid.";
+  } else {
+    errors.email = validateEmail(values.email);
   }
   return errors;
 };
