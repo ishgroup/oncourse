@@ -526,25 +526,82 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /v1/cart:
-    post:
-      summary: Create new Cart session
+            
+  /v1/cart/{id}:
+    get:
+      summary: Get cart
       description: |
-        Create new session Id that will be used for futher requests to cast endpoints.
-      operationId: cartPost
+        Get cart
+      operationId: get
       tags:
-       - Cart
+        - Cart
       consumes:
-       - application/json
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: unique cart identifier
+          required: true
+          type: string
       responses:
         200:
-          description: Object with token
+          description: cart object
           schema:
-            $ref: '#/definitions/web.Token'
+            type: string
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+            
+    post:
+      summary: Create new Cart session
+      description: |
+        Create new session Id that will be used for futher requests to cast endpoints.
+      operationId: create
+      tags:
+       - Cart
+      parameters:
+        - name: id
+          in: path
+          description: unique cart identifier
+          required: true
+          type: string
+        - name: checkout
+          in: body
+          description: checkout model
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: success responce
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+    delete:
+      summary: delete cart
+      description: |
+        delete cart after checkout pass ok
+      operationId: delete
+      tags:
+        - Cart
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: unique cart identifier
+          required: true
+          type: string
+      responses:
+        204:
+          description: success responce
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+
   /v1/postcode/{text}:
     get:
       x-filter:
@@ -1118,12 +1175,6 @@ definitions:
       name:
         type: string
         description: Name of promotion
-  web.Token:
-    type: object
-    properties:
-      token:
-        type: string
-        description: Unique identifier for the user
   common.CommonError:
     type: object
     properties:
