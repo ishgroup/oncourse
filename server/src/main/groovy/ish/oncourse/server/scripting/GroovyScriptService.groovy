@@ -16,6 +16,7 @@ import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
+import ish.common.types.TaskResultType
 import ish.common.types.TriggerType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
@@ -57,8 +58,6 @@ import java.util.concurrent.*
 import static ish.common.types.TriggerType.*
 import static ish.oncourse.server.integration.PluginService.PLUGIN_PACKAGE
 import static ish.oncourse.server.lifecycle.ChangeFilter.getAtrAttributeChange
-import static ish.scripting.ScriptResult.ResultType.FAILURE
-import static ish.scripting.ScriptResult.ResultType.SUCCESS
 
 @CompileStatic
 class GroovyScriptService {
@@ -502,10 +501,10 @@ class GroovyScriptService {
         def localScript = localContext.localObject(script)
 
         switch (result.getType()) {
-            case SUCCESS:
+            case TaskResultType.SUCCESS:
                 auditService.submit(localScript, AuditAction.SCRIPT_EXECUTED, String.format("Script '%s' executed successfully.", localScript.getName()))
                 break
-            case FAILURE:
+            case TaskResultType.FAILURE:
                 auditService.submit(localScript, AuditAction.SCRIPT_FAILED, String.format("Script '%s' failed: %s", localScript.getName(), result.getError()))
                 break
             default:
