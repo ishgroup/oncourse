@@ -3,6 +3,15 @@
  */
 package ish.oncourse.server.scripting
 
+import ish.CayenneIshTestCase
+import ish.common.types.TaskResultType
+import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.Course
+import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.IntegrationConfiguration
+import ish.oncourse.server.cayenne.IntegrationProperty
+import ish.oncourse.server.cayenne.Script
 import groovy.transform.CompileStatic
 import ish.TestWithDatabase
 import ish.DatabaseSetup
@@ -24,7 +33,7 @@ import org.quartz.impl.triggers.CronTriggerImpl
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/scripting/groovyScriptServiceTestDataSet.xml")
 class GroovyScriptServiceTest extends TestWithDatabase {
-    
+
     @Test
     void IntegrationTest() {
 
@@ -37,7 +46,7 @@ class GroovyScriptServiceTest extends TestWithDatabase {
         Assertions.assertEquals(200l, integration.id)
     }
 
-    
+
     @Test
     void testLoggerFieldTest() {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
@@ -48,9 +57,9 @@ class GroovyScriptServiceTest extends TestWithDatabase {
                 "void test() {logger.error('script method test')}")
         ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), cayenneService.getNewContext())
 
-        Assertions.assertEquals(ScriptResult.ResultType.SUCCESS, result.getType())
+        Assertions.assertEquals(TaskResultType.SUCCESS, result.getType())
     }
-    
+
     @Test
     void testRunScript() throws Exception {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
@@ -61,11 +70,12 @@ class GroovyScriptServiceTest extends TestWithDatabase {
 
         ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), cayenneService.getNewContext())
 
-        Assertions.assertEquals(ScriptResult.ResultType.SUCCESS, result.getType())
-        Assertions.assertEquals(Boolean.TRUE, result.getResultValue())
+        Assertions.assertEquals(TaskResultType.SUCCESS, result.getType())
+        Assertions.assertEquals(Boolean.TRUE, result.getLocalResult())
+        Assertions.assertEquals(Boolean.TRUE.toString(), new String(result.getData()))
     }
 
-    
+
     @Test
     void testCompilationFailure() throws Exception {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
@@ -76,12 +86,12 @@ class GroovyScriptServiceTest extends TestWithDatabase {
 
         ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), cayenneService.getNewContext())
 
-        Assertions.assertEquals(ScriptResult.ResultType.FAILURE, result.getType())
-        Assertions.assertNotNull(result.getError())
-        Assertions.assertNull(result.getResultValue())
+        Assertions.assertEquals(TaskResultType.FAILURE, result.getType())
+        Assertions.assertNotNull(result.error)
+        Assertions.assertNull(result.data)
     }
 
-    
+
     @Test
     void testScriptArguments() throws Exception {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
@@ -95,8 +105,8 @@ class GroovyScriptServiceTest extends TestWithDatabase {
                         ScriptParameters.empty().add("test", "testValue"),
                         cayenneService.getNewContext())
 
-        Assertions.assertEquals(ScriptResult.ResultType.SUCCESS, result.getType())
-        Assertions.assertEquals("testValue", result.getResultValue())
+        Assertions.assertEquals(TaskResultType.SUCCESS, result.getType())
+        Assertions.assertEquals("testValue", new String((byte[])result.getData()))
     }
 
     @Test
