@@ -14,6 +14,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
+import ish.oncourse.server.cluster.TaskResult
 import ish.oncourse.types.OutputType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
@@ -87,19 +88,19 @@ class ScriptApiImpl implements ScriptApi {
 
     @Override
     String getResult(String processId) {
-        ScriptResult results = service.getResult(processId)
-        if (results.resultOutputType) {
-            response.setContentType(results.resultOutputType?.mimeType?: OutputType.TEXT.mimeType)
-            return results.resultValue as String
+        TaskResult result = service.getResult(processId)
+        if (result.resultOutputType) {
+            response.setContentType(result.resultOutputType?.mimeType?: OutputType.TEXT.mimeType)
+            return new String(result.data)
         }
         return null
     }
 
     @Override
     byte[] getPdf(String processId) {
-        ScriptResult result = service.getResult(processId) as ScriptResult
+        TaskResult result = service.getResult(processId)
         response.addHeader('Content-Disposition', "inline;filename=\"$result.name-${LocalDateTime.now().format('yyMMddHHmmss')}.pdf\"")
-        result.resultValue as byte[]
+        result.data
     }
 
     @Override

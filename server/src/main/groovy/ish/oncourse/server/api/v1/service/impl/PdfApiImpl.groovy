@@ -13,10 +13,19 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.common.types.TaskResultType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.service.ReportApiService
+import ish.oncourse.server.document.DocumentService
+import ish.oncourse.server.cluster.ClusteredExecutorManager
+import static ish.oncourse.server.api.v1.function.CommonFunctions.badRequest
+import ish.oncourse.server.api.v1.function.export.CertificatePrintFilter
+import ish.oncourse.server.api.v1.function.export.CertificatePrintPreProcessor
+import ish.oncourse.server.api.v1.function.export.PrintFilter
+import ish.oncourse.server.api.v1.function.export.PrintPreProcessor
+import ish.oncourse.server.api.v1.function.export.PrintRequestBuilder
 import ish.oncourse.server.api.v1.function.export.*
 import ish.oncourse.server.api.v1.model.PrintRequestDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
@@ -67,7 +76,7 @@ class PdfApiImpl implements PdfApi {
     private ICayenneService cayenneService
 
     @Inject
-    private ExecutorManager executorManager
+    private ClusteredExecutorManager executorManager
 
     @Inject
     private DocumentService documentService
@@ -118,14 +127,14 @@ class PdfApiImpl implements PdfApi {
                 systemUserService.currentUser
         )
 
-        executorManager.submit(new Callable<Object>() {
+        executorManager.submit(new Callable<PrintResult>() {
             @Override
-            Object call() throws Exception {
+            PrintResult call() throws Exception {
                 PrintRequest request
                 try {
                     request = builder.build()
                 } catch (ForbiddenException e) {
-                    PrintResult result = new PrintResult(PrintResult.ResultType.FAILED)
+                    PrintResult result = new PrintResult(TaskResultType.FAILURE)
                     result.error = (e.response.entity as ValidationErrorDTO).errorMessage
                     return result
                 }
@@ -156,9 +165,9 @@ class PdfApiImpl implements PdfApi {
     @Override
     byte[] get(String entityName, String processId) {
         try {
-            PrintResult result = executorManager.getResult(processId) as PrintResult
-            addContentDispositionHeader(result.reportName)
-            result.result
+            def taskResult = executorManager.getResult(processId)
+            addContentDispositionHeader(taskResult.getName())
+            taskResult.getData()
         } catch (Exception e) {
             logger.catching(e)
             throw badRequest(e.message)

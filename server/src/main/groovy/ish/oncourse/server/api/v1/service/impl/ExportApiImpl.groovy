@@ -14,6 +14,9 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.types.OutputType
+import ish.common.types.TaskResultType
+import ish.oncourse.server.cluster.ClusteredExecutorManager
+import ish.oncourse.server.cluster.TaskResult
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.ExportTemplateApiService
@@ -27,7 +30,6 @@ import ish.oncourse.server.api.v1.service.ExportApi
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.ExportTemplate
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.export.ExportService
 import ish.print.PrintTransformationsFactory
 import ish.print.transformations.PrintTransformation
@@ -47,7 +49,7 @@ class ExportApiImpl implements ExportApi {
     private ExportService exportService
 
     @Inject
-    private ExecutorManager executorManager
+    private ClusteredExecutorManager clusteredExecutorManager
 
     @Inject
     private ICayenneService cayenneService
@@ -80,9 +82,9 @@ class ExportApiImpl implements ExportApi {
             }
         }
 
-        return executorManager.submit(new Callable<Object>() {
+        return clusteredExecutorManager.submit(new Callable<TaskResult>() {
             @Override
-            Object call() throws Exception {
+            TaskResult call() throws Exception {
                 ObjectContext context = cayenneService.newReadonlyContext
 
                 Iterable<? extends CayenneDataObject> records
@@ -94,8 +96,10 @@ class ExportApiImpl implements ExportApi {
                     records = getSelectedRecords(request.entityName, request.search, request.filter, request.tagGroups, request.sorting, aqlService, context)
                 }
 
-
-                return [(template.outputType): exportService.performExport(template, records, variables, request.exportToClipboard, request.createPreview).toString()]
+                TaskResult result = new TaskResult(TaskResultType.SUCCESS)
+                result.setResultOutputType(template.outputType)
+                result.setData(exportService.performExport(template, records, variables, request.exportToClipboard, request.createPreview).toString().bytes)
+                return result
             }
         })
     }
@@ -103,9 +107,9 @@ class ExportApiImpl implements ExportApi {
     @Override
     byte[] get(String entityName, String processId) {
         try {
-            Map.Entry<OutputType, String> result = (executorManager.getResult(processId) as Map<OutputType, String>).entrySet()[0]
-            response.setContentType(result.key.mimeType)
-            return result.value.bytes
+            TaskResult result = clusteredExecutorManager.getResult(processId)
+            response.setContentType(result.getResultOutputType().mimeType)
+            result.getData()
         } catch (Exception e) {
             logger.catching(e)
             throw badRequest(e.message)

@@ -24,6 +24,7 @@ import io.bootique.jetty.command.ServerCommand;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.servlet.*;
 import ish.oncourse.server.db.AngelCayenneModule;
+import ish.oncourse.server.cluster.ClusteredExecutorManager;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.integration.PluginsPrefsService;
@@ -166,6 +167,7 @@ public class AngelModule extends ConfigModule {
         binder.bind(String.class).annotatedWith(Names.named(ANGEL_VERSION)).toInstance(getVersion());
         binder.bind(EmailService.class).in(Scopes.SINGLETON);
         binder.bind(PluginService.class).in(Scopes.SINGLETON);
+        binder.bind(ClusteredExecutorManager.class).in(Scopes.SINGLETON);
         PluginService.configurePlugin(binder);
     }
 

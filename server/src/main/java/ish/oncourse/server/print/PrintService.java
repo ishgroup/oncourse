@@ -13,6 +13,7 @@ package ish.oncourse.server.print;
 import com.google.inject.Inject;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
+import ish.common.types.TaskResultType;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.document.DocumentService;
@@ -22,6 +23,7 @@ import ish.oncourse.server.scripting.api.ReportSpec;
 import ish.print.PrintRequest;
 import ish.print.PrintResult;
 import ish.print.PrintResult.ResultType;
+import ish.print.PrintTransformationsFactory;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
@@ -100,14 +102,15 @@ public class PrintService {
 			var worker = workerMap.get(requestUid);
 			var result = worker.getResult();
 
-			if (ResultType.RESULTS_FINISHED.contains(result.getResultType())) {
+			if (TaskResultType.SUCCESS.equals(result.getType())
+					|| TaskResultType.FAILURE.equals(result.getType())) {
 				workerMap.remove(worker.getUID());
 			}
 
 			return result;
 		}
 
-		var result = new PrintResult(ResultType.FAILED);
+		var result = new PrintResult(TaskResultType.FAILURE);
 		var error = String.format("Worker job for given UID (%s) doesn't exist.", requestUid);
 		result.setError(error);
 		logger.error(error);
@@ -152,11 +155,11 @@ public class PrintService {
 		try {
 			PrintResult result = print(request).get();
 
-			if (ResultType.FAILED.equals(result.getResultType())) {
+			if (TaskResultType.FAILURE.equals(result.getType())) {
 				return result.getError() != null ? result.getError().getBytes() : null;
 			}
 
-			return result.getResult();
+			return result.getData();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

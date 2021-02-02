@@ -10,6 +10,7 @@
  */
 package ish.oncourse.server.print;
 
+import ish.common.types.TaskResultType;
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.ICayenneService;
@@ -25,7 +26,6 @@ import ish.persistence.Preferences;
 import ish.print.PageBreakType;
 import ish.print.PrintRequest;
 import ish.print.PrintResult;
-import ish.print.PrintResult.ResultType;
 import ish.print.transformations.PrintTransformation;
 import ish.s3.AmazonS3Service;
 import ish.util.EntityUtil;
@@ -79,7 +79,7 @@ public class PrintWorker implements Runnable {
 	private double progress;
 	private Long finishTimestamp;
 	private byte[] pdfResult;
-	private ResultType result;
+	private TaskResultType result;
 	private String errorMessage;
 
 	private String reportName;
@@ -93,7 +93,7 @@ public class PrintWorker implements Runnable {
 		this.userPreferenceService = userPreferenceService;
 
 		progress = 0d;
-		result = ResultType.IN_PROGRESS;
+		result = TaskResultType.IN_PROGRESS;
 	}
 
 	/**
@@ -123,9 +123,8 @@ public class PrintWorker implements Runnable {
 		PrintResult printResult;
 
 		printResult = new PrintResult(result);
-		printResult.setProgress((int) progress);
-		printResult.setReportName(reportName);
-		printResult.setResult(pdfResult);
+		printResult.setName(reportName);
+		printResult.setData(pdfResult);
 
 		if (errorMessage != null) {
 			printResult.setError(errorMessage);
@@ -248,9 +247,9 @@ public class PrintWorker implements Runnable {
 
 			logger.info("report: {} printed successfully", startingReport.getName());
 			pdfResult = pdf;
-			result = ResultType.SUCCESS;
+			result = TaskResultType.SUCCESS;
 		} catch (Exception e) {
-			result = ResultType.FAILED;
+			result = TaskResultType.FAILURE;
 			errorMessage = e.getMessage();
 			logger.error("Printing failed.", e);
 		}
