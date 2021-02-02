@@ -1,27 +1,50 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockRooms() {
+  this.getRooms = () => this.rooms;
+
   this.getRoom = id => {
     const row = this.rooms.rows.find(row => row.id == id);
     return {
-      createdOn: new Date().toISOString(),
+      createdOn: "2021-01-30T10:17:48.295Z",
       directions: null,
       documents: [],
       facilities: null,
       id: row.id,
       kioskUrl: `https://ishoncourse.oncourse.cc/room/kiosk/${row.id}`,
-      modifiedOn: new Date().toISOString(),
+      modifiedOn: "2021-01-30T10:17:48.295Z",
       name: row.values[0],
       notes: [],
       rules: [],
       seatedCapacity: row.values[2],
       siteId: row.id,
-      tags: []
+      tags: this.getTag(row.id)
     };
   };
 
-  this.getRooms = () => {
-    return this.rooms;
+  this.createRoom = item => {
+    const data = JSON.parse(item);
+    const rooms = this.rooms;
+    const totalRows = rooms.rows;
+
+    data.id = totalRows.length + 1;
+
+    rooms.rows.push({
+      id: data.id,
+      values: [
+        data.name,
+        this.getSite(data.siteId).name,
+        data.seatedCapacity
+      ]
+    });
+
+    this.rooms = rooms;
+    this.rooms.count = data.id;
+    this.rooms.filteredCount = data.id;
+  };
+
+  this.removeRoom = id => {
+    this.rooms = removeItemByEntity(this.rooms, id);
   };
 
   const rows = generateArraysOfRecords(20, [
