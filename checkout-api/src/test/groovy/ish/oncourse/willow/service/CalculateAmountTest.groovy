@@ -22,7 +22,7 @@ class CalculateAmountTest extends ApiTest {
     @Test
     void testGetAmount() {
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
 
 
         CheckoutModelRequest checkoutModelRequest = new CheckoutModelRequest().with { modelRequest ->

@@ -31,7 +31,7 @@ class WaitingListTest extends ApiTest {
     @Test
     void testGetNode() {
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         ContactNodeRequest request = new ContactNodeRequest().with { r ->
             r.contactId = '1002'
             r.waitingCourseIds << '1001'

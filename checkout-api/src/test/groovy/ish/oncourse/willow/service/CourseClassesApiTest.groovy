@@ -53,7 +53,7 @@ class CourseClassesApiTest extends ApiTest {
         assertEquals(classes.get(0).price.appliedDiscount.discountedFee, 88.00, 0)
         assertEquals(classes.get(0).price.appliedDiscount.discountValue, 22.00, 0)
         assertEquals(classes.get(0).price.appliedDiscount.id, null)
-        assertEquals(classes.get(0).price.appliedDiscount.title, "name_2 expires 12 Sep 2111")
+        assertEquals(classes.get(0).price.appliedDiscount.title, "name_2 expires 12 Sep. 2111")
         assertEquals(classes.get(0).price.possibleDiscounts.size(), 1)
         assertEquals(classes.get(0).price.possibleDiscounts.get(0).discountedFee, 66.00, 0)
         assertEquals(classes.get(0).price.possibleDiscounts.get(0).title, "negative discount")

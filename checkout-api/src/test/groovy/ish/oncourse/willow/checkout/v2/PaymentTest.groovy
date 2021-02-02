@@ -32,7 +32,7 @@ class PaymentTest extends ApiTest {
         ThreadLocalPayerId.set(1005l)
         ThreadLocalValidateOnly.set(true)
 
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         PaymentRequest request = new PaymentRequest()
         request.setCcAmount(50.0)
 
@@ -130,7 +130,7 @@ class PaymentTest extends ApiTest {
         ThreadLocalPayerId.set(1005l)
         ThreadLocalValidateOnly.set(false)
 
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         PaymentRequest request = new PaymentRequest()
         request.setCcAmount(50.0)
         request.sessionId = TestPaymentService.INVALID_TEST_ID

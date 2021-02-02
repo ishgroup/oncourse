@@ -5,6 +5,7 @@ import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.test.LoadDataSet
 import ish.oncourse.test.TestContext
 import ish.oncourse.willow.CheckoutCayenneModule
+import ish.oncourse.willow.EntityRelationService
 import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.service.impl.CollegeService
@@ -19,6 +20,7 @@ abstract class ApiTest {
     private TestContext testContext
     protected FinancialService financialService
     protected CollegeService collegeService
+    protected EntityRelationService entityRelationService
 
 
     @Before
@@ -35,6 +37,7 @@ abstract class ApiTest {
         cayenneService = new CayenneService(cayenneRuntime)
         collegeService = new CollegeService(cayenneService)
         financialService = new FinancialService(cayenneService, collegeService)
+        entityRelationService = new EntityRelationService(cayenneService, collegeService)
     }
 
     @After

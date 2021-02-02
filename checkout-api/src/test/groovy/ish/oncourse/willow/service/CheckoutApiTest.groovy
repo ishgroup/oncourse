@@ -26,7 +26,7 @@ class CheckoutApiTest extends ApiTest {
     @Test
     void getPurchaseItemsTest() {
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         ContactNodeRequest request = new ContactNodeRequest().with { request ->
             request.contactId = '1001'
             request.classIds = ['1001', '1002']
@@ -46,7 +46,7 @@ class CheckoutApiTest extends ApiTest {
     @Test
     void getPurchaseItemsWithQuantityTest() {
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         ContactNodeRequest request = new ContactNodeRequest().with { request ->
             request.contactId = '1001'
             request.classIds = ['1001', '1002']

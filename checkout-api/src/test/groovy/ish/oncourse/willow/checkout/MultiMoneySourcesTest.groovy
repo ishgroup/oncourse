@@ -27,7 +27,7 @@ class MultiMoneySourcesTest extends ApiTest {
     @Test
     void testTwoEqCredit() {
 
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         CheckoutModelRequest modelRequest = modelRequest('1100', 220.00, ['1001'], [])
         api.makePayment(zeroPaymentRequest(modelRequest))
         PaymentIn payment = ObjectSelect.query(PaymentIn).selectOne(cayenneService.newContext())
@@ -37,7 +37,7 @@ class MultiMoneySourcesTest extends ApiTest {
     @Test
     void testMultiCredit_PPlan() {
 
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         CheckoutModelRequest modelRequest = modelRequest('1005', 200.00, ['1003'], [])
         api.makePayment(zeroPaymentRequest(modelRequest))
         PaymentIn payment = ObjectSelect.query(PaymentIn).selectOne(cayenneService.newContext())
@@ -59,7 +59,7 @@ class MultiMoneySourcesTest extends ApiTest {
 
     @Test
     void testCredit_only() {
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         CheckoutModelRequest modelRequest = modelRequest('1004', 220.00, ['1001'], [])
         api.makePayment(zeroPaymentRequest(modelRequest))
 
@@ -80,7 +80,7 @@ class MultiMoneySourcesTest extends ApiTest {
 
     @Test
     void testCredit_CCPayment() {
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         CheckoutModelRequest modelRequest = modelRequest('1001', 340.00, ['1001', '1002'], [])
         api.makePayment(validPaymentRequest(modelRequest, 240.00))
 
@@ -107,7 +107,7 @@ class MultiMoneySourcesTest extends ApiTest {
 
     @Test
     void testCredit_CCPayment_CourseVoucher_MoneyVoucher() {
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         CheckoutModelRequest modelRequest = modelRequest('1001', 440.00, ['1001', '1002'], ['1001', '1002'])
         api.makePayment(validPaymentRequest(modelRequest, 20.00))
 
@@ -146,7 +146,7 @@ class MultiMoneySourcesTest extends ApiTest {
 
     @Test
     void testCredit_CCPayment_CourseVoucher_MoneyVoucher_SingleInvoice() {
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         CheckoutModelRequest modelRequest = modelRequest('1001', 440.00, ['1011', '1012'], ['1001', '1002'])
         api.makePayment(validPaymentRequest(modelRequest, 20.00))
 
@@ -191,7 +191,7 @@ class MultiMoneySourcesTest extends ApiTest {
 
     @Test
     void testCredit_CCPayment_Revers() {
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         CheckoutModelRequest modelRequest = modelRequest('1001', 440.00, ['1011', '1012'], [])
 
         api.makePayment(invalidPaymentRequest(modelRequest, 340.00))

@@ -38,7 +38,7 @@ class TaxOverridenTest extends AbstractPaymentTest {
 
         ObjectContext context = cayenneService.newContext()
 
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
 
         PaymentRequest request = buildPaymentRequest()
         request.ccAmount = 169D

@@ -29,7 +29,7 @@ class CreditNoteTest extends ApiTest {
 
     @Test
     void testGetAmount() {
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         model = api.getCheckoutModel(createRequest( '1001'))
 
         assertEquals(170.00,  model.amount.credit, 0)
@@ -69,7 +69,7 @@ class CreditNoteTest extends ApiTest {
 
     @Test
     void testVoucherWithCredit() {
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         
         model = api.getCheckoutModel(createRequest( '1003', null, ['1001', '1002'], ['1001','1002']))
 
@@ -93,7 +93,7 @@ class CreditNoteTest extends ApiTest {
 
     @Test
     void testMakePayment() {
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         api.makePayment(new PaymentRequest().with {
             it.checkoutModelRequest = createRequest('1003', null, ['1001', '1002'], ['1001','1002'])
             it.creditCardNumber = '5431111111111111'
