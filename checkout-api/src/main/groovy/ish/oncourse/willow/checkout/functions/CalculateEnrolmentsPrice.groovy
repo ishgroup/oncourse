@@ -77,29 +77,13 @@ class CalculateEnrolmentsPrice {
         this
     }
     
-    private setDiscountedPrice(Contact contact, CourseClass courseClass, DiscountCourseClass chosenDiscount, Money discountValue, Money discountedFee) {
-        DiscountInterface discount = chosenDiscount.getDiscount()
-        model.contactNodes
-                .find {it.contactId == contact.id.toString()}
-                .enrolments.find {it.classId == courseClass.id.toString()}
-                .price
-                .appliedDiscount = new ish.oncourse.willow.model.web.Discount().with { d ->
-                    d.id = (discount as Discount).id.toString()
-                    d.title = (discount as Discount).name
-                    d.discountValue = discountValue.doubleValue()
-                    d.discountedFee = discountedFee.doubleValue()
-                    d.expiryDate = WebDiscountUtils.expiryDate(discount as Discount, courseClass.startDateTime)?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
-                    d
-                }
-    }
-    
     @CompileStatic(TypeCheckingMode.SKIP)
     private Money getOverridenFee(Contact contact, CourseClass courseClass) {
        Double feeOverriden =  model.contactNodes
                 .find {it.contactId == contact.id.toString()}
                 .enrolments.find {it.classId == courseClass.id.toString()}
                 .price.feeOverriden
-        
+
         return feeOverriden?.toMoney()
     }
     
@@ -125,18 +109,14 @@ class CalculateEnrolmentsPrice {
                 & DiscountCourseClass.COURSE_CLASS.eq(courseClass))
                 & Discount.getCurrentDateFilterForDiscountCourseClass(courseClass.startDate)).
                 select(context)
+
+        filterProgramDiscount(classDiscounts, contact, courseClass)
+
         
-        DiscountCourseClass chosenDiscount
-        
-        GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, promotions, corporatePass, enrolmentsToProceed, total, contact.student,  courseClass, taxOverridden?.rate).get()
-        Discount programDiscount = getProgramDiscount(contact, courseClass)
-        
-        if (programDiscount) {
-            chosenDiscount = discounts.applicableDiscounts.find {(it.discount as Discount).id == programDiscount.id } ?: discounts.chosenDiscount
-        } else {
-            chosenDiscount = discounts.chosenDiscount
-        }
-        
+        GetDiscountForEnrolment discounts = GetDiscountForEnrolment.
+                valueOf(classDiscounts, promotions, corporatePass, enrolmentsToProceed, total, contact.student,  courseClass, taxOverridden?.rate).
+                get()
+        DiscountCourseClass chosenDiscount = discounts.chosenDiscount
 
         if (chosenDiscount != null) {
             Money fullPrice = price.finalPriceToPayIncTax
@@ -148,23 +128,40 @@ class CalculateEnrolmentsPrice {
         price
     }
     
-    Discount getProgramDiscount(Contact contact, CourseClass courseClass) {
-        
+    void filterProgramDiscount(List<DiscountCourseClass> classDiscounts, Contact contact, CourseClass courseClass) {
+        Long currentCourseId = courseClass.course.id
         List<Long> courseIds = enrolmentsToProceed[contact]*.course*.id.unique()
-        courseIds.remove(courseClass.course.id)
+        courseIds.remove(currentCourseId)
         List<Long> productIds = productsToProceed[contact]*.id
         
-        EntityRelation relation = ObjectSelect.query(EntityRelation)
-            .where(
-                    EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName).andExp(EntityRelation.FROM_ENTITY_WILLOW_ID.in(courseIds))
-                            .orExp(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Product.simpleName).andExp(EntityRelation.FROM_ENTITY_WILLOW_ID.in(productIds)))
-            )
-            .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
-            .and(EntityRelation.TO_ENTITY_WILLOW_ID.eq(courseClass.course.id))
-            .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.DISCOUNT).isNotNull())
-            .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(ADD_ALLOW_REMOVAL, ADD_NO_REMOVAL))
-            .selectFirst(context)
-        
-        return relation?.relationType?.discount
+        List<EntityRelation> relations = ObjectSelect.query(EntityRelation)
+                .where(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName).andExp(EntityRelation.TO_ENTITY_WILLOW_ID.in(currentCourseId)))
+                .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(ADD_ALLOW_REMOVAL, ADD_NO_REMOVAL))
+                .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.DISCOUNT).isNotNull())
+                .select(context)
+        List<Discount> discountsViaRelations = relations*.relationType*.discount
+
+        classDiscounts.findAll { dcc ->
+            discountsViaRelations.empty || relations.any { relation ->
+                (dcc.discount as Discount).id == relation.relationType.discount?.id &&
+                        ((relation.fromEntityWillowId in courseIds || relation.fromEntityWillowId in productIds))
+            }
+        }
+    }
+
+    private setDiscountedPrice(Contact contact, CourseClass courseClass, DiscountCourseClass chosenDiscount, Money discountValue, Money discountedFee) {
+        DiscountInterface discount = chosenDiscount.getDiscount()
+        model.contactNodes
+                .find {it.contactId == contact.id.toString()}
+                .enrolments.find {it.classId == courseClass.id.toString()}
+                .price
+                .appliedDiscount = new ish.oncourse.willow.model.web.Discount().with { d ->
+            d.id = (discount as Discount).id.toString()
+            d.title = (discount as Discount).name
+            d.discountValue = discountValue.doubleValue()
+            d.discountedFee = discountedFee.doubleValue()
+            d.expiryDate = WebDiscountUtils.expiryDate(discount as Discount, courseClass.startDateTime)?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
+            d
+        }
     }
 }
