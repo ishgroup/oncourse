@@ -103,6 +103,9 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
 
       state.result.forEach(cid => {
         ns.entities[type] && delete ns.entities[type][`${cid}-${id}`];
+        if(ns.entities.contactNodes[cid] && ns.entities.contactNodes[cid][type]) {
+          ns.entities.contactNodes[cid][type] = ns.entities.contactNodes[cid][type].filter(eId => eId !== `${cid}-${id}`)
+        }
       });
 
       return ns;

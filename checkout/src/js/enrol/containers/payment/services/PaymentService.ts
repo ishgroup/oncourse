@@ -1,12 +1,10 @@
 import * as L from "lodash";
 import moment from "moment";
-import uuid from "uuid";
 
 import {createStringEnum} from "../../../../common/utils/EnumUtils";
 import {Item, MakeCorporatePassRequest} from "../../../../model";
 import {IshState} from "../../../../services/IshState";
 import {BuildCheckoutModelRequest} from "../../../services/CheckoutService";
-import {PaymentRequest} from "../../../../model/checkout/payment/PaymentRequest";
 
 export const FieldName = createStringEnum([
   "creditCardName",
@@ -49,15 +47,6 @@ export class PaymentService {
       return {key: v, value: v};
     });
     return Promise.resolve(result);
-  }
-
-  static creditFormValuesToRequest = (values: CreditCardFormValues, state: IshState): PaymentRequest => {
-    const result: PaymentRequest = new PaymentRequest();
-    result.checkoutModelRequest = BuildCheckoutModelRequest.fromState(state);
-    result.ccAmount = state.checkout.amount.ccPayment;
-    result.agreementFlag = values.agreementFlag;
-    result.sessionId = uuid();
-    return result;
   }
 
   static corporatePassValuesToRequest = (values, state: IshState): MakeCorporatePassRequest => {

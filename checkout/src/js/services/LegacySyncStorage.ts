@@ -1,9 +1,9 @@
-import {CookieService} from "./CookieService";
 import {IshAction} from "../actions/IshAction";
 import {CourseClassCartState, ProductCartState} from "./IshState";
 import {FULFILLED} from "../common/actions/ActionUtils";
 import {Actions} from "../web/actions/Actions";
 import {Level, Logger, LogMessage} from "./Logger";
+import {getCookie, setCookie} from "../common/utils/Cookie";
 
 class KEYS {
   static shortlist: string = "shortlist";
@@ -73,7 +73,7 @@ function getReplaceIdS(action: any) {
 }
 
 function replace(id1: string, id2: string, name: string) {
-  const list = CookieService.get(name);
+  const list = getCookie(name);
 
   if (list) {
     const ids = list.split("%");
@@ -84,12 +84,12 @@ function replace(id1: string, id2: string, name: string) {
 
     const newIds = [...ids, id2].filter(it => it !== id1).join("%");
 
-    CookieService.set(name, newIds);
+    setCookie(name, newIds);
   }
 }
 
 function add(id: string, name: string) {
-  const list = CookieService.get(name);
+  const list = getCookie(name);
 
   if (list) {
     const ids = list.split("%");
@@ -100,14 +100,14 @@ function add(id: string, name: string) {
 
     const newIds = [...ids, id].join("%");
 
-    CookieService.set(name, newIds);
+    setCookie(name, newIds);
   } else {
-    CookieService.set(name, id);
+    setCookie(name, id);
   }
 }
 
 function remove(id: string, name: string) {
-  const list = CookieService.get(name);
+  const list = getCookie(name);
 
   if (!list) {
     return;
@@ -124,6 +124,6 @@ function remove(id: string, name: string) {
       .filter(it => it !== id)
       .join("%");
 
-    CookieService.set(name, newIds);
+    setCookie(name, newIds);
   }
 }

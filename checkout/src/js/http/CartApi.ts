@@ -1,5 +1,4 @@
 import {HttpService} from "../common/services/HttpService";
-import {CommonError} from "../model/common/CommonError";
 
 export class CartApi {
   constructor(private http: HttpService) {

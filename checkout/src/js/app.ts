@@ -7,7 +7,8 @@ import {WindowService} from "./services/WindowService";
 import {HTMLMarkers} from "./common/services/HTMLMarker";
 import "../scss/index.scss";
 import {getPreferences} from "./common/actions/Actions";
-import {setCookie} from "./common/utils/Cookie";
+import {getCookie, setCookie} from "./common/utils/Cookie";
+import { v4 as uuid } from "uuid";
 
 // Intersection Observer polyfill
 require('intersection-observer');
@@ -22,6 +23,19 @@ const appStart = () => {
     setCookie(
       'clientTimezoneName',
       Intl.DateTimeFormat().resolvedOptions().timeZone,
+      {
+        samesite: "strict",
+        secure: true,
+      },
+    );
+  }
+
+  const cartId = getCookie("cartId");
+
+  if(!cartId) {
+    setCookie(
+      'cartId',
+      uuid(),
       {
         samesite: "strict",
         secure: true,

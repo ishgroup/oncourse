@@ -30,6 +30,7 @@ import {EpicToggleRedeemVoucher} from "./EpicToggleRedeemVoucher";
 import {EpicUpdateEnrolmentFields} from "./EpicUpdateEnrolmentFields";
 import {EpicProcessingMandatoryFields} from "./EpicProcessingMandatoryFields";
 import {EpicRemoveContact} from "./EpicRemoveContact";
+import {EpicStoreCartState} from "./EpicStoreCartState";
 
 
 const {
@@ -49,7 +50,7 @@ export const EpicCheckout = combineEpics(
   EpicRemoveContact,
   EpicItemSelect,
   EpicUpdateAmount,
-    EpicChangePayNow,
+  EpicChangePayNow,
   EpicUpdateSummary,
   EpicProceedToPayment,
   EpicPayment,
@@ -61,6 +62,7 @@ export const EpicCheckout = combineEpics(
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT),
   EpicUpdateEnrolmentFields,
   EpicProcessingMandatoryFields,
+  EpicStoreCartState
 );
 
 function createGetOrCreateContactEpic(actionType) {
