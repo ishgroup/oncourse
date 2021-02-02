@@ -5,9 +5,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { darken } from "@material-ui/core/styles";
-import onCourseLogoDark from "../../../../images/onCourseLogoDark.png";
-import onCourseLogoLight from "../../../../images/onCourseLogoLight.png";
-import onCourseLogoChristmas from "../../../../images/onCourseLogoChristmas.png";
+import { onCourseLogoDark, onCourseLogoLight, onCourseLogoChristmas } from "../../../img"
 
 const styles = (theme: any) => ({
   appBar: {
