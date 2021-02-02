@@ -51,7 +51,6 @@ class WaitingListTest extends ApiTest {
         contactNode = api.getContactNode(request)
         assertEquals(contactNode.waitingLists.size(), 1)
         assertTrue(contactNode.waitingLists[0].errors.empty)
-        assertEquals(contactNode.waitingLists[0].studentsCount, 1, 0)
         assertEquals(contactNode.waitingLists[0].selected, true)
         assertEquals(contactNode.waitingLists[0].fieldHeadings.size(), 1)
         assertEquals(contactNode.waitingLists[0].fieldHeadings[0].name, 'First Heading')
