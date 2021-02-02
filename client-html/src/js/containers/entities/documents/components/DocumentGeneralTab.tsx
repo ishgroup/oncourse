@@ -219,17 +219,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     />
   );
 
-  const getDateOfDeleting = useMemo(() => {
-    let dateOfDeleting = addDays(new Date(values.modifiedOn), 30);
-    if (dateOfDeleting < new Date()) {
-      dateOfDeleting = new Date();
-      while (!isSunday(dateOfDeleting)) {
-        dateOfDeleting = addDays(dateOfDeleting, 1);
-      }
-    }
-    return format(dateOfDeleting, "d MMMM yy");
-  }, [values.modifiedOn]);
-
   return (
     loadingDocVersion
       ? (
@@ -357,7 +346,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                   <span>
                     This document will be permanently deleted after
                     { ' ' }
-                    { getDateOfDeleting }
+                    { format(addDays(new Date(values.modifiedOn), 30), "d MMMM yy") }
                   </span>
                 </Typography>
                 <Button variant="outlined" size="medium" color="secondary" onClick={restoreDocument}>
