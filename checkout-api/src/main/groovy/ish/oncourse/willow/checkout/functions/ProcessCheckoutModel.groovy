@@ -294,12 +294,6 @@ class ProcessCheckoutModel {
                     model.validationErrors.formErrors << fieldError.error
                     model.validationErrors.fieldsErrors << fieldError
                 }
-                List<CourseClass> classes = enrolmentsToProceed.get(contact)
-                if (classes == null) {
-                    classes = new ArrayList<CourseClass>()
-                    enrolmentsToProceed.put(contact, classes)
-                }
-                classes.add(courseClass)
             } else {
                 a.selected = false
             }
