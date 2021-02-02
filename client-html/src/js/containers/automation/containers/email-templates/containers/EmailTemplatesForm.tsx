@@ -21,7 +21,7 @@ import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import { mapSelectItems, stubFunction } from "../../../../../common/utils/common";
+import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
@@ -147,7 +147,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
         hasNameField
       />
 
-      <form onSubmit={handleSubmit ? handleSubmit(handleSave) : stubFunction}>
+      <form onSubmit={handleSubmit(handleSave)}>
         {(dirty || isNew) && <RouteChangeConfirm when={(dirty || isNew) && !disableRouteConfirm} />}
 
         <CustomAppBar>
