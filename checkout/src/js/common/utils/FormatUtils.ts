@@ -10,6 +10,7 @@ const MONEY_FORMAT = global.Intl ?
   new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
+    currencyDisplay: 'narrowSymbol',
     minimumFractionDigits: 2,
   }) : {
     format: val => (val.toString()),
