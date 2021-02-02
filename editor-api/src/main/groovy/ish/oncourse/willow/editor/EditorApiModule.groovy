@@ -11,7 +11,7 @@ import ish.oncourse.api.cxf.CXFModule
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.services.ZKProvider
+import ish.oncourse.api.zk.ZKProvider
 import ish.oncourse.willow.editor.services.access.*
 import ish.oncourse.willow.editor.v1.service.impl.*
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature

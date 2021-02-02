@@ -6,6 +6,7 @@ import groovyx.net.http.HTTPBuilder
 import ish.oncourse.api.access.AuthFilter
 import ish.oncourse.api.access.SessionCookie
 import ish.oncourse.api.request.RequestService
+import ish.util.SecurityUtil
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.container.ContainerRequestContext
@@ -16,15 +17,17 @@ import javax.ws.rs.core.Response
 class SessionFilter  implements ContainerRequestFilter {
 
     RequestService requestService
-    
+    ZKSessionManager sessionManager
     private static final String RE_CAPTCHA_TOKEN = 'x-g-recaptcha'
     private static final String RE_CAPTCHA_HOST = 'https://www.google.com'
     private static final String RE_CAPTCHA_PATH = '/recaptcha/api/siteverify'
     private static final String RE_CAPTCHA_SECRET = '6LenRkYaAAAAAKhZKrYLzuEcy5W6Qspj_NgZJ0yy'
-    
+    private static final String GUEST_ID = "Guest-1"
+    private static final Integer SESSION_MAX_AGE = 3600
     @Inject
-    AuthenticationFilter(RequestService requestService) {
+    AuthenticationFilter(RequestService requestService, ZKSessionManager sessionManager) {
         this.requestService = requestService
+        this.sessionManager = sessionManager
     }
     
     @Override
@@ -65,10 +68,16 @@ class SessionFilter  implements ContainerRequestFilter {
     }
 
     void verifySession(String sessionNode) {
-        
+        if (!sessionManager.sessionExist(sessionNode)) {
+            requestService.setSessionToken(null,0)
+            requestService.response.sendError(Response.Status.UNAUTHORIZED.statusCode,  "User session invalid")
+        }
     }
 
     void createSession() {
-        
+        String sessionId = SecurityUtil.generateRandomPassword(20)
+        sessionManager.persistSession(GUEST_ID, sessionId)
+        String sessionToken = "$GUEST_ID&$sessionId".toString()
+        requestService.setSessionToken(sessionToken, SESSION_MAX_AGE)
     }
 }

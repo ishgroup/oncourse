@@ -3,14 +3,13 @@ package ish.oncourse.willow.editor.services.access
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import groovy.transform.CompileStatic
-import ish.oncourse.api.access.SessionCookie
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.model.College
 import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WillowUser
 import ish.oncourse.services.authentication.AuthenticationResult
 import ish.oncourse.services.authentication.IAuthenticationService
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.website.WebSiteFunctions
 import ish.security.AuthenticationUtil
 import ish.util.SecurityUtil
@@ -18,8 +17,6 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang.StringUtils
-
-import javax.servlet.http.Cookie
 
 import static ish.oncourse.services.authentication.AuthenticationStatus.*
 
@@ -52,7 +49,7 @@ class AuthenticationService implements IAuthenticationService {
             sessionManager.persistSession(userId, sessionId)
         }
         String sessionToken = "$userId&$sessionId".toString()
-        setSessionToken(sessionToken, MAX_AGE)
+        requestService.setSessionToken(sessionToken, MAX_AGE)
         result.status = SUCCESS
         result.sessionToken = sessionToken
         return result
@@ -180,19 +177,6 @@ class AuthenticationService implements IAuthenticationService {
     
     
     void logout() {
-        setSessionToken(null, 0) 
-    }
-    
-    private void setSessionToken(String value, int maxAge) {
-        Cookie cookie = new Cookie(SessionCookie.SESSION_ID, value)
-        cookie.domain =  requestService.request.serverName
-        cookie.path = requestService.request.contextPath
-        cookie.maxAge = maxAge
-        cookie.comment = 'Session identifier'
-        cookie.httpOnly = false
-        cookie.secure = false
-        cookie.version = 0
-        
-        requestService.response.addCookie(cookie)
+        requestService.setSessionToken(null, 0) 
     }
 }

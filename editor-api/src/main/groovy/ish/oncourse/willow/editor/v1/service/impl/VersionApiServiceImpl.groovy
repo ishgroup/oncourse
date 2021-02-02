@@ -14,7 +14,7 @@ import ish.oncourse.services.site.WebSiteVersionCopy
 import ish.oncourse.services.site.WebSiteVersionsDelete
 import ish.oncourse.solr.SolrCollection
 import ish.oncourse.willow.editor.rest.WebVersionToVersion
-import ish.oncourse.willow.editor.services.ZKProvider
+import ish.oncourse.api.zk.ZKProvider
 import ish.oncourse.willow.editor.v1.model.UnexpectedError
 import ish.oncourse.willow.editor.v1.model.Version
 

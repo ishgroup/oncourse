@@ -13,6 +13,7 @@ class InitZKRootNode {
     public static final String EDITOR_SESSIONS_NODE = '/willow/editorSessions'
     public static final String EDITOR_LOCK_NODE = '/willow/editorLock'
     public static final String REINDEX_LOCK_NODE = '/willow/reindexLock'
+    public static final String BILLING_SESSIONS_NODE = '/willow/billing'
     
 
     private String zkHostPort
@@ -46,6 +47,9 @@ class InitZKRootNode {
         }
         if (keeper.exists(REINDEX_LOCK_NODE, false) == null) {
             keeper.create(REINDEX_LOCK_NODE, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT)
+        }
+        if (keeper.exists(BILLING_SESSIONS_NODE, false) == null) {
+            keeper.create(BILLING_SESSIONS_NODE, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT)
         }
         keeper.close()
     }

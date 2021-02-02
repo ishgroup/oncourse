@@ -1,4 +1,4 @@
-package ish.oncourse.willow.editor.services
+package ish.oncourse.api.zk
 
 import com.google.inject.Inject
 import ish.oncourse.configuration.Configuration
