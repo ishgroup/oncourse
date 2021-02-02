@@ -92,10 +92,10 @@ class FieldValueParser {
                 case DATE:
                     Date date 
                     try {
-                        date =  Date.parse(field.value, DATE_PATTERN)
+                        date =  Date.parse(DATE_PATTERN, field.value)
                     } catch (ParseException ignore){
                         try {
-                            date = Date.parse(field.value,FormatUtils.DATE_FIELD_PARSE_FORMAT)
+                            date = Date.parse(FormatUtils.DATE_FIELD_SHOW_FORMAT, field.value)
                         } catch (ParseException e) {
                             result.value = null
                             result.fieldError = new FieldError(name: field.key, error: "Enter your ${field.name} in the form DD/MM/YYYY")
@@ -116,13 +116,13 @@ class FieldValueParser {
                     break
                 case COUNTRY:
                     result.value = getCountryBy(field.value, context)
-                    if (!result) {
+                    if (!result.value) {
                         result.fieldError = new FieldError(name: field.key, error: "Incorrect format of ${field.name}")
                     }
                     break
                 case LANGUAGE:
                     result.value = getLanguageBy(field.value, context)
-                    if (!result) {
+                    if (!result.value) {
                         result.fieldError = new FieldError(name: field.key, error: "Language name ${field.value} is incorrect")
                     }
                     break

@@ -35,7 +35,7 @@ class ValidationError {
         error: Language name languageHome is incorrect
     }, class FieldError {
         name: yearSchoolCompleted
-        error: Enter your yearSchoolCompleted in the form DD/MM/YYYY
+        error: Enter numeric value for yearSchoolCompleted
     }, class FieldError {
         name: englishProficiency
         error: englishProficiency is incorrect
