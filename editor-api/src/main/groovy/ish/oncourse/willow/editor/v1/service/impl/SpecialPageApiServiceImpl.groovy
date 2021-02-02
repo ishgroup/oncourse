@@ -5,7 +5,7 @@ import ish.oncourse.services.alias.GetSpecialPages
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.rest.UpdateRedirects
 import ish.oncourse.willow.editor.rest.UpdateSpecialPages
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.v1.model.SpecialPage
 import ish.oncourse.willow.editor.v1.model.SpecialPageItem
 import ish.oncourse.willow.editor.v1.model.SpecialPages

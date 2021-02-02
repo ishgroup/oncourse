@@ -1,6 +1,6 @@
 package ish.oncourse.willow.editor.webdav
 
-import com.google.inject.Inject
+
 import io.milton.http.Auth
 import io.milton.http.Request
 import io.milton.http.ResourceFactory
@@ -19,13 +19,11 @@ import ish.oncourse.services.mail.EmailBuilder
 import ish.oncourse.services.mail.SendEmail
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.StaticResourcePath
-import ish.oncourse.willow.editor.services.RequestService
-import ish.oncourse.willow.editor.services.access.AuthenticationService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.services.access.UserService
 import ish.oncourse.willow.editor.webdav.jscompiler.JSCompiler
 import ish.oncourse.willow.editor.website.WebSiteFunctions
 import org.apache.commons.httpclient.URIException
-import org.apache.commons.httpclient.util.URIUtil
 import org.apache.commons.lang3.ArrayUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager

@@ -7,19 +7,16 @@ import io.milton.http.Request
 import io.milton.http.ResourceFactory
 import io.milton.http.SecurityManager
 import io.milton.http.exceptions.BadRequestException
-import io.milton.http.exceptions.ConflictException
 import io.milton.http.exceptions.NotAuthorizedException
 import io.milton.resource.Resource
 import ish.oncourse.configuration.Configuration
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.services.RequestService
-import ish.oncourse.willow.editor.services.access.AuthenticationService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.services.access.UserService
 import org.apache.commons.lang3.ArrayUtils
 
 import static ish.oncourse.configuration.Configuration.AdminProperty.S_ROOT
 import static ish.oncourse.willow.editor.webdav.TopLevelDir.*
-import static java.lang.Enum.valueOf
 
 @CompileStatic
 class RootResourceFactory implements ResourceFactory {

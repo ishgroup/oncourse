@@ -1,6 +1,8 @@
 package ish.oncourse.willow.editor.services.access
 
 import com.google.inject.Inject
+import ish.oncourse.api.access.AuthFilter
+import ish.oncourse.api.access.SessionCookie
 import ish.oncourse.model.College
 import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WillowUser
@@ -8,8 +10,7 @@ import ish.oncourse.services.authentication.AuthenticationResult
 import ish.oncourse.services.authentication.AuthenticationStatus
 import ish.oncourse.services.authentication.CheckBasicAuth
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.annotation.AuthFilter
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.website.WebSiteFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory
@@ -21,7 +22,6 @@ import javax.ws.rs.ClientErrorException
 import javax.ws.rs.container.ContainerRequestContext
 import javax.ws.rs.container.ContainerRequestFilter
 import javax.ws.rs.core.Response
-
 
 @AuthFilter
 class AuthenticationFilter implements ContainerRequestFilter {

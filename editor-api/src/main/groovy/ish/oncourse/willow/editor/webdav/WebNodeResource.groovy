@@ -19,7 +19,7 @@ import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebNode
 import ish.oncourse.services.converter.CoreConverter
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.io.IOUtils

@@ -14,7 +14,7 @@ import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.services.converter.CoreConverter
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import org.apache.cayenne.ObjectContext

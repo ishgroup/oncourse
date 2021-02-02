@@ -10,7 +10,7 @@ import io.milton.servlet.Config
 import io.milton.servlet.DefaultMiltonConfigurator
 import ish.oncourse.services.authentication.AuthenticationStatus
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import ish.oncourse.willow.editor.services.access.UserService
 

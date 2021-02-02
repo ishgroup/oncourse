@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.rest.UpdateMenu
 import ish.oncourse.willow.editor.rest.WebMenuToMenuItem
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.v1.service.MenuApi
 import ish.oncourse.willow.editor.website.WebMenuFunctions
 import org.apache.cayenne.ObjectContext

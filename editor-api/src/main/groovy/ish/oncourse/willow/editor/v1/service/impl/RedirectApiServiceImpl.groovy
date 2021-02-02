@@ -3,7 +3,7 @@ package ish.oncourse.willow.editor.v1.service.impl
 import com.google.inject.Inject
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.rest.UpdateRedirects
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.v1.model.RedirectItem
 import ish.oncourse.willow.editor.v1.model.Redirects
 import ish.oncourse.willow.editor.v1.service.RedirectApi

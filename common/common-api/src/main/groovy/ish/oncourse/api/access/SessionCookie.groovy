@@ -1,4 +1,4 @@
-package ish.oncourse.willow.editor.services.access
+package ish.oncourse.api.access
 
 import org.apache.commons.lang.StringUtils
 import org.eclipse.jetty.server.Request
@@ -12,12 +12,14 @@ class SessionCookie {
     private String sessionNode
     private boolean exist = true
 
+    public static final String SESSION_ID = 'ESESSIONID'
+
     private SessionCookie(){}
 
     static SessionCookie valueOf(Request request) {
         SessionCookie sessionCookie = new SessionCookie()
 
-        Cookie cookie = request.cookies?.find { it.name == AuthenticationService.SESSION_ID }
+        Cookie cookie = request.cookies?.find { it.name == SESSION_ID }
         if (cookie && cookie.value && StringUtils.trimToNull(cookie.value)) {
             String value = cookie.value
             sessionCookie.sessionNode = "/${value.replace('&', '/')}"

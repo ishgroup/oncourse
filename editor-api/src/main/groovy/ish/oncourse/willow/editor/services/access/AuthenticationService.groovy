@@ -3,13 +3,14 @@ package ish.oncourse.willow.editor.services.access
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import groovy.transform.CompileStatic
+import ish.oncourse.api.access.SessionCookie
 import ish.oncourse.model.College
 import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WillowUser
 import ish.oncourse.services.authentication.AuthenticationResult
 import ish.oncourse.services.authentication.IAuthenticationService
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.website.WebSiteFunctions
 import ish.security.AuthenticationUtil
 import ish.util.SecurityUtil
@@ -31,7 +32,6 @@ class AuthenticationService implements IAuthenticationService {
     private ZKSessionManager sessionManager
     private UserService userService
 
-    public static final String SESSION_ID = 'ESESSIONID'
     
     private static final int MAX_AGE = 14400
 
@@ -184,7 +184,7 @@ class AuthenticationService implements IAuthenticationService {
     }
     
     private void setSessionToken(String value, int maxAge) {
-        Cookie cookie = new Cookie(SESSION_ID, value)
+        Cookie cookie = new Cookie(SessionCookie.SESSION_ID, value)
         cookie.domain =  requestService.request.serverName
         cookie.path = requestService.request.contextPath
         cookie.maxAge = maxAge

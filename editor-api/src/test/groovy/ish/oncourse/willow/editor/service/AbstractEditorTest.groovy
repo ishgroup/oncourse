@@ -5,7 +5,7 @@ import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.model.*
 import ish.oncourse.test.LoadDataSet
 import ish.oncourse.test.TestContext
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.configuration.server.ServerRuntime

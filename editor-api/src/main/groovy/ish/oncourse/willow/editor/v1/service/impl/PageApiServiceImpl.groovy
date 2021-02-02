@@ -9,7 +9,7 @@ import ish.oncourse.willow.editor.rest.WebNodeToPage
 import ish.oncourse.willow.editor.v1.model.Page
 
 import groovy.transform.CompileStatic
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.v1.model.UnexpectedError
 import ish.oncourse.willow.editor.v1.service.PageApi
 import ish.oncourse.willow.editor.website.WebNodeFunctions

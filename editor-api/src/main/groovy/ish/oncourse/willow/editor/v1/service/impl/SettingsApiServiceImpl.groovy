@@ -8,7 +8,6 @@ import ish.oncourse.services.preference.GetAutoCompleteState
 import ish.oncourse.services.preference.GetContactAgeWhenNeedParent
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsCollectParentDetails
-import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.editor.v1.model.CheckoutSettings
 import ish.oncourse.willow.editor.v1.model.ClassStateTransition
 import ish.oncourse.willow.editor.v1.model.ClassAge
@@ -18,7 +17,7 @@ import ish.oncourse.willow.editor.v1.model.State
 import ish.oncourse.willow.editor.v1.model.WebsiteSettings
 
 import groovy.transform.CompileStatic
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.v1.service.SettingsApi
 import ish.oncourse.willow.editor.website.WebSiteFunctions
 import org.apache.cayenne.ObjectContext
@@ -28,7 +27,6 @@ import org.apache.logging.log4j.Logger
 
 import static ish.oncourse.services.preference.Preferences.*
 import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact
-import static ish.oncourse.services.preference.Preferences.ENROLMENT_MIN_AGE
 
 @CompileStatic
 class SettingsApiServiceImpl implements SettingsApi {

@@ -8,7 +8,7 @@ import ish.oncourse.willow.editor.rest.WebContentToBlock
 import ish.oncourse.willow.editor.v1.model.Block
 
 import groovy.transform.CompileStatic
-import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.v1.model.UnexpectedError
 import ish.oncourse.willow.editor.v1.service.BlockApi
 import ish.oncourse.willow.editor.website.WebContentFunctions

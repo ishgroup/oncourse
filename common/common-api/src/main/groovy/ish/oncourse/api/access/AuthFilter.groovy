@@ -1,4 +1,4 @@
-package ish.oncourse.willow.editor.annotation
+package ish.oncourse.api.access
 
 import javax.ws.rs.NameBinding
 import java.lang.annotation.ElementType

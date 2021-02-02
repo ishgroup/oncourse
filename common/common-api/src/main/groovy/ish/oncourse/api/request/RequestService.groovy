@@ -1,4 +1,4 @@
-package ish.oncourse.willow.editor.services
+package ish.oncourse.api.request
 
 import com.google.inject.Singleton
 import org.eclipse.jetty.server.Request

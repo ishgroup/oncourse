@@ -106,7 +106,7 @@ paths:
     get:
       operationId: getUser
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Get current logged in user.
       tags:
         - Auth
@@ -128,7 +128,7 @@ paths:
     get:
       operationId: getMenus
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Get all menu items.
       tags:
         - Menu
@@ -147,7 +147,7 @@ paths:
     put:
       operationId: updateMenus
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Save menu items.
       tags:
         - Menu
@@ -186,7 +186,7 @@ paths:
     get:
       operationId: getPages
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Get list of pages.
       tags:
         - Page
@@ -213,7 +213,7 @@ paths:
     put:
       operationId: updatePage
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Save page parameters.
       tags:
         - Page
@@ -239,7 +239,7 @@ paths:
     post:
       operationId: createPage
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Add new page
       tags:
         - Page
@@ -258,7 +258,7 @@ paths:
     delete:
       operationId: deletePage
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Remove page by id.
       tags:
         - Page
@@ -284,7 +284,7 @@ paths:
     get:
       operationId: getBlocks
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Get list of blocks.
       tags:
         - Block
@@ -303,7 +303,7 @@ paths:
     put:
       operationId: updateBlock
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Update an existing block.
       tags:
         - Block
@@ -329,7 +329,7 @@ paths:
     post:
       operationId: createBlock
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Add new block.
       tags:
         - Block
@@ -348,7 +348,7 @@ paths:
     delete:
       operationId: deleteBlock
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Remove block
       tags:
         - Block
@@ -374,7 +374,7 @@ paths:
     get:
       operationId: getLayouts
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Get list of layouts.
       tags:
         - Theme
@@ -396,7 +396,7 @@ paths:
     get:
       operationId: getThemes
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Get list of themes.
       tags:
         - Theme
@@ -415,7 +415,7 @@ paths:
     put:
       operationId: updateTheme
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Save theme params.
       tags:
         - Theme
@@ -441,7 +441,7 @@ paths:
     post:
       operationId: createTheme
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Add new theme.
       tags:
         - Theme
@@ -460,7 +460,7 @@ paths:
     delete:
       operationId: deleteTheme
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Remove theme.
       tags:
         - Theme
@@ -486,7 +486,7 @@ paths:
     get:
       operationId: getVersions
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: |
         Get list of site versions including the current published site and current draft site. Historical versions will be also available here
         up to a limit which is set by the editor server. Older versions (or beyond a certain number of versions) will be discarded and not avaiable.
@@ -507,7 +507,7 @@ paths:
     patch:
       operationId: updateVersion
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: |
        Change version status. Useage example (put current draft version to production):
        PATCH /editor/v1/version/123  HTTP/1.1
@@ -549,7 +549,7 @@ paths:
     get:
       operationId: getSkillsOnCourseSettings
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Get SkillsOnCourse settings.
       tags:
         - Settings
@@ -566,7 +566,7 @@ paths:
     put:
       operationId: updateSkillsOnCourseSettings
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Save SkillsOnCourse settings.
       tags:
         - Settings
@@ -595,7 +595,7 @@ paths:
     get:
       operationId: getWebsiteSettings
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Get Website settings.
       tags:
         - Settings
@@ -612,7 +612,7 @@ paths:
     put:
       operationId: updateWebsiteSettings
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Save website settings.
       tags:
         - Settings
@@ -641,7 +641,7 @@ paths:
     get:
       operationId: getCheckoutSettings
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Get checkout settings.
       tags:
         - Settings
@@ -658,7 +658,7 @@ paths:
     put:
       operationId: updateCheckoutSettings
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Save checkout settings.
       tags:
         - Settings
@@ -687,7 +687,7 @@ paths:
     get:
       operationId: getRedirects
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Get redirects for the whole site.
       tags:
         - Redirect
@@ -704,7 +704,7 @@ paths:
     put:
       operationId: updateRedirects
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Replace all the redirects for the site with a new list of redirects.
       tags:
         - Redirect
@@ -737,7 +737,7 @@ paths:
     get:
       operationId: getSpecialPages
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Get special page redirects for the whole site.
       tags:
         - SpecialPage
@@ -754,7 +754,7 @@ paths:
     put:
       operationId: updateSpecialPages
       x-filter:
-        - ish.oncourse.willow.editor.annotation.AuthFilter
+        - ish.oncourse.api.access.AuthFilter
       description: Update all special redirects for web site
       tags:
         - SpecialPage
