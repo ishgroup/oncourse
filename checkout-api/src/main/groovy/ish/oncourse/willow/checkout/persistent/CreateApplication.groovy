@@ -38,7 +38,7 @@ class CreateApplication {
         application.source = PaymentSource.SOURCE_WEB
         application.confirmationStatus = ConfirmationStatus.NOT_SENT
 
-        FieldHelper.populateFields(a.fieldHeadings, application)
+        FieldHelper.valueOf([] as Set).populateFields(a.fieldHeadings, application)
         application
     }
     

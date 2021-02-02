@@ -42,7 +42,7 @@ class CreateWaitingList {
         if (StringUtils.trimToNull(w.detail) != null) {
             waitingList.detail = w.detail
         }
-        FieldHelper.populateFields(w.fieldHeadings, waitingList)
+        FieldHelper.valueOf([] as Set).populateFields(w.fieldHeadings, waitingList)
         
         waitingList
     }

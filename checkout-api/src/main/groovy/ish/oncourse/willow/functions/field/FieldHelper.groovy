@@ -116,7 +116,7 @@ class FieldHelper {
         }
     }
     
-    static void populateFields(List<FieldHeading> fieldHeadings, PersistentObject record) {
+    void populateFields(List<FieldHeading> fieldHeadings, PersistentObject record) {
         (fieldHeadings.fields.flatten() as List<ish.oncourse.willow.model.field.Field>).each { f  ->
             Object value =  new FieldValueParser(f, record.objectContext).parse().value
             if  (value) {

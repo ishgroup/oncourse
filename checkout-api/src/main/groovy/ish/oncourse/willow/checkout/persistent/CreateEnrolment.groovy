@@ -52,7 +52,7 @@ class CreateEnrolment {
         
         setInvoice.call(enrolment, invoiceLine)
 
-        FieldHelper.populateFields(e.fieldHeadings, enrolment)
+        FieldHelper.valueOf([] as Set).populateFields(e.fieldHeadings, enrolment)
 
     }
 }
