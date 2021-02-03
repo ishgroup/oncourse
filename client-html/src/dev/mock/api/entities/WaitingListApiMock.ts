@@ -11,4 +11,9 @@ export function WaitingListApiMock(mock) {
   });
 
   this.api.onPut(new RegExp(`v1/list/entity/waitingList/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
+
+  this.api.onPost("v1/list/entity/waitingList").reply(config => {
+    this.db.createWaitingList(config.data);
+    return promiseResolve(config, {});
+  });
 }
