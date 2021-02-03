@@ -8,7 +8,7 @@ export const initApp = () => {
     <React.StrictMode>
       <Billing />
     </React.StrictMode>,
-    document.getElementById("billing")
+    document.getElementById("provisioning")
   );
 }
 
