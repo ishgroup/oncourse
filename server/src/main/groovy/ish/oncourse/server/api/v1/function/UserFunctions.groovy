@@ -76,6 +76,7 @@ class UserFunctions {
                 context.newObject(SystemUser)
 
         dbModel.isActive = dtoModel.active
+        dbModel.loginAttemptNumber = dtoModel.active ? 0 : dbModel.loginAttemptNumber
         dbModel.login = dtoModel.login
         dbModel.firstName = dtoModel.firstName
         dbModel.lastName = dtoModel.lastName
