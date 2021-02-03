@@ -130,8 +130,9 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         if (StringUtils.isEmpty(messageType)) {
             validator.throwClientErrorException("messageType", "The message type shoud be specifed")
         }
+        MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
 
-        if (!MessageTypeDTO.values().contains(MessageTypeDTO.fromValue(messageType))) {
+        if (!messageTypeDTO) {
             validator.throwClientErrorException("messageType", "Unrecognized message type.")
         }
 
@@ -147,7 +148,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             validator.throwClientErrorException("entity", "The entity should be specified")
         }
 
-        if (request.fromAddress == null && messageType.equalsIgnoreCase(MessageTypeDTO.EMAIL.toString())) {
+        if (request.fromAddress == null && MessageTypeDTO.EMAIL == messageTypeDTO) {
             validator.throwClientErrorException("fromAddress", "The fromAddress should be specified")
         }
     }
@@ -156,7 +157,8 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     RecipientsDTO getRecipients(String entityName, String messageType, SearchQueryDTO request) {
         ObjectContext context = cayenneService.newReadonlyContext
         List<Long> entitiesIds = getEntityIds(entityName, request, context)
-        RecipientsModel model = getRecipientsModel(entityName, messageType, entitiesIds)
+        MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
+        RecipientsModel model = getRecipientsModel(entityName, messageTypeDTO, entitiesIds)
 
         new RecipientsDTO().with { dto ->
             dto.students = new RecipientTypeDTO().with { typeDto ->
@@ -194,7 +196,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     }
 
 
-    RecipientsModel getRecipientsModel(String entityName, String messageType, List<Long> entitiesIds) {
+    RecipientsModel getRecipientsModel(String entityName, MessageTypeDTO messageType, List<Long> entitiesIds) {
         RecipientsModel recipientsModel = new RecipientsModel()
 
         Expression exp = null
@@ -245,7 +247,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     }
 
 
-    RecipientGroupModel addRecipientsToGroup(RecipientGroupModel type, Expression expression, String messageType) {
+    RecipientGroupModel addRecipientsToGroup(RecipientGroupModel type, Expression expression, MessageTypeDTO messageType) {
         List<Long> suitableForSendIds = new ArrayList<>()
         List<Long> suppresstoSendIds = new ArrayList<>()
         List<Long> noDestinationIds = new ArrayList<>()
@@ -254,7 +256,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
 
         ObjectContext context = cayenneService.newContext
 
-        if (messageType.equalsIgnoreCase(MessageTypeDTO.EMAIL.toString())) {
+        if (MessageTypeDTO.EMAIL == messageType) {
 
             noDestinationIds = query.column(ID)
                     .where(expression.andExp(Contact.EMAIL.isNull().orExp(Contact.EMAIL.eq(EMPTY).orExp(Contact.DELIVERY_STATUS_EMAIL.eq(6)))))
@@ -266,7 +268,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                     .where(expression.andExp(Contact.EMAIL.isNotNull(), Contact.EMAIL.ne(EMPTY), Contact.DELIVERY_STATUS_EMAIL.lt(6), Contact.ALLOW_EMAIL.isTrue()))
                     .select(context)
 
-        } else if (messageType.equalsIgnoreCase(MessageTypeDTO.SMS.toString())) {
+        } else if (MessageTypeDTO.SMS == messageType) {
 
             noDestinationIds = query.column(ID)
                     .where(expression.andExp(Contact.MOBILE_PHONE.isNull().orExp(Contact.MOBILE_PHONE.eq(EMPTY).orExp(Contact.DELIVERY_STATUS_SMS.eq(6)))))
@@ -290,10 +292,11 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         logger.debug("Messaging starts")
         ObjectContext context = cayenneService.newContext
         validateBeforeSend(messageType, recipientsCount, request)
+        MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
 
         String entityName = request.entity
         List<Long> entitiesIds = getEntityIds(entityName, request.searchQuery, context)
-        RecipientsModel recipientsModel = getRecipientsModel(entityName, messageType, entitiesIds)
+        RecipientsModel recipientsModel = getRecipientsModel(entityName, messageTypeDTO, entitiesIds)
         List<Long> recipientsToSend = new ArrayList<>()
 
         addRecipientsToSend(recipientsToSend, recipientsModel.students, request.sendToStudents, request.sendToSuppressStudents)
@@ -307,15 +310,15 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                     recipientsCount.toString(), recipientsToSend.size().toString(), messageType)
             validator.throwClientErrorException("recipientsCount", "A real recipients number doesn't equal specified. Specified: ${recipientsCount}, Real: ${recipientsToSend.size()}")
         }
-        if (smtpService.email_batch != null && recipientsToSend.size() > smtpService.email_batch) {
+        if (smtpService.email_batch != null && recipientsToSend.size() > smtpService.email_batch && MessageTypeDTO.EMAIL == messageTypeDTO) {
             logger.error("A recipients number higher than allowed by license. License: {}, Real: {}",
                     smtpService.email_batch, recipientsToSend.size().toString())
             validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${smtpService.email_batch} emails in one batch. " +
-                    "Please send in smaller batches or upgrade to a plan with a higher limit.\n")
+                    "Please send in smaller batches or upgrade to a plan with a higher limit.")
         }
 
         SystemUser user = context.localObject(systemUserService.currentUser)
-        MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
+
         EmailTemplate template = ObjectSelect.query(EmailTemplate.class)
                 .where(EmailTemplate.ID.eq(request.templateId).andExp(EmailTemplate.TYPE.eq(messageTypeDTO.dbType)))
                 .selectOne(context)
