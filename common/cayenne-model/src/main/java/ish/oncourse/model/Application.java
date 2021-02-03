@@ -30,4 +30,10 @@ public class Application extends _Application implements Queueable {
 	public void setCustomFieldValue(String key, String value){
 		setCustomFieldValue(key, value, ApplicationCustomField.class);
 	}
+
+	@Property(value = FieldProperty.CUSTOM_FIELD_APPLICATION, type = PropertyGetSetFactory.GET, params = {String.class})
+	public String getCustomFieldValue(String key) {
+		CustomField field = getCustomField(key);
+		return  field == null ? null : field.getValue();
+	}
 }
