@@ -12,8 +12,8 @@ const _info = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
     → SOURCE_MAP: ${SOURCE_MAP}
     → API_ROOT: ${API_ROOT}
     → BUILD_NUMBER: ${BUILD_NUMBER}
-    `);
-  };
+  `);
+};
 
 const KEYS = {
   ENTRY: "entry"

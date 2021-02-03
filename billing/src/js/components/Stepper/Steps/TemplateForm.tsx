@@ -9,8 +9,12 @@
 import React from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { GridList, GridListTile, Typography } from "@material-ui/core";
-
-import { a, b, c, d, e, f } from "../../../img";
+import a from "../../../../images/a-small.png";
+import b from "../../../../images/b-small.png";
+import c from "../../../../images/c-small.png";
+import d from "../../../../images/d-small.png";
+import e from "../../../../images/e-small.png";
+import f from "../../../../images/f-small.png";
 
 const imgData = [
   {
