@@ -81,10 +81,6 @@ export function mockVoucherProducts() {
     this.voucherProducts = voucherProducts;
   };
 
-  this.removeVoucherProduct = id => {
-    this.voucherProducts.rows = this.voucherProducts.rows.filter(a => a.id !== id);
-  };
-
   this.getVoucherProductPlainList = () => {
     const rows = generateArraysOfRecords(20, [
       { name: "id", type: "number" },
