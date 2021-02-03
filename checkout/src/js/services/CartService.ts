@@ -1,7 +1,8 @@
 import {CartApi} from "../http/CartApi";
 import {Token} from "../model";
+import {DefaultHttpService} from "../common/services/HttpService";
 
-export class CartService extends CartApi {
+class CartService extends CartApi {
   create(id: string, checkout: string): Promise<Token> {
     return super.create(id,checkout);
   }
@@ -9,3 +10,5 @@ export class CartService extends CartApi {
     return super._delete(id);
   }
 }
+
+export default new CartService(new DefaultHttpService())

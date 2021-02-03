@@ -27,6 +27,8 @@ import {PromotionApi} from "../../http/PromotionApi";
 import {CorporatePassApi} from "../../http/CorporatePassApi";
 import {toFormKey} from "../../components/form/FieldFactory";
 import {ProductContainer} from "../../model/checkout/request/ProductContainer";
+import {getCookie} from "../../common/utils/Cookie";
+import CartService from "../../services/CartService";
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 
@@ -168,6 +170,13 @@ export class CheckoutService {
       case PaymentStatus.SUCCESSFUL_BY_PASS:
       case PaymentStatus.SUCCESSFUL_WAITING_COURSES:
       case PaymentStatus.UNDEFINED:
+
+        const cartId = getCookie("cartId");
+
+        if (cartId) {
+          CartService._delete(cartId);
+        }
+
         return [
           ...actions,
           changePhase(Phase.Result),

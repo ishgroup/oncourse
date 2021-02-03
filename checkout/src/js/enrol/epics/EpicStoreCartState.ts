@@ -3,8 +3,7 @@ import {REWRITE_CONTACT_NODE_TO_STATE, } from "../containers/summary/actions/Act
 import { Store} from "redux";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Actions} from "../../web/actions/Actions";
-import {CartService} from "../../services/CartService";
-import {DefaultHttpService} from "../../common/services/HttpService";
+import CartService from "../../services/CartService";
 import {getCookie} from "../../common/utils/Cookie";
 
 export const EpicStoreCartState = (function () {
@@ -28,9 +27,8 @@ export const EpicStoreCartState = (function () {
     .do(() => {
       const cartId = getCookie("cartId");
       if (cartId) {
-        const cartApi = new CartService(new DefaultHttpService());
         const { cart, checkout } = store.getState();
-        cartApi.create(cartId, JSON.stringify({ cart, checkout }))
+        CartService.create(cartId, JSON.stringify({ cart, checkout }))
           .catch(() => {
             console.error("Failed to upload cart data")
           })
