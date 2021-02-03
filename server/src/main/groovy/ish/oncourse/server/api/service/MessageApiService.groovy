@@ -313,6 +313,10 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         if (smtpService.email_batch != null && recipientsToSend.size() > smtpService.email_batch && MessageTypeDTO.EMAIL == messageTypeDTO) {
             logger.error("A recipients number higher than allowed by license. License: {}, Real: {}",
                     smtpService.email_batch, recipientsToSend.size().toString())
+            if (smtpService.email_batch == 0) {
+                validator.throwClientErrorException("recipientsCount", "Your license does not allow sending emails. " +
+                        "Please, contact onCourse administrator to upgrade your plan.")
+            }
             validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${smtpService.email_batch} emails in one batch. " +
                     "Please send in smaller batches or upgrade to a plan with a higher limit.")
         }
