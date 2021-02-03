@@ -1,4 +1,4 @@
-import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockWaitingLists() {
   this.getWaitingLists = () => this.waitingLists;
@@ -45,6 +45,10 @@ export function mockWaitingLists() {
     });
 
     this.waitingLists = waitingLists;
+  };
+
+  this.removeWaitingList = id => {
+    this.waitingLists = removeItemByEntity(this.waitingLists, id);
   };
 
   const rows = generateArraysOfRecords(20, [

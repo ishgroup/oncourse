@@ -16,4 +16,10 @@ export function WaitingListApiMock(mock) {
     this.db.createWaitingList(config.data);
     return promiseResolve(config, {});
   });
+
+  this.api.onDelete(new RegExp(`v1/list/entity/waitingList/\\d+`)).reply(config => {
+    const id = getParamsId(config);
+    this.db.removeWaitingList(id);
+    return promiseResolve(config, {});
+  });
 }
