@@ -28,9 +28,6 @@ Feature: Main feature for all POST requests with path 'preference/'
             | 'AUSKEY_CERTIFICATE'       | 'auskey.certificate'      | 'true' |
             | 'AUSKEY_PRIVATE_KEY'       | 'auskey.privatekey'       | 'true' |
             | 'AUSKEY_SALT'              | 'auskey.salt'             | 'true' |
-            | 'STORAGE_BUCKET_NAME'      | 'storage.bucket'          | 'true' |
-            | 'STORAGE_ACCESS_ID'        | 'storage.access.id'       | 'true' |
-            | 'STORAGE_ACCESS_KEY'       | 'storage.access.key'      | 'true' |
 
         * call read('postReadOnlyPreferences.feature') readOnlyPreferences
 
