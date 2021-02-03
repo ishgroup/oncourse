@@ -16,8 +16,8 @@ schemes:
 produces:
   - application/json
 
-host: ish.com.au
-basePath: /billing/v1
+host: provisioning.ish.com.au
+basePath: /a/v1
 
 
 paths:

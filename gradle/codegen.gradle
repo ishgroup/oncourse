@@ -27,7 +27,7 @@ task swagger (type: Swagger) {
     apiPackage = servicesPackage
     dtoPackage = modelPackage
     javaOutput = file("${project.projectDir}/build/generated-sources")
-    jsOutput = file("${project.projectDir}/build/generated-sources")
+    jsOutput = file("${project.projectDir.toString().replace('-api', '')}/build/generated-sources")
 }
 
 compileGroovy {
