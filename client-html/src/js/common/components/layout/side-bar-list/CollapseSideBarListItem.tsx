@@ -20,33 +20,32 @@ const CollapseSideBarListItem: React.FC<any> = ({
   classes,
   handleOpenTooltip,
   handleCloseTooltip,
-  openedTooltip
-}) => {
-  return (
-    <NavLink to={to} className="link" isActive={(match, location) => isActiveLink(location, to, index, item.name)}>
-      <Tooltip
-        title={item.name}
-        disableTouchListener
-        disableFocusListener
-        open={openedTooltip === index}
-        placement="bottom"
-      >
-        <MenuItem button className={classes.listItemPadding} selected={activeLink === index.toString()}>
-          <Typography
-            variant="body2"
-            onMouseOver={() => handleOpenTooltip(index)}
-            onMouseLeave={handleCloseTooltip}
-            className={clsx(classes.truncateLabel, {
-              [classes.inactiveText]: item.grayOut
-            })}
-          >
-            {item.name}
-          </Typography>
-          {item.hasIcon && <ItemIcon className={classes.itemIcon} item={item} />}
-        </MenuItem>
-      </Tooltip>
-    </NavLink>
+  openedTooltip,
+  ItemIconRenderer
+}) => (
+  <NavLink to={to} className="link" isActive={(match, location) => isActiveLink(location, to, index, item.name)}>
+    <Tooltip
+      title={item.name}
+      disableTouchListener
+      disableFocusListener
+      open={openedTooltip === index}
+      placement="bottom"
+    >
+      <MenuItem button className={classes.listItemPadding} selected={activeLink === index.toString()}>
+        <Typography
+          variant="body2"
+          onMouseOver={() => handleOpenTooltip(index)}
+          onMouseLeave={handleCloseTooltip}
+          className={clsx(classes.truncateLabel, {
+            [classes.inactiveText]: item.grayOut
+          })}
+        >
+          {item.name}
+        </Typography>
+        {ItemIconRenderer ? <ItemIconRenderer className={classes.itemIcon} item={item} /> : (item.hasIcon && <ItemIcon className={classes.itemIcon} item={item} />)}
+      </MenuItem>
+    </Tooltip>
+  </NavLink>
   );
-};
 
 export default CollapseSideBarListItem;

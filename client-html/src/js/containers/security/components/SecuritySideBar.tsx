@@ -1,13 +1,30 @@
 import React, { useCallback, useMemo, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
 import Typography from "@material-ui/core/Typography";
 import { NavLink } from "react-router-dom";
 import { MenuItem } from "@material-ui/core";
 import ScreenLockPortrait from "@material-ui/icons/ScreenLockPortrait";
 import { connect } from "react-redux";
+import { User } from "@api/model";
 import CollapseMenuList from "../../../common/components/layout/side-bar-list/CollapseSideBarList";
 import { State } from "../../../reducers/state";
 import { LICENSE_ACCESS_CONTROL_KEY } from "../../../constants/Config";
 import { SidebarSharedProps } from "../../../model/common/sidebar";
+
+library.add(faEnvelopeOpenText);
+
+const UserIconRenderer: React.FC<{ item: User }> = ({ item, ...rest }) => {
+  const icons = [];
+  if (item.tfaEnabled) {
+    icons.push(<ScreenLockPortrait {...rest} key={item.id + "tfa"} />);
+  }
+  if (item.inviteAgain) {
+    icons.push(<FontAwesomeIcon fixedWidth icon="envelope-open-text" {...rest} key={item.id + "invite"} />);
+  }
+  return <span className="centeredFlex">{icons}</span>;
+};
 
 const SecuritySideBar = React.memo<any>(
   ({
@@ -33,11 +50,14 @@ const SecuritySideBar = React.memo<any>(
     const usersItems = useMemo(
       () =>
         users
-        && users.map(({ id, email, active, tfaEnabled }) => ({
+        && users.map(({
+ id, email, active, tfaEnabled, inviteAgain
+}) => ({
           id,
-          name: email ? email : "No email",
+          name: email || "No email",
           grayOut: !active,
-          hasIcon: tfaEnabled
+          tfaEnabled,
+          inviteAgain
         })),
       [users]
     );
@@ -46,8 +66,8 @@ const SecuritySideBar = React.memo<any>(
 
     const sharedProps = useMemo<SidebarSharedProps>(
       () => ({
- history, search, activeFiltersConditions, category: "Security"
-}),
+     history, search, activeFiltersConditions, category: "Security"
+    }),
       [history, search, activeFiltersConditions]
     );
 
@@ -74,7 +94,7 @@ const SecuritySideBar = React.memo<any>(
           basePath="/security/users/"
           data={usersItems}
           plusIconPath="new"
-          ItemIcon={ScreenLockPortrait}
+          ItemIconRenderer={UserIconRenderer}
           sharedProps={sharedProps}
         />
       </div>
