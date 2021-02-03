@@ -190,7 +190,7 @@ Feature: Main feature for all PUT requests with path 'login'
         And request loginBody
         When method PUT
         Then status 401
-        And match response.errorMessage == 'Invalid email / password'
+        And match response.errorMessage == 'Login access was disabled after too many incorrect login attempts. Please contact onCourse Administrator.'
 
         #       <-----> Return value to default
         * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
@@ -443,7 +443,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 401
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Invalid email / password'
+        And match response.errorMessage == 'User is disabled. Please contact onCourse Administrator.'
 
 
 #    Scenario: (-) Authorize as admin without 2fa when "2FA required for admin users" is enabled
