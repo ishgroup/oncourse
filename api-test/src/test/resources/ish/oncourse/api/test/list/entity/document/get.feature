@@ -130,4 +130,4 @@ Feature: Main feature for all GET requests with path 'list/entity/document'
         Given path ishPath + "/999"
         When method GET
         Then status 400
-        And match $.errorMessage == "Document with id:999 doesn't exist"
+        And match $.errorMessage == "Record with id = '999' doesn't exist."
