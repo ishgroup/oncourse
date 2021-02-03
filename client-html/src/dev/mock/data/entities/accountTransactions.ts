@@ -1,10 +1,8 @@
-import { generateArraysOfRecords } from "../../mockUtils";
 import { AccountType } from "@api/model";
+import { generateArraysOfRecords } from "../../mockUtils";
 
 export function mockAccountTransactions() {
-  this.getAccountTransactions = () => {
-    return this.accountTransactions;
-  };
+  this.getAccountTransactions = () => this.accountTransactions;
 
   this.getAccountTransaction = id => {
     const row = this.accountTransactions.rows.find(row => row.id == id);
@@ -26,7 +24,7 @@ export function mockAccountTransactions() {
 
     accountTransactions.rows.push({
       id: data.id,
-      values: [data.transactionDate, data.fromAccount, data.amount, data.toAccount]
+      values: [data.transactionDate, data.fromAccount, "Deposited funds", AccountType.asset, data.amount, "Payment in line", new Date().toISOString()]
     });
 
     this.accountTransactions = accountTransactions;
@@ -40,10 +38,11 @@ export function mockAccountTransactions() {
     { name: "id", type: "number" },
     { name: "transactionDate", type: "Datetime" },
     { name: "fromAccount", type: "number" },
-    { name: "amount", type: "Money" }
+    { name: "amount", type: "number" },
+    { name: "createdOn", type: "Datetime" }
   ]).map(l => ({
     id: l.id,
-    values: [l.transactionDate, l.fromAccount, "Deposited funds", AccountType.asset, l.amount, "Payment in line"]
+    values: [l.transactionDate, l.fromAccount, "Deposited funds", AccountType.asset, 100 * l.amount, "Payment in line", l.createdOn]
   }));
 
   const columns = [
@@ -99,6 +98,16 @@ export function mockAccountTransactions() {
       visible: true,
       width: 100,
       type: null,
+      sortFields: []
+    },
+    {
+      title: "Created",
+      attribute: "createdOn",
+      type: "Datetime",
+      sortable: true,
+      visible: true,
+      system: null,
+      width: 200,
       sortFields: []
     }
   ];
