@@ -24,6 +24,29 @@ export function mockWaitingLists() {
     };
   };
 
+  this.createWaitingList = item => {
+    const data = JSON.parse(item);
+    const waitingLists = this.waitingLists;
+    const totalRows = waitingLists.rows;
+
+    const studentName = this.getContact(data.contactId);
+
+    data.id = totalRows.length + 1;
+
+    waitingLists.rows.push({
+      id: data.id,
+      values: [
+        new Date().toISOString(),
+        `${studentName.firstName} ${studentName.lastName}`,
+        this.getCourse(data.courseId),
+        data.courseId,
+        data.studentNotes
+      ]
+    });
+
+    this.waitingLists = waitingLists;
+  };
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "createdOn", type: "Datetime" },
