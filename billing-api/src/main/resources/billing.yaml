@@ -21,13 +21,40 @@ basePath: /a/v1
 
 
 paths:
-  /college:
+  /college/{name}:
+    get:
+      operationId: verifyCollegeName
+      description: |
+        Check if college name is available
+      tags:
+        - Billing
+      x-filter:
+        - ish.oncourse.api.access.AuthFilter
+      parameters:
+        - name: name
+          in: path
+          description: College name
+          required: true
+          type: string
+        - name: x-g-recaptcha
+          in: header
+          description: reCaptch token
+          required: false
+          type: string
+      responses:
+        '200':
+          description: verification responce
+          schema: 
+            type: boolean
+
     post:
       operationId: createCollege
       description: |
         Create college
       tags:
         - Billing
+      x-filter:
+        - ish.oncourse.api.access.AuthFilter
       consumes:
         - application/json
       parameters:
@@ -41,7 +68,7 @@ paths:
         '204':
           description: Success responce
         '400':
-          description: Login unsuccessful. Invalid login name or password.
+          description: Bad request
           schema:
             $ref: '#/definitions/ErrorDTO'
             
