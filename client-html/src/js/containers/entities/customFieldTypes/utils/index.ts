@@ -7,10 +7,12 @@ export const processCustomFields = (entity: any, customFieldsKey?: string) => {
   if (!customFieldsKey) {
     customFieldsKey = "customFields";
   }
-  
-  Object.keys(entity[customFieldsKey]).forEach(k => {
-    if (!entity[customFieldsKey][k]) {
-      delete entity[customFieldsKey][k];
-    }
-  });
+
+  if (entity && entity[customFieldsKey]) {
+    Object.keys(entity[customFieldsKey]).forEach(k => {
+      if (!entity[customFieldsKey][k]) {
+        delete entity[customFieldsKey][k];
+      }
+    });
+  }
 };
