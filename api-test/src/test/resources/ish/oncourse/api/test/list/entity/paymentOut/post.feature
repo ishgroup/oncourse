@@ -77,7 +77,7 @@ Feature: Main feature for all POST requests with path 'list/entity/paymentOut'
         "privateNotes":"post 1",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "createdBy":"admin",
+        "createdBy":"admin@gmail.com",
         "administrationCenterId":200,
         "administrationCenterName":"Default site"
         }
@@ -174,7 +174,7 @@ Feature: Main feature for all POST requests with path 'list/entity/paymentOut'
         "privateNotes":"post 2",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "createdBy":"UserWithRightsCreate",
+        "createdBy":"UserWithRightsCreate@gmail.com",
         "administrationCenterId":200,
         "administrationCenterName":"Default site"
         }

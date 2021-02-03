@@ -219,7 +219,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/paymentOut'
         "privateNotes":"",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "createdBy":"admin",
+        "createdBy":"admin@gmail.com",
         "administrationCenterId":200,
         "administrationCenterName":"Default site"
         }
@@ -278,7 +278,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/paymentOut'
         "privateNotes":"",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "createdBy":"admin",
+        "createdBy":"admin@gmail.com",
         "administrationCenterId":200,
         "administrationCenterName":"Default site"
         }
@@ -337,7 +337,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/paymentOut'
         "privateNotes":"",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "createdBy":"admin",
+        "createdBy":"admin@gmail.com",
         "administrationCenterId":200,
         "administrationCenterName":"Default site"
         }
@@ -396,7 +396,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/paymentOut'
         "privateNotes":"",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "createdBy":"admin",
+        "createdBy":"admin@gmail.com",
         "administrationCenterId":200,
         "administrationCenterName":"Default site"
         }
@@ -455,7 +455,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/paymentOut'
         "privateNotes":"",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "createdBy":"admin",
+        "createdBy":"admin@gmail.com",
         "administrationCenterId":200,
         "administrationCenterName":"Default site"
         }
@@ -514,7 +514,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/paymentOut'
         "privateNotes":"",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "createdBy":"admin",
+        "createdBy":"admin@gmail.com",
         "administrationCenterId":200,
         "administrationCenterName":"Default site"
         }

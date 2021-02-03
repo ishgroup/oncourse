@@ -67,7 +67,7 @@ Feature: Main feature for all GET requests with path 'list/entity/paymentOut'
         "privateNotes":"",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "createdBy":"admin",
+        "createdBy":"admin@gmail.com",
         "administrationCenterId":"#number",
         "administrationCenterName":"#string"
         }
@@ -111,7 +111,7 @@ Feature: Main feature for all GET requests with path 'list/entity/paymentOut'
         "privateNotes":"",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "createdBy":"admin",
+        "createdBy":"admin@gmail.com",
         "administrationCenterId":"#number",
         "administrationCenterName":"#string"
         }
