@@ -5,14 +5,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 
 public class DateUtils {
 
@@ -64,7 +57,7 @@ public class DateUtils {
 
 	public static Date endOfMonth(Date month) {
 		ZonedDateTime dateTime = ZonedDateTime.ofInstant(month.toInstant(), ZoneId.systemDefault());
-		return new Date(dateTime.with(LocalTime.MAX).withDayOfMonth(dateTime.getMonth().maxLength()).toInstant().toEpochMilli());
+		return new Date(dateTime.with(LocalTime.MAX).withDayOfMonth(dateTime.toLocalDate().lengthOfMonth()).toInstant().toEpochMilli());
 	}
 
 	public static boolean isCurrentMonth(Date month) {
