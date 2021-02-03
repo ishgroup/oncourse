@@ -10,7 +10,7 @@ import {
 export const SCRIPT_EDIT_VIEW_FORM_NAME = "ScriptsForm";
 
 export const closureRegexp = new RegExp(
-  /\n?\/\/\s*[a-zA-Z]+\s*closure\s*start([^\\/])+\/\/\s*[a-zA-Z]+\s*closure\s*end[\n]?/,
+  /\n?\/\/\s*[a-zA-Z]+\s*closure\s*start([^\//])+\/\/\s*[a-zA-Z]+\s*closure\s*end[\n]?/,
   "g"
 );
 
