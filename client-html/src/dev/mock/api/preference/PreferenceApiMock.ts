@@ -1,4 +1,5 @@
 import { promiseResolve } from "../../MockAdapter";
+import { getParamsId } from "../../mockUtils";
 
 export function preferenceApiMock() {
   /**
@@ -58,4 +59,9 @@ export function preferenceApiMock() {
   });
 
   this.api.onGet("/v1/preference/lockedDate").reply(config => promiseResolve(config, this.db.preferencesLockedDate()));
+
+  this.api.onGet(new RegExp(`v1/preference/enum/\\D+`)).reply(config => {
+    const enumName = getParamsId(config);
+    return promiseResolve(config, this.db.getPreferencesEnumByName(enumName));
+  });
 }
