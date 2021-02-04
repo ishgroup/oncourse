@@ -2,8 +2,8 @@ package ish.oncourse.admin.pages;
 
 import com.amazonaws.services.identitymanagement.model.AccessKey;
 import ish.oncourse.admin.pages.college.Billing;
-import ish.oncourse.admin.utils.LicenseFeeUtil;
-import ish.oncourse.admin.utils.PreferenceUtil;
+import ish.oncourse.util.LicenseFeeUtil;
+import ish.oncourse.util.PreferenceUtil;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;

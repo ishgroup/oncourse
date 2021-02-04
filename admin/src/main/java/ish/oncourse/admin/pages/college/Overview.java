@@ -1,7 +1,7 @@
 package ish.oncourse.admin.pages.college;
 
-import ish.oncourse.admin.utils.AUSKeyUtil;
-import ish.oncourse.admin.utils.PreferenceUtil;
+import ish.oncourse.util.AUSKeyUtil;
+import ish.oncourse.util.PreferenceUtil;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;

@@ -2,8 +2,8 @@ package ish.oncourse.admin.pages.college;
 
 import ish.oncourse.admin.pages.Index;
 import ish.oncourse.admin.services.billing.StockCodes;
-import ish.oncourse.admin.utils.LicenseFeeUtil;
-import ish.oncourse.admin.utils.PreferenceUtil;
+import ish.oncourse.util.LicenseFeeUtil;
+import ish.oncourse.util.PreferenceUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;

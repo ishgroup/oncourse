@@ -2,7 +2,7 @@ package ish.oncourse.admin.services.website;
 
 import ish.oncourse.admin.services.CreateSiteFileStructure;
 import ish.oncourse.admin.services.template.CopyTemplateStaticResources;
-import ish.oncourse.admin.utils.LicenseFeeUtil;
+import ish.oncourse.util.LicenseFeeUtil;
 import ish.oncourse.configuration.Configuration;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebSite;

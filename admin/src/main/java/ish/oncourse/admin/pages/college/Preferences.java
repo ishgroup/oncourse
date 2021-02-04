@@ -1,13 +1,12 @@
 package ish.oncourse.admin.pages.college;
 
-import ish.oncourse.admin.utils.PreferenceUtil;
+import ish.oncourse.util.PreferenceUtil;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.OnEvent;
