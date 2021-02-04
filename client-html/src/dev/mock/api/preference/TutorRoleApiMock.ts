@@ -6,4 +6,9 @@ export function TutorRoleApiMock(mock) {
     const id = getParamsId(config);
     return promiseResolve(config, this.db.getTutorRole(id));
   });
+
+  this.api.onPost("v1/list/entity/definedTutorRole").reply(config => {
+    this.db.createTutorRole(config.data);
+    return promiseResolve(config, {});
+  });
 }
