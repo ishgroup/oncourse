@@ -23,6 +23,21 @@ export function mockTutorRoles() {
     };
   };
 
+  this.createTutorRole = item => {
+    const data = JSON.parse(item);
+    const tutorRoles = this.tutorRoles;
+    const totalRows = tutorRoles.rows;
+
+    data.id = totalRows.length + 1;
+
+    tutorRoles.rows.push({
+      id: data.id,
+      values: [data.name, data.description, data.active]
+    });
+
+    this.tutorRoles = tutorRoles;
+  };
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "name", type: "string" },
