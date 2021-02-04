@@ -890,7 +890,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     if (lastTokenType === "'@'") {
       this.setState({
         searchValue: "",
-        options: filterTags
+        options: filterTags || []
       });
 
       return;
@@ -899,7 +899,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     if (lastTokenType === "'#'") {
       this.setState({
         searchValue: "",
-        options: tags
+        options: tags || []
       });
 
       return;
