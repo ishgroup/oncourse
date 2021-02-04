@@ -214,10 +214,15 @@ class DocumentFunctions {
 
     static ValidationErrorDTO validateStoragePlace(byte[] content, DocumentService documentService, ObjectContext context) {
         Long currentStorageSize = DocumentDao.getStoredDocumentsSize(context)
-        if (documentService.storageLimit && currentStorageSize + content.length > documentService.storageLimit) {
+        if (documentService.storageLimit != null && currentStorageSize + content.length > documentService.storageLimit) {
             String otherwise = BILLING_APP_LINK ? "add additional storage <a href=\"${BILLING_APP_LINK}\">here.</a>" : "contact ish support, please."
-            String message = "You require additional document storage capacity to save this document. " +
-                    "Either make space by deleting some of your existing documents or ${otherwise}"
+            String message
+            if (documentService.storageLimit == 0) {
+                message = "Your license doesn't allow to storage documents. Contact ish support, please!"
+            } else {
+                message = "You require additional document storage capacity to save this document. " +
+                        "Either make space by deleting some of your existing documents or ${otherwise}"
+            }
             return new ValidationErrorDTO(null, 'content', message)
         }
     }
