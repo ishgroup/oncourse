@@ -101,7 +101,7 @@ module.exports = {
         "no-plusplus": "off",
         "no-trailing-spaces": "off",
         "no-underscore-dangle": "error",
-        "no-unused-expressions": "error",
+        "no-unused-expressions": "off",
         "no-shadow": "off",
         "no-var": "error",
         "object-shorthand": "error",
@@ -130,6 +130,7 @@ module.exports = {
         "spaced-comment": "error",
         "func-names": "off",
         //TODO remove the tslint legacy parts
+        "@typescript-eslint/no-unused-expressions": "off",
         "@typescript-eslint/tslint/config": [
             "error",
             {

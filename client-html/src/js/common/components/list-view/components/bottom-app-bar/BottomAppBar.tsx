@@ -190,7 +190,6 @@ class BottomAppBar extends React.PureComponent<any, any> {
       switchLayout,
       threeColumn,
       deleteEnabled,
-      deleteActionName,
       hasShareTypes,
       onCreate,
       findRelated,
@@ -383,15 +382,18 @@ class BottomAppBar extends React.PureComponent<any, any> {
                   />
                 ) : null}
 
-                <MenuItem
-                  disabled={selection.length !== 1 || !existingRecordSelected || !deleteEnabled}
-                  onClick={this.handleDeleteClick}
-                  classes={{
-                    root: clsx("listItemPadding", classes.cogWheelMenuDelete)
-                  }}
-                >
-                  {deleteActionName}
-                </MenuItem>
+                {deleteEnabled
+                  && (
+                    <MenuItem
+                      disabled={selection.length !== 1 || !existingRecordSelected}
+                      onClick={this.handleDeleteClick}
+                      classes={{
+                        root: clsx("listItemPadding", classes.cogWheelMenuDelete)
+                      }}
+                    >
+                      Delete record
+                    </MenuItem>
+                  )}
               </Menu>
             </div>
           </div>

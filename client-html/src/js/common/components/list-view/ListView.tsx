@@ -461,12 +461,12 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       this.onQuerySearchChange(records.search);
     }
 
-    if (
-      onSwipeableDrawerDirtyForm && !fullScreenEditView && rootEntity && !fetch.pending
-      && records.rows.length && selection.length && resetEditView
-    ) {
-      onSwipeableDrawerDirtyForm(isDirty || (creatingNew && selection[0] === "new"), resetEditView);
-    }
+    // if (
+    //   onSwipeableDrawerDirtyForm && !fullScreenEditView && rootEntity && !fetch.pending
+    //   && records.rows.length && selection.length && resetEditView
+    // ) {
+    //   onSwipeableDrawerDirtyForm(isDirty || (creatingNew && selection[0] === "new"), resetEditView);
+    // }
 
     if (selection.length && selection[0] !== "new" && typeof deleteDisabledCondition === "function") {
       this.updateDeleteCondition(!deleteDisabledCondition(this.props));
