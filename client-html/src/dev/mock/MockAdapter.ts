@@ -62,6 +62,7 @@ import { ImportTemplateApiMock } from "./api/automation/ImportTemplateApiMock";
 import { EntityRelationTypesApiMock } from "./api/preference/EntityRelationTypesApiMock";
 import { DocumentApiMock } from "./api/entities/DocumentApiMock";
 import { PriorLearningApiMock } from "./api/entities/PriorLearningApiMock";
+import { TutorRoleApiMock } from "./api/preference/TutorRoleApiMock";
 
 export const initMockDB = () => new MockAdapter();
 
@@ -85,6 +86,7 @@ export class MockAdapter {
     ContactRelationTypesApiMock.apply(this);
     EntityRelationTypesApiMock.apply(this);
     CustomFieldApiMock.apply(this);
+    TutorRoleApiMock.apply(this);
 
     // User Preferences
     UserPreferenceApiMock.apply(this);
