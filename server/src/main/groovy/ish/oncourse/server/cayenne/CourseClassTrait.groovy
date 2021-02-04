@@ -92,18 +92,18 @@ trait CourseClassTrait {
     List<DiscountCourseClass> getAvalibleDiscounts(Contact contact, List<Long> courseIds,
                                                    List<Long> productIds, List<Long> promoIds,
                                                    List<MembershipProduct> newMemberships, Integer enrolmentsCount, Money purchaseTotal ) {
-        List<EntityRelation> relations = EntityRelationDao.getRelatedFrom(objectContext, Course.simpleName, course.id) +
-                EntityRelationDao.getRelatedTo(objectContext, Course.simpleName, course.id)
-        List<Discount> discountsViaRelations = relations*.relationType*.discount
+        List<EntityRelation> relations = EntityRelationDao.getRelatedFrom(objectContext, Course.simpleName, course.id)
+                .findAll {
+                    (Course.simpleName == it.fromEntityIdentifier && it.fromEntityAngelId in courseIds) ||
+                        (Product.simpleName == it.fromEntityIdentifier && it.fromEntityAngelId in productIds)
+                }
+        List<Discount> discountsViaRelations = relations*.relationType*.discount.findAll { it != null }
 
         (ObjectSelect.query(DiscountCourseClass).
                 where(DiscountCourseClass.COURSE_CLASS.dot(CourseClass.ID).eq(id)) & getDiscountDateFilter()).
                 select(objectContext).
                 findAll { dcc ->
-                    discountsViaRelations.empty || relations.any { relation ->
-                        dcc.discount.id == relation.relationType.discount?.id &&
-                                ((relation.fromEntityAngelId in courseIds || relation.fromEntityAngelId in productIds) && relation.toEntityAngelId == course.id)
-                    }
+                    dcc.discount.entityRelationTypes.empty || dcc.discount in discountsViaRelations
                 }.
                 findAll { it.discount.code == null || it.discount.id in promoIds }.
                 findAll { it.discount.isStudentEligibile(contact, newMemberships, this, enrolmentsCount, purchaseTotal) }
