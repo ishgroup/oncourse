@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 
 public class UserApiTest {
-//    @Test
+    @Test
     public void test() {
         Results results = Runner.path(  "classpath:ish/oncourse/api/test/user").tags("~@ignore").parallel(1);
         assertEquals(results.getErrorMessages(), results.getFailCount(), 0);
