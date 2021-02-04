@@ -285,7 +285,7 @@ public class AngelServerFactory {
 
             context.commitChanges();
 
-            LOGGER.warn("System user {} have added successfully.", line);
+            LOGGER.warn("System user {} have been added successfully.", line);
         });
 
         if (systemUsersFile.toFile().delete()) {
