@@ -46,7 +46,7 @@ import FormSubmitButton from "../../../../common/components/form/FormSubmitButto
 import SimpleTagList from "../../../../common/components/form/simpleTagListComponent/SimpleTagList";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
+import {D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL} from "../../../../common/utils/dates/format";
 import { getDocumentVersion, iconSwitcher } from "../../../../common/components/form/documents/components/utils";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -346,7 +346,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                   <span>
                     This document will be permanently deleted after
                     { ' ' }
-                    { format(addDays(new Date(values.modifiedOn), 30), "d MMMM yy") }
+                    { format(addDays(new Date(values.modifiedOn), 30), D_MMM_YYYY) }
                   </span>
                 </Typography>
                 <Button variant="outlined" size="medium" color="secondary" onClick={restoreDocument}>

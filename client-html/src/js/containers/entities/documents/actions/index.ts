@@ -4,12 +4,10 @@ import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtil
 export const GET_DOCUMENT_EDIT = _toRequestType("get/list/entity/document/edit");
 export const GET_DOCUMENT_EDIT_FULFILLED = FULFILLED(GET_DOCUMENT_EDIT);
 
-export const DELETE_DOCUMENT_ITEM = _toRequestType("delete/document");
-export const DELETE_DOCUMENT_ITEM_FULFILLED = FULFILLED(DELETE_DOCUMENT_ITEM);
-
 export const UPDATE_DOCUMENT_ITEM = _toRequestType("put/document");
 export const UPDATE_DOCUMENT_ITEM_FULFILLED = FULFILLED(UPDATE_DOCUMENT_ITEM);
 
+export const DELETE_DOCUMENT_ITEM = _toRequestType("delete/document");
 export const RESTORE_DOCUMENT = _toRequestType("patch/document");
 
 export const CREATE_DOCUMENT_ITEM = _toRequestType("post/document");
@@ -27,9 +25,9 @@ export const getDocument = (id: number) => ({
   payload: id
 });
 
-export const removeDocument = (id: string) => ({
+export const removeDocument = (diff: Diff) => ({
   type: DELETE_DOCUMENT_ITEM,
-  payload: id
+  payload: diff
 });
 
 export const updateDocument = (id: string, document: Document) => ({

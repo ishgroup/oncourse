@@ -37,6 +37,7 @@ import {
   createDocument, getDocument, removeDocument, updateDocument
 } from "./actions";
 import DocumentEditView from "./components/DocumentEditView";
+import BinCogwheel from "./components/BinCogwheel";
 
 const styles = () => createStyles({
   linkBtnWrapper: {
@@ -65,8 +66,6 @@ interface DocumentProps {
   getRecords?: () => void;
   getFilters?: () => void;
   clearListState?: () => void;
-  onDelete?: (id: string) => void;
-  onRestore?: (id: string) => void;
   getTags?: () => void;
   onCreate: (document: Document) => void;
   classes?: any;
@@ -77,8 +76,6 @@ interface DocumentProps {
   match?: any;
   fullScreenEditView?: boolean;
   setListFullScreenEditView?: BooleanArgFunction;
-  selection?: ListState["selection"],
-  records?: ListState["records"],
 }
 
 let Initial: Document = {
@@ -216,7 +213,6 @@ const Documents: React.FC<DocumentProps> = props => {
   const {
     getDocumentRecord,
     onInit,
-    onDelete,
     onSave,
     getFilters,
     clearListState,
@@ -228,10 +224,7 @@ const Documents: React.FC<DocumentProps> = props => {
     history,
     location,
     match: { params, url },
-    setListFullScreenEditView,
-    selection,
-    records,
-    onRestore
+    setListFullScreenEditView
   } = props;
 
   const [openFileModal, setOpenFileModal] = React.useState<boolean>(false);
@@ -353,16 +346,6 @@ const Documents: React.FC<DocumentProps> = props => {
     }
   }, [openFileModal, manuallyOpenModal]);
 
-  const deletedSelected = React.useMemo(() => {
-    if (selection.length !== 1) {
-      return false;
-    }
-    const selectedRecord = records.rows.find(r => r.id === selection[0]);
-    const activeColumnIndex = records.columns.findIndex(c => c.attribute === "active");
-    return selectedRecord?.values[activeColumnIndex] === "false";
-  }, [selection, records]);
-
-  const onDeleteHandler = id => (deletedSelected ? onRestore(id) : onDelete(id));
 
   return (
     <>
@@ -377,19 +360,17 @@ const Documents: React.FC<DocumentProps> = props => {
           manualLink,
           hideFullScreenAppBar: true
         }}
+        CogwheelAdornment={BinCogwheel}
         EditViewContent={DocumentEditView}
         getEditRecord={getDocumentRecord}
         rootEntity="Document"
         onInit={onInit}
         customOnCreate={customOnCreate}
         onCreate={onDocumentCreate}
-        onDelete={onDeleteHandler}
-        deleteActionName={deletedSelected ? "Restore from Bin" : "Move to bin"}
-        deleteWithoutConfirmation
         onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
-        deleteDisabledCondition={deleteDisabledCondition}
+        defaultDeleteDisabled
         noListTags
       />
       <FileUploaderDialog
@@ -406,9 +387,7 @@ const Documents: React.FC<DocumentProps> = props => {
 };
 
 const mapStateToProps = (state: State) => ({
-  fullScreenEditView: state.list.fullScreenEditView,
-  selection: state.list.selection,
-  records: state.list.records
+  fullScreenEditView: state.list.fullScreenEditView
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -422,13 +401,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getDocumentRecord: (id: number) => dispatch(getDocument(id)),
   onSave: (id: string, document) => dispatch(updateDocument(id, document)),
   onCreate: document => dispatch(createDocument(document)),
-  onDelete: (id: string) => dispatch(removeDocument(id)),
-  onRestore: (id: string) => dispatch(restoreDocument({
-    ids: [Number(id)],
-    diff: {
-      isRemoved: "false"
-    }
-  })),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),

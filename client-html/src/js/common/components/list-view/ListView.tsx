@@ -199,7 +199,6 @@ interface Props extends Partial<ListState> {
   getListViewPreferences?: () => void;
   preferences?: UserPreferencesState;
   setListviewMainContentWidth?: (value: string) => void;
-  deleteActionName?: string;
   deleteWithoutConfirmation?: boolean;
 }
 
@@ -453,12 +452,12 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       this.onQuerySearchChange(records.search);
     }
 
-    if (
-      onSwipeableDrawerDirtyForm && !fullScreenEditView && rootEntity && !fetch.pending
-      && records.rows.length && selection.length && resetEditView
-    ) {
-      onSwipeableDrawerDirtyForm(isDirty || (creatingNew && selection[0] === "new"), resetEditView);
-    }
+    // if (
+    //   onSwipeableDrawerDirtyForm && !fullScreenEditView && rootEntity && !fetch.pending
+    //   && records.rows.length && selection.length && resetEditView
+    // ) {
+    //   onSwipeableDrawerDirtyForm(isDirty || (creatingNew && selection[0] === "new"), resetEditView);
+    // }
 
     if (selection.length && selection[0] !== "new" && typeof deleteDisabledCondition === "function") {
       this.updateDeleteCondition(!deleteDisabledCondition(this.props));
@@ -988,7 +987,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       creatingNew,
       fullScreenEditView,
       searchQuery,
-      deleteActionName = "Delete record"
     } = this.props;
 
     const {
@@ -1080,7 +1078,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             querySearch={querySearch}
             threeColumn={threeColumn}
             deleteEnabled={deleteEnabled}
-            deleteActionName={deleteActionName}
             showExportDrawer={showExportDrawer}
             toggleExportDrawer={this.toggleExportDrawer}
             showBulkEditDrawer={showBulkEditDrawer}
