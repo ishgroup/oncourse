@@ -1043,35 +1043,35 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       propType = Entities[rootEntity][tokenText];
     }
 
-    if (!propType) {
-      const lastPathMatch = value
-        .split(" ")
-        .reverse()
-        .join(" ")
-        .match(/[a-z](?:\S+?\.)+\S+[a-z]/);
-
-      if (!lastPathMatch) {
-        return;
-      }
-
-      const entries = lastPathMatch[0].split(".");
-      const tokenIndex = entries.findIndex(e => e === tokenText);
-
-      let ob = Entities[rootEntity];
-
-      entries.forEach((e, i) => {
-        if (tokenIndex !== -1 && tokenIndex + 1 === i) {
-          return;
-        }
-
-        if (ob) {
-          if (ob[e]) {
-            propType = ob[e];
-          }
-          ob = Entities[ob[e]];
-        }
-      });
-    }
+    // if (!propType) {
+    //   const lastPathMatch = value
+    //     .split(" ")
+    //     .reverse()
+    //     .join(" ")
+    //     .match(/[a-z](?:\S+?\.)+\S+[a-z]/);
+    //
+    //   if (!lastPathMatch) {
+    //     return;
+    //   }
+    //
+    //   const entries = lastPathMatch[0].split(".");
+    //   const tokenIndex = entries.findIndex(e => e === tokenText);
+    //
+    //   let ob = Entities[rootEntity];
+    //
+    //   entries.forEach((e, i) => {
+    //     if (tokenIndex !== -1 && tokenIndex + 1 === i) {
+    //       return;
+    //     }
+    //
+    //     if (ob) {
+    //       if (ob[e]) {
+    //         propType = ob[e];
+    //       }
+    //       ob = Entities[ob[e]];
+    //     }
+    //   });
+    // }
 
     if (Entities[propType]) {
       this.pathFilter = propType;
