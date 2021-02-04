@@ -3764,6 +3764,9 @@
 	<db-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount">
 		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
+	<db-relationship name="relationTypes" source="Discount" target="EntityRelationType" toMany="true">
+		<db-attribute-pair source="id" target="discountId"/>
+	</db-relationship>
 	<db-relationship name="automationBindings" source="ExportTemplate" target="AutomationBinding" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
@@ -4855,6 +4858,7 @@
 	<obj-relationship name="relationType" source="EntityRelation" target="EntityRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
 	<obj-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" deleteRule="Deny" db-relationship-path="entityRelations"/>
 	<obj-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount" deleteRule="Nullify" db-relationship-path="entityRelationTypeDiscount"/>
+	<obj-relationship name="entityRelationTypes" source="Discount" target="EntityRelationType" deleteRule="Nullify" db-relationship-path="relationTypes"/>
 	<obj-relationship name="automationBindings" source="ExportTemplate" target="ExportTemplateAutomationBinding" deleteRule="Cascade" db-relationship-path="automationBindings"/>
 	<obj-relationship name="relatedObject" source="ExportTemplateAutomationBinding" target="ExportTemplate" deleteRule="Nullify" db-relationship-path="exportTemplate"/>
 	<obj-relationship name="fieldConfiguration" source="Field" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>
