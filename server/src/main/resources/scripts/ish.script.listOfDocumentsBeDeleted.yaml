@@ -1,4 +1,4 @@
-name: notification with be deleted documents list
+name: notification of documents pending for deletion
 body: ish.script.listOfDocumentsBeDeleted.groovy
 keyCode: ish.script.listOfDocumentsBeDeleted
 enabled: false

@@ -1,4 +1,4 @@
-name: Notification with be deleted documents list
+name: Notification of documents pending for deletion
 type: email
 keyCode: ish.email.notificationWithDocumentsList
 txtTemplate: ish.email.notificationWithDocumentsList.txt
