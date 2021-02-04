@@ -89,6 +89,7 @@ import { mockEntityRelationTypes } from "./data/entityRelationTypes";
 import { mockLanguages } from "./data/languages";
 import { mockDocuments } from "./data/entities/documents";
 import { mockPriorLearnings } from "./data/entities/priorLearnings";
+import { mockTutorRoles } from "./data/preference/tutorRoles";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -227,6 +228,8 @@ export class MockDB {
 
   priorLearnings: any;
 
+  tutorRoles: any;
+
   constructor() {
     this.init();
   }
@@ -249,6 +252,7 @@ export class MockDB {
     this.listExport = mockListExport.call(this);
     this.notes = mockNotes.call(this);
     this.languages = mockLanguages.call(this);
+    this.tutorRoles = mockTutorRoles.call(this);
 
     //  Automation
     this.scripts = mockScripts.call(this);
