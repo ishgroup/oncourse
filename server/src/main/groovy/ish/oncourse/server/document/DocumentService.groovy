@@ -96,7 +96,7 @@ class DocumentService {
 			value =  value * 1024 * 1024
 		} else if (unit == 'g') {
 			value = value * 1024 * 1024 * 1024
-		} else {
+		} else if (value != 0) {
 			RuntimeUtil.println("Unsupported type of storage limit: " + limit)
 			value = null
 		}
