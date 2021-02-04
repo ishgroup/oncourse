@@ -3,8 +3,10 @@ records = query {
     query "isRemoved is true and modifiedOn <= today - 24 days"
 }
 
-message {
-    template templateForNotification
-    to preference.email.admin
-    documents records*.currentVersion
+if (!records.empty) {
+    message {
+        template templateForNotification
+        to preference.email.admin
+        documents records*.currentVersion
+    }
 }
