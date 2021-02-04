@@ -6,31 +6,87 @@
 import * as Model from "../../../js/model/preferences";
 
 export function mockPreferences() {
-  this.getPreferences = (keys: string[]) => {
-    return keys.map(key => ({
-      uniqueKey: key,
-      valueString: this.preference[key]
-    }));
-  };
+  this.getPreferences = (keys: string[]) => keys.map(key => ({
+    uniqueKey: key,
+    valueString: this.preference[key]
+  }));
 
-  this.preferencesLockedDate = () => {
-    return {
-      year: 2015,
-      month: "DECEMBER",
-      leapYear: false,
-      dayOfYear: 365,
-      dayOfWeek: "THURSDAY",
-      era: "CE",
-      chronology: { calendarType: "iso8601", id: "ISO" },
-      monthValue: 12,
-      dayOfMonth: 31
-    };
-  };
+  this.preferencesLockedDate = () => ({
+    year: 2015,
+    month: "DECEMBER",
+    leapYear: false,
+    dayOfYear: 365,
+    dayOfWeek: "THURSDAY",
+    era: "CE",
+    chronology: { calendarType: "iso8601", id: "ISO" },
+    monthValue: 12,
+    dayOfMonth: 31
+  });
 
   this.savePreferences = fields =>
     fields.forEach(item => {
       this.preference[item.uniqueKey] = item.valueString;
     });
+
+  this.getPreferencesEnumByName = enumName => {
+    if (enumName === "ExportJurisdiction") {
+      return [
+        {
+          value: "1",
+          label: "NCVER (Standard AVETMISS)"
+        },
+        {
+          value: "2",
+          label: "NSW Department of Education"
+        },
+        {
+          value: "3",
+          label: "CSO (Community Colleges)"
+        },
+        {
+          value: "4",
+          label: "STSOnline (NSW)"
+        },
+        {
+          value: "5",
+          label: "DETConnect (Queensland)"
+        },
+        {
+          value: "6",
+          label: "STELA (South Australia)"
+        },
+        {
+          value: "7",
+          label: "Skills Tasmania"
+        },
+        {
+          value: "8",
+          label: "Skills Victoria"
+        },
+        {
+          value: "9",
+          label: "STARS (WA)"
+        },
+        {
+          value: "10",
+          label: "AQTF Competency Completions"
+        },
+        {
+          value: "11",
+          label: "WA RAPT"
+        },
+        {
+          value: "12",
+          label: "Northern Territories VET Provider Portal"
+        },
+        {
+          value: "13",
+          label: "AVETARS (ACT)"
+        }
+      ];
+    }
+    return [];
+  };
 
   return {
     // College info preferences
