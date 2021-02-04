@@ -300,6 +300,10 @@ export function listApiMock() {
         return promiseResolve(config, this.db.getPlainInvoices(config.params));
       }
 
+      case "DefinedTutorRole": {
+        return promiseResolve(config, this.db.getPlainTutorRoles());
+      }
+
       default: {
         return promiseResolve(config, {});
       }
