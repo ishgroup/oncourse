@@ -17,6 +17,7 @@ import ish.oncourse.model.CorporatePassDiscount;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.DiscountMembership;
+import ish.oncourse.model.EntityRelationType;
 import ish.oncourse.model.InvoiceLineDiscount;
 
 /**
@@ -62,6 +63,7 @@ public abstract class _Discount extends WillowCayenneObject {
     public static final String DISCOUNT_CONCESSION_TYPES_PROPERTY = "discountConcessionTypes";
     public static final String DISCOUNT_COURSE_CLASSES_PROPERTY = "discountCourseClasses";
     public static final String DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY = "discountMembershipProducts";
+    public static final String ENTITY_RELATION_TYPES_PROPERTY = "entityRelationTypes";
     public static final String INVOICE_LINE_DISCOUNTS_PROPERTY = "invoiceLineDiscounts";
 
     public static final String ID_PK_COLUMN = "id";
@@ -99,6 +101,7 @@ public abstract class _Discount extends WillowCayenneObject {
     public static final Property<List<DiscountConcessionType>> DISCOUNT_CONCESSION_TYPES = Property.create("discountConcessionTypes", List.class);
     public static final Property<List<DiscountCourseClass>> DISCOUNT_COURSE_CLASSES = Property.create("discountCourseClasses", List.class);
     public static final Property<List<DiscountMembership>> DISCOUNT_MEMBERSHIP_PRODUCTS = Property.create("discountMembershipProducts", List.class);
+    public static final Property<List<EntityRelationType>> ENTITY_RELATION_TYPES = Property.create("entityRelationTypes", List.class);
     public static final Property<List<InvoiceLineDiscount>> INVOICE_LINE_DISCOUNTS = Property.create("invoiceLineDiscounts", List.class);
 
     protected Long angelId;
@@ -135,6 +138,7 @@ public abstract class _Discount extends WillowCayenneObject {
     protected Object discountConcessionTypes;
     protected Object discountCourseClasses;
     protected Object discountMembershipProducts;
+    protected Object entityRelationTypes;
     protected Object invoiceLineDiscounts;
 
     public void setAngelId(Long angelId) {
@@ -477,6 +481,19 @@ public abstract class _Discount extends WillowCayenneObject {
         return (List<DiscountMembership>)readProperty("discountMembershipProducts");
     }
 
+    public void addToEntityRelationTypes(EntityRelationType obj) {
+        addToManyTarget("entityRelationTypes", obj, true);
+    }
+
+    public void removeFromEntityRelationTypes(EntityRelationType obj) {
+        removeToManyTarget("entityRelationTypes", obj, true);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<EntityRelationType> getEntityRelationTypes() {
+        return (List<EntityRelationType>)readProperty("entityRelationTypes");
+    }
+
     public void addToInvoiceLineDiscounts(InvoiceLineDiscount obj) {
         addToManyTarget("invoiceLineDiscounts", obj, true);
     }
@@ -565,6 +582,8 @@ public abstract class _Discount extends WillowCayenneObject {
                 return this.discountCourseClasses;
             case "discountMembershipProducts":
                 return this.discountMembershipProducts;
+            case "entityRelationTypes":
+                return this.entityRelationTypes;
             case "invoiceLineDiscounts":
                 return this.invoiceLineDiscounts;
             default:
@@ -678,6 +697,9 @@ public abstract class _Discount extends WillowCayenneObject {
             case "discountMembershipProducts":
                 this.discountMembershipProducts = val;
                 break;
+            case "entityRelationTypes":
+                this.entityRelationTypes = val;
+                break;
             case "invoiceLineDiscounts":
                 this.invoiceLineDiscounts = val;
                 break;
@@ -730,6 +752,7 @@ public abstract class _Discount extends WillowCayenneObject {
         out.writeObject(this.discountConcessionTypes);
         out.writeObject(this.discountCourseClasses);
         out.writeObject(this.discountMembershipProducts);
+        out.writeObject(this.entityRelationTypes);
         out.writeObject(this.invoiceLineDiscounts);
     }
 
@@ -769,6 +792,7 @@ public abstract class _Discount extends WillowCayenneObject {
         this.discountConcessionTypes = in.readObject();
         this.discountCourseClasses = in.readObject();
         this.discountMembershipProducts = in.readObject();
+        this.entityRelationTypes = in.readObject();
         this.invoiceLineDiscounts = in.readObject();
     }
 

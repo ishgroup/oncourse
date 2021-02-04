@@ -3442,6 +3442,9 @@
 	<db-relationship name="discount_membershipProducts" source="Discount" target="DiscountMembership" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
+	<db-relationship name="relationTypes" source="Discount" target="EntityRelationType" toMany="true">
+		<db-attribute-pair source="id" target="discountId"/>
+	</db-relationship>
 	<db-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLine_Discount" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
@@ -4487,6 +4490,7 @@
 	<obj-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discountCourseClasses"/>
 	<obj-relationship name="discountMembershipProducts" source="Discount" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discount_membershipProducts"/>
+	<obj-relationship name="entityRelationTypes" source="Discount" target="EntityRelationType" deleteRule="Nullify" db-relationship-path="relationTypes"/>
 	<obj-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoiceLineDiscounts"/>
 	<obj-relationship name="college" source="DiscountConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="concessionType" source="DiscountConcessionType" target="ConcessionType" deleteRule="Nullify" db-relationship-path="concessionType"/>

@@ -139,13 +139,10 @@ class CalculateEnrolmentsPrice {
                 .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(ADD_ALLOW_REMOVAL, ADD_NO_REMOVAL))
                 .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.DISCOUNT).isNotNull())
                 .select(context)
-        List<Discount> discountsViaRelations = relations*.relationType*.discount
+        List<Discount> discountsViaRelations = relations*.relationType*.discount.findAll { it != null }
 
         classDiscounts.findAll { dcc ->
-            discountsViaRelations.empty || relations.any { relation ->
-                (dcc.discount as Discount).id == relation.relationType.discount?.id &&
-                        ((relation.fromEntityWillowId in courseIds || relation.fromEntityWillowId in productIds))
-            }
+            (dcc.discount as Discount).entityRelationTypes.empty || (dcc.discount as Discount) in discountsViaRelations
         }
     }
 
