@@ -31,9 +31,9 @@ paths:
       x-filter:
         - ish.oncourse.api.access.AuthFilter
       parameters:
-        - name: name
+        - name: collegeKey
           in: path
-          description: College name
+          description: College unique key
           required: true
           type: string
         - name: x-g-recaptcha
@@ -83,6 +83,10 @@ definitions:
         description: user email
         example: john.smith@gmail.com
       collegeKey:
+        type: string
+        description: college sub domain
+        example: sttrinians
+      organisationName:
         type: string
         description: college sub domain
         example: sttrinians
