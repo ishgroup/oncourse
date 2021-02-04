@@ -12,6 +12,8 @@ export function TutorRoleApiMock(mock) {
     return promiseResolve(config, {});
   });
 
+  this.api.onPut(new RegExp(`v1/list/entity/definedTutorRole/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
+
   this.api.onDelete(new RegExp(`v1/list/entity/definedTutorRole/\\d+`)).reply(config => {
     const id = getParamsId(config);
     this.db.removeTutorRole(id);
