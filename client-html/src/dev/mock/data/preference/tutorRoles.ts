@@ -1,4 +1,4 @@
-import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockTutorRoles() {
   this.getPlainTutorRoles = () => this.tutorRoles;
@@ -36,6 +36,10 @@ export function mockTutorRoles() {
     });
 
     this.tutorRoles = tutorRoles;
+  };
+
+  this.removeTutorRole = id => {
+    this.tutorRoles = removeItemByEntity(this.tutorRoles, id);
   };
 
   const rows = generateArraysOfRecords(20, [

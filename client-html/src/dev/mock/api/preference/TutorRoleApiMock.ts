@@ -11,4 +11,10 @@ export function TutorRoleApiMock(mock) {
     this.db.createTutorRole(config.data);
     return promiseResolve(config, {});
   });
+
+  this.api.onDelete(new RegExp(`v1/list/entity/definedTutorRole/\\d+`)).reply(config => {
+    const id = getParamsId(config);
+    this.db.removeTutorRole(id);
+    return promiseResolve(config, {});
+  });
 }
