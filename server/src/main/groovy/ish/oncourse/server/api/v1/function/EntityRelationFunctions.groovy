@@ -85,13 +85,13 @@ class EntityRelationFunctions {
     static SaleDTO toRestToEntityRelation(EntityRelation relation) {
         SaleDTO dto
         if (Course.simpleName == relation.toEntityIdentifier) {
-            dto = toRestSalable(SelectById.query(Course, relation.toEntityAngelId).selectOne(relation.context))
+            dto = toRestSalable(getRecordById(relation.context, Course, relation.toEntityAngelId))
         } else if (Product.simpleName == relation.toEntityIdentifier) {
-            dto = toRestSalable(SelectById.query(Product, relation.toEntityAngelId).selectOne(relation.context))
+            dto = toRestSalable(getRecordById(relation.context, Product, relation.toEntityAngelId))
         } else if (Module.simpleName == relation.toEntityIdentifier) {
-            dto = toRestSalable(SelectById.query(Module, relation.toEntityAngelId).selectOne(relation.context))
+            dto = toRestSalable(getRecordById(relation.context, Module, relation.toEntityAngelId))
         } else if (Qualification.simpleName == relation.toEntityIdentifier) {
-            dto = toRestSalable(SelectById.query(Qualification, relation.toEntityAngelId).selectOne(relation.context))
+            dto = toRestSalable(getRecordById(relation.context, Qualification, relation.toEntityAngelId))
         } else {
             throw new IllegalArgumentException("Unsupported entity type relation")
         }
@@ -105,13 +105,13 @@ class EntityRelationFunctions {
     static SaleDTO toRestFromEntityRelation(EntityRelation relation) {
         SaleDTO dto
         if (Course.simpleName == relation.fromEntityIdentifier) {
-            dto = toRestSalable(SelectById.query(Course, relation.fromEntityAngelId).selectOne(relation.context))
+            dto = toRestSalable(getRecordById(relation.context, Course, relation.fromEntityAngelId))
         } else if (Product.simpleName == relation.fromEntityIdentifier) {
-            dto = toRestSalable(SelectById.query(Product, relation.fromEntityAngelId).selectOne(relation.context))
+            dto = toRestSalable(getRecordById(relation.context, Product, relation.fromEntityAngelId))
         } else if (Module.simpleName == relation.fromEntityIdentifier) {
-            dto = toRestSalable(SelectById.query(Module, relation.fromEntityAngelId).selectOne(relation.context))
+            dto = toRestSalable(getRecordById(relation.context, Module, relation.fromEntityAngelId))
         } else if (Qualification.simpleName == relation.fromEntityIdentifier) {
-            dto = toRestSalable(SelectById.query(Qualification, relation.fromEntityAngelId).selectOne(relation.context))
+            dto = toRestSalable(getRecordById(relation.context, Qualification, relation.fromEntityAngelId))
         } else {
             throw new IllegalArgumentException("Unsupported entity type relation")
         }
