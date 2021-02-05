@@ -130,7 +130,19 @@ definitions:
         type: string
         description: user phone number
         example: 0412345678
-      
+      webSiteTemplate:
+        description: web site template
+        $ref: '#/definitions/SiteTemplate'
+
+  SiteTemplate:
+    type: string
+    enum:
+      - a
+      - b
+      - c
+      - d
+      - e
+      - f
   ErrorDTO:
     type: object
     properties:
