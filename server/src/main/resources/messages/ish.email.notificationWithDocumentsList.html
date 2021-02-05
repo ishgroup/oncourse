@@ -5,7 +5,7 @@ ${render(headerKeycode)}
         <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" valign="top" align="left">
             <div class="ish_text_container" style="word-break: break-word;">
                 <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-break: break-word;text-align: left;">
-                    The following documents will be permanently deleted from your ish onCourse system after ${now.plusDays(6)}
+                    The following documents will be permanently deleted from your ish onCourse system after ${DateFormatter.getNextDayOfWeekForToday(Calendar.SUNDAY, "dd MMMM yyyy")}
                 </p>
             </div>
         </td>

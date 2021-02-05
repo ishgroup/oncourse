@@ -5,7 +5,7 @@ txtTemplate: ish.email.notificationWithDocumentsList.txt
 htmlTemplate: ish.email.notificationWithDocumentsList.html
 subject: A list of be deleted documents on Sunday
 entityClass: DocumentVersion
-description: An email with a notification with be deleted documents list on this Sunday
+description: An email with a notification with to be deleted documents list on this Sunday
 options:
   - name: headerKeycode
     dataType: TEXT
