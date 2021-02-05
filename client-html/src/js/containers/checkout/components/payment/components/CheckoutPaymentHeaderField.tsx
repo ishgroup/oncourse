@@ -2,7 +2,7 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import {CheckoutPaymentPlan, PaymentMethod} from "@api/model";
+import { CheckoutPaymentPlan, PaymentMethod } from "@api/model";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -452,7 +452,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
 
     payLaterTotal = decimalPlus(payLaterTotal > 0 ? decimalMinus(payLaterTotal, payNowExCredit) : 0, payLaterAdjustment);
 
-    dispatch(change(form, "paymentPlans", [
+    const plansFinal = [
       {
         amount: checkoutSummary.payNowTotal,
       },
@@ -461,7 +461,10 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
       {
         amount: payLaterTotal > 0 ? payLaterTotal : 0,
       }
-    ]));
+    ];
+
+    dispatch(change(form, "paymentPlans", plansFinal));
+    setPaymentPlans(plansFinal.filter(p => p.date && p.amount > 0).map(({ amount, date }) => ({ amount, date: format(date, YYYY_MM_DD_MINUSED) })));
   }, [
     checkoutItems,
     paymentPlansTotal,
