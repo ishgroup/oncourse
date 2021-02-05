@@ -104,7 +104,7 @@ const getSessionsWithRepeated = (
   repeatTimes: number,
   allSessions: TimetableSession[]
 ) => {
-  let repeated = Array.from(Array(repeatTimes));
+  let repeated = Array.from(Array(repeatTimes <= 0 ? 1 : repeatTimes));
   let repeatHandler = addHours;
   let indexIncrement = 1;
 
