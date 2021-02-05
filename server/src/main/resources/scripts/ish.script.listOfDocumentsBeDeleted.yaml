@@ -1,7 +1,7 @@
 name: notification of documents pending for deletion
 body: ish.script.listOfDocumentsBeDeleted.groovy
 keyCode: ish.script.listOfDocumentsBeDeleted
-enabled: false
+enabled: true
 triggerType: CRON
 schedule: 0 0 7 ? * MON *
 description: A notification with list of documents which will be deleted
