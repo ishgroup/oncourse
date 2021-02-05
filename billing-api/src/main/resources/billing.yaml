@@ -113,6 +113,10 @@ definitions:
         type: string
         description: College country
         example: Australia  
+      timeZone:
+        type: string
+        description: College country
+        example: Australia?sydney
       userEmail:
         type: string
         format: email

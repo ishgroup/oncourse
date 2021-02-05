@@ -1,6 +1,7 @@
 package ish.oncourse.willow.billing.filter
 
 import com.google.inject.Inject
+import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import ish.oncourse.api.access.AuthFilter
@@ -14,6 +15,7 @@ import javax.ws.rs.container.ContainerRequestFilter
 import javax.ws.rs.core.Response
 
 @AuthFilter
+@CompileDynamic
 class SessionFilter  implements ContainerRequestFilter {
 
     RequestService requestService
