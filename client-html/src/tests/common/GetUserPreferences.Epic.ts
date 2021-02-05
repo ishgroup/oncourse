@@ -7,7 +7,7 @@ import {
 import { EpicGetUserPreferences } from "../../js/common/epics/EpicGetUserPreferences";
 import { DefaultEpic } from "./Default.Epic";
 
-export const GetPreferences = (keys: PreferenceEnum[]) => DefaultEpic({
+export const GetUserPreferences = (keys: PreferenceEnum[]) => DefaultEpic({
   action: getUserPreferences(keys),
   epic: EpicGetUserPreferences,
   processData: () => {

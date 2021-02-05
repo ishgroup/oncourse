@@ -1,7 +1,7 @@
 import { LICENSE_ACCESS_CONTROL_KEY } from "../../js/constants/Config";
-import { GetPreferences } from "../common/GetPreferences.Epic";
+import { GetUserPreferences } from "../common/GetUserPreferences.Epic";
 
 describe("Get license access control preferences epic tests", () => {
   it("should return correct actions", () =>
-    GetPreferences([LICENSE_ACCESS_CONTROL_KEY]));
+    GetUserPreferences([LICENSE_ACCESS_CONTROL_KEY]));
 });
