@@ -7,7 +7,6 @@ import { DASHBOARD_CATEGORY_WIDTH_KEY } from "../../js/constants/Config";
 import { GetPreferences } from "../common/GetPreferences.Epic";
 
 describe("Get dashboard preferences epic tests", () => {
-  it("should return correct actions", () => {
-    return GetPreferences([DASHBOARD_CATEGORY_WIDTH_KEY]);
-  });
+  it("should return correct actions", () =>
+    GetPreferences([DASHBOARD_CATEGORY_WIDTH_KEY]));
 });
