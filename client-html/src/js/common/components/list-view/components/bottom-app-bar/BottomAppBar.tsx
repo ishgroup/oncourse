@@ -16,6 +16,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Tooltip from "@material-ui/core/Tooltip";
 import { fade, darken } from "@material-ui/core/styles/colorManipulator";
 import FindInPage from "@material-ui/icons/FindInPage";
+import { connect } from "react-redux";
 import ExecuteScriptModal from "../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { openInternalLink } from "../../../../utils/links";
 import SearchInput from "./components/SearchInput";
@@ -25,6 +26,20 @@ import ViewSwitcher from "./components/ViewSwitcher";
 import { APP_BAR_HEIGHT } from "../../../../../constants/Config";
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
+import { State } from "../../../../../reducers/state";
+
+const SendMessageEntities = [
+  "Invoice",
+  "Application",
+  "Contact",
+  "Enrolment",
+  "CourseClass",
+  "PaymentIn",
+  "PaymentOut",
+  "Payslip",
+  "ProductItem",
+  "WaitingList"
+];
 
 const styles = theme => createStyles({
     root: {
@@ -201,7 +216,9 @@ class BottomAppBar extends React.PureComponent<any, any> {
       searchMenuItemsRenderer,
       createButtonDisabled,
       searchQuery,
-      filteredCount
+      filteredCount,
+      messageTemplates,
+      scripts
     } = this.props;
 
     const {
@@ -212,6 +229,45 @@ class BottomAppBar extends React.PureComponent<any, any> {
     } = this.state;
 
     const existingRecordSelected = Boolean(selection.length) && selection[0] !== "NEW";
+
+    const isSendMessageAvailable = SendMessageEntities.includes(rootEntity) && Array.isArray(messageTemplates) && messageTemplates.length;
+
+    const settingsItems = [
+      (selection.length === 0 || existingRecordSelected) && scripts?.length && (
+        <ScriptsMenu
+          scripts={scripts}
+          classes={classes}
+          entity={rootEntity}
+          closeAll={this.handleClose}
+          openScriptModal={this.openScriptModal}
+        />
+      ),
+      isSendMessageAvailable && <SendMessageMenu selection={selection} entity={rootEntity} closeAll={this.handleClose} />,
+      CogwheelAdornment && (
+        <CogwheelAdornment
+          closeMenu={this.handleClose}
+          menuItemClass="listItemPadding"
+          searchQuery={searchQuery}
+          selection={selection}
+          showConfirm={showConfirm}
+          onCreate={onCreate}
+          entity={rootEntity}
+          showBulkEditDrawer={showBulkEditDrawer}
+          toggleBulkEditDrawer={toggleBulkEditDrawer}
+        />
+      ),
+      deleteEnabled
+      && (
+        <MenuItem
+          disabled={selection.length !== 1 || !existingRecordSelected}
+          onClick={this.handleDeleteClick}
+          classes={{
+            root: clsx("listItemPadding", classes.cogWheelMenuDelete)
+          }}
+        >
+          Delete record
+        </MenuItem>
+      )].filter(i => i);
 
     return (
       <>
@@ -337,7 +393,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                       root: classes.actionsBarButton,
                       disabled: classes.buttonDisabledFade
                     }}
-                    disabled={fetch.pending}
+                    disabled={fetch.pending || !settingsItems.length}
                     color="inherit"
                     aria-owns={showSettingsMenu ? "settings" : undefined}
                     aria-haspopup="true"
@@ -357,43 +413,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                 }}
                 disableAutoFocusItem
               >
-                {(selection.length === 0 || existingRecordSelected) && (
-                  <ScriptsMenu
-                    classes={classes}
-                    entity={rootEntity}
-                    closeAll={this.handleClose}
-                    openScriptModal={this.openScriptModal}
-                  />
-                )}
-
-                <SendMessageMenu selection={selection} entity={rootEntity} closeAll={this.handleClose} />
-
-                {CogwheelAdornment ? (
-                  <CogwheelAdornment
-                    closeMenu={this.handleClose}
-                    menuItemClass="listItemPadding"
-                    searchQuery={searchQuery}
-                    selection={selection}
-                    showConfirm={showConfirm}
-                    onCreate={onCreate}
-                    entity={rootEntity}
-                    showBulkEditDrawer={showBulkEditDrawer}
-                    toggleBulkEditDrawer={toggleBulkEditDrawer}
-                  />
-                ) : null}
-
-                {deleteEnabled
-                  && (
-                    <MenuItem
-                      disabled={selection.length !== 1 || !existingRecordSelected}
-                      onClick={this.handleDeleteClick}
-                      classes={{
-                        root: clsx("listItemPadding", classes.cogWheelMenuDelete)
-                      }}
-                    >
-                      Delete record
-                    </MenuItem>
-                  )}
+                {settingsItems}
               </Menu>
             </div>
           </div>
@@ -403,4 +423,9 @@ class BottomAppBar extends React.PureComponent<any, any> {
   }
 }
 
-export default withStyles(styles)(BottomAppBar);
+const mapStateToProps = (state: State) => ({
+  messageTemplates: state.list.emailTemplatesWithKeyCode,
+  scripts: state.list.scripts
+});
+
+export default connect<any, any, any>(mapStateToProps)(withStyles(styles)(BottomAppBar));

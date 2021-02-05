@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import { Script } from "@api/model";
 import { Menu } from "@material-ui/core";
 import { Dispatch } from "redux";
-import { State } from "../../../../../../reducers/state";
 import { getScripts } from "../../../../../actions";
 
 interface ScriptsMenuProps {
@@ -35,7 +34,7 @@ const ScriptsMenu = React.memo<ScriptsMenuProps>(props => {
     }
   }, []);
 
-  return scripts && scripts.length ? (
+  return (
     <>
       <MenuItem
         classes={{
@@ -72,15 +71,12 @@ const ScriptsMenu = React.memo<ScriptsMenuProps>(props => {
         ))}
       </Menu>
     </>
-  ) : null;
+  );
 });
 
-const mapStateToProps = (state: State) => ({
-  scripts: state.list.scripts
-});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getScripts: (entity: string) => dispatch(getScripts(entity))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ScriptsMenu);
+export default connect<any, any, any>(null, mapDispatchToProps)(ScriptsMenu);

@@ -11,8 +11,8 @@ import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { State } from "../../../../reducers/state";
 import {
   CHECKOUT_EMPTY_PAYMENT_ACTION,
-  CHECKOUT_PROCESS_CC_PAYMENT,
-  CHECKOUT_PROCESS_CC_PAYMENT_FULFILLED,
+  CHECKOUT_PROCESS_PAYMENT,
+  CHECKOUT_PROCESS_PAYMENT_FULFILLED,
   checkoutPaymentSetCustomStatus,
   checkoutPaymentSetStatus,
   checkoutSetPaymentProcessing
@@ -24,7 +24,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { getCheckoutModel } from "../../utils";
 
 const request: EpicUtils.Request<any, State, { xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string }> = {
-  type: CHECKOUT_PROCESS_CC_PAYMENT,
+  type: CHECKOUT_PROCESS_PAYMENT,
   getData: ({
   xValidateOnly, xPaymentSessionId, xOrigin
   }, s) => {
@@ -44,15 +44,15 @@ const request: EpicUtils.Request<any, State, { xValidateOnly: boolean, xPaymentS
         ? checkoutPaymentSetCustomStatus("success")
         : { type: CHECKOUT_EMPTY_PAYMENT_ACTION },
       {
-        type: CHECKOUT_PROCESS_CC_PAYMENT_FULFILLED,
+        type: CHECKOUT_PROCESS_PAYMENT_FULFILLED,
         payload: { ...checkoutResponse }
       },
       checkoutSetPaymentProcessing(false),
     ];
   },
-  processError: response => (response ? [
-    checkoutPaymentSetStatus("fail", response.status, response.statusText, response.data),
+  processError: (response, { xValidateOnly }) => (response ? [
     checkoutSetPaymentProcessing(false),
+    ...xValidateOnly ? [] : [checkoutPaymentSetStatus("fail", response.status, response.statusText, response.data)],
     ...Array.isArray(response.data) ? [{
       type: SHOW_MESSAGE,
       payload: {
@@ -72,4 +72,4 @@ const request: EpicUtils.Request<any, State, { xValidateOnly: boolean, xPaymentS
     ...FetchErrorHandler(response, "Payment gateway cannot be contacted. Please try again later or contact ish support.")])
 };
 
-export const EpicCheckoutProcessCcPayment: Epic<any, any> = EpicUtils.Create(request);
+export const EpicCheckoutProcessPayment: Epic<any, any> = EpicUtils.Create(request);
