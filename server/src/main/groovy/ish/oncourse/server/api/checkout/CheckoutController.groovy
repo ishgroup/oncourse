@@ -109,7 +109,6 @@ class CheckoutController {
     private ObjectContext context
     private List<CheckoutValidationErrorDTO> result = []
     private Boolean multyPurchase
-    private Enrolment paymentPlan = null
     private Map<Long, Integer> currentEnrolments = [:]
     private List<CheckoutEnrolmentDTO> processedEnrolments = []
 
@@ -186,10 +185,6 @@ class CheckoutController {
 
         if (dto.appliedDiscountId) {
             applyDiscount(dto.totalOverride, enrolment.originalInvoiceLine, courseClass, CayenneFunctions.getRecordById(context, Discount, dto.appliedDiscountId))
-        }
-
-        if (!courseClass.paymentPlanLines.empty && paymentPlan == null) {
-            createPaymentPlan(enrolment)
         }
 
         if (courseClass.isCancelled) {
@@ -372,18 +367,13 @@ class CheckoutController {
 
         invoice.updateAmountOwing()
 
-        if (paymentPlan) {
-            Money notPaymentPlanAmount = invoice.invoiceLines
-                    .findAll { it.enrolment == null || it.enrolment != paymentPlan }
-                    .collect { it.finalPriceToPayIncTax }
-                    .inject (Money.ZERO) { a, b -> a.add(b) }
-            if (notPaymentPlanAmount != null && notPaymentPlanAmount != Money.ZERO) {
-                InvoiceDueDate dueDate = invoice.invoiceDueDates.find {it.dueDate == LocalDate.now()}
-                if (dueDate) {
-                    dueDate.amount = dueDate.amount.add(notPaymentPlanAmount)
-                } else {
-                    createDueDate(notPaymentPlanAmount, LocalDate.now())
-                }
+        if (!checkout.paymentPlans.empty) {
+            if (checkout.payForThisInvoice && checkout.payForThisInvoice > 0) {
+                createDueDate(new Money(checkout.payForThisInvoice),LocalDate.now())
+            }
+
+            checkout.paymentPlans.each {
+                createDueDate(new Money(it.amount),  it.date)
             }
         } else if (checkout.invoiceDueDate)  {
             invoice.dateDue = checkout.invoiceDueDate
@@ -602,44 +592,7 @@ class CheckoutController {
         }
         invoiceLine.cosAccount = discountCourseClass.discount.cosAccount
     }
-
-    private void createPaymentPlan(Enrolment enrolment) {
-        paymentPlan = enrolment
-
-        Money amountLeftToPay = paymentPlan.originalInvoiceLine.discountedPriceTotalIncTax
-
-        InvoiceDueDate lastDueDate = null;
-
-        List<CourseClassPaymentPlanLine> paymentPlanLines = paymentPlan.courseClass.paymentPlanLines.sort {it.dayOffset}
-
-        LocalDate now = LocalDate.now()
-
-        paymentPlanLines.each { line ->
-            Money amount = amountLeftToPay > line.amount ? line.amount : amountLeftToPay
-            LocalDate dueDate
-            if (line.dayOffset == null) {
-                dueDate = now
-            } else if (enrolment.courseClass.startDateTime == null) {
-                dueDate = now.plusDays(line.dayOffset)
-            } else {
-                dueDate = LocalDateUtils.dateToValue(enrolment.courseClass.startDateTime).plusDays(line.dayOffset)
-            }
-
-            // create invoice due lines only for non zero amounts
-            if (amount != Money.ZERO) {
-                lastDueDate = createDueDate(amount, dueDate)
-            }
-
-            amountLeftToPay = amountLeftToPay.subtract(amount)
-        }
-
-        // if something is still left to be paid - assign this to the last payment
-        if (amountLeftToPay > Money.ZERO && lastDueDate != null) {
-            lastDueDate.amount = lastDueDate.amount.add(amountLeftToPay)
-        }
-
-    }
-
+    
     private InvoiceDueDate createDueDate(Money amount, LocalDate date) {
         InvoiceDueDate dueDate = context.newObject(InvoiceDueDate)
 
