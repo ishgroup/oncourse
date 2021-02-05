@@ -4,6 +4,7 @@
  */
 
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
+import {CheckoutPaymentPlan} from "@api/model";
 
 export const CHECKOUT_GET_ACTIVE_PAYMENT_TYPES = _toRequestType("checkout/get/peyment/method");
 export const CHECKOUT_GET_ACTIVE_PAYMENT_TYPES_FULFILLED = FULFILLED(CHECKOUT_GET_ACTIVE_PAYMENT_TYPES);
@@ -29,6 +30,8 @@ export const CHECKOUT_PROCESS_CC_PAYMENT_FULFILLED = FULFILLED(CHECKOUT_PROCESS_
 
 export const CHECKOUT_CLEAR_CC_IFRAME_URL = "checkout/clear/wcIframe/url";
 
+export const CHECKOUT_SET_PAYMENT_PLANS = "checkout/set/payment/plans";
+
 export const checkoutGetSavedCard = (payerId: number, paymentMethodId: number) => ({
   type: CHECKOUT_GET_SAVED_CARD,
   payload: { payerId, paymentMethodId }
@@ -41,6 +44,11 @@ export const checkoutGetActivePaymentMethods = () => ({
 export const checkoutSetPaymentMethod = (selectedType: string) => ({
   type: CHECKOUT_SET_PAYMENT_TYPE,
   payload: { selectedType }
+});
+
+export const checkoutSetPaymentPlans = (paymentPlans: CheckoutPaymentPlan[]) => ({
+  type: CHECKOUT_SET_PAYMENT_PLANS,
+  payload: paymentPlans
 });
 
 export const checkoutSetPaymentProcessing = (isProcessing: boolean) => ({

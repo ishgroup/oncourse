@@ -276,6 +276,8 @@ export const getCheckoutModel = (
 
     paymentDate: summary.paymentDate,
 
+    paymentPlans: state.payment.paymentPlans,
+
     merchantReference: payment.merchantReference,
 
     contactNodes: summary.list.map((l): ContactNode => ({
