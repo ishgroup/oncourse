@@ -48,10 +48,10 @@ const SaleRelations: React.FC<Props> = ({ relations, cartItems, onSelect }) => {
 
   const onAdd = relation => {
     const selected = { ...relation.cartItem };
-    if (relation.type === "course") {
+    if (selected.type === "course") {
       selected.id = selected.courseId;
     }
-    onSelect(selected, relation.type);
+    onSelect(selected, selected.type);
   };
 
   return (
