@@ -48,34 +48,6 @@ export const getExpireDate = month => {
   return toDay;
 };
 
-export const prepareVoucherDiscount = (voucher, remainingCartTotal) => {
-  if (remainingCartTotal >= voucher.redemptionValue) {
-    voucher.appliedValue = voucher.redemptionValue;
-    voucher.availableValue = 0;
-  } else {
-    voucher.appliedValue = remainingCartTotal;
-    voucher.availableValue = voucher.redemptionValue - remainingCartTotal;
-  }
-  return voucher;
-};
-
-export const prepareAllVouchers = (vouchers, finalTotal) => {
-  let remainingCartTotal = finalTotal;
-  vouchers.map(v => {
-    const voucher = prepareVoucherDiscount(v, remainingCartTotal);
-    remainingCartTotal -= voucher.appliedValue;
-    return voucher;
-  });
-  return { vouchers, finalTotal: remainingCartTotal };
-};
-
-export const prepareVoucherHistory = voucherHistory => voucherHistory.payments.map(v => ({
-  date: v.createdOn,
-  invoiceNo: v.invoiceNo,
-  invoiceText: `Invoice ${v.invoiceNo}`,
-  price: v.amount
-}));
-
 export const isPromotionalCodeExist = (code, checkout) => {
   const inDiscounts = checkout.summary.discounts.filter(d => d.code === code).length;
   const inVouchers = checkout.summary.vouchers.filter(v => v.code === code).length;
