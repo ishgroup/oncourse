@@ -51,20 +51,11 @@ public class DateFormatter extends DefaultFormatter {
 	public static SimpleDateFormat FORMAT_DATE_DD_MMM_YY = new SimpleDateFormat("dd MMM yy");
 	public static SimpleDateFormat FORMAT_DATE_YYYYMMDD = new SimpleDateFormat("YYYYMMdd");
 	public static SimpleDateFormat FORMAT_DATE_YYYYMM = new SimpleDateFormat("YYYYMM");
-	public static  SimpleDateFormat FORMAT_DATE_ISO8601;
+	public static SimpleDateFormat FORMAT_DATE_ISO8601;
 	static 	{
 		FORMAT_DATE_ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		FORMAT_DATE_ISO8601.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
-
-	/**
-	 * Used by [client] Module
-	 *
-	 * @see ish.view.components
-	 */
-	public static SimpleDateFormat FORMAT_DATE_TOOLTIP = new SimpleDateFormat("EEEEE d MMMMM yyyy");
-	public static SimpleDateFormat FORMAT_DATE_TIME_TOOLTIP = new SimpleDateFormat("EEEEE d MMMMM yyyy h:mm a, zzzz");
-
 
 	// 0001.01.01 12:00:00 AM +0000
 	public static final Date BEGINNING_OF_TIME;
@@ -580,6 +571,72 @@ public class DateFormatter extends DefaultFormatter {
 	 */
 	public static Date formatDateToNoon(Date input) {
 		return DateUtils.setHours(DateUtils.truncate(input, Calendar.HOUR), 12);
+	}
+
+	public static String getNextDayOfWeekForToday(Integer neededDayOfWeek, String formatPattern) {
+		return getNextDayOfWeek(today(null).getTime(), neededDayOfWeek, formatPattern);
+	}
+
+	public static String getNextDayOfWeek(Date start, Integer neededDayOfWeek, String formatPattern) {
+		neededDayOfWeek = neededDayOfWeek != null ? neededDayOfWeek : Calendar.SUNDAY;
+		SimpleDateFormat format = formatPattern != null ? new SimpleDateFormat(formatPattern) : FORMAT_DATE_DD_MMM_YYYY;
+		Calendar date = Calendar.getInstance();
+		date.setTime(start);
+		return formatDate(getNextDayOfWeek(date, neededDayOfWeek), format);
+	}
+
+
+	public static Date getNextDayOfWeek(Calendar start, int neededDayOfWeek) {
+
+		int dow = start.get(Calendar.DAY_OF_WEEK);
+
+		while (dow != neededDayOfWeek) {
+			int date = start.get(Calendar.DATE);
+			int month = start.get(Calendar.MONTH);
+			int year = start.get(Calendar.YEAR);
+
+			if (date == getMonthLastDate(month, year)) {
+				if (month == Calendar.DECEMBER) {
+					month = Calendar.JANUARY;
+					start.set(Calendar.YEAR, year + 1);
+				} else {
+					month++;
+				}
+				start.set(Calendar.MONTH, month);
+				date = 1;
+			} else {
+				date++;
+			}
+
+			start.set(Calendar.DATE, date);
+
+			dow = start.get(Calendar.DAY_OF_WEEK);
+		}
+
+		return start.getTime();
+	}
+
+
+	private static int getMonthLastDate(int month, int year) {
+		switch (month) {
+			case Calendar.JANUARY:
+			case Calendar.MARCH:
+			case Calendar.MAY:
+			case Calendar.JULY:
+			case Calendar.AUGUST:
+			case Calendar.OCTOBER:
+			case Calendar.DECEMBER:
+				return 31;
+
+			case Calendar.APRIL:
+			case Calendar.JUNE:
+			case Calendar.SEPTEMBER:
+			case Calendar.NOVEMBER:
+				return 30;
+
+			default: // Calendar.FEBRUARY
+				return year % 4 == 0 ? 29 : 28;
+		}
 	}
 
 }
