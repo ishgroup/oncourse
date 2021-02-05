@@ -1,7 +1,7 @@
 import { DefaultEpic } from "../common/Default.Epic";
 import {
   GET_ACCOUNT_TRANSACTION_LOCKED_DATE_FULFILLED,
-  getAccountTransactionLockedDate,
+  getAccountTransactionLockedDate
 } from "../../js/containers/preferences/actions";
 import { EpicGetLockedDate } from "../../js/containers/preferences/epics/EpicGetLockedDate";
 
