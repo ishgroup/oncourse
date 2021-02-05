@@ -4,7 +4,7 @@
  */
 
 import {
-  ArticleProduct, CheckoutSaleRelation,
+  ArticleProduct, CheckoutPaymentPlan, CheckoutSaleRelation,
   Course,
   CourseClass,
   Discount,
@@ -160,6 +160,7 @@ export interface CheckoutPaymentProcess {
 export interface CheckoutPayment {
   availablePaymentTypes?: PaymentMethod[];
   selectedPaymentType?: any;
+  paymentPlans?: CheckoutPaymentPlan[];
   isProcessing?: boolean;
   isFetchingDetails?: boolean;
   isSuccess?: boolean;

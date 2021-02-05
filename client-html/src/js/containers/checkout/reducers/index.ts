@@ -56,7 +56,7 @@ import {
   CHECKOUT_PROCESS_CC_PAYMENT,
   CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
   CHECKOUT_SET_PAYMENT_STATUS_DETAILS,
-  CHECKOUT_GET_SAVED_CARD_FULFILLED
+  CHECKOUT_GET_SAVED_CARD_FULFILLED, CHECKOUT_SET_PAYMENT_PLANS
 } from "../actions/checkoutPayment";
 import {
   CHECKOUT_SET_PROMO,
@@ -106,6 +106,7 @@ const initial: CheckoutState = {
   payment: {
     invoice: null,
     paymentId: null,
+    paymentPlans: [],
     availablePaymentTypes: [],
     selectedPaymentType: null,
     isProcessing: false,
@@ -536,6 +537,16 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
         payment: {
           ...state.payment,
           selectedPaymentType: action.payload.selectedType
+        }
+      };
+    }
+
+    case CHECKOUT_SET_PAYMENT_PLANS: {
+      return {
+        ...state,
+        payment: {
+          ...state.payment,
+          paymentPlans: action.payload
         }
       };
     }
