@@ -116,6 +116,7 @@ public class TemplateService {
 		if (subjectTemplate == null) {
 			return null;
 		}
+		putBaseBindings(plainBindings);
 		String subject = subjectTemplate.make(plainBindings).toString();
 		plainBindings.put(SUBJECT, subject);
 		if (htmlBindings != null) {
