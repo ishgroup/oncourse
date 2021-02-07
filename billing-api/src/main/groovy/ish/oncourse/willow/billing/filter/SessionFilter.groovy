@@ -8,6 +8,7 @@ import ish.oncourse.api.access.AuthFilter
 import ish.oncourse.api.access.SessionCookie
 import ish.oncourse.api.request.RequestService
 import ish.util.SecurityUtil
+import org.apache.zookeeper.CreateMode
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.container.ContainerRequestContext
@@ -78,7 +79,7 @@ class SessionFilter  implements ContainerRequestFilter {
 
     void createSession() {
         String sessionId = SecurityUtil.generateRandomPassword(20)
-        sessionManager.persistSession(GUEST_ID, sessionId)
+        sessionManager.persistSession(GUEST_ID, sessionId, CreateMode.EPHEMERAL)
         String sessionToken = "$GUEST_ID&$sessionId".toString()
         requestService.setSessionToken(sessionToken, SESSION_MAX_AGE)
     }

@@ -21,7 +21,7 @@ abstract class AbstractZKSessionManager {
         this.provider = provider
     }
 
-    void persistSession(String userId,  String sessionId) {
+    void persistSession(String userId, String sessionId, CreateMode mode = CreateMode.PERSISTENT) {
         try {
             if (zk.exists("/$userId", false) == null) {
                 zk.create("/$userId", new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT)

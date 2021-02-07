@@ -2,6 +2,7 @@ package ish.oncourse.willow.billing.service.impl
 
 import com.amazonaws.services.identitymanagement.model.AccessKey
 import com.google.inject.Inject
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.model.College
 import ish.oncourse.model.KeyStatus
 import ish.oncourse.model.Preference
@@ -24,18 +25,24 @@ class BillingApiImpl implements BillingApi {
     @Inject
     private IS3Service s3Service
 
+    @Inject
+    private RequestService requestService
+    
     private static final String BUCKET_NAME_FORMAT = "ish-oncourse-%s"
     private static final String AWS_USER_NAME_FORMAT = "college.%s"
     
     
     @Override
     void createCollege(CollegeDTO collegeDTO) {
+        //destroy session after process finished
+        requestService.setSessionToken(null, 0)
+
         AngelConfig angelConfig = new AngelConfig()
         
         angelConfig.securityCode = SecurityUtil.generateRandomPassword(16)
         angelConfig.collegeKey = collegeDTO.collegeKey
         
-        College college = recordNewCollege(angelConfig.securityCode, angelConfig.collegeKey, collegeDTO.organisationName)
+        College college = recordNewCollege(angelConfig.securityCode, angelConfig.collegeKey, collegeDTO.organisationName, collegeDTO.timeZone)
         angelConfig.s3bucketName = String.format(BUCKET_NAME_FORMAT, angelConfig.collegeKey)
 
         s3Service.createBucket(angelConfig.s3bucketName)
@@ -44,8 +51,27 @@ class BillingApiImpl implements BillingApi {
         angelConfig.s3accessId = key.getAccessKeyId()
         angelConfig.s3accessKey = key.getSecretAccessKey()
         
+        angelConfig.userFirstName = collegeDTO.userFirstName
+        angelConfig.userLastName = collegeDTO.userLastName
+        angelConfig.useEmail = collegeDTO.userEmail
+
+
         ObjectContext context = cayenneService.newContext()
         
+        PreferenceUtil.createPreference(context, college, Preferences.COLLEGE_NAME,  collegeDTO.organisationName)
+        PreferenceUtil.createPreference(context, college, Preferences.COLLEGE_ABN,  collegeDTO.abn)
+        PreferenceUtil.createPreference(context, college, Preferences.ONCOURSE_SERVER_DEFAULT_TZ, collegeDTO.timeZone)
+        if (collegeDTO.webSiteTemplate) {
+            PreferenceUtil.createPreference(context, college, Preferences.COLLEGE_URL, "https://${collegeDTO.collegeKey}.oncourse.cc")
+        }
+        
+        PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_COLLEGENAME, collegeDTO.traidingName)
+        PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_ADDRESS1, collegeDTO.address)
+
+        PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_SUBURB, collegeDTO.suburb)
+        PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_STATE, collegeDTO.state)
+        PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_POSTCODE, collegeDTO.postcode)
+
         PreferenceUtil.createPreference(context, college, Preference.STORAGE_BUCKET_NAME,  angelConfig.s3bucketName)
         PreferenceUtil.createPreference(context, college, Preference.STORAGE_ACCESS_ID,  angelConfig.s3accessId)
         PreferenceUtil.createPreference(context, college, Preference.STORAGE_ACCESS_KEY,  angelConfig.s3accessKey)
@@ -64,7 +90,6 @@ class BillingApiImpl implements BillingApi {
         PreferenceUtil.createPreference(context, college, Preferences.LICENSE_ATTENDANCE, String.valueOf(true))
 
         context.commitChanges()
-
         
 
     }
@@ -77,7 +102,7 @@ class BillingApiImpl implements BillingApi {
                 .select(cayenneService.newContext()).empty
     }
 
-    private College recordNewCollege(String securityCode, String collegeKey, String name) {
+    private College recordNewCollege(String securityCode, String collegeKey, String name, String timeZone) {
         Date createdOn = new Date()
         ObjectContext objectContext = cayenneService.newNonReplicatingContext()
 
@@ -99,10 +124,8 @@ class BillingApiImpl implements BillingApi {
         college.setIsTestingWebSitePayments(false)
         college.setIsWebServicePaymentsEnabled(false)
         college.setIsWebSitePaymentsEnabled(false)
-        college.setPaymentGatewayAccount(null)
-        college.setPaymentGatewayPass(null)
         college.setRequiresAvetmiss(true)
-        college.setTimeZone("Australia/Sydney")
+        college.setTimeZone(timeZone)
 
         objectContext.commitChanges()
 
