@@ -197,6 +197,14 @@
 		<db-attribute name="outcomeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
+	<db-entity name="Checkout">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="UUID" type="VARCHAR" length="30"/>
+		<db-attribute name="shoppingCart" type="LONGTEXT"/>
+	</db-entity>
 	<db-entity name="ClassCost">
 		<db-attribute name="contactId" type="BIGINT"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true"/>
@@ -1744,6 +1752,14 @@
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+	</obj-entity>
+	<obj-entity name="Checkout" className="ish.oncourse.server.cayenne.Checkout" dbEntityName="Checkout" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="UUID" type="java.lang.String" db-attribute-path="UUID"/>
+		<obj-attribute name="shoppingCart" type="java.lang.String" db-attribute-path="shoppingCart"/>
 	</obj-entity>
 	<obj-entity name="ClassCost" className="ish.oncourse.server.cayenne.ClassCost" clientClassName="ish.oncourse.cayenne.ClassCost" dbEntityName="ClassCost" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
