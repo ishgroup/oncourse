@@ -184,7 +184,6 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     });
 
     plansTotal.sort((a, b) => (a.date > b.date ? 1 : -1));
-    setPaymentPlans(plansTotal.filter(p => p.date).map(({ amount, date }) => ({ amount, date: format(date, YYYY_MM_DD_MINUSED) })));
 
     return plansTotal;
   }, [checkoutSummary]);
