@@ -21,6 +21,7 @@ import ish.oncourse.server.cayenne.WaitingList
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.exp.Expression
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
@@ -176,8 +177,8 @@ class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
         enrol1.setPersistenceState(PersistenceState.HOLLOW)
         enrol2.setPersistenceState(PersistenceState.HOLLOW)
 
-        enrol1 = SelectById.query(Enrolment, enrol1.id).selectOne(context)
-        enrol2 = SelectById.query(Enrolment, enrol2.id).selectOne(context)
+        enrol1 = SelectById.query(Enrolment, enrol1.objectId).selectOne(context)
+        enrol2 = SelectById.query(Enrolment, enrol2.objectId).selectOne(context)
 
         // do not delete outcomes when user perform cancel/refund
         assertFalse(enrol1.getOutcomes().isEmpty())
