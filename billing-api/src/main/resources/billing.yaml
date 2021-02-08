@@ -21,7 +21,7 @@ basePath: /a/v1
 
 
 paths:
-  /college/{name}:
+  /college:
     get:
       operationId: verifyCollegeName
       description: |
