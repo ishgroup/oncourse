@@ -4362,7 +4362,7 @@
 	<obj-relationship name="certificate" source="CertificateOutcome" target="Certificate" deleteRule="Nullify" db-relationship-path="certificate"/>
 	<obj-relationship name="college" source="CertificateOutcome" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="outcome" source="CertificateOutcome" target="Outcome" deleteRule="Nullify" db-relationship-path="outcome"/>
-	<obj-relationship name="college" source="Checkout" target="Outcome" deleteRule="Nullify" db-relationship-path="checkout"/>
+	<obj-relationship name="college" source="Checkout" target="College" deleteRule="Nullify" db-relationship-path="checkout"/>
 	<obj-relationship name="applications" source="College" target="Application" deleteRule="Deny" db-relationship-path="applications"/>
 	<obj-relationship name="assessmentClassModules" source="College" target="AssessmentClassModule" deleteRule="Deny" db-relationship-path="assessmentClassModules"/>
 	<obj-relationship name="attendances" source="College" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
