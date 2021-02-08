@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 61-1
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: Checkout
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                  name: shoppingCart
+                  type: JSON
+              - column:
+                  constraints:
+                    nullable: false
+                  name: UUID
+                  type: VARCHAR(30)
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: willowId
+                  type: BIGINT
+            tableName: EntityRelationType
