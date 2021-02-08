@@ -15,6 +15,7 @@ import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.CertificateOutcome;
+import ish.oncourse.model.Checkout;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.ContactRelation;
@@ -112,6 +113,7 @@ public abstract class _College extends WillowCayenneObject {
     public static final String BINARY_INFOS_PROPERTY = "binaryInfos";
     public static final String CERTIFICATE_OUTCOMES_PROPERTY = "certificateOutcomes";
     public static final String CERTIFICATES_PROPERTY = "certificates";
+    public static final String CHECKOUT_PROPERTY = "checkout";
     public static final String COLLEGE_DOMAINS_PROPERTY = "collegeDomains";
     public static final String CONCESSION_TYPES_PROPERTY = "concessionTypes";
     public static final String CONTACT_RELATION_TYPES_PROPERTY = "contactRelationTypes";
@@ -200,6 +202,7 @@ public abstract class _College extends WillowCayenneObject {
     public static final Property<List<BinaryInfo>> BINARY_INFOS = Property.create("binaryInfos", List.class);
     public static final Property<List<CertificateOutcome>> CERTIFICATE_OUTCOMES = Property.create("certificateOutcomes", List.class);
     public static final Property<List<Certificate>> CERTIFICATES = Property.create("certificates", List.class);
+    public static final Property<List<Checkout>> CHECKOUT = Property.create("checkout", List.class);
     public static final Property<List<WebHostName>> COLLEGE_DOMAINS = Property.create("collegeDomains", List.class);
     public static final Property<List<ConcessionType>> CONCESSION_TYPES = Property.create("concessionTypes", List.class);
     public static final Property<List<ContactRelationType>> CONTACT_RELATION_TYPES = Property.create("contactRelationTypes", List.class);
@@ -287,6 +290,7 @@ public abstract class _College extends WillowCayenneObject {
     protected Object binaryInfos;
     protected Object certificateOutcomes;
     protected Object certificates;
+    protected Object checkout;
     protected Object collegeDomains;
     protected Object concessionTypes;
     protected Object contactRelationTypes;
@@ -644,6 +648,19 @@ public abstract class _College extends WillowCayenneObject {
     @SuppressWarnings("unchecked")
     public List<Certificate> getCertificates() {
         return (List<Certificate>)readProperty("certificates");
+    }
+
+    public void addToCheckout(Checkout obj) {
+        addToManyTarget("checkout", obj, true);
+    }
+
+    public void removeFromCheckout(Checkout obj) {
+        removeToManyTarget("checkout", obj, true);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Checkout> getCheckout() {
+        return (List<Checkout>)readProperty("checkout");
     }
 
     public void addToCollegeDomains(WebHostName obj) {
@@ -1450,6 +1467,8 @@ public abstract class _College extends WillowCayenneObject {
                 return this.certificateOutcomes;
             case "certificates":
                 return this.certificates;
+            case "checkout":
+                return this.checkout;
             case "collegeDomains":
                 return this.collegeDomains;
             case "concessionTypes":
@@ -1659,6 +1678,9 @@ public abstract class _College extends WillowCayenneObject {
                 break;
             case "certificates":
                 this.certificates = val;
+                break;
+            case "checkout":
+                this.checkout = val;
                 break;
             case "collegeDomains":
                 this.collegeDomains = val;
@@ -1875,6 +1897,7 @@ public abstract class _College extends WillowCayenneObject {
         out.writeObject(this.binaryInfos);
         out.writeObject(this.certificateOutcomes);
         out.writeObject(this.certificates);
+        out.writeObject(this.checkout);
         out.writeObject(this.collegeDomains);
         out.writeObject(this.concessionTypes);
         out.writeObject(this.contactRelationTypes);
@@ -1965,6 +1988,7 @@ public abstract class _College extends WillowCayenneObject {
         this.binaryInfos = in.readObject();
         this.certificateOutcomes = in.readObject();
         this.certificates = in.readObject();
+        this.checkout = in.readObject();
         this.collegeDomains = in.readObject();
         this.concessionTypes = in.readObject();
         this.contactRelationTypes = in.readObject();

@@ -149,6 +149,15 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="outcomeId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
+	<db-entity name="Checkout">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="UUID" type="VARCHAR" length="30" isMandatory="true"/>
+		<db-attribute name="shoppingCart" type="JSON" isMandatory="true"/>
+	</db-entity>
 	<db-entity name="College">
 		<db-attribute name="angelVersion" type="VARCHAR" length="40"/>
 		<db-attribute name="billingCode" type="VARCHAR" length="16"/>
@@ -1652,6 +1661,13 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
+	<obj-entity name="Checkout" className="ish.oncourse.model.Checkout" dbEntityName="Checkout" superClassName="WillowCayenneObject">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="UUID" type="java.lang.String" db-attribute-path="UUID"/>
+		<obj-attribute name="shoppingCart" type="java.lang.String" db-attribute-path="shoppingCart"/>
+	</obj-entity>
 	<obj-entity name="College" className="ish.oncourse.model.College" dbEntityName="College" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelVersion" type="java.lang.String" db-attribute-path="angelVersion"/>
 		<obj-attribute name="billingCode" type="java.lang.String" db-attribute-path="billingCode"/>
@@ -2890,6 +2906,9 @@
 	<db-relationship name="outcome" source="CertificateOutcome" target="Outcome">
 		<db-attribute-pair source="outcomeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="college" source="Checkout" target="College">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
 	<db-relationship name="applications" source="College" target="Application" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -2921,6 +2940,9 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="certificates" source="College" target="Certificate" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="checkout" source="College" target="Checkout" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="collegeDomains" source="College" target="WebHostName" toMany="true">
@@ -4340,6 +4362,7 @@
 	<obj-relationship name="certificate" source="CertificateOutcome" target="Certificate" deleteRule="Nullify" db-relationship-path="certificate"/>
 	<obj-relationship name="college" source="CertificateOutcome" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="outcome" source="CertificateOutcome" target="Outcome" deleteRule="Nullify" db-relationship-path="outcome"/>
+	<obj-relationship name="college" source="Checkout" target="Outcome" deleteRule="Nullify" db-relationship-path="checkout"/>
 	<obj-relationship name="applications" source="College" target="Application" deleteRule="Deny" db-relationship-path="applications"/>
 	<obj-relationship name="assessmentClassModules" source="College" target="AssessmentClassModule" deleteRule="Deny" db-relationship-path="assessmentClassModules"/>
 	<obj-relationship name="attendances" source="College" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
@@ -4347,6 +4370,7 @@
 	<obj-relationship name="binaryInfos" source="College" target="BinaryInfo" deleteRule="Deny" db-relationship-path="binaryInfos"/>
 	<obj-relationship name="certificateOutcomes" source="College" target="CertificateOutcome" deleteRule="Deny" db-relationship-path="certificateOutcomes"/>
 	<obj-relationship name="certificates" source="College" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
+	<obj-relationship name="checkout" source="College" target="Checkout" deleteRule="Deny" db-relationship-path="checkout"/>
 	<obj-relationship name="collegeDomains" source="College" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
 	<obj-relationship name="concessionTypes" source="College" target="ConcessionType" deleteRule="Deny" db-relationship-path="concessionTypes"/>
 	<obj-relationship name="contactRelationTypes" source="College" target="ContactRelationType" deleteRule="Deny" db-relationship-path="contactRelationTypes"/>
