@@ -19,6 +19,7 @@
             <xs:element name="binaryInfoRelation" type="tns:binaryInfoRelationStub" />
             <xs:element name="certificate" type="tns:certificateStub" />
             <xs:element name="certificateOutcome" type="tns:certificateOutcomeStub" />
+            <xs:element name="checkout" type="tns:checkoutStub" />
             <xs:element name="concessionType" type="tns:concessionTypeStub" />
             <xs:element name="contact" type="tns:contactStub" />
             <xs:element name="course" type="tns:courseStub" />
@@ -315,6 +316,17 @@
                             <xs:element name="certificateId" type="xs:long"
                                         nillable="false" />
                             <xs:element name="outcomeId" type="xs:long" nillable="false" />
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+
+            <xs:complexType name="checkoutStub">
+                <xs:complexContent>
+                    <xs:extension base="tns:replicationStub">
+                        <xs:sequence>
+                            <xs:element name="fileUUID" type="xs:string" nillable="false" />
+                            <xs:element name="shoppingCart" type="xs:string" nillable="false" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

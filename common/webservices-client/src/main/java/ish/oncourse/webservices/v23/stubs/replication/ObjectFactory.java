@@ -35,6 +35,7 @@ public class ObjectFactory {
     private final static QName _BinaryInfoRelation_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "binaryInfoRelation");
     private final static QName _Certificate_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "certificate");
     private final static QName _CertificateOutcome_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "certificateOutcome");
+    private final static QName _Checkout_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "checkout");
     private final static QName _ConcessionType_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "concessionType");
     private final static QName _Contact_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "contact");
     private final static QName _Course_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "course");
@@ -215,6 +216,14 @@ public class ObjectFactory {
      */
     public CertificateOutcomeStub createCertificateOutcomeStub() {
         return new CertificateOutcomeStub();
+    }
+
+    /**
+     * Create an instance of {@link CheckoutStub }
+     * 
+     */
+    public CheckoutStub createCheckoutStub() {
+        return new CheckoutStub();
     }
 
     /**
@@ -1073,6 +1082,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v23.soap.webservices.oncourse.ish/", name = "certificateOutcome")
     public JAXBElement<CertificateOutcomeStub> createCertificateOutcome(CertificateOutcomeStub value) {
         return new JAXBElement<CertificateOutcomeStub>(_CertificateOutcome_QNAME, CertificateOutcomeStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CheckoutStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v23.soap.webservices.oncourse.ish/", name = "checkout")
+    public JAXBElement<CheckoutStub> createCheckout(CheckoutStub value) {
+        return new JAXBElement<CheckoutStub>(_Checkout_QNAME, CheckoutStub.class, null, value);
     }
 
     /**

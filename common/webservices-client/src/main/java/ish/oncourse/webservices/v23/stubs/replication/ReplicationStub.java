@@ -53,6 +53,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     BinaryInfoRelationStub.class,
     CertificateStub.class,
     CertificateOutcomeStub.class,
+    CheckoutStub.class,
     ConcessionTypeStub.class,
     ContactStub.class,
     CourseStub.class,
