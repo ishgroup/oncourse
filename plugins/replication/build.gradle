@@ -10,7 +10,7 @@ sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 sourceSets.main.groovy.srcDirs += "${buildDir}/generated-resources/main/java"
 ext {
-    webservicesVersion = '106'
+    webservicesVersion = '109'
     cayenneVersion = '4.1'
     derbyVersion = '10.14.2.0'
     bootiqueVersion = '1.0'
