@@ -3,6 +3,7 @@ package ish.oncourse.willow.billing.service.impl
 import com.amazonaws.services.identitymanagement.model.AccessKey
 import com.google.inject.Inject
 import ish.oncourse.api.request.RequestService
+import ish.oncourse.configuration.Configuration
 import ish.oncourse.model.College
 import ish.oncourse.model.KeyStatus
 import ish.oncourse.model.Preference
@@ -12,13 +13,16 @@ import ish.oncourse.services.s3.IS3Service
 import ish.oncourse.util.PreferenceUtil
 import ish.oncourse.willow.billing.v1.model.CollegeDTO
 import ish.oncourse.willow.billing.v1.service.BillingApi
+import ish.oncourse.willow.billing.website.CreateNewWebSite
 import ish.persistence.Preferences
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect 
+import org.apache.cayenne.query.ObjectSelect
+
+import static ish.oncourse.configuration.Configuration.AdminProperty.S_ROOT 
 
 class BillingApiImpl implements BillingApi {
-
+    
     @Inject
     private ICayenneService cayenneService
     
@@ -90,6 +94,21 @@ class BillingApiImpl implements BillingApi {
         PreferenceUtil.createPreference(context, college, Preferences.LICENSE_ATTENDANCE, String.valueOf(true))
 
         context.commitChanges()
+        
+        if (collegeDTO.webSiteTemplate) {
+            context = cayenneService.newNonReplicatingContext()
+            
+            WebSite template = ObjectSelect.query(WebSite)
+                    .where(WebSite.SITE_KEY.eq("template-$collegeDTO.webSiteTemplate".toString()))
+                    .selectOne(context)
+
+            CreateNewWebSite createNewWebSite = CreateNewWebSite.valueOf(collegeDTO.organisationName,
+                    collegeDTO.collegeKey,
+                    template,
+                    Configuration.getValue(S_ROOT),
+                    context.localObject(college), context)
+            createNewWebSite.create()
+        }
         
 
     }

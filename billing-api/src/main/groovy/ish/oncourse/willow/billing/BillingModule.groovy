@@ -13,14 +13,15 @@ import ish.oncourse.willow.billing.service.impl.BillingApiImpl
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
 import static ish.oncourse.configuration.Configuration.AdminProperty.STORAGE_ACCESS_ID
-import static ish.oncourse.configuration.Configuration.AdminProperty.STORAGE_ACCESS_KEY
+import static ish.oncourse.configuration.Configuration.AdminProperty.STORAGE_ACCESS_KEY 
 
 class BillingModule extends ConfigModule {
     @Override
     void configure(Binder binder) {
+        binder.bind(ZKSessionManager)
+
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         CXFModule.contributeResources(binder).addBinding().to(SessionFilter)
-        CXFModule.contributeResources(binder).addBinding().to(ZKSessionManager)
         CXFModule.contributeResources(binder).addBinding().to(BillingApiImpl)
         CXFModule.contributeFeatures(binder)
     }
