@@ -363,7 +363,13 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
 
       const payNow = updated > 0 ? updated : 0;
 
-      updateVouchersAppliedValue(decimalPlus(payNow, vouchersTotal));
+      let vouchersApplied = decimalPlus(updated, paymentPlansTotal, vouchersTotal);
+
+      if (vouchersApplied > vouchersTotal) {
+        vouchersApplied = vouchersTotal;
+      }
+
+      updateVouchersAppliedValue(decimalPlus(payNow, vouchersApplied));
 
       dispatch(checkoutUpdateSummaryField("payNowTotal", payNow));
       onPayNowChange(payNow);
