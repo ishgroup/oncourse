@@ -259,6 +259,29 @@
 		<dropColumn tableName="EntityRelation" columnName="toEntityIdentifierTemp" />
 	</changeSet>
 
+	<changeSet id="28" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="Checkout"/>
+			</not>
+		</preConditions>
+		<createTable tableName="Checkout">
+			<column name="id" type="BIGINT" autoIncrement="true" >
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="created" type="datetime" />
+			<column name="modified" type="datetime" />
+			<column name="collegeId" type="BIGINT" />
+			<column name="angelId" type="BIGINT" />
+			<column name="UUID" type="VARCHAR(30)" >
+				<constraints nullable="false"/>
+			</column>
+			<column name="shoppingCart" type="JSON" >
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+
 
 
 
