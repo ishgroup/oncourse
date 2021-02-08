@@ -138,6 +138,7 @@ class AngelStubBuilderImpl implements IAngelStubBuilder {
 		builderMap.put(Tax.class.getSimpleName(), new TaxStubBuilder())
 		builderMap.put(ish.oncourse.server.cayenne.Module.class.getSimpleName(), new ModuleStubBuilder())
 		builderMap.put(Qualification.class.getSimpleName(), new QualificationStubBuilder())
+		builderMap.put(Checkout.class.getSimpleName(), new CheckoutStubBuilder())
 
 	}
 
