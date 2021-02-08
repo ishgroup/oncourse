@@ -175,9 +175,13 @@ class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
 
         enrol1.setPersistenceState(PersistenceState.HOLLOW)
         enrol2.setPersistenceState(PersistenceState.HOLLOW)
+
+        enrol1 = SelectById.query(Enrolment, enrol1.id).selectOne(context)
+        enrol2 = SelectById.query(Enrolment, enrol2.id).selectOne(context)
+
         // do not delete outcomes when user perform cancel/refund
-		assertFalse(enrol2.getOutcomes().isEmpty())
         assertFalse(enrol1.getOutcomes().isEmpty())
         assertNotNull(enrol1.getOutcomes().get(0).getCertificateOutcomes())
+        assertFalse(enrol2.getOutcomes().isEmpty())
     }
 }
