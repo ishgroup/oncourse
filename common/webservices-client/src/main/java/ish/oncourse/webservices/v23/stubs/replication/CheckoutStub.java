@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;extension base="{http://repl.v23.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="fileUUID" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="cartUUID" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="shoppingCart" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "checkoutStub", propOrder = {
-    "fileUUID",
+    "cartUUID",
     "shoppingCart"
 })
 public class CheckoutStub
@@ -37,32 +37,32 @@ public class CheckoutStub
 {
 
     @XmlElement(required = true)
-    protected String fileUUID;
+    protected String cartUUID;
     @XmlElement(required = true)
     protected String shoppingCart;
 
     /**
-     * Gets the value of the fileUUID property.
+     * Gets the value of the cartUUID property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getFileUUID() {
-        return fileUUID;
+    public String getCartUUID() {
+        return cartUUID;
     }
 
     /**
-     * Sets the value of the fileUUID property.
+     * Sets the value of the cartUUID property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setFileUUID(String value) {
-        this.fileUUID = value;
+    public void setCartUUID(String value) {
+        this.cartUUID = value;
     }
 
     /**

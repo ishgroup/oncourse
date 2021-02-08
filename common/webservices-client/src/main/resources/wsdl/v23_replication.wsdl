@@ -325,7 +325,7 @@
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
-                            <xs:element name="fileUUID" type="xs:string" nillable="false" />
+                            <xs:element name="cartUUID" type="xs:string" nillable="false" />
                             <xs:element name="shoppingCart" type="xs:string" nillable="false" />
                         </xs:sequence>
                     </xs:extension>
