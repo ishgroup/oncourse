@@ -41,6 +41,7 @@ class ProcessWaitingLists {
             WaitingList waitingList = new WaitingList().with { list -> 
                 list.contactId = contact.id.toString()
                 list.courseId = course.id.toString()
+                list.studentsCount = 1
                 list.selected = true
                 ValidateWaitingList validate = new ValidateWaitingList(context, college).validate(course, contact.student)
                 list.errors += validate.errors
