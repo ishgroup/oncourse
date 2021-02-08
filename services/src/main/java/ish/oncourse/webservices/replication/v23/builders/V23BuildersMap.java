@@ -99,5 +99,6 @@ public class V23BuildersMap {
 		builderMap.put(FieldConfigurationLink.class.getSimpleName(), new FieldConfigurationLinkStubBuilder());
 		builderMap.put(FieldConfigurationScheme.class.getSimpleName(), new FieldConfigurationSchemeStubBuilder());
 		builderMap.put(AssessmentClassModule.class.getSimpleName(), new AssessmentClassModuleStubBuilder());
+		builderMap.put(Checkout.class.getSimpleName(), new CheckoutStubBuilder());
 	}
 }

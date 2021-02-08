@@ -113,6 +113,7 @@ public class V23UpdatersMap {
 		updaterMap.put(Tax.class.getSimpleName(), new TaxUpdater());
 		updaterMap.put(Module.class.getSimpleName(), new ModuleUpdater());
 		updaterMap.put(Qualification.class.getSimpleName(), new QualificationUpdater());
+		updaterMap.put(Checkout.class.getSimpleName(), new CheckoutUpdater());
 	}
 
 	/**
