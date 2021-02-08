@@ -18,6 +18,11 @@ export function preferenceApiMock() {
   this.api.onGet("/v1/preference/column").reply(config => promiseResolve(config, this.db.columnsSettings));
 
   /**
+   * Update preferences columns
+   */
+  this.api.onPost("/v1/preference/column").reply(config => promiseResolve(config, JSON.parse(config.data)));
+
+  /**
    * Mock Preferences save success
    * */
   this.api.onPost("/v1/preference").reply(config => {
