@@ -203,7 +203,7 @@
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 		<db-attribute name="UUID" type="VARCHAR" length="30"/>
-		<db-attribute name="shoppingCart" type="LONGTEXT"/>
+		<db-attribute name="shoppingCart" type="CLOB" length="5000"/>
 	</db-entity>
 	<db-entity name="ClassCost">
 		<db-attribute name="contactId" type="BIGINT"/>
