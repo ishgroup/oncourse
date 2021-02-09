@@ -14,17 +14,6 @@ export function CustomFieldApiMock(mock) {
    * Mock Custom Fields save success or error
    * */
   this.api.onPost("v1/preference/field/type").reply(config => {
-    this.returnError = !this.returnError;
-
-    if (this.returnError) {
-      const errorObj: ValidationError = {
-        id: "5684452",
-        propertyName: "defaultValue",
-        errorMessage: "Default Value is invalid"
-      };
-
-      return promiseReject(config, errorObj);
-    }
     const data = JSON.parse(config.data);
     data.forEach(i => {
       if (!i.id) i.id = Math.random().toString();
