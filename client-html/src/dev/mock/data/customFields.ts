@@ -7,7 +7,7 @@ export function mockCustomFields(): CustomFieldType[] {
   };
 
   this.removeCustomField = id => {
-    this.customFields = this.customFields.filter(it => it.id !== id);
+    this.customFields = this.customFields.filter(it => Number(it.id) !== Number(id));
   };
 
   this.getCustomFields = () => {
