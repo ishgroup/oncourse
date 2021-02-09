@@ -1,5 +1,5 @@
 import { ContactRelationType } from "@api/model";
-import {generateArraysOfRecords} from "../mockUtils";
+import { generateArraysOfRecords, getEntityResponse } from "../mockUtils";
 
 export function mockContactRelationTypes(): ContactRelationType[] {
   this.saveContactRelationTypes = items => {
@@ -7,7 +7,7 @@ export function mockContactRelationTypes(): ContactRelationType[] {
   };
 
   this.removeContactRelationType = id => {
-    this.contactRelationTypes = this.contactRelationTypes.filter(it => it.id !== id);
+    this.contactRelationTypes = this.contactRelationTypes.filter(it => Number(it.id) !== Number(id));
   };
 
   this.getPlainContactRelationTypes = () => {
@@ -19,20 +19,11 @@ export function mockContactRelationTypes(): ContactRelationType[] {
       values: [l.toContactName]
     }));
 
-    const columns = [];
-
-    const response = { rows, columns } as any;
-
-    response.entity = "ContactRelationType";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = rows.length;
-    response.search = null;
-    response.count = null;
-    response.sort = [];
-
-    return response;
+    return getEntityResponse({
+      entity: "ContactRelationType",
+      rows,
+      plain: true
+    });
   };
 
   return [
