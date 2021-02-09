@@ -38,8 +38,7 @@ const initialValues = {
 };
 
 const validateName = (value, item) => {
-  if (!item) return undefined;
-
+  if (!item || !item.name || !value) return undefined;
   return item.name.toLowerCase() === value.toLowerCase() ? undefined : "Type in correct value";
 };
 
@@ -48,9 +47,9 @@ const CustomFieldsDeleteDialog = React.memo<CustomFieldsDeleteDialogProps & Inje
     handleSubmit,
     item,
     value,
-    dispatch,
     setFieldToDelete,
     invalid,
+    dispatch,
     onConfirm = stubFunction
   } = props;
 
@@ -111,10 +110,6 @@ const mapStateToProps = (state: State) => ({
   value: getFormValues(FORM)(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  dispatch
-});
-
 export default reduxForm<any, CustomFieldsDeleteDialogProps>({
   form: FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CustomFieldsDeleteDialog));
+})(connect<any, any, any>(mapStateToProps)(CustomFieldsDeleteDialog));

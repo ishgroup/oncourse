@@ -65,8 +65,6 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
   constructor(props) {
     super(props);
     this.state = { fieldToDelete: null };
-
-    props.dispatch(initialize("CustomFieldsForm", { types: JSON.parse(JSON.stringify(props.customFields)) }));
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -156,33 +154,20 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     const onConfirm = () => {
       this.isPending = true;
 
-      return new Promise((resolve, reject) => {
-        this.resolvePromise = resolve;
-        this.rejectPromise = reject;
-
-        if (item.id) {
-          this.props.onDelete(item.id);
-        } else {
-          this.props.dispatch(arrayRemove("CustomFieldsForm", "types", index));
-          this.resolvePromise(true);
-        }
-      })
-        .then(clientSideDelete => {
-          if (!clientSideDelete) {
-            this.props.dispatch(
-              initialize("CustomFieldsForm", { types: JSON.parse(JSON.stringify(this.props.customFields)) })
-            );
-          }
-        })
-        .catch(() => {
-          this.isPending = false;
-        });
+      if (item.id) {
+        this.props.onDelete(item.id);
+      } else {
+        this.props.dispatch(arrayRemove("CustomFieldsForm", "types", index));
+      }
     };
+
+    if (!item.id) {
+      onConfirm();
+      return;
+    }
 
     this.setFieldToDelete(item);
     this.onDeleteConfirm = onConfirm;
-
-    // this.props.openConfirm(onConfirm, "This item will be removed from fields list");
   };
 
   render() {
@@ -205,8 +190,8 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
                   size="small"
                   color="primary"
                   classes={{
-                    sizeSmall: "appBarFab"
-                  }}
+                  sizeSmall: "appBarFab"
+                }}
                   onClick={() => this.onAddNew()}
                 >
                   <AddIcon />
@@ -218,13 +203,13 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
                 <div className="flex-fill" />
 
                 {data && (
-                  <AppBarHelpMenu
-                    created={created}
-                    modified={modified}
-                    auditsUrl={`audit?search=~"CustomFieldType" and entityId in (${idsToString(data.types)})`}
-                    manualUrl={manualLink}
-                  />
-                )}
+                <AppBarHelpMenu
+                  created={created}
+                  modified={modified}
+                  auditsUrl={`audit?search=~"CustomFieldType" and entityId in (${idsToString(data.types)})`}
+                  manualUrl={manualLink}
+                />
+              )}
 
                 <FormSubmitButton
                   disabled={!dirty}
@@ -237,19 +222,19 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
           <Grid container className={classes.marginTop}>
             <Grid item lg={10}>
               {data && data.types && (
-                <FieldArray
-                  name="types"
-                  component={CustomFieldsRenderer}
-                  dispatch={dispatch}
-                  onDelete={this.onClickDelete}
-                  classes={classes}
-                />
-              )}
+              <FieldArray
+                name="types"
+                component={CustomFieldsRenderer}
+                dispatch={dispatch}
+                onDelete={this.onClickDelete}
+                classes={classes}
+              />
+            )}
             </Grid>
           </Grid>
         </form>
       </>
-    );
+);
   }
 }
 
