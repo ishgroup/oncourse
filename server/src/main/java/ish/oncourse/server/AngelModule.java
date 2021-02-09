@@ -215,7 +215,7 @@ public class AngelModule extends ConfigModule {
         System.setProperty("org.quartz.jobStore.class", "org.quartz.impl.jdbcjobstore.JobStoreTX");
         System.setProperty("org.quartz.jobStore.isClustered", "true");
         System.setProperty("org.quartz.jobStore.dataSource", "quarz-cayenne-ds");
-
+        System.setProperty("org.quartz.jobStore.dontSetAutoCommitFalse", "false");
         SchedulerFactory sf = new StdSchedulerFactory();
         Scheduler scheduler = null;
         try {
