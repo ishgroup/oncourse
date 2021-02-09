@@ -11,7 +11,7 @@ export function mockDataCollectionForms(): DataCollectionForm[] {
   };
 
   this.deleteCollectionForm = id => {
-    this.dataCollectionForms = this.dataCollectionForms.filter(form => form.id !== id);
+    this.dataCollectionForms = this.dataCollectionForms.filter(form => String(form.id) !== String(id));
   };
 
   return [
