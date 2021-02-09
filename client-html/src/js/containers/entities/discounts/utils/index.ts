@@ -3,9 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Discount, DiscountType, MoneyRounding } from "@api/model";
+import {
+ Discount, DiscountType, MoneyRounding, Tax
+} from "@api/model";
 import Decimal from "decimal.js-light";
 import { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
+import {
+  decimalDivide,
+  decimalMinus,
+  decimalMul,
+  decimalPlus
+} from "../../../../common/utils/numbers/decimalCalculation";
 
 export const getRoundingByType = (type: MoneyRounding, value: Decimal): number => {
   switch (type) {
@@ -36,6 +44,33 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
     case "Nearest dollar":
       return value.toDecimalPlaces(0).toNumber();
   }
+};
+
+export const getDiscountAmountExTax = (discount: Discount, currentTax: Tax, classFee: number) => {
+  const taxMul = decimalPlus(1, currentTax.rate);
+  let perUnitWithTax;
+
+  switch (discount.discountType) {
+    case "Percent":
+      perUnitWithTax = decimalMinus(
+        classFee,
+        getRoundingByType(discount.rounding, new Decimal(classFee).mul(decimalMinus(1, discount.discountPercent)))
+      );
+      break;
+    case "Dollar":
+      perUnitWithTax = decimalMinus(
+        classFee,
+        getRoundingByType(discount.rounding, new Decimal(classFee).minus(decimalMul(discount.discountValue, taxMul)))
+      );
+      break;
+    case "Fee override":
+      perUnitWithTax = decimalMinus(
+        classFee,
+        getRoundingByType(discount.rounding, new Decimal(discount.discountValue).mul(taxMul))
+      );
+  }
+
+  return decimalDivide(perUnitWithTax, taxMul);
 };
 
 const secondaryDiscountText = (discountType: DiscountType, discountValue: number, discountPercent: number) => {

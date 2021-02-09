@@ -37,7 +37,12 @@ import { AppTheme } from "../../../../../model/common/Theme";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
 import BudgetCostModal from "./modal/BudgetCostModal";
 import { decimalMinus, decimalMul, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
-import { discountSort, getRoundingByType, transformDiscountForNestedList } from "../../../discounts/utils";
+import {
+  discountSort,
+  getDiscountAmountExTax,
+  getRoundingByType,
+  transformDiscountForNestedList
+} from "../../../discounts/utils";
 import { getCurrentTax } from "../../../taxes/utils";
 import BudgetInvoiceItemRenderer from "./BudgetInvoiceItemRenderer";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
@@ -52,7 +57,7 @@ import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-han
 import { getTutorPayInitial } from "../tutors/utils";
 import { getClassCostTypes } from "../../utils";
 import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { dateForCompare, getClassFeeTotal, getDiscountAmountExTax } from "./utils";
+import { dateForCompare, getClassFeeTotal } from "./utils";
 import PreferencesService from "../../../../preferences/services/PreferencesService";
 
 const styles = (theme: AppTheme) =>
@@ -351,24 +356,24 @@ const CourseClassBudgetTab = React.memo<Props>(
       async (tutor: CourseClassTutor) => {
         const fullRole = await PreferencesService.getTutorRole(tutor.roleId);
 
-        let payRate
+        let payRate;
         if (values.startDateTime && fullRole.payRates.length) {
-          fullRole.payRates.some((e) => {
+          fullRole.payRates.some(e => {
             if (isEqual(dateForCompare(e.validFrom, "yyyy-MM"),
               dateForCompare(values.startDateTime, "yyyy-MM"))) {
-              payRate = e
-              return true
+              payRate = e;
+              return true;
             }
 
             if (isBefore(dateForCompare(e.validFrom, "yyyy-MM"),
               dateForCompare(values.startDateTime, "yyyy-MM"))) {
               if (!payRate || isAfter(dateForCompare(e.validFrom, "yyyy-MM"),
                 dateForCompare(payRate.validFrom, "yyyy-MM"))) {
-                payRate = e
+                payRate = e;
               }
             }
-            return false
-          })
+            return false;
+          });
         }
 
         const role = tutorRoles.find(r => r.id === tutor.roleId);

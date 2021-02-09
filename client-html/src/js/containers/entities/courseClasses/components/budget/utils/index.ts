@@ -4,16 +4,14 @@
  */
 
 import {
- ClassCost, CourseClassPaymentPlan, Discount, Tax 
+ ClassCost, CourseClassPaymentPlan, Tax
 } from "@api/model";
-import {differenceInMinutes, format, subMinutes} from "date-fns";
-import Decimal from "decimal.js-light";
+import { differenceInMinutes, format, subMinutes } from "date-fns";
 import {
- decimalDivide, decimalMinus, decimalMul, decimalPlus 
+ decimalDivide, decimalMul, decimalPlus
 } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { TimetableSession } from "../../../../../../model/timetable";
 import { ClassCostExtended } from "../../../../../../model/entities/CourseClass";
-import { getRoundingByType } from "../../../../discounts/utils";
 import { getCurrentTax } from "../../../../taxes/utils";
 
 export const getFeeWithTaxAmount = (exTaxFee: number, currentTax: Tax) => decimalMul(exTaxFee, decimalPlus(currentTax.rate, 1));
@@ -132,36 +130,9 @@ export const getClassCostFee = (
   };
 };
 
-export const getDiscountAmountExTax = (discount: Discount, currentTax: Tax, classFee: number) => {
-  const taxMul = decimalPlus(1, currentTax.rate);
-  let perUnitWithTax;
-
-  switch (discount.discountType) {
-    case "Percent":
-      perUnitWithTax = decimalMinus(
-        classFee,
-        getRoundingByType(discount.rounding, new Decimal(classFee).mul(decimalMinus(1, discount.discountPercent)))
-      );
-      break;
-    case "Dollar":
-      perUnitWithTax = decimalMinus(
-        classFee,
-        getRoundingByType(discount.rounding, new Decimal(classFee).minus(decimalMul(discount.discountValue, taxMul)))
-      );
-      break;
-    case "Fee override":
-      perUnitWithTax = decimalMinus(
-        classFee,
-        getRoundingByType(discount.rounding, new Decimal(discount.discountValue).mul(taxMul))
-      );
-  }
-
-  return decimalDivide(perUnitWithTax, taxMul);
-};
-
 export const getClassFeeTotal = (costs: ClassCost[], taxes: Tax[]) => {
   const studentFee = costs.find(c => c.invoiceToStudent);
   return studentFee ? getFeeWithTaxAmount(studentFee.perUnitAmountExTax, getCurrentTax(taxes, studentFee.taxId)) : 0;
 };
 
-export const dateForCompare = (date: string, customFormat: string) => new Date(format(new Date(date), customFormat))
+export const dateForCompare = (date: string, customFormat: string) => new Date(format(new Date(date), customFormat));
