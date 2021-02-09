@@ -37,7 +37,12 @@ import { AppTheme } from "../../../../../model/common/Theme";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
 import BudgetCostModal from "./modal/BudgetCostModal";
 import { decimalMinus, decimalMul, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
-import { discountSort, getRoundingByType, transformDiscountForNestedList } from "../../../discounts/utils";
+import {
+  discountSort,
+  getDiscountAmountExTax,
+  getRoundingByType,
+  transformDiscountForNestedList
+} from "../../../discounts/utils";
 import { getCurrentTax } from "../../../taxes/utils";
 import BudgetInvoiceItemRenderer from "./BudgetInvoiceItemRenderer";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
@@ -52,7 +57,7 @@ import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-han
 import { getTutorPayInitial } from "../tutors/utils";
 import { getClassCostTypes } from "../../utils";
 import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { dateForCompare, getClassFeeTotal, getDiscountAmountExTax } from "./utils";
+import { dateForCompare, getClassFeeTotal } from "./utils";
 import PreferencesService from "../../../../preferences/services/PreferencesService";
 import BudgetItemRow from "./BudgetItemRow";
 

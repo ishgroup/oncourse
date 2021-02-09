@@ -14,15 +14,14 @@ properties:
     format: int64
   incomeAccountName:
     type: string
-  cosAccountId:
-    type: integer
-    format: int64
-  cosAccountName:
-    type: string
   priceEachExTax:
     type: number
   discountEachExTax:
     type: number
+  discountId:
+    type: number
+  discountName:
+    type: string
   taxEach:
     type: number
   finalPriceToPayIncTax:
