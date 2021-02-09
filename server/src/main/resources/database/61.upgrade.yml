@@ -39,4 +39,4 @@ databaseChangeLog:
                   defaultValueComputed: 'NULL'
                   name: willowId
                   type: BIGINT
-            tableName: EntityRelationType
+            tableName: Checkout
