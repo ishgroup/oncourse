@@ -49,7 +49,6 @@ abstract class CayenneIshTestCase extends IshTestCase {
 	private static final int NEXT_ID = 10000
 
 	private static final String CUSTOM_FIELD = "CustomField"
-	private static final String CHECKOUT = "Checkout"
 
 	@BeforeClass
 	static void setUpOnce() throws Exception {
@@ -315,9 +314,7 @@ abstract class CayenneIshTestCase extends IshTestCase {
 
 			executeStatement(connection, "SET foreign_key_checks = 0;")
 			for (DbEntity entity : dataMap.getDbEntities()) {
-				if (CHECKOUT != entity.getName()) {
-					executeStatement(connection, String.format("TRUNCATE %s;", entity.getName()))
-				}
+				executeStatement(connection, String.format("TRUNCATE %s;", entity.getName()))
 			}
 
 			executeStatement(connection, "SET foreign_key_checks = 1;")
