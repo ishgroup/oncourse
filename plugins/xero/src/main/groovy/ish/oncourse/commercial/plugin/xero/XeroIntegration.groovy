@@ -239,7 +239,7 @@ Review all the other employee settings and ensure they are correct.
 
 			if (!transactions.empty) {
 				Map<String, Money> groups = transactions.inject([:] as Map<String, Money> ) { result, transaction ->
-					result[(transaction.account.accountCode)] = (result[transaction.account.accountCode] ?: Money.ZERO).add(transaction.account.credit ? transaction.amount : transaction.amount.negate())
+					result[(transaction.account.accountCode)] = (result[transaction.account.accountCode] ?: Money.ZERO).add(transaction.account.credit ? transaction.amount.negate() : transaction.amount)
 					return result
 				}
 				groups = groups.findAll {k,v -> v != Money.ZERO }
