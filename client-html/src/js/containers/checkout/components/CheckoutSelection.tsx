@@ -497,7 +497,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       getContactRecord(item.id);
       setOpenContactEditView(true);
       setSelectedContact(item);
-      reset();
       setListContacts([]);
       onCloseClassList();
       onCloseItemView();
