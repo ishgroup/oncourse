@@ -21,7 +21,6 @@ import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { State } from "../../../../../reducers/state";
@@ -334,7 +333,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               fullWidth
               autoWidth={false}
               items={sites || []}
-              validate={validateSingleMandatoryField}
+              required
             />
 
             {!isNew && (
