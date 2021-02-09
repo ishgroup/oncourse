@@ -84,7 +84,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
           </IconButton>
         </div>
         {error && (
-          <Typography component="div" variant="caption" color="error" noWrap>
+          <Typography className="shakingError" component="div" variant="caption" color="error" noWrap>
             {error}
           </Typography>
         )}
