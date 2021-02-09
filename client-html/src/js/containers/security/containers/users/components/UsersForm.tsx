@@ -437,7 +437,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                     selectLabelMark="name"
                     items={userRoles || []}
                     fullWidth
-                    allowEmpty
+                    required={!values.admin}
                     sort
                   />
                 </Collapse>

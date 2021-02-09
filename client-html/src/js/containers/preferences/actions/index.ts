@@ -1,5 +1,3 @@
-import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
-import { Categories } from "../../../model/preferences";
 import {
   DataCollectionForm,
   DataCollectionRule,
@@ -14,6 +12,8 @@ import {
   Holiday,
   DefinedTutorRole
 } from "@api/model";
+import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
+import { Categories } from "../../../model/preferences";
 
 export const GET_DATA_COLLECTION_FORM_FIELD_TYPES_REQUEST = _toRequestType("get/datacollection/formFieldTypes");
 export const GET_DATA_COLLECTION_FORM_FIELD_TYPES_FULFILLED = FULFILLED(GET_DATA_COLLECTION_FORM_FIELD_TYPES_REQUEST);
@@ -124,7 +124,6 @@ export const GET_CUSTOM_FIELDS_REQUEST = _toRequestType("get/preference/field/ty
 export const GET_CUSTOM_FIELDS_FULFILLED = FULFILLED(GET_CUSTOM_FIELDS_REQUEST);
 
 export const DELETE_CUSTOM_FIELD_REQUEST = _toRequestType("delete/preference/field/type");
-export const DELETE_CUSTOM_FIELD_FULFILLED = FULFILLED(DELETE_CUSTOM_FIELD_REQUEST);
 
 export const UPDATE_CUSTOM_FIELDS_REQUEST = _toRequestType("post/preference/field/type");
 export const UPDATE_CUSTOM_FIELDS_FULFILLED = FULFILLED(UPDATE_CUSTOM_FIELDS_REQUEST);
@@ -202,7 +201,6 @@ export const deleteContactRelationType = (id: string) => ({
 export const getContactRelationTypes = () => ({
   type: GET_CONTACT_RELATION_TYPES_REQUEST
 });
-
 
 export const updateEntityRelationTypes = (entityRelationTypes: EntityRelationType[]) => ({
   type: UPDATE_ENTITY_RELATION_TYPES_REQUEST,

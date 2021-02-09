@@ -183,8 +183,13 @@ const renderCustomFields = props => {
             {fields.map((item: CustomFieldType, index) => {
               const field = fields.get(index);
 
+              const isListOrMap = ["List", "Map"].includes(field.dataType);
+
               const onDataTypeChange = () => {
                 dispatch(change(form, `${item}.defaultValue`, null));
+                if (isListOrMap && !field.mandatory) {
+                  dispatch(change(form, `${item}.mandatory`, true));
+                }
               };
 
               return (
@@ -264,6 +269,7 @@ const renderCustomFields = props => {
                               <Grid item xs={4}>
                                 <FormControlLabel
                                   className={classes.checkbox}
+                                  disabled={isListOrMap}
                                   control={(
                                     <FormField
                                       type="checkbox"
@@ -293,7 +299,7 @@ const renderCustomFields = props => {
                               </Grid>
 
                               <Grid item xs={5}>
-                                {["List", "Map"].includes(field.dataType) && (
+                                {isListOrMap && (
                                   <Field
                                     name={`${item}.defaultValue`}
                                     label="Default value"
@@ -314,7 +320,6 @@ const renderCustomFields = props => {
                 </Draggable>
               );
             })}
-
             {provided.placeholder}
           </div>
         )}
