@@ -16,10 +16,6 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 
 class WaitingListGeneral extends React.PureComponent<any, any> {
-  componentWillUnmount() {
-    this.props.clearContactsSearch();
-  }
-
   validateTagList = (value, allValues, props) => {
     const { tags } = this.props;
     return validateTagsList(tags, value, allValues, props);
