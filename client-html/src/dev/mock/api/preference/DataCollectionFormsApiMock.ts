@@ -17,19 +17,7 @@ export function DataCollectionFormsApiMock() {
    * Update Data Collection Form with success or error
    * */
   this.api.onPut(new RegExp(`v1/datacollection/form/.+`)).reply(config => {
-    this.returnError = !this.returnError;
-
-    if (this.returnError) {
-      const errorObj: ValidationError = {
-        id: "test.form.1",
-        propertyName: "name",
-        errorMessage: "Name is invalid"
-      };
-
-      return promiseReject(config, errorObj);
-    }
-
-    const id = config.url.split("/")[3];
+    const id = getParamsId(config);
     const data = JSON.parse(config.data);
     this.db.updateCollectionForm(id, data);
     return promiseResolve(config, JSON.parse(JSON.stringify(this.db.dataCollectionForms)));
