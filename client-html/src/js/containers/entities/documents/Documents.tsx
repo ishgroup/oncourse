@@ -17,7 +17,7 @@ import FileUploaderDialog from "../../../common/components/file-uploader/FileUpl
 import { getInitialDocument } from "../../../common/components/form/documents/components/utils";
 import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
 import { BooleanArgFunction } from "../../../model/common/CommonFunctions";
-import { FilterGroup, ListState } from "../../../model/common/ListView";
+import { FilterGroup } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
 import {
   setListEditRecord,
@@ -32,10 +32,7 @@ import { State } from "../../../reducers/state";
 import { getEntityTags } from "../../tags/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import {
-  restoreDocument,
-  createDocument, getDocument, removeDocument, updateDocument
-} from "./actions";
+import { createDocument, getDocument, updateDocument } from "./actions";
 import DocumentEditView from "./components/DocumentEditView";
 import BinCogwheel from "./components/BinCogwheel";
 
@@ -166,7 +163,7 @@ const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   window.open(url);
 };
 
-const setRowClasses = ({ isRemoved }) => (isRemoved === "Yes" ? "op05" : undefined);
+const setRowClasses = ({ active }) => (active === "No" ? "op05" : undefined);
 
 const handleFileSelect = (files, setCreateNew) => {
   const file = files[0];
@@ -186,27 +183,6 @@ const handleFileSelect = (files, setCreateNew) => {
       }
     });
   }
-};
-
-const deleteDisabledCondition = listProps => {
-  const { selection, records } = listProps;
-  const { rows, columns } = records;
-
-  if (!selection.length || !rows.length || !columns.length) return false;
-
-  const id = selection[0];
-  const row = rows.find(r => r.id === id);
-
-  if (!row || !row.values) return false;
-
-  const isRemovedIndex = columns.filter(c => c.visible === true || c.system === true).findIndex(c => c.attribute === "isRemoved");
-  let isRemoved = false;
-
-  if (isRemovedIndex !== -1) {
-    isRemoved = row.values[isRemovedIndex] === "true";
-  }
-
-  return isRemoved;
 };
 
 const Documents: React.FC<DocumentProps> = props => {
@@ -345,7 +321,6 @@ const Documents: React.FC<DocumentProps> = props => {
       }
     }
   }, [openFileModal, manuallyOpenModal]);
-
 
   return (
     <>
