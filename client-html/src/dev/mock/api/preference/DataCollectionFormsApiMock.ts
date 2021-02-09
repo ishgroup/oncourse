@@ -1,5 +1,6 @@
 import { ValidationError } from "@api/model";
 import { promiseReject, promiseResolve } from "../../MockAdapter";
+import { getParamsId } from "../../mockUtils";
 
 export function DataCollectionFormsApiMock() {
   this.returnError = false;
@@ -45,7 +46,7 @@ export function DataCollectionFormsApiMock() {
    * Delete Data Collection Form
    * */
   this.api.onDelete(new RegExp(`v1/datacollection/form/.+`)).reply(config => {
-    const id = config.url.split("/")[3];
+    const id = getParamsId(config);
     this.db.deleteCollectionForm(id);
     return promiseResolve(config, JSON.parse(JSON.stringify(this.db.dataCollectionForms)));
   });
