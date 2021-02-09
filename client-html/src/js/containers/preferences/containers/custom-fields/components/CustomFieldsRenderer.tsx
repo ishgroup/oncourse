@@ -83,9 +83,11 @@ const validateListMap = (value, dataType) => {
   if (Array.isArray(fields)) {
     fields.forEach(f => {
       if (!f.value || (dataType === "Map" && !f.value.includes("*") && !f.label)) {
-        error = "Error";
+        error = "Options fields are invalid";
       }
     });
+  } else {
+    return "At least one option is required";
   }
 
   return error;
@@ -187,9 +189,6 @@ const renderCustomFields = props => {
 
               const onDataTypeChange = () => {
                 dispatch(change(form, `${item}.defaultValue`, null));
-                if (isListOrMap && !field.mandatory) {
-                  dispatch(change(form, `${item}.mandatory`, true));
-                }
               };
 
               return (
@@ -269,7 +268,6 @@ const renderCustomFields = props => {
                               <Grid item xs={4}>
                                 <FormControlLabel
                                   className={classes.checkbox}
-                                  disabled={isListOrMap}
                                   control={(
                                     <FormField
                                       type="checkbox"

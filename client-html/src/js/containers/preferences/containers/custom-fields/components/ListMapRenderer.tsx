@@ -40,7 +40,7 @@ const getDefaultFields = value => {
 
 const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
   const {
-    label, dataType, input: { value, onChange, name }, onKeyPress
+    label, dataType, input: { value, onChange, name }, meta: { error }, onKeyPress
   } = props;
 
   const hoverClasses = useHoverShowStyles();
@@ -83,6 +83,11 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
             <AddCircle className="addButtonColor" />
           </IconButton>
         </div>
+        {error && (
+          <Typography component="div" variant="caption" color="error" noWrap>
+            {error}
+          </Typography>
+        )}
 
         <Typography variant="body1" component="div">
           <div>
