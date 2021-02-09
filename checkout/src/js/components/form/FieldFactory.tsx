@@ -50,7 +50,6 @@ class FieldFactory extends React.Component<any, any> {
           searchable={false}
           returnType="object"
           placeholder="Please Select..."
-          required={true}
         />;
 
       case DataType.BOOLEAN:
@@ -81,7 +80,6 @@ class FieldFactory extends React.Component<any, any> {
           newOptionEnable={true}
           searchable={true}
           showOnFocus={true}
-          required={true}
           placeholder="Please Select..."
         />;
 

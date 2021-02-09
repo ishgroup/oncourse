@@ -97,7 +97,7 @@ export class ItemWrapper extends React.Component<Props, any> {
           </label>
         }
         {warning && (<span dangerouslySetInnerHTML={{ __html: warning }} />)}
-        {error && <span className="disabled error" dangerouslySetInnerHTML={{ __html: error }} />}
+        {error && <div className="disabled error" dangerouslySetInnerHTML={{ __html: error }} />}
         <br />
         {children}
 
