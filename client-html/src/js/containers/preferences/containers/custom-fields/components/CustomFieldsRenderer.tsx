@@ -189,6 +189,9 @@ const renderCustomFields = props => {
 
               const onDataTypeChange = () => {
                 dispatch(change(form, `${item}.defaultValue`, null));
+                if (isListOrMap && !field.mandatory) {
+                  dispatch(change(form, `${item}.mandatory`, true));
+                }
               };
 
               return (
@@ -268,6 +271,7 @@ const renderCustomFields = props => {
                               <Grid item xs={4}>
                                 <FormControlLabel
                                   className={classes.checkbox}
+                                  disabled={isListOrMap}
                                   control={(
                                     <FormField
                                       type="checkbox"
