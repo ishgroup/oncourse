@@ -64,10 +64,10 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getFields: () => dispatch(getCustomFields()),
-    updateCustomFields: (customFields: CustomFieldType[]) => dispatch(updateCustomFields(customFields)),
-    deleteCustomField: (id: string) => dispatch(deleteCustomField(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
-  });
+  getFields: () => dispatch(getCustomFields()),
+  updateCustomFields: (customFields: CustomFieldType[]) => dispatch(updateCustomFields(customFields)),
+  deleteCustomField: (id: string) => dispatch(deleteCustomField(id)),
+  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CustomFields);

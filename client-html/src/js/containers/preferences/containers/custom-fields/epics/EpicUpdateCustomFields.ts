@@ -8,7 +8,7 @@ import { Epic } from "redux-observable";
 import { CustomFieldType } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../services/PreferencesService";
-import { FETCH_SUCCESS } from "../../../../../common/actions";
+import { SHOW_MESSAGE } from "../../../../../common/actions";
 import { UPDATE_CUSTOM_FIELDS_FULFILLED, UPDATE_CUSTOM_FIELDS_REQUEST } from "../../../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
@@ -28,11 +28,11 @@ const request: EpicUtils.Request<any, any, any> = {
         payload: { customFields: items }
       },
       {
-        type: FETCH_SUCCESS,
-        payload: { message: "Custom Fields were successfully updated" }
+        type: SHOW_MESSAGE,
+        payload: { message: "Custom fields were successfully updated", success: true }
       }
     ],
-  processError: response => FetchErrorHandler(response, "Error. Custom Fields were not updated")
+  processError: response => FetchErrorHandler(response, "Error. Custom fields were not updated")
 };
 
 export const EpicUpdateCustomFields: Epic<any, any> = EpicUtils.Create(request);

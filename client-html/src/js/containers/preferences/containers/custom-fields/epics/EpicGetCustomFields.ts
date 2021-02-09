@@ -6,18 +6,20 @@
 import { Epic } from "redux-observable";
 
 import { CustomFieldType } from "@api/model";
+import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../services/PreferencesService";
 import { GET_CUSTOM_FIELDS_REQUEST, GET_CUSTOM_FIELDS_FULFILLED } from "../../../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request<any, any> = {
   type: GET_CUSTOM_FIELDS_REQUEST,
   getData: () => PreferencesService.getCustomFields(),
   processData: (items: CustomFieldType[]) => [
       {
         type: GET_CUSTOM_FIELDS_FULFILLED,
         payload: { customFields: items }
-      }
+      },
+      initialize("CustomFieldsForm", { types: items })
     ]
 };
 
