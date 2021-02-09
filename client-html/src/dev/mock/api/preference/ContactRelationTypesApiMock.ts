@@ -1,5 +1,4 @@
-import { ValidationError } from "@api/model";
-import { promiseReject, promiseResolve } from "../../MockAdapter";
+import { promiseResolve } from "../../MockAdapter";
 import { getParamsId } from "../../mockUtils";
 
 export function ContactRelationTypesApiMock(mock) {
