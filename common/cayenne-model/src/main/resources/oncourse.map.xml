@@ -156,7 +156,7 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="UUID" type="VARCHAR" length="30" isMandatory="true"/>
-		<db-attribute name="shoppingCart" type="JSON" isMandatory="true"/>
+		<db-attribute name="shoppingCart" type="CLOB" length="5000" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="College">
 		<db-attribute name="angelVersion" type="VARCHAR" length="40"/>
