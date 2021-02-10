@@ -8,7 +8,7 @@ import { withStyles, createStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import {
-  Form, FieldArray, reduxForm, initialize, SubmissionError, arrayRemove, change
+  Form, FieldArray, reduxForm, SubmissionError, arrayRemove, change
 } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import isEqual from "lodash.isequal";
@@ -26,6 +26,8 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
+import { getCustomFields } from "../../../actions";
+import { Fetch } from "../../../../../model/common/Fetch";
 
 const manualLink = getManualLink("generalPrefs_customFields");
 
@@ -49,6 +51,7 @@ interface Props {
   customFields: CustomFieldType[];
   created: Date;
   modified: Date;
+  fetch: Fetch
   dispatch: any;
   handleSubmit: any;
   dirty: boolean;
@@ -76,14 +79,14 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     this.state = { fieldToDelete: null };
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.isPending) {
-      return;
+  componentDidUpdate() {
+    const { fetch } = this.props;
+
+    if (this.isPending && fetch && fetch.success === false && this.rejectPromise) {
+      this.rejectPromise(fetch.formError);
     }
-    if (nextProps.fetch && nextProps.fetch.success === false) {
-      this.rejectPromise(nextProps.fetch.formError);
-    }
-    if (nextProps.fetch && nextProps.fetch.success) {
+
+    if (this.isPending && fetch && fetch.success && this.resolvePromise) {
       this.resolvePromise();
       this.isPending = false;
     }
@@ -114,11 +117,8 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
+        this.props.dispatch(getCustomFields());
         const { nextLocation, history, setNextLocation } = this.props;
-
-        this.props.dispatch(
-          initialize("CustomFieldsForm", { types: JSON.parse(JSON.stringify(this.props.customFields)) })
-        );
 
         nextLocation && history.push(nextLocation);
         setNextLocation('');
