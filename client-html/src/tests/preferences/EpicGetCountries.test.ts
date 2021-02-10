@@ -11,7 +11,7 @@ describe("Get countries epic tests", () => {
     epic: EpicGetCountries,
     processData: mockedApi => {
       const data = mockedApi.db.countries;
-      const countries = data.sort((a, b) => (a.name[0] > b.name[0] ? 1 : -1));
+      const countries = data.sort((a, b) => (a.name > b.name ? 1 : -1));
 
       return [
         {
