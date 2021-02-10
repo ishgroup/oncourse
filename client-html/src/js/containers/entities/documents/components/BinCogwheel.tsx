@@ -37,7 +37,10 @@ const BinCogwheel = memo<Props>(props => {
   useEffect(() => {
     const selectedVal = [];
     const selectedDeletedVal = [];
-    const activeColumnIndex = records.columns.findIndex(c => c.attribute === "active");
+    const activeColumnIndex = records.columns
+      .filter(c => c.visible || c.system)
+      .findIndex(c => c.attribute === "active");
+
     selection.forEach(id => {
       const selectedRecord = records.rows.find(r => r.id === id);
       if (!selectedRecord) {
@@ -68,7 +71,7 @@ const BinCogwheel = memo<Props>(props => {
 
   return selection.length ? (
     <MenuItem onClick={onClick}>
-      <span className={ deleteActionName === "Move to bin" ? "errorColor" : null}>
+      <span className={deleteActionName === "Move to bin" ? "errorColor" : null}>
         {deleteActionName}
       </span>
       {deleteActionName === "Move to bin" && <Delete color="error" className="ml-1" />}
