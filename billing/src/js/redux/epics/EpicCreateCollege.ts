@@ -1,6 +1,6 @@
 import { Epic } from "redux-observable";
 import * as EpicUtils from "./EpicUtils";
-import { CREATE_COLLEGE } from "../actions/index";
+import { COLLEGE_WAS_CREATED, CREATE_COLLEGE } from "../actions/index";
 import InstantFetchErrorHandler from "../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import BillingService from "../../api/services/BillingApi";
 
@@ -9,7 +9,7 @@ const request: EpicUtils.Request<any, any, any> = {
   getData: (data) => BillingService.createCollege(data),
   processData: () => {
     return [
-      { type: CREATE_COLLEGE },
+      { type: COLLEGE_WAS_CREATED, payload: true },
     ]},
   processError: response => {
     return [...InstantFetchErrorHandler(response)]

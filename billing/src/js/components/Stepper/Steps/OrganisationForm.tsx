@@ -50,7 +50,12 @@ const OrganisationForm = (props: any) => {
     collegeKey,
     webSiteTemplate,
     contactForm,
+    collegeWasCreated,
   } = props;
+
+  useEffect(() => {
+    if (collegeWasCreated) handleNext();
+  }, collegeWasCreated)
 
   const { handleSubmit, handleChange, values, errors, setFieldValue, isValid, dirty } = useFormik({
     initialValues: organisationForm,
@@ -208,6 +213,7 @@ const OrganisationForm = (props: any) => {
 }
 
 const mapStateToProps = (state: any) => ({
+  collegeWasCreated: state.creatingCollege.collegeWasCreated,
   collegeKey: state.creatingCollege.collegeKey,
   webSiteTemplate: state.creatingCollege.webSiteTemplate,
   contactForm: state.creatingCollege.contactForm,

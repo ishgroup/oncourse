@@ -14,6 +14,8 @@ export const SET_TEMPLATE_VALUE = "SET_TEMPLATE_VALUE";
 export const SET_CONTACT_FORM_VALUES = "SET_CONTACT_FORM_VALUES";
 export const SET_ORGANISATION_FORM_VALUES = "SET_ORGANISATION_FORM_VALUES";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
+export const COLLEGE_WAS_CREATED = "COLLEGE_WAS_CREATED";
+export const SET_SEND_TOKEN_AGAIN_VALUE = "SET_SEND_TOKEN_AGAIN_VALUE";
 
 export const setCaptchaToken = (token: string) => ({
   type: SET_CAPTCHA_TOKEN,
@@ -29,6 +31,11 @@ export const setSitenameValidValue = (payload: boolean) => ({
   type: SET_SITENAME_VALID_VALUE,
   payload
 });
+
+export const setCollegeWasCreatedValue = (payload: boolean) => ({
+  type: COLLEGE_WAS_CREATED,
+  payload
+})
 
 export const setTemplateValue = (template: string) => ({
   type: SET_TEMPLATE_VALUE,

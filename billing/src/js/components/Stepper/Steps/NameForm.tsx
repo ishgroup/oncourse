@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Rx, {Subject} from "rxjs";
+import { debounceTime } from "rxjs/operators";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, InputAdornment } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { connect, Dispatch } from "react-redux";
-import CustomTextField from "../../common/TextField";
 import Navigation from "../Navigations";
 import { checkSiteName } from "../../../redux/actions";
 
@@ -38,25 +39,38 @@ const useStyles = makeStyles((theme:any) => ({
 const NameForm = (props: any) => {
   const classes = useStyles();
 
-  const { activeStep, steps, handleBack, handleNext, token, checkSiteName, isValidName } = props;
+  const { activeStep, steps, handleBack, handleNext, token, checkSiteName, isValidName, sendTokenAgain } = props;
 
-  const [collegeName, setCollegeName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [subject] = useState(() => new Subject());
 
   const setNewCollegeName = (e) => {
     const name: string = e.target.innerText;
     const matches = name.match(/([\w*-]+)/gi);
-    const validName = matches && matches[0] === name;
+    const validName = name && matches && matches[0] === name;
 
     if (!validName) {
       setErrorMessage('Must contain only letters, numbers and symbols "-" and "_"')
     } else {
       if (errorMessage) setErrorMessage("");
     }
-    console.log('collegeName',collegeName)
-    setCollegeName(name);
-    checkSiteName({ name, token })
+    subject.next({ name, token, validName, sendTokenAgain })
   }
+
+  useEffect(() => {
+    const subscription = subject
+      .pipe(debounceTime(1500))
+      .subscribe((values: { name: string, token: string, validName: boolean, sendTokenAgain: boolean }) => {
+        values.validName && checkSiteName({
+        name: values.name,
+        token: sendTokenAgain ? values.token : null
+      })
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <form>
@@ -88,6 +102,7 @@ const NameForm = (props: any) => {
 
 const mapStateToProps = (state: any) => ({
   isValidName: state.creatingCollege.isValidName,
+  sendTokenAgain: state.creatingCollege.sendTokenAgain,
   token: state.creatingCollege.token,
 });
 

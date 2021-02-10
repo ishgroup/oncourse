@@ -7,7 +7,9 @@ import {
   SET_TEMPLATE_VALUE,
   CLEAR_MESSAGE,
   SHOW_MESSAGE,
-  SET_SITENAME_VALID_VALUE
+  SET_SITENAME_VALID_VALUE,
+  COLLEGE_WAS_CREATED,
+  SET_SEND_TOKEN_AGAIN_VALUE,
 } from "../actions";
 import { contactFormInitialValue, organisationFormInitialValue } from "../initialValues";
 
@@ -16,6 +18,8 @@ const initState = {
   isValidName: true,
   webSiteTemplate: "",
   token: "",
+  collegeWasCreated: false,
+  sendTokenAgain: true,
   message: {
     message: "",
     error: ""
@@ -61,10 +65,22 @@ export const createCollegeReducer = (state = initState, action) => {
         organisationForm: action.payload
       };
 
-    case CREATE_COLLEGE:
+    case SET_SEND_TOKEN_AGAIN_VALUE:
       return {
         ...state,
+        sendTokenAgain: action.payload
       };
+
+    // case CREATE_COLLEGE:
+    //   return {
+    //     ...state,
+    //   };
+
+    case COLLEGE_WAS_CREATED:
+      return {
+        ...state,
+        collegeWasCreated: action.payload
+      }
 
     case SHOW_MESSAGE:
       return {

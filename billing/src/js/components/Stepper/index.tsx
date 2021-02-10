@@ -22,7 +22,7 @@ import OrganisationForm from "./Steps/OrganisationForm";
 import FinishPage from "./Steps/FinishPage";
 import { setCaptchaToken } from "../../redux/actions";
 
-const SITE_KEY = "6Lcbk0YaAAAAAM5_TdMXM3Grl0CgbbURqgJMnqVf";
+const SITE_KEY = "6LenRkYaAAAAAJf7P8OamoQSU7H5YaAKpMqTkGzU";
 
 declare global {
   interface Window { grecaptcha: any; }
@@ -95,13 +95,9 @@ const CustomizedSteppers = (props: any) => {
       if (isScriptExist && callback) callback();
     }
 
-    loadScriptByURL("recaptcha-key", `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`,  () => {
-      console.log("Script loaded!");
-
+    loadScriptByURL("recaptcha-key", `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`, () => {
       window.grecaptcha.ready(() => {
-        console.log(1);
         window.grecaptcha.execute(SITE_KEY, { action: 'submit' }).then(token => {
-          console.log(2);
           console.log(token);
           setCaptchaToken(token);
         });

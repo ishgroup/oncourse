@@ -1,6 +1,6 @@
 import { DefaultHttpService } from "./HttpService";
-import { BillingApi } from "../../../../build/generated-sources/api";
-import { CollegeDTO } from "../../../../build/generated-sources/api";
+import { BillingApi } from "../../../../build/generated-sources";
+import { CollegeDTO } from "../../../../build/generated-sources";
 
 class BillingService {
   readonly billingApi = new BillingApi(new DefaultHttpService());
