@@ -28,7 +28,7 @@ import { APP_BAR_HEIGHT, EMAIL_FROM_KEY } from "../../../../../constants/Config"
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
 import { State } from "../../../../../reducers/state";
-import { getEmailTemplatesWithKeyCode, getUserPreferences } from "../../../../actions";
+import { getEmailTemplatesWithKeyCode, getScripts, getUserPreferences } from "../../../../actions";
 
 const SendMessageEntities = [
   "Invoice",
@@ -136,18 +136,30 @@ class BottomAppBar extends React.PureComponent<any, any> {
   }
 
   componentDidMount() {
-    const { rootEntity, getMessageTemplates, getEmailFrom } = this.props;
+    const {
+     rootEntity, getMessageTemplates, getEmailFrom, scripts, getScripts
+    } = this.props;
+
     if (rootEntity) {
       getMessageTemplates(getMessageTemplateEntities(rootEntity));
       getEmailFrom();
     }
+    if (!scripts && rootEntity) {
+      getScripts(rootEntity);
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { rootEntity, getMessageTemplates, getEmailFrom } = this.props;
+    const {
+     rootEntity, getMessageTemplates, getEmailFrom, scripts, getScripts
+    } = this.props;
+
     if (rootEntity !== prevProps.rootEntity) {
       getMessageTemplates(getMessageTemplateEntities(rootEntity));
       getEmailFrom();
+      if (!scripts) {
+        getScripts(rootEntity);
+      }
     }
   }
 
@@ -464,6 +476,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   getMessageTemplates: (entities: string[]) => dispatch(getEmailTemplatesWithKeyCode(entities)),
   getEmailFrom: () => dispatch(getUserPreferences([EMAIL_FROM_KEY])),
+  getScripts: (entity: string) => dispatch(getScripts(entity))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(BottomAppBar));
