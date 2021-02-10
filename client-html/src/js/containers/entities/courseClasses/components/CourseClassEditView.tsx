@@ -17,6 +17,7 @@ import Edit from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
+import { Typography } from "@material-ui/core";
 import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
 import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
 import { StringArgFunction } from "../../../../model/common/CommonFunctions";
@@ -214,63 +215,97 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
   const classes = useBudgetAdornmentStyles();
 
   const discounts = useMemo(() => {
-    const result = budget.filter(b => b.flowType === "Discount");
-    result.sort((a, b) => (a.description > b.description ? 1 : -1));
-    return result;
+    const discountsSort = (a, b) => (a.description > b.description ? 1 : -1);
+
+    const discountItems = budget.filter(b => b.flowType === "Discount"
+      && (!b.courseClassDiscount.discount.code && !b.courseClassDiscount.discount.relationDiscount));
+    discountItems.sort(discountsSort);
+    const discountsPromo = budget.filter(b => b.flowType === "Discount"
+      && (b.courseClassDiscount.discount.code && !b.courseClassDiscount.discount.relationDiscount));
+    discountsPromo.sort(discountsSort);
+    const discountsRelations = budget.filter(b => b.flowType === "Discount"
+      && (!b.courseClassDiscount.discount.code && b.courseClassDiscount.discount.relationDiscount));
+    discountsRelations.sort(discountsSort);
+
+    console.log(budget, discountItems);
+
+    const mapDiscount = d => (
+      <Fragment key={d.id}>
+        <div>
+          {d.courseClassDiscount.discount.name}
+        </div>
+        <div className="money">
+          {formatCurrency(
+            getDiscountedFee(d, currentTax, studentFee.perUnitAmountIncTax),
+            currencySymbol
+          )}
+        </div>
+      </Fragment>
+    );
+
+    const discountHeader = header => <Typography variant="button" component="div" className="mt-3">{header}</Typography>;
+
+    return (
+      <>
+        {Boolean(discountItems.length) && discountHeader("DISCOUNTS")}
+        <div className={classes.root}>
+          {discountItems.map(mapDiscount)}
+        </div>
+        {Boolean(discountsPromo.length) && discountHeader("PROMOTIONAL CODES")}
+        <div className={classes.root}>
+          {discountsPromo.map(mapDiscount)}
+        </div>
+        {Boolean(discountsRelations.length) && discountHeader("RELATION DISCOUNT")}
+        <div className={classes.root}>
+          {discountsRelations.map(mapDiscount)}
+        </div>
+      </>
+    );
   }, [budget]);
 
   return (
-    <div className={classes.root}>
-      <div>Class fee</div>
-      <div className="money">
-        {
-          formatCurrency(
-            studentFee ? studentFee.perUnitAmountIncTax : 0,
-            currencySymbol
-          )
-        }
-        {!isNew && (
-        <FeeEditButton
-          className={classes.feeEdit}
-          onClick={e => {
-            e.stopPropagation();
-
-            dispatch(setCourseClassBudgetModalOpened(true));
-            dispatch(
-              initialize(
-                COURSE_CLASS_COST_DIALOG_FORM,
-                studentFee
-              )
-            );
-
-            const search = new URLSearchParams(window.location.search);
-            search.append("expandTab", "4");
-
-            history.replace({
-              pathname: history.location.pathname,
-              search: decodeURIComponent(search.toString())
-            });
-            if (!expandedBudget.includes("Income")) {
-              expandBudgetItem("Income");
-            }
-          }}
-        />
-      )}
-      </div>
-      {discounts.map(d => (
-        <Fragment key={d.id}>
-          <div>
-            {d.courseClassDiscount.discount.name}
-          </div>
-          <div className="money">
-            {formatCurrency(
-              getDiscountedFee(d, currentTax, studentFee.perUnitAmountIncTax),
+    <div>
+      <div className={classes.root}>
+        <div>Class fee</div>
+        <div className="money">
+          {
+            formatCurrency(
+              studentFee ? studentFee.perUnitAmountIncTax : 0,
               currencySymbol
-            )}
-          </div>
-        </Fragment>
-      ))}
+            )
+          }
+          {!isNew && (
+            <FeeEditButton
+              className={classes.feeEdit}
+              onClick={e => {
+                e.stopPropagation();
+
+                dispatch(setCourseClassBudgetModalOpened(true));
+                dispatch(
+                  initialize(
+                    COURSE_CLASS_COST_DIALOG_FORM,
+                    studentFee
+                  )
+                );
+
+                const search = new URLSearchParams(window.location.search);
+                search.append("expandTab", "4");
+
+                history.replace({
+                  pathname: history.location.pathname,
+                  search: decodeURIComponent(search.toString())
+                });
+                if (!expandedBudget.includes("Income")) {
+                  expandBudgetItem("Income");
+                }
+              }}
+            />
+          )}
+        </div>
+      </div>
+      {discounts}
     </div>
+
 );
 };
 
