@@ -10,7 +10,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
 
 
-        * def invoiceToDefault = {"id":11,"contactId":3,"contactName":"stud2","customerReference":"invoice for update","invoiceNumber":12,"billToAddress":"address str.1","shippingAddress":"shipping address1","invoiceDate":"2022-08-01","dateDue":"2022-08-11","overdue":0.00,"invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1"}],"total":300.00,"amountOwing":300.00,"publicNotes":"some public notes","paymentPlans":[{"id":11,"date":"2019-07-03","type":"Invoice office","successful":true,"amount":300.00,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.00,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.00,"entityName":"InvoiceDueDate"}],"source":"office","createdByUser":"admin","sendEmail":false}
+        * def invoiceToDefault = {"id":11,"contactId":3,"contactName":"stud2","customerReference":"invoice for update","invoiceNumber":12,"billToAddress":"address str.1","shippingAddress":"shipping address1","invoiceDate":"2022-08-01","dateDue":"2022-08-11","overdue":0.00,"invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1"}],"total":300.00,"amountOwing":300.00,"publicNotes":"some public notes","paymentPlans":[{"id":11,"date":"2019-07-03","type":"Invoice office","successful":true,"amount":300.00,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.00,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.00,"entityName":"InvoiceDueDate"}],"source":"office","createdByUser":"admin","sendEmail":false}
 
 
 
@@ -29,7 +29,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceDate":"2022-08-01",
         "dateDue":"2022-08-10",
         "overdue":0.00,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"finalPriceToPayIncTax":null,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"finalPriceToPayIncTax":null,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.00,
         "amountOwing":300.00,
         "publicNotes":"some public notes upd",
@@ -67,7 +67,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceDate":"2022-08-01",
         "dateDue":"2022-08-15",
         "overdue":0.00,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"finalPriceToPayIncTax": null,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"finalPriceToPayIncTax": null,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.00,
         "amountOwing":300.00,
         "publicNotes":"some public notes upd",
@@ -122,7 +122,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceDate":"2022-08-01",
         "dateDue":"2022-08-11",
         "overdue":0.00,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.00,
         "amountOwing":300.00,
         "publicNotes":"some public notes upd",
@@ -160,7 +160,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceDate":"2022-08-01",
         "dateDue":"2022-08-11",
         "overdue":0.00,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"finalPriceToPayIncTax":null,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"finalPriceToPayIncTax":null,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.00,
         "amountOwing":300.00,
         "publicNotes":"some public notes upd",
@@ -202,7 +202,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceDate":"2022-08-01",
         "dateDue":"2022-08-11",
         "overdue":0.00,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1"}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1"}],
         "total":300.00,
         "amountOwing":300.00,
         "publicNotes":"some public notes upd",
@@ -254,7 +254,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceDate":"2022-08-01",
         "dateDue":"2022-08-10",
         "overdue":0.00,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"finalPriceToPayIncTax":null,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"finalPriceToPayIncTax":null,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.00,
         "amountOwing":300.00,
         "publicNotes":"some public notes upd",
@@ -294,7 +294,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceDate":"2022-08-01",
         "dateDue":"2022-08-10",
         "overdue":0.00,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1"}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1"}],
         "total":300.00,
         "amountOwing":300.00,
         "publicNotes":"some public notes",
@@ -326,7 +326,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceDate":null,
         "dateDue":"2022-08-10",
         "overdue":0.00,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.00,
         "amountOwing":300.00,
         "publicNotes":"some public notes",
@@ -360,7 +360,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceDate":"2022-08-01",
         "dateDue":"2022-08-10",
         "overdue":0.00,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.00,
         "amountOwing":300.00,
         "publicNotes":"some public notes",
@@ -384,7 +384,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         """
         {
         "id":11,"contactId":3,"contactName":"stud2","customerReference":"invoice for update","invoiceNumber":12,"billToAddress":"address str.1","shippingAddress":"shipping address1","invoiceDate":"2022-08-01","dateDue":"2022-08-10","overdue":0.0,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.0,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.0,"discountEachExTax":0.0,"taxEach":0.0,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.0,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.0,"discountEachExTax":0.0,"taxEach":0.0,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.0,"amountOwing":300.0,"publicNotes":"some public notes","paymentPlans":[{"id":11,"date":"2019-07-03","type":"Invoice office","successful":true,"amount":300.0,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.0,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.0,"entityName":"InvoiceDueDate"}],"source":"office","createdByUser":"admin@gmail.com","sendEmail":false,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
@@ -433,7 +433,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         """
         {
         "id":11,"contactId":3,"contactName":"stud2","customerReference":"invoice for update","invoiceNumber":12,"billToAddress":"address str.1","shippingAddress":"shipping address1","invoiceDate":"2022-08-01","dateDue":"2022-08-10","overdue":0.0,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.0,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.0,"discountEachExTax":0.0,"taxEach":0.0,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.0,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.0,"discountEachExTax":0.0,"taxEach":0.0,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.0,"amountOwing":300.0,"publicNotes":"some public notes","paymentPlans":[{"id":11,"date":"2019-07-03","type":"Invoice office","successful":true,"amount":300.0,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.0,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.0,"entityName":"InvoiceDueDate"}],"source":"office","createdByUser":"admin@gmail.com","sendEmail":false,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
@@ -458,7 +458,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "invoiceDate":"2020-01-01",
         "dateDue":"2022-08-10",
         "overdue":0.00,
-        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+        "invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.00,
         "amountOwing":300.00,
         "publicNotes":"some public notes",
@@ -483,7 +483,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         {
         "id":11,"contactId":3,"contactName":"stud2","customerReference":"invoice for update","invoiceNumber":12,"billToAddress":"address str.1","shippingAddress":"shipping address1",
         "invoiceDate":"2022-08-01",
-        "dateDue":"2022-08-10","overdue":0.0,"invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.0,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":300.0,"discountEachExTax":0.0,"taxEach":0.0,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+        "dateDue":"2022-08-10","overdue":0.0,"invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.0,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.0,"discountEachExTax":0.0,"taxEach":0.0,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1","courseId":1,"finalPriceToPayIncTax":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
         "total":300.0,"amountOwing":300.0,"publicNotes":"some public notes","paymentPlans":[{"id":11,"date":"2019-07-03","type":"Invoice office","successful":true,"amount":300.0,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.0,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.0,"entityName":"InvoiceDueDate"}],"source":"office","createdByUser":"admin@gmail.com","sendEmail":false,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
