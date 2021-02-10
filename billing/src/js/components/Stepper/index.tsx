@@ -9,13 +9,20 @@
 import React, { useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
+import { connect, Dispatch } from "react-redux";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { Steps, items } from "./Steps";
+import { items } from "./Steps";
 import CustomButton from "../common/Button";
 import CustomStepper from "../common/Stepper";
+import NameForm from "./Steps/NameForm";
+import TemplateForm from "./Steps/TemplateForm";
+import ContactForm from "./Steps/ContactForm";
+import OrganisationForm from "./Steps/OrganisationForm";
+import FinishPage from "./Steps/FinishPage";
+import { setCaptchaToken } from "../../redux/actions";
 
-// const SITE_KEY = "6Lcbk0YaAAAAAM5_TdMXM3Grl0CgbbURqgJMnqVf";
+const SITE_KEY = "6Lcbk0YaAAAAAM5_TdMXM3Grl0CgbbURqgJMnqVf";
 
 declare global {
   interface Window { grecaptcha: any; }
@@ -40,6 +47,8 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       display: "flex",
       justifyContent: "center",
+      padding: "40px 20px 40px 190px",
+      maxHeight: "calc(100vh - 64px)",
     },
     stepWrapper: {
       width: "400px",
@@ -47,17 +56,9 @@ const useStyles = makeStyles((theme: Theme) =>
     imageStepWrapper: {
       width: "1000px",
     },
-    button: {
-      marginRight: theme.spacing(1),
-    },
     instructions: {
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
-    },
-    buttonsWrapper: {
-      display: "flex",
-      justifyContent: "space-between",
-      marginTop: "30px",
     },
     actionsContainer: {
       marginBottom: theme.spacing(2),
@@ -69,61 +70,63 @@ const getSteps = () => {
   return ["Site name", "Templates", "Contact", "Organisation", "All done!"];
 }
 
-export default function CustomizedSteppers() {
+const CustomizedSteppers = (props: any) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
+  const { setCaptchaToken } = props;
+
   const steps = getSteps();
 
-  // useEffect(() => {
-  //   const loadScriptByURL = (id, url, callback) => {
-  //     const isScriptExist = document.getElementById(id);
-  //
-  //     if (!isScriptExist) {
-  //       let script = document.createElement("script");
-  //       script.type = "text/javascript";
-  //       script.src = url;
-  //       script.id = id;
-  //       script.onload = function () {
-  //         if (callback) callback();
-  //       };
-  //       document.body.appendChild(script);
-  //     }
-  //
-  //     if (isScriptExist && callback) callback();
-  //   }
-  //
-  //   loadScriptByURL("recaptcha-key", `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`, function () {
-  //     console.log("Script loaded!");
-  //   });
-  // }, []);
+  useEffect(() => {
+    const loadScriptByURL = (id, url, callback) => {
+      const isScriptExist = document.getElementById(id);
 
-  const handleOnClick = () => {
-    // // setLoading(true);
-    // window.grecaptcha.ready(() => {
-    //   console.log(1);
-    //   window.grecaptcha.execute(SITE_KEY, { action: 'submit' }).then(token => {
-    //     console.log(2);
-    //     submitData(token);
-    //   });
-    // });
-  }
+      if (!isScriptExist) {
+        let script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = url;
+        script.id = id;
+        script.onload = function () {
+          if (callback) callback();
+        };
+        document.body.appendChild(script);
+      }
 
-  const submitData = token => {
-    console.log('token', token)
-  }
+      if (isScriptExist && callback) callback();
+    }
+
+    loadScriptByURL("recaptcha-key", `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`,  () => {
+      console.log("Script loaded!");
+
+      window.grecaptcha.ready(() => {
+        console.log(1);
+        window.grecaptcha.execute(SITE_KEY, { action: 'submit' }).then(token => {
+          console.log(2);
+          console.log(token);
+          setCaptchaToken(token);
+        });
+      });
+    });
+  }, []);
 
   const handleNext = () => {
+    if (activeStep === steps.length - 1) return
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    handleOnClick();
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  const childrenProps = { activeStep, steps, handleBack, handleNext };
+
+  const stepsComponents = [
+    <NameForm {...childrenProps}/>,
+    <TemplateForm {...childrenProps}/>,
+    <ContactForm {...childrenProps}/>,
+    <OrganisationForm {...childrenProps}/>,
+    <FinishPage {...childrenProps}/>
+  ];
 
   return (
     <div className={clsx(classes.root, activeStep === 1 ? classes.minWidth1200 : classes.minWidth800)}>
@@ -135,36 +138,15 @@ export default function CustomizedSteppers() {
 
       <div className={classes.formWrapper}>
         <div className={activeStep === 1 ? classes.imageStepWrapper : classes.stepWrapper}>
-          {Steps[activeStep]}
-
-          <div>
-            {activeStep === steps.length ? (
-              <div>
-                <Typography className={classes.instructions}>
-                  All steps completed - you&apos;re finished
-                </Typography>
-                <Button onClick={handleReset} className={classes.button}>
-                  Reset
-                </Button>
-              </div>
-            ) : (
-              <div className={classes.buttonsWrapper}>
-                <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                  Back
-                </Button>
-                <CustomButton
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                  className={classes.button}
-                >
-                  {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                </CustomButton>
-              </div>
-            )}
-          </div>
+          {stepsComponents[activeStep]}
         </div>
       </div>
     </div>
   );
 }
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setCaptchaToken: (token) => dispatch(setCaptchaToken(token)),
+});
+
+export default connect(null, mapDispatchToProps)(CustomizedSteppers as any);

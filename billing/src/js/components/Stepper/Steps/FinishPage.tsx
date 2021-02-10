@@ -16,21 +16,22 @@ const useStyles = makeStyles((theme: any) => ({
   },
 }));
 
-const FinishPage = () => {
+const FinishPage = (props) => {
   const classes = useStyles();
 
   return (
-  <div>
-    <h2 className={classes.coloredHeaderText}>
-      All done
-    </h2>
-    <Typography>
-      We are creating system for you now
-    </Typography>
-    <Typography>
-      You will receive an email with your new account details shortly
-    </Typography>
-  </div>
-)};
+    <div>
+      <h2 className={classes.coloredHeaderText}>
+        All done
+      </h2>
+      <Typography>
+        We are creating system for you now
+      </Typography>
+      <Typography>
+        You will receive an email with your new account details shortly
+      </Typography>
+    </div>
+  )
+};
 
 export default FinishPage

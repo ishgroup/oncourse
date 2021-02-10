@@ -115,8 +115,8 @@ definitions:
         example: Australia  
       timeZone:
         type: string
-        description: College country
-        example: Australia?sydney
+        description: College time zone
+        example: Australia/sydney
       userEmail:
         type: string
         format: email

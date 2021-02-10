@@ -8,17 +8,9 @@
 import React from "react";
 import NameForm from "./NameForm";
 import TemplateForm from "./TemplateForm";
-import ContactForm from "./ConstactForm";
+import ContactForm from "./ContactForm";
 import OrganisationForm from "./OrganisationForm";
 import FinishPage from "./FinishPage";
-
-export const Steps = [
-  <NameForm/>,
-  <TemplateForm/>,
-  <ContactForm/>,
-  <OrganisationForm/>,
-  <FinishPage/>
-];
 
 export interface TabsListItem {
   label: string;

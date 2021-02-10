@@ -17,6 +17,7 @@ const styles = theme => createStyles({
     height: "calc(100vh - 64px)",
     padding: theme.spacing(4),
     backgroundColor: theme.tabList.listContainer.backgroundColor,
+    position: "fixed",
   },
   listContainer: {
     flexDirection: "column",
@@ -34,13 +35,16 @@ const styles = theme => createStyles({
     "&$selected": {
       opacity: 1,
       backgroundColor: "inherit"
-    }
+    },
+    '&:hover': {
+      cursor: "auto",
+    },
   },
   listItemText: {
     fontSize: "14px",
     fontWeight: 600,
     width: "100%",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   indicator: {
     display: "none"
@@ -82,7 +86,6 @@ const TabsList = React.memo<Props>(({ classes, items, customLabels, customAppBar
                 root: classes.listItemRoot,
                 selected: classes.selected
               }}
-              onClick={() => setActiveStep(index)}
               key={index}
             >
               <Typography variant="body2" component="div" color="inherit">

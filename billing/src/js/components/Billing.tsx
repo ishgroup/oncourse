@@ -8,10 +8,10 @@ import {
   MonochromeThemeKey,
   HighcontrastThemeKey,
   ChristmasThemeKey,
-  ThemeValues,
 } from "../models/Theme";
 import { darkTheme, defaultTheme, monochromeTheme, highcontrastTheme, christmasTheme } from "../themes/ishTheme";
 import { ThemeContext} from "../themes/ThemeContext";
+import MessageProvider from "./common/message/MessageProvider";
 
 
 const Billing = () => {
@@ -74,6 +74,7 @@ const Billing = () => {
       <ThemeProvider theme={theme}>
         <Header/>
         <CustomizedSteppers />
+        <MessageProvider />
       </ThemeProvider>
     </ThemeContext.Provider>
   );

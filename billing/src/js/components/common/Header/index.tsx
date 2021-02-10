@@ -13,7 +13,9 @@ const styles = (theme: any) => ({
   appBar: {
     backgroundColor:
       theme.palette.type === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
-    zIndex: theme.zIndex.drawer + 1
+    zIndex: theme.zIndex.drawer + 1,
+    height: "64px",
+    justifyContent: "space-around"
   },
   toolBarGutters: {
     padding: "0 16px"

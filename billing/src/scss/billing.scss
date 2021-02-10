@@ -15,3 +15,24 @@ body {
 .grecaptcha-badge {
   visibility: hidden;
 }
+
+.input {
+  border-bottom: 1px solid #ccc;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 1px 6px;
+  min-width: 70px;
+  outline: none;
+  &:focus {
+    border-bottom: 2px solid #f7941d;
+  }
+}
+
+.input-wrap {
+  position: relative;
+  .input {
+    position: absolute;
+    width: 100%;
+    left: 0;
+  }
+}
