@@ -81,3 +81,5 @@ properties:
     type: boolean
     description: Apply discount if user already has success enrolments on the same course
     required: true
+  relationDiscount:
+    type: boolean
