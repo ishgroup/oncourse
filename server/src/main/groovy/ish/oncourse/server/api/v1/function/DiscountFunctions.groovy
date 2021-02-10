@@ -82,54 +82,54 @@ class DiscountFunctions {
     }}
 
     static DiscountDTO toRestDiscount(DbDiscount dbDiscount, Boolean full = true ) {
-        new DiscountDTO().with { d ->
-            d.id = dbDiscount.id
-            d.name = dbDiscount.name
-            d.code = dbDiscount.code
-            d.description = dbDiscount.publicDescription
-            d.discountType = discountTypeMap.get(dbDiscount.discountType)
-            d.discountValue = dbDiscount.discountDollar?.toBigDecimal()
-            d.discountPercent = dbDiscount.discountPercent
-            d.rounding = roundingMap.get(dbDiscount.rounding)
-            d.discountMin = dbDiscount.discountMin?.toBigDecimal()
-            d.discountMax = dbDiscount.discountMax?.toBigDecimal()
-            d.predictedStudentsPercentage = dbDiscount.predictedStudentsPercentage
-            d.validFrom = LocalDateUtils.dateToValue(dbDiscount.validFrom)
-            d.validFromOffset = dbDiscount.validFromOffset
-            d.validTo = LocalDateUtils.dateToValue(dbDiscount.validTo)
-            d.validToOffset = dbDiscount.validToOffset
+        new DiscountDTO().with { dto ->
+            dto.id = dbDiscount.id
+            dto.name = dbDiscount.name
+            dto.code = dbDiscount.code
+            dto.description = dbDiscount.publicDescription
+            dto.discountType = discountTypeMap.get(dbDiscount.discountType)
+            dto.discountValue = dbDiscount.discountDollar?.toBigDecimal()
+            dto.discountPercent = dbDiscount.discountPercent
+            dto.rounding = roundingMap.get(dbDiscount.rounding)
+            dto.discountMin = dbDiscount.discountMin?.toBigDecimal()
+            dto.discountMax = dbDiscount.discountMax?.toBigDecimal()
+            dto.predictedStudentsPercentage = dbDiscount.predictedStudentsPercentage
+            dto.validFrom = LocalDateUtils.dateToValue(dbDiscount.validFrom)
+            dto.validFromOffset = dbDiscount.validFromOffset
+            dto.validTo = LocalDateUtils.dateToValue(dbDiscount.validTo)
+            dto.validToOffset = dbDiscount.validToOffset
+            dto.relationDiscount = !dbDiscount.entityRelationTypes.empty
             if (full) {
-            d.hideOnWeb = dbDiscount.hideOnWeb
-            d.availableOnWeb = dbDiscount.isAvailableOnWeb
-            d.studentEnrolledWithinDays = dbDiscount.studentEnrolledWithinDays
-            if (dbDiscount.studentAge && dbDiscount.studentAge.matches('[<,>] \\d+') ) {
-                d.studentAgeUnder dbDiscount.studentAge.split(' ')[0] == '<'
-                d.studentAge = dbDiscount.studentAge.split(' ')[1] as Integer
-            }
-            d.studentPostcode = dbDiscount.studentPostcode
-            d.discountConcessionTypes = dbDiscount.discountConcessionTypes.collect { toRestConcessionType(it.concessionType) }
-            d.discountMemberships = dbDiscount.discountMemberships.collect{ toRestDiscountMembership(it) }.sort{ it.productId }
-            d.discountCourseClasses = getDiscountClasses(dbDiscount).collect{ item ->
-                new SaleDTO().with { sale ->
-                    sale.id = item[1] as Long
-                    sale.code = (item[7] as String) + "-" + (item[2] as String)
-                    sale.name = item[3] as String
-                    sale.type = SaleTypeDTO.CLASS
-                    sale.active = CourseClassMixin.isActual(item[4] as Boolean, item[5] as Boolean, item[6] as Date)
-                    sale
+                dto.hideOnWeb = dbDiscount.hideOnWeb
+                dto.availableOnWeb = dbDiscount.isAvailableOnWeb
+                dto.studentEnrolledWithinDays = dbDiscount.studentEnrolledWithinDays
+                if (dbDiscount.studentAge && dbDiscount.studentAge.matches('[<,>] \\dto+')) {
+                    dto.studentAgeUnder dbDiscount.studentAge.split(' ')[0] == '<'
+                    dto.studentAge = dbDiscount.studentAge.split(' ')[1] as Integer
                 }
+                dto.studentPostcode = dbDiscount.studentPostcode
+                dto.discountConcessionTypes = dbDiscount.discountConcessionTypes.collect { toRestConcessionType(it.concessionType) }
+                dto.discountMemberships = dbDiscount.discountMemberships.collect { toRestDiscountMembership(it) }.sort { it.productId }
+                dto.discountCourseClasses = getDiscountClasses(dbDiscount).collect { item ->
+                    new SaleDTO().with { sale ->
+                        sale.id = item[1] as Long
+                        sale.code = (item[7] as String) + "-" + (item[2] as String)
+                        sale.name = item[3] as String
+                        sale.type = SaleTypeDTO.CLASS
+                        sale.active = CourseClassMixin.isActual(item[4] as Boolean, item[5] as Boolean, item[6] as Date)
+                        sale
+                    }
+                }
+                dto.cosAccount = dbDiscount.cosAccount?.id
+                dto.addByDefault = dbDiscount.addByDefault
+                dto.minEnrolments = dbDiscount.minEnrolments
+                dto.minValue = dbDiscount.minValue?.toBigDecimal()
+                dto.corporatePassDiscounts = dbDiscount.corporatePassDiscount.collect { toRestDiscountCorporatePass(it.corporatePass) }
+                dto.createdOn = LocalDateUtils.dateToTimeValue(dbDiscount.createdOn)
+                dto.modifiedOn = LocalDateUtils.dateToTimeValue(dbDiscount.modifiedOn)
+                dto.limitPreviousEnrolment = dbDiscount.limitPreviousEnrolment
             }
-            d.cosAccount =  dbDiscount.cosAccount?.id
-            d.addByDefault = dbDiscount.addByDefault
-            d.minEnrolments = dbDiscount.minEnrolments
-            d.minValue = dbDiscount.minValue?.toBigDecimal()
-            d.corporatePassDiscounts = dbDiscount.corporatePassDiscount.collect { toRestDiscountCorporatePass(it.corporatePass) }
-            d.createdOn = LocalDateUtils.dateToTimeValue(dbDiscount.createdOn)
-            d.modifiedOn = LocalDateUtils.dateToTimeValue(dbDiscount.modifiedOn)
-            d.limitPreviousEnrolment = dbDiscount.limitPreviousEnrolment
-        }
-
-        d
+            dto
         }
     }
 
