@@ -146,7 +146,7 @@ module.exports = {
                             "function-regex": "^[a-zA-Z][\\w\\d]+$"
                         }
                     ],
-                    "no-boolean-literal-compare": true,
+                    "no-boolean-literal-compare": false,
                     "no-else-after-return": true,
                     "no-function-constructor-with-string-args": true,
                     "prefer-array-literal": true,
