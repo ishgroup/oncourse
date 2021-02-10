@@ -17,16 +17,18 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { fade, darken } from "@material-ui/core/styles/colorManipulator";
 import FindInPage from "@material-ui/icons/FindInPage";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import ExecuteScriptModal from "../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { openInternalLink } from "../../../../utils/links";
 import SearchInput from "./components/SearchInput";
 import ScriptsMenu from "./components/ScriptsMenu";
 import SendMessageMenu from "./components/SendMessageMenu";
 import ViewSwitcher from "./components/ViewSwitcher";
-import { APP_BAR_HEIGHT } from "../../../../../constants/Config";
+import { APP_BAR_HEIGHT, EMAIL_FROM_KEY } from "../../../../../constants/Config";
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
 import { State } from "../../../../../reducers/state";
+import { getEmailTemplatesWithKeyCode, getUserPreferences } from "../../../../actions";
 
 const SendMessageEntities = [
   "Invoice",
@@ -40,6 +42,21 @@ const SendMessageEntities = [
   "ProductItem",
   "WaitingList"
 ];
+
+const EntitiesToMessageTemplateEntitiesMap = {
+  Invoice: ["Contact", "Invoice"],
+  Application: ["Contact", "Application"],
+  Contact: ["Contact"],
+  Enrolment: ["Contact", "Enrolment"],
+  CourseClass: ["Contact", "CourseClass", "Enrolment"],
+  PaymentIn: ["Contact", "PaymentIn"],
+  PaymentOut: ["Contact", "PaymentOut"],
+  Payslip: ["Contact", "Payslip"],
+  ProductItem: ["Contact", "Voucher", "Membership", "Article", "ProductItem"],
+  WaitingList: ["Contact", "WaitingList"]
+};
+
+const getMessageTemplateEntities = entity => EntitiesToMessageTemplateEntitiesMap[entity] || [entity];
 
 const styles = theme => createStyles({
     root: {
@@ -116,6 +133,22 @@ class BottomAppBar extends React.PureComponent<any, any> {
       execScriptsMenuOpen: null,
       scriptIdSelected: null
     };
+  }
+
+  componentDidMount() {
+    const { rootEntity, getMessageTemplates, getEmailFrom } = this.props;
+    if (rootEntity) {
+      getMessageTemplates(getMessageTemplateEntities(rootEntity));
+      getEmailFrom();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { rootEntity, getMessageTemplates, getEmailFrom } = this.props;
+    if (rootEntity !== prevProps.rootEntity) {
+      getMessageTemplates(getMessageTemplateEntities(rootEntity));
+      getEmailFrom();
+    }
   }
 
   setExecScriptsMenuOpen = (value: boolean) => {
@@ -428,4 +461,9 @@ const mapStateToProps = (state: State) => ({
   scripts: state.list.scripts
 });
 
-export default connect<any, any, any>(mapStateToProps)(withStyles(styles)(BottomAppBar));
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  getMessageTemplates: (entities: string[]) => dispatch(getEmailTemplatesWithKeyCode(entities)),
+  getEmailFrom: () => dispatch(getUserPreferences([EMAIL_FROM_KEY])),
+});
+
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(BottomAppBar));
