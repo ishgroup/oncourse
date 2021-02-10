@@ -137,15 +137,12 @@ class BottomAppBar extends React.PureComponent<any, any> {
 
   componentDidMount() {
     const {
-     rootEntity, getMessageTemplates, getEmailFrom, scripts, getScripts
+     rootEntity, getMessageTemplates, getEmailFrom
     } = this.props;
 
     if (rootEntity) {
       getMessageTemplates(getMessageTemplateEntities(rootEntity));
       getEmailFrom();
-    }
-    if (!scripts && rootEntity) {
-      getScripts(rootEntity);
     }
   }
 
@@ -154,7 +151,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
      rootEntity, getMessageTemplates, getEmailFrom, scripts, getScripts
     } = this.props;
 
-    if (rootEntity !== prevProps.rootEntity) {
+    if (rootEntity && rootEntity !== prevProps.rootEntity) {
       getMessageTemplates(getMessageTemplateEntities(rootEntity));
       getEmailFrom();
       if (!scripts) {
