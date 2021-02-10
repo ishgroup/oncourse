@@ -11,7 +11,7 @@ describe("Get languages epic tests", () => {
     epic: EpicGetLanguages,
     processData: mockedApi => {
       const data = mockedApi.db.getLanguages();
-      const languages = data.sort((a, b) => (a.name[0] > b.name[0] ? 1 : -1));
+      const languages = data.sort((a, b) => (a.name > b.name ? 1 : -1));
 
       return [
         {

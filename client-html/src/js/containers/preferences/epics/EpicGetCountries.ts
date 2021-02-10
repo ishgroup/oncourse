@@ -14,7 +14,7 @@ const request: EpicUtils.Request<any, any, any> = {
   type: GET_COUNTRIES_REQUEST,
   getData: () => PreferencesService.getCountries(),
   processData: (data: Country[]) => {
-    const countries = data.sort((a, b) => (a.name[0] > b.name[0] ? 1 : -1));
+    const countries = data.sort((a, b) => (a.name > b.name ? 1 : -1));
 
     return [
       {
