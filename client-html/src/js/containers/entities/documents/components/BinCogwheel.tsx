@@ -15,12 +15,14 @@ import RestoreFromTrash from "@material-ui/icons/RestoreFromTrash";
 import { State } from "../../../../reducers/state";
 import { removeDocument, restoreDocument } from "../actions";
 import { ListState } from "../../../../model/common/ListView";
+import { NoArgFunction } from "../../../../model/common/CommonFunctions";
 
 interface Props {
   selection?: ListState["selection"];
   records?: ListState["records"];
   onDelete?: (ids: number[]) => void;
   onRestore?: (ids: number[]) => void;
+  closeMenu?: NoArgFunction;
 }
 
 const BinCogwheel = memo<Props>(props => {
@@ -28,7 +30,8 @@ const BinCogwheel = memo<Props>(props => {
     selection,
     records,
     onDelete,
-    onRestore
+    onRestore,
+    closeMenu
   } = props;
 
   const [selected, setSelected] = useState([]);
@@ -67,6 +70,7 @@ const BinCogwheel = memo<Props>(props => {
     if (selectedDeleted.length) {
       onRestore(selectedDeleted);
     }
+    closeMenu();
   };
 
   return selection.length ? (
