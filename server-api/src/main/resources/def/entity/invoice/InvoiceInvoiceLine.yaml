@@ -19,7 +19,8 @@ properties:
   discountEachExTax:
     type: number
   discountId:
-    type: number
+    type: integer
+    format: int64
   discountName:
     type: string
   taxEach:
