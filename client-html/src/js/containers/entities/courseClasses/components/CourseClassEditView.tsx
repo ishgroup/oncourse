@@ -49,6 +49,7 @@ import CourseClassDocumentsTab from "./documents/CourseClassDocumentsTab";
 import history from "../../../../constants/History";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../constants";
 import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
+import { discountsSort } from "./budget/utils";
 
 const items: TabsListItem[] = [
   {
@@ -215,8 +216,6 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
   const classes = useBudgetAdornmentStyles();
 
   const discounts = useMemo(() => {
-    const discountsSort = (a, b) => (a.description > b.description ? 1 : -1);
-
     const discountItems = budget.filter(b => b.flowType === "Discount"
       && (!b.courseClassDiscount.discount.code && !b.courseClassDiscount.discount.relationDiscount));
     discountItems.sort(discountsSort);
@@ -226,8 +225,6 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
     const discountsRelations = budget.filter(b => b.flowType === "Discount"
       && (!b.courseClassDiscount.discount.code && b.courseClassDiscount.discount.relationDiscount));
     discountsRelations.sort(discountsSort);
-
-    console.log(budget, discountItems);
 
     const mapDiscount = d => (
       <Fragment key={d.id}>
