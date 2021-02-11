@@ -4,17 +4,19 @@
  */
 
 import {
- ClassCost, CourseClassPaymentPlan, Discount, Tax 
+ ClassCost, CourseClassPaymentPlan, Discount, Tax
 } from "@api/model";
-import {differenceInMinutes, format, subMinutes} from "date-fns";
+import { differenceInMinutes, format, subMinutes } from "date-fns";
 import Decimal from "decimal.js-light";
 import {
- decimalDivide, decimalMinus, decimalMul, decimalPlus 
+ decimalDivide, decimalMinus, decimalMul, decimalPlus
 } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { TimetableSession } from "../../../../../../model/timetable";
 import { ClassCostExtended } from "../../../../../../model/entities/CourseClass";
 import { getRoundingByType } from "../../../../discounts/utils";
 import { getCurrentTax } from "../../../../taxes/utils";
+
+export const discountsSort = (a, b) => (a.description > b.description ? 1 : -1);
 
 export const getFeeWithTaxAmount = (exTaxFee: number, currentTax: Tax) => decimalMul(exTaxFee, decimalPlus(currentTax.rate, 1));
 
@@ -164,4 +166,4 @@ export const getClassFeeTotal = (costs: ClassCost[], taxes: Tax[]) => {
   return studentFee ? getFeeWithTaxAmount(studentFee.perUnitAmountExTax, getCurrentTax(taxes, studentFee.taxId)) : 0;
 };
 
-export const dateForCompare = (date: string, customFormat: string) => new Date(format(new Date(date), customFormat))
+export const dateForCompare = (date: string, customFormat: string) => new Date(format(new Date(date), customFormat));
