@@ -20,12 +20,20 @@ import ish.persistence.Preferences
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.tmatesoft.svn.core.SVNURL
+import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager
+import org.tmatesoft.svn.core.io.ISVNEditor
+import org.tmatesoft.svn.core.io.SVNRepository
+import org.tmatesoft.svn.core.io.SVNRepositoryFactory
+import org.tmatesoft.svn.core.io.diff.SVNDeltaGenerator
+import org.tmatesoft.svn.core.wc.SVNWCUtil
 
 import javax.ws.rs.InternalServerErrorException
 
-import static ish.oncourse.configuration.Configuration.AdminProperty.S_ROOT
+import static ish.oncourse.configuration.Configuration.AdminProperty.*
 
 class BillingApiImpl implements BillingApi {
     
@@ -40,6 +48,9 @@ class BillingApiImpl implements BillingApi {
     
     private static final String BUCKET_NAME_FORMAT = "ish-oncourse-%s"
     private static final String AWS_USER_NAME_FORMAT = "college.%s"
+    private static final String svnRepo =  SVNURL.parseURIEncoded( Configuration.getValue(SVN_URL))
+    private static final String svnUser =  SVNURL.parseURIEncoded( Configuration.getValue(SVN_USER))
+    private static final String svnPass =  SVNURL.parseURIEncoded( Configuration.getValue(SVN_PASS))
 
     private static final Logger logger = LogManager.logger
     
@@ -125,7 +136,7 @@ class BillingApiImpl implements BillingApi {
             }
             
             logger.warn("College was created:$collegeDTO.collegeKey")
-
+            angelConfig.commit()
             sendEmail('College was created', "college info: $collegeDTO \n errors: $errors")
 
         } catch (Exception e) {
@@ -189,6 +200,7 @@ class BillingApiImpl implements BillingApi {
     
     
     static class AngelConfig {
+        
         String securityCode
         String collegeKey
         String s3bucketName
@@ -198,7 +210,46 @@ class BillingApiImpl implements BillingApi {
         String userFirstName
         String userLastName
         String useEmail
+        
+        String toString() {
+            return  "server:\n" +
+                        "\tmax_users: 1\n" +
+                        "\tsecurity_key: $securityCode\n" +
+                    "db:\n" +
+                        "\tpass: ${SecurityUtil.generateRandomPassword(12)}\n" +
+                    "document:\n" +
+                        "\tbucket: $s3bucketName\n" +
+                        "\taccessKeyId: $s3accessId\n" +
+                        "\taccessSecretKey: $s3accessKey\n" +
+                        "\tlimit: 1G\n"
+        }
 
+        void commit() {
+            
+            String fileName = "${collegeKey}.sls"
+            SVNRepository repository = SVNRepositoryFactory.create( SVNURL.parseURIEncoded(svnRepo))
+            ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(svnUser, svnPass.toCharArray())
+            repository.setAuthenticationManager(authManager)
+            
+            ISVNEditor editor = repository.getCommitEditor( "Create $collegeKey angel instance", null)
+            
+            editor.openRoot(-1)
+            editor.addFile(fileName, null, -1)
+            editor.applyTextDelta(fileName, null)
+            SVNDeltaGenerator deltaGenerator = new SVNDeltaGenerator()
+            editor.applyTextDelta(svnRepo, null)
+            
+            InputStream is = IOUtils.toInputStream(toString(), "UTF-8")
+            
+            String chksm = deltaGenerator.sendDelta(svnRepo, is, editor, true)
+
+            is.close()
+            editor.textDeltaEnd(fileName)
+            editor.closeFile(fileName, chksm)
+            editor.closeEdit()
+
+        }
+        
     }
     
 }

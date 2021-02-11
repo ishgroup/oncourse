@@ -132,8 +132,12 @@ class Configuration {
         S_ROOT('editor_files', 's.root'),
         STORAGE_ACCESS_ID('storage_access_id', 'storage.access.id'),
         STORAGE_ACCESS_KEY('storage_access_key', 'storage.access.key'),
-        DEPLOY_SCRIPT_PATH('editor_deploy', 'editor.script.deploy')
+        DEPLOY_SCRIPT_PATH('editor_deploy', 'editor.script.deploy'),
 
+        SVN_URL('svn_url', 'svn.url'),
+        SVN_USER('svn_user', 'svn.user'),
+        SVN_PASS('svn_pass', 'svn.pass')
+        
         private String key
         private String systemProperty
 
