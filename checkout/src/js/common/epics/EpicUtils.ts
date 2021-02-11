@@ -8,6 +8,16 @@ import {commonErrorToValidationError, toValidationError} from "../utils/ErrorUti
 import {AxiosResponse} from "axios";
 import {CommonError} from "../../model/index";
 import {IAction} from "../../actions/IshAction";
+import Bugsnag from "@bugsnag/js";
+
+const notifyBugsnagApiError = (error: any) => {
+  Bugsnag.notify(new Error('Checkout API error'), function (event) {
+    event.errors[0].errorClass = 'Checkout API error';
+    event.addMetadata('Checkout API error data', {
+      ...typeof error === "object" ? error : {}
+    });
+  });
+}
 
 export function mapPayload(actionType: string) {
     return function (payload: any) {
@@ -20,6 +30,7 @@ export function mapPayload(actionType: string) {
 
 export function mapError(actionType: string) {
     return function (payload: any) {
+      notifyBugsnagApiError(payload);
         return Observable.of({
             type: REJECTED(actionType),
             payload,
@@ -41,6 +52,7 @@ export const showCommonError = (error: CommonError): { type: string, payload: an
 };
 
 export const ProcessError = (data: AxiosResponse): { type: string, payload?: any }[] => {
+  notifyBugsnagApiError(data);
   return [{type: SHOW_MESSAGES, payload: toValidationError(data)}];
 };
 
