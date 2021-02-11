@@ -13,16 +13,25 @@ import withStyles from "@material-ui/core/styles/withStyles";
 const styles = (theme: any) => ({
   input: {
     height: "36px",
-    width: "100%"
+    width: "100%",
   }
 });
 
 const CustomTextField = (props: any) => {
   const { classes } = props;
 
+  const inputProps = {
+    autoComplete: "off",
+    type: "search",
+    form: {
+      autoComplete: "off",
+    },
+  }
+
   return (
     <TextField
       className={classes.input}
+      inputProps={inputProps}
       {...props}
     />
   )

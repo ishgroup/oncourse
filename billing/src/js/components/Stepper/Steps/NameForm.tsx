@@ -6,14 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Rx, {Subject} from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { connect, Dispatch } from "react-redux";
 import Navigation from "../Navigations";
-import { checkSiteName } from "../../../redux/actions";
+import { checkSiteName, setSitenameValue } from "../../../redux/actions";
 
 const useStyles = makeStyles((theme:any) => ({
   textFieldWrapper: {
@@ -37,12 +37,19 @@ const useStyles = makeStyles((theme:any) => ({
 }));
 
 const NameForm = (props: any) => {
-  const classes = useStyles();
+  const { activeStep, steps, handleBack, handleNext, token, checkSiteName, isValidName, sendTokenAgain, setSitenameValue } = props;
 
-  const { activeStep, steps, handleBack, handleNext, token, checkSiteName, isValidName, sendTokenAgain } = props;
-
+  const [collegeKey, setCollegeKey] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [subject] = useState(() => new Subject());
+
+  const inputRef = useRef(null);
+
+  const classes = useStyles();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [inputRef]);
 
   const setNewCollegeName = (e) => {
     const name: string = e.target.innerText;
@@ -50,7 +57,7 @@ const NameForm = (props: any) => {
     const validName = name && matches && matches[0] === name;
 
     if (!validName) {
-      setErrorMessage('Must contain only letters, numbers and symbols "-" and "_"')
+      setErrorMessage('Must contain letters, numbers and symbols "-" and "_"')
     } else {
       if (errorMessage) setErrorMessage("");
     }
@@ -61,6 +68,7 @@ const NameForm = (props: any) => {
     const subscription = subject
       .pipe(debounceTime(1500))
       .subscribe((values: { name: string, token: string, validName: boolean, sendTokenAgain: boolean }) => {
+        setCollegeKey(values.name);
         values.validName && checkSiteName({
         name: values.name,
         token: sendTokenAgain ? values.token : null
@@ -72,6 +80,11 @@ const NameForm = (props: any) => {
     };
   }, []);
 
+  const handleNextCustom = () => {
+    setSitenameValue(collegeKey);
+    handleNext();
+  }
+
   return (
     <form>
       <h2 className={classes.coloredHeaderText}>Give your site a name</h2>
@@ -80,12 +93,11 @@ const NameForm = (props: any) => {
       <div className={classes.mainWrapper}>
         <div className={classes.textFieldWrapper2}>
           <Typography>https://</Typography>
-          <span className="input" onInput={(e) => setNewCollegeName(e)} contentEditable/>
+          <span className="input" onInput={(e) => setNewCollegeName(e)} ref={inputRef} contentEditable/>
           <Typography>.oncourse.cc</Typography>
         </div>
         {errorMessage && (<Typography className={classes.errorMessage}>{errorMessage}</Typography>)}
       </div>
-
 
       <Typography>- No credit card required</Typography>
       <Typography>- Free until 1 month, then $10/month</Typography>
@@ -93,7 +105,7 @@ const NameForm = (props: any) => {
         activeStep={activeStep}
         steps={steps}
         handleBack={handleBack}
-        handleNext={handleNext}
+        handleNext={handleNextCustom}
         disabled={!isValidName}
       />
     </form>
@@ -107,6 +119,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setSitenameValue: (name: string) => dispatch(setSitenameValue(name)),
   checkSiteName: ({ name, token }) => dispatch(checkSiteName({ name, token })),
 });
 

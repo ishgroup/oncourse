@@ -9,6 +9,7 @@ export const SHOW_MESSAGE = "SHOW_MESSAGE";
 export const SET_CAPTCHA_TOKEN = "SET_CAPTCHA_TOKEN";
 export const CHECK_SITENAME = "CHECK_SITENAME";
 export const SET_SITENAME_VALID_VALUE = "SET_SITENAME_VALID_VALUE";
+export const SET_SITENAME_VALUE = "SET_SITENAME_VALUE";
 export const CREATE_COLLEGE = "CREATE_COLLEGE";
 export const SET_TEMPLATE_VALUE = "SET_TEMPLATE_VALUE";
 export const SET_CONTACT_FORM_VALUES = "SET_CONTACT_FORM_VALUES";
@@ -31,6 +32,11 @@ export const setSitenameValidValue = (payload: boolean) => ({
   type: SET_SITENAME_VALID_VALUE,
   payload
 });
+
+export const setSitenameValue = (payload: string) => ({
+  type: SET_SITENAME_VALUE,
+  payload
+})
 
 export const setCollegeWasCreatedValue = (payload: boolean) => ({
   type: COLLEGE_WAS_CREATED,

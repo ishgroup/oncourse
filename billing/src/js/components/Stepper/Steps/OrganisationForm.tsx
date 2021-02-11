@@ -18,11 +18,14 @@ import Navigation from "../Navigations";
 import { countries, countriesTimeZone } from "../../../utils";
 
 const useStyles = makeStyles((theme: any) => ({
+  form: {
+    paddingBottom: "20px",
+  },
   textFieldWrapper: {
-    minHeight: "61px"
+    minHeight: "66px",
   },
   coloredHeaderText: {
-    color: theme.statistics.coloredHeaderText.color
+    color: theme.statistics.coloredHeaderText.color,
   },
 }));
 
@@ -57,7 +60,7 @@ const OrganisationForm = (props: any) => {
     if (collegeWasCreated) handleNext();
   }, collegeWasCreated)
 
-  const { handleSubmit, handleChange, values, errors, setFieldValue, isValid, dirty } = useFormik({
+  const { handleSubmit, handleChange, values, errors, setFieldValue, isValid, touched, dirty, handleBlur } = useFormik({
     initialValues: organisationForm,
     validationSchema,
     onSubmit: values => {
@@ -90,17 +93,19 @@ const OrganisationForm = (props: any) => {
   }, organisationForm)
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={classes.form}>
       <h2 className={classes.coloredHeaderText}>Organisation</h2>
       <div className={classes.textFieldWrapper}>
         <CustomTextField
           placeholder="Name"
           label="Name"
           id="organisationName"
+          autoFocus={true}
           onChange={handleChange}
           value={values.organisationName}
-          error={errors.organisationName}
+          error={touched.organisationName && errors.organisationName}
           helperText={errors.organisationName}
+          onBlur={handleBlur}
         />
       </div>
       <div className={classes.textFieldWrapper}>
@@ -128,8 +133,9 @@ const OrganisationForm = (props: any) => {
           id="address"
           onChange={handleChange}
           value={values.address}
-          error={errors.address}
+          error={touched.address && errors.address}
           helperText={errors.address}
+          onBlur={handleBlur}
         />
       </div>
       <div className={classes.textFieldWrapper}>
@@ -139,8 +145,9 @@ const OrganisationForm = (props: any) => {
           id="suburb"
           onChange={handleChange}
           value={values.suburb}
-          error={errors.suburb}
+          error={touched.suburb && errors.suburb}
           helperText={errors.suburb}
+          onBlur={handleBlur}
         />
       </div>
       <div className={classes.textFieldWrapper}>
@@ -150,8 +157,9 @@ const OrganisationForm = (props: any) => {
           id="state"
           onChange={handleChange}
           value={values.state}
-          error={errors.state}
+          error={touched.state && errors.state}
           helperText={errors.state}
+          onBlur={handleBlur}
         />
       </div>
       <div className={classes.textFieldWrapper}>
@@ -161,8 +169,9 @@ const OrganisationForm = (props: any) => {
           id="postcode"
           onChange={handleChange}
           value={values.postcode}
-          error={errors.postcode}
+          error={touched.postcode && errors.postcode}
           helperText={errors.postcode}
+          onBlur={handleBlur}
         />
       </div>
       <div className={classes.textFieldWrapper}>
@@ -177,8 +186,9 @@ const OrganisationForm = (props: any) => {
               {...params}
               label="Country"
               margin="normal"
-              error={errors.country}
+              error={touched.country && errors.country}
               helperText={errors.country}
+              onBlur={handleBlur}
             />
           )}
         />
@@ -195,8 +205,9 @@ const OrganisationForm = (props: any) => {
               {...params}
               label="Time zone"
               margin="normal"
-              error={errors.timeZone}
+              error={touched.timeZone && errors.timeZone}
               helperText={errors.timeZone}
+              onBlur={handleBlur}
             />
           )}
         />

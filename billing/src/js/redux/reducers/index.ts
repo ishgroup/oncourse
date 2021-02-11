@@ -10,6 +10,7 @@ import {
   SET_SITENAME_VALID_VALUE,
   COLLEGE_WAS_CREATED,
   SET_SEND_TOKEN_AGAIN_VALUE,
+  SET_SITENAME_VALUE,
 } from "../actions";
 import { contactFormInitialValue, organisationFormInitialValue } from "../initialValues";
 
@@ -44,8 +45,14 @@ export const createCollegeReducer = (state = initState, action) => {
     case SET_SITENAME_VALID_VALUE:
       return {
         ...state,
-        isValidName: action.payload,
+        isValidName: action.payload
       };
+
+    case SET_SITENAME_VALUE:
+      return {
+        ...state,
+        collegeKey: action.payload
+      }
 
     case SET_TEMPLATE_VALUE:
       return {
@@ -85,7 +92,7 @@ export const createCollegeReducer = (state = initState, action) => {
     case SHOW_MESSAGE:
       return {
         ...state,
-        message: action.payload,
+        message: action.payload
       };
 
     case CLEAR_MESSAGE:

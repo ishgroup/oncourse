@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import Message from "./Message";
 import { clearMessage } from "../../../redux/actions";
-// import { clearFetch, clearMessage } from "../../../redux/actions";
 
 const MessageProvider = props => {
   const {

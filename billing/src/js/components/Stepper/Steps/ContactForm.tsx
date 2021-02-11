@@ -18,7 +18,7 @@ import Navigation from "../Navigations";
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
-    minHeight: "61px"
+    minHeight: "66px"
   },
   coloredHeaderText: {
     color: theme.statistics.coloredHeaderText.color
@@ -71,6 +71,7 @@ const ContactForm = (props: any) => {
           placeholder="First Name"
           label="First Name"
           id="userFirstName"
+          autoFocus={true}
           onChange={handleChange}
           value={values.userFirstName}
           error={touched.userFirstName && errors.userFirstName}

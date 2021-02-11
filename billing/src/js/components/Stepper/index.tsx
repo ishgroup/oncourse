@@ -10,11 +10,8 @@ import React, { useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { connect, Dispatch } from "react-redux";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import { items } from "./Steps";
-import CustomButton from "../common/Button";
-import CustomStepper from "../common/Stepper";
+import LeftMenu from "../common/LeftMenu";
 import NameForm from "./Steps/NameForm";
 import TemplateForm from "./Steps/TemplateForm";
 import ContactForm from "./Steps/ContactForm";
@@ -22,7 +19,7 @@ import OrganisationForm from "./Steps/OrganisationForm";
 import FinishPage from "./Steps/FinishPage";
 import { setCaptchaToken } from "../../redux/actions";
 
-const SITE_KEY = "6LenRkYaAAAAAJf7P8OamoQSU7H5YaAKpMqTkGzU";
+const SITE_KEY = "6Lcbk0YaAAAAAM5_TdMXM3Grl0CgbbURqgJMnqVf";
 
 declare global {
   interface Window { grecaptcha: any; }
@@ -98,7 +95,6 @@ const CustomizedSteppers = (props: any) => {
     loadScriptByURL("recaptcha-key", `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`, () => {
       window.grecaptcha.ready(() => {
         window.grecaptcha.execute(SITE_KEY, { action: 'submit' }).then(token => {
-          console.log(token);
           setCaptchaToken(token);
         });
       });
@@ -126,7 +122,7 @@ const CustomizedSteppers = (props: any) => {
 
   return (
     <div className={clsx(classes.root, activeStep === 1 ? classes.minWidth1200 : classes.minWidth800)}>
-      <CustomStepper
+      <LeftMenu
         items={items}
         activeStep={activeStep}
         setActiveStep={setActiveStep}
