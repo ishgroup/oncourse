@@ -15,7 +15,7 @@ import {
 } from "redux-form";
 import { isAfter, isBefore, isEqual } from 'date-fns';
 import {
- ClassCost, CourseClassTutor, Discount, Tax
+ ClassCost, CourseClassTutor, Discount, Tax 
 } from "@api/model";
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
@@ -54,6 +54,7 @@ import { getClassCostTypes } from "../../utils";
 import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { dateForCompare, getClassFeeTotal, getDiscountAmountExTax } from "./utils";
 import PreferencesService from "../../../../preferences/services/PreferencesService";
+import BudgetItemRow from "./BudgetItemRow";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -128,6 +129,50 @@ const usePopoverStyles = makeStyles(theme => ({
     padding: theme.spacing(1),
   },
 }));
+
+const DiscountRows = props => {
+  const {
+   rowsValues, openEditModal, onDeleteClassCost, currencySymbol, classes
+  } = props;
+
+  const discountsSort = (a, b) => (a.value.description > b.value.description ? 1 : -1);
+
+  const discountItems = rowsValues.items.filter(({ value }) => value.flowType === "Discount"
+    && (!value.courseClassDiscount.discount.code && !value.courseClassDiscount.discount.relationDiscount));
+  discountItems.sort(discountsSort);
+  const discountsPromo = rowsValues.items.filter(({ value }) => value.flowType === "Discount"
+    && (value.courseClassDiscount.discount.code && !value.courseClassDiscount.discount.relationDiscount));
+  discountsPromo.sort(discountsSort);
+  const discountsRelations = rowsValues.items.filter(({ value }) => value.flowType === "Discount"
+    && (!value.courseClassDiscount.discount.code && value.courseClassDiscount.discount.relationDiscount));
+  discountsRelations.sort(discountsSort);
+
+  const mapDiscount = (item, i) => (
+    <BudgetItemRow
+      key={i}
+      openEditModal={openEditModal}
+      onDeleteClassCost={onDeleteClassCost}
+      value={item.value}
+      currencySymbol={currencySymbol}
+      classes={classes}
+      projectedBasedValue={item.projected}
+      actualBasedValue={item.actual}
+      maxBasedValue={item.max}
+    />
+  );
+
+  const discountHeader = header => <div className="mt-3 mb-2 secondaryHeading">{header}</div>;
+
+  return (
+    <>
+      {discountItems.map(mapDiscount)}
+      {Boolean(discountsPromo.length) && discountHeader("PROMOTIONAL CODES")}
+      {discountsPromo.map(mapDiscount)}
+      {Boolean(discountsRelations.length) && discountHeader("RELATION DISCOUNT")}
+      {discountsRelations.map(mapDiscount)}
+    </>
+  );
+};
 
 const MouseOverPopover = ({
   enrolments,
@@ -351,24 +396,24 @@ const CourseClassBudgetTab = React.memo<Props>(
       async (tutor: CourseClassTutor) => {
         const fullRole = await PreferencesService.getTutorRole(tutor.roleId);
 
-        let payRate
+        let payRate;
         if (values.startDateTime && fullRole.payRates.length) {
-          fullRole.payRates.some((e) => {
+          fullRole.payRates.some(e => {
             if (isEqual(dateForCompare(e.validFrom, "yyyy-MM"),
               dateForCompare(values.startDateTime, "yyyy-MM"))) {
-              payRate = e
-              return true
+              payRate = e;
+              return true;
             }
 
             if (isBefore(dateForCompare(e.validFrom, "yyyy-MM"),
               dateForCompare(values.startDateTime, "yyyy-MM"))) {
               if (!payRate || isAfter(dateForCompare(e.validFrom, "yyyy-MM"),
                 dateForCompare(payRate.validFrom, "yyyy-MM"))) {
-                payRate = e
+                payRate = e;
               }
             }
-            return false
-          })
+            return false;
+          });
         }
 
         const role = tutorRoles.find(r => r.id === tutor.roleId);
@@ -697,6 +742,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                   expanded={expandedBudget.includes("Discounts")}
                   setExpanded={expandBudgetItem}
                   rowsValues={classCostTypes.discount}
+                  customRowsRenderer={DiscountRows}
                   headerComponent={(
                     <div onClick={stopEventPropagation}>
                       <NestedList
