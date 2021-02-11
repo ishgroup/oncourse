@@ -15,7 +15,7 @@ import {
 } from "redux-form";
 import { isAfter, isBefore, isEqual } from 'date-fns';
 import {
- ClassCost, CourseClassTutor, Discount, Tax
+ ClassCost, CourseClassTutor, Discount, Tax 
 } from "@api/model";
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
