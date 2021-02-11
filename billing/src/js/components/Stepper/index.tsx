@@ -19,7 +19,7 @@ import OrganisationForm from "./Steps/OrganisationForm";
 import FinishPage from "./Steps/FinishPage";
 import { setCaptchaToken } from "../../redux/actions";
 
-const SITE_KEY = "6Lcbk0YaAAAAAM5_TdMXM3Grl0CgbbURqgJMnqVf";
+const SITE_KEY = "6LenRkYaAAAAAJf7P8OamoQSU7H5YaAKpMqTkGzU";
 
 declare global {
   interface Window { grecaptcha: any; }

@@ -16,7 +16,7 @@ import { contactFormInitialValue, organisationFormInitialValue } from "../initia
 
 const initState = {
   collegeKey: "",
-  isValidName: true,
+  isValidName: false,
   webSiteTemplate: "",
   token: "",
   collegeWasCreated: false,
