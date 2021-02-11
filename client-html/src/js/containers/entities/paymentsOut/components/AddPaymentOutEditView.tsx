@@ -193,7 +193,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
     };
 
   useEffect(() => {
-    const invoiceIndex = values.invoices.findIndex(i => i.id === Number(selection[0]));
+    const invoiceIndex = values.invoices?.findIndex(i => i.id === Number(selection[0]));
     if (invoiceIndex !== -1) {
       const amount = Math.abs(values.invoices[invoiceIndex].amountOwing);
       const amountToAllocate = getAmountToAllocate(values.invoices, amount);
