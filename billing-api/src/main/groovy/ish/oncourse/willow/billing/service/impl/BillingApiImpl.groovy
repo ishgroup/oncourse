@@ -2,6 +2,7 @@ package ish.oncourse.willow.billing.service.impl
 
 import com.amazonaws.services.identitymanagement.model.AccessKey
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.oncourse.api.request.RequestService
 import ish.oncourse.configuration.Configuration
 import ish.oncourse.model.College
@@ -35,6 +36,7 @@ import javax.ws.rs.InternalServerErrorException
 
 import static ish.oncourse.configuration.Configuration.AdminProperty.*
 
+@CompileStatic
 class BillingApiImpl implements BillingApi {
     
     @Inject
@@ -75,7 +77,7 @@ class BillingApiImpl implements BillingApi {
 
             angelConfig.userFirstName = collegeDTO.userFirstName
             angelConfig.userLastName = collegeDTO.userLastName
-            angelConfig.useEmail = collegeDTO.userEmail
+            angelConfig.userEmail = collegeDTO.userEmail
 
 
             ObjectContext context = cayenneService.newContext()
@@ -209,19 +211,24 @@ class BillingApiImpl implements BillingApi {
         
         String userFirstName
         String userLastName
-        String useEmail
+        String userEmail
         
         String toString() {
             return  "server:\n" +
-                        "\tmax_users: 1\n" +
-                        "\tsecurity_key: $securityCode\n" +
+                    "  max_users: 1\n" +
+                    "  security_key: $securityCode\n" +
                     "db:\n" +
-                        "\tpass: ${SecurityUtil.generateRandomPassword(12)}\n" +
+                    "  pass: ${SecurityUtil.generateRandomPassword(12)}\n" +
                     "document:\n" +
-                        "\tbucket: $s3bucketName\n" +
-                        "\taccessKeyId: $s3accessId\n" +
-                        "\taccessSecretKey: $s3accessKey\n" +
-                        "\tlimit: 1G\n"
+                    "  bucket: $s3bucketName\n" +
+                    "  accessKeyId: $s3accessId\n" +
+                    "  accessSecretKey: $s3accessKey\n" +
+                    "  limit: 1G\n" +
+                    "user:\n"+
+                    "  firstName: $userFirstName\n" +
+                    "  lastName: $userLastName\n" +
+                    "  email: $userEmail\n"
+
         }
 
         void commit() {
