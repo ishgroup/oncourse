@@ -200,8 +200,8 @@ class CheckoutApiImpl implements CheckoutApi {
         relations.findAll { Module.simpleName == it.toEntityIdentifier }.each { relation ->
             Module module = moduleDao.getById(context, relation.toEntityAngelId)
 
-            if (!(contact.student?.enrolments?.collect { it.outcomes } as List<Outcome>)?.collect { it.module }?.any { module == it }) {
-                if (!(contact.student?.priorLearnings?.collect { it.outcomes } as List<Outcome>)?.collect { it.module }?.any { module == it }) {
+            if (!(module in (contact.student?.enrolments?.collect { it.outcomes*.module } as List<Module>))) {
+                if (!(module in (contact.student?.priorLearnings?.collect { it.outcomes*.module } as List<Module>))) {
                     hanbleError(VALIDATION_ERROR, [new CheckoutValidationErrorDTO(error: "You don't have necessary outcomes for that Course")])
                 }
             }
