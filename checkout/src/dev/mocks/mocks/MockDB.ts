@@ -1,6 +1,6 @@
 import * as L from "lodash";
 import faker from "faker";
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 import localForage from "localforage";
 
 import {
