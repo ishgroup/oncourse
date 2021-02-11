@@ -67,6 +67,18 @@ class NestedEditView extends React.Component<any, any> {
     updateListNestedEditRecord(record.id, record, entity, index, rootEntity);
   };
 
+  onSubmit = (record, dispatch, formProps, r, index) => {
+    const { fetch: { pending } } = this.props;
+
+    if (pending) {
+      return;
+    }
+
+    return (r.customOnSave
+      ? r.customOnSave(record, dispatch, formProps)
+      : this.onSave(record, index, r.entity, formProps));
+  }
+
   render() {
     const {
       nestedEditRecords,
@@ -80,43 +92,38 @@ class NestedEditView extends React.Component<any, any> {
       creatingNew
     } = this.props;
 
-    return (
-      <>
-        {nestedEditRecords.map((r, index) => (
-          <FullScreenEditView
-            validate={validate}
-            hideFullScreenAppBar={r.hideFullScreenAppBar}
-            manualLink={manualLink}
-            nameCondition={nameCondition}
-            key={index + r.record.id}
-            rootEntity={r.entity}
-            form={`NestedEditViewForm[${index}]`}
-            fullScreenEditView={r.opened}
-            toogleFullScreenEditView={() => this.onClose(index)}
-            EditViewContent={
-              nestedEditFields && nestedEditFields[r.entity] ? nestedEditFields[r.entity] : EditViewContent
-            }
-            onSubmit={(record, dispatch, formProps) => (r.customOnSave
-                ? r.customOnSave(record, dispatch, formProps)
-                : this.onSave(record, index, r.entity, formProps))}
-            creatingNew={r.opened ? creatingNew : false}
-            nestedIndex={index}
-            showConfirm={showConfirm}
-            openNestedEditView={openNestedEditView}
-            onSubmitFail={onSubmitFail}
-            hasSelected
-            isNested
-          />
-        ))}
-      </>
-    );
+    return nestedEditRecords.map((r, index) => (
+      <FullScreenEditView
+        validate={validate}
+        hideFullScreenAppBar={r.hideFullScreenAppBar}
+        manualLink={manualLink}
+        nameCondition={nameCondition}
+        key={index + r.record.id}
+        rootEntity={r.entity}
+        form={`NestedEditViewForm[${index}]`}
+        fullScreenEditView={r.opened}
+        toogleFullScreenEditView={() => this.onClose(index)}
+        EditViewContent={
+          nestedEditFields && nestedEditFields[r.entity] ? nestedEditFields[r.entity] : EditViewContent
+        }
+        onSubmit={(record, dispatch, formProps) => this.onSubmit(record, dispatch, formProps, r, index)}
+        creatingNew={r.opened ? creatingNew : false}
+        nestedIndex={index}
+        showConfirm={showConfirm}
+        openNestedEditView={openNestedEditView}
+        onSubmitFail={onSubmitFail}
+        hasSelected
+        isNested
+      />
+    ));
   }
 }
 
 const mapFormStateToProps = (state: State) => ({
-    nestedEditRecords: state.list.nestedEditRecords,
-    rootId: state.list.editRecord && state.list.editRecord.id
-  });
+  fetch: state.fetch,
+  nestedEditRecords: state.list.nestedEditRecords,
+  rootId: state.list.editRecord && state.list.editRecord.id
+});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListNestedEditRecord: (index: number) => dispatch(clearListNestedEditRecord(index)),
