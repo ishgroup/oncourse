@@ -87,7 +87,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
   plugins.push(
     new HtmlWebpackPlugin({
       title: "Billing",
-      template: "src/dev/index.html",
+      template: "src/index.html",
       favicon: "src/images/favicon.ico",
       chunksSortMode: 'none'
     }),
