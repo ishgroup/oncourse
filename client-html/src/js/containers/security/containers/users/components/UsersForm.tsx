@@ -111,7 +111,6 @@ interface FormProps extends Props {
 
 class UsersFormBase extends React.PureComponent<FormProps, any> {
   state = {
-    validPassword: false,
     showMessage: false,
     messageText: ""
   };
@@ -131,10 +130,10 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate() {
     const {
-     user, submitSucceeded, isNew, fetch, asyncErrors, asyncValidating
-    } = nextProps;
+      user, submitSucceeded, isNew, fetch
+    } = this.props;
 
     if (user && (!this.props.user || this.props.user.id !== user.id || (submitSucceeded && !isNew))) {
       this.props.dispatch(initialize("UsersForm", user));
@@ -147,12 +146,6 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
     if (this.isPending && fetch && fetch.success) {
       this.isPending = false;
       this.resolvePromise();
-    }
-
-    if (this.props.asyncValidating && !asyncValidating && !asyncErrors) {
-      this.setState({
-        validPassword: true
-      });
     }
   }
 
@@ -177,7 +170,6 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
     if (password && passwordComplexityFlag === "true") {
       dispatch(startAsyncValidation("UsersForm"));
       dispatch(validateNewUserPassword(password));
-      this.setState({ validPassword: false });
     }
   }, 500);
 
@@ -217,8 +209,8 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
 
     openConfirm(() => {
       resetUserPassword(id);
-    }, "Remove existing password and send the user an invite to reset their password."
-    , "Send invite");
+    }, "Remove existing password and send the user an invite to reset their password.",
+     "Send invite");
   };
 
   onDisable2FA = () => {
