@@ -1,8 +1,8 @@
 import React from "react";
-import UsersForm from "./components/UsersForm";
-import { State } from "../../../../reducers/state";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import UsersForm from "./components/UsersForm";
+import { State } from "../../../../reducers/state";
 import * as SecuritySettingsModel from "../../../../model/preferences/security/SecuritySettings";
 import history from "../../../../constants/History";
 import { getAdministrationSites } from "../../../entities/sites/actions";
@@ -10,7 +10,7 @@ import { getAdministrationSites } from "../../../entities/sites/actions";
 class Users extends React.Component<any, any> {
   private unlisten;
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.onInit();
 
     this.unlisten = this.props.history.listen(() => {
@@ -78,7 +78,7 @@ class Users extends React.Component<any, any> {
 
     const currentUser = isNew
       ? {
-          administrationCentre: sites && sites.length && sites[0].id,
+          administrationCentre: null,
           admin: false,
           active: true,
           accessEditor: false,
@@ -107,19 +107,17 @@ const mapStateToProps = (state: State) => ({
   userRoles: state.security.userRoles,
   sites: state.sites.adminSites,
   passwordComplexityFlag:
-    state.preferences &&
-    state.preferences.security &&
-    state.preferences.security[SecuritySettingsModel.SecurityPasswordComplexity.uniqueKey],
+    state.preferences
+    && state.preferences.security
+    && state.preferences.security[SecuritySettingsModel.SecurityPasswordComplexity.uniqueKey],
   submitSucceeded: state.form.UsersForm && state.form.UsersForm.submitSucceeded,
   formEmail: state.form.UsersForm && state.form.UsersForm.values && state.form.UsersForm.values.email
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     onInit: () => {
       dispatch(getAdministrationSites());
     }
-  };
-};
+  });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Users);
