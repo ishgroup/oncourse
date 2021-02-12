@@ -21,4 +21,8 @@ export function DocumentApiMock(mock) {
     this.db.removeDocument(id);
     return promiseResolve(config, {});
   });
+
+  this.api.onPatch("v1/list/entity/document").reply(config => {
+    return promiseResolve(config, {});
+  });
 }

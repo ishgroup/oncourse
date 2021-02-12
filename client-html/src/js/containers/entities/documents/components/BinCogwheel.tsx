@@ -12,7 +12,6 @@ import { Dispatch } from "redux";
 import MenuItem from "@material-ui/core/MenuItem";
 import Delete from "@material-ui/icons/Delete";
 import RestoreFromTrash from "@material-ui/icons/RestoreFromTrash";
-import { State } from "../../../../reducers/state";
 import { removeDocument, restoreDocument } from "../actions";
 import { ListState } from "../../../../model/common/ListView";
 import { NoArgFunction } from "../../../../model/common/CommonFunctions";
@@ -45,7 +44,7 @@ const BinCogwheel = memo<Props>(props => {
       .findIndex(c => c.attribute === "active");
 
     selection.forEach(id => {
-      const selectedRecord = records.rows.find(r => r.id === id);
+      const selectedRecord = records.rows.find(r => Number(r.id) === Number(id));
       if (!selectedRecord) {
         return;
       }
@@ -84,11 +83,6 @@ const BinCogwheel = memo<Props>(props => {
   ) : null;
 });
 
-const mapStateToProps = (state: State) => ({
-  selection: state.list.selection,
-  records: state.list.records
-});
-
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onDelete: ids => dispatch(removeDocument({
     ids,
@@ -104,4 +98,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   })),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BinCogwheel);
+export default connect(null, mapDispatchToProps)(BinCogwheel);
