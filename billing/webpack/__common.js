@@ -38,6 +38,7 @@ const _common = (dirname, options) => {
         path.resolve(dirname, 'src/dev'),
         path.resolve(dirname, 'src/scss'),
         path.resolve(dirname, 'src/images'),
+        path.resolve(dirname, 'src/test'),
       ],
       extensions: [".ts", ".tsx", ".js", ".css", ".png"]
     },
