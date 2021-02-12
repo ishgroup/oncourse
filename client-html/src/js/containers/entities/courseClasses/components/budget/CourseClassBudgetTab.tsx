@@ -351,24 +351,24 @@ const CourseClassBudgetTab = React.memo<Props>(
       async (tutor: CourseClassTutor) => {
         const fullRole = await PreferencesService.getTutorRole(tutor.roleId);
 
-        let payRate
+        let payRate;
         if (values.startDateTime && fullRole.payRates.length) {
-          fullRole.payRates.some((e) => {
+          fullRole.payRates.some(e => {
             if (isEqual(dateForCompare(e.validFrom, "yyyy-MM"),
               dateForCompare(values.startDateTime, "yyyy-MM"))) {
-              payRate = e
-              return true
+              payRate = e;
+              return true;
             }
 
             if (isBefore(dateForCompare(e.validFrom, "yyyy-MM"),
               dateForCompare(values.startDateTime, "yyyy-MM"))) {
               if (!payRate || isAfter(dateForCompare(e.validFrom, "yyyy-MM"),
                 dateForCompare(payRate.validFrom, "yyyy-MM"))) {
-                payRate = e
+                payRate = e;
               }
             }
-            return false
-          })
+            return false;
+          });
         }
 
         const role = tutorRoles.find(r => r.id === tutor.roleId);
@@ -543,7 +543,8 @@ const CourseClassBudgetTab = React.memo<Props>(
     };
 
     const headerLabel = useMemo(() =>
-      `Budget ( ${formatCurrency(netValues.profit.actual, currencySymbol)} profit )`, [netValues.profit.actual, currencySymbol]);
+      `Budget ( ${formatCurrency(netValues.profit.actual, currencySymbol)} ${netValues.profit.actual >= 0 ? "profit" : "loss"} )`,
+       [netValues.profit.actual, currencySymbol]);
 
     const handlePopoverOpen = event => {
       setPopoverAnchor(event.currentTarget);
