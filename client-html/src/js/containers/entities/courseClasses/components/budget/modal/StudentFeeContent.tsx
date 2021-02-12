@@ -37,7 +37,10 @@ const StudentFeePaymentPlan: React.FC<any> = ({
   }) => {
   const onDeleteClick = useCallback(() => onDelete(index), []);
 
-  const offsetDate = useMemo(() => format(addDays(new Date(classStart), item.dayOffset || 0), D_MMM_YYYY), [
+  const offsetDate = useMemo(() => (classStart
+    ? format(addDays(new Date(classStart), item.dayOffset || 0), D_MMM_YYYY)
+    : null),
+     [
     item.dayOffset,
     classStart
   ]);
@@ -50,7 +53,7 @@ const StudentFeePaymentPlan: React.FC<any> = ({
         <FormField
           type="number"
           name={`${name}.dayOffset`}
-          label={`Days after start (${offsetDate})`}
+          label={`Days after start ${offsetDate ? `(${offsetDate})` : ""}`}
           normalize={normalizeNumber}
           onBlur={onBlur}
         />
@@ -168,7 +171,7 @@ const StudentFeeContent: React.FC<Props> = ({
       updated.sort((a, b) => (a.dayOffset > b.dayOffset ? 1 : -1));
 
       dispatch(change(form, namePrefix + "paymentPlan", updated));
-    }, 500);
+    }, 1000);
   }, [values.paymentPlan, form, namePrefix]);
 
   const onFeeChange = useCallback(
