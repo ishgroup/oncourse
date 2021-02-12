@@ -28,7 +28,8 @@ const request: EpicUtils.Request<ClassCost[], State, { item: CheckoutCourse }> =
     toomorrow.setHours(0, 0, 0, 0);
 
     if (studentFee && studentFee.paymentPlan.length) {
-      const classStart = new Date(item.class.startDateTime);
+      const classStart = item.class.startDateTime ? new Date(item.class.startDateTime) : new Date();
+
       classStart.setHours(0, 0, 0, 0);
 
       let passedPlansPrice = 0;
