@@ -135,10 +135,10 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
     }
   }
 
-  componentDidUpdate() {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const {
-      user, submitSucceeded, isNew, fetch
-    } = this.props;
+     user, submitSucceeded, isNew, fetch
+    } = nextProps;
 
     if (user && (!this.props.user || this.props.user.id !== user.id || (submitSucceeded && !isNew))) {
       this.props.dispatch(initialize("UsersForm", user));
