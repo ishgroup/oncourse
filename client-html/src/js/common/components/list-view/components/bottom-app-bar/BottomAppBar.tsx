@@ -296,6 +296,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
           entity={rootEntity}
           showBulkEditDrawer={showBulkEditDrawer}
           toggleBulkEditDrawer={toggleBulkEditDrawer}
+          records={records}
         />
       ),
       deleteEnabled

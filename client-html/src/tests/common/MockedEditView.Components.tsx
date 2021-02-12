@@ -48,6 +48,11 @@ export const mockedEditView: ({
       </TestEntry>
     );
 
-    render(wrapper, initialValues);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        render(wrapper, initialValues);
+        resolve();
+      }, 1000);
+    });
   });
 };
