@@ -1,12 +1,11 @@
 package ish.oncourse.model;
 
 import ish.common.types.ConfirmationStatus;
-import ish.oncourse.common.field.FieldProperty;
-import ish.oncourse.common.field.Property;
-import ish.oncourse.common.field.PropertyGetSetFactory;
+import ish.oncourse.common.field.*;
 import ish.oncourse.model.auto._Application;
 import ish.oncourse.utils.QueueableObjectUtils;
 
+@Type(value = ContextType.APPLICATION)
 public class Application extends _Application implements Queueable {
 
 	@Override
