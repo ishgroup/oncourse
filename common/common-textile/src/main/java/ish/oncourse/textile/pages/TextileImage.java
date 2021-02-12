@@ -72,8 +72,8 @@ public class TextileImage {
 		imageAlign = align != null ? align : StringUtils.EMPTY;
 		imageAlt = alt != null ? alt : StringUtils.EMPTY;
 		imageTitle = title != null ? title : StringUtils.EMPTY;
-		imageWidth = width != null ? width : (imageBinaryInfo.getCurrentVersion().getPixelWidth() + "px");
-		imageHeight = height != null ? height : (imageBinaryInfo.getCurrentVersion().getPixelHeight() + "px");
+		imageWidth = width != null ? width : imageBinaryInfo.getCurrentVersion().getPixelWidth().toString();
+		imageHeight = height != null ? height : imageBinaryInfo.getCurrentVersion().getPixelHeight().toString();
 		imageClass = cssClass != null ? cssClass : StringUtils.EMPTY;
 		imageCaption = caption;
 		if (link != null)
