@@ -50,9 +50,9 @@ class BillingApiImpl implements BillingApi {
     
     private static final String BUCKET_NAME_FORMAT = "ish-oncourse-%s"
     private static final String AWS_USER_NAME_FORMAT = "college.%s"
-    private static final String svnRepo =  SVNURL.parseURIEncoded( Configuration.getValue(SVN_URL))
-    private static final String svnUser =  SVNURL.parseURIEncoded( Configuration.getValue(SVN_USER))
-    private static final String svnPass =  SVNURL.parseURIEncoded( Configuration.getValue(SVN_PASS))
+    private static final String svnRepo =  Configuration.getValue(SVN_URL)
+    private static final String svnUser =  Configuration.getValue(SVN_USER)
+    private static final String svnPass =  Configuration.getValue(SVN_PASS)
 
     private static final Logger logger = LogManager.logger
     

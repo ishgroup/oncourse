@@ -3,8 +3,12 @@ package ish.oncourse.willow.billing
 import com.google.inject.Binder
 import com.google.inject.Provides
 import io.bootique.ConfigModule
+import io.bootique.cayenne.CayenneModule
+import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.api.cxf.CXFModule
+import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.configuration.Configuration
+import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.s3.IS3Service
 import ish.oncourse.services.s3.S3Service
 import ish.oncourse.willow.billing.filter.SessionFilter
@@ -19,6 +23,9 @@ class BillingModule extends ConfigModule {
     @Override
     void configure(Binder binder) {
         binder.bind(ZKSessionManager)
+        CayenneModule.extend(binder).addModule(new WillowCayenneModuleBuilder().build())
+
+        binder.bind(ICayenneService).to(CayenneService)
 
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         CXFModule.contributeResources(binder).addBinding().to(SessionFilter)
