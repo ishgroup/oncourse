@@ -3,6 +3,7 @@ jetty:
   connectors:
     - type: willow
       port: 8301
+      host: 127.0.0.1
   compactPath: true
 jdbc:
   willow:
