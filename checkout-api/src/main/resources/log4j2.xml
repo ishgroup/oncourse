@@ -2,14 +2,8 @@
 <Configuration status="warn" monitorInterval="30" packages="ish.oncourse.log4j.lookup">
     <Properties>
         <Property name="name">willow_checkout-api</Property>
-        <Property name="ConsoleOutputPattern">%d{HH:mm:ss.SSS} [%t] %-5p %c:%L - %m %X%x%n%ex</Property>
     </Properties>
     <Appenders>
-        <RollingFile name="FILE_REQUEST" fileName="${sys:logs.path}/${name}_request.log" filePattern="${sys:logs.path}/${name}_request.log.%i">
-            <PatternLayout pattern="${ConsoleOutputPattern}"/>
-            <SizeBasedTriggeringPolicy size="10M"/>
-            <DefaultRolloverStrategy/>
-        </RollingFile>
         <RollingFile name="FILE" fileName="${sys:logs.path}/${name}.log" filePattern="${sys:logs.path}/${name}.log.%i">
             <JsonLayout compact="true" eventEol="true">
                 <KeyValuePair key="x-site-key" value="$${header:x-site-key}"/>
@@ -35,9 +29,6 @@
         </Logger>
         <Logger name="io.bootique.jetty.server.ServerLifecycleLogger" level="info">
             <AppenderRef ref="FILE"/>
-        </Logger>
-        <Logger name="io.bootique.jetty.server.RequestLogger" level="info">
-            <AppenderRef ref="FILE_REQUEST"/>
         </Logger>
     </Loggers>
 </Configuration>
