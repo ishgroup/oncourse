@@ -89,7 +89,7 @@ definitions:
         type: string
         description: College abn
         example: 123 456 789
-      traidingName:
+      tradingName:
         type: string
         description: College traiding name
         example: Ish Learning Pty Ltd  

@@ -21,7 +21,7 @@ class SessionFilter  implements ContainerRequestFilter {
 
     RequestService requestService
     ZKSessionManager sessionManager
-    private static final String RE_CAPTCHA_TOKEN = 'x-g-recaptcha'
+    private static final String RE_CAPTCHA_TOKEN = 'xGRecaptcha'
     private static final String RE_CAPTCHA_HOST = 'https://www.google.com'
     private static final String RE_CAPTCHA_PATH = '/recaptcha/api/siteverify'
     private static final String RE_CAPTCHA_SECRET = '6LenRkYaAAAAAKhZKrYLzuEcy5W6Qspj_NgZJ0yy'
@@ -42,16 +42,6 @@ class SessionFilter  implements ContainerRequestFilter {
             String reCaptcha = requestService.request.getHeader(RE_CAPTCHA_TOKEN)
             if  (reCaptcha) {
                 HTTPBuilder builder =  new HTTPBuilder()
-                builder.post(
-                        [uri: RE_CAPTCHA_HOST,
-                         path: RE_CAPTCHA_PATH,
-                         contentType: ContentType.JSON,
-                         requestContentType: ContentType.JSON,
-                         body: [
-                                 secret: RE_CAPTCHA_SECRET,
-                                 response: reCaptcha
-                                ]
-                        ])
                 builder.handler['failure'] = { response, body ->
                     throw new ClientErrorException('Request rejected, reCaptcha check failed', Response.Status.NOT_ACCEPTABLE)
                 }
@@ -62,6 +52,17 @@ class SessionFilter  implements ContainerRequestFilter {
                         throw new ClientErrorException('Request rejected, reCaptcha check failed', Response.Status.NOT_ACCEPTABLE)
                     }
                 }
+                builder.post(
+                        [uri: RE_CAPTCHA_HOST,
+                         path: RE_CAPTCHA_PATH,
+                         contentType: ContentType.JSON,
+                         requestContentType: ContentType.JSON,
+                         query: [
+                                 secret: RE_CAPTCHA_SECRET,
+                                 response: reCaptcha
+                                ]
+                        ])
+               
             } else {
                 throw new ClientErrorException('Request rejected, no reCaptcha token provided', Response.Status.NOT_ACCEPTABLE)
             }
