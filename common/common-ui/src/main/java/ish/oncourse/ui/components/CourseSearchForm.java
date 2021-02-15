@@ -12,6 +12,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -62,9 +63,11 @@ public class CourseSearchForm extends ISHCommon {
 	void beforeRender() {
 
         Tag subjectsTag = tagService.getSubjectsTag();
-        if (subjectsTag == null)
-            throw new IllegalArgumentException(String.format("college \"%s\" does not contains \"Subjects\" tag.", request.getServerName()));
-		subjectTagChildTags = subjectsTag.getWebVisibleTags();
+        if (subjectsTag == null) {
+			subjectTagChildTags = new ArrayList<>();
+		} else {
+			subjectTagChildTags = subjectsTag.getWebVisibleTags();
+		}
 
 		Collections.sort(subjectTagChildTags, new Comparator<Tag>() {
 			public int compare(Tag tag1, Tag tag2) {

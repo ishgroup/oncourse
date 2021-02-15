@@ -15,7 +15,7 @@
                 <t:if t:test="courseClass.firstSession">
                     <div class="date">
                         <a timezone="10" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline">
-                            <abbr itemprop="startDate" data-virtual="virtualSite" data-utc="${getUTCTime(firstSessionStartDate)}" class="dtstart" title="" content="${getIsoDateTimeString(firstSessionStartdate)}">
+                            <abbr itemprop="startDate" data-virtual="virtualSite" data-utc="${getIsoDateTimeString(firstSessionStartDate)}" class="dtstart" title="" content="${getIsoDateTimeString(firstSessionStartdate)}">
                                 <t:output format="startDateFormat" value="firstSessionStartDate"/>
                             </abbr>
 
