@@ -36,7 +36,7 @@ paths:
           description: College unique key
           required: true
           type: string
-        - name: x-g-recaptcha
+        - name: xGRecaptcha
           in: header
           description: reCaptch token
           required: false
