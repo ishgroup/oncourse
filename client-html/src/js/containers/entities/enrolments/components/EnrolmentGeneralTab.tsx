@@ -38,7 +38,6 @@ import ContactSelectItemRenderer from "../../contacts/components/ContactSelectIt
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import { setSelectedContact } from "../../invoices/actions";
-import { courseClassLabelCondition, openCourseClassLink } from "../../courseClasses/utils";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -193,7 +192,8 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         <Grid item xs={twoColumn ? 8 : 12}>
           <Uneditable
             value={values && values.courseClassName}
-            url={`class/${values.courseClassId}`}
+            label="Class"
+            url={`/class/${values.courseClassId}`}
           />
         </Grid>
 
