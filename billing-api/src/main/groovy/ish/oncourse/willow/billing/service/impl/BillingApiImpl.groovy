@@ -7,6 +7,7 @@ import ish.oncourse.api.request.RequestService
 import ish.oncourse.configuration.Configuration
 import ish.oncourse.model.College
 import ish.oncourse.model.KeyStatus
+import ish.oncourse.model.PaymentGatewayType
 import ish.oncourse.model.Preference
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.mail.EmailBuilder
@@ -78,10 +79,11 @@ class BillingApiImpl implements BillingApi {
             angelConfig.userFirstName = collegeDTO.userFirstName
             angelConfig.userLastName = collegeDTO.userLastName
             angelConfig.userEmail = collegeDTO.userEmail
+            angelConfig.userPhone = collegeDTO.userPhone
 
 
             ObjectContext context = cayenneService.newContext()
-
+            college = context.localObject(college)
             PreferenceUtil.createPreference(context, college, Preferences.COLLEGE_NAME, collegeDTO.organisationName)
             PreferenceUtil.createPreference(context, college, Preferences.COLLEGE_ABN, collegeDTO.abn)
             PreferenceUtil.createPreference(context, college, Preferences.ONCOURSE_SERVER_DEFAULT_TZ, collegeDTO.timeZone)
@@ -99,7 +101,6 @@ class BillingApiImpl implements BillingApi {
             PreferenceUtil.createPreference(context, college, Preference.STORAGE_BUCKET_NAME, angelConfig.s3bucketName)
             PreferenceUtil.createPreference(context, college, Preference.STORAGE_ACCESS_ID, angelConfig.s3accessId)
             PreferenceUtil.createPreference(context, college, Preference.STORAGE_ACCESS_KEY, angelConfig.s3accessKey)
-            PreferenceUtil.createPreference(context, college, Preferences.COLLEGE_NAME, collegeDTO.organisationName)
 
             PreferenceUtil.createPreference(context, college, Preferences.LICENSE_ACCESS_CONTROL, String.valueOf(false))
             PreferenceUtil.createPreference(context, college, Preferences.LICENSE_LDAP, String.valueOf(false))
@@ -112,6 +113,11 @@ class BillingApiImpl implements BillingApi {
             PreferenceUtil.createPreference(context, college, Preferences.LICENSE_VOUCHER, String.valueOf(false))
             PreferenceUtil.createPreference(context, college, Preferences.LICENSE_MEMBERSHIP, String.valueOf(true))
             PreferenceUtil.createPreference(context, college, Preferences.LICENSE_ATTENDANCE, String.valueOf(true))
+            
+            PreferenceUtil.createPreference(context, college, ish.oncourse.services.preference.Preferences.ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED,String.valueOf(false)) 
+            PreferenceUtil.createPreference(context, college, ish.oncourse.services.preference.Preferences.ENROLMENT_CREDITCARD_PAYMENT_ENABLED, String.valueOf(false))
+            PreferenceUtil.createPreference(context, college, ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE, PaymentGatewayType.DISABLED.toString())
+            PreferenceUtil.createPreference(context, college, Preferences.SERVICES_CC_AMEX_ENABLED,  String.valueOf(false))
 
             context.commitChanges()
 
@@ -166,7 +172,7 @@ class BillingApiImpl implements BillingApi {
     Boolean verifyCollegeName(String name, String xGRecaptcha) {
         return ObjectSelect.query(College)
                 .where(College.COLLEGE_KEY.eq(name))
-                .or(College.WEB_SITES.dot(WebSite.NAME).eq(name))
+                .or(College.WEB_SITES.outer().dot(WebSite.NAME).eq(name))
                 .select(cayenneService.newContext()).empty
     }
 
@@ -213,7 +219,8 @@ class BillingApiImpl implements BillingApi {
         String userFirstName
         String userLastName
         String userEmail
-        
+        String userPhone
+
         String toString() {
             return  "server:\n" +
                     "  max_users: 1\n" +
@@ -228,7 +235,8 @@ class BillingApiImpl implements BillingApi {
                     "user:\n"+
                     "  firstName: $userFirstName\n" +
                     "  lastName: $userLastName\n" +
-                    "  email: $userEmail\n"
+                    "  email: $userEmail\n" +
+                    "  phone: $userPhone\n"
 
         }
 
