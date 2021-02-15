@@ -89,7 +89,7 @@ class BillingApiImpl implements BillingApi {
                 PreferenceUtil.createPreference(context, college, Preferences.COLLEGE_URL, "https://${collegeDTO.collegeKey}.oncourse.cc")
             }
 
-            PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_COLLEGENAME, collegeDTO.traidingName)
+            PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_COLLEGENAME, collegeDTO.tradingName)
             PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_ADDRESS1, collegeDTO.address)
 
             PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_SUBURB, collegeDTO.suburb)
@@ -194,7 +194,8 @@ class BillingApiImpl implements BillingApi {
         college.setIsWebSitePaymentsEnabled(false)
         college.setRequiresAvetmiss(true)
         college.setTimeZone(timeZone)
-
+        college.firstRemoteAuthentication = new Date(0)
+                
         objectContext.commitChanges()
 
         return college
