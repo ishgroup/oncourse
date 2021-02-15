@@ -80,10 +80,11 @@ class ReplicationJob implements Job {
 
     private void executeReplication() throws JobExecutionException {
         def securityCode = this.licenseService.getSecurity_key()
+        if (securityCode == null) {
+            return
+        }
         def lastKey = this.pref.getCommunicationKey()
-
-        def replicationEnabled = pref.getReplicationEnabled()
-
+        
         logger.info("Authenticate using current communicationKey:{}", lastKey)
 
         ReplicationPortType authPort
@@ -99,18 +100,14 @@ class ReplicationJob implements Job {
 
             logger.info("new communicationKey:{} was saved to preferences", newKey)
 
-            if (replicationEnabled) {
-                this.instructionHandler.replicate()
-                // outbound replication should go first because angel's data can be changed before we get the latest changes from willow (task 14214)
-                this.outboundHandler.replicate()
-                this.inboundHandler.replicate()
-                // the second outbound executeReplication is necessary to send changes which were done on angel as result of previous inbound replication
-                // (Attendances,Outcomes)
-                this.outboundHandler.replicate()
-            } else {
-                // if replication is disabled by preference then only performing inbound replication once a day
-                this.inboundHandler.replicate()
-            }
+            this.instructionHandler.replicate()
+            // outbound replication should go first because angel's data can be changed before we get the latest changes from willow (task 14214)
+            this.outboundHandler.replicate()
+            this.inboundHandler.replicate()
+            // the second outbound executeReplication is necessary to send changes which were done on angel as result of previous inbound replication
+            // (Attendances,Outcomes)
+            this.outboundHandler.replicate()
+
         } catch (AuthFailure e) {
             def message = String.format("Authentication failed with message from server: %s", e.getMessage())
             logger.info(message, e)
@@ -126,7 +123,6 @@ class ReplicationJob implements Job {
             } else {
                 logger.error(message, e)
             }
-            throw new JobExecutionException(message, e)
         } finally {
             this.soapPortLocator.resetReplicationPort()
         }
@@ -137,20 +133,15 @@ class ReplicationJob implements Job {
      */
     @Override
     void execute(JobExecutionContext context) throws JobExecutionException {
-        def needReplicate = true
         /**
-         * if replication is disabled we need to start inbound replication once a day
-         * (@see ish.oncourse.server.services.ISchedulerService.DISABLED_PRIMARY_REPLICATION_INTERVAL)
-         *
          * if replication is enabled we execute it in two cases:
          * 1. the replication queue is not empty
          * 2. the last replication was more then 5 minutes ago
          */
-        if (pref.getReplicationEnabled())
-        {
-            def diff = Math.abs(System.currentTimeMillis() - getLastReplicationTime(context))
-            needReplicate = (diff >= ReplicationPlugin.REPLICATION_INTERVAL || queueService.getNumberOfTransactions() > 0)
-        }
+
+        def diff = Math.abs(System.currentTimeMillis() - getLastReplicationTime(context))
+        def needReplicate = (diff >= ReplicationPlugin.REPLICATION_INTERVAL || queueService.getNumberOfTransactions() > 0)
+    
 
         if (needReplicate)
         {

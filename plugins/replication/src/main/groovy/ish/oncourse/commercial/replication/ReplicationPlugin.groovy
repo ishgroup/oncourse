@@ -50,9 +50,7 @@ class ReplicationPlugin {
     private static final Logger logger = LogManager.getLogger();
 
     
-    static int DEBUG_REFERENCE_JOB_INTERVAL = 40
     static int PRODUCTION_REFERENCE_JOB_INTERVAL = 4 * 60 * 60
-    static int DEBUG_PRIMARY_REPLICATION_INTERVAL = 30
     static int PRODUCTION_PRIMARY_REPLICATION_INTERVAL = 60
     static int DISABLED_PRIMARY_REPLICATION_INTERVAL = 60 * 60 * 24
     static long REPLICATION_INTERVAL = 5 * 60 * 1000; //5 minutes
@@ -91,16 +89,13 @@ class ReplicationPlugin {
 
         LicenseService licenseService = injector.getInstance(LicenseService)
         ISchedulerService schedulerService = injector.getInstance(ISchedulerService)
-        PreferenceController prefController = injector.getInstance(PreferenceController)
 
         WillowValidator willowValidator = injector.getInstance(WillowValidator)
 
-        CheckoutEventListener checkoutEventListener = new CheckoutEventListener(licenseService, prefController, willowValidator)
+        CheckoutEventListener checkoutEventListener = new CheckoutEventListener(licenseService, willowValidator)
         injector.getInstance(EventService).registerListener(checkoutEventListener, SystemEventType.VALIDATE_CHECKOUT) 
 
-        // reference update job schedule every 40 sec when in debug and
-        // every 4 hours when in production mode
-
+        // every 4 hours
         if (!licenseService.isReplicationDisabled()) {
             
             int referenceJobScheduleInterval = PRODUCTION_REFERENCE_JOB_INTERVAL
@@ -108,28 +103,19 @@ class ReplicationPlugin {
                     REPLICATION_JOBS_GROUP_ID, referenceJobScheduleInterval, true, false)
 
 
-            // primary replication schedule every 30 sec when in debug and
             // every 1 min when in production mode
             int primaryReplicationScheduleInterval = PRODUCTION_PRIMARY_REPLICATION_INTERVAL
 
             // if replication is not disabled by REPLICATION_DISABLED
             // property then check if it is not disabled by preference
-            if (prefController.getReplicationEnabled()) {
-                schedulerService.schedulePeriodicJob(ReplicationJob.class,
-                        PRIMARY_REPLICATION_SERVICE_JOB_ID, REPLICATION_JOBS_GROUP_ID,
-                        primaryReplicationScheduleInterval, true, false)
+            schedulerService.schedulePeriodicJob(ReplicationJob.class,
+                    PRIMARY_REPLICATION_SERVICE_JOB_ID, REPLICATION_JOBS_GROUP_ID,
+                    primaryReplicationScheduleInterval, true, false)
 
-                Executors.newSingleThreadExecutor().submit {
-                    logger.warn("Queue all unreplicated records")
-                    new QueueAllRecordsForFirstTimeReplication(injector.getInstance(ICayenneService)).runUpgrade()
-                    logger.warn("Queueing all unreplicated records finished")
-                }
-            } else {
-                // if replication is not enabled then scheduling it
-                // every 24 hours to receive preferences
-                schedulerService.schedulePeriodicJob(ReplicationJob.class,
-                        PRIMARY_REPLICATION_SERVICE_JOB_ID, REPLICATION_JOBS_GROUP_ID,
-                        DISABLED_PRIMARY_REPLICATION_INTERVAL, false, false)
+            Executors.newSingleThreadExecutor().submit {
+                logger.warn("Queue all unreplicated records")
+                new QueueAllRecordsForFirstTimeReplication(injector.getInstance(ICayenneService)).runUpgrade()
+                logger.warn("Queueing all unreplicated records finished")
             }
         }
         

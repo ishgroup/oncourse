@@ -8,14 +8,15 @@ package ish.oncourse.commercial.replication.lifecycle
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.license.LicenseService
 
 
 class ReplicationListenersService {
     @Inject
-    ReplicationListenersService(ICayenneService cayenneService, PreferenceController pref) {
+    ReplicationListenersService(ICayenneService cayenneService, LicenseService licenseService) {
         cayenneService.addListener(new InvoiceLifecycleListener(cayenneService))
         cayenneService.addListener(new QueuedTransactionListener(cayenneService))
         cayenneService.addListener(new CourseClassLifecycleListener (cayenneService))
-        cayenneService.addSyncFilter(new QueueableLifecycleListener(cayenneService, pref))
+        cayenneService.addSyncFilter(new QueueableLifecycleListener(cayenneService, licenseService))
     }
 }

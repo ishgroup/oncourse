@@ -14,6 +14,7 @@ import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
+import ish.oncourse.server.license.LicenseService
 import org.apache.cayenne.Cayenne
 import org.apache.cayenne.DataChannelSyncFilter
 import org.apache.cayenne.DataChannelSyncFilterChain
@@ -46,9 +47,9 @@ class QueueableLifecycleListener implements DataChannelSyncFilter {
     private final ICayenneService cayenneService
 
     /**
-     * Preference controller
+     * LicenseS controller
      */
-    private final PreferenceController prefController
+    private final LicenseService licenseService
 
     /**
      * Storage to hold cayenne object context between invocations of preRemove and postRemove methods.
@@ -66,9 +67,9 @@ class QueueableLifecycleListener implements DataChannelSyncFilter {
      * @param cayenneService
      * @param prefController
      */
-    QueueableLifecycleListener(ICayenneService cayenneService, PreferenceController prefController) {
+    QueueableLifecycleListener(ICayenneService cayenneService, LicenseService licenseService ) {
         this.cayenneService = cayenneService
-        this.prefController = prefController
+        this.licenseService = licenseService
     }
 
     /**
@@ -274,6 +275,6 @@ class QueueableLifecycleListener implements DataChannelSyncFilter {
      * @return true - if regular replication allowed, false - otherwise.
      */
     private boolean isAsyncReplicationAllowed(Queueable entity) {
-        return prefController.getReplicationEnabled() && entity.isAsyncReplicationAllowed()
+        return !licenseService.replicationDisabled && entity.isAsyncReplicationAllowed()
     }
 }
