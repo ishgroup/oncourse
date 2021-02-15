@@ -5,28 +5,24 @@
 
 import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
+import { ArticleProduct } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getEntityItemById } from "../../../entities/common/entityItemsService";
 import { CHECKOUT_GET_ITEM_PRODUCT, CHECKOUT_GET_ITEM_PRODUCT_FULFILLED } from "../../actions/chekoutItem";
 import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from "../../components/items/components/CkecoutItemViewForm";
-import { ArticleProduct } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request<any, any> = {
   type: CHECKOUT_GET_ITEM_PRODUCT,
   getData: (id: number) => getEntityItemById("ArticleProduct", id),
-  processData: (memberShipProduct: ArticleProduct) => {
-    return [
+  processData: (memberShipProduct: ArticleProduct) => [
       {
         type: CHECKOUT_GET_ITEM_PRODUCT_FULFILLED,
         payload: { editRecord: memberShipProduct }
       },
       initialize(CHECKOUT_ITEM_EDIT_VIEW_FORM, memberShipProduct)
-    ];
-  },
-  processError: response => {
-    return [...FetchErrorHandler(response), initialize(CHECKOUT_ITEM_EDIT_VIEW_FORM, null)];
-  }
+    ],
+  processError: response => [...FetchErrorHandler(response), initialize(CHECKOUT_ITEM_EDIT_VIEW_FORM, null)]
 };
 
 export const EpicCheckoutGetProduct: Epic<any, any> = EpicUtils.Create(request);
