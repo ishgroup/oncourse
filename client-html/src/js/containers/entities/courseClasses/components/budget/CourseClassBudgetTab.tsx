@@ -543,7 +543,7 @@ const CourseClassBudgetTab = React.memo<Props>(
     };
 
     const headerLabel = useMemo(() =>
-      `Budget ( ${formatCurrency(netValues.profit.actual, currencySymbol)} ${netValues.profit.actual >= 0 ? "profit" : "loss"} )`,
+      `Budget ( ${formatCurrency(Math.abs(netValues.profit.actual), currencySymbol)} ${netValues.profit.actual >= 0 ? "profit" : "loss"} )`,
        [netValues.profit.actual, currencySymbol]);
 
     const handlePopoverOpen = event => {
