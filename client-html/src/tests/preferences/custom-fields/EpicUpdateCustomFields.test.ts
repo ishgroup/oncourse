@@ -20,7 +20,7 @@ describe("Update custom field epic tests", () => {
         },
         {
           type: FETCH_SUCCESS,
-          payload: { message: "Custom Fields were successfully updated" }
+          payload: { message: "Custom fields were successfully updated" }
         }
       ];
     }

@@ -29,7 +29,7 @@ const request: EpicUtils.Request<any, any, any> = {
       },
       {
         type: FETCH_SUCCESS,
-        payload: { message: "Custom Fields were successfully updated" }
+        payload: { message: "Custom fields were successfully updated" }
       }
     ],
   processError: response => FetchErrorHandler(response, "Error. Custom Fields were not updated")
