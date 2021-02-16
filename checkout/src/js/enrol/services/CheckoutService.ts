@@ -1,8 +1,24 @@
 import * as L from "lodash";
 import {
-  ContactFields, ContactFieldsRequest, SubmitFieldsRequest, CreateContactParams, Field, CheckoutModel, Amount,
-  ContactNode, CheckoutModelRequest, ContactNodeRequest, PaymentResponse, DataType, Suburb,
-  GetCorporatePassRequest, ContactId, PaymentStatus, Contact, Concession, CodeResponse, FieldSet,
+  ContactFields,
+  ContactFieldsRequest,
+  SubmitFieldsRequest,
+  CreateContactParams,
+  CheckoutModel,
+  Amount,
+  ContactNode,
+  CheckoutModelRequest,
+  ContactNodeRequest,
+  PaymentResponse,
+  GetCorporatePassRequest,
+  ContactId,
+  PaymentStatus,
+  Contact,
+  Concession,
+  CodeResponse,
+  FieldSet,
+  Application,
+  Enrolment, WaitingList,
 } from "../../model";
 
 import {Injector} from "../../injector";
@@ -25,13 +41,12 @@ import {getPaymentStatus, updatePaymentStatus} from "../containers/payment/actio
 import {changePhase, finishCheckoutProcess} from "../actions/Actions";
 import {PromotionApi} from "../../http/PromotionApi";
 import {CorporatePassApi} from "../../http/CorporatePassApi";
-import {toFormKey} from "../../components/form/FieldFactory";
+import {toServerValues} from "../../components/form/FieldFactory";
 import {ProductContainer} from "../../model/checkout/request/ProductContainer";
 import {getCookie} from "../../common/utils/Cookie";
 import CartService from "../../services/CartService";
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
-
 
 export class CheckoutService {
   constructor(private contactApi: ContactApi,
@@ -334,29 +349,7 @@ export class BuildSubmitFieldsRequest {
     result.fields = L.flatMap(fields.headings, h => {
       return h.fields;
     });
-    result.fields.forEach((f: Field) => {
-      const formKey = toFormKey(f.key);
-      const value = values[formKey];
-
-      f.value = value && value.key || value || null;
-      f.itemValue = null;
-
-      if (f.value == null && f.dataType === DataType.BOOLEAN) {
-        f.value = 'false';
-      }
-
-      if (value && value.suburb && f.dataType === DataType.SUBURB) {
-        const suburb: Suburb = {
-          postcode: value.postcode,
-          state: value.state,
-          suburb: value.suburb,
-        };
-
-        f.value = null;
-        f.itemValue = {key: value.key, value: suburb};
-      }
-    });
-
+    toServerValues(result.fields, values);
     return result;
   }
 }
@@ -373,22 +366,38 @@ export class BuildCreateContactParams {
   }
 }
 
+const formatNodeCustomFields = (items: (Application & Enrolment & WaitingList)[], stateRoot: IshState) => {
+  items.forEach(it => {
+    if(it.fieldHeadings) {
+      it.fieldHeadings.forEach(fh => {
+        const form = stateRoot.form[`${it.contactId}-${it.courseId || it.classId}`];
+        if(form && form.values) {
+          toServerValues(fh.fields, form.values);
+        }
+      })
+    }
+  })
+}
+
 export class BuildContactNodes {
-  static fromState = (state: State): ContactNode[] => {
+  static fromState = (state: State, stateRoot: IshState): ContactNode[] => {
     return state.result.map(contactId => {
-      return BuildContactNodes.contactNodeBy(state.entities.contactNodes[contactId], state);
+      return BuildContactNodes.contactNodeBy(state.entities.contactNodes[contactId], state, stateRoot);
     });
   }
 
-  private static contactNodeBy = (storage: ContactNodeStorage, state: State): ContactNode => {
+  private static contactNodeBy = (storage: ContactNodeStorage, state: State, stateRoot: IshState): ContactNode => {
     const result: ContactNode = new ContactNode();
     result.contactId = storage.contactId;
-    result.enrolments = storage.enrolments ? storage.enrolments.map(id => state.entities.enrolments[id]) : [];
-    result.applications = storage.applications ? storage.applications.map(id => state.entities.applications[id]) : [];
-    result.memberships = storage.memberships ? storage.memberships.map(id => state.entities.memberships[id]) : [];
-    result.articles = storage.articles ? storage.articles.map(id => state.entities.articles[id]) : [];
-    result.vouchers = storage.vouchers ? storage.vouchers.map(id => state.entities.vouchers[id]) : [];
-    result.waitingLists = storage.waitingLists ? storage.waitingLists.map(id => state.entities.waitingLists[id]) : [];
+    result.enrolments = storage.enrolments ? storage.enrolments.map(id => L.cloneDeep(state.entities.enrolments[id])) : [];
+    formatNodeCustomFields(result.enrolments, stateRoot);
+    result.applications = storage.applications ? storage.applications.map(id => L.cloneDeep(state.entities.applications[id])) : [];
+    formatNodeCustomFields(result.applications, stateRoot);
+    result.memberships = storage.memberships ? storage.memberships.map(id => L.cloneDeep(state.entities.memberships[id])) : [];
+    result.articles = storage.articles ? storage.articles.map(id => L.cloneDeep(state.entities.articles[id])) : [];
+    result.vouchers = storage.vouchers ? storage.vouchers.map(id => L.cloneDeep(state.entities.vouchers[id])) : [];
+    result.waitingLists = storage.waitingLists ? storage.waitingLists.map(id => L.cloneDeep(state.entities.waitingLists[id])) : [];
+    formatNodeCustomFields(result.waitingLists, stateRoot);
     return result;
   }
 }
@@ -399,7 +408,7 @@ export class BuildCheckoutModelRequest {
     result.payerId = state.checkout.payerId;
     result.promotionIds = state.cart.promotions.result;
     result.redeemedVoucherIds = state.checkout.redeemVouchers.filter(v => v.enabled).map(v => v.id);
-    result.contactNodes = BuildContactNodes.fromState(state.checkout.summary);
+    result.contactNodes = BuildContactNodes.fromState(state.checkout.summary, state);
     result.corporatePassId = (state.checkout.payment.corporatePass && state.checkout.payment.corporatePass.id) || null;
     result.payNow = (state.checkout.amount && state.checkout.amount.isEditable && state.checkout.amount.payNow !== state.checkout.amount.minPayNow) ? state.checkout.amount.payNow : null;
     return result;

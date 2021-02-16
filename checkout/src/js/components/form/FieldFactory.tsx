@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Form from "redux-form";
-import {Field, DataType, Item} from "../../model";
+import {Field, DataType, Item, Suburb} from "../../model";
 import {CheckboxField} from "./CheckboxField";
 import {TextField} from "./TextField";
 import {TextAreaField} from "./TextAreaField";
@@ -12,6 +12,7 @@ import {validateDate, validateDateTime, validateEmail, validateURL} from "../../
 import {replaceWithNl} from "../../common/utils/HtmlUtils";
 import {DateTimeField} from "./DateTimeField";
 import {MoneyField} from "./MoneyField";
+import moment from "moment";
 
 class FieldFactory extends React.Component<any, any> {
 
@@ -137,6 +138,57 @@ export const toFormFieldProps = (field: Field): any => {
 
 // replace all dots to slashes, b/c redux form converts it to object
 export const toFormKey = name => (name.replace(/\./g, '/'));
+
+// format fields values to valid for server side
+export const toServerValues = (fields: Field[], values: { [key: string]: any }) => {
+  fields.forEach(f => {
+    const formKey = toFormKey(f.key);
+    const value = values[formKey];
+
+    f.value = value && value.key || value || null;
+    f.itemValue = null;
+
+    switch (f.dataType) {
+      case DataType.BOOLEAN: {
+        if (f.value === null) {
+          f.value = 'false';
+        }
+        break;
+      }
+      case DataType.SUBURB: {
+        if (value && value.suburb) {
+          const suburb: Suburb = {
+            postcode: value.postcode,
+            state: value.state,
+            suburb: value.suburb,
+          };
+
+          f.value = null;
+          f.itemValue = {key: value.key, value: suburb};
+        }
+        break;
+      }
+      case DataType.DATE: {
+        if (value) {
+          f.value = moment(value).format("YYYY-MM-DD");
+        }
+        break;
+      }
+      case DataType.DATETIME: {
+        if (value) {
+          f.value = (new Date(value)).toISOString();
+        }
+        break;
+      }
+      case DataType.MONEY: {
+        if (value) {
+          f.value = parseFloat(value.replace(/[$,]/g,""));
+        }
+        break;
+      }
+    }
+  });
+}
 
 
 const SuburbFieldBase = (props): any => {

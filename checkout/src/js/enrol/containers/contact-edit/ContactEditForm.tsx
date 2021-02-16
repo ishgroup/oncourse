@@ -100,13 +100,16 @@ const Form = reduxForm({
       result.parentRequired,
     }));
   },
-  onSubmitFail: (errors, dispatch, submitError, props) => {
+  onSubmitFail: (errors, dispatch, submitError) => {
     if (errors && !submitError) {
       dispatch(showSyncErrors(errors));
-    } else {
-      dispatch(showFormValidation(submitError, NAME));
+    } else if (submitError && submitError.data) {
+      dispatch(showFormValidation({
+        ...submitError,
+        data: { validationErrors: submitError.data }
+      },
+      NAME));
     }
-
     setTimeout(() => scrollToValidation(), 50);
   },
 })(ContactEditForm);

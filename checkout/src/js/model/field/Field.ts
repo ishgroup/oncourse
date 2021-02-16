@@ -41,7 +41,7 @@ export class Field {
   /**
    * Value for corresponded property
    */
-  value?: string;
+  value?: string | number;
 
   /**
    * Item value for corresponded property

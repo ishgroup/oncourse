@@ -3,6 +3,7 @@ import classnames from "classnames";
 
 import { Contact, Voucher, Product } from "../../../../model";
 import { ItemWrapper } from "./ItemWrapper";
+import NumberFormat from "react-number-format";
 
 
 export interface Props {
@@ -41,13 +42,14 @@ class VoucherComp extends React.PureComponent<Props, State> {
   }
 
   private updateValue = val => {
-    const reg = (/^[0-9]+\.?[0-9]*$/);
+    const parsed = parseFloat(val);
 
-    if (val > 0 && reg.test(val)) {
+    if (!isNaN(parsed) && parsed > 0) {
       this.setState({
-        price: Number(val),
+        price: parseFloat(val),
       });
     }
+
     return false;
   }
 
@@ -62,7 +64,7 @@ class VoucherComp extends React.PureComponent<Props, State> {
     return false;
   }
 
-  private handleValueBlur() {
+  private handleValueBlur = () => {
     const { onPriceValueChange } = this.props;
     onPriceValueChange(this.state.price);
   }
@@ -101,8 +103,8 @@ class VoucherComp extends React.PureComponent<Props, State> {
             <VoucherPrice
               voucher={voucher}
               price={this.state.price}
-              onChange={val => this.updateValue(val)}
-              onBlur={val => this.handleValueBlur()}
+              onChange={this.updateValue}
+              onBlur={this.handleValueBlur}
             />
           </div>
         }
@@ -149,13 +151,16 @@ const VoucherPrice = (props): any => {
     <div className="row" style={{ display: "flex", alignItems: "center" }}>
 
       <span className="col-xs-12 col-md-12">
-        <input
+        <NumberFormat
           type="text"
           name="priceValue"
-          value={`$${price}`}
-          onChange={e => props.onChange(e.target.value.replace('$', ''))}
+          value={price}
+          onChange={e => props.onChange(e.target.value.replace(/[$,]/g,""))}
           onBlur={e => props.onBlur(e)}
           style={{ margin: 0 }}
+          prefix={'$ '}
+          decimalScale={0}
+          allowNegative={false}
         />
       </span>
 
