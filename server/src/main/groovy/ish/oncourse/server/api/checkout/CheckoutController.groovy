@@ -12,7 +12,14 @@
 package ish.oncourse.server.api.checkout
 
 import groovy.transform.CompileStatic
+import ish.common.types.OutcomeStatus
+import ish.oncourse.server.api.dao.EntityRelationDao
+import ish.oncourse.server.api.dao.ModuleDao
+import ish.oncourse.server.cayenne.Course
+import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.FundingSource
+import ish.oncourse.server.cayenne.Module
+
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
 import ish.common.types.EnrolmentStatus
@@ -100,6 +107,7 @@ class CheckoutController {
     private VoucherProductApiService voucherApiService
     private ArticleProductApiService articleApiService
     private FundingSourceDao fundingSourceDao
+    private ModuleDao moduleDao
 
     private CheckoutModelDTO checkout
 
@@ -123,7 +131,8 @@ class CheckoutController {
                        MembershipProductApiService membershipApiService,
                        VoucherProductApiService voucherApiService,
                        ArticleProductApiService articleApiService,
-                       FundingSourceDao fundingSourceDao) {
+                       FundingSourceDao fundingSourceDao,
+                       ModuleDao moduleDao) {
         this.cayenneService = cayenneService
         this.systemUserService = systemUserService
         this.contactApiService = contactApiService
@@ -133,6 +142,7 @@ class CheckoutController {
         this.voucherApiService = voucherApiService
         this.articleApiService = articleApiService
         this.fundingSourceDao = fundingSourceDao
+        this.moduleDao = moduleDao
     }
 
     Checkout createCheckout(CheckoutModelDTO checkout) {
@@ -225,6 +235,18 @@ class CheckoutController {
             result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "No places available for class $courseClass.uniqueCode")
         } else {
             //TODO: make willow side validation
+        }
+
+        List<EntityRelation> relations = EntityRelationDao.getRelatedToOrEqual(context, Course.simpleName, courseClass.course.id)
+
+        relations.findAll { Module.simpleName == it.toEntityIdentifier }.each { relation ->
+            Module module = moduleDao.getById(context, relation.toEntityAngelId)
+
+            if (!(module in (contact.student?.enrolments?.collect { it.outcomes.findAll { OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(it.status) }*.module } as List<Module>))) {
+                if (!(module in (contact.student?.priorLearnings?.collect { it.outcomes.findAll { OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(it.status) }*.module } as List<Module>))) {
+                    result << new CheckoutValidationErrorDTO(error: "You don't have necessary outcomes for that Course")
+                }
+            }
         }
 
         currentEnrolments[dto.classId] = ++(currentEnrolments[dto.classId]?:0)
