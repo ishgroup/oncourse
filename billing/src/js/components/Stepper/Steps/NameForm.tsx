@@ -13,7 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { connect, Dispatch } from "react-redux";
 import Navigation from "../Navigations";
-import { checkSiteName, setSitenameValue } from "../../../redux/actions";
+import { checkSiteName, setLoadingValue, setSitenameValue } from "../../../redux/actions";
 
 const useStyles = makeStyles((theme:any) => ({
   textFieldWrapper: {
@@ -37,7 +37,17 @@ const useStyles = makeStyles((theme:any) => ({
 }));
 
 const NameForm = (props: any) => {
-  const { activeStep, steps, handleBack, handleNext, token, checkSiteName, isValidName, sendTokenAgain, setSitenameValue } = props;
+  const { activeStep,
+    steps,
+    handleBack,
+    handleNext,
+    token,
+    checkSiteName,
+    isValidName,
+    sendTokenAgain,
+    setSitenameValue,
+    setLoadingValue
+  } = props;
 
   const [collegeKey, setCollegeKey] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -61,14 +71,22 @@ const NameForm = (props: any) => {
     } else {
       if (errorMessage) setErrorMessage("");
     }
-    subject.next({ name, token, validName, sendTokenAgain })
+    subject.next({ name, token, validName, sendTokenAgain, setLoadingValue })
   }
 
   useEffect(() => {
     const subscription = subject
       .pipe(debounceTime(1500))
-      .subscribe((values: { name: string, token: string, validName: boolean, sendTokenAgain: boolean }) => {
+      .subscribe((values: {
+        name: string,
+        token: string,
+        validName: boolean,
+        sendTokenAgain: boolean,
+        setLoadingValue: (value: boolean) => void
+      }) => {
         setCollegeKey(values.name);
+        setLoadingValue(true);
+
         values.validName && checkSiteName({
         name: values.name,
         token: sendTokenAgain ? values.token : null
@@ -120,6 +138,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setSitenameValue: (name: string) => dispatch(setSitenameValue(name)),
+  setLoadingValue: (value) => dispatch(setLoadingValue(value)),
   checkSiteName: ({ name, token }) => dispatch(checkSiteName({ name, token })),
 });
 

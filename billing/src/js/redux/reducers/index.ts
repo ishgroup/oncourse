@@ -11,6 +11,9 @@ import {
   COLLEGE_WAS_CREATED,
   SET_SEND_TOKEN_AGAIN_VALUE,
   SET_SITENAME_VALUE,
+  SET_SERVER_ERROR_VALUE,
+  RESET_STORE,
+  SET_LOADING_VALUE,
 } from "../actions";
 import { contactFormInitialValue, organisationFormInitialValue } from "../initialValues";
 
@@ -21,6 +24,8 @@ const initState = {
   token: "",
   collegeWasCreated: false,
   sendTokenAgain: true,
+  serverError: false,
+  loading: false,
   message: {
     message: "",
     error: ""
@@ -78,10 +83,11 @@ export const createCollegeReducer = (state = initState, action) => {
         sendTokenAgain: action.payload
       };
 
-    // case CREATE_COLLEGE:
-    //   return {
-    //     ...state,
-    //   };
+    case CREATE_COLLEGE:
+      return {
+        ...state,
+        loading: true
+      };
 
     case COLLEGE_WAS_CREATED:
       return {
@@ -98,8 +104,25 @@ export const createCollegeReducer = (state = initState, action) => {
     case CLEAR_MESSAGE:
       return {
         ...state,
-        message: { message: "", error: false}
+        message: { message: "", error: false }
       };
+
+    case SET_SERVER_ERROR_VALUE:
+      return {
+        ...state,
+        serverError: action.payload
+      }
+
+    case RESET_STORE:
+      return {
+        ...initState
+      }
+
+    case SET_LOADING_VALUE:
+      return {
+        ...state,
+        loading: action.payload
+      }
 
     default:
       return state;

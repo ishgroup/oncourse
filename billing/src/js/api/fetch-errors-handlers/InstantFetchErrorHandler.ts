@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { SHOW_MESSAGE } from "../../redux/actions/index";
+import { SET_SERVER_ERROR_VALUE, SHOW_MESSAGE } from "../../redux/actions/index";
 
 const instantFetchErrorHandler = (
   response: any,
-  customMessage: string = "Something went wrong"
+  customMessage: string = "Something unexpected has happened, please contact ish support or try again"
 ) => {
   if (!response) {
     return ([{
@@ -24,6 +24,22 @@ const instantFetchErrorHandler = (
       payload: {
         message: (data && data.errorMessage) || customMessage,
         error: true
+      }
+    }]);
+  } else if (status === 500) {
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c.replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
+    return ([{
+        type: SET_SERVER_ERROR_VALUE,
+        payload: true
+      }, {
+        type: SHOW_MESSAGE,
+        payload: {
+          message: (data && data.errorMessage) || customMessage,
+          error: true
       }
     }]);
   } else {

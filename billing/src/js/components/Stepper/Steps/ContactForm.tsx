@@ -11,10 +11,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useFormik } from "formik";
 import { connect, Dispatch } from "react-redux";
 import * as yup from "yup";
-import "yup-phone";
+// import "yup-phone";
 import CustomTextField from "../../common/TextField";
 import { setContactFormValues } from "../../../redux/actions";
 import Navigation from "../Navigations";
+import { phoneRegExp } from "../../../constant/common";
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
@@ -28,14 +29,17 @@ const useStyles = makeStyles((theme: any) => ({
 const validationSchema = yup.object({
   userFirstName: yup.string().required("Required"),
   userLastName: yup.string().required("Required"),
-  userPhone: yup.string().required("Required").phone(null, null, "Phone number is not valid"),
+  userPhone: yup.string().required("Required").matches(phoneRegExp, "Phone number is not valid"),
+  // userPhone: yup.string().required("Required").phone(null, null, "Phone number is not valid"),
   userEmail: yup.string().required("Required").email("Email is not valid"),
 });
 
 const ContactForm = (props: any) => {
-  const classes = useStyles();
   const [ validState, setValidState ] = useState(false);
+
   const { contactForm, activeStep, steps, handleBack, handleNext, setContactFormValues } = props;
+
+  const classes = useStyles();
 
   const { handleSubmit, handleChange, values, errors, isValid, dirty, touched, handleBlur } = useFormik({
     initialValues: contactForm,

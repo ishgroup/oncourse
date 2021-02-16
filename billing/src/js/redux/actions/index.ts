@@ -17,6 +17,9 @@ export const SET_ORGANISATION_FORM_VALUES = "SET_ORGANISATION_FORM_VALUES";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 export const COLLEGE_WAS_CREATED = "COLLEGE_WAS_CREATED";
 export const SET_SEND_TOKEN_AGAIN_VALUE = "SET_SEND_TOKEN_AGAIN_VALUE";
+export const SET_SERVER_ERROR_VALUE = "SET_SERVER_ERROR_VALUE";
+export const RESET_STORE = "RESET_STORE";
+export const SET_LOADING_VALUE = "SET_LOADING_VALUE";
 
 export const setCaptchaToken = (token: string) => ({
   type: SET_CAPTCHA_TOKEN,
@@ -71,3 +74,17 @@ export const showMessage = (payload: { message: string, error: boolean }) => ({
 export const clearMessage = () => ({
   type: CLEAR_MESSAGE
 });
+
+export const setServerErrorValue = (payload: boolean) => ({
+  type: SET_SERVER_ERROR_VALUE,
+  payload
+})
+
+export const resetStore = () => ({
+  type: RESET_STORE
+})
+
+export const setLoadingValue = (payload: boolean) => ({
+  type: SET_LOADING_VALUE,
+  payload
+})

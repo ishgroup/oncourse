@@ -18,6 +18,7 @@ import ContactForm from "./Steps/ContactForm";
 import OrganisationForm from "./Steps/OrganisationForm";
 import FinishPage from "./Steps/FinishPage";
 import { setCaptchaToken } from "../../redux/actions";
+import ErrorPage from "../ErrorPage";
 
 const SITE_KEY = "6LenRkYaAAAAAJf7P8OamoQSU7H5YaAKpMqTkGzU";
 
@@ -70,7 +71,7 @@ const getSteps = () => {
 const CustomizedSteppers = (props: any) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const { setCaptchaToken } = props;
+  const { serverError, setCaptchaToken } = props;
 
   const steps = getSteps();
 
@@ -129,16 +130,22 @@ const CustomizedSteppers = (props: any) => {
       />
 
       <div className={classes.formWrapper}>
-        <div className={activeStep === 1 ? classes.imageStepWrapper : classes.stepWrapper}>
-          {stepsComponents[activeStep]}
-        </div>
+        {serverError ? <ErrorPage/> : (
+          <div className={activeStep === 1 ? classes.imageStepWrapper : classes.stepWrapper}>
+            {stepsComponents[activeStep]}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
+const mapStateToProps = (state: any) => ({
+  serverError: state.creatingCollege.serverError
+});
+
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setCaptchaToken: (token) => dispatch(setCaptchaToken(token)),
 });
 
-export default connect(null, mapDispatchToProps)(CustomizedSteppers as any);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomizedSteppers as any);

@@ -34,7 +34,7 @@ const validationSchema = yup.object({
   address: yup.string().required("Required"),
   suburb: yup.string().required("Required"),
   state: yup.string().required("Required"),
-  postcode: yup.string().required("Required"),
+  postcode: yup.number().typeError("Postal code must be a number").required("Required"),
   country: yup.string().required("Required").nullable(),
   timeZone: yup.string().required("Required").nullable(),
 });
@@ -58,7 +58,7 @@ const OrganisationForm = (props: any) => {
 
   useEffect(() => {
     if (collegeWasCreated) handleNext();
-  }, collegeWasCreated)
+  }, [collegeWasCreated])
 
   const { handleSubmit, handleChange, values, errors, setFieldValue, isValid, touched, dirty, handleBlur } = useFormik({
     initialValues: organisationForm,
@@ -81,7 +81,6 @@ const OrganisationForm = (props: any) => {
       ...contactForm,
       ...values,
     })
-    // handleNext();
   }
 
   useEffect(() => {
@@ -199,7 +198,7 @@ const OrganisationForm = (props: any) => {
           options={countriesTimeZone}
           getOptionLabel={(option: string) => option}
           onChange={ (_, value) => setFieldValue("timeZone", value) }
-          value={values.countriesTimeZone}
+          value={values.timeZone}
           renderInput={(params) => (
             <CustomTextField
               {...params}

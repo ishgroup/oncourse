@@ -1,7 +1,8 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-import CustomButton from "../common/Button";
+import { Button, CircularProgress } from "@material-ui/core";
+import { connect } from "react-redux";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import CustomButton from "../common/Button";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -13,12 +14,16 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: "space-between",
       marginTop: "30px",
     },
+    loading: {
+      height: "25px!important",
+      width: "25px!important",
+    }
   }),
 );
 
 const Navigation = (props) => {
   const classes = useStyles();
-  const { activeStep, steps, handleBack, handleNext, disabled } = props;
+  const { activeStep, steps, handleBack, handleNext, disabled, loading } = props;
 
   return (
     <div>
@@ -26,7 +31,11 @@ const Navigation = (props) => {
         <div className={classes.buttonsWrapper}>
           {activeStep === 0 ? (<span/>)
           : (
-            <Button onClick={handleBack} className={classes.button}>
+            <Button
+              onClick={handleBack}
+              className={classes.button}
+              disabled={loading}
+            >
               Back
             </Button>
           )}
@@ -35,9 +44,11 @@ const Navigation = (props) => {
               color="primary"
               onClick={handleNext}
               className={classes.button}
-              disabled={disabled}
+              disabled={disabled || loading}
             >
-              {activeStep === steps.length - 2 ? "Finish" : "Next"}
+              {loading ?
+                <CircularProgress className={classes.loading}/> :
+                activeStep === steps.length - 2 ? "Finish" : "Next"}
             </CustomButton>
         </div>
       )}
@@ -45,4 +56,9 @@ const Navigation = (props) => {
   )
 }
 
-export default Navigation;
+const mapStateToProps = (state: any) => ({
+  loading: state.creatingCollege.loading,
+  serverError: state.creatingCollege.serverError
+});
+
+export default connect(mapStateToProps, null)(Navigation);
