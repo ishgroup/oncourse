@@ -196,18 +196,7 @@ class CheckoutApiImpl implements CheckoutApi {
     List<CheckoutSaleRelationDTO> getSaleRelations(Long id, String entityName, Contact contact) {
         ObjectContext context = cayenneService.newContext
         List<EntityRelation> relations = EntityRelationDao.getRelatedToOrEqual(context, entityName, id)
-
-        relations.findAll { Module.simpleName == it.toEntityIdentifier }.each { relation ->
-            Module module = moduleDao.getById(context, relation.toEntityAngelId)
-
-            if (!(module in (contact.student?.enrolments?.collect { it.outcomes*.module } as List<Module>))) {
-                if (!(module in (contact.student?.priorLearnings?.collect { it.outcomes*.module } as List<Module>))) {
-                    hanbleError(VALIDATION_ERROR, [new CheckoutValidationErrorDTO(error: "You don't have necessary outcomes for that Course")])
-                }
-            }
-        }
-
-        relations = relations.findAll { EntityRelationCartAction.NO_ACTION != it.relationType.shoppingCart }
+                .findAll { EntityRelationCartAction.NO_ACTION != it.relationType.shoppingCart }
         List<CheckoutSaleRelationDTO> result = []
         
         relations.findAll { Course.simpleName == it.toEntityIdentifier && id != it.toEntityAngelId }.each { relation ->
@@ -516,7 +505,7 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     private CheckoutController getCheckoutController() {
-        new CheckoutController(cayenneService, systemUserService, contactApiService, invoiceApiService, courseClassApiService,  membershipApiService,  voucherApiService,  articleApiService, fundingSourceDao)
+        new CheckoutController(cayenneService, systemUserService, contactApiService, invoiceApiService, courseClassApiService,  membershipApiService,  voucherApiService,  articleApiService, fundingSourceDao, moduleDao)
     }
 
 }
