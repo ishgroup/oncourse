@@ -18,6 +18,7 @@ class SMTPService {
     private Integer port
     private String username
     private String password
+    private Mode mode = Mode.ssl
 
     @BQConfigProperty
     void setEmail_batch(Integer email_batch) {
@@ -44,7 +45,12 @@ class SMTPService {
     void setPassword(String password) {
         this.password = password
     }
-
+    
+    @BQConfigProperty
+    void setMode(String mode) {
+        this.mode = Mode.valueOf(mode)
+    }
+    
     Integer getEmail_batch() {
         return email_batch
     }
@@ -63,5 +69,29 @@ class SMTPService {
 
     String getPassword() {
         return password
+    }
+
+    Mode getMode() {
+        return mode
+    }
+    
+    static enum Mode {
+        ssl,
+        starttls,
+        unsafe
+        
+        static Mode valueOf(String name) {
+            switch (name) {
+                case 'starttls':
+                    return starttls
+                case 'unsafe': 
+                    return unsafe
+                case 'tls':
+                case 'ssl':
+                    return ssl
+                default:
+                    return ssl
+            }
+        }
     }
 }
