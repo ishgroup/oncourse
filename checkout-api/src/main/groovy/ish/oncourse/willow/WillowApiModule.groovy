@@ -38,6 +38,7 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         CXFModule.contributeResources(binder).addBinding().to(CourseClassesApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ContactApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(CartApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ProductsApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(PromotionApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(CollegeService)
