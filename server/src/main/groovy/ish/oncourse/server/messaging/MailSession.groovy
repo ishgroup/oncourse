@@ -52,9 +52,20 @@ class MailSession {
         properties.put(SMTP_HOST, smtpService.host)
         properties.put(SMTP_PORT, smtpService.port)
         
-        properties.put("mail.smtp.ssl.enable", "true")
-        properties.put("mail.smtp.starttls.enable", "false")
-
+        switch (smtpService.mode) {
+            case SMTPService.Mode.ssl:
+                properties.put("mail.smtp.ssl.enable", "true")
+                properties.put("mail.smtp.starttls.enable", "false")
+                break
+            case SMTPService.Mode.starttls:
+                properties.put("mail.smtp.ssl.enable", "false")
+                properties.put("mail.smtp.starttls.enable", "true")
+                break
+            case SMTPService.Mode.unsafe:
+                properties.put("mail.smtp.ssl.enable", "false")
+                properties.put("mail.smtp.starttls.enable", "false")
+        }
+        
         if (authNeed) {
             properties.put(SMTP_AUTH, Boolean.TRUE)
         }
