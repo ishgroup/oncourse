@@ -109,8 +109,8 @@ const OrganisationForm = (props: any) => {
       </div>
       <div className={classes.textFieldWrapper}>
         <CustomTextField
-          placeholder="*ABN"
-          label="*ABN"
+          placeholder="Company number/ABN"
+          label="Company number/ABN"
           id="abn"
           onChange={handleChange}
           value={values.abn}
