@@ -48,7 +48,7 @@ class SMTPService {
     
     @BQConfigProperty
     void setMode(String mode) {
-        this.mode = Mode.valueOf(mode)
+        this.mode = Mode.byName(mode)
     }
     
     Integer getEmail_batch() {
@@ -80,7 +80,7 @@ class SMTPService {
         starttls,
         unsafe
         
-        static Mode valueOf(String name) {
+        static Mode byName(String name) {
             switch (name) {
                 case 'starttls':
                     return starttls
