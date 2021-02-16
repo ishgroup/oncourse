@@ -64,6 +64,7 @@ class MailSession {
             case SMTPService.Mode.unsafe:
                 properties.put("mail.smtp.ssl.enable", "false")
                 properties.put("mail.smtp.starttls.enable", "false")
+                break
         }
         
         if (authNeed) {
