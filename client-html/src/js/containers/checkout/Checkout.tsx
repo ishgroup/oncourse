@@ -25,6 +25,7 @@ import { getDefaultInvoiceTerms } from "../entities/invoices/actions";
 import { changeStep, checkoutClearState } from "./actions";
 import CheckoutSelection from "./components/CheckoutSelection";
 import { getCheckoutCurrentStep } from "./utils";
+import { clearPlainPreviousCreditRecords } from "./actions/checkoutSummary";
 
 export const FORM: string = "QUICK_ENROL_FORM";
 export const CONTACT_ENTITY_NAME: string = "Contact";
@@ -114,7 +115,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) =>
     dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText)),
   changeStep: (step: number) => dispatch(changeStep(step)),
-  clearState: () => dispatch(checkoutClearState()),
+  clearState: () => {
+    dispatch(checkoutClearState());
+    dispatch(clearPlainPreviousCreditRecords());
+  },
   getActiveFundingContracts: () => dispatch(getActiveFundingContracts(true)),
   getQePermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
