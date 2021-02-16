@@ -4,7 +4,11 @@
  */
 
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
-import { getCommonPlainRecords, setCommonPlainSearch } from "../../../common/actions/CommonPlainRecordsActions";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../common/actions/CommonPlainRecordsActions";
 import {
  CheckoutDiscount, CheckoutItem, CheckoutSummary, CheckoutSummaryListItem
 } from "../../../model/checkout";
@@ -164,3 +168,5 @@ export const setPlainPreviousCreditSearch = id => setCommonPlainSearch(
 
 export const getPlainPreviousCreditRecords = () =>
   getCommonPlainRecords("Invoice", 0, "invoiceNumber,amountOwing,invoiceDate,dateDue");
+
+export const clearPlainPreviousCreditRecords = () => clearCommonPlainRecords("Invoice");
