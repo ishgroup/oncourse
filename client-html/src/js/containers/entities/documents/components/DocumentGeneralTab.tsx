@@ -10,7 +10,7 @@
  */
 
 import CircularProgress from "@material-ui/core/CircularProgress";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import clsx from "clsx";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -36,8 +36,8 @@ import {
   OpenWith
 } from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
-import { addDays, format, isSunday } from "date-fns";
-import { Document, DocumentVisibility, DocumentVersion } from "@api/model";
+import { addDays, format } from "date-fns";
+import { Document, DocumentVersion } from "@api/model";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
@@ -46,9 +46,8 @@ import FormSubmitButton from "../../../../common/components/form/FormSubmitButto
 import SimpleTagList from "../../../../common/components/form/simpleTagListComponent/SimpleTagList";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import {D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL} from "../../../../common/utils/dates/format";
+import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
 import { getDocumentVersion, iconSwitcher } from "../../../../common/components/form/documents/components/utils";
-import { mapSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
@@ -130,8 +129,6 @@ interface DocumentGeneralProps extends EditViewProps<Document> {
   classes?: any;
   hovered?: boolean;
 }
-
-const documentVisibility = () => Object.keys(DocumentVisibility).filter(val => isNaN(Number(val))).map(mapSelectItems);
 
 const validateTagList = (value, allValues, props) => {
   const { tags } = props;
@@ -396,7 +393,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
               </Button>
             </Grid>
 
-            <Grid item xs={twoColumn ? 8 : 12} className="pt-2 pb-2">
+            <Grid item xs={twoColumn ? 8 : 12} className="pt-2 pb-2 saveButtonTableOffset">
               <DocumentShare
                 validUrl={validUrl}
                 dispatch={dispatch}
