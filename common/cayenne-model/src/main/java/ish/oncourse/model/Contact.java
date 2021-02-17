@@ -14,6 +14,7 @@ import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator;
 import org.apache.cayenne.BaseDataObject;
 import org.apache.cayenne.DataObject;
+import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.validation.ValidationResult;
@@ -488,10 +489,11 @@ public class Contact extends _Contact implements Queueable {
 	}
 	
 	public boolean isEnrolled(Course course) {
-		if (getStudent() != null) {
+		if (getStudent() != null && getStudent().getPersistenceState() != PersistenceState.NEW) {
 			return ObjectSelect.query(Enrolment.class)
 					.where(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).eq(course))
 					.and(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS))
+					.and(Enrolment.STUDENT.eq(getStudent()))
 					.selectFirst(getObjectContext()) != null;
 		}
 		return false;
