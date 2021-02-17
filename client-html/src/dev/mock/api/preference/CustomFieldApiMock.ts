@@ -1,19 +1,18 @@
-import { promiseReject, promiseResolve } from "../../MockAdapter";
 import { ValidationError } from "@api/model";
+import { promiseReject, promiseResolve } from "../../MockAdapter";
+import { getParamsId } from "../../mockUtils";
 
 export function CustomFieldApiMock(mock) {
   /**
    * Custom Field items
-   **/
+   * */
 
   this.returnError = false;
 
-  this.api.onGet("v1/preference/field/type").reply(config => {
-    return promiseResolve(config, this.db.customFields);
-  });
+  this.api.onGet("v1/preference/field/type").reply(config => promiseResolve(config, this.db.customFields));
   /**
    * Mock Custom Fields save success or error
-   **/
+   * */
   this.api.onPost("v1/preference/field/type").reply(config => {
     this.returnError = !this.returnError;
 
@@ -35,9 +34,9 @@ export function CustomFieldApiMock(mock) {
   });
   /**
    * Mock Custom Field delete
-   **/
+   * */
   this.api.onDelete(new RegExp(`v1/preference/field/type/\\d+`)).reply(config => {
-    const id = config.url.split("/")[3];
+    const id = getParamsId(config);
     this.db.removeCustomField(id);
     return promiseResolve(config, this.db.customFields);
   });
