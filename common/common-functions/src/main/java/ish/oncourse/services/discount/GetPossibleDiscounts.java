@@ -23,6 +23,7 @@ public class GetPossibleDiscounts {
 		List<DiscountCourseClass> discounts = ObjectSelect.query(DiscountCourseClass.class).
 				where(DiscountCourseClass.COURSE_CLASS.eq(courseClass)).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.CODE).isNull()).
+				and(DiscountCourseClass.DISCOUNT.dot(Discount.ENTITY_RELATION_TYPES).outer().dot(EntityRelationType.CREATED).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.HIDE_ON_WEB).isFalse()).
 				and(
 						DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_ENROLLED_WITHIN_DAYS).isNotNull().

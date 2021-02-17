@@ -39,6 +39,7 @@ public class GetAppliedDiscounts {
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.DISCOUNT_CONCESSION_TYPES).outer().dot(DiscountConcessionType.CONCESSION_TYPE).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.CORPORATE_PASS_DISCOUNTS).outer().dot(CorporatePassDiscount.CREATED).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.DISCOUNT_MEMBERSHIP_PRODUCTS).outer().dot(DiscountMembership.CREATED).isNull()).
+				and(DiscountCourseClass.DISCOUNT.dot(Discount.ENTITY_RELATION_TYPES).outer().dot(EntityRelationType.CREATED).isNull()).
 
 				and(
 						DiscountCourseClass.DISCOUNT.dot(Discount.CODE).isNull()
