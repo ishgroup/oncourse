@@ -159,13 +159,14 @@ class FieldValueValidator {
             case CHOICE:
                 break
             case DataType.BOOLEAN:
-                if (!(value in [Boolean.TRUE.toString(), Boolean.FALSE.toString()])) {
+                if (value != null  && !(value in [Boolean.TRUE.toString(), Boolean.FALSE.toString()])) {
                     return 'Checkbox value is wrong'
                 }
                 break
             case DataType.DATE:
                 try {
                     FieldValueParser.DATE_FORMAT.parse(value)
+                    break
                 } catch (Exception e) {
                     logger.error('Date format is wrong', e)
                     return 'Date format is wrong'
@@ -174,6 +175,7 @@ class FieldValueValidator {
             case DataType.DATETIME:
                 try {
                     FieldValueParser.DATE_TIME_FORMAT.parse(value)
+                    break
                 } catch (Exception e) {
                     logger.error('Date time format is wrong', e)
                     return 'Date time format is wrong'
@@ -185,7 +187,7 @@ class FieldValueValidator {
                 }
                 break
             case DataType.URL:
-                if (new UrlValidator("http", "Https").isValid(value)) {
+                if (!new UrlValidator("http", "https").isValid(value)) {
                     return 'Wrong url address format'
                 }
                 break
@@ -197,6 +199,7 @@ class FieldValueValidator {
             case MONEY:
                 try {
                     new Money(value)
+                    break
                 } catch (NumberFormatException e) {
                     logger.error('Wrong money format', e)
                     return  'Wrong money format'
