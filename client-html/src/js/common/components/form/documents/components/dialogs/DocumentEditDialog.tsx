@@ -4,38 +4,24 @@
  */
 
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import {
-  Directions, Language, Link
-} from "@material-ui/icons";
-import { AlertTitle } from "@material-ui/lab";
-import Alert from "@material-ui/lab/Alert";
 import Dialog from "@material-ui/core/Dialog";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
 import clsx from "clsx";
 import DialogActions from "@material-ui/core/DialogActions";
 import { Document, Tag } from "@api/model";
-import { change, Field } from "redux-form";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Tooltip from "@material-ui/core/Tooltip";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import Collapse from "@material-ui/core/Collapse";
-import { StyledCheckbox } from "../../../form-fields/CheckboxField";
 import FormField from "../../../form-fields/FormField";
-import { Switch } from "../../../form-fields/Switch";
 import DocumentIconsChooser from "../items/DocumentIconsChooser";
-import FormRadioButtons from "../../../form-fields/FormRadioButtons";
 import { formatRelativeDate } from "../../../../../utils/dates/formatRelative";
-import DocumentTags from "../items/DocumentTags";
 import { dialogStyles } from "./dialogStyles";
 import Button from "../../../../buttons/Button";
 import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "../../../../../utils/dates/format";
-import { getAvailableOptions, getDocumentShareSummary, getDocumentVersion } from "../utils";
+import { getDocumentVersion } from "../utils";
+import DocumentShare from "../items/DocumentShare";
 
 export type DocumentDialogType = "edit" | "create" | "view";
 
@@ -76,54 +62,14 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
     onUnlink(index);
   };
 
-  onWebsiteChange = (e, val) => {
-    const { dispatch, form, itemPath } = this.props;
-    dispatch(change(form, `${itemPath}.access`, val ? "Public" : "Private"));
-  }
-
-  onPortalSharingChange = (e, val) => {
-    const { dispatch, form, itemPath } = this.props;
-    dispatch(change(form, `${itemPath}.access`, val ? "Tutors and enrolled students" : "Private"));
-  }
-
-  onTutorsChange = (e, val) => {
-    const { dispatch, form, itemPath } = this.props;
-    dispatch(change(form, `${itemPath}.access`, val ? "Tutors only" : "Private"));
-  }
-
-  onTutorsAndStudentsChange = (e, val) => {
-    const { dispatch, form, itemPath } = this.props;
-    dispatch(change(form, `${itemPath}.access`, val ? "Tutors and enrolled students" : "Tutors only"));
-  }
-
-  onLinkChange = (e, val) => {
-    const { dispatch, form, itemPath } = this.props;
-    dispatch(change(form, `${itemPath}.access`, val ? "Link" : "Private"));
-  }
-
   renderCreateType(lastVersion, validUrl, readOnly: boolean = false) {
     const {
-      classes, item, itemPath, tags, onClose, entity
+      classes, item, itemPath, tags, onClose, dispatch, form
     } = this.props;
 
-    const isCourseOnly = entity === "Course";
-
-    const availableOptions = getAvailableOptions({ [entity]: [] });
-
-    const contactRelated = [
-      "Contact",
-      "Assessment",
-      "Application",
-      "Certificate",
-      "Enrolment",
-      "Invoice",
-      "PriorLearning"].includes(entity);
-
-    const tutorsAndStudents = ["Tutors and enrolled students", "Tutors only"].includes(item.access);
-
     return (
-      <>
-        <div className="mt-1 centeredFlex">
+      <div>
+        <div className="mt-1 mb-2 centeredFlex">
           <Tooltip title="Open Document URL" disableHoverListener={!validUrl}>
             <div>
               <ButtonBase disabled={!validUrl} onClick={(e: any) => this.openDocumentURL(e, validUrl)}>
@@ -145,150 +91,16 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
             />
           </div>
         </div>
-        <div className="flex-fill">
-          <Alert severity="info" className="mb-3 mt-3">
-            <AlertTitle>Who can view this document</AlertTitle>
-            {getDocumentShareSummary(item.access, [])}
-          </Alert>
-        </div>
 
-        {availableOptions["PortalSharing"]
-        && (
-          <div className="flex-fill mb-2">
-            <CardHeader
-              classes={{
-                root: "p-0",
-                action: "mt-0",
-                title: "heading"
-              }}
-              action={(
-                <FormControlLabel
-                  classes={{
-                    root: "switchWrapper",
-                    label: "switchLabel"
-                  }}
-                  control={(
-                    <Switch
-                      checked={tutorsAndStudents}
-                      onChange={this.onPortalSharingChange}
-                      disabled={readOnly}
-                    />
-                  )}
-                  label="Shared in portal"
-                />
-              )}
-              avatar={(
-                <Avatar className="activeAvatar">
-                  <Directions />
-                </Avatar>
-              )}
-              title="Skills onCourse"
-            />
-            {!contactRelated && (
-              <>
-                {availableOptions["Tutor&Student"] && (
-                  <Collapse in={tutorsAndStudents}>
-                    <CardContent>
-                      <FormControlLabel
-                        classes={{
-                          root: "checkbox",
-                          label: "ml-0"
-                        }}
-                        control={(
-                          <StyledCheckbox
-                            checked={tutorsAndStudents}
-                            onChange={this.onTutorsChange}
-                            disabled={readOnly}
-                          />
-                        )}
-                        label="Show to tutors"
-                      />
-                      <FormControlLabel
-                        classes={{
-                          root: "checkbox"
-                        }}
-                        control={(
-                          <StyledCheckbox
-                            checked={item.access === "Tutors and enrolled students"}
-                            onChange={this.onTutorsAndStudentsChange}
-                            disabled={readOnly}
-                          />
-                        )}
-                        label="Show to students"
-                      />
-                    </CardContent>
-                  </Collapse>
-                )}
-              </>
-            )}
-          </div>
-        )}
-
-        <div className="flex-fill mb-2">
-          <CardHeader
-            classes={{
-              root: "p-0",
-              action: "mt-0",
-              title: "heading"
-            }}
-            action={(
-              <FormControlLabel
-                classes={{
-                  root: "switchWrapper",
-                  label: "switchLabel"
-                }}
-                control={(
-                  <Switch
-                    checked={["Link", "Public"].includes(item.access)}
-                    onChange={this.onLinkChange}
-                    disabled={readOnly}
-                  />
-                )}
-                label="Shared by link"
-              />
-            )}
-            avatar={(
-              <Avatar className="activeAvatar">
-                <Link />
-              </Avatar>
-            )}
-            title="Web link"
-          />
-        </div>
-
-        {isCourseOnly && (
-          <div className="flex-fill mb-2">
-            <CardHeader
-              classes={{
-                root: "p-0",
-                action: "mt-0",
-                title: "heading"
-              }}
-              action={(
-                <FormControlLabel
-                  classes={{
-                    root: "switchWrapper",
-                    label: "switchLabel"
-                  }}
-                  control={(
-                    <Switch
-                      checked={item.access === "Public"}
-                      onChange={this.onWebsiteChange}
-                      disabled={readOnly}
-                    />
-                  )}
-                  label="Shared with website visitors"
-                />
-              )}
-              avatar={(
-                <Avatar className="activeAvatar">
-                  <Language />
-                </Avatar>
-              )}
-              title="Website"
-            />
-          </div>
-        )}
+        <DocumentShare
+          validUrl={validUrl}
+          readOnly={readOnly}
+          documentSource={item}
+          dispatch={dispatch}
+          form={form}
+          itemPath={itemPath}
+          noPaper
+        />
 
         <div className="mt-1 centeredFlex">
           <FormField
@@ -315,7 +127,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
 
         <DialogActions classes={{ root: classes.actions }}>
           <Button variant="text" color="primary" onClick={onClose}>
-            Cancel
+            {readOnly ? "Close" : "Cancel"}
           </Button>
           {!readOnly && (
             <Button variant="text" disabled={!item.name} className="documentsSubmitButton" onClick={this.onAdd}>
@@ -323,115 +135,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
             </Button>
           )}
         </DialogActions>
-      </>
-    );
-  }
-
-  renderEditType(lastVersion, validUrl) {
-    const {
-      classes, item, itemPath, onCancelEdit, onSave, onClose, isNew, dirty
-    } = this.props;
-
-    return (
-      <>
-        <div className="mt-1 centeredFlex">
-          <Tooltip title="Open Document URL" disableHoverListener={!validUrl}>
-            <div>
-              <ButtonBase disabled={!validUrl} onClick={(e: any) => this.openDocumentURL(e, validUrl)}>
-                <DocumentIconsChooser
-                  hovered={Boolean(validUrl)}
-                  type={lastVersion.mimeType}
-                  thumbnail={item.thumbnail}
-                />
-              </ButtonBase>
-            </div>
-          </Tooltip>
-
-          <div className="flex-fill ml-3 overflow-hidden">
-            <Typography variant="caption" color="textSecondary">
-              Name
-            </Typography>
-            <Typography variant="subtitle1" className="text-truncate">
-              {item.name}
-            </Typography>
-          </div>
-
-          <div className="flex-fill overflow-hidden">
-            <Typography variant="caption" color="textSecondary">
-              Access
-            </Typography>
-            <Typography variant="subtitle1" className="text-truncate">
-              {item.access}
-            </Typography>
-          </div>
-
-          {!isNew && (
-            <Button variant="text" className="errorColor" onClick={this.unlink}>
-              Unlink
-            </Button>
-          )}
-        </div>
-
-        <div className="mt-1 centeredFlex">
-          <DocumentTags tags={item.tags} bold />
-        </div>
-
-        <div className="mt-1 centeredFlex">
-          <div>
-            <Typography variant="caption" color="textSecondary">
-              Description
-            </Typography>
-            {item.description ? (
-              <Typography variant="body1">{item.description}</Typography>
-            ) : (
-              <Typography variant="body1" className="placeholderContent">
-                No Value
-              </Typography>
-            )}
-          </div>
-        </div>
-
-        {/* <div className={clsx("mt-1", "centeredFlex")}> */}
-        {/*  <FormControlLabel */}
-        {/*    classes={{ */}
-        {/*      root: "checkbox" */}
-        {/*    }} */}
-        {/*    control={ */}
-        {/*      <Field */}
-        {/*        name={`${itemPath}.versionId`} */}
-        {/*        component={CheckboxField} */}
-        {/*        color="primary" */}
-        {/*        parse={val => (val ? item.versions[item.versions.length - 1].id : null)} */}
-        {/*        format={val => Boolean(val)} */}
-        {/*      /> */}
-        {/*    } */}
-        {/*    label="Freeze to a specific version" */}
-        {/*  /> */}
-        {/* </div> */}
-
-        <Collapse in={Boolean(item.versionId)}>
-          <div className="mt-1 centeredFlex">
-            <Field
-              name={`${itemPath}.versionId`}
-              component={FormRadioButtons}
-              parse={val => Number(val)}
-              format={val => String(val)}
-              items={this.getVersions()}
-              color="secondary"
-              stringValue
-            />
-          </div>
-        </Collapse>
-
-        <DialogActions classes={{ root: classes.actions }}>
-          <Button variant="text" color="primary" onClick={isNew ? onClose : onCancelEdit}>
-            Cancel
-          </Button>
-          <Button variant="text" className="documentsSubmitButton" onClick={onSave} disabled={!isNew && !dirty}>
-            {isNew ? "Add" : "Save"}
-          </Button>
-        </DialogActions>
-      </>
+      </div>
     );
   }
 
@@ -516,9 +220,8 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
 
               {!loading && (
                 <div className={clsx(classes.contentWrapper, "relative overflow-hidden paperBackgroundColor")}>
-                  {type === "edit" && this.renderEditType(lastVersion, validUrl)}
                   {type === "create" && this.renderCreateType(lastVersion, validUrl)}
-                  {type === "view" && this.renderCreateType(lastVersion, validUrl, true)}
+                  {(type === "view" || type === "edit") && this.renderCreateType(lastVersion, validUrl, true)}
                 </div>
               )}
             </>
