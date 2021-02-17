@@ -42,7 +42,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
         change(
           COURSE_CLASS_COST_DIALOG_FORM,
           "perUnitAmountExTax",
-          decimalDivide(value, decimalPlus(1, currentTax.rate))
+          decimalDivide(Number(value), decimalPlus(1, currentTax.rate))
         )
       );
     },
