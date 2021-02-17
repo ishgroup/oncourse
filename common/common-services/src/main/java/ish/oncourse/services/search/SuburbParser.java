@@ -16,6 +16,7 @@ public class SuburbParser {
     private String suburb;
     private String postcode;
     private Double distance;
+    private String display;
 
     private Suburb result;
     private ISearchService searchService;
@@ -41,6 +42,9 @@ public class SuburbParser {
             if (values.length >= 3) {
                 distance = parseKm(values[2]);
             }
+            if (values.length >= 4) {
+                display = values[3];
+            }
 
             SolrDocumentList solrSuburbs;
             if (postcode != null) {
@@ -51,7 +55,7 @@ public class SuburbParser {
 
             if (solrSuburbs.size() > 0) {
                 SolrDocument doc = solrSuburbs.get(0);
-                result = Suburb.valueOf(identifier, suburb, postcode, distance, doc);
+                result = Suburb.valueOf(identifier, suburb, postcode, distance, doc, display);
             }
         }
     }

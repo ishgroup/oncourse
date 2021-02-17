@@ -21,6 +21,8 @@ public class Suburb {
     private Double distance;
 
     private String suburb;
+    
+    private String display;
 
 
     public String getPostcode() {
@@ -72,6 +74,10 @@ public class Suburb {
         return path;
     }
 
+    public String getDisplay() {
+        return display;
+    }
+
 
     public static Suburb valueOf(String postcode, Double latitude, Double longitude, Double distance) {
         Suburb suburb = new Suburb();
@@ -83,10 +89,10 @@ public class Suburb {
     }
 
     public static Suburb valueOf(String path, Double distance, SolrDocument doc) {
-        return Suburb.valueOf(path, null, null, distance, doc);
+        return Suburb.valueOf(path, null, null, distance, doc, "");
     }
 
-    public static Suburb valueOf(String path, String suburb, String postcode, Double distance, SolrDocument doc) {
+    public static Suburb valueOf(String path, String suburb, String postcode, Double distance, SolrDocument doc, String display) {
         String location = (String) doc.get(SolrQueryBuilder.PARAMETER_loc);
         String[] points = location.split(",");
         double latitude = Double.parseDouble(points[0]);
@@ -100,6 +106,8 @@ public class Suburb {
         result.suburb = suburb;
         result.postcode = postcode;
         result.identifier = path.replaceAll("[^A-Za-z0-9]", "_");
+        
+        result.display = display;
 
         result.latitude = latitude;
         result.longitude = longitude;

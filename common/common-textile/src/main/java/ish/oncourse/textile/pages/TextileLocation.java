@@ -89,6 +89,8 @@ public class TextileLocation {
             if (distance != null) {
                 values.add(distance);
             }
+            values.add(display);
+
             path = StringUtils.join(values, "/");
             identifier = path.replaceAll("[^A-Za-z0-9]", "_");
 

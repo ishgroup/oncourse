@@ -14,7 +14,7 @@
                 </t:loop>
                 <t:loop source="suburbs" value="suburb">
                     <li class="courses-filter-near">
-                        <span>${suburb.path}</span>
+                        <span>${suburb.display}</span>
                         <a href="#" class="courses-filter-clear-option" data-id="${suburb.identifier}" data-path="${suburb.path.toLowerCase()}">
                             <i class="fa fa-times"></i>
                         </a>
