@@ -171,17 +171,19 @@ export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action
 
       const fundingInvoicesUpdated = [];
 
-      formValues.fundingInvoices.forEach(fi => {
-        const updated = JSON.parse(JSON.stringify(fi));
+      if (formValues && formValues.fundingInvoices) {
+        formValues.fundingInvoices.forEach(fi => {
+          const updated = JSON.parse(JSON.stringify(fi));
 
-        updated.item.enrolment.items = fi.item.enrolment.items.filter(i =>
-          summaryList.some(li => li.items.some(l => l.checked && l.type === "course" && l.class.id === i.class.id)));
+          updated.item.enrolment.items = fi.item.enrolment.items.filter(i =>
+            summaryList.some(li => li.items.some(l => l.checked && l.type === "course" && l.class.id === i.class.id)));
 
-        if (updated.item.enrolment.items.length) {
-          fundingInvoicesUpdated.push(updated);
-          added[fi.relatedFundingSourceId] = true;
-        }
-      });
+          if (updated.item.enrolment.items.length) {
+            fundingInvoicesUpdated.push(updated);
+            added[fi.relatedFundingSourceId] = true;
+          }
+        });
+      }
 
       if (summaryList.length === 1 && !summaryList[0].contact.isCompany) {
         const items = [...summaryList[0].items];
