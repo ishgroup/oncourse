@@ -96,7 +96,7 @@ class VoucherComp extends React.PureComponent<Props, State> {
           onQuantityBlur={() => this.handleQuantityBlur()}
           readonly={readonly}
         >
-          <VoucherDetails voucher={voucher}/>
+          {voucher.isEditablePrice && readonly ? null : <VoucherDetails voucher={voucher}/>}
         </ItemWrapper>
         {voucher.selected &&
           <div className="col-xs-8 col-md-8 alignright">
@@ -105,6 +105,7 @@ class VoucherComp extends React.PureComponent<Props, State> {
               price={this.state.price}
               onChange={this.updateValue}
               onBlur={this.handleValueBlur}
+              readonly={readonly}
             />
           </div>
         }
@@ -147,7 +148,7 @@ const VoucherPrice = (props): any => {
   const voucher = props.voucher;
   const price = props.price;
 
-  return voucher.isEditablePrice ?
+  return voucher.isEditablePrice && !props.readonly ?
     <div className="row" style={{ display: "flex", alignItems: "center" }}>
 
       <span className="col-xs-12 col-md-12">

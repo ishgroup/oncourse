@@ -87,7 +87,7 @@ class ContactComp extends React.Component<Props, any> {
         }
         <div className="col-xs-24 checkoutList">
           {enrolments.map((props, index) =>
-            props.courseClass && <EnrolmentComp
+            props.courseClass && (readonly ? props.enrolment.selected : true) && <EnrolmentComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Enrolment(), props.enrolment), !props.enrolment.selected)}
               onChangeClass={(classId) => onChangeClass(Object.assign(new Enrolment(), props.enrolment), Object.assign(new Enrolment(), props.enrolment, { classId }))}
@@ -97,7 +97,7 @@ class ContactComp extends React.Component<Props, any> {
             />,
           )}
           {applications.map((props, index) =>
-            props.courseClass && <ApplicationComp
+            props.courseClass && (readonly ? props.application.selected : true) && <ApplicationComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Application(), props.application), !props.application.selected)}
               onChangeFields={onChangeEnrolmentFields}
@@ -105,7 +105,7 @@ class ContactComp extends React.Component<Props, any> {
             />,
           )}
           {vouchers.map((props, index) =>
-            props.product && <VoucherComp
+            props.product && (readonly ? props.voucher.selected : true) && <VoucherComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Voucher(), props.voucher), !props.voucher.selected)}
               onPriceValueChange={val => onPriceValueChange(Object.assign(new Voucher(), props.voucher), val)}
@@ -114,14 +114,14 @@ class ContactComp extends React.Component<Props, any> {
             />,
           )}
           {memberships.map((props, index) =>
-            props.product && <MembershipComp
+            props.product && (readonly ? props.membership.selected : true) && <MembershipComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Membership(), props.membership), !props.membership.selected)}
               readonly={readonly}
             />,
           )}
           {articles.map((props, index) =>
-            props.product && <ArticleComp
+            props.product && (readonly ? props.article.selected : true) && <ArticleComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Article(), props.article), !props.article.selected)}
 							onQuantityValueChange={val => onQuantityValueChange(Object.assign(new Article(), props.article), val)}
@@ -129,7 +129,7 @@ class ContactComp extends React.Component<Props, any> {
             />,
           )}
           {waitingLists.map((props, index) =>
-            props.waitingList && <WaitingListComp
+            props.waitingList && (readonly ? props.waitingList.selected : true) && <WaitingListComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new WaitingList(), props.waitingList), !props.waitingList.selected)}
               onUpdate={prop => onUpdateWaitingCourse(Object.assign(new WaitingList(), props.waitingList), prop)}

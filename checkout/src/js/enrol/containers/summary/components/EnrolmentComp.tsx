@@ -71,6 +71,7 @@ class EnrolmentComp extends React.Component<Props, any> {
             error={error}
             onChangeClass={onChangeClass}
             replaceClassInCart={replaceClassInCart}
+            readonly={readonly}
           />
         </ItemWrapper>
         {!error && enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment} />}
@@ -126,6 +127,7 @@ interface ClassDetailsProps {
   onChangeClass?: (classId: string) => void;
   replaceClassInCart?: (item1: CourseClass, item2: CourseClass) => void;
   error: any;
+  readonly?: boolean;
 }
 
 const ClassDetailsLabel = (classItem: CourseClass) => {
@@ -143,8 +145,8 @@ const ClassDetailsLabel = (classItem: CourseClass) => {
   </div>
 }
 
-const ClassDetails = ({ courseClass, onChangeClass, enrolment, replaceClassInCart, error }: ClassDetailsProps) => {
-  return courseClass.id && !error ? (
+const ClassDetails = ({ courseClass, onChangeClass, enrolment, replaceClassInCart, error, readonly }: ClassDetailsProps) => {
+  return courseClass.id && !error && !readonly ? (
     <SelectField
       returnType="object"
       searchable={false}
