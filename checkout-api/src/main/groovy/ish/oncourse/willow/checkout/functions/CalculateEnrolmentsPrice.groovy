@@ -110,7 +110,7 @@ class CalculateEnrolmentsPrice {
                 & Discount.getCurrentDateFilterForDiscountCourseClass(courseClass.startDate)).
                 select(context)
 
-        filterProgramDiscount(classDiscounts, contact, courseClass)
+        classDiscounts = filterProgramDiscount(classDiscounts, contact, courseClass)
 
         
         GetDiscountForEnrolment discounts = GetDiscountForEnrolment.
@@ -128,7 +128,7 @@ class CalculateEnrolmentsPrice {
         price
     }
     
-    void filterProgramDiscount(List<DiscountCourseClass> classDiscounts, Contact contact, CourseClass courseClass) {
+    private List<DiscountCourseClass> filterProgramDiscount(List<DiscountCourseClass> classDiscounts, Contact contact, CourseClass courseClass) {
         Long currentCourseId = courseClass.course.id
         List<Long> courseIds = enrolmentsToProceed[contact]*.course*.id.unique()
         courseIds.remove(currentCourseId)
@@ -138,11 +138,16 @@ class CalculateEnrolmentsPrice {
                 .where(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName).andExp(EntityRelation.TO_ENTITY_WILLOW_ID.in(currentCourseId)))
                 .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(ADD_ALLOW_REMOVAL, ADD_NO_REMOVAL))
                 .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.DISCOUNT).isNotNull())
+                .and(
+                    EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName).andExp(EntityRelation.FROM_ENTITY_WILLOW_ID.in(courseIds))
+                    .orExp(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Product.simpleName).andExp(EntityRelation.FROM_ENTITY_WILLOW_ID.in(productIds)))
+                    )
                 .select(context)
-        List<Discount> discountsViaRelations = relations*.relationType*.discount.findAll { it != null }
+        
+        List<Long> discountsViaRelations = relations*.relationType*.discount.findAll { it != null }*.id
 
-        classDiscounts.findAll { dcc ->
-            (dcc.discount as Discount).entityRelationTypes.empty || (dcc.discount as Discount) in discountsViaRelations
+        return classDiscounts.findAll { dcc ->
+            (dcc.discount as Discount).entityRelationTypes.empty || (dcc.discount as Discount).id in discountsViaRelations
         }
     }
 
