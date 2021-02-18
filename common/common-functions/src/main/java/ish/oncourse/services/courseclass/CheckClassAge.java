@@ -17,7 +17,7 @@ public class CheckClassAge {
     private CourseClass courseClass;
 
     public boolean check() {
-        Date startOfDay = ish.oncourse.utils.DateUtils.normalisedDate(new Date());
+        Date startOfDay = new Date();
         switch (classAge.getType()) {
             case afterClassStarts:
                 return courseClass.getStartDate() == null || DateUtils.addDays(courseClass.getStartDate(), classAge.getDays())
