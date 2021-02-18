@@ -25,8 +25,14 @@ import {Phase} from "../../reducers/State";
 import {SummaryService} from "./services/SummaryService";
 import CheckoutService from "../../services/CheckoutService";
 import {WaitingList} from "../../../model/checkout/WaitingList";
+import {normalize} from "normalizr";
+import {ClassesListSchema} from "../../../NormalizeSchema";
+import {mapPayload} from "../../../common/epics/EpicUtils";
+import {Actions} from "../../../web/actions/Actions";
 
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => {
+  // console.log(e,state);
+
   return {
     contact: state.checkout.contacts.entities.contact[e.contactId],
     courseClass: state.courses.entities[e.classId] ||
@@ -158,9 +164,12 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
       dispatch(updateContactAddProcess({}, Phase.AddContact, contactId));
       dispatch(changePhase(Phase.ChangeParent));
     },
-    onChangeClass: (item1,item2): void => {
+    onChangeClass: (item1,item2, classes): void => {
       dispatch(replaceItem(item1,item2));
       dispatch(getCheckoutModelFromBackend());
+      if(classes.length) {
+        dispatch(mapPayload(Actions.REQUEST_COURSE_CLASS)(normalize(classes, ClassesListSchema)))
+      }
     },
     onProceedToPayment: (forms): void => {
       forms && Object.keys(forms).map(form => dispatch(submit(form)));

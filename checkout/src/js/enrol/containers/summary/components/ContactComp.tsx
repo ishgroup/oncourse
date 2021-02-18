@@ -25,7 +25,7 @@ export interface Props {
   waitingLists: any;
   onUpdateWaitingCourse?: (waitingCourse, prop) => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
-  onChangeClass?: (item1: PurchaseItem, item2: PurchaseItem) => void;
+  onChangeClass?: (item1: PurchaseItem, item2: PurchaseItem, newClasses: CourseClass[] ) => void;
   onPriceValueChange?: (productItem: Voucher, val: number) => void;
   onQuantityValueChange?: (productItem: Voucher|Article, val: number) => void;
   onAddConcession?: () => void;
@@ -101,7 +101,7 @@ class ContactComp extends React.Component<Props, any> {
             props.courseClass && (readonly ? props.enrolment.selected : true) && <EnrolmentComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Enrolment(), props.enrolment), !props.enrolment.selected)}
-              onChangeClass={(classId) => onChangeClass(Object.assign(new Enrolment(), props.enrolment), Object.assign(new Enrolment(), props.enrolment, { classId }))}
+              onChangeClass={(classId, newClasses) => onChangeClass(Object.assign(new Enrolment(), props.enrolment), Object.assign(new Enrolment(), props.enrolment, { classId }), newClasses)}
               onChangeFields={onChangeEnrolmentFields}
               readonly={readonly}
             />,

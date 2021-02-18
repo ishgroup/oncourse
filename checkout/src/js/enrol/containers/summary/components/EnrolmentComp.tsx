@@ -17,9 +17,10 @@ export interface Props {
   enrolment: Enrolment;
   courseClass: CourseClass;
   onChange?: (item, contact) => void;
-  onChangeClass?: (classId: string) => void;
+  onChangeClass?: (classId: string, newClasses: CourseClass[]) => void;
   onChangeFields?: (form, type) => any;
   readonly?: boolean;
+  onAddNewClasses?: any;
 }
 
 class EnrolmentComp extends React.Component<Props, any> {
@@ -40,7 +41,7 @@ class EnrolmentComp extends React.Component<Props, any> {
   }
 
   public render(): JSX.Element {
-    const { enrolment, courseClass, contact, onChange,onChangeClass, onChangeFields, readonly } = this.props;
+    const { enrolment, courseClass, contact, onChange,onChangeClass, onChangeFields, readonly, onAddNewClasses } = this.props;
     const divClass = classnames("row", "enrolmentItem", { disabled: !enrolment.selected });
     const name = `enrolment-${contact.id}-${enrolment.classId}`;
     const title: string = `${courseClass.course.name}`;
@@ -66,9 +67,9 @@ class EnrolmentComp extends React.Component<Props, any> {
         >
           <ClassDetails
             courseClass={courseClass}
-            enrolment={enrolment}
             error={error}
             onChangeClass={onChangeClass}
+            onAddNewClasses={onAddNewClasses}
             readonly={readonly}
           />
         </ItemWrapper>
@@ -121,9 +122,9 @@ const ClassPrice = (props): any => {
 
 interface ClassDetailsProps {
   courseClass: CourseClass;
-  enrolment: Enrolment;
-  onChangeClass?: (classId: string) => void;
+  onChangeClass?: (classId: string, newClasses: CourseClass[]) => void;
   error: any;
+  onAddNewClasses: any;
   readonly?: boolean;
 }
 
@@ -142,7 +143,10 @@ const ClassDetailsLabel = (classItem: CourseClass) => {
   </div>
 }
 
-const ClassDetails = ({ courseClass, onChangeClass, enrolment, error, readonly }: ClassDetailsProps) => {
+const ClassDetails = ({ courseClass, onChangeClass, error, readonly }: ClassDetailsProps) => {
+  let availableClasses = [];
+
+
   return courseClass.id && !error && !readonly ? (
     <SelectField
       returnType="object"
@@ -154,14 +158,17 @@ const ClassDetails = ({ courseClass, onChangeClass, enrolment, error, readonly }
           if (result.id === courseClass.id) {
             return;
           }
-          onChangeClass(result.id)
+          onChangeClass(result.id,availableClasses)
         },
         value: courseClass
       }}
       meta={{}}
       optionRenderer={ClassDetailsLabel}
       valueRenderer={ClassDetailsLabel}
-      loadOptions={() => CourseClassService.getAvailableClasses(courseClass.course.id)}
+      loadOptions={() => CourseClassService.getAvailableClasses(courseClass.course.id).then(options => {
+        availableClasses = options;
+        return options;
+      })}
     />
   ) : ClassDetailsLabel(courseClass);
 };

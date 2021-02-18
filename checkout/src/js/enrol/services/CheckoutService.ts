@@ -378,7 +378,7 @@ export class BuildCreateContactParams {
 
 const formatNodeCustomFields = (items: (Application & Enrolment & WaitingList)[], stateRoot: IshState) => {
   items.forEach(it => {
-    if(it.fieldHeadings) {
+    if(it && it.fieldHeadings) {
       it.fieldHeadings.forEach(fh => {
         const form = stateRoot.form[`${it.contactId}-${it.courseId || it.classId}`];
         if(form && form.values) {
