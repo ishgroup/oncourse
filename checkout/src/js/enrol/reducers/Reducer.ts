@@ -21,7 +21,6 @@ import {CHANGE_TAB} from "../containers/payment/actions/Actions";
 const IsCartModified = (state: boolean = false, action: IAction<boolean>): boolean => {
   switch (action.type) {
     case FULFILLED(WebActions.ADD_CLASS_TO_CART):
-    case FULFILLED(WebActions.REPLACE_CLASS_IN_CART):
     case FULFILLED(WebActions.ADD_PRODUCT_TO_CART):
     case FULFILLED(WebActions.ADD_PROMOTION_TO_CART):
     case FULFILLED(WebActions.ADD_WAITING_COURSE_TO_CART):

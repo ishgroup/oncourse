@@ -18,7 +18,6 @@ export interface Props {
   courseClass: CourseClass;
   onChange?: (item, contact) => void;
   onChangeClass?: (classId: string) => void;
-  replaceClassInCart?: (item1: CourseClass, item2: CourseClass) => void;
   onChangeFields?: (form, type) => any;
   readonly?: boolean;
 }
@@ -41,7 +40,7 @@ class EnrolmentComp extends React.Component<Props, any> {
   }
 
   public render(): JSX.Element {
-    const { enrolment, courseClass, contact, onChange,onChangeClass, onChangeFields, replaceClassInCart, readonly } = this.props;
+    const { enrolment, courseClass, contact, onChange,onChangeClass, onChangeFields, readonly } = this.props;
     const divClass = classnames("row", "enrolmentItem", { disabled: !enrolment.selected });
     const name = `enrolment-${contact.id}-${enrolment.classId}`;
     const title: string = `${courseClass.course.name}`;
@@ -70,7 +69,6 @@ class EnrolmentComp extends React.Component<Props, any> {
             enrolment={enrolment}
             error={error}
             onChangeClass={onChangeClass}
-            replaceClassInCart={replaceClassInCart}
             readonly={readonly}
           />
         </ItemWrapper>
@@ -125,7 +123,6 @@ interface ClassDetailsProps {
   courseClass: CourseClass;
   enrolment: Enrolment;
   onChangeClass?: (classId: string) => void;
-  replaceClassInCart?: (item1: CourseClass, item2: CourseClass) => void;
   error: any;
   readonly?: boolean;
 }
@@ -145,7 +142,7 @@ const ClassDetailsLabel = (classItem: CourseClass) => {
   </div>
 }
 
-const ClassDetails = ({ courseClass, onChangeClass, enrolment, replaceClassInCart, error, readonly }: ClassDetailsProps) => {
+const ClassDetails = ({ courseClass, onChangeClass, enrolment, error, readonly }: ClassDetailsProps) => {
   return courseClass.id && !error && !readonly ? (
     <SelectField
       returnType="object"
@@ -156,9 +153,6 @@ const ClassDetails = ({ courseClass, onChangeClass, enrolment, replaceClassInCar
         onChange: result => {
           if (result.id === courseClass.id) {
             return;
-          }
-          if (!enrolment.relatedClassId && !enrolment.relatedProductId) {
-            replaceClassInCart(courseClass,result);
           }
           onChangeClass(result.id)
         },

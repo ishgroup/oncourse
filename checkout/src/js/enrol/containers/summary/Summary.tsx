@@ -25,12 +25,11 @@ import {Phase} from "../../reducers/State";
 import {SummaryService} from "./services/SummaryService";
 import CheckoutService from "../../services/CheckoutService";
 import {WaitingList} from "../../../model/checkout/WaitingList";
-import {replaceClassInCart} from "../../../web/actions/Actions";
 
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => {
   return {
     contact: state.checkout.contacts.entities.contact[e.contactId],
-    courseClass: state.cart.courses.entities[e.classId] ||
+    courseClass: state.courses.entities[e.classId] ||
       (e.relatedClassId || e.relatedProductId)
         ? e.classId
           ? state.courses.entities[e.classId]
@@ -158,9 +157,6 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onChangeParent: (contactId): void => {
       dispatch(updateContactAddProcess({}, Phase.AddContact, contactId));
       dispatch(changePhase(Phase.ChangeParent));
-    },
-    replaceClassInCart: (replace,replacement): void => {
-      dispatch(replaceClassInCart(replace,replacement));
     },
     onChangeClass: (item1,item2): void => {
       dispatch(replaceItem(item1,item2));

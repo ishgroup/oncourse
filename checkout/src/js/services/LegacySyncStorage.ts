@@ -45,8 +45,6 @@ export class LegacySyncStorage {
     switch (action.type) {
       case FULFILLED(Actions.ADD_CLASS_TO_CART):
         return this.addCourse(getId(action));
-      case FULFILLED(Actions.REPLACE_CLASS_IN_CART):
-        return this.replaceCourse(getReplaceIdS(action));
       case FULFILLED(Actions.REMOVE_CLASS_FROM_CART):
         return this.removeCourse(getId(action));
       case FULFILLED(Actions.ADD_PRODUCT_TO_CART):

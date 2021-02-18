@@ -47,8 +47,7 @@ export const WebEpic = combineEpics(
   createAddPromotionToCartEpic(),
   createRemovePromotionFromCartEpic(),
   createAddWaitingCourseToCartEpic(),
-  createRemoveWaitingCourseFromCartEpic(),
-  createReplaceClassInCartEpic()
+  createRemoveWaitingCourseFromCartEpic()
 );
 
 function createCoursesEpic() {
@@ -282,23 +281,10 @@ function createRemovePromotionFromCartEpic() {
     }));
 }
 
-function createReplaceClassInCartEpic() {
-  return (action$, store: Store<IshState>) => action$
-    .ofType(Actions.REPLACE_CLASS_IN_CART)
-    .map(action => ({
-      type: FULFILLED(Actions.REPLACE_CLASS_IN_CART),
-      payload: {
-        replace: normalize(action.payload.replace, ClassesSchema),
-        replacement: normalize(action.payload.replacement, ClassesSchema)
-      },
-    }));
-}
-
 function createSyncCartRequestEpic() {
   return (action$, store: Store<IshState>) => action$
     .ofType(
       FULFILLED(Actions.ADD_CLASS_TO_CART),
-      FULFILLED(Actions.REPLACE_CLASS_IN_CART),
       FULFILLED(Actions.REMOVE_CLASS_FROM_CART),
       FULFILLED(Actions.ADD_PRODUCT_TO_CART),
       FULFILLED(Actions.REMOVE_PRODUCT_FROM_CART),
@@ -331,7 +317,6 @@ function createLegacySyncEpic() {
   return action$ => action$
     .ofType(
       FULFILLED(Actions.ADD_CLASS_TO_CART),
-      FULFILLED(Actions.REPLACE_CLASS_IN_CART),
       FULFILLED(Actions.REMOVE_CLASS_FROM_CART),
       FULFILLED(Actions.ADD_PRODUCT_TO_CART),
       FULFILLED(Actions.REMOVE_PRODUCT_FROM_CART),

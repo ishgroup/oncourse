@@ -21,13 +21,6 @@ function classesAllIds(state = [], action: IshAction<CourseClassCartState & Repl
           .filter(t => !state.includes(t)),
       ];
 
-    case FULFILLED(Actions.REPLACE_CLASS_IN_CART):
-      return [
-        ...state,
-        ...[action.payload.replacement.result]
-          .filter(t => !state.includes(t))
-      ].filter(it => it !== action.payload.replace.result);
-
     case FULFILLED(Actions.REMOVE_CLASS_FROM_CART):
       return state.filter(it => it !== action.payload.result);
 
@@ -46,12 +39,6 @@ function classesById(state = {}, action: IshAction<CourseClassCartState & Replac
         ...state,
         ...action.payload.entities.classes,
       };
-
-    case FULFILLED(Actions.REPLACE_CLASS_IN_CART):
-      const replaceState = {...state, ...action.payload.replacement.entities.classes};
-      delete replaceState[action.payload.replace.result];
-
-      return replaceState;
 
     case FULFILLED(Actions.REMOVE_CLASS_FROM_CART):
       const nextState = {...state};

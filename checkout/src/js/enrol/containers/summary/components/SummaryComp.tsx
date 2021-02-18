@@ -33,7 +33,6 @@ export interface Props {
   onProceedToJoin?: (forms) => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onChangeClass?: (item1: PurchaseItem, item2: PurchaseItem) => void;
-  replaceClassInCart?: (item1: CourseClass, item2: CourseClass) => void;
   onPriceValueChange?: (productItem: Voucher, val: number) => void;
   onQuantityValueChange?: (productItem: Voucher|Article, val: number) => void;
   onUpdateWaitingCourse?: () => void;
@@ -94,14 +93,13 @@ export class SummaryComp extends React.Component<Props, any> {
 
   renderContact = (props: ContactProps) => {
     const {onSelect, onPriceValueChange, onQuantityValueChange, onAddConcession, concessions, memberships, onChangeParent,
-      onUpdateWaitingCourse, onChangeEnrolmentFields, concessionTypes, onRemoveContact, onChangeClass, replaceClassInCart} = this.props;
+      onUpdateWaitingCourse, onChangeEnrolmentFields, concessionTypes, onRemoveContact, onChangeClass} = this.props;
 
     return (
       <ContactComp
         {...props}
         key={props.contact.id}
         onChangeClass={onChangeClass}
-        replaceClassInCart={replaceClassInCart}
         onSelect={(item, selected) => onSelect(item, selected)}
         onPriceValueChange={(productItem, val) => onPriceValueChange(productItem, val)}
         onQuantityValueChange={(productItem, val) => onQuantityValueChange(productItem, val)}
