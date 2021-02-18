@@ -1,0 +1,8 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div class="filter-option">
+        <input id="duration_${identifier}" name="duration_${identifier}" type="checkbox" class="filter-option-control"
+               data-path="${path.toLowerCase()}" data-counter="${counter}"/>
+        <label class="checkbox filter-option-label" for="duration_${identifier}">${display}</label>
+        <span class="filter-option-counter">(${counter})</span>
+    </div>
+</t:container>

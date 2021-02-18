@@ -36,6 +36,7 @@ public class TextileUtil {
 	public static final String TEXTILE_ATTACHMENT_PAGE = "textile/TextileAttachment";
 	public static final String TEXTILE_LOCATION_PAGE = "textile/TextileLocation";
 	public static final String TEXTILE_TUTORS_PAGE = "textile/TextileTutors";
+	public static final String TEXTILE_DURATION_PAGE = "textile/TextileDuration";
 
 	public static final String TEXTILE_COURSE_PAGE_PARAM = "course";
 	public static final String TEXTILE_COURSE_SHOW_CLASSES_PARAM = "showclasses";
@@ -60,6 +61,7 @@ public class TextileUtil {
 
 	public static final String TEXTILE_LOCATION_PAGE_PARAM = "additionalLocationParameters";
 
+	public static final String TEXTILE_DURATION_PAGE_PARAM = "additionalDurationParameters";
 
 	public static final String TEXTILE_ATTACHMENT_PAGE_PARAM = "attachmentParameters";
 

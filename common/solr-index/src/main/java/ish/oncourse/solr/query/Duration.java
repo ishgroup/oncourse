@@ -16,6 +16,32 @@ public class Duration {
 
     private Duration() {}
     
+    public static String validate(String duration)  {
+        if (StringUtils.trimToNull(duration) == null) {
+            return "Empty search criteria";
+        }
+
+        if (SELF_PACED_CONDITION.equalsIgnoreCase(duration)) {
+            return null;
+        }
+
+        Condition condition = Condition.valueOf(duration.charAt(0));
+        if (condition != null) {
+            duration = duration.substring(1);
+        }
+
+        if (StringUtils.isNumeric(duration)) {
+            int days = Integer.parseInt(duration);
+            if (days < 1) {
+                return "Wrong search criteria: " + duration;
+            }
+        } else {
+           return "days count should be numeric: " + duration;
+        }
+
+        return null;
+    }
+    
     
     public static Duration valueOf(String search) {
         

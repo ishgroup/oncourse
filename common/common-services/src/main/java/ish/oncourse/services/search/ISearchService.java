@@ -25,4 +25,7 @@ public interface ISearchService {
     Map<Long, Long> getCountersForTags(SearchParams searchParams, List<Tag> counts);
 
     Map<String, Count> getCountersForLocations(SearchParams params, List<Count> counts);
+    
+    Map<String, Count> getCountersForDurations(SearchParams params, List<Count> counts);
+
 }

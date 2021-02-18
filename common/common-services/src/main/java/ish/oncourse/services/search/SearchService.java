@@ -172,6 +172,11 @@ public class SearchService implements ISearchService {
 		}
 	}
 
+	@Override
+	public Map<String, Count> getCountersForDurations(SearchParams params, List<Count> counts) {
+		return null;
+	}
+
 	/**
 	 * Apply course root tag for all the queries for Courses core if available.
 	 *

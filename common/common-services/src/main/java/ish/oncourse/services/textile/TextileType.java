@@ -71,7 +71,12 @@ public enum TextileType {
 				"|(site:" + DIGIT_IN_QUOTS + ")" +
 				")){0,5}}",
 			LocationTextileAttribute.getAttrValues()),
-
+	DURATION("\\{duration([^}]*)}",
+			"\\{duration(.+?(" +
+					"(display:" + STR_WHITESPACE + ")" +
+					"|(duration:" + STR_WHITESPACE + ")" +
+					")){0,2}}",
+			DurationTextileAttribute.getAttrValues()),
 	TUTORS("\\{tutors([^}]*)}", "\\{tutors(.+?((" +
 			"tagName:" + STR_WHITESPACE + ")" +
 			"|(id:" + DIGIT_IN_QUOTS + ")" +

@@ -142,7 +142,9 @@ public class RichtextConverter implements IRichtextConverter {
             case LOCATION:
                 return new LocationTextileRenderer(pageRenderer, cayenneService);
             case TUTORS:
-                return new TutorsTextileRenderer(pageRenderer);                
+                return new TutorsTextileRenderer(pageRenderer);
+            case DURATION:
+                return new DurationTextileRenderer(pageRenderer);
             default:
                 throw new IllegalArgumentException(String.format("Type $s is not supported", type));
         }
