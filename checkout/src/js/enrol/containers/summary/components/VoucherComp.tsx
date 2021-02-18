@@ -42,11 +42,11 @@ class VoucherComp extends React.PureComponent<Props, State> {
   }
 
   private updateValue = val => {
-    const parsed = parseFloat(val);
+    const price = parseFloat(val);
 
-    if (!isNaN(parsed) && parsed > 0) {
+    if (!isNaN(price) && price > 0) {
       this.setState({
-        price: parseFloat(val),
+        price
       });
     }
 

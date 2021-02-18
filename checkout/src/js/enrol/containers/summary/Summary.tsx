@@ -129,6 +129,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       fetching: state.checkout.summary.fetching,
       forms: state.form,
       isOnlyWaitingLists: CheckoutService.isOnlyWaitingCourseSelected(state.checkout.summary),
+      isOnlyApplications: CheckoutService.isOnlyApplicationCourseSelected(state.checkout.summary),
       successLink: state.config.paymentSuccessURL
     };
   } catch (e) {

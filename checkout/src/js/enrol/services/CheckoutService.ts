@@ -66,11 +66,21 @@ export class CheckoutService {
   }
 
   public isOnlyWaitingCourseSelected = (summary: State) => {
-    return summary.entities.waitingLists && Object.values(summary.entities.waitingLists).find(e => e.selected)
-      && summary.entities.enrolments && !Object.values(summary.entities.enrolments).find(e => e.selected)
-      && summary.entities.vouchers && !Object.values(summary.entities.vouchers).find(e => e.selected)
-      && summary.entities.articles && !Object.values(summary.entities.articles).find(e => e.selected)
-      && summary.entities.memberships && !Object.values(summary.entities.memberships).find(e => e.selected);
+    return summary.entities.waitingLists && Object.values(summary.entities.waitingLists).some(e => e.selected)
+      && summary.entities.enrolments && !Object.values(summary.entities.enrolments).some(e => e.selected)
+      && summary.entities.applications && !Object.values(summary.entities.applications).some(e => e.selected)
+      && summary.entities.vouchers && !Object.values(summary.entities.vouchers).some(e => e.selected)
+      && summary.entities.articles && !Object.values(summary.entities.articles).some(e => e.selected)
+      && summary.entities.memberships && !Object.values(summary.entities.memberships).some(e => e.selected);
+  }
+
+  public isOnlyApplicationCourseSelected = (summary: State) => {
+    return summary.entities.waitingLists && !Object.values(summary.entities.waitingLists).some(e => e.selected)
+      && summary.entities.enrolments && !Object.values(summary.entities.enrolments).some(e => e.selected)
+      && summary.entities.applications && Object.values(summary.entities.applications).some(e => e.selected)
+      && summary.entities.vouchers && !Object.values(summary.entities.vouchers).some(e => e.selected)
+      && summary.entities.articles && !Object.values(summary.entities.articles).some(e => e.selected)
+      && summary.entities.memberships && !Object.values(summary.entities.memberships).some(e => e.selected);
   }
 
   public ifCodeExist = (code, state): boolean => {

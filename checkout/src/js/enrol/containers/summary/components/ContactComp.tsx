@@ -38,6 +38,7 @@ export interface Props {
   onChangeEnrolmentFields?: (form, type) => any;
   readonly?: boolean;
   isPayer?: boolean;
+  isOnlyApplications?: boolean;
 }
 
 class ContactComp extends React.Component<Props, any> {
@@ -45,7 +46,8 @@ class ContactComp extends React.Component<Props, any> {
     const {
       contact, enrolments, applications, vouchers, memberships, concessions, onChangeEnrolmentFields,
       articles, onSelect, onPriceValueChange, onQuantityValueChange, onAddConcession, studentMemberships, onChangeParent, waitingLists,
-      onUpdateWaitingCourse, concessionTypes, onRemoveContact, readonly, isPayer, onChangeClass, replaceClassInCart
+      onUpdateWaitingCourse, concessionTypes, onRemoveContact, readonly, isPayer, onChangeClass, replaceClassInCart,
+      isOnlyApplications
     } = this.props;
 
     return (
@@ -65,7 +67,7 @@ class ContactComp extends React.Component<Props, any> {
           onRemoveContact={onRemoveContact}
         />
 
-        {isPayer && readonly &&
+        {isPayer && readonly && !isOnlyApplications &&
           <div className="col-xs-24">
             <div className="message">
               <strong>Invoice email sent</strong>
@@ -75,7 +77,17 @@ class ContactComp extends React.Component<Props, any> {
             </div>
           </div>
         }
-        {readonly && Boolean(enrolments.length) &&
+        {readonly && Boolean(applications.length) && applications.some(e => e.application.selected) &&
+        <div className="col-xs-24">
+          <div className="message">
+            <strong>Application confirmation sent</strong>
+            <div>
+              Please check your email account or spam folder for your application confirmation and for future course updates.
+            </div>
+          </div>
+        </div>
+        }
+        {readonly && Boolean(enrolments.length) && enrolments.some(e => e.enrolment.selected) &&
         <div className="col-xs-24">
           <div className="message">
             <strong>Enrolment confirmation sent</strong>

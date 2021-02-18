@@ -1,9 +1,10 @@
 import * as React from "react";
 
-import {Promotion, RedeemVoucher as RedeemVoucherModel} from "../../model";
+import {Promotion} from "../../model";
 import AddCodeComp from "./AddCodeComp";
 import {Tabs} from "../containers/payment/reducers/State";
 import {AmountState} from "../reducers/State";
+import NumberFormat from "react-number-format";
 
 interface Props {
   amount: AmountState;
@@ -34,19 +35,18 @@ class AmountComp extends React.Component<Props, State> {
   }
 
   handleChangePayNow(val) {
-    const {onUpdatePayNow, amount} = this.props;
-    const reg = (/^[0-9]+\.?[0-9]*$/);
-    if (reg.test(val)) {
+    const payNowVal = parseFloat(val);
+    if (!isNaN(payNowVal) && payNowVal > 0) {
       this.setState({
-        payNowVal: val,
+        payNowVal
       });
     }
   }
 
-  handleBlur(value) {
+  handleBlur = () => {
     const val = this.state.payNowVal;
     const {onUpdatePayNow} = this.props;
-    onUpdatePayNow(Number(val).toFixed(2), true);
+    onUpdatePayNow(val.toFixed(2), true);
   }
 
   render(): JSX.Element {
@@ -83,7 +83,7 @@ class AmountComp extends React.Component<Props, State> {
           <PayNow
             payNow={this.state.payNowVal}
             onChange={onUpdatePayNow ? val => this.handleChangePayNow(val) : undefined}
-            onBlur={el => this.handleBlur(el)}
+            onBlur={this.handleBlur}
           />
           }
         </div>
@@ -155,13 +155,17 @@ const PayNow = props => {
 
   const renderPayNowInput = () => (
     <span className="col-xs-12">
-      <input
+      <NumberFormat
         type="text"
-        value={`$${props.payNow}`}
-        onChange={e => props.onChange(e.target.value.replace('$', ''))}
+        name="priceValue"
+        value={props.payNow}
+        onChange={e => props.onChange(e.target.value.replace(/[$,]/g,""))}
         onBlur={e => props.onBlur(e)}
+        style={{ margin: 0 }}
+        prefix={'$ '}
+        decimalScale={0}
+        allowNegative={false}
       />
-
     </span>
   );
 

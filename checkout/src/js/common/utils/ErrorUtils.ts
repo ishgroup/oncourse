@@ -5,7 +5,11 @@ import {AxiosResponse} from "axios";
 
 export const isValidationError = (error: any): boolean => {
   return error instanceof ValidationError
-    || !(isNil(error) || isUndefined(error.formErrors) && isUndefined(error.fieldsErrors));
+    || (!isNil(error) && (!isUndefined(error.formErrors)
+      && !isUndefined(error.fieldsErrors)
+      && error.formErrors.length
+      && error.fieldsErrors.length
+    ));
 };
 
 export const isCommonError = (error: any): boolean => {
