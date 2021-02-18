@@ -115,7 +115,7 @@ class EntityRelationService {
                 .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(from.simpleName))
                 .and(EntityRelation.RELATION_TYPE.dot(EntityRelationType.SHOPPING_CART).in(actions))
                 .select(cayenneService.newContext())
-                .collectEntries {relation -> [(relation): SelectById.query(to, relation.toEntityWillowId).selectOne(context) ]}
+                .collectEntries {relation -> [(relation): SelectById.query(from, relation.fromEntityWillowId).selectOne(context) ]}
                 .findAll {k,v -> v != null}
     }
     
