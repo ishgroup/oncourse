@@ -37,7 +37,6 @@ export interface Props {
   onChangeEnrolmentFields?: (form, type) => any;
   readonly?: boolean;
   isPayer?: boolean;
-  isOnlyApplications?: boolean;
 }
 
 class ContactComp extends React.Component<Props, any> {
@@ -45,9 +44,16 @@ class ContactComp extends React.Component<Props, any> {
     const {
       contact, enrolments, applications, vouchers, memberships, concessions, onChangeEnrolmentFields,
       articles, onSelect, onPriceValueChange, onQuantityValueChange, onAddConcession, studentMemberships, onChangeParent, waitingLists,
-      onUpdateWaitingCourse, concessionTypes, onRemoveContact, readonly, isPayer, onChangeClass,
-      isOnlyApplications
+      onUpdateWaitingCourse, concessionTypes, onRemoveContact, readonly, isPayer, onChangeClass
     } = this.props;
+
+    const isOnlyApplications = Boolean(!enrolments.filter(en => en.enrolment.selected).length &&
+      applications.filter(en => en.application.selected).length &&
+      !vouchers.filter(en => en.voucher.selected).length &&
+      !memberships.filter(en => en.membership.selected).length &&
+      !articles.filter(en => en.article.selected).length &&
+      !waitingLists.filter(en => en.waitingList).length
+    );
 
     return (
       <div className="row">

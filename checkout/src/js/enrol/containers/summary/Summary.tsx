@@ -31,8 +31,6 @@ import {mapPayload} from "../../../common/epics/EpicUtils";
 import {Actions} from "../../../web/actions/Actions";
 
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => {
-  // console.log(e,state);
-
   return {
     contact: state.checkout.contacts.entities.contact[e.contactId],
     courseClass: state.courses.entities[e.classId] ||
@@ -134,7 +132,6 @@ export const SummaryPropsBy = (state: IshState): any => {
       fetching: state.checkout.summary.fetching,
       forms: state.form,
       isOnlyWaitingLists: CheckoutService.isOnlyWaitingCourseSelected(state.checkout.summary),
-      isOnlyApplications: CheckoutService.isOnlyApplicationCourseSelected(state.checkout.summary),
       successLink: state.config.paymentSuccessURL
     };
   } catch (e) {

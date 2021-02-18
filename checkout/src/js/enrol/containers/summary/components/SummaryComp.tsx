@@ -47,7 +47,6 @@ export interface Props {
   onChangeEnrolmentFields?: (form, type) => any;
   forms?: any;
   isOnlyWaitingLists?: boolean;
-  isOnlyApplications?: boolean;
   successLink?: string;
 }
 
@@ -119,7 +118,7 @@ export class SummaryComp extends React.Component<Props, any> {
     const {
       contacts, amount, onAddContact, onAddCode, onProceedToPayment, fetching, onAddParent, forms, onProceedToJoin,
       redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, needParent, isOnlyWaitingLists,
-      successLink, isOnlyApplications
+      successLink
     } = this.props;
 
     const { previewMode } = this.state;
@@ -139,7 +138,6 @@ export class SummaryComp extends React.Component<Props, any> {
       contacts={contacts}
       successLink={successLink}
       corporatePass={null}
-      isOnlyApplications={isOnlyApplications}
     /> : (
       <div className="payment-summary">
         <div className={classnames("contacts-summary", {fetching})}>

@@ -74,15 +74,6 @@ export class CheckoutService {
       && summary.entities.memberships && !Object.values(summary.entities.memberships).some(e => e.selected);
   }
 
-  public isOnlyApplicationCourseSelected = (summary: State) => {
-    return summary.entities.waitingLists && !Object.values(summary.entities.waitingLists).some(e => e.selected)
-      && summary.entities.enrolments && !Object.values(summary.entities.enrolments).some(e => e.selected)
-      && summary.entities.applications && Object.values(summary.entities.applications).some(e => e.selected)
-      && summary.entities.vouchers && !Object.values(summary.entities.vouchers).some(e => e.selected)
-      && summary.entities.articles && !Object.values(summary.entities.articles).some(e => e.selected)
-      && summary.entities.memberships && !Object.values(summary.entities.memberships).some(e => e.selected);
-  }
-
   public ifCodeExist = (code, state): boolean => {
     const promotions = state.cart.promotions.entities;
     const inPromotions = Object.keys(promotions).filter(key => promotions[key].code === code).length;

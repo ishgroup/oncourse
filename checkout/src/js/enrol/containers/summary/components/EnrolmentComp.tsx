@@ -134,7 +134,6 @@ const ClassDetailsLabel = (classItem: CourseClass) => {
 
   return <div>
     <em>
-      {classItem.code && <span>{`${classItem.code} » `}</span>}
       {classItem.room && <span>{`${classItem.room.site.name} » `}</span>}
       {classItem.distantLearning && <span className="started">Self paced</span>}
       {start && end &&

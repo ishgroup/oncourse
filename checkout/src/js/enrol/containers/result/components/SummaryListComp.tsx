@@ -9,12 +9,11 @@ interface StateProps {
   contacts: ContactProps[];
   corporatePass: CorporatePass;
   successLink: string;
-  isOnlyApplications: boolean;
 }
 
 export class SummaryListComp extends React.Component<StateProps, any> {
   render() {
-    const { contacts, successLink, corporatePass, isOnlyApplications } = this.props
+    const { contacts, successLink, corporatePass } = this.props
 
     if (!contacts) {
       return null;
@@ -33,7 +32,6 @@ export class SummaryListComp extends React.Component<StateProps, any> {
         {...item}
         key={item.contact.id}
         isPayer={corporatePass ? false : item.isPayer}
-        isOnlyApplications={isOnlyApplications}
         readonly
       />)}
       <p><a className="link-continue" href={successLink}>Close</a></p>
