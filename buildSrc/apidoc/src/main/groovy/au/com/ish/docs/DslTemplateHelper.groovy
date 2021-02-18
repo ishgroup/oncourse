@@ -61,6 +61,9 @@ class DslTemplateHelper {
         if (name.endsWith("Spec")) {
             return name.replace("Spec", " script block")
         }
+        if (name.endsWith("Spec")) {
+            return name.replace("ScriptClosure", " script block")
+        }
         return name
     }
 
