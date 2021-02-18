@@ -147,18 +147,6 @@ class DocumentVersion extends _DocumentVersion implements Queueable {
 		return super.getVersionId()
 	}
 
-
-
-	/**
-	 * @return attachment file data stored in onCourse database (only works if Amazon S3 is not configured)
-	 */
-	@Nonnull
-	@API
-	@Override
-	AttachmentData getAttachmentData() {
-		return super.getAttachmentData()
-	}
-
 	/**
 	 * @return list of relations for this document version
 	 */
