@@ -25,6 +25,7 @@ import { getDashboardStatistic } from "../../../actions";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
+import ScriptStatistic from "./ScriptStatistic";
 
 const styles = theme => createStyles({
     root: {
@@ -91,13 +92,30 @@ const styles = theme => createStyles({
     rightColumn: {
       flex: "0 0 auto",
       color: theme.statistics.rightColumn.color
-    }
+    },
+    displayBlock: {
+      display: "block",
+    },
+    doneIcon: {
+      color: "#018759",
+    },
+    failedIcon: {
+      color: "#DE340C",
+    },
+    smallScriptGroup: {
+      display: "flex",
+      padding: "0",
+    },
+    smallScriptText: {
+      fontSize: "12px",
+      marginRight: "12px",
+    },
   });
 
 const TotalStatisticInfo = props => {
   const {
- totalStudents, totalEnrolments, classes, currency
-} = props;
+    totalStudents, totalEnrolments, classes, currency
+  } = props;
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Typography className={clsx(classes.totalText)}>
@@ -224,7 +242,9 @@ class Statistics extends React.Component<Props, any> {
   };
 
   render() {
-    const { classes, statisticData, currency } = this.props;
+    const {
+ classes, hasScriptsPermissions, statisticData, currency 
+} = this.props;
 
     const { chartData } = this.state;
 
@@ -344,6 +364,15 @@ class Statistics extends React.Component<Props, any> {
             </Grid>
           </List>
         </Grid>
+
+        {hasScriptsPermissions && (
+          <Grid item xs={12} className="mt-2">
+            <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
+              Automation status
+            </Typography>
+            <ScriptStatistic />
+          </Grid>
+        )}
       </Grid>
     ) : null;
   }
@@ -352,6 +381,7 @@ class Statistics extends React.Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   statisticData: state.dashboard.statistics.data,
   isUpdating: state.dashboard.statistics.updating,
+  hasScriptsPermissions: state.access["ADMIN"],
   currency: state.currency
 });
 
