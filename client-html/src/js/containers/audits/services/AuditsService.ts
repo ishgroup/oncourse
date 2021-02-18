@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../common/services/HttpService";
 import { AuditApi } from "@api/model";
+import { DefaultHttpService } from "../../../common/services/HttpService";
 
 class AuditsService {
   readonly auditApi = new AuditApi(new DefaultHttpService());

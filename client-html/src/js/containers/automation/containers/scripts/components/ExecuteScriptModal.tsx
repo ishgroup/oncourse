@@ -132,7 +132,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
     EntityService.getPlainRecords(
       "Audit",
       "created,action",
-      `entityIdentifier is "Script" and entityId is ${scriptId} and ( action is SCRIPT_FAILED or  action is SCRIPT_EXECUTED)`,
+      `entityIdentifier is "Script" and entityId is ${scriptId} and ( action is SCRIPT_FAILED or action is SCRIPT_EXECUTED)`,
       7,
       0,
       'created',
