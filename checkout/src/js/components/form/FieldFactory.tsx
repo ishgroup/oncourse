@@ -170,13 +170,13 @@ export const toServerValues = (fields: Field[], values: { [key: string]: any }) 
       }
       case DataType.DATE: {
         if (value) {
-          f.value = moment(value).format("YYYY-MM-DD");
+          f.value = moment(value, "DD/MM/YYYY").format("YYYY-MM-DD");
         }
         break;
       }
       case DataType.DATETIME: {
         if (value) {
-          f.value = (new Date(value)).toISOString();
+          f.value = moment(value, "DD/MM/YYYY hh:mm").toISOString();
         }
         break;
       }
