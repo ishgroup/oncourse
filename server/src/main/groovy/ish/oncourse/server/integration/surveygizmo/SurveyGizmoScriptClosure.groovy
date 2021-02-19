@@ -19,6 +19,25 @@ import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
 import ish.oncourse.server.scripting.api.TemplateService
 
+/**
+ * This integration allows you to push records into SurveyGizmo in order to add them to a survey. Create one integration
+ * per survey you want to send and then use this scripting block:
+ *
+ * surveyGizmo {
+ *     contact myContact
+ *     template myTemplate
+ *     reply "info@acme.com"
+ * }
+ *
+ * Use the name option if you have more than one SurveyGizmo integration and you want to push to only one.
+ * ```
+ * surveyGizmo {
+ * 	   name "name of integration"
+ *     contact myContact
+ *     template myTemplate
+ *     reply "info@acme.com"
+ * }
+ **/
 @CompileDynamic
 @API
 @ScriptClosure(key = "surveyGizmo", integration = SurveyGizmoIntegration)
