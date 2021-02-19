@@ -39,7 +39,7 @@ class UserPreferenceApiImpl implements UserPreferenceApi {
     private static final List<CategoryDTO> ALWAYS_AVAILABLE = [CategoryDTO.CONTACTS, CategoryDTO.STUDENTS, CategoryDTO.TUTORS, CategoryDTO.COMPANIES, CategoryDTO.COURSES, CategoryDTO.CLASSES,
                                                                CategoryDTO.UNITS_OF_COMPETENCY, CategoryDTO.QUALIFICATIONS, CategoryDTO.TRAINEESHIP_COURSES, CategoryDTO.TRAINEESHIPS,
                                                                CategoryDTO.SITES, CategoryDTO.ROOMS, CategoryDTO.DOCUMENTS, CategoryDTO.TAGS, CategoryDTO.SALES, CategoryDTO.MEMBERSHIPS,
-                                                               CategoryDTO.PRODUCTS, CategoryDTO.VOUCHER_TYPES, CategoryDTO.ASSESSMENT_TASKS, CategoryDTO.CHANGE_MY_PASSWORD,
+                                                               CategoryDTO.PRODUCTS, CategoryDTO.VOUCHER_TYPES, CategoryDTO.ASSESSMENT_TASKS, CategoryDTO.ASSESSMENT_SUBMISSIONS, CategoryDTO.CHANGE_MY_PASSWORD,
                                                                CategoryDTO.ONCOURSE_NEWS, CategoryDTO.SEND_SUPPORT_REQUEST_, CategoryDTO.RELEASE_NOTES, CategoryDTO.COMMUNITY_SUPPORT, CategoryDTO.DOCUMENTATION,
                                                                CategoryDTO.AUTOMATION]
 
