@@ -18,6 +18,7 @@ import {getPaymentStatus, resetPaymentState} from "../containers/payment/actions
 import {IshState} from "../../services/IshState";
 import {openEditContact, setFieldsToState} from "../containers/contact-edit/actions/Actions";
 import {getAllContactNodesFromBackend, getContactNodeFromBackend, removeItemFromSummary} from "../containers/summary/actions/Actions";
+import {getCheckoutModelFromBackend} from "../actions/Actions";
 
 const updateContactNodes = contacts => {
   const result = [];
@@ -102,7 +103,7 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
     if (state.checkout.summary.result.length) {
       return result.concat([
         Actions.changePhase(state.checkout.isCartModified ? Phase.Summary : state.checkout.page),
-        getAllContactNodesFromBackend(),
+        getCheckoutModelFromBackend(),
         removeItemFromSummary(getItemType(action.type), action.payload && action.payload.id),
       ]);
     }

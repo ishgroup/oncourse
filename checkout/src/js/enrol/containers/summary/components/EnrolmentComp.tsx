@@ -142,35 +142,48 @@ const ClassDetailsLabel = (classItem: CourseClass) => {
   </div>
 }
 
-const ClassDetails = ({ courseClass, onChangeClass, error, readonly }: ClassDetailsProps) => {
-  let availableClasses = [];
+class ClassDetails extends React.PureComponent<ClassDetailsProps, any>{
+  state = {
+    availableClasses: []
+  }
 
+  componentDidMount() {
+    const { courseClass } = this.props;
 
-  return courseClass.id && !error && !readonly ? (
-    <SelectField
-      returnType="object"
-      searchable={false}
-      valueKey="id"
-      labelKey="id"
-      input={{
-        onChange: result => {
-          if (result.id === courseClass.id) {
-            return;
-          }
-          onChangeClass(result.id,availableClasses)
-        },
-        value: courseClass
-      }}
-      meta={{}}
-      optionRenderer={ClassDetailsLabel}
-      valueRenderer={ClassDetailsLabel}
-      loadOptions={() => CourseClassService.getAvailableClasses(courseClass.course.id).then(options => {
-        availableClasses = options;
-        return options;
-      })}
-    />
-  ) : ClassDetailsLabel(courseClass);
-};
+    CourseClassService.getAvailableClasses(courseClass.course.id).then(classes => {
+      this.setState({
+        availableClasses: classes.filter(c => c.hasAvailablePlaces)
+      })
+    })
+  }
+
+  render() {
+    const { courseClass, onChangeClass, error, readonly } = this.props;
+    const { availableClasses } = this.state;
+
+    return courseClass.id && !error && !readonly ? (
+      <SelectField
+        returnType="object"
+        searchable={false}
+        valueKey="id"
+        labelKey="id"
+        input={{
+          onChange: result => {
+            if (result.id === courseClass.id) {
+              return;
+            }
+            onChangeClass(result.id,availableClasses)
+          },
+          value: courseClass
+        }}
+        meta={{}}
+        optionRenderer={ClassDetailsLabel}
+        valueRenderer={ClassDetailsLabel}
+        loadOptions={() => Promise.resolve(availableClasses)}
+      />
+    ) : ClassDetailsLabel(courseClass);
+  }
+}
 
 
 export default EnrolmentComp;

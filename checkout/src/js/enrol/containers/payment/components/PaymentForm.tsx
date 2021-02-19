@@ -12,7 +12,7 @@ import {
 } from "../actions/Actions";
 import {connect, Dispatch} from "react-redux";
 import {
-  changePhase, getAmount, setPayer, showSyncErrors, togglePayNowVisibility, updatePayNow,
+  changePhase, getAmount, getCheckoutModelFromBackend, setPayer, showSyncErrors, togglePayNowVisibility, updatePayNow,
 } from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";
 import CheckoutService from "../../../services/CheckoutService";
@@ -272,7 +272,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onSetPayer: id => {
       dispatch(setPayer(id));
-      dispatch(getAllContactNodesFromBackend());
+      dispatch(getCheckoutModelFromBackend());
     },
     onAddPayer: () => dispatch(changePhase(Phase.AddContactAsPayer)),
     onAddCompany: () => dispatch(changePhase(Phase.AddContactAsCompany)),

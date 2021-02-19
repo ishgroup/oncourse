@@ -6,7 +6,14 @@ import {Observable} from "rxjs/Observable";
 
 import {IAction} from "../../actions/IshAction";
 import {Contact} from "../../model";
-import {removeContact, EPIC_REMOVE_CONTACT, setPayer, removeRedeemVoucher, changePhase} from "../actions/Actions";
+import {
+  removeContact,
+  EPIC_REMOVE_CONTACT,
+  setPayer,
+  removeRedeemVoucher,
+  changePhase,
+  getCheckoutModelFromBackend
+} from "../actions/Actions";
 import {getAllContactNodesFromBackend, removeContactFromSummary} from "../containers/summary/actions/Actions";
 import {Phase} from "../reducers/State";
 
@@ -40,7 +47,7 @@ export const EpicRemoveContact: Epic<any, IshState> = (action$: ActionsObservabl
 
     result.push(removeContact(contactId));
     result.push(removeContactFromSummary(contactId));
-    result.push(getAllContactNodesFromBackend());
+    result.push(getCheckoutModelFromBackend());
 
     return result;
   });
