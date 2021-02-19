@@ -11,6 +11,7 @@ import { State } from "../../../reducers/state";
 import store from "../../../constants/Store";
 import { GET_IS_LOGGED_FULFILLED } from "../../../containers/preferences/actions";
 import { ServerResponse } from "../../../model/common/apiHandlers";
+import { LSRemoveItem } from "../../utils/storage";
 
 const FetchErrorHandler = (response: ServerResponse, customMessage?: string): IAction<any>[] => {
   if (!response) {
@@ -40,8 +41,8 @@ const FetchErrorHandler = (response: ServerResponse, customMessage?: string): IA
     case 401:
       const state: State = store.getState();
       const lastLocation = state.lastLocation || window.location.pathname;
-      localStorage.removeItem(APPLICATION_THEME_STORAGE_NAME);
-      localStorage.removeItem(DASHBOARD_ACTIVITY_STORAGE_NAME);
+      LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
+      LSRemoveItem(DASHBOARD_ACTIVITY_STORAGE_NAME);
       history.push("/login");
 
       return [

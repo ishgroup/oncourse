@@ -51,6 +51,7 @@ import { getCurrency, isLoggedIn } from "./preferences/actions";
 import ConfirmProvider from "../common/components/dialog/confirm/ConfirmProvider";
 import Message from "../common/components/dialog/message/Message";
 import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
+import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
 
 const isAnyFormDirty = (state: State) => {
   const forms = Object.getOwnPropertyNames(state.form);
@@ -156,14 +157,9 @@ export class MainBase extends React.PureComponent<Props, any> {
   getTheme = theme => {
     let actualTheme = theme;
 
-    try {
-      const storageThemeName = localStorage.getItem(APPLICATION_THEME_STORAGE_NAME);
-      if (storageThemeName) {
-        actualTheme = currentTheme(storageThemeName);
-      }
-    } catch (e) {
-      console.error(e);
-      return actualTheme;
+    const storageThemeName = LSGetItem(APPLICATION_THEME_STORAGE_NAME);
+    if (storageThemeName) {
+      actualTheme = currentTheme(storageThemeName);
     }
 
     return actualTheme;
@@ -171,8 +167,8 @@ export class MainBase extends React.PureComponent<Props, any> {
 
   updateStateFromStorage = () => {
     this.setState({
-      themeName: localStorage.getItem(APPLICATION_THEME_STORAGE_NAME)
-        ? localStorage.getItem(APPLICATION_THEME_STORAGE_NAME)
+      themeName: LSGetItem(APPLICATION_THEME_STORAGE_NAME)
+        ? LSGetItem(APPLICATION_THEME_STORAGE_NAME)
         : DefaultThemeKey,
       theme: this.getTheme(defaultTheme)
     });
@@ -224,7 +220,7 @@ export class MainBase extends React.PureComponent<Props, any> {
   }
 
   componentWillUnmount() {
-    localStorage.removeItem(APPLICATION_THEME_STORAGE_NAME);
+    LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
     window.removeEventListener("storage", this.updateStateFromStorage);
     window.removeEventListener("beforeunload", onWindowClose);
   }
@@ -267,7 +263,7 @@ export class MainBase extends React.PureComponent<Props, any> {
       theme: currentTheme(name)
     });
 
-    localStorage.setItem(APPLICATION_THEME_STORAGE_NAME, name);
+    LSSetItem(APPLICATION_THEME_STORAGE_NAME, name);
   };
 
   clearMessage = () => {

@@ -51,6 +51,7 @@ import { CommonListItem } from "../../../../../model/common/sidebar";
 import FilePreview from "../../../form/FilePreview";
 import ConfirmBase from "../../../dialog/confirm/ConfirmBase";
 import { ContactType } from "../../../../../containers/entities/contacts/Contacts";
+import { LSGetItem, LSSetItem } from "../../../../utils/storage";
 
 type PdfReportType = ContactType | "GENERAL";
 
@@ -142,8 +143,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
     if (prevProps.pdfReportsFetching && !pdfReportsFetching && pdfReports.length) {
       if (typeof prevState.selectedPrimary !== "number") {
-        const savedState: ShareState = localStorage.getItem(LAST_SELECTED_EXPORT)
-          && JSON.parse(localStorage.getItem(LAST_SELECTED_EXPORT))[rootEntity];
+        const savedState: ShareState = LSGetItem(LAST_SELECTED_EXPORT)
+          && JSON.parse(LSGetItem(LAST_SELECTED_EXPORT))[rootEntity];
 
         if (savedState) {
           if (savedState.selectedPrimary === 0) {
@@ -184,8 +185,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       });
 
       if (typeof prevState.selectedPrimary !== "number") {
-        const savedState: ShareState = localStorage.getItem(LAST_SELECTED_EXPORT)
-          && JSON.parse(localStorage.getItem(LAST_SELECTED_EXPORT))[rootEntity];
+        const savedState: ShareState = LSGetItem(LAST_SELECTED_EXPORT)
+          && JSON.parse(LSGetItem(LAST_SELECTED_EXPORT))[rootEntity];
 
         if (savedState && savedState.selectedPrimary > 0 ) {
           this.setState(savedState);
@@ -243,7 +244,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
     this.initializeShareForm(selectedPrimary, 0);
 
-    localStorage.setItem(LAST_SELECTED_EXPORT, JSON.stringify({
+    LSSetItem(LAST_SELECTED_EXPORT, JSON.stringify({
       [rootEntity]: {
         selectedPrimary,
         selectedSecondary: 0
@@ -260,7 +261,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       selectedSecondary
     });
 
-    localStorage.setItem(LAST_SELECTED_EXPORT, JSON.stringify({
+    LSSetItem(LAST_SELECTED_EXPORT, JSON.stringify({
       [rootEntity]: {
         selectedPrimary,
         selectedSecondary

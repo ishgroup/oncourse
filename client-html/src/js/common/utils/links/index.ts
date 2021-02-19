@@ -1,6 +1,7 @@
 import { FindEntityAql, FindEntityState } from "../../../model/entities/common";
 import { ENTITY_AQL_STORAGE_NAME } from "../../../constants/Config";
 import { isInStandaloneMode } from "../common";
+import { LSGetItem, LSSetItem } from "../storage";
 
 export const openInternalLink = link => {
   window.open(
@@ -10,7 +11,7 @@ export const openInternalLink = link => {
 };
 
 export const saveCategoryAQLLink = (aql: FindEntityAql) => {
-  let entityState: FindEntityState = localStorage.getItem(ENTITY_AQL_STORAGE_NAME) as FindEntityState;
+  let entityState: FindEntityState = LSGetItem(ENTITY_AQL_STORAGE_NAME) as FindEntityState;
   if (entityState) {
     entityState = JSON.parse(entityState as string);
   } else {
@@ -32,5 +33,5 @@ export const saveCategoryAQLLink = (aql: FindEntityAql) => {
     }
   }
 
-  localStorage.setItem(ENTITY_AQL_STORAGE_NAME, JSON.stringify(entityState));
+  LSSetItem(ENTITY_AQL_STORAGE_NAME, JSON.stringify(entityState));
 };

@@ -31,6 +31,8 @@ import { State } from "../../../reducers/state";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { usePrevious } from "../../../common/utils/hooks";
 import { mapSelectItems } from "../../../common/utils/common";
+import { LSGetItem } from "../../../common/utils/storage";
+import { APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
 
 const tagStatusValues = Object.keys(TagStatus).map(mapSelectItems);
 
@@ -140,7 +142,7 @@ const TagItemEditView = React.memo<Props>(props => {
         <AppBar
           elevation={0}
           className={clsx("flex-row align-items-center justify-content-space-between",
-            classes.header, localStorage.getItem("theme") === "christmas" && "christmasHeader")}
+            classes.header, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
         >
           <div className="flex-fill">
             <Typography className="appHeaderFontSize" color="inherit">

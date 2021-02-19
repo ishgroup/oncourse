@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../../../constants/Config";
 import { getEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import ListLinksGroup from "./searchResults/ListLinksGroup";
+import { LSGetItem } from "../../../../utils/storage";
 
 const styles = () => createStyles({
   activityStatistic: {
@@ -22,10 +23,10 @@ const styles = () => createStyles({
 
 const SidebarLatestActivity: React.FC<any> = props => {
   const { showConfirm, classes, checkSelectedResult } = props;
-  const [activities, setActivities] = React.useState(JSON.parse(localStorage.getItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null"));
+  const [activities, setActivities] = React.useState(JSON.parse(LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null"));
 
   const updateActivity = React.useCallback(() => {
-    const activity = JSON.parse(localStorage.getItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null");
+    const activity = JSON.parse(LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null");
 
     if (activity) {
       setActivities(activity);
