@@ -21,6 +21,7 @@ import onCourseLogoChristmas from "../../../../images/onCourseLogoChristmas.png"
 import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
 import DashboardService from "../services/DashboardService";
+import { LSGetItem, LSRemoveItem } from "../../../common/utils/storage";
 
 const styles = theme => ({
   appBar: {
@@ -56,8 +57,8 @@ class DashboardHeader extends React.PureComponent<any, any> {
   };
 
   logout = () => {
-    localStorage.removeItem(APPLICATION_THEME_STORAGE_NAME);
-    localStorage.removeItem(DASHBOARD_ACTIVITY_STORAGE_NAME);
+    LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
+    LSRemoveItem(DASHBOARD_ACTIVITY_STORAGE_NAME);
 
     DashboardService.logout()
       .then(() => {
@@ -73,9 +74,9 @@ class DashboardHeader extends React.PureComponent<any, any> {
   render() {
     const { themeMenu } = this.state;
     const {
- classes, theme, upgradePlanLink, setPreferencesTheme
-} = this.props;
-    const isChristmas = localStorage.getItem("theme") === "christmas";
+      classes, theme, upgradePlanLink, setPreferencesTheme
+    } = this.props;
+    const isChristmas = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas";
     return (
       <AppBar className={clsx(classes.appBar, isChristmas && "christmasHeaderDashboard")}>
         <Toolbar

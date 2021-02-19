@@ -1,11 +1,35 @@
+import { Category } from "@api/model";
 import { LatestActivityItem, LatestActivityState } from "../../../model/dashboard";
 import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../constants/Config";
-import { Category } from "@api/model";
+
+export const LSGetItem = (key: string) => {
+  try {
+    return localStorage.getItem(key);
+  } catch (e) {
+    return null;
+  }
+};
+
+export const LSSetItem = (key: string, value: string) => {
+  try {
+    localStorage.setItem(key, value);
+  } catch (e) {
+    //
+  }
+};
+
+export const LSRemoveItem = (key: string) => {
+  try {
+    localStorage.removeItem(key);
+  } catch (e) {
+    //
+  }
+};
 
 export const latestActivityStorageHandler = (item: LatestActivityItem, entity: Category) => {
   const today = new Date();
 
-  let activitySate: LatestActivityState = localStorage.getItem(DASHBOARD_ACTIVITY_STORAGE_NAME) as LatestActivityState;
+  let activitySate: LatestActivityState = LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) as LatestActivityState;
 
   if (activitySate) {
     activitySate = JSON.parse(activitySate as string);
@@ -42,5 +66,5 @@ export const latestActivityStorageHandler = (item: LatestActivityItem, entity: C
     activitySate.data = [{ entity, items: [item] }, ...activitySate.data.slice(0, 19)];
   }
 
-  localStorage.setItem(DASHBOARD_ACTIVITY_STORAGE_NAME, JSON.stringify(activitySate));
+  LSSetItem(DASHBOARD_ACTIVITY_STORAGE_NAME, JSON.stringify(activitySate));
 };

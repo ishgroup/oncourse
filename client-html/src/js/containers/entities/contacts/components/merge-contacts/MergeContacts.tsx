@@ -31,6 +31,8 @@ import { getContactName } from "../../utils";
 import RadioLabelGroup, { Selected } from "./components/RadioLabelGroup";
 import InfoCard from "./components/InfoCard";
 import { AppTheme } from "../../../../../model/common/Theme";
+import { LSGetItem } from "../../../../../common/utils/storage";
+import { APPLICATION_THEME_STORAGE_NAME } from "../../../../../constants/Config";
 
 export interface MergeContactsFormValues {
   mergeData?: MergeData;
@@ -218,7 +220,7 @@ const MergeContacts = React.memo<Props>(
           {/* </DialogActions> */}
         </Dialog>
         <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-          <AppBar className={clsx(localStorage.getItem("theme") === "christmas" && "christmasHeader")}>
+          <AppBar className={clsx(LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}>
             <Toolbar>
               <Typography className="appHeaderFontSize">
                 Merge

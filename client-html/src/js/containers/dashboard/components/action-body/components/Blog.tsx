@@ -23,6 +23,8 @@ import { D_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { getDashboardBlogPosts } from "../../../actions";
 import { State } from "../../../../../reducers/state";
+import { LSGetItem } from "../../../../../common/utils/storage";
+import { APPLICATION_THEME_STORAGE_NAME } from "../../../../../constants/Config";
 
 const styles = (theme: AppTheme) => createStyles({
   postContent: {
@@ -75,7 +77,7 @@ const styles = (theme: AppTheme) => createStyles({
     backgroundColor: "#292929"
   },
   gotItButton: {
-    color: localStorage.getItem("theme") === "highcontrast" ? "#fff" : theme.palette.primary.main
+    color: LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "highcontrast" ? "#fff" : theme.palette.primary.main
   },
   newCaption: {
     borderRadius: 16,

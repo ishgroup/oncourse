@@ -12,9 +12,10 @@ import { PreferenceEnum } from "@api/model";
 import { AppTheme } from "../../../../model/common/Theme";
 import ResizableWrapper from "../../../../common/components/layout/resizable/ResizableWrapper";
 import { SWIPEABLE_SIDEBAR_WIDTH } from "../../../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
-import { DASHBOARD_CATEGORY_WIDTH_KEY } from "../../../../constants/Config";
+import { APPLICATION_THEME_STORAGE_NAME, DASHBOARD_CATEGORY_WIDTH_KEY } from "../../../../constants/Config";
 import Statistics from "./components/Statistics";
 import Blog from "./components/Blog";
+import { LSGetItem } from "../../../../common/utils/storage";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -128,7 +129,7 @@ class ActionBody extends React.PureComponent<Props, any> {
         <Grid
           item
           xs
-          className={clsx(classes.rightSideBar, localStorage.getItem("theme") === "christmas" && "christmasBackground")}
+          className={clsx(classes.rightSideBar, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBackground")}
         >
           <Blog
             preferencesNewsLatestReadDate={preferencesNewsLatestReadDate}

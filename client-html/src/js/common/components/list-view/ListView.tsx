@@ -75,6 +75,7 @@ import { saveCategoryAQLLink } from "../../utils/links";
 import ReactTableList, { ListProps } from "./components/list/ReactTableList";
 import { getActiveTags, getFiltersNameString, getTagsUpdatedByIds } from "./utils/listFiltersUtils";
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
+import { LSGetItem } from "../../utils/storage";
 
 export const ListSideBarDefaultWidth = 200;
 export const ListMainContentDefaultWidth = 774;
@@ -922,11 +923,13 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     if (searchParam.getAll("customSearch").length) {
       let customSearch = searchParam.getAll("customSearch")[0];
 
-      const entityState = JSON.parse(localStorage.getItem(ENTITY_AQL_STORAGE_NAME)) as FindEntityState;
-      for (let i = 0; i < entityState.data.length; i++) {
-        if (entityState.data[i].id === customSearch) {
-          saveCategoryAQLLink({ AQL: "", id: customSearch, action: "remove" });
-          customSearch = entityState.data[i].AQL;
+      const entityState = JSON.parse(LSGetItem(ENTITY_AQL_STORAGE_NAME)) as FindEntityState;
+      if (entityState) {
+        for (let i = 0; i < entityState.data.length; i++) {
+          if (entityState.data[i].id === customSearch) {
+            saveCategoryAQLLink({AQL: "", id: customSearch, action: "remove"});
+            customSearch = entityState.data[i].AQL;
+          }
         }
       }
       return customSearch;
