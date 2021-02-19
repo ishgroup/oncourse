@@ -225,7 +225,7 @@ class MessageService {
 
 			recipients.each { recipient ->
 
-				bindings.put(entityName.uncapitalize(), record)
+				bindings.put(record.class.simpleName.uncapitalize(), record)
 				bindings.put(templateService.RECORD, record)
 				bindings.put(templateService.TO, recipient)
 
