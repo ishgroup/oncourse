@@ -16,6 +16,9 @@ export const mapMessageAvailableFrom = (entity: MessageTemplateEntityName) => {
     case "CourseClass":
       return ["Classes"];
 
+    case "CourseClassTutor":
+      return ["Classes"];
+
     case "Enrolment":
       return ["Enrolments", "Classes"];
 
