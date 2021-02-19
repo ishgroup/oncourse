@@ -104,6 +104,7 @@ dependencies {
 
 	implementation 'net.java.dev.jets3t:jets3t:0.9.4'
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.11.939'
+	implementation 'com.azure:azure-storage-blob:12.0.0'
 
 	api 'org.quartz-scheduler:quartz:2.2.2'
 	implementation 'org.apache.pdfbox:pdfbox:2.0.17'
@@ -198,7 +199,7 @@ test {
 		println 'user.language:' + System.getProperty('user.language')
 		println 'Locale.getDefault():' + Locale.getDefault()
 	}
-	
+
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
 	dependsOn "expandConfig"
