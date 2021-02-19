@@ -16,8 +16,22 @@ import ish.oncourse.API
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
-import ish.oncourse.server.scripting.api.TemplateService
 
+/**
+ * This integration allows you to push records into SurveyMonkey in order to add them to a survey. Create one integration
+ * per survey you want to send and then use this scripting block:
+ *
+ * surveyMonkey {
+ *     contact myContact
+ * }
+ *
+ * Use the name option if you have more than one SurveyMonkey integration and you want to push to only one.
+ * ```
+ * surveyMonkey {
+ *     name "name of integration"
+ *     contact myContact
+ * }
+ **/
 @CompileDynamic
 @API
 @ScriptClosure(key = "surveyMonkey", integration = SurveyMonkeyIntegration)

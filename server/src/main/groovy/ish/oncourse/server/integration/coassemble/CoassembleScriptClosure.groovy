@@ -17,16 +17,22 @@ import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.scripting.ScriptClosureTrait
 import ish.oncourse.server.scripting.ScriptClosure
 /**
- * Integration allows us to establish interaction between E-coach and onCourse enrol system.
+ * Integration allows us to establish interaction between Coassemble (previously called E-coach) and onCourse enrol system.
  *
- * 1. Add enrolments to Enrolments automatically as they are enrolled in onCourse.
+ * Add enrolments to Enrolments automatically as they are enrolled in onCourse.
  * ```
  * ecoach {
- *     name "name of intagration"
  *     enrolment record
  * }
  * ```
- * name is not mandatory
+ *
+ * Use the name option if you have more than one coassemble integration and you want to push to only one.
+ * ```
+ * ecoach {
+ *     name "name of integration"
+ *     enrolment record
+ * }
+ * ```
  */
 @API
 @CompileStatic
