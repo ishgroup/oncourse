@@ -80,20 +80,20 @@ interface FormProps extends Props {
 
 const setWeight = items =>
   items.map((i, index) => {
-    i.weight = index + 1;
+    let item = { ...i, weight: index + 1 };
 
-    delete i.dragIndex;
-    delete i.parent;
+    delete item.dragIndex;
+    delete item.parent;
 
-    if (i.id.toString().includes("new")) {
-      i.id = null;
+    if (item.id.toString().includes("new")) {
+      item.id = null;
     }
 
-    if (i.childTags.length) {
-      setWeight(i.childTags);
+    if (item.childTags.length) {
+      item = { ...item, childTags: setWeight(item.childTags) };
     }
 
-    return i;
+    return item;
   });
 
 const checkParentDrop = (values, path, dragID) => {
@@ -189,7 +189,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
     delete clone.dragIndex;
     delete clone.parent;
 
-    setWeight(clone.childTags);
+    const tags = { ...clone, childTags: setWeight(clone.childTags) };
 
     this.isPending = true;
 
@@ -198,9 +198,9 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       this.rejectPromise = reject;
 
       if (isNew) {
-        onCreate(clone);
+        onCreate(tags);
       } else {
-        onUpdate(clone.id, clone);
+        onUpdate(tags.id, tags);
       }
     });
   };
