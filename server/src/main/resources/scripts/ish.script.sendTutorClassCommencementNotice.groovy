@@ -18,16 +18,13 @@ if (send_before_each_session) {
 } else {
     // Query closure start
     records = query {
-        entity "CourseClassTutor"
-        query "courseClass.startDateTime not is null and courseClass.isCancelled is false and courseClass.startDateTime after today + 1 days and courseClass.startDateTime before today + 3 days"
+        entity "CourseClass"
+        query "isCancelled is false and startDateTime not is null and startDateTime after today + 1 days and startDateTime before today + 3 days"
     }
     // Query closure end
 
-    records.each { cctutor ->
-        message {
-            template classCommencementTemplate
-            to cctutor.tutor.contact
-            courseClassTutor cctutor
-        }
+    message {
+        template classCommencementTemplate
+        record records
     }
 }
