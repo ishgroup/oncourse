@@ -9,6 +9,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { openDrawer } from "../../actions";
+import { LSGetItem } from "../../utils/storage";
+import { APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
 
 const styles: any = theme => ({
   appBar: {
@@ -33,7 +35,7 @@ const CustomAppBar = props => {
 
   return (
     <AppBar
-      className={clsx(classes.appBar, localStorage.getItem("theme") === "christmas" && "christmasHeader")}
+      className={clsx(classes.appBar, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
       position="absolute"
     >
       <Toolbar>

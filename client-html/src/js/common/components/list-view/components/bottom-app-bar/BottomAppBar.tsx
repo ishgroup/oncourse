@@ -24,11 +24,12 @@ import SearchInput from "./components/SearchInput";
 import ScriptsMenu from "./components/ScriptsMenu";
 import SendMessageMenu from "./components/SendMessageMenu";
 import ViewSwitcher from "./components/ViewSwitcher";
-import { APP_BAR_HEIGHT, EMAIL_FROM_KEY } from "../../../../../constants/Config";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, EMAIL_FROM_KEY } from "../../../../../constants/Config";
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
 import { State } from "../../../../../reducers/state";
 import { getEmailTemplatesWithKeyCode, getScripts, getUserPreferences } from "../../../../actions";
+import { LSGetItem } from "../../../../utils/storage";
 
 const SendMessageEntities = [
   "Invoice",
@@ -322,7 +323,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
           filteredCount={filteredCount}
         />
 
-        <div className={clsx(classes.root, localStorage.getItem("theme") === "christmas" && "christmasHeader")}>
+        <div className={clsx(classes.root, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}>
           <SearchInput
             innerRef={searchComponentNode}
             onQuerySearch={onQuerySearch}

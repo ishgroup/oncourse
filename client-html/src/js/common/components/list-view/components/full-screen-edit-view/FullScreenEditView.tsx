@@ -23,6 +23,8 @@ import { pushGTMEvent } from "../../../google-tag-manager/actions";
 import { EditViewContainerProps } from "../../../../../model/common/ListView";
 import AppBarHelpMenu from "../../../form/AppBarHelpMenu";
 import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayName";
+import { LSGetItem } from "../../../../utils/storage";
+import { APPLICATION_THEME_STORAGE_NAME } from "../../../../../constants/Config";
 
 const styles = theme => createStyles({
     header: {
@@ -158,7 +160,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
           {!hideFullScreenAppBar && (
             <AppBar
               elevation={0}
-              className={clsx(classes.header, localStorage.getItem("theme") === "christmas" && "christmasHeader")}
+              className={clsx(classes.header, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
             >
               <div className="flex-fill">
                 <Typography className="appHeaderFontSize" color="inherit">

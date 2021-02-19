@@ -7,10 +7,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import { DRAWER_WIDTH } from "../../../constants/Config";
+import { APPLICATION_THEME_STORAGE_NAME, DRAWER_WIDTH } from "../../../constants/Config";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { openDrawer } from "../../actions";
+import { LSGetItem } from "../../utils/storage";
 
 const styles: any = theme => ({
   appBar: {
@@ -41,7 +42,7 @@ class Bar extends React.Component<any, any> {
       <AppBar
         classes={{ root: classes.appBar }}
         position="absolute"
-        className={clsx(localStorage.getItem("theme") === "christmas" && "christmasHeader")}
+        className={clsx(LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
       >
         <Toolbar>
           <Typography className="appHeaderFontSize" color="inherit" noWrap>
