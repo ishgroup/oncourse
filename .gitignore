@@ -9,3 +9,4 @@ server/onCourse.yml
 /server/onCourseSSL.keystore
 /.idea/shelf/
 /server/logs/
+**/out/
