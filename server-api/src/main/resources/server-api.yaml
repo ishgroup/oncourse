@@ -4,10 +4,10 @@ info:
   description: An API for interacting with the backend of the onCourse server
   contact:
     name: ish group pty ltd
-    url: http://ish.com.au
+    url: https://www.ish.com.au
     email: support@ish.com.au
   license:
-    name: Proprietary
+    name: AGPLv3
   version: v1
 
 host: sttrinians.cloud.ish.com.au
@@ -30,7 +30,7 @@ tags:
     description: |
       This resourse allow you to retrive and update preferences of the application.
 
-#put paths in alphabet order
+#put paths in alphabetical order
 paths:
   /access:
     $ref: './path/access/api.yml'
