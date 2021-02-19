@@ -19,6 +19,7 @@ import ish.oncourse.server.cayenne.Application
 import ish.oncourse.server.cayenne.Article
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.CourseClass
+import ish.oncourse.server.cayenne.CourseClassTutor
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.Invoice
@@ -51,8 +52,17 @@ class MessageFunctions {
     ]
 
     private static final Map<String, Map<String, Property<Long>>> ENTITY_TRANSFORMATION = [
-            "CourseClass" : ["Contact": Contact.STUDENT.dot(Student.ENROLMENTS).dot(Enrolment.COURSE_CLASS).dot(CourseClass.ID),  "Enrolment" : Enrolment.COURSE_CLASS.dot(CourseClass.ID)],
-            "ProductItem" : ["Contact": Contact.PRODUCT_ITEMS.dot(ProductItem.ID),  "Voucher" : ProductItem.ID, "Membership": ProductItem.ID, "Article": ProductItem.ID ],
+            "CourseClass" : [
+                    "Contact": Contact.STUDENT.dot(Student.ENROLMENTS).dot(Enrolment.COURSE_CLASS).dot(CourseClass.ID),
+                    "Enrolment" : Enrolment.COURSE_CLASS.dot(CourseClass.ID),
+                    "CourseClassTutor": CourseClassTutor.COURSE_CLASS.dot(CourseClass.ID)
+            ],
+            "ProductItem" : [
+                    "Contact": Contact.PRODUCT_ITEMS.dot(ProductItem.ID),
+                    "Voucher" : ProductItem.ID,
+                    "Membership": ProductItem.ID,
+                    "Article": ProductItem.ID
+            ],
             "Enrolment" : ["Contact" : Contact.STUDENT.dot(Student.ENROLMENTS).dot(Enrolment.ID)],
             "Invoice" : ["Contact" : Contact.INVOICES.dot(Invoice.ID)],
             "Application" : ["Contact" : Contact.STUDENT.dot(Student.APPLICATIONS).dot(Application.ID)],
@@ -76,6 +86,8 @@ class MessageFunctions {
                 return { e -> (e as Student).contact }
             case Tutor:
                 return { e -> (e as Tutor).contact }
+            case CourseClassTutor:
+                return { e -> (e as CourseClassTutor).tutor.contact }
             case Enrolment:
                 return { e -> (e as Enrolment).student.contact }
             case PaymentIn:
