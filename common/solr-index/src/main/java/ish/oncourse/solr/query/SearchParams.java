@@ -26,7 +26,7 @@ public class SearchParams {
     private List<Tag> tags = new ArrayList<>();
 	private ClassAge classAge;
 
-    private Duration duration;
+    private List<Duration> durations = new ArrayList<>();
 
     public List<Tag> getTags() {
         return tags;
@@ -124,24 +124,23 @@ public class SearchParams {
         this.suburbs.add(suburb);
     }
 
-    public Duration getDuration() {
-        return duration;
+    public List<Duration> getDurations() {
+        return durations;
     }
 
-    public void setDuration(Duration duration) {
-        this.duration = duration;
+    public void addDuration(Duration duration) {
+        this.durations.add(duration);
     }
 
     public boolean isEmpty() {
-        return tags.isEmpty() && suburbs.isEmpty() &&
+        return tags.isEmpty() && suburbs.isEmpty() && durations.isEmpty() &&
                 StringUtils.trimToNull(s) == null &&
                 price == null &&
                 day == null &&
                 StringUtils.trimToNull(time) == null &&
                 subject == null &&
                 after == null &&
-                before == null && 
-                duration == null;
+                before == null;
     }
 
     public Long getTutorId() {

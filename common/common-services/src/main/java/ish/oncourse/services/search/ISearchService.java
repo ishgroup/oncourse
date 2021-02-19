@@ -26,6 +26,6 @@ public interface ISearchService {
 
     Map<String, Count> getCountersForLocations(SearchParams params, List<Count> counts);
     
-    Map<String, Count> getCountersForDurations(SearchParams params, List<Count> counts);
+    Integer getCounterForDuration(SearchParams params, String duration);
 
 }

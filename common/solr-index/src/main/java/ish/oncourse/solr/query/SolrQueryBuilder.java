@@ -8,6 +8,7 @@ import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.common.params.CommonParams;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SolrQueryBuilder {
 	static final String DIGIT_PATTERN = "(\\d)+";
@@ -175,22 +176,30 @@ public class SolrQueryBuilder {
 	}
 
 	private void appendFilterDuration(ArrayList<String> filters) {
-		Duration duration = params.getDuration();
+		List<Duration> durations = params.getDurations();
+		if (!durations.isEmpty()) {
+			String durationsFilter = durations.stream().map(SolrQueryBuilder::getDurationQuery).collect(Collectors.joining(QUERY_DELIMITER + QUERY_OR + QUERY_DELIMITER, "(",")"));
+			filters.add(durationsFilter);
+		}
+	}
+	
+	public static String getDurationQuery(Duration duration) {
+		
+		if (duration == null) {
+			return null;	
+		}
 
-		if (duration != null) {
-			if (duration.isSelfPaced()) {
-				filters.add(FILTER_TEMPLATE_duration_self_paced);
-			} else {
-				switch (duration.getCondition()) {
-					case QE:
-						filters.add(String.format(FILTER_TEMPLATE_duration_eq, duration.getDays()));
-						break;
-					case LT:
-						filters.add(String.format(FILTER_TEMPLATE_duration_lt, duration.getDays()));
-					case GT:
-						filters.add(String.format(FILTER_TEMPLATE_duration_gt, duration.getDays()));
-						break;
-				}
+		if (duration.isSelfPaced()) {
+			return FILTER_TEMPLATE_duration_self_paced;
+		} else {
+			switch (duration.getCondition()) {
+				case QE:
+					return String.format(FILTER_TEMPLATE_duration_eq, duration.getDays());
+				case LT:
+					return String.format(FILTER_TEMPLATE_duration_lt, duration.getDays());
+				case GT:
+					return String.format(FILTER_TEMPLATE_duration_gt, duration.getDays());
+				default: return null;	
 			}
 		}
 	}

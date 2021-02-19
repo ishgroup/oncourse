@@ -173,8 +173,20 @@ public class SearchService implements ISearchService {
 	}
 
 	@Override
-	public Map<String, Count> getCountersForDurations(SearchParams params, List<Count> counts) {
-		return null;
+	public Integer getCounterForDuration(SearchParams params, String durationString) {
+		try {
+			Duration duration = Duration.valueOf(durationString);
+	
+			DurationFacetQueryBuilder builder = DurationFacetQueryBuilder.valueOf(duration, params, webSiteService.getCurrentCollege().getId());
+			SolrQuery q = applyCourseRootTag(builder.build());
+	
+			QueryResponse response = query(q, SolrCollection.courses);
+	
+			return response.getFacetQuery().values().stream().findAny().orElse(0);			
+
+		} catch (Exception e) {
+			throw new SearchException("Unable to get facet.", e);
+		}
 	}
 
 	/**

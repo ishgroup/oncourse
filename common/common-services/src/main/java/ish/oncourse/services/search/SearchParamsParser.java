@@ -117,8 +117,14 @@ public class SearchParamsParser
                         value = searchParams.getTutorId();
                         break;
                     case duration:
-                        searchParams.setDuration(Duration.valueOf(parameter));
-                        value = searchParams.getDuration();
+                        String[] durations = provider.getParameters(SearchParam.duration.name());
+                        for (String durationString : durations) {
+                            Duration duration = Duration.valueOf(durationString);
+                            if (duration != null) {
+                                searchParams.addDuration(duration);
+                            }
+                        }
+                        value = searchParams.getDurations();
                         break;
                     default:
                         logger.warn("Parser is not defined for SearchParam {}", name);
