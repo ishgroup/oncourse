@@ -3,18 +3,16 @@ import {ActionsObservable, Epic} from "redux-observable";
 import {IshState} from "../../../../services/IshState";
 import {MiddlewareAPI} from "redux";
 import {Observable} from "rxjs/Observable";
-import {ADD_CONTACT_TO_SUMMARY, getContactNodeFromBackend} from "../actions/Actions";
+import {ADD_CONTACT_TO_SUMMARY, addContactNodeToState, getContactNodeFromBackend} from "../actions/Actions";
 import {
   changePhase, setPayer, updateContactAddProcess, updateParentChilds,
 } from "../../../actions/Actions";
 import {addContact as addContactToCart} from "../../../../web/actions/Actions";
-
 import {IAction} from "../../../../actions/IshAction";
-import {Contact} from "../../../../model";
+import {Contact, Enrolment} from "../../../../model";
 import CheckoutService from "../../../services/CheckoutService";
 import {addContact} from "../../contact-add/actions/Actions";
 import {Phase} from "../../../reducers/State";
-
 
 export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
   return action$.ofType(ADD_CONTACT_TO_SUMMARY).flatMap((action: IAction<{contact: Contact, uncheckItems?: boolean}>) => {
@@ -70,6 +68,31 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
       parent: parent || null,
       parentRequired: contact.parentRequired,
       warning: contact.parentRequired && isAddParentPhase && wrongGuardianMessage,
+    }));
+
+    result.push(addContactNodeToState({
+      contactId: contact.id,
+      enrolments: [...state.cart.courses.result.map(key => {
+        const en = new Enrolment();
+        const cartEn = state.cart.courses.entities[key];
+        en.contactId = contact.id;
+        en.classId = cartEn.id;
+        en.allowRemove = null;
+        en.courseId = null;
+        en.errors = [];
+        en.fieldHeadings = [];
+        en.price = {...cartEn.price};
+        en.relatedClassId = null;
+        en.relatedProductId = null;
+        en.selected = true;
+        en.warnings = [];
+        return en;
+      })],
+      applications: [],
+      articles: [],
+      memberships: [],
+      vouchers: [],
+      waitingLists: [],
     }));
 
     result.push(getContactNodeFromBackend(contact, uncheckContactItems));

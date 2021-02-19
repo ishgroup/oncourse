@@ -261,10 +261,24 @@ export class BuildContactNodeRequest {
     return result;
   }
 
-  static fromContact = (contact: Contact, cart: CartState): ContactNodeRequest => {
+  static fromContact = (contact: Contact, summary: SummaryState, cart: CartState): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = contact.id;
-    result.classIds = cart.courses.result;
+    result.classIds = [];
+    if (summary.entities.contactNodes && summary.entities.contactNodes[contact.id]) {
+      summary.entities.contactNodes[contact.id].enrolments.forEach(key => {
+        if(summary.entities.enrolments[key] && summary.entities.enrolments[key].classId) {
+          result.classIds.push(summary.entities.enrolments[key].classId);
+        }
+      })
+
+      summary.entities.contactNodes[contact.id].applications.forEach(key => {
+        if(summary.entities.applications[key] && summary.entities.applications[key].classId) {
+          result.classIds.push(summary.entities.applications[key].classId);
+        }
+      })
+    }
+
     result.products = cart.products.result.map(productId => {
       const container = new ProductContainer();
       container.productId = productId;

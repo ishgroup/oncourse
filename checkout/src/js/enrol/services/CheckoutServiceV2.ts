@@ -4,6 +4,7 @@ import {Contact, ContactNode, ContactNodeRequest, PaymentRequest, PaymentRespons
 import {CartState, IshState} from "../../services/IshState";
 import {BuildContactNodeRequest} from "./CheckoutService";
 import {ContactNodeService} from "./ContactNodeService";
+import {State as SummaryState} from "../containers/summary/reducers/State";
 
 class CheckoutServiceV2 {
   readonly checkoutApi = new CheckoutV2Api(new DefaultHttpService());
@@ -15,9 +16,9 @@ class CheckoutServiceV2 {
   public getStatus(sessionId: string, payerId: string): Promise<PaymentResponse> {
     return this.checkoutApi.getStatus(sessionId,payerId);
   }
-  
-  public getContactNode = (contact: Contact, cart: CartState): Promise<ContactNode> => {
-    return this.checkoutApi.getContactNodeV2(BuildContactNodeRequest.fromContact(contact, cart));
+
+  public getContactNode = (contact: Contact, summary: SummaryState, cart: CartState): Promise<ContactNode> => {
+    return this.checkoutApi.getContactNodeV2(BuildContactNodeRequest.fromContact(contact, summary, cart));
   }
 
   public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {

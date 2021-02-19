@@ -7,15 +7,16 @@ import {Observable} from "rxjs/Observable";
 import {MiddlewareAPI} from "redux";
 import CheckoutServiceV2 from "../services/CheckoutServiceV2";
 import {ContactNodeService} from "../services/ContactNodeService";
+import {IshState} from "../../services/IshState";
 
 export const GetAllContactNodes: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any>): Observable<any> => {
   return action$.ofType(Actions.GET_ALL_CONTACT_NODES_FROM_BACKEND)
     .mergeMap(() => {
-      const state = store.getState();
+      const state: IshState = store.getState();
       const contacts = state.checkout.contacts;
 
       return Observable.forkJoin(
-        contacts.result.map(id => CheckoutServiceV2.getContactNode(contacts.entities.contact[id], state.cart)),
+        contacts.result.map(id => CheckoutServiceV2.getContactNode(contacts.entities.contact[id], state.checkout.summary, state.cart)),
       )
       .flatMap((results: ContactNode[]) => {
         const relationsUpdateActions = ContactNodeService.getRelationsUpdateActions(results);

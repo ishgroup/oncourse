@@ -11,8 +11,7 @@ import {
   EPIC_REMOVE_CONTACT,
   setPayer,
   removeRedeemVoucher,
-  changePhase,
-  getCheckoutModelFromBackend
+  changePhase
 } from "../actions/Actions";
 import {getAllContactNodesFromBackend, removeContactFromSummary} from "../containers/summary/actions/Actions";
 import {Phase} from "../reducers/State";
@@ -47,7 +46,7 @@ export const EpicRemoveContact: Epic<any, IshState> = (action$: ActionsObservabl
 
     result.push(removeContact(contactId));
     result.push(removeContactFromSummary(contactId));
-    result.push(getCheckoutModelFromBackend());
+    result.push(getAllContactNodesFromBackend());
 
     return result;
   });

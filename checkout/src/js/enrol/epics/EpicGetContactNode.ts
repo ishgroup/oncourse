@@ -10,7 +10,7 @@ import {ContactNodeService} from "../services/ContactNodeService";
 
 const request: Request<ContactNode, IshState> = {
   type: Actions.GET_CONTACT_NODE_AND_MODEL_FROM_BACKEND,
-  getData: (payload: {contact: Contact, uncheckItems?: boolean}, state: IshState) => CheckoutServiceV2.getContactNode(payload.contact, state.cart),
+  getData: (payload: {contact: Contact, uncheckItems?: boolean}, state: IshState) => CheckoutServiceV2.getContactNode(payload.contact, state.checkout.summary,  state.cart),
   processData: (value: ContactNode, state: IshState, payload) => {
     if (payload.uncheckItems) {
       // set selected to false for all items
