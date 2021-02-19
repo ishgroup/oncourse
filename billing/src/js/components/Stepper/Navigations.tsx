@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, CircularProgress } from "@material-ui/core";
 import { connect } from "react-redux";
+import clsx from "clsx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import CustomButton from "../common/Button";
 
@@ -11,13 +12,19 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     buttonsWrapper: {
       display: "flex",
-      justifyContent: "space-between",
+      justifyContent: "flex-end",
       marginTop: "30px",
     },
     loading: {
       height: "25px!important",
       width: "25px!important",
-    }
+    },
+    declineButton: {
+      color: theme.palette.primary.main,
+      "&:hover": {
+        backgroundColor: "rgba(248, 169, 74, 0.2)"
+      }
+    },
   }),
 );
 
@@ -33,7 +40,7 @@ const Navigation = (props) => {
           : (
             <Button
               onClick={handleBack}
-              className={classes.button}
+              className={clsx(classes.button, classes.declineButton)}
               disabled={loading}
             >
               Back

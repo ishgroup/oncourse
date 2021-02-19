@@ -8,16 +8,17 @@
 
 import React, {useState} from "react";
 import { createStyles, makeStyles, withStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import { connect, Dispatch } from "react-redux";
 import { GridList, GridListTile, Typography, Radio, RadioGroup, FormControlLabel, FormControl } from "@material-ui/core";
 import Navigation from "../Navigations";
 import { setTemplateValue } from "../../../redux/actions";
-import { connect, Dispatch } from "react-redux";
-import a from "../../../../images/a-small.png";
-import b from "../../../../images/b-small.png";
-import c from "../../../../images/c-small.png";
-import d from "../../../../images/d-small.png";
-import e from "../../../../images/e-small.png";
-import f from "../../../../images/f-small.png";
+import a from "../../../../images/a.png";
+import b from "../../../../images/b.png";
+import c from "../../../../images/c.png";
+import d from "../../../../images/d.png";
+import e from "../../../../images/e.png";
+import f from "../../../../images/f.png";
 
 const imgData = [
   {
@@ -75,8 +76,27 @@ const useStyles = makeStyles((theme: any) =>
       color: theme.statistics.coloredHeaderText.color,
     },
     tileRoot: {
-      height: "174px!important",
+      height: "285px!important",
     },
+    image: {
+      border: "2px solid transparent",
+      width: "300px",
+      height: "230px",
+      "&:hover": {
+        cursor: "pointer",
+      }
+    },
+    selectedImage: {
+      borderColor: theme.statistics.coloredHeaderText.color,
+    },
+    link: {
+      color: theme.statistics.coloredHeaderText.color,
+      display: "inline-block",
+      textDecoration: "none",
+      "&:hover": {
+        color: "rgb(172, 103, 20)",
+      }
+    }
   }),
 );
 
@@ -87,26 +107,13 @@ const TemplateForm = (props: any) => {
 
   const [webSiteTemplate, setWebSiteTemplate] = useState(templateStore);
 
-  const handleClick = (event) => {
-    if (event.target.value === webSiteTemplate) {
+  const handleClick = (template: string) => {
+    if (template === webSiteTemplate) {
       setWebSiteTemplate("");
     } else {
-      setWebSiteTemplate(event.target.value);
+      setWebSiteTemplate(template);
     }
   }
-
-  const CustomRadio = withStyles((theme: any) => ({
-    root: {
-      color: theme.statistics.coloredHeaderText.color,
-      '&$checked': {
-        color: theme.statistics.coloredHeaderText.color,
-      },
-      '&:hover': {
-        backgroundColor: "inherit",
-      },
-    },
-    checked: {},
-  }))((props: any) => <Radio color="default" {...props} onClick={handleClick} />);
 
   const handleBackCustom = () => {
     if (webSiteTemplate !== templateStore) setTemplateValue(webSiteTemplate);
@@ -124,21 +131,26 @@ const TemplateForm = (props: any) => {
         <h2 className={classes.coloredHeaderText}>Choose your website template</h2>
 
         <div className={classes.root}>
-          <RadioGroup aria-label="template" name="template" value={webSiteTemplate}>
-            <GridList cellHeight={160} className={classes.gridList} cols={3}>
-              {imgData.map((tile: any) => (
-                <GridListTile key={tile.img} cols={tile.cols || 1} className={classes.tileRoot}>
-                  <a href={tile.link} target="_blank">
-                    <img src={tile.img} alt={tile.title} />
+          <GridList cellHeight={160} className={classes.gridList} cols={3}>
+            {imgData.map((tile: any) => (
+              <GridListTile key={tile.img} cols={tile.cols || 1} className={classes.tileRoot}>
+                <>
+                  <img
+                    src={tile.img}
+                    alt={tile.title}
+                    className={clsx(classes.image, tile.value === webSiteTemplate ? classes.selectedImage : null)}
+                    onClick={() => handleClick(tile.value)}
+                  />
+                  <a href={tile.link} target="_blank" className={classes.link}>
+                    live preview...
                   </a>
-                  <FormControlLabel value={tile.value} control={<CustomRadio />} label={tile.title}/>
-                </GridListTile>
-              ))}
-            </GridList>
-          </RadioGroup>
+                </>
+              </GridListTile>
+            ))}
+          </GridList>
         </div>
 
-        <Typography>Don't sweat it, you can change it later</Typography>
+        <Typography>Don't sweat it, you can change this later</Typography>
       </FormControl>
       <Navigation
         activeStep={activeStep}

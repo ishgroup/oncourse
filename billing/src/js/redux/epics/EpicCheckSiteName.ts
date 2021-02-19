@@ -20,7 +20,7 @@ const request: EpicUtils.Request<any, any, any> = {
     ]},
   processError: response => {
     return [
-      ...InstantFetchErrorHandler(response, "Failed to check name"),
+      ...InstantFetchErrorHandler(response),
       { type: SET_SITENAME_VALID_VALUE, payload: false },
       { type: SET_LOADING_VALUE, payload: false }
     ]

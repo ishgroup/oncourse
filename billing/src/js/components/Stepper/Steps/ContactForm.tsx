@@ -11,7 +11,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useFormik } from "formik";
 import { connect, Dispatch } from "react-redux";
 import * as yup from "yup";
-// import "yup-phone";
 import CustomTextField from "../../common/TextField";
 import { setContactFormValues } from "../../../redux/actions";
 import Navigation from "../Navigations";

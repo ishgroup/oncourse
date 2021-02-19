@@ -123,6 +123,7 @@ const OrganisationForm = (props: any) => {
           id="tradingName"
           onChange={handleChange}
           value={values.tradingName}
+          helperText={"(if different to organisation name)"}
         />
       </div>
       <div className={classes.textFieldWrapper}>
