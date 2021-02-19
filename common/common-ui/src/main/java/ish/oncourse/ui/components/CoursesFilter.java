@@ -7,7 +7,7 @@ import ish.oncourse.services.search.SearchParamsParser;
 import ish.oncourse.services.search.SearchResult;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.solr.query.DayOption;
+import ish.oncourse.solr.query.Duration;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.solr.query.Suburb;
 import org.apache.commons.lang3.StringUtils;
@@ -53,6 +53,12 @@ public class CoursesFilter {
     private Suburb suburb;
 
     @Property
+    private List<Duration> durations;
+
+    @Property
+    private Duration duration;
+    
+    @Property
     private Tag tag;
 
     @Property
@@ -85,6 +91,7 @@ public class CoursesFilter {
         }
         tags.addAll(searchParams.getTags());
         suburbs = new ArrayList<>(searchParams.getSuburbs());
+        durations = new ArrayList<>(searchParams.getDurations());
         keyWord = StringUtils.trimToNull(searchParams.getS());
         time = StringUtils.trimToNull(searchParams.getTime());
         price = searchParams.getPrice();

@@ -13,10 +13,13 @@ public class Duration {
     private Integer days;
     private Condition condition;
     private Boolean selfPaced = false;
+    private String display;
+    private String search;
 
     private Duration() {}
     
-    public static String validate(String duration)  {
+    public static String validateTextile(String duration)  {
+        
         if (StringUtils.trimToNull(duration) == null) {
             return "Empty search criteria";
         }
@@ -41,16 +44,30 @@ public class Duration {
 
         return null;
     }
-    
-    
+
     public static Duration valueOf(String search) {
-        
+        return valueOf(search, null);
+    }
+
+
+    public static Duration valueOf(String search, String display) {
+
         if (StringUtils.trimToNull(search) == null) {
             logger.error("Empty search criteria");
         }
         
         Duration duration = new Duration();
+        String[] values = search.split("/");
+
+        if (values.length > 1) {
+            search = values[0];
+            duration.display = values[1];
+        } else {
+            duration.display = display;
+        }
         
+        duration.search = search;
+
         if (SELF_PACED_CONDITION.equalsIgnoreCase(search)) {
             duration.selfPaced = true;
             return duration;
@@ -90,7 +107,14 @@ public class Duration {
         return selfPaced;
     }
 
-    
+    public String getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(String display) {
+        this.display = display;
+    }
+
     public enum Condition {
         
         QE('='),
@@ -106,5 +130,12 @@ public class Duration {
             return Arrays.stream(values()).filter(condition -> condition.value == value).findFirst().orElse(null);
         }
         
+    }
+    
+    public String getIdentifier() {
+        return search;
+    }
+    public String getPath() {
+        return search;
     }
 }

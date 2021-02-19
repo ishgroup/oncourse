@@ -30,7 +30,7 @@ public class DurationTextileValidator extends AbstractTextileValidator {
             errors.addFailure("The duration: " + tag + " must contain the required attribute: display and duration or site", ValidationFailureType.SYNTAX);
         }
 
-        String error = Duration.validate(duration);
+        String error = Duration.validateTextile(duration);
         
         if (error != null) {
             errors.addFailure("The duration duration attribute '" + tag + " has error: " + error, ValidationFailureType.SYNTAX);

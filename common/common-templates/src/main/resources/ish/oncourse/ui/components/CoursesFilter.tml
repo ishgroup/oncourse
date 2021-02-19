@@ -20,6 +20,14 @@
                         </a>
                     </li>
                 </t:loop>
+                <t:loop source="durations" value="duration">
+                    <li class="courses-filter-duration">
+                        <span>${duration.display}</span>
+                        <a href="#" class="courses-filter-clear-option" data-id="${duration.identifier}" data-path="${duration.path}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </li>
+                </t:loop>
 
                 <t:if test="keyWord">
                     <li class="courses-filter-keyword">

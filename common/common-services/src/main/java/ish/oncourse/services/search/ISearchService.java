@@ -2,6 +2,7 @@ package ish.oncourse.services.search;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.solr.query.Count;
+import ish.oncourse.solr.query.Duration;
 import ish.oncourse.solr.query.SearchParams;
 import org.apache.solr.common.SolrDocumentList;
 
@@ -26,6 +27,6 @@ public interface ISearchService {
 
     Map<String, Count> getCountersForLocations(SearchParams params, List<Count> counts);
     
-    Integer getCounterForDuration(SearchParams params, String duration);
+    Integer getCounterForDuration(SearchParams params, Duration duration);
 
 }

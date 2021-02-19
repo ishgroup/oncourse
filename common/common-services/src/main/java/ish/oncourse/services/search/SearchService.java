@@ -173,9 +173,8 @@ public class SearchService implements ISearchService {
 	}
 
 	@Override
-	public Integer getCounterForDuration(SearchParams params, String durationString) {
+	public Integer getCounterForDuration(SearchParams params, Duration duration) {
 		try {
-			Duration duration = Duration.valueOf(durationString);
 	
 			DurationFacetQueryBuilder builder = DurationFacetQueryBuilder.valueOf(duration, params, webSiteService.getCurrentCollege().getId());
 			SolrQuery q = applyCourseRootTag(builder.build());
