@@ -9,13 +9,14 @@
 package ish.oncourse.server.integration.azureStorage
 
 import com.azure.storage.blob.BlobServiceClientBuilder
-import ish.oncourse.server.cayenne.Report
+import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.print.PrintResult
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import com.azure.storage.common.StorageSharedKeyCredential
 
+@Plugin(type=17)
 class AzureStorageIntegration implements PluginTrait {
     public static final String AZURE_ACCOUNT = "account"
     public static final String AZURE_KEY = "key"
