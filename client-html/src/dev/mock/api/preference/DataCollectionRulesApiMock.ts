@@ -1,10 +1,7 @@
-import { ValidationError } from "@api/model";
-import { promiseReject, promiseResolve } from "../../MockAdapter";
+import { promiseResolve } from "../../MockAdapter";
 import { getParamsId } from "../../mockUtils";
 
 export function DataCollectionRulesApiMock() {
-  this.returnError = false;
-
   /**
    * Data Collection Rules items
    * */
@@ -13,18 +10,7 @@ export function DataCollectionRulesApiMock() {
    * Update Data Collection Rule with success or error
    * */
   this.api.onPut(new RegExp(`v1/datacollection/rule/.+`)).reply(config => {
-    this.returnError = !this.returnError;
-
-    if (this.returnError) {
-      const errorObj: ValidationError = {
-        propertyName: "enrolmentFormName",
-        errorMessage: "Enrolment Form Name is invalid"
-      };
-
-      return promiseReject(config, errorObj);
-    }
-
-    const id = config.url.split("/")[3];
+    const id = getParamsId(config);
     const data = JSON.parse(config.data);
     this.db.updateCollectionRule(id, data);
     return promiseResolve(config, JSON.parse(JSON.stringify(this.db.dataCollectionRules)));
