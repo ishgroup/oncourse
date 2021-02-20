@@ -4,7 +4,6 @@
  */
 
 import { Epic } from "redux-observable";
-
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import LoginService from "../services/LoginService";
 import {
@@ -29,9 +28,9 @@ const request: EpicUtils.Request<any, any, any> = {
       }
     ];
   },
-  processError: () => {
+  processError: response => {
     history.push('/login');
-    return null;
+    return LoginServiceErrorsHandler(response, "Failed to get Email");
   }
 };
 
