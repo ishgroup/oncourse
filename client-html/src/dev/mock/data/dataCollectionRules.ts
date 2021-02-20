@@ -12,8 +12,7 @@ export function mockDataCollectionRules(): DataCollectionRule[] {
   };
 
   this.deleteCollectionRule = id => {
-    this.dataCollectionRules = this.dataCollectionRules.filter(rule => rule.id !== id);
-    console.log(this.dataCollectionRules);
+    this.dataCollectionRules = this.dataCollectionRules.filter(rule => String(rule.id) !== String(id));
   };
 
   return [
