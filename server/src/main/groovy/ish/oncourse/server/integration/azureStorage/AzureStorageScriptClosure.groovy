@@ -13,7 +13,7 @@ import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
 
 /**
- * Use this script block to easily send documents into the Azure Storage Blob service.
+ * Use this script block to easily send documents into the Azure Storage Blob service. Note that this has nothing to do with the onCourse document storage system and simply stores the blob in the Azure service without tracking it.
  *
  * ```
  * azurestorage {
