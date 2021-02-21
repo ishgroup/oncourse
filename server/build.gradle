@@ -133,7 +133,7 @@ dependencies {
 	implementation 'com.google.apis:google-api-services-classroom:v1-rev135-1.23.0'
 
 	api 'com.nimbusds:nimbus-jose-jwt:8.9'
-	implementation 'com.bugsnag:bugsnag:3.6.1'
+	implementation 'com.bugsnag:bugsnag:3.6.2'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
@@ -198,7 +198,7 @@ test {
 		println 'user.language:' + System.getProperty('user.language')
 		println 'Locale.getDefault():' + Locale.getDefault()
 	}
-	
+
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
 	dependsOn "expandConfig"
