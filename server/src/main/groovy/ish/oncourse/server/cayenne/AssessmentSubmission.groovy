@@ -24,7 +24,9 @@ import javax.annotation.Nullable
 @QueueableEntity
 class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, NotableTrait, AttachableTrait {
 
-
+	public static final String STUDENT_NAME_PROPERTY = "studentName"
+	public static final String CLASS_NAME_PROPERTY = "courseClassName"
+	public static final String ASSESSMENT_NAME_PROPERTY = "assessmentName"
 
 	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {
@@ -80,6 +82,31 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 	@Override
 	Contact getSubmittedBy() {
 		return super.getSubmittedBy()
+	}
+
+	/**
+	 * @return the full name of student
+	 */
+	@API
+	String getStudentName() {
+		return getEnrolment().getStudent().getContact().getFullName()
+	}
+
+	/**
+	 * @return the courseClass name in next format: 'courseName courseCode-classCode'
+	 */
+	@API
+	String getCourseClassName() {
+		CourseClass courseClass = getAssessmentClass().getCourseClass()
+		return "${courseClass.getCourse().getName()} ${courseClass.getCourse().getCode()}-${courseClass.getCode()}"
+	}
+
+	/**
+	 * @return the assessment name
+	 */
+	@API
+	String getAssessmentName() {
+		return getAssessmentClass().getAssessment().getName()
 	}
 }
 
