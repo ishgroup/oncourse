@@ -4,8 +4,8 @@ import * as ErrorUtils from "../../../../js/common/utils/ErrorUtils";
 test('backend error handler', () => {
 
   const validationError:Object = {
-    formErrors: [],
-    fieldsErrors: [],
+    formErrors: ["test"],
+    fieldsErrors: ["test"],
   };
 
   const commonError:Object = {

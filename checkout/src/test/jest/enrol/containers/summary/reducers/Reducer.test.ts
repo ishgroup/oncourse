@@ -57,13 +57,14 @@ test('test add contact ', () => {
         contactId: "00003",
         classId: "00001",
         selected: false,
+        fieldHeadings: []
       },
     ],
     memberships: [
       {
         contactId: "00003",
         productId: "00011",
-        selected: false,
+        selected: false
       },
     ],
   };
@@ -86,6 +87,7 @@ test('test add enrolment ', () => {
         contactId: "00002",
         classId: "00004",
         selected: false,
+        fieldHeadings: []
       },
     ],
   };
@@ -106,6 +108,7 @@ test('test update enrolment', () => {
         contactId: "00002",
         classId: "00003",
         selected: true,
+        fieldHeadings: []
       },
     ],
   };
