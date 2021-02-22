@@ -32,7 +32,7 @@ buildscript {
 
 plugins {
 	id 'com.github.ben-manes.versions' version '0.36.0' // adds the task 'dependencyUpdates -Drevision=release'
-	id 'com.github.node-gradle.node' version '2.2.4' apply false
+	id 'com.github.node-gradle.node' version '3.0.1' apply false
 	id 'com.github.psxpaul.execfork' version '0.1.13' apply false
 	id 'com.dorongold.task-tree' version '1.5' // adds the task 'taskTree [some task]'
 	id 'application'
