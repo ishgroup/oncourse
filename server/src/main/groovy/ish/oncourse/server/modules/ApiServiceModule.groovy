@@ -17,6 +17,7 @@ import com.google.inject.Scopes
 import ish.oncourse.server.api.service.ApplicationApiService
 import ish.oncourse.server.api.service.ArticleProductApiService
 import ish.oncourse.server.api.service.AssessmentApiService
+import ish.oncourse.server.api.service.AssessmentSubmissionApiService
 import ish.oncourse.server.api.service.CertificateApiService
 import ish.oncourse.server.api.service.ClassCostApiService
 import ish.oncourse.server.api.service.ContactApiService
@@ -45,6 +46,7 @@ import ish.oncourse.server.api.service.TutorRoleApiService
 import ish.oncourse.server.api.service.VoucherProductApiService
 import ish.oncourse.server.api.service.WaitingListApiService
 import ish.oncourse.server.api.validation.EntityValidator
+import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.dashboard.ClassSearchService
 import ish.oncourse.server.dashboard.ContactSearchService
@@ -72,6 +74,7 @@ class ApiServiceModule implements Module {
         binder.bind(ApplicationApiService).in(Scopes.SINGLETON)
         binder.bind(ArticleProductApiService).in(Scopes.SINGLETON)
         binder.bind(AssessmentApiService).in(Scopes.SINGLETON)
+        binder.bind(AssessmentSubmissionApiService).in(Scopes.SINGLETON)
         binder.bind(CertificateApiService).in(Scopes.SINGLETON)
         binder.bind(ClassCostApiService).in(Scopes.SINGLETON)
         binder.bind(ContactApiService).in(Scopes.SINGLETON)
