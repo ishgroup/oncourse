@@ -61,20 +61,6 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 		return super.getModifiedOn()
 	}
 
-	@Nullable
-	@API
-	@Override
-	String getStudentComments() {
-		return super.getStudentComments()
-	}
-
-	@Nullable
-	@API
-	@Override
-	String getTutorComments() {
-		return super.getTutorComments()
-	}
-
 	@Nonnull
 	@API
 	@Override
