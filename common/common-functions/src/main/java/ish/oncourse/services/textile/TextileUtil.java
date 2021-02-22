@@ -14,7 +14,7 @@ public class TextileUtil {
     public static final String CUSTOM_TEMPLATE_DEFINITION = "customTemplateDefinition";
 
 
-    public static final String TEXTILE_REGEXP = "(\\{((block)|(course)|(courses)|(tags)|(page)|(video)|(image)|(attachment)|(location)|(tutors))([^}]*)})|(\\{form([^}]*)}.+?(((\\{text([^}]*)})|(\\{radiolist([^}]*)})|(\\{popuplist([^}]*)})).+?)*(\\{form}))";
+    public static final String TEXTILE_REGEXP = "(\\{((block)|(course)|(courses)|(tags)|(page)|(video)|(image)|(attachment)|(location)|(duration)|(tutors))([^}]*)})|(\\{form([^}]*)}.+?(((\\{text([^}]*)})|(\\{radiolist([^}]*)})|(\\{popuplist([^}]*)})).+?)*(\\{form}))";
 	public static final String QUOT = "\"|&#8220;|&#8221;|\u201C|\u201D";
 	public static final String BOOLEAN_IN_QUOTS = inQuots("(true|false)", false);
 	public static final String YES_NO_IN_QUOTS = inQuots("(yes|no|true|false)", false);

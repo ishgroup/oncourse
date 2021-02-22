@@ -106,7 +106,7 @@ public enum TextileType {
 		return attributes;
 	}
 	
-	public static final TextileType[] BASE_TYPES={IMAGE, VIDEO, BLOCK, COURSE, COURSE_LIST, PAGE, TAGS, FORM, ATTACHMENT, LOCATION, TUTORS};
+	public static final TextileType[] BASE_TYPES={IMAGE, VIDEO, BLOCK, COURSE, COURSE_LIST, PAGE, TAGS, FORM, ATTACHMENT, LOCATION, DURATION, TUTORS};
 
 	public static final String FORM_FIELDS_PATTERN="("+TEXT.regexp+")|("+RADIOLIST.regexp+")|("+POPUPLIST.regexp+")";
 }

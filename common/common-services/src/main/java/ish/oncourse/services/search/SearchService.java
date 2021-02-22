@@ -184,7 +184,9 @@ public class SearchService implements ISearchService {
 			return response.getFacetQuery().values().stream().findAny().orElse(0);			
 
 		} catch (Exception e) {
-			throw new SearchException("Unable to get facet.", e);
+			logger.error("Unable to get facet.");
+			logger.catching(e);
+			return 0;
 		}
 	}
 

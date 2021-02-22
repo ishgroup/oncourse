@@ -24,10 +24,10 @@ public class DurationTextileValidator extends AbstractTextileValidator {
         Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
         
         String display = tagParams.get(DurationTextileAttribute.DISPLAY.getValue());
-        String duration = tagParams.get(DurationTextileAttribute.DISPLAY.getValue());
+        String duration = tagParams.get(DurationTextileAttribute.DURATION.getValue());
         
         if (display == null || duration == null) {
-            errors.addFailure("The duration: " + tag + " must contain the required attribute: display and duration or site", ValidationFailureType.SYNTAX);
+            errors.addFailure("The duration: " + tag + " must contain the required attribute: display and duration", ValidationFailureType.SYNTAX);
         }
 
         String error = Duration.validateTextile(duration);
