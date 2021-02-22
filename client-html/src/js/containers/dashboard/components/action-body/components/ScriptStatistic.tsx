@@ -15,8 +15,7 @@ import clsx from "clsx";
 import {
   differenceInHours, differenceInMinutes, differenceInSeconds, format, parseISO
 } from "date-fns";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from "@material-ui/icons/Cancel";
+import { Check, Clear } from "@material-ui/icons";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import EntityService from "../../../../../common/services/EntityService";
@@ -24,7 +23,7 @@ import { III_DD_MMM_YYYY_HH_MM } from "../../../../../common/utils/dates/format"
 
 const styles = theme => createStyles({
   statisticGroup: {
-    padding: "8px 8px 0"
+    padding: "0 8px 0"
   },
   containerStatisticGroup: {
     width: "calc(100% + 16px)",
@@ -34,14 +33,24 @@ const styles = theme => createStyles({
     display: "block",
   },
   doneIcon: {
-    color: "#018759",
+    position: "relative",
+    top: "0.3rem",
+    marginRight: theme.spacing(1),
+    fontSize: "1.2rem",
+    color: "green"
   },
   failedIcon: {
-    color: "#DE340C",
+    position: "relative",
+    top: "0.3rem",
+    marginRight: theme.spacing(1),
+    fontSize: "1.2rem",
+    color: "red"
   },
   smallScriptGroup: {
     display: "flex",
+    alignItems: "baseline",
     padding: "0",
+    height: "18px",
   },
   smallScriptText: {
     fontSize: "12px",
@@ -133,7 +142,7 @@ const ScriptStatistic = (props: any) => {
 
     if (minutes < 60) {
       return minutes + 'm ago';
-    } 
+    }
       return Math.floor(minutes / 60) + 'h ago';
   };
 
@@ -149,16 +158,16 @@ const ScriptStatistic = (props: any) => {
               <Typography className={classes.lastRunText}>
                 {getTime(scripts[key][0].date)}
               </Typography>
-              {scripts[key] && scripts[key].reverse().map((elem: any) => (
+              {scripts[key] && [...scripts[key]].reverse().map((elem: any) => (
                 elem.status === "SCRIPT_EXECUTED"
                   ? (
                     <Tooltip title={`Succeeded at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
-                      <CheckCircleIcon className={classes.doneIcon} />
+                      <Check className={classes.doneIcon} />
                     </Tooltip>
                   )
                   : (
                     <Tooltip title={`Failed at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
-                      <CancelIcon className={classes.failedIcon} />
+                      <Clear className={classes.failedIcon} />
                     </Tooltip>
                   )
               ))}
