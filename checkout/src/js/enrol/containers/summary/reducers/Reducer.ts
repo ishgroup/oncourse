@@ -151,7 +151,7 @@ const mergePurchases = (ns: State, payload: State, leaveExisting: boolean): Stat
 
   // Make sure that field headings and related ids get merged
   Object.keys(ns.entities.enrolments).forEach(key => {
-    if(payload.entities.enrolments[key] && ns.entities.enrolments[key]) {
+    if(payload.entities.enrolments && payload.entities.enrolments[key] && ns.entities.enrolments && ns.entities.enrolments[key]) {
       if (!ns.entities.enrolments[key].fieldHeadings.length && payload.entities.enrolments[key].fieldHeadings.length) {
         ns.entities.enrolments[key].fieldHeadings = payload.entities.enrolments[key].fieldHeadings
       }

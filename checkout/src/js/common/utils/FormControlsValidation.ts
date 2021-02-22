@@ -6,7 +6,7 @@ export const validateDate = value => {
 };
 
 export const validateDateTime = value => {
-  return !value || moment(value, 'DD/MM/YYYY hh:mm',true).isValid() ? undefined : "Date has invalid format";
+  return !value || moment(value, 'DD/MM/YYYY HH:mm',true).isValid() ? undefined : "Date has invalid format";
 };
 
 export const validateEmail = value => {
