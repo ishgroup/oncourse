@@ -11,10 +11,10 @@ import Loadable from "react-loadable";
 import Loading from "../../../common/components/layout/Loading";
 
 const LoadableComponent = Loadable({
-  loader: () => import("./AssessmentSubmissions"),
+  loader: () => import("./AssessmentSubmission"),
   loading: Loading
 });
 
-const LoadableAssessmentsSubmissions = props => <LoadableComponent {...props} />;
+const LoadableAssessmentSubmission = props => <LoadableComponent {...props} />;
 
-export default LoadableAssessmentsSubmissions;
+export default LoadableAssessmentSubmission;

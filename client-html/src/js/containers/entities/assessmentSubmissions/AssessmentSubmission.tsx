@@ -8,7 +8,7 @@
 import React from "react";
 import ListView from "../../../common/components/list-view/ListView";
 
-const AssessmentSubmissions = () => (
+const AssessmentSubmission = () => (
   <ListView
     listProps={{
       primaryColumn: "",
@@ -16,8 +16,8 @@ const AssessmentSubmissions = () => (
     }}
     EditViewContent={<div />}
     getEditRecord={() => []}
-    rootEntity="AssessmentSubmissions"
+    rootEntity="AssessmentSubmission"
   />
   );
 
-export default AssessmentSubmissions;
+export default AssessmentSubmission;
