@@ -31,7 +31,7 @@ buildscript {
 }
 
 plugins {
-	id 'com.github.ben-manes.versions' version '0.36.0' // adds the task 'dependencyUpdates -Drevision=release'
+	id 'com.github.ben-manes.versions' version '0.36.0' apply false // adds the task 'dependencyUpdates -Drevision=release'
 	id 'com.github.node-gradle.node' version '2.2.4' apply false
 	id 'com.github.psxpaul.execfork' version '0.1.13' apply false
 	id 'com.dorongold.task-tree' version '1.5' // adds the task 'taskTree [some task]'
@@ -49,7 +49,7 @@ subprojects {
 		mavenCentral()
 		maven {
 			//needed for itext
-			url 'http://jasperreports.sourceforge.net/maven2'
+			url "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/"
 		}
 	}
 
@@ -158,14 +158,19 @@ task testReport(type: TestReport) {
 }
 
 // Skip beta and other non-final releases in the update report
-dependencyUpdates.resolutionStrategy {
-	componentSelection { rules ->
-		rules.all { ComponentSelection selection ->
-			boolean rejected = ['alpha', 'beta', 'b', 'rc', 'cr', 'm', 'pr', 'preview', 'ea'].any { qualifier ->
-				selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
-			}
-			if (rejected) {
-				selection.reject('Release candidate')
+allprojects {
+	afterEvaluate {
+		project.apply plugin: 'com.github.ben-manes.versions'
+		dependencyUpdates.resolutionStrategy {
+			componentSelection { rules ->
+				rules.all { ComponentSelection selection ->
+					boolean rejected = ['alpha', 'beta', 'b', 'rc', 'cr', 'm', 'pr', 'preview', 'ea'].any { qualifier ->
+						selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+					}
+					if (rejected) {
+						selection.reject('Release candidate')
+					}
+				}
 			}
 		}
 	}

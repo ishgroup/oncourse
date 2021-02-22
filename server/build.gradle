@@ -147,12 +147,6 @@ dependencies {
 	testImplementation "org.apache.derby:derbynet:$derbyVersion"
 
 }
-configurations.all {
-	resolutionStrategy {
-		// this is the last MPL version of iText, so we can't go past this
-		forcedModules = ['com.lowagie:itext:2.1.7.js2']
-	}
-}
 
 sourceCompatibility = JavaVersion.VERSION_11
 
@@ -161,7 +155,7 @@ project.ext {
 }
 
 application {
-	mainClassName = 'ish.oncourse.server.AngelServer'
+	mainClass.set('ish.oncourse.server.AngelServer')
 	applicationDefaultJvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
 }
 
