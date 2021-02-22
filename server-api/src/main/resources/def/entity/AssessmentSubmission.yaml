@@ -17,14 +17,10 @@ properties:
     format: date-time
   studentName:
     type: string
-  class:
+  courseClass:
     type: string
   assessment:
     type: string
-  tags:
-    type: array
-    items:
-      $ref: './Tag.yaml'
   documents:
     type: array
     items:
