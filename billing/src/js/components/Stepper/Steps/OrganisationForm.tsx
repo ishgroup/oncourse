@@ -34,7 +34,7 @@ const validationSchema = yup.object({
   address: yup.string().required("Required"),
   suburb: yup.string().required("Required"),
   state: yup.string().required("Required"),
-  postcode: yup.number().typeError("Postal code must be a number").required("Required"),
+  postcode: yup.string().required("Required"),
   country: yup.string().required("Required").nullable(),
   timeZone: yup.string().required("Required").nullable(),
 });
