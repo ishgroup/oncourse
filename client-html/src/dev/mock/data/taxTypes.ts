@@ -1,32 +1,24 @@
 import { Tax } from "@api/model";
-import { generateArraysOfRecords } from "../mockUtils";
+import { getEntityResponse } from "../mockUtils";
 
 export function mockTaxTypes(): Tax[] {
   this.getPlainTaxes = () => {
-    const rows = generateArraysOfRecords(20, [
-      { name: "id", type: "number" },
-      { name: "code", type: "number" },
-      { name: "editable", type: "boolean" },
-      { name: "systemType", type: "boolean" }
-    ]).map(l => ({
-      id: l.id,
-      values: [l.code, true, false, true]
-    }));
+    const rows = [
+      {
+        id: "1",
+        values: ["1", "GST", "0.1000", "true"]
+      },
+      {
+        id: "2",
+        values: ["2", "N", "0.0000", "false"]
+      }
+    ];
 
-    const columns = [];
-
-    const response = { rows, columns } as any;
-
-    response.entity = "Tax";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = 10;
-    response.search = null;
-    response.count = null;
-    response.sort = [];
-
-    return response;
+    return getEntityResponse({
+      entity: "Tax",
+      rows,
+      plain: true
+    });
   };
 
   this.saveTaxType = items => {
