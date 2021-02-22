@@ -1,0 +1,25 @@
+get:
+  description: Returns assessment submission record
+  operationId: get
+  tags:
+    - AssessmentSubmission
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of assessment record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/AssessmentSubmission.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ASSESSMENT
+    errorMessage: Sorry, you have no permissions to get assessment submission. Please contact your administrator
