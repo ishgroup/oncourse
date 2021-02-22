@@ -110,12 +110,16 @@ const styles = theme => createStyles({
       fontSize: "12px",
       marginRight: "12px",
     },
+    headingMargin: {
+      margin: "10px 0",
+    }
   });
 
 const TotalStatisticInfo = props => {
   const {
     totalStudents, totalEnrolments, classes, currency
   } = props;
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Typography className={clsx(classes.totalText)}>
@@ -123,7 +127,7 @@ const TotalStatisticInfo = props => {
         {' '}
         <span>{totalStudents}</span>
         <strong className={classes.revenueColor}>{currency && currency.shortCurrencySymbol}</strong>
-        <span className="money">{formatCurrency(totalEnrolments, "")}</span>
+        {totalEnrolments && (<span className="money">{formatCurrency(totalEnrolments, "")}</span>)}
       </Typography>
     </div>
   );
@@ -187,6 +191,7 @@ interface Props {
   getCurrency?: AnyArgFunction;
   currency?: Currency;
   isUpdating?: boolean;
+  hasScriptsPermissions?: boolean;
 }
 
 class Statistics extends React.Component<Props, any> {
@@ -243,8 +248,8 @@ class Statistics extends React.Component<Props, any> {
 
   render() {
     const {
- classes, hasScriptsPermissions, statisticData, currency 
-} = this.props;
+     classes, hasScriptsPermissions, statisticData, currency
+    } = this.props;
 
     const { chartData } = this.state;
 
@@ -367,7 +372,7 @@ class Statistics extends React.Component<Props, any> {
 
         {hasScriptsPermissions && (
           <Grid item xs={12} className="mt-2">
-            <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
+            <Typography className={clsx("heading", classes.headingMargin)}>
               Automation status
             </Typography>
             <ScriptStatistic />
