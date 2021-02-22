@@ -89,7 +89,7 @@ export const getEntityDisplayName = (entity: string): Category => {
     case "Assessment": {
       return "Assessment tasks";
     }
-    case "AssessmentSubmissions": {
+    case "AssessmentSubmission": {
       return "Assessment submissions";
     }
     case "Message": {
@@ -151,8 +151,8 @@ export const getSingleEntityDisplayName = (entity: string): string => {
     case "Assessment": {
       return "Assessment task";
     }
-    case "AssessmentSubmissions": {
-      return "Assessment submissions";
+    case "AssessmentSubmission": {
+      return "Assessment submission";
     }
     default: {
       return entity;

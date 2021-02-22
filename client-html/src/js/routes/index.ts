@@ -48,7 +48,7 @@ import DiscountApp from "../containers/entities/discounts/index";
 import DocumentsApp from "../containers/entities/documents/index";
 import OutcomeApp from "../containers/entities/outcomes/index";
 import AssessmentApp from "../containers/entities/assessments/index";
-import AssessmentSubmissionsApp from "../containers/entities/assessmentSubmissions/index";
+import AssessmentSubmissionApp from "../containers/entities/assessmentSubmissions/index";
 import EnrolmentApp from "../containers/entities/enrolments/index";
 import PriorLearningApp from "../containers/entities/priorLearnings/index";
 import MessageApp from "../containers/entities/messages/index";
@@ -150,9 +150,9 @@ export const routes: MainRoute[] = [
   },
   {
     title: "Assessment submissions",
-    path: "/assessment-submissions/:id?",
-    url: "/assessment-submissions",
-    main: AssessmentSubmissionsApp,
+    path: "/assessmentSubmission/:id?",
+    url: "/assessmentSubmission",
+    main: AssessmentSubmissionApp,
     group: "Activity"
   },
   {
