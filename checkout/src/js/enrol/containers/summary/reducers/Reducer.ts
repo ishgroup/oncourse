@@ -104,9 +104,20 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
       state.result.forEach(cid => {
         ns.entities[type] && delete ns.entities[type][`${cid}-${id}`];
         if(ns.entities.contactNodes[cid] && ns.entities.contactNodes[cid][type]) {
-          ns.entities.contactNodes[cid][type] = ns.entities.contactNodes[cid][type].filter(eId => eId !== `${cid}-${id}`)
+          ns.entities.contactNodes[cid][type] = ns.entities.contactNodes[cid][type].filter(eId => eId !== `${cid}-${id}`);
         }
       });
+
+      Object.keys(ns.entities).forEach(entity => {
+        Object.keys(ns.entities[entity]).forEach(key => {
+          if (
+            (ns.entities[entity][key].relatedClassId && ns.entities[entity][key].relatedClassId === id)
+            || (ns.entities[entity][key].relatedProductId && ns.entities[entity][key].relatedProductId === id)
+          ) {
+            delete ns.entities[entity][key];
+          }
+        })
+      })
 
       return ns;
 
@@ -137,6 +148,22 @@ const mergePurchases = (ns: State, payload: State, leaveExisting: boolean): Stat
   ns.entities.enrolments = leaveExisting
     ? {...payload.entities.enrolments, ...ns.entities.enrolments}
     : {...ns.entities.enrolments, ...payload.entities.enrolments};
+
+  // Make sure that field headings and related ids get merged
+  Object.keys(ns.entities.enrolments).forEach(key => {
+    if(payload.entities.enrolments[key] && ns.entities.enrolments[key]) {
+      if (!ns.entities.enrolments[key].fieldHeadings.length && payload.entities.enrolments[key].fieldHeadings.length) {
+        ns.entities.enrolments[key].fieldHeadings = payload.entities.enrolments[key].fieldHeadings
+      }
+      if (!ns.entities.enrolments[key].relatedClassId && payload.entities.enrolments[key].relatedClassId) {
+        ns.entities.enrolments[key].relatedClassId = payload.entities.enrolments[key].relatedClassId
+      }
+      if (!ns.entities.enrolments[key].relatedProductId && payload.entities.enrolments[key].relatedProductId) {
+        ns.entities.enrolments[key].relatedProductId = payload.entities.enrolments[key].relatedProductId
+      }
+    }
+  });
+
   ns.entities.applications = leaveExisting
     ? {...payload.entities.applications, ...ns.entities.applications}
     : {...ns.entities.applications, ...payload.entities.applications};

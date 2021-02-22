@@ -15,7 +15,7 @@ import {
   PromotionsSchema, WaitingCoursesListSchema, WaitingCoursesSchema,
 } from "../../NormalizeSchema";
 import {Injector} from "../../injector";
-import {PromotionParams, ContactParams, Enrolment} from "../../model";
+import {PromotionParams, ContactParams} from "../../model";
 import {IshState} from "../../services/IshState";
 import {mapError, mapPayload} from "../../common/epics/EpicUtils";
 import {rewriteContactNodeToState} from "../../enrol/containers/summary/actions/Actions";
@@ -253,37 +253,6 @@ function createRemoveClassFromCartEpic() {
       type: FULFILLED(Actions.REMOVE_CLASS_FROM_CART),
       payload: normalize(action.payload, ClassesSchema),
     }));
-}
-
-function createRemoveClassToSummaryEpic() {
-  return (action$, store: Store<IshState>) => action$
-    .ofType(Actions.REMOVE_CLASS_FROM_CART)
-    .mergeMap(action => {
-      const state = store.getState();
-      const contacts = state.checkout.summary.result;
-      const classItem = state.courses.entities[action.payload.id]
-      return contacts.map(node => {
-        return rewriteContactNodeToState({
-          ...state.checkout.summary.entities.contactNodes[node],
-          enrolments: [
-            ...state.checkout.summary.entities.contactNodes[node].enrolments,
-            {
-              contactId: node,
-              classId: classItem.id,
-              allowRemove: null,
-              courseId: null,
-              errors: [],
-              fieldHeadings: [],
-              price: {...classItem.price},
-              relatedClassId: null,
-              relatedProductId: null,
-              selected: true,
-              warnings: []
-            }
-          ]
-        } as any)
-      })
-    });
 }
 
 function createAddWaitingCourseToCartEpic() {

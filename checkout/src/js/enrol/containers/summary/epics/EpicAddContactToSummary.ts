@@ -84,7 +84,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
         en.price = {...cartEn.price};
         en.relatedClassId = null;
         en.relatedProductId = null;
-        en.selected = true;
+        en.selected = !uncheckContactItems;
         en.warnings = [];
         return en;
       })],

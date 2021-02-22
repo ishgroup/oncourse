@@ -5,7 +5,6 @@ import {IAction} from "../../../../actions/IshAction";
 import {ContactState} from "../../../../services/IshState";
 
 export const SUBMIT_ADD_CONTACT: string = "checkout/submit/add/contact";
-export const SUBMIT_ADD_CONTACT_AS_PAYER: string = "checkout/submit/add/contact/payer";
 
 export const ADD_PAYER_FROM_VOUCHER: string = "checkout/add/payer/from/voucher";
 
@@ -44,16 +43,6 @@ export interface SubmitContact {
 export const submitAddContact = (contactId: ContactId, values: Values): IAction<SubmitContact> => {
   return {
     type: SUBMIT_ADD_CONTACT,
-    payload: getContactPayload(contactId, values),
-    meta: {
-      from: NAME,
-    },
-  };
-};
-
-export const submitAddContactAsPayer = (contactId: ContactId, values: Values): IAction<SubmitContact> => {
-  return {
-    type: SUBMIT_ADD_CONTACT_AS_PAYER,
     payload: getContactPayload(contactId, values),
     meta: {
       from: NAME,

@@ -104,12 +104,12 @@ export const ContactPropsBy = (contactId: string, state: IshState): ContactProps
   return {
     contact: state.checkout.contacts.entities.contact[contactId],
     isPayer: state.checkout.payerId === contactId,
-    enrolments: enrolmentIds.map((id: string): EnrolmentProps => EnrolmentPropsBy(enrolments[id], state)),
-    applications: applicationIds.map((id: string): ApplicationProps => ApplicationPropsBy(applications[id], state)),
-    vouchers: voucherIds.map((id: string): VoucherProps => VoucherPropsBy(vouchers[id], state)),
-    memberships: membershipIds.map((id: string): MembershipProps => MembershipPropsBy(memberships[id], state)),
-    articles: articleIds.map((id: string): ArticleProps => ArticlePropsBy(articles[id], state)),
-    waitingLists: waitingListIds.map((id: string): any => WaitingListPropsBy(waitingLists[id], state)),
+    enrolments: enrolmentIds.filter(id => enrolments[id]).map((id: string): EnrolmentProps => EnrolmentPropsBy(enrolments[id], state)),
+    applications: applicationIds.filter(id => applications[id]).map((id: string): ApplicationProps => ApplicationPropsBy(applications[id], state)),
+    vouchers: voucherIds.filter(id => vouchers[id]).map((id: string): VoucherProps => VoucherPropsBy(vouchers[id], state)),
+    memberships: membershipIds.filter(id => memberships[id]).map((id: string): MembershipProps => MembershipPropsBy(memberships[id], state)),
+    articles: articleIds.filter(id => articles[id]).map((id: string): ArticleProps => ArticlePropsBy(articles[id], state)),
+    waitingLists: waitingListIds.filter(id => waitingLists[id]).map((id: string): any => WaitingListPropsBy(waitingLists[id], state)),
   };
 };
 

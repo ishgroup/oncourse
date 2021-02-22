@@ -67,8 +67,12 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
     }
 
     if (CheckoutService.cartIsEmpty(state.cart)) {
+      if (state.checkout.summary.result.length) {
+       result.push(removeItemFromSummary(getItemType(action.type), action.payload && action.payload.id));
+      }
       return result.concat(showCartIsEmptyMessage());
     }
+
     if (state.checkout.summary.result.length) {
       return result.concat([
         Actions.changePhase(state.checkout.isCartModified ? Phase.Summary : state.checkout.page),
