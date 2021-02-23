@@ -9,6 +9,7 @@ import "../scss/index.scss";
 import {getPreferences} from "./common/actions/Actions";
 import {getCookie, setCookie} from "./common/utils/Cookie";
 import { v4 as uuid } from "uuid";
+import moment from "moment-timezone";
 
 // Intersection Observer polyfill
 require('intersection-observer');
@@ -19,16 +20,14 @@ if (window["NodeList"] && !NodeList.prototype["forEach"]) {
 }
 
 const appStart = () => {
-  if (Intl) {
-    setCookie(
-      'clientTimezoneName',
-      Intl.DateTimeFormat().resolvedOptions().timeZone,
-      {
-        samesite: "strict",
-        secure: true,
-      },
-    );
-  }
+  setCookie(
+    'clientTimezoneName',
+    moment.tz.guess(true),
+    {
+      samesite: "strict",
+      secure: true,
+    },
+  );
 
   const cartId = getCookie("cartId");
 
