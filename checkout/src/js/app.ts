@@ -34,7 +34,7 @@ const appStart = () => {
   if(!cartId) {
     setCookie(
       'cartId',
-      uuid()
+      uuid().replace(/-/g,"").substring(0,30)
     );
   }
 
