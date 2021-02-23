@@ -35,11 +35,7 @@ const appStart = () => {
   if(!cartId) {
     setCookie(
       'cartId',
-      uuid(),
-      {
-        samesite: "strict",
-        secure: true,
-      },
+      uuid()
     );
   }
 
