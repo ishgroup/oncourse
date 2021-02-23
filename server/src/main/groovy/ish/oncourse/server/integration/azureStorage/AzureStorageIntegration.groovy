@@ -9,8 +9,11 @@
 package ish.oncourse.server.integration.azureStorage
 
 import com.azure.storage.blob.BlobContainerClient
+import com.azure.storage.blob.BlobContainerClientBuilder
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.models.BlockBlobItem
+import com.azure.storage.blob.specialized.BlockBlobClient
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.print.PrintResult
@@ -39,12 +42,14 @@ class AzureStorageIntegration implements PluginTrait {
     }
 
 
-    protected store(Object blob, String name) {
-        String endpoint = "https://${this.container}.blob.core.windows.net"
-        StorageSharedKeyCredential credential = new StorageSharedKeyCredential(this.account, this.key)
-        BlobServiceClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient()
-        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient(this.container)
+    protected String store(Object blob, String name) {
 
+        BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
+                .endpoint("https://${this.account}.blob.core.windows.net")
+                .credential(new StorageSharedKeyCredential(this.account, this.key))
+                .containerName(container)
+                .buildClient()
+        
         byte[] bytes
         if (blob instanceof PrintResult) {
             bytes = (blob as PrintResult).result
@@ -56,7 +61,8 @@ class AzureStorageIntegration implements PluginTrait {
             out.flush()
             bytes = bos.toByteArray()
         }
-
+        
         blobContainerClient.getBlobClient(name).getBlockBlobClient().upload( new ByteArrayInputStream(bytes), bytes.length)
+        return blobContainerClient.getBlobClient(name).getBlobUrl()
     }
 }
