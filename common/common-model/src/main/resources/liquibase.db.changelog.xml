@@ -282,6 +282,13 @@
 		</createTable>
 	</changeSet>
 
+	<changeSet id="29" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Checkout" columnName="UUID"/>
+		</preConditions>
+		<modifyDataType tableName="Checkout" columnName="UUID" newDataType="VARCHAR(36)"/>
+	</changeSet>
+
 
 
 
