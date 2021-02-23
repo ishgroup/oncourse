@@ -27,7 +27,7 @@ class CartApiServiceImpl implements CartApi {
     void create(String id, String shoppingCart) {
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
-        Checkout checkout = findCheckoutById(id) ?: context.newObject(Checkout)
+        Checkout checkout = findCheckoutById(context, id) ?: context.newObject(Checkout)
         checkout.UUID = id
         checkout.shoppingCart = shoppingCart
         checkout.college = context.localObject(college)
@@ -36,29 +36,25 @@ class CartApiServiceImpl implements CartApi {
 
     @Override
     void delete(String id) {
-        Checkout checkout = getCheckout(id)
-        checkout.getObjectContext().deleteObject(checkout)
+        ObjectContext context = cayenneService.newContext()
+        Checkout checkout = findCheckoutById(context, id)
+        if (checkout) {
+            context.deleteObject(checkout)
+            context.commitChanges()
+        }
     }
 
     @Override
-    String get( String id) {
-        Checkout checkout = getCheckout(id)
-        return checkout.shoppingCart
+    String get(String id) {
+        Checkout checkout = findCheckoutById(cayenneService.newContext(), id)
+        return checkout?.shoppingCart
     }
 
-    private Checkout getCheckout(String id) {
-        Checkout checkout = findCheckoutById(id)
-        if (!checkout) {
-            ValidationError validationError = new ValidationError()
-            validationError.formErrors << "There is no shopping cart with id: " + id
-            throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(validationError).build())
-        }
-        checkout
-    }
-
-    private Checkout findCheckoutById(String id) {
+    private Checkout findCheckoutById(ObjectContext context, String id) {
         College college = collegeService.college
-        ObjectSelect.query(Checkout).where(Checkout.COLLEGE.eq(college).andExp(Checkout.UUID_.eq(id))).selectFirst(cayenneService.newContext())
+        ObjectSelect.query(Checkout)
+                .where(Checkout.COLLEGE.eq(college).andExp(Checkout.UUID_.eq(id)))
+                .selectFirst(context)
     }
 }
 
