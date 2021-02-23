@@ -30,7 +30,7 @@ class CartApiServiceImpl implements CartApi {
         Checkout checkout = findCheckoutById(id) ?: context.newObject(Checkout)
         checkout.UUID = id
         checkout.shoppingCart = shoppingCart
-        checkout.college = college
+        checkout.college = context.localObject(college)
         context.commitChanges()
     }
 
@@ -57,7 +57,8 @@ class CartApiServiceImpl implements CartApi {
     }
 
     private Checkout findCheckoutById(String id) {
-        ObjectSelect.query(Checkout).where(Checkout.UUID_.eq(id)).selectOne(cayenneService.newContext())
+        College college = collegeService.college
+        ObjectSelect.query(Checkout).where(Checkout.COLLEGE.eq(college).andExp(Checkout.UUID_.eq(id))).selectFirst(cayenneService.newContext())
     }
 }
 
