@@ -8,6 +8,8 @@
 
 package ish.oncourse.server.integration.azureStorage
 
+import com.azure.storage.blob.BlobContainerClient
+import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
@@ -38,18 +40,19 @@ class AzureStorageIntegration implements PluginTrait {
 
 
     protected store(Object blob, String name) {
-        def endpoint = "https://${this.container}.blob.core.windows.net"
-        def credential = new StorageSharedKeyCredential(this.account, this.key)
-        def storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient()
-        def blobContainerClient = storageClient.getBlobContainerClient(this.container)
+        String endpoint = "https://${this.container}.blob.core.windows.net"
+        StorageSharedKeyCredential credential = new StorageSharedKeyCredential(this.account, this.key)
+        BlobServiceClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient()
+        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient(this.container)
 
         byte[] bytes
         if (blob instanceof PrintResult) {
             bytes = (blob as PrintResult).result
             name = (blob as PrintResult).reportName
         } else {
-            def bos = new ByteArrayOutputStream()
-            def out = new ObjectOutputStream(bos).writeObject(blob)
+            ByteArrayOutputStream bos = new ByteArrayOutputStream()
+            ObjectOutputStream out = new ObjectOutputStream(bos)
+            out.writeObject(blob)
             out.flush()
             bytes = bos.toByteArray()
         }
