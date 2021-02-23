@@ -91,14 +91,9 @@ const mapStateToProps = (state: State) => ({
   initialValues: getFormInitialValues(SCRIPT_EDIT_VIEW_FORM_NAME)(state),
   scripts: state.automation.script.scripts,
   emailTemplates: state.automation.emailTemplate.emailTemplates,
-  pdfReports: state.automation.pdfReport.pdfReports,
-  pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds,
   nextLocation: state.nextLocation,
   pdfReports: state.automation.pdfReport.pdfReports,
   pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds,
-  nextLocation: state.nextLocation,
-  pdfReports: state.automation.pdfReport.pdfReports,
-  pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

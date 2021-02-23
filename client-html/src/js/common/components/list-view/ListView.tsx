@@ -1035,7 +1035,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       creatingNew,
       fullScreenEditView,
       searchQuery,
-      deleteActionName
+      deleteActionName = "Delete record"
     } = this.props;
 
     const {
@@ -1127,7 +1127,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             querySearch={querySearch}
             threeColumn={threeColumn}
             deleteEnabled={deleteEnabled}
-            deleteActionName={deleteActionName ? deleteActionName : "Delete record"}
+            deleteActionName={deleteActionName}
             showExportDrawer={showExportDrawer}
             toggleExportDrawer={this.toggleExportDrawer}
             showBulkEditDrawer={showBulkEditDrawer}

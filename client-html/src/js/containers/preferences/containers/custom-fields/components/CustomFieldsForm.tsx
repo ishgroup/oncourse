@@ -24,10 +24,10 @@ import CustomFieldsDeleteDialog from "./CustomFieldsDeleteDialog";
 import CustomFieldsRenderer from "./CustomFieldsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { getCustomFields } from "../../../actions";
-import { Fetch } from "../../../../../model/common/Fetch";
 import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
+import { getCustomFields } from "../../../actions";
+import { Fetch } from "../../../../../model/common/Fetch";
 
 const manualLink = getManualLink("generalPrefs_customFields");
 
@@ -117,9 +117,8 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
-
         this.props.dispatch(getCustomFields());
+        const { nextLocation, history, setNextLocation } = this.props;
 
         nextLocation && history.push(nextLocation);
         setNextLocation('');
@@ -167,6 +166,8 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
 
   onClickDelete = (item, index) => {
     const onConfirm = () => {
+      this.isPending = true;
+
       if (item.id) {
         this.props.onDelete(item.id);
       } else {

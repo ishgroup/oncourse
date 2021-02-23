@@ -179,8 +179,6 @@ const ScriptsForm = React.memo<Props>(props => {
     isNew,
     formsState,
     emailTemplates,
-    pdfReports,
-    pdfBackgrounds,
     history,
     nextLocation,
     setNextLocation,

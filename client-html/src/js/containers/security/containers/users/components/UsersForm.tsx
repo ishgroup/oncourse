@@ -261,7 +261,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       dirty,
       validateUniqueNames,
       isNew,
-      invalid,
+      invalid
       form
     } = this.props;
 
@@ -464,8 +464,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   updateUser: (user: User) => dispatch(updateUser(user)),
   resetUserPassword: (id: number) => dispatch(resetUserPassword(id)),
   disableUser2FA: (id: number) => dispatch(disableUser2FA(id)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
   openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 const UsersForm = reduxForm({
