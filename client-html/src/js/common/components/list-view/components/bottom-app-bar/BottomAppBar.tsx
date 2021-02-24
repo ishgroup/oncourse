@@ -48,7 +48,7 @@ const EntitiesToMessageTemplateEntitiesMap = {
   Application: ["Contact", "Application"],
   Contact: ["Contact"],
   Enrolment: ["Contact", "Enrolment"],
-  CourseClass: ["Contact", "CourseClass", "Enrolment"],
+  CourseClass: ["Contact", "CourseClass", "Enrolment", "CourseClassTutor"],
   PaymentIn: ["Contact", "PaymentIn"],
   PaymentOut: ["Contact", "PaymentOut"],
   Payslip: ["Contact", "Payslip"],
