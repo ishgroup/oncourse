@@ -99,7 +99,7 @@ class SurveyGizmoScriptClosure implements ScriptClosureTrait<SurveyGizmoIntegrat
 	}
 
 	@Override
-	void execute(SurveyGizmoIntegration integration) {
+	Object execute(SurveyGizmoIntegration integration) {
 		def campaign_id = integration.createCampaign("${firstName} ${lastName} <${email}>")
 
 		if (campaign_id) {
@@ -124,5 +124,7 @@ class SurveyGizmoScriptClosure implements ScriptClosureTrait<SurveyGizmoIntegrat
 				integration.sendEmail(campaign_id, subject, emailBody, replyTo)
 			}
 		}
+		
+		return null
 	}
 }

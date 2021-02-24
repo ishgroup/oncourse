@@ -33,8 +33,8 @@ class TCSIScriptClosure implements ScriptClosureTrait<TCSIIntegration> {
     Action action
 
     @Override
-    void execute(TCSIIntegration integration) {
-
+    Object execute(TCSIIntegration integration) {
+        return null
     }
 
     static enum Action {

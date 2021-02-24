@@ -64,7 +64,7 @@ class MoodleScriptClosure implements ScriptClosureTrait<MoodleIntegration> {
     * @param integration
     */
     @Override
-    void execute(MoodleIntegration integration) {
+    Object execute(MoodleIntegration integration) {
         if (enrolment.student.contact.email) {
             def userId = integration.getUserIdByEmail(enrolment.student.contact.email)
             if (!userId) {
@@ -84,5 +84,6 @@ class MoodleScriptClosure implements ScriptClosureTrait<MoodleIntegration> {
                 integration.enrolUsers(userId, course["id"])
             }
         }
+        return null
     }
 }

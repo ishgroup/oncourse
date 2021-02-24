@@ -19,21 +19,16 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
  * s3 {
  *     name "integration name"
  *     blob myDoc
- *     name "duck.jpg"
+ *     fileName "duck.jpg"
  * }
  * ```
  *
- * If you pass the result of a report block in the blob attribute, you can skip the name.
+ * If you pass the FileData object in the blob attribute, you can skip the name.
  *
- * ```
- * report {
- *     keycode "ish.onCourse.myReport"
- *     records accounts
- * }
  *
  * s3 {
  *     name "integration name"
- *     blob report
+ *     blob fileData
  * }
  * ```
  *
@@ -42,13 +37,24 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
 @ScriptClosure(key = "s3", integration = S3Integration)
 class S3ScriptClosure implements ScriptClosureTrait<S3Integration> {
 
+    private Object blob
+    private String fileName
+
+
+    void blob(Object blob) {
+        this.blob = blob
+    }
+
+    void fileName(String fileName) {
+        this.fileName = fileName
+    }
     /**
      * Execute the closure with the configuration from the passed integration
      *
      * @param integration
      */
     @Override
-    void execute(S3Integration integration) {
-
+    Object execute(S3Integration integration) {
+        return integration.stroe(blob, fileName)
     }
 }

@@ -33,7 +33,8 @@ class MyobScriptClosure implements ScriptClosureTrait<MyobIntegration> {
      * @param integration
      */
     @Override
-    void execute(MyobIntegration integration) {
+    Object execute(MyobIntegration integration) {
         integration.addManualJournalForTransactions(transactions)
+        return null
     }
 }
