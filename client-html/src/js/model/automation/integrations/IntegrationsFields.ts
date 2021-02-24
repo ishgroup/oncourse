@@ -64,3 +64,16 @@ export interface CoassembleFields {
   apiKey: string;
   userId: string;
 }
+
+export interface AmazonS3Fields {
+  account: string;
+  key: string;
+  bucket: string;
+  region: string;
+}
+
+export interface AzureFields {
+  account: string;
+  key: string;
+  container: string;
+}

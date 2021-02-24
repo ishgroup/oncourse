@@ -8,7 +8,9 @@ import {
   MYOBFields,
   SurveyGizmoFields,
   SurveyMonkeyFields,
-  XeroFields
+  XeroFields,
+  AmazonS3Fields,
+  AzureFields
 } from "./IntegrationsFields";
 
 export interface IntegrationSchema {
@@ -29,7 +31,9 @@ export interface IntegrationSchema {
     | CanvasFields
     | CloudAssessFields
     | MicropowerFields
-    | CoassembleFields;
+    | CoassembleFields
+    | AmazonS3Fields
+    | AzureFields
 }
 
 export interface IntegrationTypeSchema {
