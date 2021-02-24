@@ -3,9 +3,10 @@ import {REMOVE_ITEM_FROM_SUMMARY, REWRITE_CONTACT_NODE_TO_STATE,} from "../conta
 import { Store} from "redux";
 import CartService from "../../services/CartService";
 import {getCookie} from "../../common/utils/Cookie";
-import {StoredCartData} from "../../model/common/StoredCartData";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Actions} from "../../web/actions/Actions";
+import CheckoutService, {BuildContactNodeRequest} from "../services/CheckoutService";
+import {ContactNodeRequest} from "../../model";
 
 export const EpicStoreCartState = (function () {
   return (action$, store: Store<IshState>) => action$
@@ -25,37 +26,24 @@ export const EpicStoreCartState = (function () {
     .do(() => {
       const cartId = getCookie("cartId");
       if (cartId) {
-        const { checkout } = store.getState();
-        const storedCartData: StoredCartData = {};
+        const {checkout, cart} = store.getState();
+        const storedCartData: { [key: string]: ContactNodeRequest } & { payerId?: string } = {};
         const contactNodes = checkout.summary.entities.contactNodes;
 
-        let isEmptyCart = true;
-
-        if (contactNodes) {
-          Object.keys(contactNodes).forEach(key => {
-            storedCartData[key] = {};
-            Object.keys(contactNodes[key]).forEach(eKey => {
-              if(contactNodes[key][eKey].length) {
-                storedCartData[key][eKey] = contactNodes[key][eKey];
-                if (eKey !== "contactId" && isEmptyCart) {
-                  isEmptyCart = false;
-                }
-              }
+        if (CheckoutService.cartIsEmpty(cart)) {
+          CartService._delete(cartId)
+            .catch(() => {
+              console.error("Failed to delete cart data")
             })
+        } else if (contactNodes) {
+          Object.keys(contactNodes).forEach(key => {
+            storedCartData[key] = BuildContactNodeRequest.fromContact(checkout.contacts.entities.contact[key], checkout.summary, cart);
           })
           storedCartData.payerId = checkout.payerId;
-
-          if (isEmptyCart) {
-            CartService._delete(cartId)
-              .catch(() => {
-                console.error("Failed to delete cart data")
-              })
-          } else {
-            CartService.create(cartId, JSON.stringify(storedCartData))
-              .catch(() => {
-                console.error("Failed to upload cart data")
-              })
-          }
+          CartService.create(cartId, JSON.stringify(storedCartData))
+            .catch(() => {
+              console.error("Failed to upload cart data")
+            })
         }
       }
     })
