@@ -246,7 +246,6 @@ const DocumentShare:React.FC<Props> = ({
             >
               {`${relationsCount} ${entity.capitalize()}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""} `}
               <IconButton
-                disabled={readOnly}
                 color="secondary"
                 className={classes.linkButton}
                 onClick={() => onAttachmentCategoryClick(entity, relationsMap)}
@@ -256,7 +255,6 @@ const DocumentShare:React.FC<Props> = ({
               {portalEnabled
                 && !["Site", "Room"].includes(entity) && (
                 <IconButton
-                  disabled={readOnly}
                   color="secondary"
                   className={classes.linkButton}
                   onClick={() => onAttachmentPeopleClick(entity, documentSource.access, relations)}
