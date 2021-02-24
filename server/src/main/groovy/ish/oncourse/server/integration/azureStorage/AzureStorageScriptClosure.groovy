@@ -56,6 +56,6 @@ class AzureStorageScriptClosure implements ScriptClosureTrait<AzureStorageIntegr
      */
     @Override
     Object execute(AzureStorageIntegration integration) {
-        return integration.store(blob, name)
+        return integration.store(blob, fileName)
     }
 }
