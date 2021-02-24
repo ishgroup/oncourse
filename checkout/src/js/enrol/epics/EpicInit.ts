@@ -64,17 +64,17 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
       }
     }
 
+    if (state.checkout.summary.result.length && action.payload && action.payload.id) {
+      result.push(removeItemFromSummary(getItemType(action), action.payload.id));
+    }
+
     if (CheckoutService.cartIsEmpty(state.cart)) {
-      if (state.checkout.summary.result.length && action.payload && action.payload.id) {
-       result.push(removeItemFromSummary(getItemType(action), action.payload.id));
-      }
       return result.concat(showCartIsEmptyMessage());
     }
 
     if (state.checkout.summary.result.length) {
       return result.concat([
         Actions.changePhase(state.checkout.isCartModified ? Phase.Summary : state.checkout.page),
-        removeItemFromSummary(getItemType(action), action.payload && action.payload.id),
         getAllContactNodesFromBackend()
       ]);
     }

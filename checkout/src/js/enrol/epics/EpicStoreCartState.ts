@@ -3,15 +3,18 @@ import {REMOVE_ITEM_FROM_SUMMARY, REWRITE_CONTACT_NODE_TO_STATE,} from "../conta
 import { Store} from "redux";
 import CartService from "../../services/CartService";
 import {getCookie} from "../../common/utils/Cookie";
-import {CHANGE_PHASE} from "../actions/Actions";
 import {StoredCartData} from "../../model/common/StoredCartData";
+import {FULFILLED} from "../../common/actions/ActionUtils";
+import {Actions} from "../../web/actions/Actions";
 
 export const EpicStoreCartState = (function () {
   return (action$, store: Store<IshState>) => action$
     .ofType(
-      CHANGE_PHASE,
       REMOVE_ITEM_FROM_SUMMARY,
       REWRITE_CONTACT_NODE_TO_STATE,
+      FULFILLED(Actions.ADD_PRODUCT_TO_CART),
+      FULFILLED(Actions.ADD_CLASS_TO_CART),
+      FULFILLED(Actions.ADD_WAITING_COURSE_TO_CART)
     )
     .map(action => ({
       timestamp: new Date().getTime(),
