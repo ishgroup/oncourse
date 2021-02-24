@@ -9,7 +9,7 @@ import {
 } from "../../../actions/Actions";
 import {addContact as addContactToCart} from "../../../../web/actions/Actions";
 import {IAction} from "../../../../actions/IshAction";
-import {Contact, Enrolment} from "../../../../model";
+import {Application, Contact, Enrolment} from "../../../../model";
 import CheckoutService from "../../../services/CheckoutService";
 import {addContact} from "../../contact-add/actions/Actions";
 import {Phase} from "../../../reducers/State";
@@ -70,11 +70,24 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
       warning: contact.parentRequired && isAddParentPhase && wrongGuardianMessage,
     }));
 
-    result.push(addContactNodeToState({
-      contactId: contact.id,
-      enrolments: [...state.cart.courses.result.map(key => {
+    const statePart = {
+      enrolments: [],
+      applications: []
+    }
+
+    state.cart.courses.result.forEach(key => {
+      const cartEn = state.cart.courses.entities[key];
+      if (cartEn.isAllowByApplication) {
+        const app = new Application();
+        app.contactId = contact.id;
+        app.classId = cartEn.id;
+        app.warnings = [];
+        app.errors = [];
+        app.selected = !uncheckContactItems;
+        app.fieldHeadings = [];
+        statePart.applications.push(app);
+      } else {
         const en = new Enrolment();
-        const cartEn = state.cart.courses.entities[key];
         en.contactId = contact.id;
         en.classId = cartEn.id;
         en.allowRemove = null;
@@ -86,13 +99,17 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
         en.relatedProductId = null;
         en.selected = !uncheckContactItems;
         en.warnings = [];
-        return en;
-      })],
-      applications: [],
+        statePart.enrolments.push(en);
+      }
+    })
+
+    result.push(addContactNodeToState({
+      contactId: contact.id,
       articles: [],
       memberships: [],
       vouchers: [],
       waitingLists: [],
+      ...statePart
     }));
 
     result.push(getContactNodeFromBackend(contact, uncheckContactItems));

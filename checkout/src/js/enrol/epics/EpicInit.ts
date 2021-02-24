@@ -3,7 +3,6 @@ import {MiddlewareAPI} from "redux";
 import {ActionsObservable, Epic} from "redux-observable";
 import {Observable} from "rxjs";
 import "rxjs";
-
 import * as Actions from "../actions/Actions";
 import {Actions as WebActions} from "../../web/actions/Actions";
 import {ValidationError, PaymentStatus} from "../../model";
@@ -15,18 +14,15 @@ import {getPaymentStatus, resetPaymentState} from "../containers/payment/actions
 import {IshState} from "../../services/IshState";
 import {getAllContactNodesFromBackend, removeItemFromSummary} from "../containers/summary/actions/Actions";
 
-
 const showCartIsEmptyMessage = (): IAction<any>[] => {
   const error: ValidationError = {formErrors: [ShoppingCardIsEmpty], fieldsErrors: []};
   return [Actions.changePhase(Phase.Init), {type: Actions.SHOW_MESSAGES, payload: error}];
 };
 
-
-
 const getItemType = action => {
   switch (action.type) {
     case WebActions.REMOVE_CLASS_FROM_CART:
-      return 'enrolments';
+      return action.payload.isAllowByApplication ? "applications" : "enrolments";
 
     case WebActions.REMOVE_WAITING_COURSE_FROM_CART:
       return 'waitingLists';
@@ -38,7 +34,6 @@ const getItemType = action => {
       return null;
   }
 }
-
 
 /**
  * This epic process Init action of checkout application and define Phase of the application

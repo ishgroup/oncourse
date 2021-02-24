@@ -167,6 +167,16 @@ const mergePurchases = (ns: State, payload: State, leaveExisting: boolean): Stat
   ns.entities.applications = leaveExisting
     ? {...payload.entities.applications, ...ns.entities.applications}
     : {...ns.entities.applications, ...payload.entities.applications};
+
+  // Make sure that field headings and related ids get merged
+  Object.keys(ns.entities.applications).forEach(key => {
+    if(payload.entities.applications && payload.entities.applications[key] && ns.entities.applications && ns.entities.applications[key]) {
+      if (!ns.entities.applications[key].fieldHeadings.length && payload.entities.applications[key].fieldHeadings.length) {
+        ns.entities.applications[key].fieldHeadings = payload.entities.applications[key].fieldHeadings
+      }
+    }
+  });
+
   ns.entities.memberships = leaveExisting
     ? {...payload.entities.memberships, ...ns.entities.memberships}
     : {...ns.entities.memberships, ...payload.entities.memberships};

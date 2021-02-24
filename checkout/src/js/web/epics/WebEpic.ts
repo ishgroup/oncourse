@@ -225,22 +225,39 @@ function createAddClassToSummaryEpic() {
       return contacts.map(node => {
         return rewriteContactNodeToState({
          ...state.checkout.summary.entities.contactNodes[node],
-         enrolments: [
-           ...state.checkout.summary.entities.contactNodes[node].enrolments,
-           {
-             contactId: node,
-             classId: classItem.id,
-             allowRemove: null,
-             courseId: null,
-             errors: [],
-             fieldHeadings: [],
-             price: {...classItem.price},
-             relatedClassId: null,
-             relatedProductId: null,
-             selected: true,
-             warnings: []
-           }
-         ]
+         ...classItem.isAllowByApplication
+          ? {applications: [
+               ...state.checkout.summary.entities.contactNodes[node].applications,
+               {
+                 contactId: node,
+                 classId: classItem.id,
+                 allowRemove: null,
+                 courseId: null,
+                 errors: [],
+                 fieldHeadings: [],
+                 price: {...classItem.price},
+                 relatedClassId: null,
+                 relatedProductId: null,
+                 selected: true,
+                 warnings: []
+               }
+             ]}
+          : {enrolments: [
+               ...state.checkout.summary.entities.contactNodes[node].enrolments,
+               {
+                 contactId: node,
+                 classId: classItem.id,
+                 allowRemove: null,
+                 courseId: null,
+                 errors: [],
+                 fieldHeadings: [],
+                 price: {...classItem.price},
+                 relatedClassId: null,
+                 relatedProductId: null,
+                 selected: true,
+                 warnings: []
+               }
+             ]}
         } as any)
       })
     });
