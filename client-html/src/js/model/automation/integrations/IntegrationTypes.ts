@@ -109,3 +109,17 @@ export const learndash: IntegrationTypeSchema = {
   description:
     "LearnDash is a learning management system plugin for Wordpress websites only. It can provide an online space for you to deliver your course materials to students."
 };
+
+export const amazons3: IntegrationTypeSchema = {
+  type: 16,
+  name: "Amazon S3",
+  description:
+    "Experience Reliability & Scalability With AWS Online Storage Solutions. Sign Up For Free"
+};
+
+export const azure: IntegrationTypeSchema = {
+  type: 17,
+  name: "Microsoft Azure",
+  description:
+    "Massively-Scalable Object Storage for Unstructured Data. Try Blob Storage Free. Learn by Doing. 25+ Free Services. Build Your Idea. Get Free Credit. Try Free Products."
+};

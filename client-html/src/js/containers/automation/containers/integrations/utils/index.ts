@@ -82,6 +82,12 @@ export const getByType = (type: number, source: any) => {
     case 15: {
       return source.learndash;
     }
+    case 16: {
+      return source.amazons3;
+    }
+    case 17: {
+      return source.azure;
+    }
   }
   return null;
 };
