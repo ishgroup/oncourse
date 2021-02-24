@@ -1,20 +1,16 @@
 import {IshState} from "../../services/IshState";
-import {REWRITE_CONTACT_NODE_TO_STATE, } from "../containers/summary/actions/Actions";
+import {REMOVE_ITEM_FROM_SUMMARY, REWRITE_CONTACT_NODE_TO_STATE,} from "../containers/summary/actions/Actions";
 import { Store} from "redux";
-import {FULFILLED} from "../../common/actions/ActionUtils";
-import {Actions} from "../../web/actions/Actions";
 import CartService from "../../services/CartService";
 import {getCookie} from "../../common/utils/Cookie";
+import {CHANGE_PHASE} from "../actions/Actions";
+import {StoredCartData} from "../../model/common/StoredCartData";
 
 export const EpicStoreCartState = (function () {
   return (action$, store: Store<IshState>) => action$
     .ofType(
-      FULFILLED(Actions.ADD_CLASS_TO_CART),
-      FULFILLED(Actions.REMOVE_CLASS_FROM_CART),
-      FULFILLED(Actions.ADD_PRODUCT_TO_CART),
-      FULFILLED(Actions.REMOVE_PRODUCT_FROM_CART),
-      FULFILLED(Actions.ADD_PROMOTION_TO_CART),
-      FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART),
+      CHANGE_PHASE,
+      REMOVE_ITEM_FROM_SUMMARY,
       REWRITE_CONTACT_NODE_TO_STATE,
     )
     .map(action => ({
@@ -26,11 +22,38 @@ export const EpicStoreCartState = (function () {
     .do(() => {
       const cartId = getCookie("cartId");
       if (cartId) {
-        const { cart, checkout } = store.getState();
-        CartService.create(cartId, JSON.stringify({ cart, checkout }))
-          .catch(() => {
-            console.error("Failed to upload cart data")
+        const { checkout } = store.getState();
+        const storedCartData: StoredCartData = {};
+        const contactNodes = checkout.summary.entities.contactNodes;
+
+        let isEmptyCart = true;
+
+        if (contactNodes) {
+          Object.keys(contactNodes).forEach(key => {
+            storedCartData[key] = {};
+            Object.keys(contactNodes[key]).forEach(eKey => {
+              if(contactNodes[key][eKey].length) {
+                storedCartData[key][eKey] = contactNodes[key][eKey];
+                if (eKey !== "contactId" && isEmptyCart) {
+                  isEmptyCart = false;
+                }
+              }
+            })
           })
+          storedCartData.payerId = checkout.payerId;
+
+          if (isEmptyCart) {
+            CartService._delete(cartId)
+              .catch(() => {
+                console.error("Failed to delete cart data")
+              })
+          } else {
+            CartService.create(cartId, JSON.stringify(storedCartData))
+              .catch(() => {
+                console.error("Failed to upload cart data")
+              })
+          }
+        }
       }
     })
     .filter(() => false);

@@ -23,13 +23,16 @@ const showCartIsEmptyMessage = (): IAction<any>[] => {
 
 
 
-const getItemType = actionType => {
-  switch (actionType) {
+const getItemType = action => {
+  switch (action.type) {
     case WebActions.REMOVE_CLASS_FROM_CART:
       return 'enrolments';
 
     case WebActions.REMOVE_WAITING_COURSE_FROM_CART:
       return 'waitingLists';
+
+    case WebActions.REMOVE_PRODUCT_FROM_CART:
+      return action.payload.type.toLowerCase() + "s"
 
     default:
       return null;
@@ -67,8 +70,8 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
     }
 
     if (CheckoutService.cartIsEmpty(state.cart)) {
-      if (state.checkout.summary.result.length) {
-       result.push(removeItemFromSummary(getItemType(action.type), action.payload && action.payload.id));
+      if (state.checkout.summary.result.length && action.payload && action.payload.id) {
+       result.push(removeItemFromSummary(getItemType(action), action.payload.id));
       }
       return result.concat(showCartIsEmptyMessage());
     }
@@ -76,7 +79,7 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
     if (state.checkout.summary.result.length) {
       return result.concat([
         Actions.changePhase(state.checkout.isCartModified ? Phase.Summary : state.checkout.page),
-        removeItemFromSummary(getItemType(action.type), action.payload && action.payload.id),
+        removeItemFromSummary(getItemType(action), action.payload && action.payload.id),
         getAllContactNodesFromBackend()
       ]);
     }
