@@ -38,7 +38,7 @@ class DocumentItem extends React.PureComponent<any, any> {
       classes, item, unlink, index, entity
     } = this.props;
     return (
-      <Paper onClick={this.openFullDocumentView} classes={{ root: clsx("cursor-pointer h-100", classes.documentPaper) }}>
+      <Paper onClick={this.openDocumentView} classes={{ root: clsx("cursor-pointer h-100", classes.documentPaper) }}>
         <Grid container className={clsx("p-1 relative h-100 align-content-between", classes.container)}>
           <DocumentHeader
             item={item}
