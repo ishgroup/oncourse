@@ -135,7 +135,7 @@ class CloudAssessScriptClosure implements ScriptClosureTrait<CloudAssessIntegrat
      * @param integration
      */
     @Override
-    void execute(CloudAssessIntegration integration) {
+    Object execute(CloudAssessIntegration integration) {
         switch (action) {
             case CloudAssessScriptClosure.ENROL:
                 integration.enrol(enrolment, code)
@@ -149,5 +149,6 @@ class CloudAssessScriptClosure implements ScriptClosureTrait<CloudAssessIntegrat
             default:
                 throw new IllegalArgumentException("Unknown action: ${action}")
         }
+        return null
     }
 }

@@ -68,7 +68,7 @@ class XeroScriptClosure implements ScriptClosureTrait<XeroIntegration> {
 	}
 
 	@Override
-	void execute(XeroIntegration integration) {
+	Object execute(XeroIntegration integration) {
 		switch (action) {
 			case 'journal':
 				integration.addManualJournalForTransactions(startOn, postJournals)
@@ -120,5 +120,6 @@ class XeroScriptClosure implements ScriptClosureTrait<XeroIntegration> {
 				throw new IllegalArgumentException("Unsupported xero action")
 
 		}
+		return null
 	}
 }
