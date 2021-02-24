@@ -19,21 +19,16 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
  * azurestorage {
  *     name "integration name"
  *     blob myDoc
- *     name "duck.jpg"
+ *     filName "duck.jpg"
  * }
  * ```
  *
- * If you pass the result of a report block in the blob attribute, you can skip the name.
+ * If you pass the FileData object in the blob attribute, you can skip the name.
  *
- * ```
- * report {
- *     keycode "ish.onCourse.myReport"
- *     records accounts
- * }
  *
  * azurestorage {
  *     name "integration name"
- *     blob report
+ *     blob fileData
  * }
  * ```
  *
@@ -42,13 +37,25 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
 @ScriptClosure(key = "azurestorage", integration = AzureStorageIntegration)
 class AzureStorageScriptClosure implements ScriptClosureTrait<AzureStorageIntegration> {
 
+    private Object blob
+    private String fileName 
+    
+    
+    void blob(Object blob) {
+        this.blob = blob
+    }
+    
+    void fileName(String fileName) {
+        this.fileName = fileName
+    }
+    
     /**
      * Execute the closure with the configuration from the passed integration
      *
      * @param integration
      */
     @Override
-    void execute(AzureStorageIntegration integration) {
-
+    Object execute(AzureStorageIntegration integration) {
+        return integration.store(blob, name)
     }
 }

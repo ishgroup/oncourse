@@ -33,7 +33,7 @@ class MicropowerScriptClosure implements ScriptClosureTrait<MicropowerIntegratio
 
 
     @Override
-    void execute(MicropowerIntegration integration) {
+    Object execute(MicropowerIntegration integration) {
 
         MembershipProduct membershipProduct = integration.getMembershipProduct()
 
@@ -47,5 +47,6 @@ class MicropowerScriptClosure implements ScriptClosureTrait<MicropowerIntegratio
             }
 
         }
+        return null
     }
 }

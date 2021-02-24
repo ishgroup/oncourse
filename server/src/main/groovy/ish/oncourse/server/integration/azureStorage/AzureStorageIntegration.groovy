@@ -8,18 +8,24 @@
 
 package ish.oncourse.server.integration.azureStorage
 
+import com.amazonaws.services.s3.model.ObjectMetadata
+import com.amazonaws.services.s3.model.PutObjectRequest
+import com.amazonaws.services.s3.model.PutObjectResult
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobContainerClientBuilder
-import com.azure.storage.blob.BlobServiceClient
-import com.azure.storage.blob.BlobServiceClientBuilder
-import com.azure.storage.blob.models.BlockBlobItem
 import com.azure.storage.blob.specialized.BlockBlobClient
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
-import ish.print.PrintResult
+import ish.oncourse.server.scripting.api.FileData
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import com.azure.storage.common.StorageSharedKeyCredential
+
+import java.nio.file.Files
+
+import static java.lang.String.format
+import static java.lang.String.format
+import static java.nio.file.Path.of
 
 @Plugin(type=17)
 class AzureStorageIntegration implements PluginTrait {
@@ -42,7 +48,8 @@ class AzureStorageIntegration implements PluginTrait {
     }
 
 
-    protected String store(Object blob, String name) {
+
+    String store(Object blob, String name) {
 
         BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
                 .endpoint("https://${this.account}.blob.core.windows.net")
@@ -51,9 +58,11 @@ class AzureStorageIntegration implements PluginTrait {
                 .buildClient()
         
         byte[] bytes
-        if (blob instanceof PrintResult) {
-            bytes = (blob as PrintResult).result
-            name = (blob as PrintResult).reportName
+        if (blob instanceof FileData) {
+            bytes = (blob as FileData).content
+            name = (blob as FileData).name
+        } else if (blob instanceof byte[]) {
+            bytes = blob as byte[]
         } else {
             ByteArrayOutputStream bos = new ByteArrayOutputStream()
             ObjectOutputStream out = new ObjectOutputStream(bos)
@@ -62,7 +71,9 @@ class AzureStorageIntegration implements PluginTrait {
             bytes = bos.toByteArray()
         }
         
-        blobContainerClient.getBlobClient(name).getBlockBlobClient().upload( new ByteArrayInputStream(bytes), bytes.length)
-        return blobContainerClient.getBlobClient(name).getBlobUrl()
+        BlockBlobClient blobClient = blobContainerClient.getBlobClient(name).getBlockBlobClient()
+        blobClient.upload( new ByteArrayInputStream(bytes), bytes.length)
+        return blobClient.blobUrl
+
     }
 }

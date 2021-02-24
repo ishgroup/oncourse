@@ -67,7 +67,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
 
 
     @Override
-    void execute(CanvasIntegration integration) {
+    Object execute(CanvasIntegration integration) {
         integration.initAuthHeader()
 
         if (enrolment.student.contact.email) {
@@ -103,6 +103,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
             integration.enrolUser(student["id"], section["id"])
 
         }
+        return null
     }
 
 

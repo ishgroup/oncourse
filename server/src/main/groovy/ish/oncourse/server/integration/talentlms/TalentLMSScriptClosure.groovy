@@ -51,7 +51,7 @@ class TalentLMSScriptClosure implements ScriptClosureTrait<TalentLMSIntegration>
     }
 
     @Override
-    void execute(TalentLMSIntegration integration) {
+    Object execute(TalentLMSIntegration integration) {
         String courseId = integration.getCourseId(course)
         if (!courseId) {
             throw new IllegalStateException("Course ${course} is missing from ${integration.baseUrl}")
@@ -66,5 +66,6 @@ class TalentLMSScriptClosure implements ScriptClosureTrait<TalentLMSIntegration>
             studentId = integration.createUser(contact.email, contact.firstName, contact.lastName)
         }
         integration.enrol(courseId, studentId)
+        return null
     }
 }

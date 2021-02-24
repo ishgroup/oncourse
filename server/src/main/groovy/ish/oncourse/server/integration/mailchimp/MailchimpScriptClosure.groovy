@@ -217,7 +217,7 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
 	}
 
 	@Override
-	void execute(MailchimpIntegration integration) {
+	Object execute(MailchimpIntegration integration) {
 
 		switch (action) {
 			case MailchimpScriptClosure.SUBSCRIBE:
@@ -259,5 +259,6 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
 			default:
 				throw new IllegalArgumentException("Unknown action: ${action}")
 		}
+		return null
 	}
 }
