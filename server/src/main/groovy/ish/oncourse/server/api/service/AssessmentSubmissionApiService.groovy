@@ -11,15 +11,23 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import ish.oncourse.server.api.dao.AssessmentSubmissionDao
 import ish.oncourse.server.api.v1.model.AssessmentSubmissionDTO
+import ish.oncourse.server.api.v1.model.FundingStatusDTO
 import ish.oncourse.server.cayenne.AssessmentSubmission
+import ish.oncourse.server.cayenne.AssessmentSubmissionAttachmentRelation
 import ish.oncourse.server.document.DocumentService
 import ish.util.DateFormatter
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
+import java.time.LocalDateTime
+
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 
 class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissionDTO, AssessmentSubmission, AssessmentSubmissionDao> {
+
+    @Inject
+    private ContactApiService contactService
 
     @Inject
     private DocumentService documentService
@@ -31,12 +39,7 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
 
     @Override
     AssessmentSubmissionDTO toRestModel(AssessmentSubmission cayenneModel) {
-        new AssessmentSubmissionDTO().with { dtoModel ->
-            dtoModel.id = cayenneModel.id
-            dtoModel.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
-            dtoModel.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
-            dtoModel.submittedOn = LocalDateUtils.dateToTimeValue(cayenneModel.submittedOn)
-            dtoModel.markedOn = LocalDateUtils.dateToTimeValue(cayenneModel.markedOn)
+        toRestMinimizedModel(cayenneModel).with { dtoModel ->
             dtoModel.studentName = cayenneModel.studentName
             dtoModel.courseClass = cayenneModel.courseClassName
             dtoModel.assessment = cayenneModel.assessmentName
@@ -45,19 +48,45 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
         }
     }
 
+    AssessmentSubmissionDTO toRestMinimizedModel(AssessmentSubmission cayenneModel) {
+        new AssessmentSubmissionDTO().with { dtoModel ->
+            dtoModel.id = cayenneModel.id
+            dtoModel.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
+            dtoModel.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
+            dtoModel.submittedOn = LocalDateUtils.dateToTimeValue(cayenneModel.submittedOn)
+            dtoModel.submissionStatus = FundingStatusDTO.SUCCESS
+            dtoModel.markedOn = LocalDateUtils.dateToTimeValue(cayenneModel.markedOn)
+            dtoModel.markStatus = FundingStatusDTO.SUCCESS
+            dtoModel.enrolmentId = cayenneModel.enrolment.id
+            dtoModel.submittedById = cayenneModel.submittedBy.id
+            dtoModel
+        }
+    }
+
     @Override
     AssessmentSubmission toCayenneModel(AssessmentSubmissionDTO dto, AssessmentSubmission cayenneModel) {
-        return null
+        if (FundingStatusDTO.UNKNOWN != dto.submissionStatus) {
+            cayenneModel.submittedOn = LocalDateUtils.timeValueToDate(LocalDateTime.now())
+        }
+        if (FundingStatusDTO.UNKNOWN != dto.markStatus) {
+            cayenneModel.markedOn = LocalDateUtils.timeValueToDate(LocalDateTime.now())
+        }
+        cayenneModel.submittedBy = contactService.getEntityAndValidateExistence(cayenneModel.context, dto.submittedById)
+
+        updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, AssessmentSubmissionAttachmentRelation, cayenneModel.context)
+
+        return cayenneModel
     }
 
     @Override
     void validateModelBeforeSave(AssessmentSubmissionDTO dto, ObjectContext context, Long id) {
-
+        if (dto.submittedById == null) {
+            validator.throwClientErrorException(id, 'submittedById', 'Assessor is required')
+        }
     }
 
     @Override
     void validateModelBeforeRemove(AssessmentSubmission cayenneModel) {
-
     }
 
     Closure getAction (String key, String value) {
