@@ -15,7 +15,7 @@ const request: EpicUtils.Request<any, any, number> = {
   hideLoadIndicator: true,
   getData: id => EntityService.getPlainRecords(
       "Enrolment",
-      "createdOn,status",
+      "createdOn,status,student.contact.fullName",
       `courseClass.id is ${id} and ( status is IN_TRANSACTION or status is QUEUED or status is SUCCESS ) `
     ),
   processData: (response: DataResponse) => {
