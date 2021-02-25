@@ -120,10 +120,7 @@ public class Course extends _Course implements Queueable {
 	}
 
 	public Set<Tutor> getTutors() {
-		return getCourseClasses().stream()
-				.filter(clazz -> !clazz.isCancelled()
-						&& clazz.getIsWebVisible()
-				)
+			return getAvailableClasses().stream()
 				.map(CourseClass::getTutorRoles)
 				.flatMap(Collection::stream)
 				.map(TutorRole::getTutor)
