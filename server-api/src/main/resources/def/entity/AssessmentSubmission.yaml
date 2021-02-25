@@ -12,9 +12,15 @@ properties:
   submittedOn:
     type: string
     format: date-time
+  submittedById:
+    type: integer
+    format: int64
   markedOn:
     type: string
     format: date-time
+  enrolmentId:
+    type: integer
+    format: int64
   studentName:
     type: string
   courseClass:
