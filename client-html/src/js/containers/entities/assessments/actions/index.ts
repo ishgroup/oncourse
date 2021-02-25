@@ -18,13 +18,6 @@ export const UPDATE_ASSESSMENT_ITEM_FULFILLED = FULFILLED(UPDATE_ASSESSMENT_ITEM
 export const CREATE_ASSESSMENT_ITEM = _toRequestType("post/assessment");
 export const CREATE_ASSESSMENT_ITEM_FULFILLED = FULFILLED(CREATE_ASSESSMENT_ITEM);
 
-export const GET_ASSESSMENT_ITEMS = _toRequestType("get/assessments");
-export const GET_ASSESSMENT_ITEMS_FULFILLED = FULFILLED(GET_ASSESSMENT_ITEMS);
-
-export const CLEAR_ASSESSMENT_ITEMS = "clear/assessments";
-
-export const SET_ASSESSMENT_SEARCH = _toRequestType("set/assessment/search");
-
 export const getAssessment = (id: string) => ({
   type: GET_ASSESSMENT_ITEM,
   payload: id
@@ -43,18 +36,4 @@ export const updateAssessment = (id: string, assessment: Assessment) => ({
 export const createAssessment = (assessment: Assessment) => ({
   type: CREATE_ASSESSMENT_ITEM,
   payload: { assessment }
-});
-
-export const getAssessments = (offset?: number, columns?: string, ascending?: boolean) => ({
-  type: GET_ASSESSMENT_ITEMS,
-  payload: { offset, columns, ascending }
-});
-
-export const setAssessmentSearch = (search: string) => ({
-  type: SET_ASSESSMENT_SEARCH,
-  payload: { search }
-});
-
-export const clearAssessmentItems = () => ({
-  type: CLEAR_ASSESSMENT_ITEMS,
 });
