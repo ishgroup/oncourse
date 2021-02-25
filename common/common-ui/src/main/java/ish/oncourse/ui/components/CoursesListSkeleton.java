@@ -75,7 +75,7 @@ public class CoursesListSkeleton extends ISHCommon {
 
 	public CourseItemSkeletonModel getCourseItemModel() {
 		List<Product> relatedProducts = CourseItemModelDaoHelper.selectRelatedProducts(course);
-		List<Course> relatedCourses = CourseItemModelDaoHelper.selectRelatedCourses(course);
+		List<Course> relatedCourses = course.getRelatedCourses();
 
 		CourseItemSkeletonModel courseItemModel = new CourseItemSkeletonModel(course, relatedProducts, relatedCourses);
 		List<CourseClassProjection> projections = coursesClassProjections.get(course.getId().toString());

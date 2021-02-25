@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CourseClass extends _CourseClass implements Queueable, CourseClassInterface {
 
@@ -493,4 +494,12 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	public void setCustomFieldValue(String key, String value) {
 		setCustomFieldValue(key, value, CourseCustomField.class);
 	}
+
+	public Set<Tutor> getTutors() {
+		return getTutorRoles().stream()
+				.map(TutorRole::getTutor)
+				.filter(tutor -> tutor.getFinishDate() == null || tutor.getFinishDate().after(new Date()))
+				.collect(Collectors.toSet());
+	}
+	
 }

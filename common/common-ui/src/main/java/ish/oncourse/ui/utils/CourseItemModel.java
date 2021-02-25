@@ -11,7 +11,7 @@ import java.util.List;
 public class CourseItemModel extends CourseItemModelGeneric<CourseClass> {
 
 	private CourseItemModel(Course course) {
-		super(course, CourseItemModelDaoHelper.selectRelatedProducts(course), CourseItemModelDaoHelper.selectRelatedCourses(course));
+		super(course, CourseItemModelDaoHelper.selectRelatedProducts(course), course.getRelatedCourses());
 	}
 
 	public static CourseItemModel valueOf(Course course, SearchParams searchParams) {

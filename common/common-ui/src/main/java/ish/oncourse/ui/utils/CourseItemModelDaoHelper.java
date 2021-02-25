@@ -30,30 +30,7 @@ public class CourseItemModelDaoHelper {
 		String type = new GetPreference(college, Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, college.getObjectContext()).getValue();
 		return new CheckClassAge().classAge(ClassAge.valueOf(age, type));
 	}
-
-	public static List<Course> selectRelatedCourses(Course course) {
-		ObjectContext context = course.getObjectContext();
-
-		List<EntityRelation> relations = new LinkedList<>(
-				ObjectSelect.query(EntityRelation.class)
-						.or(FROM_ENTITY_WILLOW_ID.eq(course.getId()),
-								TO_ENTITY_WILLOW_ID.eq(course.getId()))
-						.and(FROM_ENTITY_IDENTIFIER.eq(Course.class.getSimpleName()))
-						.and(TO_ENTITY_IDENTIFIER.eq(Course.class.getSimpleName()))
-						.and(EntityRelation.COLLEGE.eq(course.getCollege()))
-						.and(RELATION_TYPE.isNull().orExp(RELATION_TYPE.dot(EntityRelationType.IS_SHOWN_ON_WEB).eq(TRUE)))
-						.cacheStrategy(LOCAL_CACHE, EntityRelation.class.getSimpleName())
-						.select(context));
-
-		return relations.stream()
-						.map((r) -> Arrays.asList(SelectById.query(Course.class, r.getFromEntityWillowId()).selectOne(context),
-								SelectById.query(Course.class, r.getToEntityWillowId()).selectOne(context)))
-						.flatMap(Collection::stream)
-						.filter(c -> !c.getId().equals(course.getId()) && c.getIsWebVisible())
-						.sorted((c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()))
-						.collect(Collectors.toList());
-	}
-
+	
 	public static List<Product> selectRelatedProducts(Course course) {
 		ObjectContext context = course.getObjectContext();
 

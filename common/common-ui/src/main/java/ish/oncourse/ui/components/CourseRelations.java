@@ -4,7 +4,6 @@ import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.ui.utils.CourseItemModelGeneric;
-import ish.oncourse.ui.utils.CourseItemModelDaoHelper;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -37,7 +36,7 @@ public class CourseRelations extends ISHCommon {
 			courseRelations = model.getRelatedCourses();
 		}
 		else {
-			courseRelations = CourseItemModelDaoHelper.selectRelatedCourses(course);
+			courseRelations = course.getRelatedCourses();
 		}
     }
 }

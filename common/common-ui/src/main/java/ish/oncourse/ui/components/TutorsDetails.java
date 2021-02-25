@@ -60,7 +60,6 @@ public class TutorsDetails extends ISHCommon {
 
     @SetupRender
     void beginRender() {
-        Date now = new Date();
         if (tutorId != null) {
             tutors = new HashSet<>(ObjectSelect.query(Tutor.class)
                     .where(Tutor.ANGEL_ID.eq(tutorId))
@@ -68,20 +67,9 @@ public class TutorsDetails extends ISHCommon {
                     .select(cayenneService.newContext()));
         } else if (course != null) {
             
-            tutors = course.getCourseClasses().stream()
-                    .filter(clazz -> !clazz.isCancelled() 
-                            && clazz.getIsWebVisible()
-                    )
-                    .map(CourseClass::getTutorRoles)
-                    .flatMap(Collection::stream)
-                    .map(TutorRole::getTutor)
-                    .filter(tutor -> tutor.getFinishDate() == null || tutor.getFinishDate().after(now))
-                    .collect(Collectors.toSet());
+            tutors = course.getTutors();
         } else if (courseClass != null) {
-            tutors = courseClass.getTutorRoles().stream()
-                    .map(TutorRole::getTutor)
-                    .filter(tutor -> tutor.getFinishDate() == null || tutor.getFinishDate().after(now))
-                    .collect(Collectors.toSet());
+            tutors = courseClass.getTutors();
         } else if (tagName != null) {
             //Count can be no higher than 12 and defaults to 3 if no count is provided.
             if (count == null || count < 1 ) {

@@ -8,13 +8,17 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.SelectById;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static ish.oncourse.model.auto._EntityRelation.*;
+import static java.lang.Boolean.TRUE;
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
 public class Course extends _Course implements Queueable {
 	
@@ -113,5 +117,39 @@ public class Course extends _Course implements Queueable {
 		return ObjectSelect.query(EntityRelation.class)
 				.where(EntityRelation.TO_ENTITY_WILLOW_ID.eq(getId()))
 				.select(objectContext);
+	}
+
+	public Set<Tutor> getTutors() {
+		return getCourseClasses().stream()
+				.filter(clazz -> !clazz.isCancelled()
+						&& clazz.getIsWebVisible()
+				)
+				.map(CourseClass::getTutorRoles)
+				.flatMap(Collection::stream)
+				.map(TutorRole::getTutor)
+				.filter(tutor -> tutor.getFinishDate() == null || tutor.getFinishDate().after(new Date()))
+				.collect(Collectors.toSet());
+	}
+	
+	public List<Course> getRelatedCourses() {
+
+		List<EntityRelation> relations = new LinkedList<>(
+				ObjectSelect.query(EntityRelation.class)
+						.or(FROM_ENTITY_WILLOW_ID.eq(getId()),
+								TO_ENTITY_WILLOW_ID.eq(getId()))
+						.and(FROM_ENTITY_IDENTIFIER.eq(Course.class.getSimpleName()))
+						.and(TO_ENTITY_IDENTIFIER.eq(Course.class.getSimpleName()))
+						.and(EntityRelation.COLLEGE.eq(getCollege()))
+						.and(RELATION_TYPE.isNull().orExp(RELATION_TYPE.dot(EntityRelationType.IS_SHOWN_ON_WEB).eq(TRUE)))
+						.cacheStrategy(LOCAL_CACHE, EntityRelation.class.getSimpleName())
+						.select(getObjectContext()));
+
+		return relations.stream()
+				.map((r) -> Arrays.asList(SelectById.query(Course.class, r.getFromEntityWillowId()).selectOne(getObjectContext()),
+						SelectById.query(Course.class, r.getToEntityWillowId()).selectOne(getObjectContext())))
+				.flatMap(Collection::stream)
+				.filter(c -> !c.getId().equals(getId()) && c.getIsWebVisible())
+				.sorted((c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()))
+				.collect(Collectors.toList());
 	}
 }
