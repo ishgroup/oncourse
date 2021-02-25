@@ -646,7 +646,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Marked On Date', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true),
         ]
         it.sortings = [
-                new SortingDTO(attribute: AssessmentSubmission.STUDENT_NAME_PROPERTY, ascending: true)
+                new SortingDTO(attribute: AssessmentSubmission.ENROLMENT.dot(Enrolment.ID).name, ascending: true)
         ]
         it.layout = LayoutTypeDTO.THREE_COLUMN
         it.filterColumnWidth = W200
