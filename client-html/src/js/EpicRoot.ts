@@ -58,6 +58,7 @@ import { EpicPdfBackgrounds } from "./containers/automation/containers/pdf-backg
 import { EpicNotes } from "./common/components/form/notes/epics";
 import { EpicPriorLearning } from "./containers/entities/priorLearnings/epics";
 import { EpicCheckout } from "./containers/checkout/epics";
+import { EpicAssessmentSubmissions } from "./containers/entities/assessmentSubmissions/epics";
 
 // Creating ES6 Set Object to guarantee unique value of each import
 const importSet = new Set([
@@ -111,6 +112,7 @@ const importSet = new Set([
   EpicCustomFieldTypes,
   EpicOutcome,
   EpicAssessment,
+  EpicAssessmentSubmissions,
   EpicEnrolment,
   EpicPriorLearning,
   EpicMessage,

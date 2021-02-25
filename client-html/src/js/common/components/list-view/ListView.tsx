@@ -909,7 +909,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
     const message = args.length >= 4 && args[3]
       ? "The filter will be permanently deleted. This action cannot be undone"
-      : "This filter is currently being shared with other users. The filter will be permanently deleted. This action cannot be undone"
+      : "This filter is currently being shared with other users. The filter will be permanently deleted. This action cannot be undone";
 
     openConfirm(() => {
       this.checkDirty(this.onDeleteFilter, args, true);
