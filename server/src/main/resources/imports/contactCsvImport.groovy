@@ -3,6 +3,8 @@ import ish.oncourse.server.imports.CsvParser
 import javax.script.ScriptException
 import java.time.format.DateTimeFormatter
 
+def genders = [ 'M': Gender.MALE, 'F': Gender.FEMALE, 'X': Gender.OTHER_GENDER ]
+
 def reader = new CsvParser(new InputStreamReader(new ByteArrayInputStream(contactFile)))
 int rowNumber = 0
 try {
@@ -14,7 +16,7 @@ try {
             contact.firstName = line.firstName
             contact.middleName = line.middleName
             contact.honorific = line.honorific
-            contact.isMale = line.gender?.toBoolean()
+            contact.gender = genders.get(line.gender)
             contact.birthDate = line.birthDate ? LocalDate.parse(line.birthDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null
             contact.isCompany = line.company?.toBoolean() ?: false
             contact.isStudent = line.isStudent?.toBoolean() ?: false
