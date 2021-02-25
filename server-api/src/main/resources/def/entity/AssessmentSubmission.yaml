@@ -9,12 +9,18 @@ properties:
   modifiedOn:
     type: string
     format: date-time
+  submissionStatus:
+    $ref: '../enum/FundingStatus.yaml'
+    required: true
   submittedOn:
     type: string
     format: date-time
   submittedById:
     type: integer
     format: int64
+  markStatus:
+    $ref: '../enum/FundingStatus.yaml'
+    required: true
   markedOn:
     type: string
     format: date-time
