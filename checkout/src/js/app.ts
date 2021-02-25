@@ -10,6 +10,7 @@ import {getPreferences} from "./common/actions/Actions";
 import {getCookie, setCookie} from "./common/utils/Cookie";
 import { v4 as uuid } from "uuid";
 import moment from "moment-timezone";
+import localforage from "localforage";
 
 // Intersection Observer polyfill
 require('intersection-observer');
@@ -37,6 +38,14 @@ const appStart = () => {
       uuid().replace(/-/g,"").substring(0,30)
     );
   }
+
+  localforage.config({
+    driver: [localforage.LOCALSTORAGE, localforage.INDEXEDDB, localforage.WEBSQL]
+  })
+
+  localforage.ready().catch(e => {
+    console.error(e);
+  })
 
   const store = CreateStore();
 
