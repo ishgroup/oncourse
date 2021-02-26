@@ -20,7 +20,6 @@ import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import Typography from "@material-ui/core/Typography";
 import clsx from "clsx";
 import uniqid from "uniqid";
-// import { startOfDay, startOfMonth } from "date-fns";
 import { AppTheme } from "../../../../../model/common/Theme";
 import AttendanceActionsMenu from "./AttendanceActionsMenu";
 import AttendanceActionModal, { ATTENDANCE_COURSE_CLASS_FORM } from "./AttendanceActionModal";
@@ -115,53 +114,6 @@ const styles = (theme: AppTheme) => createStyles({
       marginLeft: -20
     }
   });
-
-// const getAttendanceMonths = (items: AttandanceStepItem[]): AttandanceMonth[] => {
-//   const firstItemStartDate = new Date(items[0].start || items[0].dueDate);
-//
-//   const months: AttandanceMonth[] = [
-//     {
-//       month: startOfMonth(firstItemStartDate),
-//       days: [
-//         {
-//           day: startOfDay(firstItemStartDate),
-//           items: [items[0]]
-//         }
-//       ]
-//     }
-//   ];
-//
-//   for (let i = 1; i < items.length; i++) {
-//     const item = items[i];
-//
-//     const startDate = new Date(item.start || item.dueDate);
-//     const monthIndex = months.findIndex(m => m.month.getMonth() === startDate.getMonth());
-//
-//     if (monthIndex > -1) {
-//       const dayIndex = months[monthIndex].days.findIndex(d => d.day.getDay() === startDate.getDay());
-//       if (dayIndex > -1) {
-//         months[monthIndex].days[dayIndex].items.push(item);
-//       } else {
-//         months[monthIndex].days.push({
-//           day: startOfDay(startDate),
-//           items: [item]
-//         });
-//       }
-//     } else {
-//       months.push({
-//         month: startOfMonth(new Date(item.start || item.dueDate)),
-//         days: [
-//           {
-//             day: startOfDay(startDate),
-//             items: [item]
-//           }
-//         ]
-//       });
-//     }
-//   }
-//
-//   return months;
-// };
 
 let lastUpdated: { type: AttendanceGridType; items: ContactAttendanceItem["attendances"]; id: number | string } = null;
 
@@ -731,13 +683,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
       validateAttendanceUpdate([updated], "Tutor");
     };
 
-    // const attendanceMonths = useMemo(() => (stepItems.length ? getAttendanceMonths(stepItems) : []), [stepItems]);
-    //
-    // const renderedMonths = useMemo(
-    //   () => attendanceMonths.map((m, i) => <AttendanceMonthBase key={i} fullWidth {...m} />),
-    //   [attendanceMonths]
-    // );
-
     const sessionsLeftScroller = useMemo(
       () => selectedItems.length
         && stepItems.length
@@ -991,18 +936,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
           <Grid item xs={3}>
             &nbsp;
           </Grid>
-          <Grid item xs={9}>
-            {/* <div className={classes.months}> */}
-            {/*  {renderedMonths} */}
-
-            {/*  <AttendanceSlider */}
-            {/*    stepItems={stepItems} */}
-            {/*    setSelectedItems={setSelectedItems} */}
-            {/*    sliderValue={sliderValue} */}
-            {/*    setSliderValue={setSliderValue} */}
-            {/*  /> */}
-            {/* </div> */}
-          </Grid>
+          <Grid item xs={9} />
 
           <Grid item container xs={3} alignItems="center" justify="flex-end" className="pr-2">
             {sessionsLeftScroller}
