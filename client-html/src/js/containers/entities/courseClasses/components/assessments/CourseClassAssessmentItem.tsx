@@ -6,6 +6,7 @@
 import React, { useCallback, useMemo, useRef } from "react";
 import { Dispatch } from "redux";
 import { change, Field } from "redux-form";
+import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { differenceInDays } from "date-fns";
@@ -15,12 +16,15 @@ import { StyledCheckbox } from "../../../../../common/components/form/form-field
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { stubComponent } from "../../../../../common/utils/common";
 import { defaultContactName } from "../../../contacts/utils";
+import { State } from "../../../../../reducers/state";
+import { StudentAttendanceIconButton } from "../attendance/AttendanceIconButtons";
 
 interface Props {
   form: string;
   item: string;
   dispatch: Dispatch;
   tutors: CourseClassTutor[];
+  courseClassEnrolments?: any[],
   twoColumn?: boolean;
   row?: AssessmentClass;
   rows?: AssessmentClass[];
@@ -34,6 +38,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     item,
     tutors,
     twoColumn,
+    courseClassEnrolments,
     dispatch
   } = props;
 
@@ -107,66 +112,87 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   const assessmentAql = `active is true${rowsIds.length ? ` and id not (${rowsIds.toString()})` : ""}`;
 
   return (
-    <Grid container className="pb-3">
-      <Grid item xs={twoColumn ? 8 : 12} container>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <Field name={`${item}.contactIds`} component={tutorsFieldStub} />
-          <FormField
-            type="remoteDataSearchSelect"
-            entity="Assessment"
-            aqlFilter={assessmentAql}
-            name={`${item}.assessmentCode`}
-            label="Code"
-            selectValueMark="code"
-            selectLabelMark="code"
-            onInnerValueChange={onCodeChange}
-            rowHeight={36}
-            fullWidth
-            required
-          />
+    <Grid container>
+      <Grid container className="pb-3">
+        <Grid item xs={twoColumn ? 8 : 12} container>
+          <Grid item xs={twoColumn ? 6 : 12}>
+            <Field name={`${item}.contactIds`} component={tutorsFieldStub} />
+            <FormField
+              type="remoteDataSearchSelect"
+              entity="Assessment"
+              aqlFilter={assessmentAql}
+              name={`${item}.assessmentCode`}
+              label="Code"
+              selectValueMark="code"
+              selectLabelMark="code"
+              onInnerValueChange={onCodeChange}
+              rowHeight={36}
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 6 : 12}>
+            <FormField
+              type="remoteDataSearchSelect"
+              entity="Assessment"
+              aqlFilter={assessmentAql}
+              name={`${item}.assessmentName`}
+              label="Name"
+              selectValueMark="name"
+              selectLabelMark="name"
+              onInnerValueChange={onNameChange}
+              rowHeight={36}
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 6 : 12}>
+            <FormField
+              type="dateTime"
+              name={`${item}.releaseDate`}
+              label="Release date"
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 6 : 12}>
+            <FormField
+              type="dateTime"
+              name={`${item}.dueDate`}
+              label="Due date"
+              validate={[validateSingleMandatoryField, validateDueDate]}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <FormField
-            type="remoteDataSearchSelect"
-            entity="Assessment"
-            aqlFilter={assessmentAql}
-            name={`${item}.assessmentName`}
-            label="Name"
-            selectValueMark="name"
-            selectLabelMark="name"
-            onInnerValueChange={onNameChange}
-            rowHeight={36}
-            fullWidth
-            required
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <FormField
-            type="dateTime"
-            name={`${item}.releaseDate`}
-            label="Release date"
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <FormField
-            type="dateTime"
-            name={`${item}.dueDate`}
-            label="Due date"
-            validate={[validateSingleMandatoryField, validateDueDate]}
-          />
+
+        <Grid container item xs={twoColumn ? 4 : 12}>
+          <Grid item xs={12}>
+            <div>
+              <div className="heading">Assessors</div>
+              {tutorsCheckboxes}
+            </div>
+          </Grid>
         </Grid>
       </Grid>
 
-      <Grid container item xs={twoColumn ? 4 : 12}>
-        <Grid item xs={12}>
-          <div>
-            <div className="heading">Assessors</div>
-            {tutorsCheckboxes}
-          </div>
-        </Grid>
+      <Grid container className="pb-3">
+        <div className="heading">Assessment Submission</div>
+        {courseClassEnrolments.map((elem: any) => (
+          <Grid container>
+            {elem.student}
+            {/* <StudentAttendanceIconButton */}
+            {/*  attendance={{ */}
+            {/*    attendanceType: "Unmarked", */}
+            {/*  }} */}
+            {/*  onClick={e => onStudentIconClick(e, attendance.index)} */}
+            {/* /> */}
+          </Grid>
+        ))}
       </Grid>
     </Grid>
   );
 };
 
-export default CourseClassAssessmentItem;
+const mapStateToProps = (state: State) => ({
+  courseClassEnrolments: state.courseClass.enrolments,
+});
+
+export default connect(mapStateToProps, null)(CourseClassAssessmentItem);
