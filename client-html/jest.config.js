@@ -10,7 +10,7 @@ module.exports = {
       tsconfig: "tsconfig.test.json"
     }
   },
-  setupFiles: ["core-js"],
+  setupFiles: ["core-js", "jest-canvas-mock"],
   transform: {
     ".+\\.(css|styl|less|sass|scss|png|jpg|gif|ttf|woff|woff2)$": "jest-transform-stub"
   },
