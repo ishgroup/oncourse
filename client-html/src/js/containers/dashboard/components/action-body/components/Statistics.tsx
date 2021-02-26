@@ -133,6 +133,24 @@ const TotalStatisticInfo = props => {
   );
 };
 
+const ChartTooltip = args => {
+  const { payload, active } = args;
+
+  return active ? (
+    <Paper className="p-1">
+      {payload.map((i, n) => (
+        <Typography key={n} noWrap>
+          <span style={{ color: i.color }} className="mr-1">
+            {i.name}
+            :
+          </span>
+          <span className={n === 0 ? "money" : undefined}>{i.payload[`${i.name}Value`]}</span>
+        </Typography>
+      ))}
+    </Paper>
+  ) : null;
+};
+
 const Chart = props => (
   <AutoSizer disableHeight defaultHeight={200}>
     {({ width }) => (
@@ -154,24 +172,6 @@ const Chart = props => (
   </AutoSizer>
   );
 
-const ChartTooltip = args => {
-  const { payload, active } = args;
-
-  return active ? (
-    <Paper className="p-1">
-      {payload.map((i, n) => (
-        <Typography key={n} noWrap>
-          <span style={{ color: i.color }} className="mr-1">
-            {i.name}
-            :
-          </span>
-          <span className={n === 0 ? "money" : undefined}>{i.payload[`${i.name}Value`]}</span>
-        </Typography>
-      ))}
-    </Paper>
-  ) : null;
-};
-
 const preformatChartNumbers = (values: number[], reduceTo?: number) => {
   const max = Math.max(...values);
 
@@ -192,6 +192,7 @@ interface Props {
   currency?: Currency;
   isUpdating?: boolean;
   hasScriptsPermissions?: boolean;
+  dispatch?: Dispatch;
 }
 
 class Statistics extends React.Component<Props, any> {
@@ -248,7 +249,7 @@ class Statistics extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, hasScriptsPermissions, statisticData, currency
+     classes, hasScriptsPermissions, statisticData, currency, dispatch
     } = this.props;
 
     const { chartData } = this.state;
@@ -375,7 +376,7 @@ class Statistics extends React.Component<Props, any> {
             <Typography className={clsx("heading", classes.headingMargin)}>
               Automation status
             </Typography>
-            <ScriptStatistic />
+            <ScriptStatistic dispatch={dispatch} />
           </Grid>
         )}
       </Grid>
@@ -391,6 +392,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  dispatch,
   getStatistic: () => dispatch(getDashboardStatistic())
 });
 
