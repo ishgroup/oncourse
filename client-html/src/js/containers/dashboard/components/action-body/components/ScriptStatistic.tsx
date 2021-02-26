@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import {
-  differenceInHours, differenceInMinutes, differenceInSeconds, format, parseISO
+  differenceInMinutes, format
 } from "date-fns";
 import { Check, Clear } from "@material-ui/icons";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -21,35 +21,16 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import EntityService from "../../../../../common/services/EntityService";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../../common/utils/links";
+import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 const styles = theme => createStyles({
-  statisticGroup: {
-    padding: "0 8px 0"
-  },
-  containerStatisticGroup: {
-    width: "calc(100% + 16px)",
-    margin: "-8px"
-  },
-  displayBlock: {
-    display: "block",
-  },
-  doneIcon: {
-    position: "relative",
+  icon: {
     top: "0.3rem",
     marginRight: theme.spacing(1),
     fontSize: "1.2rem",
-    color: "green"
-  },
-  failedIcon: {
-    position: "relative",
-    top: "0.3rem",
-    marginRight: theme.spacing(1),
-    fontSize: "1.2rem",
-    color: "red"
   },
   smallScriptGroup: {
     display: "flex",
-    alignItems: "baseline",
     padding: "0",
     height: "18px",
   },
@@ -66,10 +47,8 @@ const styles = theme => createStyles({
   }
 });
 
-const ScriptStatistic = (props: any) => {
+const ScriptStatistic = ({ dispatch, classes }) => {
   const [scripts, setScripts] = useState({});
-
-  const { classes } = props;
 
   const getScriptsData = () => {
     EntityService.getPlainRecords(
@@ -81,60 +60,38 @@ const ScriptStatistic = (props: any) => {
       "name",
       true
     )
-      .then((response: DataResponse) => {
-        const scripts = [...response.rows];
-        const enabledScripts = response.rows.map(elem => elem.id);
+      .then(async (scriptRes: DataResponse) => {
+        const resultForRender = {};
 
-        EntityService.getPlainRecords(
-          "Audit",
-          "entityId,created,action",
-          `entityIdentifier is "Script" and entityId in (${enabledScripts.toString()}) 
-            and ( action is SCRIPT_FAILED or action is SCRIPT_EXECUTED)`,
-          null,
-          0,
-          'created',
-          false
-        ).then((response: DataResponse) => {
-          const result = {};
+        await scriptRes.rows.map(scriptRow => () =>
+          EntityService.getPlainRecords(
+            "Audit",
+            "entityId,created,action",
+            `created today and entityIdentifier is "Script" and entityId is ${scriptRow.id}
+            and ( action is SCRIPT_FAILED or action is SCRIPT_EXECUTED) `,
+            7,
+            0,
+            'created',
+            false
+          ).then(auditRes => {
+            const result = auditRes.rows.map(row => ({
+              id: row.values[0],
+              date: row.values[1],
+              status: row.values[2],
+            }));
 
-          response.rows.forEach(elem => {
-            const arrayWithValues = elem.values;
-
-            const elemForArray = {
-              id: arrayWithValues[0],
-              date: arrayWithValues[1],
-              status: arrayWithValues[2],
-            };
-
-            result[arrayWithValues[0]] = result[arrayWithValues[0]] ? [...result[arrayWithValues[0]], elemForArray] : [elemForArray];
-          });
-
-          const scriptsWithName = {};
-
-          Object.keys(result).forEach((key: string) => {
-            const script = scripts.find((elem: any) => key === elem.id);
-            scriptsWithName[script.values[0]] = [...result[key].slice(0, 7)];
-          });
-
-          const sortable = [];
-          const currentDate = new Date();
-          for (const script in scriptsWithName) {
-            if (differenceInHours(currentDate, parseISO(scriptsWithName[script][0].date)) <= 24) {
-              sortable.push([script, scriptsWithName[script][0].date]);
+            if (result.length) {
+              resultForRender[scriptRow.values[0]] = result;
             }
-          }
+          })
+          .catch(err => instantFetchErrorHandler(dispatch, err))).reduce(async (a, b) => {
+          await a;
+          await b();
+        }, Promise.resolve());
 
-          sortable.sort((a, b) => differenceInSeconds(
-            parseISO(a[1]),
-            parseISO(b[1]),
-          ));
-
-          const resultForRender = sortable.reverse().reduce((result, elem) => (
-            { ...result, [elem[0]]: [...scriptsWithName[elem[0]]] }), {});
-
-          setScripts(resultForRender);
-        });
-      });
+        setScripts(resultForRender);
+      })
+      .catch(err => instantFetchErrorHandler(dispatch, err));
   };
 
   useEffect(() => {
@@ -148,61 +105,60 @@ const ScriptStatistic = (props: any) => {
   const getTime = (date: any) => {
     const currentDate = new Date();
 
-    const minutes = differenceInMinutes(currentDate, parseISO(date));
+    const minutes = differenceInMinutes(currentDate, new Date(date));
 
     if (minutes < 60) {
       return minutes + 'm ago';
     }
-      return Math.floor(minutes / 60) + 'h ago';
+    return Math.floor(minutes / 60) + 'h ago';
   };
 
   return (
     <List dense disablePadding>
-      <Grid container className={clsx(classes.containerStatisticGroup, classes.displayBlock)}>
-        {Object.keys(scripts).map((key: string) => (
-          <Grid item className={classes.statisticGroup}>
-            <ListItem className={classes.smallScriptGroup} dense disableGutters>
-              <Grid xs={6}>
-                <Typography
-                  onClick={() => openInternalLink(`/automation/script/${scripts[key][0].id}`)}
-                  className={clsx(classes.smallText, "linkDecoration", classes.leftColumn, classes.smallScriptText)}
-                  noWrap
-                >
-                  {key}
-                </Typography>
-              </Grid>
-              <Grid className={classes.smallScriptGroup} xs={6}>
-                <Typography className={classes.lastRunText}>
-                  {getTime(scripts[key][0].date)}
-                </Typography>
-                {scripts[key] && [...scripts[key]].reverse().map((elem: any) => (
-                  elem.status === "SCRIPT_EXECUTED"
+      {Object.keys(scripts).map((key: string) => (
+        <ListItem className={classes.smallScriptGroup} dense disableGutters>
+          <Grid container wrap="nowrap">
+            <Grid item xs className="overflow-hidden">
+              <Typography
+                onClick={() => openInternalLink(`/automation/script/${scripts[key][0].id}`)}
+                className={clsx(classes.smallText, "linkDecoration", classes.leftColumn, classes.smallScriptText)}
+                noWrap
+              >
+                {key}
+              </Typography>
+            </Grid>
+            <Grid item className={classes.smallScriptGroup} xs={6}>
+              <Typography className={classes.lastRunText} color="textSecondary">
+                {getTime(scripts[key][0].date)}
+              </Typography>
+              {scripts[key] && [...scripts[key]].map((elem: any) => (
+                elem.status === "SCRIPT_EXECUTED"
                   ? (
                     <Tooltip title={`Succeeded at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
-                      <Check className={classes.doneIcon} />
+                      <Check className={clsx(classes.icon, "successColor")} />
                     </Tooltip>
                   )
                   : (
                     <Tooltip title={`Failed at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
-                      <Clear className={classes.failedIcon} />
+                      <Clear className={clsx(classes.icon, "errorColor")} />
                     </Tooltip>
                   )
               ))}
-                <Link
-                  href={`${window.location.origin}/audit?search=entityId is ${scripts[key][0].id} and entityIdentifier is "Script"`}
-                  target="_blank"
-                  color="textSecondary"
-                  underline="none"
-                >
-                  <Tooltip title="more...">
-                    <span> ...</span>
-                  </Tooltip>
-                </Link>
-              </Grid>
-            </ListItem>
+              <Link
+                href={`${window.location.origin}/audit?search=entityId is ${scripts[key][0].id} and entityIdentifier is "Script"`}
+                target="_blank"
+                color="textSecondary"
+                underline="none"
+              >
+                <Tooltip title="more...">
+                  <span> ...</span>
+                </Tooltip>
+              </Link>
+            </Grid>
           </Grid>
+
+        </ListItem>
         ))}
-      </Grid>
     </List>
   );
 };
