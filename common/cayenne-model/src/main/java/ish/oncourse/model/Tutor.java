@@ -40,12 +40,11 @@ public class Tutor extends _Tutor implements Queueable {
 
 		return ObjectSelect.query(TutorRole.class).
 				where(TutorRole.COURSE_CLASS.dot( CourseClass.CANCELLED).isFalse()).
-				and(TutorRole.COURSE_CLASS.dot( CourseClass.CANCELLED).isFalse()).
-				and(TutorRole.COURSE_CLASS.dot(CourseClass.END_DATE).isNotNull()).
+				and(TutorRole.COURSE_CLASS.dot( CourseClass.IS_WEB_VISIBLE).isTrue()).
+				and(TutorRole.COURSE_CLASS.dot(CourseClass.COURSE).dot(Course.IS_WEB_VISIBLE).isTrue()).
 				and(TutorRole.TUTOR.eq(this)).
 				and(TutorRole.IN_PUBLICITY.isTrue()).
 				and(TutorRole.COURSE_CLASS.dot(CourseClass.END_DATE).gte(calendar.getTime())).
-				and(TutorRole.COURSE_CLASS.dot(CourseClass.IS_WEB_VISIBLE).isTrue()).
 				select(getObjectContext());
 	}
 
