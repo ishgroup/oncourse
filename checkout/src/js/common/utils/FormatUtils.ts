@@ -6,15 +6,9 @@ import moment from "moment-timezone";
 /**
  * https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
  */
-const MONEY_FORMAT = global.Intl ?
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    currencyDisplay: 'narrowSymbol',
-    minimumFractionDigits: 2,
-  }) : {
-    format: val => (val.toString()),
-  };
+const MONEY_FORMAT = {
+  format: val => typeof val === "number" ? val.toLocaleString("en-US", {style: "currency", currency: "USD", minimumFractionDigits: 2}) : val,
+};
 
 /**
  * Format date string in ISO8601 to string with this pattern

@@ -67,7 +67,6 @@ class EnrolmentComp extends React.Component<Props, any> {
         >
           <ClassDetails
             courseClass={courseClass}
-            error={error}
             onChangeClass={onChangeClass}
             onAddNewClasses={onAddNewClasses}
             readonly={readonly}
@@ -123,7 +122,6 @@ const ClassPrice = (props): any => {
 interface ClassDetailsProps {
   courseClass: CourseClass;
   onChangeClass?: (classId: string, newClasses: CourseClass[]) => void;
-  error: any;
   onAddNewClasses: any;
   readonly?: boolean;
 }
@@ -158,10 +156,10 @@ class ClassDetails extends React.PureComponent<ClassDetailsProps, any>{
   }
 
   render() {
-    const { courseClass, onChangeClass, error, readonly } = this.props;
+    const { courseClass, onChangeClass, readonly } = this.props;
     const { availableClasses } = this.state;
 
-    return courseClass.id && !error && !readonly ? (
+    return courseClass.id && !readonly ? (
       <SelectField
         returnType="object"
         searchable={false}

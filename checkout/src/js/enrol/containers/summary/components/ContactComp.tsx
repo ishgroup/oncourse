@@ -107,7 +107,7 @@ class ContactComp extends React.Component<Props, any> {
             props.courseClass && (readonly ? props.enrolment.selected : true) && <EnrolmentComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Enrolment(), props.enrolment), !props.enrolment.selected)}
-              onChangeClass={(classId, newClasses) => onChangeClass(Object.assign(new Enrolment(), props.enrolment), Object.assign(new Enrolment(), props.enrolment, { classId }), newClasses)}
+              onChangeClass={(classId, newClasses) => onChangeClass(Object.assign(new Enrolment(), props.enrolment), Object.assign(new Enrolment(), props.enrolment, { classId, selected: true }), newClasses)}
               onChangeFields={onChangeEnrolmentFields}
               readonly={readonly}
             />,
