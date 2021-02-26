@@ -14,7 +14,9 @@ const calculateBoundingBoxes = children => {
 
   React.Children.forEach(children, child => {
     const domNode = child.ref.current;
-    boundingBoxes[child.key] = domNode.getBoundingClientRect();
+    if (domNode) {
+      boundingBoxes[child.key] = domNode.getBoundingClientRect();
+    }
   });
 
   return boundingBoxes;
