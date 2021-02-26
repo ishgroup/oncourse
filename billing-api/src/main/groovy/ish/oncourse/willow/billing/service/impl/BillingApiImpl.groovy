@@ -6,11 +6,7 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.api.request.RequestService
 import ish.oncourse.configuration.Configuration
-import ish.oncourse.model.College
-import ish.oncourse.model.KeyStatus
-import ish.oncourse.model.PaymentGatewayType
-import ish.oncourse.model.Preference
-import ish.oncourse.model.WebSite
+import ish.oncourse.model.*
 import ish.oncourse.services.mail.EmailBuilder
 import ish.oncourse.services.mail.SendEmail
 import ish.oncourse.services.persistence.ICayenneService
@@ -76,7 +72,7 @@ class BillingApiImpl implements BillingApi {
         try {
 
             //1.Create s3 bucket
-            String bucketName = String.format(BUCKET_NAME_FORMAT, collegeDTO.collegeKey)
+            String bucketName =  String.format(BUCKET_NAME_FORMAT, collegeDTO.collegeKey)
             s3Service.createBucket(bucketName)
             AccessKey key = s3Service.createS3User(String.format(AWS_USER_NAME_FORMAT, collegeDTO.collegeKey), bucketName)
 
@@ -197,7 +193,7 @@ class BillingApiImpl implements BillingApi {
         email.setSubject(subject)
         email.setBody(message)
         email.setToEmails('support@ish.com.ua')
-        SendEmail.valueOf(email, true)
+        SendEmail.valueOf(email, true).send()
     }
     
     @Override
@@ -232,6 +228,7 @@ class BillingApiImpl implements BillingApi {
         college.setRequiresAvetmiss(true)
         college.setTimeZone(timeZone)
         college.lastRemoteAuthentication = new Date(0)
+        college.firstRemoteAuthentication = new Date()
 
         return college
     }
@@ -267,9 +264,7 @@ class BillingApiImpl implements BillingApi {
                     "user:\n"+
                     "  firstName: $userFirstName\n" +
                     "  lastName: $userLastName\n" +
-                    "  email: $userEmail\n" +
-                    "  phone: $userPhone\n"
-
+                    "  email: $userEmail\n"
         }
 
         void commit() {
