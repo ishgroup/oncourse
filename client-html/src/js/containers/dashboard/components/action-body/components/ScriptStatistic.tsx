@@ -13,7 +13,9 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import {
-  differenceInMinutes, format, isToday
+  differenceInHours,
+  differenceInMinutes,
+  format
 } from "date-fns";
 import { Check, Clear } from "@material-ui/icons";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -52,6 +54,8 @@ const ScriptStatistic = ({ dispatch, classes }) => {
   const [scripts, setScripts] = useState([]);
 
   const getScriptsData = () => {
+    const today = new Date();
+
     EntityService.getPlainRecords(
       "Script",
       "name",
@@ -75,7 +79,7 @@ const ScriptStatistic = ({ dispatch, classes }) => {
             'created',
             false
           ).then(auditRes => {
-            if (!auditRes.rows.length || !auditRes.rows.some(r => isToday(new Date(r.values[1])))) {
+            if (!auditRes.rows.length || !auditRes.rows.some(r => differenceInHours(today, new Date(r.values[1])) <= 24)) {
               return;
             }
             const result = auditRes.rows.map(row => ({
