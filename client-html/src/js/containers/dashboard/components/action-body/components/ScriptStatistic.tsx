@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { DataResponse } from "@api/model";
 import {
  Grid, Link, List, ListItem, Typography, Tooltip
@@ -22,6 +22,7 @@ import EntityService from "../../../../../common/services/EntityService";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../../common/utils/links";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import AnimateList from "../../../../../common/utils/animation/AnimateList";
 
 const styles = theme => createStyles({
   icon: {
@@ -48,7 +49,7 @@ const styles = theme => createStyles({
 });
 
 const ScriptStatistic = ({ dispatch, classes }) => {
-  const [scripts, setScripts] = useState({});
+  const [scripts, setScripts] = useState([]);
 
   const getScriptsData = () => {
     EntityService.getPlainRecords(
@@ -61,7 +62,7 @@ const ScriptStatistic = ({ dispatch, classes }) => {
       true
     )
       .then(async (scriptRes: DataResponse) => {
-        const resultForRender = {};
+        const resultForRender = [];
 
         await scriptRes.rows.map(scriptRow => () =>
           EntityService.getPlainRecords(
@@ -81,7 +82,7 @@ const ScriptStatistic = ({ dispatch, classes }) => {
             }));
 
             if (result.length) {
-              resultForRender[scriptRow.values[0]] = result;
+              resultForRender.push({ name: scriptRow.values[0], result });
             }
           })
           .catch(err => instantFetchErrorHandler(dispatch, err))).reduce(async (a, b) => {
@@ -89,6 +90,7 @@ const ScriptStatistic = ({ dispatch, classes }) => {
           await b();
         }, Promise.resolve());
 
+        resultForRender.sort((a, b) => (new Date(a.result[0].date) < new Date(b.result[0].date) ? 1 : -1));
         setScripts(resultForRender);
       })
       .catch(err => instantFetchErrorHandler(dispatch, err));
@@ -115,50 +117,52 @@ const ScriptStatistic = ({ dispatch, classes }) => {
 
   return (
     <List dense disablePadding>
-      {Object.keys(scripts).map((key: string) => (
-        <ListItem className={classes.smallScriptGroup} dense disableGutters>
-          <Grid container wrap="nowrap">
-            <Grid item xs className="overflow-hidden">
-              <Typography
-                onClick={() => openInternalLink(`/automation/script/${scripts[key][0].id}`)}
-                className={clsx(classes.smallText, "linkDecoration", classes.leftColumn, classes.smallScriptText)}
-                noWrap
-              >
-                {key}
-              </Typography>
+      <AnimateList>
+        {scripts.map(script => (
+          <ListItem ref={createRef() as any} key={script.name} className={classes.smallScriptGroup} dense disableGutters>
+            <Grid container wrap="nowrap">
+              <Grid item xs className="overflow-hidden">
+                <Typography
+                  onClick={() => openInternalLink(`/automation/script/${script.result[0].id}`)}
+                  className={clsx(classes.smallText, "linkDecoration", classes.leftColumn, classes.smallScriptText)}
+                  noWrap
+                >
+                  {script.name}
+                </Typography>
+              </Grid>
+              <Grid item className={classes.smallScriptGroup} xs={6}>
+                <Typography className={classes.lastRunText} color="textSecondary">
+                  {getTime(script.result[0].date)}
+                </Typography>
+                {script.result.map((elem, index) => (
+                  elem.status === "SCRIPT_EXECUTED"
+                    ? (
+                      <Tooltip key={script.name + index} title={`Succeeded at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
+                        <Check className={clsx(classes.icon, "successColor")} />
+                      </Tooltip>
+                    )
+                    : (
+                      <Tooltip key={script.name + index} title={`Failed at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
+                        <Clear className={clsx(classes.icon, "errorColor")} />
+                      </Tooltip>
+                    )
+                ))}
+                <Link
+                  href={`${window.location.origin}/audit?search=entityId is ${script.result[0].id} and entityIdentifier is "Script"`}
+                  target="_blank"
+                  color="textSecondary"
+                  underline="none"
+                >
+                  <Tooltip title="more...">
+                    <span> ...</span>
+                  </Tooltip>
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item className={classes.smallScriptGroup} xs={6}>
-              <Typography className={classes.lastRunText} color="textSecondary">
-                {getTime(scripts[key][0].date)}
-              </Typography>
-              {scripts[key] && [...scripts[key]].map((elem: any) => (
-                elem.status === "SCRIPT_EXECUTED"
-                  ? (
-                    <Tooltip title={`Succeeded at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
-                      <Check className={clsx(classes.icon, "successColor")} />
-                    </Tooltip>
-                  )
-                  : (
-                    <Tooltip title={`Failed at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
-                      <Clear className={clsx(classes.icon, "errorColor")} />
-                    </Tooltip>
-                  )
-              ))}
-              <Link
-                href={`${window.location.origin}/audit?search=entityId is ${scripts[key][0].id} and entityIdentifier is "Script"`}
-                target="_blank"
-                color="textSecondary"
-                underline="none"
-              >
-                <Tooltip title="more...">
-                  <span> ...</span>
-                </Tooltip>
-              </Link>
-            </Grid>
-          </Grid>
 
-        </ListItem>
+          </ListItem>
         ))}
+      </AnimateList>
     </List>
   );
 };
