@@ -1,7 +1,6 @@
 import { Epic } from "redux-observable";
 import * as EpicUtils from "./EpicUtils";
 import { COLLEGE_WAS_CREATED, CREATE_COLLEGE, SET_LOADING_VALUE, SET_SERVER_ERROR_VALUE } from "../actions/index";
-import InstantFetchErrorHandler from "../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import BillingService from "../../api/services/BillingApi";
 
 const request: EpicUtils.Request<any, any, any> = {
@@ -13,7 +12,7 @@ const request: EpicUtils.Request<any, any, any> = {
       { type: SET_LOADING_VALUE, payload: false }
     ]},
   processError: response => {
-    return [...InstantFetchErrorHandler(response),
+    return [
       { type: SET_LOADING_VALUE, payload: false },
       { type: SET_SERVER_ERROR_VALUE, payload: true },
     ]

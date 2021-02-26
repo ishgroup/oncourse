@@ -78,7 +78,7 @@ const NameForm = (props: any) => {
 
   useEffect(() => {
     const subscription = subject
-      .pipe(debounceTime(800))
+      .pipe(debounceTime(500))
       .subscribe((values: {
         name: string,
         token: string,
