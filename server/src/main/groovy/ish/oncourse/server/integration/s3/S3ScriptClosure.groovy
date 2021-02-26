@@ -25,7 +25,7 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
  *
  * If you pass the FileData object in the blob attribute, you can skip the name.
  *
- *
+ * ```
  * s3 {
  *     name "integration name"
  *     blob fileData
