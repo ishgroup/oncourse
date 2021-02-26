@@ -48,10 +48,6 @@ class CanvasIntegration implements PluginTrait {
 
     private static Logger logger = LogManager.logger
 
-    CanvasIntegration() {
-
-    }
-
     CanvasIntegration(Map args) {
         loadConfig(args)
 
