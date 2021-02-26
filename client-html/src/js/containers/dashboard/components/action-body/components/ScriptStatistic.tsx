@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import {
-  differenceInMinutes, format
+  differenceInMinutes, format, isToday
 } from "date-fns";
 import { Check, Clear } from "@material-ui/icons";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -68,22 +68,22 @@ const ScriptStatistic = ({ dispatch, classes }) => {
           EntityService.getPlainRecords(
             "Audit",
             "entityId,created,action",
-            `created today and entityIdentifier is "Script" and entityId is ${scriptRow.id}
+            `entityIdentifier is "Script" and entityId is ${scriptRow.id}
             and ( action is SCRIPT_FAILED or action is SCRIPT_EXECUTED) `,
             7,
             0,
             'created',
             false
           ).then(auditRes => {
+            if (!auditRes.rows.length || !auditRes.rows.some(r => isToday(new Date(r.values[1])))) {
+              return;
+            }
             const result = auditRes.rows.map(row => ({
               id: row.values[0],
               date: row.values[1],
               status: row.values[2],
             }));
-
-            if (result.length) {
-              resultForRender.push({ name: scriptRow.values[0], result });
-            }
+            resultForRender.push({ name: scriptRow.values[0], result });
           })
           .catch(err => instantFetchErrorHandler(dispatch, err))).reduce(async (a, b) => {
           await a;
