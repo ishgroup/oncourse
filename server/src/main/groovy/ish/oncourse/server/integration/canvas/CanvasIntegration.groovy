@@ -48,6 +48,10 @@ class CanvasIntegration implements PluginTrait {
 
     private static Logger logger = LogManager.logger
 
+    CanvasIntegration() {
+
+    }
+
     CanvasIntegration(Map args) {
         loadConfig(args)
 
@@ -182,14 +186,25 @@ class CanvasIntegration implements PluginTrait {
      * @return the course object the matching course code
      */
     def getCourse(String code) {
+        def client = new RESTClient(baseUrl)
 
-        // canvas doesn't have an API call to get a course by code so we need to do it in memory
-        def courses = getAllCourses()
+        client.headers["Authorization"] = "Bearer ${authHeader}"
+        def result = client.request(Method.GET, ContentType.URLENC) {
+            uri.path = "/api/v1/accounts/${accountId}/courses"
+            uri.query = [
+                    search_by: "course",
+                    search_term: code
+            ]
+            response.success = { resp, result ->
+                return result
+            }
 
-        return courses.find { c ->
-            c.course_code == code
+            response.failure = { resp, result ->
+                throw new IllegalStateException("Failed to retreive all courses ${resp.getStatusLine()}")
+            }
         }
 
+        return responseToJson(result)
     }
 
     /**
