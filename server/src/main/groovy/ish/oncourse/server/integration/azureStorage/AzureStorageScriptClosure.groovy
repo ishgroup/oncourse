@@ -26,6 +26,7 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
  * If you pass the FileData object in the blob attribute, you can skip the name.
  *
  *
+ * ```
  * azurestorage {
  *     name "integration name"
  *     blob fileData
@@ -38,17 +39,17 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
 class AzureStorageScriptClosure implements ScriptClosureTrait<AzureStorageIntegration> {
 
     private Object blob
-    private String fileName 
-    
-    
+    private String fileName
+
+
     void blob(Object blob) {
         this.blob = blob
     }
-    
+
     void fileName(String fileName) {
         this.fileName = fileName
     }
-    
+
     /**
      * Execute the closure with the configuration from the passed integration
      *
