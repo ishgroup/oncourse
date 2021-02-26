@@ -24,7 +24,8 @@ const ErrorPage = (props: any) => {
 
   return (
     <p>
-      Ooops. Something unexpected has happened, please contact ish support or <a className={classes.link} onClick={clearForm}>try again</a>
+      Oops! Something went wrong in creating your new server. <br/>
+      Our team are onto it and will be in touch sort it out.
     </p>
   )
 }
@@ -35,7 +36,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setServerErrorValue: (value: boolean) => dispatch(setServerErrorValue(value)),
-  resetStore: dispatch(resetStore())
+  resetStore: () => dispatch(resetStore())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorPage);

@@ -70,7 +70,6 @@ const useStyles = makeStyles((theme: any) =>
     },
     gridList: {
       width: 1000,
-      height: 400,
     },
     coloredHeaderText: {
       color: theme.statistics.coloredHeaderText.color,

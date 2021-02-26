@@ -18,9 +18,6 @@ import Navigation from "../Navigations";
 import { countries, countriesTimeZone } from "../../../utils";
 
 const useStyles = makeStyles((theme: any) => ({
-  form: {
-    paddingBottom: "20px",
-  },
   textFieldWrapper: {
     minHeight: "66px",
   },

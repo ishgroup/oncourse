@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       justifyContent: "flex-end",
       marginTop: "30px",
+      paddingBottom: "20px"
     },
     loading: {
       height: "25px!important",
