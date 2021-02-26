@@ -89,7 +89,7 @@ const OrganisationForm = (props: any) => {
   }, organisationForm)
 
   return (
-    <form onSubmit={handleSubmit} className={classes.form}>
+    <form onSubmit={handleSubmit}>
       <h2 className={classes.coloredHeaderText}>Organisation</h2>
       <div className={classes.textFieldWrapper}>
         <CustomTextField
