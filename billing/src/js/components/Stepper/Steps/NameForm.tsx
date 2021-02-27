@@ -7,14 +7,13 @@
  */
 
 import React, { useEffect, useState, useRef } from 'react';
-import Rx, {Subject} from "rxjs";
-import { debounceTime } from "rxjs/operators";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { connect, Dispatch } from "react-redux";
 import Navigation from "../Navigations";
 import { checkSiteName, setLoadingValue, setSitenameValue } from "../../../redux/actions";
+import { usePrevious } from "../../Hooks/usePrevious";
 
 const useStyles = makeStyles((theme:any) => ({
   textFieldWrapper: {
@@ -44,7 +43,9 @@ const NameForm = (props: any) => {
     handleNext,
     token,
     checkSiteName,
+    collegeKeyFromState,
     isValidName,
+    loading,
     sendTokenAgain,
     setSitenameValue,
     setLoadingValue
@@ -52,59 +53,52 @@ const NameForm = (props: any) => {
 
   const [collegeKey, setCollegeKey] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [subject] = useState(() => new Subject());
+  const inputRef = useRef(collegeKeyFromState);
 
-  const inputRef = useRef(null);
+  const prevProps: {
+    loading: boolean,
+  } = usePrevious({ loading })
 
   const classes = useStyles();
+
+  useEffect(() => {
+    if (prevProps && prevProps.loading && !loading && isValidName) {
+      handleNext();
+    }
+  }, [loading, isValidName]);
 
   useEffect(() => {
     inputRef.current.focus();
   }, [inputRef]);
 
+  useEffect(() => {
+    if (!collegeKey && collegeKeyFromState) inputRef.current.innerText = collegeKeyFromState;
+  }, [])
+
   const setNewCollegeName = (e) => {
     const name: string = e.target.innerText;
-    // const matches = name.match(/([\w*-]+)([\w*-]+)([\w*-]+)/gi);
     const matches = name.match(/([a-z0-9*-]+)/gi);
     const validName = name && matches && matches[0] === name;
 
     if (!validName) {
-      setErrorMessage('You can only use letters, numbers and dashes')
+      setErrorMessage('You can only use letters, numbers and dashes');
     } else {
       if (errorMessage) setErrorMessage("");
     }
-    subject.next({ name, token, validName, sendTokenAgain, setLoadingValue })
+
+    setCollegeKey(name);
   }
 
-  useEffect(() => {
-    const subscription = subject
-      .pipe(debounceTime(500))
-      .subscribe((values: {
-        name: string,
-        token: string,
-        validName: boolean,
-        sendTokenAgain: boolean,
-        setLoadingValue: (value: boolean) => void
-      }) => {
-        setCollegeKey(values.name);
-
-        if (values.validName) {
-          checkSiteName({
-            name: values.name,
-            token: sendTokenAgain ? values.token : null
-          });
-          setLoadingValue(true);
-        }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
   const handleNextCustom = () => {
+    if (errorMessage || (collegeKeyFromState === collegeKey && !isValidName)) return null;
+    if ((collegeKey === collegeKeyFromState || !collegeKey && collegeKeyFromState) && isValidName) return handleNext();
+
+    checkSiteName({
+      name: collegeKey,
+      token: sendTokenAgain ? token : null
+    });
+    setLoadingValue(true);
     setSitenameValue(collegeKey);
-    handleNext();
   }
 
   const getDate = () => {
@@ -139,14 +133,15 @@ const NameForm = (props: any) => {
         steps={steps}
         handleBack={handleBack}
         handleNext={handleNextCustom}
-        disabled={!isValidName}
       />
     </form>
   )
 }
 
 const mapStateToProps = (state: any) => ({
+  collegeKeyFromState: state.creatingCollege.collegeKey,
   isValidName: state.creatingCollege.isValidName,
+  loading: state.creatingCollege.loading,
   sendTokenAgain: state.creatingCollege.sendTokenAgain,
   token: state.creatingCollege.token,
 });
