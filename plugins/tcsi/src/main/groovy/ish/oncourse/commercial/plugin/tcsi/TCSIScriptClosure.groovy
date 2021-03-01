@@ -13,7 +13,6 @@ package ish.oncourse.commercial.plugin.tcsi
 
 import groovy.transform.CompileStatic
 import ish.oncourse.API
-import ish.oncourse.server.integration.tcsi.TCSIIntegration
 import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
 
