@@ -1,0 +1,7 @@
+name: Check critical emails sent
+keyCode: ish.script.checkCriticalEmails
+body: ish.script.checkCriticalEmails.groovy
+enabled: true
+triggerType: CRON
+schedule: 0 0 7 1/1 * ? *
+description: This script runs daily to verify that all critical emails were sent during the day.
