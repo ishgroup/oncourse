@@ -250,21 +250,25 @@ class BillingApiImpl implements BillingApi {
         String userPhone
 
         String toString() {
-            return  "server:\n" +
-                    "  max_users: 1\n" +
+            return  "$collegeKey\n"+
                     "  security_key: $securityCode\n" +
-                    "db:\n" +
-                    "  pass: ${SecurityUtil.generateRandomPassword(12)}\n" +
-                    "document:\n" +
-                    "  bucket: $s3bucketName\n" +
-                    "  accessKeyId: $s3accessId\n" +
-                    "  accessSecretKey: $s3accessKey\n" +
-                    "  region: $s3Region\n" +
-                    "  limit: 1G\n" +
-                    "user:\n"+
-                    "  firstName: $userFirstName\n" +
-                    "  lastName: $userLastName\n" +
-                    "  email: $userEmail\n"
+                    "  version: \"{{ small }}\"\n" +
+                    "  server:\n" +
+                    "    max_users: 1\n" +
+                    "    port: 6000\n" +
+                    "    minion: colo.splash\n" +
+                    "  db:\n" +
+                    "    pass: ${SecurityUtil.generateRandomPassword(12)}\n" +
+                    "  document:\n" +
+                    "    bucket: $s3bucketName\n" +
+                    "    accessKeyId: $s3accessId\n" +
+                    "    accessSecretKey: $s3accessKey\n" +
+                    "    region: $s3Region\n" +
+                    "    limit: 1G\n" +
+                    "  user:\n"+
+                    "    firstName: $userFirstName\n" +
+                    "    lastName: $userLastName\n" +
+                    "    email: $userEmail\n"
         }
 
         void commit() {
