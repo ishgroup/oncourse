@@ -332,5 +332,5 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(props => (props.values
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)((props:Props) => (props.values
   ? <ImportTemplatesForm {...props} /> : null));
