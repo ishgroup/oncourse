@@ -155,7 +155,9 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
   }
 
   componentDidUpdate() {
-    const { dirty, nextLocation, setNextLocation, history } = this.props;
+    const {
+     dirty, nextLocation, setNextLocation, history
+    } = this.props;
 
     if (nextLocation && !dirty) {
       history.push(nextLocation);
@@ -262,7 +264,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       validateUniqueNames,
       isNew,
       invalid,
-      form
+      form,
     } = this.props;
 
     const { showMessage, messageText } = this.state;
@@ -464,7 +466,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   updateUser: (user: User) => dispatch(updateUser(user)),
   resetUserPassword: (id: number) => dispatch(resetUserPassword(id)),
   disableUser2FA: (id: number) => dispatch(disableUser2FA(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText)),
+  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(
+    showConfirm(onConfirm, confirmMessage, confirmButtonText)
+),
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
