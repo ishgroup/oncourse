@@ -14,6 +14,7 @@ import { connect, Dispatch } from "react-redux";
 import Navigation from "../Navigations";
 import { checkSiteName, setLoadingValue, setSitenameValue } from "../../../redux/actions";
 import { usePrevious } from "../../Hooks/usePrevious";
+import { SITE_KEY } from "../../../constant/common";
 
 const useStyles = makeStyles((theme:any) => ({
   textFieldWrapper: {
@@ -41,7 +42,6 @@ const NameForm = (props: any) => {
     steps,
     handleBack,
     handleNext,
-    token,
     checkSiteName,
     collegeKeyFromState,
     isValidName,
@@ -89,16 +89,27 @@ const NameForm = (props: any) => {
     setCollegeKey(name);
   }
 
+  const createCollege = (token?: string | null) => {
+    checkSiteName({
+      name: collegeKey,
+      token
+    });
+    setLoadingValue(true);
+    setSitenameValue(collegeKey);
+  };
+
   const handleNextCustom = () => {
     if (errorMessage || (collegeKeyFromState === collegeKey && !isValidName)) return null;
     if ((collegeKey === collegeKeyFromState || !collegeKey && collegeKeyFromState) && isValidName) return handleNext();
 
-    checkSiteName({
-      name: collegeKey,
-      token: sendTokenAgain ? token : null
-    });
-    setLoadingValue(true);
-    setSitenameValue(collegeKey);
+    if (sendTokenAgain) {
+      window.grecaptcha.execute(SITE_KEY, { action: 'submit' }).then(token => {
+        // setCaptchaToken(token);
+        createCollege(token);
+      });
+    } else {
+      createCollege(null);
+    }
   }
 
   const getDate = () => {
@@ -143,7 +154,6 @@ const mapStateToProps = (state: any) => ({
   isValidName: state.creatingCollege.isValidName,
   loading: state.creatingCollege.loading,
   sendTokenAgain: state.creatingCollege.sendTokenAgain,
-  token: state.creatingCollege.token,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

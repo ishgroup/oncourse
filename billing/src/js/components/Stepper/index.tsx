@@ -19,8 +19,7 @@ import OrganisationForm from "./Steps/OrganisationForm";
 import FinishPage from "./Steps/FinishPage";
 import { setCaptchaToken } from "../../redux/actions";
 import ErrorPage from "../ErrorPage";
-
-const SITE_KEY = "6LenRkYaAAAAAJf7P8OamoQSU7H5YaAKpMqTkGzU";
+import { SITE_KEY } from "../../constant/common";
 
 declare global {
   interface Window { grecaptcha: any; }
@@ -76,7 +75,7 @@ const CustomizedSteppers = (props: any) => {
   const steps = getSteps();
 
   useEffect(() => {
-    const loadScriptByURL = (id, url, callback) => {
+    const loadScriptByURL = (id, url) => {
       const isScriptExist = document.getElementById(id);
 
       if (!isScriptExist) {
@@ -84,22 +83,11 @@ const CustomizedSteppers = (props: any) => {
         script.type = "text/javascript";
         script.src = url;
         script.id = id;
-        script.onload = function () {
-          if (callback) callback();
-        };
         document.body.appendChild(script);
       }
-
-      if (isScriptExist && callback) callback();
     }
 
-    loadScriptByURL("recaptcha-key", `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`, () => {
-      window.grecaptcha.ready(() => {
-        window.grecaptcha.execute(SITE_KEY, { action: 'submit' }).then(token => {
-          setCaptchaToken(token);
-        });
-      });
-    });
+    loadScriptByURL("recaptcha-key", `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`);
   }, []);
 
   const handleNext = () => {
