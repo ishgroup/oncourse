@@ -16,10 +16,20 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
  * Use this script block to easily send documents into the Azure Storage Blob service. Note that this has nothing to do with the onCourse document storage system and simply stores the blob in the Azure service without tracking it.
  *
  * ```
+ * def transactions = query {
+ *     entity "AccountTransaction"
+ *     query "createdOn is today"
+ * }
+ * 
+ * def bytes = export {
+ *     template "ish.onCourse.accountTransactionMYOB.csv"
+ *     records transactions
+ * }
+ *
  * azurestorage {
  *     name "integration name"
- *     blob myDoc
- *     filName "duck.jpg"
+ *     blob bytes
+ *     filName "transactions.csv"
  * }
  * ```
  *
