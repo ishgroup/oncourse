@@ -5,10 +5,14 @@ package ish.oncourse.services.s3;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClient;
 import com.amazonaws.services.identitymanagement.model.*;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -95,11 +99,9 @@ public class S3Service implements IS3Service {
 
 	@Override
 	public void createBucket(String name) {
-		AmazonS3Client client = new AmazonS3Client(credentials);
 
-		CreateBucketRequest request = new CreateBucketRequest(name, Region.AP_Sydney);
-		client.createBucket(request);
-		
+		AmazonS3 client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.AP_SOUTHEAST_2).build();
+		client.createBucket(name);
 		// enable bucket versioning
 		BucketVersioningConfiguration versioningConfiguration = 
 				new BucketVersioningConfiguration(BucketVersioningConfiguration.ENABLED);

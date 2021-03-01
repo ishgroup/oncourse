@@ -189,7 +189,7 @@ class BillingApiImpl implements BillingApi {
     private static void sendEmail(String subject, String message) {
 
         EmailBuilder email = new EmailBuilder()
-        email.setFromEmail('no-reply@provisioning.ish.com.au')
+        email.setFromEmail('support@ish.com.ua')
         email.setSubject(subject)
         email.setBody(message)
         email.setToEmails('support@ish.com.ua')
