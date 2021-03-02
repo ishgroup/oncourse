@@ -250,7 +250,7 @@ class BillingApiImpl implements BillingApi {
         String userPhone
 
         String toString() {
-            return  "$collegeKey\n"+
+            return  "$collegeKey:\n"+
                     "  security_key: $securityCode\n" +
                     "  version: \"{{ small }}\"\n" +
                     "  server:\n" +
