@@ -1591,8 +1591,8 @@
                             <xs:element name="enrolmentId" type="xs:long"/>
                             <xs:element name="assessmentClassId" type="xs:long"/>
                             <xs:element name="submittedById" type="xs:long"/>
-                            <xs:element name="tutorComments" type="xs:string"/>
-                            <xs:element name="studentComments" type="xs:string"/>
+                            <xs:element name="submittedOn" type="xs:dateTime"/>
+                            <xs:element name="markedOn" type="xs:dateTime"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
