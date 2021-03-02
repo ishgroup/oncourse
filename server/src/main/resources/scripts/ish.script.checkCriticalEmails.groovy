@@ -1,6 +1,6 @@
 records = query {
     entity "Enrolment"
-    query "createdOn after today - 7 day and status is SUCCESS and confirmationStatus is NOT_SENT "
+    query "createdOn after today - ${numberOfDays} day and status is SUCCESS and confirmationStatus is NOT_SENT "
 }
 
 records.each { enrolment ->
@@ -12,7 +12,7 @@ records.each { enrolment ->
 
 records = query {
     entity "Invoice"
-    query "createdOn after today - 7 day and confirmationStatus is NOT_SENT "
+    query "createdOn after today - ${numberOfDays} day and confirmationStatus is NOT_SENT "
 }
 
 records.each { invoice ->
@@ -23,7 +23,7 @@ records.each { invoice ->
 
 records = query {
     entity "PaymentIn"
-    query "createdOn after today - 7 day and status is SUCCESS and confirmationStatus is NOT_SENT "
+    query "createdOn after today - ${numberOfDays} day and status is SUCCESS and confirmationStatus is NOT_SENT "
 }
 
 records.each { paymentIn ->
@@ -33,7 +33,7 @@ records.each { paymentIn ->
 
 records = query {
     entity "PaymentOut"
-    query "createdOn after today - 7 day and status is SUCCESS and confirmationStatus is NOT_SENT "
+    query "createdOn after today - ${numberOfDays} day and status is SUCCESS and confirmationStatus is NOT_SENT "
 }
 
 records.each { paymentOut ->
