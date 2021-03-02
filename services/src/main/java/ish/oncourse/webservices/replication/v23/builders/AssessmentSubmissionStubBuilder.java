@@ -15,8 +15,8 @@ public class AssessmentSubmissionStubBuilder extends AbstractWillowStubBuilder<A
 		stub.setEnrolmentId(entity.getEnrolment().getId());
 		stub.setAssessmentClassId(entity.getAssessmentClass().getId());
 		stub.setSubmittedById(entity.getSubmittedBy().getId());
-		stub.setTutorComments(entity.getTutorComments());
-		stub.setStudentComments(entity.getStudentComments());
+		stub.setSubmittedOn(entity.getSubmittedOn());
+		stub.setMarkedOn(entity.getMarkedOn());
 		return stub;
 	}
 }
