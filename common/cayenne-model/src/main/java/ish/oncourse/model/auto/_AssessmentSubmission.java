@@ -25,8 +25,8 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
-    public static final String STUDENT_COMMENTS_PROPERTY = "studentComments";
-    public static final String TUTOR_COMMENTS_PROPERTY = "tutorComments";
+    public static final String SUBMITTED_ON_PROPERTY = "submittedOn";
+    public static final String MARKED_ON_PROPERTY = "markedOn";
     public static final String ASSESSMENT_CLASS_PROPERTY = "assessmentClass";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String ENROLMENT_PROPERTY = "enrolment";
@@ -37,8 +37,8 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
     public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
     public static final Property<Date> CREATED = Property.create("created", Date.class);
     public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
-    public static final Property<String> STUDENT_COMMENTS = Property.create("studentComments", String.class);
-    public static final Property<String> TUTOR_COMMENTS = Property.create("tutorComments", String.class);
+    public static final Property<Date> SUBMITTED_ON = Property.create("submittedOn", Date.class);
+    public static final Property<Date> MARKED_ON = Property.create("markedOn", Date.class);
     public static final Property<AssessmentClass> ASSESSMENT_CLASS = Property.create("assessmentClass", AssessmentClass.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<Enrolment> ENROLMENT = Property.create("enrolment", Enrolment.class);
@@ -47,8 +47,8 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
     protected Long angelId;
     protected Date created;
     protected Date modified;
-    protected String studentComments;
-    protected String tutorComments;
+    protected Date submittedOn;
+    protected Date markedOn;
 
     protected Object assessmentClass;
     protected Object college;
@@ -85,24 +85,24 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
         return this.modified;
     }
 
-    public void setStudentComments(String studentComments) {
-        beforePropertyWrite("studentComments", this.studentComments, studentComments);
-        this.studentComments = studentComments;
+    public void setSubmittedOn(Date submittedOn) {
+        beforePropertyWrite("submittedOn", this.submittedOn, submittedOn);
+        this.submittedOn = submittedOn;
     }
 
-    public String getStudentComments() {
-        beforePropertyRead("studentComments");
-        return this.studentComments;
+    public Date getSubmittedOn() {
+        beforePropertyRead("submittedOn");
+        return this.submittedOn;
     }
 
-    public void setTutorComments(String tutorComments) {
-        beforePropertyWrite("tutorComments", this.tutorComments, tutorComments);
-        this.tutorComments = tutorComments;
+    public void setMarkedOn(Date markedOn) {
+        beforePropertyWrite("markedOn", this.markedOn, markedOn);
+        this.markedOn = markedOn;
     }
 
-    public String getTutorComments() {
-        beforePropertyRead("tutorComments");
-        return this.tutorComments;
+    public Date getMarkedOn() {
+        beforePropertyRead("markedOn");
+        return this.markedOn;
     }
 
     public void setAssessmentClass(AssessmentClass assessmentClass) {
@@ -150,10 +150,10 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
                 return this.created;
             case "modified":
                 return this.modified;
-            case "studentComments":
-                return this.studentComments;
-            case "tutorComments":
-                return this.tutorComments;
+            case "submittedOn":
+                return this.submittedOn;
+            case "markedOn":
+                return this.markedOn;
             case "assessmentClass":
                 return this.assessmentClass;
             case "college":
@@ -183,11 +183,11 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
             case "modified":
                 this.modified = (Date)val;
                 break;
-            case "studentComments":
-                this.studentComments = (String)val;
+            case "submittedOn":
+                this.submittedOn = (Date)val;
                 break;
-            case "tutorComments":
-                this.tutorComments = (String)val;
+            case "markedOn":
+                this.markedOn = (Date)val;
                 break;
             case "assessmentClass":
                 this.assessmentClass = val;
@@ -220,8 +220,8 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
         out.writeObject(this.angelId);
         out.writeObject(this.created);
         out.writeObject(this.modified);
-        out.writeObject(this.studentComments);
-        out.writeObject(this.tutorComments);
+        out.writeObject(this.submittedOn);
+        out.writeObject(this.markedOn);
         out.writeObject(this.assessmentClass);
         out.writeObject(this.college);
         out.writeObject(this.enrolment);
@@ -234,8 +234,8 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
         this.angelId = (Long)in.readObject();
         this.created = (Date)in.readObject();
         this.modified = (Date)in.readObject();
-        this.studentComments = (String)in.readObject();
-        this.tutorComments = (String)in.readObject();
+        this.submittedOn = (Date)in.readObject();
+        this.markedOn = (Date)in.readObject();
         this.assessmentClass = in.readObject();
         this.college = in.readObject();
         this.enrolment = in.readObject();
