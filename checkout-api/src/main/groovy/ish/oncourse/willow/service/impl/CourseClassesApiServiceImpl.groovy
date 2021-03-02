@@ -93,7 +93,10 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                     if (application != null) {
                         overridenFee = application.feeOverride
                         allowByApplication = false
+                    } else {
+                        allowByApplication = true
                     }
+                    
                 } else {
                     overridenFee = null
                     allowByApplication = true
