@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Autocomplete } from "@material-ui/lab";
 import { useFormik } from "formik";
@@ -16,6 +16,7 @@ import CustomTextField from "../../common/TextField";
 import { createCollege, setOrganisationFormValues } from "../../../redux/actions";
 import Navigation from "../Navigations";
 import { countries, countriesTimeZone } from "../../../utils";
+import { addEventListenerWithDeps } from "../../Hooks/addEventListnerWithDeps";
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
@@ -60,9 +61,7 @@ const OrganisationForm = (props: any) => {
   const { handleSubmit, handleChange, values, errors, setFieldValue, isValid, touched, dirty, handleBlur } = useFormik({
     initialValues: organisationForm,
     validationSchema,
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
-    },
+    onSubmit: values => {},
   });
 
   const handleBackCustom = () => {
@@ -80,6 +79,14 @@ const OrganisationForm = (props: any) => {
     })
   }
 
+  const keyPressHandler = useCallback((e) => {
+    if (e.keyCode === 13 && !((dirty && !isValid) || (!dirty && !validState))) {
+      handleNextCustom();
+    }
+  }, [dirty, isValid, validState])
+
+  addEventListenerWithDeps([keyPressHandler], keyPressHandler);
+
   useEffect(() => {
     validationSchema.validate(organisationForm).then(() => {
       setValidState(true)
@@ -89,7 +96,7 @@ const OrganisationForm = (props: any) => {
   }, organisationForm)
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <h2 className={classes.coloredHeaderText}>Organisation</h2>
       <div className={classes.textFieldWrapper}>
         <CustomTextField

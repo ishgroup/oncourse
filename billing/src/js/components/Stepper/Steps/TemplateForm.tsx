@@ -6,13 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {useState} from "react";
+import React, { useCallback, useState } from "react";
 import { createStyles, makeStyles, withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { connect, Dispatch } from "react-redux";
 import { GridList, GridListTile, Typography, Radio, RadioGroup, FormControlLabel, FormControl } from "@material-ui/core";
 import Navigation from "../Navigations";
 import { setTemplateValue } from "../../../redux/actions";
+import { addEventListenerWithDeps } from "../../Hooks/addEventListnerWithDeps";
 import a from "../../../../images/a.png";
 import b from "../../../../images/b.png";
 import c from "../../../../images/c.png";
@@ -123,6 +124,12 @@ const TemplateForm = (props: any) => {
     if (webSiteTemplate !== templateStore) setTemplateValue(webSiteTemplate);
     handleNext();
   }
+
+  const keyPressHandler = useCallback((e) => {
+    if (e.keyCode === 13) handleNextCustom();
+  }, [webSiteTemplate])
+
+  addEventListenerWithDeps([keyPressHandler], keyPressHandler);
 
   return (
     <>

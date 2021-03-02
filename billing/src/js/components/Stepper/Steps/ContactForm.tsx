@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useFormik } from "formik";
 import { connect, Dispatch } from "react-redux";
@@ -15,6 +15,7 @@ import CustomTextField from "../../common/TextField";
 import { setContactFormValues } from "../../../redux/actions";
 import Navigation from "../Navigations";
 import { phoneRegExp } from "../../../constant/common";
+import { addEventListenerWithDeps } from "../../Hooks/addEventListnerWithDeps";
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
@@ -29,7 +30,6 @@ const validationSchema = yup.object({
   userFirstName: yup.string().required("Required"),
   userLastName: yup.string().required("Required"),
   userPhone: yup.string().required("Required").matches(phoneRegExp, "Phone number is not valid"),
-  // userPhone: yup.string().required("Required").phone(null, null, "Phone number is not valid"),
   userEmail: yup.string().required("Required").email("Email is not valid"),
 });
 
@@ -43,9 +43,7 @@ const ContactForm = (props: any) => {
   const { handleSubmit, handleChange, values, errors, isValid, dirty, touched, handleBlur } = useFormik({
     initialValues: contactForm,
     validationSchema,
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
-    },
+    onSubmit: (values) => {},
   });
 
   const handleBackCustom = () => {
@@ -58,6 +56,14 @@ const ContactForm = (props: any) => {
     handleNext();
   }
 
+  const keyPressHandler = useCallback((e) => {
+    if (e.keyCode === 13 && !((dirty && !isValid) || (!dirty && !validState))) {
+      handleNextCustom();
+    }
+  }, [dirty, isValid, validState])
+
+  addEventListenerWithDeps([keyPressHandler], keyPressHandler);
+
   useEffect(() => {
     validationSchema.validate(contactForm).then(() => {
       setValidState(true)
@@ -67,7 +73,7 @@ const ContactForm = (props: any) => {
   }, contactForm)
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <h2 className={classes.coloredHeaderText}>Your contact details</h2>
       <div className={classes.textFieldWrapper}>
         <CustomTextField
@@ -118,6 +124,7 @@ const ContactForm = (props: any) => {
           onBlur={handleBlur}
         />
       </div>
+      {/*{ console.log(222, "dirty", dirty) }*/}
       <Navigation
         activeStep={activeStep}
         steps={steps}

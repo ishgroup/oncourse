@@ -112,6 +112,13 @@ const NameForm = (props: any) => {
     }
   }
 
+  const keyPress = (e: any) => {
+    if (e.charCode === 13) {
+      e.preventDefault();
+      handleNextCustom();
+    }
+  }
+
   const getDate = () => {
     const currentDate = moment(new Date());
     const currentDay = currentDate.date();
@@ -131,7 +138,11 @@ const NameForm = (props: any) => {
       <div className={classes.mainWrapper}>
         <div className={classes.textFieldWrapper2}>
           <Typography>https://</Typography>
-          <span className="input" onInput={(e) => setNewCollegeName(e)} ref={inputRef} contentEditable/>
+          <span
+            className="input"
+            onInput={(e) => setNewCollegeName(e)} ref={inputRef} contentEditable
+            onKeyPress={(e) => keyPress(e)}
+          />
           <Typography>.oncourse.cc</Typography>
         </div>
         {errorMessage && (<Typography className={classes.errorMessage}>{errorMessage}</Typography>)}
