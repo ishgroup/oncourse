@@ -1,6 +1,7 @@
 
 package ish.oncourse.webservices.v23.stubs.replication;
 
+import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -22,8 +23,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="assessmentClassId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="submittedById" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
- *         &lt;element name="tutorComments" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="studentComments" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="submittedOn" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="markedOn" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -37,8 +38,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "enrolmentId",
     "assessmentClassId",
     "submittedById",
-    "tutorComments",
-    "studentComments"
+    "submittedOn",
+    "markedOn"
 })
 public class AssessmentSubmissionStub
     extends ReplicationStub
@@ -56,10 +57,14 @@ public class AssessmentSubmissionStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long submittedById;
-    @XmlElement(required = true)
-    protected String tutorComments;
-    @XmlElement(required = true)
-    protected String studentComments;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "dateTime")
+    protected Date submittedOn;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "dateTime")
+    protected Date markedOn;
 
     /**
      * Gets the value of the enrolmentId property.
@@ -134,51 +139,51 @@ public class AssessmentSubmissionStub
     }
 
     /**
-     * Gets the value of the tutorComments property.
+     * Gets the value of the submittedOn property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getTutorComments() {
-        return tutorComments;
+    public Date getSubmittedOn() {
+        return submittedOn;
     }
 
     /**
-     * Sets the value of the tutorComments property.
+     * Sets the value of the submittedOn property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setTutorComments(String value) {
-        this.tutorComments = value;
+    public void setSubmittedOn(Date value) {
+        this.submittedOn = value;
     }
 
     /**
-     * Gets the value of the studentComments property.
+     * Gets the value of the markedOn property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getStudentComments() {
-        return studentComments;
+    public Date getMarkedOn() {
+        return markedOn;
     }
 
     /**
-     * Sets the value of the studentComments property.
+     * Sets the value of the markedOn property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setStudentComments(String value) {
-        this.studentComments = value;
+    public void setMarkedOn(Date value) {
+        this.markedOn = value;
     }
 
 }
