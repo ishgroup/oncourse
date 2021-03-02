@@ -121,6 +121,7 @@ module.exports = {
         "react/destructuring-assignment": "off",
         "react/no-did-update-set-state": "off",
         "react/jsx-props-no-spreading": "off",
+        "react/jsx-boolean-value": "off",
         "semi": "error",
         "space-before-function-paren": "off",
         "space-in-parens": [
