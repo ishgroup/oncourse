@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: tsciHigherEducation
+      author: artyom
+      validCheckSum: ANY
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: 'select count(*) from EntityRelationType where name = "Higher education"'
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  header: createdOn
+                  name: createdOn
+                  type: DATE
+              - column:
+                  header: modifiedOn
+                  name: modifiedOn
+                  type: DATE
+              - column:
+                  header: name
+                  name: name
+                  type: STRING
+              - column:
+                  header: fromName
+                  name: fromName
+                  type: STRING
+              - column:
+                  header: toName
+                  name: toName
+                  type: STRING
+              - column:
+                  header: description
+                  name: description
+                  type: STRING
+              - column:
+                  header: isShownOnWeb
+                  name: isShownOnWeb
+                  type: NUMERIC
+              - column:
+                  header: shoppingCart
+                  name: shoppingCart
+                  type: NUMERIC
+              - column:
+                  header: considerHistory
+                  name: considerHistory
+                  type: NUMERIC
+              - column:
+                  header: discountId
+                  name: discountId
+                  type: NUMERIC
+              - column:
+                  header: willowId
+                  name: willowId
+                  type: NUMERIC
+            commentLineStartsWith: '#'
+            encoding: UTF-8
+            file: database/data/tsciHigherEducation.csv
+            quotchar: '"'
+            separator: ','
+            tableName: EntityRelationType
