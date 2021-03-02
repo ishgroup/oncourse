@@ -281,4 +281,32 @@
 			</column>
 		</createTable>
 	</changeSet>
+
+	<changeSet id="29" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="AssessmentSubmission" columnName="studentComments"/>
+				<columnExists tableName="AssessmentSubmission" columnName="tutorComments"/>
+			</and>
+		</preConditions>
+		<dropColumn tableName="AssessmentSubmission">
+			<column name="studentComments"/>
+			<column name="tutorComments"/>
+		</dropColumn>
+	</changeSet>
+
+	<changeSet id="30" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<and>
+					<columnExists tableName="AssessmentSubmission" columnName="submittedOn"/>
+					<columnExists tableName="AssessmentSubmission" columnName="markedOn"/>
+				</and>
+			</not>
+		</preConditions>
+		<addColumn tableName="AssessmentSubmission">
+			<column name="submittedOn" type="datetime"/>
+			<column name="markedOn" type="datetime"/>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>
