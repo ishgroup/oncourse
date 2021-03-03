@@ -13,7 +13,6 @@ import FormField from "../../../../../../common/components/form/form-fields/Form
 import { mapSelectItems } from "../../../../../../common/utils/common";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
 import EntityService from "../../../../../../common/services/EntityService";
-import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../../constants/Config";
 
 const records = Object.keys(Entities)
@@ -22,10 +21,11 @@ const records = Object.keys(Entities)
 
 const QueryCardContent = props => {
   const {
-    field, name, classes, onValidateQuery, isValidQuery, dispatch
+    field, name, classes, onValidateQuery, isValidQuery
   } = props;
 
   const [queryResultsPending, setQueryResultsPending] = useState(false);
+  const [hideQueryResults, setQueryHideResults] = useState(false);
   const [queryResults, setQueryResults] = useState(0);
 
   const debounseSearch = useCallback<any>(
@@ -40,9 +40,10 @@ const QueryCardContent = props => {
         .then(res => {
           setQueryResults(res.rows.length);
           setQueryResultsPending(false);
+          setQueryHideResults(false);
         })
-        .catch(err => {
-          instantFetchErrorHandler(dispatch, err);
+        .catch(() => {
+          setQueryHideResults(true);
           setQueryResultsPending(false);
         });
       }
@@ -101,16 +102,16 @@ const QueryCardContent = props => {
           </Grid>
 
           <Grid xs={6} className="d-flex p-2" alignItems="flex-end" justify="flex-end">
-            {queryResultsPending && <CircularProgress size={24} thickness={4} />}
-            {!queryResultsPending && (
-            <Typography variant="caption" color="textSecondary">
-              {queryResults === PLAIN_LIST_MAX_PAGE_SIZE ? `more than ${queryResults}` : queryResults}
-              {' '}
-              record
-              {queryResults === 1 ? "" : "s"}
-              {' '}
-              found
-            </Typography>
+            {queryResultsPending && !hideQueryResults && <CircularProgress size={24} thickness={4} />}
+            {!queryResultsPending && !hideQueryResults && (
+              <Typography variant="caption" color="textSecondary">
+                {queryResults === PLAIN_LIST_MAX_PAGE_SIZE ? `more than ${queryResults}` : queryResults}
+                {' '}
+                record
+                {queryResults === 1 ? "" : "s"}
+                {' '}
+                found
+              </Typography>
             )}
           </Grid>
         </Grid>
