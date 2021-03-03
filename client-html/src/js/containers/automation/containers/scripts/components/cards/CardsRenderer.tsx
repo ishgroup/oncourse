@@ -132,7 +132,6 @@ const CardsRenderer = props => {
                             onDetailsClick={isInternal ? onInternalSaveClick : undefined}
                           >
                             <QueryCardContent
-                              key={index + component.id}
                               dispatch={dispatch}
                               field={component}
                               name={item}
