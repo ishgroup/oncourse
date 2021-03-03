@@ -24,14 +24,6 @@
 	
 	<bean id="collegeRequestInterceptor" class="ish.oncourse.webservices.soap.interceptors.CollegeRequestInterceptor" />
 
-    <bean id="v21_paymentPortType" class="ish.oncourse.webservices.soap.v21.PaymentPortTypeImpl" />
-
-    <bean id="v21_replicationPortType" class="ish.oncourse.webservices.soap.v21.ReplicationPortTypeImpl" />
-
-    <bean id="v22_paymentPortType" class="ish.oncourse.webservices.soap.v22.PaymentPortTypeImpl" />
-
-    <bean id="v22_replicationPortType" class="ish.oncourse.webservices.soap.v22.ReplicationPortTypeImpl" />
-
     <bean id="v23_paymentPortType" class="ish.oncourse.webservices.soap.v23.PaymentPortTypeImpl" />
 
     <bean id="v23_replicationPortType" class="ish.oncourse.webservices.soap.v23.ReplicationPortTypeImpl" />
@@ -55,86 +47,10 @@
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
 
-    <jaxws:endpoint id="v21_replication" implementor="#v21_replicationPortType"
-                    address="/v21/replication">
-        <jaxws:inInterceptors>
-            <ref bean="communicationKeyInterceptor" />
-            <ref bean="collegeRequestInterceptor" />
-            <ref bean="headerInterceptor" />
-        </jaxws:inInterceptors>
-
-        <jaxws:dataBinding>
-            <bean class="org.apache.cxf.jaxb.JAXBDataBinding">
-                <property name="marshallerProperties">
-                    <map>
-                        <entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
-                    </map>
-                </property>
-            </bean>
-        </jaxws:dataBinding>
-    </jaxws:endpoint>
-
-    <jaxws:endpoint id="v22_replication" implementor="#v22_replicationPortType"
-                    address="/v22/replication">
-        <jaxws:inInterceptors>
-            <ref bean="communicationKeyInterceptor" />
-            <ref bean="collegeRequestInterceptor" />
-            <ref bean="headerInterceptor" />
-        </jaxws:inInterceptors>
-
-        <jaxws:dataBinding>
-            <bean class="org.apache.cxf.jaxb.JAXBDataBinding">
-                <property name="marshallerProperties">
-                    <map>
-                        <entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
-                    </map>
-                </property>
-            </bean>
-        </jaxws:dataBinding>
-    </jaxws:endpoint>
-
     <jaxws:endpoint id="v23_replication" implementor="#v23_replicationPortType"
                     address="/v23/replication">
         <jaxws:inInterceptors>
             <ref bean="communicationKeyInterceptor" />
-            <ref bean="collegeRequestInterceptor" />
-            <ref bean="headerInterceptor" />
-        </jaxws:inInterceptors>
-
-        <jaxws:dataBinding>
-            <bean class="org.apache.cxf.jaxb.JAXBDataBinding">
-                <property name="marshallerProperties">
-                    <map>
-                        <entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
-                    </map>
-                </property>
-            </bean>
-        </jaxws:dataBinding>
-    </jaxws:endpoint>
-
-    <jaxws:endpoint id="v21_payment" implementor="#v21_paymentPortType"
-                    address="/v21/payment">
-        <jaxws:inInterceptors>
-            <ref bean="securityCodeInterceptor" />
-            <ref bean="collegeRequestInterceptor" />
-            <ref bean="headerInterceptor" />
-        </jaxws:inInterceptors>
-
-        <jaxws:dataBinding>
-            <bean class="org.apache.cxf.jaxb.JAXBDataBinding">
-                <property name="marshallerProperties">
-                    <map>
-                        <entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
-                    </map>
-                </property>
-            </bean>
-        </jaxws:dataBinding>
-    </jaxws:endpoint>
-
-    <jaxws:endpoint id="v22_payment" implementor="#v22_paymentPortType"
-                    address="/v22/payment">
-        <jaxws:inInterceptors>
-            <ref bean="securityCodeInterceptor" />
             <ref bean="collegeRequestInterceptor" />
             <ref bean="headerInterceptor" />
         </jaxws:inInterceptors>
