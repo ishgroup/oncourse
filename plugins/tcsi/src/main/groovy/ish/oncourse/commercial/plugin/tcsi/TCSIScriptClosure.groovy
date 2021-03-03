@@ -13,6 +13,7 @@ package ish.oncourse.commercial.plugin.tcsi
 
 import groovy.transform.CompileStatic
 import ish.oncourse.API
+import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
 
@@ -30,15 +31,19 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
 @ScriptClosure(key = "tcsi", integration = TCSIIntegration)
 class TCSIScriptClosure implements ScriptClosureTrait<TCSIIntegration> {
 
-    Action action
+    private Enrolment enrolment
+    
+    void enrolment(Enrolment enrolment) {
+        this.enrolment = enrolment
+    }
 
     @Override
     Object execute(TCSIIntegration integration) {
+        try {
+            integration.export(enrolment)
+        } catch (TCSIException ignore) {
+            //	ignored and allow proceed with other units of study 
+        }
         return null
     }
-
-    static enum Action {
-        UPLOAD_STUDENTS;
-    }
-
 }

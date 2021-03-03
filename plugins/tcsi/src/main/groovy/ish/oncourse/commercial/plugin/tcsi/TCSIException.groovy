@@ -6,4 +6,8 @@
 package ish.oncourse.commercial.plugin.tcsi
 
 class TCSIException extends RuntimeException {
+
+    TCSIException(String message) {
+        super(message)
+    }
 }

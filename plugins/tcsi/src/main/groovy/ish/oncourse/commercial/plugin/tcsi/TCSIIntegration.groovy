@@ -16,12 +16,18 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.EntityRelation
+import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.integration.OnSave
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.oncourse.server.services.AuthHelper
+import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 import org.apache.groovy.json.internal.JsonFastParser
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -64,10 +70,16 @@ class TCSIIntegration implements PluginTrait {
     static final String BASE_API_PATH = '/centrelink/ext-vend/tcsi/b2g/v1'
     static final String STUDENTS_PATH = BASE_API_PATH + '/students'
     static final String COURSES_PATH = BASE_API_PATH + '/courses'
+    
+    static final String HIGH_EDUCATION_TYPE  = 'Higher education'
 
     String deviceName
     String organisationId
     String jwkCertificate
+    ObjectContext context
+    EntityRelationType highEducationType
+    Course highEducation
+
     private String authToken
     
     private Enrolment enrolment
@@ -76,17 +88,22 @@ class TCSIIntegration implements PluginTrait {
     private static Logger logger = LogManager.logger
     
     private static final Closure failureHangler = { resp, body ->
-        logger.error(resp.toString())
-        logger.error(body.toString())
-        throw new RuntimeException('Something unexpected happend, please contact ish support for more details')
+        interraptExport("Something unexpected happend, please contact ish support for more details\n" +
+                "$resp.toString()\n" +
+                "$body.toString()" 
+        )
     }
     
     TCSIIntegration(Map args) {
         loadConfig(args)
-
+        this.context = cayenneService.newContext
         this.organisationId = configuration.getIntegrationProperty(TCSI_ORGANISATION_ID).value
         this.deviceName = configuration.getIntegrationProperty(TCSI_DEVICE_NAME).value
         this.jwkCertificate = configuration.getIntegrationProperty(TCSI_JWK_CERTIFICATE).value
+        
+        this.highEducationType = ObjectSelect.query(EntityRelationType)
+                .where(EntityRelationType.NAME.eq(HIGH_EDUCATION_TYPE))
+                .selectOne(context)
     }
 
     String activateDevice(String activationCode) {
@@ -194,21 +211,24 @@ class TCSIIntegration implements PluginTrait {
         }
     }
     
-    void enrolment(Enrolment e) {
-        enrolment = e
+    void export(Enrolment e) {
+        enrolment = context.localObject(e)
+        highEducation = getHighEducationRelation()
+            
         if (!getStudent()) {
             createStudent()
         }
-        if (!getCourse()) {
-            createCourse()
+        if (!getCourseGroup()) {
+            createCourseGroup()
         }
     }
     
-    def getCourse() {
+    private Object getCourseGroup() {
+        
         getClient().request(GET, JSON) {
-            uri.path = COURSES_PATH + "/students-uid/" + enrolment.student.studentNumber
+            uri.path = COURSES_PATH + "/$highEducation.id"
             response.success = { resp, result ->
-                return result["result"][0]["student"]
+                return result["result"]["course"]
             }
             response.failure =   { resp, result ->
                 if (resp.status == 404) {
@@ -220,7 +240,7 @@ class TCSIIntegration implements PluginTrait {
         }
     }
 
-    def createCourse() {
+    Object createCourseGroup() {
         getClient().request(POST, JSON) {
             uri.path = COURSES_PATH
             body = TCSIUtils.getCourseData(enrolment.courseClass.course)
@@ -299,16 +319,35 @@ class TCSIIntegration implements PluginTrait {
             errorInfo += error["error_description"]
             errorInfo +="\n"
         }
-        
-        
-        
-        logger.error(errorInfo)
+
+        interraptExport(errorInfo)
+    }
+    
+    private interraptExport(String message) {
+        logger.error(message)
 
         emailService.email {
-            subject("TCSI export failed for: $enrolment.student.contact.fullName")
-            content(errorInfo)
+            subject("TCSI export failed for: $enrolment.student.contact.fullName  $enrolment.courseClass.uniqueCode")
+            content(message)
             from (preferenceController.emailFromAddress)
         }
-        throw new TCSIException()
+        throw new TCSIException(message)
+    }
+    
+    private Course getHighEducationRelation() {
+        Course course = enrolment.courseClass.course
+
+        EntityRelation relation = ObjectSelect.query(EntityRelation)
+                .where(EntityRelation.RELATION_TYPE.eq(highEducationType))
+                .and(EntityRelation.TO_ENTITY_ANGEL_ID.eq(course.id))
+                .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                .selectFirst(cayenneService.newContext)
+        if (relation) {
+            return SelectById.query(Course, relation.fromRecordId).selectOne(context)
+        } else {
+            interraptExport("Enrolment is not a high education unit of study")
+        } 
+        return null
     }
 }
