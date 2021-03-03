@@ -191,7 +191,7 @@ class PayLine extends _PayLine {
 
 	String getPaidFor() {
 		String paidFor = null
-		String quantity = this.quantity.setScale(1, RoundingMode.HALF_UP).toString()
+		String quantity = this.quantity.setScale(2, RoundingMode.HALF_UP).toString()
 		switch(this.classCost.repetitionType) {
 			case ClassCostRepetitionType.PER_TIMETABLED_HOUR:
 			case ClassCostRepetitionType.PER_STUDENT_CONTACT_HOUR:
