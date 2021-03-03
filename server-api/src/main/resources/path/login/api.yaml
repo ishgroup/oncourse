@@ -15,43 +15,47 @@ put:
 
                    Basic login workflow:
 
-                   1) Client sends requiest to /a/v1/login endpoint with LoginRequest body of type:
+                   1. Client sends requiest to `/a/v1/login` endpoint with LoginRequest body of type:
 
-                   {
+                   ```{
                      kickOut: false,
                      login: "ish",
                      password: "password",
                      token: ""
-                   }
+                   }```
 
-                   2) Server checks LoginRequest and responses with 401 LoginResponse of type:
+                   2. Server checks LoginRequest and responses with `401` LoginResponse of type:
 
+                  ```
                    {
                      errorMessage: "",
                      loginStatus: "TFA optional",
                      passwordComlexity: false,
                      totpUrl: "otpauth://totp/onCourse:ish?secret=IJITFEUSHWMETNQZ&issuer=onCourse"
                    }
+                   ```
 
-                   3) Client sends another LoginRequest to /a/v1/login of type:
+                   3. Client sends another LoginRequest to `/a/v1/login` of type:
 
-                   {
+                   ```{
                      kickOut: false,
                      login: "ish",
                      password: "password",
                      secretCode: "IJITFEUSHWMETNQZ",
                      skipTfa: true,
                      token: ""
-                   }
+                   }```
 
-                   4) Server responds with 200 response containing set-cookie header with valid "JSESSIONID" and LoginResponse of type:
+                   4. Server responds with 200 response containing set-cookie header with valid "JSESSIONID" and LoginResponse of type:
 
-                   {
+                   ```{
                      errorMessage: null,
                      loginStatus: "Login successful",
                      passwordComlexity: false,
                      totpUrl: null
-                   }'
+                   }```
+
+                   '
   tags:
   - Authentication
   parameters:
