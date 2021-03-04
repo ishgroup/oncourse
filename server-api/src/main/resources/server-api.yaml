@@ -8,9 +8,10 @@ info:
     email: support@ish.com.au
   license:
     name: AGPLv3
-  version: v1
+  version: 1.0.0
 
 host: sttrinians.cloud.ish.com.au
+
 schemes:
   - https
 consumes:
@@ -23,7 +24,7 @@ securityDefinitions:
     type: basic
     description: HTTP Basic Authentication
 
-basePath: /a/
+basePath: /a/v1/
 
 tags:
   - name: Preference
