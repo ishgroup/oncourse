@@ -70,7 +70,7 @@ export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep,
 
   const enrolmentsCount = enrolments.filter(en => en.courseClass).length;
 
-  const courseIds = enrolments.map(en => en.courseClass.courseId).toString();
+  const courseIds = enrolments.map(en => en.courseClass && en.courseClass.courseId).filter(en => en).toString();
 
   await enrolments.map(en => () => (en.courseClass
     ? CheckoutService.getContactDiscounts(
