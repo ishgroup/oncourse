@@ -9,28 +9,31 @@ properties:
   modifiedOn:
     type: string
     format: date-time
-  submissionStatus:
-    $ref: '../enum/FundingStatus.yaml'
-    required: true
   submittedOn:
     type: string
     format: date-time
   submittedById:
     type: integer
     format: int64
-  markStatus:
-    $ref: '../enum/FundingStatus.yaml'
-    required: true
   markedOn:
     type: string
     format: date-time
   enrolmentId:
     type: integer
     format: int64
+  studentId:
+    type: integer
+    format: int64
   studentName:
     type: string
-  courseClass:
+  classId:
+    type: integer
+    format: int64
+  courseClassName:
     type: string
+  assessmentId:
+    type: integer
+    format: int64
   assessment:
     type: string
   documents:
