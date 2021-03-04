@@ -5,3 +5,7 @@ enabled: false
 triggerType: CRON
 schedule: 0 0 6 1/1 * ? *
 description:  Pull unsubscribers and mark the email address in onCourse as not allowed for marketing.
+options:
+  - name: numberOfDays
+    dataType: TEXT
+    value: "7"
