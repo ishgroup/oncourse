@@ -9,19 +9,20 @@
 const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = () => ({
     entry: ["./src/api-docs/apiDocs.tsx"],
     output: {
       publicPath: "/",
-      path: path.resolve(__dirname, "build"),
+      path: path.resolve(__dirname, "build/api-docs"),
     },
     mode: "development",
     resolve: {
       modules: [
         "node_modules"
-
       ],
       extensions: [".ts", ".tsx", ".js"]
     },
@@ -34,7 +35,6 @@ module.exports = () => ({
               loader: "ts-loader",
               options: {
                 transpileOnly: true,
-                happyPackMode: true
               }
             }
           ],
@@ -68,15 +68,30 @@ module.exports = () => ({
       new webpack.SourceMapDevToolPlugin({
         filename: "[file].map",
         exclude: [/vendor/, /images/, /hot-update/]
+      }),
+      new CompressionPlugin({
+        filename: `[path].gz`,
+        algorithm: "gzip",
+        test: /\.(js|html|css)$/,
+        threshold: 10240,
+        minRatio: 0.8
       })
     ],
+    optimization: {
+      minimizer: [
+        new TerserPlugin({
+          parallel: 4,
+          sourceMap: true
+        })
+      ]
+    },
     devServer: {
       inline: true,
-        hot: true,
-        port: 8100
+      hot: true,
+      port: 8100
     },
     devtool: false,
-      node: {
-    fs: "empty"
-  }
+    node: {
+      fs: "empty"
+    }
 });
