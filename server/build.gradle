@@ -64,12 +64,11 @@ dependencies {
 	api "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
 
 	implementation 'javax.jws:javax.jws-api:1.1'
-	implementation "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 
 	implementation "org.eclipse.jetty:jetty-servlets:$jettyVersion"
 	implementation "org.eclipse.jetty.http2:http2-server:$jettyVersion"
 	implementation "org.eclipse.jetty.websocket:websocket-servlet:$jettyVersion"
-	implementation "org.eclipse.jetty.websocket:websocket-server:$jettyVersion"
+	implementation "org.eclipse.jetty.websocket:websocket-jetty-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-alpn-java-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-jmx:$jettyVersion"
 
