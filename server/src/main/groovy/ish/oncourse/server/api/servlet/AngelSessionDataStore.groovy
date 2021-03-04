@@ -51,6 +51,20 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
     }
 
     /**
+     * Check if a session for the given id exists.
+     *
+     * @param id the session id to check
+     * @return true if the session exists in the persistent store, false otherwise
+     */
+    @Override
+    boolean doExists(String id) throws Exception {
+        return ObjectSelect.query(SystemUser)
+                .where(SystemUser.SESSION_ID.eq(id))
+                .and(SystemUser.LAST_ACCESS.gt(preferenceController.timeoutThreshold))
+                .selectCount(context) == 1
+    }
+
+    /**
      * Update the user in the database. This is done periodically to update the last access time
      * so we can track inactivity logout.
      * @param id session id
@@ -64,8 +78,7 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
         def isLogin = data.getAttribute(IS_LOGIN) as Boolean
 
         if (!user) {
-            // logout
-            return
+            return  // user already logged out
         }
         user = context.localObject(user)
 
@@ -120,18 +133,58 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
     }
 
     /**
-     * Get all expired sessions from the session ids provided
+     * Implemented by subclasses to resolve which sessions in this context
+     * that are being managed by this node that should be expired.
      *
-     * @param candidates collection of session ids to check
-     * @return
+     * @param candidates the ids of sessions the SessionCache thinks has expired
+     * @param time the time at which to check for expiry
+     * @return the reconciled set of session ids that have been checked in the store
      */
     @Override
-    Set<String> doGetExpired(Set<String> candidates) {
+    Set<String> doCheckExpired(Set<String> candidates, long time) {
         return ObjectSelect
                 .columnQuery(SystemUser, SystemUser.SESSION_ID)
                 .where(SystemUser.SESSION_ID.in(candidates))
-                .and(SystemUser.LAST_ACCESS.lt(preferenceController.timeoutThreshold))
+                .and(SystemUser.LAST_ACCESS.lt(preferenceController.getTimeoutThreshold(time)))
                 .select(context).toSet()
+    }
+
+    /**
+     * Implemented by subclasses to find sessions for this context in the store
+     * that expired at or before the time limit and thus not being actively
+     * managed by any node. This method is only called periodically (the period
+     * is configurable) to avoid putting too much load on the store.
+     *
+     * @param before the upper limit of expiry times to check. Sessions expired
+     *            at or before this timestamp will match.
+     *
+     * @return the empty set if there are no sessions expired as at the time, or
+     *         otherwise a set of session ids.
+     */
+    @Override
+    Set<String> doGetExpired(long before) {
+        return ObjectSelect
+                .columnQuery(SystemUser, SystemUser.SESSION_ID)
+                .where(SystemUser.LAST_ACCESS.lt(preferenceController.getTimeoutThreshold(before)))
+                .select(context).toSet()
+    }
+
+    /**
+     * Implemented by subclasses to delete sessions for other contexts that
+     * expired at or before the timeLimit. These are 'orphaned' sessions that
+     * are no longer being actively managed by any node. These are explicitly
+     * sessions that do NOT belong to this context (other mechanisms such as
+     * doGetExpired take care of those). As they don't belong to this context,
+     * they cannot be loaded by us.
+     *
+     * This is called only periodically to avoid placing excessive load on the
+     * store.
+     *
+     * @param time the upper limit of the expiry time to check in msec
+     */
+    @Override
+    void doCleanOrphans(long time) {
+        // nothing to do here
     }
 
     @Override

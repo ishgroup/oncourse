@@ -73,6 +73,16 @@ public class PreferenceController extends CommonPreferenceController {
 		return  new Date(timeoutThresholdMs);
 	}
 
+	/**
+	 * Instead of the timeout relative to now, get it relative to the time
+	 * passed in milliseconds
+	 * @param time
+	 * @return
+	 */
+	public Date getTimeoutThreshold(long time) {
+		long timeoutThresholdMs = time - getTimeoutMs();
+		return  new Date(timeoutThresholdMs);
+	}
 
 	@Override
 	public Object getValueForKey(String key) {
