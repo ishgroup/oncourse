@@ -101,7 +101,9 @@ const findRelatedGroup: any = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Outcome and entityId" },
   { title: "Classes", list: Classes.path, expression: "enrolments.outcomes.id" },
   { title: "Enrolments", list: "enrolment", expression: "outcomes.id" },
-  { title: "Students", list: "contact", expression: "student.enrolments.outcomes.id" }
+  { title: "Students", list: "contact", expression: "student.enrolments.outcomes.id" },
+  { title: "Certificates", list: "certificate", expression: "certificateOutcomes.outcome.id" }
+
 ];
 
 const nameCondition = (val: Outcome) => val.studentName;
