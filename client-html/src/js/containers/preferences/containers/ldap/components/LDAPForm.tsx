@@ -47,6 +47,7 @@ class LDAPBaseForm extends React.Component<any, any> {
     this.formModel = props.formatModel(Model);
 
     this.showLicenceWarning = this.showLicenceWarning.bind(this);
+    this.closeLicenceWarning = this.closeLicenceWarning.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
