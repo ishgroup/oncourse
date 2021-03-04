@@ -14,10 +14,10 @@ export function mockInvoices() {
       contactId: 323,
       contactName: row.values[3],
       createdByUser: "admin",
-      createdOn: "2021-01-20T05:31:37.412Z",
+      createdOn: "2011-08-03T08:04:51.000Z",
       customerReference: null,
-      dateDue: format(new Date(row.values[2]), "yyyy-MM-dd"),
-      invoiceDate: format(new Date(row.values[2]), "yyyy-MM-dd"),
+      dateDue: "2011-08-03",
+      invoiceDate: "2011-08-03",
       invoiceLines: [
         {
           id: 461,
