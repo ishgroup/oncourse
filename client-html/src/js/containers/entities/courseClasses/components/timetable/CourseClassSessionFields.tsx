@@ -48,7 +48,7 @@ interface Props {
   warnings: SessionWarning[];
   prevTutorsState?: any;
 }
-const siteRoomLabel = site => site.name;
+const siteRoomLabel = site => (typeof site === "object" ? site.name : "");
 
 const normalizeStartDate = (value, prevValue) => value || prevValue;
 
