@@ -64,16 +64,13 @@ dependencies {
 	api "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
 
 	implementation 'javax.jws:javax.jws-api:1.1'
-	implementation "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 
 	implementation "org.eclipse.jetty:jetty-servlets:$jettyVersion"
 	implementation "org.eclipse.jetty.http2:http2-server:$jettyVersion"
 	implementation "org.eclipse.jetty.websocket:websocket-servlet:$jettyVersion"
-	implementation "org.eclipse.jetty.websocket:websocket-server:$jettyVersion"
+	implementation "org.eclipse.jetty.websocket:websocket-jetty-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-alpn-java-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-jmx:$jettyVersion"
-
-	implementation "org.eclipse.jetty.alpn:alpn-api:1.1.3.v20160715"
 
 	implementation ("org.apache.maven:maven-artifact:3.3.9")
 	api ("org.liquibase:liquibase-core:4.1.0") {
