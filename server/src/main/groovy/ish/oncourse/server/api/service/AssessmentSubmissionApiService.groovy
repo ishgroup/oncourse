@@ -11,15 +11,12 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import ish.oncourse.server.api.dao.AssessmentSubmissionDao
 import ish.oncourse.server.api.v1.model.AssessmentSubmissionDTO
-import ish.oncourse.server.api.v1.model.FundingStatusDTO
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.AssessmentSubmissionAttachmentRelation
 import ish.oncourse.server.document.DocumentService
 import ish.util.DateFormatter
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
-
-import java.time.LocalDateTime
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
@@ -40,8 +37,11 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
     @Override
     AssessmentSubmissionDTO toRestModel(AssessmentSubmission cayenneModel) {
         toRestMinimizedModel(cayenneModel).with { dtoModel ->
+            dtoModel.studentId = cayenneModel.enrolment.student.contact.id
             dtoModel.studentName = cayenneModel.studentName
-            dtoModel.courseClass = cayenneModel.courseClassName
+            dtoModel.classId = cayenneModel.assessmentClass.courseClass.id
+            dtoModel.courseClassName = cayenneModel.courseClassName
+            dtoModel.assessmentId = cayenneModel.assessmentClass.assessment.id
             dtoModel.assessment = cayenneModel.assessmentName
             dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             dtoModel
@@ -54,9 +54,7 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
             dtoModel.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
             dtoModel.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
             dtoModel.submittedOn = LocalDateUtils.dateToTimeValue(cayenneModel.submittedOn)
-            dtoModel.submissionStatus = FundingStatusDTO.SUCCESS
             dtoModel.markedOn = LocalDateUtils.dateToTimeValue(cayenneModel.markedOn)
-            dtoModel.markStatus = FundingStatusDTO.SUCCESS
             dtoModel.enrolmentId = cayenneModel.enrolment.id
             dtoModel.submittedById = cayenneModel.submittedBy.id
             dtoModel
@@ -65,12 +63,8 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
 
     @Override
     AssessmentSubmission toCayenneModel(AssessmentSubmissionDTO dto, AssessmentSubmission cayenneModel) {
-        if (FundingStatusDTO.UNKNOWN != dto.submissionStatus) {
-            cayenneModel.submittedOn = LocalDateUtils.timeValueToDate(LocalDateTime.now())
-        }
-        if (FundingStatusDTO.UNKNOWN != dto.markStatus) {
-            cayenneModel.markedOn = LocalDateUtils.timeValueToDate(LocalDateTime.now())
-        }
+        cayenneModel.submittedOn = LocalDateUtils.timeValueToDate(dto.submittedOn)
+        cayenneModel.submittedOn = LocalDateUtils.timeValueToDate(dto.markedOn)
         cayenneModel.submittedBy = contactService.getEntityAndValidateExistence(cayenneModel.context, dto.submittedById)
 
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, AssessmentSubmissionAttachmentRelation, cayenneModel.context)
