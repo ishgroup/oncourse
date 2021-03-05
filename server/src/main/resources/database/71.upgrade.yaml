@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 71-1
+      author: artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: Course
+              columnName: feeHelpClass
+      changes:
+        - addColumn:
+            tableName: Course
+            columns:
+              - column:
+                  name: feeHelpClass
+                  type: SMALLINT
+                  value: 0
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: Course
+            columns:              
+              - column:
+                  name: fullTimeLoad
+                  type: VARCHAR(10)
+
+  - changeSet:
+      id: 71-2
+      author: artyom
+      changes:
+        - sql:
+            comment:  take any positiv value from any class from a course
+            sql:  update Course c join CourseClass cc on cc.courseId =c.id and cc.feeHelpClass=1
+                  set c.feeHelpclass = cc.feeHelpClass, c.fullTimeLoad =cc.fullTimeLoad
+                  where cc.feeHelpClass is not null or cc.fullTimeLoad is not null;
+
+  - changeSet:
+      id: 71-3
+      author: artyom
+      changes:
+        - dropColumn:
+            tableName: CourseClass
+            columnName: feeHelpClass
+        - dropColumn:
+            tableName: CourseClass
+            columnName: fullTimeLoad
+
+
+

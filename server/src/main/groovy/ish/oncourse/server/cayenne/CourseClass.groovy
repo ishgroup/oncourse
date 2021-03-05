@@ -685,30 +685,12 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	/**
 	 * @return
 	 */
-	@Nonnull
-	@API
-	@Override
-	Boolean getFeeHelpClass() {
-		return super.getFeeHelpClass()
-	}
-
-	/**
-	 * @return
-	 */
 	@API
 	@Override
 	String getFinalDETexport() {
 		return super.getFinalDETexport()
 	}
-
-	/**
-	 * @return
-	 */
-	@API
-	@Override
-	String getFullTimeLoad() {
-		return super.getFullTimeLoad()
-	}
+	
 
 	/**
 	 * Returns a value mapped to funding source. Used for AVETMISS reporting.
