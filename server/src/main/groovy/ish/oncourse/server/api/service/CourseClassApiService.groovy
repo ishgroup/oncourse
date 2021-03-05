@@ -179,7 +179,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.vetPurchasingContractID = cc.vetPurchasingContractID
         dto.vetPurchasingContractScheduleID = cc.vetPurchasingContractScheduleID
         dto.webDescription = cc.webDescription
-
+        dto.feeHelpClass = cc.course.feeHelpClass
         int toProceed = classService.getEnrolmentsToProceed(cc)
         dto.enrolmentsToProfitLeftCount =  toProceed > 0 ? toProceed : 0
 

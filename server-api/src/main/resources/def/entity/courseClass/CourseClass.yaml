@@ -151,4 +151,5 @@ properties:
     type: object
     additionalProperties:
       type: string
-
+  feeHelpClass:
+    type: boolean
