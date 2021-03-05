@@ -25,6 +25,8 @@ import org.apache.logging.log4j.Logger
 import java.time.LocalDate
 /**
  * Mailchimp integration groovy script API. Allows to subscribe/unsubscribe contact to/from Mailchimp list.
+ * You can use 'subscribe' action for updating contacts in MailChimp.
+ * 'Unsubscribe' deletes permanently contact from the list.
  *
  * Usage examples:
  *
@@ -37,6 +39,7 @@ import java.time.LocalDate
  * }
  * ```
  * Name property here is the name of Mailchimp integration which should be created in onCourse beforehand.
+ * If the name isn't specified, script will execute it for all created 'MailChimp' integrations.
  *
  * Subscribe person without onCourse contact record to Mailchimp list:
  * ```
@@ -110,6 +113,7 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
     String firstName
     String lastName
 	List<String> tags
+	Map mergeFields = [:]
 	LocalDate since
 
 	private static Logger logger = LogManager.logger
@@ -117,9 +121,9 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
 	boolean optIn = true
 
 	/**
-	 * Set Mailchimp list action: "subscribe" or "unsubscribe".
+	 * Set Mailchimp list action: "subscribe" or "unsubscribe" or "pull unsubscribes".
 	 *
-	 * @param action list action string, can be one of "subscribe" or "unsubscribe"
+	 * @param action list action string, can be one of "subscribe" or "unsubscribe" or "pull unsubscribes"
      */
 	@API
 	void action(String action) {
@@ -143,7 +147,10 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
      */
 	@API
 	void firstName(String firstName) {
-		this.firstName = firstName
+		if (firstName) {
+			this.firstName = firstName
+			this.mergeFields['FNAME'] = firstName
+		}
 	}
 
 	/**
@@ -153,7 +160,10 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
      */
 	@API
 	void lastName(String lastName) {
-		this.lastName = lastName
+		if (lastName) {
+			this.lastName = lastName
+			this.mergeFields['LNAME'] = lastName
+		}
 	}
 
 	/**
@@ -164,12 +174,13 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
 	@API
 	void contact(Contact contact) {
 		this.email = contact.email
-		this.firstName = contact.firstName
-		this.lastName = contact.lastName
+		firstName(contact.firstName)
+		lastName(contact.lastName)
 	}
 
 	/**
 	 * A flag used to specify if a user must confirm via email before they are subscribed to a mailing list
+	 * 'true' as default
 	 *
 	 * @param optIn for confirm email
 	 */
@@ -225,9 +236,15 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
 					logger.error("Subscriber email is null, firstName: ${firstName}, lastName: ${lastName}. Abort script.")
 					break
 				}
-				integration.subscribeToList(email, firstName, lastName, optIn)
+				def result
+				def client = integration.searchClient(email)
+				if (client) {
+					result = integration.updateClient(email, mergeFields)
+				} else {
+					result = integration.subscribeToList(email, mergeFields, optIn)
+				}
 
-				if (tags) {
+				if (result && tags) {
 					tags.each { tag -> integration.tag(tag, email)}
 				}
 				break
