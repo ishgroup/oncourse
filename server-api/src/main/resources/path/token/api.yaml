@@ -1,0 +1,53 @@
+get:
+  operationId: get
+  summary: Get tokens
+  description: Get list of all tokens
+  tags:
+    - Token
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/ApiToken.yaml'
+    default:
+      description: Unexpected error
+
+post:
+  summary: Create tokens
+  operationId: create
+  tags:
+    - Token
+  parameters:
+    - name: tokens
+      in: body
+      description: created tokens
+      required: true
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/ApiToken.yaml'
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+
+delete:
+  summary: Delete token
+  operationId: delete
+  tags:
+    - Token
+  parameters:
+    - name: tokenId
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of token to delete
+  responses:
+    '200':
+      description: Success response.
+    default:
+      description: Unexpected error

@@ -287,6 +287,8 @@ paths:
     $ref: './path/timetable/courseClass/api.yaml'
   /timetable/session/tag:
     $ref: './path/timetable/session/tag/api.yaml'
+  /token:
+    $ref: './path/token/api.yaml'
   /user:
     $ref: './path/user/api.yaml'
   /user/preference:
