@@ -1,0 +1,25 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+    description: Unique token identifier
+  name:
+    type: string
+    required: true
+    description: Token name on UI
+  secret:
+    type: string
+    required: true
+    description: Token secret. Exposed on UI only when created
+  lastAccess:
+    type: string
+    format: date-time
+    required: true
+    description: Date and time when token was used last
+  userId:
+    type: integer
+    format: int64
+    required: true
+    description: Unique user identifier associated token

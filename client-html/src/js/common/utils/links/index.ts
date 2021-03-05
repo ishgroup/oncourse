@@ -6,7 +6,7 @@ import { LSGetItem, LSSetItem } from "../storage";
 export const openInternalLink = link => {
   window.open(
     (link.includes("http") ? "" : window.location.origin) + link,
-    link.includes("swing") || isInStandaloneMode() ? "_self" : "_blank"
+    isInStandaloneMode() ? "_self" : "_blank"
   );
 };
 

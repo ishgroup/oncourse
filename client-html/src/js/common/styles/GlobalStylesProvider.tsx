@@ -96,6 +96,20 @@ const globalStyles = (theme: AppTheme) =>
         display: "flex",
         flexWrap: "wrap"
       },
+      ".codeArea": {
+        borderRadius: theme.shape.borderRadius,
+        background: theme.table.contrastRow.main,
+        padding: theme.spacing(1),
+        border: "none",
+        outline: "none",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        fontSize: "inherit",
+        fontFamily: "inherit",
+        color: "inherit",
+        width: "100%"
+      },
       ".appBarContainer": {
         marginTop: theme.spacing(8),
         height: `calc(100vh - ${theme.spacing(8)}px)`,

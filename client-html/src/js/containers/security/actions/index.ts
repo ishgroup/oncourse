@@ -1,5 +1,5 @@
+import { ApiToken, User, UserRole } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
-import { User, UserRole } from "@api/model";
 
 export const GET_USER_ROLES_REQUEST = _toRequestType("get/role");
 export const GET_USER_ROLES_FULFILLED = FULFILLED(GET_USER_ROLES_REQUEST);
@@ -25,6 +25,12 @@ export const RESET_USER_PASSWORD_FULFILLED = FULFILLED(RESET_USER_PASSWORD);
 export const DISABLE_USER_2FA = _toRequestType("put/user/disableTFA");
 export const DISABLE_USER_2FA_FULFILLED = FULFILLED(DISABLE_USER_2FA);
 
+export const GET_API_TOKENS_REQUEST = _toRequestType("get/tokens");
+
+export const UPDATE_API_TOKENS_REQUEST = _toRequestType("post/tokens");
+
+export const DELETE_API_TOKEN_REQUEST = _toRequestType("delete/token");
+
 export const CLEAR_USER_PASSWORD = "user/password/clear";
 
 export const disableUser2FA = (id: number) => ({
@@ -37,8 +43,18 @@ export const resetUserPassword = (id: number) => ({
   payload: id
 });
 
-export const clearUserPassword = () => ({
-  type: CLEAR_USER_PASSWORD
+export const updateApiTokens = (tokens: ApiToken[]) => ({
+  type: UPDATE_API_TOKENS_REQUEST,
+  payload: tokens
+});
+
+export const deleteApiToken = (tokenId: number) => ({
+  type: DELETE_API_TOKEN_REQUEST,
+  payload: tokenId
+});
+
+export const getApiTokens = () => ({
+  type: GET_API_TOKENS_REQUEST
 });
 
 export const validateNewUserPassword = (value: string) => ({
