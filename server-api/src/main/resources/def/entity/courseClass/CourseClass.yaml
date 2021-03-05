@@ -43,12 +43,8 @@ properties:
   expectedHours:
     type: number
   feeExcludeGST:
-    type: number
-  feeHelpClass:
-    type: boolean
+    type: number 
   finalDetExport:
-    type: string
-  fullTimeLoad:
     type: string
   initialDetExport:
     type: string

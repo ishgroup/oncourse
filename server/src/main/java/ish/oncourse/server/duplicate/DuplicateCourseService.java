@@ -61,6 +61,8 @@ public class DuplicateCourseService {
             oldCourse.getModules().forEach(newCourse::addToModules);
             newCourse.setReportableHours(oldCourse.getReportableHours());
             newCourse.setFieldConfigurationSchema(oldCourse.getFieldConfigurationSchema());
+            newCourse.setFeeHelpClass(oldCourse.getFeeHelpClass());
+            newCourse.setFullTimeLoad(oldCourse.getFullTimeLoad());
 
             for (var courseAttachmentRelation : oldCourse.getAttachmentRelations()) {
                 var relation = context.newObject(CourseAttachmentRelation.class);

@@ -373,6 +373,8 @@
 		<db-attribute name="reportableHours" type="REAL"/>
 		<db-attribute name="webDescription" type="CLOB" length="32000"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="feeHelpClass" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="fullTimeLoad" type="VARCHAR" length="10"/>
 	</db-entity>
 	<db-entity name="CourseClass">
 		<db-attribute name="attendanceType" type="INTEGER" isMandatory="true"/>
@@ -387,9 +389,7 @@
 		<db-attribute name="endDateTime" type="TIMESTAMP"/>
 		<db-attribute name="expectedHours" type="REAL"/>
 		<db-attribute name="feeExGst" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
-		<db-attribute name="feeHelpClass" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="finalDETexport" type="VARCHAR" length="20"/>
-		<db-attribute name="fullTimeLoad" type="VARCHAR" length="10"/>
 		<db-attribute name="fundingSource" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="fundingSourceId" type="BIGINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -1920,6 +1920,8 @@
 		<obj-attribute name="reportableHours" type="java.math.BigDecimal" db-attribute-path="reportableHours"/>
 		<obj-attribute name="webDescription" type="java.lang.String" db-attribute-path="webDescription"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="feeHelpClass" type="java.lang.Boolean" db-attribute-path="feeHelpClass"/>
+		<obj-attribute name="fullTimeLoad" type="java.lang.String" db-attribute-path="fullTimeLoad"/>
 	</obj-entity>
 	<obj-entity name="CourseAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.CourseAttachmentRelation" clientClassName="ish.oncourse.cayenne.CourseAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "Course"]]></qualifier>
@@ -1936,9 +1938,7 @@
 		<obj-attribute name="endDateTime" type="java.util.Date" db-attribute-path="endDateTime"/>
 		<obj-attribute name="expectedHours" type="java.math.BigDecimal" db-attribute-path="expectedHours"/>
 		<obj-attribute name="feeExGst" type="ish.math.Money" db-attribute-path="feeExGst"/>
-		<obj-attribute name="feeHelpClass" type="java.lang.Boolean" db-attribute-path="feeHelpClass"/>
 		<obj-attribute name="finalDETexport" type="java.lang.String" db-attribute-path="finalDETexport"/>
-		<obj-attribute name="fullTimeLoad" type="java.lang.String" db-attribute-path="fullTimeLoad"/>
 		<obj-attribute name="fundingSource" type="ish.common.types.ClassFundingSource" db-attribute-path="fundingSource"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="initialDETexport" type="java.lang.String" db-attribute-path="initialDETexport"/>
