@@ -140,7 +140,6 @@ const Initial: CourseClassExtended = {
   feeExcludeGST: null,
   feeHelpClass: false,
   finalDetExport: null,
-  fullTimeLoad: null,
   initialDetExport: null,
   isActive: true,
   isCancelled: false,
