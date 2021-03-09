@@ -36,4 +36,3 @@ properties:
     type: array
     items:
       $ref: "../AssessmentSubmission.yaml"
-    description: Course class tutor's ids
