@@ -164,11 +164,11 @@ class AssessmentClass extends _AssessmentClass implements Queueable, AssessmentC
 
         outcomes.findAll{it.startDateOverridden == null || it.startDateOverridden == false}
                 .each { o ->
-                    o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o)).calculate()))
+                    o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate()))
                 }
         outcomes.findAll{it.endDateOverridden == null || it.endDateOverridden == false}
                 .each {  o ->
-                    o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o)).calculate()))
+                    o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate()))
                 }
     }
 

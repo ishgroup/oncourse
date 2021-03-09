@@ -74,11 +74,13 @@ class OutcomeFunctions {
             outcomeDTO.moduleCode = outcome.module?.nationalCode
             outcomeDTO.moduleName = outcome.module?.title
 
-            outcomeDTO.trainingPlanStartDate = LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(outcome)).calculate())
+            outcomeDTO.trainingPlanStartDate = LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(outcome), Boolean.FALSE).calculate())
+            outcomeDTO.actualStartDate = LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(outcome), Boolean.TRUE).calculate())
             outcomeDTO.startDate = outcome.startDate
             outcomeDTO.startDateOverridden = outcome.startDateOverridden
 
-            outcomeDTO.trainingPlanEndDate = LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(outcome)).calculate())
+            outcomeDTO.trainingPlanEndDate = LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(outcome), Boolean.FALSE).calculate())
+            outcomeDTO.actualEndDate = LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(outcome), Boolean.TRUE).calculate())
             outcomeDTO.endDate = outcome.endDate
             outcomeDTO.endDateOverridden = outcome.endDateOverridden
 
@@ -119,10 +121,10 @@ class OutcomeFunctions {
         }
 
         outcome.startDateOverridden = outcome.priorLearning != null || outcomeDTO.startDateOverridden
-        outcome.startDate = outcome.startDateOverridden ? outcomeDTO.startDate : LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(outcome)).calculate())
+        outcome.startDate = outcome.startDateOverridden ? outcomeDTO.startDate : outcomeDTO.actualStartDate
 
         outcome.endDateOverridden = outcome.priorLearning != null || outcomeDTO.endDateOverridden
-        outcome.endDate = outcome.endDateOverridden ? outcomeDTO.endDate : LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(outcome)).calculate())
+        outcome.endDate = outcome.endDateOverridden ? outcomeDTO.endDate : outcomeDTO.actualEndDate
 
 
         if (outcomeDTO.reportableHours != null) {

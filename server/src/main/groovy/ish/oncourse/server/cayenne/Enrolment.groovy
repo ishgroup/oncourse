@@ -155,8 +155,10 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, IEnrolment, Queuea
 			setVetFundingSourceStateID(getCourseClass().getVetFundingSourceStateID());
 		}
 		if (getOutcomes() != null && getOutcomes().size() > 0) {
-			outcomes.findAll{o -> !o.startDateOverridden}.each{o -> o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o)).calculate()))}
-			outcomes.findAll{o -> !o.endDateOverridden}.each{o -> o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o)).calculate()))}
+			outcomes.findAll {o -> !o.startDateOverridden }
+					.each {o -> o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate())) }
+			outcomes.findAll {o -> !o.endDateOverridden }
+					.each {o -> o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate())) }
 
 			outcomes.findAll{ o -> !o.fundingSource}.each { o -> o.setFundingSource(getFundingSource())}
 			outcomes.findAll{ o -> !o.vetPurchasingContractID}.each { o -> o.setVetPurchasingContractID(getVetPurchasingContractID())}

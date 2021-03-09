@@ -37,11 +37,11 @@ class Attendance extends _Attendance implements IAttendance, Queueable {
 	@Override
 	void preUpdate() {
 		List<Outcome> classOutcomes = session.courseClass.enrolments*.outcomes.flatten() as List<Outcome>
-		classOutcomes.findAll{!it.startDateOverridden}.each {o ->
-			o.startDate = LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o)).calculate())
+		classOutcomes.findAll { !it.startDateOverridden }.each {o ->
+			o.startDate = LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate())
 		}
-		classOutcomes.findAll{!it.endDateOverridden}.each {o ->
-			o.endDate = LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o)).calculate())
+		classOutcomes.findAll { !it.endDateOverridden }.each {o ->
+			o.endDate = LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate())
 		}
 	}
 
