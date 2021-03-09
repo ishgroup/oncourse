@@ -212,13 +212,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField type="date" name="censusDate" label="Census date" />
                 </Grid>
-                <Grid item xs={twoColumn ? 3 : 12}>
-                  <FormField
-                    type="number"
-                    name="reportingPeriod"
-                    label="Reporting period (Year & Semester)"
-                  />
-                </Grid>
               </Grid>
             </Collapse>
           </Grid>

@@ -24,7 +24,6 @@ export function mockCourseClasses() {
       webDescription: "Lorem ipsum",
       accountId: 10,
       reportableHours: 20,
-      reportingPeriod: 2,
       suppressAvetmissExport: false,
       vetCourseSiteId: "10",
       vetFundingContract: "Skills Tasmania",

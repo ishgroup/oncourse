@@ -70,8 +70,6 @@ properties:
     type: integer
   minimumPlaces:
     type: integer
-  reportingPeriod:
-    type: integer
   sessionsCount:
     type: integer
   # vet fields

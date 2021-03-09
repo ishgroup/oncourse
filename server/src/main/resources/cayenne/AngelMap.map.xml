@@ -411,7 +411,6 @@
 		<db-attribute name="minutesPerSession" type="INTEGER" length="10" scale="2"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="reportableHours" type="REAL"/>
-		<db-attribute name="reportingPeriod" type="INTEGER"/>
 		<db-attribute name="roomId" type="BIGINT"/>
 		<db-attribute name="sessionCount" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="sessionrepeatInterval" type="INTEGER"/>
@@ -1958,7 +1957,6 @@
 		<obj-attribute name="minutesPerSession" type="java.lang.Integer" db-attribute-path="minutesPerSession"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="reportableHours" type="java.math.BigDecimal" db-attribute-path="reportableHours"/>
-		<obj-attribute name="reportingPeriod" type="java.lang.Integer" db-attribute-path="reportingPeriod"/>
 		<obj-attribute name="sessionRepeatInterval" type="java.lang.Integer" db-attribute-path="sessionrepeatInterval"/>
 		<obj-attribute name="sessionRepeatType" type="ish.common.types.SessionRepetitionType" db-attribute-path="sessionrepeatType"/>
 		<obj-attribute name="sessionsCount" type="java.lang.Integer" db-attribute-path="sessionCount"/>

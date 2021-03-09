@@ -45,6 +45,15 @@ databaseChangeLog:
         - dropColumn:
             tableName: CourseClass
             columnName: fullTimeLoad
+            
+  - changeSet:
+      id: 71-4
+      author: artyom
+      changes:
+        - dropColumn:
+            tableName: CourseClass
+            columnName: reportingPeriod
+
 
 
 
