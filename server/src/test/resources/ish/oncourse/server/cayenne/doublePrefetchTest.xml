@@ -32,7 +32,7 @@
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1"
                  isActive="1" incomeAccountId="1" fundingSource="3" deliveryMode="1" courseId="1"
 				 feeExGst="100.00" suppressAvetmissExport="0" roomId="1"
-                 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+                 budgetedPlaces="10" attendanceType="0"/>
 
 	<CourseSession id="1" startDatetime="2012-01-01 15:00:00" endDatetime="2012-01-01 16:00:00" courseClass_Id="1" payAdjustment="0"  modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
 	

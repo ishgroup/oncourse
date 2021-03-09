@@ -27,11 +27,11 @@
     <CourseClass id="1" code="123" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="5" deliveryMode="1" courseId="1" feeExGst="20.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
     <CourseClass id="2" code="124" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="5" deliveryMode="1" courseId="2" feeExGst="40.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 
     <Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name" lastName="name" email="test@test.te"/>
     <Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1" lastName="name" email="test2@test.te"/>

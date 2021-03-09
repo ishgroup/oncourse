@@ -95,11 +95,11 @@
 	<CourseClass id="1" code="123" taxAdjustment="0.1" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="5" deliveryMode="1" courseId="1" feeExGst="200.00"
-                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 	<CourseClass id="2" code="124" taxAdjustment="0.1" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="5" deliveryMode="1" courseId="2" feeExGst="400.00"
-                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 
 	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="100" invoiceNumber="1" debtorsAccountId="1" contactId="1" amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..." createdByUserId="1" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
 

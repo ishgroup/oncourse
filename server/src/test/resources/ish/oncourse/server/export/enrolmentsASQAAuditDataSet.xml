@@ -20,7 +20,7 @@
 
     <Course id="1" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10" code="TESTCOURSE" name="testCourse" isShownOnWeb="0" isVET="1" allowWaitingLists="1" isSufficientForQualification="1" currentlyOffered="0" reportableHours="95" enrolmentType="2" fieldConfigurationSchemaId="1" />
 
-    <CourseClass id="1" createdOn="2015-07-29 11:59:44" modifiedOn="2015-07-29 11:59:44" code="1" roomId="1" courseId="1" endDateTime="2015-11-19 10:30:00" feeExGst="113" incomeAccountId="100" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="1" maximumPlaces="4" minimumPlaces="1" sessionCount="1" taxId="100" deliveryMode="1" fundingSource="0" budgetedPlaces="0" reportableHours="95" isClassFeeApplicationOnly="0" taxAdjustment="0" isActive="1" suppressAvetmissExport="0" expectedHours="0" attendanceType="9" feeHelpClass="0" />
+    <CourseClass id="1" createdOn="2015-07-29 11:59:44" modifiedOn="2015-07-29 11:59:44" code="1" roomId="1" courseId="1" endDateTime="2015-11-19 10:30:00" feeExGst="113" incomeAccountId="100" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="1" maximumPlaces="4" minimumPlaces="1" sessionCount="1" taxId="100" deliveryMode="1" fundingSource="0" budgetedPlaces="0" reportableHours="95" isClassFeeApplicationOnly="0" taxAdjustment="0" isActive="1" suppressAvetmissExport="0" expectedHours="0" attendanceType="9" />
 
     <Enrolment id="1" createdOn="2015-08-26 11:45:49" modifiedOn="2015-08-26 11:45:49" courseClass_id="1" studentId="1" fundingSource="0" source="O" confirmationStatus="3" studyReason="-1" vetIsFullTime="0" eligibilityExemptionIndicator="0" vetFeeIndicator="0" feeHelpAmount="0" suppressAvetmissExport="0" attendanceType="9" />
 </dataset>

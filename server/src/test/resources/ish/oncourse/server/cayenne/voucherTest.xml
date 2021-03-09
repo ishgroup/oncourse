@@ -53,19 +53,19 @@
 	<CourseClass id="1" code="123" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 	<CourseClass id="2" code="124" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="100" deliveryMode="1" courseId="2" feeExGst="100.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 	<CourseClass id="3" code="125" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="100" deliveryMode="1" courseId="2" feeExGst="100.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 	<CourseClass id="4" code="126" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="100" deliveryMode="1" courseId="2" feeExGst="100.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 
 
 	<Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="1abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1" lastName="name" email="test@test.te"/>

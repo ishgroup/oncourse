@@ -34,13 +34,13 @@
 				 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
 				 isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="1"
 				 feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
-				 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+				 budgetedPlaces="10" attendanceType="0"/>
 
 	<CourseClass id="2" code="123" fundingSource="3" taxId="1" sessionCount="3" taxAdjustment="0.0" minimumPlaces="1"
 				 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
 				 isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="1"
 				 feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
-				 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+				 budgetedPlaces="10" attendanceType="0"/>
 
 	<Node id="1" isVocabulary="1" isWebVisible="1" nodeType="1" name="Subjects"  specialType="1"/>
 	<NodeRequirement id="1" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="1"/>

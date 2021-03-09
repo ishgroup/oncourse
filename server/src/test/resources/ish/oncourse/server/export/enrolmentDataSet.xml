@@ -60,14 +60,14 @@
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountid="100" deliveryMode="1" courseid="100" feeExGst="100.00"
                  suppressAvetmissExport="0" roomid="100" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
 	<CourseClass id="200" code="124" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxid="100" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountid="100" deliveryMode="1" courseid="200" feeExGst="100.00"
                  suppressAvetmissExport="0" roomid="100" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
 
 	<Contact id="100" isCompany="0" isStudent="1" isTutor="0" uniqueCode="1abc" isMale="1" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1" lastName="name" email="test@test.te" birthDate="1991-01-01 00:00:00" homePhone="331110000" workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
 
