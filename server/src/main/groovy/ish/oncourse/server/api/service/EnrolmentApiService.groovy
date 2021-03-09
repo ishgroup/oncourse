@@ -19,6 +19,8 @@ import ish.math.Money
 import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.api.dao.EnrolmentDao
 import ish.oncourse.server.api.dao.FundingSourceDao
+import ish.oncourse.server.api.v1.model.AssessmentSubmissionDTO
+import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.document.DocumentService
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.function.CustomFieldFunctions
@@ -55,7 +57,13 @@ import static org.apache.commons.lang3.StringUtils.trimToNull
 class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, EnrolmentDao> {
 
     @Inject
-    private CancelEnrolmentService cancelEnrolmentService;
+    private CancelEnrolmentService cancelEnrolmentService
+
+    @Inject
+    private AssessmentApiService assessmentApiService
+
+    @Inject
+    private AssessmentSubmissionApiService submissionApiService
 
     @Inject
     private SystemUserService systemUserService
@@ -137,6 +145,8 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.outcomesCount = enrolment.outcomes.size()
             enrolmentDTO.createdOn = LocalDateUtils.dateToTimeValue(enrolment.createdOn)
             enrolmentDTO.modifiedOn = LocalDateUtils.dateToTimeValue(enrolment.modifiedOn)
+            enrolmentDTO.assessments = enrolment.courseClass.assessmentClasses*.assessment.collect { assessmentApiService.toRestModel(it) }
+            enrolmentDTO.submissions = enrolment.assessmentSubmissions.collect { submissionApiService.toRestMinimizedModel(it) }
             enrolmentDTO
         }
     }
@@ -178,6 +188,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.creditType = CREDIT_TYPE_MAP.getByValue(dto.creditType)
         enrolment.creditLevel = CREDIT_LEVEL_MAP.getByValue(dto.creditLevel)
 
+        updateSubmissions(dto, enrolment)
         TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags*.id, EnrolmentTagRelation, context)
         DocumentFunctions.updateDocuments(enrolment, enrolment.attachmentRelations, dto.documents, EnrolmentAttachmentRelation, context)
         CustomFieldFunctions.updateCustomFields(context, enrolment, dto.customFields, EnrolmentCustomField)
@@ -303,5 +314,21 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             }
         }
         action
+    }
+
+    private static void updateSubmissions(EnrolmentDTO enrolmentDto, Enrolment enrolment) {
+        ObjectContext context = enrolment.context
+
+        context.deleteObjects(enrolment.assessmentSubmissions.findAll { !(it.id in enrolmentDto.submissions*.id) })
+
+        enrolmentDto.submissions.each { submissionDto ->
+            if (submissionDto.id) {
+                submissionApiService.update(submissionDto.id, submissionDto)
+            } else {
+                AssessmentSubmission submission = context.localObject(submissionApiService.create(submissionDto))
+                submission.enrolment = enrolment
+                submission.assessmentClass = enrolment.courseClass.assessmentClasses.find { submissionDto.assessmentId == it.assessment.id }
+            }
+        }
     }
 }

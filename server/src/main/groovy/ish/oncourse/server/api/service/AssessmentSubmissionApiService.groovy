@@ -41,7 +41,6 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
             dtoModel.studentName = cayenneModel.studentName
             dtoModel.classId = cayenneModel.assessmentClass.courseClass.id
             dtoModel.courseClassName = cayenneModel.courseClassName
-            dtoModel.assessmentId = cayenneModel.assessmentClass.assessment.id
             dtoModel.assessment = cayenneModel.assessmentName
             dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             dtoModel
@@ -51,12 +50,13 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
     AssessmentSubmissionDTO toRestMinimizedModel(AssessmentSubmission cayenneModel) {
         new AssessmentSubmissionDTO().with { dtoModel ->
             dtoModel.id = cayenneModel.id
-            dtoModel.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
-            dtoModel.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
+            dtoModel.enrolmentId = cayenneModel.enrolment.id
+            dtoModel.assessmentId = cayenneModel.assessmentClass.assessment.id
+            dtoModel.submittedById = cayenneModel.submittedBy.id
             dtoModel.submittedOn = LocalDateUtils.dateToTimeValue(cayenneModel.submittedOn)
             dtoModel.markedOn = LocalDateUtils.dateToTimeValue(cayenneModel.markedOn)
-            dtoModel.enrolmentId = cayenneModel.enrolment.id
-            dtoModel.submittedById = cayenneModel.submittedBy.id
+            dtoModel.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
+            dtoModel.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
             dtoModel
         }
     }
