@@ -66,7 +66,7 @@ class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, Ass
         cayenneModel.courseClass = classService.getEntityAndValidateExistence(context, dto.courseClassId)
 
         context.deleteObjects(cayenneModel.assessmentClassTutors.findAll {!(it.tutor.contact.id in dto.contactIds)})
-        context.deleteObjects(cayenneModel.assessmentSubmissions*.enrolment.findAll { !(it.id in dto.submissions*.enrolmentId) })
+        context.deleteObjects(cayenneModel.assessmentSubmissions.findAll { !(it.enrolment.id in dto.submissions*.enrolmentId) })
 
         dto.contactIds.findAll { !(it in cayenneModel.assessmentClassTutors*.tutor.contact.id) }
                 .each { contactId ->
