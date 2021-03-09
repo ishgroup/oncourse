@@ -38,11 +38,11 @@ task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'ge
     args = ['antlr4ts']
 }
 
-//task jest(type: YarnTask, dependsOn: 'queryGrammar') {
-//    args = ['test', '--runInBand']
-//}
-//
-//test.dependsOn(jest)
+task jest(type: YarnTask, dependsOn: 'queryGrammar') {
+    args = ['test', '--runInBand']
+}
+
+test.dependsOn(jest)
 
 sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources/swagger-js', 'build/generated-sources/aql-model', 'build/generated-sources/aql-parser'
