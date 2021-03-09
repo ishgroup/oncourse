@@ -45,6 +45,7 @@ import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.cayenne.EmailTemplate
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.EntityRelation
+import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.Field
 import ish.oncourse.server.cayenne.FieldConfiguration
 import ish.oncourse.server.cayenne.FieldConfigurationLink
@@ -207,6 +208,10 @@ class QueueAllRecordsForFirstTimeReplication {
         ORDERED_QUEUEABLE_CLASSES.add(new RecordDescriptor(Field.class))
         ORDERED_QUEUEABLE_CLASSES.add(new RecordDescriptor(FieldConfigurationScheme.class))
         ORDERED_QUEUEABLE_CLASSES.add(new RecordDescriptor(FieldConfigurationLink.class))
+        
+        //Entity relation types
+        ORDERED_QUEUEABLE_CLASSES.add(new RecordDescriptor(EntityRelationType.class))
+
     }
 
     private ISHDataContext context
