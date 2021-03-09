@@ -44,7 +44,6 @@ class CourseClassStubBuilder extends AbstractAngelStubBuilder<CourseClass, Cours
 		stub.setMaximumDays(entity.getMaximumDays())
 		def censusDate = LocalDateUtils.valueToDateAtNoon(entity.getCensusDate())
 		stub.setCensusDate(censusDate)
-		stub.setReportingPeriod(entity.getReportingPeriod())
 		stub.setAttendanceType(entity.getAttendanceType().getDatabaseValue())
 		stub.setMinStudentAge(entity.getMinStudentAge())
 		stub.setMaxStudentAge(entity.getMaxStudentAge())
