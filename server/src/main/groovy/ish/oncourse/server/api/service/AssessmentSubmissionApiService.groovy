@@ -64,7 +64,7 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
     @Override
     AssessmentSubmission toCayenneModel(AssessmentSubmissionDTO dto, AssessmentSubmission cayenneModel) {
         cayenneModel.submittedOn = LocalDateUtils.timeValueToDate(dto.submittedOn)
-        cayenneModel.submittedOn = LocalDateUtils.timeValueToDate(dto.markedOn)
+        cayenneModel.markedOn = LocalDateUtils.timeValueToDate(dto.markedOn)
         cayenneModel.submittedBy = contactService.getEntityAndValidateExistence(cayenneModel.context, dto.submittedById)
 
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, AssessmentSubmissionAttachmentRelation, cayenneModel.context)
