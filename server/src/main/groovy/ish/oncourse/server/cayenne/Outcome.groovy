@@ -45,6 +45,8 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 	public static final String STUDENT_NAME = "studentName"
 	public static final String STARTDATE = "startDate"
 	public static final String ENDDATE = "endDate"
+	public static final String TRAINING_PLAN_START_DATE_PROPERTY = "trainingPlanStartDate"
+	public static final String TRAINING_PLAN_END_DATE_PROPERTY = "trainingPlanEndDate"
 
 	@Override
 	void postAdd() {
@@ -106,11 +108,11 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 
 	private void updateOverriddenStartEndDates() {
 		if (startDate == null && !startDateOverridden) {
-			startDate = LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(this)).calculate())
+			startDate = LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(this), Boolean.TRUE).calculate())
 		}
 
 		if (endDate == null && !endDateOverridden) {
-			endDate = LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(this)).calculate())
+			endDate = LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(this), Boolean.TRUE).calculate())
 		}
 	}
 
@@ -365,5 +367,13 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 			return super.getSummaryDescription()
 		}
 		return contact.getName(false)
+	}
+
+	Date getTrainingPlanStartDate() {
+		return new CalculateStartDate(OutcomeDelegator.valueOf(this), Boolean.FALSE).calculate()
+	}
+
+	Date getTrainingPlanEndDate() {
+		return new CalculateEndDate(OutcomeDelegator.valueOf(this), Boolean.FALSE).calculate()
 	}
 }
