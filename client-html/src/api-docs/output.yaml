@@ -13658,8 +13658,6 @@ definitions:
         type: "integer"
       minimumPlaces:
         type: "integer"
-      reportingPeriod:
-        type: "integer"
       sessionsCount:
         type: "integer"
       suppressAvetmissExport:
@@ -14049,7 +14047,6 @@ definitions:
       isCancelled: true
       webDescription: "webDescription"
       censusDate: "2000-01-23"
-      reportingPeriod: 7
       feeHelpClass: true
       maximumDays: 9
       message: "message"
