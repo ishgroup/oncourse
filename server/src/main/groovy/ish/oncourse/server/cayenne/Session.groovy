@@ -107,13 +107,13 @@ class Session extends _Session implements SessionTrait, ISession, Queueable, Att
 	private void updateRelatedOutcomes() {
 		List<Outcome> outcomes = sessionModules*.module*.outcomes*.findAll{o -> courseClass.enrolments*.id.contains(o.enrolment?.id) }.flatten() as List<Outcome>
 
-		outcomes.findAll{it.startDateOverridden == null || it.startDateOverridden == false}
+		outcomes.findAll { !it.startDateOverridden }
 				.each { o ->
-					o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o)).calculate()))
+					o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate()))
 				}
-		outcomes.findAll{it.endDateOverridden == null || it.endDateOverridden == false}
+		outcomes.findAll { !it.endDateOverridden }
 				.each { o ->
-					o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o)).calculate()))
+					o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate()))
 				}
 	}
 

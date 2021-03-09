@@ -346,11 +346,11 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 
 		outcomes.findAll { !it.startDateOverridden }
 				.each { o ->
-					o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o)).calculate()))
+					o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate()))
 				}
 		outcomes.findAll { !it.endDateOverridden }
 				.each { o ->
-					o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o)).calculate()))
+					o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate()))
 				}
 	}
 
