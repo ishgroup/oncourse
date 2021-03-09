@@ -167,7 +167,6 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.midwayDetExport = cc.midwayDETexport
         dto.minimumPlaces = cc.minimumPlaces
         dto.minStudentAge = cc.minStudentAge
-        dto.reportingPeriod = cc.reportingPeriod
         dto.roomId = cc.room?.id
         dto.virtualSiteId = (cc.room?.site?.isVirtual ? cc.room.site.id : null) as Long
         dto.sessionsCount = cc.sessionsCount
@@ -252,7 +251,6 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         courseClass.detBookingId = dto.detBookingId
         courseClass.reportableHours = dto.reportableHours
         courseClass.censusDate = dto.censusDate
-        courseClass.reportingPeriod = dto.reportingPeriod
         courseClass.webDescription = dto.webDescription
         courseClass.initialDETexport = dto.initialDetExport
         courseClass.midwayDETexport = dto.midwayDetExport

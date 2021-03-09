@@ -858,16 +858,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	BigDecimal getReportableHours() {
 		return super.getReportableHours()
 	}
-
-	/**
-	 * @return
-	 */
-	@API
-	@Override
-	Integer getReportingPeriod() {
-		return super.getReportingPeriod()
-	}
-
+	
 	/**
 	 * @return
 	 */

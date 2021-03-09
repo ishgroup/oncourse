@@ -305,7 +305,6 @@ public class DuplicateCourseClass {
             newClass.setVetPurchasingContractScheduleID(oldClass.getVetPurchasingContractScheduleID());
             newClass.setAttendanceType(oldClass.getAttendanceType());
             newClass.setCensusDate(oldClass.getCensusDate());
-            newClass.setReportingPeriod(oldClass.getReportingPeriod());
             newClass.setRelatedFundingSource(oldClass.getRelatedFundingSource());
         }
 

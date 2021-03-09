@@ -153,7 +153,6 @@ const Initial: CourseClassExtended = {
   minStudentAge: null,
   minimumPlaces: null,
   reportableHours: 0,
-  reportingPeriod: null,
   sessionsCount: null,
   suppressAvetmissExport: false,
   vetCourseSiteID: null,
