@@ -13632,8 +13632,6 @@ definitions:
         type: "boolean"
       finalDetExport:
         type: "string"
-      fullTimeLoad:
-        type: "string"
       initialDetExport:
         type: "string"
       isActive:
@@ -13959,7 +13957,6 @@ definitions:
       finalDetExport: "finalDetExport"
       midwayDetExport: "midwayDetExport"
       endDateTime: "2000-01-23T04:56:07.000+00:00"
-      fullTimeLoad: "fullTimeLoad"
       maximumPlaces: 3
       tags:
       - requirements:
