@@ -56,7 +56,7 @@
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
 
     <Note id="7" note="firstCourseClassNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>
     <Note id="8" note="secondCourseClassNote1" createdOn="2015-01-24 18:00:00" modifiedOn="2015-01-24 18:00:00"/>

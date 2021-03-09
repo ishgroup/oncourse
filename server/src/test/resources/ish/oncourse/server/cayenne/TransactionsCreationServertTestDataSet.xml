@@ -62,8 +62,8 @@
 
 	<Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
 
-	<CourseClass id="1" code="123" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1" incomeAccountId="1000" deliveryMode="1" courseId="1" feeExGst="100.00" suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
-	<CourseClass id="2" code="123-1" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1" incomeAccountId="1000" deliveryMode="1" courseId="1" feeExGst="100.00" suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+	<CourseClass id="1" code="123" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1" incomeAccountId="1000" deliveryMode="1" courseId="1" feeExGst="100.00" suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
+	<CourseClass id="2" code="123-1" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1" incomeAccountId="1000" deliveryMode="1" courseId="1" feeExGst="100.00" suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 
 	<CourseSession id="1" courseClass_Id="1" startDatetime="2042-05-15 18:30:00.00" endDatetime="2042-05-15 19:30:00.00" payAdjustment="0.00"/>
 	<CourseSession id="2" courseClass_Id="1" startDatetime="2042-05-16 18:30:00.00" endDatetime="2042-05-16 19:30:00.00" payAdjustment="0.00"/>

@@ -36,7 +36,7 @@
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountid="100" deliveryMode="1" courseid="100" feeExGst="100.00"
                  suppressAvetmissExport="0" roomid="100" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
 
 	<CourseSession id="100" courseClass_id="100" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00" payAdjustment="0.00" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 	<CourseSession id="200" courseClass_id="100" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00" payAdjustment="0.00" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>

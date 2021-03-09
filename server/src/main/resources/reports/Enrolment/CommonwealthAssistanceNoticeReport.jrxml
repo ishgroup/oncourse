@@ -92,7 +92,7 @@
             $F{enrolment}.feeHelpAmount.multiply(1.2) :
             $F{enrolment}.feeHelpAmount).floatValue()]]></variableExpression>
     </variable>
-    <filterExpression><![CDATA[$F{enrolment}.courseClass.feeHelpClass]]></filterExpression>
+    <filterExpression><![CDATA[$F{enrolment}.courseClass.course.feeHelpClass]]></filterExpression>
 
     <group name="student" isStartNewPage="true">
         <groupExpression><![CDATA[$F{enrolment}.id]]></groupExpression>

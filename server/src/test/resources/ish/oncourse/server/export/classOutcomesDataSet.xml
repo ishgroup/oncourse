@@ -50,28 +50,28 @@
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
 	<CourseClass id="2" code="124" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
 	<CourseClass id="3" code="125" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
 	<CourseClass id="4" code="126" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
 
 	<Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="1abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1" lastName="name" email="test@test.te" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 	<Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="2abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name2" lastName="name" email="test2@test.te" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>

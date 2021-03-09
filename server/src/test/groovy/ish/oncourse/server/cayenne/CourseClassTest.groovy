@@ -97,7 +97,6 @@ class CourseClassTest extends CayenneIshTestCase {
                 cclass1.setCourse(course1)
                 cclass1.setCode(code1)
                 cclass1.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-                cclass1.setFeeHelpClass(false)
                 cclass1.setTax(Tax.getTaxWithCode("GST", c0))
                 cclass1.setIncomeAccount(AccountUtil.getDefaultBankAccount(c0, Account.class))
 
@@ -110,7 +109,6 @@ class CourseClassTest extends CayenneIshTestCase {
                 cclass2.setCourse(course2)
                 cclass2.setCode(code2)
                 cclass2.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-                cclass2.setFeeHelpClass(false)
                 cclass2.setTax(Tax.getTaxWithCode("GST", c0))
                 cclass2.setIncomeAccount(AccountUtil.getDefaultBankAccount(c0, Account.class))
 
@@ -205,7 +203,6 @@ class CourseClassTest extends CayenneIshTestCase {
         cclass.setMaximumPlaces(30)
         cclass.setMinimumPlaces(5)
         cclass.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-        cclass.setFeeHelpClass(false)
         cclass.setTax(Tax.getTaxWithCode("GST", cc))
         cclass.setIncomeAccount(AccountUtil.getDefaultBankAccount(cc, Account.class))
 
@@ -540,7 +537,6 @@ class CourseClassTest extends CayenneIshTestCase {
         cc.setIsClassFeeApplicationOnly(true)
         cc.setSuppressAvetmissExport(false)
         cc.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-        cc.setFeeHelpClass(false)
 
         logger.warn("3 {}", PersistenceState.persistenceStateName(cc.getIncomeAccount().getPersistenceState()))
         newContext.commitChanges()
@@ -589,7 +585,6 @@ class CourseClassTest extends CayenneIshTestCase {
         cc.setIsClassFeeApplicationOnly(true)
         cc.setSuppressAvetmissExport(false)
         cc.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-        cc.setFeeHelpClass(false)
 
         GregorianCalendar gc = new GregorianCalendar()
         Date startTimeForFirstSession = gc.getTime()
@@ -780,7 +775,6 @@ class CourseClassTest extends CayenneIshTestCase {
         cc.setIsClassFeeApplicationOnly(true)
         cc.setSuppressAvetmissExport(false)
         cc.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-        cc.setFeeHelpClass(false)
 
         ClassCost classCost = newContext.newObject(ClassCost.class)
         classCost.setFlowType(ClassCostFlowType.INCOME)

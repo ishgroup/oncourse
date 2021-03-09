@@ -20,9 +20,9 @@
     <CourseClass id="1" code="123" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="50" deliveryMode="1" courseId="1" feeExGst="200.00"
-                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
     <CourseClass id="2" code="124" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="0" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="50" deliveryMode="1" courseId="2" feeExGst="400.00"
-                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 </dataset>

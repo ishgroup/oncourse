@@ -97,7 +97,6 @@ class CourseClassUtilTest extends CayenneIshTestCase {
         cc.setIsClassFeeApplicationOnly(true)
         cc.setSuppressAvetmissExport(false)
         cc.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-        cc.setFeeHelpClass(false)
 
         Enrolment enrl = context.newObject(Enrolment.class)
         enrl.setSource(PaymentSource.SOURCE_ONCOURSE)
