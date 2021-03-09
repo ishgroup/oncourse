@@ -213,8 +213,10 @@ class TCSIIntegration implements PluginTrait {
     
     void export(Enrolment e) {
         enrolment = context.localObject(e)
-        highEducation = getHighEducationRelation()
-            
+        highEducation = TCSIUtils.getHighEducation(context, highEducationType, enrolment)
+        if (!highEducation) {
+            interraptExport("Enrolment is not a high education unit of study")
+        }
         if (!getStudent()) {
             createStudent()
         }
@@ -243,7 +245,7 @@ class TCSIIntegration implements PluginTrait {
     Object createCourseGroup() {
         getClient().request(POST, JSON) {
             uri.path = COURSES_PATH
-            body = TCSIUtils.getCourseData(enrolment.courseClass.course)
+            body = TCSIUtils.getCourseData(enrolment.courseClass.course, highEducationType)
             response.success = { resp, result ->
                 return handleResponce(result, "Create course")
             }
@@ -333,21 +335,5 @@ class TCSIIntegration implements PluginTrait {
         }
         throw new TCSIException(message)
     }
-    
-    private Course getHighEducationRelation() {
-        Course course = enrolment.courseClass.course
 
-        EntityRelation relation = ObjectSelect.query(EntityRelation)
-                .where(EntityRelation.RELATION_TYPE.eq(highEducationType))
-                .and(EntityRelation.TO_ENTITY_ANGEL_ID.eq(course.id))
-                .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
-                .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
-                .selectFirst(cayenneService.newContext)
-        if (relation) {
-            return SelectById.query(Course, relation.fromRecordId).selectOne(context)
-        } else {
-            interraptExport("Enrolment is not a high education unit of study")
-        } 
-        return null
-    }
 }

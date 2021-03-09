@@ -14,7 +14,14 @@ import ish.common.types.Gender
 import ish.common.types.StudentCitizenship
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
+import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.EntityRelation
+import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.Student
+import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
+import java.time.Duration
 
 
 class TCSIUtils {
@@ -220,17 +227,33 @@ class TCSIUtils {
     
     
     @CompileDynamic
-    static String getCourseData(Course c) {
+    static String getCourseData(Course c, EntityRelationType highEducationType) {
         Map<String, Object> course = [:]
 
         course["course_code"] = c.code
         course["course_name"] = c.name
-        course["course_of_study_load"] = c.reportableHours
-        course["standard_course_duration"] = c.reportableHours
-        List<CourseClass> cortedClasses = c.courseClasses.findAll { it.startDateTime }.sort { it.startDateTime }
-        Date startDate = cortedClasses.empty ? new Date() : cortedClasses[0].startDateTime
-        course["course_effective_from_date"] = startDate.format(DATE_FORMAT)
-      
+
+        course["course_of_study_load"]  = c.fullTimeLoad?:'0'
+        
+        List<Course> units = getUnitCourses(c, highEducationType)
+        units << c
+
+        List<CourseClass> classes = (units*.courseClasses.flatten() as List<CourseClass>).sort { CourseClass clazz -> clazz.startDateTime}
+        
+        course["course_effective_from_date"] = (classes.first().startDateTime?:new Date()).format(DATE_FORMAT)
+        course["course_effective_to_date"] = (classes.last().endDateTime?:new Date()).format(DATE_FORMAT)
+
+        
+        Duration duration = Duration.ZERO
+        classes.groupBy {it.course}.each { k, v ->
+            CourseClass clazz = v.find { it.startDateTime && it.endDateTime }
+            if (clazz) {
+                duration += Duration.between(clazz.startDateTime.toInstant(), clazz.endDateTime.toInstant())
+            }
+        }
+        
+        course["standard_course_duration"] =  String.format("%.1f", duration.toDays() / 365) 
+        
         def courseData  = [
                 'correlation_id' : "courseData_${System.currentTimeMillis()}",
                 'course' : course
@@ -238,6 +261,37 @@ class TCSIUtils {
 
         return JsonOutput.toJson([courseData])
         
+    }
+
+
+    static List<Course> getUnitCourses(Course hihgEducation, EntityRelationType highEducationType) {
+        ObjectContext context =  hihgEducation.context
+        List<EntityRelation> unitRelations = ObjectSelect.query(EntityRelation)
+                .where(EntityRelation.RELATION_TYPE.eq(highEducationType))
+                .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                .and(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(hihgEducation.id))
+                .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                .select(context)
+
+        return unitRelations
+                .collect { SelectById.query(Course, it.toRecordId).selectOne(context) }
+
+    }
+
+    static Course getHighEducation(ObjectContext context, EntityRelationType highEducationType, Enrolment enrolment) {
+        Course course = enrolment.courseClass.course
+
+        EntityRelation relation = ObjectSelect.query(EntityRelation)
+                .where(EntityRelation.RELATION_TYPE.eq(highEducationType))
+                .and(EntityRelation.TO_ENTITY_ANGEL_ID.eq(course.id))
+                .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                .selectFirst(context)
+        if (relation) {
+            return SelectById.query(Course, relation.fromRecordId).selectOne(context)
+        } else {
+            return null
+        }
     }
     
     static String testCourse() {
