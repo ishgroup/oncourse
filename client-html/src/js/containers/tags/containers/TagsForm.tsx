@@ -262,14 +262,26 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       );
 
       const insertValue = getDeepValue(clone, draggableId);
+      let destinationPathIndex = -1;
 
-      const insertIndex = !combine && Number(destinationPath.match(/\[[0-9]+]$/)[0].replace(/[\[\]]/g, ""));
+      if (!combine) {
+        const destinationPathMatch = destinationPath.match(/\[[0-9]+]$/);
+        if (destinationPathMatch && destinationPathMatch.length > 0) {
+          destinationPathIndex = Number(destinationPathMatch[0].replace(/[\[\]]/g, ""));
+        }
+      }
+
+      const insertIndex = !combine && destinationPathIndex;
 
       const removePath = getDeepValue(clone, draggableId.replace(/\[[0-9]+]$/, ""));
 
-      const removeIndex = Number(draggableId.match(/\[[0-9]+]$/)[0].replace(/[\[\]]/g, ""));
+      const draggableIdMatch = draggableId.match(/\[[0-9]+]$/);
 
-      removePath.splice(removeIndex, 1);
+      if (draggableIdMatch && draggableIdMatch.length > 0) {
+        const removeIndex = Number(draggableIdMatch[0].replace(/[\[\]]/g, ""));
+        removePath.splice(removeIndex, 1);
+      }
+
       combine ? insertPath.push(insertValue) : insertPath.splice(insertIndex, 0, insertValue);
 
       setDragIndex(getAllTags([clone]));
