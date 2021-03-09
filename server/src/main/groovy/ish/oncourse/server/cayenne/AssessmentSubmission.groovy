@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.oncourse.API
+import ish.oncourse.cayenne.AssessmentSubmissionInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._AssessmentSubmission
 
@@ -22,7 +23,7 @@ import javax.annotation.Nullable
 //TODO docs
 @API
 @QueueableEntity
-class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, NotableTrait, AttachableTrait {
+class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, NotableTrait, AttachableTrait, AssessmentSubmissionInterface {
 
 	public static final String STUDENT_NAME_PROPERTY = "studentName"
 	public static final String CLASS_NAME_PROPERTY = "courseClassName"
