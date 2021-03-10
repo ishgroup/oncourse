@@ -156,7 +156,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "courseId":2,
         "courseCode":"course2",
         "courseName":"Course2",
-        "endDateTime":"2022-12-01T11:14:32.000Z",
+        "endDateTime":"2029-12-01T11:14:32.000Z",
         "startDateTime":"2018-12-01T10:14:32.000Z",
         "attendanceType":"No information",
         "deliveryMode":"Classroom",

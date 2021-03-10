@@ -35,7 +35,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "dataCollectionRuleId":"101",
         "brochureDescription":"some description",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -76,6 +77,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "brochureDescription":"some description UPD",
         "qualificationId":4,
         "isTraineeship":false,
+        "feeHelpClass":false,
         "rules":[{"id":null,"description":"test","startDate":"2020-02-01","endDate":"2020-02-29","repeatEnd":"onDate","repeat":"hour","repeatEndAfter":0,"repeatOn":"2020-02-29","startDateTime":null,"endDateTime":null}]
         }
         """
@@ -161,7 +163,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "dataCollectionRuleId":"101",
         "brochureDescription":"some description",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -202,7 +205,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "dataCollectionRuleId":"101",
         "brochureDescription":"some description",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -243,7 +247,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "dataCollectionRuleId":"101",
         "brochureDescription":"some description",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -284,7 +289,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "dataCollectionRuleId":"101",
         "brochureDescription":"some description",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -325,7 +331,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "dataCollectionRuleId":"101",
         "brochureDescription":"some description",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -366,7 +373,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "dataCollectionRuleId":"101",
         "brochureDescription":"some description",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -407,7 +415,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "dataCollectionRuleId":"101",
         "brochureDescription":"some description",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -448,7 +457,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "dataCollectionRuleId":null,
         "brochureDescription":"some description",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -488,7 +498,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "dataCollectionRuleId":"101",
         "brochureDescription":"some description",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -533,7 +544,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "modules":[{"id":4}],
         "customFields":{},
         "rules":[],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -568,7 +580,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -608,7 +621,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -648,7 +662,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -707,7 +722,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "qualificationId":3,
         "dataCollectionRuleId":"102",
         "isTraineeship":true,
-        "currentlyOffered":true
+        "currentlyOffered":true,
+        "feeHelpClass":false
         }
         """
 
@@ -747,7 +763,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -789,7 +806,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "qualificationId":3,
         "dataCollectionRuleId":"102",
         "isTraineeship":true,
-        "currentlyOffered":false
+        "currentlyOffered":false,
+        "feeHelpClass":false
         }
         """
 
@@ -829,7 +847,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":null
+        "isTraineeship":null,
+        "feeHelpClass":false
         }
         """
 
@@ -871,7 +890,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "brochureDescription":"some description",
         "qualificationId":3,
         "isTraineeship":true,
-        "currentlyOffered":true
+        "currentlyOffered":true,
+        "feeHelpClass":false
         }
         """
 
@@ -924,7 +944,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "brochureDescription":"some description UPD",
         "qualificationId":4,
         "isTraineeship":true,
-        "currentlyOffered":true
+        "currentlyOffered":true,
+        "feeHelpClass":false
         }
         """
 
@@ -974,7 +995,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "customFields":{},
         "rules":[],
         "isTraineeship":true,
-        "currentlyOffered":true
+        "currentlyOffered":true,
+        "feeHelpClass":false
         }
         """
 
@@ -1022,7 +1044,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "brochureDescription":"some description",
         "qualificationId":3,
         "isTraineeship":true,
-        "currentlyOffered":true
+        "currentlyOffered":true,
+        "feeHelpClass":false
         }
         """
 
@@ -1075,7 +1098,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "brochureDescription":"some description UPD",
         "qualificationId":4,
         "isTraineeship":true,
-        "currentlyOffered":true
+        "currentlyOffered":true,
+        "feeHelpClass":false
         }
         """
 

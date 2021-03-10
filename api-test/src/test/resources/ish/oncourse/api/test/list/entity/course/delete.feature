@@ -34,7 +34,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -90,7 +91,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/course'
         "qualificationId":3,
         "dataCollectionRuleId":"102",
         "isTraineeship":true,
-        "currentlyOffered":false
+        "currentlyOffered":false,
+        "feeHelpClass":false
         }
         """
 
@@ -144,7 +146,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -210,7 +213,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 

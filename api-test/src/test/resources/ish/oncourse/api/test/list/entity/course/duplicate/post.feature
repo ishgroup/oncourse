@@ -33,7 +33,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course/duplic
         Given path ishPathCourse + '/' + id1
         When method GET
         Then status 200
-        And match $ == 
+        And match $ contains
         """
         {
         "id":"#(~~id1)",

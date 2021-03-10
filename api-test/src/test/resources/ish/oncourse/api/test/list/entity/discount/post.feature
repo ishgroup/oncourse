@@ -211,7 +211,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "corporatePassDiscounts":[{"id":1001,"contactFullName":"company #1"}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "limitPreviousEnrolment":false
+        "limitPreviousEnrolment":false,
+        "relationDiscount"=null
         }
         """
 
@@ -319,7 +320,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "corporatePassDiscounts":[{"id":1001,"contactFullName":"company #1"}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "limitPreviousEnrolment":false
+        "limitPreviousEnrolment":false,
+        "relationDiscount"=null
         }
         """
 
@@ -437,7 +439,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "corporatePassDiscounts":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "limitPreviousEnrolment":false
+        "limitPreviousEnrolment":false,
+        "relationDiscount"=null
         }
         """
 
