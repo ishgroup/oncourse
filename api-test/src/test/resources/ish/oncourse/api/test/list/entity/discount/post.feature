@@ -322,7 +322,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":null
+        "relationDiscount":false
         }
         """
 
@@ -441,7 +441,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":null
+        "relationDiscount":false
         }
         """
 
