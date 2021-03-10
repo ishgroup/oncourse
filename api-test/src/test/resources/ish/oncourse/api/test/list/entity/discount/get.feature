@@ -89,7 +89,7 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount"=null
+        "relationDiscount":null
         }
         """
 
@@ -150,7 +150,7 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount"=null
+        "relationDiscount":null
         }
         """
 

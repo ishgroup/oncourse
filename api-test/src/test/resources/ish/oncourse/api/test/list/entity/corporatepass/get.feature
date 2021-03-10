@@ -57,7 +57,7 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         "password":"password1",
         "expiryDate":null,
         "invoiceEmail":"co1@gmail.com",
-        "linkedDiscounts":[{"id":1002,"name":"discount2","discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.200,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableOnWeb":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"limitPreviousEnrolment":null,"relationDiscount"=null}],
+        "linkedDiscounts":[{"id":1002,"name":"discount2","discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.200,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableOnWeb":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"limitPreviousEnrolment":null,"relationDiscount":null}],
         "linkedSalables":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"
