@@ -9,7 +9,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { RedocStandalone } from 'redoc';
-import yaml from "./output.yaml";
+import yaml from "./schema.yaml";
 
 const start = () => {
   ReactDOM.render(
