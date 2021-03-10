@@ -85,7 +85,7 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "addByDefault":false,
         "minEnrolments":1,
         "minValue":0.00,
-        "corporatePassDiscounts":[],
+        "corporatePassDiscounts":[{"contactFullName":"company #3","id":1009}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
@@ -150,7 +150,7 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":null
+        "relationDiscount":false
         }
         """
 
