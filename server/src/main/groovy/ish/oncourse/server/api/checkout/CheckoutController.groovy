@@ -241,7 +241,9 @@ class CheckoutController {
 
         List<EntityRelation> relations = EntityRelationDao.getRelatedToOrEqual(context, Course.simpleName, courseClass.course.id)
 
-        relations.findAll { Module.simpleName == it.toEntityIdentifier }.each { relation ->
+        relations.findAll { Module.simpleName == it.toEntityIdentifier }
+                .findAll { it.relationType.shoppingCart == EntityRelationCartAction.ADD_NO_REMOVAL && it.relationType.considerHistory == Boolean.TRUE }
+                .each { relation ->
             Module module = moduleDao.getById(context, relation.toEntityAngelId)
 
             List<Outcome> successfulOutcomes = ((contact.student?.enrolments?.outcomes?.flatten() as List<Outcome>) + (contact.student?.priorLearnings?.outcomes?.flatten() as List<Outcome>))
