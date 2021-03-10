@@ -14,6 +14,8 @@ import { TimetableSession } from "../../../../../../model/timetable";
 import { ClassCostExtended } from "../../../../../../model/entities/CourseClass";
 import { getCurrentTax } from "../../../../taxes/utils";
 
+export const discountsSort = (a, b) => (a.description > b.description ? 1 : -1);
+
 export const getFeeWithTaxAmount = (exTaxFee: number, currentTax: Tax) => decimalMul(exTaxFee, decimalPlus(currentTax.rate, 1));
 
 export const getPaymentPlansTotal = (paymentPlans: CourseClassPaymentPlan[]) =>
