@@ -35,7 +35,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "brochureDescription":"some description",
         "qualificationId":3,
         "isTraineeship":false,
-        "feeHelpClass":false
+        "feeHelpClass":false,
         "rules":[{"id":null,"description":"test","repeatEnd":"after","repeat":"day","repeatEndAfter":"3","startDateTime":"2020-02-11T08:00:00.000Z","endDateTime":"2020-02-12T08:00:00.000Z"}]
         }
         """
