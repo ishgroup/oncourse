@@ -6,14 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import { RedocStandalone } from 'redoc';
-import yaml from "./schema.yaml";
 
 const start = () => {
   ReactDOM.render(
-    <RedocStandalone spec={yaml} />,
+    <RedocStandalone specUrl="swagger.yaml" />,
     document.getElementById("docs-root")
   );
 };

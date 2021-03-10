@@ -13,10 +13,19 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 
-module.exports = () => ({
-    entry: ["./src/api-docs/apiDocs.tsx"],
+module.exports = () => {
+  const swaggerPath = process.argv.indexOf("--schema") !== -1 && process.argv[process.argv.indexOf("--schema") + 1];
+
+  if (!swaggerPath) {
+    throw new Error("Swagger schema file is required !");
+  }
+
+  return {
+    entry: [
+      swaggerPath,
+      "./src/api-docs/apiDocs.tsx"
+    ],
     output: {
-      publicPath: "/",
       path: path.resolve(__dirname, "build/api-docs"),
     },
     mode: "development",
@@ -94,4 +103,5 @@ module.exports = () => ({
     node: {
       fs: "empty"
     }
-});
+  };
+};
