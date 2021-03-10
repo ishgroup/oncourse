@@ -22,7 +22,7 @@
     <Course id="1" code="TEST" name="Test Course" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"
             currentlyOffered="1" fieldOfEducation="field1" isVET="1" reportableHours="2.0" webDescription="some text"
             allowWaitingLists="0" isShownOnWeb="1" isSufficientForQualification="1"
-            printedBrochureDescription="Printed Brochure text" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+            printedBrochureDescription="Printed Brochure text" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
     <Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
              modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"

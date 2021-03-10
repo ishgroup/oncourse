@@ -15,11 +15,11 @@
 	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	
-	<Course id="1"  code="ATT1" willowId="1" name="Non vet no modules" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-	<Course id="2"  code="ATT2" willowId="2" name="Non vet with modules" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-	<Course id="3"  code="ATT3" willowId="3" name="Vet no modules" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-	<Course id="4"  code="ATT3" willowId="4" name="Vet with modules" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-	<Course id="5"  code="ATT3" willowId="5" name="Traineeship, vet with modules" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" isTraineeship="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="1"  feeHelpClass="0" code="ATT1" willowId="1" name="Non vet no modules" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="2"  feeHelpClass="0" code="ATT2" willowId="2" name="Non vet with modules" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="3"  feeHelpClass="0" code="ATT3" willowId="3" name="Vet no modules" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="4"  feeHelpClass="0" code="ATT3" willowId="4" name="Vet with modules" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="5"  feeHelpClass="0" code="ATT3" willowId="5" name="Traineeship, vet with modules" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" isTraineeship="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
 		
 	<Module id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1"/>
 	<Module id="2" type="1" isOffered="1" nationalCode="TEST2" title="Test module 2"/>

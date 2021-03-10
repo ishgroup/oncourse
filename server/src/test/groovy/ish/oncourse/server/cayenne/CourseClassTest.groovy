@@ -61,13 +61,14 @@ class CourseClassTest extends CayenneIshTestCase {
         Course course1 = c0.newObject(Course.class)
         course1.setCode("AAAA")
         course1.setName("name1")
-
         course1.setFieldConfigurationSchema(scheme)
+        course1.setFeeHelpClass(Boolean.FALSE)
 
         Course course2 = c0.newObject(Course.class)
         course2.setCode("BBBB")
         course2.setName("name2")
         course2.setFieldConfigurationSchema(scheme)
+        course2.setFeeHelpClass(Boolean.FALSE)
 
         List<String> codes =new ArrayList<>()
         List<CourseClass> classes = new ArrayList<>()
@@ -197,6 +198,7 @@ class CourseClassTest extends CayenneIshTestCase {
         course.setCode("CODE")
         course.setName("Course")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(cc).getFieldConfigurationScheme())
+        course.setFeeHelpClass(Boolean.FALSE)
 
         cclass.setCourse(course)
         cclass.setCode("" + code)
@@ -503,6 +505,7 @@ class CourseClassTest extends CayenneIshTestCase {
         course.setCode("ADV")
         course.setName("courseNamwe1")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(newContext).getFieldConfigurationScheme())
+        course.setFeeHelpClass(Boolean.FALSE)
 
         Account account = newContext.newObject(Account.class)
         account.setAccountCode("accountwCode1")
@@ -555,6 +558,7 @@ class CourseClassTest extends CayenneIshTestCase {
         course.setCode("courseCode")
         course.setName("courseName")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(newContext).getFieldConfigurationScheme())
+        course.setFeeHelpClass(Boolean.FALSE)
 
         Account account = newContext.newObject(Account.class)
         account.setAccountCode("accountCode")
@@ -745,6 +749,7 @@ class CourseClassTest extends CayenneIshTestCase {
         course.setCode("ABSEDV")
         course.setName("courseName1")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(newContext).getFieldConfigurationScheme())
+        course.setFeeHelpClass(Boolean.FALSE)
 
         Account account = newContext.newObject(Account.class)
         account.setAccountCode("accountCode1")

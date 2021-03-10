@@ -43,8 +43,8 @@
 	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-	<Course id="2"  code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
+	<Course id="2"  code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
 	<Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="50" receivableFromStudentAccountId="50" taxCode="GST" taxrate="0.1"/>
 

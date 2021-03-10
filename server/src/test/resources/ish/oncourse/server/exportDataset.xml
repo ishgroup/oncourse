@@ -18,8 +18,8 @@
 	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	
-	<Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1"  modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-	<Course id="2"  code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1"  modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1"  modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
+	<Course id="2"  code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1"  modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 	
 	<Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney" state="NSW" modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00" isVirtual="0"/>
 	<Site id="2" isAdministrationCentre="0" isShownOnWeb="1" name="test site 2" localTimezone="Australia/Brisbane" state="QLD" modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00" isVirtual="0"/>

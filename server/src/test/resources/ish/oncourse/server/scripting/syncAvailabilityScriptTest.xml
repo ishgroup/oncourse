@@ -76,7 +76,7 @@
 	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<Course code="pc1" createdOn="2014-10-17 22:29:18.0" id="200" isShownOnWeb="1" isVET="1" modifiedOn="2014-10-17 23:09:57.0" qualificationId="3966" allowWaitingLists="1" fieldOfEducation="0301" isSufficientForQualification="1" currentlyOffered="1" reportableHours="40.0" isTraineeship="0" name="Payroll Course" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course code="pc1" createdOn="2014-10-17 22:29:18.0" id="200" isShownOnWeb="1" isVET="1" modifiedOn="2014-10-17 23:09:57.0" qualificationId="3966" allowWaitingLists="1" fieldOfEducation="0301" isSufficientForQualification="1" currentlyOffered="1" reportableHours="40.0" isTraineeship="0" name="Payroll Course" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
 	<Country id="268" isoCodeAlpha3="AUS" isoCodeNumeric="36" modifiedOn="2014-10-17 22:39:31.0" name="Australia" saccCode="1101"/>
 

@@ -45,6 +45,7 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
         relatedCourse.setCode("Nothing")
         relatedCourse.setName("Name")
         relatedCourse.setFieldConfigurationSchema(scheme)
+        relatedCourse.setFeeHelpClass(Boolean.FALSE)
 
         Course course = context.newObject(Course.class)
         course.setCode("Code")
@@ -59,6 +60,7 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
         course.setAllowWaitingLists(true)
         course.setReportableHours(new BigDecimal(10))
         course.setFieldConfigurationSchema(scheme)
+        course.setFeeHelpClass(Boolean.FALSE)
 
         Product product = createProduct(context)
 

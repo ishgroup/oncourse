@@ -67,6 +67,7 @@ class CourseClassUtilTest extends CayenneIshTestCase {
         course.setCode("AABBDD" + codeSequence++)
         course.setName("courseName")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(context).getFieldConfigurationScheme())
+        course.setFeeHelpClass(Boolean.FALSE)
 
         Account account = context.newObject(Account.class)
         account.setAccountCode("accountCode")
