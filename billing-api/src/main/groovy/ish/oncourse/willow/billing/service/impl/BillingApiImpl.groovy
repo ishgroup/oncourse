@@ -32,6 +32,7 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil
 
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.InternalServerErrorException
+import java.time.LocalDate
 
 import static ish.oncourse.configuration.Configuration.AdminProperty.*
 
@@ -189,10 +190,10 @@ class BillingApiImpl implements BillingApi {
     private static void sendEmail(String subject, String message) {
 
         EmailBuilder email = new EmailBuilder()
-        email.setFromEmail('support@ish.com.ua')
+        email.setFromEmail('support@ish.com.au')
         email.setSubject(subject)
         email.setBody(message)
-        email.setToEmails('support@ish.com.ua')
+        email.setToEmails('support@ish.com.au')
         SendEmail.valueOf(email, true).send()
     }
     
@@ -232,7 +233,11 @@ class BillingApiImpl implements BillingApi {
 
         return college
     }
-    
+
+    public static void main(String[] args) {
+        AngelConfig conf = new AngelConfig()
+        println conf.paidUntil
+    }
     
     static class AngelConfig {
         
@@ -249,6 +254,19 @@ class BillingApiImpl implements BillingApi {
         String userEmail
         String userPhone
 
+        String paidUntil
+        
+        
+        AngelConfig() {
+            LocalDate untilDate = LocalDate.now()
+            if (untilDate.getDayOfMonth() < 15) {
+                untilDate = untilDate.plusMonths(1)
+            } else {
+                untilDate = untilDate.plusMonths(2)
+            }
+            paidUntil = untilDate.format("yyyy-MM-01")
+        }
+        
         String toString() {
             return  "$collegeKey:\n"+
                     "  security_key: $securityCode\n" +
@@ -268,7 +286,13 @@ class BillingApiImpl implements BillingApi {
                     "  user:\n"+
                     "    firstName: $userFirstName\n" +
                     "    lastName: $userLastName\n" +
-                    "    email: $userEmail\n"
+                    "    email: $userEmail\n" +
+                    "  billing:\n"+
+                    "    code: coasit\n"+
+                    "    plan: basic"+
+                    "    paid_until: \"$paidUntil\"\n" +
+                    "    web:\n" +
+                    "      plan: WEB-6\n"
         }
 
         void commit() {
