@@ -22,9 +22,7 @@ export class SuccessfulWaitingCourses extends React.Component<Props, any> {
           </div>
         ))}
 
-        <p><strong>Please press continue to view further important information</strong></p>
-        <p><a className="link-continue" href={successLink}>Continue</a></p>
-
+        <p><a className="link-continue" href={successLink}>Close</a></p>
       </div>
     );
   }

@@ -13,12 +13,12 @@ import {Phase} from "../../reducers/State";
 class ContactAddForm extends React.Component<any, any> {
 
   getMessages() {
-    const {childName, minAge = 18, phase, isFirst, isEmptyProducts} = this.props;
+    const {childName, minAge = 18, phase, isFirst, isEmptyProducts, isOnlyWaitingCoursesInCart} = this.props;
 
     const addStudentMessage = isEmptyProducts ?
     {
       title: `Add a student`,
-      message: `Enter the person who will attend the class.`,
+      message: isOnlyWaitingCoursesInCart ? `Enter the person who is interested in the class.` : `Enter the person who will attend the class`,
     } :
     {
       title: `Add a person`,
