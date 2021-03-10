@@ -6,7 +6,6 @@ package ish.util
 
 import ish.CayenneIshTestCase
 import ish.common.payable.PayableLineInterface
-import ish.common.types.AccountTransactionType
 import ish.common.types.AccountType
 import ish.common.types.CourseClassAttendanceType
 import ish.common.types.DeliveryMode
@@ -21,7 +20,6 @@ import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
@@ -35,12 +33,8 @@ import ish.oncourse.server.cayenne.PaymentOut
 import ish.oncourse.server.cayenne.PaymentOutLine
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tax
-import ish.oncourse.server.cayenne.glue._AccountTransaction
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
-import org.apache.cayenne.exp.Expression
-import org.apache.cayenne.exp.ExpressionFactory
-import org.apache.cayenne.query.SelectQuery
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import static org.junit.Assert.assertEquals
@@ -1117,6 +1111,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         course.setCode("AABBDD" + codeSequence++)
         course.setName("courseName")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(newContext).getFieldConfigurationScheme())
+        course.setFeeHelpClass(Boolean.FALSE)
 
         CourseClass cc = newContext.newObject(CourseClass.class)
         cc.setSessionsCount(0)

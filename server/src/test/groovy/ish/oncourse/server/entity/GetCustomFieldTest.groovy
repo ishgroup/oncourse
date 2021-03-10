@@ -106,6 +106,7 @@ class GetCustomFieldTest extends CayenneIshTestCase {
         course.code = SOME_STRING
         course.name = SOME_STRING
         course.fieldConfigurationSchema = scheme
+        course.feeHelpClass = Boolean.FALSE
         
         course
     }

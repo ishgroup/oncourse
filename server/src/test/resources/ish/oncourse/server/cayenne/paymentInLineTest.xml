@@ -47,8 +47,8 @@
 	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	
-	<Course ALLOWWAITINGLISTS="1" CODE="ATT1" CURRENTLYOFFERED="1" ID="1" ISSHOWNONWEB="1" ISSUFFICIENTFORQUALIFICATION="0" ISTRAINEESHIP="0" ISVET="0" NAME="Test 1" WILLOWID="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-	<Course ALLOWWAITINGLISTS="1" CODE="ATT2" CURRENTLYOFFERED="1" ID="2" ISSHOWNONWEB="1" ISSUFFICIENTFORQUALIFICATION="0" ISTRAINEESHIP="0" ISVET="0" NAME="Test 2" WILLOWID="2" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course ALLOWWAITINGLISTS="1" CODE="ATT1" CURRENTLYOFFERED="1" ID="1" ISSHOWNONWEB="1" ISSUFFICIENTFORQUALIFICATION="0" ISTRAINEESHIP="0" ISVET="0" NAME="Test 1" WILLOWID="1" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
+	<Course ALLOWWAITINGLISTS="1" CODE="ATT2" CURRENTLYOFFERED="1" ID="2" ISSHOWNONWEB="1" ISSUFFICIENTFORQUALIFICATION="0" ISTRAINEESHIP="0" ISVET="0" NAME="Test 2" WILLOWID="2" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
 	<Discount DISCOUNTPERCENT="0.50" DISCOUNTTYPE="1" HIDEONWEB="0" ID="1" ISAVAILABLEONWEB="1" NAME="discountPercent1" PREDICTEDSTUDENTSPERCENTAGE="0.00" ROUNDING="0" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
 

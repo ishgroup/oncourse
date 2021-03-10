@@ -22,7 +22,7 @@
 
     <Student id="1" createdOn="2015-08-24 11:45:57" modifiedOn="2015-08-24 11:45:57" contactId="1" usiStatus="2" disabilityType="100" employmentCategoryId="8" englishProficiency="3" highestSchoolLevel="6" indigenousStatus="4" isOverseasClient="0" priorEducationCode="0"  studentNumber="234378" feeHelpEligible="0" citizenship="9" clientIndustryEmployment="0" clientOccupationIdentifier="0" />
 
-    <Course id="1" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10" code="TESTCOURSE" name="testCourse" isShownOnWeb="0" isVET="1" allowWaitingLists="1" isSufficientForQualification="1" currentlyOffered="0" reportableHours="95" enrolmentType="2" fieldConfigurationSchemaId="1" />
+    <Course id="1" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10" code="TESTCOURSE" name="testCourse" isShownOnWeb="0" isVET="1" allowWaitingLists="1" isSufficientForQualification="1" currentlyOffered="0" reportableHours="95" enrolmentType="2" fieldConfigurationSchemaId="1" feeHelpClass="0" />
 
     <CourseClass id="1" createdOn="2015-07-29 11:59:44" modifiedOn="2015-07-29 11:59:44" code="1" roomId="1" courseId="1" endDateTime="2113-12-02 14:30:59" feeExGst="113" incomeAccountId="100" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="1" maximumPlaces="4" minimumPlaces="1" sessionCount="1" taxId="100" deliveryMode="1" fundingSource="0" budgetedPlaces="0" reportableHours="95" isClassFeeApplicationOnly="0" taxAdjustment="0" isActive="1" suppressAvetmissExport="0" expectedHours="0" attendanceType="9" />
 
