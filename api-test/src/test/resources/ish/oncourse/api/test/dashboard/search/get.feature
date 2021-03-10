@@ -46,7 +46,7 @@ Feature: Main feature for all GET requests with path 'dashboard/search'
             | searchQuery   | dataToAssert                                      |
             | 'account'     | []                                                |
             | 'refund'      | [{"entity":"Contact","items":[{"id":19,"name":"student1 refund #13"}]}]     |
-            | 'course4-1'   | [{"entity":"CourseClass","items":[{"id":6,"name":"Course4 course4-1"}]}]  |
+            | 'course4-1'   | [{"entity":"CourseClass","items":[{"name":"Course4 course4-101","id":33},{"name":"Course4 course4-1","id":6}]}]  |
 
         * call read('getSearchResult.feature') getSearch
 
