@@ -41,8 +41,11 @@ task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'ge
 task jest(type: YarnTask, dependsOn: 'queryGrammar') {
     args = ['test', '--runInBand']
 }
-
 test.dependsOn(jest)
+
+task apiDoc(type: YarnTask, dependsOn: ':server-api:apiDocs_mergeSwagger') {
+    args = ['build:api-docs', '--schema', tasks.getByPath(':server-api:apiDocs_mergeSwagger').outputs.files.first()]
+}
 
 sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources/swagger-js', 'build/generated-sources/aql-model', 'build/generated-sources/aql-parser'
