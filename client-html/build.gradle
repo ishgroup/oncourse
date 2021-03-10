@@ -44,7 +44,9 @@ task jest(type: YarnTask, dependsOn: 'queryGrammar') {
 test.dependsOn(jest)
 
 task apiDoc(type: YarnTask, dependsOn: ':server-api:apiDocs_mergeSwagger') {
-    args = ['build:api-docs', '--schema', tasks.getByPath(':server-api:apiDocs_mergeSwagger').outputs.files.first()]
+    args = ['build:api-docs',
+            '--schema',
+            tasks.getByPath(':server-api:apiDocs_mergeSwagger').outputs.files.first().toString()]
 }
 
 sourceSets {
