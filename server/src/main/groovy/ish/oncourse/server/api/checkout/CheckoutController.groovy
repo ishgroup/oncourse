@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.checkout
 
 import groovy.transform.CompileStatic
+import ish.common.types.EntityRelationCartAction
 import ish.common.types.OutcomeStatus
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.ModuleDao
@@ -19,6 +20,7 @@ import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.FundingSource
 import ish.oncourse.server.cayenne.Module
+import ish.oncourse.server.cayenne.Outcome
 
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
@@ -242,10 +244,10 @@ class CheckoutController {
         relations.findAll { Module.simpleName == it.toEntityIdentifier }.each { relation ->
             Module module = moduleDao.getById(context, relation.toEntityAngelId)
 
-            if (!(module in (contact.student?.enrolments?.collect { it.outcomes.findAll { OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(it.status) }*.module } as List<Module>))) {
-                if (!(module in (contact.student?.priorLearnings?.collect { it.outcomes.findAll { OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(it.status) }*.module } as List<Module>))) {
-                    result << new CheckoutValidationErrorDTO(error: "You don't have necessary outcomes for that Course")
-                }
+            List<Outcome> successfulOutcomes = ((contact.student?.enrolments?.outcomes?.flatten() as List<Outcome>) + (contact.student?.priorLearnings?.outcomes?.flatten() as List<Outcome>))
+                    .findAll {OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(it.status)}
+            if (!(module in (successfulOutcomes*.module))) {
+                result << new CheckoutValidationErrorDTO(error: "You don't have necessary outcomes for that Course")
             }
         }
 
