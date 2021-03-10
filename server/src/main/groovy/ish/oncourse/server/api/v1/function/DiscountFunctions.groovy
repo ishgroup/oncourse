@@ -103,7 +103,7 @@ class DiscountFunctions {
                 dto.hideOnWeb = dbDiscount.hideOnWeb
                 dto.availableOnWeb = dbDiscount.isAvailableOnWeb
                 dto.studentEnrolledWithinDays = dbDiscount.studentEnrolledWithinDays
-                if (dbDiscount.studentAge && dbDiscount.studentAge.matches('[<,>] \\dto+')) {
+                if (dbDiscount.studentAge && dbDiscount.studentAge.matches('[<,>] \\d+')) {
                     dto.studentAgeUnder dbDiscount.studentAge.split(' ')[0] == '<'
                     dto.studentAge = dbDiscount.studentAge.split(' ')[1] as Integer
                 }
