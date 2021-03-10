@@ -771,7 +771,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "tags": [{"id": 231,"name": "class1","status": null,"system": null,"urlPath": null,"content": null,"color": null,"weight": null,"taggedRecordsCount": null,"childrenCount": null,"created": "#ignore","modified": "#ignore","requirements": [],"childTags": []}],
         "documents":"#ignore",
         "isTraineeship": false,
-        "customFields": {}
+        "customFields": {},
+        "feeHelpClass":false
         }
         """
 
