@@ -53,7 +53,57 @@ databaseChangeLog:
         - dropColumn:
             tableName: CourseClass
             columnName: reportingPeriod
-
+            
+  - changeSet:
+      id: 71-5
+      author: artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: ApiToken
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: createdOn
+                  type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(100)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: secret
+                  type: VARCHAR(100)
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: lastAccess
+                  type: datetime
+              - column:
+                  name: userId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: FK_ApiToken_SystemUser
+                    references: SystemUser(id)
+            tableName: ApiToken
 
 
 
