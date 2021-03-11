@@ -19,7 +19,7 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import Typography from "@material-ui/core/Typography";
 import clsx from "clsx";
-import uniqid from "uniqid";
+
 import { AppTheme } from "../../../../../model/common/Theme";
 import AttendanceActionsMenu from "./AttendanceActionsMenu";
 import AttendanceActionModal, { ATTENDANCE_COURSE_CLASS_FORM } from "./AttendanceActionModal";
@@ -47,6 +47,7 @@ import {
 } from "./actions";
 import { addActionToQueue } from "../../../../../common/actions";
 import { TimetableSession } from "../../../../../model/timetable";
+import uniqid from "../../../../../common/utils/uniqid";
 
 library.add(faAdjust, faCheck, faTimes, faCircle);
 
@@ -652,7 +653,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
 
     const onStudentIconClick = useCallback(
       (e, index) => {
-
         const roleIndex = studentStatusRoles.indexOf(e.currentTarget.getAttribute("role"));
 
         const attendanceType = [2, -1].includes(roleIndex) ? studentStatusRoles[0] : studentStatusRoles[roleIndex + 1];

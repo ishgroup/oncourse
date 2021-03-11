@@ -10,7 +10,7 @@ import {
 import { CustomFieldType } from "@api/model";
 import isEqual from "lodash.isequal";
 import Fab from "@material-ui/core/Fab";
-import uniqid from "uniqid";
+
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -23,6 +23,7 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { getCustomFields } from "../../../actions";
 import { Fetch } from "../../../../../model/common/Fetch";
+import uniqid from "../../../../../common/utils/uniqid";
 
 const manualLink = getManualLink("generalPrefs_customFields");
 

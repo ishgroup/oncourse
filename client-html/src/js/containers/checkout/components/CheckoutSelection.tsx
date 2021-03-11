@@ -18,7 +18,7 @@ import {
   Category, CheckoutSaleRelation, ColumnWidth, createStringEnum
 } from "@api/model";
 import debounce from "lodash.debounce";
-import uniqid from "uniqid";
+
 import { LinkAdornment } from "../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../common/utils/links";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
@@ -114,6 +114,7 @@ import {
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../common/actions/CommonPlainRecordsActions";
+import uniqid from "../../../common/utils/uniqid";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 export const CONTACT_ENTITY_NAME: string = "Contact";

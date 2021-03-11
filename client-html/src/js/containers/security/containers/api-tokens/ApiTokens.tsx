@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import uniqid from "uniqid";
+
 import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
@@ -20,6 +20,7 @@ import Alert from "@material-ui/lab/Alert";
 import { AlertTitle } from "@material-ui/lab";
 import { connect } from "react-redux";
 import { User } from "@api/model";
+import { v4 as uuidv4 } from 'uuid';
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
@@ -51,7 +52,7 @@ const ApiTokensBase:React.FC<Props> = (
     dispatch(arrayInsert(form, "tokens", 0, {
       name: null,
       userId: null,
-      secret: uniqid("oa;ijlhfjkgvz==-")
+      secret: "b25Db3Vyc2U" + uuidv4().replaceAll("-", "")
     }));
 
     const domNode = document.getElementById("tokens[0].userId");

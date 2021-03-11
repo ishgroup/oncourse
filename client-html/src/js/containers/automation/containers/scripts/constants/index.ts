@@ -1,4 +1,4 @@
-import uniqid from "uniqid";
+
 import {
   ScriptComponent,
   ScriptEmailComponent,
@@ -6,6 +6,7 @@ import {
   ScriptMessageComponent,
   ScriptReportComponent,
 } from "../../../../../model/scripts";
+import uniqid from "../../../../../common/utils/uniqid";
 
 export const SCRIPT_EDIT_VIEW_FORM_NAME = "ScriptsForm";
 
@@ -50,7 +51,7 @@ export const getQueryComponent = (body: string): ScriptQueryComponent => {
   };
 };
 
-export const getMessageTemplate = (component) => {
+export const getMessageTemplate = component => {
   const entries = Object.entries(component);
   const parsedString = entries.reduce((result, e) => (
     e[0] === 'id' ? '' : `${result} ${e[0]} "${e[1]}"\n`), '');
@@ -81,14 +82,14 @@ export const getMessageComponent = (body: string): ScriptMessageComponent => {
     if (!key) return;
 
     const matchedValue = e.replace(key, '').trim();
-    const value = matchedValue.slice(1, matchedValue.length-1);
+    const value = matchedValue.slice(1, matchedValue.length - 1);
     result[key] = value === "false" ? false : value;
   });
 
-  return result
+  return result;
 };
 
-export const getReportTemplate = (component) => {
+export const getReportTemplate = component => {
   const entries = Object.entries(component);
   const parsedString = entries.reduce((result, e) => (
     e[0] === 'id' ? '' : `${result} ${e[0]} "${e[1]}"\n`), '');
@@ -118,11 +119,11 @@ export const getReportComponent = (body: string): ScriptReportComponent => {
     if (!key) return;
 
     const matchedValue = e.replace(key, '').trim();
-    const value = matchedValue.slice(1, matchedValue.length-1);
+    const value = matchedValue.slice(1, matchedValue.length - 1);
     result[key] = value === "false" ? false : value;
   });
 
-  return result
+  return result;
 };
 
 const getClosurePropRegex = (prop: string) => `${prop}\\s+([^\\n]+)\\n`;
@@ -178,7 +179,8 @@ export const getEmailComponent = (body: string): ScriptEmailComponent => {
         id: uniqid(),
         ...matchProps
       }
-    : { type: "Script",
+    : {
+ type: "Script",
         id: uniqid(),
         content: body
       };

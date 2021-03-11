@@ -141,7 +141,7 @@
     "redux-observable": "1.2.*",
     "rxjs": "6.6.*",
     "styled-components": "^5.2.1",
-    "uniqid": "5.3.*"
+    "uuid": "^8.3.2"
   },
   "resolutions": {
     "@material-ui/pickers/**/prop-types": "15.6.*",

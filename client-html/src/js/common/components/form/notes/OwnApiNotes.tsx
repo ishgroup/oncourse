@@ -12,7 +12,6 @@ import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircle from "@material-ui/icons/AddCircle";
 import { Note } from "@api/model";
-import uniqid from "uniqid";
 import { connect } from "react-redux";
 import styles from "./styles";
 import { State } from "../../../../reducers/state";
@@ -22,6 +21,7 @@ import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { deleteNoteItem, postNoteItem } from "./actions";
 import NotesService from "./services/NotesService";
 import instantFetchErrorHandler from "../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
+import uniqid from "../../../utils/uniqid";
 
 interface Props {
   classes?: any;

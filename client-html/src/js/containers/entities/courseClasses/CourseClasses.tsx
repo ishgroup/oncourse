@@ -13,7 +13,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { getFormInitialValues, getFormValues, initialize } from "redux-form";
-import uniqid from "uniqid";
+
 import { format } from "date-fns";
 import {
   TableModel, CourseClass, Course, ClassCost, Account, ClassFundingSource, DeliveryMode, Enrolment, Outcome
@@ -71,6 +71,7 @@ import {
 import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../common/utils/dates/format";
 import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
+import uniqid from "../../../common/utils/uniqid";
 
 const manualLink = getManualLink("classes");
 

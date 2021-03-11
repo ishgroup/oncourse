@@ -15,11 +15,11 @@ import {
 } from "redux-form";
 import { isAfter, isBefore, isEqual } from 'date-fns';
 import {
- ClassCost, CourseClassTutor, Discount, Tax 
+ ClassCost, CourseClassTutor, Discount, Tax
 } from "@api/model";
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
-import uniqid from "uniqid";
+
 import NestedList from "../../../../../common/components/form/nestedList/NestedList";
 import { stubFunction } from "../../../../../common/utils/common";
 import { stopEventPropagation } from "../../../../../common/utils/events";
@@ -60,6 +60,7 @@ import { BooleanArgFunction, StringArgFunction } from "../../../../../model/comm
 import { dateForCompare, getClassFeeTotal } from "./utils";
 import PreferencesService from "../../../../preferences/services/PreferencesService";
 import BudgetItemRow from "./BudgetItemRow";
+import uniqid from "../../../../../common/utils/uniqid";
 
 const styles = (theme: AppTheme) =>
   createStyles({

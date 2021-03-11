@@ -3,7 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import uniqid from "uniqid";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import EntityService from "../../../common/services/EntityService";
 import { getCustomColumnsMap } from "../../../common/utils/common";
@@ -14,6 +13,7 @@ import { CheckoutPage } from "../components/CheckoutSelection";
 import { CHECKOUT_CONTACT_COLUMNS, CHECKOUT_COURSE_CLASS_COLUMNS, CheckoutCurrentStep } from "../constants";
 import CheckoutService from "../services/CheckoutService";
 import { checkoutCourseClassMap, checkoutCourseMap } from "./index";
+import uniqid from "../../../common/utils/uniqid";
 
 export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep, setActiveField, setCustomLoading, dispatch) => {
   setCustomLoading(true);

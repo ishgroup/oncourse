@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid/Grid";
 import { arrayInsert, arrayRemove } from "redux-form";
 import Typography from "@material-ui/core/Typography";
 import { AssessmentClass } from "@api/model";
-import uniqid from "uniqid";
+
 import MinifiedEntitiesList from "../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import CourseClassAssessmentItems from "./CourseClassAssessmentItem";
 import { EditViewProps } from "../../../../../model/common/ListView";
@@ -17,6 +17,7 @@ import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import CourseClassAssessmentService from "./services/CourseClassAssessmentService";
 import { deleteCourseClassAssessment } from "./actions";
+import uniqid from "../../../../../common/utils/uniqid";
 
 const validateAssesments = (value: AssessmentClass[]) => {
   let error;
