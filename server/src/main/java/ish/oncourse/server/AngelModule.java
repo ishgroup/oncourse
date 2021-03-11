@@ -45,6 +45,7 @@ import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.scripting.api.EmailService;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
 import ish.oncourse.server.security.api.IPermissionService;
+import ish.oncourse.server.services.AuditService;
 import ish.oncourse.server.servlet.HealthCheckServlet;
 import ish.oncourse.server.users.SystemUserService;
 import ish.util.Maps;
@@ -165,8 +166,11 @@ public class AngelModule extends ConfigModule {
 
         return new MappedFilter<>(
                 new ApiFilter(
-                        injector.getInstance(SystemUserService.class),
-                        injector.getInstance(IPermissionService.class)),
+                        injector.getInstance(AuditService.class),
+                        injector.getInstance(ICayenneService.class),
+                        injector.getInstance(IPermissionService.class)
+                ),
+                        
                 paths,
                 ApiFilter.class.getSimpleName(),
                 0);
