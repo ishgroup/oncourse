@@ -83,6 +83,7 @@ import ish.oncourse.server.api.v1.service.SurveyApi
 import ish.oncourse.server.api.v1.service.TagApi
 import ish.oncourse.server.api.v1.service.TaxApi
 import ish.oncourse.server.api.v1.service.TimetableApi
+import ish.oncourse.server.api.v1.service.TokenApi
 import ish.oncourse.server.api.v1.service.TransactionApi
 import ish.oncourse.server.api.v1.service.TutorAttendanceApi
 import ish.oncourse.server.api.v1.service.TutorRoleApi
@@ -93,6 +94,7 @@ import ish.oncourse.server.api.v1.service.VoucherProductApi
 import ish.oncourse.server.api.v1.service.WaitingListApi
 import ish.oncourse.server.api.v1.service.impl.AccessApiImpl
 import ish.oncourse.server.api.v1.service.impl.AccountApiImpl
+import ish.oncourse.server.api.v1.service.impl.ApiTokenApiImpl
 import ish.oncourse.server.api.v1.service.impl.ApplicationApiImpl
 import ish.oncourse.server.api.v1.service.impl.ArticleProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.AssessmentApiImpl
@@ -270,5 +272,6 @@ class ApiImplementationModule implements Module {
         binder.bind(SessionApi).to(SessionApiImpl)
         binder.bind(CheckoutApi).to(CheckoutApiImpl)
         binder.bind(EntityRelationTypeApi).to(EntityRelationTypeApiImpl)
+        binder.bind(TokenApi).to(ApiTokenApiImpl)
     }
 }

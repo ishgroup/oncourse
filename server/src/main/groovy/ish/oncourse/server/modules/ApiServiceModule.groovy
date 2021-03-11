@@ -14,6 +14,7 @@ package ish.oncourse.server.modules
 import com.google.inject.Binder
 import com.google.inject.Module
 import com.google.inject.Scopes
+import ish.oncourse.server.api.service.ApiTokenApiService
 import ish.oncourse.server.api.service.ApplicationApiService
 import ish.oncourse.server.api.service.ArticleProductApiService
 import ish.oncourse.server.api.service.AssessmentApiService
@@ -103,6 +104,7 @@ class ApiServiceModule implements Module {
         binder.bind(TutorRoleApiService).in(Scopes.SINGLETON)
         binder.bind(VoucherProductApiService).in(Scopes.SINGLETON)
         binder.bind(WaitingListApiService).in(Scopes.NO_SCOPE)
+        binder.bind(ApiTokenApiService).in(Scopes.NO_SCOPE)
 
     }
 }
