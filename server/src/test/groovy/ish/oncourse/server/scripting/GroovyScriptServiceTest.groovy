@@ -60,9 +60,10 @@ class GroovyScriptServiceTest extends CayenneIshTestCase {
 
 	@Test
     void testLoggerFieldTest() {
+        ObjectContext context = cayenneService.newContext
 		GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
-        Script script = new Script()
+        Script script = context.newObject(Script.class)
         script.setEnabled(true)
         script.setScript("logger.error('script test') \n test()\n " +
 				"void test() {logger.error('script method test')}")
@@ -73,9 +74,10 @@ class GroovyScriptServiceTest extends CayenneIshTestCase {
 
 	@Test
     void testRunScript() throws Exception {
+        ObjectContext context = cayenneService.newContext
 		GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
-        Script script = new Script()
+        Script script = context.newObject(Script.class)
         script.setEnabled(true)
         script.setScript("return args.context != null")
 
@@ -87,9 +89,10 @@ class GroovyScriptServiceTest extends CayenneIshTestCase {
 
 	@Test
     void testCompilationFailure() throws Exception {
+        ObjectContext context = cayenneService.newContext
 		GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
-        Script script = new Script()
+        Script script = context.newObject(Script.class)
         script.setEnabled(true)
         script.setScript("def run(args) { return context != null")
 
@@ -102,9 +105,10 @@ class GroovyScriptServiceTest extends CayenneIshTestCase {
 
 	@Test
     void testScriptArguments() throws Exception {
+        ObjectContext context = cayenneService.newContext
 		GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
-        Script script = new Script()
+        Script script = context.newObject(Script.class)
         script.setEnabled(true)
         script.setScript("return args.test")
 

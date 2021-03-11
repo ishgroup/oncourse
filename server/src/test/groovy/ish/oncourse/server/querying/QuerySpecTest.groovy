@@ -6,6 +6,7 @@ import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
 import ish.scripting.ScriptResult
+import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.ArrayUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
@@ -300,9 +301,10 @@ class QuerySpecTest extends CayenneIshTestCase {
 
     @Test
     void testRunQueryClosure() throws Exception {
+        ObjectContext context = cayenneService.newContext
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService)
 
-        Script script = new Script()
+        Script script = context.newObject(Script.class)
         script.setEnabled(true)
 
         script.setScript(
