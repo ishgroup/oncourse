@@ -40,8 +40,7 @@ sourceSets {
 	}
 	test {
 		groovy {
-			srcDirs += 'src/main/java'
-			srcDirs += 'src/main/groovy'
+			srcDirs += 'src/test/groovy'
 		}
 
 	}
