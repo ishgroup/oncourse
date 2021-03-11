@@ -4,7 +4,7 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useRef, useState 
+ useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
@@ -21,7 +21,7 @@ import { validateSingleMandatoryField } from "../../../../../common/utils/valida
 import { stubComponent } from "../../../../../common/utils/common";
 import { defaultContactName } from "../../../contacts/utils";
 import { State } from "../../../../../reducers/state";
-import AssesmentsSubmissionActionsMenu from "./AssessmentsSubnissionActionMenu";
+import AssesmentsSubmissionActionsMenu from "./AssessmentsSubmissionActionMenu";
 import AssessmentSubmissionIconButton, { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
 import { AppTheme } from "../../../../../model/common/Theme";
 

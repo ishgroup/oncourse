@@ -10,9 +10,8 @@ import React from "react";
 import IconButton from "@material-ui/core/IconButton";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { createStringEnum } from "@api/model";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { StudentAttendanceExtended } from "../../../../../model/entities/CourseClass";
+import { StringValueType } from "../../../../../model/common/CommomObjects";
 
 const useStyles = makeStyles(() => ({
   iconRemove: {
@@ -36,7 +35,7 @@ export const AssessmentsSubmissionType = [
 ];
 
 interface AssessmentSubmissionIconProps {
-  type: AssessmentSubmissionType;
+  type: StringValueType<typeof AssessmentsSubmissionType>;
   classes?: any;
 }
 
@@ -64,7 +63,7 @@ const styles = {
 };
 
 interface AssessmentSubmissionIconButtonProps {
-  status: AssessmentsSubmissionType;
+  status: StringValueType<typeof AssessmentsSubmissionType>;
   onClick?: any;
   classes?: any;
 }
