@@ -79,7 +79,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/as
             "contactIds":[],
             "moduleIds":[],
             "releaseDate":"2020-01-31T14:53:00.000Z",
-            "dueDate":"2020-05-01T02:00:00.000Z"
+            "dueDate":"2020-05-01T02:00:00.000Z",
+            "submissions":[]
             }]
         """
 
