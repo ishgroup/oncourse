@@ -41,7 +41,7 @@ class ApiTokenApiService extends EntityApiService<ApiTokenDTO, ApiToken, ApiToke
 
     @Override
     ApiToken toCayenneModel(ApiTokenDTO dto, ApiToken cayenneModel) {
-        cayenneModel.name = dto.name()
+        cayenneModel.name = dto.name
         cayenneModel.secret = dto.secret
         cayenneModel.systemUser = userDao.getById(cayenneModel.context, dto.userId)
         return cayenneModel
