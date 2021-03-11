@@ -13,6 +13,7 @@ import ish.oncourse.server.api.dao.ApiTokenDao
 import ish.oncourse.server.api.dao.UserDao
 import ish.oncourse.server.api.v1.model.ApiTokenDTO
 import ish.oncourse.server.cayenne.ApiToken
+import ish.oncourse.server.cayenne.SystemUser
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
@@ -57,6 +58,15 @@ class ApiTokenApiService extends EntityApiService<ApiTokenDTO, ApiToken, ApiToke
         }
         if (!dto.userId) {
             validator.throwClientErrorException(id, 'userId', 'System user is required.')
+        }
+        SystemUser user = userDao.getById(context, dto.userId)
+        
+        if (!user) {
+            validator.throwClientErrorException(id, 'userId', 'System user is noty exist.')
+        }
+        
+        if (!user.isActive) {
+            validator.throwClientErrorException(id, 'userId', 'System user is not available.')
         }
     }
 

@@ -98,7 +98,8 @@ class ApiFilter implements Filter {
         String authHeader = request.getHeader(AUTHORIZATION)
         if (authHeader) {
             ApiToken token = ObjectSelect.query(ApiToken).where(ApiToken.SECRET.eq(authHeader)).selectFirst(cayenneService.newContext)
-            if (token) {               
+            
+            if (token && token.systemUser.isActive) {               
 
                 token.lastAccess = new Date()
                 token.context.commitChanges()
