@@ -233,11 +233,7 @@ class BillingApiImpl implements BillingApi {
 
         return college
     }
-
-    public static void main(String[] args) {
-        AngelConfig conf = new AngelConfig()
-        println conf.paidUntil
-    }
+    
     
     static class AngelConfig {
         
@@ -288,8 +284,8 @@ class BillingApiImpl implements BillingApi {
                     "    lastName: $userLastName\n" +
                     "    email: $userEmail\n" +
                     "  billing:\n"+
-                    "    code: coasit\n"+
-                    "    plan: basic"+
+                    "    code: $collegeKey\n"+
+                    "    plan: basic\n"+
                     "    paid_until: \"$paidUntil\"\n" +
                     "    web:\n" +
                     "      plan: WEB-6\n"
