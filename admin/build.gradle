@@ -107,7 +107,7 @@ task refreshIdeaArtifact {
 		cp.execute()
 	}
 	task ex(type: GradleBuild){
-		tasks = ['cleanMinifyJs', 'gzipJs', 'gzipCss']
+		tasks = ['gzipJs', 'gzipCss']
 	}
 	task cp(type: Copy) {
 		from(staticBuildPath) {
