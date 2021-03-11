@@ -44,7 +44,7 @@ const AssesmentsSubmissionActionsMenu: React.FC<Props> = ({
   const menuItems = items.map((tutor: CourseClassTutor) => (
     <MenuItem
       key={tutor.contactId}
-      role={tutor.contactId}
+      role={tutor.contactId.toString()}
       onClick={e => onItemClick(e, tutor)}
     >
       {/* <AttendanceIcon type={k} /> */}
