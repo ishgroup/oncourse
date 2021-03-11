@@ -652,6 +652,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
 
     const onStudentIconClick = useCallback(
       (e, index) => {
+
         const roleIndex = studentStatusRoles.indexOf(e.currentTarget.getAttribute("role"));
 
         const attendanceType = [2, -1].includes(roleIndex) ? studentStatusRoles[0] : studentStatusRoles[roleIndex + 1];
