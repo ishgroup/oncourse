@@ -23,8 +23,6 @@ jobs:
          - 3306
        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
-    name: Java ${{ matrix.java }} server test
-
     steps:
     - name: Setup timezone
       uses: zcong1993/setup-timezone@v1.1.1
@@ -48,7 +46,14 @@ jobs:
           **/node_modules
           ~/.gradle/caches
           ~/.gradle/wrapper
+          ~/.sonar/cache
         key: ${{ runner.os }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
     - name: Run tests
       run: ./gradlew server:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angelTest_trunk?user=root --stacktrace -Duser.language=en -Duser.country=AU
+
+    - name: sonarqube
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: ./gradlew sonarqube --stacktrace --info
