@@ -1,7 +1,74 @@
 apply from: "$rootDir/gradle/tapestry.app.gradle"
 apply from: "$rootDir/gradle/cxf-spring.gradle"
-apply from: "$rootDir/gradle/build-static.gradle"
 apply plugin: 'com.moowork.node'
+
+ext {
+    staticSrcPath = "${projectDir}/src/main/static"
+    staticBuildPath = "${buildDir}/resource-assemble/static"
+    cssCombined = "${staticBuildPath}/css/${project.name}.css"
+}
+
+//css combining
+task sass(type: Exec) {
+    inputs.dir "${staticSrcPath}/src"
+    outputs.file cssCombined
+    commandLine "sassc", "--style", "compressed", "${staticSrcPath}/src/${project.name}.scss", cssCombined
+}
+
+task gzipCss(dependsOn: sass) {
+    inputs.file cssCombined
+    outputs.file "${cssCombined}.gz"
+    doLast {
+        ant.gzip(src: cssCombined, destfile: "${cssCombined}.gz")
+    }
+}
+
+task combineSvg(type: CombineSvg) {
+    projectName = "${project.name}"
+    imgDirectoryName = file("$staticSrcPath/img")
+    outputDirectoryName = "$staticBuildPath"
+}
+
+task cleanCombineSvg(type: CleanCombineSvg) {
+    imgDirectory = "$staticBuildPath"
+}
+
+/**
+ * Task build and copy js and css bundles to this artifact folder
+ */
+task refreshIdeaArtifact {
+    doFirst {
+        ex.execute()
+        cp.execute()
+    }
+    task ex(type: GradleBuild){
+        tasks = ['cleanMinifyJs', 'gzipJs', 'gzipCss']
+    }
+    task cp(type: Copy) {
+        from(staticBuildPath) {
+            include '**/*.*'
+        }
+        from(staticSrcPath) {
+            include '**/*.*'
+        }
+        into "out/resources/static"
+    }
+}
+
+processResources.inputs.files gzipCss
+processResources.inputs.files combineSvg
+
+clean.dependsOn cleanMinifyJs
+clean.dependsOn cleanCombineSvg
+
+jar {
+    from "${buildDir}/resource-assemble"
+    from ('src/main') {
+        include 'static/**/*'
+        exclude 'static/js'
+        exclude 'static/src'
+    }
+}
 
 node {
     version = '12.9.1'
