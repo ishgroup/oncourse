@@ -90,7 +90,9 @@ Feature: Main feature for all POST requests with path 'list/entity/outcome'
         "hasCertificate":false,
         "printed":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "actualStartDate":"2027-02-01",
+        "actualEndDate":"2027-02-05"
         }
         """
 
@@ -192,7 +194,9 @@ Feature: Main feature for all POST requests with path 'list/entity/outcome'
         "hasCertificate":false,
         "printed":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "actualStartDate":"2027-02-01",
+        "actualEndDate":"2027-02-05"
         }
         """
 
