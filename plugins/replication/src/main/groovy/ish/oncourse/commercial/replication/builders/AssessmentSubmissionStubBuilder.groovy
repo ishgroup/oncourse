@@ -7,6 +7,7 @@ package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.webservices.v23.stubs.replication.AssessmentSubmissionStub
+import ish.util.LocalDateUtils
 
 /**
  * Created by Artem on 24/10/2016.
@@ -21,8 +22,8 @@ class AssessmentSubmissionStubBuilder extends AbstractAngelStubBuilder<Assessmen
         stub.setEnrolmentId(entity.getEnrolment().getId())
         stub.setAssessmentClassId(entity.getAssessmentClass().getId())
         stub.setSubmittedById(entity.getSubmittedBy()?.getId())
-        stub.setSubmittedOn(entity.getSubmittedOn())
-        stub.setMarkedOn(entity.getMarkedOn())
+        stub.setSubmittedOn(LocalDateUtils.valueToDate(entity.getSubmittedOn()))
+        stub.setMarkedOn(LocalDateUtils.valueToDate(entity.getMarkedOn()))
         return stub
     }
 }

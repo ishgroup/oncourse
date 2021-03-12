@@ -10,6 +10,7 @@ import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.webservices.v23.stubs.replication.AssessmentSubmissionStub
+import ish.util.LocalDateUtils
 
 /**
  * Created by Artem on 24/10/2016.
@@ -23,7 +24,7 @@ class AssessmentSubmissionUpdater extends AbstractAngelUpdater<AssessmentSubmiss
         entity.setAssessmentClass(callback.updateRelationShip(stub.getAssessmentClassId(), AssessmentClass.class))
         entity.setEnrolment(callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class))
         entity.setSubmittedBy(callback.updateRelationShip(stub.getSubmittedById(), Contact.class))
-        entity.setSubmittedOn(stub.getSubmittedOn())
-        entity.setMarkedOn(stub.getMarkedOn())
+        entity.setSubmittedOn(LocalDateUtils.dateToValue(stub.getSubmittedOn()))
+        entity.setMarkedOn(LocalDateUtils.dateToValue(stub.getMarkedOn()))
     }
 }
