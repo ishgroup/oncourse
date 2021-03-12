@@ -53,6 +53,7 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
             dtoModel.enrolmentId = cayenneModel.enrolment.id
             dtoModel.assessmentId = cayenneModel.assessmentClass.assessment.id
             dtoModel.submittedById = cayenneModel.submittedBy.id
+            dtoModel.tutorName = cayenneModel.submittedBy.fullName
             dtoModel.submittedOn = LocalDateUtils.dateToTimeValue(cayenneModel.submittedOn)
             dtoModel.markedOn = LocalDateUtils.dateToTimeValue(cayenneModel.markedOn)
             dtoModel.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
