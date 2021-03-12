@@ -11,6 +11,7 @@ package ish.oncourse.server.api.v1
 import com.google.inject.Inject
 import ish.oncourse.server.api.service.AssessmentSubmissionApiService
 import ish.oncourse.server.api.v1.model.AssessmentSubmissionDTO
+import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.service.AssessmentSubmissionApi
 
 class AssessmentSubmissionApiImpl implements AssessmentSubmissionApi {
@@ -21,5 +22,20 @@ class AssessmentSubmissionApiImpl implements AssessmentSubmissionApi {
     @Override
     AssessmentSubmissionDTO get(Long id) {
         service.get(id)
+    }
+
+    @Override
+    void update(Long id, AssessmentSubmissionDTO assessmentSubmission) {
+        service.update(id, assessmentSubmission)
+    }
+
+    @Override
+    void remove(Long id) {
+        service.remove(id)
+    }
+
+    @Override
+    void bulkChange(DiffDTO diff) {
+        service.bulkChange(diff)
     }
 }

@@ -65,7 +65,9 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
     AssessmentSubmission toCayenneModel(AssessmentSubmissionDTO dto, AssessmentSubmission cayenneModel) {
         cayenneModel.submittedOn = LocalDateUtils.timeValueToDate(dto.submittedOn)
         cayenneModel.markedOn = LocalDateUtils.timeValueToDate(dto.markedOn)
-        cayenneModel.submittedBy = contactService.getEntityAndValidateExistence(cayenneModel.context, dto.submittedById)
+        if (dto.submittedById) {
+            cayenneModel.submittedBy = contactService.getEntityAndValidateExistence(cayenneModel.context, dto.submittedById)
+        }
 
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, AssessmentSubmissionAttachmentRelation, cayenneModel.context)
 
@@ -74,13 +76,14 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
 
     @Override
     void validateModelBeforeSave(AssessmentSubmissionDTO dto, ObjectContext context, Long id) {
-        if (dto.submittedById == null) {
-            validator.throwClientErrorException(id, 'submittedById', 'Assessor is required')
+        if (dto.submittedOn == null) {
+            validator.throwClientErrorException(id, 'submittedOn', "Submitted on date couldn't be null")
         }
     }
 
     @Override
     void validateModelBeforeRemove(AssessmentSubmission cayenneModel) {
+        // N/A
     }
 
     Closure getAction (String key, String value) {
