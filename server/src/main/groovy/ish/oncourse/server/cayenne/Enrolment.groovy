@@ -11,17 +11,13 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.CalculateEndDate
-import ish.common.CalculateStartDate
 import ish.common.types.*
 import ish.math.Money
 import ish.messaging.IEnrolment
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.entity.delegator.OutcomeDelegator
 import ish.oncourse.function.CalculateOutcomeReportableHours
 import ish.oncourse.server.cayenne.glue._Enrolment
-import ish.util.LocalDateUtils
 import ish.validation.EnrolmentStatusValidator
 import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.query.ObjectSelect
@@ -156,9 +152,9 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, IEnrolment, Queuea
 		}
 		if (getOutcomes() != null && getOutcomes().size() > 0) {
 			outcomes.findAll {o -> !o.startDateOverridden }
-					.each {o -> o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate())) }
+					.each {o -> o.setStartDate(o.getActualStartDate()) }
 			outcomes.findAll {o -> !o.endDateOverridden }
-					.each {o -> o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate())) }
+					.each {o -> o.setEndDate(o.getActualEndDate()) }
 
 			outcomes.findAll{ o -> !o.fundingSource}.each { o -> o.setFundingSource(getFundingSource())}
 			outcomes.findAll{ o -> !o.vetPurchasingContractID}.each { o -> o.setVetPurchasingContractID(getVetPurchasingContractID())}

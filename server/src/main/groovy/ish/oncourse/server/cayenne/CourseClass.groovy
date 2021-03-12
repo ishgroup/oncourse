@@ -13,8 +13,6 @@ package ish.oncourse.server.cayenne
 
 
 import ish.budget.ClassCostUtil
-import ish.common.CalculateEndDate
-import ish.common.CalculateStartDate
 import ish.common.types.ClassCostFlowType
 import ish.common.types.ClassFundingSource
 import ish.common.types.CourseClassAttendanceType
@@ -26,12 +24,10 @@ import ish.messaging.IModule
 import ish.oncourse.API
 import ish.oncourse.cayenne.CourseClassUtil
 import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.entity.delegator.OutcomeDelegator
 import ish.oncourse.function.CalculateCourseClassNominalHours
 import ish.oncourse.function.CalculateCourseClassReportableHours
 import ish.oncourse.server.cayenne.glue._CourseClass
 import ish.oncourse.server.cayenne.glue._Session
-import ish.util.LocalDateUtils
 import ish.util.MoneyUtil
 import ish.validation.ValidationFailure
 import org.apache.cayenne.PersistenceState
@@ -346,11 +342,11 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 
 		outcomes.findAll { !it.startDateOverridden }
 				.each { o ->
-					o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate()))
+					o.setStartDate(o.getActualStartDate())
 				}
 		outcomes.findAll { !it.endDateOverridden }
 				.each { o ->
-					o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate()))
+					o.setEndDate(o.getActualEndDate())
 				}
 	}
 

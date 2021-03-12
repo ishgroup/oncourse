@@ -11,17 +11,13 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.CalculateEndDate
-import ish.common.CalculateStartDate
 import ish.common.types.EnrolmentStatus
 import ish.messaging.IModule
 import ish.messaging.ISession
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.entity.delegator.OutcomeDelegator
 import ish.oncourse.server.cayenne.glue._Session
 import ish.util.DurationFormatter
-import ish.util.LocalDateUtils
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.logging.log4j.LogManager
@@ -109,11 +105,11 @@ class Session extends _Session implements SessionTrait, ISession, Queueable, Att
 
 		outcomes.findAll { !it.startDateOverridden }
 				.each { o ->
-					o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate()))
+					o.setStartDate(o.getActualStartDate())
 				}
 		outcomes.findAll { !it.endDateOverridden }
 				.each { o ->
-					o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate()))
+					o.setEndDate(o.getActualEndDate())
 				}
 	}
 

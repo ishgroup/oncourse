@@ -109,11 +109,11 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 
 	private void updateOverriddenStartEndDates() {
 		if (startDate == null && !startDateOverridden) {
-			startDate = LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(this), Boolean.TRUE).calculate())
+			startDate = actualStartDate
 		}
 
 		if (endDate == null && !endDateOverridden) {
-			endDate = LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(this), Boolean.TRUE).calculate())
+			endDate = actualEndDate
 		}
 	}
 
@@ -370,11 +370,44 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 		return contact.getName(false)
 	}
 
+
+	/**
+	 * @return start date of training plan
+	 */
+	@API
 	LocalDate getTrainingPlanStartDate() {
-		return LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(this), Boolean.FALSE).calculate())
+		return LocalDateUtils.dateToValue(calculateStartDate(Boolean.FALSE))
 	}
 
+	/**
+	 * @return end date of training plan
+	 */
+	@API
 	LocalDate getTrainingPlanEndDate() {
-		return LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(this), Boolean.FALSE).calculate())
+		return LocalDateUtils.dateToValue(calculateEndDate(Boolean.FALSE))
+	}
+
+	/**
+	 * @return actual start date of outcome: depends on attendances and assessment submissions
+	 */
+	@API
+	LocalDate getActualStartDate() {
+		return LocalDateUtils.dateToValue(calculateStartDate(Boolean.TRUE))
+	}
+
+	/**
+	 * @return actual end date of outcome: depends on attendances and assessment submissions
+	 */
+	@API
+	LocalDate getActualEndDate() {
+		return LocalDateUtils.dateToValue(calculateEndDate(Boolean.TRUE))
+	}
+
+	Date calculateStartDate(Boolean attendanceTakenIntoAccount) {
+		return new CalculateStartDate(OutcomeDelegator.valueOf(this), attendanceTakenIntoAccount).calculate()
+	}
+
+	Date calculateEndDate(Boolean attendanceTakenIntoAccount) {
+		return new CalculateEndDate(OutcomeDelegator.valueOf(this), attendanceTakenIntoAccount).calculate()
 	}
 }

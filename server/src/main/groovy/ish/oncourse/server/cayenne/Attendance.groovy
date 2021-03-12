@@ -11,15 +11,11 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.CalculateEndDate
-import ish.common.CalculateStartDate
 import ish.common.types.AttendanceType
 import ish.messaging.IAttendance
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.entity.delegator.OutcomeDelegator
 import ish.oncourse.server.cayenne.glue._Attendance
-import ish.util.LocalDateUtils
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
@@ -38,10 +34,10 @@ class Attendance extends _Attendance implements IAttendance, Queueable {
 	void preUpdate() {
 		List<Outcome> classOutcomes = session.courseClass.enrolments*.outcomes.flatten() as List<Outcome>
 		classOutcomes.findAll { !it.startDateOverridden }.each {o ->
-			o.startDate = LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate())
+			o.startDate = o.actualStartDate
 		}
 		classOutcomes.findAll { !it.endDateOverridden }.each {o ->
-			o.endDate = LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o), Boolean.TRUE).calculate())
+			o.endDate = o.actualEndDate
 		}
 	}
 
