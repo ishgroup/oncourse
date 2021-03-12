@@ -102,8 +102,8 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="submittedById" type="BIGINT"/>
-		<db-attribute name="submittedOn" type="TIMESTAMP" isMandatory="true"/>
-		<db-attribute name="markedOn" type="TIMESTAMP"/>
+		<db-attribute name="submittedOn" type="DATE" isMandatory="true"/>
+		<db-attribute name="markedOn" type="DATE"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Attendance">
@@ -1669,8 +1669,8 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
-		<obj-attribute name="submittedOn" type="java.util.Date" db-attribute-path="submittedOn"/>
-		<obj-attribute name="markedOn" type="java.util.Date" db-attribute-path="markedOn"/>
+		<obj-attribute name="submittedOn" type="java.time.LocalDate" db-attribute-path="submittedOn"/>
+		<obj-attribute name="markedOn" type="java.time.LocalDate" db-attribute-path="markedOn"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="AssessmentSubmissionAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.AssessmentSubmissionAttachmentRelation" clientClassName="ish.oncourse.cayenne.AssessmentSubmissionAttachmentRelation">

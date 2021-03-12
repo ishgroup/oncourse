@@ -14,7 +14,6 @@ import ish.oncourse.server.api.v1.model.AssessmentSubmissionDTO
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.AssessmentSubmissionAttachmentRelation
 import ish.oncourse.server.document.DocumentService
-import ish.util.DateFormatter
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
@@ -54,8 +53,8 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
             dtoModel.assessmentId = cayenneModel.assessmentClass.assessment.id
             dtoModel.submittedById = cayenneModel.submittedBy.id
             dtoModel.tutorName = cayenneModel.submittedBy.fullName
-            dtoModel.submittedOn = LocalDateUtils.dateToTimeValue(cayenneModel.submittedOn)
-            dtoModel.markedOn = LocalDateUtils.dateToTimeValue(cayenneModel.markedOn)
+            dtoModel.submittedOn = cayenneModel.submittedOn
+            dtoModel.markedOn = cayenneModel.markedOn
             dtoModel.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
             dtoModel.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
             dtoModel
@@ -64,8 +63,8 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
 
     @Override
     AssessmentSubmission toCayenneModel(AssessmentSubmissionDTO dto, AssessmentSubmission cayenneModel) {
-        cayenneModel.submittedOn = LocalDateUtils.timeValueToDate(dto.submittedOn)
-        cayenneModel.markedOn = LocalDateUtils.timeValueToDate(dto.markedOn)
+        cayenneModel.submittedOn = dto.submittedOn
+        cayenneModel.markedOn = dto.markedOn
         if (dto.submittedById) {
             cayenneModel.submittedBy = contactService.getEntityAndValidateExistence(cayenneModel.context, dto.submittedById)
         }
@@ -92,12 +91,12 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
         switch (key) {
             case AssessmentSubmission.SUBMITTED_ON.name:
                 action = { AssessmentSubmission submission ->
-                    submission.submittedOn = DateFormatter.parseDate(value, null)
+                    submission.submittedOn = LocalDateUtils.stringToValue(value)
                 }
                 break
             case AssessmentSubmission.MARKED_ON.name:
                 action = { AssessmentSubmission submission ->
-                    submission.markedOn = DateFormatter.parseDate(value, null)
+                    submission.markedOn = LocalDateUtils.stringToValue(value)
                 }
                 break
             default:

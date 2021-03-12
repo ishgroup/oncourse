@@ -11,7 +11,7 @@ properties:
     format: date-time
   submittedOn:
     type: string
-    format: date-time
+    format: date
   submittedById:
     type: integer
     format: int64
@@ -19,7 +19,7 @@ properties:
     type: string
   markedOn:
     type: string
-    format: date-time
+    format: date
   enrolmentId:
     type: integer
     format: int64
