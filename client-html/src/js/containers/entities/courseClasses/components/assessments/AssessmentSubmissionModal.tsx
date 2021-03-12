@@ -26,9 +26,11 @@ const AssessmentSubmissionModal = (
   const type = modalProps[0];
   const name = `${item}.submissions[${modalProps[1]}]`;
 
+  const opened = Boolean(modalProps.length);
+
   return (
     <Dialog
-      open={Boolean(type)}
+      open={opened}
       onClose={onClose}
       classes={{
       paper: "overflow-visible"
@@ -39,6 +41,7 @@ const AssessmentSubmissionModal = (
       disableRestoreFocus
     >
       <DialogContent>
+        {opened && (
         <Grid container>
           <Grid item xs={6}>
             <FormField
@@ -46,13 +49,13 @@ const AssessmentSubmissionModal = (
               name={`${name}.${type === "Marked" ? "markedOn" : "submittedOn"}`}
               label={`${type} date`}
               parse={value => {
-              if (!value) {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                return today.toISOString();
-              }
-              return value;
-            }}
+                if (!value) {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  return today.toISOString();
+                }
+                return value;
+              }}
               required
             />
           </Grid>
@@ -67,9 +70,10 @@ const AssessmentSubmissionModal = (
               items={tutors}
               allowEmpty
             />
-          )}
+            )}
           </Grid>
         </Grid>
+        )}
       </DialogContent>
 
       <DialogActions>

@@ -91,7 +91,7 @@ interface StudentForRender {
   studentName: string;
   studentId: string;
   submission: AssessmentSubmission;
-  enrolmentId: string;
+  enrolmentId: number;
   submissionIndex: number;
 }
 
@@ -122,14 +122,15 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
 
   useEffect(() => {
     const result = courseClassEnrolments && courseClassEnrolments.reduce((acc, elem) => {
-      const submissionIndex = row.submissions.findIndex(s => s.studentId === Number(elem.contactId));
+      const submissionIndex = row.submissions.findIndex(s => s.enrolmentId === Number(elem.id));
       const submission = submissionIndex !== -1 ? row.submissions[submissionIndex] : null;
+
       return [...acc, {
         studentName: elem.student,
         studentId: elem.contactId,
         submittedValue: submission && submission.submittedOn ? "Submitted" : "Not submitted",
         markedValue: submission && submission.markedOn ? "Submitted" : "Not submitted",
-        enrolmentId: elem.id,
+        enrolmentId: Number(elem.id),
         submissionIndex,
         submission
       } as StudentForRender];
@@ -138,6 +139,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   }, [courseClassEnrolments, row.submissions]);
 
   const onPickerClose = () => {
+    setModalOpenedBy(null);
     if (modalProps[2] === "all" && row.submissions.length) {
       submissionUpdater.current(courseClassEnrolments.map(elem => ({
         id: null,
@@ -149,13 +151,12 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
         studentName: elem.student
       })));
     }
-    setModalOpenedBy(null);
   };
 
   const onChangeStatus = (type: TickType, student: StudentForRender) => {
     studentsForRender.forEach((elem => {
       if (student.studentId === elem.studentId) {
-        const submissionIndex = row.submissions.findIndex(s => s.studentId === Number(elem.studentId));
+        const submissionIndex = row.submissions.findIndex(s => s.enrolmentId === elem.enrolmentId);
         let pathIndex = submissionIndex;
 
         if (elem.submittedValue !== "Submitted") {
@@ -170,6 +171,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
               studentId: Number(elem.studentId),
               studentName: elem.studentName
             };
+
             submissionUpdater.current([newSubmission, ...row.submissions]);
           }
         } else if (submissionIndex !== -1 && type === "Submitted") {
@@ -178,15 +180,23 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
           submissionUpdater.current(updatedSubmissions);
         }
         if (type === "Marked" && elem.markedValue === "Submitted") {
-          const updatedSubmissions = [...row.submissions];
-          updatedSubmissions[submissionIndex].markedOn = null;
-          updatedSubmissions[submissionIndex].submittedById = null;
+          const updatedSubmissions = row.submissions.map((s, index) => {
+            if (submissionIndex === index) {
+              return { ...s, markedOn: null, submittedById: null };
+            }
+            return s;
+          });
           submissionUpdater.current(updatedSubmissions);
         }
         if (type === "Marked" && elem.markedValue !== "Submitted" && submissionIndex !== -1) {
-          const updatedSubmissions = [...row.submissions];
-          updatedSubmissions[submissionIndex].markedOn = today;
+          const updatedSubmissions = row.submissions.map((s, index) => {
+            if (submissionIndex === index) {
+              return { ...s, markedOn: today };
+            }
+            return s;
+          });
           submissionUpdater.current(updatedSubmissions);
+          dispatch(change(form, `${item}.submissions[${submissionIndex}].markedOn`, today));
         }
         if ((type === "Marked" && elem.markedValue !== "Submitted")
           || (type === "Submitted" && elem.submittedValue !== "Submitted") ) {
