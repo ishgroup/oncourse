@@ -101,8 +101,8 @@
 		<db-attribute name="enrolmentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
-		<db-attribute name="submittedById" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="submittedOn" type="TIMESTAMP"/>
+		<db-attribute name="submittedById" type="BIGINT"/>
+		<db-attribute name="submittedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="markedOn" type="TIMESTAMP"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
