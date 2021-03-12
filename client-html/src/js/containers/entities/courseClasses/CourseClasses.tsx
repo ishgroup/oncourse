@@ -637,9 +637,16 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
             "assessments[].assessmentName",
             "assessments[].dueDate",
             "assessments[].releaseDate",
+            "assessments[].submissions[].markedOn",
+            "assessments[].submissions[].submittedOn",
+            "assessments[].submissions[].submittedById",
             "notes[].message"
           ],
-          asyncChangeFields: ["tutors[].isInPublicity", "assessments[].contactIds"],
+          asyncChangeFields: [
+            "tutors[].isInPublicity",
+            "assessments[].contactIds",
+            "assessments[].submissions"
+          ],
           hideFullScreenAppBar: true,
           enableReinitialize: true,
           keepDirtyOnReinitialize: true

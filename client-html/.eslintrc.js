@@ -19,6 +19,7 @@ module.exports = {
         "@typescript-eslint/tslint"
     ],
     "rules": {
+        "jsx-a11y/aria-role": "off",
         "import/no-unresolved": "off",
         "import/extensions": "off",
         "import/prefer-default-export": "off",

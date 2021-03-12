@@ -28,14 +28,15 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export const AssessmentsSubmissionType = [
+export const AssessmentsSubmissionTypes = [
   "Not submitted",
-  "Submitted",
-  "Failed submission",
+  "Submitted"
 ];
 
+export type AssessmentsSubmissionType = StringValueType<typeof AssessmentsSubmissionTypes>;
+
 interface AssessmentSubmissionIconProps {
-  type: StringValueType<typeof AssessmentsSubmissionType>;
+  type: AssessmentsSubmissionType;
   classes?: any;
 }
 
@@ -63,7 +64,7 @@ const styles = {
 };
 
 interface AssessmentSubmissionIconButtonProps {
-  status: StringValueType<typeof AssessmentsSubmissionType>;
+  status: AssessmentsSubmissionType;
   onClick?: any;
   classes?: any;
 }
