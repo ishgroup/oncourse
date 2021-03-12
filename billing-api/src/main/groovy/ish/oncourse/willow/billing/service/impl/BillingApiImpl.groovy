@@ -2,6 +2,9 @@ package ish.oncourse.willow.billing.service.impl
 
 import com.amazonaws.services.identitymanagement.model.AccessKey
 import com.amazonaws.services.s3.model.Region
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.api.request.RequestService
@@ -22,6 +25,8 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.tmatesoft.svn.core.SVNDirEntry
+import org.tmatesoft.svn.core.SVNProperties
 import org.tmatesoft.svn.core.SVNURL
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager
 import org.tmatesoft.svn.core.io.ISVNEditor
@@ -251,7 +256,7 @@ class BillingApiImpl implements BillingApi {
         String userPhone
 
         String paidUntil
-        
+        String port
         
         AngelConfig() {
             LocalDate untilDate = LocalDate.now()
@@ -263,13 +268,50 @@ class BillingApiImpl implements BillingApi {
             paidUntil = untilDate.format("yyyy-MM-01")
         }
         
+        Map<String, Object> toMap() {
+           return [
+                   (collegeKey): [
+                           security_key: securityCode, 
+                           version: '"{{ small }}"',
+                           server: [
+                                   max_users: 1,
+                                   port: port,
+                                   minion: 'colo.splash'
+                           ],
+                           db: [
+                                   pass: SecurityUtil.generateRandomPassword(12)
+                           ],
+                           document: [
+                                   bucket: s3bucketName,
+                                   accessKeyId: s3accessId,
+                                   accessSecretKey: s3accessKey,
+                                   region: s3Region,
+                                   limit: '1G'
+                           ],
+                           user: [
+                                   firstName: userFirstName,
+                                   lastName: userLastName,
+                                   email: userEmail,
+                           ],
+                           billing: [
+                                   code: collegeKey,
+                                   plan: 'basic', 
+                                   paid_until: "\"$paidUntil\"", 
+                                   web: [
+                                           plan: "WEB-6"
+                                   ]
+                           ]
+                   ]
+           ] as Map<String, Object>
+        }
+        
         String toString() {
             return  "$collegeKey:\n"+
                     "  security_key: $securityCode\n" +
                     "  version: \"{{ small }}\"\n" +
                     "  server:\n" +
                     "    max_users: 1\n" +
-                    "    port: 6000\n" +
+                    "    port: $port\n" +
                     "    minion: colo.splash\n" +
                     "  db:\n" +
                     "    pass: ${SecurityUtil.generateRandomPassword(12)}\n" +
@@ -292,21 +334,43 @@ class BillingApiImpl implements BillingApi {
         }
 
         void commit() {
-            
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
+
             String fileName = "${collegeKey}.sls"
             SVNRepository repository = SVNRepositoryFactory.create( SVNURL.parseURIEncoded(svnRepo))
             ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(svnUser, svnPass.toCharArray())
             repository.setAuthenticationManager(authManager)
+
+            int maxPort = 0
+            (repository.getDir('.', -1 , null , (Collection<SVNDirEntry>) null ) as Collection<SVNDirEntry>)
+                .each { SVNDirEntry entry ->
+                    SVNProperties fileProperties = new SVNProperties( )
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream( )
+                    repository.getFile( entry.relativePath , -1 , fileProperties, baos )
+                    if (entry.name.endsWith('.sls')) {
+                        String collegeKey = entry.name.replace('.sls','')  
+                        Map<String, Object> yaml = mapper.readValue(baos.toString(), new TypeReference<Map<String, Object>>() {})
+                        int collegePort = yaml[(collegeKey)]['server']['port'] as int
+                        if (collegePort > maxPort) {
+                            maxPort = collegePort
+                        }
+                    }
+                }
+            
+            port = ++ maxPort
             
             ISVNEditor editor = repository.getCommitEditor( "Create $collegeKey angel instance", null)
             
             editor.openRoot(-1)
+            
             editor.addFile(fileName, null, -1)
             editor.applyTextDelta(fileName, null)
             SVNDeltaGenerator deltaGenerator = new SVNDeltaGenerator()
             editor.applyTextDelta(svnRepo, null)
-            
-            InputStream is = IOUtils.toInputStream(toString(), "UTF-8")
+
+            String yaml = mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(toMap())
+            InputStream is = IOUtils.toInputStream(yaml, "UTF-8")
             
             String chksm = deltaGenerator.sendDelta(svnRepo, is, editor, true)
 
