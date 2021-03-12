@@ -20,9 +20,9 @@ class AssessmentSubmissionStubBuilder extends AbstractAngelStubBuilder<Assessmen
         stub.setModified(entity.getModifiedOn())
         stub.setEnrolmentId(entity.getEnrolment().getId())
         stub.setAssessmentClassId(entity.getAssessmentClass().getId())
-        stub.setSubmittedById(entity.getSubmittedBy().getId())
-        stub.setTutorComments(entity.getTutorComments())
-        stub.setStudentComments(entity.getStudentComments())
+        stub.setSubmittedById(entity.getSubmittedBy()?.getId())
+        stub.setSubmittedOn(entity.getSubmittedOn())
+        stub.setMarkedOn(entity.getMarkedOn())
         return stub
     }
 }
