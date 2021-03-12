@@ -79,9 +79,11 @@ class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, Ass
             if (submissionDto.id) {
                 submissionApiService.update(submissionDto.id, submissionDto)
             } else {
-                AssessmentSubmission submission = context.localObject(submissionApiService.create(submissionDto))
+                submissionApiService.validateModelBeforeSave(submissionDto,context, null)
+                AssessmentSubmission submission = context.newObject(AssessmentSubmission)
                 submission.enrolment = enrolmentApiService.getEntityAndValidateExistence(context, submissionDto.enrolmentId)
                 submission.assessmentClass = cayenneModel
+                submissionApiService.toCayenneModel(submissionDto, submission)
             }
         }
 

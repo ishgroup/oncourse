@@ -325,9 +325,11 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             if (submissionDto.id) {
                 submissionApiService.update(submissionDto.id, submissionDto)
             } else {
-                AssessmentSubmission submission = context.localObject(submissionApiService.create(submissionDto))
+                submissionApiService.validateModelBeforeSave(submissionDto,context, null)
+                AssessmentSubmission submission = context.newObject(AssessmentSubmission)
                 submission.enrolment = enrolment
                 submission.assessmentClass = enrolment.courseClass.assessmentClasses.find { submissionDto.assessmentId == it.assessment.id }
+                submissionApiService.toCayenneModel(submissionDto, submission)
             }
         }
     }
