@@ -263,6 +263,19 @@ class TCSIUtils {
         
     }
 
+    static String getAdmissionData(Enrolment enrolment) {
+        
+        Map<String, Object> admission = [:]
+
+        admission["student_identification_code"] = enrolment.student.studentNumber.toString() // E313
+        admission["course_code"] = enrolment.courseClass.course.code // E307
+        def courseData  = [
+                'correlation_id' : "admissionData_${System.currentTimeMillis()}",
+                'course_admission' : admission
+        ]
+
+        return JsonOutput.toJson([courseData])
+    }
 
     static List<Course> getUnitCourses(Course hihgEducation, EntityRelationType highEducationType) {
         ObjectContext context =  hihgEducation.context
@@ -287,18 +300,27 @@ class TCSIUtils {
                 .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
                 .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
                 .selectFirst(context)
+        
         if (relation) {
             return SelectById.query(Course, relation.fromRecordId).selectOne(context)
         } else {
-            return null
+            //check if course is high education itself 
+            relation = ObjectSelect.query(EntityRelation)
+                    .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(course.id))
+                    .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
+                    .and(EntityRelation.RELATION_TYPE.eq(highEducationType)).selectFirst(context)
+            if (relation) {
+                return course
+            }
         }
+        return null
     }
     
     static String testCourse() {
         Map<String, Object> course = [:]
 
-        course["course_code"] = 'BSB40807'
-        course["course_name"] = 'TEST name'
+        course["course_code"] = '5CHCF06'
+        course["course_name"] = 'Community Services 6'
         course["course_of_study_load"] = 1
         course["standard_course_duration"] = 1
         course["course_effective_from_date"] = new Date().format(DATE_FORMAT)

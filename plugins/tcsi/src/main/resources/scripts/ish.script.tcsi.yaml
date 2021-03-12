@@ -1,0 +1,7 @@
+name: VET Student Loans export
+body: ish.script.tcsi.groovy
+keyCode: ish.script.tcsi
+enabled: false
+triggerType: ON_DEMAND
+entityClass: Enrolment
+description: This integration feeds data from onCourse directly into the HEIMS data collection system (sometimes called TCSI).

@@ -18,7 +18,6 @@ import groovyx.net.http.RESTClient
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.integration.OnSave
@@ -27,7 +26,6 @@ import ish.oncourse.server.integration.PluginTrait
 import ish.oncourse.server.services.AuthHelper
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
 import org.apache.groovy.json.internal.JsonFastParser
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -70,6 +68,7 @@ class TCSIIntegration implements PluginTrait {
     static final String BASE_API_PATH = '/centrelink/ext-vend/tcsi/b2g/v1'
     static final String STUDENTS_PATH = BASE_API_PATH + '/students'
     static final String COURSES_PATH = BASE_API_PATH + '/courses'
+    static final String ADMISSIONS_PATH = '/course-admissions'
     
     static final String HIGH_EDUCATION_TYPE  = 'Higher education'
 
@@ -215,20 +214,41 @@ class TCSIIntegration implements PluginTrait {
         enrolment = context.localObject(e)
         highEducation = TCSIUtils.getHighEducation(context, highEducationType, enrolment)
         if (!highEducation) {
-            interraptExport("Enrolment is not a high education unit of study")
+            interraptExport("Enrolment is not a high education or unit of study")
         }
         if (!getStudent()) {
             createStudent()
         }
-        if (!getCourseGroup()) {
-            createCourseGroup()
-        }
+//        if (!getCourseGroup()) {
+//            createCourseGroup()
+//        }
+        
+        
+    }
+    
+    private Object createCourseAdmission() {
+
+        getClient().request(POST, JSON) {
+            uri.path = ADMISSIONS_PATH
+            body = TCSIUtils.getAdmissionData(enrolment)
+
+            response.success = { resp, result ->
+                return result["result"]["course"]
+            }
+            response.failure =   { resp, result ->
+                if (resp.status == 404) {
+                    return null
+                } else {
+                    failureHangler(resp, result)
+                }
+            }
+        } 
     }
     
     private Object getCourseGroup() {
         
         getClient().request(GET, JSON) {
-            uri.path = COURSES_PATH + "/$highEducation.id"
+            uri.path = COURSES_PATH + "/$highEducation.code"
             response.success = { resp, result ->
                 return result["result"]["course"]
             }
@@ -247,7 +267,7 @@ class TCSIIntegration implements PluginTrait {
             uri.path = COURSES_PATH
             body = TCSIUtils.getCourseData(enrolment.courseClass.course, highEducationType)
             response.success = { resp, result ->
-                return handleResponce(result, "Create course")
+                return handleResponce(result as List, "Create course")
             }
             response.failure = failureHangler
         }
@@ -277,7 +297,7 @@ class TCSIIntegration implements PluginTrait {
             uri.path = STUDENTS_PATH
             body = TCSIUtils.getStudentData(enrolment.student)
             response.success = { resp, result ->
-                return handleResponce(result, "Create student")
+                return handleResponce(result as List, "Create student")
             }
             response.failure = failureHangler
         }
@@ -307,7 +327,7 @@ class TCSIIntegration implements PluginTrait {
         return client
     }
     
-    private handleResponce(List responceArray, String description) {
+    private Object handleResponce(List responceArray, String description) {
         def response = responceArray[0]
         if (response['success']) {
             return response['result']
@@ -332,6 +352,7 @@ class TCSIIntegration implements PluginTrait {
             subject("TCSI export failed for: $enrolment.student.contact.fullName  $enrolment.courseClass.uniqueCode")
             content(message)
             from (preferenceController.emailFromAddress)
+            to (preferenceController.emailAdminAddress)
         }
         throw new TCSIException(message)
     }
