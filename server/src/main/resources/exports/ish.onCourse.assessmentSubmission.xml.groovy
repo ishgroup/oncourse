@@ -8,8 +8,8 @@ xml.data() {
             studentName(submission.studentName)
             courseClassName(submission.courseClassName)
             assessmentName(submission.assessmentName)
-            submittedOn(submission.submittedOn?.format("d-M-y HH:mm:ss"))
-            markedOn(submission.markedOn?.format("d-M-y HH:mm:ss"))
+            submittedOn(submission.submittedOn?.format("d-M-y"))
+            markedOn(submission.markedOn?.format("d-M-y"))
         }
     }
 }

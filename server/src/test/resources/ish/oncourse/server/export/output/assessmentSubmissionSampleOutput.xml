@@ -6,8 +6,8 @@
         <studentName>First Student</studentName>
         <courseClassName>Test Course TEST-123</courseClassName>
         <assessmentName>Test Assessment Task</assessmentName>
-        <submittedOn>3-1-2021 11:00:00</submittedOn>
-        <markedOn>5-1-2021 11:00:00</markedOn>
+        <submittedOn>3-1-2021</submittedOn>
+        <markedOn>5-1-2021</markedOn>
     </assessmentSubmission>
     <assessmentSubmission id='2'>
         <createdOn>3-1-2012 10:00:00</createdOn>
@@ -15,7 +15,7 @@
         <studentName>Second Student</studentName>
         <courseClassName>Test Course TEST-123</courseClassName>
         <assessmentName>testAssessment</assessmentName>
-        <submittedOn>4-1-2021 11:00:00</submittedOn>
+        <submittedOn>4-1-2021</submittedOn>
         <markedOn />
     </assessmentSubmission>
 </data>
