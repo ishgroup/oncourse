@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+import java.time.LocalDate
 
 /**
  * Outcomes are a relationship between a student and a Module/Unit of Competency and represents
@@ -369,11 +370,11 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 		return contact.getName(false)
 	}
 
-	Date getTrainingPlanStartDate() {
-		return new CalculateStartDate(OutcomeDelegator.valueOf(this), Boolean.FALSE).calculate()
+	LocalDate getTrainingPlanStartDate() {
+		return LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(this), Boolean.FALSE).calculate())
 	}
 
-	Date getTrainingPlanEndDate() {
-		return new CalculateEndDate(OutcomeDelegator.valueOf(this), Boolean.FALSE).calculate()
+	LocalDate getTrainingPlanEndDate() {
+		return LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(this), Boolean.FALSE).calculate())
 	}
 }
