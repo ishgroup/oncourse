@@ -10,16 +10,12 @@ import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
-import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.junit.Test
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertNull
-import static org.junit.Assert.assertTrue
+import static org.junit.Assert.*
 
 class WaitingListTest extends ApiTest {
     
@@ -41,7 +37,7 @@ class WaitingListTest extends ApiTest {
         ContactNode contactNode =  api.getContactNode(request)
         assertEquals(contactNode.waitingLists.size(), 1)
         assertEquals(contactNode.waitingLists[0].errors.size(), 1)
-        assertEquals(contactNode.waitingLists[0].errors[0].toString(), 'Student Student1 Student1 was already added to waiting list for Managerial Accounting course')
+        assertEquals(contactNode.waitingLists[0].errors[0].toString(), 'Student Student1 Student1 has already been added to waiting list for Managerial Accounting course')
 
         request = new ContactNodeRequest().with { r ->
             r.contactId = '1001'

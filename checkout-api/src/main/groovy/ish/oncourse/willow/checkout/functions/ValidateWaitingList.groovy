@@ -28,7 +28,7 @@ class ValidateWaitingList extends Validate<WaitingList> {
                 select(context)
         
         if (!waitingLists.empty) {
-            errors << "Student $student.fullName was already added to waiting list for $course.name course".toString()
+            errors << "Student $student.fullName has already been added to waiting list for $course.name course".toString()
         }
         this
     }
