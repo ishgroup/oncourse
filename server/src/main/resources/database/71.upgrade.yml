@@ -104,6 +104,55 @@ databaseChangeLog:
                     foreignKeyName: FK_ApiToken_SystemUser
                     references: SystemUser(id)
             tableName: ApiToken
+  - changeSet:
+      id: 71-6
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - and:
+          - tableExists:
+              tableName: AssessmentSubmission
+          - columnExists:
+              tableName: AssessmentSubmission
+              columnName: tutorComments
+          - columnExists:
+              tableName: AssessmentSubmission
+              columnName: studentComments
+      changes:
+        - dropColumn:
+            columns:
+              - column:
+                  name: tutorComments
+              - column:
+                  name: studentComments
+            tableName: AssessmentSubmission
+  - changeSet:
+      id: 71-7
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - and:
+          - tableExists:
+              tableName: AssessmentSubmission
+          - not:
+            - columnExists:
+                tableName: AssessmentSubmission
+                columnName: submittedOn
+            - columnExists:
+                tableName: AssessmentSubmission
+                columnName: markedOn
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: submittedOn
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: markedOn
+                  type: DATE
+            tableName: AssessmentSubmission
 
 
 
