@@ -342,20 +342,25 @@ class BillingApiImpl implements BillingApi {
             repository.setAuthenticationManager(authManager)
 
             int maxPort = 0
-            (repository.getDir('.', -1 , null , (Collection<SVNDirEntry>) null ) as Collection<SVNDirEntry>)
-                .each { SVNDirEntry entry ->
-                    SVNProperties fileProperties = new SVNProperties( )
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream( )
-                    repository.getFile( entry.relativePath , -1 , fileProperties, baos )
-                    if (entry.name.endsWith('.sls')) {
-                        String collegeKey = entry.name.replace('.sls','')  
-                        Map<String, Object> yaml = mapper.readValue(baos.toString(), new TypeReference<Map<String, Object>>() {})
-                        int collegePort = yaml[(collegeKey)]['server']['port'] as int
-                        if (collegePort > maxPort) {
-                            maxPort = collegePort
-                        }
+            try {
+                (repository.getDir('.', -1, null, (Collection<SVNDirEntry>) null) as Collection<SVNDirEntry>)
+                        .each { SVNDirEntry entry -> 
+                            if (entry.name.endsWith('.sls')) {
+                                SVNProperties fileProperties = new SVNProperties()
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream()
+                                repository.getFile(entry.relativePath, -1, fileProperties, baos)
+                                String collegeKey = entry.name.replace('.sls', '')
+                                Map<String, Object> yaml = mapper.readValue(baos.toString(), new TypeReference<Map<String, Object>>() {})
+                                int collegePort = yaml[(collegeKey)]['server']['port'] as int
+                                if (collegePort > maxPort) {
+                                    maxPort = collegePort
+                                }
                     }
                 }
+            } catch (Exception e) {
+                logger.catching(e)
+                port='10000'
+            }
             
             port = ++ maxPort
             
@@ -368,8 +373,7 @@ class BillingApiImpl implements BillingApi {
             SVNDeltaGenerator deltaGenerator = new SVNDeltaGenerator()
             editor.applyTextDelta(svnRepo, null)
 
-            String yaml = mapper.writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(toMap())
+            String yaml = toString()
             InputStream is = IOUtils.toInputStream(yaml, "UTF-8")
             
             String chksm = deltaGenerator.sendDelta(svnRepo, is, editor, true)
