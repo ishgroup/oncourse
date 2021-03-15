@@ -21,7 +21,7 @@ class AssessmentSubmissionStubBuilder extends AbstractAngelStubBuilder<Assessmen
         stub.setModified(entity.getModifiedOn())
         stub.setEnrolmentId(entity.getEnrolment().getId())
         stub.setAssessmentClassId(entity.getAssessmentClass().getId())
-        stub.setSubmittedById(entity.getSubmittedBy()?.getId())
+        stub.setMarkedById(entity.getMarkedBy()?.getId())
         stub.setSubmittedOn(LocalDateUtils.valueToDate(entity.getSubmittedOn()))
         stub.setMarkedOn(LocalDateUtils.valueToDate(entity.getMarkedOn()))
         return stub
