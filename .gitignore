@@ -7,6 +7,8 @@
 server/onCourse.yml
 /server/logSetup.xml
 /server/onCourseSSL.keystore
-/.idea/shelf/
 /server/logs/
 **/out/
+/.idea/shelf/
+/.idea/sonarlint*
+/.idea/sonarlint/**
