@@ -34,6 +34,7 @@ class AngelStubBuilderImpl implements IAngelStubBuilder {
 		builderMap.put(TutorAttachmentRelation.class.getSimpleName(), relStubBuilder)
 		builderMap.put(ApplicationAttachmentRelation.class.getSimpleName(), relStubBuilder)
 		builderMap.put(AssessmentAttachmentRelation.class.getSimpleName(), relStubBuilder)
+		builderMap.put(AssessmentSubmissionAttachmentRelation.class.getSimpleName(), relStubBuilder)
 		builderMap.put(CourseModule.class.getSimpleName(), new CourseModuleStubBuilder())
 		builderMap.put(PaymentIn.class.getSimpleName(), new PaymentInStubBuilder())
 		builderMap.put(PaymentInLine.class.getSimpleName(), new PaymentInLineStubBuilder())
