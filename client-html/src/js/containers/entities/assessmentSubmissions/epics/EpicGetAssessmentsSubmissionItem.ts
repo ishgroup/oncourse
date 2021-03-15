@@ -11,15 +11,15 @@ import { initialize } from "redux-form";
 import { AssessmentSubmission } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_ASSESSMENT_SUBMISSIONS_ITEM, GET_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED } from "../actions";
-import AssessmentService from "../../assessments/services/AssessmentService";
 import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
+import AssessmentSubmissionService from "../service/AssessmentSubmissionService";
 
 const request: EpicUtils.Request<any, any, any> = {
   type: GET_ASSESSMENT_SUBMISSIONS_ITEM,
-  getData: (id: number) => AssessmentService.getAssessment(id),
+  getData: (id: number) => AssessmentSubmissionService.getAssessmentSubmission(id),
   processData: (assessmentSubmission: AssessmentSubmission, s, id) => [
     {
       type: GET_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED,

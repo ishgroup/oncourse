@@ -186,7 +186,8 @@ export class MainBase extends React.PureComponent<Props, any> {
         routes.forEach(route => {
           if (route.url && route.url !== "/") {
             const path = route.url.replace("/", "");
-            const url = new RegExp(`\\B${path}|${path}\\B`);
+            // const url = new RegExp(`\\B${path}|${path}\\B`);
+            const url = new RegExp(`\\B${path}\\b`);
             if (url.test(history.location.pathname)) {
               history.push(route.url);
               pathMatched = true;
