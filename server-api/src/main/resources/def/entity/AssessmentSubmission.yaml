@@ -12,7 +12,7 @@ properties:
   submittedOn:
     type: string
     format: date
-  submittedById:
+  markedById:
     type: integer
     format: int64
   tutorName:
