@@ -78,7 +78,7 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 		return super.getEnrolment()
 	}
 
-	@Nonnull
+	@Nullable
 	@API
 	@Override
 	Contact getSubmittedBy() {
