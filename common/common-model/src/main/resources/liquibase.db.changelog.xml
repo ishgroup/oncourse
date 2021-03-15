@@ -309,4 +309,18 @@
 			<column name="markedOn" type="datetime"/>
 		</addColumn>
 	</changeSet>
+
+	<changeSet id="31" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="AssessmentSubmission" columnName="submittedById"/>
+		</preConditions>
+		<dropNotNullConstraint tableName="AssessmentSubmission" columnName="submittedById" columnDataType="BIGINT"/>
+	</changeSet>
+
+	<changeSet id="32" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="AssessmentSubmission" columnName="submittedById"/>
+		</preConditions>
+		<renameColumn tableName="AssessmentSubmission" oldColumnName="submittedById" newColumnName="markedBy" columnDataType="BIGINT"/>
+	</changeSet>
 </databaseChangeLog>

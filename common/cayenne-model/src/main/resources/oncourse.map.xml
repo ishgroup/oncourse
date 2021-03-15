@@ -68,8 +68,8 @@
 		<db-attribute name="enrolmentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
-		<db-attribute name="submittedById" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="submittedOn" type="TIMESTAMP"/>
+		<db-attribute name="markedById" type="BIGINT"/>
+		<db-attribute name="submittedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="markedOn" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="Attendance">
@@ -2852,8 +2852,8 @@
 	<db-relationship name="enrolment" source="AssessmentSubmission" target="Enrolment">
 		<db-attribute-pair source="enrolmentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="submittedBy" source="AssessmentSubmission" target="Contact">
-		<db-attribute-pair source="submittedById" target="id"/>
+	<db-relationship name="markedBy" source="AssessmentSubmission" target="Contact">
+		<db-attribute-pair source="markedById" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="Attendance" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -3195,7 +3195,7 @@
 		<db-attribute-pair source="id" target="concessionTypeId"/>
 	</db-relationship>
 	<db-relationship name="assessmentSubmissions" source="Contact" target="AssessmentSubmission" toMany="true">
-		<db-attribute-pair source="id" target="submittedById"/>
+		<db-attribute-pair source="id" target="markedById"/>
 	</db-relationship>
 	<db-relationship name="college" source="Contact" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -4344,7 +4344,7 @@
 	<obj-relationship name="assessmentClass" source="AssessmentSubmission" target="AssessmentClass" deleteRule="Nullify" db-relationship-path="assessmentClass"/>
 	<obj-relationship name="college" source="AssessmentSubmission" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="AssessmentSubmission" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
-	<obj-relationship name="submittedBy" source="AssessmentSubmission" target="Contact" deleteRule="Nullify" db-relationship-path="submittedBy"/>
+	<obj-relationship name="markedBy" source="AssessmentSubmission" target="Contact" deleteRule="Nullify" db-relationship-path="markedBy"/>
 	<obj-relationship name="college" source="Attendance" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="markedByTutor" source="Attendance" target="Tutor" deleteRule="Nullify" db-relationship-path="markedByTutor"/>
 	<obj-relationship name="session" source="Attendance" target="Session" deleteRule="Nullify" db-relationship-path="session"/>

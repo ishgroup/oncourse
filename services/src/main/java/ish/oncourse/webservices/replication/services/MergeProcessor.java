@@ -80,7 +80,7 @@ public class MergeProcessor {
 
 
 		for (AssessmentSubmission submission : new ArrayList<>(contactToDelete.getAssessmentSubmissions())) {
-			submission.setSubmittedBy(contactToUpdate);
+			submission.setMarkedBy(contactToUpdate);
 		}
 
 		for (Invoice invoice : new ArrayList<>(contactToDelete.getInvoices())) {

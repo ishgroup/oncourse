@@ -30,7 +30,7 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
     public static final String ASSESSMENT_CLASS_PROPERTY = "assessmentClass";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String ENROLMENT_PROPERTY = "enrolment";
-    public static final String SUBMITTED_BY_PROPERTY = "submittedBy";
+    public static final String MARKED_BY_PROPERTY = "markedBy";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -42,7 +42,7 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
     public static final Property<AssessmentClass> ASSESSMENT_CLASS = Property.create("assessmentClass", AssessmentClass.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<Enrolment> ENROLMENT = Property.create("enrolment", Enrolment.class);
-    public static final Property<Contact> SUBMITTED_BY = Property.create("submittedBy", Contact.class);
+    public static final Property<Contact> MARKED_BY = Property.create("markedBy", Contact.class);
 
     protected Long angelId;
     protected Date created;
@@ -53,7 +53,7 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
     protected Object assessmentClass;
     protected Object college;
     protected Object enrolment;
-    protected Object submittedBy;
+    protected Object markedBy;
 
     public void setAngelId(Long angelId) {
         beforePropertyWrite("angelId", this.angelId, angelId);
@@ -129,12 +129,12 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
         return (Enrolment)readProperty("enrolment");
     }
 
-    public void setSubmittedBy(Contact submittedBy) {
-        setToOneTarget("submittedBy", submittedBy, true);
+    public void setMarkedBy(Contact markedBy) {
+        setToOneTarget("markedBy", markedBy, true);
     }
 
-    public Contact getSubmittedBy() {
-        return (Contact)readProperty("submittedBy");
+    public Contact getMarkedBy() {
+        return (Contact)readProperty("markedBy");
     }
 
     @Override
@@ -160,8 +160,8 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
                 return this.college;
             case "enrolment":
                 return this.enrolment;
-            case "submittedBy":
-                return this.submittedBy;
+            case "markedBy":
+                return this.markedBy;
             default:
                 return super.readPropertyDirectly(propName);
         }
@@ -198,8 +198,8 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
             case "enrolment":
                 this.enrolment = val;
                 break;
-            case "submittedBy":
-                this.submittedBy = val;
+            case "markedBy":
+                this.markedBy = val;
                 break;
             default:
                 super.writePropertyDirectly(propName, val);
@@ -225,7 +225,7 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
         out.writeObject(this.assessmentClass);
         out.writeObject(this.college);
         out.writeObject(this.enrolment);
-        out.writeObject(this.submittedBy);
+        out.writeObject(this.markedBy);
     }
 
     @Override
@@ -239,7 +239,7 @@ public abstract class _AssessmentSubmission extends WillowCayenneObject {
         this.assessmentClass = in.readObject();
         this.college = in.readObject();
         this.enrolment = in.readObject();
-        this.submittedBy = in.readObject();
+        this.markedBy = in.readObject();
     }
 
 }

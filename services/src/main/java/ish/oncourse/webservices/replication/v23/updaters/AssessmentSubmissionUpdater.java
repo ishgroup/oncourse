@@ -18,7 +18,7 @@ public class AssessmentSubmissionUpdater extends AbstractWillowUpdater<Assessmen
 		entity.setModified(stub.getModified());
 		entity.setAssessmentClass(callback.updateRelationShip(stub.getAssessmentClassId(), AssessmentClass.class));
 		entity.setEnrolment(callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class));
-		entity.setSubmittedBy(callback.updateRelationShip(stub.getSubmittedById(), Contact.class));
+		entity.setMarkedBy(callback.updateRelationShip(stub.getMarkedById(), Contact.class));
 		entity.setSubmittedOn(stub.getSubmittedOn());
 		entity.setMarkedOn(stub.getMarkedOn());
 	}
