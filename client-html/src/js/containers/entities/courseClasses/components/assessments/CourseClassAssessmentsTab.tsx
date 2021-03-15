@@ -54,9 +54,9 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
   showConfirm
 }) => {
   const AssessmentItemsComponent = useCallback(
-    props => (
+    ({ classes, ...rest }) => (
       <CourseClassAssessmentItems
-        {...props}
+        {...rest}
         dispatch={dispatch}
         form={form}
         tutors={values.tutors.filter(t => t.id)}

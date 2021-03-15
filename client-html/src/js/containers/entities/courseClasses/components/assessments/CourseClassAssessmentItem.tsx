@@ -99,6 +99,11 @@ type TickType = "Submitted" | "Marked";
 
 const today = format(new Date(), YYYY_MM_DD_MINUSED);
 
+const getFieldMeta = name => {
+  const match = name.match(/\[(\d)]\.([^.]+)$/);
+  return { field: match[2], index: Number(match[1]) };
+};
+
 const CourseClassAssessmentItem: React.FC<Props> = props => {
   const {
     form,
@@ -135,21 +140,27 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
         submission
       } as StudentForRender];
     }, []);
+
+    result.sort((a, b) => (a.studentName > b.studentName ? 1 : -1));
+
     setStudentsForRender(result);
   }, [courseClassEnrolments, row.submissions]);
 
   const onPickerClose = () => {
     setModalOpenedBy(null);
     if (modalProps[2] === "all" && row.submissions.length) {
-      submissionUpdater.current(courseClassEnrolments.map(elem => ({
-        id: null,
-        submittedOn: row.submissions[0].submittedOn,
-        markedById: row.submissions[0].markedById,
-        markedOn: row.submissions[0].markedOn,
-        enrolmentId: Number(elem.id),
-        studentId: Number(elem.contactId),
-        studentName: elem.student
-      })));
+      submissionUpdater.current(courseClassEnrolments.map(elem => {
+        const submission = row.submissions.find(s => s.enrolmentId === Number(elem.id));
+        return row.submissions[0].submittedOn || row.submissions[0].markedOn ? {
+          id: submission ? submission.id : null,
+          submittedOn: row.submissions[0].submittedOn,
+          markedById: row.submissions[0].markedById,
+          markedOn: modalProps[0] === "Marked" ? row.submissions[0].markedOn : submission?.markedOn,
+          enrolmentId: Number(elem.id),
+          studentId: Number(elem.contactId),
+          studentName: elem.student
+        } : null;
+      }).filter(s => s));
     }
   };
 
@@ -216,6 +227,18 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     dispatch(change(form, `${item}.assessmentId`, assessment ? assessment.id : null));
   };
 
+  const triggerAsyncChange = (event, newValue, previousValue, name) => {
+    const { field, index } = getFieldMeta(name);
+    const updatedSubmissions = row.submissions.map((s, sInd) => ({
+      ...s,
+      [field]: sInd === index ? newValue : s[field]
+    }));
+    if (field === "submittedOn" && !newValue) {
+      updatedSubmissions.splice(index, 1);
+    }
+    submissionUpdater.current(updatedSubmissions);
+  };
+
   const validateDueDate = useCallback(
     value => (differenceInDays(new Date(row.releaseDate), new Date(value)) > 0
         ? "Due date can't be before release date"
@@ -252,9 +275,8 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
 
     return tutors.map(t => {
       const rendered = idsSet.has(t.contactId) ? null : (
-        <div>
+        <div key={t.id}>
           <FormControlLabel
-            key={t.id}
             className="checkbox"
             control={(
               <StyledCheckbox
@@ -286,6 +308,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
               modalProps={modalProps}
               tutors={tutors}
               onClose={onPickerClose}
+              triggerAsyncChange={triggerAsyncChange}
             />
             <Field name={`${item}.submissions`} component={submissionFieldStub} />
             <Field name={`${item}.contactIds`} component={tutorsFieldStub} />
