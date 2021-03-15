@@ -82,7 +82,7 @@ const AssessmentSubmissionGeneralTab = props => {
           <FormField
             type="remoteDataSearchSelect"
             entity="Contact"
-            name="submittedById"
+            name="markedById"
             label="Assessor"
             selectValueMark="id"
             selectLabelMark="id"
