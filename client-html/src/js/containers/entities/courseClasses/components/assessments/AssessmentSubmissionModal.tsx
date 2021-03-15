@@ -21,7 +21,8 @@ const AssessmentSubmissionModal = (
     modalProps,
     item,
     tutors,
-    onClose
+    onClose,
+    triggerAsyncChange
   }
 ) => {
   const type = modalProps[0];
@@ -56,15 +57,7 @@ const AssessmentSubmissionModal = (
               type="date"
               name={`${name}.${type === "Marked" ? "markedOn" : "submittedOn"}`}
               label={`${type} date`}
-              parse={value => {
-                if (!value) {
-                  const today = new Date();
-                  today.setHours(0, 0, 0, 0);
-                  return today.toISOString();
-                }
-                return value;
-              }}
-              required
+              onChange={triggerAsyncChange}
             />
           </Grid>
           <Grid item xs={6}>
@@ -76,6 +69,7 @@ const AssessmentSubmissionModal = (
               name={`${name}.markedById`}
               label="Assessor"
               items={tutors}
+              onChange={triggerAsyncChange}
               allowEmpty
             />
             )}
