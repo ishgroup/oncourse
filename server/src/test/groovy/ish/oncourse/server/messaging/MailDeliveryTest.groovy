@@ -14,7 +14,7 @@ import javax.mail.internet.InternetAddress
 /**
  * contains lots of simplistic tests. I could not understand from the API how the InternetAddress relates/translates to the emails sent from javamail.<br>
  * also will work as safety, in case the libraries we use are upgraded or changed.
- * 
+ *
  */
 class MailDeliveryTest {
 
@@ -32,7 +32,6 @@ class MailDeliveryTest {
 			InternetAddress address = new InternetAddress(emailAddressStringSimple)
             assertEquals("checking the address ", emailAddressStringSimple, address.getAddress())
         } catch (AddressException e) {
-			e.printStackTrace()
             fail("cannot parse the address")
         }
 
@@ -41,7 +40,6 @@ class MailDeliveryTest {
 			InternetAddress address = new InternetAddress(emailAddressStringSimple, false)
             assertEquals("checking the address ", emailAddressStringSimple, address.getAddress())
         } catch (AddressException e) {
-			e.printStackTrace()
             fail("cannot parse the address")
         }
 
@@ -50,7 +48,6 @@ class MailDeliveryTest {
 			InternetAddress address = new InternetAddress(emailAddressStringComplex)
             assertEquals("checking the address ", emailAddressStringSimple, address.getAddress())
         } catch (AddressException e) {
-			e.printStackTrace()
             fail("cannot parse the address")
         }
 
@@ -59,7 +56,6 @@ class MailDeliveryTest {
 			InternetAddress address = new InternetAddress(emailAddressStringComplex)
             assertEquals("checking the address ", emailAddressStringSimple, address.getAddress())
         } catch (AddressException e) {
-			e.printStackTrace()
             fail("cannot parse the address")
         }
 
@@ -68,7 +64,6 @@ class MailDeliveryTest {
 			InternetAddress address = new InternetAddress(emailAddressStringSimple, emailAddressPersonal)
             assertEquals("checking the address ", emailAddressStringSimple, address.getAddress())
         } catch (UnsupportedEncodingException e) {
-			e.printStackTrace()
             fail("cannot parse the address")
         }
 
@@ -77,7 +72,6 @@ class MailDeliveryTest {
 			InternetAddress address = new InternetAddress(emailAddressStringComplex, emailAddressPersonal)
             assertEquals("checking the address ", emailAddressStringComplex, address.getAddress())
         } catch (UnsupportedEncodingException e) {
-			e.printStackTrace()
             fail("cannot parse the address")
         }
 
@@ -86,7 +80,6 @@ class MailDeliveryTest {
 			InternetAddress address = new InternetAddress(emailAddressStringComplex, "not matching")
             assertEquals("checking the address ", emailAddressStringComplex, address.getAddress())
         } catch (UnsupportedEncodingException e) {
-			e.printStackTrace()
             fail("cannot parse the address")
         }
 

@@ -11,6 +11,9 @@ import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.services.TestSchedulerService
 import org.apache.cayenne.map.LifecycleEvent
 import org.apache.cayenne.query.SQLTemplate
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 import org.junit.Test
@@ -24,6 +27,7 @@ class ScriptTriggeringListenerTest extends CayenneIshTestCase {
     private ICayenneService cayenneService
     private GroovyScriptService scriptService
     private TestSchedulerService schedulerService
+    private static final Logger logger = LogManager.getLogger()
 
     void setup() throws SchedulerException {
         this.cayenneService = injector.getInstance(ICayenneService.class)
@@ -35,7 +39,7 @@ class ScriptTriggeringListenerTest extends CayenneIshTestCase {
             try {
                 schedulerService.removeJob(j.getKey())
             } catch (SchedulerException e) {
-                e.printStackTrace()
+                logger.catching(e)
             }
         }
     }

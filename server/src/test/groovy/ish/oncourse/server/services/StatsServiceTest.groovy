@@ -4,6 +4,8 @@
  */
 package ish.oncourse.server.services
 
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.jfree.data.time.Day
 import org.jfree.data.time.TimeSeries
 import org.jfree.data.time.TimeSeriesCollection
@@ -14,6 +16,7 @@ import org.junit.Test
 /**
  */
 class StatsServiceTest {
+	private static final Logger logger = LogManager.getLogger()
 
 	/**
 	 * plot is saved as a png file in the current working directory, allowing to test plotting itself.<br/>
@@ -52,7 +55,7 @@ class StatsServiceTest {
 			out.write(result)
 			out.close()
 		} catch (IOException e) {
-			e.printStackTrace()
+			logger.catching(e)
 		}
 
 		File f2 = new File("sparklineTest.png")

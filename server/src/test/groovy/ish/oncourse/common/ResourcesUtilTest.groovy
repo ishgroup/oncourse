@@ -56,7 +56,6 @@ class ResourcesUtilTest {
             assertEquals(9, result.length)
 
         } catch (IOException e) {
-			e.printStackTrace()
             fail(e.getMessage())
         }
 	}
@@ -76,7 +75,6 @@ class ResourcesUtilTest {
             assertTrue("File "+f.getAbsolutePath()+" does not exist", f.exists())
             assertEquals("", "37aa63c77398d954473262e1a057c1e632eda77", ResourcesUtil.hashFile(f))
         } catch (IOException e) {
-			e.printStackTrace()
             fail(e.getMessage())
         }
 	}

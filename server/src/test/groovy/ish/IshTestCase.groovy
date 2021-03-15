@@ -200,7 +200,7 @@ abstract class IshTestCase {
                 try {
                     connection.close()
                 } catch (SQLException e) {
-                    e.printStackTrace()
+                    logger.catching(e)
                 }
             }
         }
@@ -244,7 +244,7 @@ abstract class IshTestCase {
 				try {
 					connection.close()
                 } catch (SQLException e) {
-					e.printStackTrace()
+                    logger.catching(e)
                 }
 			}
 		}
@@ -271,7 +271,7 @@ abstract class IshTestCase {
 				try {
 					connection.close()
                 } catch (SQLException e) {
-					e.printStackTrace()
+                    logger.catching(e)
                 }
 			}
 		}

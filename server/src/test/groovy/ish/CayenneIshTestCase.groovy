@@ -72,11 +72,11 @@ abstract class CayenneIshTestCase extends IshTestCase {
 
 		List<PaymentMethod> methods = ObjectSelect.query(PaymentMethod.class).select(newContext)
 		Account bankAccount = AccountUtil.getDefaultBankAccount(newContext, Account.class)
-		
+
 		for (PaymentType type : PaymentType.values()) {
 			if (PaymentMethod.NAME.eq(type.getDisplayName()).filterObjects(methods).isEmpty()) {
-				
-				
+
+
 				PaymentMethod paymentMethod = newContext.newObject(PaymentMethod.class)
 				paymentMethod.setName(type.getDisplayName())
 				paymentMethod.setAccount(bankAccount)
@@ -208,7 +208,7 @@ abstract class CayenneIshTestCase extends IshTestCase {
 		datamap.getDbEntity("BinaryRelation").getAttribute("documentId").setMandatory(false)
 
 
-		//workaround for tests (clean and insert data to database) to avoid circular dependencies in DB tables. 
+		//workaround for tests (clean and insert data to database) to avoid circular dependencies in DB tables.
 		DbRelationship circularDependencyRelationship = datamap.getDbEntity("Account").getRelationship("tax")
 		datamap.getDbEntity("Account").removeRelationship(circularDependencyRelationship.getName())
 
@@ -239,7 +239,7 @@ abstract class CayenneIshTestCase extends IshTestCase {
 		for (Relationship rel : unavailableRuleRelationsToRemove) {
 			unavailableRuleRelation.addRelationship(rel)
 		}
-		
+
 		for (Relationship rel : noteRelationshipsToRemove) {
 			datamap.getDbEntity("NoteRelation").addRelationship(rel)
 		}
@@ -296,7 +296,7 @@ abstract class CayenneIshTestCase extends IshTestCase {
 				stmt.close()
 			}
 		} catch(Exception e) {
-			e.printStackTrace()
+			logger.catching(e)
 		}
 	}
 
@@ -395,7 +395,7 @@ where schemaname='APP'"""
 				try {
 					connection.close()
 				} catch (SQLException e) {
-					e.printStackTrace()
+					logger.catching(e)
 				}
 			}
 		}

@@ -84,7 +84,6 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
 
             fillBindingsManually()
         } catch (Exception e) {
-			e.printStackTrace()
             fail(e.getMessage())
         }
 	}
