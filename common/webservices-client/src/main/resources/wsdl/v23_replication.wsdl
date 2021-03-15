@@ -1590,7 +1590,7 @@
                         <xs:sequence>
                             <xs:element name="enrolmentId" type="xs:long"/>
                             <xs:element name="assessmentClassId" type="xs:long"/>
-                            <xs:element name="submittedById" type="xs:long"/>
+                            <xs:element name="markedById" type="xs:long"/>
                             <xs:element name="submittedOn" type="xs:dateTime"/>
                             <xs:element name="markedOn" type="xs:dateTime"/>
                         </xs:sequence>

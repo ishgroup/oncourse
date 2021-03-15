@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *       &lt;sequence&gt;
  *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="assessmentClassId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
- *         &lt;element name="submittedById" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="markedById" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="submittedOn" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="markedOn" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *       &lt;/sequence&gt;
@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "assessmentSubmissionStub", propOrder = {
     "enrolmentId",
     "assessmentClassId",
-    "submittedById",
+    "markedById",
     "submittedOn",
     "markedOn"
 })
@@ -56,7 +56,7 @@ public class AssessmentSubmissionStub
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
-    protected Long submittedById;
+    protected Long markedById;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
@@ -115,27 +115,27 @@ public class AssessmentSubmissionStub
     }
 
     /**
-     * Gets the value of the submittedById property.
+     * Gets the value of the markedById property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public Long getSubmittedById() {
-        return submittedById;
+    public Long getMarkedById() {
+        return markedById;
     }
 
     /**
-     * Sets the value of the submittedById property.
+     * Sets the value of the markedById property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setSubmittedById(Long value) {
-        this.submittedById = value;
+    public void setMarkedById(Long value) {
+        this.markedById = value;
     }
 
     /**
