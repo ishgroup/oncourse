@@ -122,7 +122,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
 
   useEffect(() => {
     const result = courseClassEnrolments && courseClassEnrolments.reduce((acc, elem) => {
-      const submissionIndex = row.submissions.findIndex(s => s.enrolmentId === Number(elem.id));
+      const submissionIndex = row.submissions ? row.submissions.findIndex(s => s.enrolmentId === Number(elem.id)) : -1;
       const submission = submissionIndex !== -1 ? row.submissions[submissionIndex] : null;
 
       return [...acc, {
