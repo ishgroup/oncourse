@@ -79,7 +79,7 @@ const ApiTokensBase:React.FC<Props> = (
 
   return (
     <form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
-      <RouteChangeConfirm when={dirty} />
+      <RouteChangeConfirm form={form} when={dirty} />
       <CustomAppBar>
         <Grid container>
           <Grid item xs={12} className="centeredFlex relative">

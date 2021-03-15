@@ -73,7 +73,7 @@ const AssessmentSubmissionModal = (
               type="select"
               selectValueMark="contactId"
               selectLabelMark="tutorName"
-              name={`${name}.submittedById`}
+              name={`${name}.markedById`}
               label="Assessor"
               items={tutors}
               allowEmpty

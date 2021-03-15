@@ -144,7 +144,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
       submissionUpdater.current(courseClassEnrolments.map(elem => ({
         id: null,
         submittedOn: row.submissions[0].submittedOn,
-        submittedById: row.submissions[0].submittedById,
+        markedById: row.submissions[0].markedById,
         markedOn: row.submissions[0].markedOn,
         enrolmentId: Number(elem.id),
         studentId: Number(elem.contactId),
@@ -165,7 +165,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
             const newSubmission: AssessmentSubmission = {
               id: null,
               submittedOn: today,
-              submittedById: type === "Marked" && tutors ? tutors[0].contactId : null,
+              markedById: type === "Marked" && tutors ? tutors[0].contactId : null,
               markedOn: type === "Marked" ? today : null,
               enrolmentId: Number(elem.enrolmentId),
               studentId: Number(elem.studentId),
@@ -182,7 +182,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
         if (type === "Marked" && elem.markedValue === "Submitted") {
           const updatedSubmissions = row.submissions.map((s, index) => {
             if (submissionIndex === index) {
-              return { ...s, markedOn: null, submittedById: null };
+              return { ...s, markedOn: null, markedById: null };
             }
             return s;
           });
@@ -446,11 +446,11 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                           {" "}
                           {elem.submission && format(new Date(elem.submission.markedOn), III_DD_MMM_YYYY)}
                           <br />
-                          {elem?.submission?.submittedById && tutors && (
+                          {elem?.submission?.markedById && tutors && (
                             <span>
                               Assessor:
                               {" "}
-                              {tutors.find(t => t.contactId === elem.submission.submittedById).tutorName}
+                              {tutors.find(t => t.contactId === elem.submission.markedById).tutorName}
                             </span>
                           )}
                         </span>
