@@ -51,8 +51,8 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
             dtoModel.id = cayenneModel.id
             dtoModel.enrolmentId = cayenneModel.enrolment.id
             dtoModel.assessmentId = cayenneModel.assessmentClass.assessment.id
-            dtoModel.submittedById = cayenneModel.submittedBy?.id
-            dtoModel.tutorName = cayenneModel.submittedBy?.fullName
+            dtoModel.markedById = cayenneModel.markedBy?.id
+            dtoModel.tutorName = cayenneModel.markedBy?.fullName
             dtoModel.submittedOn = cayenneModel.submittedOn
             dtoModel.markedOn = cayenneModel.markedOn
             dtoModel.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
@@ -65,8 +65,8 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
     AssessmentSubmission toCayenneModel(AssessmentSubmissionDTO dto, AssessmentSubmission cayenneModel) {
         cayenneModel.submittedOn = dto.submittedOn
         cayenneModel.markedOn = dto.markedOn
-        if (dto.submittedById) {
-            cayenneModel.submittedBy = contactService.getEntityAndValidateExistence(cayenneModel.context, dto.submittedById)
+        if (dto.markedById) {
+            cayenneModel.markedBy = contactService.getEntityAndValidateExistence(cayenneModel.context, dto.markedById)
         }
 
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, AssessmentSubmissionAttachmentRelation, cayenneModel.context)

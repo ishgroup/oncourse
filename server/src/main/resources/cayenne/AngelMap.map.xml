@@ -101,7 +101,7 @@
 		<db-attribute name="enrolmentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
-		<db-attribute name="submittedById" type="BIGINT"/>
+		<db-attribute name="markedById" type="BIGINT"/>
 		<db-attribute name="submittedOn" type="DATE" isMandatory="true"/>
 		<db-attribute name="markedOn" type="DATE"/>
 		<db-attribute name="willowId" type="BIGINT"/>
@@ -3234,8 +3234,8 @@
 	<db-relationship name="noteRelations" source="AssessmentSubmission" target="NoteRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
-	<db-relationship name="submittedBy" source="AssessmentSubmission" target="Contact">
-		<db-attribute-pair source="submittedById" target="id"/>
+	<db-relationship name="markedBy" source="AssessmentSubmission" target="Contact">
+		<db-attribute-pair source="markedById" target="id"/>
 	</db-relationship>
 	<db-relationship name="markedByTutor" source="Attendance" target="Tutor">
 		<db-attribute-pair source="markedByTutorId" target="id"/>
@@ -3385,7 +3385,7 @@
 		<db-attribute-pair source="createdById" target="id"/>
 	</db-relationship>
 	<db-relationship name="assessmentSubmissions" source="Contact" target="AssessmentSubmission" toMany="true">
-		<db-attribute-pair source="id" target="submittedById"/>
+		<db-attribute-pair source="id" target="markedById"/>
 	</db-relationship>
 	<db-relationship name="attachmentRelations" source="Contact" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
@@ -4709,7 +4709,7 @@
 	<obj-relationship name="attachmentRelations" source="AssessmentSubmission" target="AssessmentSubmissionAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="enrolment" source="AssessmentSubmission" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="noteRelations" source="AssessmentSubmission" target="AssessmentSubmissionNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
-	<obj-relationship name="submittedBy" source="AssessmentSubmission" target="Contact" deleteRule="Nullify" db-relationship-path="submittedBy"/>
+	<obj-relationship name="markedBy" source="AssessmentSubmission" target="Contact" deleteRule="Nullify" db-relationship-path="markedBy"/>
 	<obj-relationship name="attachedAssessmentSubmission" source="AssessmentSubmissionAttachmentRelation" target="AssessmentSubmission" deleteRule="Nullify" db-relationship-path="attachedAssessmentSubmission"/>
 	<obj-relationship name="notedAssessmentSubmission" source="AssessmentSubmissionNoteRelation" target="AssessmentSubmission" deleteRule="Nullify" db-relationship-path="notedAssessmentSubmission"/>
 	<obj-relationship name="taggedAssessment" source="AssessmentTagRelation" target="Assessment" deleteRule="Nullify" db-relationship-path="taggedAssessment"/>
