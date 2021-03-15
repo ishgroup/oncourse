@@ -13,6 +13,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import MuiButton from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 
 const AssessmentSubmissionModal = (
@@ -28,6 +29,12 @@ const AssessmentSubmissionModal = (
 
   const opened = Boolean(modalProps.length);
 
+  const titlePostfix = type === "Marked" ? " and assessor" : "";
+
+  const title = type && (modalProps[2] === "all"
+    ? `All students ${type.toLowerCase()} date${titlePostfix}`
+    : `${modalProps[2]} ${type.toLowerCase()} date${titlePostfix}`);
+
   return (
     <Dialog
       open={opened}
@@ -41,6 +48,7 @@ const AssessmentSubmissionModal = (
       disableRestoreFocus
     >
       <DialogContent>
+        <DialogTitle className="normalHeading p-0 mb-2">{title}</DialogTitle>
         {opened && (
         <Grid container>
           <Grid item xs={6}>

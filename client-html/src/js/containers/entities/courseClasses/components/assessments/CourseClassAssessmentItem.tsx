@@ -200,7 +200,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
         }
         if ((type === "Marked" && elem.markedValue !== "Submitted")
           || (type === "Submitted" && elem.submittedValue !== "Submitted") ) {
-          setModalOpenedBy(`${type}-${pathIndex}`);
+          setModalOpenedBy(`${type}-${pathIndex}-${elem.studentName}`);
         }
       }
     }));
@@ -386,7 +386,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                 <IconButton
                   size="small"
                   className={classes.hiddenIcon}
-                  onClick={() => setModalOpenedBy(`Submitted-${elem.submissionIndex}`)}
+                  onClick={() => setModalOpenedBy(`Submitted-${elem.submissionIndex}-${elem.studentName}`)}
                 >
                   <DateRange color="disabled" fontSize="small" />
                 </IconButton>
@@ -404,7 +404,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                 <IconButton
                   size="small"
                   className={classes.hiddenIcon}
-                  onClick={() => setModalOpenedBy(`Marked-${elem.submissionIndex}`)}
+                  onClick={() => setModalOpenedBy(`Marked-${elem.submissionIndex}-${elem.studentName}`)}
                 >
                   <DateRange color="disabled" fontSize="small" />
                 </IconButton>
