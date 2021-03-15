@@ -639,7 +639,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
             "assessments[].releaseDate",
             "assessments[].submissions[].markedOn",
             "assessments[].submissions[].submittedOn",
-            "assessments[].submissions[].submittedById",
+            "assessments[].submissions[].markedById",
             "notes[].message"
           ],
           asyncChangeFields: [
