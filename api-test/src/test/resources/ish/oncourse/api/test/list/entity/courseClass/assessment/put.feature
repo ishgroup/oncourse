@@ -12,99 +12,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/as
 
 
 
-#    Scenario: (+) Update existing Assessment by admin
-#
-##       <----->  Add a new entity for deleting and get id:
-#        * def newClass = {"id":null,"code":"380","courseId":4,"courseCode":"course4","courseName":null,"endDateTime":null,"startDateTime":null,"attendanceType":"No information","deliveryMode":"Classroom","fundingSource":"Domestic full fee paying student","budgetedPlaces":0,"censusDate":null,"createdOn":null,"modifiedOn":null,"deposit":null,"detBookingId":null,"expectedHours":null,"feeExcludeGST":null,"feeHelpClass":false,"finalDetExport":null,"fullTimeLoad":null,"initialDetExport":null,"isActive":true,"isCancelled":false,"isDistantLearningCourse":false,"isShownOnWeb":false,"maxStudentAge":null,"maximumDays":null,"maximumPlaces":999,"message":null,"midwayDetExport":null,"minStudentAge":null,"minimumPlaces":1,"reportableHours":12,"reportingPeriod":null,"sessionsCount":null,"suppressAvetmissExport":false,"vetCourseSiteID":null,"vetFundingSourceStateID":null,"vetPurchasingContractID":null,"vetPurchasingContractScheduleID":null,"webDescription":null,"relatedFundingSourceId":null,"roomId":null,"taxId":null,"summaryFee":null,"summaryDiscounts":null,"enrolmentsToProfitLeftCount":null,"successAndQueuedEnrolmentsCount":null,"tags":[],"documents":[],"isTraineeship":false}
-#
-#        Given path ishPathClass
-#        And request newClass
-#        When method POST
-#        Then status 200
-#
-#        Given path ishPathList
-#        And param entity = 'CourseClass'
-#        And param columns = 'code'
-#        When method GET
-#        Then status 200
-#
-#        * def classId = get[0] response.rows[?(@.values == ["380"])].id
-#        * print "classId = " + classId
-#
-#        * def newAssessment =
-#            """
-#            {
-#            "id":null,
-#            "assessmentId":1000,
-#            "assessmentCode":"code1",
-#            "assessmentName":"assessment 1",
-#            "contactIds":[],
-#            "moduleIds":[],
-#            "releaseDate":"2019-01-01T00:00:00.000Z",
-#            "dueDate":"2020-02-01T03:10:00.000Z",
-#            "courseClassId":"#(~~classId)"
-#            }
-#            """
-#
-#        Given path ishPath
-#        And request newAssessment
-#        When method POST
-#        Then status 204
-#
-#        Given path ishPath + '/' + classId
-#        When method GET
-#        Then status 200
-#
-#        * def assessmentId = get[0] response[*].id
-#        * print "assessmentId = " + assessmentId
-##       <--->
-#
-#        * def assessmentToUpdate =
-#            """
-#            {
-#            "id":"#(~~assessmentId)",
-#            "assessmentId":1001,
-#            "assessmentCode":"code2",
-#            "assessmentName":"assessment 2",
-#            "contactIds":[],
-#            "moduleIds":[],
-#            "releaseDate":"2025-01-01T00:00:00.000Z",
-#            "dueDate":"2026-02-01T03:10:00.000Z",
-#            "courseClassId":"#(~~classId)"
-#            }
-#            """
-#
-#        Given path ishPath + '/' + assessmentId
-#        And request assessmentToUpdate
-#        When method PUT
-#        Then status 204
-#
-##       <---> Verification:
-#        Given path ishPath + '/' + classId
-#        When method GET
-#        Then status 200
-#        And match $ ==
-#        """
-#            [{
-#            "id":"#(~~assessmentId)",
-#            "assessmentId":1001,
-#            "courseClassId":"#(~~classId)",
-#            "assessmentCode":"code2",
-#            "assessmentName":"assessment 2",
-#            "contactIds":[],
-#            "moduleIds":[],
-#            "releaseDate":"2025-01-01T00:00:00.000Z",
-#            "dueDate":"2026-02-01T03:10:00.000Z"
-#            }]
-#        """
-#
-##       <--->  Scenario have been finished. Now remove created object from DB:
-#        Given path ishPathClass + '/' + classId
-#        When method DELETE
-#        Then status 204
-
-
-
     Scenario: (+) Update existing Assessment by notadmin with access rights
 
 #       <----->  Add a new entity for deleting and get id:
@@ -172,7 +79,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/as
             "contactIds":[],
             "moduleIds":[],
             "releaseDate":"2020-01-31T14:53:00.000Z",
-            "dueDate":"2020-05-01T02:00:00.000Z"
+            "dueDate":"2020-05-01T02:00:00.000Z",
+            "submissions":[]
             }]
         """
 
@@ -263,7 +171,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/as
     Scenario: (-) Update existing Assessment Release date > Due date
 
 #       <----->  Add a new entity for deleting and get id:
-        * def newClass = {"id":null,"code":"380aa","courseId":4,"courseCode":"course4","courseName":null,"endDateTime":null,"startDateTime":null,"attendanceType":"No information","deliveryMode":"Classroom","fundingSource":"Domestic full fee paying student","budgetedPlaces":0,"censusDate":null,"createdOn":null,"modifiedOn":null,"deposit":null,"detBookingId":null,"expectedHours":null,"feeExcludeGST":null,"feeHelpClass":false,"finalDetExport":null,"fullTimeLoad":null,"initialDetExport":null,"isActive":true,"isCancelled":false,"isDistantLearningCourse":false,"isShownOnWeb":false,"maxStudentAge":null,"maximumDays":null,"maximumPlaces":999,"message":null,"midwayDetExport":null,"minStudentAge":null,"minimumPlaces":1,"reportableHours":12,"reportingPeriod":null,"sessionsCount":null,"suppressAvetmissExport":false,"vetCourseSiteID":null,"vetFundingSourceStateID":null,"vetPurchasingContractID":null,"vetPurchasingContractScheduleID":null,"webDescription":null,"relatedFundingSourceId":null,"roomId":null,"taxId":null,"summaryFee":null,"summaryDiscounts":null,"enrolmentsToProfitLeftCount":null,"successAndQueuedEnrolmentsCount":null,"tags":[],"documents":[],"isTraineeship":false}
+        * def newClass = {"id":null,"code":"380aa","courseId":4,"courseCode":"course4","courseName":null,"endDateTime":null,"startDateTime":null,"attendanceType":"No information","deliveryMode":"Classroom","fundingSource":"Domestic full fee paying student","budgetedPlaces":0,"censusDate":null,"createdOn":null,"modifiedOn":null,"deposit":null,"detBookingId":null,"expectedHours":null,"feeExcludeGST":null,"feeHelpClass":false,"finalDetExport":null,"initialDetExport":null,"isActive":true,"isCancelled":false,"isDistantLearningCourse":false,"isShownOnWeb":false,"maxStudentAge":null,"maximumDays":null,"maximumPlaces":999,"message":null,"midwayDetExport":null,"minStudentAge":null,"minimumPlaces":1,"reportableHours":12,"sessionsCount":null,"suppressAvetmissExport":false,"vetCourseSiteID":null,"vetFundingSourceStateID":null,"vetPurchasingContractID":null,"vetPurchasingContractScheduleID":null,"webDescription":null,"relatedFundingSourceId":null,"roomId":null,"taxId":null,"summaryFee":null,"summaryDiscounts":null,"enrolmentsToProfitLeftCount":null,"successAndQueuedEnrolmentsCount":null,"tags":[],"documents":[],"isTraineeship":false}
 
         Given path ishPathClass
         And request newClass

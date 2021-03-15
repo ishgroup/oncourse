@@ -66,7 +66,6 @@ class SampleEntityBuilder {
         c.setMaximumPlaces(18)
         c.setMinimumPlaces(10)
         c.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-        c.setFeeHelpClass(false)
 
         Account accountIncome = SelectById.query(Account.class, 500).selectOne(ctx)
         c.setIncomeAccount(accountIncome)

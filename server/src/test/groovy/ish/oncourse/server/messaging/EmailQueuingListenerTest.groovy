@@ -21,6 +21,8 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
@@ -35,6 +37,7 @@ import org.junit.Test
 class EmailQueuingListenerTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
+    private static final Logger logger = LogManager.getLogger()
 
     @Before
     void setup() throws Exception {
@@ -73,7 +76,7 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
         try {
 			dataPopulation.run()
         } catch (UnsupportedEncodingException e) {
-			e.printStackTrace()
+            logger.catching(e)
         }
 	}
 

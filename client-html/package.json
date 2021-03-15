@@ -6,6 +6,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "build:prod": "webpack -p --env.NODE_ENV production",
+    "build:api-docs": "webpack -p --env.NODE_ENV production --config webpack.api.doc.config.js",
     "test": "jest",
     "start": "webpack-dev-server --history-api-fallback=true --progress --open --config webpack.dev.config.js --env.entry=./src/js/app.tsx",
     "start:prod": "webpack-dev-server --port 8100 --progress -p --env.NODE_ENV production",
@@ -103,6 +104,7 @@
     "axios": "0.21.*",
     "axios-mock-adapter": "1.19.*",
     "clsx": "1.1.*",
+    "core-js": "^3.9.1",
     "date-fns": "2.16.*",
     "date-fns-tz": "1.0.*",
     "decimal.js-light": "2.5.*",
@@ -110,6 +112,7 @@
     "lodash.debounce": "4.0.*",
     "lodash.isempty": "4.4.*",
     "lodash.isequal": "4.5.*",
+    "mobx": "^6.1.8",
     "qrcode.react": "1.0.*",
     "re-resizable": "6.9.*",
     "react": "17.0.*",
@@ -132,11 +135,13 @@
     "react-window": "1.8.*",
     "react-window-infinite-loader": "1.0.*",
     "recharts": "1.8.*",
+    "redoc": "^2.0.0-rc.48",
     "redux": "4.0.*",
     "redux-form": "8.3.*",
     "redux-observable": "1.2.*",
     "rxjs": "6.6.*",
-    "uniqid": "5.2.*"
+    "styled-components": "^5.2.1",
+    "uuid": "^8.3.2"
   },
   "resolutions": {
     "@material-ui/pickers/**/prop-types": "15.6.*",

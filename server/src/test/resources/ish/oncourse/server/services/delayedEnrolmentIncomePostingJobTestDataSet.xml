@@ -19,8 +19,8 @@
 	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<Course id="100"  code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-	<Course id="200"  code="ATT2" willowId="2" name="Test 2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="100"  code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
+	<Course id="200"  code="ATT2" willowId="2" name="Test 2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
 	<Site id="100" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney" isVirtual="0"/>
 
@@ -32,27 +32,27 @@
 				 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="0" isClassFeeApplicationOnly="1"
 				 isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="100"
 				 feeExGst="100.00" suppressAvetmissExport="0" roomId="100"
-				 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+				 budgetedPlaces="10" attendanceType="0"/>
 	<CourseClass id="200" code="124" fundingSource="3" taxAdjustment="0.1" taxId="100" sessionCount="3" minimumPlaces="1"
 				 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="0" isClassFeeApplicationOnly="1"
 				 isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="200"
 				 feeExGst="100.00" suppressAvetmissExport="0" roomId="100"
-				 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+				 budgetedPlaces="10" attendanceType="0"/>
 	<CourseClass id="300" code="125" fundingSource="3" taxAdjustment="0.1" taxId="100" sessionCount="3" minimumPlaces="1"
 				 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="0" isClassFeeApplicationOnly="1"
 				 isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="200"
 				 feeExGst="100.00" suppressAvetmissExport="0" roomId="100"
-				 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+				 budgetedPlaces="10" attendanceType="0"/>
 	<CourseClass id="400" code="126" fundingSource="3" taxAdjustment="0.1" taxId="100" sessionCount="3" minimumPlaces="1"
 				 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="0" isClassFeeApplicationOnly="1"
 				 isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="200"
 				 feeExGst="100.00" suppressAvetmissExport="0" roomId="100"
-				 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+				 budgetedPlaces="10" attendanceType="0"/>
 	<CourseClass id="500" code="127" fundingSource="3" taxAdjustment="0.1" taxId="100" sessionCount="3" minimumPlaces="1"
 				 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
 				 isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="200"
 				 feeExGst="100.00" suppressAvetmissExport="0" roomId="100"
-				 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+				 budgetedPlaces="10" attendanceType="0"/>
 
 	<Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="1abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1" lastName="name" email="test@test.te"/>
 	<Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="2abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name2" lastName="name" email="test2@test.te"/>

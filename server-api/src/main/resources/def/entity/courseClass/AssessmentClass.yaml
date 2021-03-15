@@ -32,3 +32,7 @@ properties:
   dueDate:
     type: string
     format: date-time
+  submissions:
+    type: array
+    items:
+      $ref: "../AssessmentSubmission.yaml"

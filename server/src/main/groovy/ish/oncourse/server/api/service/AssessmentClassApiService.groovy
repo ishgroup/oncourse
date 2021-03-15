@@ -17,6 +17,7 @@ import ish.oncourse.server.api.v1.model.AssessmentClassDTO
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.AssessmentClass
 import ish.oncourse.server.cayenne.AssessmentClassTutor
+import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.CourseClass
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
@@ -27,10 +28,16 @@ class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, Ass
     private AssessmentApiService assessmentService
 
     @Inject
+    private AssessmentSubmissionApiService submissionApiService
+
+    @Inject
     private CourseClassApiService classService
 
     @Inject
     private ContactApiService contactService
+
+    @Inject
+    private EnrolmentApiService enrolmentApiService
 
     @Override
     Class<AssessmentClass> getPersistentClass() {
@@ -48,6 +55,7 @@ class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, Ass
         dto.contactIds = cayenneModel.assessmentClassTutors*.tutor*.contact*.id.flatten() as List<Long>
         dto.releaseDate = LocalDateUtils.dateToTimeValue(cayenneModel.releaseDate)
         dto.dueDate = LocalDateUtils.dateToTimeValue(cayenneModel.dueDate)
+        dto.submissions = cayenneModel.assessmentSubmissions.collect { submissionApiService.toRestMinimizedModel(it) }
         return dto
     }
 
@@ -58,11 +66,25 @@ class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, Ass
         cayenneModel.courseClass = classService.getEntityAndValidateExistence(context, dto.courseClassId)
 
         context.deleteObjects(cayenneModel.assessmentClassTutors.findAll {!(it.tutor.contact.id in dto.contactIds)})
+        context.deleteObjects(cayenneModel.assessmentSubmissions.findAll { !(it.enrolment.id in dto.submissions*.enrolmentId) })
 
-        dto.contactIds.findAll { !(it in cayenneModel.assessmentClassTutors*.tutor.contact.id)}.each { contactId ->
+        dto.contactIds.findAll { !(it in cayenneModel.assessmentClassTutors*.tutor.contact.id) }
+                .each { contactId ->
             AssessmentClassTutor assessmentTutor = context.newObject(AssessmentClassTutor)
             assessmentTutor.assessmentClass = cayenneModel
             assessmentTutor.tutor = contactService.getEntityAndValidateExistence(context, contactId).tutor
+        }
+
+        dto.submissions.each { submissionDto ->
+            if (submissionDto.id) {
+                submissionApiService.update(submissionDto.id, submissionDto)
+            } else {
+                submissionApiService.validateModelBeforeSave(submissionDto,context, null)
+                AssessmentSubmission submission = context.newObject(AssessmentSubmission)
+                submission.enrolment = enrolmentApiService.getEntityAndValidateExistence(context, submissionDto.enrolmentId)
+                submission.assessmentClass = cayenneModel
+                submissionApiService.toCayenneModel(submissionDto, submission)
+            }
         }
 
         cayenneModel.dueDate = LocalDateUtils.timeValueToDate(dto.dueDate)

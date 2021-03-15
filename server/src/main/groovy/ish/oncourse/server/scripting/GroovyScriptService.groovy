@@ -90,6 +90,7 @@ class GroovyScriptService {
     private static final String PREFERENCE_SERVICE = "Preferences"
     private static final String EMAIL_SERVICE = "Email"
     private static final String QUERY_SERVICE = "Query"
+    private static final String EVENT_SERVICE = "eventService"
 
     private static final String RUN_QUERY = "query"
     private static final String SEND_EMAIL = "email"
@@ -203,6 +204,7 @@ class GroovyScriptService {
         bindings.put(PREFERENCE_SERVICE, preferenceService)
         bindings.put(EMAIL_SERVICE, emailService)
         bindings.put(QUERY_SERVICE, queryService)
+        bindings.put(EVENT_SERVICE, eventService)
         bindings.put(RECORDS_PARAM_NAME, [])
         bindings.put(FILE_PARAM_NAME, null)
 

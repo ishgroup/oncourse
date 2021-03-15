@@ -5,7 +5,7 @@ import { Dispatch } from "redux";
 import { setSwipeableDrawerDirtyForm } from "../../common/components/layout/swipeable-sidebar/actions";
 import SideBar from "./components/SecuritySideBar";
 import { Categories } from "../../model/preferences";
-import { getUserRoles, getUsers } from "./actions";
+import { getApiTokens, getUserRoles, getUsers } from "./actions";
 import { getColumnsWidth, getPreferences, updateColumnsWidth } from "../preferences/actions";
 import { State } from "../../reducers/state";
 import { LICENSE_ACCESS_CONTROL_KEY } from "../../constants/Config";
@@ -60,6 +60,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
+    dispatch(getApiTokens());
     dispatch(getUserRoles());
     dispatch(getUsers());
     dispatch(getPreferences(Categories.security));

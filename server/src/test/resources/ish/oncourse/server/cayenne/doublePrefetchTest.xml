@@ -20,7 +20,7 @@
 	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	
-	<Course id="1"  code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="1"  code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 		
 	<Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney" isVirtual="0"/>
 	
@@ -32,7 +32,7 @@
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1"
                  isActive="1" incomeAccountId="1" fundingSource="3" deliveryMode="1" courseId="1"
 				 feeExGst="100.00" suppressAvetmissExport="0" roomId="1"
-                 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+                 budgetedPlaces="10" attendanceType="0"/>
 
 	<CourseSession id="1" startDatetime="2012-01-01 15:00:00" endDatetime="2012-01-01 16:00:00" courseClass_Id="1" payAdjustment="0"  modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
 	

@@ -11,14 +11,10 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.CalculateEndDate
-import ish.common.CalculateStartDate
 import ish.oncourse.API
 import ish.oncourse.cayenne.AssessmentClassInterface
 import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.entity.delegator.OutcomeDelegator
 import ish.oncourse.server.cayenne.glue._AssessmentClass
-import ish.util.LocalDateUtils
 import ish.validation.ValidationFailure
 import org.apache.cayenne.validation.ValidationResult
 
@@ -164,11 +160,11 @@ class AssessmentClass extends _AssessmentClass implements Queueable, AssessmentC
 
         outcomes.findAll{it.startDateOverridden == null || it.startDateOverridden == false}
                 .each { o ->
-                    o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o)).calculate()))
+                    o.setStartDate(o.getActualStartDate())
                 }
         outcomes.findAll{it.endDateOverridden == null || it.endDateOverridden == false}
                 .each {  o ->
-                    o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o)).calculate()))
+                    o.setEndDate(o.getActualEndDate())
                 }
     }
 

@@ -237,7 +237,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
     static void executeQuery(String query, String expectedResult) throws Exception {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService)
 
-        Script script = new Script()
+        Script script = context.newObject(Script.class)
         script.setEnabled(true)
 
         script.setScript("def result = query {\n" +

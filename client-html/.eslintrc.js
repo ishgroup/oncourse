@@ -19,6 +19,7 @@ module.exports = {
         "@typescript-eslint/tslint"
     ],
     "rules": {
+        "jsx-a11y/aria-role": "off",
         "import/no-unresolved": "off",
         "import/extensions": "off",
         "import/prefer-default-export": "off",
@@ -121,6 +122,7 @@ module.exports = {
         "react/destructuring-assignment": "off",
         "react/no-did-update-set-state": "off",
         "react/jsx-props-no-spreading": "off",
+        "react/jsx-boolean-value": "off",
         "semi": "error",
         "space-before-function-paren": "off",
         "space-in-parens": [

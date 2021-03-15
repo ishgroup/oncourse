@@ -22,7 +22,7 @@
     <Course id="1" code="TEST" name="Test Course" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"
             currentlyOffered="1" fieldOfEducation="field1" isVET="1" reportableHours="2.0" webDescription="some text"
             allowWaitingLists="0" isShownOnWeb="1" isSufficientForQualification="1"
-            printedBrochureDescription="Printed Brochure text" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+            printedBrochureDescription="Printed Brochure text" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
     <Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
              modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
@@ -69,40 +69,40 @@
                  isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
                  incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
     <CourseClass id="200" code="124" startDateTime="2013-01-01 00:00:00"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
                  incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
     <CourseClass id="300" code="125" startDateTime="2013-01-01 00:00:00" endDateTime="2017-01-02 00:00:00"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                  isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
                  incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
     <CourseClass id="400" code="126" startDateTime="2013-01-01 00:00:00" endDateTime="[endDate]"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                  isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
     <CourseClass id="500" code="127" startDateTime="2013-01-01 00:00:00" endDateTime="[endDate]"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="0"
                  isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
                  incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
     <CourseClass id="600" code="128" startDateTime="2013-01-01 00:00:00" endDateTime="[endDate]"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                  isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
                  incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
 </dataset>

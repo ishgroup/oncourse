@@ -35,6 +35,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "brochureDescription":"some description",
         "qualificationId":3,
         "isTraineeship":false,
+        "feeHelpClass":false,
         "rules":[{"id":null,"description":"test","repeatEnd":"after","repeat":"day","repeatEndAfter":"3","startDateTime":"2020-02-11T08:00:00.000Z","endDateTime":"2020-02-12T08:00:00.000Z"}]
         }
         """
@@ -57,7 +58,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
         "id":"#number",
@@ -130,7 +131,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "brochureDescription":"some description",
         "qualificationId":3,
         "isTraineeship":true,
-        "currentlyOffered":false
+        "currentlyOffered":false,
+        "feeHelpClass":false
         }
         """
 
@@ -152,7 +154,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
         "id":"#number",
@@ -223,7 +225,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -244,7 +247,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
         "id":##number,
@@ -315,7 +318,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -349,7 +353,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -383,7 +388,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":null,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -417,7 +423,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -452,7 +459,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "modules":[],
         "dataCollectionRuleId":"102",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -487,7 +495,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "modules":[],
         "dataCollectionRuleId":"102",
         "qualificationId":null,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -522,7 +531,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "modules":[],
         "dataCollectionRuleId":"102",
         "qualificationId":3,
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -556,7 +566,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -590,7 +601,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -623,7 +635,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -657,7 +670,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -691,7 +705,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":null
+        "isTraineeship":null,
+        "feeHelpClass":false
         }
         """
 
@@ -725,7 +740,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "modules":[],
         "dataCollectionRuleId":"102",
         "qualificationId":null,
-        "isTraineeship":true
+        "isTraineeship":true,
+        "feeHelpClass":false
         }
         """
 
@@ -759,7 +775,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "relatedSellables":[],
         "modules":[],
         "dataCollectionRuleId":"102",
-        "isTraineeship":false
+        "isTraineeship":false,
+        "feeHelpClass":false
         }
         """
 
@@ -796,7 +813,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "brochureDescription":"some description",
         "qualificationId":3,
         "isTraineeship":true,
-        "currentlyOffered":null
+        "currentlyOffered":null,
+        "feeHelpClass":false
         }
         """
 
@@ -845,7 +863,8 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "brochureDescription":"some description",
         "qualificationId":3,
         "isTraineeship":true,
-        "currentlyOffered":false
+        "currentlyOffered":false,
+        "feeHelpClass":false
         }
         """
 
@@ -867,7 +886,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
         "id":"#number",

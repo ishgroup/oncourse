@@ -32,7 +32,9 @@ import {
   SET_LIST_CREATING_NEW,
   SET_LIST_FULL_SCREEN_EDIT_VIEW,
   SET_LIST_COLUMNS,
-  SET_RECIPIENTS_MESSAGE_DATA, CLEAR_RECIPIENTS_MESSAGE_DATA, SET_LIST_EDIT_RECORD_FETCHING
+  SET_RECIPIENTS_MESSAGE_DATA,
+  CLEAR_RECIPIENTS_MESSAGE_DATA,
+  SET_LIST_EDIT_RECORD_FETCHING
 } from "../actions";
 import { latestActivityStorageHandler } from "../../../utils/storage";
 import { GetRecordsArgs, ListState } from "../../../../model/common/ListView";

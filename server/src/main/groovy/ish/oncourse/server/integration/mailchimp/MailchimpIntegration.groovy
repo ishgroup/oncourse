@@ -47,7 +47,26 @@ class MailchimpIntegration implements PluginTrait {
 		this.membersUrl = "https://${region}.api.mailchimp.com/3.0/lists/$listId/members/"
 	}
 
-	protected subscribeToList(String email, String firstName, String lastName,  boolean optIn) {
+	protected searchClient(String email) {
+		RESTClient httpClient = new RESTClient(membersUrl + DigestUtils.md5Hex(email))
+
+		httpClient.request(Method.GET, ContentType.JSON) {
+			headers.'Authorization' = authHeader
+			response.success = { resp, result ->
+				return result
+			}
+			response.failure = { resp, result ->
+				logger.error("Mailchimp search client failed: ${result.status} - ${result.title}: ${result.detail}. More information at: ${result.type}.")
+			}
+		}
+
+	}
+
+	def subscribeToList(Contact contact, boolean optIn) {
+		subscribeToList(contact.email, [ 'FNAME': contact.firstName, 'LNAME': contact.lastName ], optIn)
+	}
+
+	protected subscribeToList(String email, Map mergeFields,  boolean optIn) {
 		RESTClient httpClient = new RESTClient(membersUrl)
 
 		httpClient.request(Method.POST, ContentType.JSON) {
@@ -55,10 +74,7 @@ class MailchimpIntegration implements PluginTrait {
 			body = [
 					status: optIn? 'pending' : 'subscribed',
 					email_address: email,
-					merge_fields: [
-							FNAME: firstName,
-							LNAME: lastName
-					],
+					merge_fields: mergeFields.size() > 0 ? mergeFields : null,
 			]
 
 			response.success = { resp, result ->
@@ -71,8 +87,26 @@ class MailchimpIntegration implements PluginTrait {
 
 	}
 
-	def subscribeToList(Contact contact, boolean optIn) {
-		subscribeToList(contact.email, contact.firstName, contact.lastName, optIn)
+
+	protected updateClient(String email, Map mergeFields = [:]) {
+		RESTClient httpClient = new RESTClient(membersUrl + DigestUtils.md5Hex(email))
+
+		httpClient.request(Method.PATCH, ContentType.JSON) {
+			headers.'Authorization' = authHeader
+			body = [
+					status: 'subscribed',
+					email_address: email,
+					merge_fields: mergeFields.size() > 0 ? mergeFields : null,
+			]
+
+			response.success = { resp, result ->
+				return result
+			}
+			response.failure = { resp, result ->
+				logger.error("Mailchimp update client failed: ${result.status} - ${result.title}: ${result.detail}. More information at: ${result.type}.")
+			}
+		}
+
 	}
 
 	def unsubscribeFromList(String email) {

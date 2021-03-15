@@ -40,8 +40,7 @@ sourceSets {
 	}
 	test {
 		groovy {
-			srcDirs += 'src/main/java'
-			srcDirs += 'src/main/groovy'
+			srcDirs += 'src/test/groovy'
 		}
 
 	}
@@ -259,16 +258,6 @@ task installer_unix(dependsOn: [jar, assembleDist], type: Zip) {
 	destinationDirectory = file("${buildDir}/distributions/unix")
 }
 
-// API swagger ocumentation
-task generateApiDoc (type: SwaggerDoc) {
-	schema = file("${rootDir}/server-api/src/main/resources/server-api.yaml")
-	docOutput = file("${buildDir}/doc")
-}
-task packageApiDoc (type: Zip, dependsOn: generateApiDoc) {
-	from file("${buildDir}/doc/docs")
-	archiveClassifier = 'documentation'
-}
-
 // DSL asciidoc documentation
 dslDocs {
 	source = sourceSets.main.groovy.plus(project(':types').sourceSets.main.groovy).plus(project(':server-api').sourceSets.main.groovy)
@@ -294,11 +283,6 @@ publishing {
 		dsldocs(MavenPublication) {
 			artifact (packageDslDoc) {
 				artifactId "dsldocs"
-			}
-		}
-		docs(MavenPublication) {
-			artifact(packageApiDoc) {
-				artifactId "docs"
 			}
 		}
 		jar(MavenPublication) {

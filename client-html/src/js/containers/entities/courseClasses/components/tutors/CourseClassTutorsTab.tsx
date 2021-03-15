@@ -13,7 +13,7 @@ import {
 } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import { ClassCost, CourseClassTutor, DefinedTutorRole } from "@api/model";
-import uniqid from "uniqid";
+
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { ClassCostExtended, CourseClassExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { State } from "../../../../../reducers/state";
@@ -29,6 +29,7 @@ import { getTutorNameWarning, getTutorPayInitial, isTutorWageExist } from "./uti
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
 import { setCourseClassBudgetModalOpened } from "../../actions";
 import history from "../../../../../constants/History";
+import uniqid from "../../../../../common/utils/uniqid";
 
 export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {
   values?: CourseClassExtended;

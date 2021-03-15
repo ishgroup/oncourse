@@ -13,12 +13,14 @@ package ish.oncourse.server.modules
 
 import com.google.inject.Binder
 import com.google.inject.Module
+import ish.oncourse.server.api.v1.AssessmentSubmissionApiImpl
 import ish.oncourse.server.api.v1.service.AccessApi
 import ish.oncourse.server.api.v1.service.AccountApi
 import ish.oncourse.server.api.v1.service.ApplicationApi
 import ish.oncourse.server.api.v1.service.ArticleProductApi
 import ish.oncourse.server.api.v1.service.AssessmentApi
 import ish.oncourse.server.api.v1.service.AssessmentClassApi
+import ish.oncourse.server.api.v1.service.AssessmentSubmissionApi
 import ish.oncourse.server.api.v1.service.AttendanceApi
 import ish.oncourse.server.api.v1.service.AuditApi
 import ish.oncourse.server.api.v1.service.AuthenticationApi
@@ -81,6 +83,7 @@ import ish.oncourse.server.api.v1.service.SurveyApi
 import ish.oncourse.server.api.v1.service.TagApi
 import ish.oncourse.server.api.v1.service.TaxApi
 import ish.oncourse.server.api.v1.service.TimetableApi
+import ish.oncourse.server.api.v1.service.TokenApi
 import ish.oncourse.server.api.v1.service.TransactionApi
 import ish.oncourse.server.api.v1.service.TutorAttendanceApi
 import ish.oncourse.server.api.v1.service.TutorRoleApi
@@ -91,6 +94,7 @@ import ish.oncourse.server.api.v1.service.VoucherProductApi
 import ish.oncourse.server.api.v1.service.WaitingListApi
 import ish.oncourse.server.api.v1.service.impl.AccessApiImpl
 import ish.oncourse.server.api.v1.service.impl.AccountApiImpl
+import ish.oncourse.server.api.v1.service.impl.ApiTokenApiImpl
 import ish.oncourse.server.api.v1.service.impl.ApplicationApiImpl
 import ish.oncourse.server.api.v1.service.impl.ArticleProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.AssessmentApiImpl
@@ -165,6 +169,7 @@ import ish.oncourse.server.api.v1.service.impl.UserPreferenceApiImpl
 import ish.oncourse.server.api.v1.service.impl.UserRoleApiImpl
 import ish.oncourse.server.api.v1.service.impl.VoucherProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.WaitingListApiImpl
+import ish.oncourse.server.cayenne.AssessmentSubmission
 
 class ApiImplementationModule implements Module {
 
@@ -176,6 +181,7 @@ class ApiImplementationModule implements Module {
         binder.bind(ApplicationApi).to(ApplicationApiImpl)
         binder.bind(ArticleProductApi).to(ArticleProductApiImpl)
         binder.bind(AssessmentApi).to(AssessmentApiImpl)
+        binder.bind(AssessmentSubmissionApi).to(AssessmentSubmissionApiImpl)
         binder.bind(AuditApi).to(AuditApiImpl)
         binder.bind(AuthenticationApi).to(AuthenticationApiImpl)
         binder.bind(AvetmissExportApi).to(AvetmissExportApiImpl)
@@ -266,5 +272,6 @@ class ApiImplementationModule implements Module {
         binder.bind(SessionApi).to(SessionApiImpl)
         binder.bind(CheckoutApi).to(CheckoutApiImpl)
         binder.bind(EntityRelationTypeApi).to(EntityRelationTypeApiImpl)
+        binder.bind(TokenApi).to(ApiTokenApiImpl)
     }
 }

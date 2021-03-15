@@ -15,14 +15,16 @@ const request: EpicUtils.Request<any, any, number> = {
   hideLoadIndicator: true,
   getData: id => EntityService.getPlainRecords(
       "Enrolment",
-      "createdOn,status",
+      "createdOn,status,student.contact.fullName,student.contact.id",
       `courseClass.id is ${id} and ( status is IN_TRANSACTION or status is QUEUED or status is SUCCESS ) `
     ),
   processData: (response: DataResponse) => {
     const enrolments = response.rows.map(({ id, values }) => ({
       id,
       createdOn: values[0],
-      status: values[1] as Enrolment["status"]
+      status: values[1] as Enrolment["status"],
+      student: values[2],
+      contactId: values[3],
     }));
 
     enrolments.sort((a, b) => (a.createdOn > b.createdOn ? 1 : -1));

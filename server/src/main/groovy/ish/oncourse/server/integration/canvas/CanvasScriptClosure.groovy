@@ -74,6 +74,12 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
             Map userResp = integration.getUserByEmail(enrolment.student.contact.email) as Map
             List userJson = integration.responseToJson(userResp) as List
 
+            List course = integration.getCourse(course_code) as List
+
+            if (course.size() == 0) {
+                throw new IllegalArgumentException("There are no courses with specified code ${course_code}")
+            }
+
             def student
             if (userJson.size() == 0) {
 
@@ -87,8 +93,6 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                 // will return a list of one students, take the first item in the list
                 student = userJson.first()
             }
-
-            def course = integration.getCourse(course_code)
 
             def section = integration.getSection(section_code, course["id"])
 
@@ -105,6 +109,4 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
         }
         return null
     }
-
-
 }

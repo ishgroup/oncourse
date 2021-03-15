@@ -16,6 +16,7 @@ export const ENTITIES = stringLiterals(
   "Article",
   "ArticleProduct",
   "Assessment",
+  "AssessmentSubmission",
   "Audit",
   "Banking",
   "Certificate",

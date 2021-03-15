@@ -21,7 +21,7 @@ properties:
   copyCosts:
     type: boolean
   classCost:
-    $ref: 'ClassCost.yaml'
+    $ref: './ClassCost.yaml'
   copySitesAndRooms:
     type: boolean
   copyPayableTimeForSessions:

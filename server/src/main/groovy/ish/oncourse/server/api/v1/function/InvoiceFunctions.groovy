@@ -36,8 +36,8 @@ class InvoiceFunctions {
             invoiceLine.unit = cayenneModel.unit
             invoiceLine.incomeAccountId = cayenneModel.account.id
             invoiceLine.incomeAccountName = cayenneModel.account.with { "$it.description $it.accountCode"}
-            invoiceLine.cosAccountId = cayenneModel.cosAccount?.id
-            invoiceLine.cosAccountName = cayenneModel.cosAccount?.with { "$it.description $it.accountCode" }
+            invoiceLine.discountId = cayenneModel.discounts[0]?.id
+            invoiceLine.discountName = cayenneModel.discounts[0]?.name
             invoiceLine.priceEachExTax = cayenneModel.priceEachExTax?.toBigDecimal()
             invoiceLine.discountEachExTax = cayenneModel.discountEachExTax?.toBigDecimal()
             invoiceLine.taxEach = cayenneModel.taxEach?.toBigDecimal()

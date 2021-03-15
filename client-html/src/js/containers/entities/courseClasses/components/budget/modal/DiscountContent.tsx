@@ -17,12 +17,7 @@ import FormField from "../../../../../../common/components/form/form-fields/Form
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
 import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
-import {
-  decimalDivide,
-  decimalMinus,
-  decimalMul,
-  decimalPlus
-} from "../../../../../../common/utils/numbers/decimalCalculation";
+import { decimalMul } from "../../../../../../common/utils/numbers/decimalCalculation";
 import {
   formatCurrency,
   normalizeNumberToZero,
@@ -31,8 +26,7 @@ import {
   preventNegativeOrLogEnter
 } from "../../../../../../common/utils/numbers/numbersNormalizing";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
-import { getRoundingByType } from "../../../../discounts/utils";
-import { getDiscountAmountExTax } from "../utils";
+import { getDiscountAmountExTax, getRoundingByType } from "../../../../discounts/utils";
 
 interface Props extends BudgetCostModalContentProps {
   classFee: number;

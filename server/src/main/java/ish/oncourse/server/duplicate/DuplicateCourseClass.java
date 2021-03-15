@@ -93,7 +93,6 @@ public class DuplicateCourseClass {
         }
 
         newClass.setAttendanceType(oldClass.getAttendanceType());
-        newClass.setFeeHelpClass(oldClass.getFeeHelpClass());
         newClass.setIsCancelled(Boolean.FALSE);
         var isDistantLearning = oldClass.getIsDistantLearningCourse();
         newClass.setIsDistantLearningCourse(isDistantLearning);
@@ -304,11 +303,8 @@ public class DuplicateCourseClass {
             newClass.setVetCourseSiteID(oldClass.getVetCourseSiteID());
             newClass.setVetPurchasingContractID(oldClass.getVetPurchasingContractID());
             newClass.setVetPurchasingContractScheduleID(oldClass.getVetPurchasingContractScheduleID());
-            newClass.setFeeHelpClass(oldClass.getFeeHelpClass());
             newClass.setAttendanceType(oldClass.getAttendanceType());
             newClass.setCensusDate(oldClass.getCensusDate());
-            newClass.setReportingPeriod(oldClass.getReportingPeriod());
-            newClass.setFullTimeLoad(oldClass.getFullTimeLoad());
             newClass.setRelatedFundingSource(oldClass.getRelatedFundingSource());
         }
 

@@ -33,7 +33,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course/duplic
         Given path ishPathCourse + '/' + id1
         When method GET
         Then status 200
-        And match $ == 
+        And match $ contains
         """
         {
         "id":"#(~~id1)",
@@ -77,7 +77,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course/duplic
         Given path ishPathCourse + '/' + id2
         When method GET
         Then status 200
-        And match $ == {"id":"#(~~id2)","createdOn":"#ignore","modifiedOn":"#ignore","name":"Course2","code":"course6","tags":[],"enrolmentType":"Open enrolment","allowWaitingLists":true,"dataCollectionRuleId":102,"dataCollectionRuleName":"Accredited course","status":"Enabled","brochureDescription":null,"currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0,"studentWaitingListCount":0,"hasEnrolments":false,"webDescription":null,"documents":[],"relatedSellables":[],"qualificationId":null,"qualNationalCode":null,"qualTitle":null,"qualLevel":null,"isSufficientForQualification":false,"isVET":false,"fieldOfEducation":null,"reportableHours":0.0,"modules":[],"customFields":{},"rules":[],"isTraineeship":false,"currentlyOffered":true}
+        And match $ contains {"id":"#(~~id2)","createdOn":"#ignore","modifiedOn":"#ignore","name":"Course2","code":"course6","tags":[],"enrolmentType":"Open enrolment","allowWaitingLists":true,"dataCollectionRuleId":102,"dataCollectionRuleName":"Accredited course","status":"Enabled","brochureDescription":null,"currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0,"studentWaitingListCount":0,"hasEnrolments":false,"webDescription":null,"documents":[],"relatedSellables":[],"qualificationId":null,"qualNationalCode":null,"qualTitle":null,"qualLevel":null,"isSufficientForQualification":false,"isVET":false,"fieldOfEducation":null,"reportableHours":0.0,"modules":[],"customFields":{},"rules":[],"isTraineeship":false,"currentlyOffered":true}
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
         Given path ishPathCourse + '/' + id1
@@ -124,12 +124,12 @@ Feature: Main feature for all POST requests with path 'list/entity/course/duplic
         Given path ishPathCourse + '/' + id1
         When method GET
         Then status 200
-        And match $ == {"id":"#(~~id1)","createdOn":"#ignore","modifiedOn":"#ignore","name":"Course1","code":"course5","tags":[],"enrolmentType":"Open enrolment","allowWaitingLists":true,"dataCollectionRuleId":102,"dataCollectionRuleName":"Accredited course","status":"Enabled","brochureDescription":null,"currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0,"studentWaitingListCount":0,"hasEnrolments":false,"webDescription":null,"documents":[],"relatedSellables":[],"qualificationId":1,"qualNationalCode":"UEE30807","qualTitle":"Electrotechnology Electrician","qualLevel":"Certificate III in","isSufficientForQualification":false,"isVET":true,"fieldOfEducation":"0313","reportableHours":0.0,"modules":[],"customFields":{},"rules":[],"isTraineeship":false,"currentlyOffered":true}
+        And match $ contains {"id":"#(~~id1)","createdOn":"#ignore","modifiedOn":"#ignore","name":"Course1","code":"course5","tags":[],"enrolmentType":"Open enrolment","allowWaitingLists":true,"dataCollectionRuleId":102,"dataCollectionRuleName":"Accredited course","status":"Enabled","brochureDescription":null,"currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0,"studentWaitingListCount":0,"hasEnrolments":false,"webDescription":null,"documents":[],"relatedSellables":[],"qualificationId":1,"qualNationalCode":"UEE30807","qualTitle":"Electrotechnology Electrician","qualLevel":"Certificate III in","isSufficientForQualification":false,"isVET":true,"fieldOfEducation":"0313","reportableHours":0.0,"modules":[],"customFields":{},"rules":[],"isTraineeship":false,"currentlyOffered":true}
 
         Given path ishPathCourse + '/' + id2
         When method GET
         Then status 200
-        And match $ == {"id":"#(~~id2)","createdOn":"#ignore","modifiedOn":"#ignore","name":"Course2","code":"course6","tags":[],"enrolmentType":"Open enrolment","allowWaitingLists":true,"dataCollectionRuleId":102,"dataCollectionRuleName":"Accredited course","status":"Enabled","brochureDescription":null,"currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0,"studentWaitingListCount":0,"hasEnrolments":false,"webDescription":null,"documents":[],"relatedSellables":[],"qualificationId":null,"qualNationalCode":null,"qualTitle":null,"qualLevel":null,"isSufficientForQualification":false,"isVET":false,"fieldOfEducation":null,"reportableHours":0.0,"modules":[],"customFields":{},"rules":[],"isTraineeship":false,"currentlyOffered":true}
+        And match $ contains {"id":"#(~~id2)","createdOn":"#ignore","modifiedOn":"#ignore","name":"Course2","code":"course6","tags":[],"enrolmentType":"Open enrolment","allowWaitingLists":true,"dataCollectionRuleId":102,"dataCollectionRuleName":"Accredited course","status":"Enabled","brochureDescription":null,"currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0,"studentWaitingListCount":0,"hasEnrolments":false,"webDescription":null,"documents":[],"relatedSellables":[],"qualificationId":null,"qualNationalCode":null,"qualTitle":null,"qualLevel":null,"isSufficientForQualification":false,"isVET":false,"fieldOfEducation":null,"reportableHours":0.0,"modules":[],"customFields":{},"rules":[],"isTraineeship":false,"currentlyOffered":true}
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
         Given path ishPathCourse + '/' + id1

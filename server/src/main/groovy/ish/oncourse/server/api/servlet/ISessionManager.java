@@ -31,8 +31,5 @@ public interface ISessionManager {
     void logout(HttpServletRequest request);
 
     void doKickOut(SystemUser user);
-
-    void setSessionAttribute(String key, Serializable value);
-
-    Serializable getSessionAttribute(String key);
+    
 }

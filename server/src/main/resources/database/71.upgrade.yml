@@ -1,0 +1,158 @@
+databaseChangeLog:
+  - changeSet:
+      id: 71-1
+      author: artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: Course
+              columnName: feeHelpClass
+      changes:
+        - addColumn:
+            tableName: Course
+            columns:
+              - column:
+                  name: feeHelpClass
+                  type: SMALLINT
+                  value: 0
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: Course
+            columns:              
+              - column:
+                  name: fullTimeLoad
+                  type: VARCHAR(10)
+
+  - changeSet:
+      id: 71-2
+      author: artyom
+      changes:
+        - sql:
+            comment:  take any positiv value from any class from a course
+            sql:  update Course c join CourseClass cc on cc.courseId =c.id and cc.feeHelpClass=1
+                  set c.feeHelpclass = cc.feeHelpClass, c.fullTimeLoad =cc.fullTimeLoad
+                  where cc.feeHelpClass is not null or cc.fullTimeLoad is not null;
+
+  - changeSet:
+      id: 71-3
+      author: artyom
+      changes:
+        - dropColumn:
+            tableName: CourseClass
+            columnName: feeHelpClass
+        - dropColumn:
+            tableName: CourseClass
+            columnName: fullTimeLoad
+            
+  - changeSet:
+      id: 71-4
+      author: artyom
+      changes:
+        - dropColumn:
+            tableName: CourseClass
+            columnName: reportingPeriod
+            
+  - changeSet:
+      id: 71-5
+      author: artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: ApiToken
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: createdOn
+                  type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(100)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: secret
+                  type: VARCHAR(100)
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: lastAccess
+                  type: datetime
+              - column:
+                  name: userId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: FK_ApiToken_SystemUser
+                    references: SystemUser(id)
+            tableName: ApiToken
+  - changeSet:
+      id: 71-6
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - and:
+          - tableExists:
+              tableName: AssessmentSubmission
+          - columnExists:
+              tableName: AssessmentSubmission
+              columnName: tutorComments
+          - columnExists:
+              tableName: AssessmentSubmission
+              columnName: studentComments
+      changes:
+        - dropColumn:
+            columns:
+              - column:
+                  name: tutorComments
+              - column:
+                  name: studentComments
+            tableName: AssessmentSubmission
+  - changeSet:
+      id: 71-7
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - and:
+          - tableExists:
+              tableName: AssessmentSubmission
+          - not:
+            - columnExists:
+                tableName: AssessmentSubmission
+                columnName: submittedOn
+            - columnExists:
+                tableName: AssessmentSubmission
+                columnName: markedOn
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: submittedOn
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: markedOn
+                  type: DATE
+            tableName: AssessmentSubmission
+
+
+

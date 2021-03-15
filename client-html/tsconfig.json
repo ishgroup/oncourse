@@ -36,6 +36,7 @@
   "compileOnSave": false,
   "exclude": [
     "./node_modules*",
-    "./build/resources*"
+    "./build/resources*",
+    "./src/api-docs*"
   ]
 }

@@ -15,9 +15,11 @@ import com.google.inject.Binder
 import com.google.inject.Module
 import com.google.inject.Scopes
 import ish.oncourse.server.api.dao.AccountDao
+import ish.oncourse.server.api.dao.ApiTokenDao
 import ish.oncourse.server.api.dao.ApplicationDao
 import ish.oncourse.server.api.dao.ArticleProductDao
 import ish.oncourse.server.api.dao.AssessmentDao
+import ish.oncourse.server.api.dao.AssessmentSubmissionDao
 import ish.oncourse.server.api.dao.CertificateDao
 import ish.oncourse.server.api.dao.CertificateOutcomeDao
 import ish.oncourse.server.api.dao.ClassCostDao
@@ -74,6 +76,7 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(ApplicationDao).in(Scopes.SINGLETON)
         binder.bind(ArticleProductDao).in(Scopes.SINGLETON)
         binder.bind(AssessmentDao).in(Scopes.SINGLETON)
+        binder.bind(AssessmentSubmissionDao).in(Scopes.SINGLETON)
 
 
         binder.bind(CertificateDao).in(Scopes.SINGLETON)
@@ -136,6 +139,7 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(UnavailableRuleDao).in(Scopes.SINGLETON)
         binder.bind(UserDao).in(Scopes.SINGLETON)
         binder.bind(WaitingListDao).in(Scopes.SINGLETON)
+        binder.bind(ApiTokenDao).in(Scopes.SINGLETON)
 
     }
 }

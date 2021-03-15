@@ -23,4 +23,6 @@ public interface AssessmentClassInterface {
 	CourseClassInterface getCourseClass();
 
 	List<? extends AssessmentClassModuleInterface> getAssessmentClassModules();
+
+	List<? extends AssessmentSubmissionInterface> getAssessmentSubmissions();
 }

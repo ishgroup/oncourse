@@ -787,7 +787,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   <Button className={classes.closeButton} onClick={this.onClose} variant="text">
                     Close
                   </Button>
-                  {navigator.userAgent.indexOf("Firefox") <= 0 && templateSelected
+                  {templateSelected
                   && ["Excel", "Text", "XML"].includes(exportTemplateTypesArr[selectedPrimary - 1])
                   && (
                     <Button

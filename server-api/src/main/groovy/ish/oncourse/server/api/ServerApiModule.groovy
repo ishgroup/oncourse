@@ -26,6 +26,7 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(ApplicationApi)
         CXFModule.contributeResources(binder).addBinding().to(ArticleProductApi)
         CXFModule.contributeResources(binder).addBinding().to(AssessmentApi)
+        CXFModule.contributeResources(binder).addBinding().to(AssessmentSubmissionApi)
         CXFModule.contributeResources(binder).addBinding().to(AuditApi)
         CXFModule.contributeResources(binder).addBinding().to(AuthenticationApi)
         CXFModule.contributeResources(binder).addBinding().to(AvetmissExportApi)
@@ -115,6 +116,7 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(SessionApi)
         CXFModule.contributeResources(binder).addBinding().to(CheckoutApi)
         CXFModule.contributeResources(binder).addBinding().to(EntityRelationTypeApi)
+        CXFModule.contributeResources(binder).addBinding().to(TokenApi)
 
         //------
         CXFModule.contributeFeatures(binder).addBinding().to(JAXRSBeanValidationFeature)

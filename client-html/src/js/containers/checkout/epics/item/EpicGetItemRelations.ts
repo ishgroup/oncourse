@@ -3,7 +3,7 @@ import {
   flatMap, catchError, mergeMap
 } from "rxjs/operators";
 import { CheckoutSaleRelation } from "@api/model";
-import uniqid from "uniqid";
+
 import { closestIndexTo } from "date-fns";
 import { concat, from } from "rxjs";
 import {
@@ -28,7 +28,7 @@ import {
 } from "../../constants";
 import { checkoutUpdateSummaryClassesDiscounts } from "../../actions/checkoutSummary";
 import { FETCH_FINISH, FETCH_START } from "../../../../common/actions";
-
+import uniqid from "../../../../common/utils/uniqid";
 
 const assignTypeProps = r => {
   r.toItem.cartItem.cartAction = r.cartAction;
@@ -37,7 +37,7 @@ const assignTypeProps = r => {
   r.toItem.cartItem.relationDiscount = r.discount;
   r.toItem.cartItem.checked = true;
   r.toItem.type = r.toItem.cartItem.fromItemRelation.type;
-}
+};
 
 export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObservable<any>, state$): any => action$
 .ofType(

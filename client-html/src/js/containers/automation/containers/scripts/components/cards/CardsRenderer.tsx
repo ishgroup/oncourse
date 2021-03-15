@@ -5,6 +5,8 @@
 
 import * as React from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Grid from "@material-ui/core/Grid";
+import { FormControlLabel } from "@material-ui/core";
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
 import { ScriptComponent } from "../../../../../../model/scripts";
 import ScriptCard from "./CardBase";
@@ -12,9 +14,7 @@ import EmailCardContent from "./EmailCardContent";
 import QueryCardContent from "./QueryCardContent";
 import MessageCardContent from "./MessageCardContent";
 import ReportCardContent from "./ReportCardContent";
-import Grid from "@material-ui/core/Grid";
 import { getType } from "../../utils";
-import { FormControlLabel } from "@material-ui/core";
 
 const onDragEnd = ({ destination, source, fields }) => {
   if (destination && destination.index !== source.index) {
@@ -53,19 +53,19 @@ const CardsRenderer = props => {
     }, "Script component will be deleted permanently");
   };
 
-  const renderVariables = (variables, name) => {
-    return (<>
+  const renderVariables = (variables, name) => (
+    <>
       {variables.map(elem => (
         elem.type === "Checkbox" ? (
           <Grid key={getType(elem.type) + elem.label} item xs={12}>
             <FormControlLabel
-              control={
+              control={(
                 <FormField
                   type={elem.type.toLowerCase()}
                   name={`${name}.${elem.name}`}
                   label={elem.label}
                 />
-              }
+              )}
               label={elem.label}
             />
           </Grid>
@@ -80,8 +80,8 @@ const CardsRenderer = props => {
           </Grid>
         )
       ))}
-    </>)
-  }
+    </>
+);
 
   return (
     <DragDropContext onDragEnd={args => onDragEnd({ ...args, fields })}>

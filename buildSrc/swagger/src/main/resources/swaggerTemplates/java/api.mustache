@@ -18,7 +18,7 @@ public interface {{classname}}  {
 {{#operations}}
 {{#operation}}
     @{{httpMethod}}
-    {{#subresourceOperation}}@Path("/{{version}}{{path}}{{#pathParams}}/{{=<% %>=}}{<%baseName%>}<%={{ }}=%>{{/pathParams}}"){{/subresourceOperation}}
+    {{#subresourceOperation}}@Path("/v1{{path}}{{#pathParams}}/{{=<% %>=}}{<%baseName%>}<%={{ }}=%>{{/pathParams}}"){{/subresourceOperation}}
 {{#hasConsumes}}
     @Consumes({ {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} })
 {{/hasConsumes}}

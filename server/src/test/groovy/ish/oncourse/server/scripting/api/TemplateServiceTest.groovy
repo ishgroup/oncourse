@@ -16,9 +16,10 @@ class TemplateServiceTest extends CayenneIshTestCase {
 
 	@Test
 	void testRenderTemplate() throws Exception {
+		ObjectContext context = injector.getInstance(ICayenneService.class).getNewContext()
 		TemplateService templateService = injector.getInstance(TemplateService.class)
 
-		EmailTemplate template = new EmailTemplate()
+		EmailTemplate template = context.newObject(EmailTemplate.class)
 		template.setName("test")
 		template.setKeyCode("test.plainTemplate")
 		template.setBodyPlain('Hello ${contact.firstName} ${contact.lastName}!')

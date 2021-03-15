@@ -87,7 +87,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
       expanded={index === expandedIndex}
       onChange={onChange}
       buttonsContent={(
-        <div className="centeredFlex zIndex1">
+        <div className="centeredFlex zIndex1 text-nowrap">
           <Button color="primary" onClick={onWageClick} disabled={(!tutor.roleId && tutor.roleId !== 0) || !tutor.contactId}>
             {hasWage ? "Edit pay" : "Add pay"}
           </Button>

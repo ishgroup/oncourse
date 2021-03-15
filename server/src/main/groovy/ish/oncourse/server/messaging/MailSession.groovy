@@ -28,6 +28,7 @@ class MailSession {
 
     //mail SMTP keys
     private static final String SMTP_HOST = 'mail.smtp.host'
+    private static final String SMTP_DEFAULT_USER_NAME = 'user.name'
     private static final String SMTP_CONNECTION_TIMEOUT = 'mail.smtp.connectiontimeout'
     private static final String SMTP_IO_TIMEOUT = 'mail.smtp.timeout'
     private static final String SMTP_AUTH = 'mail.smtp.auth'
@@ -35,6 +36,7 @@ class MailSession {
     private static final String SMTP_PORT = 'mail.smtp.port'
 
     //mail SMTP values
+    private static final String SMTP_DEFAULT_USER_NAME_VALUE = "noreply"
     private static final int SMTP_CONNECTION_TIMEOUT_VALUE = 300000
     private static final int SMTP_IO_TIMEOUT_VALUE = 300000
 
@@ -47,6 +49,7 @@ class MailSession {
 
     Session getSession() {
         Properties properties = new Properties()
+        properties.put(SMTP_DEFAULT_USER_NAME, SMTP_DEFAULT_USER_NAME_VALUE)
         properties.put(SMTP_CONNECTION_TIMEOUT, SMTP_CONNECTION_TIMEOUT_VALUE)
         properties.put(SMTP_IO_TIMEOUT, SMTP_IO_TIMEOUT_VALUE)
         properties.put(SMTP_HOST, smtpService.host)

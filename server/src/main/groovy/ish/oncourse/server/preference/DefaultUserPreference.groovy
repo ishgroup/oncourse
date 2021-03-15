@@ -22,6 +22,7 @@ import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.Application
 import ish.oncourse.server.cayenne.ArticleProduct
 import ish.oncourse.server.cayenne.Assessment
+import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Banking
 import ish.oncourse.server.cayenne.Certificate
@@ -610,6 +611,8 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'UOC name', attribute: Outcome.MODULE.dot(Module.TITLE).name, sortable: true, width: W200, visible: true,
                         sortFields: [Outcome.MODULE.outer().dot(Module.TITLE).name] ),
                 new ColumnDTO(title: 'Status', attribute: Outcome.STATUS.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Training plan start date', attribute: Outcome.TRAINING_PLAN_START_DATE_PROPERTY, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Training plan end date', attribute: Outcome.TRAINING_PLAN_END_DATE_PROPERTY, sortable: true, width: W200, visible: true,  type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Start date', attribute: Outcome.START_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'End date', attribute: Outcome.END_DATE.name, sortable: true, width: W200, visible: true,  type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Delivery mode', attribute: Outcome.DELIVERY_MODE.name, sortable: true, width: W200, visible: true)
@@ -630,6 +633,22 @@ class DefaultUserPreference {
         ]
         it.sortings = [
                 new SortingDTO(attribute: Assessment.CODE.name, ascending: true)
+        ]
+        it.layout = LayoutTypeDTO.THREE_COLUMN
+        it.filterColumnWidth = W200
+        it
+    }
+
+    private static final ASSESSMENT_SUBMISSION_MODEL = new TableModelDTO().with() {
+        it.columns = [
+                new ColumnDTO(title: 'Student Name', attribute: AssessmentSubmission.STUDENT_NAME_PROPERTY, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Course Class Name', attribute: AssessmentSubmission.CLASS_NAME_PROPERTY, sortable: true, width: W300, visible: true),
+                new ColumnDTO(title: 'Assessment Name', attribute: AssessmentSubmission.ASSESSMENT_NAME_PROPERTY, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Submitted On Date', attribute: AssessmentSubmission.SUBMITTED_ON.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Marked On Date', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true),
+        ]
+        it.sortings = [
+                new SortingDTO(attribute: AssessmentSubmission.ENROLMENT.dot(Enrolment.ID).name, ascending: true)
         ]
         it.layout = LayoutTypeDTO.THREE_COLUMN
         it.filterColumnWidth = W200
@@ -781,39 +800,40 @@ class DefaultUserPreference {
 
     // must be below model initializations
     public static final Map<String, TableModelDTO> DEFAULT_MODEL_MAP = [
-            (Account.ENTITY_NAME)           : ACCOUNT_MODEL,
-            (AccountTransaction.ENTITY_NAME): TRANSACTION_MODEL,
-            (Audit.ENTITY_NAME)         : AUDIT_MODEL,
-            (Banking.ENTITY_NAME)       : BANKING_MODEL,
-            (CorporatePass.ENTITY_NAME)    : CORPORATE_PASS_MODEL,
-            (Discount.ENTITY_NAME)         : DISCOUNT_MODEL,
-            (Document.ENTITY_NAME)         : DOCUMENT_MODEL,
-            (Invoice.ENTITY_NAME)          : INVOICE_MODEL,
-            (Module.ENTITY_NAME)           : MODULE_MODEL,
-            (PaymentIn.ENTITY_NAME)        : PAYMENT_IN_MODEL,
-            (Payslip.ENTITY_NAME)          : PAYSLIP_MODEL,
-            (Room.ENTITY_NAME)             : ROOM_MODEL,
-            (Script.ENTITY_NAME)           : SCRIPT_MODEL,
-            (Site.ENTITY_NAME)             : SITE_MODEL,
-            (Qualification.ENTITY_NAME)    : QUAL_MODEL,
-            (WaitingList.ENTITY_NAME)      : WAIT_LIST_MODEL,
-            (Application.ENTITY_NAME)      : APPLICATION_MODEL,
-            (ArticleProduct.ENTITY_NAME)   : ARTICLE_PRODUCT_MODEL,
-            (Course.ENTITY_NAME)           : COURSE_MODEL,
-            (VoucherProduct.ENTITY_NAME)   : VOUCHER_PRODUCT_MODEL,
-            (MembershipProduct.ENTITY_NAME): MEMBERSHIP_PRODUCT_MODEL,
-            (Certificate.ENTITY_NAME)      : CERTIFICATE_MODEL,
-            (Survey.ENTITY_NAME)           : STUDENT_FEEDBACK_MODEL,
-            (ProductItem.ENTITY_NAME)      : SALE_MODEL,
-            (Outcome.ENTITY_NAME)          : OUTCOME_MODEL,
-            (Assessment.ENTITY_NAME)       : ASSESSMENT_MODEL,
-            (Enrolment.ENTITY_NAME)        : ENROLMENT_MODEL,
-            (Message.ENTITY_NAME)          : MESSAGE_MODEL,
-            (PaymentOut.ENTITY_NAME)       : PAYMENT_OUT_MODEL,
-            (DefinedTutorRole.ENTITY_NAME) : DEFINED_TUTOR_ROLE_MODEL,
-            (CourseClass.ENTITY_NAME) : COURSECLASS_MODEL,
-            (Contact.ENTITY_NAME)           : CONTACT_MODEL,
-            (PriorLearning.ENTITY_NAME)           : PRIOR_LEARNING_MODEL
+            (Account.ENTITY_NAME)              : ACCOUNT_MODEL,
+            (AccountTransaction.ENTITY_NAME)   : TRANSACTION_MODEL,
+            (Audit.ENTITY_NAME)                : AUDIT_MODEL,
+            (Banking.ENTITY_NAME)              : BANKING_MODEL,
+            (CorporatePass.ENTITY_NAME)        : CORPORATE_PASS_MODEL,
+            (Discount.ENTITY_NAME)             : DISCOUNT_MODEL,
+            (Document.ENTITY_NAME)             : DOCUMENT_MODEL,
+            (Invoice.ENTITY_NAME)              : INVOICE_MODEL,
+            (Module.ENTITY_NAME)               : MODULE_MODEL,
+            (PaymentIn.ENTITY_NAME)            : PAYMENT_IN_MODEL,
+            (Payslip.ENTITY_NAME)              : PAYSLIP_MODEL,
+            (Room.ENTITY_NAME)                 : ROOM_MODEL,
+            (Script.ENTITY_NAME)               : SCRIPT_MODEL,
+            (Site.ENTITY_NAME)                 : SITE_MODEL,
+            (Qualification.ENTITY_NAME)        : QUAL_MODEL,
+            (WaitingList.ENTITY_NAME)          : WAIT_LIST_MODEL,
+            (Application.ENTITY_NAME)          : APPLICATION_MODEL,
+            (ArticleProduct.ENTITY_NAME)       : ARTICLE_PRODUCT_MODEL,
+            (Course.ENTITY_NAME)               : COURSE_MODEL,
+            (VoucherProduct.ENTITY_NAME)       : VOUCHER_PRODUCT_MODEL,
+            (MembershipProduct.ENTITY_NAME)    : MEMBERSHIP_PRODUCT_MODEL,
+            (Certificate.ENTITY_NAME)          : CERTIFICATE_MODEL,
+            (Survey.ENTITY_NAME)               : STUDENT_FEEDBACK_MODEL,
+            (ProductItem.ENTITY_NAME)          : SALE_MODEL,
+            (Outcome.ENTITY_NAME)              : OUTCOME_MODEL,
+            (Assessment.ENTITY_NAME)           : ASSESSMENT_MODEL,
+            (AssessmentSubmission.ENTITY_NAME) : ASSESSMENT_SUBMISSION_MODEL,
+            (Enrolment.ENTITY_NAME)            : ENROLMENT_MODEL,
+            (Message.ENTITY_NAME)              : MESSAGE_MODEL,
+            (PaymentOut.ENTITY_NAME)           : PAYMENT_OUT_MODEL,
+            (DefinedTutorRole.ENTITY_NAME)     : DEFINED_TUTOR_ROLE_MODEL,
+            (CourseClass.ENTITY_NAME)          : COURSECLASS_MODEL,
+            (Contact.ENTITY_NAME)              : CONTACT_MODEL,
+            (PriorLearning.ENTITY_NAME)        : PRIOR_LEARNING_MODEL
 
 
     ] as Map<String, TableModelDTO>

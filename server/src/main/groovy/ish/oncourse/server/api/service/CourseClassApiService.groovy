@@ -152,9 +152,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.detBookingId = cc.detBookingId
         dto.expectedHours = cc.expectedHours
         dto.feeExcludeGST = cc.feeExGst?.toBigDecimal()
-        dto.feeHelpClass = cc.feeHelpClass
         dto.finalDetExport = cc.finalDETexport
-        dto.fullTimeLoad = cc.fullTimeLoad
         dto.relatedFundingSourceId = cc.relatedFundingSource?.id
         dto.initialDetExport = cc.initialDETexport
         dto.isActive = cc.isActive
@@ -169,7 +167,6 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.midwayDetExport = cc.midwayDETexport
         dto.minimumPlaces = cc.minimumPlaces
         dto.minStudentAge = cc.minStudentAge
-        dto.reportingPeriod = cc.reportingPeriod
         dto.roomId = cc.room?.id
         dto.virtualSiteId = (cc.room?.site?.isVirtual ? cc.room.site.id : null) as Long
         dto.sessionsCount = cc.sessionsCount
@@ -181,7 +178,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.vetPurchasingContractID = cc.vetPurchasingContractID
         dto.vetPurchasingContractScheduleID = cc.vetPurchasingContractScheduleID
         dto.webDescription = cc.webDescription
-
+        dto.feeHelpClass = cc.course.feeHelpClass
         int toProceed = classService.getEnrolmentsToProceed(cc)
         dto.enrolmentsToProfitLeftCount =  toProceed > 0 ? toProceed : 0
 
@@ -253,10 +250,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         courseClass.vetPurchasingContractScheduleID = dto.vetPurchasingContractScheduleID
         courseClass.detBookingId = dto.detBookingId
         courseClass.reportableHours = dto.reportableHours
-        courseClass.feeHelpClass = dto.feeHelpClass
         courseClass.censusDate = dto.censusDate
-        courseClass.reportingPeriod = dto.reportingPeriod
-        courseClass.fullTimeLoad = dto.fullTimeLoad
         courseClass.webDescription = dto.webDescription
         courseClass.initialDETexport = dto.initialDetExport
         courseClass.midwayDETexport = dto.midwayDetExport
@@ -321,9 +315,6 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         }
         if (dto.attendanceType == null) {
             validator.throwClientErrorException(id, 'attendanceType', 'Attendance type is required')
-        }
-        if (dto.feeHelpClass == null) {
-            validator.throwClientErrorException(id, 'feeHelpClass', 'Fee help class flag is required')
         }
         if (dto.reportableHours == null) {
             validator.throwClientErrorException(id, 'reportableHours', 'Reportable hours is required')
