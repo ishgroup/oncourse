@@ -1,6 +1,9 @@
 package ish.util
 
 import ish.IshTestCase
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
+
 import static ish.util.SecurityUtil.VOUCHER_CODE_LENGTH
 import static junit.framework.TestCase.*
 import org.junit.Test
@@ -10,6 +13,7 @@ import java.util.regex.Pattern
 class SecurityUtilTest  {
 	private static final String ILLEGAL_VOUCHER_CODE_CHARACTERS = "[^01LlOoIi]+"
     private static final Pattern VOUCHER_CODE_PATTERN = Pattern.compile(ILLEGAL_VOUCHER_CODE_CHARACTERS)
+    private static final Logger logger = LogManager.getLogger()
 
     @Test
     void testDifferentPasswords() {
@@ -74,7 +78,7 @@ class SecurityUtilTest  {
             writer.write(newRand)
             writer.write(RuntimeUtil.LINE_SEPARATOR)
         } catch (Exception e) {
-			e.printStackTrace()
+            logger.catching(e)
         } finally {
             writer.close()
             Runtime.getRuntime().exit(0)

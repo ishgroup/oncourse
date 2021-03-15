@@ -123,7 +123,6 @@ class ReportServiceTest extends CayenneIshTestCase {
 						.where(Report.ID.eq(importReportResult.getReportId()))
 						.selectOne(context)
             } catch (Exception e) {
-				e.printStackTrace()
                 fail("could not import the report " + reportFile.getAbsolutePath())
             }
 
@@ -131,7 +130,6 @@ class ReportServiceTest extends CayenneIshTestCase {
 				try {
 					ReportService.compileReport(report.getReport())
                 } catch (Exception e) {
-					e.printStackTrace()
                     fail("could not compile the report " + report.getName() + " (" + reportFile.getAbsolutePath() + ")")
                 }
 			}
@@ -154,7 +152,6 @@ class ReportServiceTest extends CayenneIshTestCase {
 					.selectOne(context)
             assertEquals("Report entity should be 'CourseClass'", "CourseClass", report.getEntity())
         } catch (Exception e) {
-			e.printStackTrace()
             fail("could not import the report " + oldReportFile)
         }
 
@@ -166,7 +163,6 @@ class ReportServiceTest extends CayenneIshTestCase {
 					.selectOne(context)
             assertEquals("Report entity should be 'Enrolment'", "Enrolment", report.getEntity())
         } catch (Exception e) {
-			e.printStackTrace()
             fail("could not import the report " + newReportFile)
         }
 
@@ -175,7 +171,6 @@ class ReportServiceTest extends CayenneIshTestCase {
         try {
 			importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(oldReportFile), Charset.defaultCharset()))
         } catch (IOException e) {
-			e.printStackTrace()
         }
 
     }
@@ -204,7 +199,6 @@ class ReportServiceTest extends CayenneIshTestCase {
 					.selectOne(context)
 
         } catch (Exception e) {
-			e.printStackTrace()
             fail("could not import the report " + reportFile)
         }
 
@@ -261,7 +255,6 @@ class ReportServiceTest extends CayenneIshTestCase {
 					.selectOne(context)
 
         } catch (Exception e) {
-			e.printStackTrace()
             fail("could not import the report " + reportFile)
         }
 
@@ -325,7 +318,6 @@ class ReportServiceTest extends CayenneIshTestCase {
 					.selectOne(context)
 
         } catch (Exception e) {
-			e.printStackTrace()
             fail("could not import the report " + reportFile)
         }
 
@@ -376,7 +368,6 @@ class ReportServiceTest extends CayenneIshTestCase {
 					.selectOne(context)
 
         } catch (Exception e) {
-			e.printStackTrace()
             fail("could not import the report " + reportFile)
         }
 

@@ -53,7 +53,6 @@ class CourseTest extends CayenneIshTestCase {
         try {
 			context.commitChanges()
         } catch (Exception e) {
-			e.printStackTrace()
             fail("the course-course relationship cannot be created.")
         }
 
@@ -104,7 +103,6 @@ class CourseTest extends CayenneIshTestCase {
         try {
 			context.commitChanges()
         } catch (Exception e) {
-			e.printStackTrace()
             fail("the course-product relationship cannot be created.")
         }
 
@@ -150,7 +148,6 @@ class CourseTest extends CayenneIshTestCase {
         try {
             context.commitChanges()
         } catch (Exception e) {
-            e.printStackTrace()
             fail("the course-product relationship cannot be created.")
         }
 

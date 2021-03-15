@@ -104,7 +104,6 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 			delayedEnrolmentIncomePostingJob.executeWithDate(new Date())
 		} catch (Exception e) {
 			fail(e.getMessage())
-			e.printStackTrace()
 		}
 		assertEquals(Preferences.ACCOUNT_PREPAID_FEES_POST_AT_EVERY_SESSION, delayedEnrolmentIncomePostingJob.getDelayedIncomePreference())
 	}
@@ -227,7 +226,6 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 			delayedEnrolmentIncomePostingJob.executeWithDate(DateUtils.addHours(start1, -1))
 		} catch (JobExecutionException e) {
 			fail(e.getMessage())
-			e.printStackTrace()
 		}
 
 		DataContext newContext = cayenneService.getNewNonReplicatingContext()
@@ -323,7 +321,6 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 			delayedEnrolmentIncomePostingJob.executeWithDate(new Date())
 		} catch (JobExecutionException e) {
 			fail(e.getMessage())
-			e.printStackTrace()
 		}
 
 		DataContext newContext = cayenneService.getNewNonReplicatingContext()
@@ -419,7 +416,6 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 			delayedEnrolmentIncomePostingJob.executeWithDate(DateUtils.addHours(start4, 1))
 		} catch (JobExecutionException e) {
 			fail(e.getMessage())
-			e.printStackTrace()
 		}
 
 		DataContext newContext = cayenneService.getNewNonReplicatingContext()
@@ -514,7 +510,6 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 			delayedEnrolmentIncomePostingJob.executeWithDate(DateUtils.addHours(start1, -1))
 		} catch (JobExecutionException e) {
 			fail(e.getMessage())
-			e.printStackTrace()
 		}
 
 		DataContext newContext = cayenneService.getNewNonReplicatingContext()
@@ -611,7 +606,6 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 			delayedEnrolmentIncomePostingJob.executeWithDate(new Date())
 		} catch (JobExecutionException e) {
 			fail(e.getMessage())
-			e.printStackTrace()
 		}
 
 		DataContext newContext = cayenneService.getNewNonReplicatingContext()
@@ -708,7 +702,6 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 			delayedEnrolmentIncomePostingJob.executeWithDate(DateUtils.addHours(start4, 1))
 		} catch (JobExecutionException e) {
 			fail(e.getMessage())
-			e.printStackTrace()
 		}
 
 		DataContext newContext = cayenneService.getNewNonReplicatingContext()
@@ -805,7 +798,6 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 			delayedEnrolmentIncomePostingJob.executeWithDate(DateUtils.addDays(start4, 1))
 		} catch (JobExecutionException e) {
 			fail(e.getMessage())
-			e.printStackTrace()
 		}
 
 		DataContext newContext = cayenneService.getNewNonReplicatingContext()
@@ -903,7 +895,6 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 			delayedEnrolmentIncomePostingJob.executeWithDate(new Date())
 		} catch (JobExecutionException e) {
 			fail(e.getMessage())
-			e.printStackTrace()
 		}
 
 		DataContext newContext = cayenneService.getNewNonReplicatingContext()
@@ -945,7 +936,6 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 			delayedEnrolmentIncomePostingJob.executeWithDate(new Date())
 		} catch (JobExecutionException e) {
 			fail(e.getMessage())
-			e.printStackTrace()
 		}
 
 		DataContext newContext = cayenneService.getNewNonReplicatingContext()
