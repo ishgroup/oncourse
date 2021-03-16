@@ -154,7 +154,9 @@ class FormContainer extends React.Component<Props & RouteComponentProps, any> {
       this.props.onSubmit(this.props.category, this.parseData(val));
     })
       .then(() => {
-        const { dispatch, data, formName, nextLocation, setNextLocation, history } = this.props;
+        const {
+          dispatch, data, formName, nextLocation, setNextLocation, history
+        } = this.props;
 
         dispatch(initialize(formName, this.formatData(data)));
 
@@ -216,9 +218,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps, any> {
   }
 }
 
-const getFormName = form => {
-  return form && Object.keys(form)[0];
-};
+const getFormName = form => form && Object.keys(form)[0];
 
 const mapStateToProps = (state: State) => ({
   fetch: state.fetch,
@@ -226,14 +226,12 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch,
     onInit: category => dispatch(getPreferences(category)),
     onSubmit: (category, fields) => dispatch(savePreferences(category, fields)),
     openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
     setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-  };
-};
+  });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(FormContainer)));
