@@ -11,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Module, Qualification } from "@api/model";
+import { Collapse } from "@material-ui/core";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../reducers/state";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
@@ -226,7 +227,9 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField type="text" name="fullTimeLoad" label="Equivalent full-time student load" />
+        <Collapse in={values.feeHelpClass}>
+          <FormField type="text" name="fullTimeLoad" label="Equivalent full-time student load" />
+        </Collapse>
       </Grid>
 
       <Grid item xs={twoColumn ? 8 : 12}>
