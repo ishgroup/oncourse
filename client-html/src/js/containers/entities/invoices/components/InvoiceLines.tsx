@@ -257,9 +257,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
   const onDiscountEachExTaxChange = useCallback(
     value => {
-      dispatch(
-        change(form, `${item}.total`, calculateInvoiceLineTotal(row.priceEachExTax, value, row.taxEach, row.quantity))
-      );
+      dispatch(change(form, `${item}.taxEach`, calculateInvoiceLineTaxEach(row.priceEachExTax, value, taxRate)));
     },
     [form, item, taxRate, row.priceEachExTax, row.quantity, row.taxEach]
   );
@@ -329,7 +327,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           discountValue: parseFloat(discountDollar)
         },
         taxes.find(t => t.id === row.taxId),
-        decimalPlus(row.priceEachExTax, decimalMul(row.taxEach, row.quantity || 1))
+        row.total
       )
     ));
   };
