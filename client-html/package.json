@@ -68,7 +68,7 @@
     "webpack-bugsnag-plugins": "*",
     "webpack-bundle-analyzer": "3.*",
     "webpack-cli": "3.*",
-    "webpack-dev-server": "3.11.0",
+    "webpack-dev-server": "3.11.2",
     "webpack-pwa-manifest": "4.*",
     "workbox-webpack-plugin": "4.*",
     "zip-webpack-plugin": "3.*"
