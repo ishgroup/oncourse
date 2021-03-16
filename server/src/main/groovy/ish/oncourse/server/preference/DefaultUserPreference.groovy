@@ -641,11 +641,11 @@ class DefaultUserPreference {
 
     private static final ASSESSMENT_SUBMISSION_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Student Name', attribute: AssessmentSubmission.STUDENT_NAME_PROPERTY, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Course Class Name', attribute: AssessmentSubmission.CLASS_NAME_PROPERTY, sortable: true, width: W300, visible: true),
-                new ColumnDTO(title: 'Assessment Name', attribute: AssessmentSubmission.ASSESSMENT_NAME_PROPERTY, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Submitted On Date', attribute: AssessmentSubmission.SUBMITTED_ON.name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Marked On Date', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Student name', attribute: AssessmentSubmission.STUDENT_NAME_PROPERTY, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Class name', attribute: AssessmentSubmission.CLASS_NAME_PROPERTY, sortable: true, width: W300, visible: true),
+                new ColumnDTO(title: 'Assessment name', attribute: AssessmentSubmission.ASSESSMENT_NAME_PROPERTY, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Submitted on', attribute: AssessmentSubmission.SUBMITTED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Marked on', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
         ]
         it.sortings = [
                 new SortingDTO(attribute: AssessmentSubmission.ENROLMENT.dot(Enrolment.ID).name, ascending: true)
