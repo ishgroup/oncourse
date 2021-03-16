@@ -22,6 +22,7 @@ import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.Application
 import ish.oncourse.server.cayenne.ArticleProduct
 import ish.oncourse.server.cayenne.Assessment
+import ish.oncourse.server.cayenne.AssessmentClass
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Banking
@@ -641,9 +642,26 @@ class DefaultUserPreference {
 
     private static final ASSESSMENT_SUBMISSION_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Student name', attribute: AssessmentSubmission.STUDENT_NAME_PROPERTY, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Class name', attribute: AssessmentSubmission.CLASS_NAME_PROPERTY, sortable: true, width: W300, visible: true),
-                new ColumnDTO(title: 'Assessment name', attribute: AssessmentSubmission.ASSESSMENT_NAME_PROPERTY, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Student name',
+                        attribute: AssessmentSubmission.STUDENT_NAME_PROPERTY, sortable: true, width: W200, visible: true,
+                        sortFields: [
+                                AssessmentSubmission.ENROLMENT.dot(Enrolment.STUDENT).dot(Student.CONTACT).dot(Contact.LAST_NAME).name,
+                                AssessmentSubmission.ENROLMENT.dot(Enrolment.STUDENT).dot(Student.CONTACT).dot(Contact.FIRST_NAME).name,
+                                AssessmentSubmission.ENROLMENT.dot(Enrolment.STUDENT).dot(Student.CONTACT).dot(Contact.MIDDLE_NAME).name
+                        ]),
+                new ColumnDTO(title: 'Class name',
+                        attribute: AssessmentSubmission.CLASS_NAME_PROPERTY, sortable: true, width: W300, visible: true,
+                        sortFields: [
+                                AssessmentSubmission.ASSESSMENT_CLASS.dot(AssessmentClass.COURSE_CLASS).dot(CourseClass.COURSE).dot(Course.CODE).name,
+                                AssessmentSubmission.ASSESSMENT_CLASS.dot(AssessmentClass.COURSE_CLASS).dot(CourseClass.CODE).name
+                        ]
+                ),
+                new ColumnDTO(title: 'Assessment name',
+                        attribute: AssessmentSubmission.ASSESSMENT_NAME_PROPERTY, sortable: true, width: W200, visible: true,
+                        sortFields: [
+                                AssessmentSubmission.ASSESSMENT_CLASS.dot(AssessmentClass.ASSESSMENT).dot(Assessment.CODE).name
+                        ]
+                ),
                 new ColumnDTO(title: 'Submitted on', attribute: AssessmentSubmission.SUBMITTED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Marked on', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
         ]
