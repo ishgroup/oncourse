@@ -15,6 +15,7 @@ import { FilterGroup } from "../../../model/common/ListView";
 import AssessmentSubmissionEditView from "./components/AssessmentSubmissionsEditView";
 import { getAssessmentSubmissionsItem, removeAssessmentSubmissionsItem, updateAssessmentSubmissionsItem } from "./actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -73,6 +74,7 @@ const AssessmentSubmission = (props: any) => {
       findRelated={findRelatedGroup}
       onSave={onSave}
       onDelete={onDelete}
+      CogwheelAdornment={BulkEditCogwheelOption}
     />
   );
 };

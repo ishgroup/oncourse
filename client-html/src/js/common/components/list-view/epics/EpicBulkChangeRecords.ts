@@ -15,6 +15,8 @@ import { FETCH_SUCCESS } from "../../../actions";
 import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../epics/EpicUtils";
 import { BULK_CHANGE_RECORDS, GET_RECORDS_REQUEST } from "../actions";
+import AssessmentSubmissionService
+  from "../../../../containers/entities/assessmentSubmissions/service/AssessmentSubmissionService";
 
 const getBulkRequest = (entity: EntityName, diff: Diff): Promise<any> => {
   switch (entity) {
@@ -32,6 +34,9 @@ const getBulkRequest = (entity: EntityName, diff: Diff): Promise<any> => {
     }
     case "Contact": {
       return ContactsService.bulkChange(diff);
+    }
+    case "AssessmentSubmission": {
+      return AssessmentSubmissionService.bulkChange(diff);
     }
     default: {
       // eslint-disable-next-line prefer-promise-reject-errors

@@ -225,6 +225,22 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
         }
       ];
     }
+    case "AssessmentSubmission": {
+      return [
+        {
+          keyCode: "submittedOn",
+          label: "Submitted On",
+          name: "Submitted On",
+          type: "Date"
+        },
+        {
+          keyCode: "markedOn",
+          label: "Marked On",
+          name: "Marked On",
+          type: "Date"
+        }
+      ];
+    }
     default:
       // eslint-disable-next-line no-console
       console.warn(`There is no bulk edit fields for ${entity}`);

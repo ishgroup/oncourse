@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { AssessmentSubmission, AssessmentSubmissionApi } from "@api/model";
+import {AssessmentSubmission, AssessmentSubmissionApi, Diff} from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class AssessmentSubmissionService {
@@ -22,6 +22,10 @@ class AssessmentSubmissionService {
 
   public removeAssessmentSubmission(id: number): Promise<any> {
     return this.assessmentSubmissionApi.remove(id);
+  }
+
+  public bulkChange(diff: Diff): Promise<any> {
+    return this.assessmentSubmissionApi.bulkChange(diff);
   }
 }
 
