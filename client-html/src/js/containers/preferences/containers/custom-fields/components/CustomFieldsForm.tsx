@@ -8,7 +8,7 @@ import { withStyles, createStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import {
-  Form, FieldArray, reduxForm, SubmissionError, arrayRemove, change
+  Form, FieldArray, reduxForm, SubmissionError, arrayRemove, change, initialize
 } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import isEqual from "lodash.isequal";
@@ -118,8 +118,11 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
+        const {
+          nextLocation, history, setNextLocation, data
+        } = this.props;
 
+        this.props.dispatch(initialize("CustomFieldsForm", data));
         this.props.dispatch(getCustomFields());
 
         nextLocation && history.push(nextLocation);
