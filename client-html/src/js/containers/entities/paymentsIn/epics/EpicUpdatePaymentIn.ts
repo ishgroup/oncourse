@@ -5,21 +5,20 @@
 
 import { Epic } from "redux-observable";
 
+import { initialize } from "redux-form";
+import { PaymentIn } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_PAYMENT_IN_ITEM, UPDATE_PAYMENT_IN_ITEM, UPDATE_PAYMENT_IN_ITEM_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { initialize } from "redux-form";
-import { PaymentIn } from "@api/model";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { id: number; paymentIn: PaymentIn }> = {
+const request: EpicUtils.Request<any, { id: number; paymentIn: PaymentIn }> = {
   type: UPDATE_PAYMENT_IN_ITEM,
   getData: ({ id, paymentIn }) => updateEntityItemById("PaymentIn", id, paymentIn),
-  processData: (v, s, { id }) => {
-    return [
+  processData: (v, s, { id }) => [
       {
         type: UPDATE_PAYMENT_IN_ITEM_FULFILLED
       },
@@ -31,15 +30,12 @@ const request: EpicUtils.Request<any, any, { id: number; paymentIn: PaymentIn }>
         type: GET_RECORDS_REQUEST,
         payload: { entity: "PaymentIn", listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView ? [{
         type: GET_PAYMENT_IN_ITEM,
         payload: id
-      }
-    ];
-  },
-  processError: (response, { paymentIn }) => {
-    return [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, paymentIn)];
-  }
+      }] : []
+    ],
+  processError: (response, { paymentIn }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, paymentIn)]
 };
 
 export const EpicUpdatePaymentIn: Epic<any, any> = EpicUtils.Create(request);

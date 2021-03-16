@@ -8,11 +8,11 @@ import { Epic } from "redux-observable";
 import { FundingUpload } from "@api/model";
 import { initialize } from "redux-form";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { GET_FUNDING_UPLOADS_REQUEST, GET_FUNDING_UPLOADS_FULFILLED } from "../actions";
+import { GET_FUNDING_UPLOADS_FULFILLED, GET_FUNDING_UPLOADS_REQUEST } from "../actions";
 import FundingUploadService from "../services/FundingUploadService";
 import getAvetmissExportFormValues from "../utils/getAvetmissExportFormValues";
 
-const request: EpicUtils.Request<any, any, string> = {
+const request: EpicUtils.Request<any, string> = {
   type: GET_FUNDING_UPLOADS_REQUEST,
   getData: search => FundingUploadService.getFundingUploads(search),
   processData: (uploads: FundingUpload[]) => {

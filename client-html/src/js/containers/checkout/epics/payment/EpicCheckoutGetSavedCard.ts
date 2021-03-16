@@ -7,13 +7,9 @@ import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
-import { State } from "../../../../reducers/state";
-import {
-  CHECKOUT_GET_SAVED_CARD,
-  CHECKOUT_GET_SAVED_CARD_FULFILLED
-} from "../../actions/checkoutPayment";
+import { CHECKOUT_GET_SAVED_CARD, CHECKOUT_GET_SAVED_CARD_FULFILLED } from "../../actions/checkoutPayment";
 
-const request: EpicUtils.Request<DataResponse, State, { payerId: number, paymentMethodId: number }> = {
+const request: EpicUtils.Request<DataResponse, { payerId: number, paymentMethodId: number }> = {
   type: CHECKOUT_GET_SAVED_CARD,
   getData: ({ payerId, paymentMethodId }) => EntityService.getPlainRecords(
     "PaymentIn",

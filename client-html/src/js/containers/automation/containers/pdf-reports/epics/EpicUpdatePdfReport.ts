@@ -5,19 +5,17 @@
 
 import { Epic } from "redux-observable";
 
+import { Report } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { UPDATE_AUTOMATION_PDF_REPORT, getAutomationPdfReportsList, GET_AUTOMATION_PDF_REPORT } from "../actions/index";
-import { State } from "../../../../../reducers/state";
+import { GET_AUTOMATION_PDF_REPORT, getAutomationPdfReportsList, UPDATE_AUTOMATION_PDF_REPORT } from "../actions/index";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import PdfService from "../services/PdfService";
-import { Report } from "@api/model";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 
-const request: EpicUtils.Request<any, State, { report: Report }> = {
+const request: EpicUtils.Request<any, { report: Report }> = {
   type: UPDATE_AUTOMATION_PDF_REPORT,
   getData: ({ report }) => PdfService.updateReport(report.id, report),
-  processData: (r, s, { report }) => {
-    return [
+  processData: (r, s, { report }) => [
       {
         type: FETCH_SUCCESS,
         payload: { message: "PDF report updated" }
@@ -27,8 +25,7 @@ const request: EpicUtils.Request<any, State, { report: Report }> = {
         type: GET_AUTOMATION_PDF_REPORT,
         payload: report.id
       }
-    ];
-  },
+    ],
   processError: response => FetchErrorHandler(response, "Failed to update PDF report")
 };
 

@@ -4,24 +4,21 @@
  */
 
 import { Epic } from "redux-observable";
-
+import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { GET_COURSE_CLASS_SALES, GET_COURSE_CLASS_SALES_FULFILLED } from "../actions";
-import { DataResponse } from "@api/model";
 
-const request: EpicUtils.Request<any, any, string> = {
+const request: EpicUtils.Request<any, string> = {
   type: GET_COURSE_CLASS_SALES,
   hideLoadIndicator: true,
-  getData: payload => {
-    return EntityService.getPlainRecords(
+  getData: payload => EntityService.getPlainRecords(
       "CourseClass",
       "course.name,uniqueCode",
       `${
         payload ? `(${payload}) AND ` : ""
       }(isDistantLearningCourse is true OR endDateTime > now) AND isCancelled is false`
-    );
-  },
+    ),
 
   processData: (response: DataResponse) => {
     const courseClassItems = response.rows.map(({ id, values }) => ({

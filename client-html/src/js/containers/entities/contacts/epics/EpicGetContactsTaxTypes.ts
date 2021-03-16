@@ -10,7 +10,7 @@ import { Tax } from "@api/model";
 import ContactsService from "../services/ContactsService";
 import { GET_CONTACTS_TAX_TYPES, GET_CONTACTS_TAX_TYPES_FULFILLED } from "../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_CONTACTS_TAX_TYPES,
   getData: () => ContactsService.getContactsTaxTypes(),
   processData: (taxTypes: Tax[]) => {

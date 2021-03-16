@@ -7,10 +7,7 @@ import { Epic } from "redux-observable";
 
 import { EmailTemplate } from "@api/model";
 import * as EpicUtils from "./EpicUtils";
-import {
-  GET_EMAIL_TEMPLATES_WITH_KEYCODE,
-  GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED
-} from "../actions";
+import { GET_EMAIL_TEMPLATES_WITH_KEYCODE, GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED } from "../actions";
 import EmailTemplateService from "../services/EmailTemplateService";
 import FetchErrorHandler from "../api/fetch-errors-handlers/FetchErrorHandler";
 
@@ -29,7 +26,7 @@ const sortEmailBodyDown = (a, b) => {
   return 0;
 };
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_EMAIL_TEMPLATES_WITH_KEYCODE,
   getData: ({ entities }) => Promise.all(entities.map(entity => EmailTemplateService.getEmailTemplatesWithKeyCode(entity))),
   processData: (records: EmailTemplate[]) => {

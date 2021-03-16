@@ -5,7 +5,7 @@ import ExportService from "../services/ExportService";
 import { ExportTemplate } from "@api/model";
 import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_EXPORT_TEMPLATES,
   getData: payload => ExportService.getAllTemplates(payload),
   processData: (exportTemplates: ExportTemplate[]) => {

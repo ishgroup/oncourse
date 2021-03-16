@@ -10,7 +10,7 @@ import EntityService from "../../../services/EntityService";
 import { GET_PLAIN_RECORDS_REQUEST, GET_PLAIN_RECORDS_REQUEST_FULFILLED } from "../actions";
 import { DataResponse } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_PLAIN_RECORDS_REQUEST,
   getData: payload => {
     return EntityService.getPlainRecords(payload.entity, payload.columns, payload.search);

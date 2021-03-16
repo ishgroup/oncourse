@@ -9,11 +9,10 @@ import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { MessageExtended } from "../../../../model/common/Message";
-import { State } from "../../../../reducers/state";
 import { SEND_MESSAGE } from "../actions";
 import MessageService from "../services/MessageService";
 
-const request: EpicUtils.Request<any, State, MessageExtended> = {
+const request: EpicUtils.Request<any, MessageExtended> = {
   type: SEND_MESSAGE,
   getData: (model, s) => {
     const { selection, searchQuery } = s.list;

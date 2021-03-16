@@ -8,7 +8,6 @@ import { initialize } from "redux-form";
 import { Site } from "@api/model";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { State } from "../../../../reducers/state";
 import { GET_SITE_ITEM, UPDATE_SITE_ITEM, UPDATE_SITE_ITEM_FULFILLED } from "../actions/index";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { FETCH_SUCCESS } from "../../../../common/actions/index";
@@ -16,7 +15,7 @@ import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/act
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, State, { id: number; site: Site & { notes: any }; message?: string }> = {
+const request: EpicUtils.Request<any, { id: number; site: Site & { notes: any }; message?: string }> = {
   type: UPDATE_SITE_ITEM,
   getData: ({ id, site }) => {
     delete site.notes;
@@ -35,10 +34,10 @@ const request: EpicUtils.Request<any, State, { id: number; site: Site & { notes:
       type: GET_RECORDS_REQUEST,
       payload: { entity: "Site", listUpdate: true, savedID: id }
     },
-    {
+    ...s.list.fullScreenEditView ? [{
       type: GET_SITE_ITEM,
       payload: id
-    }
+    }] : []
   ],
   processError: (response, { site }) => [...FetchErrorHandler(response, "Site was not updated"), initialize(LIST_EDIT_VIEW_FORM_NAME, site)]
 };

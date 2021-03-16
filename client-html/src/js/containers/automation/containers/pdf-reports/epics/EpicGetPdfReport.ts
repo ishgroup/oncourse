@@ -5,21 +5,18 @@
 
 import { Epic } from "redux-observable";
 
+import { initialize } from "redux-form";
+import { Report } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { GET_AUTOMATION_PDF_REPORT } from "../actions/index";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import PdfService from "../services/PdfService";
-import { initialize } from "redux-form";
 import { PDF_REPORT_FORM_NAME } from "../PdfReports";
-import { Report } from "@api/model";
 
-const request: EpicUtils.Request<any, State, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: GET_AUTOMATION_PDF_REPORT,
   getData: id => PdfService.getReport(id),
-  processData: (report: Report) => {
-    return [initialize(PDF_REPORT_FORM_NAME, report)];
-  },
+  processData: (report: Report) => [initialize(PDF_REPORT_FORM_NAME, report)],
   processError: response => [
     ...FetchErrorHandler(response, "Failed to get PDF report"),
     initialize(PDF_REPORT_FORM_NAME, null)

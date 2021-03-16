@@ -11,11 +11,10 @@ import GoogleApiService from "../services/GoogleApiService";
 import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 import { FETCH_FAIL } from "../../../actions";
 
-const request: EpicUtils.Request<any, any, { address: string }> = {
+const request: EpicUtils.Request<any, { address: string }> = {
   type: GET_GOOGLE_GEOCODE_DETAILS,
   getData: ({ address }) => GoogleApiService.getGeocodeDetails(address),
-  processData: (response: any) => {
-    return response.status === "OK"
+  processData: (response: any) => (response.status === "OK"
       ? [
           {
             type: GET_GOOGLE_GEOCODE_DETAILS_FULFILLED,
@@ -27,8 +26,7 @@ const request: EpicUtils.Request<any, any, { address: string }> = {
             type: FETCH_FAIL,
             payload: { message: "Google Api error" }
           }
-        ];
-  },
+        ]),
   processError: response => FetchErrorHandler(response, "Google Api error")
 };
 

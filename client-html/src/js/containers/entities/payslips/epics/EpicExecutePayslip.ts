@@ -7,7 +7,7 @@ import { PayslipStatus } from "@api/model";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 
-const request: EpicUtils.Request<any, any, { ids: number[]; status: PayslipStatus }> = {
+const request: EpicUtils.Request<any, { ids: number[]; status: PayslipStatus }> = {
   type: POST_PAYSLIP_EXECUTE,
   getData: ({ ids, status }) => PayslipService.executePayslip(ids, status),
   processData: (v, s, { ids }) => {

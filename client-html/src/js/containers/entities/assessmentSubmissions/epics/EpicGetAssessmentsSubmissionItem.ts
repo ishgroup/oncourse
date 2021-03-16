@@ -17,7 +17,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import AssessmentSubmissionService from "../service/AssessmentSubmissionService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ASSESSMENT_SUBMISSIONS_ITEM,
   getData: (id: number) => AssessmentSubmissionService.getAssessmentSubmission(id),
   processData: (assessmentSubmission: AssessmentSubmission, s, id) => [

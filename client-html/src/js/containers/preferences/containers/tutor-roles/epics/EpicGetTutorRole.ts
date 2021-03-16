@@ -9,13 +9,12 @@ import { initialize } from "redux-form";
 import * as _ from "lodash";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { DefinedTutorRole } from "@api/model";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import PreferencesService from "../../../services/PreferencesService";
 import { GET_TUTOR_ROLE_FULFILLED, GET_TUTOR_ROLE_REQUEST } from "../../../actions";
 import { TUTOR_ROLES_FORM_NAME } from "../TutorRoleFormContainer";
 
-const request: EpicUtils.Request<any, State, any> = {
+const request: EpicUtils.Request<any,  any> = {
   type: GET_TUTOR_ROLE_REQUEST,
   getData: payload => PreferencesService.getTutorRole(payload.id),
   processData: (response: DefinedTutorRole) => {

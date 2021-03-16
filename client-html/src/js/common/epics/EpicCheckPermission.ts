@@ -4,13 +4,13 @@
  */
 
 import { Epic } from "redux-observable";
-import { PermissionResponse, PermissionRequest } from "@api/model";
+import { PermissionRequest, PermissionResponse } from "@api/model";
 import { IAction } from "../actions/IshAction";
 import * as EpicUtils from "./EpicUtils";
 import AccessService from "../services/AccessService";
 import { CHECK_PERMISSIONS_REQUEST, CHECK_PERMISSIONS_REQUEST_FULFILLED } from "../actions";
 
-const request: EpicUtils.Request<PermissionResponse, any, { permissionRequest: PermissionRequest, onComplete?: IAction[] }> = {
+const request: EpicUtils.Request<PermissionResponse, { permissionRequest: PermissionRequest, onComplete?: IAction[] }> = {
   type: CHECK_PERMISSIONS_REQUEST,
   getData: payload => AccessService.checkPermissions(payload.permissionRequest),
   processData: (

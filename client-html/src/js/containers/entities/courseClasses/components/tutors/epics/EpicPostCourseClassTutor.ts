@@ -4,14 +4,13 @@
  */
 
 import { Epic } from "redux-observable";
+import { CourseClassTutor } from "@api/model";
 import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
-import { State } from "../../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { POST_COURSE_CLASS_TUTOR } from "../actions";
 import CourseClassTutorService from "../services/CourseClassTutorService";
-import { CourseClassTutor } from "@api/model";
 
-const request: EpicUtils.Request<any, State, { tutor: CourseClassTutor }> = {
+const request: EpicUtils.Request<any, { tutor: CourseClassTutor }> = {
   type: POST_COURSE_CLASS_TUTOR,
   getData: ({ tutor }) => CourseClassTutorService.postCourseClassTutor(tutor),
   processData: () => [],

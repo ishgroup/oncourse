@@ -31,7 +31,7 @@ export const contactOutcomesMap = ({ values, id }) => ({
   deliveryMode: values[5]
 });
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_CONTACT_OUTCOMES,
   hideLoadIndicator: true,
   getData: contactId =>

@@ -22,7 +22,7 @@ import { preformatInvoice } from "../utils";
 
 let savedItem: Invoice;
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CREATE_INVOICE_ITEM,
   getData: payload => {
     savedItem = payload.invoice;

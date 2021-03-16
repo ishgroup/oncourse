@@ -12,7 +12,7 @@ import { POST_USER_REQUEST, POST_USER_REQUEST_FULFILLED } from "../../../actions
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: POST_USER_REQUEST,
   getData: (user: User) => UserService.updateUser(user),
   retrieveData: () => UserService.getUsers(),

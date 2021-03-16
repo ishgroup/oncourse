@@ -5,12 +5,11 @@
 
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../epics/EpicUtils";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
 import { DELETE_NOTE_ITEM } from "../actions";
 import NotesService from "../services/NotesService";
 
-const request: EpicUtils.Request<any, State, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: DELETE_NOTE_ITEM,
   hideLoadIndicator: true,
   getData: id => NotesService.remove(id),

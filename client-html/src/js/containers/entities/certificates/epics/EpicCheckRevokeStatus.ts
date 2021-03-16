@@ -5,18 +5,15 @@
 
 import { Epic } from "redux-observable";
 
+import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { GET_CERTIFICATES_REVOKE_STATUS, SET_CERTIFICATES_REVOKE_STATUS } from "../actions/index";
-import { DataResponse } from "@api/model";
-import { State } from "../../../../reducers/state";
 
-const request: EpicUtils.Request<DataResponse, State, number[]> = {
+const request: EpicUtils.Request<DataResponse, number[]> = {
   type: GET_CERTIFICATES_REVOKE_STATUS,
   hideLoadIndicator: true,
-  getData: ids => {
-    return EntityService.getPlainRecords("Certificate", "revokedOn", `id in (${ids.toString()})`);
-  },
+  getData: ids => EntityService.getPlainRecords("Certificate", "revokedOn", `id in (${ids.toString()})`),
   processData: ({ rows }) => {
     const hasRevoked = rows.some(r => r.values[0]);
 

@@ -5,13 +5,13 @@
 
 import { Epic } from "redux-observable";
 
+import { initialize } from "redux-form";
 import * as EpicUtils from "../../../epics/EpicUtils";
 import { State } from "../../../../reducers/state";
 import { GET_LIST_NESTED_EDIT_RECORD, SET_LIST_NESTED_EDIT_RECORD } from "../actions/index";
-import { initialize } from "redux-form";
 import { getEntityItemById } from "../../../../containers/entities/common/entityItemsService";
 
-const request: EpicUtils.Request<any, State, { entity: string; id: number; index?: number; threeColumn?: boolean }> = {
+const request: EpicUtils.Request<any, { entity: string; id: number; index?: number; threeColumn?: boolean }> = {
   type: GET_LIST_NESTED_EDIT_RECORD,
   getData: ({ entity, id, threeColumn }, state) => {
     if (threeColumn && entity === state.list.records.entity) {
@@ -19,8 +19,7 @@ const request: EpicUtils.Request<any, State, { entity: string; id: number; index
     }
     return getEntityItemById(entity, id);
   },
-  processData: (record: any, state: State, { index, entity }) => {
-    return typeof index === "number"
+  processData: (record: any, state: State, { index, entity }) => (typeof index === "number"
       ? [initialize(`NestedEditViewForm[${index}]`, record)]
       : [
           {
@@ -32,8 +31,7 @@ const request: EpicUtils.Request<any, State, { entity: string; id: number; index
             }
           },
           initialize(`NestedEditViewForm[${state.list.nestedEditRecords.length || 0}]`, record)
-        ];
-  }
+        ])
 };
 
 export const EpicGetListNestedEditRecord: Epic<any, any> = EpicUtils.Create(request);

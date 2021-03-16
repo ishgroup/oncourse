@@ -11,14 +11,13 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import EntityService from "../../../../common/services/EntityService";
 import { getCustomColumnsMap, stubFunction } from "../../../../common/utils/common";
 import { CheckoutDiscount } from "../../../../model/checkout";
-import { State } from "../../../../reducers/state";
 import { getContactFullName } from "../../../entities/contacts/utils";
 import { addContact } from "../../actions";
 import { CHECKOUT_GET_VOUCHER_REDEEMER, CHECKOUT_SET_PROMO } from "../../actions/checkoutSummary";
 import { CHECKOUT_CONTACT_COLUMNS } from "../../constants";
 import store from "../../../../constants/Store";
 
-const request: EpicUtils.Request<DataResponse, State, { id: number, vouchersItem: CheckoutDiscount}> = {
+const request: EpicUtils.Request<DataResponse, { id: number, vouchersItem: CheckoutDiscount}> = {
   type: CHECKOUT_GET_VOUCHER_REDEEMER,
   getData: ({ id }) => EntityService.getPlainRecords("Contact", CHECKOUT_CONTACT_COLUMNS, `id is ${id}`),
   processData: (res, s, { vouchersItem }) => {

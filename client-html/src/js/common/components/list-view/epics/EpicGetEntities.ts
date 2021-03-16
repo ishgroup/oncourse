@@ -6,11 +6,11 @@
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../epics/EpicUtils";
 import EntityService from "../../../services/EntityService";
-import { GET_RECORDS_REQUEST, GET_RECORDS_FULFILLED, setListSelection } from "../actions/index";
+import { GET_RECORDS_FULFILLED, GET_RECORDS_REQUEST, setListSelection } from "../actions/index";
 import { State } from "../../../../reducers/state";
 import { GetRecordsArgs } from "../../../../model/common/ListView";
 
-const request: EpicUtils.Request<any, any, GetRecordsArgs> = {
+const request: EpicUtils.Request<any, GetRecordsArgs> = {
   type: GET_RECORDS_REQUEST,
   getData: (payload, state) => EntityService.getList(payload, state),
   processData: ([records, searchQuery], state: State, payload) => {

@@ -10,7 +10,7 @@ import { ConcessionType } from "@api/model";
 import { GET_CONTACTS_CONCESSION_TYPES, GET_CONTACTS_CONCESSION_TYPES_FULFILLED } from "../actions";
 import ContactsService from "../services/ContactsService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_CONTACTS_CONCESSION_TYPES,
   getData: () => ContactsService.getContactsConcessionTypes(),
   processData: (contactsConcessionTypes: ConcessionType[]) => {

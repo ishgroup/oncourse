@@ -6,18 +6,17 @@
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import {
+  clearTimetableMonths,
   DELETE_TIMETABLE_FILTER,
   DELETE_TIMETABLE_FILTER_FULFILLED,
-  GET_TIMETABLE_FILTERS,
-  clearTimetableMonths,
   findTimetableSessions,
+  GET_TIMETABLE_FILTERS,
   getTimetableSessionsDays,
   setTimetableSearch
 } from "../actions";
 import { Session } from "@api/model";
 import CustomFiltersService from "../../../common/services/CustomFiltersService";
 import { FETCH_SUCCESS } from "../../../common/actions";
-import { State } from "../../../reducers/state";
 import { addMonths, endOfMonth, startOfMonth } from "date-fns";
 import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
 
@@ -36,7 +35,7 @@ const getActionsForUpdate = (filters, id, currentMonth) => {
   ];
 };
 
-const request: EpicUtils.Request<any, State, { id: number; currentMonth: Date }> = {
+const request: EpicUtils.Request<any,  { id: number; currentMonth: Date }> = {
   type: DELETE_TIMETABLE_FILTER,
   hideLoadIndicator: true,
   getData: ({ id }) => CustomFiltersService.deleteCustomFilter("Session", id),

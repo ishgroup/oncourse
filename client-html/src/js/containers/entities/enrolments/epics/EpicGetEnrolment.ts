@@ -6,7 +6,7 @@
 import { Epic } from "redux-observable";
 import { Enrolment } from "@api/model";
 import { initialize } from "redux-form";
-import {clearActionsQueue} from "../../../../common/actions";
+import { clearActionsQueue } from "../../../../common/actions";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
@@ -16,7 +16,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import EnrolmentService from "../services/EnrolmentService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ENROLMENT_ITEM,
   getData: (id: number) => EnrolmentService.getEnrolment(id),
   processData: (enrolment: Enrolment, s, id) => {

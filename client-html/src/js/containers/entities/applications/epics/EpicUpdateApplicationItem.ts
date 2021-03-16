@@ -16,7 +16,7 @@ import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/act
 import ApplicationService from "../service/ApplicationService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { id: number; application: Application & { notes: any } }> = {
+const request: EpicUtils.Request<any, { id: number; application: Application & { notes: any } }> = {
   type: UPDATE_APPLICATION_ITEM,
   getData: ({ id, application }) => {
     delete application.notes;
@@ -36,10 +36,10 @@ const request: EpicUtils.Request<any, any, { id: number; application: Applicatio
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Application", listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView ? [{
         type: GET_APPLICATION_ITEM,
         payload: id
-      }
+      }] : []
     ],
   processError: (response, { application }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, application)]
 };

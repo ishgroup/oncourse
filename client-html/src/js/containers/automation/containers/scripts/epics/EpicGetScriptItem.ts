@@ -7,13 +7,12 @@ import { Epic } from "redux-observable";
 import { Script } from "@api/model";
 import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_SCRIPT_ENTITY_REQUEST, GET_SCRIPT_ENTITY_FULFILLED } from "../actions/index";
-import { State } from "../../../../../reducers/state";
+import { GET_SCRIPT_ENTITY_FULFILLED, GET_SCRIPT_ENTITY_REQUEST } from "../actions/index";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getEntityItemById } from "../../../../entities/common/entityItemsService";
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../constants";
 
-const request: EpicUtils.Request<any, State, any> = {
+const request: EpicUtils.Request<any, any> = {
   type: GET_SCRIPT_ENTITY_REQUEST,
   getData: id => getEntityItemById("Script", id),
   processData: (editRecord: Script) => [

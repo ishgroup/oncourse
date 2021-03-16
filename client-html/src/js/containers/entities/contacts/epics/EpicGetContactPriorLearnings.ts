@@ -19,7 +19,7 @@ export const contactPriorLearningsMap = ({ values, id }) => ({
   qualName: values[4]
 });
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_CONTACT_PRIOR_LEARNINGS,
   hideLoadIndicator: true,
   getData: contactId =>

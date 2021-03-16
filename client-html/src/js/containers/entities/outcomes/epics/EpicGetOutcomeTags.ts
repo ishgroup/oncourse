@@ -13,7 +13,7 @@ import { SET_LIST_MENU_TAGS } from "../../../../common/components/list-view/acti
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_OUTCOME_TAGS } from "../actions";
 
-const request: EpicUtils.Request<any, any, never> = {
+const request: EpicUtils.Request<any, never> = {
   type: GET_OUTCOME_TAGS,
   getData: () => TagsService.getTags("Enrolment"),
   processData: tags => {

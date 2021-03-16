@@ -21,7 +21,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 
 let savedItem: Module;
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CREATE_MODULE_ITEM,
   getData: payload => {
     savedItem = payload.module;

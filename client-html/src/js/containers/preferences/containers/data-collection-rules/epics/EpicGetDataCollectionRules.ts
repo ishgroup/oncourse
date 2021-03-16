@@ -7,10 +7,10 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../services/PreferencesService";
-import { GET_DATA_COLLECTION_RULES_REQUEST, GET_DATA_COLLECTION_RULES_FULFILLED } from "../../../actions";
+import { GET_DATA_COLLECTION_RULES_FULFILLED, GET_DATA_COLLECTION_RULES_REQUEST } from "../../../actions";
 import { DataCollectionRule } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_DATA_COLLECTION_RULES_REQUEST,
   getData: () => PreferencesService.getDataCollectionRules(),
   processData: (dataCollectionRules: DataCollectionRule[]) => {

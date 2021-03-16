@@ -9,17 +9,14 @@
 import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import {
-  DELETE_ASSESSMENT_SUBMISSIONS_ITEM,
-  DELETE_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED
-} from "../actions/index";
+import { DELETE_ASSESSMENT_SUBMISSIONS_ITEM, DELETE_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED } from "../actions/index";
 import { FETCH_SUCCESS } from "../../../../common/actions/index";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST, setListSelection } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import AssessmentSubmissionService from "../service/AssessmentSubmissionService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_ASSESSMENT_SUBMISSIONS_ITEM,
   getData: (id: number) => AssessmentSubmissionService.removeAssessmentSubmission(id),
   processData: () => [

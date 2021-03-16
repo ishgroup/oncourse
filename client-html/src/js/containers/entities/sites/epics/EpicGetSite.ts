@@ -14,10 +14,10 @@ import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/ac
 import { getEntityItemById } from "../../common/entityItemsService";
 import GoogleApiService from "../../../../common/components/google-maps/services/GoogleApiService";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import {clearActionsQueue, FETCH_FAIL} from "../../../../common/actions";
+import { clearActionsQueue, FETCH_FAIL } from "../../../../common/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_SITE_ITEM,
   getData: (id: number) => getEntityItemById("Site", id).then((site: Site) => {
       if (!site.latitude && !site.longitude && site.street && site.suburb && site.country && site.country.name) {

@@ -10,7 +10,7 @@ import { Session } from "@api/model";
 import CustomFiltersService from "../../../common/services/CustomFiltersService";
 import { FETCH_SUCCESS } from "../../../common/actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: POST_TIMETABLE_FILTER,
   hideLoadIndicator: true,
   getData: filter => CustomFiltersService.saveCustomFilter(filter, "Session"),

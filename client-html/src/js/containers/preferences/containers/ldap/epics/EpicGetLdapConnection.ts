@@ -10,7 +10,7 @@ import PreferencesService from "../../../services/PreferencesService";
 import { FETCH_FAIL, FETCH_SUCCESS, GET_LDAP_CONNECTION_REQUEST } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_LDAP_CONNECTION_REQUEST,
   getData: payload =>
     PreferencesService.checkConnection(payload.host, payload.port, payload.isSsl, payload.baseDn, payload.user),

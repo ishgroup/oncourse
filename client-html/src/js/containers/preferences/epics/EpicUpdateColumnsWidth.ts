@@ -11,7 +11,7 @@ import { UPDATE_COLUMNS_WIDTH_REQUEST, UPDATE_COLUMNS_WIDTH_REQUEST_FULFILLED } 
 import { ColumnWidth } from "@api/model";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: UPDATE_COLUMNS_WIDTH_REQUEST,
   getData: (columnWidth: ColumnWidth) => PreferencesService.updateColumnsWidth(columnWidth),
   processData: () => {

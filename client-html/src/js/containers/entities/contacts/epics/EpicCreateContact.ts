@@ -19,7 +19,7 @@ import { processCustomFields } from "../../customFieldTypes/utils";
 import ContactsService from "../services/ContactsService";
 import { CREATE_CONTACT } from "../actions";
 
-const request: EpicUtils.Request<any, any, Contact> = {
+const request: EpicUtils.Request<any, Contact> = {
   type: CREATE_CONTACT,
   getData: contact => {
     processCustomFields(contact);

@@ -26,7 +26,7 @@ export const contactCertificatesMap = ({ values, id }) => {
   };
 };
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_CONTACT_CERTIFICATES,
   hideLoadIndicator: true,
   getData: contactId => EntityService.getPlainRecords(

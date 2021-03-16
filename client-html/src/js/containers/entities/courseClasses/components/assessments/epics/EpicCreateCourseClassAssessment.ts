@@ -4,14 +4,13 @@
  */
 
 import { Epic } from "redux-observable";
+import { AssessmentClass } from "@api/model";
 import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
-import { State } from "../../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { CREATE_COURSE_CLASS_ASSESSMENT } from "../actions";
 import CourseClassAssessmentService from "../services/CourseClassAssessmentService";
-import { AssessmentClass } from "@api/model";
 
-const request: EpicUtils.Request<any, State, { assessment: AssessmentClass }> = {
+const request: EpicUtils.Request<any, { assessment: AssessmentClass }> = {
   type: CREATE_COURSE_CLASS_ASSESSMENT,
   getData: ({ assessment }) => CourseClassAssessmentService.createCourseClassAssessment(assessment),
   processData: () => [],

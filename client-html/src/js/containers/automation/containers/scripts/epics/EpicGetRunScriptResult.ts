@@ -9,10 +9,7 @@ import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { createAndDownloadFile } from "../../../../../common/utils/common";
-import {
-  GET_RUN_SCRIPT_RESULT,
-  GET_RUN_SCRIPT_RESULT_FULFILLED
-} from "../actions";
+import { GET_RUN_SCRIPT_RESULT, GET_RUN_SCRIPT_RESULT_FULFILLED } from "../actions";
 import ScriptsService from "../services/ScriptsService";
 
 const getExtensionByContentType = contentType => {
@@ -41,7 +38,7 @@ const getExtensionByContentType = contentType => {
   }
 };
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_RUN_SCRIPT_RESULT,
   hideLoadIndicator: true,
   getData: ({ processId }) => ScriptsService.getRunScriptResultResponse(processId),

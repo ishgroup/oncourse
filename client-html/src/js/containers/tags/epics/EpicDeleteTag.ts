@@ -12,7 +12,7 @@ import { DELETE_TAG_REQUEST, DELETE_TAG_REQUEST_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_TAG_REQUEST,
   getData: payload => TagsService.remove(payload.id),
   retrieveData: () => TagsService.getTags(),

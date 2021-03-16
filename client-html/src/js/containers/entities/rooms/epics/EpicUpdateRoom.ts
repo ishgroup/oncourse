@@ -4,14 +4,14 @@
  */
 
 import { Epic } from "redux-observable";
-import {processNotesAsyncQueue} from "../../../../common/components/form/notes/utils";
+import { Room } from "@api/model";
+import { initialize } from "redux-form";
+import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_ROOM_ITEM, UPDATE_ROOM_ITEM, UPDATE_ROOM_ITEM_FULFILLED } from "../actions/index";
-import { Room } from "@api/model";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { initialize } from "redux-form";
-import {executeActionsQueue, FETCH_SUCCESS} from "../../../../common/actions/index";
+import { FETCH_SUCCESS } from "../../../../common/actions/index";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
@@ -19,7 +19,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 let savedID: string;
 let savedItem: Room;
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: UPDATE_ROOM_ITEM,
   getData: payload => {
     savedID = payload.id;
@@ -29,8 +29,7 @@ const request: EpicUtils.Request<any, any, any> = {
     return updateEntityItemById("Room", payload.id, payload.room);
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
-  processData: () => {
-    return [
+  processData: (p, s) => [
       {
         type: UPDATE_ROOM_ITEM_FULFILLED
       },
@@ -42,15 +41,12 @@ const request: EpicUtils.Request<any, any, any> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Room", listUpdate: true, savedID }
       },
-      {
+      ...s.list.fullScreenEditView ? [{
         type: GET_ROOM_ITEM,
         payload: savedID
-      }
-    ];
-  },
-  processError: response => {
-    return [...FetchErrorHandler(response, "Room was not updated"), initialize(LIST_EDIT_VIEW_FORM_NAME, savedItem)];
-  }
+      }] : []
+    ],
+  processError: response => [...FetchErrorHandler(response, "Room was not updated"), initialize(LIST_EDIT_VIEW_FORM_NAME, savedItem)]
 };
 
 export const EpicUpdateRoom: Epic<any, any> = EpicUtils.Create(request);

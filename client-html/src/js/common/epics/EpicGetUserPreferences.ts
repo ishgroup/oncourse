@@ -5,22 +5,20 @@
 
 import { Epic } from "redux-observable";
 
-import * as EpicUtils from "../epics/EpicUtils";
-import { GET_USER_PREFERENCES, GET_USER_PREFERENCES_FULFILLED } from "../actions";
 import { PreferenceEnum } from "@api/model";
+import * as EpicUtils from "./EpicUtils";
+import { GET_USER_PREFERENCES, GET_USER_PREFERENCES_FULFILLED } from "../actions";
 import UserPreferenceService from "../services/UserPreferenceService";
 
-const request: EpicUtils.Request<{ [key: string]: string }, any, PreferenceEnum[]> = {
+const request: EpicUtils.Request<{ [key: string]: string }, PreferenceEnum[]> = {
   type: GET_USER_PREFERENCES,
   getData: keys => UserPreferenceService.getUserPreferencesByKeys(keys),
-  processData: preferences => {
-    return [
+  processData: preferences => [
       {
         type: GET_USER_PREFERENCES_FULFILLED,
         payload: { preferences }
       }
-    ];
-  }
+    ]
 };
 
 export const EpicGetUserPreferences: Epic<any, any> = EpicUtils.Create(request);

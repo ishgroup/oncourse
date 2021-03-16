@@ -11,7 +11,7 @@ import ExportService from "../services/ExportService";
 import { getExportResult, POST_EXPORT_REQUEST } from "../actions";
 import { START_PROCESS, UPDATE_PROCESS } from "../../../../../actions";
 
-const request: EpicUtils.Request<any, any, { exportRequest: ExportRequest; outputType: OutputType, isClipboard: boolean }> = {
+const request: EpicUtils.Request<any, { exportRequest: ExportRequest; outputType: OutputType, isClipboard: boolean }> = {
   type: POST_EXPORT_REQUEST,
   hideLoadIndicator: true,
   getData: ({ exportRequest }) => ExportService.runExport(exportRequest),

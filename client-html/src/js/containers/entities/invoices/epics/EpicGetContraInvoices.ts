@@ -14,7 +14,7 @@ import { initialize } from "redux-form";
 
 let savedInvoiceToContra: ContraInvoiceFormData;
 
-const request: EpicUtils.Request<any, any, ContraInvoiceFormData> = {
+const request: EpicUtils.Request<any,  ContraInvoiceFormData> = {
   type: GET_CONTRA_INVOICES,
   hideLoadIndicator: true,
   getData: invoiceToContra => {

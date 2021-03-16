@@ -13,7 +13,7 @@ import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { GET_API_TOKENS_REQUEST } from "../../../actions";
 import ApiTokensService from "../services/ApiTokensService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_API_TOKENS_REQUEST,
   getData: () => ApiTokensService.getTokens(),
   processData: (tokens: ApiToken[]) => [initialize("ApiTokensForm", { tokens })]

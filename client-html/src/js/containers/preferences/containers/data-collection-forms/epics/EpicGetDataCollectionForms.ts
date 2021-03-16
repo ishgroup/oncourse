@@ -7,9 +7,9 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../services/PreferencesService";
-import { GET_DATA_COLLECTION_FORMS_REQUEST, GET_DATA_COLLECTION_FORMS_FULFILLED } from "../../../actions";
+import { GET_DATA_COLLECTION_FORMS_FULFILLED, GET_DATA_COLLECTION_FORMS_REQUEST } from "../../../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_DATA_COLLECTION_FORMS_REQUEST,
   getData: () => PreferencesService.getDataCollectionForms(),
   processData: dataCollectionForms => {

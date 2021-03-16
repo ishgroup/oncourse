@@ -7,15 +7,14 @@ import { Epic } from "redux-observable";
 
 import * as _ from "lodash";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { DELETE_TUTOR_ROLE_REQUEST, DELETE_TUTOR_ROLE_FULFILLED, GET_TUTOR_ROLES_REQUEST } from "../../../actions";
+import { DELETE_TUTOR_ROLE_FULFILLED, DELETE_TUTOR_ROLE_REQUEST, GET_TUTOR_ROLES_REQUEST } from "../../../actions";
 import PreferencesService from "../../../services/PreferencesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import history from "../../../../../constants/History";
 import { DefinedTutorRole } from "@api/model";
 
-const request: EpicUtils.Request<any, State, { id: number; tutorRoles: DefinedTutorRole[] }> = {
+const request: EpicUtils.Request<any,  { id: number; tutorRoles: DefinedTutorRole[] }> = {
   type: DELETE_TUTOR_ROLE_REQUEST,
   getData: ({ id }) => PreferencesService.removeTutorRole(id),
   processData: (v, s, p) => {

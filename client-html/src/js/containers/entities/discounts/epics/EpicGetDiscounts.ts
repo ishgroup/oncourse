@@ -8,9 +8,9 @@ import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { GET_DISCOUNTS, GET_DISCOUNTS_FULFILLED } from "../actions";
-import { Discount, DataResponse } from "@api/model";
+import { DataResponse, Discount } from "@api/model";
 
-const request: EpicUtils.Request<any, any, string> = {
+const request: EpicUtils.Request<any,string> = {
   type: GET_DISCOUNTS,
   getData: payload => {
     return EntityService.getPlainRecords(

@@ -10,7 +10,7 @@ import EntityService from "../../../../common/services/EntityService";
 import { transformDataType } from "../../common/utils";
 import { GET_CUSTOM_FIELD_TYPES, GET_CUSTOM_FIELD_TYPES_FULFILLED } from "../actions";
 
-const request: EpicUtils.Request<any, any, string> = {
+const request: EpicUtils.Request<any, string> = {
   type: GET_CUSTOM_FIELD_TYPES,
   getData: entity => EntityService.getPlainRecords(
       "CustomFieldType",

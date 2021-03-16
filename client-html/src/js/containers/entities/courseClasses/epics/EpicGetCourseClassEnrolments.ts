@@ -10,7 +10,7 @@ import { GET_COURSE_CLASS_ENROLMENTS, setCourseClassEnrolments } from "../action
 import EntityService from "../../../../common/services/EntityService";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: GET_COURSE_CLASS_ENROLMENTS,
   hideLoadIndicator: true,
   getData: id => EntityService.getPlainRecords(

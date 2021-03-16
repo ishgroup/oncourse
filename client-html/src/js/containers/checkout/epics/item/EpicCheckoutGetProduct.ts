@@ -12,7 +12,7 @@ import { CHECKOUT_GET_ITEM_PRODUCT, CHECKOUT_GET_ITEM_PRODUCT_FULFILLED } from "
 import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from "../../components/items/components/CkecoutItemViewForm";
 import { ArticleProduct } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CHECKOUT_GET_ITEM_PRODUCT,
   getData: (id: number) => getEntityItemById("ArticleProduct", id),
   processData: (memberShipProduct: ArticleProduct) => {

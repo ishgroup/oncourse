@@ -7,15 +7,11 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import LoginService from "../services/LoginService";
-import {
-  FETCH_SUCCESS,
-  POST_CREATE_PASSWORD_REQUEST,
-  POST_CREATE_PASSWORD_FULFILLED,
-} from "../../../common/actions";
+import { FETCH_SUCCESS, POST_CREATE_PASSWORD_FULFILLED, POST_CREATE_PASSWORD_REQUEST, } from "../../../common/actions";
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
 import history from "../../../constants/History";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: POST_CREATE_PASSWORD_REQUEST,
   getData: payload => LoginService.createPasswordByToken(payload.token, payload.password),
   processData: () => {

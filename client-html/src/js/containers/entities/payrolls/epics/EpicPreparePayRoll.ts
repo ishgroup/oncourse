@@ -13,7 +13,7 @@ import { initialize } from "redux-form";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { PAYSLIP_GENERATE_FORM } from "../../payslips/components/PayslipGenerateDialog";
 
-const request: EpicUtils.Request<any, any, { entity: string; payrollRequest: PayrollRequest }> = {
+const request: EpicUtils.Request<any, { entity: string; payrollRequest: PayrollRequest }> = {
   type: PREPARE_PAYROLL,
   getData: ({ entity, payrollRequest }) => PayrollService.prepare(entity, payrollRequest),
   processData: (preparedWages: WagesToProcess, state, { payrollRequest }) => {

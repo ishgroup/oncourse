@@ -19,7 +19,7 @@ import {
 import WaitingListService from "../services/WaitingListService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { waitingList: WaitingList }> = {
+const request: EpicUtils.Request<any, { waitingList: WaitingList }> = {
   type: CREATE_WAITING_LIST_ITEM,
   getData: ({ waitingList }) => {
     processCustomFields(waitingList);
