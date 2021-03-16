@@ -33,7 +33,7 @@ const AssessmentSubmissionGeneralTab = props => {
     <Grid container className="pt-3 pl-3 pr-3">
       <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
-          label="Student Name"
+          label="Student name"
           name="studentName"
           type="text"
           placeholder={twoColumn ? "Name" : undefined}
@@ -43,7 +43,7 @@ const AssessmentSubmissionGeneralTab = props => {
       </Grid>
       <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
-          label="Class Name"
+          label="Class name"
           name="courseClassName"
           type="text"
           placeholder={twoColumn ? "Class Name" : undefined}
@@ -53,7 +53,7 @@ const AssessmentSubmissionGeneralTab = props => {
       </Grid>
       <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
-          label="Assessmment Name"
+          label="Assessmment name"
           name="assessment"
           type="text"
           placeholder={twoColumn ? "Assessmment Name" : undefined}
@@ -98,7 +98,7 @@ const AssessmentSubmissionGeneralTab = props => {
       <Grid container>
         <Grid item xs={twoColumn ? 4 : 12}>
           <FormField
-            label="Submitted On"
+            label="Submitted on"
             name="submittedOn"
             type="date"
             placeholder={twoColumn ? "Submitted On" : undefined}
@@ -109,7 +109,7 @@ const AssessmentSubmissionGeneralTab = props => {
         <Grid item xs={twoColumn ? 4 : 12}>
           {values.markedOn && (
           <FormField
-            label="Marked On"
+            label="Marked on"
             name="markedOn"
             type="date"
             placeholder={twoColumn ? "Marked On" : undefined}
