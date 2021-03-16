@@ -27,7 +27,7 @@ import { accountLabelCondition } from "../../accounts/utils";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getDiscountAmountExTax } from "../../discounts/utils";
 
 const calculateInvoiceLineTotal = (
@@ -329,7 +329,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           discountValue: parseFloat(discountDollar)
         },
         taxes.find(t => t.id === row.taxId),
-        row.total || 0
+        decimalPlus(row.priceEachExTax, decimalMul(row.taxEach, row.quantity || 1))
       )
     ));
   };
