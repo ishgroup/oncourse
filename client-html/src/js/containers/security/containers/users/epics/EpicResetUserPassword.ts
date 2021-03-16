@@ -13,7 +13,7 @@ import { showMessage } from "../../../../../common/actions";
 import { POST_USER_REQUEST_FULFILLED, RESET_USER_PASSWORD } from "../../../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
     type: RESET_USER_PASSWORD,
     hideLoadIndicator: true,
     getData: (id: number) => UserService.resetPassword(id),

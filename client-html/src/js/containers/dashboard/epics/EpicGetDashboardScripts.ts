@@ -4,16 +4,13 @@
  */
 
 import { Epic } from "redux-observable";
-import {
- Column, DataResponse, DataRow, Script
-} from "@api/model";
+import { Column, DataResponse, DataRow, Script } from "@api/model";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { GET_ON_DEMAND_SCRIPTS, GET_ON_DEMAND_SCRIPTS_FULFILLED } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../common/services/EntityService";
-import { State } from "../../../reducers/state";
 
-const request: EpicUtils.Request<any, State, any> = {
+const request: EpicUtils.Request<any, any> = {
   type: GET_ON_DEMAND_SCRIPTS,
   getData: () => EntityService.getRecords(
     "Script",

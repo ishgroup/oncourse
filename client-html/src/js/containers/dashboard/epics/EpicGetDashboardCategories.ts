@@ -12,7 +12,7 @@ import { getMainRouteUrl } from "../../../routes/routesMapping";
 import UserPreferenceService from "../../../common/services/UserPreferenceService";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_DASHBOARD_CATEGORIES,
   getData: () => UserPreferenceService.getCategories(),
   processData: (links: DashboardLinks) => {

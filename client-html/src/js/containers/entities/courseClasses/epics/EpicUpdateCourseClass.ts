@@ -15,11 +15,10 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import { processCustomFields } from "../../customFieldTypes/utils";
 import { GET_COURSE_CLASS, UPDATE_COURSE_CLASS } from "../actions";
 import CourseClassService from "../services/CourseClassService";
-import { State } from "../../../../reducers/state";
 import { QueuedAction } from "../../../../model/common/ActionsQueue";
 import { processCourseClassApiActions } from "../utils";
 
-const request: EpicUtils.Request<any, State, { id: number; courseClass: CourseClass }> = {
+const request: EpicUtils.Request<any, { id: number; courseClass: CourseClass }> = {
   type: UPDATE_COURSE_CLASS,
   getData: ({ id, courseClass }) => {
     processCustomFields(courseClass);
@@ -30,7 +29,6 @@ const request: EpicUtils.Request<any, State, { id: number; courseClass: CourseCl
       const syncActions = actions.filter(a => a.entity !== "Note");
       const noteActions = actions.filter(a => a.entity === "Note");
       await processNotesAsyncQueue(noteActions);
-
       return syncActions;
     }),
   processData: (actions: QueuedAction[], s, { id }) => [
@@ -43,10 +41,10 @@ const request: EpicUtils.Request<any, State, { id: number; courseClass: CourseCl
         type: GET_RECORDS_REQUEST,
         payload: { entity: "CourseClass", listUpdate: true, ignoreSelection: true }
       },
-      {
+      ...s.list.fullScreenEditView ? [{
         type: GET_COURSE_CLASS,
         payload: id
-      },
+      }] : [],
       clearActionsQueue()
     ],
   processError: response => [...FetchErrorHandler(response, "Class was not updated"), reset(LIST_EDIT_VIEW_FORM_NAME)]

@@ -5,13 +5,13 @@
 
 import { Epic } from "redux-observable";
 
+import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import ContactsService from "../services/ContactsService";
 import { GET_MERGE_CONTACTS, GET_MERGE_CONTACTS_FULFILLED } from "../actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { initialize } from "redux-form";
 
-const request: EpicUtils.Request<any, any, { contactA: string; contactB: string }> = {
+const request: EpicUtils.Request<any, { contactA: string; contactB: string }> = {
   type: GET_MERGE_CONTACTS,
   getData: ({ contactA, contactB }) => ContactsService.getMergeData(contactA, contactB),
   processData: (mergeData, s, { contactA, contactB }) => [

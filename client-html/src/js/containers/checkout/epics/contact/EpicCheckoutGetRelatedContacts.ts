@@ -8,8 +8,7 @@ import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { getCustomColumnsMap } from "../../../../common/utils/common";
-import { State } from "../../../../reducers/state";
-import {CHECKOUT_GET_RELATED_CONTACT, CHECKOUT_GET_RELATED_CONTACT_FULFILLED} from "../../actions/checkoutContact";
+import { CHECKOUT_GET_RELATED_CONTACT, CHECKOUT_GET_RELATED_CONTACT_FULFILLED } from "../../actions/checkoutContact";
 
 const defaultContactMap = ({ id, values }) => ({
   id: Number(id),
@@ -22,13 +21,13 @@ const defaultContactMap = ({ id, values }) => ({
 
 const request: EpicUtils.Request<
   DataResponse,
-  State,
   { search?: string; columns?: string; ascending?: boolean; sort?: string }
   > = {
   type: CHECKOUT_GET_RELATED_CONTACT,
   hideLoadIndicator: true,
-  getData: ({ search, columns, ascending, sort }) => {
-    return EntityService.getPlainRecords(
+  getData: ({
+ search, columns, ascending, sort
+}) => EntityService.getPlainRecords(
       "Contact",
       columns || "firstName,lastName,email,birthDate",
       search,
@@ -36,8 +35,7 @@ const request: EpicUtils.Request<
       0,
       sort,
       ascending
-    );
-  },
+    ),
   processData: (records, s, { columns }) => {
     const { rows } = records;
     const relatedContacts: Contact[] = rows.map(columns ? getCustomColumnsMap(columns) : defaultContactMap);

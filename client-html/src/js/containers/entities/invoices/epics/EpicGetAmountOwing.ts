@@ -6,12 +6,12 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_CONTRA_INVOICES, GET_AMOUNT_OWING_FULFILLED, GET_AMOUNT_OWING } from "../actions";
+import { GET_AMOUNT_OWING, GET_AMOUNT_OWING_FULFILLED, GET_CONTRA_INVOICES } from "../actions";
 import { DataResponse } from "@api/model";
 import EntityService from "../../../../common/services/EntityService";
 import { ContraInvoiceFormData } from "../reducers/state";
 
-const request: EpicUtils.Request<any, any, number> = {
+const request: EpicUtils.Request<any,  number> = {
   type: GET_AMOUNT_OWING,
   hideLoadIndicator: true,
   getData: invoiceId => {

@@ -6,9 +6,7 @@
 import { Epic } from "redux-observable";
 
 import { initialize } from "redux-form";
-import {
- Banking, Payment, PrintRequest, Report 
-} from "@api/model";
+import { Banking, Payment } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import BankingService from "../services/BankingService";
 import { CREATE_BANKING_ITEM, CREATE_BANKING_ITEM_FULFILLED } from "../actions";
@@ -19,12 +17,10 @@ import {
   GET_RECORDS_REQUEST,
   setListSelection
 } from "../../../../common/components/list-view/actions";
-import { doPrintRequest } from "../../../../common/components/list-view/components/share/actions";
-import { BankingReport, PaymentInType, PaymentOutType } from "../consts";
-import { State } from "../../../../reducers/state";
+import { PaymentInType, PaymentOutType } from "../consts";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, State, any> = {
+const request: EpicUtils.Request<any, any> = {
   type: CREATE_BANKING_ITEM,
   getData: payload => BankingService.createBanking(payload.banking),
   processData: (value, state, payload) => {

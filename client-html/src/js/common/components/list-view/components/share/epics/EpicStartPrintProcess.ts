@@ -7,12 +7,10 @@ import { Epic } from "redux-observable";
 import { stopSubmit } from "redux-form";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import PdfService from "../../../../../../containers/automation/containers/pdf-reports/services/PdfService";
-import {
- DO_PRINT_REQUEST, DO_PRINT_REQUEST_FULFILLED, GET_PDF_REPORTS, GET_PRINT_RESULT 
-} from "../actions";
+import { DO_PRINT_REQUEST, DO_PRINT_REQUEST_FULFILLED, GET_PDF_REPORTS, GET_PRINT_RESULT } from "../actions";
 import { START_PROCESS, UPDATE_PROCESS } from "../../../../../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DO_PRINT_REQUEST,
   hideLoadIndicator: true,
   getData: payload => PdfService.doPrint(payload.rootEntity, payload.printRequest),

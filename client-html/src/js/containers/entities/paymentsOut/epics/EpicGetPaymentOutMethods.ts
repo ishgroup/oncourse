@@ -3,7 +3,7 @@ import { GET_ACTIVE_PAYMENT_OUT_METHODS, GET_ACTIVE_PAYMENT_OUT_METHODS_FULFILLE
 import { Epic } from "redux-observable";
 import PreferencesService from "../../../preferences/services/PreferencesService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ACTIVE_PAYMENT_OUT_METHODS,
   getData: () => PreferencesService.getPaymentTypes(),
   processData: (paymentMethods: any, state: any, payload) => {

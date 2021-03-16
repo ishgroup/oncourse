@@ -12,7 +12,7 @@ import { FETCH_SUCCESS } from "../../../../../common/actions";
 import { UPDATE_CUSTOM_FIELDS_FULFILLED, UPDATE_CUSTOM_FIELDS_REQUEST } from "../../../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: UPDATE_CUSTOM_FIELDS_REQUEST,
   getData: payload => {
     payload.customFields.forEach(cc => {

@@ -14,7 +14,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import membershipProductService from "../services/MembershipProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_MEMBERSHIP_PRODUCT_ITEM,
   getData: (id: number) => membershipProductService.getMembershipProduct(id),
   processData: (membershipProduct: MembershipProduct) => {

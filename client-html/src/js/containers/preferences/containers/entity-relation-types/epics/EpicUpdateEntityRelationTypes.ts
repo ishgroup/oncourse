@@ -12,7 +12,7 @@ import { UPDATE_ENTITY_RELATION_TYPES_FULFILLED, UPDATE_ENTITY_RELATION_TYPES_RE
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { EntityRelationType } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
     type: UPDATE_ENTITY_RELATION_TYPES_REQUEST,
     getData: payload => PreferencesService.updateEntityRelationTypes(payload.entityRelationTypes),
     retrieveData: () => PreferencesService.getEntityRelationTypes(),

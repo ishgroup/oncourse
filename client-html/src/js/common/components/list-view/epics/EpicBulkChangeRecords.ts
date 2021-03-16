@@ -10,7 +10,6 @@ import CourseClassService from "../../../../containers/entities/courseClasses/se
 import CourseService from "../../../../containers/entities/courses/services/CourseService";
 import EnrolmentService from "../../../../containers/entities/enrolments/services/EnrolmentService";
 import OutcomeService from "../../../../containers/entities/outcomes/services/OutcomeService";
-import { State } from "../../../../reducers/state";
 import { FETCH_SUCCESS } from "../../../actions";
 import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../epics/EpicUtils";
@@ -45,7 +44,7 @@ const getBulkRequest = (entity: EntityName, diff: Diff): Promise<any> => {
   }
 };
 
-const request: EpicUtils.Request<any, State, { entity: EntityName, diff: Diff }> = {
+const request: EpicUtils.Request<any, { entity: EntityName, diff: Diff }> = {
   type: BULK_CHANGE_RECORDS,
   getData: ({ entity, diff }) => getBulkRequest(entity, diff),
   processData: (v, s, { entity }) => [

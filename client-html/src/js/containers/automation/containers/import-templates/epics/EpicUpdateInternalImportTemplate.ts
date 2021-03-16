@@ -5,6 +5,7 @@
 
 import { Epic } from "redux-observable";
 
+import { ImportModel } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import {
   GET_IMPORT_TEMPLATE,
@@ -12,17 +13,14 @@ import {
   UPDATE_INTERNAL_IMPORT_TEMPLATE,
   UPDATE_INTERNAL_IMPORT_TEMPLATE_FULFILLED
 } from "../actions/index";
-import { ImportModel } from "@api/model";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ImportTemplatesService from "../services/ImportTemplatesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
-import { State } from "../../../../../reducers/state";
 
-const request: EpicUtils.Request<State, any, { importTemplate: ImportModel }> = {
+const request: EpicUtils.Request< { importTemplate: ImportModel }, { importTemplate: ImportModel }> = {
   type: UPDATE_INTERNAL_IMPORT_TEMPLATE,
   getData: ({ importTemplate }) => ImportTemplatesService.updateInternal(importTemplate),
-  processData: (v, s, { importTemplate: { id } }) => {
-    return [
+  processData: (v, s, { importTemplate: { id } }) => [
       {
         type: UPDATE_INTERNAL_IMPORT_TEMPLATE_FULFILLED
       },
@@ -37,8 +35,7 @@ const request: EpicUtils.Request<State, any, { importTemplate: ImportModel }> = 
         type: FETCH_SUCCESS,
         payload: { message: "Import template updated" }
       }
-    ];
-  },
+    ],
   processError: response => FetchErrorHandler(response, "Failed to update  import template")
 };
 

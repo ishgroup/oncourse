@@ -14,7 +14,7 @@ import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/act
 import { RESTORE_DOCUMENT } from "../actions";
 import { showMessage } from "../../../../common/actions";
 
-const request: EpicUtils.Request<any, any, Diff> = {
+const request: EpicUtils.Request<any, Diff> = {
   type: RESTORE_DOCUMENT,
   hideLoadIndicator: true,
   getData: diff => DocumentsService.bulkChange(diff),

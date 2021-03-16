@@ -4,14 +4,13 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../epics/EpicUtils";
 import { Note } from "@api/model";
-import { State } from "../../../../../reducers/state";
+import * as EpicUtils from "../../../../epics/EpicUtils";
 import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
 import { PUT_NOTE_ITEM } from "../actions";
 import NotesService from "../services/NotesService";
 
-const request: EpicUtils.Request<any, State, { note: Note }> = {
+const request: EpicUtils.Request<any, { note: Note }> = {
   type: PUT_NOTE_ITEM,
   hideLoadIndicator: true,
   getData: ({ note }) => NotesService.update(note.id, note),

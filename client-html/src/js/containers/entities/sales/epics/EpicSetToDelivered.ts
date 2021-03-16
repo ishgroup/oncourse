@@ -14,7 +14,7 @@ import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/act
 import { updateEntityItemById } from "../../common/entityItemsService";
 import SaleService from "../services/SaleService";
 
-const request: EpicUtils.Request<any, any, { id: number }> = {
+const request: EpicUtils.Request<any, { id: number }> = {
   type: SET_SALE_DELIVERED,
   getData: ({ id }) =>
     SaleService.getSale(id).then((productItem: ProductItem) => {

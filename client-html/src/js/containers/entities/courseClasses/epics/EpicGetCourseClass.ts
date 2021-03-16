@@ -5,7 +5,6 @@
 
 import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
-import { State } from "../../../../reducers/state";
 import { CourseClassExtended } from "../../../../model/entities/CourseClass";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { courseClassBudgetPath, plainEnrolmentPath } from "../../../../constants/Api";
@@ -22,7 +21,7 @@ import { getEntityItemById } from "../../common/entityItemsService";
 import { clearActionsQueue } from "../../../../common/actions";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
 
-const request: EpicUtils.Request<any, State, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: GET_COURSE_CLASS,
   hideLoadIndicator: true,
   getData: id => getEntityItemById("CourseClass", id),

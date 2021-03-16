@@ -13,7 +13,7 @@ import {
 } from "../actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
-import { DataResponse, Account, AccountType, Tax } from "@api/model";
+import { Account, AccountType, DataResponse, Tax } from "@api/model";
 
 const parseResponse = (records: DataResponse) => {
   const items: Account[] = [];
@@ -41,7 +41,7 @@ const makeRequest = (type: number) => {
   );
 };
 
-const incomeRequest: EpicUtils.Request<any, any, any> = {
+const incomeRequest: EpicUtils.Request = {
   type: GET_INCOME_ACCOUNTS,
   getData: () => makeRequest(4),
   processData: (records: DataResponse) => {
@@ -54,7 +54,7 @@ const incomeRequest: EpicUtils.Request<any, any, any> = {
   }
 };
 
-const liabilityRequest: EpicUtils.Request<any, any, any> = {
+const liabilityRequest: EpicUtils.Request = {
   type: GET_LIABILITY_ACCOUNTS,
   getData: () => makeRequest(2),
   processData: (records: DataResponse) => {

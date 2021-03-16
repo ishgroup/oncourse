@@ -6,14 +6,14 @@
 import { Epic } from "redux-observable";
 
 import { change } from "redux-form";
+import { DataResponse, ReportOverlay } from "@api/model";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import { GET_OVERLAY_ITEMS, GET_OVERLAY_ITEMS_FULFILLED } from "../actions";
-import { DataResponse, ReportOverlay } from "@api/model";
 import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../../../services/EntityService";
 import { CommonListItem } from "../../../../../../model/common/sidebar";
 
-const request: EpicUtils.Request<any, any, { overlayToSelect?: string }> = {
+const request: EpicUtils.Request<any, { overlayToSelect?: string }> = {
   type: GET_OVERLAY_ITEMS,
   getData: () => EntityService.getPlainRecords("ReportOverlay", "name", null, null, null, "name", true),
   processData: (response: DataResponse, s, p) => {

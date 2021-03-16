@@ -7,16 +7,15 @@ import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import {
-  UPDATE_SCRIPT_ENTITY_REQUEST,
-  UPDATE_SCRIPT_ENTITY_REQUEST_FULFILLED,
   GET_SCRIPT_ENTITY_REQUEST,
-  GET_SCRIPTS_LIST
+  GET_SCRIPTS_LIST,
+  UPDATE_SCRIPT_ENTITY_REQUEST,
+  UPDATE_SCRIPT_ENTITY_REQUEST_FULFILLED
 } from "../actions";
 import { updateEntityItemById, updateEntityItemByIdErrorHandler } from "../../../../entities/common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../common/components/list-view/constants";
-import { State } from "../../../../../reducers/state";
 
-const request: EpicUtils.Request<any, State, any> = {
+const request: EpicUtils.Request<any, any> = {
   type: UPDATE_SCRIPT_ENTITY_REQUEST,
   getData: ({ id, script, method }) => updateEntityItemById("Script", id, script, method),
   processData: (v, s, { id }) => [

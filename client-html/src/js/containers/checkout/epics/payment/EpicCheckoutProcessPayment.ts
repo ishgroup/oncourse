@@ -8,7 +8,6 @@ import { Epic } from "redux-observable";
 import { CheckoutResponse } from "@api/model";
 import { SHOW_MESSAGE } from "../../../../common/actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { State } from "../../../../reducers/state";
 import {
   CHECKOUT_EMPTY_PAYMENT_ACTION,
   CHECKOUT_PROCESS_PAYMENT,
@@ -23,7 +22,7 @@ import CheckoutService from "../../services/CheckoutService";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getCheckoutModel } from "../../utils";
 
-const request: EpicUtils.Request<any, State, { xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string }> = {
+const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string }> = {
   type: CHECKOUT_PROCESS_PAYMENT,
   getData: ({
   xValidateOnly, xPaymentSessionId, xOrigin

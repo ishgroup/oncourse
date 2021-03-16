@@ -8,13 +8,12 @@ import { Epic } from "redux-observable";
 import { ImportModel } from "@api/model";
 import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_IMPORT_TEMPLATE, GET_IMPORT_TEMPLATE_FULFILLED } from "../actions";
 import ImportTemplatesService from "../services/ImportTemplatesService";
 import { IMPORT_TEMPLATES_FORM_NAME } from "../ImportTemplates";
 
-const request: EpicUtils.Request<ImportModel, State, number> = {
+const request: EpicUtils.Request<ImportModel, number> = {
   type: GET_IMPORT_TEMPLATE,
   getData: id => ImportTemplatesService.get(id),
   processData: editRecord => [

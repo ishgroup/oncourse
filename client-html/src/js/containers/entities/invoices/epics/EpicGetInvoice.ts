@@ -16,7 +16,7 @@ import InvoiceService from "../services/InvoiceService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { getInvoiceClosestPaymentDueDate, sortInvoicePaymentPlans } from "../utils";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_INVOICE_ITEM,
   getData: (id: number) => InvoiceService.getInvoice(id),
   processData: (invoice: Invoice, s, id) => {

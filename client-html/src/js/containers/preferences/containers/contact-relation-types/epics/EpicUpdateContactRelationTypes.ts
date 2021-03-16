@@ -12,7 +12,7 @@ import { UPDATE_CONTACT_RELATION_TYPES_FULFILLED, UPDATE_CONTACT_RELATION_TYPES_
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { ContactRelationType } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: UPDATE_CONTACT_RELATION_TYPES_REQUEST,
   getData: payload => PreferencesService.updateContactRelationTypes(payload.contactRelationTypes),
   retrieveData: () => PreferencesService.getContactRelationTypes(),

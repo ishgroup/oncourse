@@ -10,7 +10,7 @@ import { GET_INVOICE_LINE_ENROLMENTS, SET_INVOICE_LINE_ENROLMENTS } from "../act
 import { DataResponse } from "@api/model";
 import EntityService from "../../../../common/services/EntityService";
 
-const request: EpicUtils.Request<any, any, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: GET_INVOICE_LINE_ENROLMENTS,
   hideLoadIndicator: true,
   getData: courseClassId =>

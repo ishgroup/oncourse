@@ -17,14 +17,11 @@ import { PayrollRequest } from "@api/model";
 import PayrollService from "../services/PayrollService";
 import { SHOW_MESSAGE, START_PROCESS } from "../../../../common/actions";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
-import { State } from "../../../../reducers/state";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { format } from "date-fns";
-import { DD_MM_YYYY_SLASHED_HH_MM_COLONED } from "../../../../common/utils/dates/format";
 
 let maxPayslipId;
 
-const request: EpicUtils.Request<any, State, { entity: string; confirm: boolean; payrollRequest: PayrollRequest }> = {
+const request: EpicUtils.Request<any, { entity: string; confirm: boolean; payrollRequest: PayrollRequest }> = {
   type: EXECUTE_PAYROLL,
   getData: ({ entity, confirm, payrollRequest }) => {
     if (entity === "Payslip") {

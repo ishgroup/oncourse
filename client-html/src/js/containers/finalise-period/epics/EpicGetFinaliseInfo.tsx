@@ -12,7 +12,7 @@ import { FinalisePeriodInfo } from "@api/model";
 import { initialize } from "redux-form";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: Request<any, any, any> = {
+const request: Request = {
   type: GET_FINALISE_INFO,
   getData: (lockDate: string) => FinaliseService.getInfo(lockDate),
   processData: (info: FinalisePeriodInfo) => {

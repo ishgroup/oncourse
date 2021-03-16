@@ -13,7 +13,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 
 import PaymentOutService from "../services/PaymentOutService";
 
-const request: EpicUtils.Request<any, any, { paymentOut: PaymentOut }> = {
+const request: EpicUtils.Request<any, { paymentOut: PaymentOut }> = {
   type: POST_PAYMENT_OUT_ITEM,
   getData: ({ paymentOut }) => PaymentOutService.postPaymentOut(paymentOut),
   processData: () => {

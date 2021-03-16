@@ -12,7 +12,7 @@ import { getEntityItemById } from "../../../entities/common/entityItemsService";
 import { CHECKOUT_GET_ITEM_MEMBERSHIP, CHECKOUT_GET_ITEM_MEMBERSHIP_FULFILLED } from "../../actions/chekoutItem";
 import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from "../../components/items/components/CkecoutItemViewForm";
 
-const request: EpicUtils.Request<any, any, CheckoutItem> = {
+const request: EpicUtils.Request<any, CheckoutItem> = {
   type: CHECKOUT_GET_ITEM_MEMBERSHIP,
   getData: ({ id }) => getEntityItemById("MembershipProduct", id),
   processData: (memberShipProduct: any, s, item) => {

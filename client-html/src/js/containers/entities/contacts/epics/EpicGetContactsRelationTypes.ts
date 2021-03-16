@@ -10,7 +10,7 @@ import { ContactRelationType } from "@api/model";
 import { GET_CONTACTS_RELATION_TYPES, GET_CONTACTS_RELATION_TYPES_FULFILLED } from "../actions";
 import ContactsService from "../services/ContactsService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_CONTACTS_RELATION_TYPES,
   getData: () => ContactsService.getContactsRelationTypes(),
   processData: (items: ContactRelationType[]) => {

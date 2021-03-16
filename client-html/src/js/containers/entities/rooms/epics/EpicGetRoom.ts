@@ -6,7 +6,7 @@
 import { Epic } from "redux-observable";
 import { Room } from "@api/model";
 import { initialize } from "redux-form";
-import {clearActionsQueue} from "../../../../common/actions";
+import { clearActionsQueue } from "../../../../common/actions";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_ROOM_ITEM, GET_ROOM_ITEM_FULFILLED } from "../actions";
@@ -15,7 +15,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { getEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ROOM_ITEM,
   getData: (id: number) => getEntityItemById("Room", id),
   processData: (room: Room, s, id) => [

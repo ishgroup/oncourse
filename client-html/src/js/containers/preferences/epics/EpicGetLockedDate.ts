@@ -9,7 +9,7 @@ import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { GET_ACCOUNT_TRANSACTION_LOCKED_DATE, GET_ACCOUNT_TRANSACTION_LOCKED_DATE_FULFILLED } from "../actions";
 import PreferencesService from "../services/PreferencesService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ACCOUNT_TRANSACTION_LOCKED_DATE,
   getData: () => {
     return PreferencesService.getLockedDate();

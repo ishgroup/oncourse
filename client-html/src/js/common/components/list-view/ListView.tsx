@@ -7,18 +7,14 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
 import clsx from "clsx";
-import { createStyles, withStyles, ThemeProvider } from "@material-ui/core/styles";
+import { createStyles, ThemeProvider, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  Currency,
-  LayoutType,
-  TableModel,
-  ExportTemplate,
-  Report, Column, SearchQuery
-} from "@api/model";
+import { Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import ErrorOutline from "@material-ui/icons/ErrorOutline";
+import Button from "@material-ui/core/Button";
 import { EntityName } from "../../../containers/automation/constants";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
@@ -34,37 +30,41 @@ import LoadingIndicator from "../layout/LoadingIndicator";
 import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEditView";
 import {
   clearListState,
+  deleteCustomFilter,
+  getListNestedEditRecord,
+  getRecords,
   setFilterGroups,
+  setListColumns,
+  setListCreatingNew,
+  setListEditRecord,
+  setListEditRecordFetching,
+  setListEntity,
+  setListFullScreenEditView,
   setListLayout,
+  setListMenuTags,
   setListSelection,
   setListUserAQLSearch,
-  deleteCustomFilter,
-  setListEditRecord,
-  getListNestedEditRecord,
-  setListMenuTags,
-  setListCreatingNew,
-  setListFullScreenEditView,
-  updateTableModel,
-  getRecords,
-  setListColumns,
-  setSearch, setListEditRecordFetching, setListEntity
+  setSearch,
+  updateTableModel
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
-import {
-  closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm
-} from "../../actions";
+import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
 import { GAEventTypes } from "../google-tag-manager/services/GoogleAnalyticsService";
 import {
- AnyArgFunction, BooleanArgFunction, NoArgFunction, StringArgFunction
+  AnyArgFunction,
+  BooleanArgFunction,
+  NoArgFunction,
+  StringArgFunction
 } from "../../../model/common/CommonFunctions";
 import {
   EditViewContainerProps,
   FilterGroup,
   FindRelatedItem,
-  ListAqlMenuItemsRenderer, ListState
+  ListAqlMenuItemsRenderer,
+  ListState
 } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
 import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
@@ -75,8 +75,6 @@ import { saveCategoryAQLLink } from "../../utils/links";
 import ReactTableList, { ListProps } from "./components/list/ReactTableList";
 import { getActiveTags, getFiltersNameString, getTagsUpdatedByIds } from "./utils/listFiltersUtils";
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
-import ErrorOutline from "@material-ui/icons/ErrorOutline";
-import Button from "@material-ui/core/Button";
 import { LSGetItem } from "../../utils/storage";
 
 export const ListSideBarDefaultWidth = 200;
@@ -313,9 +311,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       creatingNew,
       resetEditView,
       setListUserAQLSearch,
-      isDirty,
-      isInvalid,
-      onSwipeableDrawerDirtyForm,
       setListCreatingNew,
       deleteDisabledCondition,
       menuTagsLoaded,
@@ -461,13 +456,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       this.onQuerySearchChange(records.search);
     }
 
-    // if (
-    //   onSwipeableDrawerDirtyForm && !fullScreenEditView && rootEntity && !fetch.pending
-    //   && records.rows.length && selection.length && resetEditView
-    // ) {
-    //   onSwipeableDrawerDirtyForm(isDirty || (creatingNew && selection[0] === "new"), resetEditView);
-    // }
-
     if (selection.length && selection[0] !== "new" && typeof deleteDisabledCondition === "function") {
       this.updateDeleteCondition(!deleteDisabledCondition(this.props));
     }
@@ -585,7 +573,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     const { threeColumn } = this.state;
 
     if ((isDirty || (creatingNew && selection[0] === "new")) && !this.ignoreCheckDirtyOnSelection) {
-      this.setState({ newSelection })
+      this.setState({ newSelection });
       this.showConfirm(() => {
         this.ignoreCheckDirtyOnSelection = true;
         this.onSelection(newSelection);
@@ -770,11 +758,13 @@ class ListView extends React.PureComponent<Props, ComponentState> {
   };
 
   showConfirm = (handler, confirmMessage?: string, confirmText?: string, ...rest) => {
-    const { closeConfirm, openConfirm, isInvalid, fullScreenEditView, submitForm } = this.props;
+    const {
+ closeConfirm, openConfirm, isInvalid, fullScreenEditView, submitForm
+} = this.props;
 
     const afterSubmitButtonHandler = () => {
-      fullScreenEditView ? this.toggleFullWidthView() : this.onSelection(this.state.newSelection)
-    }
+      fullScreenEditView ? this.toggleFullWidthView() : this.onSelection(this.state.newSelection);
+    };
 
     const confirmButton = (
       <Button
@@ -795,7 +785,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       >
         SAVE
       </Button>
-    )
+    );
 
     if (!confirmMessage && !confirmText) {
       openConfirm(
@@ -974,7 +964,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       if (entityState) {
         for (let i = 0; i < entityState.data.length; i++) {
           if (entityState.data[i].id === customSearch) {
-            saveCategoryAQLLink({AQL: "", id: customSearch, action: "remove"});
+            saveCategoryAQLLink({ AQL: "", id: customSearch, action: "remove" });
             customSearch = entityState.data[i].AQL;
           }
         }
@@ -1220,7 +1210,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
   openNestedEditView: (entity: string, id: number, threeColumn: boolean) => dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
   openConfirm: (onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText, onCancelCustom, confirmCustomComponent) => dispatch(
-    showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText, onCancelCustom, confirmCustomComponent)),
+    showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText, onCancelCustom, confirmCustomComponent)
+),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),

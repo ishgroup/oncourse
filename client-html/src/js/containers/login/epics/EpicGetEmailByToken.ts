@@ -7,15 +7,10 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import LoginService from "../services/LoginService";
-import {
-  FETCH_SUCCESS,
-  GET_EMAIL_BY_TOKEN_REQUEST,
-  GET_EMAIL_BY_TOKEN_FULFILLED,
-} from "../../../common/actions";
-import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
+import { FETCH_SUCCESS, GET_EMAIL_BY_TOKEN_FULFILLED, GET_EMAIL_BY_TOKEN_REQUEST, } from "../../../common/actions";
 import history from "../../../constants/History";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_EMAIL_BY_TOKEN_REQUEST,
   getData: payload => LoginService.getEmailByToken(payload.value),
   processData: (responce: string) => {

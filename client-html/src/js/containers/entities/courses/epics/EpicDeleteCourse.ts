@@ -15,7 +15,7 @@ import CourseService from "../services/CourseService";
 import { DELETE_COURSE } from "../actions";
 import { ENTITY_NAME as CoursesEntity } from "../Courses";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_COURSE,
   getData: id => CourseService.remove(id),
   processData: () => {

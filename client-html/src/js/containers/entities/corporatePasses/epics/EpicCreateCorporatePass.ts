@@ -5,12 +5,12 @@
 
 import { Epic } from "redux-observable";
 
+import { CorporatePass } from "@api/model";
+import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { CREATE_CORPORATE_PASS_ITEM, CREATE_CORPORATE_PASS_ITEM_FULFILLED } from "../actions";
-import { CorporatePass } from "@api/model";
 import CorporatePassService from "../services/CorporatePassService";
 import { FETCH_SUCCESS } from "../../../../common/actions/index";
-import { initialize } from "redux-form";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import {
   clearListNestedEditRecord,
@@ -21,14 +21,13 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 
 let savedItem: CorporatePass;
 
-const request: EpicUtils.Request<any, any, { corporatePass: CorporatePass }> = {
+const request: EpicUtils.Request<any, { corporatePass: CorporatePass }> = {
   type: CREATE_CORPORATE_PASS_ITEM,
   getData: payload => {
     savedItem = payload.corporatePass;
     return CorporatePassService.createCorporatePass(savedItem);
   },
-  processData: () => {
-    return [
+  processData: () => [
       {
         type: CREATE_CORPORATE_PASS_ITEM_FULFILLED
       },
@@ -43,8 +42,7 @@ const request: EpicUtils.Request<any, any, { corporatePass: CorporatePass }> = {
       setListSelection([]),
       clearListNestedEditRecord(0),
       initialize(LIST_EDIT_VIEW_FORM_NAME, null)
-    ];
-  },
+    ],
   processError: response => [
     ...FetchErrorHandler(response, "CorporatePass was not created"),
     initialize(LIST_EDIT_VIEW_FORM_NAME, savedItem)

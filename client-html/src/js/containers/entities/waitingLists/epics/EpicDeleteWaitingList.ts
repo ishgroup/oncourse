@@ -14,7 +14,7 @@ import { initialize } from "redux-form";
 import { GET_RECORDS_REQUEST, setListSelection } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_WAITING_LIST_ITEM,
   getData: (id: number) => WaitingListService.removeWaitingList(id),
   processData: () => {

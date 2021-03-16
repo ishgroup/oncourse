@@ -12,7 +12,7 @@ import { DELETE_CONCESSION_TYPE_FULFILLED, DELETE_CONCESSION_TYPE_REQUEST } from
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { ConcessionType } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_CONCESSION_TYPE_REQUEST,
   getData: payload => PreferencesService.deleteConcessionType(payload.id),
   retrieveData: () => PreferencesService.getConcessionTypes(),

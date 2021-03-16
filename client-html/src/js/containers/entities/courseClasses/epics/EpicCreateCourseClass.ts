@@ -23,7 +23,7 @@ import history from "../../../../constants/History";
 
 let createdClassId = null;
 
-const request: EpicUtils.Request<any, any, { courseClass: CourseClass }> = {
+const request: EpicUtils.Request<any, { courseClass: CourseClass }> = {
   type: CREATE_COURSE_CLASS,
   getData: ({ courseClass }) => {
     processCustomFields(courseClass);

@@ -16,7 +16,7 @@ import { format } from "date-fns";
 import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_BANKING_ITEM,
   getData: (id: number) => BankingService.getBanking(id),
   processData: (banking: Banking) => {

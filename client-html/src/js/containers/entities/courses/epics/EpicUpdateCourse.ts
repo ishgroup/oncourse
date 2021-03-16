@@ -17,7 +17,7 @@ import { processCustomFields } from "../../customFieldTypes/utils";
 import { GET_COURSE, UPDATE_COURSE } from "../actions";
 import { ENTITY_NAME as CoursesEntity } from "../Courses";
 
-const request: EpicUtils.Request<any, any, { id: number; course: Course }> = {
+const request: EpicUtils.Request<any, { id: number; course: Course }> = {
   type: UPDATE_COURSE,
   getData: ({ id, course }) => {
     processCustomFields(course);
@@ -33,10 +33,10 @@ const request: EpicUtils.Request<any, any, { id: number; course: Course }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: CoursesEntity, listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView ? [{
         type: GET_COURSE,
         payload: id
-      }
+      }] : []
     ],
   processError: (response, { course }) => [
       ...FetchErrorHandler(response, `${CoursesEntity} was not updated`),

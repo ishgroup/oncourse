@@ -6,7 +6,7 @@ import EntityService from "../../../../common/services/EntityService";
 
 let formData: PaymentOut;
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ADD_PAYMENT_OUT_VALUES,
   hideLoadIndicator: true,
   getData: contact => {

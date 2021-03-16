@@ -1,7 +1,7 @@
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_VOUCHER_PRODUCT_MIN_MAX_FEE, GET_VOUCHER_PRODUCT_MIN_MAX_FEE_FULFILLED } from "../actions";
 import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { GET_VOUCHER_PRODUCT_MIN_MAX_FEE, GET_VOUCHER_PRODUCT_MIN_MAX_FEE_FULFILLED } from "../actions";
 import EntityService from "../../../../common/services/EntityService";
 
 const getFee = (ids: string, asc: boolean) =>
@@ -17,11 +17,9 @@ const getFee = (ids: string, asc: boolean) =>
 
 const extractFee = (response: DataResponse) => (response.pageSize > 0 ? response.rows[0].values[0] : 0);
 
-const request: EpicUtils.Request<any, any, string> = {
+const request: EpicUtils.Request<any, string> = {
   type: GET_VOUCHER_PRODUCT_MIN_MAX_FEE,
-  getData: ids => {
-    return Promise.all([getFee(ids, true), getFee(ids, false)]);
-  },
+  getData: ids => Promise.all([getFee(ids, true), getFee(ids, false)]),
   processData: (response: DataResponse[]) => {
     const actions = [
       {

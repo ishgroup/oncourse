@@ -10,7 +10,7 @@ import PreferencesService from "../services/PreferencesService";
 import { GET_COUNTRIES_REQUEST, GET_COUNTRIES_REQUEST_FULFILLED } from "../actions";
 import { Country } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_COUNTRIES_REQUEST,
   getData: () => PreferencesService.getCountries(),
   processData: (data: Country[]) => {

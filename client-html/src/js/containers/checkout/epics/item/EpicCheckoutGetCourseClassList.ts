@@ -10,7 +10,7 @@ import { CHECKOUT_GET_COURSE_CLASS_LIST, CHECKOUT_GET_COURSE_CLASS_LIST_FULFILLE
 import { CHECKOUT_COURSE_CLASS_COLUMNS } from "../../constants";
 import { checkoutCourseClassMap } from "../../utils";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CHECKOUT_GET_COURSE_CLASS_LIST,
   getData: ({
     search

@@ -10,7 +10,7 @@ import UserService from "../services/UsersService";
 import { GET_USERS_REQUEST, GET_USERS_REQUEST_FULFILLED } from "../../../actions";
 import { User } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_USERS_REQUEST,
   getData: () => UserService.getUsers(),
   processData: (users: User[]) => {

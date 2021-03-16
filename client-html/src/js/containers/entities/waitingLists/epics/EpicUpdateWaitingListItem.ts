@@ -15,7 +15,7 @@ import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/act
 import WaitingListService from "../services/WaitingListService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { id: number; waitingList: WaitingList }> = {
+const request: EpicUtils.Request<any, { id: number; waitingList: WaitingList }> = {
   type: UPDATE_WAITING_LIST_ITEM,
   getData: ({ id, waitingList }) => {
     processCustomFields(waitingList);
@@ -33,10 +33,10 @@ const request: EpicUtils.Request<any, any, { id: number; waitingList: WaitingLis
       type: GET_RECORDS_REQUEST,
       payload: { entity: "WaitingList", listUpdate: true, savedID: id }
     },
-    {
+    ...s.list.fullScreenEditView ? [{
       type: GET_WAITING_LIST_ITEM,
       payload: id
-    }
+    }] : []
   ],
   processError: (response, { waitingList }) => [
       ...FetchErrorHandler(response, "Waiting List was not updated"),

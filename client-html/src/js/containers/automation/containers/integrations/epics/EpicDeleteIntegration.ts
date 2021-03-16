@@ -10,7 +10,7 @@ import { FETCH_SUCCESS } from "../../../../../common/actions/index";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { DELETE_INTEGRATION_ITEM_REQUEST, getIntegrations } from "../../../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_INTEGRATION_ITEM_REQUEST,
   getData: payload => IntegrationService.deleteIntegrationItem(payload.id),
   processData: () => [

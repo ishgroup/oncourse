@@ -15,14 +15,14 @@ import {
   GET_ASSESSMENT_SUBMISSIONS_ITEM,
   UPDATE_ASSESSMENT_SUBMISSIONS_ITEM,
   UPDATE_ASSESSMENT_SUBMISSIONS_ITEM_FULFILLED
-} from "../actions/index";
-import { FETCH_SUCCESS } from "../../../../common/actions/index";
+} from "../actions";
+import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import AssessmentSubmissionService from "../service/AssessmentSubmissionService";
 
-const request: EpicUtils.Request<any, any, { id: number; assessmentSubmission: AssessmentSubmission & { notes: any } }> = {
+const request: EpicUtils.Request<any, { id: number; assessmentSubmission: AssessmentSubmission & { notes: any } }> = {
   type: UPDATE_ASSESSMENT_SUBMISSIONS_ITEM,
   getData: ({ id, assessmentSubmission }) => {
     delete assessmentSubmission.notes;
@@ -41,10 +41,10 @@ const request: EpicUtils.Request<any, any, { id: number; assessmentSubmission: A
       type: GET_RECORDS_REQUEST,
       payload: { entity: "AssessmentSubmission", listUpdate: true, savedID: id }
     },
-    {
+    ...s.list.fullScreenEditView ? [{
       type: GET_ASSESSMENT_SUBMISSIONS_ITEM,
       payload: id
-    }
+    }] : []
   ],
   processError: (response, { assessmentSubmission }) => (
     [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, assessmentSubmission)]

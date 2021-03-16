@@ -8,11 +8,10 @@ import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../../common/components/list-view/constants";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { State } from "../../../../../../reducers/state";
 import { GET_COURSE_CLASS_ASSESSMENTS } from "../actions";
 import CourseClassAssessmentService from "../services/CourseClassAssessmentService";
 
-const request: EpicUtils.Request<any, State, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: GET_COURSE_CLASS_ASSESSMENTS,
   hideLoadIndicator: true,
   getData: id => CourseClassAssessmentService.getCourseClassAssessments(id),

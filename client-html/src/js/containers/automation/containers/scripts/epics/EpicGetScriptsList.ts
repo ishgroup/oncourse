@@ -8,13 +8,12 @@ import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { GET_SCRIPTS_LIST, GET_SCRIPTS_LIST_FULFILLED } from "../actions/index";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../../../common/services/EntityService";
 import { CommonListItem } from "../../../../../model/common/sidebar";
 import history from "../../../../../constants/History";
 
-const request: EpicUtils.Request<any, State, { nameToSelect: string; selectFirst: boolean }> = {
+const request: EpicUtils.Request<any,{ nameToSelect: string; selectFirst: boolean }> = {
   type: GET_SCRIPTS_LIST,
   getData: () => EntityService.getPlainRecords("Script", "name,enabled,keyCode", null, null, null, "name", true),
   processData: (response: DataResponse, s, p) => {
