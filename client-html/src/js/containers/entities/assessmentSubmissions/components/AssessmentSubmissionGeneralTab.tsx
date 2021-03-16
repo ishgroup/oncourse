@@ -82,6 +82,7 @@ const AssessmentSubmissionGeneralTab = props => {
           <FormField
             type="remoteDataSearchSelect"
             entity="Contact"
+            aqlFilter={"tutor.assessmentClassTutors.assessmentClass.assessmentSubmissions.id = " + values.id}
             name="markedById"
             label="Assessor"
             selectValueMark="id"
