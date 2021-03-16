@@ -22,6 +22,10 @@ sourceSets {
 }
 
 dependencies {
+
+    testCompile 'rg.hamcrest:hamcrest-all:2.2'
+    testCompile 'org.apache.lucene:lucene-analyzers-common:7.1.0'
+    testCompile 'org.apache.lucene:lucene-test-framework:7.1.0'
     compile project(':common:cayenne-model')
     compile project(':common:common-functions')
     compile project(':common:job-scheduler')
