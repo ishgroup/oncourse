@@ -178,7 +178,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
           />
         </Grid>
         <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={getPaymentNameById(paymentMethods, values.paymentMethodId)} label="Type" />
+          <Uneditable value={paymentMethods && getPaymentNameById(paymentMethods, values.paymentMethodId)} label="Type" />
         </Grid>
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable value={values.status} label="Status" />
