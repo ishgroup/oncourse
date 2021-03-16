@@ -321,6 +321,6 @@
 		<preConditions onFail="MARK_RAN">
 			<columnExists tableName="AssessmentSubmission" columnName="submittedById"/>
 		</preConditions>
-		<renameColumn tableName="AssessmentSubmission" oldColumnName="submittedById" newColumnName="markedBy" columnDataType="BIGINT"/>
+		<renameColumn tableName="AssessmentSubmission" oldColumnName="submittedById" newColumnName="markedById" columnDataType="BIGINT"/>
 	</changeSet>
 </databaseChangeLog>
