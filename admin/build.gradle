@@ -69,19 +69,6 @@ ext {
 	cssCombined = "${staticBuildPath}/css/${project.name}.css"
 }
 
-// this is a fake because our minifier plugin is broken
-// it just copies the file over
-task minifyJs(type: Copy) {
-	from "$staticSrcPath/js/admin-min.js"
-	into "$staticBuildPath/js/"
-}
-
-task gzipJs(type: Zip) {
-	from "$staticBuildPath/js/admin-min.js"
-	archiveName 'admin-min.js.gz'
-	into "$staticBuildPath/js/"
-}
-
 //css combining
 task sass(type: Exec) {
 	inputs.dir "${staticSrcPath}/src"
@@ -120,14 +107,12 @@ task refreshIdeaArtifact {
 	}
 }
 
-processResources.inputs.files gzipJs
 processResources.inputs.files gzipCss
 
 jar {
 	from "${buildDir}/resource-assemble"
 	from ('src/main') {
 		include 'static/**/*'
-		exclude 'static/js'
 		exclude 'static/src'
 	}
 }
