@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <wildcardResourcePatterns>
+      <entry name="?*.properties" />
+      <entry name="?*.xml" />
+      <entry name="?*.gif" />
+      <entry name="?*.png" />
+      <entry name="?*.jpeg" />
+      <entry name="?*.jpg" />
+      <entry name="?*.html" />
+      <entry name="?*.dtd" />
+      <entry name="?*.tld" />
+      <entry name="?*.ftl" />
+    </wildcardResourcePatterns>
+    <bytecodeTargetLevel>
+      <module name="admin" target="1.8" />
+      <module name="admin_main" target="1.8" />
+      <module name="admin_test" target="1.8" />
+      <module name="api_main" target="1.8" />
+      <module name="api_test" target="1.8" />
+      <module name="buildSrc_main" target="1.9" />
+      <module name="buildSrc_test" target="1.9" />
+      <module name="cayenne-model" target="1.8" />
+      <module name="cayenne-model_main" target="1.8" />
+      <module name="cayenne-model_test" target="1.8" />
+      <module name="checkout" target="1.8" />
+      <module name="checkout-api" target="1.8" />
+      <module name="checkout-api_main" target="1.8" />
+      <module name="checkout-api_swagger" target="1.8" />
+      <module name="checkout-api_test" target="1.8" />
+      <module name="checkout_main" target="1.8" />
+      <module name="checkout_swagger" target="1.8" />
+      <module name="checkout_test" target="1.8" />
+      <module name="cms_main" target="1.8" />
+      <module name="cms_test" target="1.8" />
+      <module name="codegen" target="1.8" />
+      <module name="codegen-common" target="1.8" />
+      <module name="codegen-common_main" target="1.8" />
+      <module name="codegen-common_main~1" target="1.8" />
+      <module name="codegen-common_test" target="1.8" />
+      <module name="codegen-common_test~1" target="1.8" />
+      <module name="codegen-jaxrs" target="1.8" />
+      <module name="codegen-jaxrs_main" target="1.8" />
+      <module name="codegen-jaxrs_test" target="1.8" />
+      <module name="codegen-stub" target="1.8" />
+      <module name="codegen-stub_main" target="1.8" />
+      <module name="codegen-stub_test" target="1.8" />
+      <module name="codegen-typescript" target="1.8" />
+      <module name="codegen-typescript_main" target="1.8" />
+      <module name="codegen-typescript_test" target="1.8" />
+      <module name="codegen_main" target="1.8" />
+      <module name="codegen_test" target="1.8" />
+      <module name="common" target="1.7" />
+      <module name="common-api" target="1.8" />
+      <module name="common-api_main" target="1.8" />
+      <module name="common-api_test" target="1.8" />
+      <module name="common-bootique" target="1.8" />
+      <module name="common-bootique_main" target="1.8" />
+      <module name="common-bootique_test" target="1.8" />
+      <module name="common-codegen_main" target="1.8" />
+      <module name="common-codegen_test" target="1.8" />
+      <module name="common-functions" target="1.8" />
+      <module name="common-functions_main" target="1.8" />
+      <module name="common-functions_test" target="1.8" />
+      <module name="common-model" target="1.8" />
+      <module name="common-model_main" target="1.8" />
+      <module name="common-model_test" target="1.8" />
+      <module name="common-services" target="1.8" />
+      <module name="common-services_main" target="1.8" />
+      <module name="common-services_test" target="1.8" />
+      <module name="common-templates" target="1.8" />
+      <module name="common-templates_main" target="1.8" />
+      <module name="common-templates_test" target="1.8" />
+      <module name="common-test" target="1.8" />
+      <module name="common-test_main" target="1.8" />
+      <module name="common-test_test" target="1.8" />
+      <module name="common-textile" target="1.8" />
+      <module name="common-textile_main" target="1.8" />
+      <module name="common-textile_test" target="1.8" />
+      <module name="common-ui" target="1.8" />
+      <module name="common-ui_main" target="1.8" />
+      <module name="common-ui_test" target="1.8" />
+      <module name="common_main" target="1.7" />
+      <module name="common_test" target="1.7" />
+      <module name="editor" target="1.8" />
+      <module name="editor-api" target="1.8" />
+      <module name="editor-api_main" target="1.8" />
+      <module name="editor-api_swagger" target="1.8" />
+      <module name="editor-api_test" target="1.8" />
+      <module name="editor_main" target="1.8" />
+      <module name="editor_swagger" target="1.8" />
+      <module name="editor_test" target="1.8" />
+      <module name="enrol_main" target="1.8" />
+      <module name="enrol_test" target="1.8" />
+      <module name="ish.oncourse.willow-codegen_main" target="1.8" />
+      <module name="ish.oncourse.willow-codegen_test" target="1.8" />
+      <module name="ish.oncourse.willow_buildSrc_main" target="11" />
+      <module name="ish.oncourse.willow_buildSrc_test" target="11" />
+      <module name="jaxrs_main" target="1.8" />
+      <module name="jaxrs_test" target="1.8" />
+      <module name="job-scheduler" target="1.8" />
+      <module name="job-scheduler_main" target="1.8" />
+      <module name="job-scheduler_test" target="1.8" />
+      <module name="portal" target="1.8" />
+      <module name="portal_main" target="1.8" />
+      <module name="portal_test" target="1.8" />
+      <module name="react_main" target="1.7" />
+      <module name="react_test" target="1.7" />
+      <module name="search" target="1.8" />
+      <module name="search_main" target="1.8" />
+      <module name="search_test" target="1.8" />
+      <module name="services" target="1.8" />
+      <module name="services_main" target="1.8" />
+      <module name="services_test" target="1.8" />
+      <module name="solr-index" target="1.8" />
+      <module name="solr-index_main" target="1.8" />
+      <module name="solr-index_schema" target="1.8" />
+      <module name="solr-index_test" target="1.8" />
+      <module name="stub_main" target="1.8" />
+      <module name="stub_test" target="1.8" />
+      <module name="tapestry-classes" target="1.8" />
+      <module name="tapestry-classes_main" target="1.8" />
+      <module name="tapestry-classes_test" target="1.8" />
+      <module name="test-functions" target="1.8" />
+      <module name="test-functions_main" target="1.8" />
+      <module name="test-functions_test" target="1.8" />
+      <module name="test-tapestry" target="1.8" />
+      <module name="test-tapestry_main" target="1.8" />
+      <module name="test-tapestry_test" target="1.8" />
+      <module name="typescript_main" target="1.8" />
+      <module name="typescript_test" target="1.8" />
+      <module name="usi" target="1.8" />
+      <module name="usi_main" target="1.8" />
+      <module name="usi_test" target="1.8" />
+      <module name="waCommon" target="1.8" />
+      <module name="waCommon_main" target="1.8" />
+      <module name="waCommon_test" target="1.8" />
+      <module name="web" target="1.8" />
+      <module name="web_main" target="1.8" />
+      <module name="web_test" target="1.8" />
+      <module name="webservices-client" target="1.8" />
+      <module name="webservices-client_main" target="1.8" />
+      <module name="webservices-client_test" target="1.8" />
+      <module name="webservices-usi" target="1.8" />
+      <module name="webservices-usi_main" target="1.8" />
+      <module name="webservices-usi_test" target="1.8" />
+      <module name="willow-api_main" target="1.7" />
+      <module name="willow-api_test" target="1.7" />
+      <module name="Willow-common" target="1.8" />
+      <module name="Willow-common_main" target="1.8" />
+      <module name="Willow-common_test" target="1.8" />
+      <module name="Willow.common.waCommon" target="1.8" />
+      <module name="Willow.common.waCommon.main" target="1.8" />
+      <module name="Willow.common.waCommon.test" target="1.8" />
+      <module name="Willow_buildSrc" target="11" />
+      <module name="Willow_buildSrc_main" target="11" />
+      <module name="Willow_buildSrc_test" target="11" />
+      <module name="willow_main" target="1.7" />
+      <module name="Willow_main" target="1.8" />
+      <module name="Willow_test" target="1.8" />
+      <module name="willow_test" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

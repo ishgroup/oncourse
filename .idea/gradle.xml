@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="delegatedBuild" value="true" />
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/admin" />
+            <option value="$PROJECT_DIR$/billing" />
+            <option value="$PROJECT_DIR$/billing-api" />
+            <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/checkout" />
+            <option value="$PROJECT_DIR$/checkout-api" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/cayenne-model" />
+            <option value="$PROJECT_DIR$/common/codegen" />
+            <option value="$PROJECT_DIR$/common/codegen/common" />
+            <option value="$PROJECT_DIR$/common/codegen/jaxrs" />
+            <option value="$PROJECT_DIR$/common/codegen/stub" />
+            <option value="$PROJECT_DIR$/common/codegen/typescript" />
+            <option value="$PROJECT_DIR$/common/common-api" />
+            <option value="$PROJECT_DIR$/common/common-bootique" />
+            <option value="$PROJECT_DIR$/common/common-functions" />
+            <option value="$PROJECT_DIR$/common/common-model" />
+            <option value="$PROJECT_DIR$/common/common-services" />
+            <option value="$PROJECT_DIR$/common/common-templates" />
+            <option value="$PROJECT_DIR$/common/common-test" />
+            <option value="$PROJECT_DIR$/common/common-textile" />
+            <option value="$PROJECT_DIR$/common/common-ui" />
+            <option value="$PROJECT_DIR$/common/job-scheduler" />
+            <option value="$PROJECT_DIR$/common/solr-index" />
+            <option value="$PROJECT_DIR$/common/tapestry-classes" />
+            <option value="$PROJECT_DIR$/common/test-functions" />
+            <option value="$PROJECT_DIR$/common/test-tapestry" />
+            <option value="$PROJECT_DIR$/common/webservices-client" />
+            <option value="$PROJECT_DIR$/common/webservices-usi" />
+            <option value="$PROJECT_DIR$/editor" />
+            <option value="$PROJECT_DIR$/editor-api" />
+            <option value="$PROJECT_DIR$/portal" />
+            <option value="$PROJECT_DIR$/search" />
+            <option value="$PROJECT_DIR$/services" />
+            <option value="$PROJECT_DIR$/usi" />
+            <option value="$PROJECT_DIR$/web" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
