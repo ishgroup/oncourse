@@ -3,7 +3,6 @@ import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicUpdateBanking } from "../../../js/containers/entities/bankings/epics/EpicUpdateBanking";
 import {
-  GET_BANKING_ITEM,
   UPDATE_BANKING_ITEM_FULFILLED,
   updateBanking
 } from "../../../js/containers/entities/bankings/actions";
@@ -63,10 +62,6 @@ describe("Update banking epic tests", () => {
       {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Banking", listUpdate: true, savedID: "2" }
-      },
-      {
-        type: GET_BANKING_ITEM,
-        payload: "2"
       }
     ]
   }));
