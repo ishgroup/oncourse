@@ -2,11 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter" lang="en">
-<t:remove>
-		Purpose: html, head and body tags for the entire page. This is called for
-		every single full page which is rendered by onCourse.
-		Override: No. This component should not normally be overridden
-	</t:remove>
 <head>
 <head t:type="pageheader" title="${title}" />
 </head>

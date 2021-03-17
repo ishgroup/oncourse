@@ -43,7 +43,7 @@ public class Billing {
 	@InjectComponent
 	@Property
 	private Form newCustomFeeForm;
-	
+
 	@Property
 	@Persist
 	private College college;
@@ -60,10 +60,6 @@ public class Billing {
 	@Property
 	@Persist
 	private List<WebSite> webSites;
-
-	@Property
-	@Persist
-	private List<LicenseFee> collegeLicenseFees;
 
 	@Property
 	private String newCode;
@@ -83,12 +79,9 @@ public class Billing {
 
 	@Property
 	private boolean webPaymentEnabled;
-	
+
 	@Property
 	private boolean qePaymentEnabled;
-	
-	@Property
-	private boolean amexEnabled;
 
 	@Property
 	private boolean replicationEnabled;
@@ -96,28 +89,20 @@ public class Billing {
 	@Property
 	private boolean creditCardPaymentEnabled;
 
-	@Property
-	private boolean corporatePassPaymentEnabled;
-
-
-	@Property
-	@Persist
-	private boolean showReplicationMessage;
-	
 	@Inject
 	private ICayenneService cayenneService;
-	
+
 	@Inject
 	private ICollegeService collegeService;
-	
+
 	@Inject
 	private PreferenceControllerFactory prefsFactory;
-	
+
 	private PreferenceController preferenceController;
 
     @InjectPage
     private Index indexPage;
-	
+
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 	Object onActivate() {
@@ -142,33 +127,11 @@ public class Billing {
 
 		this.replicationEnabled = preferenceController.getReplicationEnabled();
 
-		this.corporatePassPaymentEnabled = preferenceController.isCorporatePassPaymentEnabled();
-
 		this.creditCardPaymentEnabled = preferenceController.isCreditCardPaymentEnabled();
 
 		this.webSites = college.getWebSites();
 
-		Expression collegeFeesExp = ExpressionFactory.matchExp(LicenseFee.WEB_SITE_PROPERTY, null);
-		this.collegeLicenseFees = collegeFeesExp.filterObjects(college.getLicenseFees());
-		Ordering.orderList(collegeLicenseFees, Arrays.asList(new Ordering(LicenseFee.KEY_CODE_PROPERTY, SortOrder.ASCENDING)));
-		
-		this.collegeCustomFees = college.getCustomFees();
-		
 		List<Preference> prefs = ObjectSelect.query(Preference.class).where(Preference.COLLEGE.eq(college)).select(context);
-		for (Preference p : prefs) {
-			if (Preferences.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
-				this.amexEnabled = Boolean.parseBoolean(p.getValueString());
-				break;
-			}
-		}
-	}
-
-	public boolean isSupport() {
-		return isSupportFee(getCurrentCollegeLicenseFee());
-	}
-
-	public boolean isHosting() {
-		return isHostingFee(getCurrentLicenseFee());
 	}
 
 	@OnEvent(component="billingForm", value="success")
@@ -179,7 +142,7 @@ public class Billing {
 			college.setPaymentGatewayAccount(this.college.getPaymentGatewayAccount());
 			college.setPaymentGatewayPass(this.college.getPaymentGatewayPass());
 			college.setName(this.college.getName());
-			
+
 			if (this.webPaymentEnabled) {
 				preferenceController.setPaymentGatewayType(PaymentGatewayType.PAYMENT_EXPRESS);
 			}
@@ -189,21 +152,7 @@ public class Billing {
 			preferenceController.setLicenseCCProcessing(this.qePaymentEnabled);
 
 			replicationEnable();
-			preferenceController.setCorporatePassPaymentEnabled(corporatePassPaymentEnabled);
 			preferenceController.setCreditCardPaymentEnabled(creditCardPaymentEnabled);
-
-			boolean found = false;
-			for (Preference p : college.getPreferences()) {
-				if (Preferences.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
-					p.setValueString(Boolean.toString(this.amexEnabled));
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				PreferenceUtil.createPreference(context, college,
-						Preferences.SERVICES_CC_AMEX_ENABLED, Boolean.toString(this.amexEnabled));
-			}
 		}
 
 		context.commitChanges();
@@ -212,7 +161,6 @@ public class Billing {
 	private void replicationEnable()
 	{
 		boolean old = preferenceController.getReplicationEnabled();
-		showReplicationMessage = old != replicationEnabled && replicationEnabled;
 		preferenceController.setReplicationEnabled(replicationEnabled);
 	}
 
@@ -227,24 +175,18 @@ public class Billing {
 		return this.college.getId();
 	}
 
-	@AfterRender
-	void afterRender()
-	{
-		showReplicationMessage = false;
-	}
-
 	public String getPaymentExpUser() {
 		return college.getPaymentGatewayAccount();
 	}
-	
+
 	public void setPaymentExpUser(String value) {
 		college.setPaymentGatewayAccount(value);
 	}
-	
+
 	public String getPaymentExpPass() {
 		return college.getPaymentGatewayPass();
 	}
-	
+
 	public void setPaymentExpPass(String value) {
 		college.setPaymentGatewayPass(value);
 	}
@@ -286,7 +228,7 @@ public class Billing {
 	public String getCollegeName() {
 		return college.getName();
 	}
-	
+
 	public void setCollegeName(String collegeName) {
 		if (StringUtils.trimToNull(collegeName) != null) {
 			college.setName(collegeName);
@@ -302,171 +244,8 @@ public class Billing {
 		}
     }
 
-	private boolean isSupportFee(LicenseFee fee) {
-		return LicenseFeeUtil.SUPPORT_FEE_CODE.equals(fee.getKeyCode());
-	}
-
-	private boolean isHostingFee(LicenseFee fee) {
-		return LicenseFeeUtil.HOSTING_FEE_CODE.equals(fee.getKeyCode());
-	}
-
 	public WebSite getCurrentWebsite() {
 		return webSites.get(webSiteIndex);
-	}
-
-	public LicenseFee getCurrentLicenseFee() {
-		return getCurrentWebsite().getLicenseFees().get(feeIndex);
-	}
-
-	public LicenseFee getCurrentCollegeLicenseFee() {
-		return collegeLicenseFees.get(feeIndex);
-	}
-
-	public CustomFee getCurrentCustomFee() {
-		return collegeCustomFees.get(customFeeIndex);
-	}
-	
-	public String getCurrentPaidUntil() {
-		return getFeePaidUntil(getCurrentLicenseFee());
-	}
-
-	public void setCurrentPaidUntil(String paidUntilString) {
-		setPaidUntil(getCurrentLicenseFee(), paidUntilString);
-	}
-
-	public String getCurrentCollegeFeePaidUntil() {
-		return getFeePaidUntil(getCurrentCollegeLicenseFee());
-	}
-
-	public void setCurrentCollegeFeePaidUntil(String paidUntilString) {
-		setPaidUntil(getCurrentCollegeLicenseFee(), paidUntilString);
-	}
-
-	private String getFeePaidUntil(LicenseFee fee) {
-		Date paidUntil = fee.getPaidUntil();
-		if (paidUntil != null) {
-			return dateFormat.format(paidUntil);
-		}
-
-		return StringUtils.EMPTY;
-	}
-
-	public String getCurrentPlanName()
-	{
-		return getCurrentLicenseFee().getPlanName();
-	}
-
-	public void setCurrentPlanName(String planName)
-	{
-		setPlanName(getCurrentLicenseFee(), planName);
-	}
-
-
-	public String getCurrentCollegePlanName()
-	{
-		return getCurrentCollegeLicenseFee().getPlanName();
-	}
-
-	public void setCurrentCollegePlanName(String planName)
-	{
-		setPlanName(getCurrentCollegeLicenseFee(), planName);
-	}
-
-	private void setPlanName(LicenseFee licenseFee, String planName)
-	{
-		if (planName != null)
-		{
-			try {
-				StockCodes code = StockCodes.valueOf(StringUtils.trimToEmpty(planName).toLowerCase());
-				planName = code.name();
-			} catch (IllegalArgumentException e) {
-				//billingForm.recordError(String.format("Plan name \"%s\" is not supported.",planName));
-				planName = StockCodes.platinum.name();
-			}
-		}
-		licenseFee.setPlanName(planName);
-	}
-	
-	public String getCurrentCustomFeeCode() {
-		return getCurrentCustomFee().getCode();
-	}
-
-	public void setCurrentCustomFeeCode(String code) {
-		getCurrentCustomFee().setCode(code);
-	}
-
-	public String getCurrentCustomFeeName() {
-		return getCurrentCustomFee().getName();
-	}
-
-	public void setCurrentCustomFeeName(String name) {
-		getCurrentCustomFee().setName(name);
-	}
-
-	public String getCurrentCustomFeePauidUntil() {
-		Date paidUntil = getCurrentCustomFee().getPaidUntil();
-		if (paidUntil != null) {
-			return dateFormat.format(paidUntil);
-		}
-
-		return StringUtils.EMPTY;
-	}
-
-	public void setCurrentCustomFeePauidUntil(String paidUntil) {
-		if (paidUntil != null) {
-			try {
-				Date date = dateFormat.parse(paidUntil);
-				if (date != null) {
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(date);
-					cal.set(Calendar.DAY_OF_MONTH, 1);
-					getCurrentCustomFee().setPaidUntil(cal.getTime());
-				}
-			} catch (ParseException e) {
-				billingForm.recordError("Paid until date not valid.");
-			}
-		} else {
-			getCurrentCustomFee().setPaidUntil(null);
-		}
-	}
-
-	Object onActionFromDeleteCustomFee(Long id) {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-
-		CustomFee customFee = SelectById.query(CustomFee.class, id).selectOne(context);
-		
-
-		context.deleteObjects(customFee);
-		context.commitChanges();
-		return null;
-	}
-
-	@OnEvent(component = "newCustomFeeForm", value = "validate")
-	void validateCustomFee() {
-
-		if (newPaidUntil != null) {
-			try {
-				Date date = dateFormat.parse(newPaidUntil);
-			} catch (ParseException e) {
-				newCustomFeeForm.recordError("Paid until date not valid.");
-			}
-		}
-	}
-	
-	@OnEvent(component="newCustomFeeForm", value="success")
-	void addCustomFee() throws ParseException {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-
-		CustomFee customFee = context.newObject(CustomFee.class);
-		customFee.setCollege(context.localObject(college));
-
-		customFee.setCode(newCode);
-		customFee.setName(newName);
-		if (newPaidUntil != null) {
-			customFee.setPaidUntil(dateFormat.parse(newPaidUntil));
-		}
-		customFee.setFee(newFee);
-		context.commitChanges();
 	}
 
 }

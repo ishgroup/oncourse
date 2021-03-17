@@ -22,12 +22,12 @@
  					<td>${college.angelVersion}</td>
 					<td>
 						<t:loop source="college.webSites" value="site">
-							<a target="_blank" href="http://${site.siteKey}.live.oncourse.net.au">${site.siteKey}<t:if test="commaSeparate">, </t:if></a>
-						</t:loop>		
+							<a target="_blank" href="http://${site.siteKey}.oncourse.cc">${site.siteKey}<t:if test="commaSeparate">, </t:if></a>
+						</t:loop>
 					</td>
  				</tr>
  			</t:loop>
  		</tbody>
  	</table>
- 	
+
 </html>

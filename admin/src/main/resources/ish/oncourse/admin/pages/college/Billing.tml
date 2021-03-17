@@ -22,176 +22,32 @@
 			<td><t:textfield t:id="paymentPass" value="paymentExpPass" />
 			</td>
 		</tr>
-		<tr>
-			<td>Billing code</td>
-			<td><t:textfield t:id="billingCode" value="billingCode" validate="required"/></td>
-		</tr>
-		<tr>
-			<td>Purchase order</td>
-			<td><t:textfield t:id="purchaseOrder" value="purchaseOrder"/></td>
-		</tr>
 	</table>
 
 	<label class="checkbox">
 		<t:checkbox t:id="replicationCheckbox" value="replicationEnabled"/>Replication enabled
 	</label>
-	<t:if test="showReplicationMessage">
-		<div class="message">
-			Restart this angel server two times:
-			<ul>
-				<li>for loading preferences to angel side.</li>
-				<li>for rescheduling replication job.</li>
-			</ul>
-		</div>
-	</t:if>
 
 	<label class="checkbox">
 		<t:checkbox t:id="webPaymentCheckbox" value="webPaymentEnabled"/>Enable online enrolments
 	</label>
 	<label class="checkbox">
-		<t:checkbox t:id="qePaymentCheckbox" value="qePaymentEnabled"/>Enable credit card gateway for Angel 
-	</label>
-	<label class="checkbox">
-		<t:checkbox t:id="amexCheckbox" value="amexEnabled"/>Enable Amex cards (Mastercard/Visa are always enabled)
+		<t:checkbox t:id="qePaymentCheckbox" value="qePaymentEnabled"/>Enable credit card gateway for Angel
 	</label>
 
 	<label class="checkbox">
 		<t:checkbox t:id="creditCardPaymentEnabledCheckbox" value="creditCardPaymentEnabled"/>Enable online payment via credit card
 	</label>
 
-	<label class="checkbox">
-		<t:checkbox t:id="corporatePassPaymentEnabledCheckbox" value="corporatePassPaymentEnabled"/>Enable online payment via corporatePass
-	</label>
-
-
-	<h2>License Fees (onCourse)</h2>
-
-	<table class="table table-striped table-condensed">
-		<thead>
-		<tr>
-			<td>Key Code</td>
-			<td>Plan Name</td>
-			<td>Paid Until</td>
-			<td>Free Transactions</td>
-			<td>Fee</td>
-		</tr>
-		</thead>
-		<tbody>
-		<t:loop source="collegeLicenseFees" index="feeIndex">
-			<tr>
-				<td>${currentCollegeLicenseFee.keyCode}</td>
-				<td><t:textfield t:id="collegePlanName" value="currentCollegePlanName"/></td>
-				<td>
-					<t:if test="support">
-						<t:textfield t:id="collegePaidUntil" class="datefield" value="currentCollegeFeePaidUntil"/>
-					</t:if>
-				</td>
-				<td><t:textfield t:id="collegeFreeTransactions" t:validate="required" value="currentCollegeLicenseFee.freeTransactions"/></td>
-				<td><t:textfield t:id="collegeFee" t:validate="required" value="currentCollegeLicenseFee.fee"/></td>
-			</tr>
-		</t:loop>
-		</tbody>
-	</table>
-
-	<t:loop source="webSites" index="webSiteIndex">
-		<h2>License Fees (${currentWebsite.name})</h2>
-		<table class="table table-striped table-condensed">
-			<thead>
-			<tr>
-				<td>Key Code</td>
-				<td>Plan Name</td>
-				<td>Paid Until</td>
-				<td>Free Transactions</td>
-				<td>Fee</td>
-			</tr>
-			</thead>
-			<tbody>
-			<t:loop source="currentWebsite.licenseFees" index="feeIndex">
-				<tr>
-					<td>${currentLicenseFee.keyCode}</td>
-					<td><t:textfield t:id="planName" value="currentPlanName"/></td>
-					<td>
-						<t:if test="hosting">
-							<t:textfield t:id="paidUntil" class="datefield" value="currentPaidUntil"/>
-						</t:if>
-					</td>
-					<td><t:textfield t:id="freeTransactions" t:validate="required" value="currentLicenseFee.freeTransactions"/></td>
-					<td><t:textfield t:id="fee" t:validate="required" value="currentLicenseFee.fee"/></td>
-				</tr>
-			</t:loop>
-			</tbody>
-		</table>
-	</t:loop>
-
-	<h2>Custom Fees</h2>
-	<table class="table table-striped table-condensed">
-	<thead>
-	<tr>
-		<td>Product Code</td>
-		<td>Name</td>
-		<td>Paid Until</td>
-		<td>Fee</td>
-	</tr>
-	</thead>
-	<tbody>
-	<t:loop source="collegeCustomFees" index="customFeeIndex">
-		<tr>
-			<td><t:textfield  value="currentCustomFeeCode"/></td>
-			<td><t:textfield  value="currentCustomFeeName"/></td>
-			<td><t:textfield  class="datefield" value="currentCustomFeePauidUntil"/></td>
-
-			<td>
-				<div class="input-append">
-					<t:textfield t:validate="required" value="currentCustomFee.fee"/>
-					<t:actionlink t:id="deleteCustomFee" class="btn" context="currentCustomFee.id"><i class="icon-trash"></i></t:actionlink>
-				</div>
-			</td>
-			
-		</tr>
-	</t:loop>
-	</tbody>
-	</table>
-
 	<t:errors/>
-	
+
 	<div class="form-actions">
 		<t:submit t:id="save" class="btn btn-primary" value="Save"/>
 	</div>
 </t:form>
 
-
-	<table class="table table-striped table-condensed">
-		<thead>
-		<tr>
-			<td>Product Code</td>
-			<td>Name</td>
-			<td>Paid Until</td>
-			<td>Fee</td>
-		</tr>
-		</thead>
-		<tbody>
-	
-		<t:form t:id="newCustomFeeForm">
-
-			<t:errors/>
-			<tr>
-				<td><t:textfield t:id="newCode" t:validate="required" value="newCode"/></td>
-				<td><t:textfield t:id="newName" t:validate="required" value="newName"/></td>
-				<td><t:textfield t:id="newPaidUntil" class="datefield" value="newPaidUntil"/></td>
-				
-				<td>
-					<div class="input-append">
-						<t:textfield t:id="newFee" t:validate="required" value="newFee" />
-						<t:submit t:id="addCustomFee" class="btn btn-success" value="Add"/>
-					</div>
-				</td>
-			</tr>
-		</t:form>
-		</tbody>
-	</table>
-
 	<script type="text/javascript">
-		jQuery(function() {		
+		jQuery(function() {
 			jQuery( ".datefield" ).datepicker({ dateFormat: 'dd/mm/yy' });
 			jQuery( ".datefield" ).datepicker({ dateFormat: 'dd/mm/yy' });
 		});
