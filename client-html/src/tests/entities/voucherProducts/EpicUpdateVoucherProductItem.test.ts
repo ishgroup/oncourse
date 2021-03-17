@@ -3,7 +3,6 @@ import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicUpdateVoucherProductItem } from "../../../js/containers/entities/voucherProducts/epics/EpicUpdateVoucherProductItem";
 import {
-  GET_VOUCHER_PRODUCT_ITEM,
   UPDATE_VOUCHER_PRODUCT_ITEM_FULFILLED,
   updateVoucherProduct
 } from "../../../js/containers/entities/voucherProducts/actions";
@@ -23,10 +22,6 @@ describe("Update voucherProduct epic tests", () => {
       {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "VoucherProduct", listUpdate: true, savedID: "1" }
-      },
-      {
-        type: GET_VOUCHER_PRODUCT_ITEM,
-        payload: "1"
       }
     ]
   }));
