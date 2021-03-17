@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useRef, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
 import { change, Field } from "redux-form";
@@ -13,65 +11,21 @@ import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { differenceInDays, format } from "date-fns";
-import {
- Assessment, AssessmentClass, AssessmentSubmission, CourseClassTutor
-} from "@api/model";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import { Assessment, AssessmentClass, AssessmentSubmission, CourseClassTutor } from "@api/model";
+import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import DateRange from "@material-ui/icons/DateRange";
 import { Tooltip } from "@material-ui/core";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { stubComponent } from "../../../../../common/utils/common";
+import { getArrayFieldMeta, stubComponent } from "../../../../../common/utils/common";
 import { defaultContactName } from "../../../contacts/utils";
 import { State } from "../../../../../reducers/state";
-import AssessmentSubmissionIconButton, {
-  AssessmentsSubmissionType
-} from "./AssessmentSubmissionIconButton";
-import { AppTheme } from "../../../../../model/common/Theme";
+import AssessmentSubmissionIconButton, { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
 import AssessmentSubmissionModal from "./AssessmentSubmissionModal";
 import { III_DD_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
-
-const styles = (theme: AppTheme) =>
-  createStyles({
-    rowWrapper: {
-      minHeight: "36px",
-      padding: "0 8px",
-    },
-    items: {
-      marginLeft: -8,
-      marginRight: -8,
-      "& > div:nth-child(even)": {
-        backgroundColor: theme.table.contrastRow.light
-      },
-      "&:first-child": {
-        marginTop: 0
-      }
-    },
-    tableHeader: {
-      marginLeft: -8,
-      marginRight: -8,
-    },
-    center: {
-      display: "flex",
-      justifyContent: "center",
-      "&:hover $hiddenIcon, &:hover $hiddenTitleIcon": {
-        visibility: "visible",
-      }
-    },
-    hiddenIcon: {
-      visibility: "hidden",
-      position: "absolute",
-      transform: "translate(calc(100% + 2px),-2px)",
-      padding: 0
-    },
-    hiddenTitleIcon: {
-      visibility: "hidden",
-      position: "absolute",
-      bottom: "-3px"
-    }
-  });
+import styles from "./styles";
 
 interface Props {
   form: string;
@@ -98,11 +52,6 @@ interface StudentForRender {
 type TickType = "Submitted" | "Marked";
 
 const today = format(new Date(), YYYY_MM_DD_MINUSED);
-
-const getFieldMeta = name => {
-  const match = name.match(/\[(\d)]\.([^.]+)$/);
-  return { field: match[2], index: Number(match[1]) };
-};
 
 const CourseClassAssessmentItem: React.FC<Props> = props => {
   const {
@@ -228,15 +177,32 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   };
 
   const triggerAsyncChange = (event, newValue, previousValue, name) => {
-    const { field, index } = getFieldMeta(name);
-    const updatedSubmissions = row.submissions.map((s, sInd) => ({
-      ...s,
-      [field]: sInd === index ? newValue : s[field]
-    }));
-    if (field === "submittedOn" && !newValue) {
-      updatedSubmissions.splice(index, 1);
-    }
-    submissionUpdater.current(updatedSubmissions);
+    setTimeout(() => {
+      const { field, index } = getArrayFieldMeta(name);
+      const updatedSubmissions = row.submissions.map((s, sInd) => ({
+        ...s,
+        [field]: sInd === index ? newValue : s[field]
+      }));
+      if (field === "submittedOn") {
+        if (!newValue) {
+          updatedSubmissions.splice(index, 1);
+        }
+        const submission = row.submissions[index];
+        if (!submission && newValue && modalProps[2] !== "all") {
+          const elem = studentsForRender[modalProps[3]];
+          updatedSubmissions.unshift({
+            id: null,
+            submittedOn: newValue,
+            markedById: null,
+            markedOn: null,
+            enrolmentId: Number(elem.enrolmentId),
+            studentId: Number(elem.studentId),
+            studentName: elem.studentName
+          });
+        }
+      }
+      submissionUpdater.current(updatedSubmissions.filter(s => s.hasOwnProperty("enrolmentId")));
+    }, 500);
   };
 
   const validateDueDate = useCallback(
@@ -298,15 +264,24 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
 
   const assessmentAql = `active is true${rowsIds.length ? ` and id not (${rowsIds.toString()})` : ""}`;
 
+  const titlePostfix = modalProps[0] === "Marked" ? " and assessor" : "";
+
+  const title = modalProps[0] && (modalProps[2] === "all"
+    ? `All students ${modalProps[0].toLowerCase()} date${titlePostfix}`
+    : `${modalProps[2]} ${modalProps[0].toLowerCase()} date${titlePostfix}`);
+
+  const name = `${item}.submissions[${modalProps[1]}]`;
+
   return (
     <Grid container>
-      <Grid container className="pb-3">
+      <Grid item={true} xs={12} container className="pb-3">
         <Grid item xs={twoColumn ? 8 : 12} container>
           <Grid item xs={twoColumn ? 6 : 12}>
             <AssessmentSubmissionModal
-              item={item}
+              name={name}
               modalProps={modalProps}
               tutors={tutors}
+              title={title}
               onClose={onPickerClose}
               triggerAsyncChange={triggerAsyncChange}
             />
@@ -368,7 +343,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
         </Grid>
       </Grid>
 
-      <Grid container className="pb-3">
+      <Grid item={true} xs={12} container className="pb-3">
         <div className="heading">Assessment Submission</div>
         <Grid container xs={12} className={classes.tableHeader}>
           <Grid item xs={4} />
@@ -409,7 +384,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                 <IconButton
                   size="small"
                   className={classes.hiddenIcon}
-                  onClick={() => setModalOpenedBy(`Submitted-${elem.submissionIndex}-${elem.studentName}`)}
+                  onClick={() => setModalOpenedBy(`Submitted-${elem.submissionIndex}-${elem.studentName}-${index}`)}
                 >
                   <DateRange color="disabled" fontSize="small" />
                 </IconButton>
@@ -427,7 +402,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                 <IconButton
                   size="small"
                   className={classes.hiddenIcon}
-                  onClick={() => setModalOpenedBy(`Marked-${elem.submissionIndex}-${elem.studentName}`)}
+                  onClick={() => setModalOpenedBy(`Marked-${elem.submissionIndex}-${elem.studentName}-${index}`)}
                 >
                   <DateRange color="disabled" fontSize="small" />
                 </IconButton>

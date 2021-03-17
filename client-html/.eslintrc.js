@@ -15,8 +15,7 @@ module.exports = {
     },
     "plugins": [
         "import",
-        "@typescript-eslint",
-        "@typescript-eslint/tslint"
+        "@typescript-eslint"
     ],
     "rules": {
         "jsx-a11y/aria-role": "off",
@@ -131,39 +130,6 @@ module.exports = {
         ],
         "spaced-comment": "error",
         "func-names": "off",
-        //TODO remove the tslint legacy parts
-        "@typescript-eslint/no-unused-expressions": "off",
-        "@typescript-eslint/tslint/config": [
-            "error",
-            {
-                "rules": {
-                    "exhaustive-deps": true,
-                    "function-name": [
-                        true,
-                        {
-                            "method-regex": "^[a-z][\\w\\d]+$",
-                            "private-method-regex": "^[a-z][\\w\\d]+$",
-                            "protected-method-regex": "^[a-z][\\w\\d]+$",
-                            "static-method-regex": "^[A-Z_\\d]+$",
-                            "function-regex": "^[a-zA-Z][\\w\\d]+$"
-                        }
-                    ],
-                    "no-boolean-literal-compare": false,
-                    "no-else-after-return": true,
-                    "no-function-constructor-with-string-args": true,
-                    "prefer-array-literal": true,
-                    "prettier": [
-                        true,
-                        {
-                            "printWidth": 120
-                        }
-                    ],
-                    "react-hooks-nesting": true,
-                    "rules-of-hooks": true,
-                    "ter-prefer-arrow-callback": true
-                }
-            }
-        ]
     },
     "settings": {
         "import/parsers": {

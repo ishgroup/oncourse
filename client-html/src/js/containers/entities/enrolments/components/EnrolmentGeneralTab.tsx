@@ -14,12 +14,12 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {
-  PaymentSource,
-  EnrolmentStudyReason,
-  EnrolmentExemptionType,
-  Enrolment,
-  FundingSource,
   ClassFundingSource,
+  Enrolment,
+  EnrolmentExemptionType,
+  EnrolmentStudyReason,
+  FundingSource,
+  PaymentSource,
   Tag
 } from "@api/model";
 import FormField from "../../../../common/components/form/form-fields/FormField";
@@ -29,9 +29,12 @@ import { formatFundingSourceId } from "../../common/utils";
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import {
   validateAssociatedCourseIdentifier,
-  validateCharacter, validateOutcomeIdTrainingOrg,
+  validateCharacter,
+  validateOutcomeIdTrainingOrg,
   validateVetClientID,
-  validateVetFundingSourceState, validateVetPurchasingContractIdentifier, validateVetTrainingContractID
+  validateVetFundingSourceState,
+  validateVetPurchasingContractIdentifier,
+  validateVetTrainingContractID
 } from "../../../../common/utils/validation";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
@@ -44,6 +47,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import Uneditable from "../../../../common/components/form/Uneditable";
+import EnrolmentSubmissions from "./EnrolmentSubmissions";
 
 const validateCricosConfirmation = value => validateCharacter(value, 32, "Confirmation of Enrolment");
 
@@ -412,6 +416,12 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
             />
           </Grid>
         </Grid>
+
+        <EnrolmentSubmissions
+          values={values}
+          dispatch={dispatch}
+          form={form}
+        />
       </Grid>
     </>
   );

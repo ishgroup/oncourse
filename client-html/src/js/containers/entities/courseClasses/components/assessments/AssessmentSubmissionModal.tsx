@@ -1,4 +1,3 @@
-
 /*
  * Copyright ish group pty ltd 2021.
  *
@@ -19,22 +18,15 @@ import FormField from "../../../../../common/components/form/form-fields/FormFie
 const AssessmentSubmissionModal = (
   {
     modalProps,
-    item,
+    name,
     tutors,
     onClose,
-    triggerAsyncChange
+    triggerAsyncChange,
+    title
   }
 ) => {
   const type = modalProps[0];
-  const name = `${item}.submissions[${modalProps[1]}]`;
-
   const opened = Boolean(modalProps.length);
-
-  const titlePostfix = type === "Marked" ? " and assessor" : "";
-
-  const title = type && (modalProps[2] === "all"
-    ? `All students ${type.toLowerCase()} date${titlePostfix}`
-    : `${modalProps[2]} ${type.toLowerCase()} date${titlePostfix}`);
 
   return (
     <Dialog
