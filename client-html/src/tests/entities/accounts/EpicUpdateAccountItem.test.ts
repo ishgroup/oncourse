@@ -29,10 +29,6 @@ describe("Update account epic tests", () => {
         {
           type: GET_RECORDS_REQUEST,
           payload: { entity: "Account", listUpdate: true, savedID: String(accountId) }
-        },
-        {
-          type: GET_ACCOUNT_ITEM,
-          payload: String(accountId)
         }
       ]
     });
