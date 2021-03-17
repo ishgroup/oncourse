@@ -9,7 +9,7 @@ import { EpicUpdateSite } from "./EpicUpdateSite";
 import { EpicCreateSite } from "./EpicCreateSite";
 import { EpicDeleteSite } from "./EpicDeleteSite";
 import { EpicGetAdminSites } from "./EpicGetAdminSites";
-import { EpicGetVirualSites } from "./EpicGetVirualSites";
+import { EpicGetVirtualSites } from "./EpicGetVirtualSites";
 
 export const EpicSite = combineEpics(
   EpicGetSite,
@@ -17,5 +17,5 @@ export const EpicSite = combineEpics(
   EpicCreateSite,
   EpicDeleteSite,
   EpicGetAdminSites,
-  EpicGetVirualSites
+  EpicGetVirtualSites
 );

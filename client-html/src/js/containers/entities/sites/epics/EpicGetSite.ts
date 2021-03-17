@@ -16,6 +16,7 @@ import GoogleApiService from "../../../../common/components/google-maps/services
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { clearActionsQueue, FETCH_FAIL } from "../../../../common/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { compareByName } from "../../../../common/utils/sortArrayOfObjectsByName";
 
 const request: EpicUtils.Request = {
   type: GET_SITE_ITEM,
@@ -35,7 +36,10 @@ const request: EpicUtils.Request = {
       }
       return { site: { ...site }, updateSite: false, error: false };
     }),
-  processData: ({ site, updateSite, error }, s, id) => (updateSite
+  processData: ({ site, updateSite, error }, s, id) => {
+    site.rooms.sort(compareByName);
+
+    return (updateSite
       ? [
           {
             type: UPDATE_SITE_ITEM,
@@ -43,25 +47,26 @@ const request: EpicUtils.Request = {
           }
         ]
       : [
-          {
-            type: GET_SITE_ITEM_FULFILLED
-          },
-          {
-            type: SET_LIST_EDIT_RECORD,
-            payload: { editRecord: site, name: site.name }
-          },
-          initialize(LIST_EDIT_VIEW_FORM_NAME, site),
-          getNoteItems("Site", id, LIST_EDIT_VIEW_FORM_NAME),
-          ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
-          ...(error
-              ? [
-                  {
-                    type: FETCH_FAIL,
-                    payload: { message: "Google Api Error" }
-                  }
-                ]
-              : [])
-        ]),
+        {
+          type: GET_SITE_ITEM_FULFILLED
+        },
+        {
+          type: SET_LIST_EDIT_RECORD,
+          payload: { editRecord: site, name: site.name }
+        },
+        initialize(LIST_EDIT_VIEW_FORM_NAME, site),
+        getNoteItems("Site", id, LIST_EDIT_VIEW_FORM_NAME),
+        ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
+        ...(error
+          ? [
+              {
+                type: FETCH_FAIL,
+                payload: { message: "Google Api Error" }
+              }
+          ]
+          : [])
+      ]);
+},
   processError: e => FetchErrorHandler(e, "Error on getting site data")
 };
 
