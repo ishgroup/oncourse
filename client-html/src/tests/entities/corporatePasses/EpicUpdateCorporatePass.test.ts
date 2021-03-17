@@ -3,7 +3,6 @@ import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicUpdateCorporatePass } from "../../../js/containers/entities/corporatePasses/epics/EpicUpdateCorporatePass";
 import {
-  GET_CORPORATE_PASS_ITEM,
   UPDATE_CORPORATE_PASS_ITEM_FULFILLED,
   updateCorporatePass
 } from "../../../js/containers/entities/corporatePasses/actions";
@@ -25,10 +24,6 @@ describe("Update corporate pass epic tests", () => {
         {
           type: GET_RECORDS_REQUEST,
           payload: { entity: "CorporatePass", listUpdate: true, savedID: id }
-        },
-        {
-          type: GET_CORPORATE_PASS_ITEM,
-          payload: id
         }
       ]
     });
