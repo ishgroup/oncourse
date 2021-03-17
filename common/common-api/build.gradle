@@ -1,42 +1,39 @@
+plugins {
+    id 'java-library'
+}
 apply from: "$rootDir/gradle/bootique.gradle"
-
-apply plugin: 'groovy'
-apply plugin: 'java'
-
 
 compileGroovy.options.encoding = 'UTF-8'
 compileTestGroovy.options.encoding = 'UTF-8'
 
 dependencies {
-    compile(project(':common:common-functions')) {
+    api(project(':common:common-functions')) {
         exclude group: 'org.apache.logging.log4j'
     }
-    
+
 //cxf
-    compile 'org.apache.cxf:cxf-core:3.2.2'
-    compile ('org.apache.cxf:cxf-rt-frontend-jaxrs:3.2.2'){
+    api 'org.apache.cxf:cxf-core:3.2.2'
+    api ('org.apache.cxf:cxf-rt-frontend-jaxrs:3.2.2'){
         exclude group:'javax.ws.rs'
     }
-    compile "javax.ws.rs:javax.ws.rs-api:2.1@jar"
+    api "javax.ws.rs:javax.ws.rs-api:2.1@jar"
 
     // compile 'org.apache.cxf:cxf-rt-transports-http-jetty:3.2.2'
-    compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7'
+    api 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7'
+    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7'
 
-//    org.eclipse.jetty
-    
 //bean validation
-    compile 'javax.validation:validation-api:1.1.0.Final'
-    compile 'org.apache.bval:org.apache.bval.bundle:1.1.2'
+    api 'javax.validation:validation-api:1.1.0.Final'
+    api 'org.apache.bval:org.apache.bval.bundle:1.1.2'
 
 //cayenne
-    compile "org.apache.cayenne:cayenne-server:$cayenneVersion"
-    compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
-    compile "org.apache.cayenne:cayenne-cache-invalidation:$cayenneVersion"
-    compile "org.apache.cayenne:cayenne-di:$cayenneVersion"
+    api "org.apache.cayenne:cayenne-server:$cayenneVersion"
+    api "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
+    api "org.apache.cayenne:cayenne-cache-invalidation:$cayenneVersion"
+    api "org.apache.cayenne:cayenne-di:$cayenneVersion"
 
 //search
-    compile group: 'org.apache.solr', name: 'solr-solrj', version: solrVersion
+    api "org.apache.solr:solr-solrj:$solrVersion"
 
-    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
+    api "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
 }

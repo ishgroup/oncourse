@@ -58,6 +58,8 @@ dependencies {
 	testImplementation project(path: ':common:common-test', configuration: 'testFixtures')
 
 	testImplementation project(':common:test-functions')
+	testImplementation "org.dbunit:dbunit:2.5.3"
+
 }
 
 

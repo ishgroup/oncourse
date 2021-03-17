@@ -15,9 +15,6 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.io.InputStream;
 
-/**
- * akoiro - 2/24/16.
- */
 public abstract class AbstractTest extends ServiceTest {
     protected ICayenneService cayenneService;
 

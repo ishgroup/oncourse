@@ -1,3 +1,7 @@
+plugins {
+    id 'java-library'
+}
+
 apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/caffeine.gradle"
 
@@ -14,18 +18,18 @@ compileGroovy.options.encoding = 'UTF-8'
 compileTestGroovy.options.encoding = 'UTF-8'
 
 dependencies {
-    compile project(':common:cayenne-model')
-    compile 'javax.cache:cache-api:1.0.0'
-    compile 'org.ehcache:ehcache:' + ehcacheVersion
-    compile 'javax.servlet:servlet-api:3.0'
-    compile 'axis:axis:1.4'
-    compile 'wsdl4j:wsdl4j:1.6.3'
-    compile 'org.apache.solr:solr-solrj:' + solrVersion
-    compile 'commons-httpclient:commons-httpclient:3.1'
-    compile 'net.java.dev.textile-j:textile-j:2.2.864'
-    compile 'com.atlassian.commonmark:commonmark:0.15.2'
+    api project(':common:cayenne-model')
+    api 'javax.cache:cache-api:1.0.0'
+    api 'org.ehcache:ehcache:' + ehcacheVersion
+    api 'javax.servlet:servlet-api:3.0'
+    api 'axis:axis:1.4'
+    api 'wsdl4j:wsdl4j:1.6.3'
+    api 'org.apache.solr:solr-solrj:' + solrVersion
+    api 'commons-httpclient:commons-httpclient:3.1'
+    api 'net.java.dev.textile-j:textile-j:2.2.864'
+    api 'com.atlassian.commonmark:commonmark:0.15.2'
 
-    testCompile project(':common:test-functions')
+    testImplementation project(':common:test-functions')
 }
 
 test {

@@ -103,8 +103,6 @@ public class Overview {
 	}
 
 	private void disableCollege(ObjectContext context, College college) {
-		college.setBillingCode(null);
-
 		List<Preference> licensePrefs = ObjectSelect.query(Preference.class).
 				where(Preference.COLLEGE.eq(college).
 						andExp(Preference.NAME.in(LICENSE_KEYS))).

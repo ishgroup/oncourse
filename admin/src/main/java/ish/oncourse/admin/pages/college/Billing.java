@@ -1,22 +1,13 @@
 package ish.oncourse.admin.pages.college;
 
 import ish.oncourse.admin.pages.Index;
-import ish.oncourse.admin.services.billing.StockCodes;
-import ish.oncourse.util.LicenseFeeUtil;
-import ish.oncourse.util.PreferenceUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.system.ICollegeService;
-import ish.persistence.Preferences;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectById;
-import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,11 +16,7 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class Billing {
@@ -205,24 +192,6 @@ public class Billing {
 
 	public void setBillingCode(String value) {
 		college.setBillingCode(value);
-	}
-
-	public void setPaidUntil(LicenseFee fee, String dateString) {
-		if (dateString != null) {
-			try {
-				Date date = dateFormat.parse(dateString);
-				if (date != null) {
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(date);
-					cal.set(Calendar.DAY_OF_MONTH, 1);
-					fee.setPaidUntil(cal.getTime());
-				}
-			} catch (ParseException e) {
-				billingForm.recordError("Paid until date not valid.");
-			}
-		} else {
-			fee.setPaidUntil(null);
-		}
 	}
 
 	public String getCollegeName() {
