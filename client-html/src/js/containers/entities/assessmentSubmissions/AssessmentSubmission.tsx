@@ -60,7 +60,7 @@ const AssessmentSubmission = (props: any) => {
     <ListView
       listProps={{
         primaryColumn: "studentName",
-        secondaryColumn: "createdOn",
+        secondaryColumn: "assessmentName",
       }}
       editViewProps={{
         nameCondition,
