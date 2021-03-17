@@ -3,7 +3,6 @@ import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicUpdateCertificateItem } from "../../../js/containers/entities/certificates/epics/EpicUpdateCertificateItem";
 import {
-  GET_CERTIFICATE_ITEM,
   UPDATE_CERTIFICATE_ITEM_FULFILLED,
   updateCertificate
 } from "../../../js/containers/entities/certificates/actions";
@@ -23,10 +22,6 @@ describe("Update certificate epic tests", () => {
       {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Certificate", listUpdate: true, savedID: "1" }
-      },
-      {
-        type: GET_CERTIFICATE_ITEM,
-        payload: "1"
       }
     ]
   }));
