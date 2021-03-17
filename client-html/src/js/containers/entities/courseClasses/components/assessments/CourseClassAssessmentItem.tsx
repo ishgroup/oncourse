@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useRef, useState 
+} from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
 import { change, Field } from "redux-form";
@@ -11,7 +13,9 @@ import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { differenceInDays, format } from "date-fns";
-import { Assessment, AssessmentClass, AssessmentSubmission, CourseClassTutor } from "@api/model";
+import {
+ Assessment, AssessmentClass, AssessmentSubmission, CourseClassTutor 
+} from "@api/model";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import DateRange from "@material-ui/icons/DateRange";
