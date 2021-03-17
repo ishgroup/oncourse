@@ -323,4 +323,46 @@
 		</preConditions>
 		<renameColumn tableName="AssessmentSubmission" oldColumnName="submittedById" newColumnName="markedById" columnDataType="BIGINT"/>
 	</changeSet>
+	<changeSet id="33" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="WebLayoutPath"/>
+			</not>
+		</preConditions>
+		<createTable tableName="WebLayoutPath">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="created" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modified" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="path" type="VARCHAR(200)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="webSiteLayoutId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="webSiteVersionId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<addForeignKeyConstraint baseTableName="WebLayoutPath"
+								 baseColumnNames="webSiteLayoutId"
+								 constraintName="WebLayoutPath_WebSiteLayout_fk"
+								 referencedTableName="WebSiteLayout"
+								 referencedColumnNames="id"
+								 validate="true"/>
+		<addForeignKeyConstraint baseTableName="WebLayoutPath"
+								 baseColumnNames="webSiteVersionId"
+								 constraintName="WebLayoutPath_WebSiteVersion_fk"
+								 referencedTableName="WebSiteVersion"
+								 referencedColumnNames="id"
+								 validate="true"/>
+		<createIndex indexName="WebLayoutPath_path" tableName="WebLayoutPath">
+			<column name="path"/>
+		</createIndex>
+	</changeSet>
 </databaseChangeLog>

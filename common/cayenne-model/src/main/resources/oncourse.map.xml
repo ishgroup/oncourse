@@ -1458,6 +1458,14 @@
 		<db-attribute name="layoutKey" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
+	<db-entity name="WebLayoutPath">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="path" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="webSiteLayoutId" type="BIGINT" isMandatory="true"/>
+	</db-entity>
 	<db-entity name="WebSiteVersion">
 		<db-attribute name="deployedById" type="BIGINT"/>
 		<db-attribute name="deployedOn" type="TIMESTAMP"/>
@@ -2754,6 +2762,11 @@
 	</obj-entity>
 	<obj-entity name="WebSiteLayout" className="ish.oncourse.model.WebSiteLayout" dbEntityName="WebSiteLayout" superClassName="WillowCayenneObject">
 		<obj-attribute name="layoutKey" type="java.lang.String" db-attribute-path="layoutKey"/>
+	</obj-entity>
+	<obj-entity name="WebLayoutPath" className="ish.oncourse.model.WebLayoutPath" dbEntityName="WebLayoutPath" superClassName="WillowCayenneObject">
+		<obj-attribute name="path" type="java.lang.String" db-attribute-path="path"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
 	<obj-entity name="WebSiteVersion" className="ish.oncourse.model.WebSiteVersion" dbEntityName="WebSiteVersion" superClassName="WillowCayenneObject">
 		<obj-attribute name="deployedOn" type="java.util.Date" db-attribute-path="deployedOn"/>
@@ -4205,6 +4218,21 @@
 	<db-relationship name="webSiteVersion" source="WebContent" target="WebSiteVersion">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
+	
+	<db-relationship name="webSiteVersion" source="WebLayoutPath" target="WebSiteVersion">
+		<db-attribute-pair source="webSiteVersionId" target="id"/>
+	</db-relationship>
+	<db-relationship name="webLayoutPaths" source="WebSiteVersion" target="WebLayoutPath" toMany="true">
+		<db-attribute-pair source="id" target="webSiteVersionId"/>
+	</db-relationship>
+	
+	<db-relationship name="webSiteLayout" source="WebLayoutPath" target="WebSiteLayout">
+		<db-attribute-pair source="webSiteLayoutId" target="id"/>
+	</db-relationship>
+	<db-relationship name="webLayoutPaths" source="WebSiteLayout" target="WebLayoutPath" toMany="true">
+		<db-attribute-pair source="id" target="webSiteLayoutId"/>
+	</db-relationship>
+	
 	<db-relationship name="webContent" source="WebContentVisibility" target="WebContent">
 		<db-attribute-pair source="WebContentId" target="id"/>
 	</db-relationship>
@@ -4801,4 +4829,10 @@
 	<obj-relationship name="webNode" source="WebUrlAlias" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
 	<obj-relationship name="webSiteVersion" source="WebUrlAlias" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>
 	<obj-relationship name="logs" source="WillowUser" target="Log" deleteRule="Deny" db-relationship-path="logs"/>
+	<obj-relationship name="webSiteVersion" source="WebLayoutPath" target="WebSiteVersion" deleteRule="Deny" db-relationship-path="webSiteVersion"/>
+	<obj-relationship name="webSiteLayout" source="WebLayoutPath" target="WebSiteLayout" deleteRule="Deny" db-relationship-path="webSiteLayout"/>
+	<obj-relationship name="webLayoutPaths" source="WebSiteVersion" target="WebLayoutPath" deleteRule="Deny" db-relationship-path="webLayoutPaths"/>
+	<obj-relationship name="webLayoutPaths" source="WebSiteLayout" target="WebLayoutPath" deleteRule="Deny" db-relationship-path="webLayoutPaths"/>
+
+
 </data-map>
