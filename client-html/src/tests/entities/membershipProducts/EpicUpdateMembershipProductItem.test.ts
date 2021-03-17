@@ -3,7 +3,6 @@ import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicUpdateMembershipProductItem } from "../../../js/containers/entities/membershipProducts/epics/EpicUpdateMembershipProductItem";
 import {
-  GET_MEMBERSHIP_PRODUCT_ITEM,
   UPDATE_MEMBERSHIP_PRODUCT_ITEM_FULFILLED,
   updateMembershipProduct
 } from "../../../js/containers/entities/membershipProducts/actions";
@@ -23,10 +22,6 @@ describe("Update membership product epic tests", () => {
       {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "MembershipProduct", listUpdate: true, savedID: "1" }
-      },
-      {
-        type: GET_MEMBERSHIP_PRODUCT_ITEM,
-        payload: "1"
       }
     ]
   }));
