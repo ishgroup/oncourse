@@ -98,7 +98,7 @@
     "@material-ui/lab": "4.0.0-alpha.57",
     "@material-ui/pickers": "3.2.*",
     "antlr4-c3": "1.1.*",
-    "antlr4ts": "0.5.0-alpha.3",
+    "antlr4ts": "0.5.0-alpha.4",
     "autosuggest-highlight": "3.1.*",
     "axios": "0.21.*",
     "axios-mock-adapter": "1.19.*",
