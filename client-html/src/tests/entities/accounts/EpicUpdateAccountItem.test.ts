@@ -1,8 +1,5 @@
 import { DefaultEpic } from "../../common/Default.Epic";
-import {
-  GET_ACCOUNT_ITEM,
-  updateAccount
-} from "../../../js/containers/entities/accounts/actions";
+import { updateAccount } from "../../../js/containers/entities/accounts/actions";
 import { EpicUpdateAccountItem } from "../../../js/containers/entities/accounts/epics/EpicUpdateAccountItem";
 import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
