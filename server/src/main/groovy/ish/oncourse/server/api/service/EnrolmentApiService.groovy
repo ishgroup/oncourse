@@ -188,7 +188,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.creditType = CREDIT_TYPE_MAP.getByValue(dto.creditType)
         enrolment.creditLevel = CREDIT_LEVEL_MAP.getByValue(dto.creditLevel)
 
-        updateSubmissions(dto, enrolment)
+//        updateSubmissions(dto, enrolment)
         TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags*.id, EnrolmentTagRelation, context)
         DocumentFunctions.updateDocuments(enrolment, enrolment.attachmentRelations, dto.documents, EnrolmentAttachmentRelation, context)
         CustomFieldFunctions.updateCustomFields(context, enrolment, dto.customFields, EnrolmentCustomField)
@@ -325,7 +325,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             if (submissionDto.id) {
                 submissionApiService.update(submissionDto.id, submissionDto)
             } else {
-                submissionApiService.validateModelBeforeSave(submissionDto,context, null)
+                submissionApiService.validateModelBeforeSave(submissionDto, context, null)
                 AssessmentSubmission submission = context.newObject(AssessmentSubmission)
                 submission.enrolment = enrolment
                 submission.assessmentClass = enrolment.courseClass.assessmentClasses.find { submissionDto.assessmentId == it.assessment.id }
