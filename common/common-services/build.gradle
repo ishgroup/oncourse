@@ -1,32 +1,30 @@
+plugins {
+	id 'java-library'
+}
 apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/tapestry.gradle"
 
-apply plugin: 'groovy'
-apply plugin: 'java'
-
 dependencies {
-	compile project(':common:common-model')
+	api project(':common:common-model')
+	api project(':common:common-functions')
+	api project(':common:solr-index')
 
-	compile project(':common:common-functions')
+	api 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 
-	compile project(':common:solr-index')
+	api 'commons-collections:commons-collections:3.2.1'
+	api 'commons-logging:commons-logging:1.1.1'
 
-	implementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
-
-	compile 'commons-collections:commons-collections:3.2.1'
-	compile 'commons-logging:commons-logging:1.1.1'
-
-	compile 'net.htmlparser.jericho:jericho-html:3.2'
+	api 'net.htmlparser.jericho:jericho-html:3.2'
 
     //the jackson verson does not have problem with initializing in hot deployed wars
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
-	compile 'com.amazonaws:aws-java-sdk-s3:1.11.964'
-	compile 'com.amazonaws:aws-java-sdk-iam:1.11.964'
+	api 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
+	api 'com.amazonaws:aws-java-sdk-s3:1.11.964'
+	api 'com.amazonaws:aws-java-sdk-iam:1.11.964'
 
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
-	compile 'org.apache.maven:maven-artifact:3.0.4'
+	api 'org.apache.maven:maven-artifact:3.0.4'
 
-	testCompile project(':common:test-tapestry')
+	testImplementation project(':common:test-tapestry')
 }
 
 test {

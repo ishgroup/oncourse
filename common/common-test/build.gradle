@@ -2,21 +2,21 @@ configurations { tapestryTest }
 
 dependencies {
 
-    testCompile ("ish.oncourse:types:$typesVersion") {
+    testImplementation ("ish.oncourse:types:$typesVersion") {
         //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
-    testCompile "org.apache.cayenne:cayenne-server:$cayenneVersion"
-	testCompile "org.apache.tapestry:tapestry-core:$tapestryVersion"
-	testCompile "org.apache.tapestry:tapestry-ioc:$tapestryVersion"
-	testCompile ("org.apache.tapestry:tapestry-test:$tapestryVersion") {
+	testImplementation "org.apache.cayenne:cayenne-server:$cayenneVersion"
+	testImplementation "org.apache.tapestry:tapestry-core:$tapestryVersion"
+	testImplementation "org.apache.tapestry:tapestry-ioc:$tapestryVersion"
+	testImplementation ("org.apache.tapestry:tapestry-test:$tapestryVersion") {
 		exclude group: 'org.seleniumhq.selenium.server', module: 'selenium-server'
 	}
-	testCompile 'org.apache.derby:derby:10.11.1.1'
-	testCompile 'commons-dbcp:commons-dbcp:1.4'
-	testCompile 'commons-pool:commons-pool:1.5.6'
-    testCompile 'commons-collections:commons-collections:3.2.1'
+	testImplementation 'org.apache.derby:derby:10.11.1.1'
+	testImplementation 'commons-dbcp:commons-dbcp:1.4'
+	testImplementation 'commons-pool:commons-pool:1.5.6'
+	testImplementation 'commons-collections:commons-collections:3.2.1'
 }
 
 configurations {

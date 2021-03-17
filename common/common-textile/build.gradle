@@ -1,4 +1,6 @@
-apply plugin: 'java'
+plugins {
+	id 'java-library'
+}
 dependencies {
-	compile project(':common:common-services')
+	api project(':common:common-services')
 }

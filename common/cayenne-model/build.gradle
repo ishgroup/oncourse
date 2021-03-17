@@ -1,20 +1,22 @@
-
+plugins {
+    id 'java-library'
+}
 apply plugin: 'org.apache.cayenne'
 
 dependencies {
-    compile ("ish.oncourse:types:$typesVersion") {
+    api ("ish.oncourse:types:$typesVersion") {
         //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
-    compile ('commons-validator:commons-validator:1.5.0'){
+    api ('commons-validator:commons-validator:1.5.0'){
         //the lib (version 2.1) conflicts with commons-collections (ver 3.2.1) from org.apache.cayenne group dependences
         exclude group:'commons-collections', module: 'commons-collections'
     }
 
-    compile "commons-lang:commons-lang:2.6"
-    compile "org.apache.cayenne:cayenne-server:$cayenneVersion"
-    compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
-    compile "org.apache.cayenne:cayenne-cache-invalidation:$cayenneVersion"
+    api "commons-lang:commons-lang:2.6"
+    api "org.apache.cayenne:cayenne-server:$cayenneVersion"
+    api "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
+    testImplementation "org.apache.cayenne:cayenne-cache-invalidation:$cayenneVersion"
 }
 
 cgen {
