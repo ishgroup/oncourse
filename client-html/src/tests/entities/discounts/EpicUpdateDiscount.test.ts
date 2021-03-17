@@ -2,7 +2,6 @@ import { DefaultEpic } from "../../common/Default.Epic";
 import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import {
-  GET_DISCOUNT_ITEM,
   UPDATE_DISCOUNT_ITEM_FULFILLED,
   updateDiscount
 } from "../../../js/containers/entities/discounts/actions";
@@ -25,10 +24,6 @@ describe("Update discount epic tests", () => {
         {
           type: GET_RECORDS_REQUEST,
           payload: { entity: "Discount", listUpdate: true, savedID: id }
-        },
-        {
-          type: GET_DISCOUNT_ITEM,
-          payload: id
         }
       ]
     });
