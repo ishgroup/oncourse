@@ -10,7 +10,7 @@ buildscript {
         tapestryVersion = '5.4.3'
 		bootiqueVersion = '1.0'
         webservicesVersion = '112'
-
+        caffeineVersion = '2.6.2'
     }
 
 	repositories {

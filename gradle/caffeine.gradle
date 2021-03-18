@@ -1,8 +1,0 @@
-ext {
-    caffeineVersion = '2.6.2'
-}
-
-dependencies {
-    compile group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: caffeineVersion
-    compile group: 'com.github.ben-manes.caffeine', name: 'jcache', version: caffeineVersion
-}

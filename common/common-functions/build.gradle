@@ -3,7 +3,6 @@ plugins {
 }
 
 apply from: "$rootDir/gradle/functions.gradle"
-apply from: "$rootDir/gradle/caffeine.gradle"
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
@@ -28,6 +27,9 @@ dependencies {
     api 'commons-httpclient:commons-httpclient:3.1'
     api 'net.java.dev.textile-j:textile-j:2.2.864'
     api 'com.atlassian.commonmark:commonmark:0.15.2'
+
+    api "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
+    api "com.github.ben-manes.caffeine:jcache:$caffeineVersion"
 
     testImplementation project(':common:test-functions')
 }
