@@ -965,6 +965,11 @@ definitions:
         description: Layout id which this theme uses
       blocks:
         $ref: '#/definitions/ThemeBlocks'
+      paths:
+        description: A list of path patterms to aply the theme
+        type: array
+        items:
+          type: string
 
   MenuItem:
     type: object
