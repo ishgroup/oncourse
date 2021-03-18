@@ -19,13 +19,13 @@ import ish.math.Money
 import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.api.dao.EnrolmentDao
 import ish.oncourse.server.api.dao.FundingSourceDao
-import ish.oncourse.server.api.v1.model.AssessmentSubmissionDTO
-import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.document.DocumentService
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.function.CustomFieldFunctions
 import ish.oncourse.server.api.v1.function.DocumentFunctions
 import ish.oncourse.server.api.v1.function.TagFunctions
+
+import static ish.oncourse.server.api.v1.function.AssessmentSubmissionFunctions.updateSubmissions
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.CREDIT_LEVEL_MAP
 import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.CREDIT_PROVIDER_TYPE_MAP
@@ -188,7 +188,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.creditType = CREDIT_TYPE_MAP.getByValue(dto.creditType)
         enrolment.creditLevel = CREDIT_LEVEL_MAP.getByValue(dto.creditLevel)
 
-//        updateSubmissions(dto, enrolment)
+        updateSubmissions(submissionApiService, this, dto.submissions, enrolment.assessmentSubmissions, context)
         TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags*.id, EnrolmentTagRelation, context)
         DocumentFunctions.updateDocuments(enrolment, enrolment.attachmentRelations, dto.documents, EnrolmentAttachmentRelation, context)
         CustomFieldFunctions.updateCustomFields(context, enrolment, dto.customFields, EnrolmentCustomField)
@@ -314,23 +314,5 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             }
         }
         action
-    }
-
-    private static void updateSubmissions(EnrolmentDTO enrolmentDto, Enrolment enrolment) {
-        ObjectContext context = enrolment.context
-
-        context.deleteObjects(enrolment.assessmentSubmissions.findAll { !(it.id in enrolmentDto.submissions*.id) })
-
-        enrolmentDto.submissions.each { submissionDto ->
-            if (submissionDto.id) {
-                submissionApiService.update(submissionDto.id, submissionDto)
-            } else {
-                submissionApiService.validateModelBeforeSave(submissionDto, context, null)
-                AssessmentSubmission submission = context.newObject(AssessmentSubmission)
-                submission.enrolment = enrolment
-                submission.assessmentClass = enrolment.courseClass.assessmentClasses.find { submissionDto.assessmentId == it.assessment.id }
-                submissionApiService.toCayenneModel(submissionDto, submission)
-            }
-        }
     }
 }
