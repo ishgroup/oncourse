@@ -1464,7 +1464,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="path" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="webSiteLayoutId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="webNodeTypeId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="WebSiteVersion">
 		<db-attribute name="deployedById" type="BIGINT"/>
@@ -4226,11 +4226,11 @@
 		<db-attribute-pair source="id" target="webSiteVersionId"/>
 	</db-relationship>
 	
-	<db-relationship name="webSiteLayout" source="WebLayoutPath" target="WebSiteLayout">
-		<db-attribute-pair source="webSiteLayoutId" target="id"/>
+	<db-relationship name="webNodeType" source="WebLayoutPath" target="WebNodeType">
+		<db-attribute-pair source="webNodeTypeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webLayoutPaths" source="WebSiteLayout" target="WebLayoutPath" toMany="true">
-		<db-attribute-pair source="id" target="webSiteLayoutId"/>
+	<db-relationship name="webLayoutPaths" source="WebNodeType" target="WebLayoutPath" toMany="true">
+		<db-attribute-pair source="id" target="webNodeTypeId"/>
 	</db-relationship>
 	
 	<db-relationship name="webContent" source="WebContentVisibility" target="WebContent">
@@ -4830,9 +4830,9 @@
 	<obj-relationship name="webSiteVersion" source="WebUrlAlias" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>
 	<obj-relationship name="logs" source="WillowUser" target="Log" deleteRule="Deny" db-relationship-path="logs"/>
 	<obj-relationship name="webSiteVersion" source="WebLayoutPath" target="WebSiteVersion" deleteRule="Deny" db-relationship-path="webSiteVersion"/>
-	<obj-relationship name="webSiteLayout" source="WebLayoutPath" target="WebSiteLayout" deleteRule="Deny" db-relationship-path="webSiteLayout"/>
+	<obj-relationship name="webNodeType" source="WebLayoutPath" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeType"/>
 	<obj-relationship name="webLayoutPaths" source="WebSiteVersion" target="WebLayoutPath" deleteRule="Deny" db-relationship-path="webLayoutPaths"/>
-	<obj-relationship name="webLayoutPaths" source="WebSiteLayout" target="WebLayoutPath" deleteRule="Deny" db-relationship-path="webLayoutPaths"/>
+	<obj-relationship name="webLayoutPaths" source="WebNodeType" target="WebLayoutPath" deleteRule="Deny" db-relationship-path="webLayoutPaths"/>
 
 
 </data-map>

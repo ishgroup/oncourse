@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.WebContentVisibility;
+import ish.oncourse.model.WebLayoutPath;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.WebSiteVersion;
@@ -30,6 +31,7 @@ public abstract class _WebNodeType extends WillowCayenneObject {
     public static final String WEB_NODES_PROPERTY = "webNodes";
     public static final String WEB_SITE_LAYOUT_PROPERTY = "webSiteLayout";
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
+    public static final String WEB_LAYOUT_PATHS_PROPERTY = "webLayoutPaths";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -40,6 +42,7 @@ public abstract class _WebNodeType extends WillowCayenneObject {
     public static final Property<List<WebNode>> WEB_NODES = Property.create("webNodes", List.class);
     public static final Property<WebSiteLayout> WEB_SITE_LAYOUT = Property.create("webSiteLayout", WebSiteLayout.class);
     public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
+    public static final Property<List<WebLayoutPath>> WEB_LAYOUT_PATHS = Property.create("webLayoutPaths", List.class);
 
     protected Date created;
     protected Date modified;
@@ -49,6 +52,7 @@ public abstract class _WebNodeType extends WillowCayenneObject {
     protected Object webNodes;
     protected Object webSiteLayout;
     protected Object webSiteVersion;
+    protected Object webLayoutPaths;
 
     public void setCreated(Date created) {
         beforePropertyWrite("created", this.created, created);
@@ -122,6 +126,19 @@ public abstract class _WebNodeType extends WillowCayenneObject {
         return (WebSiteVersion)readProperty("webSiteVersion");
     }
 
+    public void addToWebLayoutPaths(WebLayoutPath obj) {
+        addToManyTarget("webLayoutPaths", obj, true);
+    }
+
+    public void removeFromWebLayoutPaths(WebLayoutPath obj) {
+        removeToManyTarget("webLayoutPaths", obj, true);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<WebLayoutPath> getWebLayoutPaths() {
+        return (List<WebLayoutPath>)readProperty("webLayoutPaths");
+    }
+
     protected abstract void onPostAdd();
 
     @Override
@@ -145,6 +162,8 @@ public abstract class _WebNodeType extends WillowCayenneObject {
                 return this.webSiteLayout;
             case "webSiteVersion":
                 return this.webSiteVersion;
+            case "webLayoutPaths":
+                return this.webLayoutPaths;
             default:
                 return super.readPropertyDirectly(propName);
         }
@@ -178,6 +197,9 @@ public abstract class _WebNodeType extends WillowCayenneObject {
             case "webSiteVersion":
                 this.webSiteVersion = val;
                 break;
+            case "webLayoutPaths":
+                this.webLayoutPaths = val;
+                break;
             default:
                 super.writePropertyDirectly(propName, val);
         }
@@ -201,6 +223,7 @@ public abstract class _WebNodeType extends WillowCayenneObject {
         out.writeObject(this.webNodes);
         out.writeObject(this.webSiteLayout);
         out.writeObject(this.webSiteVersion);
+        out.writeObject(this.webLayoutPaths);
     }
 
     @Override
@@ -213,6 +236,7 @@ public abstract class _WebNodeType extends WillowCayenneObject {
         this.webNodes = in.readObject();
         this.webSiteLayout = in.readObject();
         this.webSiteVersion = in.readObject();
+        this.webLayoutPaths = in.readObject();
     }
 
 }

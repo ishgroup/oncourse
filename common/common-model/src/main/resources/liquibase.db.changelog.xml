@@ -342,7 +342,7 @@
 			<column name="path" type="VARCHAR(200)">
 				<constraints nullable="false"/>
 			</column>
-			<column name="webSiteLayoutId" type="BIGINT">
+			<column name="webNodeTypeId" type="BIGINT">
 				<constraints nullable="false"/>
 			</column>
 			<column name="webSiteVersionId" type="BIGINT">
@@ -350,9 +350,9 @@
 			</column>
 		</createTable>
 		<addForeignKeyConstraint baseTableName="WebLayoutPath"
-								 baseColumnNames="webSiteLayoutId"
-								 constraintName="WebLayoutPath_WebSiteLayout_fk"
-								 referencedTableName="WebSiteLayout"
+								 baseColumnNames="webNodeTypeId"
+								 constraintName="WebLayoutPath_WebNodeType_fk"
+								 referencedTableName="WebNodeType"
 								 referencedColumnNames="id"
 								 validate="true"/>
 		<addForeignKeyConstraint baseTableName="WebLayoutPath"
