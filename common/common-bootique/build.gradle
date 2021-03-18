@@ -1,1 +1,11 @@
-apply from: "$rootDir/gradle/bootique.gradle"
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    api 'io.bootique:bootique:$bootiqueVersion'
+    api 'io.bootique.jetty:bootique-jetty:$bootiqueVersion'
+    api 'io.bootique.jcache:bootique-jcache:$bootiqueVersion'
+    api 'io.bootique.cayenne:bootique-cayenne:$bootiqueVersion'
+    api 'io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion'
+}

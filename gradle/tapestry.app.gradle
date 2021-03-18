@@ -4,7 +4,6 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-apply from: "$rootDir/gradle/bootique.gradle"
 apply from: "$rootDir/gradle/jetty.gradle"
 
 targetCompatibility = '1.8'
@@ -33,7 +32,7 @@ dependencies {
     /**
      * bootique dependencies
      */
-    implementation 'io.bootique.tapestry:bootique-tapestry'
+    implementation 'io.bootique.tapestry:bootique-tapestry:$bootiqueVersion'
 
     implementation 'aopalliance:aopalliance:1.0'
     implementation 'commons-logging:commons-logging:1.1.1'
