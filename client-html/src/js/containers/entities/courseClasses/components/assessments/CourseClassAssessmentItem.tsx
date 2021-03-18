@@ -452,7 +452,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                             <span>
                               Assessor:
                               {" "}
-                              {tutors.find(t => t.contactId === elem.submission.markedById).tutorName}
+                              {tutors.find(t => t.contactId === elem.submission.markedById)?.tutorName}
                             </span>
                           )}
                         </span>

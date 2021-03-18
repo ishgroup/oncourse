@@ -265,7 +265,7 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
                             <span>
                               Assessor:
                               {" "}
-                              {tutors.find(t => t.contactId === submission.markedById).tutorName}
+                              {tutors.find(t => t.contactId === submission.markedById)?.tutorName}
                             </span>
                           )}
                         </span>
