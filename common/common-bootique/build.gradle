@@ -9,5 +9,4 @@ dependencies {
     api "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
     api "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
 
-    api 'com.google.com.inject:guice:4.2.0'
 }

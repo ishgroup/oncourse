@@ -10,6 +10,8 @@ ext {
 }
 
 dependencies {
+	implementation project(':common:common-bootique')
+
 	implementation 'javax.xml.ws:jaxws-api:2.3.1'
 	implementation 'javax.jws:javax.jws-api:1.1'
 
