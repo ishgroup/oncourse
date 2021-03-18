@@ -145,7 +145,7 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
     ? `All assessments ${modalProps[0].toLowerCase()} date${titlePostfix}`
     : `${modalProps[2]} ${modalProps[0].toLowerCase()} date${titlePostfix}`);
 
-  return values.assessments.length ? (
+  return values.assessments && values.assessments.length ? (
     <Grid item={true} xs={12} container>
       <AssessmentSubmissionModal
         name={`submissions[${modalProps[1]}]`}
