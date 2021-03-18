@@ -40,6 +40,8 @@ export const toValidationError = (response: AxiosResponse) => {
 
   if (isValidationError(response.data.validationErrors)) {
     messages = Object.assign({}, messages, response.data.validationErrors);
+  } else if (isValidationError(response.data)) {
+    messages = Object.assign({}, messages, response.data);
   } else if (isCommonError(response.data)) {
     messages.formErrors.push(response.data.message);
   } else if (isPlainTextError(response.data)) {
