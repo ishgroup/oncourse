@@ -417,11 +417,11 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           </Grid>
         </Grid>
 
-        {/* <EnrolmentSubmissions */}
-        {/*  values={values} */}
-        {/*  dispatch={dispatch} */}
-        {/*  form={form} */}
-        {/* /> */}
+        <EnrolmentSubmissions
+          values={values}
+          dispatch={dispatch}
+          form={form}
+        />
       </Grid>
     </>
   );
