@@ -18,7 +18,7 @@ export function mockRooms() {
       rules: [],
       seatedCapacity: row.values[2],
       siteId: row.id,
-      tags: this.getTag(row.id)
+      tags: this.getTags()
     };
   };
 
