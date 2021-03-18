@@ -4,7 +4,7 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useRef, useState 
+ useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
@@ -14,7 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { differenceInDays, format } from "date-fns";
 import {
- Assessment, AssessmentClass, AssessmentSubmission, CourseClassTutor 
+ Assessment, AssessmentClass, AssessmentSubmission, CourseClassTutor
 } from "@api/model";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -30,6 +30,7 @@ import AssessmentSubmissionIconButton, { AssessmentsSubmissionType } from "./Ass
 import AssessmentSubmissionModal from "./AssessmentSubmissionModal";
 import { III_DD_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import styles from "./styles";
+import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 
 interface Props {
   form: string;
@@ -76,7 +77,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   const modalProps = modalOpenedBy ? modalOpenedBy.split("-") : [];
 
   const tutorsUpdater = useRef<any>();
-  const submissionUpdater = useRef<any>();
+  const submissionUpdater = useRef<(s: AssessmentSubmission[]) => void>();
 
   useEffect(() => {
     const result = courseClassEnrolments && courseClassEnrolments.reduce((acc, elem) => {
@@ -111,7 +112,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
           markedOn: modalProps[0] === "Marked" ? row.submissions[0].markedOn : submission?.markedOn,
           enrolmentId: Number(elem.id),
           studentId: Number(elem.contactId),
-          studentName: elem.student
+          studentName: elem.student,
         } : null;
       }).filter(s => s));
     }
@@ -133,7 +134,8 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
               markedOn: type === "Marked" ? today : null,
               enrolmentId: Number(elem.enrolmentId),
               studentId: Number(elem.studentId),
-              studentName: elem.studentName
+              studentName: elem.studentName,
+              assessmentId: row.assessmentId
             };
 
             submissionUpdater.current([newSubmission, ...row.submissions]);
@@ -201,7 +203,8 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
             markedOn: null,
             enrolmentId: Number(elem.enrolmentId),
             studentId: Number(elem.studentId),
-            studentName: elem.studentName
+            studentName: elem.studentName,
+            assessmentId: row.assessmentId
           });
         }
       }

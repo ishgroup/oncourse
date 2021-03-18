@@ -59,7 +59,7 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
 
   const modalProps = modalOpenedBy ? modalOpenedBy.split("-") : [];
 
-  const onChangeStatus = (type, submissionIndex, prevStatus, assessment) => {
+  const onChangeStatus = (type, submissionIndex, prevStatus, assessment, index) => {
     let pathIndex = submissionIndex;
     const today = format(new Date(), YYYY_MM_DD_MINUSED);
 
@@ -89,7 +89,7 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
       dispatch(change(form, `submissions[${submissionIndex}].markedOn`, today));
     }
     if (prevStatus !== "Submitted") {
-      setModalOpenedBy(`${type}-${pathIndex}-${assessment.name}`);
+      setModalOpenedBy(`${type}-${pathIndex}-${assessment.name}-${index}`);
     }
   };
 
@@ -113,30 +113,32 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
   };
 
   const triggerAsyncChange = (event, newValue, previousValue, name) => {
-    setTimeout(() => {
       const { field, index } = getArrayFieldMeta(name);
       if (field === "submittedOn" && modalProps[2] !== "all") {
-        const updatedSubmissions = [...values.submissions];
-        if (!newValue) {
-          updatedSubmissions.splice(index, 1);
-        }
-        const assessment = values.assessments[modalProps[3]];
-        const submission = values.submissions.find(s => s.assessmentId === assessment?.id);
-        if (!submission && newValue && modalProps[2] !== "all") {
-          updatedSubmissions.unshift({
-            id: null,
-            submittedOn: newValue,
-            markedById: null,
-            markedOn: null,
-            enrolmentId: values.id,
-            studentId: values.studentContactId,
-            studentName: values.studentName,
-            assessmentId: assessment?.id
-          });
-        }
-        dispatch(change(form, "submissions", updatedSubmissions.filter(s => s.hasOwnProperty("assessmentId"))));
+        setTimeout(() => {
+          const updatedSubmissions = [...values.submissions];
+          if (!newValue) {
+            updatedSubmissions.splice(index, 1);
+            dispatch(change(form, "submissions", updatedSubmissions.filter(s => s.hasOwnProperty("assessmentId"))));
+          } else {
+            const assessment = values.assessments[modalProps[3]];
+            const submission = values.submissions.find(s => s.assessmentId === assessment?.id);
+            if (!submission && newValue && modalProps[2] !== "all") {
+              updatedSubmissions.unshift({
+                id: null,
+                submittedOn: newValue,
+                markedById: null,
+                markedOn: null,
+                enrolmentId: values.id,
+                studentId: values.studentContactId,
+                studentName: values.studentName,
+                assessmentId: assessment?.id
+              });
+              dispatch(change(form, "submissions", updatedSubmissions.filter(s => s.hasOwnProperty("assessmentId"))));
+            }
+          }
+        }, 500);
       }
-    }, 500);
   };
 
   const titlePostfix = modalProps[0] === "Marked" ? " and assessor" : "";
@@ -195,7 +197,7 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
               <div className="d-flex relative">
                 <AssessmentSubmissionIconButton
                   status={submitStatus}
-                  onClick={() => onChangeStatus("Submitted", submissionIndex, submitStatus, elem)}
+                  onClick={() => onChangeStatus("Submitted", submissionIndex, submitStatus, elem, index)}
                 />
                 {submitStatus === "Submitted" && (
                   <IconButton
@@ -213,7 +215,7 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
               <div className="d-flex relative">
                 <AssessmentSubmissionIconButton
                   status={markedStatus}
-                  onClick={() => onChangeStatus("Marked", submissionIndex, markedStatus, elem)}
+                  onClick={() => onChangeStatus("Marked", submissionIndex, markedStatus, elem, index)}
                 />
                 {markedStatus === "Submitted" && (
                   <IconButton
