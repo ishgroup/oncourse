@@ -641,6 +641,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           ],
           asyncChangeFields: [
             "tutors[].isInPublicity",
+            "assessments[].contactIds",
             "assessments[].submissions"
           ],
           hideFullScreenAppBar: true,
