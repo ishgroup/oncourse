@@ -431,7 +431,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       response = input.value[selectLabelMark];
     } else {
       const selected = sortedItems.find(i => getOptionSelected(i, input.value));
-
       response = selected ? selected[selectLabelMark] : defaultDisplayValue || input.value;
     }
 
@@ -439,7 +438,11 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       response = defaultDisplayValue;
     }
 
-    return ![null, undefined, ''].includes(input.value) ? response : <span className={clsx("overflow-hidden placeholderContent", classes.editable)}>No value</span>;
+    return (
+      ![null, undefined, ''].includes(input.value)
+      ? response
+      : <span className={clsx("overflow-hidden placeholderContent", classes.editable)}>No value</span>
+    );
   }, [formattedDisplayValue, selectLabelCondition, alwaysDisplayDefault, returnType, defaultDisplayValue, selectLabelMark, input, classes]);
 
   const labelContent = useMemo(() => (labelAdornment ? (
