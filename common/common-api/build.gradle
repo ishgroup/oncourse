@@ -9,8 +9,8 @@ dependencies {
     api(project(':common:common-functions')) {
         exclude group: 'org.apache.logging.log4j'
     }
+    api project(':common:common-bootique')
 
-//cxf
     api 'org.apache.cxf:cxf-core:3.2.2'
     api ('org.apache.cxf:cxf-rt-frontend-jaxrs:3.2.2'){
         exclude group:'javax.ws.rs'

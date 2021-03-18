@@ -4,7 +4,6 @@ ext {
     swaggerName = 'checkout.yaml'
 }
 
-
 configurations {
     swagger
 }
@@ -16,12 +15,11 @@ apply from: "$rootDir/gradle/build-api.gradle"
 mainClassName = 'ish.oncourse.willow.WillowApp'
 
 
-
-
 dependencies {
-    compile project(':common:common-api')
-    compile project(':common:common-bootique')
-    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
+    implementation project(':common:common-api')
+    implementation project(':common:common-bootique')
+    implementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
+
     swagger project(':common:codegen:jaxrs')
 }
 test {

@@ -1,9 +1,9 @@
 apply from: "$rootDir/gradle/tapestry.gradle"
 
 dependencies {
-	compile project(':common:common-services')
-	compile project(':common:test-functions')
-	compile ("org.apache.tapestry:tapestry-test:$tapestryVersion") {
+	implementation project(':common:common-services')
+	implementation project(':common:test-functions')
+	implementation ("org.apache.tapestry:tapestry-test:$tapestryVersion") {
 		exclude group: 'org.seleniumhq.selenium.server', module: 'selenium-server'
 	}
 }

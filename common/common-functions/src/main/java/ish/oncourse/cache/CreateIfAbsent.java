@@ -8,10 +8,6 @@ import javax.cache.CacheManager;
 import javax.cache.configuration.Configuration;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * User: akoiro
- * Date: 2/4/18
- */
 public class CreateIfAbsent<K, V> {
 
 	private final CacheManager cacheManager;

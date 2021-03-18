@@ -15,7 +15,7 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-pool2', version: '2.4.2'
     implementation group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.1.1'
     implementation group: 'com.github.javafaker', name: 'javafaker', version: '0.13'
-    implementation group: 'org.dbunit', name: 'dbunit', version : '2.5.3'
+    implementation 'org.dbunit:dbunit:2.5.3'
     implementation group: 'com.carrotsearch.randomizedtesting', name: 'randomizedtesting-runner', version: '2.5.3'
 }
 

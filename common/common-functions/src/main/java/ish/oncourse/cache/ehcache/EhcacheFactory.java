@@ -20,10 +20,6 @@ import java.util.concurrent.TimeUnit;
 import static org.ehcache.config.builders.CacheConfigurationBuilder.newCacheConfigurationBuilder;
 import static org.ehcache.config.builders.ResourcePoolsBuilder.newResourcePoolsBuilder;
 
-/**
- * User: akoiro
- * Date: 31/3/18
- */
 public class EhcacheFactory<K, V> extends ACacheFactory<K, V> {
 
 	private static final Logger logger = LogManager.getLogger();

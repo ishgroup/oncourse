@@ -3,9 +3,11 @@ plugins {
 }
 
 dependencies {
-    api 'io.bootique:bootique:$bootiqueVersion'
-    api 'io.bootique.jetty:bootique-jetty:$bootiqueVersion'
-    api 'io.bootique.jcache:bootique-jcache:$bootiqueVersion'
-    api 'io.bootique.cayenne:bootique-cayenne:$bootiqueVersion'
-    api 'io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion'
+    api "io.bootique:bootique:$bootiqueVersion"
+    api "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
+    api "io.bootique.jcache:bootique-jcache:$bootiqueVersion"
+    api "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
+    api "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
+
+    api 'com.google.com.inject:guice:4.2.0'
 }

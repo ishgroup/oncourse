@@ -7,10 +7,7 @@ import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.configuration.Configuration;
 
-/**
- * User: akoiro
- * Date: 3/4/18
- */
+
 public abstract class ACacheFactory<K, V> implements ICacheFactory<K, V> {
 	private final Configuration<K, V> defaultConfig;
 	private final CreateIfAbsent<K, V> createIfAbsent;
