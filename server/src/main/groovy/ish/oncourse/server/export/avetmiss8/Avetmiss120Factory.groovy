@@ -218,7 +218,8 @@ class Avetmiss120Factory extends AvetmissFactory {
 
         line.setResult(outcome.getStatus().getDatabaseValue().toString())
 
-        if (outcome.getStatus() == null || OutcomeStatus.STATUS_NOT_SET == outcome.getStatus()) {
+        if (outcome.getStatus() == null ||
+                [OutcomeStatus.STATUS_NOT_SET, OutcomeStatus.STATUS_ASSESSABLE_CONTINUING_ENROLMENT].contains(outcome.getStatus())) {
             if (isVetFlag) {
                 if (result.defaultOutcome == null) {
                     line.setResult("00")
