@@ -40,13 +40,20 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
   } = props;
 
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);
+  const [modalProps, setModalProps] = useState<string[]>([]);
   const [tutors, setTutors] = useState([]);
+
+  useEffect(() => {
+    setModalProps(modalOpenedBy ? modalOpenedBy.split("-") : []);
+  }, [modalOpenedBy]);
 
   useEffect(() => {
     EntityService.getPlainRecords(
       "Contact",
       "firstName,lastName",
-      `tutor.assessmentClassTutors.assessmentClass.courseClass.id is ${values.courseClassId}`
+      modalProps[3]
+        ? `tutor.assessmentClassTutors.assessmentClass.courseClass.id is ${values.courseClassId} and tutor.assessmentClassTutors.assessmentClass.assessment.id is ${values.assessments[modalProps[3]].id}`
+        : `tutor.assessmentClassTutors.assessmentClass.courseClass.id is ${values.courseClassId}`
     )
     .then(res => {
       setTutors(res.rows.map(r => ({
@@ -55,9 +62,7 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
       })));
     })
     .catch(err => instantFetchErrorHandler(dispatch, err));
-  }, []);
-
-  const modalProps = modalOpenedBy ? modalOpenedBy.split("-") : [];
+  }, [values, modalProps]);
 
   const onChangeStatus = (type, submissionIndex, prevStatus, assessment, index) => {
     let pathIndex = submissionIndex;
@@ -69,7 +74,7 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
         const newSubmission: AssessmentSubmission = {
           id: null,
           submittedOn: today,
-          markedById: type === "Marked" && tutors ? tutors[0].contactId : null,
+          markedById: null,
           markedOn: type === "Marked" ? today : null,
           enrolmentId: values.id,
           studentId: values.studentContactId,
@@ -156,6 +161,7 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
         title={title}
         onClose={onPickerClose}
         triggerAsyncChange={triggerAsyncChange}
+        disableAssessor={modalProps[0] === "Marked" && modalProps[2] === "all"}
       />
 
       <div className="heading">Assessments Submissions</div>
@@ -186,7 +192,7 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
           </span>
         </Grid>
       </Grid>
-      <Grid container xs={12} className={classes.items}>
+      <Grid container item={true} xs={12} className={classes.items}>
         {values.assessments.map((elem, index) => {
             const submissionIndex = values.submissions.findIndex(s => s.assessmentId === elem.id);
             const submission = submissionIndex !== -1 && values.submissions[submissionIndex];

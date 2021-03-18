@@ -22,7 +22,8 @@ const AssessmentSubmissionModal = (
     tutors,
     onClose,
     triggerAsyncChange,
-    title
+    title,
+    disableAssessor = false
   }
 ) => {
   const type = modalProps[0];
@@ -54,16 +55,17 @@ const AssessmentSubmissionModal = (
           </Grid>
           <Grid item xs={6}>
             {type === "Marked" && (
-            <FormField
-              type="select"
-              selectValueMark="contactId"
-              selectLabelMark="tutorName"
-              name={`${name}.markedById`}
-              label="Assessor"
-              items={tutors}
-              onChange={triggerAsyncChange}
-              allowEmpty
-            />
+              <FormField
+                type="select"
+                selectValueMark="contactId"
+                selectLabelMark="tutorName"
+                name={`${name}.markedById`}
+                label="Assessor"
+                items={tutors}
+                onChange={triggerAsyncChange}
+                disabled={disableAssessor}
+                allowEmpty
+              />
             )}
           </Grid>
         </Grid>
