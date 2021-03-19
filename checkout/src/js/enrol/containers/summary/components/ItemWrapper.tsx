@@ -51,7 +51,7 @@ export class ItemWrapper extends React.Component<Props, any> {
     return (
       <div className={classnames("enrolmentInfo", { "col-xs-16 col-md-16": !fullWidth, "col-md-24": fullWidth })}>
 
-        {selected && quantity && quantity > 0 ?
+        {selected ?
           <div style={styles.quantity}>
             {!readonly && <div style={styles.enrolmentSelect}>
               <input

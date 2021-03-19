@@ -16,7 +16,7 @@ export const GetAllContactNodes: Epic<any, any> = (action$: ActionsObservable<an
       const contacts = state.checkout.contacts;
 
       return Observable.forkJoin(
-        contacts.result.map(id => CheckoutServiceV2.getContactNode(contacts.entities.contact[id], state.checkout.summary, state.cart)),
+        contacts.result.map(id => CheckoutServiceV2.getContactNode(contacts.entities.contact[id], state.checkout.summary, state.cart, state.checkout.payerId)),
       )
       .flatMap((results: ContactNode[]) => {
         const relationsUpdateActions = ContactNodeService.getRelationsUpdateActions(results);

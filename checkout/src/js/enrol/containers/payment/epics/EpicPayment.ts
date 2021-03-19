@@ -23,6 +23,7 @@ import CheckoutServiceV2 from "../../../services/CheckoutServiceV2";
 import {AxiosResponse} from "axios";
 import {ProcessCheckoutModel} from "../../../epics/EpicProceedToPayment";
 import {Phase} from "../../../reducers/State";
+import {EpicValidatePayment} from "./EpicValidatePayment";
 
 const SubmitPaymentForWaitingCoursesRequest: Request<any, IshState> = {
   type: SUBMIT_PAYMENT_FOR_WAITING_COURSES,
@@ -155,6 +156,7 @@ export const EpicPayment = combineEpics(
   SubmitPaymentCorporatePass,
   SubmitPaymentForWaitingCourses,
   GetPaymentStatus,
+  EpicValidatePayment,
   GetCorporatePass,
   ProcessPaymentV2,
   ProcessPaymentV2Status,

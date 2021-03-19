@@ -41,10 +41,10 @@ class CreditCardV2Comp extends React.Component<Props, any> {
 
   componentDidMount() {
     const {
-       payerId, processPaymentV2,
+      processPaymentV2
     } = this.props;
 
-    processPaymentV2(true, payerId);
+    processPaymentV2(true, null);
 
     window.addEventListener("message", this.onMessage);
   }
@@ -55,12 +55,8 @@ class CreditCardV2Comp extends React.Component<Props, any> {
 
   componentDidUpdate(prev) {
     const {
-      amount, payerId, processPaymentV2, iframeUrl
+      iframeUrl
     } = this.props;
-
-    if (prev.amount.ccPayment !== amount.ccPayment || prev.payerId !== payerId) {
-      processPaymentV2(true, payerId);
-    }
 
     if(this.iframeRef.current && prev.iframeUrl !== iframeUrl) {
       this.iframeRef.current.contentWindow.location.replace(iframeUrl);

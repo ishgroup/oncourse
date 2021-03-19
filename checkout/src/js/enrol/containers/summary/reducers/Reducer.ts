@@ -61,6 +61,15 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
       mergePurchases(ns, action.payload, false);
       return ns;
 
+    case SummaryActions.REWRITE_CONTACT_NODES_TO_STATE:
+      ns.result = action.payload.result;
+      ns.entities.contactNodes = action.payload.entities.contactNodes;
+      mergePurchases(ns, action.payload, false);
+
+      // Make sure vouchers will not duplicate for non payers
+      ns.entities.vouchers = action.payload.entities.vouchers;
+      return ns;
+
     case SummaryActions.ItemsLoad:
       return action.payload;
 
@@ -125,9 +134,16 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
     case SummaryActions.REMOVE_CONTACT_FROM_SUMMARY:
       const {contactId} = action.payload;
 
-      ['enrolments', 'memberships', 'vouchers', 'articles', 'applications'].map(item =>
-        ns.entities.contactNodes[contactId][item].map(id => delete ns.entities[item][id]),
+      ItemsKeys.forEach(item => {
+          ns.entities.contactNodes[contactId][item].forEach(id => delete ns.entities[item][id]);
+          for (let ent in ns.entities[item]) {
+            if (ns.entities[item][ent] && ns.entities[item][ent].contactId === contactId) {
+              delete ns.entities[item][ent];
+            }
+          }
+        }
       );
+
       ns.result = state.result.filter(id => id !== contactId);
       delete ns.entities.contactNodes[contactId];
       return ns;

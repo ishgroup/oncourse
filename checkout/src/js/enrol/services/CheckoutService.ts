@@ -105,7 +105,7 @@ export class CheckoutService {
     return this.contactApi.getContactFields(BuildContactFieldsRequest.fromStateSelected(contact, state.checkout.summary, state.checkout.phase));
   }
 
-  public submitContactDetails = (values: ContactFields, fields: { [key: string]: any }): Promise<any> => {
+  public submitContactDetails = (fields: ContactFields, values: { [key: string]: any }): Promise<any> => {
     return this.contactApi.submitContactDetails(BuildSubmitFieldsRequest.fromValues(fields, values));
   }
 
@@ -246,22 +246,7 @@ export class BuildContactNodeRequest {
     return result;
   }
 
-  static fromState = (cart: CartState): ContactNodeRequest => {
-    const result: ContactNodeRequest = new ContactNodeRequest();
-    result.contactId = cart.contact.id;
-    result.classIds = cart.courses.result;
-    result.products = cart.products.result.map(productId => {
-      const container = new ProductContainer();
-      container.productId = productId;
-      container.quantity = 1;
-      return container;
-    });
-    result.promotionIds = cart.promotions.result;
-    result.waitingCourseIds = cart.waitingCourses.result;
-    return result;
-  }
-
-  static fromContact = (contact: Contact, summary: SummaryState, cart: CartState): ContactNodeRequest => {
+  static fromContact = (contact: Contact, summary: SummaryState, cart: CartState, payerId: string): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = contact.id;
     result.classIds = [];
@@ -280,11 +265,15 @@ export class BuildContactNodeRequest {
     }
 
     result.products = cart.products.result.map(productId => {
+      const productType = cart.products.entities[productId] && cart.products.entities[productId].type;
+      if (productType === "VOUCHER" && contact.id !== payerId) {
+        return null;
+      }
       const container = new ProductContainer();
       container.productId = productId;
       container.quantity = 1;
       return container;
-    });
+    }).filter(pr => pr);
     result.promotionIds = cart.promotions.result;
     result.waitingCourseIds = cart.waitingCourses.result;
     return result;
@@ -410,7 +399,12 @@ export class BuildContactNodes {
     formatNodeCustomFields(result.applications, stateRoot);
     result.memberships = storage.memberships ? storage.memberships.map(id => L.cloneDeep(state.entities.memberships[id])) : [];
     result.articles = storage.articles ? storage.articles.map(id => L.cloneDeep(state.entities.articles[id])) : [];
-    result.vouchers = storage.vouchers ? storage.vouchers.map(id => L.cloneDeep(state.entities.vouchers[id])) : [];
+
+    // Make sure that only payer has vouchers
+    result.vouchers = state.entities.vouchers && stateRoot.checkout.payerId === storage.contactId
+      ? Object.keys(state.entities.vouchers).map(vKey => ({...state.entities.vouchers[vKey], contactId: storage.contactId}))
+      : [];
+
     result.waitingLists = storage.waitingLists ? storage.waitingLists.map(id => L.cloneDeep(state.entities.waitingLists[id])) : [];
     formatNodeCustomFields(result.waitingLists, stateRoot);
     return result;

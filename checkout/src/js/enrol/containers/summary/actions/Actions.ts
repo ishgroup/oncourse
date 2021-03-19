@@ -18,6 +18,7 @@ export const GET_ALL_CONTACT_NODES_FROM_BACKEND: string = "checkout/summary/get/
 
 export const ADD_CONTACT_NODE_TO_STATE: string = "checkout/summary/update/ContactNode";
 export const REWRITE_CONTACT_NODE_TO_STATE: string = "checkout/summary/rewrite/ContactNode";
+export const REWRITE_CONTACT_NODES_TO_STATE: string = "checkout/summary/rewrite/ContactNodes";
 
 export const SELECT_ITEM_REQUEST: string = "checkout/summary/select/item/request";
 
@@ -109,6 +110,14 @@ export const rewriteContactNodeToState = (node: ContactNode): IAction<State> => 
   return {
     payload,
     type: REWRITE_CONTACT_NODE_TO_STATE,
+  };
+};
+
+export const rewriteContactNodesToState = (nodes: ContactNode[]): IAction<State> => {
+  const payload: State = ContactNodeToState(nodes);
+  return {
+    payload,
+    type: REWRITE_CONTACT_NODES_TO_STATE,
   };
 };
 

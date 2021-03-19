@@ -17,8 +17,8 @@ class CheckoutServiceV2 {
     return this.checkoutApi.getStatus(sessionId,payerId);
   }
 
-  public getContactNode = (contact: Contact, summary: SummaryState, cart: CartState): Promise<ContactNode> => {
-    return this.checkoutApi.getContactNodeV2(BuildContactNodeRequest.fromContact(contact, summary, cart));
+  public getContactNode = (contact: Contact, summary: SummaryState, cart: CartState, payerId: string): Promise<ContactNode> => {
+    return this.checkoutApi.getContactNodeV2(BuildContactNodeRequest.fromContact(contact, summary, cart, payerId));
   }
 
   public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {

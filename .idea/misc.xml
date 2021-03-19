@@ -8,9 +8,7 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="11" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="11" project-jdk-type="JavaSDK" />
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
       <map>
@@ -21,6 +19,7 @@
                 <list>
                   <option value="https://svn.ish.com.au/ish/willow/branches" />
                   <option value="https://svn.ish.com.au/ish/willow/resources" />
+                  <option value="https://svn.ish.com.au/ish/willow/shelves" />
                   <option value="https://svn.ish.com.au/ish/willow/tags" />
                 </list>
               </option>
