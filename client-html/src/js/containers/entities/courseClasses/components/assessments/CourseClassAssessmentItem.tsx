@@ -30,7 +30,6 @@ import AssessmentSubmissionIconButton, { AssessmentsSubmissionType } from "./Ass
 import AssessmentSubmissionModal from "./AssessmentSubmissionModal";
 import { III_DD_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import styles from "./styles";
-import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 
 interface Props {
   form: string;
@@ -73,11 +72,14 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
 
   const [studentsForRender, setStudentsForRender] = useState<StudentForRender[]>([]);
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);
+  const [allSubmissionsDate, setAllSubmissionsDate] = useState<string>(null);
 
   const modalProps = modalOpenedBy ? modalOpenedBy.split("-") : [];
 
   const tutorsUpdater = useRef<any>();
   const submissionUpdater = useRef<(s: AssessmentSubmission[]) => void>();
+
+  const submissionTutors = useMemo(() => tutors.filter(t => row.contactIds.includes(t.contactId)), [tutors, row.contactIds]);
 
   useEffect(() => {
     const result = courseClassEnrolments && courseClassEnrolments.reduce((acc, elem) => {
@@ -102,19 +104,21 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
 
   const onPickerClose = () => {
     setModalOpenedBy(null);
-    if (modalProps[2] === "all" && row.submissions.length) {
+    if (modalProps[2] === "all") {
       submissionUpdater.current(courseClassEnrolments.map(elem => {
         const submission = row.submissions.find(s => s.enrolmentId === Number(elem.id));
-        return row.submissions[0].submittedOn || row.submissions[0].markedOn ? {
+        return !allSubmissionsDate && modalProps[0] === "Submitted" ? null : {
           id: submission ? submission.id : null,
-          submittedOn: row.submissions[0].submittedOn,
-          markedById: row.submissions[0].markedById,
-          markedOn: modalProps[0] === "Marked" ? row.submissions[0].markedOn : submission?.markedOn,
+          submittedOn: modalProps[0] === "Submitted" ? allSubmissionsDate : submission ? submission.submittedOn : allSubmissionsDate,
+          markedById: submission ? submission.markedById : null,
+          markedOn: modalProps[0] === "Marked" ? allSubmissionsDate : submission ? submission.markedOn : null,
           enrolmentId: Number(elem.id),
           studentId: Number(elem.contactId),
           studentName: elem.student,
-        } : null;
+          assessmentId: row.assessmentId
+        };
       }).filter(s => s));
+      setAllSubmissionsDate(null);
     }
   };
 
@@ -130,7 +134,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
             const newSubmission: AssessmentSubmission = {
               id: null,
               submittedOn: today,
-              markedById: type === "Marked" && tutors ? tutors[0].contactId : null,
+              markedById: type === "Marked" && submissionTutors ? submissionTutors[0].contactId : null,
               markedOn: type === "Marked" ? today : null,
               enrolmentId: Number(elem.enrolmentId),
               studentId: Number(elem.studentId),
@@ -274,7 +278,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   const titlePostfix = modalProps[0] === "Marked" ? " and assessor" : "";
 
   const title = modalProps[0] && (modalProps[2] === "all"
-    ? `All students ${modalProps[0].toLowerCase()} date${titlePostfix}`
+    ? `All students ${modalProps[0].toLowerCase()} date`
     : `${modalProps[2]} ${modalProps[0].toLowerCase()} date${titlePostfix}`);
 
   const name = `${item}.submissions[${modalProps[1]}]`;
@@ -287,8 +291,10 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
             <AssessmentSubmissionModal
               name={name}
               modalProps={modalProps}
-              tutors={tutors}
+              tutors={submissionTutors}
               title={title}
+              allSubmissionsDate={allSubmissionsDate}
+              setAllSubmissionsDate={setAllSubmissionsDate}
               onClose={onPickerClose}
               triggerAsyncChange={triggerAsyncChange}
             />
@@ -360,7 +366,10 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
               <IconButton
                 size="small"
                 className={classes.hiddenTitleIcon}
-                onClick={() => setModalOpenedBy(`Submitted-0-all`)}
+                onClick={() => {
+                  setAllSubmissionsDate(today);
+                  setModalOpenedBy(`Submitted-0-all`);
+                }}
               >
                 <DateRange color="disabled" fontSize="small" />
               </IconButton>
@@ -372,7 +381,10 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
               <IconButton
                 size="small"
                 className={classes.hiddenTitleIcon}
-                onClick={() => setModalOpenedBy(`Marked-0-all`)}
+                onClick={() => {
+                  setAllSubmissionsDate(today);
+                  setModalOpenedBy(`Marked-0-all`);
+                }}
               >
                 <DateRange color="disabled" fontSize="small" />
               </IconButton>
