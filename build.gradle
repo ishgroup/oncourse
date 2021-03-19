@@ -5,7 +5,7 @@ buildscript {
 		log4j2Version = '2.12.0'
         typesVersion = '58.1'
 		solrVersion = '7.1.0'
-		groovyVersion = '2.5.9'
+		groovyVersion = '2.5.14'
         mariadbVersion = '2.4.1'
         tapestryVersion = '5.4.3'
 		bootiqueVersion = '1.0'
