@@ -885,9 +885,6 @@ definitions:
         type: string
         description: title of the page
         example: Contact us
-      themeId:
-        type: integer
-        description: theme id used for the page
       content:
         type: string
         description: Rich text content

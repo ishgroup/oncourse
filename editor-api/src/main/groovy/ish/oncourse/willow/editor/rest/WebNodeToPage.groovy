@@ -20,7 +20,6 @@ class WebNodeToPage {
         return new Page().with {page ->
             page.id = webNode.nodeNumber
             page.title = webNode.name
-            page.themeId = webNode.webNodeType.id.intValue()
             page.content = webNode.webContentVisibility?.find {it.regionKey == RegionKey.content}?.webContent?.contentTextile
             page.visible = webNode.published
             page.urls += webNode.webUrlAliases .collect { webUrlAlias ->  WebUrlAliasToPageLink.valueOf(webUrlAlias).pageLink }

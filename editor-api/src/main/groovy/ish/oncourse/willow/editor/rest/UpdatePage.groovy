@@ -3,7 +3,6 @@ package ish.oncourse.willow.editor.rest
 import ish.oncourse.model.RegionKey
 import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebNode
-import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.converter.CoreConverter
 import ish.oncourse.utils.ResourceNameValidator
@@ -11,9 +10,8 @@ import ish.oncourse.willow.editor.v1.model.Page
 import ish.oncourse.willow.editor.v1.model.PageLink
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
-import org.eclipse.jetty.server.Request
+import org.eclipse.jetty.server.Request 
 
 class UpdatePage extends AbstractUpdate<Page> {
 
@@ -32,16 +30,8 @@ class UpdatePage extends AbstractUpdate<Page> {
             error = "There are no pages for pageParams: $resourceToSave"
             return this
         }
-        WebNodeType theme = SelectById.query(WebNodeType, resourceToSave.themeId.longValue()).selectFirst(context)
-        if (!theme) {
-            error = "There are no page theme for pageParams: $resourceToSave"
-            return this
-        }
+
         WebContent defaultBlock = node.webContentVisibility?.find { it.regionKey == RegionKey.content }?.webContent
-        if (!theme) {
-            error = "There are no default Web Content for pageParams: $resourceToSave"
-            return this
-        }
         
         resourceToSave.title = StringUtils.trimToEmpty(resourceToSave.title)
         error = ResourceNameValidator.valueOf().validate(resourceToSave.title)
@@ -57,7 +47,6 @@ class UpdatePage extends AbstractUpdate<Page> {
         
         node.suppressOnSitemap = resourceToSave.suppressOnSitemap
         node.name = resourceToSave.title
-        node.webNodeType = theme
         defaultBlock.contentTextile = resourceToSave.content
         defaultBlock.content = CoreConverter.convert(resourceToSave.content)
         node.published = resourceToSave.visible

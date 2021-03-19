@@ -365,4 +365,11 @@
 			<column name="path"/>
 		</createIndex>
 	</changeSet>
+
+	<changeSet id="34" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="WebNode" columnName="webNodeTypeId"/>
+		</preConditions>
+		<dropNotNullConstraint tableName="WebNode" columnName="webNodeTypeId" columnDataType="BIGINT"/>
+	</changeSet>
 </databaseChangeLog>

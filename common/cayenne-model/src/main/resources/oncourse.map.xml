@@ -1431,7 +1431,7 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="nodeNumber" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="suppressOnSitemap" type="BIT" isMandatory="true"/>
-		<db-attribute name="webNodeTypeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="webNodeTypeId" type="BIGINT" length="19"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="WebNodeType">
