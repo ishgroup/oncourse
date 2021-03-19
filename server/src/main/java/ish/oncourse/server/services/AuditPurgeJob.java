@@ -13,12 +13,16 @@ import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.license.LicenseService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SQLExec;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @DisallowConcurrentExecution
 public class AuditPurgeJob implements Job {
@@ -37,7 +41,9 @@ public class AuditPurgeJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         ObjectContext objectContext = cayenneService.getNewContext();
-        String sql = String.format("DELETE FROM Audit WHERE created < DATE_ADD(SYSDATE(), INTERVAL %d MONTH)", (-1) * licenseService.getMax_audit_log_store());
+        Date sysDate = DateUtils.addMonths(new Date(), (-1) * licenseService.getMax_audit_log_store());
+        String sysDateString = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sysDate);
+        String sql = String.format("DELETE FROM Audit WHERE created < '%s'", sysDateString);
 
         logger.debug("SQL which should delete audit logs: " + sql);
 
