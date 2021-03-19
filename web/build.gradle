@@ -9,9 +9,13 @@ configurations {
 
 
 dependencies {
-	compile (project(':common:common-ui'))
-	compile (project(':common:common-bootique'))
-	testCompile project(':common:test-tapestry')
+	implementation project(':common:common-bootique')
+	implementation project(':common:common-templates')
+	implementation project(':common:common-services')
+	implementation project(':common:common-textile')
+	implementation project(':common:tapestry-classes')
+
+	testImplementation project(':common:test-tapestry')
 }
 
 test {

@@ -150,6 +150,7 @@
       <module name="Willow-common" target="1.8" />
       <module name="Willow-common_main" target="1.8" />
       <module name="Willow-common_test" target="1.8" />
+      <module name="Willow.common.common-ui" target="1.8" />
       <module name="Willow.common.waCommon" target="1.8" />
       <module name="Willow.common.waCommon.main" target="1.8" />
       <module name="Willow.common.waCommon.test" target="1.8" />
