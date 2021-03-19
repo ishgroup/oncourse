@@ -34,6 +34,8 @@ interface Props {
   form: string;
 }
 
+const today = format(new Date(), YYYY_MM_DD_MINUSED);
+
 const EnrolmentSubmissions: React.FC<Props> = props => {
   const {
     classes, values, form, dispatch
@@ -42,31 +44,31 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);
   const [modalProps, setModalProps] = useState<string[]>([]);
   const [tutors, setTutors] = useState([]);
+  const [allSubmissionsDate, setAllSubmissionsDate] = useState<string>(null);
 
   useEffect(() => {
     setModalProps(modalOpenedBy ? modalOpenedBy.split("-") : []);
   }, [modalOpenedBy]);
 
   useEffect(() => {
-    EntityService.getPlainRecords(
-      "Contact",
-      "firstName,lastName",
-      modalProps[3]
-        ? `tutor.assessmentClassTutors.assessmentClass.courseClass.id is ${values.courseClassId} and tutor.assessmentClassTutors.assessmentClass.assessment.id is ${values.assessments[modalProps[3]].id}`
-        : `tutor.assessmentClassTutors.assessmentClass.courseClass.id is ${values.courseClassId}`
-    )
-    .then(res => {
-      setTutors(res.rows.map(r => ({
-        contactId: Number(r.id),
-        tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
-      })));
-    })
-    .catch(err => instantFetchErrorHandler(dispatch, err));
+    if (modalProps[3]) {
+      EntityService.getPlainRecords(
+        "Contact",
+        "firstName,lastName",
+        `tutor.assessmentClassTutors.assessmentClass.courseClass.id is ${values.courseClassId} and tutor.assessmentClassTutors.assessmentClass.assessment.id is ${values.assessments[modalProps[3]].id}`
+      )
+        .then(res => {
+          setTutors(res.rows.map(r => ({
+            contactId: Number(r.id),
+            tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
+          })));
+        })
+        .catch(err => instantFetchErrorHandler(dispatch, err));
+    }
   }, [values, modalProps]);
 
   const onChangeStatus = (type, submissionIndex, prevStatus, assessment, index) => {
     let pathIndex = submissionIndex;
-    const today = format(new Date(), YYYY_MM_DD_MINUSED);
 
     if (prevStatus !== "Submitted") {
       if (submissionIndex === -1) {
@@ -99,22 +101,23 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
   };
 
   const onPickerClose = () => {
-    if (modalProps[2] === "all" && values.submissions.length) {
+    setModalOpenedBy(null);
+    if (modalProps[2] === "all") {
       dispatch(change(form, "submissions", values.assessments.map(a => {
         const submission = values.submissions.find(s => s.assessmentId === a.id);
-        return values.submissions[0].submittedOn || values.submissions[0].markedOn ? {
+        return !allSubmissionsDate && modalProps[0] === "Submitted" ? null : {
           id: submission ? submission.id : null,
-          submittedOn: modalProps[0] === "Marked" ? submission?.submittedOn || values.submissions[0].markedOn : values.submissions[0].submittedOn,
-          markedById: values.submissions[0].markedById,
-          markedOn: modalProps[0] === "Marked" ? values.submissions[0].markedOn : submission?.markedOn,
+          submittedOn: modalProps[0] === "Submitted" ? allSubmissionsDate : submission ? submission.submittedOn : null,
+          markedById: submission ? submission.markedById : null,
+          markedOn: modalProps[0] === "Marked" ? allSubmissionsDate : submission ? submission.markedOn : null,
           enrolmentId: values.id,
           studentId: values.studentContactId,
           studentName: values.studentName,
           assessmentId: a.id
-        } : null;
+        };
       }).filter(s => s)));
     }
-    setModalOpenedBy(null);
+    setAllSubmissionsDate(null);
   };
 
   const triggerAsyncChange = (event, newValue, previousValue, name) => {
@@ -149,7 +152,7 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
   const titlePostfix = modalProps[0] === "Marked" ? " and assessor" : "";
 
   const title = modalProps[0] && (modalProps[2] === "all"
-    ? `All assessments ${modalProps[0].toLowerCase()} date${titlePostfix}`
+    ? `All assessments ${modalProps[0].toLowerCase()} date`
     : `${modalProps[2]} ${modalProps[0].toLowerCase()} date${titlePostfix}`);
 
   return values.assessments && values.assessments.length ? (
@@ -161,7 +164,8 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
         title={title}
         onClose={onPickerClose}
         triggerAsyncChange={triggerAsyncChange}
-        disableAssessor={modalProps[0] === "Marked" && modalProps[2] === "all"}
+        allSubmissionsDate={allSubmissionsDate}
+        setAllSubmissionsDate={setAllSubmissionsDate}
       />
 
       <div className="heading">Assessments Submissions</div>
@@ -173,7 +177,10 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
             <IconButton
               size="small"
               className={classes.hiddenTitleIcon}
-              onClick={() => setModalOpenedBy(`Submitted-0-all`)}
+              onClick={() => {
+                setAllSubmissionsDate(today);
+                setModalOpenedBy(`Submitted-0-all`);
+              }}
             >
               <DateRange color="disabled" fontSize="small" />
             </IconButton>
@@ -185,7 +192,10 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
             <IconButton
               size="small"
               className={classes.hiddenTitleIcon}
-              onClick={() => setModalOpenedBy(`Marked-0-all`)}
+              onClick={() => {
+                setAllSubmissionsDate(today);
+                setModalOpenedBy(`Marked-0-all`);
+              }}
             >
               <DateRange color="disabled" fontSize="small" />
             </IconButton>
