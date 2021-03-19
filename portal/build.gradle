@@ -1,6 +1,6 @@
 apply from: "$rootDir/gradle/tapestry.app.gradle"
 apply from: "$rootDir/gradle/cxf-spring.gradle"
-apply plugin: 'com.moowork.node'
+apply plugin: 'com.github.node-gradle.node'
 
 ext {
     staticSrcPath = "${projectDir}/src/main/static"
