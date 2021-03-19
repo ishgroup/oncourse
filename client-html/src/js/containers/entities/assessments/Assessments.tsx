@@ -72,6 +72,7 @@ const findRelatedGroup: any = [
     list: "document",
     expression: "attachmentRelations.entityIdentifier == Assessment and attachmentRelations.entityRecordId"
   },
+  { title: "Submissions", list: "assessmentSubmission", expression: "assessmentClass.assessment.id" }
 ];
 
 const setRowClasses = ({ active }) => (active === "Yes" ? undefined : "op05");
