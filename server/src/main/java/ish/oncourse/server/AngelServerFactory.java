@@ -171,6 +171,12 @@ public class AngelServerFactory {
                     randomSchedule, prefController.getOncourseServerDefaultTimezone(),
                     true, false);
 
+            //between 2:00am and 2:59am
+            randomSchedule = String.format(AUDIT_PURGE_JOB_CRON_SCHEDULE_TEMPLATE, random.nextInt(59));
+            schedulerService.scheduleCronJob(AuditPurgeJob.class, AUDIT_PURGE_JOB, BACKGROUND_JOBS_GROUP_ID,
+                    randomSchedule, prefController.getOncourseServerDefaultTimezone(),
+                    false, false);
+
             schedulerService.scheduleCronJob(FundingContractUpdateJob.class,
                     FUNDING_CONTRACT_JOB_ID,
                     BACKGROUND_JOBS_GROUP_ID,
