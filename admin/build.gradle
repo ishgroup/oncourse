@@ -30,7 +30,7 @@ dependencies {
 		exclude group: 'org.seleniumhq.selenium.server', module: 'selenium-server'
 	}
 
-	implementation project(':common:common-model')
+	implementation project(':common:cayenne-model')
 	implementation (project(':common:common-services'))  {
 		exclude group: 'axis', module: 'axis'
 	}

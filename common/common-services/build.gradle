@@ -5,7 +5,7 @@ apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/tapestry.gradle"
 
 dependencies {
-	api project(':common:common-model')
+	api project(':common:cayenne-model')
 	api project(':common:common-functions')
 	api project(':common:solr-index')
 

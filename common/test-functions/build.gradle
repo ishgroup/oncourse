@@ -9,7 +9,7 @@ compileTestGroovy.options.encoding = 'UTF-8'
 
 dependencies {
     implementation project(':common:common-functions')
-    implementation project(':common:common-model')
+    implementation project(':common:cayenne-model')
 
     implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
     implementation group: 'org.apache.commons', name: 'commons-pool2', version: '2.4.2'

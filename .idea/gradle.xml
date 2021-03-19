@@ -27,12 +27,10 @@
             <option value="$PROJECT_DIR$/common/common-api" />
             <option value="$PROJECT_DIR$/common/common-bootique" />
             <option value="$PROJECT_DIR$/common/common-functions" />
-            <option value="$PROJECT_DIR$/common/common-model" />
             <option value="$PROJECT_DIR$/common/common-services" />
             <option value="$PROJECT_DIR$/common/common-templates" />
             <option value="$PROJECT_DIR$/common/common-test" />
             <option value="$PROJECT_DIR$/common/common-textile" />
-            <option value="$PROJECT_DIR$/common/common-ui" />
             <option value="$PROJECT_DIR$/common/job-scheduler" />
             <option value="$PROJECT_DIR$/common/solr-index" />
             <option value="$PROJECT_DIR$/common/tapestry-classes" />
