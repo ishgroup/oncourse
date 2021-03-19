@@ -7,6 +7,7 @@
 // TODO: Remove component when native DynamicSizeList will be included in react-window v.2
 import React from "react";
 import { VariableSizeList } from "react-window";
+import debounce from "lodash.debounce";
 
 class ItemMeasurer extends React.Component<any, any> {
   _node = null;
@@ -19,7 +20,7 @@ class ItemMeasurer extends React.Component<any, any> {
     // @ts-ignore
     if (typeof window.ResizeObserver !== "undefined") {
       // @ts-ignore
-      this._resizeObserver = new window.ResizeObserver(this._onResize);
+      this._resizeObserver = new window.ResizeObserver(debounce(this._onResize, 800));
 
       if (this._node !== null) {
         this._resizeObserver.observe(this._node);
