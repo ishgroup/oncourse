@@ -153,6 +153,7 @@ public class WebSiteVersionCopy {
                 .where(WebNodeType.WEB_SITE_VERSION.eq(fromVersion))
                 .select(context)
                 .forEach(webNodeType ->  {
+                    
             WebNodeType newWebNodeType = context.newObject(WebNodeType.class);
 
             newWebNodeType.setCreated(webNodeType.getCreated());
@@ -160,6 +161,14 @@ public class WebSiteVersionCopy {
             newWebNodeType.setWebSiteLayout(layoutMap.get(webNodeType.getWebSiteLayout()));
             newWebNodeType.setName(webNodeType.getName());
             newWebNodeType.setWebSiteVersion(toVersion);
+            webNodeType.getWebLayoutPaths().forEach( path -> {
+                WebLayoutPath newPath = context.newObject(WebLayoutPath.class);
+                newPath.setCreated(new Date());
+                newPath.setModified(new Date());
+                newPath.setWebSiteVersion(toVersion);
+                newPath.setWebNodeType(newWebNodeType);
+                newPath.setPath(path.getPath());                 
+            });
 
             webNodeTypeMap.put(webNodeType, newWebNodeType);
         });

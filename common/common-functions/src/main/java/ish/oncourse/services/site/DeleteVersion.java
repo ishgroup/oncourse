@@ -19,6 +19,7 @@ public class DeleteVersion {
 			context.deleteObjects(version.getMenus());
 			context.deleteObjects(version.getWebURLAliases());
 			context.deleteObjects(version.getWebNodes());
+			context.deleteObjects(version.getWebLayoutPaths());
 			context.deleteObjects(version.getWebNodeTypes());
 			context.deleteObjects(version.getLayouts());
 		} else {
