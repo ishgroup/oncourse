@@ -255,6 +255,7 @@ const findRelatedGroup: any[] = [
   { title: "Outcomes", list: "outcome", expression: "enrolment.courseClass.id" },
   { title: "Payslips", list: "payslip", expression: "paylines.classCost.courseClass.id" },
   { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.id" },
+  { title: "Submissions", list: "assessmentSubmission", expression: "assessmentClass.courseClass.id" },
   { title: "Tutors", list: "contact", expression: "tutor.courseClassRoles.courseClass.id" },
   {
     title: "Withdrawn students",
