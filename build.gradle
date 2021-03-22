@@ -83,11 +83,24 @@ allprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
-    sourceSets.main.java.srcDirs = []
-    sourceSets.main.groovy.srcDir 'src/main/java'
+// compile everything with the groovy plugin which can handle mixed groovy and Java files
+    sourceSets {
+        main {
+            groovy {
+                srcDirs += 'src/main/java'
+                srcDirs += 'src/main/groovy'
+            }
+            java {
+                srcDirs = []
+            }
+        }
+        test {
+            groovy {
+                srcDirs += 'src/test/groovy'
+            }
 
-    sourceSets.test.java.srcDirs = []
-    sourceSets.test.groovy.srcDir 'src/test/java'
+        }
+    }
 
     configurations {
         deployerJars {

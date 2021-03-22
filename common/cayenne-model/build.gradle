@@ -3,6 +3,14 @@ plugins {
 }
 apply plugin: 'org.apache.cayenne'
 
+sourceSets {
+    main {
+        groovy {
+            srcDirs += "${buildDir}/generated-resources/main/java"
+        }
+    }
+}
+
 dependencies {
     api ("ish.oncourse:types:$typesVersion") {
         //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
@@ -37,10 +45,15 @@ cgen {
     map 'src/main/resources/oncourse.map.xml'
     superPkg 'ish.oncourse.model.auto'
     makePairs true
-    mode 'all'
-    overwrite true
+    mode 'entity'
     createPropertyNames true
-    force true
+    destDir = file("${buildDir}/generated-resources/main/java")
+    doLast {
+        // remove subclass files which are already committed inside the app
+        delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/model") {
+            exclude '**/auto/*'
+        }
+    }
 }
 
 compileJava.dependsOn(cgen)
