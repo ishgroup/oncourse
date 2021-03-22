@@ -105,7 +105,7 @@ export class CheckoutService {
     return this.contactApi.getContactFields(BuildContactFieldsRequest.fromStateSelected(contact, state.checkout.summary, state.checkout.phase));
   }
 
-  public submitContactDetails = (fields: ContactFields, values: { [key: string]: any }): Promise<any> => {
+  public submitContactDetails = (values: { [key: string]: any }, fields: ContactFields): Promise<any> => {
     return this.contactApi.submitContactDetails(BuildSubmitFieldsRequest.fromValues(fields, values));
   }
 
