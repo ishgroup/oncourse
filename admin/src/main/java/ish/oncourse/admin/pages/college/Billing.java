@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.*;
-import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.math.BigDecimal;
@@ -22,14 +21,6 @@ import java.util.List;
 public class Billing {
 
 	private static final Logger logger = LogManager.getLogger();
-
-	@InjectComponent
-	@Property
-	private Form billingForm;
-
-	@InjectComponent
-	@Property
-	private Form newCustomFeeForm;
 
 	@Property
 	@Persist

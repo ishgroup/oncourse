@@ -1,33 +1,22 @@
 package ish.oncourse.admin.pages.college;
 
-import ish.oncourse.util.AUSKeyUtil;
-import ish.oncourse.util.PreferenceUtil;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.webservices.usi.crypto.CryptoUtils;
 import ish.persistence.Preferences;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.upload.services.UploadedFile;
-import org.bouncycastle.util.encoders.Base64;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
-
-import static ish.oncourse.model.Preference.STORAGE_BUCKET_NAME;
 
 public class Overview {
 
@@ -76,7 +65,7 @@ public class Overview {
 		lastIP = college.getIpAddress();
 		onCourseVersion = college.getAngelVersion();
 		replicationState = college.getCommunicationKeyStatus().toString();
-		lastReplication = dateFormat.format(college.getLastRemoteAuthentication());
+		lastReplication = college.getLastRemoteAuthentication() != null ? dateFormat.format(college.getLastRemoteAuthentication()): "never";
 		collegeKey = college.getCollegeKey();
 	}
 

@@ -46,7 +46,7 @@ public class ReplicationStatus {
 	}
 	
 	public String getLastReplicationDate() {
-		return dateFormat.format(currentCollege.getLastRemoteAuthentication());
+		return currentCollege.getLastRemoteAuthentication() != null ?dateFormat.format(currentCollege.getLastRemoteAuthentication()):"never";
 	}
 	
 	public String getOldestQueuedItemTimestamp() {
