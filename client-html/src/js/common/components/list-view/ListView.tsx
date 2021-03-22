@@ -588,7 +588,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       setListCreatingNew(false);
     }
 
-    if (!newSelection.length) {
+    if (newSelection && !newSelection.length) {
       this.updateHistory(params.id ? url.replace(`/${params.id}`, "") : url + "", search );
       resetEditView();
     }
