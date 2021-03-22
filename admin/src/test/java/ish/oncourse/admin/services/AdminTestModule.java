@@ -26,7 +26,6 @@ import ish.oncourse.services.RichtextConverter;
 import ish.oncourse.services.threading.ThreadSource;
 import ish.oncourse.services.threading.ThreadSourceImpl;
 import ish.oncourse.util.IPageRenderer;
-import ish.oncourse.util.PageRenderer;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.ioc.ServiceBinder;
 

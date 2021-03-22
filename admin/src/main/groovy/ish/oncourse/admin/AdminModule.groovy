@@ -9,13 +9,13 @@ import io.bootique.jetty.JettyModule
 import io.bootique.jetty.MappedFilter
 import io.bootique.jetty.MappedServlet
 import io.bootique.tapestry.di.InjectorModuleDef
+import ish.oncourse.admin.services.WillowModuleDef
 import ish.oncourse.admin.services.access.AuthenticationFilter
 import ish.oncourse.admin.services.access.AuthenticationService
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.listeners.LiquibaseServletListener
-import ish.oncourse.tapestry.WillowModuleDef
 import ish.oncourse.tapestry.WillowTapestryFilter
 import ish.oncourse.tapestry.WillowTapestryFilterBuilder
 import ish.oncourse.util.log.LogAppInfo

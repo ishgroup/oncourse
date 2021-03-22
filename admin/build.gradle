@@ -28,6 +28,8 @@ dependencies {
 	implementation "org.apache.tapestry:tapestry-json:$tapestryVersion"
 	implementation "org.apache.tapestry:tapestry-spring:$tapestryVersion"
 	implementation "org.apache.tapestry:tapestry-upload:$tapestryVersion"
+	implementation "org.apache.tapestry:tapestry-http:$tapestryVersion"
+
 
 	testCompile ("org.apache.tapestry:tapestry-test:$tapestryVersion") {
 		exclude group: 'org.seleniumhq.selenium.server', module: 'selenium-server'
