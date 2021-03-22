@@ -1,6 +1,5 @@
 package ish.oncourse.test.context
 
-import ish.oncourse.model.CourseProductRelation
 import ish.oncourse.model.Product
 
 /**
@@ -10,13 +9,4 @@ import ish.oncourse.model.Product
 class CProduct {
     Product product
 
-    CProduct relatedTo(CCourse from) {
-        CourseProductRelation relation = new CourseProductRelation()
-        relation.setCollege(this.product.college)
-        relation.setFromCourse(from.course)
-        relation.setToProduct(this.product)
-        relation.setCreated(new Date())
-        relation.setModified(new Date())
-        return this
-    }
 }

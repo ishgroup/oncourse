@@ -2,7 +2,7 @@ package ish.oncourse.services.site;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.model.access.SessionToken;
+import ish.oncourse.services.access.SessionToken;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
