@@ -14,9 +14,8 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseAttachmentRelation
-import ish.oncourse.server.cayenne.CourseCourseRelation
 import ish.oncourse.server.cayenne.CourseModule
-import ish.oncourse.server.cayenne.CourseProductRelation
+
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
