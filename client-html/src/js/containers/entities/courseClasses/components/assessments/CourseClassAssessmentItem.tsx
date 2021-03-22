@@ -126,7 +126,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   const onChangeStatus = (type: TickType, student: StudentForRender) => {
     studentsForRender.forEach((elem => {
       if (student.studentId === elem.studentId) {
-        const submissionIndex = row.submissions.findIndex(s => s.enrolmentId === elem.enrolmentId);
+        const submissionIndex = row.submissions ? row.submissions.findIndex(s => s.enrolmentId === elem.enrolmentId) : -1;
         let pathIndex = submissionIndex;
 
         if (elem.submittedValue !== "Submitted") {
@@ -135,7 +135,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
             const newSubmission: AssessmentSubmission = {
               id: null,
               submittedOn: today,
-              markedById: type === "Marked" && submissionTutors ? submissionTutors[0].contactId : null,
+              markedById: type === "Marked" && submissionTutors && submissionTutors.length ? submissionTutors[0].contactId : null,
               markedOn: type === "Marked" ? today : null,
               enrolmentId: Number(elem.enrolmentId),
               studentId: Number(elem.studentId),
