@@ -2,27 +2,23 @@ package ish.oncourse.admin.services.ntis;
 
 import au.gov.training.services.trainingcomponent.ITrainingComponentService;
 import ish.oncourse.admin.services.AdminTestModule;
-import ish.oncourse.test.ServiceTest;
+import org.apache.tapestry5.test.PageTester;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-public class TrainingComponentServiceTest extends ServiceTest {
+public class TrainingComponentServiceTest   {
 
-	@Before
-	public void setup() throws Exception {
-		initTest("ish.oncourse.admin.services", "", AdminTestModule.class);
-	}
 
 	/**
      * This method performs ten calls to the GetServerTime operation.
      */
     @Test
     public void testGetServerTime() throws Exception {
+        PageTester tester =  new PageTester("ish.oncourse.admin.services", "appName", "src/main/webapp",  AdminTestModule.class);
 
-    	ITrainingComponentService port = getService(ITrainingComponentService.class);
+    	ITrainingComponentService port = tester.getRegistry().getService(ITrainingComponentService.class);
 
         long startTime = System.currentTimeMillis();
         XMLGregorianCalendar serverDate = port.getServerTime();
