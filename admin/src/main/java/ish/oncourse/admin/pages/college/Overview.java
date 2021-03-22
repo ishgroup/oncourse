@@ -51,10 +51,6 @@ public class Overview {
 	@Inject
 	private ICayenneService cayenneService;
 
-	@InjectComponent
-	@Property
-	private Form ausKeyForm;
-
 	@Property
 	private College college;
 

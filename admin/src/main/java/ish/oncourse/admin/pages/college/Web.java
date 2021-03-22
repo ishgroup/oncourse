@@ -24,8 +24,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.http.services.Request;
+import org.apache.tapestry5.http.services.Response;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -38,28 +38,28 @@ public class Web {
 
     public final static String DEFAULT_HOME_PAGE_NAME = "Home page";
 	private static final Logger logger = LogManager.getLogger();
-	
+
 	@Property
 	private College college;
-	
+
 	@Property
 	@Persist(PersistenceConstants.SESSION)
 	private Map<String, WebSite> sites;
-	
+
 	@SuppressWarnings("all")
 	@Property
 	private List<WebHostName> domains;
-	
+
 	@Property
 	private WebHostName currentDomain;
-	
+
 	@SuppressWarnings("all")
 	@Property
 	private WebSite currentSite;
-	
+
 	@Property
 	private String newSiteNameValue;
-	
+
 	@Property
 	private String newSiteKeyValue;
 
@@ -68,7 +68,7 @@ public class Web {
 
 	@Property
 	private SiteTemplateSelectModel templateSelectModel;
-	
+
 	@Property
 	private String newSiteGoogleTagmanagerValue;
 
@@ -77,42 +77,42 @@ public class Web {
 
 	@Property
 	private String newDomainValue;
-	
+
 	@Property
 	private String newDomainSite;
-	
+
 	@SuppressWarnings("all")
 	@Property
 	private String changeSiteUrl;
-	
+
 	@Property
 	private String currentSiteKey;
-	
+
 	@SuppressWarnings("all")
 	@Property
 	@Persist
 	private StringSelectModel siteSelectModel;
-	
+
 	@SuppressWarnings("all")
 	@Property
 	@Persist
 	private boolean siteDeleteFailed;
-	
+
 	@SuppressWarnings("all")
 	private String selectedSite;
-	
+
 	@Inject
 	private ICollegeService collegeService;
-	
+
 	@Inject
 	private ICayenneService cayenneService;
 
     @Inject
     private IWebNodeService webNodeService;
-	
+
 	@Inject
 	private Request request;
-	
+
 	@Inject
 	private Response response;
 
@@ -127,7 +127,7 @@ public class Web {
 
     @Property
     private String error;
-	
+
 	void onActivate(Long id) {
 		this.college = collegeService.findById(id);
 	}
@@ -141,23 +141,23 @@ public class Web {
 	void setupRender() {
 		this.changeSiteUrl = response.encodeURL(request.getContextPath() + "/college/changeDomainSite");
 		this.sites = new HashMap<>();
-		
+
 		ObjectContext context = cayenneService.newContext();
-		
+
 		College college = context.localObject(this.college);
-		
+
 		List<WebSite> sites = ObjectSelect.query(WebSite.class).
 				where(WebSite.COLLEGE.eq(college)).
 				select(context);
 		for (WebSite site : sites) {
 			this.sites.put(site.getSiteKey(), site);
 		}
-		
+
 		this.domains = ObjectSelect.query(WebHostName.class).
 				where(WebHostName.COLLEGE.eq(college)).
 				select(context);
-		
-		
+
+
 		String[] siteKeys = new String[sites.size()];
 		int i = 0;
 		for (WebSite site : sites) {
@@ -168,49 +168,49 @@ public class Web {
 
 		templateSelectModel = SiteTemplateSelectModel.valueOf(webSiteService.getSiteTemplates());
 	}
-	
+
 	@AfterRender
 	void afterRender() {
 		this.siteDeleteFailed = false;
 	}
-	
+
 	@OnEvent(component="newDomainForm", value="success")
 	void addDomain() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		
+
 		WebHostName domain = context.newObject(WebHostName.class);
 		domain.setCollege(context.localObject(college));
 
 		WebSite site = ObjectSelect.query(WebSite.class).
 				where(WebSite.SITE_KEY.eq(newDomainSite)).
 				selectOne(context);
-		
+
 		domain.setWebSite(site);
 		domain.setName(newDomainValue);
 		domain.setCreated(new Date());
 		domain.setModified(new Date());
-		
+
 		context.commitChanges();
 	}
-	
+
 	@OnEvent(component="sitesEditForm", value="success")
 	void saveSites() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		
+
 		for (String key : sites.keySet()) {
 			if (sites.get(key) != null) {
 				WebSite webSite = context.localObject(sites.get(key));
-				
+
 				if (webSite != null) {
 					webSite.setGoogleTagmanagerAccount(sites.get(key).getGoogleTagmanagerAccount());
 					webSite.setCoursesRootTagName(sites.get(key).getCoursesRootTagName());
 				}
 			}
 		}
-		
+
 		context.commitChanges();
 	}
-	
+
 	@OnEvent(component="sitesForm", value="success")
 	void addSite() {
         ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -227,26 +227,26 @@ public class Web {
 
         validateHandler.setErrors(createNewWebSite.getErrors());
 	}
-	
-	
+
+
 	Object onActionFromDeleteDomain(Long id) {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		
+
 		WebHostName domain = SelectById.query(WebHostName.class, id).selectOne(context);
 		WebSite webSite = domain.getWebSite();
-		
+
 		context.deleteObjects(domain);
 		context.commitChanges();
 		return null;
 	}
-	
+
 	Object onActionFromDeleteSite(String siteKey) {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		
+
 		WebSite site = ObjectSelect.query(WebSite.class).
 				where(WebSite.SITE_KEY.eq(siteKey)).
 				selectOne(context);
-		
+
 		try {
 			WebSiteDelete.valueOf(site, context).delete();
 		} catch (CayenneRuntimeException e) {
@@ -254,15 +254,15 @@ public class Web {
 			logger.error("Web site could not be deleted", e);
 			return null;
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	public String getSelectedSite() {
 		return currentDomain.getWebSite().getSiteKey();
 	}
-	
+
 	public WebSite getCurrentWebSite() {
 		return this.sites.get(currentSiteKey);
 	}

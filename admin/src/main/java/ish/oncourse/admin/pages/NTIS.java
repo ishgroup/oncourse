@@ -13,9 +13,9 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Response;
-import org.apache.tapestry5.services.Session;
+import org.apache.tapestry5.http.services.Request;
+import org.apache.tapestry5.http.services.Response;
+import org.apache.tapestry5.http.services.Session;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,16 +36,16 @@ public class NTIS {
 
 	@Inject
 	private Request request;
-	
+
 	@Inject
 	private Response response;
 
 	@Inject
 	private ThreadSource threadSource;
-	
+
 	@Inject
 	private IMailService mailService;
-	
+
 	@InjectComponent
 	private Form updateForm;
 
@@ -65,7 +65,7 @@ public class NTIS {
 	void setupRender() {
 		this.ntisResultUrl = response.encodeURL(request.getContextPath() + "/NTISJson");
 		String lastUpdate = preferenceController.getNTISLastUpdate();
-		
+
 		if (lastUpdate != null) {
 			this.lastUpdateDate = preferenceController.getNTISLastUpdate();
 			this.dateFrom = lastUpdate;
@@ -73,7 +73,7 @@ public class NTIS {
 			this.lastUpdateDate = "NEVER";
 		}
 	}
-	
+
 	/**
 	 * Checks if already running update.
 	 * @return true/false
@@ -83,7 +83,7 @@ public class NTIS {
 		Boolean started = (Boolean) session.getAttribute(NTIS_UPDATE_STARTED_ATTR);
 		return Boolean.TRUE.equals(started);
 	}
-	
+
 	@OnEvent(component = "updateForm", value = "validate")
 	void validate() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -118,7 +118,7 @@ public class NTIS {
 
 		private Session session;
 
-		public SessionBoundNTISTask(Date from, Date to, Session session, INTISUpdater ntisUpdater, 
+		public SessionBoundNTISTask(Date from, Date to, Session session, INTISUpdater ntisUpdater,
 				PreferenceController preferenceController, IMailService mailService) {
 			super(from, to, ntisUpdater, preferenceController, mailService);
 			this.session = session;
@@ -133,9 +133,9 @@ public class NTIS {
 				synchronized (session) {
 					session.setAttribute(NTIS_DATA_ATTR, ntisData);
 				}
-				
+
 				super.run();
-				
+
 			} finally {
 				synchronized (session) {
 					session.setAttribute(NTIS_UPDATE_STARTED_ATTR, null);

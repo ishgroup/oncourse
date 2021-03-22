@@ -83,6 +83,12 @@ allprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
+    sourceSets.main.java.srcDirs = []
+    sourceSets.main.groovy.srcDir 'src/main/java'
+
+    sourceSets.test.java.srcDirs = []
+    sourceSets.test.groovy.srcDir 'src/test/java'
+
     configurations {
         deployerJars {
             description = 'Jars needed for doing deployment to JBoss Nexus repo'

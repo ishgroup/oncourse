@@ -8,24 +8,24 @@ import ish.oncourse.admin.services.ntis.OrganisationServiceBuilder;
 import ish.oncourse.admin.services.ntis.TrainingComponentServiceBuilder;
 import ish.oncourse.admin.services.storage.S3ServiceBuilder;
 import ish.oncourse.services.BinderFunctions;
-import ish.oncourse.services.cache.IRequestCacheService;
-import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.services.RichtextConverter;
+import ish.oncourse.services.cache.IRequestCacheService;
+import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.threading.ThreadSource;
 import ish.oncourse.services.threading.ThreadSourceImpl;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.commons.Configuration;
+import org.apache.tapestry5.commons.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 
 
 /**
  * Willow Admin application service module.
- * 
+ *
  */
 
 public class AppModule {

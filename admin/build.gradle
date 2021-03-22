@@ -5,12 +5,15 @@ configurations {
 }
 
 ext {
-	tapestryVersion = '5.5.0'
+	tapestryVersion = '5.7.1'
 	adminCxfVersion = '2.6.6'
 }
 
 dependencies {
 	implementation project(':common:common-bootique')
+
+	implementation "org.codehaus.groovy:groovy-all:3.0.7"
+	implementation "org.codehaus.groovy:groovy-dateutil:3.0.7"
 
 	implementation 'javax.xml.ws:jaxws-api:2.3.1'
 	implementation 'javax.jws:javax.jws-api:1.1'
@@ -31,9 +34,7 @@ dependencies {
 	}
 
 	implementation project(':common:cayenne-model')
-	implementation (project(':common:common-services'))  {
-		exclude group: 'axis', module: 'axis'
-	}
+	implementation project(':common:common-services')
 	implementation (project(':common:webservices-usi')) {
 		exclude group: 'axis'
 		exclude group: 'org.apache.cxf'
@@ -66,6 +67,9 @@ dependencies {
 
 
 mainClassName = 'ish.oncourse.admin.AdminApp'
+
+targetCompatibility = '11'
+sourceCompatibility = '11'
 
 ext {
 	staticSrcPath = "${projectDir}/src/main/static"

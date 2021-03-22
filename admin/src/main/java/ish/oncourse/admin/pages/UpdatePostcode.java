@@ -11,9 +11,9 @@ import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Response;
-import org.apache.tapestry5.services.Session;
+import org.apache.tapestry5.http.services.Request;
+import org.apache.tapestry5.http.services.Response;
+import org.apache.tapestry5.http.services.Session;
 import org.apache.xml.dtm.ref.DTMNodeList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -44,27 +44,27 @@ public class UpdatePostcode {
 	@SuppressWarnings("all")
 	@Property
 	private String lastUpdateDate;
-	
+
 	@Inject
 	private ThreadSource threadSource;
-	
+
 	@Inject
 	private Request request;
-	
+
 	@Inject
 	private Response response;
-	
+
 	@SuppressWarnings("all")
 	@Inject
 	private IPostCodeDbService postCodeDbService;
-	
+
 	@Inject
 	private PreferenceController preferenceController;
-	
+
 	@SuppressWarnings("all")
 	@Property
 	private String processResultUrl;
-		
+
 	@SetupRender
 	void setupRender() {
 		processResultUrl = response.encodeURL(request.getContextPath() + "/UpdatePostcodeCallback");
@@ -75,7 +75,7 @@ public class UpdatePostcode {
 			this.lastUpdateDate = NEVER_UPDATED_VALUE;
 		}
 	}
-	
+
 	/**
 	 * Checks if already running update.
 	 * @return true/false
@@ -85,7 +85,7 @@ public class UpdatePostcode {
 		Boolean started = (Boolean) session.getAttribute(IS_POSTCODE_UPDATE_STARTED_FLAG);
 		return Boolean.TRUE.equals(started);
 	}
-	
+
 	@OnEvent(component = "updateForm", value = "success")
 	void submitted() throws Exception {
 		final Session session = request.getSession(false);
@@ -98,7 +98,7 @@ public class UpdatePostcode {
 			}
 		}
 	}
-	
+
 	static class UpdatePostcodesTask implements Runnable {
 		private static final Logger logger = LogManager.getLogger();
 
@@ -120,7 +120,7 @@ public class UpdatePostcode {
 		private Session session;
 		private PreferenceController preferenceController;
 		private IPostCodeDbService postCodeDbService;
-		
+
 
 		public UpdatePostcodesTask(Session session, PreferenceController preferenceController, IPostCodeDbService postCodeDbService) {
 			super();
@@ -174,9 +174,9 @@ public class UpdatePostcode {
 					session.setAttribute(IS_POSTCODE_UPDATE_STARTED_FLAG, null);
 				}
 			}
-			
+
 		}
-		
+
 		private List<BigDecimal> parseResponse(final String response, final String originalCode) throws Throwable {
 			final List<BigDecimal> geometry = new ArrayList<>(2);
 			DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
@@ -193,12 +193,12 @@ public class UpdatePostcode {
 						XPath xpath = XPathFactory.newInstance().newXPath();
 						XPathExpression latExpr = xpath.compile(LATITUDE_XPATH);
 						XPathExpression longExpr = xpath.compile(LONGITUDE_XPATH);
-						
+
 						String latitude =((DTMNodeList) latExpr.evaluate(resultElement, XPathConstants.NODESET)).item(0).getNodeValue();
 						String longitude = ((DTMNodeList) longExpr.evaluate(resultElement, XPathConstants.NODESET)).item(0).getNodeValue();
 						BigDecimal latitudeValue = new BigDecimal(latitude);
 						BigDecimal longitudeValue = new BigDecimal(longitude);
-						if (longitudeValue.compareTo(new BigDecimal(LONGITUDE_MINIMAL_VALUE)) > 0 && longitudeValue.compareTo(new BigDecimal(LONGITUDE_MAXIMAL_VALUE)) < 0 && 
+						if (longitudeValue.compareTo(new BigDecimal(LONGITUDE_MINIMAL_VALUE)) > 0 && longitudeValue.compareTo(new BigDecimal(LONGITUDE_MAXIMAL_VALUE)) < 0 &&
 							latitudeValue.compareTo(BigDecimal.ZERO) < 0 && latitudeValue.compareTo(new BigDecimal(LATITUDE_MINIMAL_VALUE)) > 0) {
 							geometry.add(latitudeValue);
 							geometry.add(longitudeValue);
@@ -209,7 +209,7 @@ public class UpdatePostcode {
 			}
 			return geometry;
 		}
-		
+
 		private boolean findCorrectPostalCode(final NodeList addressComponentsList, final String originalCode) {
 			if (addressComponentsList != null) {
 				for (int j = 0; j < addressComponentsList.getLength(); j++) {
@@ -223,7 +223,7 @@ public class UpdatePostcode {
 							if (names != null && names.getLength() == 1) {
 								Element code = (Element) names.item(0);
 								final String codeValue = code.getFirstChild().getNodeValue();
-								if (StringUtils.trimToNull(codeValue) != null && (originalCode.equals(codeValue.trim()) || 
+								if (StringUtils.trimToNull(codeValue) != null && (originalCode.equals(codeValue.trim()) ||
 									codeValue.substring(0, codeValue.length() - originalCode.length()).replaceAll(ZERO_CHARACTER, StringUtils.EMPTY).trim().isEmpty())) {
 									return true;
 								}
@@ -234,7 +234,7 @@ public class UpdatePostcode {
 			}
 			return false;
 		}
-		
+
 		private URLConnection openHttpConnection(final URL url) throws IOException {
 			if (url == null) {
 				return null;
@@ -243,7 +243,7 @@ public class UpdatePostcode {
 			connection.connect();
 			return connection;
 		}
-		
+
 		private String requestPostcode(final String requestUrl) {
 			OutputStream output = null;
 			InputStream input = null;
@@ -279,7 +279,7 @@ public class UpdatePostcode {
 			}
 			return result.toString();
 		}
-		
+
 	}
 
 }

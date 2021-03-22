@@ -11,9 +11,9 @@ import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.beanmodel.BeanModel;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.BeanModelSource;
+import org.apache.tapestry5.beanmodel.services.BeanModelSource;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -21,34 +21,34 @@ import java.util.Date;
 import java.util.List;
 
 public class Index {
-	
+
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
-	
+
 	@Inject
 	private ICollegeService collegeService;
-	
+
 	@Property
 	private List<College> colleges;
-	
+
 	@Property
 	private BeanModel<College> collegeModel;
-	
+
 	@Inject
 	private BeanModelSource beanModelSource;
-	
+
 	@Inject
 	private ComponentResources componentResources;
 
 	@Inject
 	private PreferenceControllerFactory preferenceControllerFactory;
-	
+
 	@Property
 	@Persist
 	private College college;
-	
+
 	@Property
 	private WebSite site;
-	
+
 	@SetupRender
 	void setupRender() {
 		if (collegeModel == null) {
@@ -60,7 +60,7 @@ public class Index {
 		this.colleges = collegeService.allColleges();
 		Ordering.orderList(this.colleges, Arrays.asList(new Ordering(College.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE)));
 	}
-	
+
 	public String getLastRemoteAuthentication() {
 		Date lastRemoteAuth = college.getLastRemoteAuthentication();
 		return lastRemoteAuth != null ? DATE_FORMAT.format(lastRemoteAuth) : "";
@@ -70,7 +70,7 @@ public class Index {
 		PreferenceController preferenceController = preferenceControllerFactory.getPreferenceController(college);
 		return preferenceController.getAvetmissStateName();
 	}
-	
+
 	public boolean isCommaSeparate() {
 		return college.getWebSites().size() > college.getWebSites().indexOf(site) + 1;
 	}

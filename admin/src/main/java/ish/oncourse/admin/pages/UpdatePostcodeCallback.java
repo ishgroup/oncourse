@@ -4,18 +4,18 @@ import ish.oncourse.services.preference.PreferenceController;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
+import org.apache.tapestry5.http.services.Request;
+import org.apache.tapestry5.http.services.Session;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 public class UpdatePostcodeCallback {
 
 	@Inject
 	private Request request;
-	
+
 	@Inject
 	private PreferenceController preferenceController;
-	
+
 	public StreamResponse onActivate() {
 		Session session = request.getSession(false);
 		Boolean updateInProgress = (Boolean) session.getAttribute(UpdatePostcode.IS_POSTCODE_UPDATE_STARTED_FLAG);
