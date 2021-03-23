@@ -128,7 +128,6 @@ export class PageSettings extends React.PureComponent<Props, any> {
 
     return (
       <div>
-
         <ul>
           <li>
             <a href="javascript:void(0)" onClick={e => this.clickBack(e)}>
@@ -201,24 +200,23 @@ export class PageSettings extends React.PureComponent<Props, any> {
                 />
                 <span className="icon icon-add btn-icon-add" onClick={() => this.onAddNewUrl()}/>
               </div>
-
             </FormGroup>
 
-            <FormGroup>
-              <Label htmlFor="pageTheme">Theme</Label>
-              <Input
-                type="select"
-                name="pageTheme"
-                id="pageTheme"
-                placeholder="Page theme"
-                value={themeId}
-                onChange={e => this.onChange(e, 'themeId')}
-              >
-                {themes.map(theme => (
-                  <option key={theme.id} value={theme.id}>{theme.title}</option>
-                ))}
-              </Input>
-            </FormGroup>
+            {/*<FormGroup>*/}
+            {/*  <Label htmlFor="pageTheme">Theme</Label>*/}
+            {/*  <Input*/}
+            {/*    type="select"*/}
+            {/*    name="pageTheme"*/}
+            {/*    id="pageTheme"*/}
+            {/*    placeholder="Page theme"*/}
+            {/*    value={themeId}*/}
+            {/*    onChange={e => this.onChange(e, 'themeId')}*/}
+            {/*  >*/}
+            {/*    {themes.map(theme => (*/}
+            {/*      <option key={theme.id} value={theme.id}>{theme.title}</option>*/}
+            {/*    ))}*/}
+            {/*  </Input>*/}
+            {/*</FormGroup>*/}
 
             <FormGroup>
               <Checkbox
@@ -260,7 +258,6 @@ export class PageSettings extends React.PureComponent<Props, any> {
 
           </Form>
         </div>
-
       </div>
     );
   }

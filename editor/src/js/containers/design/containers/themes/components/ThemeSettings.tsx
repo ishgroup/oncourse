@@ -1,26 +1,34 @@
 import React from 'react';
-import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import {Theme, Layout} from "../../../../../model";
 import {IconBack} from "../../../../../common/components/IconBack";
 
 interface Props {
   theme: Theme;
+  themes: Theme[];
   layouts: Layout[];
   onBack: () => void;
   onEdit?: (settings) => void;
+  showError?: (title) => any;
   onDelete?: (title) => void;
   showModal?: (props) => void;
 }
 
 export class ThemeSettings extends React.Component<Props, any> {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      title: props.theme.title,
       layoutId: props.theme.layoutId,
+      newLink: '',
+      title: props.theme.title,
+      urls: [],
     };
+  }
+
+  componentDidMount() {
+    const {theme} = this.props;
+    if (theme.paths) this.setState({urls: theme.paths});
   }
 
   clickBack(e) {
@@ -29,10 +37,41 @@ export class ThemeSettings extends React.Component<Props, any> {
     onBack();
   }
 
+  formatLink(link) {
+    return (link.indexOf('/') !== 0 ? `/${link}` : link).replace(/ /g, '');
+  }
+
+  onAddNewUrl() {
+    const newLink = this.formatLink(this.state.newLink);
+    const {showError, themes} = this.props;
+
+    if (!this.state.newLink) return;
+
+    const isUsedUrl = themes.some((elem: Theme) => elem.paths
+      && elem.paths.some((elem: string) => elem === newLink))
+      || this.state.urls.some((elem: string) => elem === newLink);
+
+    if (isUsedUrl) {
+      showError('This url already exist');
+      return;
+    }
+
+    const urls = this.state.urls.concat(newLink);
+    this.setState({
+      urls,
+      newLink: '',
+    });
+  }
+
   onChange(event, key) {
     this.setState({
       [key]: event.target.value,
     });
+  }
+
+  onDeleteUrl(url) {
+    const urls = this.state.urls.filter(item => item !== url);
+    this.setState({urls});
   }
 
   onSave() {
@@ -41,6 +80,7 @@ export class ThemeSettings extends React.Component<Props, any> {
     onEdit({
       title: this.state.title,
       layoutId: this.state.layoutId,
+      paths: this.state.urls,
     });
   }
 
@@ -56,11 +96,10 @@ export class ThemeSettings extends React.Component<Props, any> {
 
   render () {
     const {theme, layouts} = this.props;
-    const {title, layoutId} = this.state;
+    const {layoutId, newLink, title, urls} = this.state;
 
     return (
       <div>
-
         <ul>
           <li>
             <a href="javascript:void(0)" onClick={e => this.clickBack(e)}>
@@ -97,6 +136,40 @@ export class ThemeSettings extends React.Component<Props, any> {
                   <option key={layout.id} value={layout.id}>{layout.title}</option>
                 ))}
               </Input>
+            </FormGroup>
+
+            <FormGroup>
+              <Label htmlFor="pageUrl">Pages</Label>
+              <div className="links">
+
+                {urls.map((url, index) => (
+                  <div className="links__item" key={index}>
+                    <div
+                      title={url}
+                    >
+                      {url}
+                    </div>
+
+                    <span
+                      className="links__remove icon-close"
+                      onClick={() => this.onDeleteUrl(url)}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="input-icon">
+                <Input
+                  type="text"
+                  name="newLink"
+                  id="newLink"
+                  placeholder="New Page Url"
+                  value={newLink}
+                  onChange={e => this.onChange(e, 'newLink')}
+                  onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
+                />
+                <span className="icon icon-add btn-icon-add" onClick={() => this.onAddNewUrl()}/>
+              </div>
             </FormGroup>
 
             <FormGroup className="actions-group">

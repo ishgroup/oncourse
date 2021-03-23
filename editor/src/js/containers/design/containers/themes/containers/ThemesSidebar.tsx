@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
+import {error} from 'react-notification-system-redux';
 import classnames from "classnames";
 import {URL} from "../../../../../routes";
 import {Theme, Layout} from "../../../../../model";
@@ -8,6 +9,7 @@ import {addTheme, deleteTheme, saveTheme} from "../actions";
 import {SidebarList} from "../../../../../components/Sidebar/SidebarList";
 import {State} from "../../../../../reducers/state";
 import {showModal} from "../../../../../common/containers/modal/actions";
+import {notificationParams} from "../../../../../common/utils/NotificationSettings";
 
 interface Props {
   themes: Theme[];
@@ -18,6 +20,7 @@ interface Props {
   onAddTheme: () => any;
   history: any;
   fetching: boolean;
+  showError: (title) => any;
   showModal: (props) => any;
 }
 
@@ -37,7 +40,7 @@ class ThemesSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {themes, match, onEditSettings, onDeleteTheme, showModal, fetching, layouts} = this.props;
+    const {themes, match, onEditSettings, onDeleteTheme, showError, showModal, fetching, layouts} = this.props;
     const activeTheme = match.params.id && themes.find(theme => theme.id == match.params.id);
 
     return (
@@ -54,9 +57,11 @@ class ThemesSidebar extends React.Component<Props, any> {
         {activeTheme &&
         <ThemeSettings
           theme={activeTheme}
+          themes={themes}
           layouts={layouts}
           onBack={() => this.resetActiveTheme()}
           onEdit={prop => onEditSettings(activeTheme, prop)}
+          showError={showError}
           onDelete={id => onDeleteTheme(id)}
           showModal={showModal}
         />
@@ -75,6 +80,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onEditSettings: (theme, settings) => dispatch(saveTheme(theme.id, {...theme, ...settings})),
+    showError: title => dispatch(error({...notificationParams, title})),
     onDeleteTheme: title => dispatch(deleteTheme(title)),
     onAddTheme: () => dispatch(addTheme()),
     showModal: props => dispatch(showModal(props)),
