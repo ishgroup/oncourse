@@ -1,10 +1,6 @@
-goog.provide('TimeTable');
-
-goog.require('jquery');
-goog.require('jquery.calendario');
-goog.require('initialise');
-
-
+import jQuery, * as $ from "./jquery-1.11.2";
+import "./jquery.calendario";
+import "./initialise";
 
 var $j = jQuery.noConflict();
 var timetable;
@@ -13,10 +9,10 @@ $j(document).ready(function () {
 
 
     if ($j('#mytimetablepage').length) {
-        
+
         timetable = new MyTimetable();
         timetable.init($j('#team-timetable').length > 0);
-        
+
 
         $j('#team-timetable').on('click', function(){
             timetable.destroy();
@@ -27,10 +23,10 @@ $j(document).ready(function () {
             timetable =  new MyTimetable();
             timetable.init(false);
         });
-    } 
+    }
 });
 
-MyTimetable = function() {
+var MyTimetable = function() {
 }
 
 MyTimetable.prototype = {
@@ -51,9 +47,9 @@ MyTimetable.prototype = {
         $j('div.sync-to-device').on('click', function () {
             window.location.href =  $j(this).attr('value');
         });
-        
+
         $j('#calendar').empty();
-        
+
          this.cal = $j('#calendar').calendario({
                 checkUpdate: false,
                 weekabbrs: [ 'S', 'M', 'T', 'W', 'T', 'F', 'S' ],
@@ -64,9 +60,9 @@ MyTimetable.prototype = {
           this.year = $j('#custom-year').html(this.cal.getYear());
 
         this.updateMonthYear();
-         
+
         var self = this;
-        
+
         $j('#custom-next').on('click', function () {
             self.cal.gotoNextMonth();
             self.updateMonthYear();
@@ -76,7 +72,7 @@ MyTimetable.prototype = {
             self.updateMonthYear();
         });
     },
-    
+
     updateMonthYear: function() {
         this.month.html(this.cal.getMonthName() + " ");
         this.year.html(this.cal.getYear());
@@ -132,7 +128,7 @@ MyTimetable.prototype = {
         this.sessionsPageSize = 10;
 
         this.nextPage();
-        
+
 
         $j(window).scroll(function() {
             if(($j('#accordion').innerHeight() < ($j(window).scrollTop() + $j(window).height() - $j('#header-holder').height())) && $j('#showMoreCourses').length ) {
@@ -141,7 +137,7 @@ MyTimetable.prototype = {
             }
         });
     },
-    
+
     nextPage: function() {
         var refreshId = '#accordion';
         var self = this;
@@ -156,13 +152,13 @@ MyTimetable.prototype = {
                     $j(refreshId).append(data.content);
                     self.splitMonthsDays();
                     if (self.showTeam) {
-                       
+
                         if ($j(data.content).find('.class-card').length == 10) {
                             $j(refreshId).append("<a id='showMoreCourses' style='display:none;'>");
                             self.sessionsOffset += self.sessionsPageSize;
                         }
                     }
-                    
+
                     $j('.point-marker').off();
                     self.initMarkerHandler();
                     self.refreshColors($j(refreshId + ' .class-card'), false);
@@ -198,15 +194,15 @@ MyTimetable.prototype = {
                 dayHeadCode = $j(this).attr('data-month-day');
             }
         });
-        
+
     },
-                                
+
     refreshColors: function(elements, updateParent) {
         var self = this;
         elements.each(function() {
             var classId = $j(this).attr('value');
             var colourIndex;
-    
+
             if (self.allClasses.indexOf(classId) < 0) {
                 self.allClasses.push(classId);
             }
@@ -218,14 +214,14 @@ MyTimetable.prototype = {
             }
         });
     },
-    
-    
+
+
     initMarkerHandler: function() {
         $j('.point-marker').on('click', function() {
             var sessionId = $j(this).attr('value');
             var state = $j(this).next('.class-description').attr('aria-expanded');
             var cell = $j('span#sessionId-' + sessionId).parent();
-            
+
             if (state == "false") {
                 cell.css('background-color', cell.css('border-color'));
                 cell.parent().siblings('span.fc-date').addClass('white-text');

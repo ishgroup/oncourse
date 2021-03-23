@@ -1,6 +1,6 @@
-goog.provide('application');
-
-goog.require('initialise');
+import jQuery, * as $ from "./jquery-1.11.2";
+import "./jquery.slimscroll.min";
+import "./initialise";
 
 var $j = jQuery.noConflict();
 var target;

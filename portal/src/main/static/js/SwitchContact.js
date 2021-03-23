@@ -1,5 +1,4 @@
-goog.provide('SwitchContact');
-goog.require('jquery');
+import jQuery, * as $ from "./jquery-1.11.2";
 
 var $j = jQuery.noConflict();
 

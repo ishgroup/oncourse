@@ -1,6 +1,4 @@
-goog.provide('Outcomes');
-
-goog.require('jquery');
+import jQuery, * as $ from "./jquery-1.11.2";
 
 
 var $j = jQuery.noConflict();
@@ -111,7 +109,7 @@ function refreshSelection(selected) {
 }
 
 
-EnrolmentCtrl = function () {
+var EnrolmentCtrl = function () {
 };
 
 
@@ -154,7 +152,7 @@ EnrolmentCtrl.prototype = {
 };
 
 
-ModuleCtrl = function () {
+var ModuleCtrl = function () {
 };
 
 
@@ -200,7 +198,7 @@ ModuleCtrl.prototype = {
 
 
 
-OutcomeCtrl = function () {
+var OutcomeCtrl = function () {
 };
 
 OutcomeCtrl.prototype = {

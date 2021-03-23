@@ -1,6 +1,5 @@
-goog.provide('masonry.pkgd');
+import jQuery, * as $ from "./jquery-1.11.2";
 
-goog.require('jquery');
 /*!
  * Masonry PACKAGED v4.1.1
  * Cascading grid layout library

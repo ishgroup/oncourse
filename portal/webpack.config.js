@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const glob = require("glob");
 
 
 module.exports = function (options = {}) {
@@ -25,9 +26,9 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
     mode: NODE_ENV,
     entry: {
       main: [
-        'react',
         path.resolve(__dirname, 'src', 'js', 'app.tsx')
-      ]
+      ],
+      "portal-min": glob.sync("./src/main/static/js/*.js")
     },
     output: {
       path: path.resolve(__dirname, 'build/resource-assemble/static/js'),
@@ -36,8 +37,9 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
     },
     resolve: {
       modules: [
+        path.resolve(__dirname, "src/main/static/js"),
         path.resolve(__dirname, "src/js"),
-        "node_modules"
+        "node_modules",
       ],
       extensions: [".ts", ".tsx", ".js", ".css", ".scss"]
     },
@@ -73,6 +75,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
 
 const plugins = (NODE_ENV, BUILD_NUMBER) => {
   const plugins = [
+    new webpack.IgnorePlugin(/^(\.\/locale|jquery|\.\/item|desandro-matches-selector|ev-emitter|fizzy-ui-utils|get-size|outlayer)$/),
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
     new webpack.EnvironmentPlugin({
       RELEASE_VERSION: BUILD_NUMBER

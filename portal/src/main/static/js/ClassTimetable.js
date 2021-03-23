@@ -1,9 +1,7 @@
-goog.provide('ClassTimetable');
-
-goog.require('jquery');
-goog.require('moment');
-goog.require('timepicki');
-goog.require('StudentTimetable');
+import jQuery, * as $ from "./jquery-1.11.2";
+import "./moment.min";
+import "./timepicki";
+import "./StudentTimetable";
 
 /**
  * Created by Artem on 28/06/2016.
@@ -11,7 +9,7 @@ goog.require('StudentTimetable');
 
 var $j = jQuery.noConflict();
 
-AttendanceCtrl = function () {
+var AttendanceCtrl = function () {
 };
 
 AttendanceCtrl.prototype = {
@@ -330,7 +328,7 @@ AttendanceCtrl.prototype = {
 };
 
 
-ClassTimetable = function () {
+var ClassTimetable = function () {
 };
 
 ClassTimetable.prototype = {

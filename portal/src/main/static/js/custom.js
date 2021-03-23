@@ -1,13 +1,8 @@
-goog.provide('custom');
-
-goog.require('jquery');
-goog.require('jquery.ui');
-goog.require('jquery.calendario');
-goog.require('bootstrap');
-goog.require('jquery.flexisel');
-goog.require('respond');
-
-
+import jQuery, * as $ from "./jquery-1.11.2";
+import "./jquery-ui-1.11.2";
+import "./jquery.calendario";
+import "./bootstrap";
+import "./jquery.flexisel";
 
 var $j = jQuery.noConflict();
 
@@ -27,6 +22,7 @@ var SlidesToShow = 3;
 var singleSlideWidth;
 var singleSessionWidth;
 var isSetSlideWidth = true;
+var singleSessionWidthCalc;
 
 $j(document).ready(function () {
     $j('.class-week li.active').popover({
@@ -435,7 +431,7 @@ $j(document).ready(function () {
 		return false;
 	});
 
-    $fluidEl = $j(".container > .col-lg-9");
+    var $fluidEl = $j(".container > .col-lg-9");
     $j('#venue').data('aspectRatio', this.height / this.width);
     $j(window).resize(function () {
         var newWidth = $fluidEl.width();

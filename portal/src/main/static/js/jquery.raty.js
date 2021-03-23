@@ -1,6 +1,4 @@
-goog.provide('jquery.raty');
-
-goog.require('jquery');
+import jQuery, * as $ from "./jquery-1.11.2";
 
 /*!
  * jQuery Raty - A Star Rating Plugin

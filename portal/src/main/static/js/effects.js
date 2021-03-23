@@ -1,7 +1,6 @@
-goog.provide('effects');
-goog.require('jquery');
-goog.require('bootstrap.checkbox');
-goog.require('timepicki');
+import jQuery, * as $ from "./jquery-1.11.2";
+import "./bootstrap-checkbox.min";
+import "./timepicki";
 
 // THIS IS JS BY DARYA
 
@@ -11,8 +10,8 @@ $j(document).ready(function() {
 
 // diff classes for diff percents on dashboard
   function DashboardAttendance(){
-    dashboardPercent = $j('.dashboard-card.persent-of-attendance .percent').text().replace('%','');
-    dashboardAttendanceCard = $j('.dashboard-card.persent-of-attendance');
+    var dashboardPercent = $j('.dashboard-card.persent-of-attendance .percent').text().replace('%','');
+    var dashboardAttendanceCard = $j('.dashboard-card.persent-of-attendance');
 
     if ( dashboardPercent < 75 ){
       dashboardAttendanceCard.addClass('low-percent-card');

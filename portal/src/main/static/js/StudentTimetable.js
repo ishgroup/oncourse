@@ -1,7 +1,4 @@
-goog.provide('StudentTimetable');
-
-goog.require('jquery');
-
+import jQuery, * as $ from "./jquery-1.11.2";
 
 var $j = jQuery.noConflict();
 
@@ -14,7 +11,7 @@ function init() {
 
     updatePercenColours();
     $j('.show-roll a').on('click', function() {
-       
+
         $j(this).parents('.past-course, .future-course').append('<button class="btn btn-primary vertical-center btn-xs btn-finish">CLOSE</button>').addClass('past-course-diff');
         $j('.show-roll a').css('pointer-events', 'none');
         $j('[id^=class-description-]').hide();
@@ -34,7 +31,7 @@ function init() {
 function updatePercenColours() {
     $j('.percents-of-attendance span, .current-attendance span').each( function(){
         parent = $j(this).parent();
-        percent = $j(this).text();
+        var percent = $j(this).text();
 
         if (percent>90){
             parent.addClass('full-percents');

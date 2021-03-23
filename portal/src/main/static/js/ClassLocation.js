@@ -1,10 +1,8 @@
-goog.provide('ClassLocation');
-
-goog.require('jquery');
+import jQuery, * as $ from "./jquery-1.11.2";
 
 var $j = jQuery.noConflict();
 
-ClassLocation = function () {
+var ClassLocation = function () {
 };
 
 ClassLocation.prototype = {

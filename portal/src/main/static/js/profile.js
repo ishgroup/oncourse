@@ -1,11 +1,8 @@
-goog.provide('profile');
-
-goog.require('initialise');
-
+import jQuery, * as $ from "./jquery-1.11.2";
+import "./initialise";
 
 
 var $j = jQuery.noConflict();
-
 
 function initAutocomplete(){if ($j("#suburb").length) {
 

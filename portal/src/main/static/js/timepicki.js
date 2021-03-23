@@ -1,6 +1,4 @@
-goog.provide('timepicki');
-
-goog.require('jquery');
+import jQuery, * as $ from "./jquery-1.11.2";
 /*
  * Author: @senthil2rajan
  * plugin: timepicker

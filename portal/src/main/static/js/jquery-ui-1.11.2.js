@@ -1,5 +1,4 @@
-goog.provide('jquery.ui');
-goog.require('jquery');
+import jQuery, * as $ from "./jquery-1.11.2";
 
 /*! jQuery UI - v1.11.2 - 2014-10-16
 * http://jqueryui.com

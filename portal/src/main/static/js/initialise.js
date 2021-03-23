@@ -1,10 +1,10 @@
-goog.provide('initialise');
-
-goog.require('custom');
-goog.require('jquery.placeholder');
-
+import jQuery, * as $ from "./jquery-1.11.2";
+import "./custom";
+import "./jquery.placeholder";
 
 var $j = jQuery.noConflict();
+
+window["jQuery"] = $j;
 
 function sendAjaxWithData(actionLink, formData, jdata, callback)
 {

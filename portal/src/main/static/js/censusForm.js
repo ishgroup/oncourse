@@ -1,12 +1,11 @@
-goog.provide('CensusForm');
-goog.require('jquery');
+import jQuery, * as $ from "./jquery-1.11.2";
 //we need add initialise.js code before the code because initialise.js contains common functionality
 // for all input controls (like unbind blur and focus functions)
-goog.require('initialise');
+import "./initialise";
 
 var $j = jQuery.noConflict();
 
-CensusForm = function () {
+var CensusForm = function () {
 };
 CensusForm.prototype = {
     data: 0,

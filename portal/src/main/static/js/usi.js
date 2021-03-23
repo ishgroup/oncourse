@@ -1,15 +1,13 @@
-goog.provide('usi');
-goog.require('jquery');
+import jQuery, * as $ from "./jquery-1.11.2";
 //we need add initialise.js code before the code because initialise.js contains common functionality
 // for all input controls (like unbind blur and focus functions)
-goog.require('initialise');
-goog.require('timepicki');
-
+import "./initialise";
+import "./timepicki";
 
 
 var $j = jQuery.noConflict();
 
-Usi = function () {
+var Usi = function () {
 };
 
 Usi.prototype = {
@@ -58,7 +56,7 @@ Usi.prototype = {
 					$j.each(this.data.errors, function (index, value) {
             errorsHtml += '<li>' + value + '</li>';
 					});
-					
+
 					$j('#main-container').prepend($j('<div class="error-message"><ul>' + errorsHtml + '</ul></div>'))
 				}
     },
@@ -121,7 +119,7 @@ Usi.prototype = {
 			$j('.usi-progress-verify').show();
       var self = this;
       var data = $j(".form-control").serialize();
-      
+
 			$j.ajax({
             url: '/portal/usi/usi:verifyUsi' + "/" + self.step + "/" + self.uniqueKey,
             type: 'post',

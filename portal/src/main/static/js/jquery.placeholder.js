@@ -1,6 +1,4 @@
-goog.provide('jquery.placeholder');
-
-goog.require('jquery')
+import jQuery, * as $ from "./jquery-1.11.2";
 
 function isIE () {
 	var myNav = navigator.userAgent.toLowerCase();
