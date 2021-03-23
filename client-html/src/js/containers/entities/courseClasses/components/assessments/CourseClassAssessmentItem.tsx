@@ -20,6 +20,7 @@ import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import DateRange from "@material-ui/icons/DateRange";
 import { Tooltip } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
@@ -356,135 +357,144 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
         </Grid>
       </Grid>
 
-      <Grid item={true} xs={12} container className="pb-3">
-        <div className="heading">Assessment Submission</div>
-        <Grid container xs={12} className={classes.tableHeader}>
-          <Grid item xs={4} />
-          <Grid item xs={2} className={classes.center}>
-            <span className="relative">
-              Submitted
-              <IconButton
-                size="small"
-                className={classes.hiddenTitleIcon}
-                onClick={() => {
+      {typeof row.id === "number" ? (
+        <Grid item={true} xs={12} container className="pb-3">
+          <div className="heading">Assessment Submission</div>
+          <Grid container xs={12} className={classes.tableHeader}>
+            <Grid item xs={4} />
+            <Grid item xs={2} className={classes.center}>
+              <span className="relative">
+                Submitted
+                <IconButton
+                  size="small"
+                  className={classes.hiddenTitleIcon}
+                  onClick={() => {
                   setAllSubmissionsDate(today);
                   setModalOpenedBy(`Submitted-0-all`);
                 }}
-              >
-                <DateRange color="disabled" fontSize="small" />
-              </IconButton>
-            </span>
-          </Grid>
-          <Grid xs={2} className={classes.center}>
-            <span className="relative">
-              Marked
-              <IconButton
-                size="small"
-                className={classes.hiddenTitleIcon}
-                onClick={() => {
+                >
+                  <DateRange color="disabled" fontSize="small" />
+                </IconButton>
+              </span>
+            </Grid>
+            <Grid xs={2} className={classes.center}>
+              <span className="relative">
+                Marked
+                <IconButton
+                  size="small"
+                  className={classes.hiddenTitleIcon}
+                  onClick={() => {
                   setAllSubmissionsDate(today);
                   setModalOpenedBy(`Marked-0-all`);
                 }}
-              >
-                <DateRange color="disabled" fontSize="small" />
-              </IconButton>
-            </span>
+                >
+                  <DateRange color="disabled" fontSize="small" />
+                </IconButton>
+              </span>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container xs={12} className={classes.items}>
-          {studentsForRender.map((elem, index) => {
-            const submittedContent = (
-              <div className="d-flex">
-                <AssessmentSubmissionIconButton
-                  status={elem.submittedValue}
-                  onClick={() => onChangeStatus("Submitted", elem)}
-                />
-                {elem.submittedValue === "Submitted" && (
-                <IconButton
-                  size="small"
-                  className={classes.hiddenIcon}
-                  onClick={() => setModalOpenedBy(`Submitted-${elem.submissionIndex}-${elem.studentName}-${index}`)}
-                >
-                  <DateRange color="disabled" fontSize="small" />
-                </IconButton>
-              )}
-              </div>
-            );
-
-            const markedContent = (
-              <div className="d-flex">
-                <AssessmentSubmissionIconButton
-                  status={elem.markedValue}
-                  onClick={() => onChangeStatus("Marked", elem)}
-                />
-                {elem.markedValue === "Submitted" && (
-                <IconButton
-                  size="small"
-                  className={classes.hiddenIcon}
-                  onClick={() => setModalOpenedBy(`Marked-${elem.submissionIndex}-${elem.studentName}-${index}`)}
-                >
-                  <DateRange color="disabled" fontSize="small" />
-                </IconButton>
-              )}
-              </div>
+          <Grid container xs={12} className={classes.items}>
+            {studentsForRender.map((elem, index) => {
+              const submittedContent = (
+                <div className="d-flex">
+                  <AssessmentSubmissionIconButton
+                    status={elem.submittedValue}
+                    onClick={() => onChangeStatus("Submitted", elem)}
+                  />
+                  {elem.submittedValue === "Submitted" && (
+                    <IconButton
+                      size="small"
+                      className={classes.hiddenIcon}
+                      onClick={() => setModalOpenedBy(`Submitted-${elem.submissionIndex}-${elem.studentName}-${index}`)}
+                    >
+                      <DateRange color="disabled" fontSize="small" />
+                    </IconButton>
+                  )}
+                </div>
               );
 
-            return (
-              <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
-                <Grid item xs={4} className="d-inline-flex-center">
-                  {elem.studentName}
-                </Grid>
-                <Grid item xs={2} className={classes.center}>
-                  {elem.submittedValue === "Submitted"
-                    ? (
+              const markedContent = (
+                <div className="d-flex">
+                  <AssessmentSubmissionIconButton
+                    status={elem.markedValue}
+                    onClick={() => onChangeStatus("Marked", elem)}
+                  />
+                  {elem.markedValue === "Submitted" && (
+                    <IconButton
+                      size="small"
+                      className={classes.hiddenIcon}
+                      onClick={() => setModalOpenedBy(`Marked-${elem.submissionIndex}-${elem.studentName}-${index}`)}
+                    >
+                      <DateRange color="disabled" fontSize="small" />
+                    </IconButton>
+                  )}
+                </div>
+              );
+
+              return (
+                <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
+                  <Grid item xs={4} className="d-inline-flex-center">
+                    {elem.studentName}
+                  </Grid>
+                  <Grid item xs={2} className={classes.center}>
+                    {elem.submittedValue === "Submitted"
+                      ? (
+                        <Tooltip
+                          title={(
+                            <span>
+                              Submitted date:
+                              {" "}
+                              {elem.submission && format(new Date(elem.submission.submittedOn), III_DD_MMM_YYYY)}
+                            </span>
+                          )}
+                          placement="top"
+                          disableFocusListener
+                          disableTouchListener
+                        >
+                          {submittedContent}
+                        </Tooltip>
+                      )
+                      : submittedContent}
+                  </Grid>
+                  <Grid item xs={2} className={classes.center}>
+                    {elem.markedValue === "Submitted" ? (
                       <Tooltip
                         title={(
                           <span>
-                            Submitted date:
+                            Marked date:
                             {" "}
-                            {elem.submission && format(new Date(elem.submission.submittedOn), III_DD_MMM_YYYY)}
+                            {elem.submission && format(new Date(elem.submission.markedOn), III_DD_MMM_YYYY)}
+                            <br />
+                            {elem?.submission?.markedById && tutors && (
+                              <span>
+                                Assessor:
+                                {" "}
+                                {tutors.find(t => t.contactId === elem.submission.markedById)?.tutorName}
+                              </span>
+                            )}
                           </span>
-                      )}
+                        )}
                         placement="top"
                         disableFocusListener
                         disableTouchListener
                       >
-                        {submittedContent}
+                        {markedContent}
                       </Tooltip>
-                    )
-                    : submittedContent}
+                    ) : markedContent}
+                  </Grid>
                 </Grid>
-                <Grid item xs={2} className={classes.center}>
-                  {elem.markedValue === "Submitted" ? (
-                    <Tooltip
-                      title={(
-                        <span>
-                          Marked date:
-                          {" "}
-                          {elem.submission && format(new Date(elem.submission.markedOn), III_DD_MMM_YYYY)}
-                          <br />
-                          {elem?.submission?.markedById && tutors && (
-                            <span>
-                              Assessor:
-                              {" "}
-                              {tutors.find(t => t.contactId === elem.submission.markedById)?.tutorName}
-                            </span>
-                          )}
-                        </span>
-                      )}
-                      placement="top"
-                      disableFocusListener
-                      disableTouchListener
-                    >
-                      {markedContent}
-                    </Tooltip>
-                  ) : markedContent}
-                </Grid>
-              </Grid>
-            );
-          })}
+              );
+            })}
+          </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        <div>
+          <div className="heading">Assessment Submission</div>
+          <Typography component="div" className="mt-2 mb-3" variant="caption" color="textSecondary">
+            Please save new assessment before editinig submissions
+          </Typography>
+        </div>
+      )}
     </Grid>
   );
 };
