@@ -194,7 +194,7 @@ const renderCustomFields = props => {
               return (
                 <Draggable key={index} draggableId={String(index + 1)} index={index}>
                   {provided => (
-                    <div key={index} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                    <div id={`custom-field-${index}`} key={index} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                       <Card className="card d-flex">
                         <div className="centeredFlex mr-2">
                           <DragIndicator className={clsx("dndActionIcon", classes.dragIcon)} />
