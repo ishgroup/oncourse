@@ -4,7 +4,6 @@ import ish.oncourse.model.College;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.soap.ReplicationPortTypeTest;
-import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
@@ -21,7 +20,7 @@ import java.util.List;
 public class PaymentServiceImplTest extends ServiceTest {
 	private ICayenneService service;
 	private College college;
-	
+
 	@Before
 	public void setupDataSet() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
@@ -40,7 +39,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 
 		college = colleges.isEmpty() ? null : colleges.get(0);
 	}
-	
+
 	private College localizeCollege(ObjectContext context) {
 		if (college == null) {
 			return null;

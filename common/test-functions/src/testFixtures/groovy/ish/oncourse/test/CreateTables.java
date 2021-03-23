@@ -17,10 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * User: akoiro
- * Date: 27/8/17
- */
 public class CreateTables {
 	private static final Logger logger = LogManager.getLogger();
 

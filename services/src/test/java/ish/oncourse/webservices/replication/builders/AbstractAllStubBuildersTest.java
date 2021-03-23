@@ -8,7 +8,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.functions.Functions;
 import ish.oncourse.test.tapestry.ServiceTest;
-import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import org.apache.cayenne.Cayenne;
 import org.junit.After;

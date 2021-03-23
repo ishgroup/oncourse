@@ -4,7 +4,6 @@ import ish.oncourse.model.Instruction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
-import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.junit.Before;

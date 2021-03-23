@@ -5,7 +5,6 @@ import ish.math.Money;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.tapestry.ServiceTest;
-import ish.oncourse.util.payment.*;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -189,7 +188,7 @@ public class PaymentInTest extends ServiceTest{
 		invoice1.setDateDue(calendar.getTime());
 		invoice1.setContact(contact);
 		invoice1.setSource(PaymentSource.SOURCE_ONCOURSE);
-		
+
 		Invoice invoice2 = context.newObject(Invoice.class);
 		invoice2.setAngelId(102l);
 		invoice2.setAmountOwing(new Money("-1"));

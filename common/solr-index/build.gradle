@@ -30,7 +30,7 @@ dependencies {
     api "io.reactivex.rxjava2:rxjava:2.1.6"
 
     testImplementation "org.apache.solr:solr-dataimporthandler:$solrVersion"
-    testImplementation project(':common:test-functions')
+    testImplementation(testFixtures(project(":common:test-functions")))
     testImplementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
     testImplementation "com.google.code.gson:gson:2.8.4"
     testImplementation 'rg.hamcrest:hamcrest-all:2.2'

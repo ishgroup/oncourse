@@ -5,10 +5,6 @@ import ish.oncourse.cayenne.cache.JCacheModule
 import org.apache.cayenne.cache.QueryCache
 import org.apache.cayenne.configuration.server.ServerRuntime
 
-/**
- * User: akoiro
- * Date: 9/12/17
- */
 class ServerRuntimeBuilder {
     private String cayenneXml = "cayenne-oncourse.xml"
     private QueryCache queryCache = null

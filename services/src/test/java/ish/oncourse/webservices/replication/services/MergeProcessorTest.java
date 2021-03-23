@@ -10,7 +10,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
-import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
@@ -41,7 +40,7 @@ public class MergeProcessorTest extends ServiceTest {
 	ITransactionGroupProcessor transactionGroupProcessor;
 	ICayenneService cayenneService;
 
-	
+
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
@@ -59,10 +58,10 @@ public class MergeProcessorTest extends ServiceTest {
 		cayenneService = getService(ICayenneService.class);
 
 	}
-	
+
 	@Test
 	public void processMergeTransaction() {
-		
+
 		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V21);
 
 		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
@@ -104,7 +103,7 @@ public class MergeProcessorTest extends ServiceTest {
 		studentStub.setUsiStatus(UsiStatus.VERIFIED.getDatabaseValue());
 		studentStub.setUsi("2222222222");
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(studentStub);
-		
+
 		TutorStub tutorStub = new TutorStub();
 		tutorStub.setAngelId(1l);
 		tutorStub.setWillowId(1l);
@@ -140,12 +139,12 @@ public class MergeProcessorTest extends ServiceTest {
 
 
 		transactionGroup.getTransactionKeys().add(TransactionGroupProcessorImpl.MERGE_KEY);
-		
+
 		List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
 		assertEquals(1, records.size());
 		assertEquals(SUCCESS,((ReplicatedRecord)records.get(0)).getStatus());
-		
-		
+
+
 		ObjectContext context = cayenneService.newContext();
 		ContactDuplicate duplicate = ObjectSelect.query(ContactDuplicate.class).where(ContactDuplicate.ANGEL_ID.eq(1l).andExp(ContactDuplicate.STATUS.eq(ContactDuplicateStatus.PROCESSED))).selectOne(context);
 		assertNotNull(duplicate);
@@ -179,7 +178,7 @@ public class MergeProcessorTest extends ServiceTest {
 				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_IDENTIFIER).eq("Contact"))
 				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_WILLOW_ID).eq(contactToUpdate.getId()))
 				.and(TaggableTag.TAG.dot(Tag.ANGEL_ID).eq(1l)).select(context);
-		
+
 		assertTrue(!tagRelation1.isEmpty());
 		assertEquals(1l, tagRelation1.get(0).getId().longValue());
 		assertEquals(1l ,tagRelation1.get(0).getTaggable().getId().longValue());
@@ -193,10 +192,10 @@ public class MergeProcessorTest extends ServiceTest {
 		assertTrue(!tagRelation2.isEmpty());
 		assertEquals(2l ,tagRelation2.get(0).getId().longValue());
 		assertEquals(1l, tagRelation2.get(0).getTaggable().getId().longValue());
-		
+
 		List<AssessmentClassTutor> assessmentClassTutor = ObjectSelect.query(AssessmentClassTutor.class).select(context);
 		assertEquals(2, assessmentClassTutor.size());
-		
+
 		assertEquals(Long.valueOf(1), assessmentClassTutor.get(0).getTutor().getId());
 		assertEquals(Long.valueOf(1), assessmentClassTutor.get(1).getTutor().getId());
 
@@ -207,7 +206,7 @@ public class MergeProcessorTest extends ServiceTest {
 		assertEquals(Long.valueOf(1), assessmentSubmissions.get(0).getSubmittedBy().getId());
 		assertEquals(Long.valueOf(1), assessmentSubmissions.get(1).getSubmittedBy().getId());
 
-		
+
 	}
 
 

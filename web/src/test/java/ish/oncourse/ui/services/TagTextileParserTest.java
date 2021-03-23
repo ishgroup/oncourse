@@ -11,7 +11,6 @@ import ish.oncourse.services.html.ICacheMetaProvider;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteService;
@@ -39,13 +38,12 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.testng.Assert.assertEquals;
 
 
 public class TagTextileParserTest extends ServiceTest {
 
-	
+
 	private String tags = "<div id=\"tag-tree\">\n" +
 			"\t\t\n" +
 			"\t\n" +
@@ -87,13 +85,13 @@ public class TagTextileParserTest extends ServiceTest {
 			"\t\t</ul>\n" +
 			"\t</div>\n" +
 			"\t</div>";
-	
+
 	@Before
 	public void setup() {
 		initTest("ish.oncourse.ui", "App",  ish.oncourse.ui.services.TestModule.class);
 		new LoadDataSet().dataSetFile("ish/oncourse/website/services/TagTextileParserTestDataSet.xml").addReplacement("[null]", null).load(getDataSource());
 	}
-	
+
 	@Test
 	public void test() {
 		ICayenneService cayenneService = getService(ICayenneService.class);
@@ -105,7 +103,7 @@ public class TagTextileParserTest extends ServiceTest {
 		assertEquals(tags.replaceAll("\\s+",""), doc.getElementById("tag-tree").toString().replaceAll("\\s+",""));
 
 	}
-	
+
 	@ImportModule({UIModule.class})
 	public static class TextileModule {
 

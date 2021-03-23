@@ -7,15 +7,12 @@ configurations {
 	all*.exclude group: 'org.apache.tapestry', module: 'tapestry-spring'
 }
 
-
 dependencies {
 	implementation project(':common:common-bootique')
 	implementation project(':common:common-templates')
 	implementation project(':common:common-services')
 	implementation project(':common:common-textile')
 	implementation project(':common:tapestry-classes')
-
-	testImplementation project(':common:test-tapestry')
 }
 
 test {

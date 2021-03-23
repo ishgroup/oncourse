@@ -7,7 +7,6 @@ import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
-import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v21.stubs.replication.BinaryInfoRelationStub;
 import ish.oncourse.webservices.v21.stubs.replication.CourseStub;
@@ -42,7 +41,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         transactionGroupProcessor = getService(ITransactionGroupProcessor.class);
         cayenneService = getService(ICayenneService.class);
     }
-	
+
 
 	@Test
 	public void testDeleteV17Object() throws Exception {
@@ -89,7 +88,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		}
 	}
 
-    
+
 	@Test
 	public void testBinaryDataProcessingV17() {
 		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V21);
@@ -198,8 +197,8 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         }
         return transactionGroup;
     }
-	
-	
+
+
 	@Test
 	public void testMergeContactsDenyRuleV17() {
 		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V21);

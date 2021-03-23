@@ -11,10 +11,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * User: akoiro
- * Date: 30/10/17
- */
 public class TestContext {
 	private static final Logger logger = LogManager.getLogger();
 

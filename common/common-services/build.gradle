@@ -23,8 +23,6 @@ dependencies {
 
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	api 'org.apache.maven:maven-artifact:3.0.4'
-
-	testImplementation project(':common:test-tapestry')
 }
 
 test {

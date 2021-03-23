@@ -1,26 +1,22 @@
-sourceSets.main.java.srcDirs = []
-sourceSets.main.groovy.srcDir 'src/main/java'
-
-sourceSets.test.java.srcDirs = []
-sourceSets.test.groovy.srcDir 'src/test/java'
-
-compileGroovy.options.encoding = 'UTF-8'
-compileTestGroovy.options.encoding = 'UTF-8'
-
-dependencies {
-    implementation project(':common:common-functions')
-    implementation project(':common:cayenne-model')
-
-    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
-    implementation group: 'org.apache.commons', name: 'commons-pool2', version: '2.4.2'
-    implementation group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.1.1'
-    implementation group: 'com.github.javafaker', name: 'javafaker', version: '0.13'
-    implementation 'org.dbunit:dbunit:2.5.3'
-    implementation group: 'com.carrotsearch.randomizedtesting', name: 'randomizedtesting-runner', version: '2.5.3'
+plugins {
+    id 'java-library'
+    id 'java-test-fixtures'
 }
 
-targetCompatibility = '1.8'
-sourceCompatibility = '1.8'
+sourceSets.testFixtures.java.srcDirs = []
+sourceSets.testFixtures.groovy.srcDirs += 'src/testFixtures/java'
+
+dependencies {
+    testFixturesApi(project(':common:common-functions'))
+    testFixturesApi(project(':common:cayenne-model'))
+
+    testFixturesApi "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
+    testFixturesApi "org.apache.commons:commons-pool2:2.4.2"
+    testFixturesApi "org.apache.commons:commons-dbcp2:2.1.1"
+    testFixturesApi "com.github.javafaker:javafaker:0.13"
+    testFixturesApi "org.dbunit:dbunit:2.5.3"
+    testFixturesApi "com.carrotsearch.randomizedtesting:randomizedtesting-runner:2.5.3"
+}
 
 task createDatabase(type: JavaExec) {
     doLast {

@@ -5,10 +5,6 @@ package ish.oncourse.cayenne;
 
 import org.apache.cayenne.cache.QueryCache;
 
-/**
- * User: akoiro
- * Date: 8/12/17
- */
 public class WillowCayenneModuleBuilder {
 
 	private QueryCache queryCache;

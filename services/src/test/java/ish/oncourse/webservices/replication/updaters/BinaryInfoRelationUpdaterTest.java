@@ -3,7 +3,6 @@ package ish.oncourse.webservices.replication.updaters;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.tapestry.ServiceTest;
-import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -75,11 +74,11 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 				prepareV21Stub(PaymentOut.class.getSimpleName()),
 				getMessageForIllegalEntity(PaymentOut.class.getSimpleName()));
 	}
-	
+
 	private <U extends AbstractWillowUpdater, S extends GenericReplicationStub> void testCorrectRelation(U updater, S stub, Class eClass) {
 		testCorrectRelation(updater, stub, eClass, false);
 	}
-	
+
 	private <U extends AbstractWillowUpdater, S extends GenericReplicationStub> void testCorrectRelation(U updater, S stub, Class eClass, boolean isV6) {
 		ObjectContext context = getService(ICayenneService.class).newContext();
 		try {
@@ -149,7 +148,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			context.rollbackChanges();
 		}
 	}
-	
+
 	private BinaryInfoRelation prepareRelation(ObjectContext context) {
 		BinaryInfoRelation entity = context.newObject(BinaryInfoRelation.class);
 		College college = context.newObject(College.class);
@@ -181,11 +180,11 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 			}
 		};
 	}
-	
+
 	private String getMessage(String simpleName) {
 		return String.format("Unable to load related entity %s for angelid 1 or this entity not presented in transaction group", simpleName);
 	}
-	
+
 	private String getMessageForIllegalEntity(String simpleName) {
 		return String.format("Unexpected related entity with type %S and angelid 1", simpleName);
 	}

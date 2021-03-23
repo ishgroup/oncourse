@@ -5,7 +5,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
-import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
@@ -50,7 +49,7 @@ public class PreferenceUpdaterTest extends ServiceTest {
         transactionGroupProcessor = getService(ITransactionGroupProcessor.class);
         cayenneService = getService(ICayenneService.class);
     }
-    
+
     @Test
     public void testCreate() {
         PreferenceStub stub = new PreferenceStub();

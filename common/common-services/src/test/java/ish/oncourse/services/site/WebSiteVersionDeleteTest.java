@@ -4,7 +4,6 @@
 package ish.oncourse.services.site;
 
 
-import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
@@ -22,9 +21,9 @@ import static org.junit.Assert.*;
 
 /*Can not be tested properly because DeleteVersion.delete in WebSiteVersionDelete uses database cascade delete.*/
 public class WebSiteVersionDeleteTest extends ServiceTest {
-	
+
 	private ICayenneService cayenneService;
-	
+
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
@@ -42,10 +41,10 @@ public class WebSiteVersionDeleteTest extends ServiceTest {
 		WebSiteVersionDelete.valueOf(deletingVersion, currentVersion, deployedVersion, context).delete();
 
 		assertEquals(PersistenceState.TRANSIENT, deletingVersion.getPersistenceState());
-		
+
 		WebSite site = Cayenne.objectForPK(context, WebSite.class, 1l);
 		assertEquals(2, site.getVersions().size());
-		
+
 		assertNull(SelectById.query(WebSiteVersion.class,2l).selectOne(context));
 		assertNull(SelectById.query(WebSiteLayout.class, 3l).selectOne(context));
 		assertNull(SelectById.query(WebSiteLayout.class, 4l).selectOne(context));
@@ -67,7 +66,7 @@ public class WebSiteVersionDeleteTest extends ServiceTest {
 		assertNull(SelectById.query(WebContentVisibility.class, 8l).selectOne(context));
 		assertNull(SelectById.query(WebUrlAlias.class, 3l).selectOne(context));
 		assertNull(SelectById.query(WebUrlAlias.class, 4l).selectOne(context));
-	} 
+	}
 
 	@Ignore
 	@Test
@@ -78,7 +77,7 @@ public class WebSiteVersionDeleteTest extends ServiceTest {
 
 		assertEquals(PersistenceState.TRANSIENT, site.getPersistenceState());
 		assertNull(Cayenne.objectForPK(context, WebSite.class, 1l));
-		
+
 		assertTrue(ObjectSelect.query(LicenseFee.class).select(context).isEmpty());
 		assertTrue(ObjectSelect.query(WebHostName.class).select(context).isEmpty());
 		assertTrue(ObjectSelect.query(WebSiteVersion.class).select(context).isEmpty());

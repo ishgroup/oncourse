@@ -5,10 +5,6 @@ import ish.oncourse.model.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
-/**
- * User: akoiro
- * Date: 10/11/17
- */
 class CCollege {
     ObjectContext objectContext
     College college

@@ -1,6 +1,5 @@
 package ish.oncourse.services.course;
 
-
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
@@ -86,7 +85,7 @@ public class GetWebVisibleClassesTest {
 
         ObjectContext context = testContext.getServerRuntime().newContext();
         Course course = ObjectSelect.query(Course.class).selectFirst(context);
-        
+
         Date currentDate = new Date();
 
         createCourseClass(course, addDays(currentDate, -15), addDays(currentDate, -13), false);

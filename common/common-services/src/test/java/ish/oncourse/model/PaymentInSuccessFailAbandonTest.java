@@ -9,7 +9,6 @@ import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
-import ish.oncourse.util.payment.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.EJBQLQuery;
@@ -27,9 +26,9 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class PaymentInSuccessFailAbandonTest extends ServiceTest {
-	
+
 	private ICayenneService cayenneService;
-	
+
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
@@ -40,7 +39,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 
 		this.cayenneService = getService(ICayenneService.class);
 	}
-	
+
 	@Test
 	public void testPaymentSuccess() throws Exception {
 		PaymentIn paymentIn = Cayenne.objectForPK(cayenneService.newContext(), PaymentIn.class, 2000);
@@ -50,8 +49,8 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertTrue(model.getPaymentIn().getStatus() == PaymentStatus.SUCCESS);
 
 		paymentIn.getObjectContext().commitChanges();
-		
-		//check replication queue, 
+
+		//check replication queue,
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord","select transactionId from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
 		BigInteger transactionId = (BigInteger) actualData.getValue(0, "transactionId");
@@ -68,23 +67,23 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000");
 		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
-		
+
 		assertEquals("Payment status success.", PaymentStatus.SUCCESS, paymentIn.getStatus());
-		
+
 		Enrolment enrol = Cayenne.objectForPK(cayenneService.newContext(), Enrolment.class, 2000);
 		assertEquals("Enrol status sucess.", EnrolmentStatus.SUCCESS, enrol.getStatus());
 	}
-	
+
 	@Test
 	public void testSuccessWebPayment() throws Exception {
-		
+
 		ObjectContext context = cayenneService.newContext();
 		College college = Cayenne.objectForPK(context, College.class, 1);
 		WebSite webSite = Cayenne.objectForPK(context, WebSite.class, 1);
 		CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, 1186958);
 		CourseClass courseClass2 = Cayenne.objectForPK(context, CourseClass.class, 1186959);
 		Calendar calendar = Calendar.getInstance();
-		
+
 		PaymentIn paymentIn = context.newObject(PaymentIn.class);
 		paymentIn.setCollege(college);
 		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
@@ -98,20 +97,20 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		contact1.setGivenName("Test_Payer");
 		contact1.setFamilyName("Test_Payer");
 		contact1.setCollege(college);
-		
+
 		Student student1 = context.newObject(Student.class);
 		student1.setCollege(college);
 		student1.setContact(contact1);
-		
+
 		Contact contact2 = context.newObject(Contact.class);
 		contact2.setGivenName("Test_Payer2");
 		contact2.setFamilyName("Test_Payer2");
 		contact2.setCollege(college);
-		
+
 		Student student2 = context.newObject(Student.class);
 		student2.setCollege(college);
 		student2.setContact(contact1);
-		
+
 		Invoice invoice1 = context.newObject(Invoice.class);
 		invoice1.setAngelId(100l);
 		invoice1.setAmountOwing(new Money("150"));
@@ -148,7 +147,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		enrol2.setCollege(college);
 		enrol2.setSource(PaymentSource.SOURCE_ONCOURSE);
 		enrol2.setStudent(student2);
-		
+
 		InvoiceLine invLine2 = context.newObject(InvoiceLine.class);
 		invLine2.setTitle("Test_invLine2");
 		invLine2.setCollege(college);
@@ -166,7 +165,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		paymentIn.addToPaymentInLines(pLine1);
 
 		context.commitChanges();
-		
+
 		assertEquals("Check paymentIn saved.", false, paymentIn.getObjectId().isTemporary());
 		assertEquals("Check invoice1 saved.", false, invoice1.getObjectId().isTemporary());
 
@@ -187,7 +186,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertEquals("2 Contacts in the queue.", 2, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Student'");
 		assertEquals("2 Students in the queue.", 2, actualData.getRowCount());
-		
+
 		//clean up QueuedRecords
 		context.performQuery(new EJBQLQuery("delete from QueuedRecord"));
 		context.performQuery(new EJBQLQuery("delete from QueuedTransaction"));
@@ -198,31 +197,31 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertTrue(model.getPaymentIn().getStatus() == PaymentStatus.SUCCESS);
 
 		context.commitChanges();
-		
+
 		dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=%s", invoice1.getId()));
 		assertEquals("1 Invoice in the queue.", 1, actualData.getRowCount());
-		
+
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select transactionId from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=%s", invLine1.getId()));
 		assertEquals("1 InvoiceLine1 in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select transactionId from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=%s", invLine2.getId()));
 		assertEquals("1 InvoiceLine2 in the queue.", 1, actualData.getRowCount());
-		
+
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select transactionId from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=%s", paymentIn.getId()));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select transactionId from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=%s", pLine1.getId()));
 		assertEquals("1 PaymentInLine1 in the queue.", 1, actualData.getRowCount());
-		
+
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=%s", enrol1.getId()));
 		assertEquals("1 Enrolment1 in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=%s", enrol2.getId()));
 		assertEquals("1 Enrolment2 in the queue.", 1, actualData.getRowCount());
-		
+
 		assertEquals("Payment status success.", PaymentStatus.SUCCESS, paymentIn.getStatus());
 		assertEquals("Enrol1 status sucess.", EnrolmentStatus.SUCCESS, enrol1.getStatus());
 		assertEquals("Enrol2 status sucess.", EnrolmentStatus.SUCCESS, enrol2.getStatus());
 	}
-	
+
 	@Test
 	public void testPaymentFail() throws Exception {
 		PaymentIn paymentIn = Cayenne.objectForPK(cayenneService.newContext(), PaymentIn.class, 2000);
@@ -230,7 +229,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 
 		PaymentInFail.valueOf(model).perform();
 		paymentIn.getObjectContext().commitChanges();
-		
+
 		//check replication queue
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
@@ -248,13 +247,13 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000");
 		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
-		
+
 		assertEquals("Payment status success.", PaymentStatus.FAILED, paymentIn.getStatus());
-		
+
 		Enrolment enrol = Cayenne.objectForPK(cayenneService.newContext(), Enrolment.class, 2000);
 		assertEquals("Enrol status sucess.", EnrolmentStatus.IN_TRANSACTION, enrol.getStatus());
 	}
-	
+
 	@Test
 	public void testPaymentAbandon() throws Exception {
 		PaymentIn paymentIn = Cayenne.objectForPK(cayenneService.newContext(), PaymentIn.class, 2000);
@@ -273,10 +272,10 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertTrue(reversePayment != null);
 		paymentIn.getObjectContext().commitChanges();
 		assertEquals("Reverse payment sessionid should be equal to payment sessionid", reversePayment.getSessionId(), paymentIn.getSessionId());
-		
+
 		assertEquals("Check type internal.", PaymentType.REVERSE, reversePayment.getType());
 		assertEquals("Zero amount.", 0, reversePayment.getAmount().intValue());
-		
+
 		//check replication queue
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
@@ -289,19 +288,19 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
-		
+
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=%s", reversePayment.getId()));
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 inverse PaymentIn in the queue.", 1, actualData.getRowCount());
-		
+
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000");
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000");
 		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
-		
+
 		assertEquals("Payment status success.", PaymentStatus.FAILED, paymentIn.getStatus());
-		
+
 		Enrolment enrol = Cayenne.objectForPK(cayenneService.newContext(), Enrolment.class, 2000);
 		assertEquals("Enrol status sucess.", EnrolmentStatus.FAILED, enrol.getStatus());
 	}
@@ -325,7 +324,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 				throw new IllegalStateException("Unexpected reverse payment amount");
 			}
 		}
-		
+
 		List<PaymentInLine> negateLines = PaymentInLine.AMOUNT.lt(Money.ZERO).filterObjects(reversePaymentRegular.getPaymentInLines());
 		assertEquals(1, negateLines.size());
 		List<InvoiceLine> refundLines = negateLines.get(0).getInvoice().getInvoiceLines();
@@ -349,14 +348,14 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 
 
 	}
-	
+
 	@Test
 	public void testPaymentAbandonKeepInvoice() throws Exception {
 		PaymentIn paymentIn = Cayenne.objectForPK(cayenneService.newContext(), PaymentIn.class, 2000);
 		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
 		PaymentInAbandon.valueOf(model,true).perform();
 		paymentIn.getObjectContext().commitChanges();
-		
+
 		//check replication queue
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord","select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
@@ -374,9 +373,9 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000");
 		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
-		
+
 		assertEquals("Payment status success.", PaymentStatus.FAILED, paymentIn.getStatus());
-		
+
 		Enrolment enrol = Cayenne.objectForPK(cayenneService.newContext(), Enrolment.class, 2000);
 		assertEquals("Enrol status sucess.", EnrolmentStatus.SUCCESS, enrol.getStatus());
 	}

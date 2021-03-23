@@ -9,7 +9,6 @@ import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.sms.ISMSService;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
-import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConnection;
@@ -77,7 +76,7 @@ public class SMSJobTest extends ServiceTest {
 
 		SMSJob smsJob = new SMSJob(messagePersonService, smsService, prefFactory, cayenneService);
 		smsJob.execute();
-		
+
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("MessagePerson", String.format("select * from MessagePerson where status=1"));
 		assertEquals("Checking number of QUEUED messages.", 4, actualData.getRowCount());

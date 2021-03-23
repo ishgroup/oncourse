@@ -7,7 +7,7 @@ import ish.common.types.CreditCardType
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.PaymentIn
-import ish.oncourse.test.tapestry.ServiceTest
+import ServiceTest
 import ish.oncourse.util.payment.PaymentInModel
 import org.junit.Before
 import org.junit.Test
@@ -22,7 +22,7 @@ import static org.mockito.Matchers.any
 import static org.mockito.Mockito.*
 
 class NewPaymentExpressGatewayServiceTest extends ServiceTest {
-	
+
 	def PaymentIn paymentIn
 	def PaymentInModel model
 
@@ -45,8 +45,8 @@ class NewPaymentExpressGatewayServiceTest extends ServiceTest {
 		model =  mock(PaymentInModel)
 		when(model.paymentIn).thenReturn(paymentIn)
 	}
-	
-	
+
+
 	@Test
 	def void testRealGateway(){
 		def service = new GatewayHelper()
@@ -80,7 +80,7 @@ class NewPaymentExpressGatewayServiceTest extends ServiceTest {
 		}
 
 		def service = getCustomService(stub)
-		
+
 		when(paymentIn.status).thenReturn(FAILED_CARD_DECLINED)
 		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, (String) null).build()
 		ProcessDPSResponse.valueOf(model, service.submitRequest(request)).process()
@@ -139,7 +139,7 @@ class NewPaymentExpressGatewayServiceTest extends ServiceTest {
 		ProcessDPSResponse.valueOf(model, service.submitRequest(request)).process()
 		checkFail()
 	}
-	
+
 	private void checkSuccess() {
 		verify(paymentIn, times(1)).setStatus(SUCCESS)
 		verify(paymentIn, times(1)).setBillingId(any(String))
@@ -157,7 +157,7 @@ class NewPaymentExpressGatewayServiceTest extends ServiceTest {
 		verify(paymentIn, times(1)).setStatusNotes(FAILED_PAYMENT_IN)
 		verify(paymentIn, times(0)).setDateBanked(any(Date))
 	}
-	
+
 	private GatewayHelper getCustomService(PaymentExpressWSSoap12Stub stub) {
 		def service = new  GatewayHelper() {
 			@Override

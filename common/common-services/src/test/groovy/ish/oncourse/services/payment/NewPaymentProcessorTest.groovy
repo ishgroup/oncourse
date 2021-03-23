@@ -8,7 +8,7 @@ import ish.oncourse.services.cache.NoopQueryCache
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.test.LoadDataSet
-import ish.oncourse.test.tapestry.ServiceTest
+import ServiceTest
 import org.apache.tapestry5.internal.test.TestableRequest
 import org.apache.tapestry5.ioc.Messages
 import org.junit.Before
@@ -182,7 +182,7 @@ class NewPaymentProcessorTest extends ServiceTest {
         PaymentResponse response = new PaymentResponse()
         controller.processPayment(request, response)
         testPaymentFields(controller.model.paymentIn, request)
-        
+
         controller = getPaymentController('sessionId')
         assertEquals(GetPaymentState.PaymentState.CHOOSE_ABANDON_OTHER, controller.state)
         assertNotNull(controller.model.paymentIn)
@@ -235,9 +235,9 @@ class NewPaymentProcessorTest extends ServiceTest {
         assertEquals(paymentIn.creditCardExpiry, "$request.month/$request.year")
         assertEquals(paymentIn.creditCardType, CreditCardType.MASTERCARD)
         assertEquals(paymentIn.creditCardNumber, "${request.number.substring(0,6)}XXXXXXX${request.number.substring(13)}")
-        
+
     }
-    
+
     private getPaymentController(String sessionId) {
         new PaymentControllerBuilder(sessionId, getService(INewPaymentGatewayServiceBuilder), cayenneService, messages, getService(TestableRequest)).build()
 
