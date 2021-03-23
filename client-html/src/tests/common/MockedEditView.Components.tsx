@@ -1,8 +1,6 @@
 import * as React from "react";
-import { createMount } from "@material-ui/core/test-utils";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../js/common/components/list-view/constants";
 import ListEditView from "../../js/common/components/list-view/components/edit-view/EditView";
-import { mockedAPI, TestEntry } from "../TestEntry";
 import { defaultComponents } from "./Default.Components";
 
 interface Props {
