@@ -78,6 +78,8 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
   constructor(props) {
     super(props);
     this.state = { fieldToDelete: null };
+
+    props.dispatch(initialize("CustomFieldsForm", { "types": props.customFields }));
   }
 
   componentDidUpdate() {
