@@ -62,7 +62,7 @@ export class ItemWrapper extends React.Component<Props, any> {
                 disabled={!isNil(error) || item.allowRemove === false} />
             </div>}
 
-            {!readonly && <input
+            {!readonly && typeof quantity === "number" && <input
               type="text"
               name="quantityValue"
               value={quantity}

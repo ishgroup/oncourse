@@ -118,14 +118,16 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
       });
 
       Object.keys(ns.entities).forEach(entity => {
-        Object.keys(ns.entities[entity]).forEach(key => {
-          if (
-            (ns.entities[entity][key].relatedClassId && ns.entities[entity][key].relatedClassId === id)
-            || (ns.entities[entity][key].relatedProductId && ns.entities[entity][key].relatedProductId === id)
-          ) {
-            delete ns.entities[entity][key];
-          }
-        })
+        if(ns.entities[entity]) {
+          Object.keys(ns.entities[entity]).forEach(key => {
+            if (
+              (ns.entities[entity][key].relatedClassId && ns.entities[entity][key].relatedClassId === id)
+              || (ns.entities[entity][key].relatedProductId && ns.entities[entity][key].relatedProductId === id)
+            ) {
+              delete ns.entities[entity][key];
+            }
+          })
+        }
       })
 
       return ns;
