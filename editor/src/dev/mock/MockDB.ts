@@ -65,7 +65,6 @@ export class MockDB {
         id: 1,
         title: 'page1',
         visible: true,
-        themeId: 2,
         urls: [
           {
             link: '/page1/',
@@ -79,7 +78,6 @@ export class MockDB {
         id: 2,
         title: 'Page - 2',
         visible: true,
-        themeId: 2,
         urls: [
           {
             link: '/page/2',
@@ -97,7 +95,6 @@ export class MockDB {
         id: 3,
         title: 'Page - 3',
         visible: true,
-        themeId: 2,
         urls: [
           {
             link: '/page3/',

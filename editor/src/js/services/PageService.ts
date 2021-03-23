@@ -53,7 +53,6 @@ class PageService {
 
     request.id = newPage.id;
     request.title = newPage.title;
-    request.themeId = newPage.themeId;
     request.content = newPage.content;
     request.urls = newPage.urls;
     request.visible = newPage.visible;
