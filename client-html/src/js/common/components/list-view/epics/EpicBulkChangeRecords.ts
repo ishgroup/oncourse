@@ -4,7 +4,6 @@
  */
 import { Diff } from "@api/model";
 import { Epic } from "redux-observable";
-import { EntityName } from "../../../../containers/automation/constants";
 import ContactsService from "../../../../containers/entities/contacts/services/ContactsService";
 import CourseClassService from "../../../../containers/entities/courseClasses/services/CourseClassService";
 import CourseService from "../../../../containers/entities/courses/services/CourseService";
@@ -16,6 +15,7 @@ import * as EpicUtils from "../../../epics/EpicUtils";
 import { BULK_CHANGE_RECORDS, GET_RECORDS_REQUEST } from "../actions";
 import AssessmentSubmissionService
   from "../../../../containers/entities/assessmentSubmissions/service/AssessmentSubmissionService";
+import { EntityName } from "../../../../model/entities/common";
 import ApplicationService from "../../../../containers/entities/applications/service/ApplicationService";
 import AssessmentService from "../../../../containers/entities/assessments/services/AssessmentService";
 import PayslipService from "../../../../containers/entities/payslips/services/PayslipService";

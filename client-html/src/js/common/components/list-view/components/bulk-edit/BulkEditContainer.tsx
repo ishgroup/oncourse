@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  Diff, FundingSource, SearchQuery, Sorting, Tag
-} from "@api/model";
+import { Diff, FundingSource, SearchQuery, Sorting, Tag } from "@api/model";
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
@@ -14,15 +12,10 @@ import ListItem from "@material-ui/core/ListItem";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
 import { Help } from "@material-ui/icons";
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  change, Field, reduxForm
-} from "redux-form";
-import { EntityName } from "../../../../../containers/automation/constants";
+import { change, Field, reduxForm } from "redux-form";
 import { PreferencesState } from "../../../../../containers/preferences/reducers/state";
 import { getEntityTags } from "../../../../../containers/tags/actions";
 import { State } from "../../../../../reducers/state";
@@ -34,6 +27,7 @@ import { bulkChangeRecords } from "../../actions";
 import bottomDrawerStyles from "../bottomDrawerStyles";
 import SelectionSwitcher from "../share/SelectionSwitcher";
 import { BulkEditField, getBulkEditFields } from "./utils";
+import { EntityName } from "../../../../../model/entities/common";
 
 interface BulkEditProps {
   rootEntity: EntityName;

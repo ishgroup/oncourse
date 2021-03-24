@@ -4,10 +4,8 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import { change } from "redux-form";
-import {
-  Course, EntityRelationType, Qualification, Sale, Module
-} from "@api/model";
+import { change, Validator } from "redux-form";
+import { Course, EntityRelationType, Module, Qualification, Sale } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { State } from "../../../../reducers/state";
@@ -22,13 +20,17 @@ import {
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import { EntityName } from "../../../../model/entities/common";
 
 interface Props {
   values: any;
   dispatch: Dispatch;
   submitSucceeded: boolean;
   form: string;
-  rootEntity: string;
+  rootEntity: EntityName;
+  name?: string;
+  validate?: Validator;
   courses?: Course[];
   coursesPending?: boolean;
   searchCourses?: StringArgFunction;
@@ -46,17 +48,23 @@ interface Props {
   qualificationsPending?: boolean;
   modules?: Module[];
   modulesPending?: boolean;
+  relationTypesFilter?: {
+    entities: EntityName[];
+    filter: (relation: EntityRelationTypeRendered) => boolean;
+  }
 }
 
 const RelationsCommon: React.FC<Props> = (
   {
     values,
+    validate,
+    name,
     dispatch,
     form,
     submitSucceeded,
     searchCourses,
     clearCoursesSearch,
-    entityRelationTypes,
+    entityRelationTypes = [],
     clearSalesSearch,
     clearModuleSearch,
     clearQualificationsSearch,
@@ -71,10 +79,24 @@ const RelationsCommon: React.FC<Props> = (
     qualificationsPending,
     modules,
     modulesPending,
-    rootEntity
+    rootEntity,
+    relationTypesFilter
   }
 ) => {
-  const relationTypes = useMemo(() => formattedEntityRelationTypes(entityRelationTypes), [entityRelationTypes]);
+  const relationTypes = useMemo<EntityRelationTypeRendered[]>(() =>
+    formattedEntityRelationTypes(entityRelationTypes), [entityRelationTypes]);
+
+  const validateRelations = useCallback((rels: Sale[]) => {
+    let error;
+    if (relationTypesFilter) {
+      rels.forEach(rel => {
+        if (relationTypesFilter.entities.includes(rel.type as any) && !relationTypes.filter(relationTypesFilter.filter).length) {
+          error = "No available relation types for some of added relations";
+        }
+      });
+    }
+    return error;
+  }, [relationTypesFilter, relationTypes]);
 
   const listValues = useMemo(() => (values && values.relatedSellables ? formatRelatedSalables(values.relatedSellables) : []), [
     values.relatedSellables
@@ -146,6 +168,7 @@ const RelationsCommon: React.FC<Props> = (
   const relationCell = props => (
     <NestedListRelationCell
       {...props}
+      relationTypesFilter={relationTypesFilter}
       relationTypes={relationTypes}
       dispatch={dispatch}
       form={form}
@@ -154,6 +177,8 @@ const RelationsCommon: React.FC<Props> = (
 
   return (
     <NestedList
+      name={name}
+      validate={validate ? [validate, validateRelations] : validateRelations}
       title={`${listValues.length || ""} relations`}
       formId={values.id}
       values={listValues}

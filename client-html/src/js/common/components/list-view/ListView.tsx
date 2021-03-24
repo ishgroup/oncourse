@@ -15,7 +15,6 @@ import { Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, Tabl
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import ErrorOutline from "@material-ui/icons/ErrorOutline";
 import Button from "@material-ui/core/Button";
-import { EntityName } from "../../../containers/automation/constants";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
 import { onSubmitFail } from "../../utils/highlightFormClassErrors";
@@ -70,7 +69,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
 import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
 import { ENTITY_AQL_STORAGE_NAME, LISTVIEW_MAIN_CONTENT_WIDTH } from "../../../constants/Config";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import { FindEntityState } from "../../../model/entities/common";
+import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
 import ReactTableList, { ListProps } from "./components/list/ReactTableList";
 import { getActiveTags, getFiltersNameString, getTagsUpdatedByIds } from "./utils/listFiltersUtils";

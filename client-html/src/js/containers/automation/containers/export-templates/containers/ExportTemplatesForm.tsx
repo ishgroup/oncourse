@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Form, initialize, InjectedFormProps } from "redux-form";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import FileCopy from "@material-ui/icons/FileCopy";
@@ -24,13 +22,13 @@ import FormField from "../../../../../common/components/form/form-fields/FormFie
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import Bindings from "../../../components/Bindings";
 import AvailableFrom, { mapAvailableFrom } from "../../../components/AvailableFrom";
-import { EntityItems, EntityName } from "../../../constants";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { validateKeycode } from "../../../utils";
 import { mapSelectItems } from "../../../../../common/utils/common";
+import { EntityItems, EntityName } from "../../../../../model/entities/common";
 
 const manualUrl = getManualLink("advancedSetup_Export");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;
