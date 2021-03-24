@@ -1,9 +1,16 @@
+import {
+ Diff, Room, RoomApi, RoomValidationApi 
+} from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
-import { Room, RoomApi, RoomValidationApi } from "@api/model";
 
 class RoomService {
   readonly roomApi = new RoomApi(new DefaultHttpService());
+
   readonly roomValidationApi = new RoomValidationApi(new DefaultHttpService());
+
+  public bulkChange(diff: Diff): Promise<any> {
+    return this.roomApi.bulkChange(diff);
+  }
 
   public createRoom(room: Room): Promise<any> {
     return this.roomApi.create(room);

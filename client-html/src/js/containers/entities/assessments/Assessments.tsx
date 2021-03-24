@@ -20,6 +20,7 @@ import { FilterGroup } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getListTags } from "../../tags/actions";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 const manualLink = getManualLink("assessment");
 
@@ -110,6 +111,7 @@ const Assessments: React.FC<AssessmentsProps> = props => {
         asyncBlurFields: ["notes[].message"]
       }}
       EditViewContent={AssessmentEditView}
+      CogwheelAdornment={BulkEditCogwheelOption}
       getEditRecord={getAssessmentRecord}
       rootEntity="Assessment"
       onInit={onInit}

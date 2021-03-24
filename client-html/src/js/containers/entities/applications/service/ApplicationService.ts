@@ -1,8 +1,12 @@
+import { Application, ApplicationApi, Diff } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
-import { Application, ApplicationApi } from "@api/model";
 
 class ApplicationService {
   readonly applicationApi = new ApplicationApi(new DefaultHttpService());
+
+  public bulkChange(diff: Diff): Promise<any> {
+    return this.applicationApi.bulkChange(diff);
+  }
 
   public getApplication(id: number): Promise<any> {
     return this.applicationApi.get(id);
