@@ -6,11 +6,21 @@
 import React from "react";
 import { FieldArray } from "redux-form";
 import Grid from "@material-ui/core/Grid";
+import { Course } from "@api/model";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import RelationsCommon from "../../common/components/RelationsCommon";
+import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-const CourseMarketingTab: React.FC<any> = props => {
+const relationTypesFilter = {
+  entities: ["Module" as const],
+  filter: (rel: EntityRelationTypeRendered) => rel.isReverseRelation
+    && rel.considerHistory
+    && rel.shoppingCart === "Add but do not allow removal"
+};
+
+const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = props => {
   const {
     twoColumn,
     classes,
@@ -51,11 +61,13 @@ const CourseMarketingTab: React.FC<any> = props => {
 
       <Grid item xs={twoColumn ? 10 : 12}>
         <RelationsCommon
+          name="relatedSellables"
           values={values}
           dispatch={dispatch}
           form={form}
           submitSucceeded={submitSucceeded}
           rootEntity={rootEntity}
+          relationTypesFilter={relationTypesFilter}
         />
       </Grid>
     </Grid>

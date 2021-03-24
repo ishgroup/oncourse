@@ -77,7 +77,7 @@ interface Props {
   onToggleSearch?: any;
   disabled?: boolean;
   disableAddAll?: boolean;
-  validate?: Validator;
+  validate?: Validator | Validator[];
   entityTags?: any;
   CustomCell?: React.ReactNode;
 }
@@ -120,7 +120,6 @@ class NestedList extends React.Component<Props, NestedListState> {
     } = this.props;
 
     const { selectedAqlEntity } = this.state;
-
 
     if (aqlEntities && selectedAqlEntity) {
       const searchTags = entityTags[selectedAqlEntity] && entityTags[selectedAqlEntity].length
@@ -477,7 +476,7 @@ class NestedList extends React.Component<Props, NestedListState> {
       formError: error
     });
 
-    return <div className="invisible" />;
+    return <div className="invisible" id={this.props.name} />;
   });
 
   render() {
