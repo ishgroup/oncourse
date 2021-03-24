@@ -58,6 +58,45 @@ import org.apache.cayenne.PersistentObject
  *
  * Usage example:
  * ```
+ *   erolments = query {  
+ *     entity "Enrolment"
+ *     query "status is SUCCESS "
+ *   }
+ *
+ *   def enrolments_pdf = report {
+ *     keycode "ish.onCourse.enrolmentConfirmation"
+ *     records erolments
+ *   }
+ *
+ *   def enrolments_csv = export {
+ *       template "ish.onCourse.enrolment.csv"
+ *       records erolments   
+ *   }
+ *
+ *   def enrolments_xml = export {
+ *       template "ish.onCourse.enrolment.xml"
+ *       records erolments
+ *   }
+ *
+ *   def enrolments_file = new File("enrolments.txt")
+ *
+ *   erolments.each { e->
+ *     enrolments_file.append(e.student.fullName +'_'+ e.courseClass.uniqueCode +'\n')
+ *   }
+ *
+ *   message {
+ *     to "support@example.com"
+ *     cc "ccrecipient@example.com"
+ *     bcc "bccrecipient@example.com"
+ *     from "support@@example.com", "onCourse Support"
+ *     subject "Attachment example"
+ *     content "Look at attached files"
+ *     attachment "enrolments.pdf", "application/pdf", enrolments_pdf
+ *     attachment "enrolments.csv", "text/csv", enrolments_csv
+ *     attachment "enrolments.xml", "text/xml", enrolments_xml
+ *     attachment "text/plain", enrolments_file
+ *   }
+ *   
  *  message {
  *      from "admin@example.com"
  *      to "torecipient@example.com"

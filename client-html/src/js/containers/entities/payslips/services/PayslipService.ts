@@ -1,8 +1,14 @@
+import {
+ Diff, Payslip, PayslipApi, PayslipStatus 
+} from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
-import { Payslip, PayslipApi, PayslipStatus } from "@api/model";
 
 class PayslipService {
   readonly payslipApi = new PayslipApi(new DefaultHttpService());
+
+  public bulkChange(diff: Diff): Promise<any> {
+    return this.payslipApi.bulkChange(diff);
+  }
 
   public getPayslip(id: number): Promise<any> {
     return this.payslipApi.get(id);

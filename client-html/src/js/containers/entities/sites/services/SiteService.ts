@@ -1,8 +1,12 @@
+import { Diff, Site, SiteApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
-import { Site, SiteApi } from "@api/model";
 
 class SiteService {
   readonly siteApi = new SiteApi(new DefaultHttpService());
+
+  public bulkChange(diff: Diff): Promise<any> {
+    return this.siteApi.bulkChange(diff);
+  }
 
   public createSite(site: Site): Promise<any> {
     return this.siteApi.create(site);

@@ -17,6 +17,7 @@ import ish.util.RuntimeUtil;
 public class LicenseService {
     public static final String SERVICES_SECURITYKEY = "services.securitykey";
     private Integer max_concurrent_users = null;
+    private Integer max_audit_log_store = 12;
 
     private String services_host =  "https://secure-payment.oncourse.net.au";
     private String usi_host = "https://secure-payment.oncourse.net.au";
@@ -30,6 +31,18 @@ public class LicenseService {
     public void setMax_concurrent_users(int max_concurrent_users) {
         RuntimeUtil.println("server will limit number of concurrent users to " + max_concurrent_users);
         this.max_concurrent_users = max_concurrent_users;
+    }
+
+    @BQConfigProperty
+    public void setMax_audit_log_store(Integer max_audit_log_store) {
+        if (max_audit_log_store < 1) {
+            max_audit_log_store = 1;
+        }
+        if (max_audit_log_store > 24) {
+            max_audit_log_store = 24;
+        }
+        RuntimeUtil.println("server will limit number of months for storing audit logs to " + max_audit_log_store);
+        this.max_audit_log_store = max_audit_log_store;
     }
 
     @BQConfigProperty
@@ -71,6 +84,10 @@ public class LicenseService {
 
     public Integer getMax_concurrent_users() {
         return max_concurrent_users;
+    }
+
+    public Integer getMax_audit_log_store() {
+        return max_audit_log_store;
     }
 
     public Boolean isReplicationDisabled() {

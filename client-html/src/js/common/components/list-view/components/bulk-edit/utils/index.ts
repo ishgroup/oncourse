@@ -238,6 +238,28 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
         }
       ];
     }
+    case "WaitingList":
+    case "Room":
+    case "Site":
+    case "Payslip":
+    case "Assessment":
+    case "Application":
+      return [
+        {
+          keyCode: "bulkTag",
+          label: "Add tags",
+          name: "bulkTag",
+          type: "Tag",
+          defaultValue: []
+        },
+        {
+          keyCode: "bulkUntag",
+          label: "Remove tags",
+          name: "bulkUntag",
+          type: "Tag",
+          defaultValue: []
+        }
+      ];
     default:
       // eslint-disable-next-line no-console
       console.warn(`There is no bulk edit fields for ${entity}`);

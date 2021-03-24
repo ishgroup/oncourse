@@ -28,6 +28,7 @@ import { getCustomFieldTypes } from "../customFieldTypes/actions";
 import { State } from "../../../reducers/state";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface ApplicationsProps {
   getApplicationRecord?: () => void;
@@ -180,6 +181,7 @@ class Applications extends React.Component<ApplicationsProps, any> {
           }}
           nestedEditFields={nestedEditFields}
           EditViewContent={ApplicationEditView}
+          CogwheelAdornment={BulkEditCogwheelOption}
           getEditRecord={getApplicationRecord}
           rootEntity="Application"
           onInit={this.onInit}

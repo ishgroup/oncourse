@@ -1,6 +1,5 @@
 import { DefaultEpic } from "../../common/Default.Epic";
 import {
-  GET_APPLICATION_ITEM,
   UPDATE_APPLICATION_ITEM_FULFILLED,
   updateApplication
 } from "../../../js/containers/entities/applications/actions";
@@ -41,10 +40,6 @@ describe("Update application epic tests", () => {
       {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Application", listUpdate: true, savedID: "1" }
-      },
-      {
-        type: GET_APPLICATION_ITEM,
-        payload: "1"
       }
     ]
   }));

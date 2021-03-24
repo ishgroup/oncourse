@@ -51,6 +51,8 @@ const Initial: Course = {
   id: null,
   isSufficientForQualification: false,
   isTraineeship: false,
+  feeHelpClass: false,
+  fullTimeLoad: null,
   isVET: false,
   name: null,
   enrolmentType: "Open enrolment",

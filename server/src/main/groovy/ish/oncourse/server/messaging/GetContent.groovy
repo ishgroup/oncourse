@@ -14,11 +14,13 @@ package ish.oncourse.server.messaging
 import groovy.transform.CompileDynamic
 import org.apache.commons.lang3.StringUtils
 
+import javax.activation.DataHandler
 import javax.mail.BodyPart
 import javax.mail.MessagingException
 import javax.mail.Multipart
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMultipart
+import javax.mail.util.ByteArrayDataSource
 
 @CompileDynamic
 class GetContent {
@@ -86,6 +88,12 @@ class GetContent {
 
             if (param.content instanceof File) {
                 part.attachFile(param.content as File)
+            } else if (param.content instanceof byte[]) {
+                ByteArrayDataSource dataSrc = new ByteArrayDataSource(param.content as byte[], param.type)
+                part.setDataHandler(new DataHandler(dataSrc))
+            } else if (param.content instanceof String) {
+                ByteArrayDataSource dataSrc = new ByteArrayDataSource(param.content.toString().bytes, param.type)
+                part.setDataHandler(new DataHandler(dataSrc))
             } else {
                 part.setContent(param.content, param.type)
             }

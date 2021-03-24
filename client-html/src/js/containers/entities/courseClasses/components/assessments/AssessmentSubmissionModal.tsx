@@ -1,4 +1,3 @@
-
 /*
  * Copyright ish group pty ltd 2021.
  *
@@ -15,26 +14,23 @@ import MuiButton from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
+import { stubFunction } from "../../../../../common/utils/common";
+import EditInPlaceDateTimeField from "../../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
 
 const AssessmentSubmissionModal = (
   {
     modalProps,
-    item,
+    name,
     tutors,
     onClose,
-    triggerAsyncChange
+    triggerAsyncChange,
+    title,
+    allSubmissionsDate,
+    setAllSubmissionsDate,
   }
 ) => {
   const type = modalProps[0];
-  const name = `${item}.submissions[${modalProps[1]}]`;
-
   const opened = Boolean(modalProps.length);
-
-  const titlePostfix = type === "Marked" ? " and assessor" : "";
-
-  const title = type && (modalProps[2] === "all"
-    ? `All students ${type.toLowerCase()} date${titlePostfix}`
-    : `${modalProps[2]} ${type.toLowerCase()} date${titlePostfix}`);
 
   return (
     <Dialog
@@ -53,25 +49,42 @@ const AssessmentSubmissionModal = (
         {opened && (
         <Grid container>
           <Grid item xs={6}>
-            <FormField
-              type="date"
-              name={`${name}.${type === "Marked" ? "markedOn" : "submittedOn"}`}
-              label={`${type} date`}
-              onChange={triggerAsyncChange}
-            />
+            {modalProps[2] === "all" ? (
+              <EditInPlaceDateTimeField
+                type="date"
+                label={`${type} date`}
+                input={{
+                  onChange: setAllSubmissionsDate,
+                  onFocus: stubFunction,
+                  onBlur: stubFunction,
+                  value: allSubmissionsDate
+                }}
+                meta={{}}
+              />
+            ) : (
+              <FormField
+                type="date"
+                name={`${name}.${type === "Marked" ? "markedOn" : "submittedOn"}`}
+                label={`${type} date`}
+                onChange={triggerAsyncChange}
+              />
+            )}
+
           </Grid>
           <Grid item xs={6}>
-            {type === "Marked" && (
-            <FormField
-              type="select"
-              selectValueMark="contactId"
-              selectLabelMark="tutorName"
-              name={`${name}.markedById`}
-              label="Assessor"
-              items={tutors}
-              onChange={triggerAsyncChange}
-              allowEmpty
-            />
+            {type === "Marked" && modalProps[2] !== "all" && (
+              (
+                <FormField
+                  type="select"
+                  selectValueMark="contactId"
+                  selectLabelMark="tutorName"
+                  name={`${name}.markedById`}
+                  label="Assessor"
+                  items={tutors}
+                  onChange={triggerAsyncChange}
+                  allowEmpty
+                />
+              )
             )}
           </Grid>
         </Grid>

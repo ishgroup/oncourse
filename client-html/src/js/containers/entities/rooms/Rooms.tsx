@@ -24,6 +24,7 @@ import { getListTags } from "../../tags/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 const manualLink = getManualLink("sitesRooms_rooms");
 
@@ -106,6 +107,7 @@ class Rooms extends React.Component<any, any> {
             asyncBlurFields: ["notes[].message"]
           }}
           updateTableModel={updateTableModel}
+          CogwheelAdornment={BulkEditCogwheelOption}
           EditViewContent={RoomEditView}
           getEditRecord={getRoomRecord}
           rootEntity="Room"

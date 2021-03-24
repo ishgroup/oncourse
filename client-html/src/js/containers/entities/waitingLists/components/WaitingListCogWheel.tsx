@@ -7,6 +7,7 @@ import React, { useMemo, memo, useCallback } from "react";
 import { connect } from "react-redux";
 import MenuItem from "@material-ui/core/MenuItem";
 import { State } from "../../../../reducers/state";
+import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 
 const WaitingListCogWheel = memo<any>(props => {
   const {
@@ -23,6 +24,7 @@ const WaitingListCogWheel = memo<any>(props => {
 
   return (
     <>
+      <BulkEditCogwheelOption {...props} />
       {hoSelectedOrNew ? null : (
         <MenuItem className={menuItemClass} onClick={onQuickEnrolment} disabled={!hasQePermissions}>
           Enrol

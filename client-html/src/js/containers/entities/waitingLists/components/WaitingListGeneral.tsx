@@ -65,7 +65,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
           name="courseId"
           label="Course"
           selectValueMark="id"
-          selectLabelMark="name"
+          selectLabelCondition={v => v.name}
           selectFilterCondition={courseFilterCondition}
           defaultDisplayValue={values && values.courseName}
           labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}

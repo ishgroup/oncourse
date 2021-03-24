@@ -20,6 +20,7 @@ import { FilterGroup } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getListTags } from "../../tags/actions";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 const manualLink = getManualLink("assessment");
 
@@ -72,6 +73,7 @@ const findRelatedGroup: any = [
     list: "document",
     expression: "attachmentRelations.entityIdentifier == Assessment and attachmentRelations.entityRecordId"
   },
+  { title: "Submissions", list: "assessmentSubmission", expression: "assessmentClass.assessment.id" }
 ];
 
 const setRowClasses = ({ active }) => (active === "Yes" ? undefined : "op05");
@@ -109,6 +111,7 @@ const Assessments: React.FC<AssessmentsProps> = props => {
         asyncBlurFields: ["notes[].message"]
       }}
       EditViewContent={AssessmentEditView}
+      CogwheelAdornment={BulkEditCogwheelOption}
       getEditRecord={getAssessmentRecord}
       rootEntity="Assessment"
       onInit={onInit}

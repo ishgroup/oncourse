@@ -6,26 +6,55 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FormControlLabel, Grid } from "@material-ui/core";
 import { change } from "redux-form";
 import { format } from "date-fns";
+import { AssessmentSubmission } from "@api/model";
+import clsx from "clsx";
 import FormField from "../../../../common/components/form/form-fields/FormField";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getContactName } from "../../contacts/utils";
 import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
+import EntityService from "../../../../common/services/EntityService";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-const AssessmentSubmissionGeneralTab = props => {
+const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmission>> = props => {
   const {
     dispatch, form, twoColumn, values
   } = props;
+
+  const [tutors, setTutors] = useState([]);
+
+  useEffect(() => {
+    EntityService.getPlainRecords(
+      "Contact",
+      "firstName,lastName",
+      `tutor.assessmentClassTutors.assessmentClass.assessmentSubmissions.id is ${values.id}`
+    )
+      .then(res => {
+        setTutors(res.rows.map(r => ({
+          contactId: Number(r.id),
+          tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
+        })));
+      })
+      .catch(err => instantFetchErrorHandler(dispatch, err));
+  }, [values.id]);
 
   const onChangeMarked = (e: any, value: boolean) => {
     if (value) {
       dispatch(change(form, "markedOn", format(new Date(), 'yyyy-MM-dd')));
     } else {
-      dispatch(change(LIST_EDIT_VIEW_FORM_NAME, "markedOn", null));
+      dispatch(change(form, "markedOn", null));
+      if (typeof values.markedById === "number") {
+        dispatch(change(form, "markedById", null));
+      }
+    }
+  };
+
+  const onAssessorChange = (e, newValue) => {
+    if (newValue && !values.markedOn) {
+      onChangeMarked(null, true);
     }
   };
 
@@ -66,31 +95,28 @@ const AssessmentSubmissionGeneralTab = props => {
         <Grid item xs={twoColumn ? 4 : 12} className="d-flex align-items-center">
           <FormControlLabel
             className="checkbox"
-            control={<FormField type="checkbox" name="submittedOn" color="secondary" fullWidth />}
+            control={<StyledCheckbox checked={values.submittedOn} />}
             label="Submitted"
             disabled
           />
         </Grid>
-        <Grid item xs={twoColumn ? 4 : 12} className="d-flex align-items-center">
+        <Grid item xs={twoColumn ? 4 : 12} className={clsx("d-flex align-items-center", !twoColumn && "mb-2")}>
           <FormControlLabel
             className="checkbox"
             label="Marked"
-            control={<StyledCheckbox checked={!!values.markedOn} onChange={onChangeMarked} />}
+            control={<StyledCheckbox checked={values.markedOn} onChange={onChangeMarked} />}
           />
         </Grid>
         <Grid item xs={twoColumn ? 4 : 12}>
           <FormField
-            type="remoteDataSearchSelect"
-            entity="Contact"
-            aqlFilter={"tutor.assessmentClassTutors.assessmentClass.assessmentSubmissions.id = " + values.id}
+            type="select"
+            selectValueMark="contactId"
+            selectLabelMark="tutorName"
             name="markedById"
             label="Assessor"
-            selectValueMark="id"
-            selectLabelMark="id"
-            selectLabelCondition={contactLabelCondition}
-            defaultDisplayValue={values && defaultContactName(values.tutorName)}
-            itemRenderer={ContactSelectItemRenderer}
-            rowHeight={55}
+            items={tutors}
+            onChange={onAssessorChange}
+            allowEmpty
           />
         </Grid>
       </Grid>

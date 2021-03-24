@@ -2,7 +2,7 @@ import { DefaultEpic } from "../../common/Default.Epic";
 import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicUpdateOutcomeItem } from "../../../js/containers/entities/outcomes/epics/EpicUpdateOutcomeItem";
-import { GET_OUTCOME_ITEM, updateOutcome } from "../../../js/containers/entities/outcomes/actions";
+import { updateOutcome } from "../../../js/containers/entities/outcomes/actions";
 
 describe("Update outcome epic tests", () => {
   it("EpicUpdateOutcomeItem should returns correct values", () => DefaultEpic({
@@ -16,10 +16,6 @@ describe("Update outcome epic tests", () => {
       {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Outcome", listUpdate: true, savedID: "1" }
-      },
-      {
-        type: GET_OUTCOME_ITEM,
-        payload: "1"
       }
     ]
   }));

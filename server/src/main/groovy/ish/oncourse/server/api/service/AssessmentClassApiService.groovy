@@ -17,10 +17,11 @@ import ish.oncourse.server.api.v1.model.AssessmentClassDTO
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.AssessmentClass
 import ish.oncourse.server.cayenne.AssessmentClassTutor
-import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.CourseClass
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+
+import static ish.oncourse.server.api.v1.function.AssessmentSubmissionFunctions.updateSubmissions
 
 class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, AssessmentClass, AssessmentClassDao> {
 
@@ -66,7 +67,6 @@ class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, Ass
         cayenneModel.courseClass = classService.getEntityAndValidateExistence(context, dto.courseClassId)
 
         context.deleteObjects(cayenneModel.assessmentClassTutors.findAll {!(it.tutor.contact.id in dto.contactIds)})
-        context.deleteObjects(cayenneModel.assessmentSubmissions.findAll { !(it.enrolment.id in dto.submissions*.enrolmentId) })
 
         dto.contactIds.findAll { !(it in cayenneModel.assessmentClassTutors*.tutor.contact.id) }
                 .each { contactId ->
@@ -75,24 +75,14 @@ class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, Ass
             assessmentTutor.tutor = contactService.getEntityAndValidateExistence(context, contactId).tutor
         }
 
-        dto.submissions.each { submissionDto ->
-            if (submissionDto.id) {
-                submissionApiService.update(submissionDto.id, submissionDto)
-            } else {
-                submissionApiService.validateModelBeforeSave(submissionDto,context, null)
-                AssessmentSubmission submission = context.newObject(AssessmentSubmission)
-                submission.enrolment = enrolmentApiService.getEntityAndValidateExistence(context, submissionDto.enrolmentId)
-                submission.assessmentClass = cayenneModel
-                submissionApiService.toCayenneModel(submissionDto, submission)
-            }
-        }
-
         cayenneModel.dueDate = LocalDateUtils.timeValueToDate(dto.dueDate)
         if (dto.releaseDate) {
             cayenneModel.releaseDate = LocalDateUtils.timeValueToDate(dto.releaseDate)
         } else {
             cayenneModel.releaseDate = null
         }
+
+        updateSubmissions(submissionApiService, enrolmentApiService, dto.submissions, cayenneModel.assessmentSubmissions, context)
 
         return cayenneModel
     }

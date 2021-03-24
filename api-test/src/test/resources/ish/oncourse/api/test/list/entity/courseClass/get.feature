@@ -151,8 +151,8 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         And match $ ==
         """
         {
-        "id":4,
-        "code":"1",
+        "id":1111,
+        "code":"1111",
         "courseId":2,
         "courseCode":"course2",
         "courseName":"Course2",
@@ -183,7 +183,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "midwayDetExport":null,
         "minStudentAge":null,
         "minimumPlaces":1,        
-        "sessionsCount":5,
+        "sessionsCount":0,
         "suppressAvetmissExport":false,
         "vetCourseSiteID":null,
         "vetFundingSourceStateID":null,

@@ -34,10 +34,10 @@ import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -58,7 +58,8 @@ import static ish.validation.ValidationUtil.isValidEmailAddress;
 
 @BQConfig
 public class AngelServerFactory {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AngelServerFactory.class);
+
+    private static final Logger LOGGER =  LogManager.getLogger();
 
     public final static String TXT_SYSTEM_USERS_FILE = "createAdminUsers.txt";
     public final static String CSV_SYSTEM_USERS_FILE = "createAdminUsers.csv";
@@ -123,9 +124,12 @@ public class AngelServerFactory {
             createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(), prefController, mailDeliveryService);
 
         } catch (Throwable e) {
+            LOGGER.catching(e);
+            LOGGER.error("Server start failed on basic level, aborting startup of other services");
             // total failure, some of the essential services cannot be
             // started
             throw new RuntimeException("Server start failed on basic level, aborting startup of other services", e);
+            
         }
 
         // only if no fail until now start the background cron-like tasks
@@ -166,6 +170,12 @@ public class AngelServerFactory {
                     INVOICE_OVERDUE_UPDATE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
                     randomSchedule, prefController.getOncourseServerDefaultTimezone(),
                     true, false);
+
+            //between 2:00am and 2:59am
+            randomSchedule = String.format(AUDIT_PURGE_JOB_CRON_SCHEDULE_TEMPLATE, random.nextInt(59));
+            schedulerService.scheduleCronJob(AuditPurgeJob.class, AUDIT_PURGE_JOB, BACKGROUND_JOBS_GROUP_ID,
+                    randomSchedule, prefController.getOncourseServerDefaultTimezone(),
+                    false, false);
 
             schedulerService.scheduleCronJob(FundingContractUpdateJob.class,
                     FUNDING_CONTRACT_JOB_ID,

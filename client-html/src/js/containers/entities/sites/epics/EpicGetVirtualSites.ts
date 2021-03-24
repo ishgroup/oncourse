@@ -31,4 +31,4 @@ const request: EpicUtils.Request<any, any> = {
   }
 };
 
-export const EpicGetVirualSites: Epic<any, any> = EpicUtils.Create(request);
+export const EpicGetVirtualSites: Epic<any, any> = EpicUtils.Create(request);
