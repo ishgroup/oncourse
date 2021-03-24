@@ -1,0 +1,15 @@
+name: MailChimp Bulk Edit
+body: SCC mailChimp bulk update.groovy
+keyCode: scc.script.mailChimpBulkEdit
+enabled: true
+triggerType: ON_DEMAND
+options:
+  - name: fromDate
+    dataType: DATE
+    value: "2019-01-01"
+  - name: enrolmentMailchimpIntegrationName
+    dataType: TEXT
+    value: "Enrolment"
+  - name: waitingListMailchimpIntegrationName
+    dataType: TEXT
+    value: "WaitingList"
