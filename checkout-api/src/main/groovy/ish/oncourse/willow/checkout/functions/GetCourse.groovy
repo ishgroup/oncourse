@@ -29,8 +29,8 @@ class GetCourse extends Get<Course>{
             logger.error("course Id required")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'course id required')).build())
         }
-        Course course = (ObjectSelect.query(Course)
-                .where(ExpressionFactory.matchDbExp(Course.ID_PK_COLUMN, id)) & Course.COLLEGE.eq(college))
+        Course course = ((ObjectSelect.query(Course)
+                .where(ExpressionFactory.matchDbExp(Course.ID_PK_COLUMN, id)) & Course.COLLEGE.eq(college)) & Course.IS_WEB_VISIBLE.eq(Boolean.TRUE))
                 .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
                 .cacheGroup(Course.class.simpleName)
                 .selectOne(context)
