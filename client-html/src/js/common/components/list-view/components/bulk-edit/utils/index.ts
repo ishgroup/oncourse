@@ -3,11 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  ClassFundingSource, CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus
-} from "@api/model";
-import { EntityName } from "../../../../../../containers/automation/constants";
-import { SelectItemDefault } from "../../../../../../model/entities/common";
+import { ClassFundingSource, CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus } from "@api/model";
+import { EntityName, SelectItemDefault } from "../../../../../../model/entities/common";
 import { mapSelectItems } from "../../../../../utils/common";
 import {
   validateFundingSourse,

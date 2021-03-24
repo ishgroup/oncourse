@@ -3,10 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
- Course, Module, Qualification, Sale, SaleType
-} from "@api/model";
+import { Course, EntityRelationType, Module, Qualification, Sale, SaleType } from "@api/model";
 import { Classes } from "../../../../model/entities/CourseClass";
+import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 
 export const entityForLink = (type: SaleType) => {
   switch (type) {
@@ -74,9 +73,8 @@ export const formatRelatedSalables = (relatedItems, type?: SaleType) => relatedI
   };
 });
 
-export const formattedEntityRelationTypes = types => {
-  if (!types) return [];
-  const relations = [];
+export const formattedEntityRelationTypes = (types: EntityRelationType[]): EntityRelationTypeRendered[] => {
+  const relations: EntityRelationTypeRendered[] = [];
   types.forEach(type => {
     let combined = false;
     if (type.toName !== type.fromName) {

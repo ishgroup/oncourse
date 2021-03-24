@@ -3,12 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useRef, useState
-} from "react";
-import {
-  Form, change, initialize, InjectedFormProps
-} from "redux-form";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { change, Form, initialize, InjectedFormProps } from "redux-form";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import FileCopy from "@material-ui/icons/FileCopy";
 import Grid from "@material-ui/core/Grid/Grid";
@@ -26,7 +22,6 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import Button from "../../../../../common/components/buttons/Button";
 import Bindings from "../../../components/Bindings";
-import { EntityItems } from "../../../constants";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
@@ -36,6 +31,7 @@ import { createAndDownloadFile } from "../../../../../common/utils/common";
 import FilePreview from "../../../../../common/components/form/FilePreview";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import Uneditable from "../../../../../common/components/form/Uneditable";
+import { EntityItems } from "../../../../../model/entities/common";
 
 const manualUrl = getManualLink("reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
