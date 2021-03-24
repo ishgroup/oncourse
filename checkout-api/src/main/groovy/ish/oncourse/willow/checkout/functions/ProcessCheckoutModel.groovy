@@ -305,10 +305,10 @@ class ProcessCheckoutModel {
     WaitingList processWaitingList(WaitingList w) {
         w.errors.clear()
         w.warnings.clear()
+        ValidateWaitingList validate = new ValidateWaitingList(context, college).validate(w)
+        w.errors += validate.errors
+        w.warnings += validate.warnings
         if (w.selected) {
-            ValidateWaitingList validate = new ValidateWaitingList(context, college).validate(w)
-            w.errors += validate.errors
-            w.warnings += validate.warnings
             if (w.errors.empty) {
                 Course course = new GetCourse(context, college, w.courseId).get()
                 List<FieldHeading> expectedHeadings = new GetWaitingListFields(course).get()
