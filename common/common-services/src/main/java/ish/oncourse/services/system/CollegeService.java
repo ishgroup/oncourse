@@ -27,6 +27,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.util.Date;
 import java.util.List;
 
+import static org.apache.cayenne.query.QueryCacheStrategy.NO_CACHE;
+
 /**
  * 
  * @author Marek Wawrzyczny
@@ -177,6 +179,7 @@ public class CollegeService implements ICollegeService {
 		return ObjectSelect.query(College.class)
 				.where(College.BILLING_CODE.isNotNull())
 				.orderBy(College.NAME.descInsensitive())
+				.cacheStrategy(NO_CACHE)
 				.select(cayenneService.sharedContext());
 	}
 }
