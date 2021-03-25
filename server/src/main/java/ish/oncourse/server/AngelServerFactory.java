@@ -36,6 +36,8 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 
@@ -111,7 +113,8 @@ public class AngelServerFactory {
                       LicenseService licenseService,
                       CayenneService cayenneService,
                       PluginService pluginService,
-                      MailDeliveryService mailDeliveryService) {
+                      MailDeliveryService mailDeliveryService,
+                      Server server) {
         try {
 
             // Create DB schema
@@ -120,8 +123,8 @@ public class AngelServerFactory {
 
             LOGGER.warn("Upgrade data");
             schemaUpdateService.upgradeData();
-
-            createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(), prefController, mailDeliveryService);
+            ServerConnector connector = (ServerConnector)server.getConnectors()[0];
+            createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(),connector.getHost(), connector.getPort(), prefController, mailDeliveryService);
 
         } catch (Throwable e) {
             LOGGER.catching(e);
@@ -245,7 +248,7 @@ public class AngelServerFactory {
         LOGGER.warn("Server ready");
     }
 
-    private void createSystemUsers(DataContext context, String collegeKey, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
+    private void createSystemUsers(DataContext context, String collegeKey, String host, int port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
         Path systemUsersFile = Paths.get(CSV_SYSTEM_USERS_FILE);
         if (!systemUsersFile.toFile().exists()) {
             systemUsersFile = Paths.get(TXT_SYSTEM_USERS_FILE);
@@ -256,10 +259,6 @@ public class AngelServerFactory {
         } catch (NoSuchFileException ignored) {
             LOGGER.warn("File with system users not found.");
             return;
-        }
-        if (collegeKey == null) {
-            LOGGER.warn("College key is not set! Specify your college key in onCourse.yml, please.");
-            crashServer();
         }
         lines.forEach(line -> {
             String[] lineData = line.split("(, )+|([ ,\t])+");
@@ -285,7 +284,7 @@ public class AngelServerFactory {
             user.setEmail(email);
 
             try {
-                String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey);
+                String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey, host, port);
                 user.setInvitationToken(invitationToken);
                 user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
             } catch (MessagingException ex) {
