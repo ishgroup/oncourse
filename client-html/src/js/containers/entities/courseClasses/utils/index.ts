@@ -8,7 +8,8 @@ import { openInternalLink } from "../../../../common/utils/links";
 import {
   ClassCostExtended,
   ClassCostItem,
-  ClassCostTypes, Classes,
+  ClassCostTypes,
+  Classes,
   CourseClassStatus,
   CourseClassTutorExtended
 } from "../../../../model/entities/CourseClass";
@@ -327,6 +328,22 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
         );
       });
     })
+    .reduce(async (a, b) => {
+      await a;
+      await b();
+    }, Promise.resolve());
+
+  const assessmentUpdateActions = unprocessedAsyncActions.filter(
+    a => a.entity === "AssessmentClass" && a.method === "PUT"
+  );
+
+  await assessmentUpdateActions
+    .map(a => () => CourseClassAssessmentService.updateCourseClassAssessment(a.actionBody.payload.assessment).then(() => {
+        unprocessedAsyncActions.splice(
+          unprocessedAsyncActions.findIndex(u => u.id === a.id),
+          1
+        );
+      }))
     .reduce(async (a, b) => {
       await a;
       await b();
