@@ -2,11 +2,11 @@ buildscript {
 	ext {
 		cayenneVersion = '4.1.B2'
 		ehcacheVersion = '3.4.0'
-		log4j2Version = '2.12.0'
-        typesVersion = '58.1'
+		log4j2Version = '2.14.1'
+        typesVersion = '74'
 		solrVersion = '7.1.0'
 		groovyVersion = '2.5.14'
-        mariadbVersion = '2.4.1'
+        mariadbVersion = '2.7.2'
         tapestryVersion = '5.4.3'
 		bootiqueVersion = '1.0'
         webservicesVersion = '112'
@@ -35,7 +35,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.3.RELEASE' apply false
 	id 'com.github.ben-manes.versions' version '0.38.0' // adds the task 'dependencyUpdates -Drevision=release'
     id 'com.github.node-gradle.node' version '3.0.1' apply false
-	id 'com.dorongold.task-tree' version '1.4' // adds the task 'taskTree [some task]'
+	id 'com.dorongold.task-tree' version '1.5' // adds the task 'taskTree [some task]'
 }
 
 taskTree{

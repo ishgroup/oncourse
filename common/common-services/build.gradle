@@ -12,8 +12,6 @@ dependencies {
 	api 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 
 	api 'commons-collections:commons-collections:3.2.1'
-	api 'commons-logging:commons-logging:1.1.1'
-
 	api 'net.htmlparser.jericho:jericho-html:3.2'
 
     //the jackson verson does not have problem with initializing in hot deployed wars

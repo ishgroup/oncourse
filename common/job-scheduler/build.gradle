@@ -3,7 +3,7 @@ apply from: "$rootDir/gradle/curator.gradle"
 
 dependencies {
     compile 'com.cronutils:cron-utils:7.0.1'
-    compile 'org.quartz-scheduler:quartz:2.3.0'
+    compile 'org.quartz-scheduler:quartz:2.3.2'
     compile ('org.liquibase:liquibase-core:3.6.3') {
         exclude group: 'ch.qos.logback', module: 'logback-classic'
     }

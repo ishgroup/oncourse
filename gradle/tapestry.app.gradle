@@ -33,9 +33,7 @@ dependencies {
      * bootique dependencies
      */
     implementation "io.bootique.tapestry:bootique-tapestry:$bootiqueVersion"
-
     implementation 'aopalliance:aopalliance:1.0'
-    implementation 'commons-logging:commons-logging:1.1.1'
 
     /**
      * poi dependencies
