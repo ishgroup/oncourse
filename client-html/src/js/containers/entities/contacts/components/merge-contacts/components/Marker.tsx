@@ -22,7 +22,7 @@ const styles = createStyles(({ palette, spacing }: Theme) => ({
 
 const Marker = React.memo(({ classes, className, letter }: Props) => (
   <Typography
-    className={`d-inline-flex-center justify-content-center text-uppercase text-bold user-select-none ${
+    className={`d-inline-flex-center justify-content-center text-uppercase text-bold ${
       className ? `${classes.marker} ${className}` : classes.marker
     }`}
     display="block"

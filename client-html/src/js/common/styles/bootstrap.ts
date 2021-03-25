@@ -419,11 +419,11 @@ export const bootstrap = (theme: AppTheme) => ({
   ".box-shadow-none": {
     boxShadow: "none"
   },
-  ".user-select-none": {
-    WebkitTouchCallout: "none",
-    KhtmlUserSelect: "none",
-    ...prefixer("userSelect", "none")
-  },
+  // ".user-select-none": {
+  //   WebkitTouchCallout: "none",
+  //   KhtmlUserSelect: "none",
+  //   ...prefixer("userSelect", "none")
+  // },
   ".vert-align-mid": {
     verticalAlign: "middle"
   },

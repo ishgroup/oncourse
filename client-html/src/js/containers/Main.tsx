@@ -26,7 +26,7 @@ import store from "../constants/Store";
 import { loginRoute, routes } from "../routes";
 import MessageProvider from "../common/components/dialog/message/MessageProvider";
 import {
- darkTheme, defaultTheme, monochromeTheme, highcontrastTheme, christmasTheme
+  darkTheme, defaultTheme, monochromeTheme, highcontrastTheme, christmasTheme
 } from "../common/themes/ishTheme";
 import { ThemeContext } from "./ThemeContext";
 import {

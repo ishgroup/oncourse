@@ -5,13 +5,17 @@
 
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
+import {
+  getFormSyncErrors, initialize, isDirty, isInvalid, submit
+} from "redux-form";
 import clsx from "clsx";
 import { createStyles, ThemeProvider, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
+import {
+  Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel
+} from "@api/model";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import ErrorOutline from "@material-ui/icons/ErrorOutline";
 import Button from "@material-ui/core/Button";
@@ -47,7 +51,9 @@ import {
   updateTableModel
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
-import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
+import {
+  closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm
+} from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
@@ -1057,7 +1063,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
           </ResizableWrapper>
         )}
 
-        <Grid item className="flex-fill overflow-hidden flex-column user-select-none">
+        <Grid item className="flex-fill overflow-hidden flex-column">
           <ShareContainer
             showExportDrawer={showExportDrawer}
             toggleExportDrawer={this.toggleExportDrawer}
