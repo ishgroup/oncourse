@@ -1,5 +1,6 @@
 import React from 'react';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import {error} from 'react-notification-system-redux';
 import classnames from "classnames";
 import {URL} from "../../../../../routes";
@@ -87,4 +88,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ThemesSidebar as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ThemesSidebar as any);

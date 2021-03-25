@@ -1,5 +1,6 @@
 import React from 'react';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import classnames from 'classnames';
 import {clearRenderHtml, getPages, savePage, setPageContentMode, toggleEditMode} from "./actions";
 import {ContentMode, Page as PageModel} from "../../../../model";
@@ -73,4 +74,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Pages as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Pages as any);

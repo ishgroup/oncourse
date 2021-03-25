@@ -1,39 +1,49 @@
-import {Store} from "react-redux";
 import {createEpicMiddleware} from "redux-observable";
 import {createLogger} from "redux-logger";
-import localforage from "localforage";
-import {applyMiddleware, compose, createStore, StoreEnhancer} from "redux";
-
+import {applyMiddleware, compose, createStore, Store, StoreEnhancer} from "redux";
 import {EpicRoot} from "./EpicRoot";
-import {autoRehydrate, getStoredState, OnComplete, persistStore} from "redux-persist";
+import { persistReducer } from 'redux-persist'
 import {combinedReducers} from "./reducers";
 import {EnvironmentConstants} from "./config/EnvironmentConstants";
+import localforage from "localforage";
+import {State} from "./reducers/state";
 
+const persistConfig = {
+  key: 'root',
+  storage: localforage,
+  blacklist: ["form", "notifications"]
+}
 
-const getMiddleware = (): StoreEnhancer<any> => {
+const persistedReducer = persistReducer(persistConfig, combinedReducers);
+
+const inDevelopment = process.env.NODE_ENV === EnvironmentConstants.development;
+
+const epicMiddleware = createEpicMiddleware();
+
+const global: any = window;
+
+const composeEnhancers = inDevelopment && global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  // @ts-ignore
+  ? global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 50 })
+  : compose;
+
+export const CreateStore = (): Store<State> => {
   const logger = createLogger({
     collapsed: true,
   });
 
+  let store;
+
   /**
    * Split middlewares which we using in development and in production.
    */
-  if (process.env.NODE_ENV === EnvironmentConstants.development) {
-    return applyMiddleware(createEpicMiddleware(EpicRoot), logger);
+  if (inDevelopment) {
+    store = createStore(persistedReducer, composeEnhancers(applyMiddleware(epicMiddleware, logger)));
   } else {
-    return applyMiddleware(createEpicMiddleware(EpicRoot));
+    store = createStore(persistedReducer, composeEnhancers(applyMiddleware(epicMiddleware)));
   }
-};
 
-export const CreateStore = (): Store<any> => {
-  const store: Store<any> = createStore(
-    combinedReducers,
-    <any>compose(getMiddleware(), autoRehydrate()),
-  ) as Store<any>;
+  epicMiddleware.run(EpicRoot);
+
   return store;
 };
-
-export const RestoreState = (store: Store<any>, onComplete: OnComplete<any>): void => {
-  persistStore(store, {storage: localforage, blacklist: ["form", "notifications"]}, onComplete);
-};
-

@@ -1,6 +1,7 @@
 import React from 'react';
 import update from 'react-addons-update';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import classnames from 'classnames';
 import {Button, Col, FormGroup, Input, Row} from 'reactstrap';
 import {getRedirectSettings, setRedirectSettings} from "./actions";
@@ -153,4 +154,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Redirect as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Redirect as any);

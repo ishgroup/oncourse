@@ -1,12 +1,13 @@
 import {MiddlewareAPI} from "redux";
-import {ActionsObservable, Epic} from "redux-observable";
-import {Observable} from 'rxjs/Rx';
-import Notifications, {success, error} from 'react-notification-system-redux';
+import {ActionsObservable, Epic, StateObservable} from "redux-observable";
+import {error} from 'react-notification-system-redux';
 import "rxjs";
 import {AxiosResponse} from "axios";
 import {IAction} from "../actions/IshAction";
 import {SERVER_ERROR} from "../common/actions";
 import {LOG_OUT_REQUEST} from "../containers/auth/actions/index";
+import {catchError, flatMap, mergeMap, retry} from "rxjs/operators";
+import {defer, from, Observable} from "rxjs";
 
 
 export interface Request<V, S> {
@@ -39,25 +40,32 @@ export const ProcessError = (data: AxiosResponse): { type: string, payload?: any
 
 
 export const Create = <V, S>(request: Request<V, S>): Epic<any, any> => {
-  return (action$: ActionsObservable<any>, store: MiddlewareAPI<S>): Observable<any> => {
+  return (action$: ActionsObservable<any>, state$: StateObservable<S>): Observable<any> => {
     return action$
-      .ofType(request.type).mergeMap(action => Observable
-        .fromPromise(request.getData(action.payload, store.getState()))
-        .flatMap(data => request.processData(data, store.getState(), action.payload))
-        .catch(data => {
-          return request.processError ? request.processError(data) : ProcessError(data);
-        }),
+      .ofType(request.type).pipe(
+        mergeMap(action =>
+          from(request.getData(action.payload, state$.value)).pipe(
+            mergeMap(data => request.processData(data, state$.value, action.payload)),
+            catchError(data => request.processError ? request.processError(data) : ProcessError(data)),
+          ),
+        ),
       );
   };
 };
 
-export const Reply = <V, S>(request: Request<V, S>, retry: number): Epic<any, any> => {
-  return (action$: ActionsObservable<any>, store: MiddlewareAPI<S>): Observable<any> => {
+export const Reply = <V, S>(request: Request<V, S>, retryTimes: number): Epic<any, any> => {
+  return (action$: ActionsObservable<any>, state$: StateObservable<S>): Observable<any> => {
     return action$
-      .ofType(request.type).mergeMap((action: IAction<any>) => Observable
-        .defer(() => request.getData(action.payload, store.getState())).retry(retry)
-        .flatMap((data: V) => request.processData(data, store.getState()))
-        .catch(data => request.processError(data)),
+      .ofType(request.type).pipe(
+        mergeMap((action: IAction<any>) =>
+          from(() =>
+            request.getData(action.payload, state$.value),
+          ).pipe(
+            retry(retryTimes),
+            mergeMap((data: V) => request.processData(data, state$.value)),
+            catchError(data => request.processError(data)),
+          ),
+        ),
       );
   };
 };

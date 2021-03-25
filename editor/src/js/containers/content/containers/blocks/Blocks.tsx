@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import classnames from "classnames";
 import {getBlocks, saveBlock, setBlockContentMode} from "./actions";
 import {State} from "../../../../reducers/state";
@@ -52,4 +53,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Blocks as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Blocks as any);

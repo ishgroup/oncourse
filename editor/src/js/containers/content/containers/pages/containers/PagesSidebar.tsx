@@ -1,5 +1,6 @@
 import React from 'react';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import classnames from "classnames";
 import {error} from 'react-notification-system-redux';
 import {Page, Theme} from "../../../../../model";
@@ -96,4 +97,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PagesSidebar as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PagesSidebar as any);

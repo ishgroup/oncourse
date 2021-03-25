@@ -1,5 +1,3 @@
-import * as Lodash from "lodash";
-
 export function FULFILLED(actionType: string) {
   return postfix(actionType, "FULFILLED");
 }
@@ -20,19 +18,4 @@ export function postfix(actionType: string, name: string) {
  */
 export const _toRequestType = (type: string): string => {
   return `${type}/request`;
-};
-
-/**
- * Convert Redux Action to Redux Action Reject type
- */
-export const _toRejectType = (type: string): string => {
-  return `${type}/reject`;
-};
-
-
-export const _epicToRedux = (action: any, type: string, payload: any): any => {
-  const result = Lodash.clone(action);
-  result.payload = payload;
-  result.type = payload;
-  return result;
 };

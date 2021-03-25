@@ -1,7 +1,7 @@
-import React from 'react';
-import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
-import {DragDropContext, DragSource} from 'react-dnd';
-import HTML5Backend, {NativeTypes} from 'react-dnd-html5-backend';
+import * as React from "react";
+import {HTML5Backend} from "react-dnd-html5-backend";
+import {DndProvider} from 'react-dnd';
+import {Row, Col} from 'reactstrap';
 import {Theme as ThemeModel, Block} from "../../../../../model";
 import {ThemeLayout} from "./ThemeLayout";
 import Source from "../containers/Source";
@@ -51,4 +51,6 @@ class Theme extends React.Component<Props, any> {
   }
 }
 
-export default DragDropContext(HTML5Backend)(Theme);
+export default props => <DndProvider backend={HTML5Backend}>
+  <Theme {...props}/>
+</DndProvider>;

@@ -1,5 +1,6 @@
 import React from 'react';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import classnames from "classnames";
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {getSkillsOnCourseSettings, setSkillsOnCourseSettings} from "./actions";
@@ -113,4 +114,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Skills as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Skills as any);

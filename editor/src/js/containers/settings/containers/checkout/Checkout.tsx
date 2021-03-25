@@ -1,5 +1,6 @@
 import React from 'react';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import classnames from "classnames";
 import {getCheckoutSettings, setCheckoutSettings} from "./actions";
@@ -160,4 +161,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Checkout as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Checkout as any);

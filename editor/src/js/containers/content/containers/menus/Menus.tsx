@@ -1,8 +1,9 @@
 import React from 'react';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import {Container, Row, Col, Button} from 'reactstrap';
 import classnames from 'classnames';
-import SortableTree, {changeNodeAtPath, addNodeUnderParent, removeNodeAtPath} from 'react-sortable-tree';
+import SortableTree, {changeNodeAtPath, removeNodeAtPath} from 'react-sortable-tree';
 import {changeMenuTree, getMenuItems, saveMenuTree} from "./actions";
 import {MenuState} from "./reducers/State";
 import {showModal} from "../../../../common/containers/modal/actions";
@@ -201,4 +202,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Menus as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Menus as any);

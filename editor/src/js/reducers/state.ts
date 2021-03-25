@@ -10,6 +10,7 @@ import {WebsiteSettingsState} from "../containers/settings/containers/website/re
 import {SkillsOnCourseState} from "../containers/settings/containers/skillsOnCourse/reducers/State";
 import {CheckoutSettingsState} from "../containers/settings/containers/checkout/reducers/State";
 import {SpecialPageSettingsState} from "../containers/settings/containers/specialPages/reducers/State";
+import {CmsConfig} from "../configLoader";
 
 interface SettingsState {
   redirectSettings: RedirectSettingsState;
@@ -22,6 +23,7 @@ interface SettingsState {
 // global cms state
 export interface State {
   auth: AuthState;
+  config: CmsConfig;
   menu: MenuState;
   page: PagesState;
   block: BlocksState;

@@ -1,5 +1,6 @@
 import React from 'react';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import {withRouter} from 'react-router-dom';
 import {Container, Row, Col} from 'reactstrap';
 import classnames from "classnames";

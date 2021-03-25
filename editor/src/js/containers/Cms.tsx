@@ -1,9 +1,8 @@
 import React from 'react';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
 import {Route, NavLink, Redirect, withRouter} from 'react-router-dom';
 import Notifications from 'react-notification-system-redux';
 import classnames from 'classnames';
-
 import {Layout} from '../components/Layout/Layout';
 import {Sidebar} from '../components/Layout/Sidebar';
 import {Content} from '../components/Layout/Content';
@@ -20,6 +19,7 @@ import {getPageByUrl} from "./content/containers/pages/actions";
 import {Version, VersionStatus} from "../model";
 import {BrowserWarning} from "../common/components/BrowserWarning";
 import {Browser} from "../utils";
+import {Dispatch} from "redux";
 
 interface Props {
   auth: AuthState;
@@ -142,5 +142,5 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Cms as any));
+export default withRouter(connect<any,any,any>(mapStateToProps, mapDispatchToProps)(Cms as any));
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import {Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import classnames from "classnames";
 import {getWebsiteSettings, setWebsiteSettings} from "./actions";
@@ -238,4 +239,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Website as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Website as any);

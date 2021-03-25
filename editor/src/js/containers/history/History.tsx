@@ -1,5 +1,6 @@
 import React from 'react';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import {Table, Button} from 'reactstrap';
 import classnames from "classnames";
 import TimeAgo from 'react-timeago';
@@ -103,4 +104,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(History as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(History as any);

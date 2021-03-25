@@ -39,18 +39,24 @@ const _common = (dirname, options) => {
         path.resolve(dirname, 'src/dev'),
         path.resolve(dirname, 'src/scss'),
       ],
+      alias: {
+        'dom-helpers/scrollbarSize': path.resolve(dirname, 'node_modules', 'dom-helpers', 'util', 'scrollbarSize'),
+        'dom-helpers/removeClass': path.resolve(dirname, 'node_modules', 'dom-helpers', 'class', 'removeClass'),
+        'dom-helpers/addClass': path.resolve(dirname, 'node_modules', 'dom-helpers', 'class', 'addClass'),
+      },
       extensions: [".ts", ".tsx", ".js", ".css"]
     },
     module: {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: 'awesome-typescript-loader',
+          use: 'ts-loader',
           include: [
             path.resolve(dirname, 'build/generated-sources'),
             path.resolve(dirname, "src/js"),
             path.resolve(dirname, "src/dev"),
           ],
+          exclude: /node_modules/
         },
       ]
     },
@@ -74,11 +80,11 @@ const _styleModule = (dirname) => {
   return [
     {
       test: /\.(jpg|jpeg|gif|png)$/,
-      loader: 'url-loader?limit=1024&name=images/[name].[ext]'
+      use: 'url-loader?limit=1024&name=images/[name].[ext]'
     },
     {
       test: /\.(otf|eot|ttf|woff|woff2|svg)$/,
-      loader: 'file-loader?name=fonts/[name].[ext]&publicPath=./',
+      use: 'file-loader?name=fonts/[name].[ext]&publicPath=./',
       exclude: [
         /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
       ]

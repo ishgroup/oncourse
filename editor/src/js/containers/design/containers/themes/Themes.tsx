@@ -1,6 +1,7 @@
 import React from 'react';
 import {Container, Row, Col} from 'reactstrap';
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import classnames from "classnames";
 import {getLayouts, getThemes, saveTheme, updateThemeState} from "./actions";
 import {Theme as ThemeModel} from "../../../../model";
@@ -75,4 +76,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Themes as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Themes as any);

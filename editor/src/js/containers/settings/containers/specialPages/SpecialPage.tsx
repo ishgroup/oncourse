@@ -1,6 +1,7 @@
 import React from "react";
 import update from "react-addons-update";
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import classnames from "classnames";
 import {
   Container,
@@ -62,7 +63,7 @@ export class SpecialPage extends React.PureComponent<Props, any> {
     this.setState({
       rules: this.state.rules.map(rule => ({...rule, submitted: true})),
     });
-    
+
     const rules = this.state.rules
       .map(({from, specialPage, matchType}) => ({from, specialPage, matchType}));
 
@@ -110,4 +111,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SpecialPage as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(SpecialPage as any);
