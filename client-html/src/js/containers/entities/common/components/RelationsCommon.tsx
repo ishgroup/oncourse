@@ -88,7 +88,7 @@ const RelationsCommon: React.FC<Props> = (
 
   const validateRelations = useCallback((rels: Sale[]) => {
     let error;
-    if (relationTypesFilter) {
+    if (rels && relationTypesFilter) {
       rels.forEach(rel => {
         if (relationTypesFilter.entities.includes(rel.type as any) && !relationTypes.filter(relationTypesFilter.filter).length) {
           error = "No available relation types for some of added relations";
