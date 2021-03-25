@@ -88,6 +88,8 @@ public class AngelCommand extends CommandWithMetadata {
         var serverFactory = serverFactoryProvider.get();
         try {
             CayenneService cayenneService = cayenneServiceProvider.get();
+            Server server = serverProvider.get();
+
             serverFactory.start(prefControllerProvider.get(),
                     schemaUpdateServiceProvider.get(),
                     schedulerServiceProvider.get(),
@@ -96,10 +98,10 @@ public class AngelCommand extends CommandWithMetadata {
                     licenseServiceProvider.get(),
                     cayenneService,
                     pluginServiceProvider.get(),
-                    mailDeliveryServiceProvider.get()
+                    mailDeliveryServiceProvider.get(),
+                    server
                     );
 
-            Server server = serverProvider.get();
             server.addBean(new AngelSessionDataStoreFactory(cayenneService, prefControllerProvider.get()));
             server.addBean(new MBeanContainer(ManagementFactory.getPlatformMBeanServer()));
             bugsnagFactoryProvider.get().init();

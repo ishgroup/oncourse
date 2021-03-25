@@ -199,15 +199,17 @@ class UserFunctions {
     static String sendInvitationEmailToNewSystemUser(SystemUser currentUser, SystemUser newUser,
                                                      PreferenceController preferenceController,
                                                      MailDeliveryService mailDeliveryService,
-                                                     String collegeKey) throws MessagingException {
+                                                     String collegeKey, String host, int port) throws MessagingException {
+        String serverAddress = collegeKey ? "https://${collegeKey}.cloud.oncourse.cc" : "https://${host}:${port}"
+                
         String messageStart = currentUser ? "${currentUser.fullName} has given you access" : "You were provided access"
         String invitationToken = generateUserInvitationToken()
         String subject = "Welcome to onCourse!"
         String messageText =
                 """
-${messageStart} to the ish onCourse application for https://${collegeKey}.cloud.oncourse.cc. Please click here to accept this invitation.
+${messageStart} to the ish onCourse application for ${serverAddress} . Please click here to accept this invitation.
 
-https://${collegeKey}.cloud.oncourse.cc/invite/${invitationToken}
+${serverAddress}/invite/${invitationToken}
 
 This invitation will expire in 24 hours.
                 """
