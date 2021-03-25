@@ -45,7 +45,7 @@ const AssessmentSubmissionModal = (
       disableRestoreFocus
     >
       <DialogContent>
-        <DialogTitle className="normalHeading p-0 mb-2">{title}</DialogTitle>
+        <DialogTitle className="p-0 mb-2">{title}</DialogTitle>
         {opened && (
         <Grid container>
           <Grid item xs={6}>
