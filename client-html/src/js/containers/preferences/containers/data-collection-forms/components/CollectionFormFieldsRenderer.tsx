@@ -51,7 +51,6 @@ const renderCollectionFormFields = props => {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
-                        
                         <CollectionFormField
                           item={field}
                           field={item}
