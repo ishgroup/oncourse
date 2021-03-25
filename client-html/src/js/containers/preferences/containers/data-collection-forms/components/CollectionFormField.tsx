@@ -88,7 +88,7 @@ const CollectionFormField = props => {
         />
       </div>
 
-      <Typography variant="subtitle2" color="textSecondary" className="flex-fill">
+      <Typography id={`${field}.type`} variant="subtitle2" color="textSecondary" className="flex-fill">
         {item.type.label}
       </Typography>
 
