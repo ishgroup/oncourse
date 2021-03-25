@@ -3,6 +3,11 @@ import { theme } from "./appTheme";
 
 const createOverrides = palette => ({
   overrides: {
+    MuiButtonBase: {
+      root: {
+        userSelect: "all",
+      }
+    },
     MuiCollapse: {
       entered: {
         height: "auto",

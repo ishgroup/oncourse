@@ -108,7 +108,7 @@ const EnrolClassListView = React.memo<any>(props => {
 
   return !isClassesEmpty ? (
     <div className={clsx("p-2 overflow-auto", classes.root)}>
-      <List className={clsx("user-select-none", classes.list)}>
+      <List className={classes.list}>
         <Grid item sm={12} className={clsx("text-center", classes.showPastRoot)}>
           <Button
             color="primary"
