@@ -40,13 +40,17 @@ public class AuditPurgeJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        ObjectContext objectContext = cayenneService.getNewContext();
-        Date sysDate = DateUtils.addMonths(new Date(), (-1) * licenseService.getMax_audit_log_store());
-        String sysDateString = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sysDate);
-        String sql = String.format("DELETE FROM Audit WHERE created < '%s'", sysDateString);
+        if (licenseService.getPurge_audit_after_days() != null) {
+            ObjectContext objectContext = cayenneService.getNewContext();
+            Date sysDate = DateUtils.addDays(new Date(), (-1) * licenseService.getPurge_audit_after_days());
+            String sysDateString = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sysDate);
+            String sql = String.format("DELETE FROM Audit WHERE created < '%s'", sysDateString);
 
-        logger.debug("SQL which should delete audit logs: " + sql);
+            logger.debug("SQL which should delete audit logs: " + sql);
 
-        SQLExec.query(sql).execute(objectContext);
+            SQLExec.query(sql).execute(objectContext);
+        } else {
+            logger.debug("There wasn't specified number of days for storing audit logs");
+        }
     }
 }

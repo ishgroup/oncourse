@@ -17,7 +17,7 @@ import ish.util.RuntimeUtil;
 public class LicenseService {
     public static final String SERVICES_SECURITYKEY = "services.securitykey";
     private Integer max_concurrent_users = null;
-    private Integer max_audit_log_store = 12;
+    private Integer purge_audit_after_days = null;
 
     private String services_host =  "https://secure-payment.oncourse.net.au";
     private String usi_host = "https://secure-payment.oncourse.net.au";
@@ -34,15 +34,12 @@ public class LicenseService {
     }
 
     @BQConfigProperty
-    public void setMax_audit_log_store(Integer max_audit_log_store) {
-        if (max_audit_log_store < 1) {
-            max_audit_log_store = 1;
+    public void setPurge_audit_after_days(Integer purge_audit_after_days) {
+        if (purge_audit_after_days < 1) {
+            purge_audit_after_days = 1;
         }
-        if (max_audit_log_store > 24) {
-            max_audit_log_store = 24;
-        }
-        RuntimeUtil.println("server will limit number of months for storing audit logs to " + max_audit_log_store);
-        this.max_audit_log_store = max_audit_log_store;
+        RuntimeUtil.println("server will limit number of days for storing audit logs to " + purge_audit_after_days);
+        this.purge_audit_after_days = purge_audit_after_days;
     }
 
     @BQConfigProperty
@@ -86,8 +83,8 @@ public class LicenseService {
         return max_concurrent_users;
     }
 
-    public Integer getMax_audit_log_store() {
-        return max_audit_log_store;
+    public Integer getPurge_audit_after_days() {
+        return purge_audit_after_days;
     }
 
     public Boolean isReplicationDisabled() {
