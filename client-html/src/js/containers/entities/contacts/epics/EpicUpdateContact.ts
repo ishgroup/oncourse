@@ -36,7 +36,7 @@ const request: EpicUtils.Request<any, { id: number; contact: Contact & { notes: 
       type: GET_RECORDS_REQUEST,
       payload: { entity: "Contact", listUpdate: true, savedID: id }
     },
-    ...s.list.fullScreenEditView ? [{
+    ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
       type: GET_CONTACT,
       payload: id
     }] : []

@@ -41,7 +41,7 @@ const request: EpicUtils.Request = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Room", listUpdate: true, savedID }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_ROOM_ITEM,
         payload: savedID
       }] : []

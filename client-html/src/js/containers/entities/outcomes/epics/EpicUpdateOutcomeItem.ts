@@ -27,7 +27,7 @@ const request: EpicUtils.Request<any, { id: number; outcome: Outcome }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Outcome", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_OUTCOME_ITEM,
         payload: id
       }] : []

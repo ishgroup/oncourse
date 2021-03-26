@@ -41,7 +41,7 @@ const request: EpicUtils.Request<any, { id: number; assessmentSubmission: Assess
       type: GET_RECORDS_REQUEST,
       payload: { entity: "AssessmentSubmission", listUpdate: true, savedID: id }
     },
-    ...s.list.fullScreenEditView ? [{
+    ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
       type: GET_ASSESSMENT_SUBMISSIONS_ITEM,
       payload: id
     }] : []

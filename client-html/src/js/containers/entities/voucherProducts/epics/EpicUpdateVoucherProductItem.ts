@@ -34,7 +34,7 @@ const request: EpicUtils.Request<any, { id: number; voucherProduct: VoucherProdu
         type: GET_RECORDS_REQUEST,
         payload: { entity: "VoucherProduct", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_VOUCHER_PRODUCT_ITEM,
         payload: id
       }] : []

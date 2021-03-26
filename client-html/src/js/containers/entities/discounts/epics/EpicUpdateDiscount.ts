@@ -27,7 +27,7 @@ const request: EpicUtils.Request<any, { id: number; discount: Discount }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Discount", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_DISCOUNT_ITEM,
         payload: id
       }] : []
