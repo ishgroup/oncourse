@@ -1,4 +1,4 @@
-package ish.oncourse.ui.pages.internal;
+package ish.oncourse.ui.components.internal;
 
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.WebContentVisibility;

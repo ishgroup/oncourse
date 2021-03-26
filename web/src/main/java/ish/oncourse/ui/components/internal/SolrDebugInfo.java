@@ -1,4 +1,4 @@
-package ish.oncourse.ui.pages.internal;
+package ish.oncourse.ui.components.internal;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.common.util.SimpleOrderedMap;
