@@ -9,6 +9,7 @@ import ish.oncourse.configuration.ISHHealthCheckServlet;
 import ish.oncourse.linktransform.functions.GetCourseByPath;
 import ish.oncourse.linktransform.functions.GetCourseClassByPath;
 import ish.oncourse.model.*;
+import ish.oncourse.model.auto._WebUrlAlias;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
@@ -378,10 +379,20 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		String query = requestGlobals.getHTTPServletRequest().getQueryString();
 
 		WebUrlAlias redirect = webUrlAliasService.getAliasByPath(URLPath.valueOf(path).getEncodedPath());
-		if (redirect != null && redirect.getRedirectTo() != null) {
-			request.setAttribute(REQUEST_ATTR_redirectTo, redirect.getRedirectTo());
-			request.setAttribute(REQUEST_ATTR_redirectToParams, query);
-			return true;
+		if (redirect != null) { 
+			if (redirect.getRedirectTo() != null) {
+				request.setAttribute(REQUEST_ATTR_redirectTo, redirect.getRedirectTo());
+				request.setAttribute(REQUEST_ATTR_redirectToParams, query);
+				return true;
+			}
+			
+			if (redirect.getWebNode() != null && !redirect.isDefault()) {
+				WebUrlAlias defaultPath = redirect.getWebNode().getWebUrlAliases().stream().filter(_WebUrlAlias::isDefault).findAny().orElse(null);
+				if (defaultPath != null) {
+					request.setAttribute(REQUEST_ATTR_redirectTo, defaultPath.getUrlPath());
+					request.setAttribute(REQUEST_ATTR_redirectToParams, query);
+				}
+			}
 		}
 		return false;
 	}
