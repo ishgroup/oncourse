@@ -15,6 +15,7 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.AssessmentSubmissionInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._AssessmentSubmission
+import ish.util.LocalDateUtils
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
@@ -117,6 +118,11 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 	@API
 	String getAssessmentName() {
 		return getAssessmentClass().getAssessment().getName()
+	}
+
+	@Override
+	Date getSubmittedDate() {
+		return LocalDateUtils.valueToDate(submittedOn)
 	}
 }
 
