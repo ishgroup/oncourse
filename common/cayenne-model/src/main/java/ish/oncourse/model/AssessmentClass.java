@@ -17,5 +17,4 @@ public class AssessmentClass extends _AssessmentClass implements Queueable, Asse
 	public boolean isAsyncReplicationAllowed() {
 		return true;
 	}
-
 }
