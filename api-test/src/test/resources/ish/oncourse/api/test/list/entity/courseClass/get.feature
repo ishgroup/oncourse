@@ -145,7 +145,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         Then status 200
 #       <--->
 
-        Given path ishPath + '/4'
+        Given path ishPath + '/1111'
         When method GET
         Then status 200
         And match $ ==
@@ -183,7 +183,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "midwayDetExport":null,
         "minStudentAge":null,
         "minimumPlaces":1,        
-        "sessionsCount":0,
+        "sessionsCount":5,
         "suppressAvetmissExport":false,
         "vetCourseSiteID":null,
         "vetFundingSourceStateID":null,
@@ -194,7 +194,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "qualificationHours":null,
         "nominalHours":5.00,
         "classroomHours":5.00,
-        "studentContactHours":12.0,
+        "studentContactHours":0.0,
         "reportableHours":0.0,
         "roomId":1,
         "virtualSiteId":null,
@@ -202,14 +202,14 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "summaryFee":null,
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":0,
-        "allEnrolmentsCount":1,
-        "allOutcomesCount":1,
-        "inProgressOutcomesCount":1,
+        "allEnrolmentsCount":0,
+        "allOutcomesCount":0,
+        "inProgressOutcomesCount":0,
         "passOutcomesCount":0,
         "failedOutcomesCount":0,
         "withdrawnOutcomesCount":0,
         "otherOutcomesCount":0,
-        "successAndQueuedEnrolmentsCount":1,
+        "successAndQueuedEnrolmentsCount":0,
         "canceledEnrolmentsCount":0,
         "failedEnrolmentsCount":0,
         "tags":[],
