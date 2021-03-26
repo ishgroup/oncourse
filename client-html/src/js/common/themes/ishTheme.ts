@@ -5,7 +5,7 @@ const createOverrides = palette => ({
   overrides: {
     MuiButtonBase: {
       root: {
-        userSelect: "all",
+        userSelect: "auto",
       }
     },
     MuiCollapse: {
