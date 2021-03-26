@@ -31,7 +31,7 @@ const request: EpicUtils.Request<any, { id: number; paymentOut: PaymentOutModel 
         type: GET_RECORDS_REQUEST,
         payload: { entity: "PaymentOut", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_PAYMENT_OUT_ITEM,
         payload: id
       }] : []

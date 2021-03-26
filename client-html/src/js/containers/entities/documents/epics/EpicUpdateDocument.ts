@@ -25,7 +25,7 @@ const request: EpicUtils.Request<any, { id: number; document: Document & { notes
       type: GET_RECORDS_REQUEST,
       payload: { entity: "Document", listUpdate: true, savedID: id }
     },
-    ...s.list.fullScreenEditView ? [{
+    ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
       type: GET_DOCUMENT_EDIT,
       payload: id
     }] : []

@@ -34,7 +34,7 @@ const request: EpicUtils.Request<any, { id: number; membershipProduct: Membershi
         type: GET_RECORDS_REQUEST,
         payload: { entity: "MembershipProduct", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_MEMBERSHIP_PRODUCT_ITEM,
         payload: id
       }] : []

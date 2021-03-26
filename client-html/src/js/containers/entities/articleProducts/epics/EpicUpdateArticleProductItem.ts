@@ -27,7 +27,7 @@ const request: EpicUtils.Request<any, { id: number; articleProduct: ArticleProdu
         type: GET_RECORDS_REQUEST,
         payload: { entity: "ArticleProduct", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_ARTICLE_PRODUCT_ITEM,
         payload: id
       }] : []

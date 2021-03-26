@@ -30,7 +30,7 @@ const request: EpicUtils.Request<any, { id: number; paymentIn: PaymentIn }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "PaymentIn", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_PAYMENT_IN_ITEM,
         payload: id
       }] : []

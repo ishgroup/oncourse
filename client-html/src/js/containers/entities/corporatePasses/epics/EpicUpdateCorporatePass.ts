@@ -29,7 +29,7 @@ const request: EpicUtils.Request<any, { id: number; corporatePass: CorporatePass
         type: GET_RECORDS_REQUEST,
         payload: { entity: "CorporatePass", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_CORPORATE_PASS_ITEM,
         payload: id
       }] : []

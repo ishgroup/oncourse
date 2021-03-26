@@ -33,7 +33,7 @@ const request: EpicUtils.Request<any, { id: number; survey: SurveyItem }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Survey", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_STUDENT_SURVEY_ITEM,
         payload: id
       }] : []

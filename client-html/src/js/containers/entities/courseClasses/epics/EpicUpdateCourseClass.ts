@@ -41,7 +41,7 @@ const request: EpicUtils.Request<any, { id: number; courseClass: CourseClass }> 
         type: GET_RECORDS_REQUEST,
         payload: { entity: "CourseClass", listUpdate: true, ignoreSelection: true }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_COURSE_CLASS,
         payload: id
       }] : [],

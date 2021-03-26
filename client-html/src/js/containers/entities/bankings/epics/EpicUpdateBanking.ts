@@ -27,7 +27,7 @@ const request: EpicUtils.Request<any, { id: number; banking: Banking }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Banking", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_BANKING_ITEM,
         payload: id
       }] : []

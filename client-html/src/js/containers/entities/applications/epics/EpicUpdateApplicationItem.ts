@@ -36,7 +36,7 @@ const request: EpicUtils.Request<any, { id: number; application: Application & {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Application", listUpdate: true, savedID: id }
       },
-      ...s.list.fullScreenEditView ? [{
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_APPLICATION_ITEM,
         payload: id
       }] : []
