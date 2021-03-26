@@ -1,9 +1,6 @@
 package ish.oncourse.services.preference;
 
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Country;
-import ish.oncourse.model.PaymentGatewayType;
-import ish.oncourse.model.Student;
+import ish.oncourse.model.*;
 import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -319,10 +316,17 @@ public class PreferenceController extends CommonPreferenceController {
             return Boolean.valueOf(value);
         }
     }
-
-
+    
+	public String getStorageAccessId() {
+		return getValue(Preference.STORAGE_ACCESS_ID, false);
+	}
 	
-
+	public String getStorageAccessKey() {
+		return getValue(Preference.STORAGE_ACCESS_KEY, false);
+	}
+	public String getStorageBucketName() {
+		return getValue(Preference.STORAGE_BUCKET_NAME, false);
+	}
 
 	public enum FieldDescriptor {
 		street("address", Contact.STREET.getName(), String.class, true, true),
