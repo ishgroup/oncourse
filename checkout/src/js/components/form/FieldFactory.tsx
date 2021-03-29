@@ -188,7 +188,7 @@ export const toServerValues = (fields: Field[], values: { [key: string]: any }) 
       }
     }
   });
-}
+};
 
 
 const SuburbFieldBase = (props): any => {
@@ -214,7 +214,7 @@ const SuburbFieldBase = (props): any => {
     <Form.Field {...props} component={TextField} type="text"/> ;
 };
 
-const SuburbField =  connect((state,{form}) => ({
+const SuburbField =  connect<any,any,any>((state,{form}) => ({
   values: Form.getFormValues(form)(state),
 }),
 )(SuburbFieldBase);

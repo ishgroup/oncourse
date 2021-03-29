@@ -21,7 +21,7 @@ export class ComboboxField extends React.Component<any, any> {
 function comboboxFieldComponent(props: ComboboxFieldProps & WrappedMouseHoverProps) {
   const {
     items,
-    ...selectProps,
+    ...selectProps
   } = props;
 
   return (

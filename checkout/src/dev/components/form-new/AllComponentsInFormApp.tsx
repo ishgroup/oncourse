@@ -9,11 +9,9 @@ import {Values} from "redux-form-website-template";
 
 import "../../../scss/index.scss";
 import {SearchApiMock} from "../../mocks/SearchApiMock";
-
 import {TextField} from "../../../js/components/form-new/TextField";
 import Checkbox from "../../../js/components/form-new/Checkbox";
 import SelectField from "../../../js/components/form-new/SelectField";
-import RadioGroup from "../../../js/components/form-new/RadioGroup";
 import TextArea from "../../../js/components/form-new/TextArea";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 
@@ -21,14 +19,6 @@ import {MockConfig} from "../../mocks/mocks/MockConfig";
 const store = createStore(
   combineReducers({form: formReducer}), applyMiddleware(createLogger()),
 );
-
-const options = [
-  {key: 'one', value: 'One'},
-  {key: 'two', value: 'Two'},
-  {key: 'three', value: 'Three'},
-  {key: 'five', value: 'Five'},
-
-];
 
 const config: MockConfig = new MockConfig();
 const stub: SearchApiMock = new SearchApiMock(config);
@@ -38,7 +28,7 @@ const stub: SearchApiMock = new SearchApiMock(config);
  */
 class AllComponentsFrom extends React.Component<any, any> {
   render() {
-    const {handleSubmit, pristine, reset, submitting} = this.props;
+    const {handleSubmit, pristine, submitting} = this.props;
     return (
       <form onSubmit={handleSubmit}>
         <fieldset>
@@ -61,16 +51,12 @@ class AllComponentsFrom extends React.Component<any, any> {
   }
 }
 
-const validate = (values: FormData) => {
-  const errors = Object.assign({}, values);
-  return errors;
-};
+const validate = values => Object.assign({}, values);
 
 const Form = reduxForm({
   validate,
   form: "AllComponentsFrom",
 })(AllComponentsFrom);
-
 
 function showResults(values) {
   window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);

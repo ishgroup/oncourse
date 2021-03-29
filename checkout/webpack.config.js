@@ -1,11 +1,9 @@
 const __common = require('./webpack/__common');
-
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 const ZipPlugin = require('zip-webpack-plugin');
 const { BugsnagBuildReporterPlugin, BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
@@ -58,7 +56,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
           use: [
             {
               loader: 'babel-loader',
-              query: {
+              options: {
                 presets: ['@babel/preset-react', "@babel/preset-env"]
               }
             },
@@ -70,7 +68,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
         {
           test: /\.js$/,
           loader: 'babel-loader',
-          query: {
+          options: {
             presets: ['@babel/preset-react', "@babel/preset-env"]
           }
         }
@@ -122,7 +120,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
       sourceMap: true
     }),
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
-    new ExtractTextPlugin("main.css"),
+    new MiniCssExtractPlugin({ filename: "main.css" }),
     new webpack.optimize.ModuleConcatenationPlugin(),
   ];
 
@@ -130,26 +128,11 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
     case "production":
       plugins.push(
         new CompressionPlugin({
-          asset: "[path].gz[query]",
+          filename: "[file].gz[query]",
           algorithm: "gzip",
           test: /\.(js|html|css|map)$/,
           minRatio: Infinity,
         }),
-        new TypedocWebpackPlugin({
-          jsx: "react",
-          target: "es6",
-          lib: [
-            "lib.dom.d.ts",
-            "lib.es5.d.ts",
-            "lib.es2015.d.ts",
-            "lib.es2016.d.ts",
-            "lib.es2017.d.ts"
-          ],
-          allowSyntheticDefaultImports: true,
-          moduleResolution: "node",
-          module: "es6",
-          out: "../docs" // relative to output
-        }, "./src/js/"),
         new ZipPlugin({
           path: '../distribution',
           filename: 'checkout.zip',

@@ -1,4 +1,3 @@
-const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const __common = require("./webpack/__common");
 const __DEFAULT_ENTRY = "./src/js/app.tsx";

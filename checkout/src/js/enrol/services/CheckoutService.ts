@@ -20,10 +20,8 @@ import {
   Application,
   Enrolment, WaitingList,
 } from "../../model";
-
 import {Injector} from "../../injector";
 import {CartState, IshState} from "../../services/IshState";
-import {State as SummaryState} from "../containers/summary/reducers/State";
 import {ContactApi} from "../../http/ContactApi";
 import {CheckoutApi} from "../../http/CheckoutApi";
 import {ContactNodeStorage, State} from "../containers/summary/reducers/State";
@@ -66,12 +64,12 @@ export class CheckoutService {
   }
 
   public isOnlyWaitingCourseSelected = (summary: State) => {
-    return summary.entities.waitingLists && Object.values(summary.entities.waitingLists).some(e => e.selected)
-      && summary.entities.enrolments && !Object.values(summary.entities.enrolments).some(e => e.selected)
-      && summary.entities.applications && !Object.values(summary.entities.applications).some(e => e.selected)
-      && summary.entities.vouchers && !Object.values(summary.entities.vouchers).some(e => e.selected)
-      && summary.entities.articles && !Object.values(summary.entities.articles).some(e => e.selected)
-      && summary.entities.memberships && !Object.values(summary.entities.memberships).some(e => e.selected);
+    return summary.entities.waitingLists && Object.values<any>(summary.entities.waitingLists).some(e => e.selected)
+      && summary.entities.enrolments && !Object.values<any>(summary.entities.enrolments).some(e => e.selected)
+      && summary.entities.applications && !Object.values<any>(summary.entities.applications).some(e => e.selected)
+      && summary.entities.vouchers && !Object.values<any>(summary.entities.vouchers).some(e => e.selected)
+      && summary.entities.articles && !Object.values<any>(summary.entities.articles).some(e => e.selected)
+      && summary.entities.memberships && !Object.values<any>(summary.entities.memberships).some(e => e.selected);
   }
 
   public ifCodeExist = (code, state): boolean => {
@@ -142,7 +140,7 @@ export class CheckoutService {
   }
 
   public getUpdateModel = (state: IshState, payNow: number): Promise<CheckoutModel> => {
-    let request:CheckoutModelRequest = BuildCheckoutModelRequest.fromState(state);
+    const request:CheckoutModelRequest = BuildCheckoutModelRequest.fromState(state);
     request.payNow = payNow;
     return this.checkoutApi.getCheckoutModel(request);
   }
@@ -173,7 +171,7 @@ export class CheckoutService {
     this.corporatePassApi.getCorporatePass(BuildGetCorporatePassRequest.fromState(state, code))
   )
 
-  public haveContactSelectedItems = (contact: Contact, summary: SummaryState): boolean => {
+  public haveContactSelectedItems = (contact: Contact, summary: State): boolean => {
     const request: ContactFieldsRequest = BuildContactFieldsRequest.fromStateSelected(contact, summary);
     return !!(request.classIds.length || request.waitingCourseIds.length || request.products.length);
   }
@@ -205,7 +203,7 @@ export class CheckoutService {
           updatePaymentStatus(response),
         ];
       default:
-        throw new Error(`Unknown status ${response.status}`);
+        throw new Error(`Unknown status ${String(response.status)}`);
     }
   }
 
@@ -226,16 +224,16 @@ export class BuildContactNodeRequest {
     const products = [];
 
     if (item.classId) {
-      classIds.push(item.classId)
+      classIds.push(item.classId);
     }
     if (item.relatedClassId) {
-      classIds.push(item.relatedClassId)
+      classIds.push(item.relatedClassId);
     }
     if (item.productId) {
-      products.push({productId: item.productId, quantity:1} as ProductContainer)
+      products.push({productId: item.productId, quantity:1} as ProductContainer);
     }
     if (item.relatedProductId) {
-      products.push({productId: item.relatedProductId, quantity:1} as ProductContainer)
+      products.push({productId: item.relatedProductId, quantity:1} as ProductContainer);
     }
 
     result.contactId = item.contactId;
@@ -246,22 +244,22 @@ export class BuildContactNodeRequest {
     return result;
   }
 
-  static fromContact = (contact: Contact, summary: SummaryState, cart: CartState, payerId: string): ContactNodeRequest => {
+  static fromContact = (contact: Contact, summary: State, cart: CartState, payerId: string): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = contact.id;
     result.classIds = [];
     if (summary.entities.contactNodes && summary.entities.contactNodes[contact.id]) {
       summary.entities.contactNodes[contact.id].enrolments.forEach(key => {
-        if(summary.entities.enrolments[key] && summary.entities.enrolments[key].classId) {
+        if (summary.entities.enrolments[key] && summary.entities.enrolments[key].classId) {
           result.classIds.push(summary.entities.enrolments[key].classId);
         }
-      })
+      });
 
       summary.entities.contactNodes[contact.id].applications.forEach(key => {
-        if(summary.entities.applications[key] && summary.entities.applications[key].classId) {
+        if (summary.entities.applications[key] && summary.entities.applications[key].classId) {
           result.classIds.push(summary.entities.applications[key].classId);
         }
-      })
+      });
     }
 
     result.products = cart.products.result.map(productId => {
@@ -299,7 +297,7 @@ export class BuildContactFieldsRequest {
     return result;
   }
 
-  static fromStateSelected = (contact: Contact, summary: SummaryState, phase?: Phase): ContactFieldsRequest => {
+  static fromStateSelected = (contact: Contact, summary: State, phase?: Phase): ContactFieldsRequest => {
     const result: ContactFieldsRequest = new ContactFieldsRequest();
     result.contactId = contact.id;
     result.classIds = [];
@@ -312,11 +310,11 @@ export class BuildContactFieldsRequest {
     const products = ['vouchers', 'memberships', 'articles'];
     const waitingLists = ['waitingLists'];
 
-    enrolments.forEach(item => Object.values(summary.entities[item])
+    enrolments.map(item => Object.values<any>(summary.entities[item])
       .filter(e => e.contactId === contact.id && e.selected)
       .map(e => result.classIds.push(e.classId)));
 
-    products.forEach(item => Object.values(summary.entities[item])
+    products.map(item => Object.values<any>(summary.entities[item])
       .filter(e => e.contactId === contact.id && e.selected)
       .map(e => {
         const productContainer: ProductContainer = new ProductContainer();
@@ -325,7 +323,7 @@ export class BuildContactFieldsRequest {
         result.products = [productContainer];
       }));
 
-    waitingLists.forEach(item => Object.values(summary.entities[item])
+    waitingLists.map(item => Object.values<any>(summary.entities[item])
       .filter(e => e.contactId === contact.id && e.selected)
       .map(e => result.waitingCourseIds.push(e.courseId)));
 
@@ -372,16 +370,16 @@ export class BuildCreateContactParams {
 
 const formatNodeCustomFields = (items: (Application & Enrolment & WaitingList)[], stateRoot: IshState) => {
   items.forEach(it => {
-    if(it && it.fieldHeadings) {
+    if (it && it.fieldHeadings) {
       it.fieldHeadings.forEach(fh => {
         const form = stateRoot.form[`${it.contactId}-${it.courseId || it.classId}`];
-        if(form && form.values) {
+        if (form && form.values) {
           toServerValues(fh.fields, form.values);
         }
-      })
+      });
     }
-  })
-}
+  });
+};
 
 export class BuildContactNodes {
   static fromState = (state: State, stateRoot: IshState): ContactNode[] => {
@@ -450,7 +448,7 @@ export class BuildGetCorporatePassRequest {
 export class BuildWaitingCoursesResult {
   static fromState = (state: IshState): any => {
     const result = [];
-    const nodes = Object.values(state.checkout.summary.entities.contactNodes)
+    const nodes = Object.values<any>(state.checkout.summary.entities.contactNodes)
       .map(item => ({
         contactId: item.contactId,
         coursesIds: item.waitingLists,
@@ -460,7 +458,7 @@ export class BuildWaitingCoursesResult {
       .map(node => ({
         name: `${state.checkout.contacts.entities.contact[node.contactId].firstName} ${state.checkout.contacts.entities.contact[node.contactId].lastName}`,
         courses: node.coursesIds.map(id => state.checkout.summary.entities.waitingLists[id]).filter(c => c.selected),
-      }))
+      }));
 
     filteredNodes.map(n => result.push({
       name: n.name,

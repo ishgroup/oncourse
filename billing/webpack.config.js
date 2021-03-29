@@ -1,5 +1,4 @@
 const __common = require('./webpack/__common');
-
 const fs = require('fs');
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -13,7 +12,6 @@ module.exports = function (options = {}) {
   const API_ROOT = options.API_ROOT || 'http://localhost:10080';
   const BUILD_NUMBER = options.BUILD_NUMBER || 'DEV';
   __common.info(NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER);
-
   const main = _main(NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER);
   main.module.rules = [...main.module.rules, ...__common.styleModule(__dirname)]
   return main;
@@ -57,19 +55,16 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
     },
     externals: [function (context, request, callback) {
       const p = path.resolve(context, request) + '.js';
-
       if (/.custom.js$/.test(p)) {
         fs.stat(p, (err) => {
           if (err) {
             callback(null, "{}");
             return;
           }
-
           callback();
         });
         return;
       }
-
       callback();
     }],
     bail: false,

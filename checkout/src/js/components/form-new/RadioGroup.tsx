@@ -41,7 +41,7 @@ class RadioGroup extends React.Component<any, any> {
             onFocus={input.onFocus}
             disabled={disabled || i.disabled}
           />
-          <span htmlFor={i.key}>&nbsp; {i.value}</span>
+          <span>&nbsp; {i.value}</span>
         </span>
       );
     });

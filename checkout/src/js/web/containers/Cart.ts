@@ -5,9 +5,9 @@ import {Actions} from "../actions/Actions";
 import {GABuilder} from "../../services/GoogleAnalyticsService";
 import {Course} from "../../model";
 
-export default connect(mapStateToProps, mapDispatchToProps)(Cart as any);
+export default connect<any, any, any, IshState>(mapStateToProps, mapDispatchToProps)(Cart as any);
 
-function mapStateToProps(state: IshState, ownProps: Props) {
+function mapStateToProps(state: IshState) {
   return {
     classes: state.cart.courses,
     products: state.cart.products,

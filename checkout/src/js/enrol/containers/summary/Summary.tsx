@@ -1,6 +1,7 @@
 import * as React from "react";
 import {IshState} from "../../../services/IshState";
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import {submit} from 'redux-form';
 
 import {Application, Article, Enrolment, Membership, PurchaseItem, Voucher} from "../../../model";
@@ -37,7 +38,7 @@ export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps 
       (e.relatedClassId || e.relatedProductId)
         ? e.classId
           ? state.courses.entities[e.classId]
-          : state.inactiveCourses.entities[e.courseId] && { course: state.inactiveCourses.entities[e.courseId] }
+          : state.inactiveCourses.entities[e.courseId] && {course: state.inactiveCourses.entities[e.courseId]}
         : null,
     enrolment: e,
   };
@@ -164,14 +165,14 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onChangeClass: (item1,item2, classes): void => {
       dispatch(replaceItem(item1,item2));
       dispatch(getCheckoutModelFromBackend());
-      if(classes.length) {
-        dispatch(mapPayload(Actions.REQUEST_COURSE_CLASS)(normalize(classes, ClassesListSchema)))
+      if (classes.length) {
+        dispatch(mapPayload(Actions.REQUEST_COURSE_CLASS)(normalize(classes, ClassesListSchema)));
       }
     },
     onProceedToPayment: (forms): void => {
       forms && Object.keys(forms).map(form => dispatch(submit(form)));
 
-      const errors = Object.values(forms).filter(f => f.syncErrors);
+      const errors = Object.values<any>(forms).filter(f => f.syncErrors);
       if (errors && errors.length) return;
 
       dispatch(proceedToPayment());
@@ -179,7 +180,7 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onProceedToJoin: (forms): void => {
       forms && Object.keys(forms).map(form => dispatch(submit(form)));
 
-      const errors = Object.values(forms).filter(f => f.syncErrors);
+      const errors = Object.values<any>(forms).filter(f => f.syncErrors);
       if (errors && errors.length) return;
 
       dispatch(submitPaymentForWaitingCourses());
@@ -222,6 +223,6 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
   };
 };
 
-const Container = connect(SummaryPropsBy, SummaryActionsBy)(SummaryComp);
+const Container = connect<any,any,any>(SummaryPropsBy, SummaryActionsBy)(SummaryComp);
 
 export default Container;

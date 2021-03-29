@@ -10,20 +10,19 @@ export class ConfirmOrderDialog extends React.Component<Props, {}> {
   private $item;
 
   constructor(props) {
-    super();
+    super(props);
     this.$item = document.querySelector(`.classItem[data-classid='${props.id}']`);
     this.modalService = WindowService.get("modal");
   }
 
-  componentWillMount() {
-    document.addEventListener("click", this.props.close);
-  }
-
   componentDidMount() {
-    const el = findDOMNode(this);
+    const el: any = findDOMNode(this);
     el.style.display = 'block';
     el.style.right = '150px';
     el.style.top = '-11px';
+    setTimeout(() => {
+      document.addEventListener("click", this.props.close);
+    },         500);
   }
 
   componentWillUnmount() {

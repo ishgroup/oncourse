@@ -5,8 +5,8 @@ import * as React from "react";
  * Wraps passed component, and passed all props inside component and mouseInside property.
  */
 export class MouseHover extends React.Component<MouseHoverProps, MouseHoverState> {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       isInside: false,

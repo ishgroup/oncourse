@@ -4,7 +4,7 @@ import {IshState} from "../services/IshState";
 import {initGAEvent} from "../services/GoogleAnalyticsService";
 
 
-export const GoogleAnalyticsEpic: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): any => {
+export const GoogleAnalyticsEpic: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any, IshState>): any => {
   return action$
     .filter(action => action.meta && action.meta.analytics)
     .mergeMap(action => {

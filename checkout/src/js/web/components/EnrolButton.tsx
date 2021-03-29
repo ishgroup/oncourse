@@ -8,8 +8,8 @@ import {sendProductDetailsImpressionEvent, sendProductImpressionEvent} from "../
 
 
 class EnrolButtonBase extends React.Component<Props, State> {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       showedPopup: false,
@@ -79,9 +79,9 @@ class EnrolButtonBase extends React.Component<Props, State> {
         quantity: 1
       };
 
-      sendProductImpressionEvent(eventData)
-      if(document.querySelector('[class="courseDescription"]')) {
-        sendProductDetailsImpressionEvent(eventData)
+      sendProductImpressionEvent(eventData);
+      if (document.querySelector('[class="courseDescription"]')) {
+        sendProductDetailsImpressionEvent(eventData);
       }
     }
   }
@@ -152,13 +152,13 @@ class EnrolButtonBase extends React.Component<Props, State> {
       <div className="classAction" ref={this.setButtonRef}>
         {reverseElements ? elements.reverse() : elements}
         {this.state.showedPopup && course &&
-        <ConfirmOrderDialog
-          id={id}
-          name={course.name}
-          isAlreadyAdded={this.state.isAlreadyAdded}
-          close={this.closePopup}
-          checkoutPath={checkoutPath}
-        />
+          <ConfirmOrderDialog
+            id={id}
+            name={course.name}
+            isAlreadyAdded={this.state.isAlreadyAdded}
+            close={this.closePopup}
+            checkoutPath={checkoutPath}
+          />
         }
       </div>
     );

@@ -14,7 +14,7 @@ import CheckoutService from "../../../services/CheckoutService";
 import {addContact} from "../../contact-add/actions/Actions";
 import {Phase} from "../../../reducers/State";
 
-export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
+export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any, IshState>): Observable<any> => {
   return action$.ofType(ADD_CONTACT_TO_SUMMARY).flatMap((action: IAction<{contact: Contact, uncheckItems?: boolean}>) => {
     const state: IshState = store.getState();
 
@@ -73,7 +73,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     const statePart = {
       enrolments: [],
       applications: []
-    }
+    };
 
     state.cart.courses.result.forEach(key => {
       const cartEn = state.cart.courses.entities[key];
@@ -101,7 +101,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
         en.warnings = [];
         statePart.enrolments.push(en);
       }
-    })
+    });
 
     result.push(addContactNodeToState({
       contactId: contact.id,

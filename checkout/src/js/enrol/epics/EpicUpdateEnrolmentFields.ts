@@ -10,7 +10,7 @@ import {REWRITE_CONTACT_NODE_TO_STATE, UPDATE_ENROLMENT_FIELDS} from "../contain
 import {toFormKey} from "../../components/form/FieldFactory";
 import {Field, DataType} from "../../model";
 
-export const EpicUpdateEnrolmentFields: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
+export const EpicUpdateEnrolmentFields: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any, IshState>): Observable<any> => {
 
   // TODO: Will be optimized
   return action$.ofType(UPDATE_ENROLMENT_FIELDS).flatMap((action: IAction<any>): any => {

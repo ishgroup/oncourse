@@ -13,7 +13,7 @@ const ItemsKeys = [
   "articles",
   "vouchers",
   "waitingLists",
-]
+];
 
 export const Reducer = (state: State = ContactNodeToState([]), action: IAction<any>): State => {
   const ns: State = L.cloneDeep(state);
@@ -31,7 +31,7 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
             ns.entities[key] = {...ns.entities[key], ...action.payload.replacement.entities[key]};
             stateNode[key].splice(index,1,replacementNode[key][0]);
           }
-        })
+        });
       });
       return ns;
 
@@ -39,12 +39,12 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
       action.payload.result.forEach(id => {
         const stateNode: ContactNodeStorage = ns.entities.contactNodes[id];
         const payloadNode: ContactNodeStorage = action.payload.entities.contactNodes[id];
-        stateNode.enrolments = Array.from(new Set([...stateNode.enrolments || [], ...payloadNode.enrolments]));
-        stateNode.applications = Array.from(new Set([...stateNode.applications || [], ...payloadNode.applications]));
-        stateNode.memberships = Array.from(new Set([...stateNode.memberships || [], ...payloadNode.memberships]));
-        stateNode.articles = Array.from(new Set([...stateNode.articles || [], ...payloadNode.articles]));
-        stateNode.vouchers = Array.from(new Set([...stateNode.vouchers || [], ...payloadNode.vouchers]));
-        stateNode.waitingLists = Array.from(new Set([...stateNode.waitingLists || [], ...payloadNode.waitingLists]));
+        stateNode.enrolments = Array.from(new Set([...stateNode.enrolments || [], ...payloadNode.enrolments || []]));
+        stateNode.applications = Array.from(new Set([...stateNode.applications || [], ...payloadNode.applications || []]));
+        stateNode.memberships = Array.from(new Set([...stateNode.memberships || [], ...payloadNode.memberships || []]));
+        stateNode.articles = Array.from(new Set([...stateNode.articles || [], ...payloadNode.articles || []]));
+        stateNode.vouchers = Array.from(new Set([...stateNode.vouchers || [], ...payloadNode.vouchers || []]));
+        stateNode.waitingLists = Array.from(new Set([...stateNode.waitingLists || [], ...payloadNode.waitingLists || []]));
       });
       mergePurchases(ns, action.payload, false);
       return ns;
@@ -80,7 +80,7 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
           ...state.resultDetails,
           contacts: action.payload
         }
-      }
+      };
 
     case SummaryActions.SET_RESULT_DETAILS_CORPORATE_PASS:
       return {
@@ -89,7 +89,7 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
           ...state.resultDetails,
           corporatePass: action.payload
         }
-      }
+      };
 
     case RESET_CHECKOUT_STATE:
       return ContactNodeToState([]);
@@ -98,7 +98,7 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
       return {
         ...state,
         resultDetails: {}
-      }
+      };
 
     case SummaryActions.SELECT_ITEM_REQUEST:
       return {
@@ -112,13 +112,13 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
 
       state.result.forEach(cid => {
         ns.entities[type] && delete ns.entities[type][`${cid}-${id}`];
-        if(ns.entities.contactNodes[cid] && ns.entities.contactNodes[cid][type]) {
+        if (ns.entities.contactNodes[cid] && ns.entities.contactNodes[cid][type]) {
           ns.entities.contactNodes[cid][type] = ns.entities.contactNodes[cid][type].filter(eId => eId !== `${cid}-${id}`);
         }
       });
 
       Object.keys(ns.entities).forEach(entity => {
-        if(ns.entities[entity]) {
+        if (ns.entities[entity]) {
           Object.keys(ns.entities[entity]).forEach(key => {
             if (
               (ns.entities[entity][key].relatedClassId && ns.entities[entity][key].relatedClassId === id)
@@ -126,9 +126,9 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
             ) {
               delete ns.entities[entity][key];
             }
-          })
+          });
         }
-      })
+      });
 
       return ns;
 
@@ -137,13 +137,13 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
       const {contactId} = action.payload;
 
       ItemsKeys.forEach(item => {
-          ns.entities.contactNodes[contactId][item].forEach(id => delete ns.entities[item][id]);
-          for (let ent in ns.entities[item]) {
+        ns.entities.contactNodes[contactId][item].forEach(id => delete ns.entities[item][id]);
+        for (const ent in ns.entities[item]) {
             if (ns.entities[item][ent] && ns.entities[item][ent].contactId === contactId) {
               delete ns.entities[item][ent];
             }
           }
-        }
+      }
       );
 
       ns.result = state.result.filter(id => id !== contactId);
@@ -169,15 +169,15 @@ const mergePurchases = (ns: State, payload: State, leaveExisting: boolean): Stat
 
   // Make sure that field headings and related ids get merged
   Object.keys(ns.entities.enrolments).forEach(key => {
-    if(payload.entities.enrolments && payload.entities.enrolments[key] && ns.entities.enrolments && ns.entities.enrolments[key]) {
+    if (payload.entities.enrolments && payload.entities.enrolments[key] && ns.entities.enrolments && ns.entities.enrolments[key]) {
       if (!ns.entities.enrolments[key].fieldHeadings.length && payload.entities.enrolments[key].fieldHeadings.length) {
-        ns.entities.enrolments[key].fieldHeadings = payload.entities.enrolments[key].fieldHeadings
+        ns.entities.enrolments[key].fieldHeadings = payload.entities.enrolments[key].fieldHeadings;
       }
       if (!ns.entities.enrolments[key].relatedClassId && payload.entities.enrolments[key].relatedClassId) {
-        ns.entities.enrolments[key].relatedClassId = payload.entities.enrolments[key].relatedClassId
+        ns.entities.enrolments[key].relatedClassId = payload.entities.enrolments[key].relatedClassId;
       }
       if (!ns.entities.enrolments[key].relatedProductId && payload.entities.enrolments[key].relatedProductId) {
-        ns.entities.enrolments[key].relatedProductId = payload.entities.enrolments[key].relatedProductId
+        ns.entities.enrolments[key].relatedProductId = payload.entities.enrolments[key].relatedProductId;
       }
     }
   });
@@ -188,9 +188,9 @@ const mergePurchases = (ns: State, payload: State, leaveExisting: boolean): Stat
 
   // Make sure that field headings and related ids get merged
   Object.keys(ns.entities.applications).forEach(key => {
-    if(payload.entities.applications && payload.entities.applications[key] && ns.entities.applications && ns.entities.applications[key]) {
+    if (payload.entities.applications && payload.entities.applications[key] && ns.entities.applications && ns.entities.applications[key]) {
       if (!ns.entities.applications[key].fieldHeadings.length && payload.entities.applications[key].fieldHeadings.length) {
-        ns.entities.applications[key].fieldHeadings = payload.entities.applications[key].fieldHeadings
+        ns.entities.applications[key].fieldHeadings = payload.entities.applications[key].fieldHeadings;
       }
     }
   });

@@ -1,9 +1,9 @@
 import * as React from "react";
-import { isNil } from "lodash";
+import {isNil} from "lodash";
 import classnames from "classnames";
-import { CSSProperties } from "react";
+import {CSSProperties} from "react";
 
-const styles: CSSProperties = {
+const styles: { [key: string]: CSSProperties } = {
   divStyle: {
     width: '2em',
     paddingRight: '0px',
@@ -24,7 +24,7 @@ const styles: CSSProperties = {
     alignItems: "center",
     margin: "0 -19px"
   }
-}
+};
 
 
 export interface Props {
@@ -49,7 +49,7 @@ export class ItemWrapper extends React.Component<Props, any> {
       quantity, onQuantityChange, onQuantityBlur } = this.props;
 
     return (
-      <div className={classnames("enrolmentInfo", { "col-xs-16 col-md-16": !fullWidth, "col-md-24": fullWidth })}>
+      <div className={classnames("enrolmentInfo", {"col-xs-16 col-md-16": !fullWidth, "col-md-24": fullWidth})}>
 
         {selected ?
           <div style={styles.quantity}>
@@ -77,7 +77,7 @@ export class ItemWrapper extends React.Component<Props, any> {
 
           </div>
           :
-          <label style={{ position: "relative" }}>
+          <label style={{position: "relative"}}>
             {!readonly &&
             <input
                className="enrolmentSelect"
@@ -96,8 +96,8 @@ export class ItemWrapper extends React.Component<Props, any> {
             {title}
           </label>
         }
-        {warning && (<span dangerouslySetInnerHTML={{ __html: warning }} />)}
-        {error && <div className="disabled" dangerouslySetInnerHTML={{ __html: error }} />}
+        {warning && (<span dangerouslySetInnerHTML={{__html: warning}} />)}
+        {error && <div className="disabled" dangerouslySetInnerHTML={{__html: error}} />}
         <br />
         {children}
       </div>

@@ -144,4 +144,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setContactFormValues: (contactFormData) => dispatch(setContactFormValues(contactFormData)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ContactForm as any);

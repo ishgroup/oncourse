@@ -5,8 +5,8 @@ import {stopPropagation} from "../../../common/utils/HtmlUtils";
 
 export class JoinButton extends React.Component<Props, State> {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       isAlreadyAdded: false,
@@ -60,9 +60,9 @@ export class JoinButton extends React.Component<Props, State> {
       className="actionLink"
       onClick={e => this.onAdd(e)}
       dangerouslySetInnerHTML={{__html: this.props.children}}
-    />
+    />;
 
-    return content || <span />
+    return content || <span />;
   }
 }
 

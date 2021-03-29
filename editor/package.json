@@ -1,17 +1,17 @@
 {
   "name": "editor",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "cms pure java script application",
   "main": "webpack.config.js",
   "scripts": {
     "dependencies:outdated": "npm outdated",
     "clean": "rm -rf ./build",
-    "build:prod": "webpack -p --progress --env.NODE_ENV production",
-    "build:prod:watch": "webpack --watch --progress -p --env.NODE_ENV production",
+    "build:prod": "webpack -p --progress --node-env production",
+    "build:prod:watch": "webpack --watch --progress -p --node-env production",
     "build:dev": "webpack --progress",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
-    "build:mock": "webpack --progress --env.NODE_ENV mock",
-    "build:mock:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map --env.NODE_ENV mock",
+    "build:mock": "webpack --progress --node-env mock",
+    "build:mock:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map --node-env mock",
     "test": "jest --ci  --testResultsProcessor=jest-junit",
     "start": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx --content-base ./src/dev",
     "start:mock": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/dev/app.tsx --content-base ./src/dev"
@@ -36,6 +36,7 @@
     "raw-loader": "4.0.2",
     "sass-loader": "11.0.1",
     "source-map-loader": "2.0.1",
+    "ts-jest": "^26.5.4",
     "ts-loader": "^8.0.18",
     "tslint": "6.1.3",
     "tslint-config-airbnb": "5.11.2",
@@ -45,8 +46,6 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
-    "@material-ui/core": "4.11.*",
-    "@material-ui/icons": "4.11.*",
     "@ckeditor/ckeditor5-autoformat": "latest",
     "@ckeditor/ckeditor5-basic-styles": "latest",
     "@ckeditor/ckeditor5-editor-classic": "latest",
@@ -59,6 +58,8 @@
     "@ckeditor/ckeditor5-paragraph": "latest",
     "@ckeditor/ckeditor5-react": "latest",
     "@ckeditor/ckeditor5-theme-lark": "latest",
+    "@material-ui/core": "4.11.*",
+    "@material-ui/icons": "4.11.*",
     "@types/react-dom": "^17.0.3",
     "axios": "0.21.1",
     "axios-mock-adapter": "1.19.0",

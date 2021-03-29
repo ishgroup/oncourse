@@ -8,7 +8,7 @@ import {HTMLMarkers} from "./common/services/HTMLMarker";
 import "../scss/index.scss";
 import {getPreferences} from "./common/actions/Actions";
 import {getCookie, setCookie} from "./common/utils/Cookie";
-import { v4 as uuid } from "uuid";
+import {v4 as uuid} from "uuid";
 import moment from "moment-timezone";
 import localforage from "localforage";
 
@@ -17,7 +17,7 @@ require('intersection-observer');
 
 // NodeList forEach polyfill
 if (window["NodeList"] && !NodeList.prototype["forEach"]) {
-  NodeList.prototype["forEach"] = Array.prototype.forEach;
+  NodeList.prototype["forEach"] = Array.prototype.forEach as any;
 }
 
 const appStart = () => {
@@ -32,7 +32,7 @@ const appStart = () => {
 
   const cartId = getCookie("cartId");
 
-  if(!cartId) {
+  if (!cartId) {
     setCookie(
       'cartId',
       uuid().replace(/-/g,"").substring(0,30)
@@ -41,11 +41,11 @@ const appStart = () => {
 
   localforage.config({
     driver: [localforage.LOCALSTORAGE, localforage.INDEXEDDB, localforage.WEBSQL]
-  })
+  });
 
   localforage.ready().catch(e => {
     console.error(e);
-  })
+  });
 
   const store = CreateStore();
 

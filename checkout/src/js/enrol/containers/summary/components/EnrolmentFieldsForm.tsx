@@ -5,6 +5,7 @@ import {isNil} from "lodash";
 
 import HeadingComp from "../../../components/HeadingComp";
 import {toFormKey} from "../../../../components/form/FieldFactory";
+import {IshState} from "../../../../services/IshState";
 
 class EnrolmentFields extends React.Component<any, any> {
 
@@ -78,4 +79,4 @@ const EnrolmentFieldsForm = reduxForm({
   destroyOnUnmount: false,
 })(EnrolmentFields);
 
-export default connect<any, any, any>(state => ({forms: state.form}))(EnrolmentFieldsForm) as any;
+export default connect<any, any, any, IshState>((state: any) => ({forms: state.form}))(EnrolmentFieldsForm) as any;

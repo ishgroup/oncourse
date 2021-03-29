@@ -10,8 +10,8 @@ import {Item} from "../../model";
  * @Deprecated Use /components/RadioGroupFields.tsx
  */
 export class RadioGroupField extends React.Component<RadioGroupFieldProps, RadioGroupFieldState> {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
 
   render() {

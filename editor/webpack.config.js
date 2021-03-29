@@ -43,9 +43,9 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
         path.resolve(__dirname, 'src/scss'),
       ],
       alias: {
-        'dom-helpers/scrollbarSize': path.resolve(dirname, 'node_modules', 'dom-helpers', 'util', 'scrollbarSize'),
-        'dom-helpers/removeClass': path.resolve(dirname, 'node_modules', 'dom-helpers', 'class', 'removeClass'),
-        'dom-helpers/addClass': path.resolve(dirname, 'node_modules', 'dom-helpers', 'class', 'addClass'),
+        'dom-helpers/scrollbarSize': path.resolve(__dirname, 'node_modules', 'dom-helpers', 'util', 'scrollbarSize'),
+        'dom-helpers/removeClass': path.resolve(__dirname, 'node_modules', 'dom-helpers', 'class', 'removeClass'),
+        'dom-helpers/addClass': path.resolve(__dirname, 'node_modules', 'dom-helpers', 'class', 'addClass'),
       },
       extensions: [".ts", ".tsx", ".js", ".css"]
     },
@@ -95,7 +95,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
     case "production":
       plugins.push(
         new CompressionPlugin({
-          asset: "[path].gz[query]",
+          filename: "[file].gz[query]",
           algorithm: "gzip",
           test: /\.(js|html|css|map)$/,
           minRatio: Infinity,

@@ -1,4 +1,4 @@
-import {ValidationError, Contact, ContactFields, Amount, Preferences} from "../../model";
+import {ValidationError, Contact, ContactFields, Amount} from "../../model";
 import {State as SummaryState} from "../containers/summary/reducers/State";
 import {State as PaymentState} from "../containers/payment/reducers/State";
 import {ContactsState} from "../../NormalizeSchema";
@@ -18,7 +18,6 @@ export interface CheckoutState {
   concession: any;
   redeemVouchers: any;
   contactAddProcess: ContactAddProcessState;
-  preferences: Preferences;
   fetching?: boolean;
   isCartModified: boolean;
 }

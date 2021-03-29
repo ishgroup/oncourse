@@ -82,7 +82,11 @@ const _styleModule = (dirname) => {
     },
     {
       test: /\.(otf|eot|ttf|woff|woff2|svg)$/,
-      loader: 'file-loader?name=fonts/[name].[ext]&publicPath=./',
+      loader: 'file-loader',
+      options: {
+        name: "fonts/[name].[ext]",
+        publicPath: "./"
+      },
       exclude: [
         /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
       ]

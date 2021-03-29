@@ -1,11 +1,10 @@
-
 import React from "react";
 import {Amount, Contact} from "../../../../model";
 import {PayerSelect} from "./PayerSelect";
 import {PayerAdd} from "./PayerAdd";
 import CreditCardHeader from "./CreditCardHeader";
 import {processPaymentV2FailedStatus, setIframeUrl} from "../actions/Actions";
-import {Dispatch} from "react-redux";
+import {Dispatch} from "redux";
 
 interface Props {
   contacts: Contact[];
@@ -58,7 +57,7 @@ class CreditCardV2Comp extends React.Component<Props, any> {
       iframeUrl
     } = this.props;
 
-    if(this.iframeRef.current && prev.iframeUrl !== iframeUrl) {
+    if (this.iframeRef.current && prev.iframeUrl !== iframeUrl) {
       this.iframeRef.current.contentWindow.location.replace(iframeUrl);
     }
   }

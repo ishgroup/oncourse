@@ -3,8 +3,8 @@ import {CommonCartItem} from "../../../services/IshState";
 
 export default class CartItem extends React.Component<CartItemProps, CartItemState> {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       pending: false,

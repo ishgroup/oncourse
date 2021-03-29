@@ -7,10 +7,10 @@
  */
 
 import React, { useCallback, useState } from "react";
-import { createStyles, makeStyles, withStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { connect, Dispatch } from "react-redux";
-import { GridList, GridListTile, Typography, Radio, RadioGroup, FormControlLabel, FormControl } from "@material-ui/core";
+import { GridList, GridListTile, Typography, FormControl } from "@material-ui/core";
 import Navigation from "../Navigations";
 import { setTemplateValue } from "../../../redux/actions";
 import { addEventListenerWithDeps } from "../../Hooks/addEventListnerWithDeps";
@@ -176,4 +176,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setTemplateValue: (template: string) => dispatch(setTemplateValue(template)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TemplateForm as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(TemplateForm as any);

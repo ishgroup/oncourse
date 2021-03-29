@@ -1,17 +1,17 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const path = require("path");
 
 const _info = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
   console.log(`
-Build started with following configuration:
-===========================================
-→ NODE_ENV: ${NODE_ENV}
-→ SOURCE_MAP: ${SOURCE_MAP}
-→ API_ROOT: ${API_ROOT}
-→ BUILD_NUMBER: ${BUILD_NUMBER}
-`);
+    Build started with following configuration:
+    ===========================================
+    → NODE_ENV: ${NODE_ENV}
+    → SOURCE_MAP: ${SOURCE_MAP}
+    → API_ROOT: ${API_ROOT}
+    → BUILD_NUMBER: ${BUILD_NUMBER}
+  `);
 };
 
 const KEYS = {
@@ -19,6 +19,7 @@ const KEYS = {
 };
 
 const _common = (dirname, options) => {
+  const mode = options.NODE_ENV || 'development';
   let _main = {
     entry: ['babel-polyfill', 'url-polyfill', 'custom-event-polyfill', options[KEYS.ENTRY]],
     output: {
@@ -33,8 +34,12 @@ const _common = (dirname, options) => {
         path.resolve(dirname, 'src/scss'),
         path.resolve(dirname, 'node_modules')
       ],
+      fallback: {
+        util: require.resolve("util/")
+      },
       extensions: [".ts", ".tsx", ".js", ".css"]
     },
+    mode: mode,
     module: {
       rules: [
         {
@@ -42,7 +47,7 @@ const _common = (dirname, options) => {
           use: [
             {
               loader: 'babel-loader',
-              query: {
+              options: {
                 presets: ['@babel/preset-react', "@babel/preset-env"]
               }
             },
@@ -54,11 +59,14 @@ const _common = (dirname, options) => {
             path.resolve(dirname, "src/js"),
             path.resolve(dirname, "src/dev"),
           ],
+          exclude: [
+            path.resolve(dirname, "node_modules")
+          ]
         },
         {
           test: /\.js$/,
           loader: 'babel-loader',
-          query: {
+          options: {
             presets: ['@babel/preset-react', "@babel/preset-env"]
           }
         }
@@ -66,13 +74,14 @@ const _common = (dirname, options) => {
     },
     plugins: [
       _DefinePlugin('development', 'http://localhost:10080', options.BUILD_NUMBER),
-      new ExtractTextPlugin("[name].css"),
+      new MiniCssExtractPlugin({ filename: "[name].css" }),
       new webpack.optimize.ModuleConcatenationPlugin(),
+      new webpack.SourceMapDevToolPlugin({}),
     ],
     devServer: {
       inline: false
     },
-    devtool: 'source-map',
+    devtool: false,
   };
   _main.module.rules = [..._main.module.rules, ..._styleModule(dirname)];
   return _main;
@@ -82,25 +91,25 @@ const _styleModule = (dirname) => {
   return [
     {
       test: /\.css$/,
-      loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'}),
+      use: [MiniCssExtractPlugin.loader, 'css-loader'],
       include: [
         path.resolve(dirname, 'node_modules')
       ]
     },
     {
       test: /\.scss$/,
-      loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader', 'sass-loader']}),
+      use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       include: [
         path.resolve(dirname, "src/scss"),
       ]
     },
     {
       test: /\.(jpg|jpeg|gif|png)$/,
-      loader: 'url-loader?limit=1024&name=images/[name].[ext]'
+      use: 'url-loader?limit=1024&name=images/[name].[ext]'
     },
     {
       test: /\.(woff|woff2|eot|ttf|svg)$/,
-      loader: 'url-loader?limit=1024&name=fonts/[name].[ext]'
+      use: 'url-loader?limit=1024&name=fonts/[name].[ext]'
     },
     {
       enforce: "pre", test: /\.js$/, loader: "source-map-loader"

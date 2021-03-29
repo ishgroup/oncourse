@@ -4,8 +4,8 @@ import {PromotionCart, PromotionCartState} from "../../../services/IshState";
 
 export default class Promotions extends React.Component<PromotionsProps, PromotionsState> {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       value: "",

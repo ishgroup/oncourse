@@ -8,13 +8,13 @@ import {RadioGroupField} from "../../../components/form/RadioGroupField";
 
 
 interface State {
-  visible: boolean
+  visible: boolean;
 }
 
 export class Dialog extends React.Component<FeeProps, State> {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       visible: false
     };
@@ -33,7 +33,7 @@ export class Dialog extends React.Component<FeeProps, State> {
 
   render() {
     const onClose = () => {
-      this.hide()
+      this.hide();
     };
     return (
       <Rodal visible={this.state.visible}
@@ -44,17 +44,17 @@ export class Dialog extends React.Component<FeeProps, State> {
       >
         {this.questions()}
       </Rodal>
-    )
+    );
   }
 
   questions() {
     const onSubmit = (values: Values): void => {
       this.props.onSubmit(values);
-      this.hide()
+      this.hide();
     };
     return (
       <Form {...this.props} onSubmit={onSubmit}/>
-    )
+    );
   }
 }
 
@@ -64,15 +64,7 @@ export interface Props extends FormProps<FormData, any, any>, FeeProps {
 
 export class Fields extends React.Component<any, any> {
   render() {
-    const {model, handleSubmit, onClose} = this.props;
-    const p: any = {
-      key: "testKey",
-      name: "testName",
-      label: "testLabel",
-      type: "text",
-      required: "true",
-      placeholder: "placeholder",
-    };
+    const {model, handleSubmit} = this.props;
     return (
       <div className="modal-content">
         <div className="modal-header">
@@ -87,7 +79,7 @@ export class Fields extends React.Component<any, any> {
               switch (f.dataType) {
                 default:
                   return <Field {...toFormFieldProps(f)} component={RadioGroupField}
-                                items={[{key: "true", value: "Yes"}, {key: "false", value: "No"}]}/>
+                                items={[{key: "true", value: "Yes"}, {key: "false", value: "No"}]}/>;
               }
             })}
 
@@ -98,7 +90,7 @@ export class Fields extends React.Component<any, any> {
           </form>
         </div>
       </div>
-    )
+    );
   }
 }
 

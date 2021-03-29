@@ -10,7 +10,8 @@ import {
   changeTab, getCorporatePass, resetCorporatePass,
   submitPaymentCorporatePass, updatePaymentStatus, processPaymentV2,
 } from "../actions/Actions";
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import {
   changePhase, getAmount, getCheckoutModelFromBackend, setPayer, showSyncErrors, togglePayNowVisibility, updatePayNow,
 } from "../../../actions/Actions";
@@ -19,7 +20,7 @@ import CheckoutService from "../../../services/CheckoutService";
 import {IshState} from "../../../../services/IshState";
 import {Tabs} from "../reducers/State";
 import {PaymentStatus, CorporatePass, Contact, Amount, ValidationError} from "../../../../model";
-import {getAllContactNodesFromBackend, setResultDetailsCorporatePass} from "../../summary/actions/Actions";
+import {setResultDetailsCorporatePass} from "../../summary/actions/Actions";
 
 /**
  * @Deprecated will be remove, now it is used only as example
@@ -95,7 +96,6 @@ class PaymentForm extends React.Component<Props, any> {
       iframeUrl, processPaymentV2, formSyncErrors, dispatch, formValues
     } = this.props;
 
-
     const disabled = (pristine || submitting);
 
     const agreementChecked = formValues && formValues[FieldName.agreementFlag];
@@ -129,7 +129,7 @@ class PaymentForm extends React.Component<Props, any> {
                     voucherPayerEnabled={voucherPayerEnabled}
                     iframeUrl={iframeUrl}
                     processPaymentV2={processPaymentV2}
-                    disabled={formSyncErrors}
+                    disabled={!(formSyncErrors && Object.keys(formSyncErrors).length === 0)}
                     dispatch={dispatch}
                   />
                 }
@@ -294,7 +294,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export const Container = connect<any, any, any>(
+export const Container = connect<any, any, any, IshState>(
   mapStateToProps,
   mapDispatchToProps,
 )(Form);

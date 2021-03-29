@@ -136,4 +136,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setCaptchaToken: (token) => dispatch(setCaptchaToken(token)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomizedSteppers as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CustomizedSteppers as any);

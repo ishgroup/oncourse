@@ -17,7 +17,7 @@ import {getAllContactNodesFromBackend, removeContactFromSummary} from "../contai
 import {Phase} from "../reducers/State";
 
 
-export const EpicRemoveContact: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
+export const EpicRemoveContact: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any, IshState>): Observable<any> => {
   return action$.ofType(EPIC_REMOVE_CONTACT).flatMap((action: IAction<Contact>) => {
     const state: IshState = store.getState();
     const result = [];

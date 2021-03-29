@@ -8,8 +8,8 @@ import {sendProductDetailsImpressionEvent, sendProductImpressionEvent} from "../
 import {findPriceInDOM} from "../../../common/utils/DomUtils";
 
 class BuyButtonBase extends React.Component<BuyButtonProps, BuyButtonState> {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       showedPopup: false,
@@ -73,7 +73,7 @@ class BuyButtonBase extends React.Component<BuyButtonProps, BuyButtonState> {
         variant: product.type,
         quantity: 1,
         price: findPriceInDOM(product.id)
-      }
+      };
 
       sendProductImpressionEvent(eventData);
 

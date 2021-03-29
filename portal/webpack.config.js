@@ -1,7 +1,6 @@
 const __common = require('./webpack/__common');
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
@@ -58,8 +57,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
     optimization: {
       minimizer: [
         new TerserPlugin({
-          parallel: 4,
-          sourceMap: true
+          parallel: 4
         })
       ]
     },
@@ -75,12 +73,14 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
 
 const plugins = (NODE_ENV, BUILD_NUMBER) => {
   const plugins = [
-    new webpack.IgnorePlugin(/^(\.\/locale|jquery|\.\/item|desandro-matches-selector|ev-emitter|fizzy-ui-utils|get-size|outlayer)$/),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^(\.\/locale|jquery|\.\/item|desandro-matches-selector|ev-emitter|fizzy-ui-utils|get-size|outlayer)$/
+    }),
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
     new webpack.EnvironmentPlugin({
       RELEASE_VERSION: BUILD_NUMBER
     }),
-    new MiniCssExtractPlugin("[name].css"),
+    new MiniCssExtractPlugin({ filename: "[name].css" }),
     new webpack.optimize.ModuleConcatenationPlugin(),
   ];
 
@@ -96,21 +96,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
       );
       break;
     case "development":
-      // plugins.push(
-      //   htmlPlugin("enrol/checkout/index.html"),
-      //   htmlPlugin("courses/index.html"),
-      //   htmlPlugin("courses/one_class.html"),
-      //   htmlPlugin("products/index.html")
-      // );
       break;
   }
   return plugins;
-};
-
-const htmlPlugin = (name) => {
-  return new HtmlWebpackPlugin({
-    filename: `${name}`,
-    template: path.resolve(__dirname, "./dev-server/", name),
-    inject: false
-  });
 };

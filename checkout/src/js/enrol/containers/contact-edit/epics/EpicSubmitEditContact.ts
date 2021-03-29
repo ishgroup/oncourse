@@ -9,7 +9,7 @@ import {addContactToSummary} from "../../summary/actions/Actions";
 import {changePhase, updateContactAddProcess} from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";
 
-export const SubmitEditContact: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
+export const SubmitEditContact: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any, IshState>): Observable<any> => {
   return action$.ofType(SUBMIT_EDIT_CONTACT).flatMap(action => {
     const state = store.getState();
     const contact: Contact = action.payload;

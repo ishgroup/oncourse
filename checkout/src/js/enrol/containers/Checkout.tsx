@@ -1,6 +1,6 @@
 import * as React from "react";
-import {connect, Dispatch} from "react-redux";
-
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import ContactAddForm from "./contact-add/ContactAddForm";
 import CompanyAddForm from "./contact-add/CompanyAddForm";
 import Concession from './concession/Concession';
@@ -152,6 +152,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-const Container = connect(mapStateToProps, mapDispatchToProps)(Checkout);
+const Container = connect<any, any, any, IshState>(mapStateToProps, mapDispatchToProps)(Checkout);
 
 export default Container;

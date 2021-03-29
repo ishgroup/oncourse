@@ -1,10 +1,12 @@
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import {IshState} from "../../../services/IshState";
 import {ResultComp} from "./components/ResultComp";
 import {tryAnotherCard} from "./actions/Actions";
 import {changePhase, resetCheckoutState} from "../../actions/Actions";
 import {resetPaymentState, resetPaymentStateOnInit} from "../payment/actions/Actions";
 import {Phase} from "../../reducers/State";
+import {IshAction} from "../../../actions/IshAction";
 
 const PropsBy = (state: IshState): any => {
   return {
@@ -15,7 +17,7 @@ const PropsBy = (state: IshState): any => {
   };
 };
 
-export const ActionsBy = (dispatch: Dispatch<IshState>): any => {
+export const ActionsBy = (dispatch: Dispatch<IshAction<any>>): any => {
   return {
     onCancel: () => {
       dispatch(resetCheckoutState());
@@ -32,5 +34,5 @@ export const ActionsBy = (dispatch: Dispatch<IshState>): any => {
   };
 };
 
-export const Result = connect(PropsBy, ActionsBy)(ResultComp);
+export const Result = connect<any,any,any>(PropsBy, ActionsBy)(ResultComp);
 

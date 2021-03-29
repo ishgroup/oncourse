@@ -3,13 +3,14 @@ import {Messages as MessagesComp} from "../components/Messages";
 import {Phase} from "../reducers/State";
 import {Model, Progress as ProgressComp, Tab} from "../components/Progress";
 import {changePhase} from "../actions/Actions";
+import {IshState} from "../../services/IshState";
 
-export const Messages = connect(state => (
+export const Messages = connect<any, any, any, IshState>(state => (
   {error: state.checkout.error}
 ))(MessagesComp as any);
 
 
-export const Progress = connect<any, any, any>(
+export const Progress = connect<any, any, any, IshState>(
   state => ({
     model: progressModelBy(state.checkout.phase),
     haveTotalAmount: !!(state.checkout.amount && Number(state.checkout.amount.total)),

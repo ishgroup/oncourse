@@ -43,7 +43,7 @@ const mapStateToProps = (state: IshState, ownProps: FeesProps) => {
   };
 };
 
-export const Fees = connect(mapStateToProps, mapDispatchToProps)(FeesContainer);
+export const Fees = connect<any, any, any, IshState>(mapStateToProps, mapDispatchToProps)(FeesContainer);
 
 interface FeesProps {
   id: string;

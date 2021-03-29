@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import {IshState, WaitingCourseClassState} from "../../services/IshState";
 import {Course} from "../../model";
 import {Actions} from "../actions/Actions";
-import {GABuilder} from "../../services/GoogleAnalyticsService";
 import {JoinButton} from "../components/joinButton/JoinButton";
 
 const isAdded = (items: WaitingCourseClassState, id: string): boolean => {
@@ -48,4 +47,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(JoinButton as any);
+export default connect<any, any, any, IshState>(mapStateToProps, mapDispatchToProps)(JoinButton as any);

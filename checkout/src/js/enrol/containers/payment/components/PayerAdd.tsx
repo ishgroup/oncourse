@@ -10,8 +10,8 @@ export interface Props {
 export class PayerAdd extends React.Component<Props, any> {
   private listEl;
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       showList: false,

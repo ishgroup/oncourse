@@ -2,7 +2,6 @@ import * as L from "lodash";
 import {MiddlewareAPI} from "redux";
 import {ActionsObservable, Epic} from "redux-observable";
 import {Observable} from "rxjs";
-import "rxjs";
 import * as Actions from "../actions/Actions";
 import {Actions as WebActions} from "../../web/actions/Actions";
 import {ValidationError, PaymentStatus} from "../../model";
@@ -28,17 +27,17 @@ const getItemType = action => {
       return 'waitingLists';
 
     case WebActions.REMOVE_PRODUCT_FROM_CART:
-      return action.payload.type.toLowerCase() + "s"
+      return action.payload.type.toLowerCase() + "s";
 
     default:
       return null;
   }
-}
+};
 
 /**
  * This epic process Init action of checkout application and define Phase of the application
  */
-export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
+export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any, IshState>): Observable<any> => {
   return action$.ofType(
     Actions.INIT_REQUEST,
     WebActions.REMOVE_CLASS_FROM_CART,

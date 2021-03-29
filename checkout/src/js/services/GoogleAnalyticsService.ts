@@ -9,7 +9,7 @@ interface ProductEvent {
   name: string;                 // Product name (string).
   category: string;             // Product category (string).
   brand?: string;               // Product brand (string).
-  variant?: string;             // Product variant (string).
+  variant?: any;             // Product variant (string).
   price?: number;               // Product price (currency).
   quantity?: number;
 }
@@ -55,11 +55,6 @@ export const initGAEvent = (data, state) => {
   } catch (e) {
     console.log('unhandled error in google analytics service ' + e, data);
   }
-};
-
-const sendInitActions = () => {
-  // window['ga']('create', trackingId, 'auto');
-  // window['ga']('require', 'ec');
 };
 
 const sendProductClickEvent = (data, state: IshState) => {

@@ -42,4 +42,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EnrolButton.EnrolButton as any);
+export default connect<any, any, any, IshState>(mapStateToProps, mapDispatchToProps)(EnrolButton.EnrolButton as any);

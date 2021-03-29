@@ -1,5 +1,6 @@
 import React from "react";
-import {connect, Dispatch} from "react-redux";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import {IshState} from "../../../services/IshState";
 import {PaymentComp} from "./components/PaymentComp";
 import PaymentForm from "./components/PaymentForm";
@@ -30,5 +31,5 @@ export const ActionsBy = (dispatch: Dispatch<any>): any => {
   };
 };
 
-export const Payment = connect(PropsBy, ActionsBy)(PaymentComp);
+export const Payment = connect<any,any,any>(PropsBy, ActionsBy)(PaymentComp);
 

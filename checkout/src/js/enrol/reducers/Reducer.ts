@@ -137,7 +137,7 @@ const ContactsReducer = (
 
       ns = L.cloneDeep(state);
       ns.entities.contact = {...ns.entities.contact, ...action.payload.entities.contact};
-      ns.result = Array.from(new Set([...ns.result, ...action.payload.result]));
+      ns.result = Array.from(new Set([...ns.result, action.payload.result as any]));
       return ns;
 
     case Actions.UPDATE_PARENT_CHILDS_REQUEST:

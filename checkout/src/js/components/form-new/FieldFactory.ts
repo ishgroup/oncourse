@@ -1,12 +1,9 @@
 import * as React from "react";
 import * as Form from "redux-form";
-
 import {Field, DataType} from "../../model";
-
 import SelectField from "./SelectField";
 import Checkbox from "./Checkbox";
-import TextField from "./TextField";
-import RadioGroup from "./RadioGroup";
+import {TextField} from "./TextField";
 
 
 class FieldFactory {

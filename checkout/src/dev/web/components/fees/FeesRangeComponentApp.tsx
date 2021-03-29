@@ -3,13 +3,12 @@ import * as ReactDOM from "react-dom";
 import {FeesRangeComponent, Props, Values} from "../../../../js/web/components/fees/FeesRangeComponent";
 import {mockCourseClassWithFeesRange, mockField} from "../../../mocks/mocks/MockFunctions";
 import {DataType} from "../../../../js/model";
-import {connect, Dispatch, Provider, Store} from "react-redux";
-import {applyMiddleware, combineReducers, createStore} from "redux";
+import {connect, Provider} from "react-redux";
+import {applyMiddleware, combineReducers, createStore, Dispatch, Store} from "redux";
 import {reducer as formReducer} from "redux-form";
 import "../../../../scss/index.scss";
 import {createLogger} from "redux-logger";
 import {IAction} from "../../../../js/actions/IshAction";
-
 
 const reducer = combineReducers({
   form: formReducer,
@@ -26,7 +25,7 @@ export const store: Store<any> = createStore(reducer, applyMiddleware(createLogg
 
 
 const props: Props = {
-  onSubmit: (values: Values) => {
+  onSubmit: () => {
   },
   model: {
     header: "<h3 class=\"modal-title pull-left text-nowrap\" id=\"ModalLabel\">Am I eligible?</h3>",
@@ -51,14 +50,14 @@ const render = () => ReactDOM.render(
   document.getElementById("react-fees-range-component"),
 );
 
-const Comp = connect(state => {
+const Comp = connect<any, any, any, any>(state => {
   return {
     model: props.model,
     estimatedDiscountIndex: state.estimatedDiscountIndex,
   };
 },                   (dispatch: Dispatch<any>): any => {
   return {
-    onSubmit: values => dispatch({type: "SET", payload: 1}),
+    onSubmit: () => dispatch({type: "SET", payload: 1}),
   };
 })(FeesRangeComponent);
 

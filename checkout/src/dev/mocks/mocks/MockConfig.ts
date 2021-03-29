@@ -1,13 +1,11 @@
 import * as L from "lodash";
-
 import {AxiosResponse} from "axios";
-
 import faker from "faker";
 import uuid from "uuid";
 import {CreateMockDB, MockDB} from "./MockDB";
 import localForage from "localforage";
 import {Injector} from "../../../js/injector";
-import {Store} from "react-redux";
+import {Store} from "redux";
 import {IshState} from "../../../js/services/IshState";
 import {EnvironmentConstants} from "../../../js/config/EnvironmentConstants";
 import {CartApiMock} from "../CartApiMock";
@@ -71,8 +69,8 @@ export class MockConfig {
 
   createValidationError(formErrors: number = 3, field: string[]): ValidationError {
     return {
-      formErrors: L.range(0, formErrors).map((i) => faker.hacker.phrase()),
-      fieldsErrors: field.map((f) => {
+      formErrors: L.range(0, formErrors).map( i => faker.hacker.phrase()),
+      fieldsErrors: field.map( f => {
         return {name: f, error: faker.hacker.phrase()};
       }),
     };

@@ -1,6 +1,5 @@
 import "rxjs";
 import {Observable} from "rxjs/Observable";
-import {error} from "util";
 
 let index: number = 0;
 

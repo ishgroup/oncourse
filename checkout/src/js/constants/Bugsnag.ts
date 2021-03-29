@@ -13,9 +13,7 @@ if (typeof jest === 'undefined') {
     appVersion:  String(process.env.BUILD_NUMBER),
     releaseStage: process.env.NODE_ENV,
     onError (event) {
-      if (!event.errors.length || !event.errors[0].stacktrace.some(s => s.file.includes("dynamic.js"))) {
-        return false;
-      }
+      return !(!event.errors.length || !event.errors[0].stacktrace.some(s => s.file.includes("dynamic.js")));
     },
   });
 } else {

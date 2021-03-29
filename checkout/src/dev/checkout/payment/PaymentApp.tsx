@@ -1,17 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
 import {Provider} from "react-redux";
 import {Messages, Progress} from "../../../js/enrol/containers/Functions";
-
-import "../../scss/index.scss";
-
 import {Payment} from "../../../js/enrol/containers/payment/Payment";
 import {addContact} from "../../../js/enrol/containers/contact-add/actions/Actions";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 import {updateAmount} from "../../../js/enrol/actions/Actions";
-
 import * as MockFunctions from "../../mocks/mocks/MockFunctions";
+import "../../scss/index.scss";
 
 const config: MockConfig = new MockConfig();
 

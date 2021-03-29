@@ -5,7 +5,7 @@ import {Product} from "../../model";
 import {Actions} from "../actions/Actions";
 import {GABuilder} from "../../services/GoogleAnalyticsService";
 
-export default connect(mapStateToProps, mapDispatchToProps)(BuyButton);
+export default connect<any, any, any, IshState>(mapStateToProps, mapDispatchToProps)(BuyButton);
 
 function isAdded(items: ProductCartState, id: string) {
   const item = items.result.find(itemId => itemId === id);

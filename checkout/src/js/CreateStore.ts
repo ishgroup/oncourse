@@ -1,14 +1,13 @@
-import {Store} from "react-redux";
 import {createEpicMiddleware} from "redux-observable";
 import {createLogger} from "redux-logger";
 import * as localforage from "localforage";
 import {ConfigConstants} from "./config/ConfigConstants";
-import {applyMiddleware, compose, createStore, StoreEnhancer} from "redux";
+import {applyMiddleware, compose, createStore, StoreEnhancer, Store} from "redux";
 import {IshState} from "./services/IshState";
 import {EpicRoot} from "./EpicRoot";
 import {combinedReducers} from "./reducers/reducers";
 import {EnvironmentConstants} from "./config/EnvironmentConstants";
-import {autoRehydrate, getStoredState, OnComplete, persistStore} from "redux-persist";
+import {autoRehydrate, OnComplete, persistStore} from "redux-persist";
 import {syncCartStore} from "./SyncCartStore";
 import {createBlacklistFilter} from 'redux-persist-transform-filter';
 
@@ -22,9 +21,9 @@ const getMiddleware = (): StoreEnhancer<IshState> => {
    * Split middlewares which we using in development and in production.
    */
   if (process.env.NODE_ENV === EnvironmentConstants.development) {
-    return applyMiddleware(createEpicMiddleware(EpicRoot), logger);
+    return applyMiddleware(createEpicMiddleware(EpicRoot), logger) as any;
   } else {
-    return applyMiddleware(createEpicMiddleware(EpicRoot));
+    return applyMiddleware(createEpicMiddleware(EpicRoot)) as any;
   }
 };
 

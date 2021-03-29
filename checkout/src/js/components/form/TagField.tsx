@@ -10,8 +10,8 @@ import {Item} from "../../model";
  * @Deprecated Use /components/RadioGroupFields.tsx
  */
 export class TagField extends React.Component<TagFieldProps, TagFieldState> {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
 
   render() {

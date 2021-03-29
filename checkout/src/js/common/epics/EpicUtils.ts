@@ -2,7 +2,6 @@ import {FULFILLED, REJECTED} from "../actions/ActionUtils";
 import {Observable} from "rxjs";
 import {MiddlewareAPI} from "redux";
 import {ActionsObservable, Epic} from "redux-observable";
-import "rxjs";
 import {SHOW_MESSAGES} from "../../enrol/actions/Actions";
 import {commonErrorToValidationError, toValidationError} from "../utils/ErrorUtils";
 import {AxiosResponse} from "axios";
@@ -17,24 +16,24 @@ const notifyBugsnagApiError = (error: any) => {
       ...typeof error === "object" ? error : {}
     });
   });
-}
+};
 
 export function mapPayload(actionType: string) {
-    return function (payload: any) {
-        return {
-            type: FULFILLED(actionType),
-            payload,
+  return function (payload: any) {
+      return {
+          type: FULFILLED(actionType),
+          payload,
         };
     };
 }
 
 export function mapError(actionType: string) {
-    return function (payload: any) {
+  return function (payload: any) {
       notifyBugsnagApiError(payload);
-        return Observable.of({
-            type: REJECTED(actionType),
-            payload,
-            error: true,
+      return Observable.of({
+          type: REJECTED(actionType),
+          payload,
+          error: true,
         });
     };
 }
@@ -58,7 +57,7 @@ export const ProcessError = (data: AxiosResponse): { type: string, payload?: any
 
 
 export const Create = <V, S>(request: Request<V, S>): Epic<any, any> => {
-  return (action$: ActionsObservable<any>, store: MiddlewareAPI<S>): Observable<any> => {
+  return (action$: ActionsObservable<any>, store: MiddlewareAPI<any,S>): Observable<any> => {
     return action$
       .ofType(request.type).mergeMap(action => Observable
         .fromPromise(request.getData(action.payload, store.getState()))
@@ -71,7 +70,7 @@ export const Create = <V, S>(request: Request<V, S>): Epic<any, any> => {
 };
 
 export const Reply = <V, S>(request: Request<V, S>, retry: number): Epic<any, any> => {
-  return (action$: ActionsObservable<any>, store: MiddlewareAPI<S>): Observable<any> => {
+  return (action$: ActionsObservable<any>, store: MiddlewareAPI<any,S>): Observable<any> => {
     return action$
       .ofType(request.type).mergeMap((action: IAction<any>) => Observable
         .defer(() => request.getData(action.payload, store.getState())).retry(retry)

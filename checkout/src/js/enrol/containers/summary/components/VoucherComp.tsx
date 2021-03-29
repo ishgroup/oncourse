@@ -1,8 +1,7 @@
 import * as React from "react";
 import classnames from "classnames";
-
-import { Contact, Voucher, Product } from "../../../../model";
-import { ItemWrapper } from "./ItemWrapper";
+import {Contact, Voucher, Product} from "../../../../model";
+import {ItemWrapper} from "./ItemWrapper";
 import NumberFormat from "react-number-format";
 
 
@@ -65,18 +64,18 @@ class VoucherComp extends React.PureComponent<Props, State> {
   }
 
   private handleValueBlur = () => {
-    const { onPriceValueChange } = this.props;
+    const {onPriceValueChange} = this.props;
     onPriceValueChange(this.state.price);
   }
 
   private handleQuantityBlur() {
-    const { onQuantityValueChange } = this.props;
+    const {onQuantityValueChange} = this.props;
     onQuantityValueChange(this.state.quantity || 1);
   }
 
   public render(): JSX.Element {
-    const { voucher, product, contact, onChange, readonly } = this.props;
-    const divClass = classnames("row", "enrolmentItem", { disabled: !voucher.selected });
+    const {voucher, product, contact, onChange, readonly} = this.props;
+    const divClass = classnames("row", "enrolmentItem", {disabled: !voucher.selected});
     const warning = voucher.warnings && voucher.warnings.length ? this.props.voucher.warnings[0] : null;
     const error = voucher.warnings && voucher.errors.length ? this.props.voucher.errors[0] : null;
     const name = `voucher-${contact.id}-${voucher.productId}`;
@@ -149,7 +148,7 @@ const VoucherPrice = (props): any => {
   const price = props.price;
 
   return voucher.isEditablePrice && !props.readonly ?
-    <div className="row" style={{ display: "flex", alignItems: "center" }}>
+    <div className="row" style={{display: "flex", alignItems: "center"}}>
 
       <span className="col-xs-12 col-md-12">
         <NumberFormat
@@ -158,7 +157,7 @@ const VoucherPrice = (props): any => {
           value={price}
           onChange={e => props.onChange(e.target.value.replace(/[$,]/g,""))}
           onBlur={e => props.onBlur(e)}
-          style={{ margin: 0 }}
+          style={{margin: 0}}
           prefix={'$ '}
           decimalScale={0}
           allowNegative={false}

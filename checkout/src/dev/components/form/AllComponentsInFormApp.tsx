@@ -1,17 +1,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
 import {Provider} from "react-redux";
 import {createLogger} from "redux-logger";
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import {Field, reducer as formReducer, reduxForm} from "redux-form";
 import {Values} from "redux-form-website-template";
-
 import {TextField} from "../../../js/components/form/TextField";
 import {CheckboxField} from "../../../js/components/form/CheckboxField";
 import {ComboboxField} from "../../../js/components/form/ComboboxField";
 import {TextAreaField} from "../../../js/components/form/TextAreaField";
-import {RadioGroupField} from "../../../js/components/form/RadioGroupField";
 
 
 const store = createStore(
@@ -34,7 +31,7 @@ const options = [
 class AllComponentsFrom extends React.Component<any, any> {
 
   render() {
-    const {handleSubmit, pristine, reset, submitting} = this.props;
+    const {handleSubmit, pristine, submitting} = this.props;
     return (
       <form onSubmit={handleSubmit}>
         <fieldset>
@@ -55,7 +52,7 @@ class AllComponentsFrom extends React.Component<any, any> {
   }
 }
 
-const validate = (values: FormData) => {
+const validate = values => {
   const errors = Object.assign({}, values);
   return errors;
 };

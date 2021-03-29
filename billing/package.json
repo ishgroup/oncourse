@@ -1,6 +1,6 @@
 {
   "name": "billing",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "main": "webpack.config.js",
   "devDependencies": {
@@ -8,12 +8,16 @@
     "@ckeditor/ckeditor5-theme-lark": "latest",
     "awesome-typescript-loader": "5.0.0-1",
     "compression-webpack-plugin": "^1.1.11",
+    "css-loader": "^5.2.0",
     "file-loader": "5.*",
     "jest": "^26.6.3",
     "jest-junit": "^12.0.0",
+    "mini-css-extract-plugin": "^1.4.0",
+    "sass-loader": "^11.0.1",
     "source-map-loader": "0.2.3",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2",
     "zip-webpack-plugin": "^4.0.1"
   },
   "dependencies": {
@@ -29,7 +33,7 @@
     "@types/react-dom": "^16.9.8",
     "axios": "^0.21.1",
     "formik": "^2.2.6",
-    "html-webpack-plugin": "^4.5.1",
+    "html-webpack-plugin": "^5.3.1",
     "moment": "^2.29.1",
     "node-sass": "^4.0.0",
     "react": "^17.0.1",
@@ -41,8 +45,7 @@
     "redux-observable": "^1.2.0",
     "rxjs": "^6.6.3",
     "typescript": "^4.0.3",
-    "yup": "^0.32.8",
-    "zip-webpack-plugin": "3.0.0"
+    "yup": "^0.32.8"
   },
   "scripts": {
     "dependencies:outdated": "npm outdated",
@@ -52,7 +55,7 @@
     "build:dev": "webpack --progress",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
     "test": "jest --ci --testResultsProcessor=jest-junit",
-    "start": "webpack-dev-server --history-api-fallback=true --progress --open --config webpack.dev.config.js --env.entry=./src/js/app.tsx"
+    "start": "webpack serve --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx"
   },
   "eslintConfig": {
     "extends": [

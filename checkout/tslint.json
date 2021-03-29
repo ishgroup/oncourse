@@ -8,6 +8,8 @@
     "no-consecutive-blank-lines": [true, 2],
     "space-in-parens": ["error", "never"],
     "arrow-parens": [true, "ban-single-arg-parens"],
-    "ter-arrow-parens": false
+    "ter-arrow-parens": false,
+    "trailing-comma": false,
+    "import-name": false
   }
 }
