@@ -397,6 +397,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				if (defaultPath != null) {
 					request.setAttribute(REQUEST_ATTR_redirectTo, defaultPath.getUrlPath());
 					request.setAttribute(REQUEST_ATTR_redirectToParams, query);
+					return true;
 				}
 			}
 		}
