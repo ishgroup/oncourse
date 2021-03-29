@@ -18,7 +18,8 @@ const styles = theme =>
     root: {
       display: "flex",
       flexDirection: "column",
-      width: "100%"
+      width: "100%",
+      userSelect: "text",
     },
     actionButtonsGroup: {
       position: "absolute",

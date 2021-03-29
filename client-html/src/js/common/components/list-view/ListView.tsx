@@ -1063,7 +1063,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
           </ResizableWrapper>
         )}
 
-        <Grid item className="flex-fill overflow-hidden flex-column">
+        <Grid item className="flex-fill overflow-hidden flex-column user-select-none">
           <ShareContainer
             showExportDrawer={showExportDrawer}
             toggleExportDrawer={this.toggleExportDrawer}
