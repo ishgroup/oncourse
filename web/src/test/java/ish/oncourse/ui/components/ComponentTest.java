@@ -23,6 +23,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.test.PageTester;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
 
 import static ish.oncourse.cayenne.cache.ICacheEnabledService.CacheDisableReason.EDITOR;
 import static ish.oncourse.ui.pages.ComponentTestPage.CURRENT_RENDERED_COMPONENT_ATTRIBUTE_NAME;
-
+@Ignore
 public class ComponentTest extends ServiceTest {
 
 	private static Logger logger = LogManager.getLogger();
