@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebNode;
+import ish.oncourse.model.auto._WebUrlAlias;
 import ish.oncourse.model.visitor.IVisitor;
 import ish.oncourse.utils.ResourceNameValidator;
 import org.apache.cayenne.validation.ValidationResult;
@@ -83,5 +84,9 @@ public class WebNode extends _WebNode {
         if (error != null)
             validationResult.addFailure(ValidationFailure.validationFailure(this, WebNode.NAME_PROPERTY, error));
     }
+    
+    public WebUrlAlias getDefaultAlias() {
+		return getWebUrlAliases().stream().filter(_WebUrlAlias::isDefault).findAny().orElse(null);
+	}
 }
 
