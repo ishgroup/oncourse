@@ -55,6 +55,8 @@ class ThemeApiServiceImpl implements ThemeApi {
         }
 
         context.deleteObjects(theme.webContentVisibilities)
+        context.deleteObjects(theme.webLayoutPaths)
+
         context.deleteObject(theme)
         context.commitChanges()
     }

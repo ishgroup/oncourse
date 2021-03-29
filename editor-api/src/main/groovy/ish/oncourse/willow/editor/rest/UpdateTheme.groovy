@@ -1,10 +1,6 @@
 package ish.oncourse.willow.editor.rest
 
-import ish.oncourse.model.RegionKey
-import ish.oncourse.model.WebContent
-import ish.oncourse.model.WebContentVisibility
-import ish.oncourse.model.WebNodeType
-import ish.oncourse.model.WebSiteLayout
+import ish.oncourse.model.*
 import ish.oncourse.willow.editor.v1.model.BlockPosition
 import ish.oncourse.willow.editor.v1.model.Theme
 import ish.oncourse.willow.editor.website.ResourceNameUtil
@@ -12,14 +8,11 @@ import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebNodeTypeFunctions
 import ish.oncourse.willow.editor.website.WebSiteLayoutFunctions
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
 import org.eclipse.jetty.server.Request
 
-import static ish.oncourse.model.RegionKey.content
-import static ish.oncourse.model.RegionKey.footer
-import static ish.oncourse.model.RegionKey.header
-import static ish.oncourse.model.RegionKey.left
-import static ish.oncourse.model.RegionKey.right
+import static ish.oncourse.model.RegionKey.*
 
 class UpdateTheme extends AbstractUpdate<Theme> {
 
@@ -68,8 +61,33 @@ class UpdateTheme extends AbstractUpdate<Theme> {
             error = "Theme name must be unique"
             return this
         }
-        nodeType.webSiteLayout = layout
+        
         nodeType.name = resourceToSave.title
+
+        List<String> duplicates = (resourceToSave.paths.countBy {it}.grep { it.value > 1 } as List<Map.Entry<String, Integer>>).collect { it.key }
+        if (!duplicates.empty) {
+            error = "Theme paths must be unique: ${duplicates.join(',')} "
+            return this
+        }
+        context.deleteObjects(nodeType.webLayoutPaths.findAll {!(it.path in resourceToSave.paths)})
+        resourceToSave.paths.findAll {! (it in nodeType.webLayoutPaths*.path) }.each {path ->
+            WebLayoutPath duplicatePath = ObjectSelect.query(WebLayoutPath)
+                    .where(WebLayoutPath.WEB_SITE_VERSION.eq(nodeType.webSiteVersion))
+                    .and(WebLayoutPath.WEB_NODE_TYPE.ne(nodeType))
+                    .and(WebLayoutPath.PATH.eq(path)).selectFirst(context)
+            
+            if (duplicatePath) {
+                error = "The '$path' already used for '$duplicatePath.webNodeType.name' theme"
+                return this
+            } else {
+                WebLayoutPath newPath = context.newObject(WebLayoutPath)
+                newPath.webNodeType = nodeType
+                newPath.path = path
+                newPath.webSiteVersion = nodeType.webSiteVersion
+                newPath.created = new Date()
+                newPath.modified = new Date()
+            }
+        }
         
         error = updateBlockVisibility()
         return this

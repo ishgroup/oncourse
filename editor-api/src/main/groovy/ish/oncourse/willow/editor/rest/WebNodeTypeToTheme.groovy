@@ -34,6 +34,7 @@ class WebNodeTypeToTheme {
                 schema.footer = getBlocksBy(footer)
                 schema
             }
+            theme.paths = webNodeType.webLayoutPaths*.path
             theme
         }
     }
