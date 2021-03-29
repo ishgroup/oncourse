@@ -18,17 +18,29 @@ trait TableModelDTOTrait {
     boolean equalsByColumns(TableModelDTO otherModelDto) {
         boolean isEqualTitles = false
         boolean isEqualAttributes = false
+        boolean isEqualSortable = true
         if (((TableModelDTO) this).columns.size() == otherModelDto.columns.size()) {
+
             if (((TableModelDTO) this).columns.collect { column -> column.title }
                     .containsAll(otherModelDto.columns.collect { otherColumn -> otherColumn.title })) {
                 isEqualTitles =  true
             }
+
             if (((TableModelDTO) this).columns.collect { column -> column.attribute }
                     .containsAll(otherModelDto.columns.collect { otherColumn -> otherColumn.attribute })) {
                 isEqualAttributes = true
             }
 
-            if (isEqualTitles && isEqualAttributes) {
+            def current = ((TableModelDTO) this).columns.collect { column -> column.sortable }
+            def other =  otherModelDto.columns.collect { column -> column.sortable }
+            current.eachWithIndex{ boolean entry, int i ->
+                if (entry != other[i]) {
+                    isEqualSortable = false
+                    return
+                }
+            }
+
+            if (isEqualTitles && isEqualAttributes && isEqualSortable) {
                 return true
             }
         }
