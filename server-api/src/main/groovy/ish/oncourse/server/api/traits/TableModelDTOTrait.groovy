@@ -16,33 +16,28 @@ import ish.oncourse.server.api.v1.model.TableModelDTO
 trait TableModelDTOTrait {
 
     boolean equalsByColumns(TableModelDTO otherModelDto) {
-        boolean isEqualTitles = false
-        boolean isEqualAttributes = false
-        boolean isEqualSortable = true
+        boolean isEqualColumns = true
         if (((TableModelDTO) this).columns.size() == otherModelDto.columns.size()) {
-
-            if (((TableModelDTO) this).columns.collect { column -> column.title }
-                    .containsAll(otherModelDto.columns.collect { otherColumn -> otherColumn.title })) {
-                isEqualTitles =  true
-            }
-
-            if (((TableModelDTO) this).columns.collect { column -> column.attribute }
-                    .containsAll(otherModelDto.columns.collect { otherColumn -> otherColumn.attribute })) {
-                isEqualAttributes = true
-            }
-
-            def current = ((TableModelDTO) this).columns.collect { column -> column.sortable }
-            def other =  otherModelDto.columns.collect { column -> column.sortable }
-            current.eachWithIndex{ boolean entry, int i ->
-                if (entry != other[i]) {
-                    isEqualSortable = false
+            ((TableModelDTO) this).columns.eachWithIndex{  entry, int i ->
+                if (entry.title != otherModelDto.columns[i].title) {
+                    isEqualColumns = false
+                    return
+                }
+                if (entry.attribute != otherModelDto.columns[i].attribute) {
+                    isEqualColumns = false
+                    return
+                }
+                if (entry.sortable != otherModelDto.columns[i].sortable) {
+                    isEqualColumns = false
+                    return
+                }
+                if ((entry.type == null && otherModelDto.columns[i].type != null) || (entry.type != otherModelDto.columns[i].type)) {
+                    isEqualColumns = false
                     return
                 }
             }
 
-            if (isEqualTitles && isEqualAttributes && isEqualSortable) {
-                return true
-            }
+            return isEqualColumns
         }
 
         return false
