@@ -64,9 +64,7 @@ dependencies {
 
 	testImplementation project(':common:test-functions')
 	testImplementation "org.dbunit:dbunit:2.5.3"
-
 }
-
 
 mainClassName = 'ish.oncourse.admin.AdminApp'
 

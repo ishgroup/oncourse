@@ -8,27 +8,15 @@ apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/build-api.gradle"
 apply from: "$rootDir/gradle/codegen.gradle"
 
-
 mainClassName = 'ish.oncourse.willow.billing.BillingApp'
-
-configurations {
-    closureCompiler
-}
+targetCompatibility = '11'
+sourceCompatibility = '11'
 
 dependencies {
-    compile project(':common:common-api')
-    compile project(':common:common-templates')
-    compile project(':common:common-bootique')
-    compile project(':common:common-services')
+    implementation project(':common:common-api')
+    implementation project(':common:common-templates')
+    implementation project(':common:common-bootique')
+    implementation project(':common:common-services')
     implementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
     implementation 'org.tmatesoft.svnkit:svnkit:1.10.1'
-//    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.2'
-//    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.2'
-
-
-}
-
-test {
-    forkEvery = 1 //run every test in separate jvm
-    initTestDBConfig(project, test)
 }
