@@ -1,8 +1,13 @@
 plugins {
 	id 'java-library'
+	id 'java-test-fixtures'
 }
+
 apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/tapestry.gradle"
+
+sourceSets.testFixtures.java.srcDirs = []
+sourceSets.testFixtures.groovy.srcDirs += 'src/testFixtures/java'
 
 dependencies {
 	api project(':common:cayenne-model')
@@ -21,6 +26,9 @@ dependencies {
 
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	api 'org.apache.maven:maven-artifact:3.0.4'
+	testFixturesApi (testFixtures(project(":common:test-functions")))
+	testImplementation(testFixtures(project(":common:test-functions")))
+
 }
 
 test {
