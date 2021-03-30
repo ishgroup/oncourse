@@ -105,7 +105,6 @@ public class WebSiteVersionCopy {
             newVisibility.setWeight(visibility.getWeight());
             newVisibility.setWebContent(newContent);
             newVisibility.setWebNode(webNodeMap.get(visibility.getWebNode()));
-            newVisibility.setWebNodeType(webNodeTypeMap.get(visibility.getWebNodeType()));
         });
     }
 
@@ -141,7 +140,6 @@ public class WebSiteVersionCopy {
             newNode.setName(node.getName());
             newNode.setNodeNumber(node.getNodeNumber());
             newNode.setPublished(node.isPublished());
-            newNode.setWebNodeType(webNodeTypeMap.get(node.getWebNodeType()));
             newNode.setWebSiteVersion(toVersion);
             newNode.setSuppressOnSitemap(node.isSuppressOnSitemap());
             webNodeMap.put(node, newNode);

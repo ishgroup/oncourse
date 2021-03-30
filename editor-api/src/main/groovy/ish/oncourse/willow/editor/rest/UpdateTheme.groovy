@@ -63,7 +63,8 @@ class UpdateTheme extends AbstractUpdate<Theme> {
         }
         
         nodeType.name = resourceToSave.title
-
+        resourceToSave.paths =resourceToSave.paths.collect{it.toLowerCase()}
+                
         List<String> duplicates = (resourceToSave.paths.countBy {it}.grep { it.value > 1 } as List<Map.Entry<String, Integer>>).collect { it.key }
         if (!duplicates.empty) {
             error = "Theme paths must be unique: ${duplicates.join(',')} "

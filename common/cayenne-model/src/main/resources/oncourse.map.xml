@@ -1431,7 +1431,6 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="nodeNumber" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="suppressOnSitemap" type="BIT" isMandatory="true"/>
-		<db-attribute name="webNodeTypeId" type="BIGINT" length="19"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="WebNodeType">
@@ -4266,9 +4265,6 @@
 	<db-relationship name="webMenus" source="WebNode" target="WebMenu" toMany="true">
 		<db-attribute-pair source="id" target="webNodeId"/>
 	</db-relationship>
-	<db-relationship name="webNodeType" source="WebNode" target="WebNodeType">
-		<db-attribute-pair source="webNodeTypeId" target="id"/>
-	</db-relationship>
 	<db-relationship name="webSiteVersion" source="WebNode" target="WebSiteVersion">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
@@ -4277,9 +4273,6 @@
 	</db-relationship>
 	<db-relationship name="webContentVisibilities" source="WebNodeType" target="WebContentVisibility" toMany="true">
 		<db-attribute-pair source="id" target="WebNodeTypeId"/>
-	</db-relationship>
-	<db-relationship name="webNode" source="WebNodeType" target="WebNode" toMany="true">
-		<db-attribute-pair source="id" target="webNodeTypeId"/>
 	</db-relationship>
 	<db-relationship name="webSiteLayout" source="WebNodeType" target="WebSiteLayout">
 		<db-attribute-pair source="webSiteLayoutId" target="id"/>
@@ -4801,11 +4794,9 @@
 	<obj-relationship name="webSiteVersion" source="WebMenu" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>
 	<obj-relationship name="webContentVisibility" source="WebNode" target="WebContentVisibility" deleteRule="Cascade" db-relationship-path="webContentVisibility"/>
 	<obj-relationship name="webMenus" source="WebNode" target="WebMenu" deleteRule="Nullify" db-relationship-path="webMenus"/>
-	<obj-relationship name="webNodeType" source="WebNode" target="WebNodeType" deleteRule="Nullify" db-relationship-path="webNodeType"/>
 	<obj-relationship name="webSiteVersion" source="WebNode" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>
 	<obj-relationship name="webUrlAliases" source="WebNode" target="WebUrlAlias" deleteRule="Cascade" db-relationship-path="webUrlAliases"/>
 	<obj-relationship name="webContentVisibilities" source="WebNodeType" target="WebContentVisibility" deleteRule="Cascade" db-relationship-path="webContentVisibilities"/>
-	<obj-relationship name="webNodes" source="WebNodeType" target="WebNode" deleteRule="Deny" db-relationship-path="webNode"/>
 	<obj-relationship name="webSiteLayout" source="WebNodeType" target="WebSiteLayout" deleteRule="Nullify" db-relationship-path="webSiteLayout"/>
 	<obj-relationship name="webSiteVersion" source="WebNodeType" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>
 	<obj-relationship name="college" source="WebSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>

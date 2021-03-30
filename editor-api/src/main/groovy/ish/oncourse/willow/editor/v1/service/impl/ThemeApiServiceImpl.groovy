@@ -50,9 +50,6 @@ class ThemeApiServiceImpl implements ThemeApi {
         if (theme.defaultPageTheme) {
             throw createClientException("The default theme can't be deleted")
         }
-        if (theme.themeUsedInPages) {
-            throw createClientException("The theme is used for pages")
-        }
 
         context.deleteObjects(theme.webContentVisibilities)
         context.deleteObjects(theme.webLayoutPaths)

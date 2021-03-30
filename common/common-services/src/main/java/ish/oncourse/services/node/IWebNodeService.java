@@ -92,7 +92,6 @@ public interface IWebNodeService extends IBaseService<WebNode> {
      * Creates new WebNode by these parameters.
      */
    WebNode createNewNodeBy(WebSiteVersion webSiteVersion,
-                           WebNodeType webNodeType,
                            String nodeName,
                            String content,
                            Integer nodeNumber);

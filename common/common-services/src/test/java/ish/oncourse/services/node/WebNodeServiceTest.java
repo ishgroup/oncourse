@@ -54,14 +54,13 @@ public class WebNodeServiceTest  extends ServiceTest  {
         page.setName("page");
         page.setWebSiteVersion(siteVersion);
 
-        WebNode webNode = webNodeService.createNewNodeBy(siteVersion, page, "Test", "Test", 1);
+        WebNode webNode = webNodeService.createNewNodeBy(siteVersion, "Test", "Test", 1);
         assertWebNode(webNode);
     }
 
 
     private void assertWebNode(WebNode webNode) {
         assertNotNull(webNode.getWebSiteVersion());
-        assertNotNull(webNode.getWebNodeType());
         assertNotNull(webNode.getWebContentVisibility());
         assertEquals(1,webNode.getWebContentVisibility().size());
         assertNotNull(webNode.getWebContentVisibility().get(0));

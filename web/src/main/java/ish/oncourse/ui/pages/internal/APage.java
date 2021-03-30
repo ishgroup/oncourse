@@ -1,11 +1,12 @@
 package ish.oncourse.ui.pages.internal;
 
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.util.URLUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +40,9 @@ public abstract class APage extends ISHCommon {
 
     @Inject
     private IWebNodeService webNodeService;
+
+    @Inject
+    private IWebNodeTypeService webNodeTypeService;
     
     @Inject
     private IWebSiteVersionService webSiteVersionService;
@@ -71,7 +75,7 @@ public abstract class APage extends ISHCommon {
     }
 
     public WebNodeType getWebNodeType() {
-        return node != null ? node.getWebNodeType() : null;
+        return webNodeTypeService.getWebNodeType();
     }
 
     public String getBodyClass() {

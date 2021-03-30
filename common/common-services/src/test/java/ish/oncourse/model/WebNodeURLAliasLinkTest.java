@@ -104,7 +104,7 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 	
 	private WebUrlAlias createWebUrlAlias(WebNode webNode) {
 		ObjectContext context = webNode.getObjectContext();
-		WebSiteVersion webSiteVersion = webNode.getWebNodeType().getWebSiteVersion();
+		WebSiteVersion webSiteVersion = webNode.getWebSiteVersion();
 		assertNotNull("WebSite should not be null", webSiteVersion);
 		WebUrlAlias alias = context.newObject(WebUrlAlias.class);
 		alias.setWebSiteVersion(webSiteVersion);
@@ -131,7 +131,6 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 		
 		WebNode webNode = context.newObject(WebNode.class);
 		webNode.setName("test Name");
-		webNode.setWebNodeType(webNodeType);
 		webNode.setWebSiteVersion(siteVersion);
 		webNode.setNodeNumber(0);
 		return webNode;

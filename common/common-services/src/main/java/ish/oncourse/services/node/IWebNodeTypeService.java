@@ -28,4 +28,11 @@ public interface IWebNodeTypeService {
 	 * @return
 	 */
 	WebNodeType findById(Long willowId);
+	
+	/**
+	 * Gets webNode type by request path.
+	 * @return current webNodeType
+	 */
+	@RequestCached
+	WebNodeType getWebNodeType();
 }

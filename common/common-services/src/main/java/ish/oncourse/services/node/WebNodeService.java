@@ -2,11 +2,11 @@ package ish.oncourse.services.node;
 
 import ish.oncourse.model.*;
 import ish.oncourse.services.BaseService;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
-import ish.oncourse.services.IRichtextConverter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -162,14 +162,12 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		ObjectContext ctx = cayenneService.sharedContext();
 
 		WebSiteVersion webSiteVersion = ctx.localObject(webSiteVersionService.getCurrentVersion());
-		WebNodeType webNodeType = ctx.localObject(webNodeTypeService.getDefaultWebNodeType());
 		Integer nextNodeNumber = getNextNodeNumber();
-		return createNewNodeBy(webSiteVersion, webNodeType, NEW_PAGE_WEB_NODE_NAME + " (" + nextNodeNumber + ")" , SAMPLE_WEB_CONTENT, nextNodeNumber);
+		return createNewNodeBy(webSiteVersion, NEW_PAGE_WEB_NODE_NAME + " (" + nextNodeNumber + ")" , SAMPLE_WEB_CONTENT, nextNodeNumber);
 	}
 
 	@Override
     public synchronized WebNode createNewNodeBy(WebSiteVersion webSiteVersion,
-                                                WebNodeType webNodeType,
                                                 String nodeName,
                                                 String content,
                                                 Integer nodeNumber)
@@ -179,9 +177,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
         newPageNode.setName(nodeName);
         newPageNode.setWebSiteVersion(webSiteVersion);
         newPageNode.setNodeNumber(nodeNumber);
-
-        newPageNode.setWebNodeType(webNodeType);
-
+        
         WebContent webContent = ctx.newObject(WebContent.class);
         webContent.setWebSiteVersion(webSiteVersion);
 		webContent.setContentTextile(content);
@@ -197,8 +193,6 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	private void applyCommons(ObjectSelect query) {
 		query.and(siteQualifier());
-		query.prefetch(WebNode.WEB_NODE_TYPE.disjoint());
-		query.prefetch(WebNode.WEB_NODE_TYPE.dot(WebNodeType.WEB_SITE_LAYOUT).disjoint());
 		query.prefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint());
 		query.prefetch(WebNode.WEB_CONTENT_VISIBILITY.dot(WebContentVisibility.WEB_CONTENT).disjoint());
 		query.prefetch(WebNode.WEB_URL_ALIASES.disjoint());
@@ -207,22 +201,8 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	@Override
 	public WebSiteLayout getLayout() {
-		WebSiteLayout layout = null;
-
-		//if the requested site is not exist - return null
-		if (webSiteService.getCurrentWebSite() == null) {
-			return null;
-		}
-
-		WebNode webNode = getCurrentNode();
-		if (webNode != null) {
-			layout = webNode.getWebNodeType().getWebSiteLayout();
-		}
-		else if (webNodeTypeService.getDefaultWebNodeType() != null) {
-			layout = webNodeTypeService.getDefaultWebNodeType().getWebSiteLayout();
-		}
-
-		return layout;
+		WebNodeType theme =  webNodeTypeService.getWebNodeType();
+		return theme != null ? theme.getWebSiteLayout() : null;
 	}
 
 

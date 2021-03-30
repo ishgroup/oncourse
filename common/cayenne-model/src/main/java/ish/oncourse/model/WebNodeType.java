@@ -51,7 +51,4 @@ public class WebNodeType extends _WebNodeType {
 		return PAGE.equals(getName());
 	}
 	
-	public boolean isThemeUsedInPages() {
-		return !getWebNodes().isEmpty();
-	}
 }
