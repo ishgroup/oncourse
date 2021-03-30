@@ -373,14 +373,16 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
             [classes.inlineTextField]: formatting === "inline"
           })}
         >
-          <InputLabel
-            classes={{
-              root: classes.inputLabel,
-              shrink: classes.labelShrink
-            }}
-          >
-            {labelContent}
-          </InputLabel>
+          {Boolean(label) && (
+            <InputLabel
+              classes={{
+                root: classes.inputLabel,
+                shrink: classes.labelShrink
+              }}
+            >
+              {labelContent}
+            </InputLabel>
+          )}
           <Input
             type="text"
             onKeyPress={onKeyPress}

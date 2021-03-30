@@ -529,6 +529,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           reset();
           setListContacts([]);
         } else {
+          dispatch(change(form, "contacts", null));
           const check = selectedContacts.filter(c => c.id === row.id);
           if (check.length === 0) {
             row.relations = [];
