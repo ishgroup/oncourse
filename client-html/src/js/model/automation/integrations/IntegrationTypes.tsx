@@ -3,7 +3,7 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-
+import React from "react";
 import { IntegrationTypeSchema } from "./IntegrationSchema";
 
 export const moodle: IntegrationTypeSchema = {
@@ -122,4 +122,18 @@ export const azure: IntegrationTypeSchema = {
   name: "Microsoft Azure",
   description:
     "Massively-Scalable Object Storage for Unstructured Data. Try Blob Storage Free. Learn by Doing. 25+ Free Services. Build Your Idea. Get Free Credit. Try Free Products."
+};
+
+export const servicensw: IntegrationTypeSchema = {
+  type: 18,
+  name: "Service NSW voucher",
+  description: (
+    <span>
+      Automatically verify and redeem the NSW Government creative kids and active kids vouchers.
+      <br />
+      <a href="https://www.service.nsw.gov.au/campaign/creative-kids">
+        https://www.service.nsw.gov.au/campaign/creative-kids
+      </a>
+    </span>
+  )
 };

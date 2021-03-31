@@ -88,6 +88,9 @@ export const getByType = (type: number, source: any) => {
     case 17: {
       return source.azure;
     }
+    case 18: {
+      return source.servicensw;
+    }
   }
   return null;
 };

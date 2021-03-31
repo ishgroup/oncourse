@@ -20,6 +20,7 @@ import talentlms from "../../../../../images/talentlms.png";
 import learndash from "../../../../../images/learndash.png";
 import amazons3 from "../../../../../images/amazons3.png";
 import azure from "../../../../../images/azure.png";
+import servicensw from "../../../../../images/servicensw.svg";
 
 export default {
   moodle,
@@ -38,5 +39,6 @@ export default {
   talentlms,
   learndash,
   amazons3,
-  azure
+  azure,
+  servicensw
 };

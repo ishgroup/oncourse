@@ -20,3 +20,4 @@ export { TalentLMSForm as talentlms } from "./TalentLMSForm";
 export { LearnDashForm as learndash } from "./LearnDashForm";
 export { AmazonS3Form as amazons3 } from "./AmazonS3Form";
 export { AzureForm as azure } from "./AzureForm";
+export { NSWForm as servicensw } from "./NSWForm";
