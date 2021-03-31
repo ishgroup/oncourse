@@ -5,11 +5,11 @@
   "description": "react web client for oncourse application",
   "main": "webpack.config.js",
   "scripts": {
-    "build:prod": "webpack --progress --env production",
-    "build:api-docs": "webpack --progress --env production --config webpack.api.doc.config.js",
+    "build:prod": "webpack --progress --env NODE_ENV=production",
+    "build:api-docs": "webpack --progress --env NODE_ENV=production --config webpack.api.doc.config.js",
     "test": "jest",
     "start": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx",
-    "start:prod": "webpack serve --history-api-fallback --port 8100 --progress -p --env production",
+    "start:prod": "webpack serve --history-api-fallback --port 8100 --progress -p --env NODE_ENV=production",
     "start:mock": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/dev/app.tsx",
     "antlr4ts": "cd ../buildSrc/aql/src/main/resources/ && ../../../../../client-html/node_modules/.bin/antlr4ts Aql.g4 -o ../../../../../client-html/build/generated-sources/aql-parser"
   },
