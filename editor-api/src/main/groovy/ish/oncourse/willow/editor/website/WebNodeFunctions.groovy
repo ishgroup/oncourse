@@ -25,8 +25,6 @@ class WebNodeFunctions {
 
     static List<WebNode> getNodes(Request request, ObjectContext context) {
         (ObjectSelect.query(WebNode) & siteQualifier(request, context))
-        .prefetch(WebNode.WEB_NODE_TYPE.disjoint())
-        .prefetch(WebNode.WEB_NODE_TYPE.dot(WebNodeType.WEB_SITE_LAYOUT).disjoint())
         .prefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint())
         .prefetch(WebNode.WEB_CONTENT_VISIBILITY.dot(WebContentVisibility.WEB_CONTENT).disjoint())
         .prefetch(WebNode.WEB_URL_ALIASES.disjoint())
@@ -112,9 +110,7 @@ class WebNodeFunctions {
     }
 
     static ObjectSelect<WebNode> addPrefetches(ObjectSelect<WebNode> select) {
-        select.prefetch(WebNode.WEB_NODE_TYPE.disjoint())
-                .prefetch(WebNode.WEB_NODE_TYPE.dot(WebNodeType.WEB_SITE_LAYOUT).disjoint())
-                .prefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint())
+        select.prefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint())
                 .prefetch(WebNode.WEB_CONTENT_VISIBILITY.dot(WebContentVisibility.WEB_CONTENT).disjoint())
                 .prefetch(WebNode.WEB_URL_ALIASES.disjoint())
 
