@@ -135,9 +135,8 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           favicon: "src/images/favicon.ico",
           chunksSortMode: 'none',
         }),
+
         new ForkTsCheckerWebpackPlugin({
-          watch: [path.resolve(__dirname, "src/js")],
-          checkSyntacticErrors: true,
           async: false,
         }),
         new webpack.SourceMapDevToolPlugin({
@@ -149,7 +148,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           RELEASE_VERSION: BUILD_NUMBER,
         }),
         new CompressionPlugin({
-          filename: `[path].gz`,
+          filename: `[file].gz`,
           algorithm: "gzip",
           test: /\.(js|html|css)$/,
           threshold: 10240,
