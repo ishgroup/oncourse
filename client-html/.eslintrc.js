@@ -22,7 +22,6 @@ module.exports = {
         "import/no-unresolved": "off",
         "import/extensions": "off",
         "import/prefer-default-export": "off",
-        "@typescript-eslint/class-name-casing": "error",
         "@typescript-eslint/indent": "off",
         "@typescript-eslint/member-delimiter-style": [
             "off",
