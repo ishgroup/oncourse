@@ -372,4 +372,18 @@
 		</preConditions>
 		<dropNotNullConstraint tableName="WebNode" columnName="webNodeTypeId" columnDataType="BIGINT"/>
 	</changeSet>
+
+	<changeSet id="35" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="matchType" tableName="WebLayoutPath"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="WebLayoutPath">
+			<column name="matchType" type="SMALLINT">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	
 </databaseChangeLog>

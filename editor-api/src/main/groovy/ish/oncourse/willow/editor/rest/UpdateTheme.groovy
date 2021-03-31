@@ -1,8 +1,10 @@
 package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.*
+import ish.oncourse.util.ISHUrlValidator
 import ish.oncourse.willow.editor.v1.model.BlockPosition
 import ish.oncourse.willow.editor.v1.model.Theme
+import ish.oncourse.willow.editor.v1.model.ThemePath
 import ish.oncourse.willow.editor.website.ResourceNameUtil
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebNodeTypeFunctions
@@ -13,6 +15,8 @@ import org.apache.commons.lang3.StringUtils
 import org.eclipse.jetty.server.Request
 
 import static ish.oncourse.model.RegionKey.*
+import static ish.oncourse.specialpages.RequestMatchType.EXACT
+import static ish.oncourse.specialpages.RequestMatchType.STARTS_WITH
 
 class UpdateTheme extends AbstractUpdate<Theme> {
 
@@ -63,27 +67,54 @@ class UpdateTheme extends AbstractUpdate<Theme> {
         }
         
         nodeType.name = resourceToSave.title
-        resourceToSave.paths =resourceToSave.paths.collect{it.toLowerCase()}
-                
-        List<String> duplicates = (resourceToSave.paths.countBy {it}.grep { it.value > 1 } as List<Map.Entry<String, Integer>>).collect { it.key }
+        
+        //normolise all paths to lover case and validate
+        ISHUrlValidator validator = new ISHUrlValidator()
+        resourceToSave.paths = resourceToSave.paths.each {
+            it.path = it.path.toLowerCase()
+            if (!it.path.startsWith("/")) {
+                error = "The path $it.path must starts with slash '/' character"
+                return this 
+            }
+            if (!validator.isValidOnlyPath(it.path)) {
+                error = "The path $it.path is not valid"
+                return this
+            }
+        }
+        
+        // looking fo duplicates 
+        List<String> duplicates = (resourceToSave.paths.countBy {"$it.path exact match: $it.exactMatch" }.grep { it.value > 1 } as List<Map.Entry<String, Integer>>).collect { it.key }
         if (!duplicates.empty) {
-            error = "Theme paths must be unique: ${duplicates.join(',')} "
+            error = "Theme paths patterns must be unique: ${duplicates.join(',')} "
             return this
         }
-        context.deleteObjects(nodeType.webLayoutPaths.findAll {!(it.path in resourceToSave.paths)})
-        resourceToSave.paths.findAll {! (it in nodeType.webLayoutPaths*.path) }.each {path ->
+        
+        //looking for paths that should be deleted
+        List<WebLayoutPath> pathToDelete = nodeType.webLayoutPaths.findAll {dbPath ->
+           !resourceToSave.paths.any {it.path == dbPath.path && it.exactMatch == (dbPath.matchType == EXACT) }
+        }
+        context.deleteObjects(pathToDelete)
+        
+        List<ThemePath> newPaths = resourceToSave.paths.findAll {themePath ->
+            !nodeType.webLayoutPaths.any { it.path == themePath.path && it.matchType == (themePath.exactMatch? EXACT:STARTS_WITH )  } 
+        }
+        newPaths.each {themePath ->
+            
             WebLayoutPath duplicatePath = ObjectSelect.query(WebLayoutPath)
                     .where(WebLayoutPath.WEB_SITE_VERSION.eq(nodeType.webSiteVersion))
                     .and(WebLayoutPath.WEB_NODE_TYPE.ne(nodeType))
-                    .and(WebLayoutPath.PATH.eq(path)).selectFirst(context)
+                    .and(WebLayoutPath.PATH.eq(themePath.path))
+                    .and(WebLayoutPath.MATCH_TYPE.eq(themePath.exactMatch?EXACT:STARTS_WITH))
+                    .selectFirst(context)
             
             if (duplicatePath) {
-                error = "The '$path' already used for '$duplicatePath.webNodeType.name' theme"
+                error = "The '$themePath.path) exact match: $themePath.exactMatch' already used for '$duplicatePath.webNodeType.name' theme"
                 return this
             } else {
                 WebLayoutPath newPath = context.newObject(WebLayoutPath)
                 newPath.webNodeType = nodeType
-                newPath.path = path
+                newPath.path = themePath.path
+                newPath.matchType = themePath.exactMatch?EXACT:STARTS_WITH
                 newPath.webSiteVersion = nodeType.webSiteVersion
                 newPath.created = new Date()
                 newPath.modified = new Date()

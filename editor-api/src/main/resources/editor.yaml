@@ -966,8 +966,20 @@ definitions:
         description: A list of path patterms to aply the theme
         type: array
         items:
-          type: string
-
+          $ref: '#/definitions/ThemePath'
+  
+  ThemePath:
+    type: object
+    description: theme the path pattern
+    properties:
+      path:
+        type: string
+        description: theme path
+        example: /about
+      exactMatch:
+        type: boolean
+        description: is exact matching, othervice starts with
+        
   MenuItem:
     type: object
     properties:

@@ -1462,6 +1462,7 @@
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="path" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="matchType" type="SMALLINT" length="32"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="webNodeTypeId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
@@ -2764,6 +2765,7 @@
 	</obj-entity>
 	<obj-entity name="WebLayoutPath" className="ish.oncourse.model.WebLayoutPath" dbEntityName="WebLayoutPath" superClassName="WillowCayenneObject">
 		<obj-attribute name="path" type="java.lang.String" db-attribute-path="path"/>
+		<obj-attribute name="matchType" type="ish.oncourse.specialpages.RequestMatchType" db-attribute-path="matchType"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
