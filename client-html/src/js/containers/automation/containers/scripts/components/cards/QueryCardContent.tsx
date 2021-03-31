@@ -97,7 +97,7 @@ const QueryCardContent = props => {
           <Grid xs={6}>
             <Uneditable
               value={field.queryClosureReturnValue}
-              label="Returned Results Name"
+              label="Returned results name"
             />
           </Grid>
 

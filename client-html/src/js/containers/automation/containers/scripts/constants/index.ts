@@ -10,31 +10,27 @@ import uniqid from "../../../../../common/utils/uniqid";
 
 export const SCRIPT_EDIT_VIEW_FORM_NAME = "ScriptsForm";
 
-export const closureRegexp = new RegExp(
-  /\n?\/\/\s*[a-zA-Z]+\s*closure\s*start([^\//])+\/\/\s*[a-zA-Z]+\s*closure\s*end[\n]?/,
-  "g"
-);
-
-export const closureNameRegexp = /\/\/\s*([a-zA-Z]+)\s*closure/;
-
 export const emailClosureRegexp = new RegExp(
   /email\s*{\s*([!+=%*?a-zA-Z0-9.,:"'()\\\s@\-/_]|['"][!+=%*?a-zA-Z0-9.,:"'()\\\s@\-/_${}]+['"])+}/,
   "g"
 );
 
 export const getScriptComponent = (content): ScriptComponent => ({
-    type: "Script",
-    id: uniqid(),
-    content
-  });
+  type: "Script",
+  id: uniqid(),
+  content
+});
+
+export const queryClosureRegexp = new RegExp(
+  "(def\\s+)?\\w+\\s+=\\s+query\\s+{(\\n+)?(\\s+)?entity\\s+[\"']?\\w+[\"']?(\\s+)?query\\s+[\"'].+[\"'](\\s+)(\\n+)?}",
+  "g"
+);
 
 export const getQueryTemplate = (entity: string, query: string, queryClosureReturnValue: string) =>
-  `\n// Query closure start 
-  ${queryClosureReturnValue} = query {
+  `${queryClosureReturnValue} = query {
     entity "${entity}"
     query "${query.replace(/\\"/g, '"').replace(/"/g, '\\"')}"
-  }      
-  // Query closure end\n`;
+  }`;
 
 export const getQueryComponent = (body: string): ScriptQueryComponent => {
   const queryClosureReturnValueMatch = body.match(/\s+(.+)\s+=\s+query/);
@@ -44,8 +40,7 @@ export const getQueryComponent = (body: string): ScriptQueryComponent => {
   return {
     type: "Query",
     id: uniqid(),
-    // queryClosureReturnValue: queryClosureReturnValueMatch && queryClosureReturnValueMatch[1],
-    queryClosureReturnValue: "records",
+    queryClosureReturnValue: (queryClosureReturnValueMatch && queryClosureReturnValueMatch[1]) || "records",
     entity: entityMatch && entityMatch[1],
     query: queryMatch && queryMatch[1].replace(/\\"/g, '"')
   };
