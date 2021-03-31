@@ -6,7 +6,6 @@
 import * as React from "react";
 import { reduxForm, initialize } from "redux-form";
 import Typography from "@material-ui/core/Typography";
-import { connect } from "react-redux";
 import Button from "../../../../../../common/components/buttons/Button";
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
 import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
@@ -60,4 +59,4 @@ class MYOBBaseForm extends React.Component<any, any> {
 export const MYOBForm = reduxForm({
   form: "MYOBForm",
   onSubmitFail
-})(connect<any, any, any>(null, null)(MYOBBaseForm));
+})(MYOBBaseForm);
