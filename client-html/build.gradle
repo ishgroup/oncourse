@@ -16,7 +16,7 @@ task webpack(type: YarnTask, dependsOn: 'queryGrammar') {
     outputs.dir("$buildDir/assets")
     inputs.property('version', version)
 
-    args = ['build:prod', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
+    args = ['build:prod', '--env', 'BUILD_NUMBER', version ?: 'SNAPSHOT']
 }
 
 clean {

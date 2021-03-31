@@ -24,20 +24,20 @@ Build started with following configuration:
 };
 
 const KEYS = {
-  ENTRY: "entry"
+  ENTRY: "entry",
 };
 
 const _common = (dirname, options) => {
   const _main = {
     entry: [
       "webpack-dev-server/client?http://localhost:8100",
-      options[KEYS.ENTRY]
+      options[KEYS.ENTRY],
     ],
     output: {
       publicPath: "/",
       path: path.resolve(dirname, "build"),
-      filename: `[name].js?v=${options['BUILD_NUMBER']}`,
-      chunkFilename: `[name].js?v=${options['BUILD_NUMBER']}`
+      filename: `[name].js?v=${options.BUILD_NUMBER}`,
+      chunkFilename: `[name].js?v=${options.BUILD_NUMBER}`,
     },
     optimization: {
       splitChunks: {
@@ -47,20 +47,20 @@ const _common = (dirname, options) => {
             test: /[\\/]node_modules[\\/]/,
             name: "vendors",
             enforce: true,
-            reuseExistingChunk: true
-          }
-        }
-      }
+            reuseExistingChunk: true,
+          },
+        },
+      },
     },
     mode: "development",
     resolve: {
       modules: [
         "node_modules",
         path.resolve(dirname, "build/generated-sources"),
-        path.resolve(dirname, "src/images")
+        path.resolve(dirname, "src/images"),
       ],
       extensions: [".ts", ".tsx", ".js"],
-      plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(dirname, './tsconfig.dev.json') })]
+      plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(dirname, './tsconfig.dev.json') })],
     },
     module: {
       rules: [
@@ -71,52 +71,51 @@ const _common = (dirname, options) => {
               loader: "ts-loader",
               options: {
                 transpileOnly: true,
-                happyPackMode: true
-              }
-            }
+                happyPackMode: true,
+              },
+            },
           ],
           include: [
             path.resolve(dirname, "build/generated-sources"),
             path.resolve(dirname, "build/grammar"),
             path.resolve(dirname, "src/js"),
-            path.resolve(dirname, "src/dev")
+            path.resolve(dirname, "src/dev"),
           ],
           exclude: [
-            path.resolve(dirname, "node_modules")
-          ]
-        }
-      ]
+            path.resolve(dirname, "node_modules"),
+          ],
+        },
+      ],
     },
     plugins: [
       _DefinePlugin("development", options.BUILD_NUMBER),
-      new webpack.WatchIgnorePlugin([
-        /\.js$/,
-        path.resolve(dirname, "node_modules")
-      ]),
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      }),
+      new webpack.WatchIgnorePlugin({
+       paths: [
+          /\.js$/,
+          path.resolve(dirname, "node_modules"),
+        ],
+      }),
       new MiniCssExtractPlugin({ filename: '[name].css' }),
       new webpack.SourceMapDevToolPlugin({
         filename: "[file].map",
-        exclude: [/vendor/, /images/, /hot-update/]
+        exclude: [/vendor/, /images/, /hot-update/],
       }),
       new ForkTsCheckerWebpackPlugin({
-        watch: [
-          path.resolve(dirname, "src/js"),
-          path.resolve(dirname, "src/dev")
-        ],
-        checkSyntacticErrors: true,
         async: false,
-        tsconfig: path.resolve(dirname, './tsconfig.dev.json')
-      })
+        typescript: {
+          configFile: path.resolve(dirname, './tsconfig.dev.json'),
+        },
+      }),
     ],
     devServer: {
       inline: true,
       hot: true,
-      port: 8100
+      port: 8100,
     },
     devtool: false,
-    node: {
-      fs: "empty"
-    }
   };
   _main.module.rules = [..._main.module.rules, ..._styleModule(dirname)];
   return _main;
@@ -128,16 +127,16 @@ const _styleModule = dirname => [
       use: [{
         loader: 'file-loader',
         options: {
-          name: '[name].[ext]'
+          name: '[name].[ext]',
         },
       }],
       exclude: [
         /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-      ]
+      ],
     },
     {
       test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-      use: ['raw-loader']
+      use: ['raw-loader'],
     },
     {
       test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
@@ -148,28 +147,29 @@ const _styleModule = dirname => [
           loader: 'postcss-loader',
           options: styles.getPostCssConfig( {
             themeImporter: {
-              themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
+              themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' ),
             },
-            minify: true
-          } )
-        }
-      ]
+            minify: true,
+          } ),
+        },
+      ],
     },
     {
       test: /\.s?css$/,
       use: [MiniCssExtractPlugin.loader, 'css-loader'],
       exclude: [
         /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-      ]
+      ],
     },
     {
       enforce: "pre",
       test: /\.js$/,
       loader: "source-map-loader",
       exclude: [
-        path.resolve(dirname, "node_modules/antlr4ts")
-      ]
-    }
+        path.resolve(dirname, "node_modules/antlr4ts"),
+        path.resolve(dirname, "node_modules/ace-builds"),
+      ],
+    },
   ];
 
 /**
@@ -177,7 +177,7 @@ const _styleModule = dirname => [
  */
 const _DefinePlugin = (NODE_ENV, BUILD_NUMBER) => new webpack.EnvironmentPlugin({
     NODE_ENV,
-    RELEASE_VERSION: BUILD_NUMBER
+    RELEASE_VERSION: BUILD_NUMBER,
   });
 
 const _CompressionPlugin = () => new CompressionPlugin({
@@ -185,7 +185,7 @@ const _CompressionPlugin = () => new CompressionPlugin({
     algorithm: "gzip",
     test: /\.(js|html)$/,
     threshold: 10240,
-    minRatio: 0.8
+    minRatio: 0.8,
   });
 
 const _PwaManifestPlugin = () => new WebpackPwaManifest({
@@ -196,11 +196,11 @@ const _PwaManifestPlugin = () => new WebpackPwaManifest({
   icons: [
     {
       src: path.resolve(__dirname, "../src/images/ish-onCourse-icon-192.png"),
-      size: "192x192"
+      size: "192x192",
     },
     {
       src: path.resolve(__dirname, "../src/images/ish-onCourse-icon-512.png"),
-      size: "512x512"
+      size: "512x512",
     },
   ],
   start_url: "/",
@@ -209,7 +209,7 @@ const _PwaManifestPlugin = () => new WebpackPwaManifest({
   display: "standalone",
   prefer_related_applications: false,
   theme_color: "#f7941d",
-  categories: ["productivity", "education", "business"]
+  categories: ["productivity", "education", "business"],
 });
 
 const _GenerateSW = () => new WorkboxPlugin.GenerateSW({
@@ -225,5 +225,5 @@ module.exports = {
   DefinePlugin: _DefinePlugin,
   CompressionPlugin: _CompressionPlugin,
   PwaManifestPlugin: _PwaManifestPlugin,
-  GenerateSW: _GenerateSW
+  GenerateSW: _GenerateSW,
 };
