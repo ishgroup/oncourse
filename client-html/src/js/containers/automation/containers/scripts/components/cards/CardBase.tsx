@@ -44,7 +44,8 @@ const styles = theme =>
       overflow: "visible"
     },
     summaryRoot: {
-      borderBottom: "1px solid transparent"
+      borderBottom: "1px solid transparent",
+      padding: theme.spacing(0, 0, 0, 2)
     },
     summaryExpanded: {
       borderBottomColor: `${theme.palette.divider}`

@@ -3,10 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {Script} from "@api/model";
+import { Script } from "@api/model";
 import {
-  closureNameRegexp,
-  closureRegexp,
   emailClosureRegexp,
   getEmailComponent,
   getQueryComponent,
@@ -16,32 +14,26 @@ import {
   getMessageComponent,
   getReportComponent,
   getReportTemplate,
-  importsRegexp
+  importsRegexp,
+  queryClosureRegexp
 } from "../constants/index";
 
-const getClosureComponent = (body: string) => {
-  const customClosureMatch = body.match(closureNameRegexp);
-  const emailClosureMatch = body.match(emailClosureRegexp);
-
-  if (customClosureMatch) {
-    const type = customClosureMatch[1];
-
-    switch (type) {
-      case "Query": {
-        return getQueryComponent(body);
-      }
-      case "Message": {
-        return getMessageComponent(body);
-      }
-      case "Report": {
-        return getReportComponent(body);
-      }
+const getClosureComponent = closure => {
+  switch (closure.type) {
+    case "query": {
+      return getQueryComponent(closure.content);
     }
+    case "message": {
+      return getMessageComponent(closure.content);
+    }
+    // case "Report": {
+    //   return getReportComponent(body);
+    // }
   }
 
-  if (emailClosureMatch) {
-    return getEmailComponent(body);
-  }
+  // if (closure.content.match(emailClosureRegexp)) {
+  //   return getEmailComponent(closure.content);
+  // }
 
   return null;
 };
@@ -68,16 +60,16 @@ export const ParseScriptBody = (scriptItem: Script) => {
   const components = [];
 
   try {
-    const customClosures = content.match(closureRegexp);
+    const queryClosures = (content?.match(queryClosureRegexp) || []).map(content => ({ content, type: "query" })) || [];
     const emailClosures = [];
     // = content.match(emailClosureRegexp);
 
     const matchComponents = content
-      .replace(closureRegexp, "CLOSURE")
+      .replace(queryClosureRegexp, "CLOSURE")
       // .replace(emailClosureRegexp, "CLOSURE")
       .split("CLOSURE");
 
-    const closures = [...(customClosures || []), ...(emailClosures || [])];
+    const closures = [...queryClosures, ...(emailClosures || [])];
 
     matchComponents.forEach((c, index) => {
       if (c.trim()) {
@@ -128,10 +120,10 @@ export const appendComponents = (value: any): Script => {
 
   if (value.imports) {
     content = value.imports
-        .filter(i => Boolean(i.trim()))
-        .map(i => "import " + i)
-        .join("\n") + `
-        \n${content}`;
+      .filter(i => Boolean(i.trim()))
+      .map(i => "import " + i)
+      .join("\n") + `
+      \n${content}`;
   }
 
   delete value.components;
@@ -141,7 +133,7 @@ export const appendComponents = (value: any): Script => {
   return { ...value, content };
 };
 
-export const getType = (type) => {
+export const getType = type => {
   switch (type.toLowerCase()) {
     case "date time":
       return "dateTime";
@@ -154,6 +146,6 @@ export const getType = (type) => {
     case "multiline text":
       return "multilineText";
     default:
-      return type.toLowerCase()
+      return type.toLowerCase();
   }
-}
+};
