@@ -8,6 +8,7 @@ import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.specialpages.RequestMatchType;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -76,16 +77,29 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
         if (webSiteService.getCurrentWebSite() == null) {
             return null;
         }
-
-        List<WebLayoutPath> paths = ObjectSelect.query(WebLayoutPath.class)
-                .where(WebLayoutPath.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
-                .prefetch(WebLayoutPath.WEB_NODE_TYPE.joint())
-                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebNode.class.getSimpleName())
-                .select(cayenneService.sharedContext());
-
         String urlPath = request.getPath().toLowerCase();
 
-        WebLayoutPath layoutPath = paths.stream().filter(path -> urlPath.startsWith(path.getPath())).max(Comparator.comparing(p -> p.getPath().length())).orElse(null);
+        //exact match search
+        WebLayoutPath layoutPath = ObjectSelect.query(WebLayoutPath.class)
+                .where(WebLayoutPath.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
+                .and(WebLayoutPath.PATH.eq(urlPath))
+                .and(WebLayoutPath.MATCH_TYPE.eq(RequestMatchType.EXACT))
+                .prefetch(WebLayoutPath.WEB_NODE_TYPE.joint())
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebNode.class.getSimpleName())
+                .selectFirst(cayenneService.sharedContext());
+
+        if (layoutPath == null) {
+            layoutPath = ObjectSelect.query(WebLayoutPath.class)
+                .where(WebLayoutPath.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
+                .and(WebLayoutPath.MATCH_TYPE.eq(RequestMatchType.STARTS_WITH))
+                .prefetch(WebLayoutPath.WEB_NODE_TYPE.joint())
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebNode.class.getSimpleName())
+                .select(cayenneService.sharedContext())
+                .stream()
+                .filter(path -> urlPath.startsWith(path.getPath()))
+                .max(Comparator.comparing(p -> p.getPath().length()))
+                .orElse(null);
+        }
         if (layoutPath != null) {
             return layoutPath.getWebNodeType();
         }  else  {
