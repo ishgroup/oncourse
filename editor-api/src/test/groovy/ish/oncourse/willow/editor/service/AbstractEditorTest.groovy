@@ -91,7 +91,7 @@ abstract class AbstractEditorTest {
             page.setWebSiteLayout(webSiteLayout)
             page.setWebSiteVersion(stagedVersion)
 
-            WebNode node = WebNodeFunctions.createNewNodeBy(stagedVersion, page, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1)
+            WebNode node = WebNodeFunctions.createNewNodeBy(stagedVersion, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1)
             node.setPublished(true)
 
             WebContent webContent = context.newObject(WebContent)

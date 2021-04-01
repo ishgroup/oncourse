@@ -8,20 +8,19 @@ import io.milton.http.SecurityManager
 import io.milton.http.exceptions.BadRequestException
 import io.milton.http.exceptions.NotAuthorizedException
 import io.milton.resource.Resource
+import ish.oncourse.api.request.RequestService
 import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebNode
-import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.services.converter.CoreConverter
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.ArrayUtils
 
-import java.nio.charset.Charset
+import java.nio.charset.Charset 
 
 class PageResourceFactory implements ResourceFactory {
 
@@ -110,8 +109,7 @@ class PageResourceFactory implements ResourceFactory {
     WebNodeResource createNewPage(String name, String content) {
         ObjectContext ctx = cayenneService.newContext()
         WebSiteVersion webSiteVersion = WebSiteVersionFunctions.getCurrentVersion(requestService.request, ctx)
-        WebNodeType webNodeType = WebNodeFunctions.getDefaultWebNodeType(requestService.request, ctx)
-        WebNode webNode = WebNodeFunctions.createNewNodeBy(webSiteVersion, webNodeType, name, content, WebNodeFunctions.getNextNodeNumber(requestService.request, ctx))
+        WebNode webNode = WebNodeFunctions.createNewNodeBy(webSiteVersion, name, content, WebNodeFunctions.getNextNodeNumber(requestService.request, ctx))
         ctx.commitChanges()
         return new WebNodeResource(webNode, cayenneService, securityManager, requestService)
     }

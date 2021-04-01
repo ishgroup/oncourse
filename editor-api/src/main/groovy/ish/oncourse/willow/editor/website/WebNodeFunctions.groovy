@@ -31,22 +31,13 @@ class WebNodeFunctions {
         .select(context)
     }
 
-    static WebNodeType getDefaultWebNodeType(Request request, ObjectContext context) {
-        return (ObjectSelect.query(WebNodeType)
-                .where(WebNodeType.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, context))) 
-                & WebNodeType.NAME.eq(WebNodeType.PAGE))
-                .selectFirst(context)
-    }
-
     static WebNode createNewNode(Request request, ObjectContext ctx) {
         WebSiteVersion webSiteVersion = WebSiteVersionFunctions.getCurrentVersion(request, ctx)
-        WebNodeType webNodeType = WebNodeTypeFunctions.getDefaultWebNodeType(webSiteVersion)
         Integer nextNodeNumber = getNextNodeNumber(request, ctx)
-        return createNewNodeBy(webSiteVersion, webNodeType, "$NEW_PAGE_WEB_NODE_NAME  ($nextNodeNumber)" , SAMPLE_WEB_CONTENT, nextNodeNumber)
+        return createNewNodeBy(webSiteVersion, "$NEW_PAGE_WEB_NODE_NAME  ($nextNodeNumber)" , SAMPLE_WEB_CONTENT, nextNodeNumber)
     }
     
     static WebNode createNewNodeBy(WebSiteVersion webSiteVersion,
-                                   WebNodeType webNodeType,
                                    String nodeName,
                                    String content,
                                    Integer nodeNumber) {
@@ -55,7 +46,6 @@ class WebNodeFunctions {
         newPageNode.name = nodeName
         newPageNode.webSiteVersion = webSiteVersion
         newPageNode.nodeNumber = nodeNumber
-        newPageNode.webNodeType = webNodeType
 
         WebContent webContent = ctx.newObject(WebContent)
         webContent.webSiteVersion = webSiteVersion
