@@ -1,7 +1,8 @@
 import React from 'react';
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
-import {Theme, Layout} from "../../../../../model";
+import {Theme, Layout, ThemePath} from "../../../../../model";
 import {IconBack} from "../../../../../common/components/IconBack";
+import {Checkbox} from "../../../../../common/components/Checkbox";
 
 interface Props {
   theme: Theme;
@@ -23,6 +24,7 @@ export class ThemeSettings extends React.Component<Props, any> {
       newLink: '',
       title: props.theme.title,
       urls: [],
+      exactMatch: false,
     };
   }
 
@@ -43,23 +45,31 @@ export class ThemeSettings extends React.Component<Props, any> {
 
   onAddNewUrl() {
     const newLink = this.formatLink(this.state.newLink);
-    const {showError, themes} = this.props;
+    // const {showError, themes} = this.props;
 
     if (!this.state.newLink) return;
 
-    const isUsedUrl = themes.some((elem: Theme) => elem.paths
-      && elem.paths.some((elem: string) => elem === newLink))
-      || this.state.urls.some((elem: string) => elem === newLink);
+    // const isUsedUrl = themes.some((elem: Theme) => elem.paths
+    //   && elem.paths.some((elem: ThemePath) => elem === newLink))
+    //   || this.state.urls.some((elem: string) => elem === newLink);
+    //
+    // if (isUsedUrl) {
+    //   showError('This url already exist');
+    //   return;
+    // }
 
-    if (isUsedUrl) {
-      showError('This url already exist');
-      return;
-    }
+    const urls = this.state.urls.concat({
+      path: newLink,
+      exactMatch: this.state.exactMatch
+    });
 
-    const urls = this.state.urls.concat(newLink);
+    console.log("urls", urls);
+    console.log("this.state.urls", this.state.urls);
+
     this.setState({
       urls,
       newLink: '',
+      exactMatch: false,
     });
   }
 
@@ -70,7 +80,7 @@ export class ThemeSettings extends React.Component<Props, any> {
   }
 
   onDeleteUrl(url) {
-    const urls = this.state.urls.filter(item => item !== url);
+    const urls = this.state.urls.filter(item => item.path !== url);
     this.setState({urls});
   }
 
@@ -96,7 +106,7 @@ export class ThemeSettings extends React.Component<Props, any> {
 
   render () {
     const {theme, layouts} = this.props;
-    const {layoutId, newLink, title, urls} = this.state;
+    const {exactMatch, layoutId, newLink, title, urls} = this.state;
 
     return (
       <div>
@@ -145,14 +155,14 @@ export class ThemeSettings extends React.Component<Props, any> {
                 {urls.map((url, index) => (
                   <div className="links__item" key={index}>
                     <div
-                      title={url}
+                      title={url.path}
                     >
-                      {url}
+                      {url.path}
                     </div>
 
                     <span
                       className="links__remove icon-close"
-                      onClick={() => this.onDeleteUrl(url)}
+                      onClick={() => this.onDeleteUrl(url.path)}
                     />
                   </div>
                 ))}
@@ -169,6 +179,16 @@ export class ThemeSettings extends React.Component<Props, any> {
                   onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
                 />
                 <span className="icon icon-add btn-icon-add" onClick={() => this.onAddNewUrl()}/>
+              </div>
+              <div>
+                <FormGroup>
+                  <Checkbox
+                    label="Exact matching"
+                    name="exactMatch"
+                    checked={exactMatch}
+                    onChange={e => {this.setState({exactMatch: !exactMatch})}}
+                  />
+                </FormGroup>
               </div>
             </FormGroup>
 
