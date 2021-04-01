@@ -13,9 +13,8 @@ task webpack(type: NodeTask, dependsOn: 'yarn_install') {
     args = ['--progress', '--env', 'NODE_ENV=production', '--env', 'BUILD_NUMBER=', version ?: '99-SNAPSHOT']
 }
 
-task jest(type: NodeTask, dependsOn: 'yarn_install') {
-    script = project.file('node_modules/.bin/jest')
-    args = ['--ci', '--testResultsProcessor=jest-junit']
+task jest(type: YarnTask, dependsOn: 'yarn_install') {
+    args = ['test']
 }
 
 sourceSets {

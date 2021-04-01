@@ -12,7 +12,7 @@
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
     "build:mock": "webpack --progress --node-env mock",
     "build:mock:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map --node-env mock",
-    "test": "jest --ci  --testResultsProcessor=jest-junit",
+    "test": "jest --ci  --testResultsProcessor=jest-junit --passWithNoTests",
     "start": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx --content-base ./src/dev",
     "start:mock": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/dev/app.tsx --content-base ./src/dev"
   },
