@@ -86,7 +86,7 @@ class Users extends React.Component<any, any> {
         }
       : users && users.find(item => item.id.toString() === id);
 
-    const oldEmail = isNew ? null : users && users.find(item => item.id.toString() === id).email;
+    const oldEmail = isNew ? null : currentUser ? currentUser.email : null;
 
     return sites ? (
       <UsersForm
