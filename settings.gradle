@@ -18,5 +18,6 @@ rootProject.name = 'onCourse commercial'
 include ':plugins:cloud-assess',
         ':plugins:xero',
         ':plugins:replication',
-        ':plugins:tcsi'
+        ':plugins:tcsi',
+        ':plugins:nsw-service'
 
