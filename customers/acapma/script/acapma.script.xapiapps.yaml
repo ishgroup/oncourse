@@ -1,0 +1,8 @@
+name: Xapiapps
+keyCode: acapma.script.xapiapps
+body: acapma.script.xapiapps.groovy
+enabled: false
+triggerType: ENTITY_EVENT
+entityEventType: CREATE_OR_UPDATE
+entityClass: Contact
+description: onCourse will create students in Xapiapps if they do not already exist
