@@ -209,7 +209,7 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
   const edit = () => {
     setIsEditing(true);
     setTimeout(() => {
-      inputNode.current.focus();
+      if (inputNode && inputNode.current) inputNode.current.focus();
     }, 50);
   };
 
