@@ -60,10 +60,7 @@ public class Billing {
 
 	@Property
 	private boolean qePaymentEnabled;
-
-	@Property
-	private boolean replicationEnabled;
-
+	
 	@Property
 	private boolean creditCardPaymentEnabled;
 
@@ -102,9 +99,7 @@ public class Billing {
 			this.webPaymentEnabled = true;
 		}
 		this.qePaymentEnabled = preferenceController.getLicenseCCProcessing();
-
-		this.replicationEnabled = preferenceController.getReplicationEnabled();
-
+		
 		this.creditCardPaymentEnabled = preferenceController.isCreditCardPaymentEnabled();
 
 		this.webSites = college.getWebSites();
@@ -117,8 +112,6 @@ public class Billing {
 		ObjectContext context = college.getObjectContext();
 
 		if (college != null) {
-			college.setPaymentGatewayAccount(this.college.getPaymentGatewayAccount());
-			college.setPaymentGatewayPass(this.college.getPaymentGatewayPass());
 			college.setName(this.college.getName());
 
 			if (this.webPaymentEnabled) {
@@ -129,19 +122,12 @@ public class Billing {
 			}
 			preferenceController.setLicenseCCProcessing(this.qePaymentEnabled);
 
-			replicationEnable();
 			preferenceController.setCreditCardPaymentEnabled(creditCardPaymentEnabled);
 		}
 
 		context.commitChanges();
 	}
-
-	private void replicationEnable()
-	{
-		boolean old = preferenceController.getReplicationEnabled();
-		preferenceController.setReplicationEnabled(replicationEnabled);
-	}
-
+	
 
     void onActivate(Long id) {
 		if (college == null || !college.getId().equals(id)) {
@@ -152,22 +138,7 @@ public class Billing {
 	Object onPassivate() {
 		return this.college.getId();
 	}
-
-	public String getPaymentExpUser() {
-		return college.getPaymentGatewayAccount();
-	}
-
-	public void setPaymentExpUser(String value) {
-		college.setPaymentGatewayAccount(value);
-	}
-
-	public String getPaymentExpPass() {
-		return college.getPaymentGatewayPass();
-	}
-
-	public void setPaymentExpPass(String value) {
-		college.setPaymentGatewayPass(value);
-	}
+	
 
 	public String getBillingCode() {
 		return college.getBillingCode();

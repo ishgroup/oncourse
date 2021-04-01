@@ -8,10 +8,7 @@
 
 	<link rel="stylesheet" type="text/css" href="${contextPath}/css/admin.css"/>
 
-	<script type="text/javascript" src="${contextPath}/js/bootstrap.js"></script>
-	<script type="text/javascript" src="${contextPath}/js/jquery.ui.core.js"></script>
-	<script type="text/javascript" src="${contextPath}/js/jquery.ui.datepicker.js"></script>
-	<script type="text/javascript" src="${contextPath}/js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/adimn-min.js"/>
 
 	<script type="text/javascript">jQuery.noConflict()</script>
 

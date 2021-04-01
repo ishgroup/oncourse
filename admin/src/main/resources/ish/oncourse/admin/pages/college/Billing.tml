@@ -12,21 +12,8 @@
 			<td>College name</td>
 			<td><t:textfield t:id="collegeName" value="collegeName" /></td>
 		</tr>
-		<tr>
-			<td>PaymentExpress user</td>
-			<td><t:textfield t:id="paymentUser" value="paymentExpUser" />
-			</td>
-		</tr>
-		<tr>
-			<td>PaymentExpress password</td>
-			<td><t:textfield t:id="paymentPass" value="paymentExpPass" />
-			</td>
-		</tr>
 	</table>
-
-	<label class="checkbox">
-		<t:checkbox t:id="replicationCheckbox" value="replicationEnabled"/>Replication enabled
-	</label>
+	
 
 	<label class="checkbox">
 		<t:checkbox t:id="webPaymentCheckbox" value="webPaymentEnabled"/>Enable online enrolments
@@ -46,11 +33,5 @@
 	</div>
 </t:form>
 
-	<script type="text/javascript">
-		jQuery(function() {
-			jQuery( ".datefield" ).datepicker({ dateFormat: 'dd/mm/yy' });
-			jQuery( ".datefield" ).datepicker({ dateFormat: 'dd/mm/yy' });
-		});
-	</script>
 
 </html>
