@@ -15,6 +15,17 @@ interface Props {
   showModal?: (props) => void;
 }
 
+const urlsOptions = [
+  {
+    value: false,
+    title: "Starts with matching",
+  },
+  {
+    value: true,
+    title: "Exact matching",
+  }
+];
+
 export class ThemeSettings extends React.Component<Props, any> {
   constructor(props) {
     super(props);
@@ -63,14 +74,25 @@ export class ThemeSettings extends React.Component<Props, any> {
       exactMatch: this.state.exactMatch
     });
 
-    console.log("urls", urls);
-    console.log("this.state.urls", this.state.urls);
-
     this.setState({
       urls,
       newLink: '',
       exactMatch: false,
     });
+  }
+
+  onUpdatePath(event, path) {
+    const updatedUrls = this.state.urls.map(elem => {
+      if (elem.path === path) {
+        elem.exactMatch = !!event.target.value;
+      }
+
+      return elem;
+    });
+
+    this.setState({
+      urls: updatedUrls
+    })
   }
 
   onChange(event, key) {
@@ -153,11 +175,27 @@ export class ThemeSettings extends React.Component<Props, any> {
               <div className="links">
 
                 {urls.map((url, index) => (
-                  <div className="links__item" key={index}>
+                  <div className="links__item path-item" key={index}>
                     <div
                       title={url.path}
+                      className="links__title"
                     >
                       {url.path}
+                    </div>
+
+                    <div className="links__select">
+                      <Input
+                        type="select"
+                        name="exactMatch"
+                        id="exactMatch"
+                        placeholder="Exact matching"
+                        value={url.exactMatch.toString()}
+                        onChange={e => this.onUpdatePath(e, url.path)}
+                      >
+                        {urlsOptions.map(option => (
+                          <option key={option.title} value={option.value.toString()}>{option.title}</option>
+                        ))}
+                      </Input>
                     </div>
 
                     <span
@@ -180,16 +218,16 @@ export class ThemeSettings extends React.Component<Props, any> {
                 />
                 <span className="icon icon-add btn-icon-add" onClick={() => this.onAddNewUrl()}/>
               </div>
-              <div>
-                <FormGroup>
-                  <Checkbox
-                    label="Exact matching"
-                    name="exactMatch"
-                    checked={exactMatch}
-                    onChange={e => {this.setState({exactMatch: !exactMatch})}}
-                  />
-                </FormGroup>
-              </div>
+              {/*<div>*/}
+              {/*  <FormGroup>*/}
+              {/*    <Checkbox*/}
+              {/*      label="Exact matching"*/}
+              {/*      name="exactMatch"*/}
+              {/*      checked={exactMatch}*/}
+              {/*      onChange={e => {this.setState({exactMatch: !exactMatch})}}*/}
+              {/*    />*/}
+              {/*  </FormGroup>*/}
+              {/*</div>*/}
             </FormGroup>
 
             <FormGroup className="actions-group">

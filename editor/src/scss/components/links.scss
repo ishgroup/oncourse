@@ -1,5 +1,28 @@
 .links {
   margin-bottom: 10px;
+
+  //TODO: DELETE WITH NEW STYLES
+  &__select {
+    font-weight: 100;
+    margin-top: 6px;
+
+    .form-control {
+      font-size: 12px;
+      padding: 2px;
+      height: 24px;
+    }
+  }
+  //TODO: DELETE WITH NEW STYLES
+  &__path {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-right: 15px;
+    transition: color .15s;
+  }
+  //TODO: DELETE WITH NEW STYLES
+  .path-item {
+    margin-bottom: 6px;
+  }
   
   &__item {
     position: relative;
