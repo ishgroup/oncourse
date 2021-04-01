@@ -34,7 +34,7 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
 
     const checkoutModel = getCheckoutModel(
       s.checkout,
-      paymentPlans.filter(p => p.amount).map(p => ({ amount: p.amount, date: format(new Date(p.date), YYYY_MM_DD_MINUSED) })),
+      paymentPlans.filter(p => p.amount && p.date).map(p => ({ amount: p.amount, date: format(new Date(p.date), YYYY_MM_DD_MINUSED) })),
       (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(s) as any).fundingInvoices,
       (getFormValues(CHECKOUT_SUMMARY_FORM)(s) as any)
     );
