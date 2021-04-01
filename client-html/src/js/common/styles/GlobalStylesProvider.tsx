@@ -54,7 +54,8 @@ const customOSScrollbars = getOS() === "Windows"
 const globalStyles = (theme: AppTheme) =>
   createStyles({
     "@global": {
-      "@font-face": [
+      ...theme.palette.type === "dark" ? { "a": { color: "#90caf9" } } : {},
+        "@font-face": [
         {
           fontFamily: "Inter",
           fontWeight: `100 900`,
