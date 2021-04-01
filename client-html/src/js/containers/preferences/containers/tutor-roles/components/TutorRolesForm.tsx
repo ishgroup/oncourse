@@ -5,7 +5,7 @@
 
 import React from "react";
 import { Dispatch } from "redux";
-import { InjectedFormProps, reduxForm } from "redux-form";
+import { InjectedFormProps } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import { DefinedTutorRole } from "@api/model";
@@ -17,7 +17,6 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/
 import PayRates from "./PayRates";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
@@ -115,7 +114,4 @@ const TutorRolesForm = React.memo<Props>(
   )
 );
 
-export default reduxForm({
-  form: "TutorRolesForm",
-  onSubmitFail
-})(props => (props.value ? <TutorRolesForm {...props} /> : null));
+export default props => (props.value ? <TutorRolesForm {...props} /> : null);
