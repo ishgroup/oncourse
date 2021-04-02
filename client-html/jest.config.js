@@ -12,7 +12,7 @@ module.exports = {
   },
   setupFiles: ["core-js", "jest-canvas-mock"],
   transform: {
-    ".+\\.(css|styl|less|sass|scss|png|jpg|gif|ttf|woff|woff2)$": "jest-transform-stub"
+    ".+\\.(css|styl|less|sass|scss|png|jpg|gif|svg|ttf|woff|woff2)$": "jest-transform-stub"
   },
   reporters: ["default"],
   moduleDirectories: ["node_modules", "src"],
