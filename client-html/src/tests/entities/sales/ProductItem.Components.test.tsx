@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
+import { EEE_D_MMM_YYYY } from "../../../js/common/utils/dates/format";
 import SalesEditView from "../../../js/containers/entities/sales/components/SalesEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
 
@@ -13,7 +13,7 @@ describe("Virtual rendered SalesEditView", () => {
       expect(wrapper.find(".textField").at(1).text()).toContain(initialValues.purchasedByName);
 
       expect(wrapper.find(".textField").at(2).text()).toContain(
-        format(new Date(initialValues.purchasedOn), III_DD_MMM_YYYY).toString()
+        "Purchased on" + format(new Date(initialValues.purchasedOn), EEE_D_MMM_YYYY).toString()
       );
 
       expect(wrapper.find(".textField").at(3).text()).toContain(initialValues.purchasePrice);
