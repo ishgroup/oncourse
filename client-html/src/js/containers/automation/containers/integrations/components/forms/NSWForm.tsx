@@ -41,7 +41,7 @@ class NSWBaseForm extends React.Component<any, any> {
         <FormField name="fields.chanelCode" label="Store channel code" type="text" required fullWidth />
         <FormField name="fields.terminalId" label="POS terminal id" type="text" required fullWidth />
         <FormField name="fields.programme" label="Programme" type="text" required fullWidth />
-        <FormField name="fields.apiKey" label="API key" type="text" required fullWidth />
+        <FormField name="fields.apiKey" label="API key" type="password" required fullWidth />
       </form>
     );
   }
