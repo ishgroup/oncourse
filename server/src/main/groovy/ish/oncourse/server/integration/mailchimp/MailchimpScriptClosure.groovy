@@ -97,6 +97,14 @@ import java.time.LocalDate
  *     action "pull unsubscribes"
  * }
  * ```
+ * Delete a user permanently from MailChimp by email, after this the user can be added again
+ *
+ * ```
+ * mailchimp {
+ *     action "delete permanently"
+ *     email "student@example.com"
+ * }
+ * ```
  *
  */
 @API
@@ -107,6 +115,7 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
 	static final SUBSCRIBE = "subscribe"
 	static final UNSUBSCRIBE = "unsubscribe"
 	static final PULL_UNSUBSCRIBES ="pull unsubscribes"
+	static final DELETE_PERMANENTLY ="delete permanently"
     String action = SUBSCRIBE
 
     String email
@@ -232,28 +241,30 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
 
 		switch (action) {
 			case MailchimpScriptClosure.SUBSCRIBE:
-				if (!email) {
-					logger.error("Subscriber email is null, firstName: ${firstName}, lastName: ${lastName}. Abort script.")
-					break
-				}
-				def result
-				def client = integration.searchClient(email)
-				if (client) {
-					result = integration.updateClient(email, mergeFields)
-				} else {
-					result = integration.subscribeToList(email, mergeFields, optIn)
-				}
-
-				if (result && tags) {
-					tags.each { tag -> integration.tag(tag, email)}
-				}
-				break
 			case MailchimpScriptClosure.UNSUBSCRIBE:
 				if (!email) {
 					logger.error("Subscriber email is null, firstName: ${firstName}, lastName: ${lastName}. Abort script.")
 					break
 				}
-				integration.unsubscribeFromList(email)
+				String status = MailchimpScriptClosure.UNSUBSCRIBE == action ? 'unsubscribed' : optIn ? 'pending' : 'subscribed'
+				def result
+				def client = integration.searchClient(email)
+				if (client) {
+					result = integration.updateClient(email, mergeFields, status)
+				} else {
+					result = integration.addToList(email, mergeFields, status)
+				}
+
+				if (result && tags && MailchimpScriptClosure.SUBSCRIBE == action) {
+					tags.each { tag -> integration.tag(tag, email)}
+				}
+				break
+			case MailchimpScriptClosure.DELETE_PERMANENTLY:
+				if (!email) {
+					logger.error("Subscriber email is null, firstName: ${firstName}, lastName: ${lastName}. Abort script.")
+					break
+				}
+				integration.deletePermanently(email)
 				break
 			case MailchimpScriptClosure.PULL_UNSUBSCRIBES:
 				int offset = 0
