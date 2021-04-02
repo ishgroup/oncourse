@@ -200,6 +200,9 @@ class UserFunctions {
                                                      PreferenceController preferenceController,
                                                      MailDeliveryService mailDeliveryService,
                                                      String collegeKey, String host, int port) throws MessagingException {
+        if (host == null) {
+            host = '0.0.0.0'
+        }
         String serverAddress = collegeKey ? "https://${collegeKey}.cloud.oncourse.cc" : "https://${host}:${port}"
                 
         String messageStart = currentUser ? "${currentUser.fullName} has given you access" : "You were provided access"
