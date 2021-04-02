@@ -3,26 +3,43 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-def run(args) {
+records = query {
+    entity "Course"
+    query "courseClasses not is null and taggingRelations.tag.name not is \"AlwaysOn\""
+    context context
+}
 
-    records = query {
-           entity "Course"
-           query "isShownOnWeb and currentlyOffered"
-           context args.context
-       }
+List<Long> redirectTagId = query {
+    entity "Tag"
+    query "name is \"Redirect\""
+    context context
+}.collect { it.id }
 
-    def today = new Date()
+StringBuilder listOfCourses = new StringBuilder()
+int numberOfCourses = 0
 
-    records.removeAll { c -> c.tags.find { t -> t.name == "AlwaysOn" }  }
+records.each { Course course ->
+    List<CourseClass> recentOfFutureClasses = course.courseClasses.findAll { cc ->
+        cc.isActive && ((cc.startDateTime != null && cc.endDateTime != null && cc.endDateTime > new Date()) || cc.isDistantLearningCourse)
+    } as List<CourseClass>
 
-    records.each { Course c ->
-        def recentOfFutureClasses =  c.courseClasses.findAll { cc ->
-            !cc.isCancelled && cc.startDateTime != null && (cc.startDateTime > today ||  (today - cc.startDateTime) <= 22)
-        }
-        if(!recentOfFutureClasses) {
-            c.setCurrentlyOffered(false)
-            c.setIsShownOnWeb(false)
-        }
+    if (recentOfFutureClasses.empty) {
+        course.setCurrentlyOffered(false)
+        course.setIsShownOnWeb(false)
+
+        ish.oncourse.server.api.v1.function.TagFunctions.updateTags(course, course.taggingRelations, redirectTagId, CourseTagRelation, course.context)
+
+        listOfCourses.append(course.code).append(' ')
+                .append(course.name).append('\n')
+        numberOfCourses += 1
     }
-    args.context.commitChanges()
+}
+context.commitChanges()
+
+if (listOfCourses.toString() != "") {
+    message {
+        to "James.Laughlin@weasydney.nsw.edu.au"
+        subject "${numberOfCourses} courses which were disabled"
+        content "The following courses were found with no future classes. They have been disabled:\n\n" + listOfCourses.toString()
+    }
 }
