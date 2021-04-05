@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import Loadable from "react-loadable";
+import Loadable from "@react-loadable/revised";
 import Loading from "../../common/components/layout/Loading";
 
 const LoadableComponent = Loadable({

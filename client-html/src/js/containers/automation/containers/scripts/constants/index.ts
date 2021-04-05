@@ -1,7 +1,6 @@
 
 import {
   ScriptComponent,
-  ScriptEmailComponent,
   ScriptQueryComponent,
   ScriptMessageComponent,
   ScriptReportComponent,
@@ -10,27 +9,27 @@ import uniqid from "../../../../../common/utils/uniqid";
 
 export const SCRIPT_EDIT_VIEW_FORM_NAME = "ScriptsForm";
 
-export const emailClosureRegexp = new RegExp(
-  /email\s*{\s*([!+=%*?a-zA-Z0-9.,:"'()\\\s@\-/_]|['"][!+=%*?a-zA-Z0-9.,:"'()\\\s@\-/_${}]+['"])+}/,
-  "g"
-);
-
 export const getScriptComponent = (content): ScriptComponent => ({
   type: "Script",
   id: uniqid(),
-  content
+  content,
 });
 
 export const queryClosureRegexp = new RegExp(
-  "(def\\s+)?\\w+\\s+=\\s+query\\s+{(\\n+)?(\\s+)?entity\\s+[\"']?\\w+[\"']?(\\s+)?query\\s+[\"'].+[\"'](\\s+)(\\n+)?}",
-  "g"
+  "\\n?(def\\s+)?\\w+\\s+=\\s+query\\s+{(\\n+)?(\\s+)?entity\\s+[\"']?\\w+[\"']?(\\s+)?query\\s+[\"'].+[\"'](\\s+)(\\n+)?}(\\s+)?\\n{0,2}",
+  "g",
+);
+
+export const messageClosureRegexp = new RegExp(
+  "\\n?(\\s+)?message\\s+{[^}]+record records[^}]+}(\\s+)?\\n{0,2}",
+  "g",
 );
 
 export const getQueryTemplate = (entity: string, query: string, queryClosureReturnValue: string) =>
-  `${queryClosureReturnValue} = query {
+  `\n${queryClosureReturnValue} = query {
     entity "${entity}"
     query "${query.replace(/\\"/g, '"').replace(/"/g, '\\"')}"
-  }`;
+  }\n\n`;
 
 export const getQueryComponent = (body: string): ScriptQueryComponent => {
   const queryClosureReturnValueMatch = body.match(/\s+(.+)\s+=\s+query/);
@@ -42,43 +41,41 @@ export const getQueryComponent = (body: string): ScriptQueryComponent => {
     id: uniqid(),
     queryClosureReturnValue: (queryClosureReturnValueMatch && queryClosureReturnValueMatch[1]) || "records",
     entity: entityMatch && entityMatch[1],
-    query: queryMatch && queryMatch[1].replace(/\\"/g, '"')
+    query: queryMatch && queryMatch[1].replace(/\\"/g, '"'),
   };
 };
 
 export const getMessageTemplate = component => {
   const entries = Object.entries(component);
-  const parsedString = entries.reduce((result, e) => (
-    e[0] === 'id' ? '' : `${result} ${e[0]} "${e[1]}"\n`), '');
+  const parsedString = entries.reduce((result, e, index) => (["id", "record", "attachment", "type"].includes(e[0])
+    ? result
+    : `${result}${e[0]} "${e[1]}"${index === (entries.length - 1) ? "" : "\n\t"}`), "");
 
-  return `\n// Message closure start 
-  message {
+  return `\nmessage {
     ${parsedString}
     record records
     attachment file
-  }      
-  // Message closure end\n`;
+  }\n\n`;
 };
 
 export const getMessageComponent = (body: string): ScriptMessageComponent => {
   const result: ScriptMessageComponent = {
     type: "Message",
-    id: uniqid()
+    id: uniqid(),
   };
 
-  if (!body) return result;
+  if (!body) {
+    result.template = null;
+    return result;
+  }
 
-  const entries = body.match(/\n?(.*")\n/gi);
+  const entries = body.match(/\w+(\s+)[^{}\n)]+/g);
 
   entries.forEach(e => {
-    const matchedKey = e.match(/(.*?)\"/);
-    const key = matchedKey ? matchedKey[1].trim() : "";
-
-    if (!key) return;
-
-    const matchedValue = e.replace(key, '').trim();
-    const value = matchedValue.slice(1, matchedValue.length - 1);
-    result[key] = value === "false" ? false : value;
+    const key = e.match(/\w+/)[0];
+    const value = e.replace(/\w+/, "").trim();
+    if (!value) return;
+    result[key] = value.replace(/['"]/g, "");
   });
 
   return result;
@@ -87,7 +84,7 @@ export const getMessageComponent = (body: string): ScriptMessageComponent => {
 export const getReportTemplate = component => {
   const entries = Object.entries(component);
   const parsedString = entries.reduce((result, e) => (
-    e[0] === 'id' ? '' : `${result} ${e[0]} "${e[1]}"\n`), '');
+    e[0] === 'id' ? '' : `\t${result} ${e[0]} "${e[1]}"\n`), '');
 
   return `\n// Report closure start 
   file = report {
@@ -100,7 +97,7 @@ export const getReportTemplate = component => {
 export const getReportComponent = (body: string): ScriptReportComponent => {
   const result: ScriptReportComponent = {
     type: "Report",
-    id: uniqid()
+    id: uniqid(),
   };
 
   if (!body) return result;
@@ -119,84 +116,6 @@ export const getReportComponent = (body: string): ScriptReportComponent => {
   });
 
   return result;
-};
-
-const getClosurePropRegex = (prop: string) => `${prop}\\s+([^\\n]+)\\n`;
-
-const emailComponentProps = [
-  "template",
-  "bindings",
-  "subject",
-  "content",
-  "from",
-  "to",
-  "cc",
-  "bcc",
-  "key",
-  "keyCollision"
-];
-
-const emptyEmailRegex = /email\s*{\s*}/;
-
-export const getEmailComponent = (body: string): ScriptEmailComponent => {
-  const matchProps = {};
-  const bindingsValues = [];
-  let parsedBody = body;
-
-  emailComponentProps.forEach(p => {
-    const regex = new RegExp(getClosurePropRegex(p));
-    const match = parsedBody.match(regex);
-
-    if (match) {
-      if (p === "bindings") {
-        const dataItems = match[1].split(",");
-
-        dataItems.forEach(d => {
-          const values = d.split(":");
-
-          bindingsValues.push({ variable: values[0], data: values[1] });
-        });
-      } else {
-        matchProps[p] = match[1];
-      }
-
-      parsedBody = parsedBody.replace(regex, "");
-    }
-  });
-
-  if (bindingsValues.length) {
-    matchProps["bindings"] = bindingsValues;
-  }
-
-  return emptyEmailRegex.test(parsedBody)
-    ? {
-        type: "Email",
-        id: uniqid(),
-        ...matchProps
-      }
-    : {
- type: "Script",
-        id: uniqid(),
-        content: body
-      };
-};
-
-export const getEmailTemplate = (props: any) => {
-  let bodyString = "";
-  const propsArray = Object.keys(props);
-
-  propsArray.forEach((p, index) => {
-    const stringEnd = index + 1 === propsArray.length ? "" : "\t";
-
-    if (p === "bindings") {
-      bodyString += `${p} ${props[p].map(b => `${b.variable}: ${b.data}`)}\n${stringEnd}`;
-      return;
-    }
-
-    bodyString += `${p} ${props[p]}\n${stringEnd}`;
-  });
-
-  return `email {\n\t${bodyString}}`;
 };
 
 export const importsRegexp = /import(\s+static)?\s+([\w]+)([.]?[\w*]+)+/g;

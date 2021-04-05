@@ -1,4 +1,3 @@
-import { initialize } from "redux-form";
 import ImportTemplatesService from "../../automation/containers/import-templates/services/ImportTemplatesService";
 import ModuleService from "../modules/services/ModuleService";
 import QualificationService from "../qualifications/services/QualificationService";
@@ -276,10 +275,6 @@ export const updateEntityItemById = (entity: string, id: number, item: any, meth
 
 export const updateEntityItemByIdErrorHandler = (response: any, entity: string, form: string, item: any) => {
   switch (entity) {
-    case "Script": {
-      return [...FetchErrorHandler(response, "Script was not updated"), initialize(form, ParseScriptBody(item))];
-    }
-
     default: {
       return FetchErrorHandler(response, `${entity} was not updated`);
     }

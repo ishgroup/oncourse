@@ -6,15 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import Loadable from "@react-loadable/revised";
-import Loading from "../../../common/components/layout/Loading";
-
-const LoadableComponent = Loadable({
-  loader: () => import("./AssessmentSubmission"),
-  loading: Loading
-});
-
-const LoadableAssessmentSubmission = props => <LoadableComponent {...props} />;
-
-export default LoadableAssessmentSubmission;
+// eslint-disable-next-line id-blacklist
+interface String {
+  capitalize();
+}

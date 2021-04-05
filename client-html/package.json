@@ -71,6 +71,7 @@
   "dependencies": {
     "@bugsnag/js": "7.*",
     "@bugsnag/plugin-react": "7.*",
+    "@react-loadable/revised": "^0.1.0-experimental-1",
     "@ckeditor/ckeditor5-autoformat": "latest",
     "@ckeditor/ckeditor5-basic-styles": "latest",
     "@ckeditor/ckeditor5-editor-classic": "latest",
@@ -110,13 +111,12 @@
     "qrcode.react": "1.*",
     "re-resizable": "6.*",
     "react": "17.*",
-    "react-dom": "17.*",
     "react-ace": "9.*",
     "react-awesome-gravatar": "2.*",
     "react-beautiful-dnd": "13.*",
     "react-color": "2.*",
+    "react-dom": "17.*",
     "react-dropzone": "11.*",
-    "react-loadable": "5.*",
     "react-markdown": "5.*",
     "react-mde": "11.*",
     "react-number-format": "4.*",
@@ -133,7 +133,6 @@
     "redux-form": "8.*",
     "redux-observable": "1.*",
     "rxjs": "6.*",
-    "styled-components": "5.*",
     "uuid": "8.*"
   }
 }

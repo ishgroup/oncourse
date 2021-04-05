@@ -22,7 +22,9 @@ module.exports = {
         "import/no-unresolved": "off",
         "import/extensions": "off",
         "import/prefer-default-export": "off",
+        "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/indent": "off",
+        "@typescript-eslint/comma-dangle": "off",
         "@typescript-eslint/member-delimiter-style": [
             "off",
             {
