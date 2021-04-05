@@ -89,7 +89,7 @@ public class AngelCommand extends CommandWithMetadata {
         try {
             CayenneService cayenneService = cayenneServiceProvider.get();
             Server server = serverProvider.get();
-
+            HttpFactory httpFactory = httpFactoryProvider.get();
             serverFactory.start(prefControllerProvider.get(),
                     schemaUpdateServiceProvider.get(),
                     schedulerServiceProvider.get(),
@@ -99,13 +99,12 @@ public class AngelCommand extends CommandWithMetadata {
                     cayenneService,
                     pluginServiceProvider.get(),
                     mailDeliveryServiceProvider.get(),
-                    server
-                    );
+                    httpFactory);
 
             server.addBean(new AngelSessionDataStoreFactory(cayenneService, prefControllerProvider.get()));
             server.addBean(new MBeanContainer(ManagementFactory.getPlatformMBeanServer()));
             bugsnagFactoryProvider.get().init();
-            httpFactoryProvider.get().init();
+            httpFactory.init();
         } catch (Exception e) {
             return CommandOutcome.failed(1, e);
         }

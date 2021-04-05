@@ -19,6 +19,7 @@ import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.dao.UserDao;
 import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.db.SchemaUpdateService;
+import ish.oncourse.server.http.HttpFactory;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
@@ -114,7 +115,7 @@ public class AngelServerFactory {
                       CayenneService cayenneService,
                       PluginService pluginService,
                       MailDeliveryService mailDeliveryService,
-                      Server server) {
+                      HttpFactory httpFactory) {
         try {
 
             // Create DB schema
@@ -123,8 +124,7 @@ public class AngelServerFactory {
 
             LOGGER.warn("Upgrade data");
             schemaUpdateService.upgradeData();
-            ServerConnector connector = (ServerConnector)server.getConnectors()[0];
-            createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(),connector.getHost(), connector.getPort(), prefController, mailDeliveryService);
+            createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(), httpFactory.getIp(), httpFactory.getPort(), prefController, mailDeliveryService);
 
         } catch (Throwable e) {
             LOGGER.catching(e);
@@ -248,7 +248,7 @@ public class AngelServerFactory {
         LOGGER.warn("Server ready");
     }
 
-    private void createSystemUsers(DataContext context, String collegeKey, String host, int port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
+    private void createSystemUsers(DataContext context, String collegeKey, String host, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
         Path systemUsersFile = Paths.get(CSV_SYSTEM_USERS_FILE);
         if (!systemUsersFile.toFile().exists()) {
             systemUsersFile = Paths.get(TXT_SYSTEM_USERS_FILE);
