@@ -5,17 +5,15 @@
 
 import { Script } from "@api/model";
 import {
-  emailClosureRegexp,
-  getEmailComponent,
   getQueryComponent,
   getQueryTemplate,
   getScriptComponent,
   getMessageTemplate,
   getMessageComponent,
-  getReportComponent,
   getReportTemplate,
   importsRegexp,
-  queryClosureRegexp
+  queryClosureRegexp,
+  messageClosureRegexp,
 } from "../constants/index";
 
 const getClosureComponent = closure => {
@@ -61,15 +59,20 @@ export const ParseScriptBody = (scriptItem: Script) => {
 
   try {
     const queryClosures = (content?.match(queryClosureRegexp) || []).map(content => ({ content, type: "query" })) || [];
-    const emailClosures = [];
-    // = content.match(emailClosureRegexp);
+    const messageClosures = (content?.match(messageClosureRegexp) || []).map(content => ({ content, type: "message" })) || [];
 
-    const matchComponents = content
-      .replace(queryClosureRegexp, "CLOSURE")
-      // .replace(emailClosureRegexp, "CLOSURE")
-      .split("CLOSURE");
+    let parsedContent = content;
 
-    const closures = [...queryClosures, ...(emailClosures || [])];
+    if (queryClosures.length) {
+      parsedContent = parsedContent.replace(queryClosureRegexp, "CLOSURE");
+    }
+    if (messageClosures.length) {
+      parsedContent = parsedContent.replace(messageClosureRegexp, "CLOSURE");
+    }
+
+    const matchComponents = parsedContent.split("CLOSURE");
+
+    const closures = [...queryClosures, ...messageClosures];
 
     matchComponents.forEach((c, index) => {
       if (c.trim()) {
@@ -91,10 +94,6 @@ const getComponentBody = (component: any) => {
     case "Query": {
       return getQueryTemplate(component.entity, component.query, component.queryClosureReturnValue);
     }
-    // case "Email": {
-    //   delete component.type;
-    //   return getEmailTemplate(component);
-    // }
     case "Script": {
       return component.content;
     }

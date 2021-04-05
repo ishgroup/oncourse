@@ -12,26 +12,6 @@ export interface ScriptQueryComponent extends ScriptComponent {
   query?: string;
 }
 
-export interface ScriptEmailComponent extends ScriptComponent {
-  template?: string;
-  bindings?: string;
-  subject?: string;
-  content?: string;
-  to?: string;
-  ccc?: string;
-  bcc?: string;
-}
-
-export interface ScriptEmailComponent extends ScriptComponent {
-  template?: string;
-  bindings?: string;
-  subject?: string;
-  content?: string;
-  to?: string;
-  ccc?: string;
-  bcc?: string;
-}
-
 export interface ScriptMessageComponent extends ScriptComponent {
   template?: string;
   from?: string;

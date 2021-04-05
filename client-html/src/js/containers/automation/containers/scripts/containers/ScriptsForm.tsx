@@ -8,13 +8,13 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import FileCopy from "@material-ui/icons/FileCopy";
 import React, {
- useCallback, useEffect, useMemo, useState
+ useCallback, useEffect, useMemo, useState,
 } from "react";
 import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import {
-  Form, arrayInsert, change, FieldArray, initialize
+  Form, arrayInsert, change, FieldArray, initialize,
 } from "redux-form";
 import Typography from "@material-ui/core/Typography";
 import { OutputType, TriggerType } from "@api/model";
@@ -39,7 +39,9 @@ import { setScriptComponents } from "../actions";
 import { ScriptComponentType } from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { getQueryComponent, getScriptComponent, getMessageComponent, getReportComponent } from "../constants";
+import {
+ getQueryComponent, getScriptComponent, getMessageComponent, getReportComponent,
+} from "../constants";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -50,50 +52,50 @@ const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${i
 const styles = theme =>
   createStyles({
     root: {
-      padding: theme.spacing(0, 9)
+      padding: theme.spacing(0, 9),
     },
     divider: {
-      margin: "20px 0"
+      margin: "20px 0",
     },
     checkbox: {
       height: "50px",
-      display: "flex"
+      display: "flex",
     },
     cardsBox: {
-      padding: theme.spacing(0, 3, 3, 0)
+      padding: theme.spacing(0, 3, 3, 0),
     },
     deleteButtonContainer: {
-      display: "flex"
+      display: "flex",
     },
     deleteButton: {
       right: "-8px",
-      top: "-8px"
+      top: "-8px",
     },
     cardContent: {
-      height: "120px"
+      height: "120px",
     },
     getBackIcon: {
       color: "#fff",
-      transform: "rotate(180deg)"
+      transform: "rotate(180deg)",
     },
     dragging: {
       borderRadius: "4px",
       width: "55px",
       paddingLeft: "4px",
       height: "25px",
-      background: "#fff"
+      background: "#fff",
     },
     dialogContent: {
       width: "450px",
-      padding: theme.spacing(0, 3)
+      padding: theme.spacing(0, 3),
     },
     infoContainer: {
       background: theme.palette.background.default,
       borderRadius: "4px",
       padding: theme.spacing(1, 0, 1, 2),
-      margin: theme.spacing(1, 0, 3, 0)
+      margin: theme.spacing(1, 0, 3, 0),
     },
-    queryField: {}
+    queryField: {},
   });
 
 const entityNameTypes = Object.keys(TriggerType).slice(0, 6).filter(t => t !== "Schedule");
@@ -106,7 +108,7 @@ const TriggerToRecordTypeMap: TriggerToRecordObjType = {
   "Enrolment successful": "Enrolment",
   "Enrolment cancelled": "Enrolment",
   "Class cancelled": "CourseClass",
-  "Class published on web": "CourseClass"
+  "Class published on web": "CourseClass",
 };
 
 interface Props {
@@ -192,7 +194,7 @@ const ScriptsForm = React.memo<Props>(props => {
   const isInternal = useMemo(() => values && values.keyCode && values.keyCode.startsWith("ish."), [values && values.keyCode]);
   const isOriginallyInternal = useMemo(
     () => initialValues && initialValues.keyCode && initialValues.keyCode.startsWith("ish."),
-    [initialValues && initialValues.keyCode]
+    [initialValues && initialValues.keyCode],
   );
   const prevId = usePrevious(values && values.id);
 
@@ -212,11 +214,11 @@ const ScriptsForm = React.memo<Props>(props => {
         ...values,
         id: null,
         keyCode,
-        name
+        name,
       });
       onDialogClose();
     },
-    [values]
+    [values],
   );
 
   const onValidateQuery = isValidQuery => {
@@ -268,20 +270,20 @@ const ScriptsForm = React.memo<Props>(props => {
   const isScheduleTrigger = useMemo(() => Boolean(
     values
     && values.trigger
-    && values.trigger.type === "Schedule"
+    && values.trigger.type === "Schedule",
   ), [
     values && values.trigger,
-    values && values.trigger && values.trigger.type
+    values && values.trigger && values.trigger.type,
   ]);
 
   const isSystemTrigger = useMemo(() => Boolean(
     values
     && values.trigger
-    && (isScheduleTrigger || TriggerToRecordTypeMap[values.trigger.type])
+    && (isScheduleTrigger || TriggerToRecordTypeMap[values.trigger.type]),
   ), [
     values && values.trigger,
     values && values.trigger && values.trigger.type,
-    isScheduleTrigger
+    isScheduleTrigger,
   ]);
 
   const handleSave = useCallback(
@@ -315,7 +317,7 @@ const ScriptsForm = React.memo<Props>(props => {
         onSave(requestValues.id, requestValues);
       }
     },
-    [formsState, isNew, isSystemTrigger, values]
+    [formsState, isNew, isSystemTrigger, values],
   );
 
   const defaultVariables = useMemo(
@@ -330,9 +332,9 @@ const ScriptsForm = React.memo<Props>(props => {
         isSystemTrigger && !isScheduleTrigger
           ? [{ name: "record", type: TriggerToRecordTypeMap[values.trigger.type] }]
           : []
-      )
+      ),
     ],
-    [values, values && values.trigger, values && values.trigger && values.trigger.type, isSystemTrigger, isScheduleTrigger]
+    [values, values && values.trigger, values && values.trigger && values.trigger.type, isSystemTrigger, isScheduleTrigger],
   );
 
   const enableEntityNameField = entityNameTypes.indexOf(values && values.trigger && values.trigger.type) > -1;
@@ -376,8 +378,8 @@ const ScriptsForm = React.memo<Props>(props => {
                       icon: <DeleteForever />,
                       tooltip: "Delete script",
                       confirmText: "Script component will be deleted permanently",
-                      confirmButtonText: "DELETE"
-                    }
+                      confirmButtonText: "DELETE",
+                    },
                   ]}
                 />
               )}
@@ -455,6 +457,7 @@ const ScriptsForm = React.memo<Props>(props => {
                   emailTemplates={emailTemplates}
                   pdfReports={pdfReports}
                   pdfBackgrounds={pdfBackgrounds}
+                  options={values.options}
                 />
 
                 <FormField
@@ -525,8 +528,8 @@ const ScriptsForm = React.memo<Props>(props => {
                       </Typography>
 
                       {values.lastRun && values.lastRun.length ? (
-                        values.lastRun.map(runDate => (
-                          <Typography variant="body1" key={runDate + "_key"}>
+                        values.lastRun.map((runDate, index) => (
+                          <Typography variant="body1" key={runDate + index}>
                             {formatRelativeDate(new Date(runDate), new Date(), DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL)}
                           </Typography>
                         ))

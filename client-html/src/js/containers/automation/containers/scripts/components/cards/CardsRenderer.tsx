@@ -10,7 +10,6 @@ import { FormControlLabel } from "@material-ui/core";
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
 import { ScriptComponent } from "../../../../../../model/scripts";
 import ScriptCard from "./CardBase";
-import EmailCardContent from "./EmailCardContent";
 import QueryCardContent from "./QueryCardContent";
 import MessageCardContent from "./MessageCardContent";
 import ReportCardContent from "./ReportCardContent";
@@ -26,6 +25,7 @@ const CardsRenderer = props => {
   const {
     fields,
     dispatch,
+    meta: { form },
     onValidateQuery,
     classes,
     showConfirm,
@@ -36,6 +36,7 @@ const CardsRenderer = props => {
     emailTemplates,
     pdfReports,
     pdfBackgrounds,
+    options,
   } = props;
 
   const onDelete = (e, index, fields, showConfirm) => {
@@ -167,6 +168,8 @@ const CardsRenderer = props => {
                               isValidQuery={isValidQuery}
                               emailTemplates={emailTemplates}
                               renderVariables={renderVariables}
+                              options={options}
+                              form={form}
                             />
                           </ScriptCard>
                         </div>
@@ -197,28 +200,6 @@ const CardsRenderer = props => {
                               pdfBackgrounds={pdfBackgrounds}
                               renderVariables={renderVariables}
                             />
-                          </ScriptCard>
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                }
-
-                case "Email": {
-                  return (
-                    <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
-                      {provided => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
-                          <ScriptCard
-                            heading="Email"
-                            className="mb-3"
-                            onDelete={!isInternal ? e => onDelete(e, index, fields, showConfirm) : null}
-                            onAddItem={() => null}
-                            dragHandlerProps={provided.dragHandleProps}
-                            expanded
-                            onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                          >
-                            <EmailCardContent name={item} field={component} classes={classes} />
                           </ScriptCard>
                         </div>
                       )}

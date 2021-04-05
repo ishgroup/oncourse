@@ -99,15 +99,15 @@ const _common = (dirname, options) => {
         ],
       }),
       new MiniCssExtractPlugin({ filename: '[name].css' }),
-      new webpack.SourceMapDevToolPlugin({
-        filename: "[file].map",
-        exclude: [/vendor/, /images/, /hot-update/],
-      }),
       new ForkTsCheckerWebpackPlugin({
         async: false,
         typescript: {
           configFile: path.resolve(dirname, './tsconfig.dev.json'),
         },
+      }),
+      new webpack.SourceMapDevToolPlugin({
+        filename: "[file].map",
+        exclude: [/vendor/, /images/, /hot-update/, /\d/],
       }),
     ],
     devServer: {
