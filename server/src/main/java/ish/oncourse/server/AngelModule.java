@@ -11,13 +11,7 @@
 
 package ish.oncourse.server;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.Provides;
-import com.google.inject.Scopes;
-import com.google.inject.Singleton;
-import com.google.inject.TypeLiteral;
+import com.google.inject.*;
 import com.google.inject.name.Names;
 import io.bootique.BQCoreModule;
 import io.bootique.ConfigModule;
@@ -40,14 +34,15 @@ import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.lifecycle.ClassPublishListener;
 import ish.oncourse.server.lifecycle.PayslipApprovedListener;
 import ish.oncourse.server.lifecycle.PayslipPaidListener;
+import ish.oncourse.server.lifecycle.ScriptTriggeringCommitListener;
 import ish.oncourse.server.modules.AngelJobFactory;
 import ish.oncourse.server.preference.UserPreferenceService;
+import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.scripting.api.EmailService;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
 import ish.oncourse.server.security.api.IPermissionService;
 import ish.oncourse.server.services.AuditService;
 import ish.oncourse.server.servlet.HealthCheckServlet;
-import ish.oncourse.server.users.SystemUserService;
 import ish.util.Maps;
 import org.apache.cayenne.commitlog.CommitLogListener;
 import org.apache.cayenne.commitlog.CommitLogModule;
@@ -96,6 +91,13 @@ public class AngelModule extends ConfigModule {
 
     public static final String ANGEL_VERSION = "angelVersion";
 
+
+    @Singleton
+    @Provides
+    ScriptTriggeringCommitListener provideScriptTriggeringCommitListener(Provider<GroovyScriptService> scriptServiceProvider) {
+        return new ScriptTriggeringCommitListener(scriptServiceProvider.get());
+    }
+
     @Singleton
     @Provides
     ClassPublishListener provideClassPublishListener(EventService eventService) {
@@ -122,8 +124,11 @@ public class AngelModule extends ConfigModule {
 
     @Singleton
     @Provides
-    CommitLogModuleExt provideCommitLogModuleExt(ClassPublishListener classPublishListener, PayslipApprovedListener payslipApprovedListener, PayslipPaidListener paidListener) {
-        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener);
+    CommitLogModuleExt provideCommitLogModuleExt(ClassPublishListener classPublishListener,
+                                                 PayslipApprovedListener payslipApprovedListener,
+                                                 PayslipPaidListener paidListener,
+                                                 ScriptTriggeringCommitListener scriptTriggeringCommitListener) {
+        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener, scriptTriggeringCommitListener);
     }
 
     @Override
