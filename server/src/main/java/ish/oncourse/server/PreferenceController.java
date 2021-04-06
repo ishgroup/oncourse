@@ -44,15 +44,16 @@ public class PreferenceController extends CommonPreferenceController {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private final ObjectContext context;
+	private final ICayenneService cayenneService;
 	private final ISystemUserService systemUserService;
 	private final LicenseService licenseService;
+	private ObjectContext objectContext;
 
 	private Map<String, Boolean> showReleaseNotes = new HashMap<>();
 
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,LicenseService licenseService) {
-		this.context = cayenneService.getNewContext();
+		this.cayenneService = cayenneService;
 		this.systemUserService = systemUserService;
 		this.licenseService = licenseService;
 		sharedController = this;
@@ -166,8 +167,15 @@ public class PreferenceController extends CommonPreferenceController {
 		return sharedController;
 	}
 
+	public ObjectContext getObjectContext() {
+		if (objectContext == null) {
+			objectContext = cayenneService.getNewContext();
+		}
+		return objectContext;
+	}
+
 	public void rollbackChanges() {
-		this.context.rollbackChanges();
+		this.getObjectContext().rollbackChanges();
 	}
 
 	/**
@@ -184,7 +192,7 @@ public class PreferenceController extends CommonPreferenceController {
 			objectSelect.and(Preference.USER.eq(systemUserService.getCurrentUser()));
 		}
 
-		return objectSelect.selectFirst(context);
+		return objectSelect.selectFirst(cayenneService.getNewContext());
 	}
 
 	/**
@@ -204,7 +212,7 @@ public class PreferenceController extends CommonPreferenceController {
 	 */
 	@Override
 	protected synchronized void setValue(String key, boolean isUserPref, String value) {
-		setValue(this.context, key, isUserPref, value);
+		setValue(getObjectContext(), key, isUserPref, value);
 	}
 
 	private void setValue(ObjectContext context, String key, boolean isUserPref, String value) {
@@ -243,7 +251,7 @@ public class PreferenceController extends CommonPreferenceController {
 		return !ObjectSelect.query(SurveyFieldConfiguration.class)
 				.where(SurveyFieldConfiguration.INT_TYPE.eq(4))
 				.and(SurveyFieldConfiguration.DELIVERY_SCHEDULE.eq(DeliverySchedule.ON_ENROL))
-				.select(context).isEmpty();
+				.select(cayenneService.getNewContext()).isEmpty();
 	}
 
 }
