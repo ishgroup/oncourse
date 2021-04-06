@@ -98,8 +98,8 @@ class UpdateTheme extends AbstractUpdate<Theme> {
         List<ThemePath> newPaths = resourceToSave.paths.findAll {themePath ->
             !nodeType.webLayoutPaths.any { it.path == themePath.path && it.matchType == (themePath.exactMatch? EXACT:STARTS_WITH )  } 
         }
-        newPaths.each {themePath ->
-            
+        
+        for (ThemePath themePath : newPaths)  {
             WebLayoutPath duplicatePath = ObjectSelect.query(WebLayoutPath)
                     .where(WebLayoutPath.WEB_SITE_VERSION.eq(nodeType.webSiteVersion))
                     .and(WebLayoutPath.WEB_NODE_TYPE.ne(nodeType))
