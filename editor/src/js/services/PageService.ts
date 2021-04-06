@@ -5,10 +5,11 @@ import {State} from "../reducers/state";
 import {DefaultHttpService} from "../common/services/HttpService";
 
 class PageService {
-  readonly pageApi = new PageApi(new DefaultHttpService());
+  readonly customApi = new DefaultHttpService();
+  readonly pageApi = new PageApi(this.customApi);
 
   public getPages(pageLink?): Promise<Page[]> {
-    return this.pageApi.getPages(pageLink ? pageLink : null);
+    return this.customApi.GET(`/v1/page`, {headers: {  }, params: {pageLink}, responseType: 'json'});
   }
 
   public savePage(props, state: State): Promise<any> {

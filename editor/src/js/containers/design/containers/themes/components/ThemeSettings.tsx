@@ -1,8 +1,7 @@
 import React from 'react';
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
-import {Theme, Layout, ThemePath} from "../../../../../model";
+import {Theme, Layout} from "../../../../../model";
 import {IconBack} from "../../../../../common/components/IconBack";
-import {Checkbox} from "../../../../../common/components/Checkbox";
 
 interface Props {
   theme: Theme;
