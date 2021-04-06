@@ -108,14 +108,9 @@ class ScriptTriggeringListener implements DataChannelSyncFilter {
 		RECORD_STORAGE.get().peek().add(new EventRecordMapping(LifecycleEvent.POST_PERSIST, entity))
 	}
 
-	@PostUpdate
-	void postUpdate(Object entity) {
-		RECORD_STORAGE.get().peek().add(new EventRecordMapping(LifecycleEvent.POST_UPDATE, entity))
-	}
-
 	@PreRemove
 	void preRemove(Object entity) {
-		scriptService.getScriptsForEntity(entity.getClass(), LifecycleEvent.PRE_REMOVE).each{script ->
+		scriptService.getScriptsForEntity(entity.getClass(), LifecycleEvent.PRE_REMOVE).each {script ->
 			scriptService.runAndWait(script, new ScriptParameters().fillDefaultParameters(entity), { ->
 				ObjectContext context = (ISHDataContext) cayenneService.getNewContext()
 				context.setReadOnly(true)
@@ -139,7 +134,7 @@ class ScriptTriggeringListener implements DataChannelSyncFilter {
 
 	private void handleDefaultTimeZonePreferenceChange(Preference preference) {
 		// reschedule all CRON triggered scripts in case default server time zone preference has changed
-		if (Preferences.ONCOURSE_SERVER_DEFAULT_TZ.equals(preference.getName())) {
+		if (Preferences.ONCOURSE_SERVER_DEFAULT_TZ == preference.getName()) {
 			List<Script> scripts = preference.getObjectContext().select(SelectQuery.query(
 					Script.class, Script.TRIGGER_TYPE.eq(TriggerType.CRON)))
 
