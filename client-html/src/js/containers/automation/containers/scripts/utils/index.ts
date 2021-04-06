@@ -13,7 +13,7 @@ import {
   getReportTemplate,
   importsRegexp,
   queryClosureRegexp,
-  messageClosureRegexp,
+  messageClosureRegexp, getReportComponent, reportClosureRegexp,
 } from "../constants/index";
 
 const getClosureComponent = closure => {
@@ -24,15 +24,10 @@ const getClosureComponent = closure => {
     case "message": {
       return getMessageComponent(closure.content);
     }
-    // case "Report": {
-    //   return getReportComponent(body);
-    // }
+    case "report": {
+      return getReportComponent(closure.content);
+    }
   }
-
-  // if (closure.content.match(emailClosureRegexp)) {
-  //   return getEmailComponent(closure.content);
-  // }
-
   return null;
 };
 
@@ -60,6 +55,7 @@ export const ParseScriptBody = (scriptItem: Script) => {
   try {
     const queryClosures = (content?.match(queryClosureRegexp) || []).map(content => ({ content, type: "query" })) || [];
     const messageClosures = (content?.match(messageClosureRegexp) || []).map(content => ({ content, type: "message" })) || [];
+    const reportClosuress = (content?.match(reportClosureRegexp) || []).map(content => ({ content, type: "report" })) || [];
 
     let parsedContent = content;
 
@@ -69,10 +65,13 @@ export const ParseScriptBody = (scriptItem: Script) => {
     if (messageClosures.length) {
       parsedContent = parsedContent.replace(messageClosureRegexp, "CLOSURE");
     }
+    if (reportClosuress.length) {
+      parsedContent = parsedContent.replace(reportClosureRegexp, "CLOSURE");
+    }
 
     const matchComponents = parsedContent.split("CLOSURE");
 
-    const closures = [...queryClosures, ...messageClosures];
+    const closures = [...queryClosures, ...messageClosures, ...reportClosuress];
 
     matchComponents.forEach((c, index) => {
       if (c.trim()) {

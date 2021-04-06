@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {useEffect, useMemo, useState} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Grid from "@material-ui/core/Grid";
+import { change } from "redux-form";
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
-import {change} from "redux-form";
-import {SCRIPT_EDIT_VIEW_FORM_NAME} from "../../constants";
+import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../../constants";
 import PdfService from "../../../pdf-reports/services/PdfService";
 
 const ReportCardContent = props => {
@@ -20,12 +20,14 @@ const ReportCardContent = props => {
   const pdfReportsItems = useMemo(
     () => (pdfReports
       ? pdfReports.filter(t => t.keyCode).map(t => ({ value: t.keyCode, label: t.name, id: t.id }))
-      : []), [pdfReports]);
+      : []), [pdfReports]
+);
 
   const pdfBackgroundsItems = useMemo(
     () => (pdfBackgrounds
       ? pdfBackgrounds.filter(t => t.name).map(t => ({ value: t.name, label: t.name }))
-      : []), [pdfBackgrounds]);
+      : []), [pdfBackgrounds]
+);
 
   const getPdfReport = async (id: number) => {
     let pdfReport;
@@ -34,21 +36,21 @@ const ReportCardContent = props => {
       pdfReport = await PdfService.getReport(id);
       pdfReport && setPdfReportsVariables(pdfReport.variables);
     } catch (e) {
-      console.warn(e)
+      console.warn(e);
     }
 
     return pdfReport;
-  }
+  };
 
-  const changePdfReport = async (item) => {
-    const pdfReport = await getPdfReport(item.id)
+  const changePdfReport = async item => {
+    const pdfReport = await getPdfReport(item.id);
 
     pdfReport && pdfReport.variables && pdfReport.variables.forEach(e => {
       if (e.type === "Checkbox") {
         dispatch(change(SCRIPT_EDIT_VIEW_FORM_NAME, `${name}.${e.name}`, false));
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     if (field && field.report) {
@@ -58,7 +60,7 @@ const ReportCardContent = props => {
   }, [field]);
 
   return (
-    <Grid container>
+    <Grid container className="mt-2">
       <Grid item xs={12}>
         <FormField
           type="text"

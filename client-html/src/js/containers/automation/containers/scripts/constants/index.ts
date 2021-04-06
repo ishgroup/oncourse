@@ -25,6 +25,11 @@ export const messageClosureRegexp = new RegExp(
   "g",
 );
 
+export const reportClosureRegexp = new RegExp(
+  "\\n?((\\s+)?file\\s+=\\s+)?report\\s+{[^}]+record records[^}]+}(\\s+)?\\n{0,2}",
+  "g",
+);
+
 export const getQueryTemplate = (entity: string, query: string, queryClosureReturnValue: string) =>
   `\n${queryClosureReturnValue} = query {
     entity "${entity}"
@@ -84,14 +89,12 @@ export const getMessageComponent = (body: string): ScriptMessageComponent => {
 export const getReportTemplate = component => {
   const entries = Object.entries(component);
   const parsedString = entries.reduce((result, e) => (
-    e[0] === 'id' ? '' : `\t${result} ${e[0]} "${e[1]}"\n`), '');
+    e[0] === 'id' ? '' : `${result} ${e[0]} "${e[1]}"\n\t`), '');
 
-  return `\n// Report closure start 
-  file = report {
+  return `\nfile = report {
     ${parsedString}
     record records
-  }      
-  // Report closure end\n`;
+  }\n\n`;
 };
 
 export const getReportComponent = (body: string): ScriptReportComponent => {
