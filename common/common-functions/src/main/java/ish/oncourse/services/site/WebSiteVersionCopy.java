@@ -165,7 +165,9 @@ public class WebSiteVersionCopy {
                 newPath.setModified(new Date());
                 newPath.setWebSiteVersion(toVersion);
                 newPath.setWebNodeType(newWebNodeType);
-                newPath.setPath(path.getPath());                 
+                newPath.setPath(path.getPath());
+                newPath.setMatchType(path.getMatchType());
+
             });
 
             webNodeTypeMap.put(webNodeType, newWebNodeType);
