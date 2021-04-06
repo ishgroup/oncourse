@@ -105,6 +105,7 @@ public class WebSiteVersionCopy {
             newVisibility.setWeight(visibility.getWeight());
             newVisibility.setWebContent(newContent);
             newVisibility.setWebNode(webNodeMap.get(visibility.getWebNode()));
+            newVisibility.setWebNodeType(webNodeTypeMap.get(visibility.getWebNodeType())); 
         });
     }
 
