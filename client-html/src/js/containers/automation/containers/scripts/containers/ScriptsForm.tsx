@@ -356,7 +356,7 @@ const ScriptsForm = React.memo<Props>(props => {
         <CustomAppBar fullWidth noDrawer>
           <Grid container>
             <Grid item xs={12} className={clsx("centeredFlex", "relative")}>
-              {!isInternal && (
+              {!isInternal && viewMode !== "Advanced" && (
                 <ScriptAddMenu
                   addComponent={addComponent}
                   form={form}
@@ -463,8 +463,8 @@ const ScriptsForm = React.memo<Props>(props => {
                         <ScriptCard
                           heading="Import"
                           className="mt-3"
-                          onDelete={hasUpdateAccess ? removeImports : null}
-                          onAddItem={hasUpdateAccess ? addImport : null}
+                          onDelete={hasUpdateAccess && !isInternal ? removeImports : null}
+                          onAddItem={hasUpdateAccess && !isInternal ? addImport : null}
                           disableExpandedBottomMargin
                           expanded
                           onDetailsClick={isInternal ? onInternalSaveClick : undefined}
