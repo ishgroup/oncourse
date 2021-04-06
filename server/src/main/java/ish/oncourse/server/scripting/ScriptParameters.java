@@ -16,7 +16,7 @@ public class ScriptParameters {
 
 	private List<ScriptParameter> parameters = new ArrayList<>();
 
-	ScriptParameters() { }
+	public ScriptParameters() { }
 
 	public ScriptParameters fillDefaultParameters(Object entity) {
 		parameters.add(new ScriptParameter<>(GroovyScriptService.ENTITY_PARAM_NAME, entity));
