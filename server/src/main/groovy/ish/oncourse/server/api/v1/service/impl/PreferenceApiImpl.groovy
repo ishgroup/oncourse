@@ -105,7 +105,6 @@ class PreferenceApiImpl implements PreferenceApi {
                 }
             }
         } catch (IllegalArgumentException e) {
-            controller.rollbackChanges()
             logger.catching(e)
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, 'uniqueKey', e.message)).build())
         }
