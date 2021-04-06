@@ -3,9 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grow from "@material-ui/core/Grow/Grow";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import FileCopy from "@material-ui/icons/FileCopy";
 import React, {
  useCallback, useEffect, useMemo, useState,
@@ -20,6 +17,8 @@ import Typography from "@material-ui/core/Typography";
 import { OutputType, TriggerType } from "@api/model";
 import createStyles from "@material-ui/core/styles/createStyles";
 import DeleteForever from "@material-ui/icons/DeleteForever";
+import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
+import CodeIcon from '@material-ui/icons/Code';
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
@@ -190,6 +189,7 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const [isValidQuery, setIsValidQuery] = useState<boolean>(true);
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
+  const [viewMode, setViewMode] = useState<"Cards" | "Advanced">("Cards");
 
   const isInternal = useMemo(() => values && values.keyCode && values.keyCode.startsWith("ish."), [values && values.keyCode]);
   const isOriginallyInternal = useMemo(
@@ -221,8 +221,8 @@ const ScriptsForm = React.memo<Props>(props => {
     [values],
   );
 
-  const onValidateQuery = isValidQuery => {
-    setIsValidQuery(isValidQuery);
+  const onValidateQuery = isValid => {
+    setIsValidQuery(isValid);
   };
 
   const addComponent = (componentName: ScriptComponentType) => {
@@ -287,10 +287,10 @@ const ScriptsForm = React.memo<Props>(props => {
   ]);
 
   const handleSave = useCallback(
-    values => {
+    valuesToSave => {
       setDisableRouteConfirm(true);
 
-      const requestValues = { ...values };
+      const requestValues = { ...valuesToSave };
 
       if (isSystemTrigger) requestValues.entity = null;
 
@@ -303,7 +303,7 @@ const ScriptsForm = React.memo<Props>(props => {
       }
 
       if (isNew) {
-        onCreate(values);
+        onCreate(valuesToSave);
         return;
       }
 
@@ -319,6 +319,14 @@ const ScriptsForm = React.memo<Props>(props => {
     },
     [formsState, isNew, isSystemTrigger, values],
   );
+
+  const toogleViewMode = () => {
+    if (viewMode === "Cards") {
+      setViewMode("Advanced");
+    } else {
+      setViewMode("Cards");
+    }
+  };
 
   const defaultVariables = useMemo(
     () => [
@@ -370,28 +378,35 @@ const ScriptsForm = React.memo<Props>(props => {
 
               <div className="flex-fill" />
 
-              {!isNew && !isInternal && (
+              {!isNew && (
                 <AppBarActions
                   actions={[
-                    {
-                      action: handleDelete,
-                      icon: <DeleteForever />,
-                      tooltip: "Delete script",
-                      confirmText: "Script component will be deleted permanently",
-                      confirmButtonText: "DELETE",
-                    },
+                    isInternal
+                      ? {
+                          action: onInternalSaveClick,
+                          icon: <FileCopy />,
+                          tooltip: "Save as new script"
+                        }
+                      : {
+                          action: handleDelete,
+                          icon: <DeleteForever />,
+                          tooltip: "Delete script",
+                          confirmText: "Script component will be deleted permanently",
+                          confirmButtonText: "DELETE",
+                        },
+                    viewMode === "Cards"
+                      ? {
+                          action: toogleViewMode,
+                          icon: <CodeIcon />,
+                          tooltip: "Switch to code view"
+                        }
+                      : {
+                          action: toogleViewMode,
+                          icon: <ViewAgendaIcon />,
+                          tooltip: "Switch to cards view"
+                        }
                   ]}
                 />
-              )}
-
-              {isInternal && (
-                <Grow in={isInternal}>
-                  <Tooltip title="Save as new script">
-                    <IconButton onClick={onInternalSaveClick} color="inherit">
-                      <FileCopy color="inherit" />
-                    </IconButton>
-                  </Tooltip>
-                </Grow>
               )}
 
               <AppBarHelpMenu
@@ -426,39 +441,58 @@ const ScriptsForm = React.memo<Props>(props => {
                   </ScriptCard>
                 </div>
 
-                {values.imports && (
-                  <div>
-                    <ScriptCard
-                      heading="Import"
-                      className="mt-3"
-                      onDelete={hasUpdateAccess ? removeImports : null}
-                      onAddItem={hasUpdateAccess ? addImport : null}
-                      disableExpandedBottomMargin
-                      expanded
-                      onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                    >
-                      <ImportCardContent classes={classes} hasUpdateAccess={hasUpdateAccess} isInternal={isInternal} />
-                    </ScriptCard>
-                  </div>
-                )}
+                {viewMode === "Advanced" ? (
+                  <ScriptCard
+                    heading="Script"
+                    className="mb-3 mt-3"
+                    onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                    expanded
+                    noPadding
+                  >
+                    <FormField
+                      type="code"
+                      name="body"
+                      disabled={isInternal}
+                      required
+                    />
+                  </ScriptCard>
+                ) : (
+                  <>
+                    {values.imports && (
+                      <div>
+                        <ScriptCard
+                          heading="Import"
+                          className="mt-3"
+                          onDelete={hasUpdateAccess ? removeImports : null}
+                          onAddItem={hasUpdateAccess ? addImport : null}
+                          disableExpandedBottomMargin
+                          expanded
+                          onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                        >
+                          <ImportCardContent classes={classes} hasUpdateAccess={hasUpdateAccess} isInternal={isInternal} />
+                        </ScriptCard>
+                      </div>
+                    )}
 
-                <FieldArray
-                  name="components"
-                  component={CardsRenderer}
-                  hasUpdateAccess={hasUpdateAccess}
-                  dispatch={dispatch}
-                  onValidateQuery={onValidateQuery}
-                  showConfirm={openConfirm}
-                  classes={classes}
-                  rerenderOnEveryChange
-                  isInternal={isInternal}
-                  isValidQuery={isValidQuery}
-                  onInternalSaveClick={onInternalSaveClick}
-                  emailTemplates={emailTemplates}
-                  pdfReports={pdfReports}
-                  pdfBackgrounds={pdfBackgrounds}
-                  options={values.options}
-                />
+                    <FieldArray
+                      name="components"
+                      component={CardsRenderer}
+                      hasUpdateAccess={hasUpdateAccess}
+                      dispatch={dispatch}
+                      onValidateQuery={onValidateQuery}
+                      showConfirm={openConfirm}
+                      classes={classes}
+                      rerenderOnEveryChange
+                      isInternal={isInternal}
+                      isValidQuery={isValidQuery}
+                      onInternalSaveClick={onInternalSaveClick}
+                      emailTemplates={emailTemplates}
+                      pdfReports={pdfReports}
+                      pdfBackgrounds={pdfBackgrounds}
+                      options={values.options}
+                    />
+                  </>
+                )}
 
                 <FormField
                   type="text"
