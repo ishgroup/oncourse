@@ -2,6 +2,7 @@ package ish.oncourse.admin.services.website;
 
 import ish.oncourse.model.*;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.specialpages.RequestMatchType;
 import org.apache.cayenne.ObjectContext;
 
 import java.util.Date;
@@ -28,6 +29,14 @@ public class CreateDefaultWebSiteStructure {
         page.setModified(now);
         page.setWebSiteLayout(webSiteLayout);
         page.setWebSiteVersion(stagedVersion);
+        
+        WebLayoutPath layoutPath = context.newObject(WebLayoutPath.class);
+        layoutPath.setCreated(new Date());
+        layoutPath.setModified(new Date());
+        layoutPath.setWebSiteVersion(stagedVersion);
+        layoutPath.setWebNodeType(page);
+        layoutPath.setPath("/");
+        layoutPath.setMatchType(RequestMatchType.STARTS_WITH);
 
         WebLayoutPath defaultThemePath = new WebLayoutPath();
         defaultThemePath.setWebNodeType(page);
