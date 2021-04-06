@@ -115,6 +115,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                     break
                 case TriggerType.ENTITY_EVENT:
                     st.entityName = dbScript.entityClass
+                    st.entityAttribute = dbScript.entityAttribute
                     switch (dbScript.entityEventType) {
                         case EntityEvent.CREATE:
                             st.type = ON_CREATE
@@ -196,21 +197,25 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                 dbScript.triggerType = TriggerType.ENTITY_EVENT
                 dbScript.entityEventType = EntityEvent.CREATE
                 dbScript.entityClass = scriptDTO.trigger.entityName
+                dbScript.entityAttribute = scriptDTO.trigger.entityAttribute
                 break
             case ON_EDIT:
                 dbScript.triggerType = TriggerType.ENTITY_EVENT
                 dbScript.entityEventType = EntityEvent.UPDATE
                 dbScript.entityClass = scriptDTO.trigger.entityName
+                dbScript.entityAttribute = scriptDTO.trigger.entityAttribute
                 break
             case ON_CREATE_AND_EDIT:
                 dbScript.triggerType = TriggerType.ENTITY_EVENT
                 dbScript.entityEventType = EntityEvent.CREATE_OR_UPDATE
                 dbScript.entityClass = scriptDTO.trigger.entityName
+                dbScript.entityAttribute = scriptDTO.trigger.entityAttribute
                 break
             case ON_DELETE:
                 dbScript.triggerType = TriggerType.ENTITY_EVENT
                 dbScript.entityEventType = EntityEvent.REMOVE
                 dbScript.entityClass = scriptDTO.trigger.entityName
+                dbScript.entityAttribute = scriptDTO.trigger.entityAttribute
                 break
             case ENROLMENT_CANCELLED:
                 dbScript.triggerType = TriggerType.ONCOURSE_EVENT
