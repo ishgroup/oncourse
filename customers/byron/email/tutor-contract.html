@@ -1,0 +1,155 @@
+${render("ish.email.header")}
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td align="left" class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 17px;padding-bottom: 10px;padding-left: 34px;" align="left">
+            <div class="ish_text_container">
+                <h2 style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 18px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;font-weight: normal;font-style: normal;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 125%;margin-top: 0;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;">
+                    Tutor Contractor Agreement
+                </h2>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+            <div class="ish_text_container">
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-break: break-word;border: 0;text-align: left;">
+                    Dear ${record.tutor.contact.firstName},</br>
+                    </br>
+                    Byron Community College (BCC) is offering the course below, subject to receiving sufficient enrolments.
+                    You will be given at least two days notice should the course have insufficient enrolments to run.
+                    You will receive as much notice as possible if the course is cancelled/rescheduled due to matters beyond our control.</br>
+                    Please respond to this email by email stating "I agree to the terms and conditions outlined in this contract".</br>
+                    </br>
+                    ${record.courseClass.course.name} is due to run on the following sessions:
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 35px;padding-right: 17px;padding-bottom: 0;padding-left: 17px;" align="left">
+            <table border="0" width="100%" style="border:0">
+                <tbody class="ish_invoice_content">
+                <% record.courseClass.sessions.sort { s -> s.startDatetime }.eachWithIndex { s, i -> %>
+                <% if (i % 2 == 0) { %>
+                <tr style="background-color: rgba(0,0,0,.05)" bgcolor="rgba(0,0,0,.05)">
+                    <td colspan="2" style="padding-top: 17px;padding-right: 17px;padding-bottom: 17px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:13px;">
+                        <table width="100%" align="left" cellpadding="0" cellspacing="0" border="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;">
+                            <tbody>
+                            <tr>
+                                <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse; color: #000000  !important;" width="50%" valign="top" align="left">
+                                    ${s.startDatetime.format("EEEE d MMMM yyyy h:mm a", record.courseClass.getTimeZone())} to ${s.endDatetime.format("h:mm a", record.courseClass.getTimeZone())}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <% } else { %>
+                <tr>
+                    <td colspan="2" style="padding-top: 17px;padding-right: 17px;padding-bottom: 17px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:13px;">
+                        <table width="100%" align="left" cellpadding="0" cellspacing="0" border="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;">
+                            <tbody>
+                            <tr>
+                                <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse; color: #000000  !important;" width="50%" valign="top" align="left">
+                                    ${s.startDatetime.format("EEEE d MMMM yyyy h:mm a", record.courseClass.getTimeZone())} to ${s.endDatetime.format("h:mm a", record.courseClass.getTimeZone())}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <% } %>
+                <% } %>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+            <div class="ish_text_container">
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-break: break-word;border: 0;text-align: left;">
+                    at ${record.courseClass.displayableLocation}</br>
+                    </br>
+                    <% record.courseClass.costs.findAll { it.contact == record.tutor.contact }.each { cost -> %>
+                    <% def text
+                    def costRate
+                    switch (cost.repetitionType) {
+
+                    case ish.common.types.ClassCostRepetitionType.FIXED:
+                    costRate = "fixed amount"
+                    break
+                    case ish.common.types.ClassCostRepetitionType.PER_ENROLMENT:
+                    costRate = "per enrolment"
+                    break
+                    case ish.common.types.ClassCostRepetitionType.PER_SESSION:
+                    costRate = "per session for " + record.courseClass.sessions.size() + " sessions"
+                    break
+                    case ish.common.types.ClassCostRepetitionType.PER_STUDENT_CONTACT_HOUR:
+                    costRate = "per student contact hour"
+                    break
+                    case ish.common.types.ClassCostRepetitionType.PER_TIMETABLED_HOUR:
+                    costRate = "per hour for " + cost.getSessionPayableHours(record.courseClass.endDateTime) + " hours"
+                    break
+                    case ish.common.types.ClassCostRepetitionType.PER_UNIT:
+                    costRate = "per unit for " + cost.unitCount + " units"
+                    break
+                    } %>
+                    Pay rate: ${cost.perUnitAmountExTax} ${costRate}
+                    <% } %></br>
+                    </br>
+                    The position will not necessarily lead to further or on-going employment opportunities. The pay rate includes face-to-face teaching, preparation, sick pay and holiday pay. The position requires you to plan, conduct and evaluate the course in a professional manner. You are required to ensure that training venues are left in a clean and tidy condition and that students and other Tutors work is respected. Please use the recycling facilities provided in the classroom and encourage students to use them as well.</br>
+                    </br>
+                    You are required to keep students personal details in a secure place and under no circumstances can information concerning students be relayed to a third party without the express written consent of the Director.</br>
+                    </br>
+                    You are required to collect class attendance sheet and venue key, and organise photocopying prior to commencement of each class (check with office to ensure time suitability). Audio-visual equipment should be checked for availability.</br>
+                    </br>
+                    If tutors wish to place any form of extra advertising or media release which is of their own accord, then it should have in some way either the CC name or logo attached to it and needs to be approved by the College.</br>
+                    </br>
+                    If you are unable to attend the class due to unavoidable circumstances, you are required to make alternate arrangements with your students and then advise the office.</br>
+                    </br>
+                    If it is necessary for you to terminate your employment before the end of your agreed period, a minimum of two weeks notice of your intention must be given to the Director. Should management deem that you are not conducting, or have not conducted your course in an appropriate manner, BCC reserves the right to terminate your employment without notice. Grievance procedures would then be available.</br>
+                    </br>
+                </p>
+            </div>
+        </td>
+        <td align="left" class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 17px;padding-bottom: 10px;padding-left: 34px;" align="left">
+            <div class="ish_text_container">
+                <h4 style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 18px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;font-weight: normal;font-style: normal;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 125%;margin-top: 0;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;">
+                    FINAL WAGES WILL BE PAID ON COURSE COMPLETION AND UPON RETURN OF INVOICE,</br>
+                    VENUE KEYS, COMPLETED CLASS ROLE, STUDENT AND TUTOR EVALUATION FORMS.
+                </h4>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 0;padding-bottom: 10px;padding-left: 17px; vertial-align: top;" align="left" valign="top">
+            <div class="ish_text_container">
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #7f7f7f;color: #7f7f7f !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Regards,</br>
+                    </br>
+                    Vicki Walker</br>
+                    (Course coordinator)
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+${render("ish.email.footer")}

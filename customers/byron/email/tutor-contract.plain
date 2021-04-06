@@ -1,22 +1,25 @@
-${render("Header")}
-Tutor Employment Contract
-Dear ${tutor.contact.firstName},
+${render("ish.email.header")}
+
+Tutor Contractor Agreement
+
+
+Dear ${record.tutor.contact.firstName},
 
 Byron Community College (BCC) is offering the course below, subject to
-receiving sufficient enrolments. You will be given at least two days’
+receiving sufficient enrolments. You will be given at least two days
 notice should the course have insufficient enrolments to run. Please
-respond to this email so that we know you have received it and confirm the
-details.
+respond to this email by email stating "I agree to the terms and conditions outlined in this contract".
 
-${cc.course.name} is due to run on the following sessions:
-<% cc.sessions.sort { s -> s.startDatetime }.each { s -> %>
-${s.startDatetime.format("EEEE d MMMM yyyy h:mm a", cc.getTimeZone())} to ${s.endDatetime.format("h:mm a", cc.getTimeZone())}<% } %>
-at ${cc.displayableLocation}
-<% cc.costs.findAll { it.contact.equals(tutor.contact) }.each { cost -> %>
+${record.courseClass.course.name} is due to run on the following sessions:
+<% record.courseClass.sessions.sort { s -> s.startDatetime }.each { s -> %>
+${s.startDatetime.format("EEEE d MMMM yyyy h:mm a", record.courseClass.getTimeZone())} to ${s.endDatetime.format("h:mm a", record.courseClass.getTimeZone())}
+<% } %>
+at ${record.courseClass.displayableLocation}
+<% record.courseClass.costs.findAll { it.contact == record.tutor.contact }.each { cost -> %>
 <% def text
    def costRate
    switch (cost.repetitionType) {
-    
+
     case ish.common.types.ClassCostRepetitionType.FIXED:
         costRate = "fixed amount"
         break
@@ -24,13 +27,13 @@ at ${cc.displayableLocation}
         costRate = "per enrolment"
         break
     case ish.common.types.ClassCostRepetitionType.PER_SESSION:
-        costRate = "per session for " + cc.sessions.size() + " sessions"
+        costRate = "per session for " + record.courseClass.sessions.size() + " sessions"
         break
     case ish.common.types.ClassCostRepetitionType.PER_STUDENT_CONTACT_HOUR:
         costRate = "per student contact hour"
         break
     case ish.common.types.ClassCostRepetitionType.PER_TIMETABLED_HOUR:
-        costRate = "per hour for " + cost.getSessionPayableHours(cc.endDateTime) + " hours"
+        costRate = "per hour for " + cost.getSessionPayableHours(record.courseClass.endDateTime) + " hours"
         break
     case ish.common.types.ClassCostRepetitionType.PER_UNIT:
         costRate = "per unit for " + cost.unitCount + " units"
@@ -43,12 +46,12 @@ opportunities. The pay rate includes face-to-face teaching, preparation,
 sick pay and holiday pay. The position requires you to plan, conduct and
 evaluate the course in a professional manner. You are required to ensure
 that training venues are left in a clean and tidy condition and that
-students’ and other Tutors’ work is respected. Please use the recycling
+students and other Tutors work is respected. Please use the recycling
 facilities provided in the classroom and encourage students to use them as
 well.
 
-You are required to keep students’ personal details in a secure place and
-under no circumstances can information concerning students’ be relayed to a
+You are required to keep students personal details in a secure place and
+under no circumstances can information concerning students be relayed to a
 third party without the express written consent of the Director.
 
 You are required to collect class attendance sheet and venue key, and
@@ -65,7 +68,7 @@ are required to make alternate arrangements with your students and then
 advise the office.
 
 If it is necessary for you to terminate your employment before the end of
-your agreed period, a minimum of two weeks’ notice of your intention must
+your agreed period, a minimum of two weeks notice of your intention must
 be given to the Director. Should management deem that you are not
 conducting, or have not conducted your course in an appropriate manner, BCC
 reserves the right to terminate your employment without notice. Grievance
@@ -78,4 +81,4 @@ Regards,
 
 Vicki Walker
 (Course coordinator)
-${render("Footer")}
+${render("ish.email.footer")}
