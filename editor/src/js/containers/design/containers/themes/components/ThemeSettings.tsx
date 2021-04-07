@@ -17,7 +17,7 @@ interface Props {
 const urlsOptions = [
   {
     value: false,
-    title: "Starts with matching",
+    title: "Starts with",
   },
   {
     value: true,

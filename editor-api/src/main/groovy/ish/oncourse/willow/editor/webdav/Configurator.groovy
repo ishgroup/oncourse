@@ -16,7 +16,7 @@ import ish.oncourse.willow.editor.services.access.UserService
 
 import javax.servlet.ServletException
 
-import static ish.oncourse.willow.editor.EditorApiModule.INJECTOR_PROPERTY
+import static ish.oncourse.willow.editor.webdav.WebdavModule.INJECTOR_PROPERTY
 
 class Configurator extends DefaultMiltonConfigurator {
     
