@@ -47,9 +47,7 @@ test('test CheckoutModel processing', () => {
 
   expect(actions[0].type).toBe(CHANGE_PHASE);
   expect(actions[0].payload).toBe(Phase.Summary);
-  expect(actions[1].type).toBe(SHOW_MESSAGES);
-  expect(actions[1].payload.formErrors[0]).toBe("Common Error Message");
-  expect(actions[2].type).toBe(ADD_CONTACT_NODE_TO_STATE);
-  expect(actions[2].payload.result.length).toBe(1);
-  expect(actions[2].payload.entities.contactNodes[node1.contactId].enrolments.length).toBe(2);
+  expect(actions[1].type).toBe(ADD_CONTACT_NODE_TO_STATE);
+  expect(actions[1].payload.result.length).toBe(1);
+  expect(actions[1].payload.entities.contactNodes[node1.contactId].enrolments.length).toBe(2);
 });
