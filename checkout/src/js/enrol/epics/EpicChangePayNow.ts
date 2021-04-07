@@ -5,44 +5,46 @@ import {UPDATE_PAYNOW, updateAmount} from "../actions/Actions";
 import CheckoutService from "../services/CheckoutService";
 import {Epic} from "redux-observable";
 import {changeTab} from "../containers/payment/actions/Actions";
-import {showCommonError} from "../../common/epics/EpicUtils";
 import {Tabs} from "../containers/payment/reducers/State";
 
 const request: EpicUtils.Request<CheckoutModel, IshState> = {
-    type: UPDATE_PAYNOW,
-    getData: (payload, state: IshState) => CheckoutService.getUpdateModel(state, payload.val),
-    processData: (model: CheckoutModel, state: IshState) => {
-        return ProcessCheckoutModel.process(model, state)
-    },
+  type: UPDATE_PAYNOW,
+  getData: (payload, state: IshState) => CheckoutService.getUpdateModel(state, payload.val),
+  processData: (model: CheckoutModel, state: IshState) => {
+    return ProcessCheckoutModel.process(model, state);
+  },
 };
 
 export const EpicChangePayNow: Epic<any, any> = EpicUtils.Create(request);
 
 export class ProcessCheckoutModel {
-    static process = (model: CheckoutModel, state: IshState): any[] => {
-        const tab = state.checkout.payment.currentTab;
-        const creditCardAvailable = state.preferences.hasOwnProperty('creditCardEnabled') ? state.preferences.creditCardEnabled : true;
-        const result = [];
+  static process = (model: CheckoutModel, state: IshState): any[] => {
+    const tab = state.checkout.payment.currentTab;
 
-        if (model.error) {
-            return [
-                updateAmount(model.amount),
-                showCommonError({message: model.error.message}),
-            ];
-        }
+    const creditCardAvailable = state.preferences.hasOwnProperty('creditCardEnabled')
+      ? state.preferences.creditCardEnabled
+      : true;
 
-        result.push(updateAmount(model.amount));
+    const result = [];
+
+    if (model.error) {
+      return [
+        updateAmount(model.amount),
+      ];
+    }
+
+    result.push(updateAmount(model.amount));
 
         // change tab to pay later for zero payments
-        if (Number(model.amount.ccPayment) === 0 && tab !== Tabs.payLater) {
-            result.push(changeTab(Tabs.payLater));
-        }
+    if (Number(model.amount.ccPayment) === 0 && tab !== Tabs.payLater) {
+      result.push(changeTab(Tabs.payLater));
+    }
 
         // change tab to credit card for not zero payment if credit card method enabled
-        if (Number(model.amount.ccPayment) !== 0 && tab === Tabs.payLater && creditCardAvailable) {
-            result.push(changeTab(Tabs.creditCard));
-        }
-
-        return result;
+    if (Number(model.amount.ccPayment) !== 0 && tab === Tabs.payLater && creditCardAvailable) {
+      result.push(changeTab(Tabs.creditCard));
     }
+
+    return result;
+  }
 }

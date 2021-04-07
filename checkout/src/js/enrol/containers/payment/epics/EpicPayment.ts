@@ -48,9 +48,9 @@ const SubmitPaymentForWaitingCoursesRequest: Request<any, IshState> = {
 
     response.data.contactNodes.forEach((cn: ContactNode) => {
       cn.waitingLists.forEach(wl => {
-        actions.push(showFormValidation(response,`${wl.contactId}-${wl.courseId}`))
-      })
-    })
+        actions.push(showFormValidation(response,`${wl.contactId}-${wl.courseId}`));
+      });
+    });
 
     return actions;
   }
@@ -111,7 +111,7 @@ const processPaymentV2: Request<PaymentResponse, IshState> = {
   },
   processError: (response: AxiosResponse): IAction<any>[] => {
     if (response && response.data && response.data.payerId && response.data.amount && response.data.contactNodes) {
-      return ProcessCheckoutModel.process(response.data as CheckoutModel);
+      return [...ProcessCheckoutModel.process(response.data as CheckoutModel),...ProcessError(response)];
     } else {
       return [
         changePhase(Phase.Payment),
@@ -139,7 +139,7 @@ const processPaymentV2Status: Request<PaymentResponse, IshState> = {
   processError: (response: AxiosResponse): IAction<any>[] => {
     const data: any = response.data;
     if (data && data.payerId && data.amount && data.contactNodes) {
-      return ProcessCheckoutModel.process(data as CheckoutModel);
+      return [...ProcessCheckoutModel.process(data as CheckoutModel), ...ProcessError(response)];
     } else {
       return [
         changePhase(Phase.Payment),

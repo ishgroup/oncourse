@@ -2,18 +2,17 @@ import * as L from "lodash";
 import {IshState} from "../../services/IshState";
 import CheckoutService from "../services/CheckoutService";
 import {addContactNodeToState, PROCEED_TO_PAYMENT} from "../containers/summary/actions/Actions";
-import {CHANGE_PHASE, changePhase, updateAmount} from "../actions/Actions";
+import {CHANGE_PHASE, changePhase} from "../actions/Actions";
 import * as EpicUtils from "../../common/epics/EpicUtils";
 import {CheckoutModel, ContactNode, CommonError} from "../../model";
 import {Phase} from "../reducers/State";
 import {Epic} from "redux-observable";
 import {processingMandatoryFields} from "../containers/payment/actions/Actions";
 
-
 const request: EpicUtils.Request<CheckoutModel, IshState> = {
   type: PROCEED_TO_PAYMENT,
   getData: (payload: any, state: IshState): Promise<CheckoutModel> => CheckoutService.getCheckoutModel(state),
-  processData: (value: CheckoutModel, state: IshState) => {
+  processData: (value: CheckoutModel) => {
     return ProcessCheckoutModel.process(value);
   },
 };
@@ -57,7 +56,6 @@ export class ProcessCheckoutModel {
     const result = [];
     if (!L.isNil(error)) {
       result.push(changePhase(Phase.Summary));
-      result.push(EpicUtils.showCommonError(error));
     }
     return result;
   }
