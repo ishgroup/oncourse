@@ -21,7 +21,7 @@ const records = Object.keys(Entities)
 
 const QueryCardContent = props => {
   const {
-    field, name, classes, onValidateQuery, isValidQuery
+    field, name, classes, onValidateQuery, isValidQuery, disabled
   } = props;
 
   const [queryResultsPending, setQueryResultsPending] = useState(false);
@@ -68,6 +68,7 @@ const QueryCardContent = props => {
           label="Entity"
           items={records}
           className="d-flex mt-2"
+          disabled={disabled}
           required
         />
 
@@ -84,7 +85,7 @@ const QueryCardContent = props => {
                 name={`${name}.query`}
                 label="Query"
                 rootEntity={field.entity}
-                disabled={!field.entity}
+                disabled={!field.entity || disabled}
                 onValidateQuery={onValidateQuery}
                 validate={validateExpression}
                 required

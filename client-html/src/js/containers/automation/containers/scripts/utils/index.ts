@@ -41,6 +41,10 @@ const checkDuplicateScriptParts = (components, parsedComponent) => {
   }
 };
 
+const messageFilter = body => /template\s+/.test(body) ? /record\s+records/.test(body) : true;
+
+const messageReplacer = match => (messageFilter(match) ? "CLOSURE" : match);
+
 export const ParseScriptBody = (scriptItem: Script) => {
   let { content } = scriptItem;
   let imports = content.match(importsRegexp);
@@ -54,7 +58,11 @@ export const ParseScriptBody = (scriptItem: Script) => {
 
   try {
     const queryClosures = (content?.match(queryClosureRegexp) || []).map(content => ({ content, type: "query" })) || [];
-    const messageClosures = (content?.match(messageClosureRegexp) || []).map(content => ({ content, type: "message" })) || [];
+
+    const messageClosures = (content?.match(messageClosureRegexp)
+      ?.filter(messageFilter) || [])
+      ?.map(content => ({ content, type: "message" })) || [];
+
     const reportClosuress = (content?.match(reportClosureRegexp) || []).map(content => ({ content, type: "report" })) || [];
 
     let parsedContent = content;
@@ -63,7 +71,7 @@ export const ParseScriptBody = (scriptItem: Script) => {
       parsedContent = parsedContent.replace(queryClosureRegexp, "CLOSURE");
     }
     if (messageClosures.length) {
-      parsedContent = parsedContent.replace(messageClosureRegexp, "CLOSURE");
+      parsedContent = parsedContent.replace(messageClosureRegexp, messageReplacer);
     }
     if (reportClosuress.length) {
       parsedContent = parsedContent.replace(reportClosureRegexp, "CLOSURE");

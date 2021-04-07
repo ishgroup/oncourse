@@ -54,7 +54,7 @@ const CardsRenderer = props => {
     }, "Script component will be deleted permanently");
   };
 
-  const renderVariables = (variables, name) => (
+  const renderVariables = (variables, name, disabled) => (
     <>
       {variables.map(elem => (
         elem.type === "Checkbox" ? (
@@ -67,6 +67,7 @@ const CardsRenderer = props => {
                   label={elem.label}
                 />
               )}
+              disabled={disabled}
               label={elem.label}
             />
           </Grid>
@@ -76,6 +77,7 @@ const CardsRenderer = props => {
               type={getType(elem.type)}
               name={`${name}.${elem.name}`}
               label={elem.label}
+              disabled={disabled}
               required
             />
           </Grid>
@@ -110,7 +112,7 @@ const CardsRenderer = props => {
                             <FormField
                               type="code"
                               name={`${item}.content`}
-                              disabled={!hasUpdateAccess}
+                              disabled={isInternal || !hasUpdateAccess}
                               className="mt-3"
                             />
                           </ScriptCard>
@@ -139,6 +141,7 @@ const CardsRenderer = props => {
                               classes={classes}
                               onValidateQuery={onValidateQuery}
                               isValidQuery={isValidQuery}
+                              disabled={isInternal}
                             />
                           </ScriptCard>
                         </div>
@@ -170,6 +173,7 @@ const CardsRenderer = props => {
                               renderVariables={renderVariables}
                               options={options}
                               form={form}
+                              disabled={isInternal}
                             />
                           </ScriptCard>
                         </div>
