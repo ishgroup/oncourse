@@ -125,7 +125,15 @@ public enum DataType implements DisplayableExtendedEnumeration<Integer> {
      * Database value: 12
      */
     @API
-    MESSAGE_TEMPLATE(12, "Message template");
+    MESSAGE_TEMPLATE(12, "Message template"),
+
+    /**
+     * Extra bindings
+     *
+     * Database value: 12
+     */
+    @API
+    OBJECT(13, "Object");
 
 
 
