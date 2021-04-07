@@ -1,0 +1,8 @@
+name: Send tutor contract email
+enabled: true
+triggerType: ON_DEMAND
+entityClass: CourseClass
+options:
+  - name: tutorContractEmailTemplate
+    dataType: MESSAGE_TEMPLATE
+    value: "Tutor contract"
