@@ -21,7 +21,7 @@ export const queryClosureRegexp = new RegExp(
 );
 
 export const messageClosureRegexp = new RegExp(
-  "\\n?(\\s+)?message\\s+{[^}]+record records[^}]+}(\\s+)?\\n{0,2}",
+  "\\n?\\s*message\\s+{(\\s+\\w+\\s?[\"']?.+[\"']?\\n)+\\s*}\\s*\\n{0,2}",
   "g",
 );
 
@@ -74,7 +74,7 @@ export const getMessageComponent = (body: string): ScriptMessageComponent => {
     return result;
   }
 
-  const entries = body.match(/\w+(\s+)[^{}\n)]+/g);
+  const entries = body.match(/{(\s+\w+\s?["']?.+["']?\n)+\s*}/)[0]?.match(/(\w+\s?["']?.+["']?\n)+/g);
 
   entries.forEach(e => {
     const key = e.match(/\w+/)[0];

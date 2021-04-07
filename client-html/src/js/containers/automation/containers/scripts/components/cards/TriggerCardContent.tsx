@@ -33,7 +33,7 @@ const TriggerCardContent = props => {
           : TriggerTypeItems
         }
         required
-        disabled={isInternal && !isScheduleOrOnDemand}
+        disabled={!isScheduleOrOnDemand}
         autoWidth
       />
 

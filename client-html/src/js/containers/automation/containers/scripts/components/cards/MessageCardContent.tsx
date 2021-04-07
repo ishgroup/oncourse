@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
 
 const MessageCardContent = React.memo<any>(props => {
   const {
-    name, emailTemplates, customPreferencesFields, field, dispatch, form, renderVariables, options
+    name, emailTemplates, customPreferencesFields, field, dispatch, form, renderVariables, options, disabled
   } = props;
 
   const [messageVariables, setMessageVariables] = useState([]);
@@ -118,6 +118,7 @@ const MessageCardContent = React.memo<any>(props => {
         <Switch
           checked={!templateMessage}
           onChange={onTypeChange}
+          disabled={disabled}
         />
       </Grid>
 
@@ -130,6 +131,7 @@ const MessageCardContent = React.memo<any>(props => {
             items={messageTemplateItems}
             selectLabelCondition={emailTemplatesForRender}
             onInnerValueChange={changeEmailTemplate}
+            disabled={disabled}
             required
           />
         </Grid>
@@ -140,6 +142,7 @@ const MessageCardContent = React.memo<any>(props => {
               type="text"
               name={`${name}.to`}
               label="To"
+              disabled={disabled}
               fullWidth
             />
           </Grid>
@@ -148,6 +151,7 @@ const MessageCardContent = React.memo<any>(props => {
               type="text"
               name={`${name}.subject`}
               label="Subject"
+              disabled={disabled}
               fullWidth
             />
           </Grid>
@@ -156,6 +160,7 @@ const MessageCardContent = React.memo<any>(props => {
               type="text"
               name={`${name}.content`}
               label="Content"
+              disabled={disabled}
               fullWidth
             />
           </Grid>
@@ -168,6 +173,7 @@ const MessageCardContent = React.memo<any>(props => {
           name={`${name}.from`}
           label="From"
           placeholder={customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY] || 'No value'}
+          disabled={disabled}
           fullWidth
         />
       </Grid>
@@ -176,6 +182,7 @@ const MessageCardContent = React.memo<any>(props => {
         <FormField
           type="text"
           name={`${name}.cc`}
+          disabled={disabled}
           label="cc"
           fullWidth
         />
@@ -185,6 +192,7 @@ const MessageCardContent = React.memo<any>(props => {
         <FormField
           type="text"
           name={`${name}.bcc`}
+          disabled={disabled}
           label="bcc"
           fullWidth
         />
@@ -194,6 +202,7 @@ const MessageCardContent = React.memo<any>(props => {
         <FormField
           type="text"
           name={`${name}.key`}
+          disabled={disabled}
           label="Key"
           fullWidth
         />
@@ -203,12 +212,13 @@ const MessageCardContent = React.memo<any>(props => {
         <FormField
           type="text"
           name={`${name}.keyCollision`}
+          disabled={disabled}
           label="Key collision"
           fullWidth
         />
       </Grid>
 
-      {renderVariables(messageVariables, name)}
+      {renderVariables(messageVariables, name, disabled)}
     </Grid>
   );
 });
