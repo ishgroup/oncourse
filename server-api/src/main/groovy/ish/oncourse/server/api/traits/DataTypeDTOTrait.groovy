@@ -44,6 +44,8 @@ trait DataTypeDTOTrait {
                 return DataType.EMAIL
             case DataTypeDTO.MESSAGE_TEMPLATE:
                 return DataType.MESSAGE_TEMPLATE
+            case DataTypeDTO.OBJECT:
+                return DataType.OBJECT
             default:
                 throw new IllegalArgumentException("${toString()}")
         }
@@ -80,6 +82,8 @@ trait DataTypeDTOTrait {
                 return DataTypeDTO.EMAIL
             case DataType.MESSAGE_TEMPLATE:
                 return DataTypeDTO.MESSAGE_TEMPLATE
+            case DataType.OBJECT:
+                return DataTypeDTO.OBJECT
             default:
                 throw new IllegalArgumentException("$dataType.displayName")
         }
