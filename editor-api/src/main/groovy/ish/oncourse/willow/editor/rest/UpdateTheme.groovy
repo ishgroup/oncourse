@@ -65,7 +65,7 @@ class UpdateTheme extends AbstractUpdate<Theme> {
             error = "Theme name must be unique"
             return this
         }
-        
+        nodeType.webSiteLayout = layout
         nodeType.name = resourceToSave.title
         
         //normolise all paths to lover case and validate
