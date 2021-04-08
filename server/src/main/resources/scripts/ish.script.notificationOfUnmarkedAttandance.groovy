@@ -1,5 +1,4 @@
 def startOfDate = Calendar.getInstance().getTime().clearTime() - 1
-
 def sessions = query {
     entity "Session"
     query "startDatetime is yesterday and courseClass.isCancelled is false and courseClass.isActive is true"
@@ -46,4 +45,3 @@ if (!sessionsWithUnmarkedAttendance.empty) {
         content bodyContent.join(System.getProperty('line.separator'))
     }
 }
-

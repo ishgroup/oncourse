@@ -1,5 +1,3 @@
-
-
 def accounts = query {
     entity 'Account'
 }
@@ -12,4 +10,3 @@ report {
     param 'localdateRange_from': fromDate, 'localdateRange_to': toDate
     generatePreview true
 }
-
