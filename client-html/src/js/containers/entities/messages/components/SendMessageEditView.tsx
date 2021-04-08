@@ -36,7 +36,6 @@ import {
   getRecipientsMessageData
 } from "../../../../common/components/list-view/actions";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { EMAIL_FROM_KEY } from "../../../../constants/Config";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -176,18 +175,15 @@ const bindingsRenderer: any = ({ fields }) => fields.map((i, n) => {
   };
 
   return (
-    <Fragment key={item.label}>
-      <Grid item xs={12} className="mb-2">
-        <Field
-          name={`${i}.value`}
-          label={`${item.label}`}
-          type={item.type}
-          component={DataTypeRenderer}
-          validate={validateSingleMandatoryField}
-          {...fieldProps()}
-        />
-      </Grid>
-    </Fragment>
+    <Grid item xs={12} className="mb-2" key={item.label}>
+      <Field
+        name={`${i}.value`}
+        label={`${item.label}`}
+        type={item.type}
+        component={DataTypeRenderer}
+        {...fieldProps()}
+      />
+    </Grid>
   );
 });
 
@@ -232,9 +228,9 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
   }, [htmlRef.current]);
 
   const [preview, setPreview] = useState(null);
-  const [isMarketing, setIsMarketing] = useState(true)
+  const [isMarketing, setIsMarketing] = useState(true);
 
-  const [suppressed, setSuppressed] = useState(false)
+  const [suppressed, setSuppressed] = useState(false);
 
   const [selected, setSelected] = useState({
     withdrawnStudents: false,
@@ -324,7 +320,10 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
       const selectedTemplate = getTemplateById(value);
       if (selectedTemplate) {
         setPreview(null);
-        dispatch(change(form, "bindings", selectedTemplate.variables));
+
+        // set variables with default empty values
+        dispatch(change(form, "bindings", selectedTemplate.variables.map(v =>
+          ({ ...v, value: v.type === "Checkbox" ? false : v.type === "Text" ? "" : v.value }))));
 
         if (htmlRef.current && htmlRef.current.shadowRoot) {
           htmlRef.current.shadowRoot.innerHTML = "";
@@ -511,8 +510,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
                 <StyledCheckbox
                   checked={isMarketing}
                   onChange={() => {
-                    setIsMarketing(!isMarketing)
-                    setSuppressed(!suppressed)
+                    setIsMarketing(!isMarketing);
+                    setSuppressed(!suppressed);
                   }}
                   color="secondary"
                 />
