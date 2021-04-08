@@ -14,18 +14,19 @@ import {
   importsRegexp,
   queryClosureRegexp,
   messageClosureRegexp, getReportComponent, reportClosureRegexp,
-} from "../constants/index";
+} from "../constants";
+import { ScriptExtended } from "../../../../../model/entities/Script";
 
-const getClosureComponent = closure => {
+const getClosureComponent = async closure => {
   switch (closure.type) {
     case "query": {
-      return getQueryComponent(closure.content);
+      return getQueryComponent(closure.body);
     }
     case "message": {
-      return getMessageComponent(closure.content);
+      return getMessageComponent(closure.body);
     }
     case "report": {
-      return getReportComponent(closure.content);
+      return getReportComponent(closure.body);
     }
   }
   return null;
@@ -41,11 +42,11 @@ const checkDuplicateScriptParts = (components, parsedComponent) => {
   }
 };
 
-const messageFilter = body => /template\s+/.test(body) ? /record\s+records/.test(body) : true;
+const messageFilter = body => (/template\s+/.test(body) ? /record\s+records/.test(body) : true);
 
 const messageReplacer = match => (messageFilter(match) ? "CLOSURE" : match);
 
-export const ParseScriptBody = (scriptItem: Script) => {
+export const ParseScriptBody = async (scriptItem: Script) => {
   let { content } = scriptItem;
   let imports = content.match(importsRegexp);
 
@@ -57,13 +58,13 @@ export const ParseScriptBody = (scriptItem: Script) => {
   const components = [];
 
   try {
-    const queryClosures = (content?.match(queryClosureRegexp) || []).map(content => ({ content, type: "query" })) || [];
+    const queryClosures = (content?.match(queryClosureRegexp) || []).map(body => ({ body, type: "query" })) || [];
 
     const messageClosures = (content?.match(messageClosureRegexp)
       ?.filter(messageFilter) || [])
-      ?.map(content => ({ content, type: "message" })) || [];
+      ?.map(body => ({ body, type: "message" })) || [];
 
-    const reportClosuress = (content?.match(reportClosureRegexp) || []).map(content => ({ content, type: "report" })) || [];
+    const reportClosuress = (content?.match(reportClosureRegexp) || []).map(body => ({ body, type: "report" })) || [];
 
     let parsedContent = content;
 
@@ -81,14 +82,14 @@ export const ParseScriptBody = (scriptItem: Script) => {
 
     const closures = [...queryClosures, ...messageClosures, ...reportClosuress];
 
-    matchComponents.forEach((c, index) => {
+    for (const [index, c] of matchComponents.entries()) {
       if (c.trim()) {
         checkDuplicateScriptParts(components, getScriptComponent(c));
       }
       if (closures[index]) {
-        checkDuplicateScriptParts(components, getClosureComponent(closures[index]));
+        checkDuplicateScriptParts(components, await getClosureComponent(closures[index]));
       }
-    });
+    }
   } catch (e) {
     console.error(e);
   }
@@ -115,7 +116,7 @@ const getComponentBody = (component: any) => {
   }
 };
 
-export const appendComponents = (value: any): Script => {
+export const appendComponents = (value: ScriptExtended): Script => {
   let content = "";
 
   if (value.components && value.components.length) {

@@ -12,11 +12,17 @@ import {
   UPDATE_SCRIPT_ENTITY_REQUEST,
   UPDATE_SCRIPT_ENTITY_REQUEST_FULFILLED,
 } from "../actions";
-import { updateEntityItemById } from "../../../../entities/common/entityItemsService";
+import ScriptsService from "../services/ScriptsService";
+import { appendComponents } from "../utils";
 
 const request: EpicUtils.Request = {
   type: UPDATE_SCRIPT_ENTITY_REQUEST,
-  getData: ({ id, script, method }) => updateEntityItemById("Script", id, script, method),
+  getData: ({ id, script, method }) => {
+    if (method === "PATCH") {
+      return ScriptsService.patchScriptItem(id, appendComponents(script));
+    }
+    return ScriptsService.saveScriptItem(id, appendComponents(script));
+  },
   processData: (v, s, { id }) => [
     {
       type: UPDATE_SCRIPT_ENTITY_REQUEST_FULFILLED,

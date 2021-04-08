@@ -4,20 +4,20 @@
  */
 
 import React, {
- useMemo, useState, useEffect, useCallback,
+ useMemo, useCallback,
 } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import LockOutlined from "@material-ui/icons/LockOutlined";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import { EmailTemplateApi } from "@api/model";
 import Typography from "@material-ui/core/Typography";
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../../../reducers/state";
 import { ADMIN_EMAIL_KEY } from "../../../../../../constants/Config";
-import { DefaultHttpService } from "../../../../../../common/services/HttpService";
 import { Switch } from "../../../../../../common/components/form/form-fields/Switch";
+import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import EmailTemplateService from "../../../email-templates/services/EmailTemplateService";
 
 const useStyles = makeStyles(() => ({
   itemIcon: {
@@ -29,10 +29,8 @@ const useStyles = makeStyles(() => ({
 
 const MessageCardContent = React.memo<any>(props => {
   const {
-    name, emailTemplates, customPreferencesFields, field, dispatch, form, renderVariables, options, disabled
+    name, emailTemplates, customPreferencesFields, field, dispatch, form, renderVariables, disabled
   } = props;
-
-  const [messageVariables, setMessageVariables] = useState([]);
 
   const classes = useStyles();
 
@@ -53,42 +51,20 @@ const MessageCardContent = React.memo<any>(props => {
       </span>
     ) : item.label ), []);
 
-  const getEmailTemplate = async (id: number) => {
-    const emailTemplateService = new EmailTemplateApi(new DefaultHttpService());
-    let emailTemplate;
-
-    try {
-      emailTemplate = await emailTemplateService.get(id);
-      emailTemplate && setMessageVariables(emailTemplate.variables);
-    } catch (e) {
-      console.warn(e);
-    }
-
-    return emailTemplate;
-  };
-
-  useEffect(() => {
-    if (field && field.template) {
-      const templateOption = options?.find(o => o.name === field.template);
-
-      if (templateOption) {
-        dispatch(change(form, `${name}.template`, templateOption.value ));
-      }
-
-      const currentEmailTemplate = emailTemplates.find(t => t.keyCode === field.template);
-      if (currentEmailTemplate) {
-        getEmailTemplate(currentEmailTemplate.id);
-      }
-    }
-  }, [field, options]);
+  const getEmailTemplate = async (id: number) => EmailTemplateService
+    .get(id)
+    .catch(e => instantFetchErrorHandler(dispatch, e));
 
   const changeEmailTemplate = async item => {
     const emailTemplate = await getEmailTemplate(item.id);
-    emailTemplate && emailTemplate.variables && emailTemplate.variables.forEach(e => {
-      if (e.type === "Checkbox") {
-        dispatch(change(form, `${name}.${e.name}`, false));
-      }
-    });
+    if (emailTemplate) {
+      emailTemplate.variables.forEach(e => {
+        if (e.type === "Checkbox") {
+          dispatch(change(form, `${name}.${e.name}`, false));
+        }
+      });
+      dispatch(change(form, `${name}.templateEntity`, emailTemplate));
+    }
   };
 
   const onTypeChange = (e, checked) => {
@@ -218,13 +194,13 @@ const MessageCardContent = React.memo<any>(props => {
         />
       </Grid>
 
-      {renderVariables(messageVariables, name, disabled)}
+      {field.templateEntity ? renderVariables(field.templateEntity.variables, name, disabled) : null}
     </Grid>
   );
 });
 
 const mapStateToProps = (state: State) => ({
-  customPreferencesFields: state.preferences.customFields,
+  customPreferencesFields: state.preferences.customFields
 });
 
 export default connect<any, any, any>(mapStateToProps)(MessageCardContent);
