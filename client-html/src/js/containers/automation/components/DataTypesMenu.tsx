@@ -218,8 +218,8 @@ const DataTypesMenu = React.memo<DataTypesMenuProps>(({
           if (t === "Message template" && (!isScriptsAutomation || !isOptionsBindingType)) {
             return null;
           }
-          // Show Object option only in options
-          if (t === "Object" && !isOptionsBindingType) {
+          // Show Object option only in variables
+          if (t === "Object" && !isVariablesBindingType) {
             return null;
           }
           return <MenuItem onClick={handleClick} key={t} role={t}>{t}</MenuItem>;

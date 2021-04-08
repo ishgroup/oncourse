@@ -36,21 +36,20 @@ const CardsRenderer = props => {
     emailTemplates,
     pdfReports,
     pdfBackgrounds,
-    options,
   } = props;
 
-  const onDelete = (e, index, fields, showConfirm) => {
+  const onDelete = (e, index, fieldsIns, showConfirm) => {
     e.stopPropagation();
     showConfirm(() => {
-      const component = fields.get(index);
+      const component = fieldsIns.get(index);
       if (component && component.type === "Query") {
-        const allComponents = fields.getAll();
+        const allComponents = fieldsIns.getAll();
         allComponents.splice(index, 1);
         if (!allComponents.some(c => c.type === "Query")) {
           onValidateQuery(true);
         }
       }
-      fields.remove(index);
+      fieldsIns.remove(index);
     }, "Script component will be deleted permanently");
   };
 
@@ -171,7 +170,6 @@ const CardsRenderer = props => {
                               isValidQuery={isValidQuery}
                               emailTemplates={emailTemplates}
                               renderVariables={renderVariables}
-                              options={options}
                               form={form}
                               disabled={isInternal}
                             />

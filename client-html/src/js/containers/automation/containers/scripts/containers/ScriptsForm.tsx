@@ -489,7 +489,6 @@ const ScriptsForm = React.memo<Props>(props => {
                       emailTemplates={emailTemplates}
                       pdfReports={pdfReports}
                       pdfBackgrounds={pdfBackgrounds}
-                      options={values.options}
                     />
                   </>
                 )}
