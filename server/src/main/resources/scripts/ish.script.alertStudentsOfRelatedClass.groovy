@@ -1,15 +1,9 @@
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Tutor
-
 if (!record || record.isDistantLearningCourse) {
     return
 }
-
-
 if (record?.firstSession?.tutors?.empty) {
     return
 }
-
 
 Tutor ccTutor = record.firstSession.tutors[0]
 List<Enrolment> enrolmentList =  new ArrayList<>()
@@ -37,16 +31,14 @@ students.removeAll { s ->
 /**
  * Once you have a non-duped student list, notify all students in the list
  */
-students*.contact.flatten().each { student ->
-
-    message {
-        template alertStudentsTemplate
-        record student
-        tutor ccTutor.contact
-        courseClass record
-        key "alert students of related classes", record
-        keyCollision "drop"
-    }
+records = students*.contact.flatten()
+message {
+    template alertStudentsTemplate
+    record records
+    tutor ccTutor.contact
+    courseClass record
+    key "alert students of related classes", record
+    keyCollision "drop"
 }
 
 message {

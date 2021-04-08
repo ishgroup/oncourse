@@ -1,7 +1,8 @@
 if (tagName == "" || record.courseClass.hasTag(tagName)) {
+    records = record.courseClass.tutorRoles*.tutor.flatten()
     message {
         template enrolmentNotificationTemplate
-        records record.courseClass.tutorRoles*.tutor.flatten()
+        record records
         enrolment record
     }
 }
