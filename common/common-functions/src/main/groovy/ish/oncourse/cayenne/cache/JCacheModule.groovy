@@ -13,6 +13,7 @@ class JCacheModule implements Module {
         binder.bind(ICacheProvider.class).to(CaffeineProvider.class)
         binder.bind(QueryCache.class).to(JCacheQueryCache.class)
         binder.bind(ICacheEnabledService.class).to(DefaultCacheEnabledService.class)
+        binder.bind(ICacheInvalidationService.class).to(DefaultCacheInvalidationService.class)
     }
 
     static class DefaultCacheEnabledService implements ICacheEnabledService {
@@ -21,5 +22,18 @@ class JCacheModule implements Module {
 
         @Override
         void setCacheEnabled(CacheDisableReason reason, Boolean enabled) {}
+    }
+    
+    static class DefaultCacheInvalidationService implements ICacheInvalidationService {
+
+        @Override
+        void setCache(QueryCache cache) {
+
+        }
+
+        @Override
+        void init() {
+
+        }
     }
 }

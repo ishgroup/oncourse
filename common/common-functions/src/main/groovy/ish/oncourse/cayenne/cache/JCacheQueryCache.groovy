@@ -21,10 +21,12 @@ class JCacheQueryCache implements QueryCache {
 
     private Set<String> seenCacheNames = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>())
 
-    JCacheQueryCache(@Inject ICacheProvider cacheProvider, @Inject ICacheEnabledService enabledService) {
+    JCacheQueryCache(@Inject ICacheProvider cacheProvider, @Inject ICacheEnabledService enabledService, @Inject ICacheInvalidationService cacheInvalidationService) {
         this.cacheProvider = cacheProvider
         this.cacheFactory = cacheProvider.createFactory(String.class, List.class)
         this.enabledService = enabledService
+        cacheInvalidationService.setCache(this)
+        cacheInvalidationService.init()
     }
 
     @Override

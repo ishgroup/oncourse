@@ -20,6 +20,8 @@ import ish.oncourse.tapestry.WillowModuleDef
 import ish.oncourse.tapestry.WillowTapestryFilter
 import ish.oncourse.tapestry.WillowTapestryFilterBuilder
 import ish.oncourse.util.log.LogAppInfo
+import ish.oncourse.website.cache.CacheInvalidationService
+import ish.oncourse.cayenne.cache.ICacheInvalidationService
 import ish.oncourse.website.services.CacheEnabledService
 import org.apache.cayenne.configuration.server.ServerRuntime
 
@@ -105,6 +107,7 @@ class WebModule extends ConfigModule {
         @Override
         void configure(org.apache.cayenne.di.Binder binder) {
             binder.bind(ICacheEnabledService).toInstance(service)
+            binder.bind(ICacheInvalidationService).to(CacheInvalidationService)
         }
     }
 

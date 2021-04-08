@@ -1,26 +1,19 @@
 package ish.oncourse.willow.editor.v1.service.impl
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
+import ish.oncourse.api.request.RequestService
+import ish.oncourse.api.zk.ZKProvider
 import ish.oncourse.configuration.Configuration
 import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WebSite
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.services.site.DeleteVersion
-import ish.oncourse.services.site.GetDeployedVersion
-import ish.oncourse.services.site.GetNextSiteVersion
-import ish.oncourse.services.site.WebSitePublisher
-import ish.oncourse.services.site.WebSiteVersionCopy
-import ish.oncourse.services.site.WebSiteVersionsDelete
-import ish.oncourse.solr.SolrCollection
+import ish.oncourse.services.site.*
 import ish.oncourse.willow.editor.rest.WebVersionToVersion
-import ish.oncourse.api.zk.ZKProvider
+import ish.oncourse.willow.editor.services.access.UserService
 import ish.oncourse.willow.editor.v1.model.UnexpectedError
 import ish.oncourse.willow.editor.v1.model.Version
-
-import groovy.transform.CompileStatic
-import ish.oncourse.api.request.RequestService
-import ish.oncourse.willow.editor.services.access.UserService
 import ish.oncourse.willow.editor.v1.model.VersionStatus
 import ish.oncourse.willow.editor.v1.service.VersionApi
 import ish.oncourse.willow.editor.website.WebSiteFunctions
@@ -41,10 +34,11 @@ import java.time.LocalDateTime
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-import static ish.oncourse.cayenne.cache.ICacheEnabledService.CacheDisableReason.PUBLISHER
-import static ish.oncourse.configuration.InitZKRootNode.EDITOR_LOCK_NODE
-import static ish.oncourse.solr.ReindexConstants.*
 import static ish.oncourse.configuration.Configuration.AdminProperty.DEPLOY_SCRIPT_PATH
+import static ish.oncourse.configuration.InitZKRootNode.EDITOR_LOCK_NODE
+import static ish.oncourse.configuration.InitZKRootNode.WEB_PUBLISH
+import static ish.oncourse.solr.ReindexConstants.*
+import static ish.oncourse.solr.SolrCollection.classes
 import static ish.oncourse.willow.editor.EditorProperty.SERVICES_LOCATION
 import static org.apache.zookeeper.CreateMode.PERSISTENT
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE
@@ -146,7 +140,6 @@ class VersionApiServiceImpl implements VersionApi {
         String userEmail = userService.userEmail
         String serverName = request.serverName
         WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
-        URL webappServiceUrl = new URL(request.scheme, request.serverName, request.serverPort, "")
 
         executorService.submit {
             try {
@@ -165,10 +158,10 @@ class VersionApiServiceImpl implements VersionApi {
                         " new version id:${newVersion.id}, took: ${System.currentTimeMillis() - time} milliseconds")
 
                 logger.warn("Run cache clean for $webSite.siteKey")
-                cleanWebappServiceCache(webappServiceUrl)
+                cleanWebappServiceCache(webSite.siteKey)
 
                 logger.warn("Run classes reindex for $webSite.siteKey")
-                new URL("$servicesUrl${REINDEX_PATH}?${PARAM_COLLECTION}=${SolrCollection.classes.name()}&${PARAM_WEB_SITE}=${webSite.siteKey}").text
+                new URL("$servicesUrl${REINDEX_PATH}?${PARAM_COLLECTION}=${classes.name()}&${PARAM_WEB_SITE}=${webSite.siteKey}").text
 
 
             } catch (Exception e) {
@@ -179,11 +172,11 @@ class VersionApiServiceImpl implements VersionApi {
  
     }
 
-    private void cleanWebappServiceCache(URL serviceUrl) {
-        URLConnection conn = serviceUrl.openConnection()
-        conn.setRequestProperty("Cookie", "${PUBLISHER.toString().toLowerCase()}=true")
-        if (conn.content instanceof InputStream) {
-            (new BufferedReader(new InputStreamReader(conn.content as InputStream))).text
+    private void cleanWebappServiceCache(String siteKey) {
+        try {
+            zkProvider.getZk(WEB_PUBLISH).setData('/', siteKey.getBytes(), -1)
+        } catch(Exception e) {
+            logger.catching(e)
         }
     }
 
