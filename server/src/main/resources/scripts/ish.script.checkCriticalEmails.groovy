@@ -4,11 +4,8 @@ records = query {
 }
 
 records.each { enrolment ->
-    enrolment.modifiedOn = new Date()
-    enrolment.context.commitChanges()
     eventService.postEvent(ish.oncourse.common.SystemEvent.valueOf(SystemEventType.ENROLMENT_SUCCESSFUL, enrolment))
 }
-
 
 records = query {
     entity "Invoice"
@@ -17,9 +14,8 @@ records = query {
 
 records.each { invoice ->
     invoice.modifiedOn = new Date()
-    invoice.context.commitChanges()
 }
-
+records[0].context.commitChanges
 
 records = query {
     entity "PaymentIn"
@@ -28,8 +24,8 @@ records = query {
 
 records.each { paymentIn ->
     paymentIn.modifiedOn = new Date()
-    paymentIn.context.commitChanges()
 }
+records[0].context.commitChanges
 
 records = query {
     entity "PaymentOut"
@@ -38,5 +34,5 @@ records = query {
 
 records.each { paymentOut ->
     paymentOut.modifiedOn = new Date()
-    paymentOut.context.commitChanges()
 }
+records[0].context.commitChanges
