@@ -168,15 +168,15 @@ export function mockPreferences() {
     [Model.Fax.uniqueKey]: "test",
     [Model.FeeHelpProviderCode.uniqueKey]: "test",
     [Model.Id.uniqueKey]: "test",
-    [Model.Jurisdiction.uniqueKey]: 3,
+    [Model.Jurisdiction.uniqueKey]: "3",
     [Model.Phone.uniqueKey]: "test",
     [Model.Postcode.uniqueKey]: "test",
     [Model.QldIdentifier.uniqueKey]: "test",
     [Model.ShowGUI.uniqueKey]: true,
-    [Model.State.uniqueKey]: 1,
+    [Model.State.uniqueKey]: "1",
     [Model.StateName.uniqueKey]: "test",
     [Model.Suburb.uniqueKey]: "test",
-    [Model.Type.uniqueKey]: 4,
+    [Model.Type.uniqueKey]: "4",
     [Model.showOfferedQM.uniqueKey]: true,
 
     // Financial preferences
