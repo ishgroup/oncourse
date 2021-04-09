@@ -98,7 +98,7 @@ const AvailabilityItem: React.FC<Props> = ({
   );
 
   return (
-    <Card className={threeColumn ? classes.threeColumnCard : "card"}>
+    <Card id={`holidays-item-${index}`} className={threeColumn ? classes.threeColumnCard : "card"}>
       <Grid container spacing={2}>
         <Grid item xs={availabilityLayout[1].xs}>
           <Grid container>
