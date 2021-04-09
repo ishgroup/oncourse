@@ -22,6 +22,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
+  Binding,
   EmailTemplate, MessageType, Recipients, /* Recipients, */ SearchQuery
 } from "@api/model";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -46,6 +47,7 @@ import RecipientsSelectionSwitcher from "./RecipientsSelectionSwitcher";
 import { Switch } from "../../../../common/components/form/form-fields/Switch";
 import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
 import previewSmsImage from "../../../../../images/preview-sms.png";
+import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 
 const styles = theme => createStyles({
   previewContent: {
@@ -137,7 +139,7 @@ const initialValues: MessageExtended = {
 };
 
 const bindingsRenderer: any = ({ fields }) => fields.map((i, n) => {
-  const item = fields.get(n);
+  const item: Binding = fields.get(n);
 
   const fieldProps: any = () => {
     switch (item.type) {
@@ -181,6 +183,7 @@ const bindingsRenderer: any = ({ fields }) => fields.map((i, n) => {
         label={`${item.label}`}
         type={item.type}
         component={DataTypeRenderer}
+        validate={["Checkbox", "Text"].includes(item.type) ? null : validateSingleMandatoryField}
         {...fieldProps()}
       />
     </Grid>
