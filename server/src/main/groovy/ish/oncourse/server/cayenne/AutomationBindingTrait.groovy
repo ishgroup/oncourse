@@ -41,6 +41,9 @@ trait AutomationBindingTrait {
    }
 
     Object parseValue(String valueString) {
+        if (valueString == null) {
+            return null
+        }
         try {
             switch (dataType) {
                 case FILE:
