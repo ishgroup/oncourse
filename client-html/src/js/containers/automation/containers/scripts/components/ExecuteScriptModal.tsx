@@ -34,9 +34,9 @@ import { III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from "../../../../../common
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { State } from "../../../../../reducers/state";
-import { getEntityItemById } from "../../../../entities/common/entityItemsService";
 import RecipientsSelectionSwitcher from "../../../../entities/messages/components/RecipientsSelectionSwitcher";
 import { runScript } from "../actions";
+import ScriptsService from "../services/ScriptsService";
 
 const FORM = "ExecuteScriptForm";
 
@@ -162,7 +162,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
   useEffect(() => {
     if (scriptId) {
       updateAudits();
-      getEntityItemById("Script", scriptId)
+      ScriptsService.getScriptItem(scriptId)
         .then(s => {
           const initialValues = { ...s };
 
