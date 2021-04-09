@@ -29,7 +29,7 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
  * azurestorage {
  *     name "integration name"
  *     blob bytes
- *     filName "transactions.csv"
+ *     fileName "transactions.csv"
  * }
  * ```
  *
