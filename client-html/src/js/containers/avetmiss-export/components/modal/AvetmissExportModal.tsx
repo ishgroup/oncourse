@@ -10,6 +10,7 @@ import AvetmissExportForm from "../../containers/AvetmissExportForm";
 import Content from "../../../../common/components/layout/Content";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { openInternalLink } from "../../../../common/utils/links";
 
 interface Props {
   opened: boolean;
@@ -32,7 +33,8 @@ export const manualAvetmisConfirm = (onConfirm: AnyArgFunction, showConfirm: Sho
     "Continue",
     null,
     null,
-    "Use regular export"
+    "Use regular export",
+    () => openInternalLink("/avetmiss-export")
   );
 };
 
