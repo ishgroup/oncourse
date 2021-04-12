@@ -17,11 +17,13 @@ import { appendComponents } from "../utils";
 
 const request: EpicUtils.Request = {
   type: UPDATE_SCRIPT_ENTITY_REQUEST,
-  getData: ({ id, script, method }) => {
+  getData: ({
+ id, script, method, viewMode 
+}) => {
     if (method === "PATCH") {
-      return ScriptsService.patchScriptItem(id, appendComponents(script));
+      return ScriptsService.patchScriptItem(id, appendComponents(script, viewMode));
     }
-    return ScriptsService.saveScriptItem(id, appendComponents(script));
+    return ScriptsService.saveScriptItem(id, appendComponents(script, viewMode));
   },
   processData: (v, s, { id }) => [
     {

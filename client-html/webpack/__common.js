@@ -107,13 +107,13 @@ const _common = (dirname, options) => {
       }),
       new webpack.SourceMapDevToolPlugin({
         filename: "[file].map",
-        exclude: [/vendor/, /images/, /hot-update/, /\d/],
+        exclude: [/vendor/, /images/, /hot-update/],
       }),
     ],
     devServer: {
       inline: true,
       hot: true,
-      port: 8100,
+      port: 8100
     },
     devtool: false,
   };

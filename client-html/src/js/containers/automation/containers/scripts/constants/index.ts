@@ -85,7 +85,7 @@ export const getMessageComponent = async (body: string): Promise<ScriptComponent
     if (key === "template") {
       result.templateEntity = await EntityService.getPlainRecords("EmailTemplate", "id", `keyCode is ${value}`)
       .then(r => {
-        if (r.rows[0].id) {
+        if (r.rows[0]?.id) {
           return EmailTemplateService.get(Number(r.rows[0].id));
         }
         return null;
