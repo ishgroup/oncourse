@@ -14,7 +14,7 @@ import {
   Form, arrayInsert, change, FieldArray, initialize,
 } from "redux-form";
 import Typography from "@material-ui/core/Typography";
-import { OutputType, TriggerType } from "@api/model";
+import { OutputType, Script, TriggerType } from "@api/model";
 import createStyles from "@material-ui/core/styles/createStyles";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
@@ -35,7 +35,7 @@ import ImportCardContent from "../components/cards/ImportCardContent";
 import TriggerCardContent from "../components/cards/TriggerCardContent";
 import ScriptAddMenu from "../components/ScriptAddMenu";
 import { setScriptComponents } from "../actions";
-import { ScriptComponentType } from "../../../../../model/scripts";
+import { ScriptComponentType, ScriptViewMode } from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import {
@@ -44,6 +44,7 @@ import {
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import { ApiMethods } from "../../../../../model/common/apiHandlers";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -130,7 +131,7 @@ interface Props {
   form?: string;
   openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
   handleSubmit?: any;
-  onSave?: any;
+  onSave?: (id: number, script: Script, method: ApiMethods, viewMode: ScriptViewMode) => void;
   onCreate?: any;
   onDelete?: any;
   formsState?: any;
@@ -184,12 +185,12 @@ const ScriptsForm = React.memo<Props>(props => {
     pdfBackgrounds,
     history,
     nextLocation,
-    setNextLocation,
+    setNextLocation
   } = props;
 
   const [isValidQuery, setIsValidQuery] = useState<boolean>(true);
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
-  const [viewMode, setViewMode] = useState<"Cards" | "Advanced">("Cards");
+  const [viewMode, setViewMode] = useState<ScriptViewMode>("Cards");
 
   const isInternal = useMemo(() => values && values.keyCode && values.keyCode.startsWith("ish."), [values && values.keyCode]);
   const isOriginallyInternal = useMemo(
@@ -312,9 +313,9 @@ const ScriptsForm = React.memo<Props>(props => {
       //   === JSON.stringify([values.components, values.imports]);
 
       if (isInternal) {
-        onSave(requestValues.id, requestValues, "PATCH");
+        onSave(requestValues.id, requestValues, "PATCH", viewMode);
       } else {
-        onSave(requestValues.id, requestValues);
+        onSave(requestValues.id, requestValues, "PUT", viewMode);
       }
     },
     [formsState, isNew, isSystemTrigger, values],
@@ -322,7 +323,7 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const toogleViewMode = () => {
     if (viewMode === "Cards") {
-      setViewMode("Advanced");
+      setViewMode("Code");
     } else {
       setViewMode("Cards");
     }
@@ -356,7 +357,7 @@ const ScriptsForm = React.memo<Props>(props => {
         <CustomAppBar fullWidth noDrawer>
           <Grid container>
             <Grid item xs={12} className={clsx("centeredFlex", "relative")}>
-              {!isInternal && viewMode !== "Advanced" && (
+              {!isInternal && viewMode !== "Code" && (
                 <ScriptAddMenu
                   addComponent={addComponent}
                   form={form}
@@ -441,7 +442,7 @@ const ScriptsForm = React.memo<Props>(props => {
                   </ScriptCard>
                 </div>
 
-                {viewMode === "Advanced" ? (
+                {viewMode === "Code" ? (
                   <ScriptCard
                     heading="Script"
                     className="mb-3 mt-3"
@@ -451,7 +452,7 @@ const ScriptsForm = React.memo<Props>(props => {
                   >
                     <FormField
                       type="code"
-                      name="body"
+                      name="content"
                       disabled={isInternal}
                       required
                     />

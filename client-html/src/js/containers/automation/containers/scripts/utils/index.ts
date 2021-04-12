@@ -15,7 +15,7 @@ import {
   queryClosureRegexp,
   messageClosureRegexp, getReportComponent, reportClosureRegexp,
 } from "../constants";
-import { ScriptExtended } from "../../../../../model/entities/Script";
+import { ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 
 const getClosureComponent = async closure => {
   switch (closure.type) {
@@ -116,28 +116,32 @@ const getComponentBody = (component: any) => {
   }
 };
 
-export const appendComponents = (value: ScriptExtended): Script => {
-  let content = "";
+export const appendComponents = (value: ScriptExtended, viewMode: ScriptViewMode): Script => {
+  const result = { ...value };
 
-  if (value.components && value.components.length) {
-    value.components.forEach(c => {
-      content += getComponentBody(c);
-    });
+  if (viewMode === "Cards") {
+    result.content = "";
+
+    if (value.components && value.components.length) {
+      value.components.forEach(c => {
+        result.content += getComponentBody(c);
+      });
+    }
+
+    if (value.imports) {
+      result.content = value.imports
+        .filter(i => Boolean(i.trim()))
+        .map(i => "import " + i)
+        .join("\n") + `
+      \n${result.content}`;
+    }
   }
 
-  if (value.imports) {
-    content = value.imports
-      .filter(i => Boolean(i.trim()))
-      .map(i => "import " + i)
-      .join("\n") + `
-      \n${content}`;
-  }
+  delete result.components;
+  delete result.imports;
+  delete result.body;
 
-  delete value.components;
-  delete value.imports;
-  delete value.body;
-
-  return { ...value, content };
+  return result;
 };
 
 export const getType = type => {

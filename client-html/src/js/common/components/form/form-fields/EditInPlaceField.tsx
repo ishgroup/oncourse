@@ -466,6 +466,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       formatting = "primary",
       selectValueMark = "value",
       selectLabelMark = "label",
+      // helper function to detect selected option
+      selectValueCondition,
       selectLabelCondition,
       input,
       meta: { error, invalid },
@@ -684,11 +686,13 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 <Select
                   value={multiple
                     ? input.value || []
-                    : returnType === "object"
-                      ? selectLabelCondition
-                        ? selectLabelCondition(input.value)
-                        : input.value ? input.value[selectValueMark] : ""
-                      : input.value}
+                    : selectValueCondition
+                      ? selectValueCondition(input.value)
+                      : returnType === "object"
+                        ? selectLabelCondition
+                          ? selectLabelCondition(input.value)
+                          : input.value ? input.value[selectValueMark] : ""
+                        : input.value}
                   inputRef={this.setInputNode}
                   classes={{
                     root: clsx(classes.textFieldBorderModified, fieldClasses.text),

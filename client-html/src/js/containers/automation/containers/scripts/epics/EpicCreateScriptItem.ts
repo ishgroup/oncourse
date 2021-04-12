@@ -12,11 +12,11 @@ import { GET_SCRIPTS_LIST, POST_SCRIPT_ENTITY_FULFILLED, POST_SCRIPT_ENTITY_REQU
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { appendComponents } from "../utils";
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../constants";
-import { ScriptExtended } from "../../../../../model/entities/Script";
+import { ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 
-const request: EpicUtils.Request<any, { script: ScriptExtended }> = {
+const request: EpicUtils.Request<any, { script: ScriptExtended, viewMode: ScriptViewMode }> = {
   type: POST_SCRIPT_ENTITY_REQUEST,
-  getData: payload => ScriptsService.createScriptItem(appendComponents(payload.script)),
+  getData: ({ script, viewMode }) => ScriptsService.createScriptItem(appendComponents(script, viewMode)),
   processData: (r, s, { script }) => [
       {
         type: POST_SCRIPT_ENTITY_FULFILLED

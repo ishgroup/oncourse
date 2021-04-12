@@ -18,7 +18,6 @@ import {
  createScriptItem, deleteScriptItem, getScriptItem, saveScriptItem
 } from "./actions";
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "./constants";
-import { ApiMethods } from "../../../../model/common/apiHandlers";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { setNextLocation, showConfirm } from "../../../../common/actions";
 
@@ -95,8 +94,8 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getScriptItem: (id: number) => dispatch(getScriptItem(id)),
-  onSave: (id: number, script: Script, method?: ApiMethods) => dispatch(saveScriptItem(id, script, method)),
-  onCreate: (script: Script) => dispatch(createScriptItem(script)),
+  onSave: (id, script, method, viewMode) => dispatch(saveScriptItem(id, script, method, viewMode)),
+  onCreate: (script, viewMode) => dispatch(createScriptItem(script, viewMode)),
   onDelete: (id: number) => dispatch(deleteScriptItem(id)),
   openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),

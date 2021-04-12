@@ -7,17 +7,20 @@ import React, {
  useMemo, useCallback,
 } from "react";
 import { connect } from "react-redux";
-import { change } from "redux-form";
+import { change, getFormValues } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import LockOutlined from "@material-ui/icons/LockOutlined";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
+import { CustomFieldType } from "@api/model";
+import { Dispatch } from "redux";
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../../../reducers/state";
 import { ADMIN_EMAIL_KEY } from "../../../../../../constants/Config";
 import { Switch } from "../../../../../../common/components/form/form-fields/Switch";
 import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import EmailTemplateService from "../../../email-templates/services/EmailTemplateService";
+import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
 
 const useStyles = makeStyles(() => ({
   itemIcon: {
@@ -27,9 +30,21 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const MessageCardContent = React.memo<any>(props => {
+interface Props {
+  name: string;
+  emailTemplates: any;
+  field: ScriptComponent;
+  dispatch: Dispatch;
+  form: string;
+  renderVariables: any;
+  disabled: boolean;
+  customPreferencesFields?: CustomFieldType;
+  values?: ScriptExtended;
+}
+
+const MessageCardContent = React.memo<Props>(props => {
   const {
-    name, emailTemplates, customPreferencesFields, field, dispatch, form, renderVariables, disabled
+    name, emailTemplates, customPreferencesFields, field, dispatch, form, renderVariables, disabled, values
   } = props;
 
   const classes = useStyles();
@@ -41,6 +56,8 @@ const MessageCardContent = React.memo<any>(props => {
         }))
       : []), [emailTemplates],
   );
+
+  const templateOption = useMemo(() => values?.options?.find(o => o.name === field.template), [values?.options, field.template]);
 
   const emailTemplatesForRender = useCallback(item => (
     item.hasIcon ? (
@@ -69,7 +86,7 @@ const MessageCardContent = React.memo<any>(props => {
 
   const onTypeChange = (e, checked) => {
     const updated = { ...field };
-    if (checked) {
+    if (!checked) {
       delete updated["template"];
       updated["to"] = null;
       updated["subject"] = null;
@@ -83,42 +100,87 @@ const MessageCardContent = React.memo<any>(props => {
     dispatch(change(form, `${name}`, updated));
   };
 
+  const getSelectedTemplateValue = key => {
+    if (templateOption) {
+      return templateOption.value;
+    }
+    return key;
+  };
+
   const templateMessage = field.hasOwnProperty("template");
+
+  console.log(templateOption);
+
+  const FromField = (
+    <Grid item xs={12}>
+      <FormField
+        type="text"
+        name={`${name}.from`}
+        label="From"
+        placeholder={customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY] || 'No value'}
+        disabled={disabled}
+        fullWidth
+      />
+    </Grid>
+);
 
   return (
     <Grid container className="mt-2">
       <Grid item xs={12} className="centeredFlex">
         <Typography variant="caption" color="textSecondary">
-          Plain message
+          Use template
         </Typography>
         <Switch
-          checked={!templateMessage}
+          checked={templateMessage}
           onChange={onTypeChange}
           disabled={disabled}
         />
       </Grid>
 
       {templateMessage ? (
-        <Grid item xs={6}>
-          <FormField
-            type="select"
-            name={`${name}.template`}
-            label="Template"
-            items={messageTemplateItems}
-            selectLabelCondition={emailTemplatesForRender}
-            onInnerValueChange={changeEmailTemplate}
-            disabled={disabled}
-            required
-          />
-        </Grid>
+        <>
+          <Grid item xs={6}>
+            <FormField
+              type="select"
+              name={`${name}.template`}
+              label="Template"
+              items={messageTemplateItems}
+              selectLabelCondition={emailTemplatesForRender}
+              selectValueCondition={getSelectedTemplateValue}
+              onInnerValueChange={changeEmailTemplate}
+              disabled={disabled}
+              required
+            />
+          </Grid>
+          {FromField}
+        </>
       ) : (
         <>
+          {FromField}
           <Grid item xs={12}>
             <FormField
               type="text"
               name={`${name}.to`}
               label="To"
               disabled={disabled}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormField
+              type="text"
+              name={`${name}.cc`}
+              disabled={disabled}
+              label="cc"
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormField
+              type="text"
+              name={`${name}.bcc`}
+              disabled={disabled}
+              label="bcc"
               fullWidth
             />
           </Grid>
@@ -146,37 +208,6 @@ const MessageCardContent = React.memo<any>(props => {
       <Grid item xs={12}>
         <FormField
           type="text"
-          name={`${name}.from`}
-          label="From"
-          placeholder={customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY] || 'No value'}
-          disabled={disabled}
-          fullWidth
-        />
-      </Grid>
-
-      <Grid item xs={12}>
-        <FormField
-          type="text"
-          name={`${name}.cc`}
-          disabled={disabled}
-          label="cc"
-          fullWidth
-        />
-      </Grid>
-
-      <Grid item xs={12}>
-        <FormField
-          type="text"
-          name={`${name}.bcc`}
-          disabled={disabled}
-          label="bcc"
-          fullWidth
-        />
-      </Grid>
-
-      <Grid item xs={12}>
-        <FormField
-          type="text"
           name={`${name}.key`}
           disabled={disabled}
           label="Key"
@@ -199,8 +230,9 @@ const MessageCardContent = React.memo<any>(props => {
   );
 });
 
-const mapStateToProps = (state: State) => ({
-  customPreferencesFields: state.preferences.customFields
+const mapStateToProps = (state: State, ownProps) => ({
+  customPreferencesFields: state.preferences.customFields,
+  values: getFormValues(ownProps.form)(state)
 });
 
 export default connect<any, any, any>(mapStateToProps)(MessageCardContent);
