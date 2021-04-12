@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.scripting.api
 
-import ish.oncourse.server.messaging.AttachmentParam
+import ish.oncourse.server.messaging.DocumentParam
 
 /**
  * SMTP email sending API. Allows to send arbitrary emails with attachments with variety of sending configuration options,
@@ -43,7 +43,7 @@ class SmtpSpec {
     List<String> ccList = []
     List<String> bccList = []
     String multipartType = SMTPMessage.DEFAULT_MULTIPART_TYPE
-    List<AttachmentParam> attachments = []
+    List<DocumentParam> attachments = []
 
 	/**
 	 * Set "from" address for the email. Defaults to "email.from" preference if not set.
@@ -126,7 +126,7 @@ class SmtpSpec {
 	 * @param content MIME type of the attachment
      */
 	void attachment(String contentType, Object content) {
-		this.attachments << AttachmentParam.valueOf(null ,contentType, content)
+		this.attachments << DocumentParam.valueOf(null ,contentType, content)
 	}
 
 	/**
@@ -137,7 +137,7 @@ class SmtpSpec {
 	 * @param content attachment object
      */
 	void attachment(String fileName, String contentType, Object content) {
-		this.attachments << AttachmentParam.valueOf(fileName, contentType, content)
+		this.attachments << DocumentParam.valueOf(fileName, contentType, content)
 	}
 
 	/**
@@ -146,6 +146,6 @@ class SmtpSpec {
 	 * @param attachment attachment properties map, e.g. [fileName: 'example.txt', type: 'text/plain', content: 'test text']
      */
 	void attachment(Map<String, Object> attachment) {
-		this.attachments << AttachmentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
+		this.attachments << DocumentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
 	}
 }

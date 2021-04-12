@@ -33,7 +33,7 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
  * }
  * ```
  *
- * If you pass the FileData object in the blob attribute, you can skip the name.
+ * If you pass the DocumentParam object as the blob attribute, you can skip the name.
  *
  *
  * ```
