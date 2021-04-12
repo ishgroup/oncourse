@@ -1,27 +1,43 @@
 import React from "react";
-import {Container, Row, Col} from 'reactstrap';
-import classnames from 'classnames';
+import {withStyles} from "@material-ui/core/styles";
+import clsx from "clsx";
+import {Grid} from "@material-ui/core";
+
+const styles = theme => ({
+  contentWrapper: {
+    padding: "15px 25px",
+  },
+  fullHeight: {
+    minHeight: "100vh",
+    height: "100vh",
+  },
+});
 
 interface Props {
+  classes: any;
   sidebar?: any;
   content?: any;
   fullHeight?: boolean;
 }
 
-export const Layout = (props: Props) => {
-  const {sidebar, fullHeight, content} = props;
+const Layout = (props: Props) => {
+  const {classes, sidebar, fullHeight, content} = props;
 
   return (
-    <Container fluid>
-      <Row className={classnames({'full-height': fullHeight})}>
-        {sidebar &&
-          sidebar
-        }
+    <>
+      <Grid>
+        <Grid container className={clsx(fullHeight && classes.fullHeight)}>
+          {sidebar &&
+            sidebar
+          }
 
-        <Col md={sidebar ? 10 : 12} className="content-wrapper">
-          {content}
-        </Col>
-      </Row>
-    </Container>
+          <Grid item xs={sidebar ? 10 : 12} className={classes.contentWrapper}>
+            {content}
+          </Grid>
+        </Grid>
+      </Grid>
+    </>
   );
 }
+
+export default (withStyles(styles)(Layout));

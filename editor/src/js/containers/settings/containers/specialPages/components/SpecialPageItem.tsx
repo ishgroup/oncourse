@@ -1,16 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-} from "reactstrap";
+import {TextField} from "@material-ui/core";
 import {
   SpecialPageItem as SpecialPageItemModel,
   URLMatchRule,
@@ -36,8 +26,8 @@ export class SpecialPageItem extends React.PureComponent<Props, any> {
           <h6 className="mb-0 ml-2">{item.specialPage}</h6>
 
           <div className="rule ml-2">
-            <Label>From ({item.matchType.toLowerCase()})</Label>
-            <Input
+            <label>From ({item.matchType.toLowerCase()})</label>
+            <TextField
               className={classnames({
                 invalid: item.error,
               })}

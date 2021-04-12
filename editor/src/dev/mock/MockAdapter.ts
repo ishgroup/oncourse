@@ -1,5 +1,4 @@
 import axiosMockAdapter from 'axios-mock-adapter';
-import {Col, Container, Row} from 'reactstrap';
 import {defaultAxios} from "../../js/common/services/DefaultHttpClient";
 import {CreateMockDB, MockDB} from "./MockDB";
 

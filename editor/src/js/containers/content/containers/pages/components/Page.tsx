@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import classnames from 'classnames';
-import {Button, FormGroup, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import {PageState} from "../reducers/State";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
@@ -10,7 +9,8 @@ import MarkdownEditor from "../../../../../common/components/editor/MarkdownEdit
 import Editor from "../../../../../common/components/editor/HtmlEditor";
 import marked from "marked";
 import {ContentMode} from "../../../../../model";
-import {ContentModeSwitch} from "../../../../../common/components/ContentModeSwitch";
+import ContentModeSwitch from "../../../../../common/components/ContentModeSwitch";
+import CustomButton from "../../../../../common/components/CustomButton";
 
 interface PageProps {
   page: PageState;
@@ -159,10 +159,8 @@ export const Page: React.FC<PageProps> = ({
           {renderEditor()}
         </div>
         <div className="mt-4">
-          <FormGroup>
-            <Button onClick={handleCancel} color="link">Cancel</Button>
-            <Button onClick={handleSave} color="primary">Save</Button>
-          </FormGroup>
+          <CustomButton onClick={handleCancel} styleType="cancel">Cancel</CustomButton>
+          <CustomButton onClick={handleSave} styleType="submit">Save</CustomButton>
         </div>
       </>}
     </div>

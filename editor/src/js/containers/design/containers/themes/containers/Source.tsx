@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import update from 'react-addons-update';
 import classnames from 'classnames';
-import {Input} from 'reactstrap';
 import Card from "./Card";
 import {DropTarget} from 'react-dnd';
+import {TextField} from "@material-ui/core";
 
 interface Props {
   list: any[];
@@ -79,7 +79,7 @@ class Source extends Component<any, any> {
         <div className={classnames("theme__source", className, {active: isActive})} data-placeholder={placeholder}>
 
           {cards && cards.length > 0 && showFilter &&
-            <Input
+            <TextField
               type="text"
               name="filter"
               placeholder="Filter"

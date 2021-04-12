@@ -19,6 +19,11 @@ const createOverrides = palette => ({
       disabled: {}
     },
     MuiInputBase: {
+      input: {
+        border: "0!important",
+        margin: "0!important",
+        height: "1.1876em!important",
+      },
       inputMultiline: {
         lineHeight: "1.5em"
       }
@@ -50,6 +55,11 @@ const createOverrides = palette => ({
         "@media (min-width: 600px)": {
           minHeight: "36px"
         }
+      }
+    },
+    MuiPaper: {
+      root: {
+        padding: "16px",
       }
     },
     MuiTableCell: {
@@ -104,17 +114,17 @@ const commonTypography = {
 const defaultThemePalette = {
   primary: {
     main: "#f7941d",
-    contrastText: "#fff"
+    contrastText: "#fff",
   },
   background: {
-    default: "#fbf9f0"
+    default: "#fbf9f0",
   },
   secondary: {
-    main: "#4b6390"
+    main: "#4b6390",
   },
   text: {
     secondary: "rgba(0, 0, 0, 0.54)",
-    primary: "rgba(0, 0, 0, 0.87)"
+    primary: "rgba(0, 0, 0, 0.87)",
   }
 };
 

@@ -1,4 +1,9 @@
 import React from 'react';
+import DesktopMacIcon from '@material-ui/icons/DesktopMac';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import SettingsIcon from '@material-ui/icons/Settings';
+import PhotoAlbumIcon from '@material-ui/icons/PhotoAlbum';
+import LowPriorityIcon from '@material-ui/icons/LowPriority';
 
 import Blocks from './containers/content/containers/blocks/Blocks';
 import BlockSidebar from './containers/content/containers/blocks/containers/BlockSidebar';
@@ -45,7 +50,7 @@ export interface Route {
   root?: boolean;                                   // root items displaying in main sidebar
   exact?: boolean;
   isPublic?: boolean;
-  icon?: string;                                    // icon class for menu item in slim mode
+  icon?: any;                                    // icon class for menu item in slim mode
   main: (props) => any;                             // main component for route
   sidebar?: (props?) => any;                        // sidebar component form route
   parent?: string;                                  // parent item url for sub menu items
@@ -59,7 +64,7 @@ export const routes: Route[] = [
     url: URL.SITE,
     exact: true,
     root: true,
-    icon: 'icon-airplay',
+    icon: <DesktopMacIcon/>,
     main: props => <span/>,
   },
   {
@@ -67,7 +72,7 @@ export const routes: Route[] = [
     root: true,
     path: '/content',
     url: URL.CONTENT,
-    icon: 'icon-dashboard',
+    icon: <DashboardIcon/>,
     main: props => <span/>,
   },
   {
@@ -76,7 +81,7 @@ export const routes: Route[] = [
     exact: true,
     path: '/settings',
     url: URL.SETTINGS,
-    icon: 'icon-settings',
+    icon: <SettingsIcon/>,
     main: props => <span/>,
   },
   {
@@ -84,7 +89,7 @@ export const routes: Route[] = [
     root: true,
     path: '/design',
     url: URL.DESIGN,
-    icon: 'icon-photo_album',
+    icon: <PhotoAlbumIcon/>,
     main: props => <span/>,
   },
 
@@ -167,7 +172,7 @@ export const routes: Route[] = [
     root: true,
     path: '/history',
     url: URL.HISTORY,
-    icon: 'icon-low_priority',
+    icon: <LowPriorityIcon/>,
     main: props => <History {...props}/>,
   },
 
