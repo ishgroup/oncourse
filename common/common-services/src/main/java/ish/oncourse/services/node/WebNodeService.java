@@ -196,7 +196,8 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		query.prefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint());
 		query.prefetch(WebNode.WEB_CONTENT_VISIBILITY.dot(WebContentVisibility.WEB_CONTENT).disjoint());
 		query.prefetch(WebNode.WEB_URL_ALIASES.disjoint());
-		query.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebNode.class.getSimpleName());
+		query.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		query.cacheGroup(getCacheGroup());
 	}
 
 	@Override
@@ -220,7 +221,8 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	    ObjectContext context = cayenneService.sharedContext();
 	    return ObjectSelect.query(WebUrlAlias.class)
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebUrlAlias.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroup(getCacheGroup())
 			    .and(WebUrlAlias.WEB_NODE.eq(webNode))
 			    .and(WebUrlAlias.DEFAULT.eq(true))
 			    .selectOne(context);
@@ -229,7 +231,8 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	@Override
 	public WebNode getNodeForName(String nodeName) {
 		return ObjectSelect.query(WebNode.class)
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebNode.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroup(getCacheGroup())
 				.and(siteQualifier())
 				.and(WebNode.NAME.eq(nodeName))
 				.selectOne(cayenneService.sharedContext());

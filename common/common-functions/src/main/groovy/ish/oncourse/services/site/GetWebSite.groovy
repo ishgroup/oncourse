@@ -21,7 +21,8 @@ class GetWebSite {
         ObjectSelect.query(WebSite.class)
                 .where(WebSite.SITE_KEY.eq(siteKeyHeader))
                 .prefetch(WebSite.COLLEGE.disjointById())
-                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebSite.class.toString())
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+                .cacheGroup(siteKeyHeader)
                 .selectFirst(context)
     }
 }

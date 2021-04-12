@@ -34,7 +34,8 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 		ObjectSelect<WebUrlAlias> query = ObjectSelect.query(WebUrlAlias.class)
 				.and(siteQualifier())
 				.and(WebUrlAlias.URL_PATH.eq(path))
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebUrlAlias.class.getSimpleName());
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroup(getCacheGroup());
 
 		List<WebUrlAlias> aliases = query.select(cayenneService.sharedContext());
 		int size = aliases.size();

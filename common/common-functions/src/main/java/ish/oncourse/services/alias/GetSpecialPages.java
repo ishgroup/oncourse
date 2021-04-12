@@ -16,7 +16,8 @@ public class GetSpecialPages {
 
     public List<WebUrlAlias> get() {
         return ObjectSelect.query(WebUrlAlias.class)
-                .cacheStrategy(useCache ? QueryCacheStrategy.LOCAL_CACHE : QueryCacheStrategy.LOCAL_CACHE_REFRESH, WebUrlAlias.class.getSimpleName())
+                .cacheStrategy(useCache ? QueryCacheStrategy.LOCAL_CACHE : QueryCacheStrategy.LOCAL_CACHE_REFRESH)
+                .cacheGroup(webSiteVersion.getWebSite() != null ? webSiteVersion.getWebSite().getSiteKey() : WebUrlAlias.class.getSimpleName())
                 .and(WebUrlAlias.WEB_SITE_VERSION.eq(webSiteVersion))
                 .and(WebUrlAlias.SPECIAL_PAGE.isNotNull())
                 .and(WebUrlAlias.MATCH_TYPE.isNotNull())

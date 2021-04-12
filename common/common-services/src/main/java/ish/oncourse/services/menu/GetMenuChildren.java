@@ -18,8 +18,16 @@ public class GetMenuChildren {
     private boolean useCache = true;
     public List<WebMenu> get() {
         List<WebMenu> result = new ArrayList<>();
+        String cache;
+        if (parentMenu.getWebSiteVersion() != null && parentMenu.getWebSiteVersion().getWebSite() != null) {
+            cache = parentMenu.getWebSiteVersion().getWebSite().getSiteKey();
+        } else {
+            cache = WebMenu.class.getSimpleName();
+        }
+            
         result.addAll(ObjectSelect.query(WebMenu.class).
-                cacheStrategy(useCache ? QueryCacheStrategy.LOCAL_CACHE : QueryCacheStrategy.LOCAL_CACHE_REFRESH, WebMenu.class.getSimpleName())
+                cacheStrategy(useCache ? QueryCacheStrategy.LOCAL_CACHE : QueryCacheStrategy.LOCAL_CACHE_REFRESH)
+                .cacheGroup(cache)
                 .and(WebMenu.PARENT_WEB_MENU.eq(parentMenu))
                 .prefetch(WebMenu.PARENT_WEB_MENU.disjoint())
                 .prefetch(WebMenu.WEB_NODE.disjoint())

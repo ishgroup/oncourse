@@ -1,7 +1,6 @@
 package ish.oncourse.pages.internal;
 
 import ish.oncourse.model.Country;
-import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.GetAutoCompleteState;
@@ -54,7 +53,7 @@ public class AutoComplete {
 		if (term != null) {
 			ObjectContext context = cayenneService.sharedContext();
 			List<Country> countries = ObjectSelect.query(Country.class).
-            cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName()).
+            cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Country.class.getSimpleName()).
             where(Country.NAME.likeIgnoreCase("%"+term+"%")).
 					select(context);
 					

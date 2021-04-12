@@ -47,14 +47,10 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 		}
 		updateWeight(menu, size, null);
 		setUniqueWebMenuName(menu);
-//		refreshMenus();
 		return menu;
 	}
 
-	private void refreshMenus() {
-		ObjectSelect.query(WebMenu.class)
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH, WebMenu.class.getSimpleName());
-	}
+
 
 	public List<WebMenu> getChildrenBy(WebMenu parent) {
 		return GetMenuChildren.valueOf(parent, cayenneService.sharedContext(), true).get();
@@ -88,7 +84,8 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 		return ObjectSelect.query(WebMenu.class)
 				.and(siteQualifier())
 				.and(WebMenu.PARENT_WEB_MENU.isNull())
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebMenu.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroup(getCacheGroup())
 				.selectOne(cayenneService.sharedContext());
 	}
 

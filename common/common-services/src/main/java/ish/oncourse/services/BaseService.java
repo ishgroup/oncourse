@@ -67,7 +67,8 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 			try {
 				return ObjectSelect.query(getEntityClass()).
 						where(ExpressionFactory.matchDbExp(IBaseService.ID_PK_COLUMN, willowId)).
-						cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, getEntityClass().getSimpleName()).
+						cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+						cacheGroup(getCacheGroup()).
 						selectOne(getCayenneService().sharedContext());
 
 			} catch (Exception e) {
@@ -81,12 +82,22 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 	public List<T> findByQualifier(Expression qualifier) {
 		try {
 			return new ArrayList<>(ObjectSelect.query(getEntityClass(), qualifier).
-					cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, getEntityClass().getSimpleName()).
+					cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).						
+					cacheGroup(getCacheGroup()).
 					select(getCayenneService().sharedContext()));
 		} catch (Exception e) {
 			logger.error("Query resulted in Exception thrown. Query: {}", qualifier, e);
 			//TODO: Should the exception be rethrown to indicate error condition to the client code?
 			return new ArrayList<>();
+		}
+	}
+	
+	public String getCacheGroup() {
+		if (webSiteService.getCurrentWebSite() != null
+				&& webSiteService.getCurrentWebSite().getSiteKey() != null) {
+			return webSiteService.getCurrentWebSite().getSiteKey();
+		} else {
+			return getEntityClass().getSimpleName();
 		}
 	}
 

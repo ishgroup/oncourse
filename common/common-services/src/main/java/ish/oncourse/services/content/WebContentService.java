@@ -26,11 +26,12 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	
 	@Inject
 	private IWebSiteVersionService webSiteVersionService;
-
+	
 	@Override
 	public WebContent getWebContent(String searchProperty, Object value) {
 		ObjectSelect<WebContent> query = ObjectSelect.query(WebContent.class).
-				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName()).
+				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+				cacheGroup(getCacheGroup()).
 				and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()));
 		if (searchProperty != null) {
 			query.and(ExpressionFactory.matchExp(
@@ -54,7 +55,8 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@Override
 	public List<WebContent> getBlocks() {
 		return ObjectSelect.query(WebContent.class)
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroup(getCacheGroup())
 				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(getBlockQualifier())
 				.orderBy(WebContent.MODIFIED.desc())
@@ -131,7 +133,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	public WebContent getBlockByName(String webContentName) {
 		return ObjectSelect.query(WebContent.class)
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
-				.cacheGroup(WebContent.class.getSimpleName())
+				.cacheGroup(getCacheGroup())
 				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(WebContent.NAME.eq(webContentName))
 				.and(getBlockQualifier())

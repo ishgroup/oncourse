@@ -65,7 +65,7 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 				where(WebContentVisibility.WEB_CONTENT.eq(this)).
 				and(WebContentVisibility.WEB_NODE_TYPE.eq(webNodeType)).
 				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
-				cacheGroup(WebContentVisibility.class.getSimpleName()).
+				cacheGroup(getCacheGroup()).
 				select(getObjectContext());
 
 		logger.debug(String.format("The number of found visibilities: %s", list.size()));
@@ -85,12 +85,20 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 				where(WebContentVisibility.WEB_CONTENT.eq(this)).
 				and(WebContentVisibility.WEB_NODE.eq(webNode)).
 				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
-				cacheGroup(WebContentVisibility.class.getSimpleName()).
+				cacheGroup(getCacheGroup()).
 				select(getObjectContext());
 
 		logger.debug(String.format("The number of found visibilities: %s", list.size()));
 		
 		return list.isEmpty() ? null : list.get(0);
+	}
+	
+	public String getCacheGroup() {
+		if (getWebSiteVersion() != null && getWebSiteVersion().getWebSite() != null) {
+			return getWebSiteVersion().getWebSite().getSiteKey();
+		} else {
+			return WebContentVisibility.class.getSimpleName();
+		}
 	}
 
 	public int compareTo(WebContent arg) {

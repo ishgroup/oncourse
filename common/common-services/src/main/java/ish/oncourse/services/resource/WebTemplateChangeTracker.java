@@ -3,6 +3,7 @@
  */
 package ish.oncourse.services.resource;
 
+import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.model.WebTemplate;
@@ -48,7 +49,8 @@ public class WebTemplateChangeTracker {
 
 	public boolean containsChanges() {
 		String applicationKey = webSiteVersionService.getApplicationKey();
-		if (webSiteService.getCurrentWebSite() == null || applicationKey == null) {
+		WebSite webSite =  webSiteService.getCurrentWebSite();
+		if (webSite == null || applicationKey == null) {
 			return false;
 		}
 
@@ -58,7 +60,8 @@ public class WebTemplateChangeTracker {
 		logger.info("Latest deployed site version: " + webSiteVersion.getId() + " on: " + webSiteVersion.getDeployedOn() + ", last cache invalidation on: " + timestamp);
 
 		return (ObjectSelect.query(WebTemplate.class)
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebTemplate.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroup(webSite.getSiteKey())
 				.and(WebTemplate.LAYOUT.dot(WebSiteLayout.WEB_SITE_VERSION).eq(webSiteVersion))
 				.and(WebTemplate.MODIFIED.gt(timestamp))
 				.limit(1)

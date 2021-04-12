@@ -1,7 +1,6 @@
 package ish.oncourse.services.node;
 
 import ish.oncourse.model.WebLayoutPath;
-import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.BaseService;
@@ -65,7 +64,7 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
 
         SelectQuery selectQuery = new SelectQuery(WebNodeType.class, expression);
         selectQuery.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-        selectQuery.setCacheGroup(WebNodeType.class.getSimpleName());
+        selectQuery.setCacheGroup(getCacheGroup());
         selectQuery.addOrdering(WebNodeType.MODIFIED_PROPERTY, SortOrder.DESCENDING);
 
         return context.performQuery(selectQuery);
@@ -85,7 +84,8 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
                 .and(WebLayoutPath.PATH.eq(urlPath))
                 .and(WebLayoutPath.MATCH_TYPE.eq(RequestMatchType.EXACT))
                 .prefetch(WebLayoutPath.WEB_NODE_TYPE.joint())
-                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebNode.class.getSimpleName())
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+                .cacheGroup(getCacheGroup())
                 .selectFirst(cayenneService.sharedContext());
 
         if (layoutPath == null) {
@@ -93,7 +93,8 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
                 .where(WebLayoutPath.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
                 .and(WebLayoutPath.MATCH_TYPE.eq(RequestMatchType.STARTS_WITH))
                 .prefetch(WebLayoutPath.WEB_NODE_TYPE.joint())
-                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebNode.class.getSimpleName())
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+                .cacheGroup(getCacheGroup())    
                 .select(cayenneService.sharedContext())
                 .stream()
                 .filter(path -> urlPath.startsWith(path.getPath()))

@@ -2,7 +2,6 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebNodeType;
 import ish.oncourse.model.visitor.IVisitor;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 
@@ -29,19 +28,20 @@ public class WebNodeType extends _WebNodeType {
 	public <T> T accept(IVisitor<T> visitor) {
 		return visitor.visitWebNodeType(this);
 	}
-
-	public static WebNodeType forName(ObjectContext ctx, String name) {
-		return ObjectSelect.query(WebNodeType.class).
-				where(WebNodeType.NAME.eq(name)).
-				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
-				cacheGroup(WebNodeType.class.getSimpleName()).
-				selectFirst(ctx);
-	}
+	
 
 	@SuppressWarnings("unchecked")
 	public List<WebContent> getContentForRegionKey(String regionKey) {
+		String cache;
+		if (getWebSiteVersion() != null && getWebSiteVersion().getWebSite() != null) {
+			cache = getWebSiteVersion().getWebSite().getSiteKey();
+		} else {
+			cache = WebContent.class.getSimpleName();
+		}
+		
 		return ObjectSelect.query(WebContent.class)
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroup(cache)
 				.and(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.WEB_NODE_TYPE).eq(this))
 				.and(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.REGION_KEY).eq(RegionKey.valueOf(regionKey.toLowerCase())))
 				.orderBy(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.WEIGHT).asc()).select(getObjectContext());
