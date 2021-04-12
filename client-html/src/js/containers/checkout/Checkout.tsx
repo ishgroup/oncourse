@@ -6,11 +6,8 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
 import { NoArgFunction } from "../../model/common/CommonFunctions";
 import { State } from "../../reducers/state";
-import { AppTheme } from "../../model/common/Theme";
 import { getActiveFundingContracts } from "../avetmiss-export/actions";
 import { getCountries, getLanguages } from "../preferences/actions";
 import {
@@ -25,7 +22,6 @@ import { getDefaultInvoiceTerms } from "../entities/invoices/actions";
 import { changeStep, checkoutClearState } from "./actions";
 import CheckoutSelection from "./components/CheckoutSelection";
 import { getCheckoutCurrentStep } from "./utils";
-import { clearPlainPreviousCreditRecords } from "./actions/checkoutSummary";
 
 export const FORM: string = "QUICK_ENROL_FORM";
 export const CONTACT_ENTITY_NAME: string = "Contact";
@@ -117,7 +113,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   changeStep: (step: number) => dispatch(changeStep(step)),
   clearState: () => {
     dispatch(checkoutClearState());
-    dispatch(clearPlainPreviousCreditRecords());
   },
   getActiveFundingContracts: () => dispatch(getActiveFundingContracts(true)),
   getQePermissions: () => {

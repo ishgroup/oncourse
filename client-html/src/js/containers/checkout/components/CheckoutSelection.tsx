@@ -1209,6 +1209,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             openDiscountView={openDiscountView}
             selectedDiscount={selectedDiscount}
             selectedContacts={selectedContacts}
+            summaryList={summary.list}
           />
         </div>
         <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice) })}>
