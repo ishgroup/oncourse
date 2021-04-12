@@ -9,8 +9,16 @@ import {State} from "../../../../reducers/state";
 import {WebsiteSettingsState} from "./reducers/State";
 import {toPositive} from "../../../../common/utils/NumberUtils";
 import CustomButton from "../../../../common/components/CustomButton";
+import {withStyles} from "@material-ui/core/styles";
+
+const styles = theme => ({
+  select: {
+    width: "230px",
+  }
+});
 
 interface Props {
+  classes: any;
   onInit: () => any;
   onSave: (settings) => any;
   website: WebsiteSettingsState;
@@ -59,7 +67,6 @@ export class Website extends React.Component<Props, any> {
   }
 
   onChange(value, key, parent?) {
-
     if (parent) {
       this.setState({
         [parent]: {
@@ -90,7 +97,7 @@ export class Website extends React.Component<Props, any> {
     const {
       enableSocialMedia, addThisId, enableForCourse, enableForWebpage, classAge, suburbAutocompleteState,
     } = this.state;
-    const {fetching} = this.props;
+    const {classes, fetching} = this.props;
 
     return (
       <Paper className={classnames({fetching})}>
@@ -110,7 +117,7 @@ export class Website extends React.Component<Props, any> {
             />
           </Grid>
 
-          <Grid className="mb-6">
+          <Grid className="mt-2">
             <label htmlFor="addThisId">AddThis profile id</label>
             <Grid container>
               <Grid item xs={3}>
@@ -126,7 +133,7 @@ export class Website extends React.Component<Props, any> {
             </Grid>
           </Grid>
 
-          <Grid className="pt-2">
+          <Grid className="mt-2 ">
             <h4>VISIBILITY RULES</h4>
             <h6>Enable for these pages</h6>
             <FormControlLabel
@@ -156,7 +163,7 @@ export class Website extends React.Component<Props, any> {
             />
           </Grid>
 
-          <Grid>
+          <Grid className="mt-3">
             <h6>Hide class on website</h6>
             <div className="form-inline">
               <TextField
@@ -167,10 +174,11 @@ export class Website extends React.Component<Props, any> {
                 onChange={e => {this.onChangeClassAge(e.target.value, 'offset', 'hideClass');}}
                 onBlur={e => {this.onChangeClassAge(toPositive(e.target.value), 'offset', 'hideClass');}}
               />
-              <label>days</label>
+              <label className="ml-1 mr-2">days</label>
               <Select
                 type="select"
                 name="hideClassCondition"
+                className={classes.select}
                 value={classAge.hideClass.condition}
                 onChange={e => {this.onChangeClassAge(e.target.value, 'condition', 'hideClass');}}
               >
@@ -182,7 +190,7 @@ export class Website extends React.Component<Props, any> {
             </div>
           </Grid>
 
-          <Grid>
+          <Grid className="mt-2">
             <h6>Stop web enrolments</h6>
             <div className="form-inline">
               <TextField
@@ -193,10 +201,11 @@ export class Website extends React.Component<Props, any> {
                 onChange={e => {this.onChangeClassAge(e.target.value, 'offset', 'stopWebEnrolment');}}
                 onBlur={e => {this.onChangeClassAge(toPositive(e.target.value), 'offset', 'stopWebEnrolment');}}
               />
-              <label>days</label>
+              <label className="ml-1 mr-2">days</label>
                 <Select
                   type="select"
                   name="stopWebEnrolmentCondition"
+                  className={classes.select}
                   value={classAge.stopWebEnrolment.condition}
                   onChange={e => {this.onChangeClassAge(e.target.value, 'condition', 'stopWebEnrolment');}}
                 >
@@ -207,7 +216,7 @@ export class Website extends React.Component<Props, any> {
             </div>
           </Grid>
 
-          <Grid>
+          <Grid className="mt-3 mb-2">
             <label>Show suburbs from</label>
             <Grid container>
               <Grid item xs={3}>
@@ -215,6 +224,7 @@ export class Website extends React.Component<Props, any> {
                   type="select"
                   name="suburbAutocompleteState"
                   value={suburbAutocompleteState}
+                  className="w-100"
                   onChange={e => {
                     this.onChange(e.target.value, 'suburbAutocompleteState');
                   }}
@@ -235,6 +245,7 @@ export class Website extends React.Component<Props, any> {
           <CustomButton
             onClick={() => this.onSave()}
             styleType="submit"
+            styles="mt-2"
           >
             Save
           </CustomButton>
@@ -257,4 +268,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Website as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Website));

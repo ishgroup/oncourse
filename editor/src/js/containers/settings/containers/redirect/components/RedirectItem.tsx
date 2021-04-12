@@ -15,7 +15,7 @@ interface Props {
   onRemove: (index) => any;
 }
 
-export class RedirectItem extends React.Component<Props, any> {
+class RedirectItem extends React.Component<Props, any> {
   shouldComponentUpdate(newProps: Props) {
     return this.props.item !== newProps.item;
   }
@@ -25,35 +25,33 @@ export class RedirectItem extends React.Component<Props, any> {
 
     return (
       <Grid key={index}>
-        <div className="form-inline rule">
+        <label className="mr-1">From</label>
+        <TextField
+          className={classnames({invalid: (item.submitted && item.to && !item.from) || item.error})}
+          type="text"
+          name={`from-${index}`}
+          id={`from-${index}`}
+          value={item.from}
+          onChange={e => onChange(e, index, 'from')}
+        />
 
-          <label>From</label>
-          <TextField
-            className={classnames({invalid: (item.submitted && item.to && !item.from) || item.error})}
-            type="text"
-            name={`from-${index}`}
-            id={`from-${index}`}
-            value={item.from}
-            onChange={e => onChange(e, index, 'from')}
-          />
+        <label className="ml-1 mr-1">To</label>
+        <TextField
+          className={classnames({invalid: (item.submitted && !item.to && item.from) || item.error})}
+          type="text"
+          name={`to-${index}`}
+          id={`to-${index}`}
+          value={item.to}
+          onChange={e => onChange(e, index, 'to')}
+        />
 
-          <label>To</label>
-          <TextField
-            className={classnames({invalid: (item.submitted && !item.to && item.from) || item.error})}
-            type="text"
-            name={`to-${index}`}
-            id={`to-${index}`}
-            value={item.to}
-            onChange={e => onChange(e, index, 'to')}
-          />
-
-          <CustomButton
-            styleType="delete"
-            onClick={() => onRemove(index)}
-          >
-            Remove
-          </CustomButton>
-        </div>
+        <CustomButton
+          styleType="delete"
+          onClick={() => onRemove(index)}
+          styles="ml-1"
+        >
+          Remove
+        </CustomButton>
 
         {item.error &&
           <div className="form-inline">
@@ -64,4 +62,6 @@ export class RedirectItem extends React.Component<Props, any> {
     );
   }
 }
+
+export default RedirectItem;
 

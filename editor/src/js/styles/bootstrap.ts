@@ -103,6 +103,21 @@ export const bootstrap = (theme: AppTheme) => ({
   ".pt-2": {
     paddingTop: theme.spacing(2)
   },
+  ".p-1-5": {
+    padding: theme.spacing(1.5)
+  },
+  ".pt-1-5": {
+    paddingTop: theme.spacing(1.5)
+  },
+  ".pb-1-5": {
+    paddingBottom: theme.spacing(1.5)
+  },
+  ".pl-1-5": {
+    paddingLeft: theme.spacing(1.5)
+  },
+  ".pr-1-5": {
+    paddingRight: theme.spacing(1.5)
+  },
   ".p-1": {
     padding: theme.spacing(1)
   },
@@ -177,6 +192,21 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".mb-2": {
     marginBottom: theme.spacing(2)
+  },
+  ".m-1-5": {
+    margin: theme.spacing(1.5)
+  },
+  ".mt-1-5": {
+    marginTop: theme.spacing(1.5)
+  },
+  ".ml-1-5": {
+    marginLeft: theme.spacing(1.5)
+  },
+  ".mr-1-5": {
+    marginRight: theme.spacing(1.5)
+  },
+  ".mb-1-5": {
+    marginBottom: theme.spacing(1.5)
   },
   ".m-1": {
     margin: theme.spacing(1)

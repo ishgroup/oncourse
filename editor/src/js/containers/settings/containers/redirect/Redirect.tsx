@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import classnames from 'classnames';
 import {getRedirectSettings, setRedirectSettings} from "./actions";
-import {RedirectItem} from "./components/RedirectItem";
+import RedirectItem from "./components/RedirectItem";
 import {RedirectSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
 import CustomButton from "../../../../common/components/CustomButton";
@@ -122,7 +122,7 @@ export class Redirect extends React.PureComponent<Props, any> {
           </Grid>
         }
 
-        <Grid>
+        <Grid className="mt-2 mb-2">
           <CustomButton
             styleType="submit"
             onClick={() => this.onAddNew()}

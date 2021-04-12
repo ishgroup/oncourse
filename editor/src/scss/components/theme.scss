@@ -6,31 +6,31 @@
   }
   
   &__source {
-    height: 200px;
-    border: 1px solid $gray;
-    background: transparent;
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: static;
-    transition: all .3s;
+    //height: 200px;
+    //border: 1px solid $gray;
+    //background: transparent;
+    //overflow-y: auto;
+    //overflow-x: hidden;
+    //position: static;
+    //transition: all .3s;
   
-    &:after {
-      position: absolute;
-      width: 100%;
-      content: attr(data-placeholder);
-      text-align: center;
-      top: 50%;
-      left: 0;
-      margin-top: -17px;
-      font-size: 34px;
-      color: $gray;
-      text-transform: uppercase;
-      opacity: .3;
-      pointer-events: none;
-    }
+    //&:after {
+    //  position: absolute;
+    //  width: 100%;
+    //  content: attr(data-placeholder);
+    //  text-align: center;
+    //  top: 50%;
+    //  left: 0;
+    //  margin-top: -17px;
+    //  font-size: 34px;
+    //  color: $gray;
+    //  text-transform: uppercase;
+    //  opacity: .3;
+    //  pointer-events: none;
+    //}
     
     &.active {
-      background: $main-green;
+      //background: $main-green;
     }
     
     &.blocks{
@@ -48,16 +48,16 @@
   }
   
   &__card {
-    border: 1px dashed $main-green;
-    padding: 0.5rem 1rem;
-    margin: .5rem;
-    background: white;
-    cursor: move;
-    opacity: 1;
+    //border: 1px dashed $main-green;
+    //padding: 0.5rem 1rem;
+    //margin: .5rem;
+    //background: white;
+    //cursor: move;
+    //opacity: 1;
   
     &.dragging {
-      opacity: 0;
-      max-width: 200px;
+      //opacity: 0;
+      //max-width: 200px;
     }
   }
 }

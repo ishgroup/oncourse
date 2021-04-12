@@ -2,15 +2,27 @@ import React from "react";
 import update from "react-addons-update";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
+import {withStyles} from "@material-ui/core/styles";
 import {Paper} from "@material-ui/core";
 import classnames from "classnames";
 import {getSpecialPageSettings, setSpecialPageSettings} from "./actions";
 import {SpecialPageSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
-import {SpecialPageItem} from "./components/SpecialPageItem";
+import SpecialPageItem from "./components/SpecialPageItem";
 import CustomButton from "../../../../common/components/CustomButton";
 
+const styles = theme => ({
+  rules: {
+    maxHeight: "80vh",
+    overflowY: "auto",
+    display: "flex",
+    alignItems: "flex-end",
+    marginBottom: theme.spacing(2),
+  },
+});
+
 interface Props {
+  classes: any,
   onInit: () => any;
   onSave: (settings) => any;
   specialPages: SpecialPageSettingsState;
@@ -58,18 +70,17 @@ export class SpecialPage extends React.PureComponent<Props, any> {
     const rules = this.state.rules
       .map(({from, specialPage, matchType}) => ({from, specialPage, matchType}));
 
-
     this.setState({rules});
     onSave({rules});
   }
 
   render() {
     const {rules} = this.state;
-    const {fetching} = this.props;
+    const {classes, fetching} = this.props;
 
     return (
       <Paper className={classnames({fetching})}>
-        <div className="rules">
+        <div className={classes.rules}>
           {rules &&
             rules
               .map((rule, index) => (
@@ -105,4 +116,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(SpecialPage as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(SpecialPage));

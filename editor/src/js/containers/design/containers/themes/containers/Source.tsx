@@ -1,17 +1,53 @@
 import React, {Component} from 'react';
 import update from 'react-addons-update';
-import classnames from 'classnames';
 import Card from "./Card";
 import {DropTarget} from 'react-dnd';
 import {TextField} from "@material-ui/core";
+import clsx from "clsx";
+import {withStyles} from "@material-ui/core/styles";
+
+const styles = theme => ({
+  themeSource: {
+    height: "200px",
+    border: "1px solid gray",
+    background: "transparent",
+    overflowY: "auto",
+    overflowX: "hidden",
+    position: "static",
+    transition: "all .3s",
+    "&:after": {
+      position: "absolute",
+      width: "100%",
+      content: "attr(data-placeholder)",
+      textAlign: "center",
+      top: "50%",
+      left: 0,
+      marginTop: "-17px",
+      fontSize: "34px",
+      color: "gray",
+      textTransform: "uppercase",
+      opacity: .3,
+      pointerEvents: "none",
+    },
+  },
+  blocks: {
+    height: "632px",
+  },
+  activeBlock: {
+    background: theme.statistics.enrolmentText.color,
+  },
+  notActiveBlock: {
+    background: "#fff",
+  }
+});
 
 interface Props {
+  classes: any;
   list: any[];
   showFilter?: boolean;
 }
 
 class Source extends Component<any, any> {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -71,19 +107,23 @@ class Source extends Component<any, any> {
 
   render() {
     const {cards, filter} = this.state;
-    const {canDrop, isOver, connectDropTarget, placeholder, className, showFilter} = this.props;
+    const {canDrop, classes, isOver, connectDropTarget, placeholder, className, showFilter} = this.props;
     const isActive = canDrop && isOver;
 
     return connectDropTarget(
-      <div className="pos-r">
-        <div className={classnames("theme__source", className, {active: isActive})} data-placeholder={placeholder}>
-
+      <div className="relative">
+        <div
+          className={clsx(classes.themeSource, className === "blocks" && classes.blocks,
+            isActive && classes.activeBlock || classes.notActiveBlock)}
+          data-placeholder={placeholder}
+        >
           {cards && cards.length > 0 && showFilter &&
             <TextField
               type="text"
               name="filter"
               placeholder="Filter"
               id="filter"
+              className="w-100"
               value={filter}
               onChange={e => this.onChangeFilter(e)}
             />
@@ -121,4 +161,4 @@ export default DropTarget("CARD", cardTarget, (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
   isOver: monitor.isOver(),
   canDrop: monitor.canDrop(),
-}))(Source);
+}))(withStyles(styles as any)(Source));

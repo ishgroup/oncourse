@@ -3,14 +3,31 @@ import {DragSource, DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom';
 import classnames from 'classnames';
 import flow from 'lodash/flow';
+import {withStyles} from "@material-ui/core/styles";
+import clsx from "clsx";
+
+const styles = theme => ({
+  themeCard: {
+    border: "1px dashed",
+    borderColor: theme.statistics.enrolmentText.color,
+    padding: "0.5rem 1rem",
+    margin: ".5rem",
+    background: "white",
+    cursor: "move",
+    opacity: 1,
+  },
+  dragging: {
+    opacity: 0,
+    maxWidth: "200px",
+  }
+});
 
 class Card extends Component<any, any> {
-
   render() {
-    const {card, isDragging, connectDragSource, connectDropTarget} = this.props;
+    const {card, classes, isDragging, connectDragSource, connectDropTarget} = this.props;
 
     return connectDragSource(connectDropTarget(
-      <div className={classnames('theme__card', {dragging: isDragging})}>
+      <div className={clsx(classes.themeCard, isDragging && classes.dragging)}>
         {card.title}
       </div>,
     ));
@@ -97,4 +114,4 @@ export default flow<any, any, any>(
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging(),
   })),
-)(Card);
+)(withStyles(styles)(Card));

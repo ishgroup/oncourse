@@ -1,5 +1,5 @@
 .links {
-  margin-bottom: 10px;
+  //margin-bottom: 10px;
 
   //TODO: DELETE WITH NEW STYLES
   &__select {
@@ -40,10 +40,10 @@
   }
   
   &__title {
-    padding-right: 15px;
-    transition: color .15s;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    //padding-right: 15px;
+    //transition: color .15s;
+    //text-overflow: ellipsis;
+    //overflow: hidden;
     
     &:after {
       //display: block;
@@ -67,19 +67,19 @@
     }
   
     &:hover {
-      &:after {
-        visibility: visible;
-        opacity: .85;
-      }
+      //&:after {
+      //  visibility: visible;
+      //  opacity: .85;
+      //}
     }
   
     &--base {
-      color: $secondary;
+      //color: $secondary;
     }
   
     &--default {
-      color: $main-green;
-      cursor: default;
+      //color: $main-green;
+      //cursor: default;
     
       &:hover {
         &:after {

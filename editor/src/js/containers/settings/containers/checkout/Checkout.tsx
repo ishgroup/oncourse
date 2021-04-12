@@ -73,69 +73,71 @@ export class Checkout extends React.Component<Props, any> {
     return (
       <Paper className={classnames({fetching})}>
         <form>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={allowCreateContactOnEnrol}
-                onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnEnrol')}}
-                name="enableSocialMedia"
-                color="primary"
-              />
-            }
-            label="Allow create new student on enrol."
-          />
+          <Grid className="flex-column">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={allowCreateContactOnEnrol}
+                  onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnEnrol')}}
+                  name="enableSocialMedia"
+                  color="primary"
+                />
+              }
+              label="Allow create new student on enrol."
+            />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={allowCreateContactOnWaitingList}
-                onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnWaitingList')}}
-                name="allowCreateContactOnWaitingList"
-                color="primary"
-              />
-            }
-            label="Allow create new student on waiting list."
-          />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={allowCreateContactOnWaitingList}
+                  onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnWaitingList')}}
+                  name="allowCreateContactOnWaitingList"
+                  color="primary"
+                />
+              }
+              label="Allow create new student on waiting list."
+            />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={allowCreateContactOnMailingList}
-                onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnMailingList')}}
-                name="allowCreateContactOnMailingList"
-                color="primary"
-              />
-            }
-            label="Allow create new student on mailing list"
-          />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={allowCreateContactOnMailingList}
+                  onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnMailingList')}}
+                  name="allowCreateContactOnMailingList"
+                  color="primary"
+                />
+              }
+              label="Allow create new student on mailing list"
+            />
 
-          <Grid>
-            <div className="form-inline">
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={collectParentDetails}
-                    onChange={e => {this.onChange(e.target.checked, 'collectParentDetails')}}
-                    name="collectParentDetails"
-                    color="primary"
-                  />
-                }
-                label="Collect parent or guardian details for students under"
-              />
+            <Grid>
+              <div className="form-inline">
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={collectParentDetails}
+                      onChange={e => {this.onChange(e.target.checked, 'collectParentDetails')}}
+                      name="collectParentDetails"
+                      color="primary"
+                    />
+                  }
+                  label="Collect parent or guardian details for students under"
+                />
 
-              <TextField
-                type="number"
-                name="contactAgeWhenNeedParent"
-                className="xs"
-                value={contactAgeWhenNeedParent}
-                onChange={e => {this.onChange(e.target.value, 'contactAgeWhenNeedParent');}}
-                onBlur={e => {this.onChange(toPositive(e.target.value), 'contactAgeWhenNeedParent');}}
-              />
+                <TextField
+                  type="number"
+                  name="contactAgeWhenNeedParent"
+                  className="xs"
+                  value={contactAgeWhenNeedParent}
+                  onChange={e => {this.onChange(e.target.value, 'contactAgeWhenNeedParent');}}
+                  onBlur={e => {this.onChange(toPositive(e.target.value), 'contactAgeWhenNeedParent');}}
+                />
 
-            </div>
+              </div>
+            </Grid>
           </Grid>
 
-          <Grid>
+          <Grid className="mt-2 mb-2">
             <label htmlFor="addThisId">Enrolment min age</label>
             <Grid container>
               <Grid item xs={2}>
@@ -153,6 +155,7 @@ export class Checkout extends React.Component<Props, any> {
           <CustomButton
             styleType="submit"
             onClick={() => this.onSave()}
+            styles="mt-2"
           >
             Save
           </CustomButton>

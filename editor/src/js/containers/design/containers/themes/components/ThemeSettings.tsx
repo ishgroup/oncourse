@@ -6,6 +6,7 @@ import {Theme, Layout} from "../../../../../model";
 import IconBack from "../../../../../common/components/IconBack";
 import CustomButton from "../../../../../common/components/CustomButton";
 import {Grid, Select, TextField} from "@material-ui/core";
+import clsx from "clsx";
 
 const styles: any = theme => ({
   linkBack: {
@@ -33,7 +34,22 @@ const styles: any = theme => ({
     marginTop: "30px",
     paddingTop: "20px",
     borderTop: "1px solid #bbbbbb",
-  }
+  },
+  input: {
+    height: "20px",
+    fontSize: "12px",
+    width: "144px",
+  },
+  linkTitle: {
+    paddingRight: "15px",
+    transition: "color .15s",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    fontWeight: 600,
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
 });
 
 interface Props {
@@ -182,12 +198,13 @@ class ThemeSettings extends React.Component<Props, any> {
                 name="themeTitle"
                 id="themeTitle"
                 placeholder="Theme title"
+                className={classes.input}
                 value={title}
                 onChange={e => this.onChange(e, 'title')}
               />
             </Grid>
 
-            <Grid>
+            <Grid className={clsx("flex-column", "mt-2", "mb-2")}>
               <label htmlFor="themeLayout">Layout</label>
               <Select
                 name="themeLayout"
@@ -211,16 +228,17 @@ class ThemeSettings extends React.Component<Props, any> {
                     <div>
                       <div
                         title={url.path}
-                        className="links__title"
+                        className={classes.linkTitle}
                       >
                         {url.path}
                       </div>
 
-                      <div className="links__select">
+                      <div>
                         <Select
                           name="exactMatch"
                           id="exactMatch"
                           placeholder="Exact matching"
+                          className={clsx(classes.input, "mb-1")}
                           value={url.exactMatch.toString()}
                           onChange={e => this.onUpdatePath(e, url.path)}
                         >
@@ -238,7 +256,7 @@ class ThemeSettings extends React.Component<Props, any> {
                 ))}
               </div>
 
-              <div className="centeredFlex">
+              <div className={clsx("centeredFlex", "mt-2", "mb-2")}>
                 <TextField
                   type="text"
                   name="newLink"

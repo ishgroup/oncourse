@@ -53,7 +53,7 @@ const styles: any = theme => ({
     bottom: 0,
     left: 0,
     padding: "15px 5px",
-    color: "$gray",
+    color: "gray",
     borderTop: "1px solid #bbbbbb",
   },
   link: {

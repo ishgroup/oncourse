@@ -20,8 +20,8 @@ export class ThemeLayout extends React.Component<Props, any> {
     };
 
     return (
-      <div className="theme__layout">
-        <Grid container>
+      <div>
+        <Grid container className="mb-2 pr-3">
           <Grid item xs={12}>
             <Source
               placeholder="Header"
@@ -32,8 +32,8 @@ export class ThemeLayout extends React.Component<Props, any> {
           </Grid>
         </Grid>
 
-        <Grid container>
-          <Grid item xs={4}>
+        <Grid container className="mb-2 pr-3">
+          <Grid item xs={4} className="pr-1-5">
             <Source
               placeholder="Left"
               id="left"
@@ -42,7 +42,7 @@ export class ThemeLayout extends React.Component<Props, any> {
             />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item xs={4} className="pr-1-5 pl-1-5">
             <Source
               placeholder="Middle"
               id="centre"
@@ -51,7 +51,7 @@ export class ThemeLayout extends React.Component<Props, any> {
             />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item xs={4} className="pl-1-5">
             <Source
               placeholder="Right"
               id="right"
@@ -61,7 +61,7 @@ export class ThemeLayout extends React.Component<Props, any> {
           </Grid>
         </Grid>
 
-        <Grid container>
+        <Grid container className="mb-2 pr-3">
           <Grid item xs={12}>
             <Source
               placeholder="Footer"

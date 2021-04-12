@@ -25,7 +25,7 @@ class Theme extends React.Component<Props, any> {
     const {theme, blocks, onUpdateLayout} = this.props;
 
     return (
-      <div className="theme">
+      <div>
         <Grid container>
           <Grid item xs={7}>
             <ThemeLayout
@@ -39,7 +39,7 @@ class Theme extends React.Component<Props, any> {
             <Source
               className="blocks"
               showFilter={true}
-              placeholder="Blocks"
+              placeholder="Drag into regions to the left"
               id="default"
               list={getFreeBlocks(theme, blocks)}
             />

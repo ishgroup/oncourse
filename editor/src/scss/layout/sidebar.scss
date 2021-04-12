@@ -93,11 +93,11 @@
     //min-width: 70px;
     
     li:not(:first-child) {
-      border-top: 1px solid $gray;
+      //border-top: 1px solid $gray;
     }
     
     li:last-child {
-      border-bottom: 1px solid $gray;
+      //border-bottom: 1px solid $gray;
     }
     
     //a {
@@ -131,7 +131,7 @@
   .actions-group {
     margin-top: 30px;
     padding-top: 20px;
-    border-top: 1px solid $gray;
+    //border-top: 1px solid $gray;
   }
   
   a {

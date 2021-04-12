@@ -60,31 +60,33 @@ export class Skills extends React.Component<Props, any> {
     return (
       <Paper className={classnames({fetching})}>
         <form>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={hideStudentDetails}
-                onChange={e => {this.onChange(e, 'hideStudentDetails')}}
-                name="hideStudentDetails"
-                color="primary"
-              />
-            }
-            label="Hide student contact details from tutor."
-          />
+          <Grid className="flex-column">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={hideStudentDetails}
+                  onChange={e => {this.onChange(e, 'hideStudentDetails')}}
+                  name="hideStudentDetails"
+                  color="primary"
+                />
+              }
+              label="Hide student contact details from tutor."
+            />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={enableOutcomeMarking}
-                onChange={e => {this.onChange(e, 'enableOutcomeMarking')}}
-                name="enableOutcomeMarking"
-                color="primary"
-              />
-            }
-            label="Enable outcome marking in tutor portal."
-          />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={enableOutcomeMarking}
+                  onChange={e => {this.onChange(e, 'enableOutcomeMarking')}}
+                  name="enableOutcomeMarking"
+                  color="primary"
+                />
+              }
+              label="Enable outcome marking in tutor portal."
+            />
+          </Grid>
 
-          <Grid>
+          <Grid className="mt-1 mb-1">
             <label htmlFor="tutorFeedbackEmail">Email tutor feedback to</label>
             <Grid container>
               <Grid item xs={3}>
@@ -102,6 +104,7 @@ export class Skills extends React.Component<Props, any> {
           <CustomButton
             styleType="submit"
             onClick={() => this.onSave()}
+            styles="mt-2"
           >
             Save
           </CustomButton>

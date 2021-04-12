@@ -1,23 +1,78 @@
 import React from 'react';
 import {Checkbox, FormControlLabel, Grid, TextField} from '@material-ui/core';
+import clsx from "clsx";
 import CloseIcon from '@material-ui/icons/Close';
 import {withStyles} from "@material-ui/core/styles";
 import AddIcon from '@material-ui/icons/Add';
-import classnames from 'classnames';
 import IconBack from "../../../../../common/components/IconBack";
 import PageService from "../../../../../services/PageService";
 import {addContentMarker} from "../../../utils";
 import {PageState} from "../reducers/State";
-
 import CustomButton from "../../../../../common/components/CustomButton";
 
 const styles: any = theme => ({
+  links: {
+    marginBottom: "10px",
+  },
+  linksItem: {
+    position: "relative",
+    color: theme.palette.text.primary,
+    cursor: "pointer",
+    fontFamily: theme.typography.fontFamily,
+    // fontWeight: 600,
+    padding: "4px 0",
+    fontSize: "13px",
+    lineHeight: "1em",
+  },
+  linkDefault: {
+    color: theme.statistics.enrolmentText.color,
+    cursor: "default",
+    "&:hover": {
+      "&:after": {
+        display: "none",
+      },
+    },
+  },
   linkBack: {
     textTransform: "capitalize",
     color: "rgba(0, 0, 0, 0.87)",
     fontSize: "15px",
     display: "block",
     padding: "15px 20px",
+  },
+  linkTitle: {
+    paddingRight: "15px",
+    transition: "color .15s",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    fontWeight: 600,
+    "&:after": {
+      display: "block",
+      // visibility: "hidden",
+      opacity: 0,
+      pointerEvents: "none",
+      padding: "3px",
+      fontSize: "12px",
+      fontWeight: 100,
+      borderRadius: "2px",
+      position: "absolute",
+      content: "Make Default",
+      fontFamily: theme.typography.fontFamily,
+      top: "1px",
+      left: "100%",
+      color: theme.share.color.headerText,
+      background: "#fbf9f0",
+      marginLeft: "10px",
+      whiteSpace: "nowrap",
+      transition: "opacity .25s",
+    },
+    "&:hover": {
+      cursor: "pointer",
+      "&:after": {
+        visibility: "visible",
+        opacity: .85,
+      },
+    },
   },
   removeButton: {
     marginRight: theme.spacing(2),
@@ -110,9 +165,9 @@ class PageSettings extends React.PureComponent<Props, any> {
 
   onSetDefaultUrl(url) {
     const urls = this.state.urls
-      .map(item => item.link === url.link ? {...item, isDefault: true} : {...item, isDefault: false});
+      .map(item => item.link === url.link ? {...item, isDefault: true} : {...item, isDefault: false})
 
-    this.setState({urls});
+    this.setState({urls})
   }
 
   onDeleteUrl(url) {
@@ -190,14 +245,12 @@ class PageSettings extends React.PureComponent<Props, any> {
             <Grid>
               <label htmlFor="pageUrl">Page Links (URLs)</label>
 
-              <div className="links">
+              <div className={classes.links}>
 
-                <div className="links__item">
+                <div className={classes.linksItem}>
                   <div
                     onClick={() => urls.find(url => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
-                    className={classnames("links__title links__title--base", {
-                      "links__title--default": !urls.find(url => url.isDefault),
-                    })}
+                    className={clsx(classes.linkTitle, !urls.find(url => url.isDefault && classes.linkDefault))}
                     title={defaultPageUrl.link}
                   >
                     {defaultPageUrl.link}
@@ -209,7 +262,7 @@ class PageSettings extends React.PureComponent<Props, any> {
                   <div className="centeredFlex justify-content-space-between" key={index}>
                     <div
                       onClick={() => !url.isDefault && this.onSetDefaultUrl(url)}
-                      className={classnames("links__title", {"links__title--default": url.isDefault})}
+                      className={clsx(classes.linkTitle, url.isDefault && classes.linkDefault)}
                       title={url.link}
                     >
                       {url.link}
