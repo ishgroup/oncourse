@@ -11,32 +11,11 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { MessageExtended } from "../../../../model/common/Message";
 import { SEND_MESSAGE } from "../actions";
 import MessageService from "../services/MessageService";
+import { getMessageRequestModel } from "../utils";
 
 const request: EpicUtils.Request<any, MessageExtended> = {
   type: SEND_MESSAGE,
-  getData: (model, s) => {
-    const { selection, searchQuery } = s.list;
-
-    const requestModel = {
-      ...model,
-      searchQuery: { ...searchQuery },
-      variables: model.bindings ? model.bindings.reduce((prev: any, cur) => {
-        prev[cur.name] = cur.value;
-        return prev;
-      }, {}) : {},
-    };
-
-    if (!model.selectAll && Array.isArray(selection) && selection.length) {
-      requestModel.searchQuery.search = `id in (${String(selection)})`;
-    }
-
-    delete requestModel.selectAll;
-    delete requestModel.bindings;
-    delete requestModel.recipientsCount;
-    delete requestModel.messageType;
-
-    return MessageService.sendMessage(model.recipientsCount, requestModel, model.messageType);
-  },
+  getData: (model, s) => MessageService.sendMessage(model.recipientsCount, getMessageRequestModel(model, s.list.selection, s.list.searchQuery), model.messageType),
   processData: () => [
       {
         type: FETCH_SUCCESS,
