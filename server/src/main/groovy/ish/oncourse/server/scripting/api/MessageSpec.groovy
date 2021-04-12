@@ -355,7 +355,7 @@ class MessageSpec {
     @API
     void attachment(File file) {
         if (file) {
-            this.attachments << DocumentParam.valueOf(file.getName() , null, file )
+            this.attachments << DocumentParam.valueOf(file.getName(), file )
         }
     }
 
