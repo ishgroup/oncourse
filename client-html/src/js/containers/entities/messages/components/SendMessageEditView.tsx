@@ -48,6 +48,7 @@ import { Switch } from "../../../../common/components/form/form-fields/Switch";
 import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
 import previewSmsImage from "../../../../../images/preview-sms.png";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { getMessageRequestModel } from "../utils";
 
 const styles = theme => createStyles({
   previewContent: {
@@ -276,25 +277,11 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
   const getTemplateById = useCallback(id => templates.find(t => t.id === id), [templates]);
 
   const getPreview = val => {
-    const requestModel = {
-      ...val,
-      searchQuery: { ...listSearchQuery },
-      variables: val.bindings.reduce((prev: any, cur) => {
-        prev[cur.name] = cur.value;
-        return prev;
-      }, {}),
-    };
-
-    delete requestModel.selectAll;
-    delete requestModel.bindings;
-    delete requestModel.recipientsCount;
-    delete requestModel.messageType;
-
-    if (!val.selectAll && Array.isArray(selection) && selection.length) {
-      requestModel.searchQuery.search = `id in (${String(selection)})`;
-    }
-
-    MessageService.getMessagePreview(val.recipientsCount, requestModel, val.messageType)
+    MessageService.getMessagePreview(
+      val.recipientsCount,
+      getMessageRequestModel(val, selection, listSearchQuery),
+      val.messageType
+      )
       .then(r => {
         setPreview(r);
           if (htmlRef.current) {
