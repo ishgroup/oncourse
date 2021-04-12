@@ -20,6 +20,14 @@ class DocumentParam {
 
     private DocumentParam() { }
 
+    static DocumentParam valueOf(Object content) {
+        valueOf(null, null, content)
+    }
+
+    static DocumentParam valueOf(String fileName, Object content) {
+        valueOf(fileName, null, content)
+    }
+
     static DocumentParam valueOf(String fileName, String type, Object content) {
         DocumentParam param = new DocumentParam()
         param.fileName = fileName

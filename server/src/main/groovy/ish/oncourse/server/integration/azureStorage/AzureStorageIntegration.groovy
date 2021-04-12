@@ -53,7 +53,7 @@ class AzureStorageIntegration implements PluginTrait {
             documentParam = blob as DocumentParam
             name = documentParam.fileName
         } else {
-            documentParam = DocumentParam.valueOf(name, null, blob)
+            documentParam = DocumentParam.valueOf(name, blob)
         }
         byte[] bytes = documentParam.contentInBytes
         
