@@ -11,21 +11,17 @@
 
 package ish.oncourse.server.messaging
 
-import groovy.transform.CompileDynamic
 
-@CompileDynamic
-class AttachmentParam {
+class DocumentParam {
 
     private String fileName
     private String type
     private Object content
 
-    private AttachmentParam() {
+    private DocumentParam() { }
 
-    }
-
-    static AttachmentParam valueOf(String fileName, String type, Object content) {
-        AttachmentParam param = new AttachmentParam()
+    static DocumentParam valueOf(String fileName, String type, Object content) {
+        DocumentParam param = new DocumentParam()
         param.fileName = fileName
         param.type = type
         param.content = content
@@ -42,5 +38,23 @@ class AttachmentParam {
 
     Object getContent() {
         return content
+    }
+    
+    byte[] getContentInBytes() {
+        byte[] bytes
+        if (content instanceof File) {
+            bytes = (content as File).getBytes()
+        } else if (content instanceof byte[]) {
+            bytes = content as byte[]
+        } else if (content instanceof String) {
+            bytes = (content as String).getBytes()
+        } else {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream()
+            ObjectOutputStream out = new ObjectOutputStream(bos)
+            out.writeObject(content)
+            out.flush()
+            bytes = bos.toByteArray()
+        }
+        return bytes
     }
 }

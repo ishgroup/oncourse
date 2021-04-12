@@ -13,10 +13,9 @@ package ish.oncourse.server.scripting.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
-import ish.oncourse.API
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.messaging.AttachmentParam
+import ish.oncourse.server.messaging.DocumentParam
 import ish.util.MessageUtils
 import org.apache.cayenne.PersistentObject
 
@@ -99,7 +98,7 @@ class EmailSpec {
 	List<String> ccList = []
 	List<String> bccList = []
 	String multipartType = SMTPMessage.DEFAULT_MULTIPART_TYPE
-	List<AttachmentParam> attachments = []
+	List<DocumentParam> attachments = []
 
 
 	/**
@@ -251,7 +250,7 @@ class EmailSpec {
 	 * @param content MIME type of the attachment
 	 */
 	void attachment(String contentType, Object content) {
-		this.attachments << AttachmentParam.valueOf(null, contentType, content)
+		this.attachments << DocumentParam.valueOf(null, contentType, content)
 	}
 
 	/**
@@ -262,7 +261,7 @@ class EmailSpec {
 	 * @param content attachment object
 	 */
 	void attachment(String fileName, String contentType, Object content) {
-		this.attachments << AttachmentParam.valueOf(fileName, contentType, content)
+		this.attachments << DocumentParam.valueOf(fileName, contentType, content)
 	}
 
 	/**
@@ -271,6 +270,6 @@ class EmailSpec {
 	 * @param attachment attachment properties map, e.g. [fileName: 'example.txt', type: 'text/plain', content: 'test text']
 	 */
 	void attachment(Map<String, Object> attachment) {
-		this.attachments << AttachmentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
+		this.attachments << DocumentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
 	}
 }

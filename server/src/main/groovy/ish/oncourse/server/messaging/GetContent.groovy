@@ -32,7 +32,7 @@ class GetContent {
 
     private GetEmailPlainBody getEmailPlainBody
     private GetEmailHtmlBody getEmailHtmlBody
-    private List<AttachmentParam> attachmentParams
+    private List<DocumentParam> documentParams
 
     //should be private after deleting all deprecated content
     GetContent() {
@@ -47,11 +47,11 @@ class GetContent {
         valueOf(getEmailPlainBody, getEmailHtmlBody, null)
     }
 
-    static GetContent valueOf(GetEmailPlainBody getEmailPlainBody, GetEmailHtmlBody getEmailHtmlBody, List<AttachmentParam> attachmentParams) {
+    static GetContent valueOf(GetEmailPlainBody getEmailPlainBody, GetEmailHtmlBody getEmailHtmlBody, List<DocumentParam> documentParams) {
         GetContent getContent = new GetContent()
         getContent.getEmailPlainBody = getEmailPlainBody
         getContent.getEmailHtmlBody = getEmailHtmlBody
-        getContent.attachmentParams = attachmentParams
+        getContent.documentParams = documentParams
         getContent
     }
 
@@ -79,7 +79,7 @@ class GetContent {
             multipart.addBodyPart(textPart)
         }
 
-        attachmentParams.each { param ->
+        documentParams.each { param ->
             BodyPart part = new MimeBodyPart()
 
             if (param.fileName)  {

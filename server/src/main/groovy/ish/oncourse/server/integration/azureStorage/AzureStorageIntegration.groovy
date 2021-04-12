@@ -8,24 +8,15 @@
 
 package ish.oncourse.server.integration.azureStorage
 
-import com.amazonaws.services.s3.model.ObjectMetadata
-import com.amazonaws.services.s3.model.PutObjectRequest
-import com.amazonaws.services.s3.model.PutObjectResult
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobContainerClientBuilder
 import com.azure.storage.blob.specialized.BlockBlobClient
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
-import ish.oncourse.server.scripting.api.FileData
+import ish.oncourse.server.messaging.DocumentParam
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import com.azure.storage.common.StorageSharedKeyCredential
-
-import java.nio.file.Files
-
-import static java.lang.String.format
-import static java.lang.String.format
-import static java.nio.file.Path.of
 
 @Plugin(type=17)
 class AzureStorageIntegration implements PluginTrait {
@@ -56,20 +47,15 @@ class AzureStorageIntegration implements PluginTrait {
                 .credential(new StorageSharedKeyCredential(this.account, this.key))
                 .containerName(container)
                 .buildClient()
-        
-        byte[] bytes
-        if (blob instanceof FileData) {
-            bytes = (blob as FileData).content
-            name = (blob as FileData).name
-        } else if (blob instanceof byte[]) {
-            bytes = blob as byte[]
+
+        DocumentParam documentParam
+        if (blob instanceof DocumentParam) {
+            documentParam = blob as DocumentParam
+            name = documentParam.fileName
         } else {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream()
-            ObjectOutputStream out = new ObjectOutputStream(bos)
-            out.writeObject(blob)
-            out.flush()
-            bytes = bos.toByteArray()
+            documentParam = DocumentParam.valueOf(name, null, blob)
         }
+        byte[] bytes = documentParam.contentInBytes
         
         BlockBlobClient blobClient = blobContainerClient.getBlobClient(name).getBlockBlobClient()
         blobClient.upload( new ByteArrayInputStream(bytes), bytes.length)

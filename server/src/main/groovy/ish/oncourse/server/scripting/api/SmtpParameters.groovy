@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.scripting.api
 
-import ish.oncourse.server.messaging.AttachmentParam
+import ish.oncourse.server.messaging.DocumentParam
 
 /**
  * Created by anarut on 8/17/16.
@@ -28,7 +28,7 @@ class SmtpParameters {
     List<String> ccList = []
     List<String> bccList = []
     String multipartType
-    List<AttachmentParam> attachments
+    List<DocumentParam> attachments
     String templateIdentifier
     Map<String, Object> bindings
 

@@ -17,7 +17,7 @@ import groovy.transform.TypeCheckingMode
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.messaging.AttachmentParam
+import ish.oncourse.server.messaging.DocumentParam
 import ish.util.MessageUtils
 import org.apache.cayenne.PersistentObject
 
@@ -138,7 +138,7 @@ class MessageSpec {
     List<String> toList = []
     List<String> ccList = []
     List<String> bccList = []
-    List<AttachmentParam> attachments = []
+    List<DocumentParam> attachments = []
 
     String fromName
     String content
@@ -332,17 +332,30 @@ class MessageSpec {
         this.bccList = recipients.toList()
     }
 
+    /**
+     * Add a documentParam as attachment to the email.
+     * Using this method means that the message is not stored inside onCourse.
+     *
+     * @param documentParam as DocumentParam
+     */
+    @API
+    void attachment(DocumentParam documentParam) {
+        if (documentParam) {
+            this.attachments << documentParam
+        }
+    }
+
 
     /**
      * Add a file as attachment to the email.
      * Using this method means that the message is not stored inside onCourse.
      *
-     * @param file a file
+     * @param file as File
      */
     @API
     void attachment(File file) {
         if (file) {
-            this.attachments << AttachmentParam.valueOf(file.getName() , null, file )
+            this.attachments << DocumentParam.valueOf(file.getName() , null, file )
         }
     }
 
@@ -356,7 +369,7 @@ class MessageSpec {
      */
     @API
     void attachment(String contentType, Object content) {
-        this.attachments << AttachmentParam.valueOf(null ,contentType, content)
+        this.attachments << DocumentParam.valueOf(null ,contentType, content)
     }
 
 
@@ -370,7 +383,7 @@ class MessageSpec {
      */
     @API
     void attachment(String fileName, String contentType, Object content) {
-        this.attachments << AttachmentParam.valueOf(fileName, contentType, content)
+        this.attachments << DocumentParam.valueOf(fileName, contentType, content)
     }
 
 
@@ -383,7 +396,7 @@ class MessageSpec {
     @API
     void attachment(Map<String, Object> attachment) {
         if (attachment) {
-            this.attachments << AttachmentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
+            this.attachments << DocumentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
         }
     }
 
