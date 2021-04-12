@@ -38,8 +38,10 @@ class CacheInvalidationService implements ICacheInvalidationService,Watcher {
         if (NodeDataChanged == event.type) {
             try {
                 String siteKey = new String(zk.getData(WEB_PUBLISH, this, null))
+                logger.warn("Invalidate query cache for $siteKey")
                 cache.removeGroup(siteKey)  
             } catch (KeeperException e) {
+                logger.error("Fail to invalidate query cache: $event")
                 logger.catching(e)
             }
         }
