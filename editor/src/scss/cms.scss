@@ -1,16 +1,15 @@
   // typography
-  @import 'typography/fonts';
+  //@import 'typography/fonts';
 
 // include all styles in .cms scope
 .cms-scope {
-
   // vendors
-  @import 'vendors/bootstrap';
-  @import 'vendors/normilize';
+  //@import 'vendors/bootstrap';
+  //@import 'vendors/normilize';
   
   // base
   @import 'base/theme';
-  @import 'base/base';
+  //@import 'base/base';
   @import 'base/mixins';
   
   // layout
@@ -18,11 +17,11 @@
   @import 'layout/sidebar';
   
   //patterns
-  @import 'patterns/link';
-  @import 'patterns/form';
-  @import 'patterns/button';
-  @import 'patterns/checkbox';
-  @import 'patterns/table';
+  //@import 'patterns/link';
+  //@import 'patterns/form';
+  //@import 'patterns/button';
+  //@import 'patterns/checkbox';
+  //@import 'patterns/table';
   @import 'patterns/loader';
 
   // components
@@ -30,8 +29,8 @@
   @import 'components/menu-editor';
   @import 'components/editor-area';
   @import 'components/notifications';
-  @import 'components/links';
+  //@import 'components/links';
   @import 'components/theme';
-  @import 'components/modal';
-  @import 'components/rules';
+  //@import 'components/modal';
+  //@import 'components/rules';
 }

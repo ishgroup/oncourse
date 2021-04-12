@@ -1,14 +1,14 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import {Checkbox, FormControlLabel, Grid, Paper, Select, TextField} from "@material-ui/core";
 import classnames from "classnames";
 import {getWebsiteSettings, setWebsiteSettings} from "./actions";
-import {Checkbox} from "../../../../common/components/Checkbox";
 import {Condition, State as SuburbState} from "../../../../model";
 import {State} from "../../../../reducers/state";
 import {WebsiteSettingsState} from "./reducers/State";
 import {toPositive} from "../../../../common/utils/NumberUtils";
+import CustomButton from "../../../../common/components/CustomButton";
 
 interface Props {
   onInit: () => any;
@@ -18,7 +18,6 @@ interface Props {
 }
 
 export class Website extends React.Component<Props, any> {
-
   constructor(props) {
     super(props);
 
@@ -94,58 +93,73 @@ export class Website extends React.Component<Props, any> {
     const {fetching} = this.props;
 
     return (
-      <div className={classnames({fetching})}>
-        <Form>
-          <FormGroup>
+      <Paper className={classnames({fetching})}>
+        <form>
+          <Grid>
             <h4>ADD THIS</h4>
-            <Checkbox
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={enableSocialMedia}
+                  onChange={e => {this.onChange(e.target.checked, 'enableSocialMedia')}}
+                  name="enableSocialMedia"
+                  color="primary"
+                />
+              }
               label="Enable social media links."
-              name="enableSocialMedia"
-              checked={enableSocialMedia}
-              onChange={e => {this.onChange(e.target.checked, 'enableSocialMedia');}}
             />
-          </FormGroup>
+          </Grid>
 
-          <FormGroup className="mb-6">
-            <Label htmlFor="addThisId">AddThis profile id</Label>
-            <Row>
-              <Col sm={3}>
-                <Input
+          <Grid className="mb-6">
+            <label htmlFor="addThisId">AddThis profile id</label>
+            <Grid container>
+              <Grid item xs={3}>
+                <TextField
                   type="text"
                   name="addThisId"
                   id="addThisId"
                   value={addThisId}
                   onChange={e => this.onChange(e.target.value, 'addThisId')}
                 />
-                <FormText><a target="_blank" href="http://www.addthis.com/">Click here</a> to to create one.</FormText>
-              </Col>
-            </Row>
-          </FormGroup>
+                <p><a target="_blank" href="http://www.addthis.com/">Click here</a> to to create one.</p>
+              </Grid>
+            </Grid>
+          </Grid>
 
-          <FormGroup className="pt-2">
+          <Grid className="pt-2">
             <h4>VISIBILITY RULES</h4>
             <h6>Enable for these pages</h6>
-            <Checkbox
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={enableForCourse}
+                  onChange={e => {this.onChange(e.target.checked, 'enableForCourse')}}
+                  name="enableForCourse"
+                  color="primary"
+                />
+              }
               label="Course"
-              name="enableForCourse"
-              checked={enableForCourse}
-              onChange={e => {this.onChange(e.target.checked, 'enableForCourse');}}
             />
-          </FormGroup>
+          </Grid>
 
-          <FormGroup>
-            <Checkbox
+          <Grid>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={enableForWebpage}
+                  onChange={e => {this.onChange(e.target.checked, 'enableForWebpage')}}
+                  name="enableForWebpage"
+                  color="primary"
+                />
+              }
               label="Web page"
-              name="enableForWebpage"
-              checked={enableForWebpage}
-              onChange={e => {this.onChange(e.target.checked, 'enableForWebpage');}}
             />
-          </FormGroup>
+          </Grid>
 
-          <FormGroup>
+          <Grid>
             <h6>Hide class on website</h6>
             <div className="form-inline">
-              <Input
+              <TextField
                 type="number"
                 name="offset"
                 className="xs"
@@ -153,8 +167,8 @@ export class Website extends React.Component<Props, any> {
                 onChange={e => {this.onChangeClassAge(e.target.value, 'offset', 'hideClass');}}
                 onBlur={e => {this.onChangeClassAge(toPositive(e.target.value), 'offset', 'hideClass');}}
               />
-              <Label>days</Label>
-              <Input
+              <label>days</label>
+              <Select
                 type="select"
                 name="hideClassCondition"
                 value={classAge.hideClass.condition}
@@ -164,14 +178,14 @@ export class Website extends React.Component<Props, any> {
                 <option value={Condition.beforeClassStarts}>before class starts</option>
                 <option value={Condition.afterClassEnds}>after class ends</option>
                 <option value={Condition.beforeClassEnds}>before class ends</option>
-              </Input>
+              </Select>
             </div>
-          </FormGroup>
+          </Grid>
 
-          <FormGroup>
+          <Grid>
             <h6>Stop web enrolments</h6>
             <div className="form-inline">
-              <Input
+              <TextField
                 type="number"
                 name="stopWebEnrolmentDays"
                 className="xs"
@@ -179,8 +193,8 @@ export class Website extends React.Component<Props, any> {
                 onChange={e => {this.onChangeClassAge(e.target.value, 'offset', 'stopWebEnrolment');}}
                 onBlur={e => {this.onChangeClassAge(toPositive(e.target.value), 'offset', 'stopWebEnrolment');}}
               />
-              <Label>days</Label>
-                <Input
+              <label>days</label>
+                <Select
                   type="select"
                   name="stopWebEnrolmentCondition"
                   value={classAge.stopWebEnrolment.condition}
@@ -189,15 +203,15 @@ export class Website extends React.Component<Props, any> {
                 <option value={Condition.afterClassStarts}>after class starts</option>
                 <option value={Condition.beforeClassStarts}>before class starts</option>
                 <option value={Condition.beforeClassEnds}>before class ends</option>
-              </Input>
+              </Select>
             </div>
-          </FormGroup>
+          </Grid>
 
-          <FormGroup>
-            <Label>Show suburbs from</Label>
-            <Row>
-              <Col sm={3}>
-                <Input
+          <Grid>
+            <label>Show suburbs from</label>
+            <Grid container>
+              <Grid item xs={3}>
+                <Select
                   type="select"
                   name="suburbAutocompleteState"
                   value={suburbAutocompleteState}
@@ -213,15 +227,19 @@ export class Website extends React.Component<Props, any> {
                   <option value={SuburbState.ACT}>ACT</option>
                   <option value={SuburbState.WA}>Western Australia</option>
                   <option value={SuburbState.SA}>South Australia</option>
-                </Input>
-              </Col>
-            </Row>
-          </FormGroup>
+                </Select>
+              </Grid>
+            </Grid>
+          </Grid>
 
-          <Button color="primary" onClick={() => this.onSave()}>Save</Button>
-
-        </Form>
-      </div>
+          <CustomButton
+            onClick={() => this.onSave()}
+            styleType="submit"
+          >
+            Save
+          </CustomButton>
+        </form>
+      </Paper>
     );
   }
 }

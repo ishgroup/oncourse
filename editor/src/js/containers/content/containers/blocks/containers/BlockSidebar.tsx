@@ -3,10 +3,10 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import classnames from "classnames";
 import {State} from "../../../../../reducers/state";
-import {BlockSettings} from "../components/BlockSettings";
+import BlockSettings from "../components/BlockSettings";
 import {URL} from "../../../../../routes";
 import {addBlock, deleteBlock, saveBlock} from "../actions";
-import {SidebarList} from "../../../../../components/Sidebar/SidebarList";
+import SidebarList from "../../../../../components/Sidebar/SidebarList";
 import {showModal} from "../../../../../common/containers/modal/actions";
 import {BlockState} from "../reducers/State";
 

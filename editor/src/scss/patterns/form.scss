@@ -26,8 +26,8 @@ form {
 .form-control {
   height: auto;
   padding: 5px 10px;
-  font-size: 14px;
-  border-radius: 2px;
+  //font-size: 14px;
+  //border-radius: 2px;
   
   &::-webkit-input-placeholder {
     color: $gray;
@@ -70,41 +70,41 @@ select {
 }
 
 label {
-  color: $gray-dark;
-  font-weight: 300;
-  font-family: 'Roboto', sans-serif;
+  //color: $gray-dark;
+  //font-weight: 300;
+  //font-family: 'Roboto', sans-serif;
 }
 
 .form-control-feedback {
-  font-weight: 300;
-  font-family: 'Roboto', sans-serif;
-  font-size: 12px;
-  position: initial;
-  width: 100%;
-  height: auto;
-  line-height: 1em;
-  text-align: left;
+//  font-weight: 300;
+//  font-family: 'Roboto', sans-serif;
+//  font-size: 12px;
+//  position: initial;
+//  width: 100%;
+//  height: auto;
+//  line-height: 1em;
+//  text-align: left;
 }
 
 .input-icon {
   position: relative;
   
   input {
-    width: calc(100% - 25px);
+    //width: calc(100% - 25px);
   }
   
   .icon {
-    position: absolute;
-    right: -1px;
-    top: 50%;
-    margin-top: -12px;
+    //position: absolute;
+    //right: -1px;
+    //top: 50%;
+    //margin-top: -12px;
   }
   
 }
 
 .form-error {
   input {
-    border-bottom: 1px solid $danger !important;
+    //border-bottom: 1px solid $danger !important;
   }
   
   .form-control-feedback {

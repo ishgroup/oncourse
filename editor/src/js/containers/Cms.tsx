@@ -1,12 +1,16 @@
 import React from 'react';
 import {connect} from "react-redux";
+import clsx from "clsx";
+import {Dispatch} from "redux";
 import {Route, NavLink, Redirect, withRouter} from 'react-router-dom';
+import { ThemeProvider } from "@material-ui/core/styles";
 import Notifications from 'react-notification-system-redux';
-import classnames from 'classnames';
-import {Layout} from '../components/Layout/Layout';
-import {Sidebar} from '../components/Layout/Sidebar';
+import {withStyles} from "@material-ui/core";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Layout from '../components/Layout/Layout';
+import Sidebar from '../components/Layout/Sidebar';
 import {Content} from '../components/Layout/Content';
-import {Modal} from "../common/containers/modal/Modal";
+import Modal from "../common/containers/modal/Modal";
 import {getHistoryInstance, setHistoryInstance} from "../history";
 import {URL} from "../routes";
 import {getUser, logout} from "./auth/actions";
@@ -17,12 +21,36 @@ import {ModalState} from "../common/containers/modal/reducers/State";
 import {State} from "../reducers/state";
 import {getPageByUrl} from "./content/containers/pages/actions";
 import {Version, VersionStatus} from "../model";
-import {BrowserWarning} from "../common/components/BrowserWarning";
+import BrowserWarning from "../common/components/BrowserWarning";
 import {Browser} from "../utils";
-import {Dispatch} from "redux";
+import {ThemeContext} from "../styles/ThemeContext";
+import {defaultTheme} from "../styles/ishTheme";
+import GlobalStylesProvider from "../styles/GlobalStylesProvider";
+
+const styles: any = theme => ({
+  cms: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    pointerEvents: "none",
+    zIndex: "999",
+    color: theme.palette.text.primary,
+  },
+  cmsContainerViewMode: {
+    pointerEvents: "none",
+    background: "transparent",
+  },
+  cmsContainer: {
+    background: "#fbf9f0",
+    pointerEvents: "all",
+  },
+})
 
 interface Props {
   auth: AuthState;
+  classes: any;
   notifications: any;
   modal: ModalState;
   logout: () => any;
@@ -45,8 +73,7 @@ const checkViewMode = (history, pageEditMode) => (
   history.location.pathname === '/' || (history.location.pathname.indexOf('/page/') === 0 && !pageEditMode)
 );
 
-export class Cms extends React.Component<Props, any> {
-
+class Cms extends React.Component<Props, any> {
   componentDidMount() {
     setHistoryInstance(this.props.history);
 
@@ -70,7 +97,7 @@ export class Cms extends React.Component<Props, any> {
   }
 
   render() {
-    const {logout, auth, notifications, modal, hideModal, showModal, pageEditMode} = this.props;
+    const {classes, logout, auth, notifications, modal, hideModal, showModal, pageEditMode} = this.props;
     const {isAuthenticated, user} = auth;
     const viewMode: boolean = checkViewMode(this.props.history, pageEditMode);
     const slimSidebar: boolean = checkSlimSidebar(this.props.history);
@@ -78,46 +105,54 @@ export class Cms extends React.Component<Props, any> {
     const hasBrowserWarning = isAuthenticated && Browser.unsupported();
     const warningPadding = hasBrowserWarning ? '37px' : '0px';
 
-    const styles = `
-      .site-wrapper {
-        padding-left:${globalPadding};
-        padding-top: ${warningPadding};
-      }
-      #content div[class^='block-'] {
-        border: 1px solid transparent;
-        cursor: pointer;
-      }
-      #content div[class^='block-']:hover {
-        border: 1px solid red;
-      }
-    `;
+    // const styles = `
+    //   .site-wrapper {
+    //     padding-left:${globalPadding};
+    //     padding-top: ${warningPadding};
+    //   }
+    //   #content div[class^='block-'] {
+    //     border: 1px solid transparent;
+    //     cursor: pointer;
+    //   }
+    //   #content div[class^='block-']:hover {
+    //     border: 1px solid red;
+    //   }
+    // `;
 
     // set left padding for site content (sidebar width)
     const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: styles}}/>);
 
     return (
-      <div className="cms">
-        <div className={classnames("cms__container", {"cms__container--view-mode": viewMode})}>
-          {globalSiteStyle}
-          {hasBrowserWarning && <BrowserWarning />}
-          <Notifications notifications={notifications} />
-          <Modal {...modal} onHide={hideModal}/>
-          <Layout
-            sidebar={
-              isAuthenticated &&
-                <Sidebar
-                  user={user}
-                  slim={slimSidebar}
-                  onLogout={() => logout()}
-                  onPublish={() => this.publish()}
-                  showModal={showModal}
-                />
-            }
-            content={<Content isAuthenticated={isAuthenticated}/>}
-            fullHeight={true}
-          />
-        </div>
-      </div>
+      <ThemeContext.Provider
+        value={{ themeName: "default" }}
+      >
+        <ThemeProvider theme={defaultTheme}>
+          <CssBaseline/>
+          <GlobalStylesProvider/>
+          <div className={classes.cms}>
+            <div className={clsx(classes.cmsContainer, viewMode && classes.cmsContainerViewMode)}>
+              {globalSiteStyle}
+              {hasBrowserWarning && <BrowserWarning />}
+              <Notifications notifications={notifications} />
+              <Modal {...modal} onHide={hideModal}/>
+              <Layout
+                sidebar={
+                  isAuthenticated &&
+                    <Sidebar
+                      user={user}
+                      slim={slimSidebar}
+                      onLogout={() => logout()}
+                      onPublish={() => this.publish()}
+                      showModal={showModal}
+                    />
+                }
+                content={<Content isAuthenticated={isAuthenticated}/>}
+                fullHeight={true}
+              />
+            </div>
+          </div>
+        </ThemeProvider>
+      </ThemeContext.Provider>
     );
   }
 }
@@ -142,5 +177,5 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default withRouter(connect<any,any,any>(mapStateToProps, mapDispatchToProps)(Cms as any));
+export default withRouter(connect<any,any,any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Cms) as any));
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
+import {Grid} from "@material-ui/core";
 import {Theme as ThemeModel} from "../../../../../model";
 import Source from "../containers/Source";
 
@@ -10,7 +10,6 @@ interface Props {
 }
 
 export class ThemeLayout extends React.Component<Props, any> {
-
   render() {
     const {theme, blocks, onUpdate} = this.props;
 
@@ -22,57 +21,56 @@ export class ThemeLayout extends React.Component<Props, any> {
 
     return (
       <div className="theme__layout">
-        <Row>
-          <Col md="12">
+        <Grid container>
+          <Grid item xs={12}>
             <Source
               placeholder="Header"
               id="top"
               onUpdate={onUpdate}
               list={getThemeBlocks('top')}
             />
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
 
-        <Row>
-          <Col md="4">
+        <Grid container>
+          <Grid item xs={4}>
             <Source
               placeholder="Left"
               id="left"
               onUpdate={onUpdate}
               list={getThemeBlocks('left')}
             />
-          </Col>
+          </Grid>
 
-          <Col md="4">
+          <Grid item xs={4}>
             <Source
               placeholder="Middle"
               id="centre"
               onUpdate={onUpdate}
               list={getThemeBlocks('centre')}
             />
-          </Col>
+          </Grid>
 
-          <Col md="4">
+          <Grid item xs={4}>
             <Source
               placeholder="Right"
               id="right"
               onUpdate={onUpdate}
               list={getThemeBlocks('right')}
             />
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
 
-        <Row>
-          <Col md="12">
+        <Grid container>
+          <Grid item xs={12}>
             <Source
               placeholder="Footer"
               id="footer"
               onUpdate={onUpdate}
               list={getThemeBlocks('footer')}
             />
-          </Col>
-        </Row>
-
+          </Grid>
+        </Grid>
       </div>
     );
   }

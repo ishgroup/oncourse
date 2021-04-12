@@ -94,9 +94,9 @@
   }
 
   .ck.ck-dropdown .ck-button__label {
-    font-family: "Source Sans Pro", sans-serif;
-    overflow: visible;
-    width: 120px;
+    //font-family: "Source Sans Pro", sans-serif;
+    //overflow: visible;
+    //width: 120px;
   }
 
   .ck.ck-button.ck-dropdown__button {
@@ -161,10 +161,10 @@
   }
 
   .content-mode-wrapper {
-    position: absolute;
-    right: 10px;
-    top: 14px;
-    z-index: 1000;
+    //position: absolute;
+    //right: 10px;
+    //top: 14px;
+    //z-index: 1000;
 
     .content-toggle {
       padding: 2px;
@@ -173,7 +173,7 @@
       background-color: black;
       font-size: 9px;
       border-radius: 0;
-      line-height: 1;
+      //line-height: 1;
       border: 0;
     }
 

@@ -2,22 +2,13 @@ import React from "react";
 import update from "react-addons-update";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
+import {Paper} from "@material-ui/core";
 import classnames from "classnames";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-} from "reactstrap";
 import {getSpecialPageSettings, setSpecialPageSettings} from "./actions";
 import {SpecialPageSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
 import {SpecialPageItem} from "./components/SpecialPageItem";
+import CustomButton from "../../../../common/components/CustomButton";
 
 interface Props {
   onInit: () => any;
@@ -77,7 +68,7 @@ export class SpecialPage extends React.PureComponent<Props, any> {
     const {fetching} = this.props;
 
     return (
-      <div className={classnames({fetching})}>
+      <Paper className={classnames({fetching})}>
         <div className="rules">
           {rules &&
             rules
@@ -91,10 +82,13 @@ export class SpecialPage extends React.PureComponent<Props, any> {
               ))}
         </div>
 
-        <Button onClick={() => this.onSave()} color="primary">
+        <CustomButton
+          styleType="submit"
+          onClick={() => this.onSave()}
+        >
           Save
-        </Button>
-      </div>
+        </CustomButton>
+      </Paper>
     );
   }
 }

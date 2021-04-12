@@ -1,12 +1,55 @@
 import React from 'react';
-import {Input, Button} from 'reactstrap';
 import {NavLink} from 'react-router-dom';
+import {withStyles} from "@material-ui/core/styles";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {Page, Block, Theme} from "../../model";
-import {IconBack} from "../../common/components/IconBack";
+import IconBack from "../../common/components/IconBack";
+import CustomButton from "../../common/components/CustomButton";
+import {TextField} from "@material-ui/core";
 
 type Item = (Page | Block | Theme);
 
+const styles: any = theme => ({
+  linkBack: {
+    textTransform: "capitalize",
+    color: "rgba(0, 0, 0, 0.87)",
+    fontSize: "15px",
+    display: "block",
+    padding: "15px 20px",
+  },
+  link: {
+    color: theme.palette.text.secondary,
+    fontSize: "15px",
+    display: "block",
+    padding: "15px 20px",
+    transition: "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
+    "&:hover": {
+      backgroundColor: "rgba(0, 0, 0, 0.1)",
+      color: theme.palette.text.primary,
+    }
+  },
+  sidebarSettings: {
+    padding: "10px 20px",
+  },
+  sidebarList: {
+    overflowY: "auto",
+    height: "calc(100vh - 265px)",
+  },
+  small: {
+    display: "block",
+    color: theme.palette.text.primary,
+    paddingTop: "3px",
+    lineHeight: "12px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+  linkTitle: {
+    fontWeight: 400,
+  }
+});
+
 interface Props {
+  classes: any;
   items: Item[];
   onBack: () => void;
   category: string;
@@ -16,8 +59,7 @@ interface Props {
   onAdd?: () => any;
 }
 
-export class SidebarList extends React.Component<Props, any> {
-
+class SidebarList extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
@@ -40,7 +82,7 @@ export class SidebarList extends React.Component<Props, any> {
   }
 
   render() {
-    const {items, category, subTitleKey, subTitleFilterFunc, onAdd, idKey = 'id'} = this.props;
+    const {classes, items, category, subTitleKey, subTitleFilterFunc, onAdd, idKey = 'id'} = this.props;
     const reg = new RegExp(this.state.filter.replace('(', '\\(').replace(')', '\\)'), 'gi');
 
     const getSubtitle = (item: Item) => (
@@ -57,14 +99,14 @@ export class SidebarList extends React.Component<Props, any> {
       <ul>
 
         <li>
-          <a href="javascript:void(0)" className="link-back" onClick={e => this.clickBack(e)}>
+          <a href="javascript:void(0)" className={classes.linkBack} onClick={e => this.clickBack(e)}>
             <IconBack text={category}/>
           </a>
         </li>
 
         <li>
-          <div className="sidebar__settings">
-            <Input
+          <div className={classes.sidebarSettings}>
+            <TextField
               placeholder="Filter"
               name="filter"
               value={this.state.filter}
@@ -75,21 +117,28 @@ export class SidebarList extends React.Component<Props, any> {
 
         {onAdd &&
         <li>
-          <div className="sidebar__settings">
-            <Button onClick={onAdd} color="primary"><span className="icon icon-add_circle"/>Add new</Button>
+          <div className={classes.sidebarSettings}>
+            <CustomButton
+              onClick={onAdd}
+              styleType="submit"
+            >
+              <AddCircleIcon/>
+              Add new
+            </CustomButton>
           </div>
         </li>
         }
 
         {items &&
         <li>
-          <ul className="sidebar__list">
+          <ul className={classes.sidebarList}>
             {items
               .filter(item => applyFilter(item))
               .map(item => (
                 <li key={item[idKey]}>
                   <NavLink
                     exact={false}
+                    className={classes.link}
                     to={`/${category}/${item[idKey]}`}
                     activeClassName="active"
                   >
@@ -101,6 +150,7 @@ export class SidebarList extends React.Component<Props, any> {
 
                       {item[subTitleKey] &&
                         <small
+                          className={classes.small}
                           dangerouslySetInnerHTML={{
                             __html: getSubtitle(item).replace(reg, str => (`<mark>${str}</mark>`)),
                           }}
@@ -111,10 +161,10 @@ export class SidebarList extends React.Component<Props, any> {
 
                     {!this.state.filter &&
                     <span>
-                      <span>{item.title}</span>
+                      <span className={classes.linkTitle}>{item.title}</span>
 
                       {item[subTitleKey] &&
-                        <small>{getSubtitle(item)}</small>
+                        <small className={classes.small}>{getSubtitle(item)}</small>
                       }
                     </span>
                     }
@@ -126,9 +176,9 @@ export class SidebarList extends React.Component<Props, any> {
           </ul>
         </li>
         }
-
       </ul>
     );
   }
 }
 
+export default (withStyles(styles)(SidebarList));

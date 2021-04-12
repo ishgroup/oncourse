@@ -1,9 +1,43 @@
 import React from 'react';
-import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import CloseIcon from '@material-ui/icons/Close';
+import AddIcon from '@material-ui/icons/Add';
+import {withStyles} from "@material-ui/core/styles";
 import {Theme, Layout} from "../../../../../model";
-import {IconBack} from "../../../../../common/components/IconBack";
+import IconBack from "../../../../../common/components/IconBack";
+import CustomButton from "../../../../../common/components/CustomButton";
+import {Grid, Select, TextField} from "@material-ui/core";
+
+const styles: any = theme => ({
+  linkBack: {
+    textTransform: "capitalize",
+    color: "rgba(0, 0, 0, 0.87)",
+    fontSize: "15px",
+    display: "block",
+    padding: "15px 20px",
+  },
+  removeButton: {
+    marginRight: theme.spacing(2),
+  },
+  removeIcon: {
+    color: theme.palette.error.main,
+    fontSize: "1rem",
+  },
+  addIcon: {
+    color: theme.statistics.enrolmentText.color,
+    fontSize: "1.2rem",
+  },
+  sideBarSetting: {
+    padding: "10px 20px",
+  },
+  actionsGroup: {
+    marginTop: "30px",
+    paddingTop: "20px",
+    borderTop: "1px solid #bbbbbb",
+  }
+});
 
 interface Props {
+  classes: any,
   theme: Theme;
   themes: Theme[];
   layouts: Layout[];
@@ -25,7 +59,7 @@ const urlsOptions = [
   }
 ];
 
-export class ThemeSettings extends React.Component<Props, any> {
+class ThemeSettings extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
@@ -126,24 +160,24 @@ export class ThemeSettings extends React.Component<Props, any> {
   }
 
   render () {
-    const {theme, layouts} = this.props;
-    const {exactMatch, layoutId, newLink, title, urls} = this.state;
+    const {classes, theme, layouts} = this.props;
+    const {layoutId, newLink, title, urls} = this.state;
 
     return (
       <div>
         <ul>
           <li>
-            <a href="javascript:void(0)" onClick={e => this.clickBack(e)}>
+            <a href="javascript:void(0)" className={classes.linkBack} onClick={e => this.clickBack(e)}>
               <IconBack text={theme.title}/>
             </a>
           </li>
         </ul>
 
-        <div className="sidebar__settings">
-          <Form>
-            <FormGroup>
-              <Label for="themeTitle">Title</Label>
-              <Input
+        <div className={classes.sideBarSetting}>
+          <form>
+            <Grid>
+              <label htmlFor="themeTitle">Title</label>
+              <TextField
                 type="text"
                 name="themeTitle"
                 id="themeTitle"
@@ -151,12 +185,11 @@ export class ThemeSettings extends React.Component<Props, any> {
                 value={title}
                 onChange={e => this.onChange(e, 'title')}
               />
-            </FormGroup>
+            </Grid>
 
-            <FormGroup>
-              <Label for="themeLayout">Layout</Label>
-              <Input
-                type="select"
+            <Grid>
+              <label htmlFor="themeLayout">Layout</label>
+              <Select
                 name="themeLayout"
                 id="themeLayout"
                 placeholder="Theme layout"
@@ -166,47 +199,47 @@ export class ThemeSettings extends React.Component<Props, any> {
                 {layouts.map(layout => (
                   <option key={layout.id} value={layout.id}>{layout.title}</option>
                 ))}
-              </Input>
-            </FormGroup>
+              </Select>
+            </Grid>
 
-            <FormGroup>
-              <Label htmlFor="pageUrl">Pages</Label>
+            <Grid>
+              <label htmlFor="pageUrl">Pages</label>
               <div className="links">
 
                 {urls.map((url, index) => (
-                  <div className="links__item path-item" key={index}>
-                    <div
-                      title={url.path}
-                      className="links__title"
-                    >
-                      {url.path}
-                    </div>
-
-                    <div className="links__select">
-                      <Input
-                        type="select"
-                        name="exactMatch"
-                        id="exactMatch"
-                        placeholder="Exact matching"
-                        value={url.exactMatch.toString()}
-                        onChange={e => this.onUpdatePath(e, url.path)}
+                  <div className="centeredFlex path-item" key={index}>
+                    <div>
+                      <div
+                        title={url.path}
+                        className="links__title"
                       >
-                        {urlsOptions.map(option => (
-                          <option key={option.title} value={option.value.toString()}>{option.title}</option>
-                        ))}
-                      </Input>
-                    </div>
+                        {url.path}
+                      </div>
 
-                    <span
-                      className="links__remove icon-close"
+                      <div className="links__select">
+                        <Select
+                          name="exactMatch"
+                          id="exactMatch"
+                          placeholder="Exact matching"
+                          value={url.exactMatch.toString()}
+                          onChange={e => this.onUpdatePath(e, url.path)}
+                        >
+                          {urlsOptions.map(option => (
+                            <option key={option.title} value={option.value.toString()}>{option.title}</option>
+                          ))}
+                        </Select>
+                      </div>
+                    </div>
+                    <CloseIcon
                       onClick={() => this.onDeleteUrl(url.path)}
+                      className={classes.removeIcon}
                     />
                   </div>
                 ))}
               </div>
 
-              <div className="input-icon">
-                <Input
+              <div className="centeredFlex">
+                <TextField
                   type="text"
                   name="newLink"
                   id="newLink"
@@ -215,43 +248,35 @@ export class ThemeSettings extends React.Component<Props, any> {
                   onChange={e => this.onChange(e, 'newLink')}
                   onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
                 />
-                <span className="icon icon-add btn-icon-add" onClick={() => this.onAddNewUrl()}/>
+                <AddIcon
+                  onClick={() => this.onAddNewUrl()}
+                  className={classes.addIcon}
+                />
               </div>
-              {/*<div>*/}
-              {/*  <FormGroup>*/}
-              {/*    <Checkbox*/}
-              {/*      label="Exact matching"*/}
-              {/*      name="exactMatch"*/}
-              {/*      checked={exactMatch}*/}
-              {/*      onChange={e => {this.setState({exactMatch: !exactMatch})}}*/}
-              {/*    />*/}
-              {/*  </FormGroup>*/}
-              {/*</div>*/}
-            </FormGroup>
+            </Grid>
 
-            <FormGroup className="actions-group">
+            <Grid className={classes.actionsGroup}>
               <div className="buttons-inline">
-                <Button
-                  color="danger"
-                  className="outline"
+                <CustomButton
+                  styleType="delete"
                   onClick={e => this.onClickDelete(e)}
+                  styles={classes.removeButton}
                 >
-                  <span className="icon icon-delete"/>
                   Remove
-                </Button>
-
-                <Button
-                  color="primary"
+                </CustomButton>
+                <CustomButton
+                  styleType="submit"
                   onClick={e => this.onSave()}
                 >
                   Save
-                </Button>
+                </CustomButton>
               </div>
-            </FormGroup>
-          </Form>
+            </Grid>
+          </form>
         </div>
-
       </div>
     );
   }
 }
+
+export default (withStyles(styles)(ThemeSettings));

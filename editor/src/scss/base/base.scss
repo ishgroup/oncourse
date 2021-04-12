@@ -10,9 +10,9 @@ ul {
   list-style: none;
 }
 
-a {
-  line-height: 1em;
-}
+//a {
+//  line-height: 1em;
+//}
 
 a {
   &:focus,
@@ -24,7 +24,7 @@ a {
 
 label {
   margin-bottom: 8px;
-  line-height: 1em;
+  //line-height: 1em;
   font-size: 15px;
 }
 
@@ -33,8 +33,8 @@ mark {
 }
 
 .full-height {
-  min-height: 100vh;
-  height: 100vh;
+  //min-height: 100vh;
+  //height: 100vh;
 }
 
 .btn {

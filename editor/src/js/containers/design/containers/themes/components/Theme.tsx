@@ -1,7 +1,7 @@
 import * as React from "react";
+import {Grid} from "@material-ui/core";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from 'react-dnd';
-import {Row, Col} from 'reactstrap';
 import {Theme as ThemeModel, Block} from "../../../../../model";
 import {ThemeLayout} from "./ThemeLayout";
 import Source from "../containers/Source";
@@ -26,16 +26,16 @@ class Theme extends React.Component<Props, any> {
 
     return (
       <div className="theme">
-        <Row>
-          <Col md="7">
+        <Grid container>
+          <Grid item xs={7}>
             <ThemeLayout
               theme={theme}
               blocks={blocks}
               onUpdate={onUpdateLayout}
             />
-          </Col>
+          </Grid>
 
-          <Col md="5">
+          <Grid item xs={5}>
             <Source
               className="blocks"
               showFilter={true}
@@ -43,9 +43,8 @@ class Theme extends React.Component<Props, any> {
               id="default"
               list={getFreeBlocks(theme, blocks)}
             />
-          </Col>
-        </Row>
-
+          </Grid>
+        </Grid>
       </div>
     );
   }

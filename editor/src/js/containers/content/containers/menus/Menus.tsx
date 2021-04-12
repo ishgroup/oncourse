@@ -1,13 +1,14 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {Container, Row, Col, Button} from 'reactstrap';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import classnames from 'classnames';
 import SortableTree, {changeNodeAtPath, removeNodeAtPath} from 'react-sortable-tree';
 import {changeMenuTree, getMenuItems, saveMenuTree} from "./actions";
 import {MenuState} from "./reducers/State";
 import {showModal} from "../../../../common/containers/modal/actions";
 import {State} from "../../../../reducers/state";
+import CustomButton from "../../../../common/components/CustomButton";
 
 interface Props {
   menu: MenuState;
@@ -130,16 +131,12 @@ export class Menus extends React.Component<Props, any> {
     // </Button>,
     return (
       [
-        <Button
-          color="danger"
-          size="sm"
+        <CustomButton
+          styleType="delete"
           onClick={() => this.removeNode(node, path)}
         >
-          <span
-            className={classnames("icon", node.children && node.children.length ? "icon-delete_sweep" :"icon-delete")}
-          />
           Remove
-        </Button>,
+        </CustomButton>,
       ]
     );
   }
@@ -149,14 +146,13 @@ export class Menus extends React.Component<Props, any> {
 
     return (
       <div>
-        <Button
-          size="md"
-          color="primary"
+        <CustomButton
+          styleType="submit"
           onClick={() => this.addItem()}
         >
-          <span className="icon icon-add_circle"/>
+          <AddCircleIcon/>
           Add new item
-        </Button>
+        </CustomButton>
         <div
           style={{
             height: `${menu.items.length ? this.getMenuItemsCount() * 54 : 54}px`,
@@ -176,13 +172,12 @@ export class Menus extends React.Component<Props, any> {
             })}
           />
         </div>
-          <Button
-            size="md"
-            color="primary"
-            onClick={() => this.save()}
-          >
-            Save
-          </Button>
+        <CustomButton
+          styleType="submit"
+          onClick={() => this.save()}
+        >
+          Save
+        </CustomButton>
       </div>
     );
   }

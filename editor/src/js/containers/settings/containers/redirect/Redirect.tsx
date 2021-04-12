@@ -1,15 +1,25 @@
 import React from 'react';
 import update from 'react-addons-update';
+import {withStyles} from "@material-ui/core/styles";
+import {Grid, Paper, TextField} from "@material-ui/core";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import classnames from 'classnames';
-import {Button, Col, FormGroup, Input, Row} from 'reactstrap';
 import {getRedirectSettings, setRedirectSettings} from "./actions";
 import {RedirectItem} from "./components/RedirectItem";
 import {RedirectSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
+import CustomButton from "../../../../common/components/CustomButton";
+
+const styles: any = theme => ({
+  saveButton: {
+    marginLeft: theme.spacing(2),
+  },
+});
 
 interface Props {
+  classes: any;
   onInit: () => any;
   onSave: (settings) => any;
   redirect: RedirectSettingsState;
@@ -17,7 +27,6 @@ interface Props {
 }
 
 export class Redirect extends React.PureComponent<Props, any> {
-
   constructor(props) {
     super(props);
 
@@ -88,10 +97,10 @@ export class Redirect extends React.PureComponent<Props, any> {
 
   render() {
     const {rules, filter} = this.state;
-    const {fetching} = this.props;
+    const {classes, fetching} = this.props;
 
     return (
-      <div className={classnames({fetching})}>
+      <Paper className={classnames({fetching})}>
         <p>
           Add 301 redirects to your website by entering the local path on the left (starting with '/')
           and the destination on the right (either starting with '/' for another local page or starting with
@@ -99,30 +108,36 @@ export class Redirect extends React.PureComponent<Props, any> {
         </p>
 
         {rules && rules.length > 0 &&
-          <Row>
-            <Col sm="2">
-              <FormGroup>
-                <Input
-                  type="text"
-                  name="filter"
-                  placeholder="Filter"
-                  id="filter"
-                  value={filter}
-                  onChange={e => this.onChangeFilter(e)}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
+          <Grid container>
+            <Grid item xs={2}>
+              <TextField
+                type="text"
+                name="filter"
+                placeholder="Filter"
+                id="filter"
+                value={filter}
+                onChange={e => this.onChangeFilter(e)}
+              />
+            </Grid>
+          </Grid>
         }
 
-        <FormGroup>
-          <Button onClick={() => this.onAddNew()} color="primary">
-            <span className="icon icon-add_circle"/> Add new
-          </Button>
-          <Button onClick={this.onSave} color="primary">
+        <Grid>
+          <CustomButton
+            styleType="submit"
+            onClick={() => this.onAddNew()}
+          >
+            <AddCircleIcon/>
+            Add new
+          </CustomButton>
+          <CustomButton
+            styleType="submit"
+            onClick={() => this.onSave()}
+            styles={classes.saveButton}
+          >
             Save
-          </Button>
-        </FormGroup>
+          </CustomButton>
+        </Grid>
 
         <div className="rules">
           {rules && rules
@@ -137,7 +152,7 @@ export class Redirect extends React.PureComponent<Props, any> {
               />,
           )}
         </div>
-      </div>
+      </Paper>
     );
   }
 }
@@ -154,4 +169,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Redirect as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Redirect));

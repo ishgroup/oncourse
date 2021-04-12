@@ -1,20 +1,20 @@
-@mixin prefixer($property, $value, $prefixes: webkit moz ms o spec) {
-  @each $prefix in $prefixes {
-    @if $prefix == webkit {
-      -webkit-#{$property}: $value;
-    } @else if $prefix == moz {
-      -moz-#{$property}: $value;
-    } @else if $prefix == ms {
-      -ms-#{$property}: $value;
-    } @else if $prefix == o {
-      -o-#{$property}: $value;
-    } @else if $prefix == spec {
-      #{$property}: $value;
-    } @else  {
-      @warn "Unrecognized prefix: #{$prefix}";
-    }
-  }
-}
+//@mixin prefixer($property, $value, $prefixes: webkit moz ms o spec) {
+//  @each $prefix in $prefixes {
+//    @if $prefix == webkit {
+//      -webkit-#{$property}: $value;
+//    } @else if $prefix == moz {
+//      -moz-#{$property}: $value;
+//    } @else if $prefix == ms {
+//      -ms-#{$property}: $value;
+//    } @else if $prefix == o {
+//      -o-#{$property}: $value;
+//    } @else if $prefix == spec {
+//      #{$property}: $value;
+//    } @else  {
+//      @warn "Unrecognized prefix: #{$prefix}";
+//    }
+//  }
+//}
 
 @mixin spinner() {
   position: relative;
@@ -37,8 +37,8 @@
     left: 50%;
     margin-top: -10px;
     margin-left: -10px;
-    @include prefixer(animation, Animation-spin 600ms infinite linear);
-    @include prefixer(box-sizing, border-box);
+    //@include prefixer(animation, Animation-spin 600ms infinite linear);
+    //@include prefixer(box-sizing, border-box);
     border-radius: 50%;
     border: 2px solid #ccc;
     border-right-color: #333;

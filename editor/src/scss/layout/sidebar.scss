@@ -1,82 +1,82 @@
 .sidebar-wrapper {
-  background-color: $sidebar-color;
-  color: rgba(0, 0, 0, 0.87);
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
-  transition: all .2s;
-  padding: 0;
-  min-width: 70px;
-  height: 100%;
+  //background-color: $sidebar-color;
+  //color: rgba(0, 0, 0, 0.87);
+  //-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  //box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
+  //transition: all .2s;
+  //padding: 0;
+  //min-width: 70px;
+  //height: 100%;
 }
 
 .sidebar {
-  position: fixed;
-  height: 100vh;
-  width: 16.666667%; // col-2 bootstrap width
+  //position: fixed;
+  //height: 100vh;
+  //width: 16.666667%; // col-2 bootstrap width
   
-  li {
-    &.sub {
-      a {
-        padding: 10px 20px 10px 50px;
-      }
-    }
-    
-    &.hidden {
-      display: none;
-    }
-  
-    &:not(:first-child) {
-      border-top: 1px solid transparent;
-    }
-  
-    &:last-child {
-      border-bottom: 1px solid transparent;
-    }
-  }
-  
-  a {
-    small {
-      display: block;
-      color: $gray;
-      padding-top: 3px;
-      line-height: 12px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
+  //li {
+  //  &.sub {
+  //    a {
+  //      //padding: 10px 20px 10px 50px;
+  //    }
+  //  }
+  //
+  //  &.hidden {
+  //    //display: none;
+  //  }
+  //
+  //  &:not(:first-child) {
+  //    border-top: 1px solid transparent;
+  //  }
+  //
+  //  &:last-child {
+  //    border-bottom: 1px solid transparent;
+  //  }
+  //}
+  //
+  //a {
+  //  small {
+  //    display: block;
+  //    color: $gray;
+  //    padding-top: 3px;
+  //    line-height: 12px;
+  //    overflow: hidden;
+  //    text-overflow: ellipsis;
+  //  }
+  //}
   
   .link-back {
-    text-transform: capitalize;
+    //text-transform: capitalize;
   }
   
   &__content {
-    height: 100%;
-    position: relative;
+    //height: 100%;
+    //position: relative;
   }
   
   &__settings {
-    padding: 10px 20px;
-    color: $white;
+    //padding: 10px 20px;
+    //color: $white;
     
     input {
-      max-width: 100%;
+      //max-width: 100%;
     }
   }
   
   &__list {
-    overflow-y: auto;
-    height: calc(100vh - 265px);
+    //overflow-y: auto;
+    //height: calc(100vh - 265px);
   }
   
   &__footer {
-    position: absolute;
-    font-size: 12px;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    padding: 15px;
-    color: $gray;
-    border-top: 1px solid $gray;
+    //position: absolute;
+    //font-size: 12px;
+    //width: 100%;
+    //bottom: 0;
+    //left: 0;
+    //padding: 15px;
+    //color: $gray;
+    //border-top: 1px solid $gray;
     
     .col {
       padding-top: 5px;
@@ -89,8 +89,8 @@
   }
   
   &--slim {
-    width: 4%;
-    min-width: 70px;
+    //width: 4%;
+    //min-width: 70px;
     
     li:not(:first-child) {
       border-top: 1px solid $gray;
@@ -100,22 +100,22 @@
       border-bottom: 1px solid $gray;
     }
     
-    a {
-      font-size: 20px;
-      padding: 10px 0;
-      text-align: center;
-    }
+    //a {
+    //  font-size: 20px;
+    //  padding: 10px 0;
+    //  text-align: center;
+    //}
   
     .logout-link {
-      font-size: 12px;
+      //font-size: 12px;
     }
   
     .sidebar__footer {
       font-size: 10px;
       
       .btn {
-        font-size: 10px;
-        min-width: 60px;
+        //font-size: 10px;
+        //min-width: 60px;
       }
       
       .col {
@@ -135,37 +135,37 @@
   }
   
   a {
-    color: $black;
-    font-size: 15px;
-    display: block;
-    padding: 15px 20px;
-    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    //color: $black;
+    //font-size: 15px;
+    //display: block;
+    //padding: 15px 20px;
+    //transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
     
     &:hover:not(.active) {
       background-color: rgba(0, 0, 0, .1);
     }
     
     &.active {
-      color: $primary;
+      //color: $primary;
     }
   }
   
   .logout-link {
-    padding: 5px 0;
-    text-align: center;
+    //padding: 5px 0;
+    //text-align: center;
     
     .user {
-      font-size: 12px;
+      //font-size: 12px;
     }
     
     &:hover:not(.active) {
-      text-decoration: underline;
-      background-color: transparent;
+      //text-decoration: underline;
+      //background-color: transparent;
     }
   }
   
   .separator {
-    border-top: 1px solid $gray;
-    box-shadow: 0px 1px 4px 0 $gray;
+    //border-top: 1px solid $gray;
+    //box-shadow: 0px 1px 4px 0 $gray;
   }
 }

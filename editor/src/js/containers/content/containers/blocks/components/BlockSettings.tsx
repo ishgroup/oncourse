@@ -1,19 +1,42 @@
 import React from 'react';
-import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
-import {IconBack} from "../../../../../common/components/IconBack";
+import {withStyles} from "@material-ui/core/styles";
+import IconBack from "../../../../../common/components/IconBack";
 import {BlockState} from "../reducers/State";
 import {addContentMarker} from "../../../utils";
+import CustomButton from "../../../../../common/components/CustomButton";
+import {TextField} from "@material-ui/core";
+
+const styles: any = theme => ({
+  linkBack: {
+    textTransform: "capitalize",
+    color: "rgba(0, 0, 0, 0.87)",
+    fontSize: "15px",
+    display: "block",
+    padding: "15px 20px",
+  },
+  removeButton: {
+    marginRight: theme.spacing(2),
+  },
+  sideBarSetting: {
+    padding: "10px 20px",
+  },
+  actionsGroup: {
+    marginTop: "30px",
+    paddingTop: "20px",
+    borderTop: "1px solid #bbbbbb",
+  }
+});
 
 interface Props {
   block: BlockState;
+  classes: any;
   onBack: () => void;
   onEdit?: (settings) => void;
   onDelete?: (id) => void;
   showModal?: (props) => any;
 }
 
-export class BlockSettings extends React.Component<Props, any> {
-
+class BlockSettings extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
@@ -54,24 +77,24 @@ export class BlockSettings extends React.Component<Props, any> {
   }
 
   render () {
-    const {block} = this.props;
+    const {block, classes} = this.props;
     const {title} = this.state;
 
     return (
       <div>
         <ul>
           <li>
-            <a href="javascript:void(0)" onClick={e => this.clickBack(e)}>
+            <a href="javascript:void(0)" className={classes.linkBack} onClick={e => this.clickBack(e)}>
               <IconBack text={block.title || 'New Block'}/>
             </a>
           </li>
         </ul>
 
-        <div className="sidebar__settings">
-          <Form>
-            <FormGroup>
-              <Label for="blockTitle">Title</Label>
-              <Input
+        <div className={classes.sideBarSetting}>
+          <form>
+            <div>
+              <label htmlFor="blockTitle">Title</label>
+              <TextField
                 type="text"
                 name="blockTitle"
                 id="blockTitle"
@@ -79,31 +102,31 @@ export class BlockSettings extends React.Component<Props, any> {
                 value={title}
                 onChange={e => this.onChange(e, 'title')}
               />
-            </FormGroup>
+            </div>
 
-            <FormGroup className="actions-group">
+            <div className={classes.actionsGroup}>
               <div className="buttons-inline">
-                <Button
-                  color="danger"
-                  className="outline"
+                <CustomButton
+                  styleType="delete"
                   onClick={this.onClickDelete}
+                  styles={classes.removeButton}
                 >
-                  <span className="icon icon-delete"/>
                   Remove
-                </Button>
+                </CustomButton>
 
-                <Button
-                  color="primary"
+                <CustomButton
+                  styleType="submit"
                   onClick={this.onSave}
                 >
                   Save
-                </Button>
+                </CustomButton>
               </div>
-            </FormGroup>
-          </Form>
+            </div>
+          </form>
         </div>
-
       </div>
     );
   }
 }
+
+export default (withStyles(styles)(BlockSettings));

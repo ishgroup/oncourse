@@ -1,16 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {Button, FormGroup, Input} from 'reactstrap';
 import classnames from 'classnames';
+import marked from "marked";
 import Editor from "../../../../../common/components/editor/HtmlEditor";
 import {BlockState} from "../reducers/State";
 import {addContentMarker} from "../../../utils";
 import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
-import marked from "marked";
 import {ContentMode} from "../../../../../model";
-import {ContentModeSwitch} from "../../../../../common/components/ContentModeSwitch";
+import ContentModeSwitch from "../../../../../common/components/ContentModeSwitch";
+import CustomButton from "../../../../../common/components/CustomButton";
+import {withStyles} from "@material-ui/core/styles";
+
+const styles = theme => ({
+  cancelButton: {
+    marginRight: theme.spacing(2),
+  },
+});
 
 interface Props {
   block: BlockState;
+  classes: any;
   onSave: (blockId, html) => void;
   setContentMode?: (id: number, contentMode: ContentMode) => any;
 }
@@ -18,7 +26,7 @@ interface Props {
 // custom event to reinitialize site plugins on editing content
 const pluginInitEvent = new Event("plugins:init");
 
-const Block: React.FC<Props> = ({block, onSave, setContentMode}) => {
+const Block: React.FC<Props> = ({block, classes, onSave, setContentMode}) => {
   const [editMode, setEditMode] = useState(false);
   const [draftContent, setDraftContent] = useState("");
 
@@ -29,7 +37,7 @@ const Block: React.FC<Props> = ({block, onSave, setContentMode}) => {
     if (block.contentMode === "md") {
       setDraftContent(marked(block.content || ""));
     }
-  },        []);
+  }, []);
 
   const onClickArea = e => {
     e.preventDefault();
@@ -96,17 +104,26 @@ const Block: React.FC<Props> = ({block, onSave, setContentMode}) => {
           )
         }>
           <ContentModeSwitch
-              contentModeId={block.contentMode}
-              moduleId={block.id}
-              setContentMode={setContentMode}
+            contentModeId={block.contentMode}
+            moduleId={block.id}
+            setContentMode={setContentMode}
           />
           {renderEditor()}
         </div>
-        <div className="mt-4">
-            <FormGroup>
-                <Button onClick={handleCancel} color="link">Cancel</Button>
-                <Button onClick={handleSave} color="primary">Save</Button>
-            </FormGroup>
+        <div className="mt-3">
+          <CustomButton
+            styleType="cancel"
+            styles={classes.cancelButton}
+            onClick={handleCancel}
+          >
+            Cancel
+          </CustomButton>
+          <CustomButton
+            styleType="submit"
+            onClick={handleSave}
+          >
+            Save
+          </CustomButton>
         </div>
       </>}
 
@@ -121,4 +138,4 @@ const Block: React.FC<Props> = ({block, onSave, setContentMode}) => {
   );
 };
 
-export default Block;
+export default (withStyles(styles)(Block));

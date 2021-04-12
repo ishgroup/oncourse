@@ -88,8 +88,8 @@ hr {
  */
 
 pre {
-  font-family: monospace, monospace; /* 1 */
-  font-size: 1em; /* 2 */
+  //font-family: monospace, monospace; /* 1 */
+  //font-size: 1em; /* 2 */
 }
 
 /* Text-level semantics
@@ -142,8 +142,8 @@ strong {
 code,
 kbd,
 samp {
-  font-family: monospace, monospace; /* 1 */
-  font-size: 1em; /* 2 */
+  //font-family: monospace, monospace; /* 1 */
+  //font-size: 1em; /* 2 */
 }
 
 /**
@@ -242,9 +242,9 @@ input,
 optgroup,
 select,
 textarea {
-  font-size: 100%; /* 1 */
-  line-height: 1.15; /* 1 */
-  margin: 0; /* 2 */
+  //font-size: 100%; /* 1 */
+  //line-height: 1.15; /* 1 */
+  //margin: 0; /* 2 */
 }
 
 /**
@@ -254,7 +254,7 @@ textarea {
 
 button,
 input { /* 1 */
-  overflow: visible;
+  //overflow: visible;
 }
 
 /**
@@ -262,10 +262,10 @@ input { /* 1 */
  * 1. Remove the inheritance of text transform in Firefox.
  */
 
-button,
-select { /* 1 */
-  text-transform: none;
-}
+//button,
+//select { /* 1 */
+//  text-transform: none;
+//}
 
 /**
  * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`

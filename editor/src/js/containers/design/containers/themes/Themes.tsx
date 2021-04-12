@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Row, Col} from 'reactstrap';
+import {Grid} from "@material-ui/core";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import classnames from "classnames";
@@ -21,7 +21,6 @@ interface Props {
 }
 
 export class Themes extends React.Component<Props, any> {
-
   componentDidMount() {
     this.props.onInit();
   }
@@ -33,14 +32,14 @@ export class Themes extends React.Component<Props, any> {
     return (
       <div>
         {theme &&
-        <Col sm="12" className={classnames({fetching})}>
+        <Grid item xs={12} className={classnames({fetching})}>
           <Theme
             theme={theme}
             onUpdateLayout={(blockId, items) => onUpdateLayout(theme, blockId, items)}
             onSaveTheme={() => onSaveTheme(theme)}
             blocks={blocks}
           />
-        </Col>
+        </Grid>
         }
       </div>
     );

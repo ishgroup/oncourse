@@ -2,11 +2,11 @@ import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import classnames from "classnames";
-import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import {Checkbox, FormControlLabel, Grid, Paper, TextField} from "@material-ui/core";
 import {getSkillsOnCourseSettings, setSkillsOnCourseSettings} from "./actions";
-import {Checkbox} from "../../../../common/components/Checkbox";
 import {State} from "../../../../reducers/state";
 import {SkillsOnCourseState} from "./reducers/State";
+import CustomButton from "../../../../common/components/CustomButton";
 
 interface Props {
   onInit: () => any;
@@ -58,46 +58,55 @@ export class Skills extends React.Component<Props, any> {
     const {fetching} = this.props;
 
     return (
-      <div className={classnames({fetching})}>
+      <Paper className={classnames({fetching})}>
+        <form>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={hideStudentDetails}
+                onChange={e => {this.onChange(e, 'hideStudentDetails')}}
+                name="hideStudentDetails"
+                color="primary"
+              />
+            }
+            label="Hide student contact details from tutor."
+          />
 
-        <Form>
-          <FormGroup>
-            <Checkbox
-              label="Hide student contact details from tutor."
-              name="hideStudentDetails"
-              checked={hideStudentDetails}
-              onChange={e => {this.onChange(e, 'hideStudentDetails');}}
-            />
-          </FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={enableOutcomeMarking}
+                onChange={e => {this.onChange(e, 'enableOutcomeMarking')}}
+                name="enableOutcomeMarking"
+                color="primary"
+              />
+            }
+            label="Enable outcome marking in tutor portal."
+          />
 
-          <FormGroup>
-            <Checkbox
-              label="Enable outcome marking in tutor portal."
-              name="enableOutcomeMarking"
-              checked={enableOutcomeMarking}
-              onChange={e => {this.onChange(e, 'enableOutcomeMarking');}}
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <Label htmlFor="tutorFeedbackEmail">Email tutor feedback to</Label>
-            <Row>
-              <Col sm={3}>
-                <Input
+          <Grid>
+            <label htmlFor="tutorFeedbackEmail">Email tutor feedback to</label>
+            <Grid container>
+              <Grid item xs={3}>
+                <TextField
                   type="text"
                   name="tutorFeedbackEmail"
                   id="tutorFeedbackEmail"
                   value={tutorFeedbackEmail}
                   onChange={e => this.onChange(e, 'tutorFeedbackEmail')}
                 />
-              </Col>
-            </Row>
-          </FormGroup>
+              </Grid>
+            </Grid>
+          </Grid>
 
-          <Button color="primary" onClick={() => this.onSave()}>Save</Button>
-        </Form>
-
-      </div>
+          <CustomButton
+            styleType="submit"
+            onClick={() => this.onSave()}
+          >
+            Save
+          </CustomButton>
+        </form>
+      </Paper>
     );
   }
 }

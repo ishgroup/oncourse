@@ -1,24 +1,54 @@
 import * as  React from 'react';
-import {Field, reduxForm} from 'redux-form';
+import {Form, Field, reduxForm} from 'redux-form';
 import classnames from 'classnames';
-import {Button, Form, FormGroup, Input, FormFeedback} from 'reactstrap';
-import {BrowserWarning} from "../../../common/components/BrowserWarning";
+import {withStyles} from "@material-ui/core/styles";
+import {Grid, TextField} from "@material-ui/core";
+import {darken, fade} from "@material-ui/core/styles/colorManipulator";
+import BrowserWarning from "../../../common/components/BrowserWarning";
+import CustomButton from "../../../common/components/CustomButton";
+
+const styles: any = theme => ({
+  loginWrapper: {
+
+  },
+  loginFormContainer: {
+    marginTop: "200px",
+    borderRadius: "5px",
+    padding: "40px 30px 15px 30px",
+    background: theme.palette.background.paper,
+    width: "300px",
+    height: "200px",
+  },
+  loginButton: {
+    marginLeft: theme.spacing(2),
+  },
+  loginButtonDisabled: {
+    backgroundColor: fade(theme.palette.primary.main, 0.5),
+  },
+  input: {
+    width: "100%",
+    marginBottom: "20px",
+  }
+});
 
 const input = props => {
-  const {type, input, placeholder, id, meta} = props;
+  const {className, type, input, placeholder, id, meta} = props;
   const {submitFailed, invalid, error} = meta;
   const showError = submitFailed && invalid && error;
 
   return (
     <div className={classnames({'form-error': showError})}>
-      <Input
+      <TextField
         type={type}
         name={input.name}
+        className={className}
+        error={showError}
+        helperText={showError && error}
         id={id}
         placeholder={placeholder}
         onChange={input.onChange}
+        fullWidth
       />
-      {showError && <FormFeedback>{error}</FormFeedback>}
     </div>
   );
 };
@@ -38,46 +68,56 @@ const validate = values => {
 
 
 class LoginForm extends React.Component<any, any> {
-
   cancelApplication = () => {
     document.cookie = "";
     window.location.href = "";
   }
 
   form() {
-    const {handleSubmit, pristine, submitting} = this.props;
+    const {classes, handleSubmit, pristine, submitting} = this.props;
 
     return (
-      <>
+      <Grid className={classes.loginWrapper}>
         <BrowserWarning />
-        <Form onSubmit={handleSubmit} className="login-form">
-          <FormGroup>
-            <Field
-              id="loginEmail"
-              name="email"
-              type="text"
-              placeholder="Email"
-              component={input}
-            />
-          </FormGroup>
+          <Form onSubmit={handleSubmit} className={classes.loginFormContainer}>
+            <div >
+              <Field
+                id="loginEmail"
+                name="email"
+                type="text"
+                placeholder="Email"
+                className={classes.input}
+                component={input}
+              />
+            </div>
 
-          <FormGroup>
             <Field
               id="loginPassword"
               type="password"
               name="password"
               placeholder="Password"
+              className={classes.input}
               component={input}
             />
-          </FormGroup>
-          <Button disabled={pristine || submitting} color="primary" type="submit">
-            Log in
-          </Button>
-          <Button disabled={submitting} className="btn-cancel" type="button" onClick={this.cancelApplication}>
-            Cancel
-          </Button>
+            <div className={"w-100 d-flex justify-content-end"}>
+              <CustomButton
+                styleType="cancel"
+                disabled={submitting}
+                onClick={this.cancelApplication}
+              >
+                Cancel
+              </CustomButton>
+              <CustomButton
+                styleType="submit"
+                type="submit"
+                disabled={pristine || submitting}
+                styles={classes.loginButton}
+              >
+                Login
+              </CustomButton>
+            </div>
         </Form>
-      </>
+      </Grid>
     );
   }
 
@@ -89,4 +129,4 @@ class LoginForm extends React.Component<any, any> {
 export default reduxForm<any, any>({
   validate,
   form: 'login',
-})(LoginForm as any);
+})(withStyles(styles)(LoginForm) as any);

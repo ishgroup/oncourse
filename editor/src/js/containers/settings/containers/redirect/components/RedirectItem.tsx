@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {RedirectItem as RedirectItemModel} from "../../../../../model";
+import CustomButton from "../../../../../common/components/CustomButton";
+import {Grid, TextField} from "@material-ui/core";
 
 interface RedirectItemState extends RedirectItemModel {
   submitted?: boolean;
@@ -15,7 +16,6 @@ interface Props {
 }
 
 export class RedirectItem extends React.Component<Props, any> {
-
   shouldComponentUpdate(newProps: Props) {
     return this.props.item !== newProps.item;
   }
@@ -24,11 +24,11 @@ export class RedirectItem extends React.Component<Props, any> {
     const {item, index, onChange, onRemove} = this.props;
 
     return (
-      <FormGroup key={index}>
+      <Grid key={index}>
         <div className="form-inline rule">
 
-          <Label>From</Label>
-          <Input
+          <label>From</label>
+          <TextField
             className={classnames({invalid: (item.submitted && item.to && !item.from) || item.error})}
             type="text"
             name={`from-${index}`}
@@ -37,8 +37,8 @@ export class RedirectItem extends React.Component<Props, any> {
             onChange={e => onChange(e, index, 'from')}
           />
 
-          <Label>To</Label>
-          <Input
+          <label>To</label>
+          <TextField
             className={classnames({invalid: (item.submitted && !item.to && item.from) || item.error})}
             type="text"
             name={`to-${index}`}
@@ -47,14 +47,12 @@ export class RedirectItem extends React.Component<Props, any> {
             onChange={e => onChange(e, index, 'to')}
           />
 
-          <Button
-            color="danger"
-            className="outline"
+          <CustomButton
+            styleType="delete"
             onClick={() => onRemove(index)}
           >
-            <span className="icon icon-delete"/>
             Remove
-          </Button>
+          </CustomButton>
         </div>
 
         {item.error &&
@@ -62,7 +60,7 @@ export class RedirectItem extends React.Component<Props, any> {
             <label className="error">{item.error}</label>
           </div>
         }
-      </FormGroup>
+      </Grid>
     );
   }
 }

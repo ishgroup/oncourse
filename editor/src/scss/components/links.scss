@@ -25,14 +25,14 @@
   }
   
   &__item {
-    position: relative;
-    color: $black;
-    cursor: pointer;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    padding: 4px 0;
-    font-size: 13px;
-    line-height: 1em;
+    //position: relative;
+    //color: $black;
+    //cursor: pointer;
+    //font-family: 'Roboto', sans-serif;
+    //font-weight: 400;
+    //padding: 4px 0;
+    //font-size: 13px;
+    //line-height: 1em;
     
     &:last-child {
       border-bottom: none;
@@ -46,24 +46,24 @@
     overflow: hidden;
     
     &:after {
-      display: block;
-      visibility: hidden;
-      opacity: 0;
-      pointer-events: none;
-      padding: 3px;
-      font-size: 12px;
-      font-weight: 100;
-      border-radius: 2px;
-      position: absolute;
-      content: "Make Default";
-      font-family: 'Roboto', sans-serif;
-      top: 1px;
-      left: 100%;
-      color: $white;
-      background: $secondary;
-      margin-left: 10px;
-      white-space: nowrap;
-      transition: opacity .25s;
+      //display: block;
+      //visibility: hidden;
+      //opacity: 0;
+      //pointer-events: none;
+      //padding: 3px;
+      //font-size: 12px;
+      //font-weight: 100;
+      //border-radius: 2px;
+      //position: absolute;
+      //content: "Make Default";
+      //font-family: 'Roboto', sans-serif;
+      //top: 1px;
+      //left: 100%;
+      //color: $white;
+      //background: $secondary;
+      //margin-left: 10px;
+      //white-space: nowrap;
+      //transition: opacity .25s;
     }
   
     &:hover {

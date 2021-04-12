@@ -1,41 +1,41 @@
 .cms {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 999;
-  color: $black;
+  //position: fixed;
+  //top: 0;
+  //left: 0;
+  //width: 100%;
+  //height: 100%;
+  //pointer-events: none;
+  //z-index: 999;
+  //color: $black;
   
   &__container {
-    pointer-events: all;
-    background: #fafafa;
+    //pointer-events: all;
+    //background: #fafafa;
     
     &--view-mode {
-      pointer-events: none;
-      background: transparent;
+      //pointer-events: none;
+      //background: transparent;
   
       .sidebar-wrapper {
-        pointer-events: all;
+        //pointer-events: all;
         
         &--slim {
-          max-width: 4%;
+          //max-width: 4%;
         }
       }
     }
     
     .content-wrapper {
-      padding: 15px 25px;
+      //padding: 15px 25px;
     }
   }
 
   .browser-warning {
-    padding: 10px;
-    background: $danger-hover;
-    color: white;
-    line-height: 17px;
-    font-weight: 300;
-    text-align: center;
+    //padding: 10px;
+    //background: $danger-hover;
+    //color: white;
+    //line-height: 17px;
+    //font-weight: 300;
+    //text-align: center;
   }
 }

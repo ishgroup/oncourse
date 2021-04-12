@@ -1,13 +1,50 @@
 import React from 'react';
-import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import {Checkbox, FormControlLabel, Grid, TextField} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import {withStyles} from "@material-ui/core/styles";
+import AddIcon from '@material-ui/icons/Add';
 import classnames from 'classnames';
-import {Checkbox} from "../../../../../common/components/Checkbox";
-import {IconBack} from "../../../../../common/components/IconBack";
+import IconBack from "../../../../../common/components/IconBack";
 import PageService from "../../../../../services/PageService";
 import {addContentMarker} from "../../../utils";
 import {PageState} from "../reducers/State";
 
+import CustomButton from "../../../../../common/components/CustomButton";
+
+const styles: any = theme => ({
+  linkBack: {
+    textTransform: "capitalize",
+    color: "rgba(0, 0, 0, 0.87)",
+    fontSize: "15px",
+    display: "block",
+    padding: "15px 20px",
+  },
+  removeButton: {
+    marginRight: theme.spacing(2),
+  },
+  removeIcon: {
+    color: theme.palette.error.main,
+    fontSize: "1rem",
+  },
+  addIcon: {
+    color: theme.statistics.enrolmentText.color,
+    fontSize: "1.2rem",
+  },
+  sideBarSetting: {
+    padding: "10px 20px",
+  },
+  actionsGroup: {
+    marginTop: "30px",
+    paddingTop: "20px",
+    borderTop: "1px solid #bbbbbb",
+  },
+  inputWrapper: {
+    marginBottom: theme.spacing(2),
+  }
+});
+
 interface Props {
+  classes: any;
   page: PageState;
   pages: PageState[];
   onBack: () => void;
@@ -18,8 +55,7 @@ interface Props {
   themes?: any;
 }
 
-export class PageSettings extends React.PureComponent<Props, any> {
-
+class PageSettings extends React.PureComponent<Props, any> {
   constructor(props) {
     super(props);
 
@@ -122,7 +158,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
   }
 
   render () {
-    const {page, themes} = this.props;
+    const {classes, page, themes} = this.props;
     const {title, visible, themeId, urls, newLink, suppressOnSitemap} = this.state;
     const defaultPageUrl = PageService.generateBasetUrl(page);
 
@@ -130,28 +166,29 @@ export class PageSettings extends React.PureComponent<Props, any> {
       <div>
         <ul>
           <li>
-            <a href="javascript:void(0)" onClick={e => this.clickBack(e)}>
+            <a href="javascript:void(0)" className={classes.linkBack} onClick={e => this.clickBack(e)}>
               <IconBack text={page.title || 'New Page'}/>
             </a>
           </li>
         </ul>
 
-        <div className="sidebar__settings">
-          <Form>
-            <FormGroup>
-              <Label for="pageTitle">Title</Label>
-              <Input
+        <div className={classes.sideBarSetting}>
+          <form>
+            <Grid>
+              <label htmlFor="pageTitle">Title</label>
+              <TextField
                 type="text"
                 name="pageTitle"
                 id="pageTitle"
                 placeholder="Page title"
+                className={classes.inputWrapper}
                 value={title}
                 onChange={e => this.onChange(e, 'title')}
               />
-            </FormGroup>
+            </Grid>
 
-            <FormGroup>
-              <Label htmlFor="pageUrl">Page Links (URLs)</Label>
+            <Grid>
+              <label htmlFor="pageUrl">Page Links (URLs)</label>
 
               <div className="links">
 
@@ -169,7 +206,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
 
 
                 {urls.map((url, index) => (
-                  <div className="links__item" key={index}>
+                  <div className="centeredFlex justify-content-space-between" key={index}>
                     <div
                       onClick={() => !url.isDefault && this.onSetDefaultUrl(url)}
                       className={classnames("links__title", {"links__title--default": url.isDefault})}
@@ -179,86 +216,80 @@ export class PageSettings extends React.PureComponent<Props, any> {
                     </div>
 
                     {!url.isDefault &&
-                      <span
-                        className="links__remove icon-close"
+                      <CloseIcon
                         onClick={() => !url.isDefault && this.onDeleteUrl(url)}
+                        className={classes.removeIcon}
                       />
                     }
                   </div>
                 ))}
               </div>
 
-              <div className="input-icon">
-                <Input
+              <div className="centeredFlex">
+                <TextField
                   type="text"
                   name="newLink"
                   id="newLink"
                   placeholder="New Page Url"
+                  className={classes.inputWrapper}
                   value={newLink}
                   onChange={e => this.onChange(e, 'newLink')}
                   onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
                 />
-                <span className="icon icon-add btn-icon-add" onClick={() => this.onAddNewUrl()}/>
+                <AddIcon
+                  onClick={() => this.onAddNewUrl()}
+                  className={classes.addIcon}
+                />
               </div>
-            </FormGroup>
+            </Grid>
 
-            {/*<FormGroup>*/}
-            {/*  <Label htmlFor="pageTheme">Theme</Label>*/}
-            {/*  <Input*/}
-            {/*    type="select"*/}
-            {/*    name="pageTheme"*/}
-            {/*    id="pageTheme"*/}
-            {/*    placeholder="Page theme"*/}
-            {/*    value={themeId}*/}
-            {/*    onChange={e => this.onChange(e, 'themeId')}*/}
-            {/*  >*/}
-            {/*    {themes.map(theme => (*/}
-            {/*      <option key={theme.id} value={theme.id}>{theme.title}</option>*/}
-            {/*    ))}*/}
-            {/*  </Input>*/}
-            {/*</FormGroup>*/}
-
-            <FormGroup>
-              <Checkbox
-                label="Visible"
-                name="visible"
-                checked={visible}
-                onChange={e => {this.onChange(e, 'visible');}}
-              />
-            </FormGroup>
-
-            <FormGroup>
-              <Checkbox
-                label="Hide from sitemap"
-                name="suppressOnSitemap"
-                checked={suppressOnSitemap}
-                onChange={e => {this.onChange(e, 'suppressOnSitemap');}}
-              />
-            </FormGroup>
-
-            <FormGroup className="actions-group">
-              <div className="buttons-inline">
-                <Button
-                  color="danger"
-                  className="outline"
-                  onClick={this.onClickDelete}
-                >
-                  <span className="icon icon-delete"/>
-                  Remove
-                </Button>
-
-                <Button
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={visible}
+                  onChange={e => {this.onChange(e, 'visible')}}
+                  name="visible"
                   color="primary"
+                />
+              }
+              label="Visible"
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={suppressOnSitemap}
+                  onChange={e => {this.onChange(e, 'suppressOnSitemap')}}
+                  name="suppressOnSitemap"
+                  color="primary"
+                />
+              }
+              label="Hide from sitemap"
+            />
+
+            <Grid className={classes.actionsGroup}>
+              <div className="buttons-inline">
+                <CustomButton
+                  styleType="delete"
+                  onClick={this.onClickDelete}
+                  styles={classes.removeButton}
+                >
+                  Remove
+                </CustomButton>
+
+                <CustomButton
+                  styleType="submit"
                   onClick={this.onSave}
                 >
                   Save
-                </Button>
+                </CustomButton>
               </div>
-            </FormGroup>
-
-          </Form>
+            </Grid>
+          </form>
         </div>
       </div>
     );
   }
 }
+
+export default (withStyles(styles)(PageSettings));

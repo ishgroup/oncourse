@@ -1,14 +1,14 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import {Checkbox, FormControlLabel, Grid, Paper, TextField} from "@material-ui/core";
 import classnames from "classnames";
 import {getCheckoutSettings, setCheckoutSettings} from "./actions";
-import {Checkbox} from "../../../../common/components/Checkbox";
 import {State} from "../../../../reducers/state";
 import {CheckoutSettingsState} from "./reducers/State";
 import {CheckoutSettings} from "../../../../model";
 import {toPositive} from "../../../../common/utils/NumberUtils";
+import CustomButton from "../../../../common/components/CustomButton";
 
 interface Props {
   fetching?: boolean;
@@ -18,7 +18,6 @@ interface Props {
 }
 
 export class Checkout extends React.Component<Props, any> {
-
   constructor(props) {
     super(props);
 
@@ -72,48 +71,59 @@ export class Checkout extends React.Component<Props, any> {
     const {fetching} = this.props;
 
     return (
-      <div className={classnames({fetching})}>
-        <Form>
-
-          <FormGroup>
-            <Checkbox
-              label="Allow create new student on enrol."
-              name="enableSocialMedia"
-              checked={allowCreateContactOnEnrol}
-              onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnEnrol');}}
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <Checkbox
-              label="Allow create new student on waiting list."
-              name="allowCreateContactOnWaitingList"
-              checked={allowCreateContactOnWaitingList}
-              onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnWaitingList');}}
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <Checkbox
-              label="Allow create new student on mailing list"
-              name="allowCreateContactOnMailingList"
-              checked={allowCreateContactOnMailingList}
-              onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnMailingList');}}
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <div className="form-inline">
-
+      <Paper className={classnames({fetching})}>
+        <form>
+          <FormControlLabel
+            control={
               <Checkbox
+                checked={allowCreateContactOnEnrol}
+                onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnEnrol')}}
+                name="enableSocialMedia"
+                color="primary"
+              />
+            }
+            label="Allow create new student on enrol."
+          />
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={allowCreateContactOnWaitingList}
+                onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnWaitingList')}}
+                name="allowCreateContactOnWaitingList"
+                color="primary"
+              />
+            }
+            label="Allow create new student on waiting list."
+          />
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={allowCreateContactOnMailingList}
+                onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnMailingList')}}
+                name="allowCreateContactOnMailingList"
+                color="primary"
+              />
+            }
+            label="Allow create new student on mailing list"
+          />
+
+          <Grid>
+            <div className="form-inline">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={collectParentDetails}
+                    onChange={e => {this.onChange(e.target.checked, 'collectParentDetails')}}
+                    name="collectParentDetails"
+                    color="primary"
+                  />
+                }
                 label="Collect parent or guardian details for students under"
-                className="inline"
-                name="collectParentDetails"
-                checked={collectParentDetails}
-                onChange={e => {this.onChange(e.target.checked, 'collectParentDetails');}}
               />
 
-              <Input
+              <TextField
                 type="number"
                 name="contactAgeWhenNeedParent"
                 className="xs"
@@ -123,27 +133,32 @@ export class Checkout extends React.Component<Props, any> {
               />
 
             </div>
-          </FormGroup>
+          </Grid>
 
-          <FormGroup>
-            <Label htmlFor="addThisId">Enrolment min age</Label>
-            <Row>
-              <Col sm={2}>
-                <Input
+          <Grid>
+            <label htmlFor="addThisId">Enrolment min age</label>
+            <Grid container>
+              <Grid item xs={2}>
+                <TextField
                   type="number"
                   name="enrolmentMinAge"
                   id="enrolmentMinAge"
                   value={enrolmentMinAge}
                   onChange={e => this.onChange(e.target.value, 'enrolmentMinAge')}
                 />
-              </Col>
-            </Row>
-          </FormGroup>
+              </Grid>
+            </Grid>
+          </Grid>
 
-          <Button color="primary" onClick={() => this.onSave()}>Save</Button>
+          <CustomButton
+            styleType="submit"
+            onClick={() => this.onSave()}
+          >
+            Save
+          </CustomButton>
 
-        </Form>
-      </div>
+        </form>
+      </Paper>
     );
   }
 }

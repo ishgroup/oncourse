@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {withRouter} from 'react-router-dom';
-import {Container, Row, Col} from 'reactstrap';
 import classnames from "classnames";
 import {submitLoginForm} from "./actions";
 import {DefaultConfig} from "../../constants/Config";
@@ -24,15 +23,9 @@ export class Login extends React.Component<Props, any> {
     const {onSubmit, fetching} = this.props;
 
     return (
-      <Container>
-        <Row>
-          <Col md="4" className="mx-auto">
-            <div className={classnames("login-wrapper", {fetching})}>
-              <LoginForm onSubmit={onSubmit}/>
-            </div>
-          </Col>
-        </Row>
-      </Container>
+      <div className={classnames({fetching}, "d-flex align-items-center justify-content-center relative")}>
+        <LoginForm onSubmit={onSubmit}/>
+      </div>
     );
   }
 }

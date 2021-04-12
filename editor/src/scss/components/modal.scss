@@ -55,22 +55,22 @@
 }
 
 .modal-content {
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  background-color: #fff;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 2px;
-  outline: 0;
+  //position: relative;
+  //display: -webkit-box;
+  //display: -webkit-flex;
+  //display: -ms-flexbox;
+  //display: flex;
+  //-webkit-box-orient: vertical;
+  //-webkit-box-direction: normal;
+  //-webkit-flex-direction: column;
+  //-ms-flex-direction: column;
+  //flex-direction: column;
+  //background-color: #fff;
+  //-webkit-background-clip: padding-box;
+  //background-clip: padding-box;
+  //border: 1px solid rgba(0, 0, 0, 0.2);
+  //border-radius: 2px;
+  //outline: 0;
 }
 
 .modal-backdrop {
@@ -110,7 +110,7 @@
 
 .modal-title {
   margin-bottom: 0;
-  line-height: 1.5;
+  //line-height: 1.5;
 }
 
 .modal-body {

@@ -1,13 +1,20 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {Table, Button} from 'reactstrap';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 import classnames from "classnames";
 import TimeAgo from 'react-timeago';
 import {getHistory, publish, setVersion} from "./actions";
 import {Version, VersionStatus} from "../../model";
 import {State} from "../../reducers/state";
 import {showModal} from "../../common/containers/modal/actions";
+import CustomButton from "../../common/components/CustomButton";
 
 interface Props {
   versions: Version[];
@@ -48,43 +55,50 @@ class History extends React.Component<Props, any> {
 
     return (
       <div className={classnames('overflow-content', {fetching})}>
-
-        <Table className="table table--row-center">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Published</th>
-              <th>By</th>
-              <th/>
-            </tr>
-          </thead>
-
-          <tbody>
-          {versions &&
-            versions.map(version => (
-              <tr key={version.id}>
-                <td>{version.id}</td>
-                <td>
-                  {version.status === VersionStatus.draft && 'Draft'}
-                  {(version.status === VersionStatus.published || !version.status) && version.publishedOn &&
+        <TableContainer component={Paper}>
+          <Table  className="table table--row-center" aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">#</TableCell>
+                <TableCell align="left">Published</TableCell>
+                <TableCell align="left">By</TableCell>
+                <TableCell align="left"/>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {versions && versions.map((version) => (
+                <TableRow key={version.id}>
+                  <TableCell align="left">{version.id}</TableCell>
+                  <TableCell align="left">
+                    {version.status === VersionStatus.draft && 'Draft'}
+                    {(version.status === VersionStatus.published || !version.status) && version.publishedOn &&
                     <TimeAgo date={version.publishedOn} live={false}/>
-                  }
-                </td>
-                <td>{version.author}</td>
-                <td>
-                  {version.status === VersionStatus.draft &&
-                    <Button color="primary" onClick={() => this.onPublish(version.id)}>Publish</Button>
-                  }
-                  {(version.status === VersionStatus.published || !version.status) &&
-                    <Button color="secondary" onClick={() => this.onRevert(version.id)}>Revert</Button>
-                  }
-                </td>
-              </tr>
-            ))
-          }
-          </tbody>
-        </Table>
-
+                    }
+                  </TableCell>
+                  <TableCell align="left">{version.author}</TableCell>
+                  <TableCell align="left">
+                    {version.status === VersionStatus.draft &&
+                      <CustomButton
+                        styleType="submit"
+                        onClick={() => this.onPublish(version.id)}
+                      >
+                        Publish
+                      </CustomButton>
+                    }
+                    {(version.status === VersionStatus.published || !version.status) &&
+                      <CustomButton
+                        styleType="cancel"
+                        onClick={() => this.onPublish(version.id)}
+                      >
+                        Revert
+                      </CustomButton>
+                    }
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     );
   }
