@@ -93,12 +93,12 @@ class DataPopulationUtils {
             newScript = context.newObject(Script)
             newScript.keyCode = keyCode
             newScript.enabled = oldScript ? Boolean.FALSE : getBoolean(props, ENABLED)
-            newScript.triggerType = get(props, TRIGGER_TYPE, TriggerType)
             newScript.cronSchedule = getString(props, CRON_SCHEDULE)
         }
 
         newScript.name = name
         newScript.entity = getString(props, ENTITY_CLASS)
+        newScript.entityAttribute = getString(props, ENTITY_ATTRIBUTE)
 
         newScript.triggerType = updateTriggerType(newScript.triggerType, get(props, TRIGGER_TYPE, TriggerType))
         newScript.outputType = get(props, OUTPUT_TYPE, OutputType)
@@ -198,7 +198,10 @@ class DataPopulationUtils {
 
 
     private static TriggerType updateTriggerType(TriggerType oldType, TriggerType newType) {
-        if (oldType == newType) {
+        if (newType == null) {
+            return null
+        }
+        if (newType == oldType) {
             return oldType
         }
         if ([TriggerType.ON_DEMAND, TriggerType.CRON].contains(oldType)) {
