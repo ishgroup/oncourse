@@ -157,6 +157,8 @@ const findRelatedGroup: any = [
   { title: "Voucher redeemed", list: "sale", expression: "redeemedEnrolment.id" },
   { title: "Students", list: "contact", expression: "student.enrolments.id" },
   { title: "Submissions", list: "assessmentSubmission", expression: "enrolment.id" },
+  { title: "Certificates", list: "certificate", expression: "certificateOutcomes.outcome.enrolment.id" },
+
 ];
 
 const nestedEditFields = {
