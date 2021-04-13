@@ -1,6 +1,7 @@
 package ish.oncourse.willow.billing.website;
 
 import ish.oncourse.model.*;
+import ish.oncourse.specialpages.RequestMatchType;
 import org.apache.cayenne.ObjectContext;
 
 import java.util.Date;
@@ -24,6 +25,14 @@ public class CreateDefaultWebSiteStructure {
         page.setWebSiteLayout(webSiteLayout);
         page.setWebSiteVersion(stagedVersion);
 
+        WebLayoutPath layoutPath = context.newObject(WebLayoutPath.class);
+        layoutPath.setCreated(new Date());
+        layoutPath.setModified(new Date());
+        layoutPath.setWebSiteVersion(stagedVersion);
+        layoutPath.setWebNodeType(page);
+        layoutPath.setPath("/");
+        layoutPath.setMatchType(RequestMatchType.STARTS_WITH);
+        
         WebNode node = createNewNodeBy(page);
         node.setPublished(true);
 
@@ -51,9 +60,7 @@ public class CreateDefaultWebSiteStructure {
         newPageNode.setName(DEFAULT_HOME_PAGE_NAME);
         newPageNode.setWebSiteVersion(stagedVersion);
         newPageNode.setNodeNumber(1);
-
-        newPageNode.setWebNodeType(webNodeType);
-
+        
         WebContent webContent = ctx.newObject(WebContent.class);
         webContent.setWebSiteVersion(stagedVersion);
         webContent.setContentTextile(DEFAULT_HOME_PAGE_NAME);

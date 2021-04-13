@@ -37,13 +37,6 @@ public class CreateDefaultWebSiteStructure {
         layoutPath.setWebNodeType(page);
         layoutPath.setPath("/");
         layoutPath.setMatchType(RequestMatchType.STARTS_WITH);
-
-        WebLayoutPath defaultThemePath = new WebLayoutPath();
-        defaultThemePath.setWebNodeType(page);
-        defaultThemePath.setWebSiteVersion(stagedVersion);
-        defaultThemePath.setPath("/");
-        defaultThemePath.setCreated(new Date());
-        defaultThemePath.setModified(new Date());
         
         WebNode node = webNodeService.createNewNodeBy(stagedVersion, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1);
         node.setPublished(true);

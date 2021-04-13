@@ -13,6 +13,8 @@ targetCompatibility = '11'
 sourceCompatibility = '11'
 
 dependencies {
+    implementation 'javax.xml.ws:jaxws-api:2.3.1'
+    implementation 'javax.jws:javax.jws-api:1.1'
     implementation project(':common:common-api')
     implementation project(':common:common-templates')
     implementation project(':common:common-bootique')
