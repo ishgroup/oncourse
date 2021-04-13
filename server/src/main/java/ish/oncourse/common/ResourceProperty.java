@@ -22,6 +22,7 @@ public enum  ResourceProperty {
     NAME("name"),
     ENABLED("enabled"),
     ENTITY_CLASS("entityClass"),
+    ENTITY_ATTRIBUTE("entityAttribute"),
     DESCRIPTION("description"),
     BODY("body"),
     KEY_CODE("keyCode"),
