@@ -10,9 +10,8 @@ import {configLoader} from "./configLoader";
 import Cms from "./containers/Cms";
 import {createRootComponent, loadCmsCss} from "./utils";
 import {DefaultConfig} from "./constants/Config";
-import "../scss/cms.scss";
 import StylesProviderCustom from "./styles/StylesProviderCustom";
-// import "./CMSCustom";
+import "../scss/cms.scss";
 
 const store = CreateStore();
 
@@ -26,16 +25,13 @@ export const initApp = () => {
   configLoader(store);
   createRootComponent();
   loadCmsCss(store.getState().config.cssPath);
-  // const root = document.getElementById(DefaultConfig.CONTAINER_ID);
-  // root.attachShadow({ mode: "open" });
+
 
   const start = store => {
     ReactDOM.render(
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistStore(store)}>
-          {/*{console.log(123, <cms-custom/>)}*/}
-          {/*<cms-custom/>*/}
-          <StylesProviderCustom>
+          <StylesProviderCustom >
             <Router>
               <Cms/>
             </Router>
@@ -43,24 +39,8 @@ export const initApp = () => {
         </PersistGate>
       </Provider>,
       document.getElementById(DefaultConfig.CONTAINER_ID),
-      // root.shadowRoot,
     );
   };
-
-  // const start = store => {
-  //   ReactDOM.render(
-  //     <Provider store={store}>
-  //       <PersistGate loading={null} persistor={persistStore(store)}>
-  //         <StylesProviderCustom>
-  //           <Router>
-  //             <Cms/>
-  //           </Router>
-  //         </StylesProviderCustom>
-  //       </PersistGate>
-  //     </Provider>,
-  //     document.getElementById(DefaultConfig.CONTAINER_ID),
-  //   );
-  // };
 
   start(store);
 };

@@ -5,4 +5,4 @@ const generateClassName = createGenerateClassName({
   disableGlobal: true
 });
 
-export default props => <StylesProvider generateClassName={generateClassName}>{props.children}</StylesProvider>;
+export default props => <StylesProvider generateClassName={generateClassName} {...props}>{props.children}</StylesProvider>;
