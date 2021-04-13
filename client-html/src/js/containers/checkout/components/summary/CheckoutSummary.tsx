@@ -41,6 +41,7 @@ const CheckoutSummary = React.memo<Props>(props => {
     selectedContacts,
     summaryList,
     getPreviousCreditRecords,
+    getPreviousOwingRecords,
     checkoutUpdateSummaryPrices,
     checkoutUpdateSummaryClassesDiscounts
   } = props;
@@ -53,6 +54,7 @@ const CheckoutSummary = React.memo<Props>(props => {
 
     if ((!prevPayer && currentPayer) || (prevPayer && currentPayer && prevPayer.contact.id !== currentPayer.contact.id)) {
       getPreviousCreditRecords(currentPayer.contact.id);
+      getPreviousOwingRecords(currentPayer.contact.id);
     }
   }, [selectedContacts, summaryList]);
 
