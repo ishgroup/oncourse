@@ -433,6 +433,7 @@ const ScriptsForm = React.memo<Props>(props => {
                   <ScriptCard className="mt-3" heading="Trigger" disableExpandedBottomMargin expanded>
                     <TriggerCardContent
                       classes={classes}
+                      dispatch={dispatch}
                       TriggerTypeItems={TriggerTypeItems}
                       ScheduleTypeItems={ScheduleTypeItems}
                       enableEntityNameField={enableEntityNameField}
