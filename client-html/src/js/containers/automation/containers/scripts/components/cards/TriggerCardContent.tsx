@@ -27,10 +27,10 @@ const TriggerCardContent = props => {
   ]);
 
   useEffect(() => {
-    if (values.trigger.entityAttribute) {
+    if (values.trigger?.entityAttribute) {
       dispatch(change(form, "trigger.entityAttribute", null));
     }
-  }, [values.trigger.type, values.trigger.entityName]);
+  }, [values.trigger?.type, values.trigger?.entityName]);
 
   return (
     <div className="pt-2 centeredFlex">
