@@ -1,5 +1,5 @@
 import React from 'react';
-import {Checkbox, FormControlLabel, Grid, TextField} from '@material-ui/core';
+import {Checkbox, FormControlLabel, Grid, IconButton} from '@material-ui/core';
 import clsx from "clsx";
 import CloseIcon from '@material-ui/icons/Close';
 import {withStyles} from "@material-ui/core/styles";
@@ -9,8 +9,11 @@ import PageService from "../../../../../services/PageService";
 import {addContentMarker} from "../../../utils";
 import {PageState} from "../reducers/State";
 import CustomButton from "../../../../../common/components/CustomButton";
+import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import {stubFunction} from "../../../../../common/utils/Components";
+import {AppTheme} from "../../../../../styles/themeInterface";
 
-const styles: any = theme => ({
+const styles: any = (theme: AppTheme) => ({
   links: {
     marginBottom: "10px",
   },
@@ -81,8 +84,12 @@ const styles: any = theme => ({
     color: theme.palette.error.main,
     fontSize: "1rem",
   },
+  addIconButton: {
+    position: "relative",
+    bottom: "-5px",
+  },
   addIcon: {
-    color: theme.statistics.enrolmentText.color,
+    color: theme.palette.divider,
     fontSize: "1.2rem",
   },
   sideBarSetting: {
@@ -95,7 +102,7 @@ const styles: any = theme => ({
   },
   inputWrapper: {
     marginBottom: theme.spacing(2),
-  }
+  },
 });
 
 interface Props {
@@ -152,7 +159,7 @@ class PageSettings extends React.PureComponent<Props, any> {
       visible: this.state.visible,
       themeId: this.state.themeId,
       suppressOnSitemap: this.state.suppressOnSitemap,
-      content: addContentMarker(page.content, page.contentMode)
+      content: addContentMarker(page.content, page.contentMode),
     });
   }
 
@@ -165,9 +172,9 @@ class PageSettings extends React.PureComponent<Props, any> {
 
   onSetDefaultUrl(url) {
     const urls = this.state.urls
-      .map(item => item.link === url.link ? {...item, isDefault: true} : {...item, isDefault: false})
+      .map(item => item.link === url.link ? {...item, isDefault: true} : {...item, isDefault: false});
 
-    this.setState({urls})
+    this.setState({urls});
   }
 
   onDeleteUrl(url) {
@@ -175,7 +182,7 @@ class PageSettings extends React.PureComponent<Props, any> {
     this.setState({urls});
   }
 
-  onClickDelete = (e) => {
+  onClickDelete = e => {
     e.preventDefault();
     const {onDelete, page, showModal} = this.props;
 
@@ -230,15 +237,19 @@ class PageSettings extends React.PureComponent<Props, any> {
         <div className={classes.sideBarSetting}>
           <form>
             <Grid>
-              <label htmlFor="pageTitle">Title</label>
-              <TextField
-                type="text"
+              <EditInPlaceField
+                label="Title"
                 name="pageTitle"
                 id="pageTitle"
                 placeholder="Page title"
                 className={classes.inputWrapper}
-                value={title}
-                onChange={e => this.onChange(e, 'title')}
+                meta={{}}
+                input={{
+                  onChange: e => this.onChange(e, 'title'),
+                  onFocus: stubFunction,
+                  onBlur: stubFunction,
+                  value: title,
+                }}
               />
             </Grid>
 
@@ -279,20 +290,26 @@ class PageSettings extends React.PureComponent<Props, any> {
               </div>
 
               <div className="centeredFlex">
-                <TextField
-                  type="text"
-                  name="newLink"
-                  id="newLink"
-                  placeholder="New Page Url"
-                  className={classes.inputWrapper}
-                  value={newLink}
-                  onChange={e => this.onChange(e, 'newLink')}
-                  onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
-                />
-                <AddIcon
-                  onClick={() => this.onAddNewUrl()}
-                  className={classes.addIcon}
-                />
+                <div>
+                  <EditInPlaceField
+                    label="New Page Url"
+                    type="text"
+                    name="newLink"
+                    id="newLink"
+                    value={newLink}
+                    meta={{}}
+                    onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
+                    input={{
+                      onChange: e => this.onChange(e, 'newLink'),
+                      onFocus: stubFunction,
+                      onBlur: stubFunction,
+                      value: newLink,
+                    }}
+                  />
+                </div>
+                <IconButton size="small" onClick={this.onAddNewUrl} className={classes.addIconButton}>
+                  <AddIcon className={classes.addIcon} />
+                </IconButton>
               </div>
             </Grid>
 
@@ -300,7 +317,7 @@ class PageSettings extends React.PureComponent<Props, any> {
               control={
                 <Checkbox
                   checked={visible}
-                  onChange={e => {this.onChange(e, 'visible')}}
+                  onChange={e => {this.onChange(e, 'visible'); }}
                   name="visible"
                   color="primary"
                 />
@@ -312,7 +329,7 @@ class PageSettings extends React.PureComponent<Props, any> {
               control={
                 <Checkbox
                   checked={suppressOnSitemap}
-                  onChange={e => {this.onChange(e, 'suppressOnSitemap')}}
+                  onChange={e => {this.onChange(e, 'suppressOnSitemap'); }}
                   name="suppressOnSitemap"
                   color="primary"
                 />
