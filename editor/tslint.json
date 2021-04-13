@@ -1,7 +1,7 @@
 {
   "extends": "tslint-config-airbnb",
   "rules": {
-    "import-name": [true, { "react": "React" }],
+    "import-name": false,
     "object-curly-spacing": [
       true,
       "never"
