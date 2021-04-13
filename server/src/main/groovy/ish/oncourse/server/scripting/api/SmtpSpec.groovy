@@ -137,7 +137,11 @@ class SmtpSpec {
 	 * @param content attachment object
      */
 	void attachment(String fileName, String contentType, Object content) {
-		this.attachments << DocumentParam.valueOf(fileName, contentType, content)
+		if (content instanceof DocumentParam) {
+			this.attachments << DocumentParam.valueOf(fileName, contentType, (content as DocumentParam).content)
+		} else {
+			this.attachments << DocumentParam.valueOf(fileName, contentType, content)
+		}
 	}
 
 	/**
