@@ -1,12 +1,12 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import classnames from "classnames";
 import {Checkbox, FormControlLabel, Grid, Paper, TextField} from "@material-ui/core";
 import {getSkillsOnCourseSettings, setSkillsOnCourseSettings} from "./actions";
 import {State} from "../../../../reducers/state";
 import {SkillsOnCourseState} from "./reducers/State";
 import CustomButton from "../../../../common/components/CustomButton";
+import clsx from "clsx";
 
 interface Props {
   onInit: () => any;
@@ -58,14 +58,14 @@ export class Skills extends React.Component<Props, any> {
     const {fetching} = this.props;
 
     return (
-      <Paper className={classnames({fetching})}>
+      <Paper className={clsx({fetching}, "p-3")}>
         <form>
           <Grid className="flex-column">
             <FormControlLabel
               control={
                 <Checkbox
                   checked={hideStudentDetails}
-                  onChange={e => {this.onChange(e, 'hideStudentDetails')}}
+                  onChange={e => {this.onChange(e, 'hideStudentDetails');}}
                   name="hideStudentDetails"
                   color="primary"
                 />
@@ -77,7 +77,7 @@ export class Skills extends React.Component<Props, any> {
               control={
                 <Checkbox
                   checked={enableOutcomeMarking}
-                  onChange={e => {this.onChange(e, 'enableOutcomeMarking')}}
+                  onChange={e => {this.onChange(e, 'enableOutcomeMarking');}}
                   name="enableOutcomeMarking"
                   color="primary"
                 />

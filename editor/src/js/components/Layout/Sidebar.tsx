@@ -1,6 +1,5 @@
 import React from 'react';
-import {Route as DomRoute, Redirect} from 'react-router-dom';
-import {NavLink} from 'react-router-dom';
+import {Route as DomRoute, NavLink} from 'react-router-dom';
 import clsx from "clsx";
 import {withStyles} from "@material-ui/core/styles";
 import {Route, routes} from '../../routes';
@@ -87,7 +86,7 @@ const styles: any = theme => ({
       textDecoration: "underline",
       backgroundColor: "transparent",
       color: theme.palette.text.secondary,
-    }
+    },
   },
   slimPublishButton: {
     fontSize: "10px",
@@ -96,8 +95,8 @@ const styles: any = theme => ({
   },
   listItem: {
     borderBottom: "1px solid #bbb",
-  }
-})
+  },
+});
 
 interface Props {
   classes: any;
@@ -186,9 +185,9 @@ class Sidebar extends React.Component<Props, any> {
               onClick={e => this.onClickMenu(route.url)}
               activeClassName={classes.activeLink}
             >
-              <span className="d-flex">
-                {route.icon && <span className="centeredFlex mr-0-5">{route.icon}</span>}
-                {!slim && <span> {route.title}</span>}
+              <span className="centeredFlex">
+                {route.icon}
+                {!slim && <span className="ml-0-5"> {route.title}</span>}
               </span>
             </NavLink>
           </li>,
@@ -253,5 +252,5 @@ const RouteWrapper = ({component: Component, ...rest}) => {
   );
 };
 
-export default (withStyles(styles)(Sidebar))
+export default (withStyles(styles)(Sidebar));
 

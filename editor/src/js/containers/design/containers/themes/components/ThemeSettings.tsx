@@ -97,17 +97,17 @@ class ThemeSettings extends React.Component<Props, any> {
     if (theme.paths) this.setState({urls: theme.paths});
   }
 
-  clickBack(e) {
+  clickBack = (e) => {
     const {onBack} = this.props;
     e.preventDefault();
     onBack();
   }
 
-  formatLink(link) {
+  formatLink = (link) => {
     return (link.indexOf('/') !== 0 ? `/${link}` : link).replace(/ /g, '');
   }
 
-  onAddNewUrl() {
+  onAddNewUrl = () => {
     const newLink = this.formatLink(this.state.newLink);
     // const {showError, themes} = this.props;
 
@@ -134,7 +134,7 @@ class ThemeSettings extends React.Component<Props, any> {
     });
   }
 
-  onUpdatePath(event, path) {
+  onUpdatePath = (event, path) => {
     const updatedUrls = this.state.urls.map(elem => {
       if (elem.path === path) {
         elem.exactMatch = !!event.target.value;
@@ -148,18 +148,18 @@ class ThemeSettings extends React.Component<Props, any> {
     });
   }
 
-  onChange(event, key) {
+  onChange = (event, key) => {
     this.setState({
       [key]: event.target.value,
     });
   }
 
-  onDeleteUrl(url) {
+  onDeleteUrl = (url) => {
     const urls = this.state.urls.filter(item => item.path !== url);
     this.setState({urls});
   }
 
-  onSave() {
+  onSave = () => {
     const {onEdit} = this.props;
 
     onEdit({
@@ -169,7 +169,7 @@ class ThemeSettings extends React.Component<Props, any> {
     });
   }
 
-  onClickDelete(e) {
+  onClickDelete = (e) => {
     e.preventDefault();
     const {onDelete, theme, showModal} = this.props;
 

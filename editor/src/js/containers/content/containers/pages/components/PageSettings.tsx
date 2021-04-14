@@ -1,5 +1,5 @@
 import React from 'react';
-import {Checkbox, FormControlLabel, Grid, IconButton} from '@material-ui/core';
+import {Checkbox, FormControlLabel, IconButton} from '@material-ui/core';
 import clsx from "clsx";
 import CloseIcon from '@material-ui/icons/Close';
 import {withStyles} from "@material-ui/core/styles";
@@ -147,7 +147,7 @@ class PageSettings extends React.PureComponent<Props, any> {
     }
   }
 
-  clickBack(e) {
+  clickBack = (e) => {
     const {onBack} = this.props;
     e.preventDefault();
     onBack();
@@ -166,21 +166,21 @@ class PageSettings extends React.PureComponent<Props, any> {
     });
   }
 
-  onChange(event, key) {
+  onChange = (event, key) => {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     this.setState({
       [key]: value,
     });
   }
 
-  onSetDefaultUrl(url) {
+  onSetDefaultUrl = (url) => {
     const urls = this.state.urls
       .map(item => item.link === url.link ? {...item, isDefault: true} : {...item, isDefault: false});
 
     this.setState({urls});
   }
 
-  onDeleteUrl(url) {
+  onDeleteUrl = (url) => {
     const urls = this.state.urls.filter(item => item.link !== url.link);
     this.setState({urls});
   }
@@ -195,7 +195,7 @@ class PageSettings extends React.PureComponent<Props, any> {
     });
   }
 
-  onAddNewUrl() {
+  onAddNewUrl = () => {
     const newLink = this.formatLink(this.state.newLink);
     const {pages, page, showError} = this.props;
     const actualPages = pages.map(p => p.id === page.id ? {...p, urls: this.state.urls} : p);
@@ -218,7 +218,7 @@ class PageSettings extends React.PureComponent<Props, any> {
     });
   }
 
-  formatLink(link) {
+  formatLink = (link) => {
     return (link.indexOf('/') !== 0 ? `/${link}` : link).replace(/ /g, '');
   }
 
@@ -239,23 +239,20 @@ class PageSettings extends React.PureComponent<Props, any> {
 
         <div className={classes.sideBarSetting}>
           <form>
-            <Grid>
-              <EditInPlaceField
-                label="Title"
-                name="pageTitle"
-                id="pageTitle"
-                className={classes.inputWrapper}
-                meta={{}}
-                input={{
-                  onChange: e => this.onChange(e, 'title'),
-                  onFocus: stubFunction,
-                  onBlur: stubFunction,
-                  value: title,
-                }}
-              />
-            </Grid>
+            <EditInPlaceField
+              label="Title"
+              name="pageTitle"
+              id="pageTitle"
+              className={classes.inputWrapper}
+              meta={{}}
+              input={{
+                onChange: e => this.onChange(e, 'title'),
+                onFocus: stubFunction,
+                onBlur: stubFunction,
+                value: title,
+              }}
+            />
 
-            <Grid>
               <label htmlFor="pageUrl">Page Links (URLs)</label>
 
               <div className={classes.links}>
@@ -282,10 +279,12 @@ class PageSettings extends React.PureComponent<Props, any> {
                     </div>
 
                     {!url.isDefault &&
+
+                    <IconButton size="small" onClick={() => !url.isDefault && this.onDeleteUrl(url)}>
                       <CloseIcon
-                        onClick={() => !url.isDefault && this.onDeleteUrl(url)}
                         className={classes.removeIcon}
                       />
+                    </IconButton>
                     }
                   </div>
                 ))}
@@ -313,7 +312,6 @@ class PageSettings extends React.PureComponent<Props, any> {
                   <AddIcon className={classes.addIcon} />
                 </IconButton>
               </div>
-            </Grid>
 
             <FormControlLabel
               control={
@@ -339,7 +337,7 @@ class PageSettings extends React.PureComponent<Props, any> {
               label="Hide from sitemap"
             />
 
-            <Grid className={classes.actionsGroup}>
+            <div className={classes.actionsGroup}>
               <div className="buttons-inline">
                 <CustomButton
                   styleType="delete"
@@ -356,7 +354,7 @@ class PageSettings extends React.PureComponent<Props, any> {
                   Save
                 </CustomButton>
               </div>
-            </Grid>
+            </div>
           </form>
         </div>
       </div>
