@@ -1,12 +1,14 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {Checkbox, FormControlLabel, Grid, Paper, TextField} from "@material-ui/core";
+import {Checkbox, FormControlLabel, Grid, Paper} from "@material-ui/core";
 import {getSkillsOnCourseSettings, setSkillsOnCourseSettings} from "./actions";
 import {State} from "../../../../reducers/state";
 import {SkillsOnCourseState} from "./reducers/State";
 import CustomButton from "../../../../common/components/CustomButton";
 import clsx from "clsx";
+import {stubFunction} from "../../../../common/utils/Components";
+import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 
 interface Props {
   onInit: () => any;
@@ -87,15 +89,19 @@ export class Skills extends React.Component<Props, any> {
           </Grid>
 
           <Grid className="mt-1 mb-1">
-            <label htmlFor="tutorFeedbackEmail">Email tutor feedback to</label>
             <Grid container>
               <Grid item xs={3}>
-                <TextField
-                  type="text"
+                <EditInPlaceField
+                  label="Email tutor feedback to"
                   name="tutorFeedbackEmail"
                   id="tutorFeedbackEmail"
-                  value={tutorFeedbackEmail}
-                  onChange={e => this.onChange(e, 'tutorFeedbackEmail')}
+                  meta={{}}
+                  input={{
+                    onChange: e => this.onChange(e, 'tutorFeedbackEmail'),
+                    onFocus: stubFunction,
+                    onBlur: stubFunction,
+                    value: tutorFeedbackEmail,
+                  }}
                 />
               </Grid>
             </Grid>

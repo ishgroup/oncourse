@@ -1,8 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {Checkbox, FormControlLabel, Grid, Paper, Select, TextField} from "@material-ui/core";
-import classnames from "classnames";
+import {Checkbox, FormControlLabel, Grid, Paper, Typography} from "@material-ui/core";
 import {getWebsiteSettings, setWebsiteSettings} from "./actions";
 import {Condition, State as SuburbState} from "../../../../model";
 import {State} from "../../../../reducers/state";
@@ -10,12 +9,72 @@ import {WebsiteSettingsState} from "./reducers/State";
 import {toPositive} from "../../../../common/utils/NumberUtils";
 import CustomButton from "../../../../common/components/CustomButton";
 import {withStyles} from "@material-ui/core/styles";
+import clsx from "clsx";
+import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
+import {stubFunction} from "../../../../common/utils/Components";
 
 const styles = theme => ({
   select: {
     width: "230px",
-  }
+  },
+  number: {
+    width: "30px",
+  },
 });
+
+const conditionItems = [
+  {
+    value: Condition.afterClassStarts,
+    label: "after class starts",
+  },
+  {
+    value: Condition.beforeClassStarts,
+    label: "before class starts",
+  },
+  {
+    value: Condition.afterClassEnds,
+    label: "after class ends",
+  },
+  {
+    value: Condition.beforeClassEnds,
+    label: "before class ends",
+  },
+];
+
+const suburbItems = [
+  {
+    value: "default",
+    label: "All states",
+  },
+  {
+    value: SuburbState.NSW,
+    label: "NSW",
+  },
+  {
+    value: SuburbState.QLD,
+    label: "Queensland",
+  },
+  {
+    value: SuburbState.VIC,
+    label: "Victoria",
+  },
+  {
+    value: SuburbState.TAS,
+    label: "Tasmania",
+  },
+  {
+    value: SuburbState.ACT,
+    label: "ACT",
+  },
+  {
+    value: SuburbState.WA,
+    label: "Western Australia",
+  },
+  {
+    value: SuburbState.SA,
+    label: "South Australia",
+  },
+];
 
 interface Props {
   classes: any;
@@ -36,7 +95,7 @@ export class Website extends React.Component<Props, any> {
       addThisId: website.addThisId || "",
       enableForCourse: website.enableForCourse || false,
       enableForWebpage: website.enableForWebpage || false,
-      suburbAutocompleteState: website.suburbAutocompleteState || "default",
+      suburbAutocompleteState: website.suburbAutocompleteState,
       classAge: {
         hideClass: (website.classAge && website.classAge.hideClass)
           || {offset: 0, condition: Condition.afterClassStarts},
@@ -102,156 +161,169 @@ export class Website extends React.Component<Props, any> {
     const {classes, fetching} = this.props;
 
     return (
-      <Paper className={classnames({fetching})}>
-        <form>
-          <Grid>
-            <h4>ADD THIS</h4>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={enableSocialMedia}
-                  onChange={e => {this.onChange(e.target.checked, 'enableSocialMedia')}}
-                  name="enableSocialMedia"
-                  color="primary"
-                />
-              }
-              label="Enable social media links."
-            />
-          </Grid>
-
-          <Grid className="mt-2">
-            <label htmlFor="addThisId">AddThis profile id</label>
-            <Grid container>
-              <Grid item xs={3}>
-                <TextField
-                  type="text"
-                  name="addThisId"
-                  id="addThisId"
-                  value={addThisId}
-                  onChange={e => this.onChange(e.target.value, 'addThisId')}
-                />
-                <p><a target="_blank" href="http://www.addthis.com/">Click here</a> to to create one.</p>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid className="mt-2 ">
-            <h4>VISIBILITY RULES</h4>
-            <h6>Enable for these pages</h6>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={enableForCourse}
-                  onChange={e => {this.onChange(e.target.checked, 'enableForCourse')}}
-                  name="enableForCourse"
-                  color="primary"
-                />
-              }
-              label="Course"
-            />
-          </Grid>
-
-          <Grid>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={enableForWebpage}
-                  onChange={e => {this.onChange(e.target.checked, 'enableForWebpage')}}
-                  name="enableForWebpage"
-                  color="primary"
-                />
-              }
-              label="Web page"
-            />
-          </Grid>
-
-          <Grid className="mt-3">
-            <h6>Hide class on website</h6>
-            <div className="form-inline">
-              <TextField
-                type="number"
-                name="offset"
-                className="xs"
-                value={classAge.hideClass.offset}
-                onChange={e => {this.onChangeClassAge(e.target.value, 'offset', 'hideClass');}}
-                onBlur={e => {this.onChangeClassAge(toPositive(e.target.value), 'offset', 'hideClass');}}
+      <Paper className={clsx({fetching}, "p-3")}>
+        <Grid>
+          <h4 className="heading mb-1">ADD THIS</h4>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={enableSocialMedia}
+                onChange={e => this.onChange(e.target.checked, 'enableSocialMedia')}
+                name="enableSocialMedia"
+                color="primary"
               />
-              <label className="ml-1 mr-2">days</label>
-              <Select
-                type="select"
-                name="hideClassCondition"
-                className={classes.select}
-                value={classAge.hideClass.condition}
-                onChange={e => {this.onChangeClassAge(e.target.value, 'condition', 'hideClass');}}
-              >
-                <option value={Condition.afterClassStarts}>after class starts</option>
-                <option value={Condition.beforeClassStarts}>before class starts</option>
-                <option value={Condition.afterClassEnds}>after class ends</option>
-                <option value={Condition.beforeClassEnds}>before class ends</option>
-              </Select>
-            </div>
-          </Grid>
+            }
+            label="Enable social media links."
+          />
+        </Grid>
 
-          <Grid className="mt-2">
-            <h6>Stop web enrolments</h6>
-            <div className="form-inline">
-              <TextField
-                type="number"
-                name="stopWebEnrolmentDays"
-                className="xs"
-                value={classAge.stopWebEnrolment.offset}
-                onChange={e => {this.onChangeClassAge(e.target.value, 'offset', 'stopWebEnrolment');}}
-                onBlur={e => {this.onChangeClassAge(toPositive(e.target.value), 'offset', 'stopWebEnrolment');}}
+        <Grid container className="mt-1">
+          <Grid item xs={3}>
+            <EditInPlaceField
+              label="AddThis profile id"
+              name="addThisId"
+              id="addThisId"
+              meta={{}}
+              input={{
+                onChange: e => this.onChange(e.target.value, 'addThisId'),
+                onFocus: stubFunction,
+                onBlur: stubFunction,
+                value: addThisId,
+              }}
+            />
+            <p><a target="_blank" href="http://www.addthis.com/">Click here</a> to to create one.</p>
+          </Grid>
+        </Grid>
+
+        <Grid className="mt-2">
+          <h4 className="heading">VISIBILITY RULES</h4>
+          <Typography variant="caption" component="h6">Enable for these pages</Typography>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={enableForCourse}
+                onChange={e => this.onChange(e.target.checked, 'enableForCourse')}
+                name="enableForCourse"
+                color="primary"
               />
-              <label className="ml-1 mr-2">days</label>
-                <Select
-                  type="select"
-                  name="stopWebEnrolmentCondition"
-                  className={classes.select}
-                  value={classAge.stopWebEnrolment.condition}
-                  onChange={e => {this.onChangeClassAge(e.target.value, 'condition', 'stopWebEnrolment');}}
-                >
-                <option value={Condition.afterClassStarts}>after class starts</option>
-                <option value={Condition.beforeClassStarts}>before class starts</option>
-                <option value={Condition.beforeClassEnds}>before class ends</option>
-              </Select>
-            </div>
-          </Grid>
+            }
+            label="Course"
+          />
+        </Grid>
 
-          <Grid className="mt-3 mb-2">
-            <label>Show suburbs from</label>
-            <Grid container>
-              <Grid item xs={3}>
-                <Select
-                  type="select"
-                  name="suburbAutocompleteState"
-                  value={suburbAutocompleteState}
-                  className="w-100"
-                  onChange={e => {
-                    this.onChange(e.target.value, 'suburbAutocompleteState');
-                  }}
-                >
-                  <option value={"default"}>All states</option>
-                  <option value={SuburbState.NSW}>NSW</option>
-                  <option value={SuburbState.QLD}>Queensland</option>
-                  <option value={SuburbState.VIC}>Victoria</option>
-                  <option value={SuburbState.TAS}>Tasmania</option>
-                  <option value={SuburbState.ACT}>ACT</option>
-                  <option value={SuburbState.WA}>Western Australia</option>
-                  <option value={SuburbState.SA}>South Australia</option>
-                </Select>
-              </Grid>
-            </Grid>
-          </Grid>
+        <Grid>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={enableForWebpage}
+                onChange={e => this.onChange(e.target.checked, 'enableForWebpage')}
+                name="enableForWebpage"
+                color="primary"
+              />
+            }
+            label="Web page"
+          />
+        </Grid>
 
-          <CustomButton
-            onClick={() => this.onSave()}
-            styleType="submit"
-            styles="mt-2"
-          >
-            Save
-          </CustomButton>
-        </form>
+        <div className="mt-3">
+          <Typography variant="caption" component="h6">Hide class on website</Typography>
+          <Typography>
+            <EditInPlaceField
+              type="number"
+              name="offset"
+              id="addThisId"
+              meta={{}}
+              input={{
+                onChange: e => this.onChangeClassAge(e.target.value, 'offset', 'hideClass'),
+                onBlur: e => this.onChangeClassAge(toPositive(e), 'offset', 'hideClass'),
+                onFocus: stubFunction,
+                value: classAge.hideClass.offset,
+              }}
+              className={classes.number}
+              formatting="inline"
+              hideArrows
+            />
+
+            <label className="ml-1 mr-2">days</label>
+
+            <EditInPlaceField
+              select
+              name="hideClassCondition"
+              id="addThisId"
+              className={classes.select}
+              meta={{}}
+              input={{
+                onChange: e => this.onChangeClassAge(e, 'condition', 'hideClass'),
+                onBlur: stubFunction,
+                onFocus: stubFunction,
+                value: classAge.hideClass.condition,
+              }}
+              items={conditionItems}
+              formatting="inline"
+            />
+          </Typography>
+        </div>
+
+        <Grid className="mt-2">
+          <Typography variant="caption" component="h6">Stop web enrolments</Typography>
+          <Typography>
+            <EditInPlaceField
+              type="number"
+              name="stopWebEnrolmentDays"
+              meta={{}}
+              input={{
+                onChange: e => this.onChangeClassAge(e.target.value, 'offset', 'stopWebEnrolment'),
+                onBlur: e => this.onChangeClassAge(toPositive(e), 'offset', 'stopWebEnrolment'),
+                onFocus: stubFunction,
+                value: classAge.stopWebEnrolment.offset,
+              }}
+              className={classes.number}
+              formatting="inline"
+              hideArrows
+            />
+
+            <label className="ml-1 mr-2">days</label>
+
+            <EditInPlaceField
+              select
+              name="stopWebEnrolmentCondition"
+              className={classes.select}
+              meta={{}}
+              input={{
+                onChange: e => this.onChangeClassAge(e, 'condition', 'stopWebEnrolment'),
+                onBlur: stubFunction,
+                onFocus: stubFunction,
+                value: classAge.stopWebEnrolment.condition,
+              }}
+              items={conditionItems.filter(i => i.value !== Condition.afterClassEnds)}
+              formatting="inline"
+            />
+          </Typography>
+        </Grid>
+
+        <Grid className="mt-3 mb-2">
+          <EditInPlaceField
+            select
+            label="Show suburbs from"
+            name="suburbAutocompleteState"
+            meta={{}}
+            input={{
+              onChange: e => this.onChange(e, 'suburbAutocompleteState'),
+              onBlur: stubFunction,
+              onFocus: stubFunction,
+              value: suburbAutocompleteState || "default",
+            }}
+            items={suburbItems}
+          />
+        </Grid>
+
+        <CustomButton
+          onClick={() => this.onSave()}
+          styleType="submit"
+          styles="mt-2"
+        >
+          Save
+        </CustomButton>
       </Paper>
     );
   }
