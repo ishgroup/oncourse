@@ -222,7 +222,7 @@ export function mockMessage() {
       + '    </style>\n'
       + '\n'
       + '    <style type="text/css" media="screen">\n'
-      + '        @import url(http://fonts.googleapis.com/css?family=Oxygen:400,700);\n'
+      + '        @import url("https://fonts.googleapis.com/css2?family=Oxygen:wght@400;700&display=swap");\n'
       + '    </style>\n'
       + '\n'
       + '    <style type="text/css" media="screen">\n'
