@@ -144,8 +144,8 @@ export class Menus extends React.Component<Props, any> {
         <CustomButton
           styleType="submit"
           onClick={() => this.addItem()}
+          startIcon={<AddCircleIcon />}
         >
-          <AddCircleIcon/>
           Add new item
         </CustomButton>
 

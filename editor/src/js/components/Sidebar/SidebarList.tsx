@@ -30,7 +30,7 @@ const styles: any = theme => ({
     "&:hover": {
       backgroundColor: "rgba(0, 0, 0, 0.1)",
       color: theme.palette.text.primary,
-    }
+    },
   },
   sidebarSettings: {
     padding: "10px 20px",
@@ -49,7 +49,7 @@ const styles: any = theme => ({
   },
   linkTitle: {
     fontWeight: 400,
-  }
+  },
 });
 
 interface Props {
@@ -125,8 +125,8 @@ class SidebarList extends React.Component<Props, any> {
             <CustomButton
               onClick={onAdd}
               styleType="submit"
+              startIcon={<AddCircleIcon />}
             >
-              <AddCircleIcon/>
               Add new
             </CustomButton>
           </div>

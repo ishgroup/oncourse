@@ -5,12 +5,12 @@ import {Grid, Paper, TextField} from "@material-ui/core";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import classnames from 'classnames';
 import {getRedirectSettings, setRedirectSettings} from "./actions";
 import RedirectItem from "./components/RedirectItem";
 import {RedirectSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
 import CustomButton from "../../../../common/components/CustomButton";
+import clsx from "clsx";
 
 const styles: any = theme => ({
   saveButton: {
@@ -100,34 +100,30 @@ export class Redirect extends React.PureComponent<Props, any> {
     const {classes, fetching} = this.props;
 
     return (
-      <Paper className={classnames({fetching})}>
-        <p>
+      <Paper className={clsx({fetching}, "p-3")}>
+        <p className="mb-1">
           Add 301 redirects to your website by entering the local path on the left (starting with '/')
           and the destination on the right (either starting with '/' for another local page or starting with
           http/https for redirecting to another website).
         </p>
 
         {rules && rules.length > 0 &&
-          <Grid container>
-            <Grid item xs={2}>
-              <TextField
-                type="text"
-                name="filter"
-                placeholder="Filter"
-                id="filter"
-                value={filter}
-                onChange={e => this.onChangeFilter(e)}
-              />
-            </Grid>
-          </Grid>
+          <TextField
+            type="text"
+            name="filter"
+            placeholder="Filter"
+            id="filter"
+            value={filter}
+            onChange={e => this.onChangeFilter(e)}
+          />
         }
 
-        <Grid className="mt-2 mb-2">
+        <Grid className="mt-2 mb-3">
           <CustomButton
             styleType="submit"
             onClick={() => this.onAddNew()}
+            startIcon={<AddCircleIcon />}
           >
-            <AddCircleIcon/>
             Add new
           </CustomButton>
           <CustomButton
@@ -139,19 +135,21 @@ export class Redirect extends React.PureComponent<Props, any> {
           </CustomButton>
         </Grid>
 
-        <div className="rules">
-          {rules && rules
-            .filter(r => r.from.indexOf(filter) !== -1 || r.to.indexOf(filter) !== -1 || !r.from || !r.to)
-            .map((rule, index) =>
-              <RedirectItem
-                key={index}
-                item={rule}
-                index={index}
-                onChange={this.onChange.bind(this)}
-                onRemove={this.onRemove.bind(this)}
-              />,
-          )}
-        </div>
+        <Grid container className="mt-3">
+          <Grid item xs={12} md={10} lg={8} xl={6}>
+            {rules && rules
+              .filter(r => r.from.indexOf(filter) !== -1 || r.to.indexOf(filter) !== -1 || !r.from || !r.to)
+              .map((rule, index) =>
+                <RedirectItem
+                  key={index}
+                  item={rule}
+                  index={index}
+                  onChange={this.onChange.bind(this)}
+                  onRemove={this.onRemove.bind(this)}
+                />,
+              )}
+          </Grid>
+        </Grid>
       </Paper>
     );
   }

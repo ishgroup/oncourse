@@ -1,8 +1,9 @@
 import React from 'react';
-import classnames from 'classnames';
 import {RedirectItem as RedirectItemModel} from "../../../../../model";
 import CustomButton from "../../../../../common/components/CustomButton";
-import {Grid, TextField} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
+import {stubFunction} from "../../../../../common/utils/Components";
+import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
 
 interface RedirectItemState extends RedirectItemModel {
   submitted?: boolean;
@@ -24,40 +25,52 @@ class RedirectItem extends React.Component<Props, any> {
     const {item, index, onChange, onRemove} = this.props;
 
     return (
-      <Grid key={index}>
-        <label className="mr-1">From</label>
-        <TextField
-          className={classnames({invalid: (item.submitted && item.to && !item.from) || item.error})}
-          type="text"
-          name={`from-${index}`}
-          id={`from-${index}`}
-          value={item.from}
-          onChange={e => onChange(e, index, 'from')}
+      <Grid container key={index} className="centeredFlex">
+        <Grid item xs={5}>
+          <EditInPlaceField
+            label="From"
+            name={`from-${index}`}
+            id={`from-${index}`}
+            meta={{
+              invalid: (item.submitted && item.to && !item.from) || item.error,
+              error: item.error,
+            }}
+            input={{
+              onChange: e => onChange(e, index, 'from'),
+              onBlur: stubFunction,
+              onFocus: stubFunction,
+              value: item.from,
+            }}
+            fullWidth
         />
-
-        <label className="ml-1 mr-1">To</label>
-        <TextField
-          className={classnames({invalid: (item.submitted && !item.to && item.from) || item.error})}
-          type="text"
-          name={`to-${index}`}
-          id={`to-${index}`}
-          value={item.to}
-          onChange={e => onChange(e, index, 'to')}
-        />
-
-        <CustomButton
-          styleType="delete"
-          onClick={() => onRemove(index)}
-          styles="ml-1"
-        >
-          Remove
-        </CustomButton>
-
-        {item.error &&
-          <div className="form-inline">
-            <label className="error">{item.error}</label>
-          </div>
-        }
+        </Grid>
+        <Grid item xs={5}>
+          <EditInPlaceField
+            label="To"
+            name={`to-${index}`}
+            id={`to-${index}`}
+            meta={{
+              invalid: (item.submitted && !item.to && item.from) || item.error,
+              error: item.error,
+            }}
+            input={{
+              onChange: e => onChange(e, index, 'to'),
+              onBlur: stubFunction,
+              onFocus: stubFunction,
+              value: item.to,
+            }}
+            fullWidth
+          />
+        </Grid>
+        <Grid item>
+          <CustomButton
+            styleType="delete"
+            onClick={() => onRemove(index)}
+            styles="ml-1"
+          >
+            Remove
+          </CustomButton>
+        </Grid>
       </Grid>
     );
   }

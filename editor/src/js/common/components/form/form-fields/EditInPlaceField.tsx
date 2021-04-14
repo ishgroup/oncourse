@@ -137,7 +137,9 @@ const styles = theme => createStyles({
     },
   },
   smallOffsetInput: {
-    padding: "2px",
+    ".cms-scope &": {
+      padding: "2px",
+    }
   },
   inlineMargin: {
     marginRight: "0.3em",
@@ -157,7 +159,6 @@ const styles = theme => createStyles({
     "&:after": {
       borderBottomColor: theme.palette.primary.main,
     },
-
   },
   selectIcon: {
     fontSize: "24px",

@@ -13,7 +13,7 @@ import clsx from "clsx";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 import {stubFunction} from "../../../../common/utils/Components";
 
-const styles = theme => ({
+const styles = () => ({
   select: {
     width: "230px",
   },
@@ -241,6 +241,7 @@ export class Website extends React.Component<Props, any> {
               }}
               className={classes.number}
               formatting="inline"
+              disableInputOffsets
               hideArrows
             />
 
@@ -279,6 +280,7 @@ export class Website extends React.Component<Props, any> {
               }}
               className={classes.number}
               formatting="inline"
+              disableInputOffsets
               hideArrows
             />
 

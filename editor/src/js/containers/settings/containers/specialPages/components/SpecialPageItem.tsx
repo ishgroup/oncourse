@@ -1,26 +1,16 @@
 import React from "react";
-import classnames from "classnames";
-import {TextField} from "@material-ui/core";
 import {
   SpecialPageItem as SpecialPageItemModel,
-  URLMatchRule,
 } from "../../../../../model";
-import {withStyles} from "@material-ui/core/styles";
-import clsx from "clsx";
+import {stubFunction} from "../../../../../common/utils/Components";
+import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
 
-const styles = theme => ({
-  rule: {
-    maxWidth: "25vw",
-    width: "25vw",
-  }
-})
 
 interface SpecialPageItemState extends SpecialPageItemModel {
   submitted?: boolean;
 }
 
 interface Props {
-  classes: any;
   item: SpecialPageItemState;
   index: number;
   onChange: (e, index, key) => any;
@@ -28,34 +18,34 @@ interface Props {
 
 class SpecialPageItem extends React.PureComponent<Props, any> {
   render() {
-    const {classes, item, index, onChange} = this.props;
+    const {item, index, onChange} = this.props;
+
+    console.log(item);
 
     return (
       <div key={index}>
-        <h6 className="mb-1">{item.specialPage}</h6>
-
-        <div className={clsx(classes.rule, "d-flex", "align-items-end")}>
-          <label className="mr-1">From ({item.matchType.toLowerCase()})</label>
-          <TextField
-            className={classnames({
-              invalid: item.error,
-            })}
-            type="text"
+        <h6 className="heading mb-1">{item.specialPage}</h6>
+        <div>
+          <EditInPlaceField
+            label={`From (${item.matchType.toLowerCase()})`}
             name={`from-${index}`}
             id={`from-${index}`}
-            value={item.from}
-            onChange={e => onChange(e, index, "from")}
+            meta={{
+              invalid: item.error,
+              error: item.error,
+            }}
+            input={{
+              onChange: e => onChange(e, index, 'from'),
+              onBlur: stubFunction,
+              onFocus: stubFunction,
+              value: item.from,
+            }}
+            fullWidth
           />
         </div>
-
-        {item.error && (
-          <div>
-            <label className="error">{item.error}</label>
-          </div>
-        )}
       </div>
     );
   }
 }
 
-export default (withStyles(styles)(SpecialPageItem));
+export default SpecialPageItem;

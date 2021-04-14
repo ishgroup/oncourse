@@ -4,12 +4,12 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {withStyles} from "@material-ui/core/styles";
 import {Paper} from "@material-ui/core";
-import classnames from "classnames";
 import {getSpecialPageSettings, setSpecialPageSettings} from "./actions";
 import {SpecialPageSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
 import SpecialPageItem from "./components/SpecialPageItem";
 import CustomButton from "../../../../common/components/CustomButton";
+import clsx from "clsx";
 
 const styles = theme => ({
   rules: {
@@ -79,7 +79,7 @@ export class SpecialPage extends React.PureComponent<Props, any> {
     const {classes, fetching} = this.props;
 
     return (
-      <Paper className={classnames({fetching})}>
+      <Paper className={clsx({fetching}, "p-3")}>
         <div className={classes.rules}>
           {rules &&
             rules

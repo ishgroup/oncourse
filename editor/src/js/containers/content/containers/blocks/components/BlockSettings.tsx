@@ -4,7 +4,8 @@ import IconBack from "../../../../../common/components/IconBack";
 import {BlockState} from "../reducers/State";
 import {addContentMarker} from "../../../utils";
 import CustomButton from "../../../../../common/components/CustomButton";
-import {TextField} from "@material-ui/core";
+import {stubFunction} from "../../../../../common/utils/Components";
+import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
 
 const styles: any = theme => ({
   linkBack: {
@@ -24,11 +25,6 @@ const styles: any = theme => ({
   sideBarSetting: {
     padding: "10px 20px",
   },
-  actionsGroup: {
-    marginTop: "30px",
-    paddingTop: "20px",
-    borderTop: "1px solid #bbbbbb",
-  }
 });
 
 interface Props {
@@ -66,11 +62,11 @@ class BlockSettings extends React.Component<Props, any> {
 
     onEdit({
       title: this.state.title,
-      content: addContentMarker(block.content, block.contentMode)
+      content: addContentMarker(block.content, block.contentMode),
     });
   }
 
-  onClickDelete = (e) => {
+  onClickDelete =e => {
     e.preventDefault();
     const {onDelete, block, showModal} = this.props;
 
@@ -95,38 +91,40 @@ class BlockSettings extends React.Component<Props, any> {
         </ul>
 
         <div className={classes.sideBarSetting}>
-          <form>
-            <div>
-              <label htmlFor="blockTitle">Title</label>
-              <TextField
-                type="text"
-                name="blockTitle"
-                id="blockTitle"
-                placeholder="Block title"
-                value={title}
-                onChange={e => this.onChange(e, 'title')}
-              />
-            </div>
+          <div>
+            <EditInPlaceField
+              label="Title"
+              name="blockTitle"
+              id="blockTitle"
+              meta={{}}
+              input={{
+                onChange: e => this.onChange(e, 'title'),
+                onBlur: stubFunction,
+                onFocus: stubFunction,
+                value: title,
+              }}
+              fullWidth
+            />
+          </div>
 
-            <div className={classes.actionsGroup}>
-              <div className="buttons-inline">
-                <CustomButton
-                  styleType="delete"
-                  onClick={this.onClickDelete}
-                  styles={classes.removeButton}
-                >
-                  Remove
-                </CustomButton>
+          <div className="mt-3">
+            <div className="buttons-inline">
+              <CustomButton
+                styleType="delete"
+                onClick={this.onClickDelete}
+                styles={classes.removeButton}
+              >
+                Remove
+              </CustomButton>
 
-                <CustomButton
-                  styleType="submit"
-                  onClick={this.onSave}
-                >
-                  Save
-                </CustomButton>
-              </div>
+              <CustomButton
+                styleType="submit"
+                onClick={this.onSave}
+              >
+                Save
+              </CustomButton>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     );
