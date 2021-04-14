@@ -24,10 +24,10 @@ export class Checkout extends React.Component<Props, any> {
     const checkout = props.checkout;
 
     this.state = {
-      allowCreateContactOnEnrol: checkout.allowCreateContactOnEnrol,
-      allowCreateContactOnWaitingList:  checkout.allowCreateContactOnWaitingList,
-      allowCreateContactOnMailingList: checkout.allowCreateContactOnMailingList,
-      collectParentDetails: checkout.collectParentDetails,
+      allowCreateContactOnEnrol: checkout.allowCreateContactOnEnrol || false,
+      allowCreateContactOnWaitingList:  checkout.allowCreateContactOnWaitingList || false,
+      allowCreateContactOnMailingList: checkout.allowCreateContactOnMailingList || false,
+      collectParentDetails: checkout.collectParentDetails || false,
       contactAgeWhenNeedParent: checkout.contactAgeWhenNeedParent,
       enrolmentMinAge: checkout.enrolmentMinAge,
     };

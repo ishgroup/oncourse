@@ -32,14 +32,16 @@ export class Website extends React.Component<Props, any> {
     const website = props.website;
 
     this.state = {
-      enableSocialMedia: website.enableSocialMedia,
-      addThisId: website.addThisId,
-      enableForCourse: website.enableForCourse,
-      enableForWebpage: website.enableForWebpage,
-      suburbAutocompleteState: website.suburbAutocompleteState,
+      enableSocialMedia: website.enableSocialMedia || false,
+      addThisId: website.addThisId || "",
+      enableForCourse: website.enableForCourse || false,
+      enableForWebpage: website.enableForWebpage || false,
+      suburbAutocompleteState: website.suburbAutocompleteState || "default",
       classAge: {
-        hideClass: (website.classAge && website.classAge.hideClass) || {},
-        stopWebEnrolment: (website.classAge && website.classAge.stopWebEnrolment) || {},
+        hideClass: (website.classAge && website.classAge.hideClass)
+          || {offset: 0, condition: Condition.afterClassStarts},
+        stopWebEnrolment: (website.classAge && website.classAge.stopWebEnrolment)
+          || {offset: 0, condition: Condition.afterClassStarts},
       },
     };
   }
@@ -229,7 +231,7 @@ export class Website extends React.Component<Props, any> {
                     this.onChange(e.target.value, 'suburbAutocompleteState');
                   }}
                 >
-                  <option value={null}>All states</option>
+                  <option value={"default"}>All states</option>
                   <option value={SuburbState.NSW}>NSW</option>
                   <option value={SuburbState.QLD}>Queensland</option>
                   <option value={SuburbState.VIC}>Victoria</option>

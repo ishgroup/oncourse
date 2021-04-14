@@ -22,7 +22,6 @@ const styles: any = (theme: AppTheme) => ({
     color: theme.palette.text.primary,
     cursor: "pointer",
     fontFamily: theme.typography.fontFamily,
-    // fontWeight: 600,
     padding: "4px 0",
     fontSize: "13px",
     lineHeight: "1em",
@@ -42,6 +41,10 @@ const styles: any = (theme: AppTheme) => ({
     fontSize: "15px",
     display: "block",
     padding: "15px 20px",
+    "&:hover": {
+      backgroundColor: "rgba(0, 0, 0, 0.1)",
+      color: theme.palette.text.primary,
+    },
   },
   linkTitle: {
     paddingRight: "15px",
@@ -228,7 +231,7 @@ class PageSettings extends React.PureComponent<Props, any> {
       <div>
         <ul>
           <li>
-            <a href="javascript:void(0)" className={classes.linkBack} onClick={e => this.clickBack(e)}>
+            <a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>
               <IconBack text={page.title || 'New Page'}/>
             </a>
           </li>
@@ -261,7 +264,7 @@ class PageSettings extends React.PureComponent<Props, any> {
                 <div className={classes.linksItem}>
                   <div
                     onClick={() => urls.find(url => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
-                    className={clsx(classes.linkTitle, !urls.find(url => url.isDefault && classes.linkDefault))}
+                    className={clsx(classes.linkTitle, !urls.find(url => url.isDefault) && classes.linkDefault)}
                     title={defaultPageUrl.link}
                   >
                     {defaultPageUrl.link}

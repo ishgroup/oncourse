@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import {Paper} from "@material-ui/core";
 import classnames from 'classnames';
 import SortableTree, {changeNodeAtPath, removeNodeAtPath} from 'react-sortable-tree';
 import {changeMenuTree, getMenuItems, saveMenuTree} from "./actions";
@@ -9,6 +10,7 @@ import {MenuState} from "./reducers/State";
 import {showModal} from "../../../../common/containers/modal/actions";
 import {State} from "../../../../reducers/state";
 import CustomButton from "../../../../common/components/CustomButton";
+import 'react-sortable-tree/style.css';
 
 interface Props {
   menu: MenuState;
@@ -96,6 +98,7 @@ export class Menus extends React.Component<Props, any> {
   }
 
   getTitleField = (node, path) => {
+
     return (
       <div className={classnames("rst__field", {invalid: node.error})}>
         <span>Title </span>
@@ -121,14 +124,6 @@ export class Menus extends React.Component<Props, any> {
   }
 
   getButtons = (node, path) => {
-    // <Button
-    //   color="primary"
-    //   size="sm"
-    //   onClick={() => this.addNode(path)}
-    // >
-    //   <span className="icon icon-add_circle"/>
-    //   Add child
-    // </Button>,
     return (
       [
         <CustomButton
@@ -145,7 +140,7 @@ export class Menus extends React.Component<Props, any> {
     const {menu, onChangeTree, fetching} = this.props;
 
     return (
-      <div>
+      <Paper className="p-2">
         <CustomButton
           styleType="submit"
           onClick={() => this.addItem()}
@@ -153,6 +148,34 @@ export class Menus extends React.Component<Props, any> {
           <AddCircleIcon/>
           Add new item
         </CustomButton>
+
+        {/*<div*/}
+        {/*  style={{*/}
+        {/*    height: `${menu.items.length ? this.getMenuItemsCount() * 54 : 54}px`,*/}
+        {/*    maxHeight: '80vh',*/}
+        {/*    minHeight: '200px',*/}
+        {/*  }}*/}
+        {/*  className={classnames("rst", {fetching})}*/}
+        {/*>*/}
+        {/*  <DragDropContext>*/}
+        {/*  /!*<DragDropContext onDragEnd={this.onDragEnd}>*!/*/}
+        {/*    <Droppable droppableId="ROOT" isCombineEnabled>*/}
+        {/*      {provided => (*/}
+        {/*        <div ref={provided.innerRef}>*/}
+        {/*          <TagItem*/}
+        {/*            // noTransformClass={classes.noTransform}*/}
+        {/*            item={menu.items}*/}
+        {/*            // onDelete={this.removeChildTag}*/}
+        {/*            // openTagEditView={openTagEditView}*/}
+        {/*            // validatTagsNames={validatTagsNames}*/}
+        {/*          />*/}
+        {/*          {provided.placeholder}*/}
+        {/*        </div>*/}
+        {/*      )}*/}
+        {/*    </Droppable>*/}
+        {/*  </DragDropContext>*/}
+        {/*</div>*/}
+
         <div
           style={{
             height: `${menu.items.length ? this.getMenuItemsCount() * 54 : 54}px`,
@@ -178,7 +201,7 @@ export class Menus extends React.Component<Props, any> {
         >
           Save
         </CustomButton>
-      </div>
+      </Paper>
     );
   }
 }

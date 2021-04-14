@@ -86,6 +86,7 @@ const styles: any = theme => ({
     "&:hover": {
       textDecoration: "underline",
       backgroundColor: "transparent",
+      color: theme.palette.text.secondary,
     }
   },
   slimPublishButton: {
@@ -161,12 +162,11 @@ class Sidebar extends React.Component<Props, any> {
     const getSubRoutes = url => (
       routes.filter(route => !route.isPublic && route.parent === url).map((route: Route, index) => (
         <li key={index} className={clsx((this.state.activeUrl !== url || slim) && "d-none")}>
-          {/*{console.log("this.state.activeUrl", this.state.activeUrl)}*/}
-          {/*{console.log("route.url", route.url)}*/}
           <NavLink
             exact={route.exact}
-            className={clsx(classes.subLink, classes.link, this.state.activeUrl === route.url && classes.activeLink)}
+            className={clsx(classes.subLink, classes.link)}
             to={route.url}
+            activeClassName={classes.activeLink}
           >
             <span>{route.title}</span>
           </NavLink>
@@ -182,8 +182,9 @@ class Sidebar extends React.Component<Props, any> {
             <NavLink
               exact={route.exact}
               to={route.url}
-              className={clsx(classes.link, this.state.activeUrl === route.url && classes.activeLink)}
+              className={clsx(classes.link)}
               onClick={e => this.onClickMenu(route.url)}
+              activeClassName={classes.activeLink}
             >
               <span className="d-flex">
                 {route.icon && <span className="centeredFlex mr-0-5">{route.icon}</span>}
@@ -231,7 +232,7 @@ class Sidebar extends React.Component<Props, any> {
 
               <Grid container className="center">
                 <Grid item xs={12}>
-                  <a href="javascript:void(0)" className={classes.logoutLink} onClick={e => this.onClickLogout(e)}>
+                  <a href="#" className={classes.logoutLink} onClick={e => this.onClickLogout(e)}>
                     <span className="user">{userName} {userName && ':'} logout</span>
                   </a>
                 </Grid>

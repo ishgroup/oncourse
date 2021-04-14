@@ -21,9 +21,9 @@ export class Skills extends React.Component<Props, any> {
     super(props);
 
     this.state = {
-      hideStudentDetails: props.skillsOnCourse.hideStudentDetails,
-      enableOutcomeMarking: props.skillsOnCourse.enableOutcomeMarking,
-      tutorFeedbackEmail: props.skillsOnCourse.tutorFeedbackEmail,
+      hideStudentDetails: props.skillsOnCourse.hideStudentDetails || false,
+      enableOutcomeMarking: props.skillsOnCourse.enableOutcomeMarking || false,
+      tutorFeedbackEmail: props.skillsOnCourse.tutorFeedbackEmail || "",
     };
   }
 

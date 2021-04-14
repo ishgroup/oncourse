@@ -24,7 +24,7 @@ const buttonsStyles: any = theme => ({
 });
 
 const CustomButton = (props: any) => {
-  const {children, classes, styles, styleType} = props;
+  const {children, classes, styles, styleType, ...others} = props;
 
   const getClass = () => {
     if (styleType === "submit") return classes.submitButton;
@@ -32,14 +32,10 @@ const CustomButton = (props: any) => {
     if (styleType === "delete") return classes.deleteButton;
   }
 
-  // const MUIButtonProps = {...props};
-  // delete MUIButtonProps.styleType;
-  // delete MUIButtonProps.styles;
-
   return (
     <Button
       className={clsx(getClass(), styles)}
-      {...props}
+      {...others}
     >
       {children}
     </Button>

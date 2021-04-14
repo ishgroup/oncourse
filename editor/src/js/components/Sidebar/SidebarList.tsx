@@ -16,6 +16,10 @@ const styles: any = theme => ({
     fontSize: "15px",
     display: "block",
     padding: "15px 20px",
+    "&:hover": {
+      backgroundColor: "rgba(0, 0, 0, 0.1)",
+      color: theme.palette.text.primary,
+    },
   },
   link: {
     color: theme.palette.text.secondary,
@@ -99,7 +103,7 @@ class SidebarList extends React.Component<Props, any> {
       <ul>
 
         <li>
-          <a href="javascript:void(0)" className={classes.linkBack} onClick={e => this.clickBack(e)}>
+          <a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>
             <IconBack text={category}/>
           </a>
         </li>

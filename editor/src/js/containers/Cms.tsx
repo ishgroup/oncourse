@@ -38,13 +38,13 @@ const styles: any = theme => ({
     zIndex: "999",
     color: theme.palette.text.primary,
   },
-  cmsContainerViewMode: {
-    pointerEvents: "none",
-    background: "transparent",
-  },
   cmsContainer: {
     background: "#fbf9f0",
     pointerEvents: "all",
+  },
+  cmsContainerViewMode: {
+    pointerEvents: "none",
+    background: "transparent",
   },
 })
 
@@ -105,19 +105,19 @@ class Cms extends React.Component<Props, any> {
     const hasBrowserWarning = isAuthenticated && Browser.unsupported();
     const warningPadding = hasBrowserWarning ? '37px' : '0px';
 
-    // const styles = `
-    //   .site-wrapper {
-    //     padding-left:${globalPadding};
-    //     padding-top: ${warningPadding};
-    //   }
-    //   #content div[class^='block-'] {
-    //     border: 1px solid transparent;
-    //     cursor: pointer;
-    //   }
-    //   #content div[class^='block-']:hover {
-    //     border: 1px solid red;
-    //   }
-    // `;
+    const styles = `
+      .site-wrapper {
+        padding-left:${globalPadding};
+        padding-top: ${warningPadding};
+      }
+      #content div[class^='block-'] {
+        border: 1px solid transparent;
+        cursor: pointer;
+      }
+      #content div[class^='block-']:hover {
+        border: 1px solid red;
+      }
+    `;
 
     // set left padding for site content (sidebar width)
     const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: styles}}/>);

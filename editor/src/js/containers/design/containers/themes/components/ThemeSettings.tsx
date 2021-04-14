@@ -15,6 +15,10 @@ const styles: any = theme => ({
     fontSize: "15px",
     display: "block",
     padding: "15px 20px",
+    "&:hover": {
+      backgroundColor: "rgba(0, 0, 0, 0.1)",
+      color: theme.palette.text.primary,
+    },
   },
   removeButton: {
     marginRight: theme.spacing(2),
@@ -183,7 +187,7 @@ class ThemeSettings extends React.Component<Props, any> {
       <div>
         <ul>
           <li>
-            <a href="javascript:void(0)" className={classes.linkBack} onClick={e => this.clickBack(e)}>
+            <a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>
               <IconBack text={theme.title}/>
             </a>
           </li>

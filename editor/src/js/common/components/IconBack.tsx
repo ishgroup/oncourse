@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   iconBack: {
-    fontSize: "1rem"
+    fontSize: "1rem",
   },
 })
 
