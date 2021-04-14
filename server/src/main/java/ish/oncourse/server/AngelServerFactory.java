@@ -146,13 +146,6 @@ public class AngelServerFactory {
             schedulerService.scheduleCronJob(EmailDequeueJob.class, EMAIL_DEQUEUEING_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
                     EMAIL_DEQUEUEING_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
 
-            // scheduling backup job only for derby
-            if (Preferences.DATABASE_USED_DERBY.equals(prefController.getDatabaseUsed())) {
-                // backup service (every hour)
-                schedulerService.scheduleCronJob(BackupJob.class, BACKUP_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
-                        BACKUP_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
-            }
-
             // job responsible for GL transfers for delayed income feature
             schedulerService.scheduleCronJob(DelayedEnrolmentIncomePostingJob.class,
                     DELAYED_ENROLMENT_INCOME_POSTING_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
