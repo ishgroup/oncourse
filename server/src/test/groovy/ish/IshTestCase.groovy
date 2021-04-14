@@ -44,7 +44,6 @@ abstract class IshTestCase {
     private static final String MARIADB = "mariadb"
     private static final String MYSQL = "mysql"
     private static final String MSSQL = "mssql"
-    private static final String DERBY = "derby"
 
     private static boolean loggingInitialised = false
 
@@ -63,7 +62,6 @@ abstract class IshTestCase {
     @BeforeClass
     static void setupOnceRoot() throws Exception {
 		System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
-        System.setProperty("derby.stream.error.method", "ish.IshTestCase.disableDerbyLogFile")
         //set JRGroovy compiler as default for tests
 		new JRRuntimeConfig().config()
 
