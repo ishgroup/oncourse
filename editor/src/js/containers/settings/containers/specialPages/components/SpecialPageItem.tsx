@@ -20,8 +20,6 @@ class SpecialPageItem extends React.PureComponent<Props, any> {
   render() {
     const {item, index, onChange} = this.props;
 
-    console.log(item);
-
     return (
       <div key={index}>
         <h6 className="heading mb-1">{item.specialPage}</h6>
