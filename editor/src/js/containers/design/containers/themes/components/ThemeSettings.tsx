@@ -5,8 +5,9 @@ import {withStyles} from "@material-ui/core/styles";
 import {Theme, Layout} from "../../../../../model";
 import IconBack from "../../../../../common/components/IconBack";
 import CustomButton from "../../../../../common/components/CustomButton";
-import {Grid, Select, TextField} from "@material-ui/core";
-import clsx from "clsx";
+import {IconButton} from "@material-ui/core";
+import {stubFunction} from "../../../../../common/utils/Components";
+import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
 
 const styles: any = theme => ({
   linkBack: {
@@ -25,10 +26,14 @@ const styles: any = theme => ({
   },
   removeIcon: {
     color: theme.palette.error.main,
-    fontSize: "1rem",
+    fontSize: "1.2rem",
+  },
+  addIconButton: {
+    position: "relative",
+    bottom: "-5px",
   },
   addIcon: {
-    color: theme.statistics.enrolmentText.color,
+    color: theme.palette.divider,
     fontSize: "1.2rem",
   },
   sideBarSetting: {
@@ -38,11 +43,6 @@ const styles: any = theme => ({
     marginTop: "30px",
     paddingTop: "20px",
     borderTop: "1px solid #bbbbbb",
-  },
-  input: {
-    height: "20px",
-    fontSize: "12px",
-    width: "144px",
   },
   linkTitle: {
     paddingRight: "15px",
@@ -57,7 +57,7 @@ const styles: any = theme => ({
 });
 
 interface Props {
-  classes: any,
+  classes: any;
   theme: Theme;
   themes: Theme[];
   layouts: Layout[];
@@ -76,7 +76,7 @@ const urlsOptions = [
   {
     value: true,
     title: "Exact matching",
-  }
+  },
 ];
 
 class ThemeSettings extends React.Component<Props, any> {
@@ -124,7 +124,7 @@ class ThemeSettings extends React.Component<Props, any> {
 
     const urls = this.state.urls.concat({
       path: newLink,
-      exactMatch: this.state.exactMatch
+      exactMatch: this.state.exactMatch,
     });
 
     this.setState({
@@ -144,8 +144,8 @@ class ThemeSettings extends React.Component<Props, any> {
     });
 
     this.setState({
-      urls: updatedUrls
-    })
+      urls: updatedUrls,
+    });
   }
 
   onChange(event, key) {
@@ -195,89 +195,93 @@ class ThemeSettings extends React.Component<Props, any> {
 
         <div className={classes.sideBarSetting}>
           <form>
-            <Grid>
-              <label htmlFor="themeTitle">Title</label>
-              <TextField
-                type="text"
+              <EditInPlaceField
+                label="Theme title"
                 name="themeTitle"
-                id="themeTitle"
-                placeholder="Theme title"
-                className={classes.input}
-                value={title}
-                onChange={e => this.onChange(e, 'title')}
+                id="pageTitle"
+                meta={{}}
+                input={{
+                  onChange: e => this.onChange(e, 'title'),
+                  onFocus: stubFunction,
+                  onBlur: stubFunction,
+                  value: title,
+                }}
               />
-            </Grid>
 
-            <Grid className={clsx("flex-column", "mt-2", "mb-2")}>
-              <label htmlFor="themeLayout">Layout</label>
-              <Select
+              <EditInPlaceField
+                label="Theme layout"
                 name="themeLayout"
                 id="themeLayout"
-                placeholder="Theme layout"
-                value={layoutId}
-                onChange={e => this.onChange(e, 'layoutId')}
-              >
-                {layouts.map(layout => (
-                  <option key={layout.id} value={layout.id}>{layout.title}</option>
-                ))}
-              </Select>
-            </Grid>
+                selectValueMark="id"
+                selectLabelMark="title"
+                meta={{}}
+                input={{
+                  onChange: e => this.onChange(e, 'layoutId'),
+                  onFocus: stubFunction,
+                  onBlur: stubFunction,
+                  value: layoutId,
+                }}
+                select
+                items={layouts}
+              />
 
-            <Grid>
-              <label htmlFor="pageUrl">Pages</label>
+              <label htmlFor="pageUrl" className="mt-2 mb-1">Pages</label>
               <div className="links">
 
                 {urls.map((url, index) => (
-                  <div className="centeredFlex path-item" key={index}>
+                  <div className="centeredFlex" key={index}>
                     <div>
-                      <div
-                        title={url.path}
-                        className={classes.linkTitle}
-                      >
-                        {url.path}
+                      <EditInPlaceField
+                        label={url.path}
+                        name="exactMatch"
+                        id="exactMatch"
+                        selectLabelMark="title"
+                        className="mb-1"
+                        meta={{}}
+                        input={{
+                          onChange: e => this.onUpdatePath(e, url.path),
+                          onFocus: stubFunction,
+                          onBlur: stubFunction,
+                          value: url.exactMatch,
+                        }}
+                        fieldClasses={{
+                          label: classes.linkTitle,
+                        }}
+                        select
+                        items={urlsOptions}
+                      />
                       </div>
-
-                      <div>
-                        <Select
-                          name="exactMatch"
-                          id="exactMatch"
-                          placeholder="Exact matching"
-                          className={clsx(classes.input, "mb-1")}
-                          value={url.exactMatch.toString()}
-                          onChange={e => this.onUpdatePath(e, url.path)}
-                        >
-                          {urlsOptions.map(option => (
-                            <option key={option.title} value={option.value.toString()}>{option.title}</option>
-                          ))}
-                        </Select>
-                      </div>
-                    </div>
-                    <CloseIcon
-                      onClick={() => this.onDeleteUrl(url.path)}
-                      className={classes.removeIcon}
-                    />
+                    <IconButton size="small" onClick={() => this.onDeleteUrl(url.path)}>
+                      <CloseIcon className={classes.removeIcon} />
+                    </IconButton>
                   </div>
                 ))}
               </div>
 
-              <div className={clsx("centeredFlex", "mt-2", "mb-2")}>
-                <TextField
-                  type="text"
-                  name="newLink"
-                  id="newLink"
-                  placeholder="New Page Url"
-                  value={newLink}
-                  onChange={e => this.onChange(e, 'newLink')}
-                  onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
-                />
-                <AddIcon
-                  onClick={() => this.onAddNewUrl()}
-                  className={classes.addIcon}
-                />
+              <div className="centeredFlex mt-2 mb-2">
+                <div>
+                  <EditInPlaceField
+                    label="New Page Url"
+                    type="text"
+                    name="newLink"
+                    id="newLink"
+                    value={newLink}
+                    meta={{}}
+                    onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
+                    input={{
+                      onChange: e => this.onChange(e, 'newLink'),
+                      onFocus: stubFunction,
+                      onBlur: stubFunction,
+                      value: newLink,
+                    }}
+                  />
+                </div>
+                <IconButton size="small" onClick={this.onAddNewUrl} className={classes.addIconButton}>
+                  <AddIcon className={classes.addIcon} />
+                </IconButton>
               </div>
-            </Grid>
 
-            <Grid className={classes.actionsGroup}>
+            <div className={classes.actionsGroup}>
               <div className="buttons-inline">
                 <CustomButton
                   styleType="delete"
@@ -293,7 +297,7 @@ class ThemeSettings extends React.Component<Props, any> {
                   Save
                 </CustomButton>
               </div>
-            </Grid>
+            </div>
           </form>
         </div>
       </div>

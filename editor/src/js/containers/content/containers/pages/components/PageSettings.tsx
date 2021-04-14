@@ -223,8 +223,8 @@ class PageSettings extends React.PureComponent<Props, any> {
   }
 
   render () {
-    const {classes, page, themes} = this.props;
-    const {title, visible, themeId, urls, newLink, suppressOnSitemap} = this.state;
+    const {classes, page} = this.props;
+    const {title, visible, urls, newLink, suppressOnSitemap} = this.state;
     const defaultPageUrl = PageService.generateBasetUrl(page);
 
     return (
@@ -244,7 +244,6 @@ class PageSettings extends React.PureComponent<Props, any> {
                 label="Title"
                 name="pageTitle"
                 id="pageTitle"
-                placeholder="Page title"
                 className={classes.inputWrapper}
                 meta={{}}
                 input={{

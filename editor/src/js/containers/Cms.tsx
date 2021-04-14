@@ -2,11 +2,9 @@ import React from 'react';
 import {connect} from "react-redux";
 import clsx from "clsx";
 import {Dispatch} from "redux";
-import {Route, NavLink, Redirect, withRouter} from 'react-router-dom';
-import { ThemeProvider } from "@material-ui/core/styles";
+import {withRouter} from 'react-router-dom';
+import {ThemeProvider, withStyles} from "@material-ui/core/styles";
 import Notifications from 'react-notification-system-redux';
-import {withStyles} from "@material-ui/core";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Layout from '../components/Layout/Layout';
 import Sidebar from '../components/Layout/Sidebar';
 import {Content} from '../components/Layout/Content';
@@ -26,6 +24,7 @@ import {Browser} from "../utils";
 import {ThemeContext} from "../styles/ThemeContext";
 import {defaultTheme} from "../styles/ishTheme";
 import GlobalStylesProvider from "../styles/GlobalStylesProvider";
+import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
 
 const styles: any = theme => ({
   cms: {
@@ -46,7 +45,7 @@ const styles: any = theme => ({
     pointerEvents: "none",
     background: "transparent",
   },
-})
+});
 
 interface Props {
   auth: AuthState;
@@ -124,10 +123,10 @@ class Cms extends React.Component<Props, any> {
 
     return (
       <ThemeContext.Provider
-        value={{ themeName: "default" }}
+        value={{themeName: "default"}}
       >
         <ThemeProvider theme={defaultTheme}>
-          <CssBaseline/>
+          <ScopedCssBaseline/>
           <GlobalStylesProvider/>
           <div className={classes.cms}>
             <div className={clsx(classes.cmsContainer, viewMode && classes.cmsContainerViewMode)}>
@@ -177,5 +176,5 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default withRouter(connect<any,any,any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Cms) as any));
+export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Cms) as any));
 

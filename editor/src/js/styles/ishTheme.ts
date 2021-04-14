@@ -69,11 +69,6 @@ const createOverrides = palette => ({
         },
       },
     },
-    MuiPaper: {
-      root: {
-        padding: "16px",
-      },
-    },
     MuiTableCell: {
       root: {
         fontWeight: 400,
