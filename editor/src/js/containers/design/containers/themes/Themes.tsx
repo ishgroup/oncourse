@@ -2,7 +2,7 @@ import React from 'react';
 import {Grid} from "@material-ui/core";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import classnames from "classnames";
+import clsx from "clsx";
 import {getLayouts, getThemes, saveTheme, updateThemeState} from "./actions";
 import {Theme as ThemeModel} from "../../../../model";
 import Theme from "./components/Theme";
@@ -32,7 +32,7 @@ export class Themes extends React.Component<Props, any> {
     return (
       <div>
         {theme &&
-        <Grid item xs={12} className={classnames({fetching})}>
+        <Grid item xs={12} className={clsx((fetching && "fetching"))}>
           <Theme
             theme={theme}
             onUpdateLayout={(blockId, items) => onUpdateLayout(theme, blockId, items)}

@@ -42,11 +42,6 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
         path.resolve(__dirname, 'src/js'),
         path.resolve(__dirname, 'src/scss'),
       ],
-      alias: {
-        'dom-helpers/scrollbarSize': path.resolve(__dirname, 'node_modules', 'dom-helpers', 'util', 'scrollbarSize'),
-        'dom-helpers/removeClass': path.resolve(__dirname, 'node_modules', 'dom-helpers', 'class', 'removeClass'),
-        'dom-helpers/addClass': path.resolve(__dirname, 'node_modules', 'dom-helpers', 'class', 'addClass'),
-      },
       extensions: [".ts", ".tsx", ".js", ".css"]
     },
     mode: mode,

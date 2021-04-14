@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {Paper} from "@material-ui/core";
-import classnames from 'classnames';
+import clsx from "clsx";
 import SortableTree, {changeNodeAtPath, removeNodeAtPath} from 'react-sortable-tree';
 import {changeMenuTree, getMenuItems, saveMenuTree} from "./actions";
 import {MenuState} from "./reducers/State";
@@ -100,7 +100,7 @@ export class Menus extends React.Component<Props, any> {
   getTitleField = (node, path) => {
 
     return (
-      <div className={classnames("rst__field", {invalid: node.error})}>
+      <div className={clsx("rst__field", node.error && "invalid")}>
         <span>Title </span>
         <input
           value={node.title}
@@ -113,7 +113,7 @@ export class Menus extends React.Component<Props, any> {
 
   getSubTitleField = (node, path) => {
     return (
-      <div className={classnames("rst__field", {invalid: node.error})}>
+      <div className={clsx("rst__field", node.error && "invalid")}>
         <span>Url </span>
         <input
           value={node.url}
@@ -155,7 +155,7 @@ export class Menus extends React.Component<Props, any> {
         {/*    maxHeight: '80vh',*/}
         {/*    minHeight: '200px',*/}
         {/*  }}*/}
-        {/*  className={classnames("rst", {fetching})}*/}
+        {/*  className={clsx("rst", fetching && "fetching")}*/}
         {/*>*/}
         {/*  <DragDropContext>*/}
         {/*  /!*<DragDropContext onDragEnd={this.onDragEnd}>*!/*/}
@@ -182,7 +182,7 @@ export class Menus extends React.Component<Props, any> {
             maxHeight: '80vh',
             minHeight: '200px',
           }}
-          className={classnames("rst", {fetching})}
+          className={clsx("rst", (fetching && "fetching"))}
         >
           <SortableTree
             treeData={menu.items}

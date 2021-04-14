@@ -137,7 +137,7 @@ class ThemeSettings extends React.Component<Props, any> {
   onUpdatePath = (event, path) => {
     const updatedUrls = this.state.urls.map(elem => {
       if (elem.path === path) {
-        elem.exactMatch = !!event.target.value;
+        elem.exactMatch = !!event;
       }
 
       return elem;
@@ -150,7 +150,7 @@ class ThemeSettings extends React.Component<Props, any> {
 
   onChange = (event, key) => {
     this.setState({
-      [key]: event.target.value,
+      [key]: event.target && event.target.value || event,
     });
   }
 
@@ -195,91 +195,91 @@ class ThemeSettings extends React.Component<Props, any> {
 
         <div className={classes.sideBarSetting}>
           <form>
-              <EditInPlaceField
-                label="Theme title"
-                name="themeTitle"
-                id="pageTitle"
-                meta={{}}
-                input={{
-                  onChange: e => this.onChange(e, 'title'),
-                  onFocus: stubFunction,
-                  onBlur: stubFunction,
-                  value: title,
-                }}
-              />
+            <EditInPlaceField
+              label="Theme title"
+              name="themeTitle"
+              id="pageTitle"
+              meta={{}}
+              input={{
+                onChange: e => this.onChange(e, 'title'),
+                onFocus: stubFunction,
+                onBlur: stubFunction,
+                value: title,
+              }}
+            />
 
-              <EditInPlaceField
-                label="Theme layout"
-                name="themeLayout"
-                id="themeLayout"
-                selectValueMark="id"
-                selectLabelMark="title"
-                meta={{}}
-                input={{
-                  onChange: e => this.onChange(e, 'layoutId'),
-                  onFocus: stubFunction,
-                  onBlur: stubFunction,
-                  value: layoutId,
-                }}
-                select
-                items={layouts}
-              />
+            <EditInPlaceField
+              select
+              label="Theme layout"
+              name="themeLayout"
+              id="themeLayout"
+              selectValueMark="id"
+              selectLabelMark="title"
+              meta={{}}
+              input={{
+                onChange: e => this.onChange(e, 'layoutId'),
+                onFocus: stubFunction,
+                onBlur: stubFunction,
+                value: layoutId,
+              }}
+              items={layouts}
+            />
 
-              <label htmlFor="pageUrl" className="mt-2 mb-1">Pages</label>
-              <div className="links">
+            <label htmlFor="pageUrl" className="mt-2 mb-1">Pages</label>
+            <div className="links">
 
-                {urls.map((url, index) => (
-                  <div className="centeredFlex" key={index}>
-                    <div>
-                      <EditInPlaceField
-                        label={url.path}
-                        name="exactMatch"
-                        id="exactMatch"
-                        selectLabelMark="title"
-                        className="mb-1"
-                        meta={{}}
-                        input={{
-                          onChange: e => this.onUpdatePath(e, url.path),
-                          onFocus: stubFunction,
-                          onBlur: stubFunction,
-                          value: url.exactMatch,
-                        }}
-                        fieldClasses={{
-                          label: classes.linkTitle,
-                        }}
-                        select
-                        items={urlsOptions}
-                      />
-                      </div>
-                    <IconButton size="small" onClick={() => this.onDeleteUrl(url.path)}>
-                      <CloseIcon className={classes.removeIcon} />
-                    </IconButton>
-                  </div>
-                ))}
-              </div>
-
-              <div className="centeredFlex mt-2 mb-2">
-                <div>
-                  <EditInPlaceField
-                    label="New Page Url"
-                    type="text"
-                    name="newLink"
-                    id="newLink"
-                    value={newLink}
-                    meta={{}}
-                    onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
-                    input={{
-                      onChange: e => this.onChange(e, 'newLink'),
-                      onFocus: stubFunction,
-                      onBlur: stubFunction,
-                      value: newLink,
-                    }}
-                  />
+              {urls.map((url, index) => (
+                <div className="centeredFlex" key={index}>
+                  <div>
+                    <EditInPlaceField
+                      select
+                      label={url.path}
+                      name="exactMatch"
+                      id="exactMatch"
+                      selectLabelMark="title"
+                      className="mb-1"
+                      meta={{}}
+                      input={{
+                        onChange: e => this.onUpdatePath(e, url.path),
+                        onFocus: stubFunction,
+                        onBlur: stubFunction,
+                        value: url.exactMatch,
+                      }}
+                      fieldClasses={{
+                        label: classes.linkTitle,
+                      }}
+                      items={urlsOptions}
+                    />
+                    </div>
+                  <IconButton size="small" onClick={() => this.onDeleteUrl(url.path)}>
+                    <CloseIcon className={classes.removeIcon} />
+                  </IconButton>
                 </div>
-                <IconButton size="small" onClick={this.onAddNewUrl} className={classes.addIconButton}>
-                  <AddIcon className={classes.addIcon} />
-                </IconButton>
+              ))}
+            </div>
+
+            <div className="centeredFlex mt-2 mb-2">
+              <div>
+                <EditInPlaceField
+                  label="New Page Url"
+                  type="text"
+                  name="newLink"
+                  id="newLink"
+                  value={newLink}
+                  meta={{}}
+                  onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
+                  input={{
+                    onChange: e => this.onChange(e, 'newLink'),
+                    onFocus: stubFunction,
+                    onBlur: stubFunction,
+                    value: newLink,
+                  }}
+                />
               </div>
+              <IconButton size="small" onClick={this.onAddNewUrl} className={classes.addIconButton}>
+                <AddIcon className={classes.addIcon} />
+              </IconButton>
+            </div>
 
             <div className={classes.actionsGroup}>
               <div className="buttons-inline">

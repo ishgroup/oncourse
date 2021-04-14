@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {DragSource, DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom';
-import classnames from 'classnames';
+import clsx from "clsx";
 import flow from 'lodash/flow';
 import {withStyles} from "@material-ui/core/styles";
-import clsx from "clsx";
 
 const styles = theme => ({
   themeCard: {

@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
+import clsx from "clsx";
 import {Checkbox, FormControlLabel, Grid, Paper, Typography} from "@material-ui/core";
 import {getWebsiteSettings, setWebsiteSettings} from "./actions";
 import {Condition, State as SuburbState} from "../../../../model";
@@ -9,7 +10,6 @@ import {WebsiteSettingsState} from "./reducers/State";
 import {toPositive} from "../../../../common/utils/NumberUtils";
 import CustomButton from "../../../../common/components/CustomButton";
 import {withStyles} from "@material-ui/core/styles";
-import clsx from "clsx";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 import {stubFunction} from "../../../../common/utils/Components";
 
@@ -161,7 +161,7 @@ export class Website extends React.Component<Props, any> {
     const {classes, fetching} = this.props;
 
     return (
-      <Paper className={clsx({fetching}, "p-3")}>
+      <Paper className={clsx((fetching && "fetching"), "p-3")}>
         <Grid>
           <h4 className="heading mb-1">ADD THIS</h4>
           <FormControlLabel

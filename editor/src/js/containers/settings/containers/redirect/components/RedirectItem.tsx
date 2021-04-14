@@ -1,7 +1,7 @@
 import React from 'react';
+import {Grid} from "@material-ui/core";
 import {RedirectItem as RedirectItemModel} from "../../../../../model";
 import CustomButton from "../../../../../common/components/CustomButton";
-import {Grid} from "@material-ui/core";
 import {stubFunction} from "../../../../../common/utils/Components";
 import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
 

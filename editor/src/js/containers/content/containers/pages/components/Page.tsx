@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import classnames from 'classnames';
+import clsx from "clsx";
 import {PageState} from "../reducers/State";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
@@ -146,10 +146,7 @@ export const Page: React.FC<PageProps> = ({
     <div>
       {editMode && <>
         <div className={
-          classnames({
-            "editor-wrapper" : true,
-            "ace-wrapper": page.contentMode === "html" || page.contentMode === "textile",
-          })
+          clsx("editor-wrapper", (page.contentMode === "html" || page.contentMode === "textile") && "ace-wrapper")
         }>
           <ContentModeSwitch
               contentModeId={page.contentMode}

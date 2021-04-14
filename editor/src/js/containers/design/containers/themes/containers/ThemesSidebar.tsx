@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {error} from 'react-notification-system-redux';
-import classnames from "classnames";
+import clsx from "clsx";
 import {URL} from "../../../../../routes";
 import {Theme, Layout} from "../../../../../model";
 import ThemeSettings from "../components/ThemeSettings";
@@ -45,7 +45,7 @@ class ThemesSidebar extends React.Component<Props, any> {
     const activeTheme = match.params.id && themes.find(theme => theme.id == match.params.id);
 
     return (
-      <div className={classnames({fetching})}>
+      <div className={clsx(fetching && "fetching")}>
         {!activeTheme &&
         <SidebarList
           items={themes}

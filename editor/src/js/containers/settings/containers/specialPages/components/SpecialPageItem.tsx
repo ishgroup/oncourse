@@ -2,15 +2,23 @@ import React from "react";
 import {
   SpecialPageItem as SpecialPageItemModel,
 } from "../../../../../model";
+import {withStyles} from "@material-ui/core/styles";
 import {stubFunction} from "../../../../../common/utils/Components";
 import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
 
+const styles = theme => ({
+  rule: {
+    maxWidth: "25vw",
+    width: "25vw",
+  }
+})
 
 interface SpecialPageItemState extends SpecialPageItemModel {
   submitted?: boolean;
 }
 
 interface Props {
+  classes: any;
   item: SpecialPageItemState;
   index: number;
   onChange: (e, index, key) => any;
@@ -18,7 +26,7 @@ interface Props {
 
 class SpecialPageItem extends React.PureComponent<Props, any> {
   render() {
-    const {item, index, onChange} = this.props;
+    const {classes, item, index, onChange} = this.props;
 
     return (
       <div key={index}>
@@ -46,4 +54,4 @@ class SpecialPageItem extends React.PureComponent<Props, any> {
   }
 }
 
-export default SpecialPageItem;
+export default (withStyles(styles)(SpecialPageItem));

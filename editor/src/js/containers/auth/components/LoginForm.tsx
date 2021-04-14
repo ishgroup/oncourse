@@ -1,16 +1,13 @@
 import * as  React from 'react';
 import {Form, Field, reduxForm} from 'redux-form';
-import classnames from 'classnames';
+import clsx from "clsx";
 import {withStyles} from "@material-ui/core/styles";
-import {Grid, TextField} from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import {darken, fade} from "@material-ui/core/styles/colorManipulator";
 import BrowserWarning from "../../../common/components/BrowserWarning";
 import CustomButton from "../../../common/components/CustomButton";
 
 const styles: any = theme => ({
-  loginWrapper: {
-
-  },
   loginFormContainer: {
     marginTop: "200px",
     borderRadius: "5px",
@@ -37,7 +34,7 @@ const input = props => {
   const showError = submitFailed && invalid && error;
 
   return (
-    <div className={classnames({'form-error': showError})}>
+    <div className={clsx(showError && 'form-error')}>
       <TextField
         type={type}
         name={input.name}
@@ -77,10 +74,10 @@ class LoginForm extends React.Component<any, any> {
     const {classes, handleSubmit, pristine, submitting} = this.props;
 
     return (
-      <Grid className={classes.loginWrapper}>
+      <div>
         <BrowserWarning />
           <Form onSubmit={handleSubmit} className={classes.loginFormContainer}>
-            <div >
+            <div>
               <Field
                 id="loginEmail"
                 name="email"
@@ -117,7 +114,7 @@ class LoginForm extends React.Component<any, any> {
               </CustomButton>
             </div>
         </Form>
-      </Grid>
+      </div>
     );
   }
 

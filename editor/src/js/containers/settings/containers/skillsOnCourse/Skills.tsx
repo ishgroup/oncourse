@@ -60,7 +60,7 @@ export class Skills extends React.Component<Props, any> {
     const {fetching} = this.props;
 
     return (
-      <Paper className={clsx({fetching}, "p-3")}>
+      <Paper className={clsx((fetching && "fetching"), "p-3")}>
         <form>
           <Grid className="flex-column">
             <FormControlLabel

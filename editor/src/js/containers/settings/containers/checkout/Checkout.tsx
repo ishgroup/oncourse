@@ -1,14 +1,14 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {Checkbox, FormControlLabel, Grid, Paper} from "@material-ui/core";
+import {Checkbox, FormControlLabel, Paper} from "@material-ui/core";
+import clsx from "clsx";
 import {getCheckoutSettings, setCheckoutSettings} from "./actions";
 import {State} from "../../../../reducers/state";
 import {CheckoutSettingsState} from "./reducers/State";
 import {CheckoutSettings} from "../../../../model";
 import {toPositive} from "../../../../common/utils/NumberUtils";
 import CustomButton from "../../../../common/components/CustomButton";
-import clsx from "clsx";
 import {stubFunction} from "../../../../common/utils/Components";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 
@@ -74,7 +74,7 @@ export class Checkout extends React.Component<Props, any> {
 
     return (
       <Paper className={clsx({fetching}, "p-3")}>
-        <Grid className="flex-column">
+        <div className="flex-column">
           <FormControlLabel
             control={
               <Checkbox
@@ -111,7 +111,7 @@ export class Checkout extends React.Component<Props, any> {
             label="Allow create new student on mailing list"
           />
 
-          <Grid>
+          <div>
             <div className="form-inline">
               <FormControlLabel
                 control={
@@ -144,10 +144,10 @@ export class Checkout extends React.Component<Props, any> {
                 }
               />
             </div>
-          </Grid>
-        </Grid>
+          </div>
+        </div>
 
-        <Grid className="mt-2">
+        <div className="mt-2">
           <EditInPlaceField
             type="number"
             label="Enrolment min age"
@@ -162,7 +162,7 @@ export class Checkout extends React.Component<Props, any> {
             }}
             hideArrows
           />
-        </Grid>
+        </div>
 
         <CustomButton
           styleType="submit"

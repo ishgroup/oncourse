@@ -30,7 +30,7 @@ const styles: any = (theme: AppTheme) => ({
     color: theme.statistics.enrolmentText.color,
     cursor: "default",
     "&:hover": {
-      "&:after": {
+      "&::after": {
         display: "none",
       },
     },
@@ -52,29 +52,29 @@ const styles: any = (theme: AppTheme) => ({
     textOverflow: "ellipsis",
     overflow: "hidden",
     fontWeight: 600,
-    "&:after": {
+    "&::after": {
       display: "block",
-      // visibility: "hidden",
+      visibility: "hidden",
       opacity: 0,
       pointerEvents: "none",
       padding: "3px",
       fontSize: "12px",
-      fontWeight: 100,
+      fontWeight: 400,
       borderRadius: "2px",
       position: "absolute",
-      content: "Make Default",
+      content: "'Make Default'",
       fontFamily: theme.typography.fontFamily,
-      top: "1px",
       left: "100%",
-      color: theme.share.color.headerText,
-      background: "#fbf9f0",
+      color: theme.palette.text.primary,
+      background: theme.statistics.enrolmentText.color,
       marginLeft: "10px",
       whiteSpace: "nowrap",
       transition: "opacity .25s",
+      top: "1px",
     },
     "&:hover": {
       cursor: "pointer",
-      "&:after": {
+      "&::after": {
         visibility: "visible",
         opacity: .85,
       },
@@ -269,7 +269,7 @@ class PageSettings extends React.PureComponent<Props, any> {
 
 
                 {urls.map((url, index) => (
-                  <div className="centeredFlex justify-content-space-between" key={index}>
+                  <div className="centeredFlex justify-content-space-between relative" key={index}>
                     <div
                       onClick={() => !url.isDefault && this.onSetDefaultUrl(url)}
                       className={clsx(classes.linkTitle, url.isDefault && classes.linkDefault)}

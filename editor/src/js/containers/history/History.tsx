@@ -8,7 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import classnames from "classnames";
+import clsx from "clsx";
 import TimeAgo from 'react-timeago';
 import {getHistory, publish, setVersion} from "./actions";
 import {Version, VersionStatus} from "../../model";
@@ -54,7 +54,7 @@ class History extends React.Component<Props, any> {
     const {versions, fetching} = this.props;
 
     return (
-      <div className={classnames('overflow-content', {fetching})}>
+      <div className={clsx('overflow-content', (fetching && "fetching"))}>
         <TableContainer component={Paper}>
           <Table  className="table table--row-center" aria-label="simple table">
             <TableHead>

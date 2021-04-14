@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import classnames from "classnames";
+import clsx from "clsx";
+import {Paper} from "@material-ui/core";
 import {getBlocks, saveBlock, setBlockContentMode} from "./actions";
 import {State} from "../../../../reducers/state";
 import {BlockState} from "./reducers/State";
 import Block from "./components/Block";
 import {ContentMode} from "../../../../model";
-import {setPageContentMode} from "../pages/actions";
 
 interface Props {
   blocks: BlockState[];
@@ -28,12 +28,14 @@ const Blocks: React.FC<Props> = ({match, blocks, onEditHtml, fetching, onInit, s
   return (
     <div>
       {activeBlock &&
-        <div className={classnames({fetching})}>
-          <Block
-            block={activeBlock}
-            onSave={onEditHtml}
-            setContentMode={setContentMode}
-          />
+        <div className={clsx((fetching && "fetching"))}>
+          <Paper className="p-3">
+            <Block
+              block={activeBlock}
+              onSave={onEditHtml}
+              setContentMode={setContentMode}
+            />
+          </Paper>
         </div>
       }
     </div>

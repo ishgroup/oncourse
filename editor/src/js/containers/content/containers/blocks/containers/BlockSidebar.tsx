@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import classnames from "classnames";
+import clsx from "clsx";
 import {State} from "../../../../../reducers/state";
 import BlockSettings from "../components/BlockSettings";
 import {URL} from "../../../../../routes";
@@ -41,7 +41,7 @@ export class BlockSidebar extends React.Component<Props, any> {
     const activeBlock = match.params.id && blocks.find(block => block.id == match.params.id);
 
     return (
-      <div className={classnames({fetching})}>
+      <div className={clsx((fetching && "fetching"))}>
         {!activeBlock &&
           <SidebarList
             items={blocks}

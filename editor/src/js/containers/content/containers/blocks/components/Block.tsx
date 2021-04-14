@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import classnames from 'classnames';
+import clsx from "clsx";
 import marked from "marked";
+import {withStyles} from "@material-ui/core/styles";
 import Editor from "../../../../../common/components/editor/HtmlEditor";
 import {BlockState} from "../reducers/State";
 import {addContentMarker} from "../../../utils";
@@ -8,7 +9,6 @@ import MarkdownEditor from "../../../../../common/components/editor/MarkdownEdit
 import {ContentMode} from "../../../../../model";
 import ContentModeSwitch from "../../../../../common/components/ContentModeSwitch";
 import CustomButton from "../../../../../common/components/CustomButton";
-import {withStyles} from "@material-ui/core/styles";
 
 const styles = theme => ({
   cancelButton: {
@@ -97,10 +97,7 @@ const Block: React.FC<Props> = ({block, classes, onSave, setContentMode}) => {
     <div>
       {editMode && <>
         <div className={
-          classnames(
-            {
-              "editor-wrapper" : true,
-              "ace-wrapper": block.contentMode === "html" || block.contentMode === "textile"},
+          clsx("editor-wrapper", (block.contentMode === "html" || block.contentMode === "textile") && "ace-wrapper",
           )
         }>
           <ContentModeSwitch
@@ -129,7 +126,7 @@ const Block: React.FC<Props> = ({block, classes, onSave, setContentMode}) => {
 
       {!editMode &&
         <div onClick={onClickArea}>
-          <div className={classnames("editor-area", {'editor-area--empty': !block.content})}>
+          <div className={clsx("editor-area", !block.content && 'editor-area--empty')}>
             {block.content}
           </div>
         </div>

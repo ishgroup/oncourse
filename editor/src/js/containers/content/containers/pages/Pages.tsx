@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import classnames from 'classnames';
+import clsx from "clsx";
 import {clearRenderHtml, getPages, savePage, setPageContentMode, toggleEditMode} from "./actions";
 import {ContentMode, Page as PageModel} from "../../../../model";
 import {Page} from "./components/Page";
@@ -38,7 +38,7 @@ export class Pages extends React.Component<Props, any> {
     return (
       <div>
         {activePage &&
-          <div className={classnames({fetching})}>
+          <div className={clsx((fetching && "fetching"))}>
             <Page
               page={activePage}
               onSave={onEditHtml}

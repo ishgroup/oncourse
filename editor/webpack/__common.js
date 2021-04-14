@@ -39,11 +39,6 @@ const _common = (dirname, options) => {
         path.resolve(dirname, 'src/dev'),
         path.resolve(dirname, 'src/scss'),
       ],
-      alias: {
-        'dom-helpers/scrollbarSize': path.resolve(dirname, 'node_modules', 'dom-helpers', 'util', 'scrollbarSize'),
-        'dom-helpers/removeClass': path.resolve(dirname, 'node_modules', 'dom-helpers', 'class', 'removeClass'),
-        'dom-helpers/addClass': path.resolve(dirname, 'node_modules', 'dom-helpers', 'class', 'addClass'),
-      },
       extensions: [".ts", ".tsx", ".js", ".css"]
     },
     module: {

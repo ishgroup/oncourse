@@ -5,12 +5,12 @@ import {Grid, Paper, TextField} from "@material-ui/core";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
+import clsx from "clsx";
 import {getRedirectSettings, setRedirectSettings} from "./actions";
 import RedirectItem from "./components/RedirectItem";
 import {RedirectSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
 import CustomButton from "../../../../common/components/CustomButton";
-import clsx from "clsx";
 
 const styles: any = theme => ({
   saveButton: {
@@ -100,7 +100,7 @@ export class Redirect extends React.PureComponent<Props, any> {
     const {classes, fetching} = this.props;
 
     return (
-      <Paper className={clsx({fetching}, "p-3")}>
+      <Paper className={clsx((fetching && "fetching"), "p-3")}>
         <p className="mb-1">
           Add 301 redirects to your website by entering the local path on the left (starting with '/')
           and the destination on the right (either starting with '/' for another local page or starting with

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import classnames from "classnames";
+import clsx from "clsx";
 import {error} from 'react-notification-system-redux';
 import {Page, Theme} from "../../../../../model";
 import PageSettings from "../components/PageSettings";
@@ -51,7 +51,7 @@ export class PagesSidebar extends React.Component<Props, any> {
     const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
-      <div className={classnames({fetching})}>
+      <div className={clsx((fetching && "fetching"))}>
         {!activePage &&
           <SidebarList
             items={pages}

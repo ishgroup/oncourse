@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {withRouter} from 'react-router-dom';
-import classnames from "classnames";
+import clsx from "clsx";
 import {submitLoginForm} from "./actions";
 import {DefaultConfig} from "../../constants/Config";
 import {CookieService} from "../../services/CookieService";
@@ -23,7 +23,7 @@ export class Login extends React.Component<Props, any> {
     const {onSubmit, fetching} = this.props;
 
     return (
-      <div className={classnames({fetching}, "d-flex align-items-center justify-content-center relative")}>
+      <div className={clsx((fetching && "fetching"), "d-flex align-items-center justify-content-center relative")}>
         <LoginForm onSubmit={onSubmit}/>
       </div>
     );

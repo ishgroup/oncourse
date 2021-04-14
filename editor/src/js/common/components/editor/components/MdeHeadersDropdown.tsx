@@ -1,5 +1,5 @@
 import React from "react";
-import classnames from "classnames";
+import clsx from "clsx";
 import useComponentVisible from "../../../hooks/UseComponentVisible";
 import {selectWord} from "react-mde/lib/js/util/MarkdownUtil.js";
 
@@ -46,10 +46,9 @@ const MdeHeadersDropdown: React.FC<any>  = () => {
             d="M.941 4.523a.75.75 0 1 1 1.06-1.06l3.006 3.005 3.005-3.005a.75.75 0 1 1 1.06 1.06l-3.549 3.55a.75.75 0 0 1-1.168-.136L.941 4.523z"></path>
         </svg>
       </button>
-      <div className={classnames("ck ck-reset ck-dropdown__panel ck-dropdown__panel_se",
-        {
-          "ck-dropdown__panel-visible": isComponentVisible,
-        })}>
+      <div className={clsx("ck ck-reset ck-dropdown__panel ck-dropdown__panel_se",
+          isComponentVisible && "ck-dropdown__panel-visible"
+        )}>
         <ul className="ck ck-reset ck-list">
           <li className="ck ck-list__item">
             <button
