@@ -67,6 +67,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="gradingTypeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="AssessmentClass">
@@ -104,6 +105,7 @@
 		<db-attribute name="markedById" type="BIGINT"/>
 		<db-attribute name="submittedOn" type="DATE" isMandatory="true"/>
 		<db-attribute name="markedOn" type="DATE"/>
+		<db-attribute name="grade" type="DECIMAL" length="6" scale="2"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Attendance">
@@ -756,6 +758,23 @@
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="outcomeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="startDate" type="DATE" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="GradingItem">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="lowerBound" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
+		<db-attribute name="gradingTypeId" type="BIGINT" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="GradingType">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="minValue" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
+		<db-attribute name="maxValue" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
+		<db-attribute name="entryType" type="SMALLINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="Import">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
@@ -2316,6 +2335,22 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="startDate" type="java.time.LocalDate" db-attribute-path="startDate"/>
 	</obj-entity>
+	<obj-entity name="GradingItem" className="ish.oncourse.server.cayenne.GradingItem" dbEntityName="GradingItem" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="itemName" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="lowerBound" type="java.math.BigDecimal" db-attribute-path="lowerBound"/>
+	</obj-entity>
+	<obj-entity name="GradingType" className="ish.oncourse.server.cayenne.GradingType" dbEntityName="GradingType" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="typeName" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="minValue" type="java.math.BigDecimal" db-attribute-path="minValue"/>
+		<obj-attribute name="maxValue" type="java.math.BigDecimal" db-attribute-path="maxValue"/>
+		<obj-attribute name="entryType" type="ish.common.types.GradingEntryType" db-attribute-path="entryType"/>
+	</obj-entity>
 	<obj-entity name="Import" className="ish.oncourse.server.cayenne.Import" clientClassName="ish.oncourse.cayenne.Import" dbEntityName="Import" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
@@ -3195,6 +3230,9 @@
 	<db-relationship name="taggingRelations" source="Assessment" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
+	<db-relationship name="gradingType" source="Assessment" target="GradingType">
+		<db-attribute-pair source="gradingTypeId" target="id"/>
+	</db-relationship>
 	<db-relationship name="assessment" source="AssessmentClass" target="Assessment">
 		<db-attribute-pair source="assessmentId" target="id"/>
 	</db-relationship>
@@ -3860,6 +3898,12 @@
 	</db-relationship>
 	<db-relationship name="outcome" source="FundingUpload_Outcome" target="Outcome">
 		<db-attribute-pair source="outcomeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="gradingType" source="GradingItem" target="GradingType">
+		<db-attribute-pair source="gradingTypeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="gradingItems" source="GradingType" target="GradingItem" toMany="true">
+		<db-attribute-pair source="id" target="gradingTypeId"/>
 	</db-relationship>
 	<db-relationship name="automationBindings" source="Import" target="AutomationBinding" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
@@ -4694,6 +4738,7 @@
 	<obj-relationship name="attachmentRelations" source="Assessment" target="AssessmentAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="noteRelations" source="Assessment" target="AssessmentNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="taggingRelations" source="Assessment" target="AssessmentTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
+	<obj-relationship name="gradingType" source="Assessment" target="GradingType" deleteRule="Nullify" db-relationship-path="gradingType"/>
 	<obj-relationship name="attachedAssessment" source="AssessmentAttachmentRelation" target="Assessment" deleteRule="Nullify" db-relationship-path="attachedAssessment"/>
 	<obj-relationship name="assessment" source="AssessmentClass" target="Assessment" deleteRule="Nullify" db-relationship-path="assessment"/>
 	<obj-relationship name="assessmentClassModules" source="AssessmentClass" target="AssessmentClassModule" deleteRule="Cascade" db-relationship-path="assessmentClassModules"/>
@@ -4922,6 +4967,8 @@
 	<obj-relationship name="systemUser" source="FundingUpload" target="SystemUser" deleteRule="Nullify" db-relationship-path="systemUser"/>
 	<obj-relationship name="fundingUpload" source="FundingUploadOutcome" target="FundingUpload" deleteRule="Nullify" db-relationship-path="fundingUpload"/>
 	<obj-relationship name="outcome" source="FundingUploadOutcome" target="Outcome" deleteRule="Nullify" db-relationship-path="outcome"/>
+	<obj-relationship name="gradingType" source="GradingItem" target="GradingType" deleteRule="Nullify" db-relationship-path="gradingType"/>
+	<obj-relationship name="gradingItems" source="GradingType" target="GradingItem" deleteRule="Nullify" db-relationship-path="gradingItems"/>
 	<obj-relationship name="automationBindings" source="Import" target="ImportAutomationBinding" deleteRule="Cascade" db-relationship-path="automationBindings"/>
 	<obj-relationship name="relatedObject" source="ImportAutomationBinding" target="Import" deleteRule="Nullify" db-relationship-path="import"/>
 	<obj-relationship name="integrationProperties" source="IntegrationConfiguration" target="IntegrationProperty" deleteRule="Cascade" db-relationship-path="integrationProperties"/>
