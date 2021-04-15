@@ -52,6 +52,8 @@ const styles: any = (theme: AppTheme) => ({
     textOverflow: "ellipsis",
     overflow: "hidden",
     fontWeight: 600,
+    fontSize: "13px",
+    lineHeight: 1.2,
     "&::after": {
       display: "block",
       visibility: "hidden",
@@ -92,7 +94,7 @@ const styles: any = (theme: AppTheme) => ({
     bottom: "-5px",
   },
   addIcon: {
-    color: theme.palette.divider,
+    color: theme.statistics.enrolmentText.color,
     fontSize: "1.2rem",
   },
   sideBarSetting: {
@@ -267,7 +269,6 @@ class PageSettings extends React.PureComponent<Props, any> {
                   </div>
                 </div>
 
-
                 {urls.map((url, index) => (
                   <div className="centeredFlex justify-content-space-between relative" key={index}>
                     <div
@@ -290,24 +291,23 @@ class PageSettings extends React.PureComponent<Props, any> {
                 ))}
               </div>
 
-              <div className="centeredFlex">
-                <div>
-                  <EditInPlaceField
-                    label="New Page Url"
-                    type="text"
-                    name="newLink"
-                    id="newLink"
-                    value={newLink}
-                    meta={{}}
-                    onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
-                    input={{
-                      onChange: e => this.onChange(e, 'newLink'),
-                      onFocus: stubFunction,
-                      onBlur: stubFunction,
-                      value: newLink,
-                    }}
-                  />
-                </div>
+              <div className="centeredFlex w-100">
+                <EditInPlaceField
+                  label="New Page Url"
+                  type="text"
+                  name="newLink"
+                  id="newLink"
+                  value={newLink}
+                  meta={{}}
+                  onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
+                  input={{
+                    onChange: e => this.onChange(e, 'newLink'),
+                    onFocus: stubFunction,
+                    onBlur: stubFunction,
+                    value: newLink,
+                  }}
+                  className="w-100"
+                />
                 <IconButton size="small" onClick={this.onAddNewUrl} className={classes.addIconButton}>
                   <AddIcon className={classes.addIcon} />
                 </IconButton>

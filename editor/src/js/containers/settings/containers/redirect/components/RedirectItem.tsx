@@ -23,7 +23,6 @@ class RedirectItem extends React.Component<Props, any> {
 
   render() {
     const {item, index, onChange, onRemove} = this.props;
-
     return (
       <Grid container key={index} className="centeredFlex">
         <Grid item xs={5}>

@@ -2,6 +2,7 @@ import React from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 import {withStyles} from "@material-ui/core/styles";
+import clsx from "clsx";
 import {Theme, Layout} from "../../../../../model";
 import IconBack from "../../../../../common/components/IconBack";
 import CustomButton from "../../../../../common/components/CustomButton";
@@ -33,14 +34,13 @@ const styles: any = theme => ({
     bottom: "-5px",
   },
   addIcon: {
-    color: theme.palette.divider,
+    color: theme.statistics.enrolmentText.color,
     fontSize: "1.2rem",
   },
   sideBarSetting: {
     padding: "10px 20px",
   },
   actionsGroup: {
-    marginTop: "30px",
     paddingTop: "20px",
     borderTop: "1px solid #bbbbbb",
   },
@@ -54,6 +54,14 @@ const styles: any = theme => ({
       cursor: "pointer",
     },
   },
+  urlsWrapper: {
+    maxHeight: "calc(100vh - 410px)",
+    overflow: "auto",
+    marginRight: "-20px",
+  },
+  linksWrapper: {
+    paddingRight: "20px",
+  }
 });
 
 interface Props {
@@ -225,19 +233,18 @@ class ThemeSettings extends React.Component<Props, any> {
               items={layouts}
             />
 
-            <label htmlFor="pageUrl" className="mt-2 mb-1">Pages</label>
-            <div className="links">
-
-              {urls.map((url, index) => (
-                <div className="centeredFlex" key={index}>
-                  <div>
+            <div className={classes.urlsWrapper}>
+              <label htmlFor="pageUrl" className="mt-2 mb-1">Pages</label>
+              <div className={clsx("links", classes.linksWrapper)}>
+                {urls.map((url, index) => (
+                  <div className={"centeredFlex"} key={index}>
                     <EditInPlaceField
                       select
                       label={url.path}
                       name="exactMatch"
                       id="exactMatch"
                       selectLabelMark="title"
-                      className="mb-1"
+                      className="w-100"
                       meta={{}}
                       input={{
                         onChange: e => this.onUpdatePath(e, url.path),
@@ -250,32 +257,31 @@ class ThemeSettings extends React.Component<Props, any> {
                       }}
                       items={urlsOptions}
                     />
-                    </div>
-                  <IconButton size="small" onClick={() => this.onDeleteUrl(url.path)}>
-                    <CloseIcon className={classes.removeIcon} />
-                  </IconButton>
-                </div>
-              ))}
+                    <IconButton size="small" onClick={() => this.onDeleteUrl(url.path)}>
+                      <CloseIcon className={classes.removeIcon} />
+                    </IconButton>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="centeredFlex mt-2 mb-2">
-              <div>
-                <EditInPlaceField
-                  label="New Page Url"
-                  type="text"
-                  name="newLink"
-                  id="newLink"
-                  value={newLink}
-                  meta={{}}
-                  onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
-                  input={{
-                    onChange: e => this.onChange(e, 'newLink'),
-                    onFocus: stubFunction,
-                    onBlur: stubFunction,
-                    value: newLink,
-                  }}
-                />
-              </div>
+            <div className={"centeredFlex pt-1"}>
+              <EditInPlaceField
+                label="New Page Url"
+                type="text"
+                name="newLink"
+                id="newLink"
+                value={newLink}
+                meta={{}}
+                onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
+                input={{
+                  onChange: e => this.onChange(e, 'newLink'),
+                  onFocus: stubFunction,
+                  onBlur: stubFunction,
+                  value: newLink,
+                }}
+                className="w-100"
+              />
               <IconButton size="small" onClick={this.onAddNewUrl} className={classes.addIconButton}>
                 <AddIcon className={classes.addIcon} />
               </IconButton>

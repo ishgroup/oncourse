@@ -13,6 +13,15 @@ import {State} from "../../../../reducers/state";
 import CustomButton from "../../../../common/components/CustomButton";
 
 const styles: any = theme => ({
+  redirectWrapper: {
+    maxHeight: "calc(100vh - 30px)",
+    boxSizing: "border-box",
+    overflow: "hidden",
+  },
+  redirectItemWrapper: {
+    maxHeight: "calc(100vh - 230px)",
+    overflowY: "auto",
+  },
   saveButton: {
     marginLeft: theme.spacing(2),
   },
@@ -80,13 +89,9 @@ export class Redirect extends React.PureComponent<Props, any> {
   }
 
   onRemove(index) {
-    this.setState(update(this.state, {
-      rules: {
-        $splice: [
-          [index, 1],
-        ],
-      },
-    }));
+    const {rules} = this.state;
+
+    this.setState({rules: rules.filter(elem => elem.from !== index)})
   }
 
   onChangeFilter(e) {
@@ -100,7 +105,7 @@ export class Redirect extends React.PureComponent<Props, any> {
     const {classes, fetching} = this.props;
 
     return (
-      <Paper className={clsx((fetching && "fetching"), "p-3")}>
+      <Paper className={clsx((fetching && "fetching"), "p-3", classes.redirectWrapper)}>
         <p className="mb-1">
           Add 301 redirects to your website by entering the local path on the left (starting with '/')
           and the destination on the right (either starting with '/' for another local page or starting with
@@ -135,17 +140,17 @@ export class Redirect extends React.PureComponent<Props, any> {
           </CustomButton>
         </Grid>
 
-        <Grid container className="mt-3">
+        <Grid container className={clsx("mt-3", classes.redirectItemWrapper)}>
           <Grid item xs={12} md={10} lg={8} xl={6}>
             {rules && rules
               .filter(r => r.from.indexOf(filter) !== -1 || r.to.indexOf(filter) !== -1 || !r.from || !r.to)
               .map((rule, index) =>
                 <RedirectItem
-                  key={index}
+                  key={rule.from}
                   item={rule}
                   index={index}
                   onChange={this.onChange.bind(this)}
-                  onRemove={this.onRemove.bind(this)}
+                  onRemove={this.onRemove.bind(this, rule.from)}
                 />,
               )}
           </Grid>
