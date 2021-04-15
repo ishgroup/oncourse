@@ -9,7 +9,7 @@ import ish.common.types.ModuleType;
 import ish.oncourse.model.Module;
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.reference.V6ReferenceService;
+import ish.oncourse.services.reference.ReferenceService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +22,7 @@ public class ModuleNTISUpdater extends AbstractTrainingComponentNTISUpdater {
 	public ModuleNTISUpdater(
 			ITrainingComponentService trainingService,
 			ICayenneService cayenneService,
-			V6ReferenceService referenceService,
+			ReferenceService referenceService,
 			DateTimeOffset from,
 			DateTimeOffset to) {
 		super(trainingService, cayenneService, referenceService, from, to);

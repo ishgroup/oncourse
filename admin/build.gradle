@@ -6,7 +6,7 @@ configurations {
 
 ext {
 	tapestryVersion = '5.7.1'
-	adminCxfVersion = '2.6.6'
+	adminCxfVersion = '3.4.3'
 }
 
 dependencies {

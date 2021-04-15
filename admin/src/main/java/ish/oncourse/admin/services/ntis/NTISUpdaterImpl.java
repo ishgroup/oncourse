@@ -11,7 +11,7 @@ import ish.oncourse.model.Organisation;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.reference.V6ReferenceService;
+import ish.oncourse.services.reference.ReferenceService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 
@@ -30,7 +30,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 	private IOrganisationService organisationService;
 
 	@Inject
-	private V6ReferenceService referenceService;
+	private ReferenceService referenceService;
 
 	@Inject
 	private ICayenneService cayenneService;

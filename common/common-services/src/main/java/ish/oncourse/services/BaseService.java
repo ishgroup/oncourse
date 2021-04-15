@@ -10,7 +10,6 @@ import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -30,9 +29,7 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 	@Inject
 	private IWebSiteService webSiteService;
 	private Class<T> entityClass;
-
-    @Inject
-    private Request request;
+	
 	
 	private static final Logger logger = LogManager.getLogger();
 

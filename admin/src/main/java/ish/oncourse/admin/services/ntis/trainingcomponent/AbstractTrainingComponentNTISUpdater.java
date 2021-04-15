@@ -9,7 +9,7 @@ import ish.oncourse.admin.services.ntis.AbstractComponentNTISUpdater;
 import ish.oncourse.admin.services.ntis.NTISException;
 import ish.oncourse.admin.services.ntis.NTISResult;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.reference.V6ReferenceService;
+import ish.oncourse.services.reference.ReferenceService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,7 +65,7 @@ public abstract class AbstractTrainingComponentNTISUpdater extends AbstractCompo
 	public AbstractTrainingComponentNTISUpdater(
 			ITrainingComponentService trainingService,
 			ICayenneService cayenneService,
-			V6ReferenceService referenceService,
+			ReferenceService referenceService,
 			DateTimeOffset from,
 			DateTimeOffset to) {
 		super(cayenneService, referenceService, from, to);

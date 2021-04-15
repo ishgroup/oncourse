@@ -87,15 +87,13 @@ public class BinderFunctions {
 
     public static void bindReferenceServices(ServiceBinder binder) {
         // Reference Data services
-        binder.bind(V5ReferenceService.class);
-        binder.bind(V6ReferenceService.class);
-        binder.bind(V7ReferenceService.class);
-        binder.bind(ICountryService.class, CountryService.class).withId("CountryService");
-        binder.bind(ILanguageService.class, LanguageService.class).withId("LanguageService");
-        binder.bind(IModuleService.class, ModuleService.class).withId("ModuleService");
-        binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
-        binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
-        binder.bind(IPostcodeService.class, PostcodeService.class).withId("PostcodeService");
+        binder.bind(ReferenceService.class, V6ReferenceService.class);
+        binder.bind(ICountryService.class, CountryService.class);
+        binder.bind(ILanguageService.class, LanguageService.class);
+        binder.bind(IModuleService.class, ModuleService.class);
+        binder.bind(IQualificationService.class, QualificationService.class);
+        binder.bind(ITrainingPackageService.class, TrainingPackageService.class);
+        binder.bind(IPostcodeService.class, PostcodeService.class);
     }
 
     public static void bindEntityServices(ServiceBinder binder) {

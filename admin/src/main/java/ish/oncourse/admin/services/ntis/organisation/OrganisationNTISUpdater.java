@@ -10,7 +10,7 @@ import ish.oncourse.admin.services.ntis.NTISException;
 import ish.oncourse.admin.services.ntis.NTISResult;
 import ish.oncourse.model.Organisation;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.reference.V6ReferenceService;
+import ish.oncourse.services.reference.ReferenceService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
@@ -31,7 +31,7 @@ public class OrganisationNTISUpdater extends AbstractComponentNTISUpdater {
 	public OrganisationNTISUpdater(
 			IOrganisationService organisationService,
 			ICayenneService cayenneService,
-			V6ReferenceService referenceService,
+			ReferenceService referenceService,
 			DateTimeOffset from,
 			DateTimeOffset to) {
 		super(cayenneService, referenceService, from, to);
