@@ -89,7 +89,7 @@ const globalStyles = (theme: AppTheme) =>
         height: "100vh",
         overflowY: "hidden"
       },
-      ".container": {
+      ".cms-scope .container": {
         display: "flex",
         flexWrap: "wrap"
       },

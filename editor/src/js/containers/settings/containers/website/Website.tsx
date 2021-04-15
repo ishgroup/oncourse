@@ -18,7 +18,7 @@ const styles = () => ({
     width: "230px",
   },
   number: {
-    width: "30px",
+    width: "50px",
   },
 });
 
@@ -162,7 +162,7 @@ export class Website extends React.Component<Props, any> {
 
     return (
       <Paper className={clsx((fetching && "fetching"), "p-3")}>
-        <Grid>
+        <div>
           <h4 className="heading mb-1">ADD THIS</h4>
           <FormControlLabel
             control={
@@ -175,7 +175,7 @@ export class Website extends React.Component<Props, any> {
             }
             label="Enable social media links."
           />
-        </Grid>
+        </div>
 
         <Grid container className="mt-1">
           <Grid item xs={3}>
@@ -195,7 +195,7 @@ export class Website extends React.Component<Props, any> {
           </Grid>
         </Grid>
 
-        <Grid className="mt-2">
+        <div className="mt-2">
           <h4 className="heading">VISIBILITY RULES</h4>
           <Typography variant="caption" component="h6">Enable for these pages</Typography>
           <FormControlLabel
@@ -209,9 +209,9 @@ export class Website extends React.Component<Props, any> {
             }
             label="Course"
           />
-        </Grid>
+        </div>
 
-        <Grid>
+        <div>
           <FormControlLabel
             control={
               <Checkbox
@@ -223,7 +223,7 @@ export class Website extends React.Component<Props, any> {
             }
             label="Web page"
           />
-        </Grid>
+        </div>
 
         <div className="mt-3">
           <Typography variant="caption" component="h6">Hide class on website</Typography>
@@ -265,7 +265,7 @@ export class Website extends React.Component<Props, any> {
           </Typography>
         </div>
 
-        <Grid className="mt-2">
+        <div className="mt-2">
           <Typography variant="caption" component="h6">Stop web enrolments</Typography>
           <Typography>
             <EditInPlaceField
@@ -301,9 +301,9 @@ export class Website extends React.Component<Props, any> {
               formatting="inline"
             />
           </Typography>
-        </Grid>
+        </div>
 
-        <Grid className="mt-3 mb-2">
+        <div className="mt-3 mb-2">
           <EditInPlaceField
             select
             label="Show suburbs from"
@@ -317,7 +317,7 @@ export class Website extends React.Component<Props, any> {
             }}
             items={suburbItems}
           />
-        </Grid>
+        </div>
 
         <CustomButton
           onClick={() => this.onSave()}

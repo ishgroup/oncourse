@@ -25,15 +25,13 @@ const Layout = (props: Props) => {
 
   return (
     <>
-      <Grid>
-        <Grid container className={clsx(fullHeight && classes.fullHeight)}>
-          {sidebar &&
-            sidebar
-          }
+      <Grid container className={clsx(fullHeight && classes.fullHeight)}>
+        {sidebar &&
+          sidebar
+        }
 
-          <Grid item xs={sidebar ? 10 : 12} className={classes.contentWrapper}>
-            {content}
-          </Grid>
+        <Grid item xs={sidebar ? 10 : 12} className={classes.contentWrapper}>
+          {content}
         </Grid>
       </Grid>
     </>

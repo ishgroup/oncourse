@@ -123,7 +123,7 @@ export class Redirect extends React.PureComponent<Props, any> {
           />
         }
 
-        <Grid className="mt-2 mb-3">
+        <div className="mt-2 mb-3">
           <CustomButton
             styleType="submit"
             onClick={() => this.onAddNew()}
@@ -138,7 +138,7 @@ export class Redirect extends React.PureComponent<Props, any> {
           >
             Save
           </CustomButton>
-        </Grid>
+        </div>
 
         <Grid container className={clsx("mt-3", classes.redirectItemWrapper)}>
           <Grid item xs={12} md={10} lg={8} xl={6}>

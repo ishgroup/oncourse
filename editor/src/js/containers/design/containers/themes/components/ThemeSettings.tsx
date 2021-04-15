@@ -61,7 +61,7 @@ const styles: any = theme => ({
   },
   linksWrapper: {
     paddingRight: "20px",
-  }
+  },
 });
 
 interface Props {

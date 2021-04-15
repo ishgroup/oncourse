@@ -62,7 +62,7 @@ export class Skills extends React.Component<Props, any> {
     return (
       <Paper className={clsx((fetching && "fetching"), "p-3")}>
         <form>
-          <Grid className="flex-column">
+          <div className="flex-column">
             <FormControlLabel
               control={
                 <Checkbox
@@ -86,9 +86,9 @@ export class Skills extends React.Component<Props, any> {
               }
               label="Enable outcome marking in tutor portal."
             />
-          </Grid>
+          </div>
 
-          <Grid className="mt-1 mb-1">
+          <div className="mt-1 mb-1">
             <Grid container>
               <Grid item xs={3}>
                 <EditInPlaceField
@@ -105,7 +105,7 @@ export class Skills extends React.Component<Props, any> {
                 />
               </Grid>
             </Grid>
-          </Grid>
+          </div>
 
           <CustomButton
             styleType="submit"

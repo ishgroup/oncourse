@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStyles, Grid, makeStyles, Modal} from '@material-ui/core';
+import {createStyles, makeStyles, Modal} from '@material-ui/core';
 import CustomButton from "../../components/CustomButton";
 
 const useStyles = makeStyles(theme =>
@@ -69,12 +69,12 @@ const ModalWindow = (props: Props) => {
       {/*{title &&*/}
       {/*  <ModalHeader toggle={() => onClickCancel()}>{title}</ModalHeader>*/}
       {/*}*/}
-      <Grid container className={classes.modalContent}>
-        <Grid className={classes.modalText}>
+      <div className={classes.modalContent}>
+        <div className={classes.modalText}>
           {text || 'Are you sure?'}
-        </Grid>
+        </div>
 
-        <Grid className={classes.buttonsWrapper}>
+        <div className={classes.buttonsWrapper}>
           <CustomButton
             styleType="cancel"
             onClick={() => onClickCancel()}
@@ -88,8 +88,8 @@ const ModalWindow = (props: Props) => {
           >
             Confirm
           </CustomButton>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
     </Modal>
   );
 };

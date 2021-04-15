@@ -28,7 +28,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 
 const styles = theme => createStyles({
   textField: {
-    paddingBottom: "13px",
+    paddingBottom: "4px",
     paddingLeft: "0",
     overflow: "hidden",
     display: "flex",
