@@ -15,6 +15,7 @@ import {
 import { Dispatch } from "redux";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
+import LockOutlined from "@material-ui/icons/LockOutlined";
 import { CommonListItem } from "../../../model/common/sidebar";
 import { SelectItemDefault } from "../../../model/entities/common";
 import { IMPORT_TEMPLATES_FORM_NAME } from "../containers/import-templates/ImportTemplates";
@@ -74,6 +75,15 @@ const BindingsItem = React.memo<BindingsItemProps>(({
     }
   }, [item.type]);
 
+  const emailTemplatesForRender = useCallback(item => (
+    item.hasIcon ? (
+      <span>
+        {item.label}
+        {' '}
+        <LockOutlined className="selectItmeIcon" />
+      </span>
+    ) : item.label ), []);
+
   const fieldProps: any = useMemo(() => {
     const props = {};
 
@@ -87,6 +97,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
 
     if (item.type === "Message template") {
       props["items"] = emailTemplateItems;
+      props["selectLabelCondition"] = emailTemplatesForRender;
     }
 
     return props;
@@ -165,8 +176,10 @@ const Bindings = React.memo<BindingsProps>( props => {
   const isScriptsAutomation = useMemo(() => (form === SCRIPT_EDIT_VIEW_FORM_NAME), [form]);
   const emailTemplateItems = useMemo(
     () => (emailTemplates
-      ? emailTemplates.filter(t => t.keyCode).map(t => ({ value: t.keyCode, label: t.name }))
-      : []), [emailTemplates]
+      ? emailTemplates.filter(t => t.keyCode).map(t => ({
+        value: t.keyCode, label: t.name, hasIcon: t.hasIcon, id: t.id,
+      }))
+      : []), [emailTemplates],
   );
 
   const handleClick = useCallback(event => {
