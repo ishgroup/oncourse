@@ -53,6 +53,7 @@ import ish.oncourse.server.api.v1.service.FilterApi
 import ish.oncourse.server.api.v1.service.FinalisePeriodApi
 import ish.oncourse.server.api.v1.service.FundingContractApi
 import ish.oncourse.server.api.v1.service.FundingUploadApi
+import ish.oncourse.server.api.v1.service.GradingApi
 import ish.oncourse.server.api.v1.service.HolidayApi
 import ish.oncourse.server.api.v1.service.ImportApi
 import ish.oncourse.server.api.v1.service.IntegrationApi
@@ -131,6 +132,7 @@ import ish.oncourse.server.api.v1.service.impl.FilterApiImpl
 import ish.oncourse.server.api.v1.service.impl.FinalisePeriodApiImpl
 import ish.oncourse.server.api.v1.service.impl.FundingContractApiImpl
 import ish.oncourse.server.api.v1.service.impl.FundingUploadApiImpl
+import ish.oncourse.server.api.v1.service.impl.GradingApiImpl
 import ish.oncourse.server.api.v1.service.impl.HolidayApiImpl
 import ish.oncourse.server.api.v1.service.impl.ImportApiImpl
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
@@ -273,5 +275,6 @@ class ApiImplementationModule implements Module {
         binder.bind(CheckoutApi).to(CheckoutApiImpl)
         binder.bind(EntityRelationTypeApi).to(EntityRelationTypeApiImpl)
         binder.bind(TokenApi).to(ApiTokenApiImpl)
+        binder.bind(GradingApi).to(GradingApiImpl)
     }
 }
