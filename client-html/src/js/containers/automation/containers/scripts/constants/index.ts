@@ -16,7 +16,7 @@ export const getScriptComponent = (content): ScriptComponent => ({
 });
 
 export const queryClosureRegexp = new RegExp(
-  "\\n?(def\\s+)?\\w+\\s+=\\s+query\\s+{(\\n+)?(\\s+)?entity\\s+[\"']?\\w+[\"']?(\\s+)?query\\s+[\"'].+[\"'](\\s+)(\\n+)?}(\\s+)?\\n{0,2}",
+  "\\n?(def\\s+)?\\w+\\s+=\\s+query\\s+{(\\n+)?(\\s+)?entity\\s+[\"']?\\w+[\"']?(\\s+)?(query\\s+[\"'].+[\"'](\\s+))?(\\n+)?}(\\s+)?\\n{0,2}",
   "g",
 );
 
@@ -26,9 +26,11 @@ export const messageClosureRegexp = new RegExp(
 );
 
 export const reportClosureRegexp = new RegExp(
-  "\\n?((\\s+)?file\\s+=\\s+)?report\\s+{[^}]+record records[^}]+}(\\s+)?\\n{0,2}",
+  "\\n?\\s*file\\s+=\\s+report\\s+{[^}]+record records[^}]+}(\\s+)?\\n{0,2}",
   "g",
 );
+
+export const closureSplitRegexp = /CLOSURE-\w+-\d+/g;
 
 export const getQueryTemplate = (entity: string, query: string, queryClosureReturnValue: string) =>
   `\n${queryClosureReturnValue} = query {
@@ -38,7 +40,7 @@ export const getQueryTemplate = (entity: string, query: string, queryClosureRetu
 
 export const getQueryComponent = (body: string): ScriptComponent => {
   const queryClosureReturnValueMatch = body.match(/\s+(.+)\s+=\s+query/);
-  const entityMatch = body.match(/entity\s+"(.+)"\s+query/);
+  const entityMatch = body.match(/entity\s+['"](.+)['"]\s/);
   const queryMatch = body.match(/query\s+"(.+)"\s+(context)?/);
 
   return {
@@ -58,8 +60,7 @@ export const getMessageTemplate = component => {
     : `${result}${e[0]} ${variables.some(v => v.name === e[0] && v.type === "Object") ? e[1] : `"${e[1]}"`}${index === (entries.length - 1) ? "" : "\n\t\t"}`), "");
 
   return `\nmessage {
-    ${parsedString}
-    record records
+    ${parsedString}${component.hasOwnProperty("template") ? "record records" : ""}
     attachment file
   }\n\n`;
 };

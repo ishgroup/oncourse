@@ -100,6 +100,8 @@ const styles = theme =>
 
 const entityNameTypes = Object.keys(TriggerType).slice(0, 6).filter(t => t !== "Schedule");
 
+const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);
+
 type TriggerToRecordObjType = {
   [K in TriggerType]?: string
 };
@@ -116,7 +118,6 @@ interface Props {
   values: any;
   initialValues;
   dispatch: any;
-  TriggerTypeItems: any;
   ScheduleTypeItems: any;
   hasUpdateAccess: boolean;
   history: any;
@@ -170,7 +171,6 @@ const ScriptsForm = React.memo<Props>(props => {
     values,
     initialValues,
     invalid,
-    TriggerTypeItems,
     ScheduleTypeItems,
     openConfirm,
     hasUpdateAccess,

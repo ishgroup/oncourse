@@ -84,11 +84,11 @@ const QueryCardContent = props => {
                 type="aql"
                 name={`${name}.query`}
                 label="Query"
+                placeholder="All records"
                 rootEntity={field.entity}
                 disabled={!field.entity || disabled}
                 onValidateQuery={onValidateQuery}
                 validate={validateExpression}
-                required
               />
             </div>
           </Collapse>
