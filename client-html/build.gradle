@@ -44,11 +44,13 @@ task jest(type: YarnTask, dependsOn: 'queryGrammar') {
 test.dependsOn(jest)
 
 task apiDoc(type: YarnTask, dependsOn: ':server-api:apiDocs_mergeSwagger') {
+    group = "documentation"
     args = ['build:api-docs',
             '--schema',
             tasks.getByPath(':server-api:apiDocs_mergeSwagger').outputs.files.first().toString()]
 }
 task packageApiDoc (type: Zip, dependsOn: apiDoc) {
+    group = "documentation"
     from file("${buildDir}/api-docs")
     archiveClassifier = 'documentation'
 }

@@ -134,7 +134,7 @@
     "react-window": "1.8.*",
     "react-window-infinite-loader": "1.0.*",
     "recharts": "1.8.*",
-    "redoc": "^2.0.0-rc.48",
+    "redoc": "^2.0.0-rc.53",
     "redux": "4.0.*",
     "redux-form": "8.3.*",
     "redux-observable": "1.2.*",
