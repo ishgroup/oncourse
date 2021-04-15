@@ -9,6 +9,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.oncourse.API
+import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._GradingItem
 
 import javax.annotation.Nonnull
@@ -20,6 +21,7 @@ import javax.annotation.Nonnull
  * - a lower bound which allows specifying the appropriate entry
  */
 @API
+@QueueableEntity
 class GradingItem extends _GradingItem {
 
     /**

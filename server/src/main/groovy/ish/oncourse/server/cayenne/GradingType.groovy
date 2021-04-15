@@ -10,6 +10,7 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.GradingEntryType
 import ish.oncourse.API
+import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._GradingType
 
 import javax.annotation.Nonnull
@@ -23,6 +24,7 @@ import javax.annotation.Nonnull
  * If the entry type of grading is entries the grading type will have list of graiding items.
  */
 @API
+@QueueableEntity
 class GradingType extends _GradingType {
 
     /**
