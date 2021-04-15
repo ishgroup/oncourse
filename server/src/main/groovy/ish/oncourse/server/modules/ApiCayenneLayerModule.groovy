@@ -42,6 +42,7 @@ import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.EntityRelationTypeDao
 import ish.oncourse.server.api.dao.ExportTemplateDao
 import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
+import ish.oncourse.server.api.dao.GradingTypeDao
 import ish.oncourse.server.api.dao.ImportDao
 import ish.oncourse.server.api.dao.InvoiceDao
 import ish.oncourse.server.api.dao.InvoiceDueDateDao
@@ -102,6 +103,7 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(ExportTemplateDao).in(Scopes.SINGLETON)
 
         binder.bind(FieldConfigurationSchemeDao).in(Scopes.SINGLETON)
+        binder.bind(GradingTypeDao).in(Scopes.SINGLETON)
 
         binder.bind(ImportDao).in(Scopes.SINGLETON)
         binder.bind(InvoiceDao).in(Scopes.SINGLETON)
