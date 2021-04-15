@@ -30,6 +30,7 @@ import ish.oncourse.server.api.service.EmailTemplateApiService
 import ish.oncourse.server.api.service.EnrolmentApiService
 import ish.oncourse.server.api.service.EntityRelationTypeApiService
 import ish.oncourse.server.api.service.ExportTemplateApiService
+import ish.oncourse.server.api.service.GradingApiService
 import ish.oncourse.server.api.service.ImportApiService
 import ish.oncourse.server.api.service.InvoiceApiService
 import ish.oncourse.server.api.service.MembershipProductApiService
@@ -72,6 +73,7 @@ class ApiServiceModule implements Module {
 
         binder.bind(EntityValidator).in(Scopes.SINGLETON)
 
+        binder.bind(ApiTokenApiService).in(Scopes.NO_SCOPE)
         binder.bind(ApplicationApiService).in(Scopes.SINGLETON)
         binder.bind(ArticleProductApiService).in(Scopes.SINGLETON)
         binder.bind(AssessmentApiService).in(Scopes.SINGLETON)
@@ -87,6 +89,7 @@ class ApiServiceModule implements Module {
         binder.bind(EnrolmentApiService).in(Scopes.SINGLETON)
         binder.bind(EntityRelationTypeApiService).in(Scopes.NO_SCOPE)
         binder.bind(ExportTemplateApiService).in(Scopes.SINGLETON)
+        binder.bind(GradingApiService).in(Scopes.SINGLETON)
         binder.bind(ImportApiService).in(Scopes.SINGLETON)
         binder.bind(InvoiceApiService).in(Scopes.SINGLETON)
         binder.bind(MembershipProductApiService).in(Scopes.SINGLETON)
@@ -104,7 +107,6 @@ class ApiServiceModule implements Module {
         binder.bind(TutorRoleApiService).in(Scopes.SINGLETON)
         binder.bind(VoucherProductApiService).in(Scopes.SINGLETON)
         binder.bind(WaitingListApiService).in(Scopes.NO_SCOPE)
-        binder.bind(ApiTokenApiService).in(Scopes.NO_SCOPE)
 
     }
 }
