@@ -14,6 +14,7 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.AssessmentDao
+import ish.oncourse.server.cayenne.GradingType
 import ish.oncourse.server.document.DocumentService
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
@@ -38,6 +39,9 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
     private DocumentService documentService
 
     @Inject
+    private GradingApiService gradingApiService
+
+    @Inject
     private SystemUserService systemUserService
 
     @Override
@@ -54,6 +58,7 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
             assessment.tags = cayenneModel.tags.collect { toRestTagMinimized(it) }
             assessment.active = cayenneModel.active
             assessment.description = cayenneModel.description
+            assessment.gradingType = gradingApiService.toRestModel(cayenneModel.gradingType)
             assessment.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             assessment.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
             assessment.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
@@ -67,6 +72,7 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
         cayenneModel.name = trimToNull(restModel.name)
         cayenneModel.active = restModel.active
         cayenneModel.description = trimToNull(restModel.description)
+        cayenneModel.gradingType = gradingApiService.getEntityAndValidateExistence(cayenneModel.context, restModel.gradingType.id)
 
         updateTags(cayenneModel, cayenneModel.taggingRelations, restModel.tags*.id, AssessmentTagRelation, cayenneModel.context)
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, restModel.documents, AssessmentAttachmentRelation, cayenneModel.context)
@@ -109,6 +115,10 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
         }
         if (restModel.active == null) {
             validator.throwClientErrorException(id, 'active', 'Active flag is required.')
+        }
+
+        if (restModel.gradingType == null) {
+            validator.throwClientErrorException(id, 'gradingType', 'The grading type is required.')
         }
 
         TagFunctions.validateTagForSave(Assessment, context, restModel.tags*.id)
