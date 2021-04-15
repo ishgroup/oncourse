@@ -102,7 +102,7 @@ const MessageCardContent = React.memo<Props>(props => {
         fullWidth
       />
     </Grid>
-);
+  );
 
   return (
     <Grid container className="mt-2">
@@ -122,7 +122,10 @@ const MessageCardContent = React.memo<Props>(props => {
           <Grid item xs={6}>
             <FormField
               type="select"
-              name={typeof templateOptionIndex === "number" ? `options[${templateOptionIndex}].value` : `${name}.template`}
+              name={typeof templateOptionIndex === "number" && templateOptionIndex !== -1
+                ? `options[${templateOptionIndex}].value`
+                : `${name}.template`
+              }
               label="Template"
               items={messageTemplateItems}
               selectLabelCondition={emailTemplatesForRender}
@@ -174,7 +177,7 @@ const MessageCardContent = React.memo<Props>(props => {
           </Grid>
           <Grid item xs={12}>
             <FormField
-              type="text"
+              type="multilineText"
               name={`${name}.content`}
               label="Content"
               disabled={disabled}
@@ -184,25 +187,29 @@ const MessageCardContent = React.memo<Props>(props => {
         </>
       )}
 
-      <Grid item xs={12}>
-        <FormField
-          type="text"
-          name={`${name}.key`}
-          disabled={disabled}
-          label="Key"
-          fullWidth
-        />
-      </Grid>
+      {field.hasOwnProperty("key") && (
+        <Grid item xs={12}>
+          <FormField
+            type="text"
+            name={`${name}.key`}
+            disabled={disabled}
+            label="Key"
+            fullWidth
+          />
+        </Grid>
+      )}
 
-      <Grid item xs={12}>
-        <FormField
-          type="text"
-          name={`${name}.keyCollision`}
-          disabled={disabled}
-          label="Key collision"
-          fullWidth
-        />
-      </Grid>
+      {field.hasOwnProperty("keyCollision") && (
+        <Grid item xs={12}>
+          <FormField
+            type="text"
+            name={`${name}.keyCollision`}
+            disabled={disabled}
+            label="Key collision"
+            fullWidth
+          />
+        </Grid>
+      )}
 
       {field.templateEntity ? renderVariables(field.templateEntity.variables, name, disabled) : null}
     </Grid>

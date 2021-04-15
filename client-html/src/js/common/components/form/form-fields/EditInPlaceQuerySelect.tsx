@@ -15,7 +15,7 @@ import { change, WrappedFieldMetaProps } from "redux-form";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
 import { DatePicker, TimePicker as Time } from "@material-ui/pickers";
-import ExpandMore from "@material-ui/icons/ExpandMore";
+import CreateIcon from '@material-ui/icons/Create';
 import ButtonBase from "@material-ui/core/ButtonBase";
 import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
@@ -655,8 +655,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   };
 
   getValue = classes => (
-      this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden placeholderContent")}>No value</span>
-    );
+    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden placeholderContent")}>{this.props.placeholder || "No value"}</span>
+  );
 
   getInlineMenuStyles = () => {
     const { caretCoordinates } = this.state;
@@ -1321,7 +1321,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
               }}
               primary={(
                 <ButtonBase
-                  onClick={() => this.edit()}
+                  onClick={this.edit}
                   className={clsx(classes.editable, "overflow-hidden hoverIconContainer")}
                   component="div"
                 >
@@ -1331,7 +1331,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                     })}
                   >
                     {editableComponent || this.getValue(classes)}
-                    <ExpandMore className={clsx("hoverIcon", classes.editIcon)} />
+                    <CreateIcon className={clsx("hoverIcon", classes.editPencilIcon)} />
                   </span>
                 </ButtonBase>
               )}

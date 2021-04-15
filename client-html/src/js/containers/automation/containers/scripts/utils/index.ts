@@ -13,20 +13,20 @@ import {
   getReportTemplate,
   importsRegexp,
   queryClosureRegexp,
-  messageClosureRegexp, getReportComponent, reportClosureRegexp,
+  messageClosureRegexp, getReportComponent, reportClosureRegexp, closureSplitRegexp,
 } from "../constants";
-import { ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
+import { ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 
-const getClosureComponent = async closure => {
-  switch (closure.type) {
-    case "query": {
-      return getQueryComponent(closure.body);
+const getClosureComponent = async (body: string, type: ScriptComponentType) => {
+  switch (type) {
+    case "Query": {
+      return getQueryComponent(body);
     }
-    case "message": {
-      return getMessageComponent(closure.body);
+    case "Message": {
+      return getMessageComponent(body);
     }
-    case "report": {
-      return getReportComponent(closure.body);
+    case "Report": {
+      return getReportComponent(body);
     }
   }
   return null;
@@ -42,9 +42,16 @@ const checkDuplicateScriptParts = (components, parsedComponent) => {
   }
 };
 
-const messageFilter = body => (/template\s+/.test(body) ? /record\s+records/.test(body) : true);
-
-const messageReplacer = match => (messageFilter(match) ? "CLOSURE" : match);
+const messageFilter = body => {
+  let pass = true;
+  if (/template\s+/.test(body) && !/record\s+records/.test(body)) {
+    pass = false;
+  }
+  if (/attachment\s+/.test(body) && !/attachment\s+file\s/.test(body)) {
+    pass = false;
+  }
+  return pass;
+};
 
 export const ParseScriptBody = async (scriptItem: Script) => {
   let { content } = scriptItem;
@@ -58,36 +65,39 @@ export const ParseScriptBody = async (scriptItem: Script) => {
   const components = [];
 
   try {
-    const queryClosures = (content?.match(queryClosureRegexp) || []).map(body => ({ body, type: "query" })) || [];
+    const closures = {
+      Query: [],
+      Message: [],
+      Report: []
+    };
 
-    const messageClosures = (content?.match(messageClosureRegexp)
-      ?.filter(messageFilter) || [])
-      ?.map(body => ({ body, type: "message" })) || [];
+    const parsedContent = content
+    .replace(queryClosureRegexp, body => {
+      closures.Query.push(body);
+      return `CLOSURE-Query-${closures.Query.length - 1}`;
+    })
+    .replace(messageClosureRegexp, body => {
+      if (messageFilter(body)) {
+        closures.Message.push(body);
+        return `CLOSURE-Message-${closures.Message.length - 1}`;
+      }
+      return body;
+    })
+    .replace(reportClosureRegexp, body => {
+      closures.Report.push(body);
+      return `CLOSURE-Report-${closures.Report.length - 1}`;
+    });
 
-    const reportClosuress = (content?.match(reportClosureRegexp) || []).map(body => ({ body, type: "report" })) || [];
-
-    let parsedContent = content;
-
-    if (queryClosures.length) {
-      parsedContent = parsedContent.replace(queryClosureRegexp, "CLOSURE");
-    }
-    if (messageClosures.length) {
-      parsedContent = parsedContent.replace(messageClosureRegexp, messageReplacer);
-    }
-    if (reportClosuress.length) {
-      parsedContent = parsedContent.replace(reportClosureRegexp, "CLOSURE");
-    }
-
-    const matchComponents = parsedContent.split("CLOSURE");
-
-    const closures = [...queryClosures, ...messageClosures, ...reportClosuress];
+    const matchComponents = parsedContent.split(closureSplitRegexp);
+    const splitMarkesrs = parsedContent.match(closureSplitRegexp);
 
     for (const [index, c] of matchComponents.entries()) {
       if (c.trim()) {
         checkDuplicateScriptParts(components, getScriptComponent(c));
       }
-      if (closures[index]) {
-        checkDuplicateScriptParts(components, await getClosureComponent(closures[index]));
+      if (splitMarkesrs[index]) {
+        const [,type, cIndex] = splitMarkesrs[index].split("-");
+        checkDuplicateScriptParts(components, await getClosureComponent(closures[type][cIndex], type as ScriptComponentType));
       }
     }
   } catch (e) {

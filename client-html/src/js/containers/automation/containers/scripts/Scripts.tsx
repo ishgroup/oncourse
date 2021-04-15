@@ -21,7 +21,6 @@ import { SCRIPT_EDIT_VIEW_FORM_NAME } from "./constants";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { setNextLocation, showConfirm } from "../../../../common/actions";
 
-const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);
 
 const ScheduleTypeItems = Object.keys(ScheduleType).map(mapSelectItems);
 
@@ -66,7 +65,6 @@ const ScriptsBase = React.memo<any>(props => {
 
   return (
     <ScriptsForm
-      TriggerTypeItems={TriggerTypeItems}
       ScheduleTypeItems={ScheduleTypeItems}
       dispatch={dispatch}
       isNew={isNew}
