@@ -73,7 +73,27 @@ public class NTIS {
 			this.lastUpdateDate = "NEVER";
 		}
 	}
+	
+	Object onActivate(String path) throws ParseException {
+		if ("cron".equals(path)) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
+			final Date from = dateFormat.parse(preferenceController.getNTISLastUpdate());
+			final Date to = new Date();
+			final Session session = request.getSession(true);
+			final INTISUpdater updater = ntisUpdater;
+			final PreferenceController preferenceController = this.preferenceController;
+
+			synchronized (session) {
+				Boolean started = (Boolean) session.getAttribute(NTIS_UPDATE_STARTED_ATTR);
+				if (started == null) {
+					session.setAttribute(NTIS_UPDATE_STARTED_ATTR, true);
+					threadSource.runInThread(new SessionBoundNTISTask(from, to, session, updater, preferenceController, mailService));
+				}
+			}
+		}
+		return null;
+	}
 	/**
 	 * Checks if already running update.
 	 * @return true/false
