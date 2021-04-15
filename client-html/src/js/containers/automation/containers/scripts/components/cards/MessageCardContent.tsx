@@ -4,13 +4,12 @@
  */
 
 import React, {
- useMemo, useCallback,
+  useMemo, useCallback,
 } from "react";
 import { connect } from "react-redux";
 import { change, getFormValues } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import LockOutlined from "@material-ui/icons/LockOutlined";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import { CustomFieldType } from "@api/model";
 import { Dispatch } from "redux";
@@ -21,14 +20,6 @@ import { Switch } from "../../../../../../common/components/form/form-fields/Swi
 import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import EmailTemplateService from "../../../email-templates/services/EmailTemplateService";
 import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
-
-const useStyles = makeStyles(() => ({
-  itemIcon: {
-    fontSize: "16px",
-    position: "relative",
-    bottom: "-3px"
-  },
-}));
 
 interface Props {
   name: string;
@@ -47,8 +38,6 @@ const MessageCardContent = React.memo<Props>(props => {
     name, emailTemplates, customPreferencesFields, field, dispatch, form, renderVariables, disabled, values
   } = props;
 
-  const classes = useStyles();
-
   const messageTemplateItems = useMemo(
     () => (emailTemplates
       ? emailTemplates.filter(t => t.keyCode).map(t => ({
@@ -57,14 +46,14 @@ const MessageCardContent = React.memo<Props>(props => {
       : []), [emailTemplates],
   );
 
-  const templateOption = useMemo(() => values?.options?.find(o => o.name === field.template), [values?.options, field.template]);
+  const templateOptionIndex = useMemo(() => values?.options?.findIndex(o => o.name === field.template), [values?.options, field.template]);
 
   const emailTemplatesForRender = useCallback(item => (
     item.hasIcon ? (
       <span>
         {item.label}
         {' '}
-        <LockOutlined className={classes.itemIcon} />
+        <LockOutlined className="selectItmeIcon" />
       </span>
     ) : item.label ), []);
 
@@ -100,16 +89,7 @@ const MessageCardContent = React.memo<Props>(props => {
     dispatch(change(form, `${name}`, updated));
   };
 
-  const getSelectedTemplateValue = key => {
-    if (templateOption) {
-      return templateOption.value;
-    }
-    return key;
-  };
-
   const templateMessage = field.hasOwnProperty("template");
-
-  console.log(templateOption);
 
   const FromField = (
     <Grid item xs={12}>
@@ -142,11 +122,10 @@ const MessageCardContent = React.memo<Props>(props => {
           <Grid item xs={6}>
             <FormField
               type="select"
-              name={`${name}.template`}
+              name={typeof templateOptionIndex === "number" ? `options[${templateOptionIndex}].value` : `${name}.template`}
               label="Template"
               items={messageTemplateItems}
               selectLabelCondition={emailTemplatesForRender}
-              selectValueCondition={getSelectedTemplateValue}
               onInnerValueChange={changeEmailTemplate}
               disabled={disabled}
               required
