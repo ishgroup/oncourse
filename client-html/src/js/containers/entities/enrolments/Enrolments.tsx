@@ -296,7 +296,8 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     }
 
     setChangedFields([]);
-    onSave(values.id, values);
+
+    if (values) onSave(values.id, values);
   };
 
   return (
