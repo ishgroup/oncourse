@@ -53,6 +53,14 @@ const messageFilter = body => {
   return pass;
 };
 
+const reportFilter = body => {
+  let pass = true;
+  if (!/record\s+records/.test(body)) {
+    pass = false;
+  }
+  return pass;
+};
+
 export const ParseScriptBody = async (scriptItem: Script) => {
   let { content } = scriptItem;
   let imports = content.match(importsRegexp);
@@ -84,8 +92,11 @@ export const ParseScriptBody = async (scriptItem: Script) => {
       return body;
     })
     .replace(reportClosureRegexp, body => {
-      closures.Report.push(body);
-      return `CLOSURE-Report-${closures.Report.length - 1}`;
+      if (reportFilter(body)) {
+        closures.Report.push(body);
+        return `CLOSURE-Report-${closures.Report.length - 1}`;
+      }
+      return body;
     });
 
     const matchComponents = parsedContent.split(closureSplitRegexp);
