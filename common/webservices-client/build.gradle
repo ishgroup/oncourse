@@ -59,7 +59,7 @@ compileJava.dependsOn generateSources
 
 sourceSets {
     main {
-        java {
+        groovy {
             srcDir 'build/generated'
         }
     }
