@@ -1,7 +1,4 @@
-.svn
 .gradle
-.settings
-.idea/workspace.xml
 **/node_modules/
 **/build/
 server/onCourse.yml
@@ -9,6 +6,3 @@ server/onCourse.yml
 /server/onCourseSSL.keystore
 /server/logs/
 **/out/
-/.idea/shelf/
-/.idea/sonarlint*
-/.idea/sonarlint/**
