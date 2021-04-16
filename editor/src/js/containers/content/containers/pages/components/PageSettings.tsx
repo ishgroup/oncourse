@@ -52,6 +52,7 @@ const styles: any = (theme: AppTheme) => ({
     textOverflow: "ellipsis",
     overflow: "hidden",
     fontWeight: 600,
+    fontFamily: theme.typography.fontFamily,
     fontSize: "13px",
     lineHeight: 1.2,
     "&::after": {

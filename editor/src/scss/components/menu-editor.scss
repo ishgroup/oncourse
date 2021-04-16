@@ -39,7 +39,7 @@
       font-size: 12px;
       color: $gray-dark;
       font-weight: 300;
-      font-family: 'Roboto', sans-serif;
+      font-family: Inter, sans-serif;
     }
     
     input {
@@ -81,8 +81,8 @@
   
   &__rowToolbar {
     button {
-      box-shadow: none;
-      font-weight: 500;
+      //box-shadow: none;
+      //font-weight: 500;
       
       &.btn.btn-danger {
         color: $danger;

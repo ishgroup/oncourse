@@ -11,8 +11,17 @@ import {showModal} from "../../../../common/containers/modal/actions";
 import {State} from "../../../../reducers/state";
 import CustomButton from "../../../../common/components/CustomButton";
 import 'react-sortable-tree/style.css';
+import {withStyles} from "@material-ui/core/styles";
+
+const styles = theme => ({
+  deleteButton: {
+    padding: `1px ${theme.spacing(1)}px`,
+    fontWeight: 600,
+  }
+})
 
 interface Props {
+  classes: any;
   menu: MenuState;
   onInit: () => any;
   onChangeTree: (treeData) => any;
@@ -23,7 +32,6 @@ interface Props {
 }
 
 export class Menus extends React.Component<Props, any> {
-
   componentDidMount() {
     this.props.onInit();
   }
@@ -124,11 +132,15 @@ export class Menus extends React.Component<Props, any> {
   }
 
   getButtons = (node, path) => {
+    const {classes} = this.props;
+
     return (
       [
         <CustomButton
           styleType="delete"
           onClick={() => this.removeNode(node, path)}
+          styles={classes.deleteButton}
+          size={"small"}
         >
           Remove
         </CustomButton>,
@@ -220,4 +232,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Menus as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Menus));

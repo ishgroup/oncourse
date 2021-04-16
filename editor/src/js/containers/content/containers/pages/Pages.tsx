@@ -7,6 +7,7 @@ import {ContentMode, Page as PageModel} from "../../../../model";
 import {Page} from "./components/Page";
 import {State} from "../../../../reducers/state";
 import {getThemes} from "../../../design/containers/themes/actions";
+import {Paper} from "@material-ui/core";
 
 interface Props {
   pages: PageModel[];
@@ -37,8 +38,8 @@ export class Pages extends React.Component<Props, any> {
 
     return (
       <div>
-        {activePage &&
-          <div className={clsx((fetching && "fetching"))}>
+        {activePage && editMode &&
+          <Paper className={clsx((fetching && "fetching"), "p-3")}>
             <Page
               page={activePage}
               onSave={onEditHtml}
@@ -48,7 +49,7 @@ export class Pages extends React.Component<Props, any> {
               editMode={editMode}
               setContentMode={setContentMode}
             />
-          </div>
+          </Paper>
         }
       </div>
     );

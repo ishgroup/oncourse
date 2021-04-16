@@ -155,7 +155,7 @@ export const Page: React.FC<PageProps> = ({
           />
           {renderEditor()}
         </div>
-        <div className="mt-4">
+        <div className="mt-3">
           <CustomButton onClick={handleCancel} styleType="cancel">Cancel</CustomButton>
           <CustomButton onClick={handleSave} styleType="submit">Save</CustomButton>
         </div>
