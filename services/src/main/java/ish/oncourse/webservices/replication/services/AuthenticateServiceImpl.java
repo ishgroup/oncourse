@@ -2,7 +2,7 @@ package ish.oncourse.webservices.replication.services;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
-import ish.oncourse.model.access.SessionToken;
+import ish.oncourse.services.access.SessionToken;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.exception.StackTraceUtils;

@@ -2,7 +2,7 @@ package ish.oncourse.webservices.soap.interceptors;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
-import ish.oncourse.model.access.SessionToken;
+import ish.oncourse.services.access.SessionToken;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.util.SoapUtil;
 import org.apache.cxf.binding.soap.SoapMessage;
