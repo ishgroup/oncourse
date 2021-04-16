@@ -195,8 +195,8 @@ const CardsRenderer = props => {
                               dispatch={dispatch}
                               field={component}
                               name={item}
-                              classes={classes}
                               form={form}
+                              disabled={isInternal}
                               renderVariables={renderVariables}
                             />
                           </ScriptCard>
