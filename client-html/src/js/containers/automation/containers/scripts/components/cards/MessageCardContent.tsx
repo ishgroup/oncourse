@@ -4,12 +4,11 @@
  */
 
 import React, {
-  useMemo, useCallback,
+  useMemo,
 } from "react";
 import { connect } from "react-redux";
 import { change, getFormValues } from "redux-form";
 import Grid from "@material-ui/core/Grid";
-import LockOutlined from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { CustomFieldType } from "@api/model";
 import { Dispatch } from "redux";
@@ -20,6 +19,7 @@ import { Switch } from "../../../../../../common/components/form/form-fields/Swi
 import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import EmailTemplateService from "../../../email-templates/services/EmailTemplateService";
 import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
+import { renderAutomationItems } from "../../../../utils";
 
 interface Props {
   name: string;
@@ -47,15 +47,6 @@ const MessageCardContent = React.memo<Props>(props => {
   );
 
   const templateOptionIndex = useMemo(() => values?.options?.findIndex(o => o.name === field.template), [values?.options, field.template]);
-
-  const emailTemplatesForRender = useCallback(item => (
-    item.hasIcon ? (
-      <span>
-        {item.label}
-        {' '}
-        <LockOutlined className="selectItmeIcon" />
-      </span>
-    ) : item.label ), []);
 
   const getEmailTemplate = async (id: number) => EmailTemplateService
     .get(id)
@@ -124,11 +115,10 @@ const MessageCardContent = React.memo<Props>(props => {
               type="select"
               name={typeof templateOptionIndex === "number" && templateOptionIndex !== -1
                 ? `options[${templateOptionIndex}].value`
-                : `${name}.template`
-              }
+                : `${name}.template`}
               label="Template"
               items={messageTemplateItems}
-              selectLabelCondition={emailTemplatesForRender}
+              selectLabelCondition={renderAutomationItems}
               onInnerValueChange={changeEmailTemplate}
               disabled={disabled}
               required

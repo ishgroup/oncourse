@@ -137,8 +137,6 @@ interface Props {
   onDelete?: any;
   formsState?: any;
   emailTemplates?: CommonListItem[];
-  pdfReports?: CommonListItem[];
-  pdfBackgrounds?: CommonListItem[];
 }
 
 const getInitComponentBody = (componentName: ScriptComponentType) => {
@@ -181,8 +179,6 @@ const ScriptsForm = React.memo<Props>(props => {
     isNew,
     formsState,
     emailTemplates,
-    pdfReports,
-    pdfBackgrounds,
     history,
     nextLocation,
     setNextLocation
@@ -488,8 +484,6 @@ const ScriptsForm = React.memo<Props>(props => {
                       isValidQuery={isValidQuery}
                       onInternalSaveClick={onInternalSaveClick}
                       emailTemplates={emailTemplates}
-                      pdfReports={pdfReports}
-                      pdfBackgrounds={pdfBackgrounds}
                     />
                   </>
                 )}

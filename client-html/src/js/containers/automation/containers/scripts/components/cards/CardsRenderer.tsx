@@ -33,9 +33,7 @@ const CardsRenderer = props => {
     isInternal,
     isValidQuery,
     onInternalSaveClick,
-    emailTemplates,
-    pdfReports,
-    pdfBackgrounds,
+    emailTemplates
   } = props;
 
   const onDelete = (e, index, fieldsIns, showConfirm) => {
@@ -198,8 +196,7 @@ const CardsRenderer = props => {
                               field={component}
                               name={item}
                               classes={classes}
-                              pdfReports={pdfReports}
-                              pdfBackgrounds={pdfBackgrounds}
+                              form={form}
                               renderVariables={renderVariables}
                             />
                           </ScriptCard>
