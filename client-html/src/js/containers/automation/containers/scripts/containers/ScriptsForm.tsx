@@ -218,7 +218,11 @@ const ScriptsForm = React.memo<Props>(props => {
     [values],
   );
 
-  const onValidateQuery = isValid => {
+  const onValidateQuery = (isValid, input?) => {
+    if(input && input.includes("${")) {
+      setIsValidQuery(true);
+      return;
+    }
     setIsValidQuery(isValid);
   };
 
