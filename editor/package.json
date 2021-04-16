@@ -14,6 +14,7 @@
     "build:mock:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map --node-env mock",
     "test": "jest --ci  --testResultsProcessor=jest-junit --passWithNoTests",
     "start": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx --content-base ./src/dev",
+    "start:prod": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx --content-base ./src/dev",
     "start:mock": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/dev/app.tsx --content-base ./src/dev"
   },
   "devDependencies": {
@@ -36,6 +37,7 @@
     "raw-loader": "4.0.2",
     "sass-loader": "11.0.1",
     "source-map-loader": "2.0.1",
+    "terser-webpack-plugin": "^5.1.1",
     "ts-jest": "^26.5.4",
     "ts-loader": "^8.0.18",
     "tslint": "6.1.3",
@@ -91,6 +93,8 @@
     "react-text-mask": "5.4.3",
     "react-timeago": "5.2.0",
     "react-transition-group": "^4.4.1",
+    "react-virtualized-auto-sizer": "^1.0.5",
+    "react-window": "^1.8.6",
     "redux": "4.0.5",
     "redux-form": "8.3.7",
     "redux-logger": "3.0.6",

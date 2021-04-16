@@ -4,7 +4,7 @@ import {routes} from '../../routes';
 
 export const Content = props => {
   return (
-    <div>
+    <>
       {routes.map((route, index) => (
         <RouteWrapper
           key={index}
@@ -15,7 +15,7 @@ export const Content = props => {
           isAuthenticated={props.isAuthenticated}
         />
       ))}
-    </div>
+    </>
   );
 };
 

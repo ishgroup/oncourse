@@ -10,21 +10,45 @@ interface RedirectItemState extends RedirectItemModel {
 }
 
 interface Props {
-  item: RedirectItemState;
+  data: {
+    items: RedirectItemState[];
+    index: number;
+    onChange: (e, index, key) => any;
+    onRemove: (index) => any;
+  };
   index: number;
-  onChange: (e, index, key) => any;
-  onRemove: (index) => any;
+  style: any;
 }
 
-class RedirectItem extends React.Component<Props, any> {
-  shouldComponentUpdate(newProps: Props) {
-    return this.props.item !== newProps.item;
-  }
+const areEqual = (prev: Props, cur: Props) => {
+  let equal = true;
 
-  render() {
-    const {item, index, onChange, onRemove} = this.props;
-    return (
-      <Grid container key={index} className="centeredFlex">
+  const prevItem = prev.data.items[prev.index];
+  const curItem = cur.data.items[cur.index];
+
+  for (const key in prevItem) {
+    if (prevItem[key] !== curItem[key]) {
+      equal = false;
+      break;
+    }
+  }
+  return equal;
+};
+
+const RedirectItem = React.memo<Props>((
+  {
+    style,
+    data,
+    index,
+  }) => {
+
+  const {items, onChange, onRemove} = data;
+
+  const item = items[index];
+
+  return (
+    <div style={style}>
+      <Grid container className="centeredFlex">
         <Grid item xs={5}>
           <EditInPlaceField
             label="From"
@@ -41,7 +65,8 @@ class RedirectItem extends React.Component<Props, any> {
               value: item.from,
             }}
             fullWidth
-        />
+            noWrap
+          />
         </Grid>
         <Grid item xs={5}>
           <EditInPlaceField
@@ -59,6 +84,7 @@ class RedirectItem extends React.Component<Props, any> {
               value: item.to,
             }}
             fullWidth
+            noWrap
           />
         </Grid>
         <Grid item>
@@ -71,9 +97,9 @@ class RedirectItem extends React.Component<Props, any> {
           </CustomButton>
         </Grid>
       </Grid>
-    );
-  }
-}
+    </div>
+  );
+},areEqual);
 
 export default RedirectItem;
 

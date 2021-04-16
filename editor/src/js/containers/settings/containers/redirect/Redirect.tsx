@@ -1,5 +1,4 @@
-import React from 'react';
-import update from 'react-addons-update';
+import React, {useEffect, useState} from 'react';
 import {withStyles} from "@material-ui/core/styles";
 import {Grid, Paper, TextField} from "@material-ui/core";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -7,20 +6,19 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import clsx from "clsx";
 import {getRedirectSettings, setRedirectSettings} from "./actions";
-import RedirectItem from "./components/RedirectItem";
+import RedirectComp from "./components/RedirectItem";
+import {FixedSizeList as List} from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 import {RedirectSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
 import CustomButton from "../../../../common/components/CustomButton";
+import {RedirectItem} from "../../../../../../build/generated-sources";
 
 const styles: any = theme => ({
   redirectWrapper: {
     maxHeight: "calc(100vh - 30px)",
     boxSizing: "border-box",
     overflow: "hidden",
-  },
-  redirectItemWrapper: {
-    maxHeight: "calc(100vh - 230px)",
-    overflowY: "auto",
   },
   saveButton: {
     marginLeft: theme.spacing(2),
@@ -35,130 +33,122 @@ interface Props {
   fetching: boolean;
 }
 
-export class Redirect extends React.PureComponent<Props, any> {
-  constructor(props) {
-    super(props);
+const Redirect: React.FC<Props> = (
+  {
+    redirect,
+    onInit,
+    onSave,
+    classes,
+    fetching,
+  }) => {
+  const [rules, setRules] = useState<RedirectItem[]>(redirect.rules.map(r => ({...r, submitted: false})) || []);
+  const [filter, setFilter] = useState("");
 
-    this.state = {
-      rules: props.redirect.rules,
-      filter: '',
-    };
-  }
+  useEffect(() => {
+    onInit();
+  },        []);
 
-  componentDidMount() {
-    this.props.onInit();
-  }
 
-  componentWillReceiveProps(props: Props) {
-    if (props.redirect.refreshSettings) {
-      this.setState({rules: props.redirect.rules});
-    }
-  }
+  useEffect(() => {
+    setRules(redirect.rules);
+  },        [redirect.refreshSettings]);
 
-  onChange(e, index, key) {
-    this.setState(update(this.state, {
-      rules: {[index]: {
-        [key]: {$set: e.target.value},
-        submitted: {$set: false},
-      }},
+
+  const onChange = (e, index, key) => {
+    const updated = rules.map((r, rIndex) => ({
+      ...r,
+      [key]: rIndex === index ? e.target.value : r[key],
+      submitted: false,
     }));
-  }
+    setRules(updated);
+  };
 
-  onAddNew() {
-    this.setState(update(this.state, {
-      rules: {
-        $unshift: [{from: '', to: ''}],
-      },
-    }));
-  }
+  const onAddNew = () => {
+    setRules([{from: '', to: ''}, ...rules]);
+  };
 
-  onSave = () => {
-    const {onSave} = this.props;
-    this.setState({
-      rules: this.state.rules.map(rule => ({...rule, submitted: true})),
-    });
-
-    const rules = this.state.rules
+  const onSaveHandler = () => {
+    const rulesForUpdate = rules
       .filter(rule => rule.from || rule.to)
-      .map(rule => ({from: rule.from, to: rule.to}));
+      .map(rule => ({from: rule.from, to: rule.to, submitted: true}));
 
-    if (rules.filter(rule => (rule.from && !rule.to) || (!rule.from && rule.to)).length) return;
+    if (rulesForUpdate.filter(rule => (rule.from && !rule.to) || (!rule.from && rule.to)).length) return;
 
-    this.setState({rules});
-    onSave({rules});
-  }
+    setRules(rulesForUpdate);
+    onSave({rules: rulesForUpdate.map(({from, to}) => ({from, to}))});
+  };
 
-  onRemove(index) {
-    const {rules} = this.state;
+  const onRemove = index => {
+    const updated = [...rules];
+    updated.splice(index, 1);
+    setRules(updated);
+  };
 
-    this.setState({rules: rules.filter(elem => elem.from !== index)})
-  }
+  const onChangeFilter = e => {
+    setFilter(e.target.value);
+  };
 
-  onChangeFilter(e) {
-    this.setState({
-      filter: e.target.value,
-    });
-  }
+  const filteredRules = rules.filter(r => r.from.indexOf(filter) !== -1 || r.to.indexOf(filter) !== -1 || !r.from || !r.to);
 
-  render() {
-    const {rules, filter} = this.state;
-    const {classes, fetching} = this.props;
+  return (
+    <Paper className={clsx((fetching && "fetching"), "p-3", classes.redirectWrapper)}>
+      <p className="mb-1">
+        Add 301 redirects to your website by entering the local path on the left (starting with '/')
+        and the destination on the right (either starting with '/' for another local page or starting with
+        http/https for redirecting to another website).
+      </p>
 
-    return (
-      <Paper className={clsx((fetching && "fetching"), "p-3", classes.redirectWrapper)}>
-        <p className="mb-1">
-          Add 301 redirects to your website by entering the local path on the left (starting with '/')
-          and the destination on the right (either starting with '/' for another local page or starting with
-          http/https for redirecting to another website).
-        </p>
+      {rules && rules.length > 0 &&
+        <TextField
+          type="text"
+          name="filter"
+          placeholder="Filter"
+          id="filter"
+          value={filter}
+          onChange={onChangeFilter}
+        />
+      }
 
-        {rules && rules.length > 0 &&
-          <TextField
-            type="text"
-            name="filter"
-            placeholder="Filter"
-            id="filter"
-            value={filter}
-            onChange={e => this.onChangeFilter(e)}
-          />
-        }
+      <div className="mt-2 mb-3">
+        <CustomButton
+          styleType="submit"
+          onClick={onAddNew}
+          startIcon={<AddCircleIcon />}
+        >
+          Add new
+        </CustomButton>
+        <CustomButton
+          styleType="submit"
+          onClick={onSaveHandler}
+          styles={classes.saveButton}
+        >
+          Save
+        </CustomButton>
+      </div>
 
-        <div className="mt-2 mb-3">
-          <CustomButton
-            styleType="submit"
-            onClick={() => this.onAddNew()}
-            startIcon={<AddCircleIcon />}
-          >
-            Add new
-          </CustomButton>
-          <CustomButton
-            styleType="submit"
-            onClick={() => this.onSave()}
-            styles={classes.saveButton}
-          >
-            Save
-          </CustomButton>
-        </div>
-
-        <Grid container className={clsx("mt-3", classes.redirectItemWrapper)}>
-          <Grid item xs={12} md={10} lg={8} xl={6}>
-            {rules && rules
-              .filter(r => r.from.indexOf(filter) !== -1 || r.to.indexOf(filter) !== -1 || !r.from || !r.to)
-              .map((rule, index) =>
-                <RedirectItem
-                  key={rule.from}
-                  item={rule}
-                  index={index}
-                  onChange={this.onChange.bind(this)}
-                  onRemove={this.onRemove.bind(this, rule.from)}
-                />,
+      <Grid container className={clsx("mt-3", classes.redirectItemWrapper)}>
+        <Grid item xs={12} md={10}>
+          <div style={{height: (window.innerHeight - 230) < (filteredRules.length * 47) ? window.innerHeight - 230 : filteredRules.length * 47}}>
+            <AutoSizer>
+              {({height, width}) => (
+                <List
+                  className="List"
+                  height={height}
+                  itemCount={filteredRules.length}
+                  itemData={{onChange, onRemove, items: filteredRules}}
+                  itemSize={47}
+                  width={width}
+                >
+                  {RedirectComp}
+                </List>
               )}
-          </Grid>
+            </AutoSizer>
+          </div>
         </Grid>
-      </Paper>
-    );
-  }
-}
+      </Grid>
+    </Paper>
+  );
+};
 
 const mapStateToProps = (state: State) => ({
   redirect: state.settings.redirectSettings,

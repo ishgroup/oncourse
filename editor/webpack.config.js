@@ -4,6 +4,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
 const CompressionPlugin = require("compression-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = function (options = {}) {
@@ -43,6 +44,13 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
         path.resolve(__dirname, 'src/scss'),
       ],
       extensions: [".ts", ".tsx", ".js", ".css"]
+    },
+    optimization: {
+      minimizer: [
+        new TerserPlugin({
+          parallel: 4
+        })
+      ]
     },
     mode: mode,
     module: {
