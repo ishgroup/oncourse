@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
+import {withStyles} from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -16,7 +17,15 @@ import {State} from "../../reducers/state";
 import {showModal} from "../../common/containers/modal/actions";
 import CustomButton from "../../common/components/CustomButton";
 
+const styles = theme => ({
+  historyWrapper: {
+    maxHeight: "95vh",
+    overflowY: "auto",
+  }
+});
+
 interface Props {
+  classes: any;
   versions: Version[];
   onInit: () => any;
   onPublish: (id) => any;
@@ -26,7 +35,6 @@ interface Props {
 }
 
 class History extends React.Component<Props, any> {
-
   constructor(props) {
     super(props);
   }
@@ -51,10 +59,10 @@ class History extends React.Component<Props, any> {
   }
 
   render() {
-    const {versions, fetching} = this.props;
+    const {classes, versions, fetching} = this.props;
 
     return (
-      <div className={clsx('overflow-content', (fetching && "fetching"))}>
+      <div className={clsx(classes.historyWrapper, (fetching && "fetching"))}>
         <TableContainer component={Paper} className="p-3">
           <Table  className="table table--row-center" aria-label="simple table">
             <TableHead>
@@ -118,4 +126,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(History as any);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(History));
