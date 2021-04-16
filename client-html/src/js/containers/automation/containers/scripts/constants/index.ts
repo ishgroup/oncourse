@@ -22,16 +22,20 @@ export const queryClosureRegexp = new RegExp(
 );
 
 export const messageClosureRegexp = new RegExp(
-  "\\n?\\s*message\\s+{(\\s+\\w+\\s?[\"']?.+[\"']?\\n)+\\s*}\\s*\\n{0,2}",
+  "\\s?message\\s+{((?:[^{}]|{[^}]*})*)}\\n{0,2}",
   "g",
 );
 
 export const reportClosureRegexp = new RegExp(
-  "\\n?\\s*file\\s+=\\s+report\\s+{[^}]+record records[^}]+}(\\s+)?\\n{0,2}",
+  "\\s?file\\s+=\\s+report\\s+{((?:[^{}]|{[^}]*})*)}\\n{0,2}",
   "g",
 );
 
 export const closureSplitRegexp = /CLOSURE-\w+-\d+/g;
+
+export const closureBodyRegexp = /{((?:[^{}]|{[^}]*})*)}/;
+
+const getBodyEntries = body => body.match(closureBodyRegexp)[0]?.match(/(\w+\s?["']?.+["']?\n)+/g);
 
 export const getQueryTemplate = (entity: string, query: string, queryClosureReturnValue: string) =>
   `\n${queryClosureReturnValue} = query {
@@ -81,7 +85,7 @@ export const getMessageComponent = async (body: string): Promise<ScriptComponent
     return result;
   }
 
-  const entries = body.match(/{(\s+\w+\s?["']?.+["']?\n)+\s*}/)[0]?.match(/(\w+\s?["']?.+["']?\n)+/g);
+  const entries = getBodyEntries(body);
 
   for (const e of entries) {
     const key = e.match(/\w+/)[0];
@@ -130,7 +134,7 @@ export const getReportComponent = async (body: string): Promise<ScriptComponent>
 
   if (!body) return result;
 
-  const entries = body.match(/{(\s+\w+\s?["']?.+["']?\n)+\s*}/)[0]?.match(/(\w+\s?["']?.+["']?\n)+/g);
+  const entries = getBodyEntries(body);
 
   for (const e of entries) {
     const key = e.match(/\w+/)[0];
