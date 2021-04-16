@@ -89,6 +89,7 @@ const QueryCardContent = props => {
                 disabled={!field.entity || disabled}
                 onValidateQuery={onValidateQuery}
                 validate={validateExpression}
+                isValidQuery={isValidQuery}
               />
             </div>
           </Collapse>

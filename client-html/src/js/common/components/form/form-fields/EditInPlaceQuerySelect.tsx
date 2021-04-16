@@ -251,7 +251,7 @@ interface State {
 }
 
 interface Props {
-  onValidateQuery?: BooleanArgFunction;
+  onValidateQuery?: (valid: boolean, input?: string) => void;
   setInputNode: HTMLTagArgFunction;
   className: string;
   rootEntity: string;
@@ -262,6 +262,7 @@ interface Props {
   disabled?: boolean;
   disableUnderline?: boolean;
   disableErrorText?: boolean;
+  isValidQuery?: boolean;
   clearOnUnmount?: boolean;
   inline?: boolean;
   hideLabel?: boolean;
@@ -433,7 +434,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       this.setState({
         error: true
       });
-      onValidateQuery(false);
+      onValidateQuery(false, inputValue);
     }
 
     if (hasSuggestionsForIncomplete) {
@@ -526,7 +527,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     }
 
     if (onValidateQuery) {
-      onValidateQuery(!parserErrors);
+      onValidateQuery(!parserErrors, input);
     }
 
     return { tokens, parser } as any;
@@ -1209,7 +1210,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       endAdornment,
       disableUnderline,
       disableErrorText,
-      fieldClasses = {}
+      fieldClasses = {},
+      isValidQuery
     } = this.props;
 
     const {
@@ -1238,7 +1240,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
         <div
           className={clsx("relative", {
-            "d-none": !(inline || isEditing || meta.invalid || error),
+            "d-none": !(inline || isEditing || (!isValidQuery && (meta.invalid || error))),
             "pointer-events-none": disabled,
             [classes.bottomPadding]: !inline
           })}
@@ -1279,10 +1281,10 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                   ...params.inputProps,
                   value: inputValue
                 }}
-                error={(meta && meta.invalid) || error}
+                error={!isValidQuery && ((meta && meta.invalid) || error)}
                 helperText={(
                   <span className="shakingError">
-                    {!disableErrorText && (meta && meta.invalid ? meta.error : error ? "Expression is invalid" : "")}
+                    {!disableErrorText && !isValidQuery && (meta && meta.invalid ? meta.error : error ? "Expression is invalid" : "")}
                   </span>
                 )}
                 onChange={this.handleInputChange}
@@ -1301,7 +1303,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         </div>
         <div
           className={clsx(classes.textField, {
-            "d-none": inline || isEditing || meta.invalid || error,
+            "d-none": inline || isEditing || (!isValidQuery && (meta.invalid || error)),
             "pointer-events-none": disabled
           })}
         >
