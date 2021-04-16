@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import clsx from "clsx";
+import {Paper} from "@material-ui/core";
 import {PageState} from "../reducers/State";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
@@ -144,7 +145,7 @@ export const Page: React.FC<PageProps> = ({
 
   return (
     <div>
-      {editMode && <>
+      {editMode && <Paper className="p-3">
         <div className={
           clsx("editor-wrapper", (page.contentMode === "html" || page.contentMode === "textile") && "ace-wrapper")
         }>
@@ -159,7 +160,7 @@ export const Page: React.FC<PageProps> = ({
           <CustomButton onClick={handleCancel} styleType="cancel">Cancel</CustomButton>
           <CustomButton onClick={handleSave} styleType="submit">Save</CustomButton>
         </div>
-      </>}
+      </Paper>}
     </div>
   );
 };
