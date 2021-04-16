@@ -55,7 +55,7 @@ class History extends React.Component<Props, any> {
 
     return (
       <div className={clsx('overflow-content', (fetching && "fetching"))}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className="p-3">
           <Table  className="table table--row-center" aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -88,7 +88,7 @@ class History extends React.Component<Props, any> {
                     {(version.status === VersionStatus.published || !version.status) &&
                       <CustomButton
                         styleType="cancel"
-                        onClick={() => this.onPublish(version.id)}
+                        onClick={() => this.onRevert(version.id)}
                       >
                         Revert
                       </CustomButton>
