@@ -4,6 +4,7 @@ import ish.oncourse.common.field.FieldProperty;
 import ish.oncourse.common.field.Property;
 import ish.oncourse.common.field.PropertyGetSetFactory;
 import ish.oncourse.model.auto._Course;
+import ish.oncourse.model.auto._TutorRole;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -123,6 +124,7 @@ public class Course extends _Course implements Queueable {
 			return getAvailableClasses().stream()
 				.map(CourseClass::getTutorRoles)
 				.flatMap(Collection::stream)
+				.filter(_TutorRole::getInPublicity)	
 				.map(TutorRole::getTutor)
 				.filter(tutor -> tutor.getFinishDate() == null || tutor.getFinishDate().after(new Date()))
 				.collect(Collectors.toSet());

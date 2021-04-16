@@ -7,6 +7,7 @@ import ish.oncourse.common.field.FieldProperty;
 import ish.oncourse.common.field.Property;
 import ish.oncourse.common.field.PropertyGetSetFactory;
 import ish.oncourse.model.auto._CourseClass;
+import ish.oncourse.model.auto._TutorRole;
 import ish.oncourse.utils.DateUtils;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.SessionUtils;
@@ -497,6 +498,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 
 	public Set<Tutor> getTutors() {
 		return getTutorRoles().stream()
+				.filter(_TutorRole::getInPublicity)
 				.map(TutorRole::getTutor)
 				.filter(tutor -> tutor.getFinishDate() == null || tutor.getFinishDate().after(new Date()))
 				.collect(Collectors.toSet());
