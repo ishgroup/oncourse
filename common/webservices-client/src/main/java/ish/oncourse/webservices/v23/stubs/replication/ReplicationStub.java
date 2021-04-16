@@ -129,7 +129,9 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     TaxStub.class,
     HollowStub.class,
     DeletedStub.class,
-    QualificationStub.class
+    QualificationStub.class,
+    GradingTypeStub.class,
+    GradingItemStub.class
 })
 public abstract class ReplicationStub
     extends GenericReplicationStub

@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="markedById" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="submittedOn" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="markedOn" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="grade" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -39,7 +40,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "assessmentClassId",
     "markedById",
     "submittedOn",
-    "markedOn"
+    "markedOn",
+    "grade"
 })
 public class AssessmentSubmissionStub
     extends ReplicationStub
@@ -65,6 +67,7 @@ public class AssessmentSubmissionStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date markedOn;
+    protected Float grade;
 
     /**
      * Gets the value of the enrolmentId property.
@@ -184,6 +187,30 @@ public class AssessmentSubmissionStub
      */
     public void setMarkedOn(Date value) {
         this.markedOn = value;
+    }
+
+    /**
+     * Gets the value of the grade property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Float }
+     *     
+     */
+    public Float getGrade() {
+        return grade;
+    }
+
+    /**
+     * Sets the value of the grade property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Float }
+     *     
+     */
+    public void setGrade(Float value) {
+        this.grade = value;
     }
 
 }

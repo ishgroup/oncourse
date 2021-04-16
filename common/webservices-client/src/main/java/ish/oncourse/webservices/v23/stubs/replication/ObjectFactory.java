@@ -138,6 +138,8 @@ public class ObjectFactory {
     private final static QName _AuthNewCommunicationKey_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "authNewCommunicationKey");
     private final static QName _FaultResponse_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "faultResponse");
     private final static QName _Qualification_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "qualification");
+    private final static QName _GradingType_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "gradingType");
+    private final static QName _GradingItem_QNAME = new QName("http://repl.v23.soap.webservices.oncourse.ish/", "gradingItem");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ish.oncourse.webservices.v23.stubs.replication
@@ -960,6 +962,22 @@ public class ObjectFactory {
      */
     public QualificationStub createQualificationStub() {
         return new QualificationStub();
+    }
+
+    /**
+     * Create an instance of {@link GradingTypeStub }
+     * 
+     */
+    public GradingTypeStub createGradingTypeStub() {
+        return new GradingTypeStub();
+    }
+
+    /**
+     * Create an instance of {@link GradingItemStub }
+     * 
+     */
+    public GradingItemStub createGradingItemStub() {
+        return new GradingItemStub();
     }
 
     /**
@@ -2012,6 +2030,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v23.soap.webservices.oncourse.ish/", name = "qualification")
     public JAXBElement<QualificationStub> createQualification(QualificationStub value) {
         return new JAXBElement<QualificationStub>(_Qualification_QNAME, QualificationStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GradingTypeStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v23.soap.webservices.oncourse.ish/", name = "gradingType")
+    public JAXBElement<GradingTypeStub> createGradingType(GradingTypeStub value) {
+        return new JAXBElement<GradingTypeStub>(_GradingType_QNAME, GradingTypeStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GradingItemStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v23.soap.webservices.oncourse.ish/", name = "gradingItem")
+    public JAXBElement<GradingItemStub> createGradingItem(GradingItemStub value) {
+        return new JAXBElement<GradingItemStub>(_GradingItem_QNAME, GradingItemStub.class, null, value);
     }
 
 }

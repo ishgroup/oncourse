@@ -122,6 +122,8 @@
             <xs:element name="authNewCommunicationKey" type="xs:long"/>
             <xs:element name="faultResponse" type="tns:FaultReason"/>
             <xs:element name="qualification" type="tns:qualificationStub" />
+            <xs:element name="gradingType" type="tns:gradingTypeStub" />
+            <xs:element name="gradingItem" type="tns:gradingItemStub" />
 
             <xs:simpleType name="errorCode">
                 <xs:restriction base="xs:string">
@@ -1555,6 +1557,7 @@
                             <xs:element name="name" type="xs:string"/>
                             <xs:element name="description" type="xs:string"/>
                             <xs:element name="isActive" type="xs:boolean"/>
+                            <xs:element name="gradingTypeId" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1593,6 +1596,7 @@
                             <xs:element name="markedById" type="xs:long"/>
                             <xs:element name="submittedOn" type="xs:dateTime"/>
                             <xs:element name="markedOn" type="xs:dateTime"/>
+                            <xs:element name="grade" type="xs:float" minOccurs="0"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1710,6 +1714,31 @@
                             <xs:element name="specialisation" type="xs:string" />
                             <xs:element name="title" type="xs:string" />
                             <xs:element name="trainingPackageId" type="xs:long" />
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+
+            <xs:complexType name="gradingTypeStub">
+                <xs:complexContent>
+                    <xs:extension base="tns:replicationStub">
+                        <xs:sequence>
+                            <xs:element name="name" type="xs:string" />
+                            <xs:element name="minValue" type="xs:float" minOccurs="0"/>
+                            <xs:element name="maxValue" type="xs:float" minOccurs="0"/>
+                            <xs:element name="entryType" type="xs:int"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+
+            <xs:complexType name="gradingItemStub">
+                <xs:complexContent>
+                    <xs:extension base="tns:replicationStub">
+                        <xs:sequence>
+                            <xs:element name="name" type="xs:string" />
+                            <xs:element name="lowerBound" type="xs:float" minOccurs="0"/>
+                            <xs:element name="gradingTypeId" type="xs:long" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

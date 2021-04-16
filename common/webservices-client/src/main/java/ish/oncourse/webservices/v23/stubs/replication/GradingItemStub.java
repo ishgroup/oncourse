@@ -10,19 +10,17 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
- * <p>Java class for assessmentStub complex type.
+ * <p>Java class for gradingItemStub complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="assessmentStub"&gt;
+ * &lt;complexType name="gradingItemStub"&gt;
  *   &lt;complexContent&gt;
  *     &lt;extension base="{http://repl.v23.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="isActive" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="lowerBound" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
  *         &lt;element name="gradingTypeId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
@@ -33,55 +31,22 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "assessmentStub", propOrder = {
-    "code",
+@XmlType(name = "gradingItemStub", propOrder = {
     "name",
-    "description",
-    "isActive",
+    "lowerBound",
     "gradingTypeId"
 })
-public class AssessmentStub
+public class GradingItemStub
     extends ReplicationStub
 {
 
     @XmlElement(required = true)
-    protected String code;
-    @XmlElement(required = true)
     protected String name;
-    @XmlElement(required = true)
-    protected String description;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
-    @XmlSchemaType(name = "boolean")
-    protected Boolean isActive;
+    protected Float lowerBound;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long gradingTypeId;
-
-    /**
-     * Gets the value of the code property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCode() {
-        return code;
-    }
-
-    /**
-     * Sets the value of the code property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCode(String value) {
-        this.code = value;
-    }
 
     /**
      * Gets the value of the name property.
@@ -108,51 +73,27 @@ public class AssessmentStub
     }
 
     /**
-     * Gets the value of the description property.
+     * Gets the value of the lowerBound property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Float }
      *     
      */
-    public String getDescription() {
-        return description;
+    public Float getLowerBound() {
+        return lowerBound;
     }
 
     /**
-     * Sets the value of the description property.
+     * Sets the value of the lowerBound property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Float }
      *     
      */
-    public void setDescription(String value) {
-        this.description = value;
-    }
-
-    /**
-     * Gets the value of the isActive property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public Boolean isIsActive() {
-        return isActive;
-    }
-
-    /**
-     * Sets the value of the isActive property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setIsActive(Boolean value) {
-        this.isActive = value;
+    public void setLowerBound(Float value) {
+        this.lowerBound = value;
     }
 
     /**
