@@ -17,7 +17,6 @@ import { renderAutomationItems } from "../../../../utils";
 
 interface Props {
   name: string;
-  emailTemplates: any;
   field: ScriptComponent;
   dispatch: Dispatch;
   form: string;
@@ -27,7 +26,7 @@ interface Props {
 
 const ReportCardContent: React.FC<Props> = props => {
   const {
-    dispatch, field, name, renderVariables, form
+    dispatch, field, name, renderVariables, form, disabled
   } = props;
 
   const pdfReports = useSelector<State, any>(state => state.automation.pdfReport.pdfReports);
@@ -71,6 +70,7 @@ const ReportCardContent: React.FC<Props> = props => {
           type="text"
           name={`${name}.fileName`}
           label="File Name"
+          disabled={disabled}
           required
         />
 
@@ -82,6 +82,7 @@ const ReportCardContent: React.FC<Props> = props => {
           className="d-flex mt-2"
           onInnerValueChange={changePdfReport}
           selectLabelCondition={renderAutomationItems}
+          disabled={disabled}
           required
         />
 
@@ -93,6 +94,7 @@ const ReportCardContent: React.FC<Props> = props => {
           label="Background"
           items={pdfBackgroundsItems}
           className="d-flex mt-2"
+          disabled={disabled}
           allowEmpty
         />
 
