@@ -766,6 +766,7 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="lowerBound" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
 		<db-attribute name="gradingTypeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="GradingType">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -775,6 +776,7 @@
 		<db-attribute name="minValue" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
 		<db-attribute name="maxValue" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
 		<db-attribute name="entryType" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Import">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
@@ -2342,6 +2344,7 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="itemName" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="lowerBound" type="java.math.BigDecimal" db-attribute-path="lowerBound"/>
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="GradingType" className="ish.oncourse.server.cayenne.GradingType" dbEntityName="GradingType" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
@@ -2351,6 +2354,7 @@
 		<obj-attribute name="minValue" type="java.math.BigDecimal" db-attribute-path="minValue"/>
 		<obj-attribute name="maxValue" type="java.math.BigDecimal" db-attribute-path="maxValue"/>
 		<obj-attribute name="entryType" type="ish.common.types.GradingEntryType" db-attribute-path="entryType"/>
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="Import" className="ish.oncourse.server.cayenne.Import" clientClassName="ish.oncourse.cayenne.Import" dbEntityName="Import" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
