@@ -9,7 +9,7 @@ import {
  getFormInitialValues, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { withRouter } from "react-router";
-import { ScheduleType, Script, TriggerType } from "@api/model";
+import { ScheduleType, Script } from "@api/model";
 import { Dispatch } from "redux";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../reducers/state";
@@ -85,9 +85,7 @@ const mapStateToProps = (state: State) => ({
   initialValues: getFormInitialValues(SCRIPT_EDIT_VIEW_FORM_NAME)(state),
   scripts: state.automation.script.scripts,
   emailTemplates: state.automation.emailTemplate.emailTemplates,
-  nextLocation: state.nextLocation,
-  pdfReports: state.automation.pdfReport.pdfReports,
-  pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds
+  nextLocation: state.nextLocation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

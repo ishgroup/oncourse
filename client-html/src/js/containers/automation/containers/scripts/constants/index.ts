@@ -6,6 +6,7 @@ import {
 import uniqid from "../../../../../common/utils/uniqid";
 import EmailTemplateService from "../../email-templates/services/EmailTemplateService";
 import EntityService from "../../../../../common/services/EntityService";
+import PdfService from "../../pdf-reports/services/PdfService";
 
 export const SCRIPT_EDIT_VIEW_FORM_NAME = "ScriptsForm";
 
@@ -57,7 +58,11 @@ export const getMessageTemplate = component => {
   const entries = Object.entries(component);
   const parsedString = entries.reduce((result, e, index) => (["id", "record", "attachment", "type", "templateEntity"].includes(e[0])
     ? result
-    : `${result}${e[0]} ${variables.some(v => v.name === e[0] && v.type === "Object") ? e[1] : `"${e[1]}"`}${index === (entries.length - 1) ? "" : "\n\t\t"}`), "");
+    : `${result}${e[0]} ${variables.some(v => v.name === e[0] && v.type === "Object") 
+      ? e[1] 
+      : `"${e[1]}"`}${index === (entries.length - 1) 
+        ? "" 
+        : "\n\t\t"}`), "");
 
   return `\nmessage {
     ${parsedString}${component.hasOwnProperty("template") ? "record records" : ""}
@@ -102,8 +107,14 @@ export const getMessageComponent = async (body: string): Promise<ScriptComponent
 
 export const getReportTemplate = component => {
   const entries = Object.entries(component);
-  const parsedString = entries.reduce((result, e) => (
-    e[0] === 'id' ? '' : `${result} ${e[0]} "${e[1]}"\n\t`), '');
+  const variables: Binding[] = component?.templateEntity?.variables || [];
+  const parsedString = entries.reduce((result, e, index) => (["id", "record", "reportEntity"].includes(e[0])
+    ? result
+    : `${result}${e[0]} ${variables.some(v => v.name === e[0] && v.type === "Object") 
+      ? e[1] 
+      : `"${e[1]}"`}${index === (entries.length - 1) 
+        ? "" 
+        : "\n\t\t"}`), "");
 
   return `\nfile = report {
     ${parsedString}
@@ -111,7 +122,7 @@ export const getReportTemplate = component => {
   }\n\n`;
 };
 
-export const getReportComponent = (body: string): ScriptComponent => {
+export const getReportComponent = async (body: string): Promise<ScriptComponent> => {
   const result: ScriptComponent = {
     type: "Report",
     id: uniqid(),
@@ -119,18 +130,25 @@ export const getReportComponent = (body: string): ScriptComponent => {
 
   if (!body) return result;
 
-  const entries = body.match(/\n?(.*")\n/gi);
+  const entries = body.match(/{(\s+\w+\s?["']?.+["']?\n)+\s*}/)[0]?.match(/(\w+\s?["']?.+["']?\n)+/g);
 
-  entries.forEach(e => {
-    const matchedKey = e.match(/(.*?)\"/);
-    const key = matchedKey ? matchedKey[1].trim() : "";
+  for (const e of entries) {
+    const key = e.match(/\w+/)[0];
+    const value = e.replace(/\w+/, "").trim();
+    if (!value) break;
 
-    if (!key) return;
-
-    const matchedValue = e.replace(key, '').trim();
-    const value = matchedValue.slice(1, matchedValue.length - 1);
-    result[key] = value === "false" ? false : value;
-  });
+    if (key === "keycode") {
+      result.reportEntity = await EntityService.getPlainRecords("Report", "id", `keyCode is ${value}`)
+        .then(r => {
+          if (r.rows[0]?.id) {
+            return PdfService.getReport((Number(r.rows[0].id)));
+          }
+          return null;
+        })
+        .catch(er => console.error(er));
+    }
+    result[key] = value.replace(/['"]/g, "");
+  }
 
   return result;
 };
