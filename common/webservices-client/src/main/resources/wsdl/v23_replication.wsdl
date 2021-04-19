@@ -1596,7 +1596,7 @@
                             <xs:element name="markedById" type="xs:long"/>
                             <xs:element name="submittedOn" type="xs:dateTime"/>
                             <xs:element name="markedOn" type="xs:dateTime"/>
-                            <xs:element name="grade" type="xs:float" minOccurs="0"/>
+                            <xs:element name="grade" type="xs:decimal"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

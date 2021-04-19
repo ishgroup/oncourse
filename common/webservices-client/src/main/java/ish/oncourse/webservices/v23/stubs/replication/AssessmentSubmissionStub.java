@@ -1,6 +1,7 @@
 
 package ish.oncourse.webservices.v23.stubs.replication;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +26,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="markedById" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="submittedOn" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="markedOn" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
- *         &lt;element name="grade" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
+ *         &lt;element name="grade" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -67,7 +68,8 @@ public class AssessmentSubmissionStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date markedOn;
-    protected Float grade;
+    @XmlElement(required = true)
+    protected BigDecimal grade;
 
     /**
      * Gets the value of the enrolmentId property.
@@ -194,10 +196,10 @@ public class AssessmentSubmissionStub
      * 
      * @return
      *     possible object is
-     *     {@link Float }
+     *     {@link BigDecimal }
      *     
      */
-    public Float getGrade() {
+    public BigDecimal getGrade() {
         return grade;
     }
 
@@ -206,10 +208,10 @@ public class AssessmentSubmissionStub
      * 
      * @param value
      *     allowed object is
-     *     {@link Float }
+     *     {@link BigDecimal }
      *     
      */
-    public void setGrade(Float value) {
+    public void setGrade(BigDecimal value) {
         this.grade = value;
     }
 
