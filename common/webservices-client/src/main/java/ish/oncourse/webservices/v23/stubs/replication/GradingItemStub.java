@@ -1,6 +1,7 @@
 
 package ish.oncourse.webservices.v23.stubs.replication;
 
+import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -20,7 +21,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *     &lt;extension base="{http://repl.v23.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="lowerBound" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
+ *         &lt;element name="lowerBound" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
  *         &lt;element name="gradingTypeId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
@@ -42,7 +43,8 @@ public class GradingItemStub
 
     @XmlElement(required = true)
     protected String name;
-    protected Float lowerBound;
+    @XmlElement(required = true)
+    protected BigDecimal lowerBound;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
@@ -77,10 +79,10 @@ public class GradingItemStub
      * 
      * @return
      *     possible object is
-     *     {@link Float }
+     *     {@link BigDecimal }
      *     
      */
-    public Float getLowerBound() {
+    public BigDecimal getLowerBound() {
         return lowerBound;
     }
 
@@ -89,10 +91,10 @@ public class GradingItemStub
      * 
      * @param value
      *     allowed object is
-     *     {@link Float }
+     *     {@link BigDecimal }
      *     
      */
-    public void setLowerBound(Float value) {
+    public void setLowerBound(BigDecimal value) {
         this.lowerBound = value;
     }
 

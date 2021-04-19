@@ -1,6 +1,7 @@
 
 package ish.oncourse.webservices.v23.stubs.replication;
 
+import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -20,8 +21,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *     &lt;extension base="{http://repl.v23.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="minValue" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
- *         &lt;element name="maxValue" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
+ *         &lt;element name="minValue" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="maxValue" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
  *         &lt;element name="entryType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
@@ -44,8 +45,10 @@ public class GradingTypeStub
 
     @XmlElement(required = true)
     protected String name;
-    protected Float minValue;
-    protected Float maxValue;
+    @XmlElement(required = true)
+    protected BigDecimal minValue;
+    @XmlElement(required = true)
+    protected BigDecimal maxValue;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
@@ -80,10 +83,10 @@ public class GradingTypeStub
      * 
      * @return
      *     possible object is
-     *     {@link Float }
+     *     {@link BigDecimal }
      *     
      */
-    public Float getMinValue() {
+    public BigDecimal getMinValue() {
         return minValue;
     }
 
@@ -92,10 +95,10 @@ public class GradingTypeStub
      * 
      * @param value
      *     allowed object is
-     *     {@link Float }
+     *     {@link BigDecimal }
      *     
      */
-    public void setMinValue(Float value) {
+    public void setMinValue(BigDecimal value) {
         this.minValue = value;
     }
 
@@ -104,10 +107,10 @@ public class GradingTypeStub
      * 
      * @return
      *     possible object is
-     *     {@link Float }
+     *     {@link BigDecimal }
      *     
      */
-    public Float getMaxValue() {
+    public BigDecimal getMaxValue() {
         return maxValue;
     }
 
@@ -116,10 +119,10 @@ public class GradingTypeStub
      * 
      * @param value
      *     allowed object is
-     *     {@link Float }
+     *     {@link BigDecimal }
      *     
      */
-    public void setMaxValue(Float value) {
+    public void setMaxValue(BigDecimal value) {
         this.maxValue = value;
     }
 

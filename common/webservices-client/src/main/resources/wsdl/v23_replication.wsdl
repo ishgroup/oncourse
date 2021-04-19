@@ -1724,8 +1724,8 @@
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
                             <xs:element name="name" type="xs:string" />
-                            <xs:element name="minValue" type="xs:float" minOccurs="0"/>
-                            <xs:element name="maxValue" type="xs:float" minOccurs="0"/>
+                            <xs:element name="minValue" type="xs:decimal"/>
+                            <xs:element name="maxValue" type="xs:decimal"/>
                             <xs:element name="entryType" type="xs:int"/>
                         </xs:sequence>
                     </xs:extension>
@@ -1737,7 +1737,7 @@
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
                             <xs:element name="name" type="xs:string" />
-                            <xs:element name="lowerBound" type="xs:float" minOccurs="0"/>
+                            <xs:element name="lowerBound" type="xs:decimal"/>
                             <xs:element name="gradingTypeId" type="xs:long" />
                         </xs:sequence>
                     </xs:extension>
