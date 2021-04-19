@@ -106,6 +106,8 @@ class AngelUpdaterImpl implements IAngelUpdater {
 		updaterMap.put(FieldConfigurationScheme.class.getSimpleName(), new FieldConfigurationSchemeUpdater())
 		updaterMap.put(AssessmentClassModule.class.getSimpleName(), new AssessmentClassModuleUpdater())
 		updaterMap.put(Checkout.class.getSimpleName(), new CheckoutUpdater())
+		updaterMap.put(GradingType.class.getSimpleName(), new GradingTypeUpdater())
+		updaterMap.put(GradingItem.class.getSimpleName(), new GradingItemUpdater())
 	}
 
 	/**
