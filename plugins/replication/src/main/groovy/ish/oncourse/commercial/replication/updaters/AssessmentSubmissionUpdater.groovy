@@ -26,5 +26,6 @@ class AssessmentSubmissionUpdater extends AbstractAngelUpdater<AssessmentSubmiss
         entity.setMarkedBy(callback.updateRelationShip(stub.getMarkedById(), Contact.class))
         entity.setSubmittedOn(LocalDateUtils.dateToValue(stub.getSubmittedOn()))
         entity.setMarkedOn(LocalDateUtils.dateToValue(stub.getMarkedOn()))
+        entity.setGrade(stub.getGrade())
     }
 }

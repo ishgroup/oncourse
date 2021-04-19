@@ -22,6 +22,7 @@ class AssessmentStubBuilder extends AbstractAngelStubBuilder<Assessment, Assessm
         stub.setName(entity.getName())
         stub.setIsActive(entity.getActive())
         stub.setDescription(entity.getDescription())
+        stub.setGradingTypeId(entity.getGradingType().getId())
         return stub
     }
 }

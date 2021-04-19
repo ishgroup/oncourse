@@ -6,6 +6,7 @@
 package ish.oncourse.commercial.replication.updaters
 
 import ish.oncourse.server.cayenne.Assessment
+import ish.oncourse.server.cayenne.GradingType
 import ish.oncourse.webservices.v23.stubs.replication.AssessmentStub
 
 /**
@@ -20,5 +21,6 @@ class AssessmentUpdater extends AbstractAngelUpdater<AssessmentStub, Assessment>
         entity.setCode(stub.getCode())
         entity.setName(stub.getName())
         entity.setDescription(stub.getDescription())
+        entity.setGradingType(callback.updateRelationShip(stub.getGradingTypeId(), GradingType.class))
     }
 }
