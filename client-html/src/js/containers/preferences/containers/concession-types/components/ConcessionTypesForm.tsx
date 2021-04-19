@@ -21,9 +21,9 @@ import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErro
 import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { concessionTypesStyles } from "./styles";
 import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
+import { cardsFormStyles } from "../../../styles/formCommonStyles";
 
 const manualLink = getManualLink("generalPrefs_concessionTypes");
 
@@ -236,6 +236,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const ConcessionTypesForm = reduxForm({
   onSubmitFail,
   form: "ConcessionTypesForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(concessionTypesStyles)(withRouter(ConcessionTypesBaseForm)) as any));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(cardsFormStyles)(withRouter(ConcessionTypesBaseForm)) as any));
 
 export default ConcessionTypesForm;

@@ -18,12 +18,12 @@ import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import { concessionTypesStyles } from "../../concession-types/components/styles";
 import ContactRelationTypesRenderer from "./ContactRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
+import { cardsFormStyles } from "../../../styles/formCommonStyles";
 
 const manualLink = getManualLink("generalPrefs_contactRelationTypes");
 
@@ -236,6 +236,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const ContactRelationTypesForm = reduxForm({
   onSubmitFail,
   form: "ContactRelationTypesForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(concessionTypesStyles)(withRouter(ContactRelationTypesBaseForm)) as any));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(cardsFormStyles)(withRouter(ContactRelationTypesBaseForm)) as any));
 
 export default ContactRelationTypesForm;

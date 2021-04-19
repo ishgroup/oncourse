@@ -492,6 +492,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       selectAdornment,
       returnType,
       InputProps: { ...restInputProps } = {},
+      InputLabelProps = {},
       labelAdornment,
       preformatDisplayValue,
       clearOnUnmount,
@@ -672,6 +673,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 root: clsx(classes.label, !label && classes.labelTopZeroOffset),
                 shrink: classes.labelShrink
               }}
+              {...InputLabelProps}
             >
               {labelContent}
             </InputLabel>
