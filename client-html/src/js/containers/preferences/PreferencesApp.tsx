@@ -1,6 +1,6 @@
 /**
  * preferences app layout
- **/
+ * */
 
 import React, { useEffect, useMemo } from "react";
 import { isDirty, reset } from "redux-form";
@@ -13,7 +13,7 @@ import { setSwipeableDrawerDirtyForm } from "../../common/components/layout/swip
 import {
   getColumnsWidth,
   getDataCollectionForms,
-  getDataCollectionRules,
+  getDataCollectionRules, getGradingTypes,
   getPreferences,
   getTutorRoles,
   updateColumnsWidth
@@ -72,6 +72,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getDataCollectionForms());
     dispatch(getColumnsWidth());
     dispatch(getTutorRoles());
+    dispatch(getGradingTypes());
     dispatch(getPreferences(Categories.licences));
   },
   updateColumnsWidth: (preferenceLeftColumnWidth: number) => dispatch(updateColumnsWidth({ preferenceLeftColumnWidth })),
