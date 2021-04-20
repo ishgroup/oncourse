@@ -1939,8 +1939,8 @@ This is the home page for your college web site. ish onCourse is able to synchro
 
 
     <!-- ASSESSMENT-->
-        <Assessment ID="1000" CREATEDON="2019-09-11 22:45:19.44000000" MODIFIEDON="2019-09-11 22:48:40.460000000" ACTIVE="1" CODE="code1" DESCRIPTION="some description" NAME="assessment 1"/>
-        <Assessment ID="1001" CREATEDON="2019-09-11 22:48:27.866000000" MODIFIEDON="2019-09-11 22:49:08.653000000" ACTIVE="1" CODE="code2" DESCRIPTION="some description" NAME="assessment 2"/>
+        <Assessment ID="1000" CREATEDON="2019-09-11 22:45:19.44000000" MODIFIEDON="2019-09-11 22:48:40.460000000" ACTIVE="1" CODE="code1" DESCRIPTION="some description" NAME="assessment 1" gradingTypeId="-1"/>
+        <Assessment ID="1001" CREATEDON="2019-09-11 22:48:27.866000000" MODIFIEDON="2019-09-11 22:49:08.653000000" ACTIVE="1" CODE="code2" DESCRIPTION="some description" NAME="assessment 2" gradingTypeId="-1"/>
 
 
     <!-- ASSESSMENTCLASS-->
