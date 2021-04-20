@@ -50,7 +50,7 @@ import {
   GET_USI_SORTWARE_ID_FULFILLED,
   GET_ENTITY_RELATION_TYPES_FULFILLED,
   DELETE_ENTITY_RELATION_TYPE_FULFILLED,
-  UPDATE_ENTITY_RELATION_TYPES_FULFILLED, GET_GRADING_TYPES_FULFILLED
+  UPDATE_ENTITY_RELATION_TYPES_FULFILLED
 } from "../actions";
 import { GET_MESSAGE_QUEUED_FULFILLED, POST_AUTHENTICATION_FULFILLED } from "../../../common/actions";
 import getTimestamps from "../../../common/utils/timestamps/getTimestamps";
@@ -87,7 +87,9 @@ export const preferencesReducer = (state: PreferencesState = {}, action: IAction
       const categoryName = Categories[category];
       const timestamps = getTimestamps(preferences);
 
-      preferences.forEach(item => (newPreferences[item.uniqueKey] = item.valueString));
+      preferences.forEach(item => {
+        newPreferences[item.uniqueKey] = item.valueString;
+      });
 
       newPreferences.created = timestamps[0];
       newPreferences.modified = timestamps[1];
@@ -242,13 +244,6 @@ export const preferencesReducer = (state: PreferencesState = {}, action: IAction
       return {
         ...state,
         tutorRoles
-      };
-    }
-
-    case GET_GRADING_TYPES_FULFILLED: {
-      return {
-        ...state,
-        gradingTypes: action.payload
       };
     }
 

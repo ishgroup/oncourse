@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import {
   FieldArray,
@@ -20,13 +20,13 @@ import { Grid, Fab, Typography } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { Dispatch } from "redux";
 import { State } from "../../../../reducers/state";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import RouteChangeConfirm from "../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import GradingsRenderer from "./components/GradingsRenderer";
-import { getGradingTypes, updateGradingTypes } from "../../actions";
+import { updateGradingTypes } from "../../actions";
+import { showConfirm } from "../../../../common/actions";
 
 export interface GradingFormData {
   types: GradingType[];
@@ -34,15 +34,12 @@ export interface GradingFormData {
 
 export interface GradingProps {
   values: GradingFormData;
-  gradingTypes: GradingType[];
-  showConfirm: ShowConfirmCaller;
   onSave: (types: GradingType[]) => void;
 }
 
 const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispatch }> = (
   {
     values,
-    showConfirm,
     handleSubmit,
     dispatch,
     dirty,
@@ -51,10 +48,6 @@ const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispa
     array
   }
 ) => {
-  useEffect(() => {
-    dispatch(getGradingTypes());
-  }, []);
-
   const onAddNew = () => {
     const item: GradingType = {
       id: null,
@@ -75,13 +68,13 @@ const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispa
     const field = values.types[index];
 
     if (field.id) {
-      return showConfirm(
+      return dispatch(showConfirm(
         () => {
           array.remove("types", index);
         },
-        "Grading type will be deleted permanently",
+        "Grading type will be deleted permanently after saving",
         "Delete"
-      );
+      ));
     }
     array.remove("types", index);
   };
@@ -175,16 +168,15 @@ const validate = (values: GradingFormData) => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("GradingForm")(state),
-  gradingTypes: state.preferences.gradingTypes,
-  fetch: state.fetch
 });
+
+export const FORM = "GradingForm";
 
 export default reduxForm({
   onSubmitFail,
   validate,
-  form: "GradingForm",
+  form: FORM,
   initialValues: {
     types: []
   }
 })(connect(mapStateToProps)(GradingForm));
-
