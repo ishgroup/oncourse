@@ -25,5 +25,6 @@ properties:
     type: array
     items:
       $ref: './Document.yaml'
-  gradingType:
-    $ref: './GradingType.yaml'
+  gradingTypeId:
+    type: integer
+    format: int64
