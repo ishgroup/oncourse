@@ -16,6 +16,9 @@ public class AssessmentStubBuilder extends AbstractWillowStubBuilder<Assessment,
 		stub.setName(entity.getName());
 		stub.setIsActive(entity.getActive());
 		stub.setDescription(entity.getDescription());
+		if (entity.getGradingType() != null) {
+			stub.setGradingTypeId(entity.getGradingType().getId());
+		}
 		return stub;
 	}
 }

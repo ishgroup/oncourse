@@ -4,6 +4,7 @@
 package ish.oncourse.webservices.replication.v23.updaters;
 
 import ish.oncourse.model.Assessment;
+import ish.oncourse.model.GradingType;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v23.stubs.replication.AssessmentStub;
@@ -17,5 +18,6 @@ public class AssessmentUpdater extends AbstractWillowUpdater<AssessmentStub, Ass
 		entity.setCode(stub.getCode());
 		entity.setName(stub.getName());
 		entity.setDescription(stub.getDescription());
+		entity.setGradingType(callback.updateRelationShip(stub.getGradingTypeId(), GradingType.class));
 	}
 }

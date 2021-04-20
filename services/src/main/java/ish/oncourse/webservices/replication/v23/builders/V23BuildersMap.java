@@ -100,5 +100,7 @@ public class V23BuildersMap {
 		builderMap.put(FieldConfigurationScheme.class.getSimpleName(), new FieldConfigurationSchemeStubBuilder());
 		builderMap.put(AssessmentClassModule.class.getSimpleName(), new AssessmentClassModuleStubBuilder());
 		builderMap.put(Checkout.class.getSimpleName(), new CheckoutStubBuilder());
+		builderMap.put(GradingType.class.getSimpleName(), new GradingTypeStubBuilder());
+		builderMap.put(GradingItem.class.getSimpleName(), new GradingItemStubBuilder());
 	}
 }

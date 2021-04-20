@@ -114,6 +114,8 @@ public class V23UpdatersMap {
 		updaterMap.put(Module.class.getSimpleName(), new ModuleUpdater());
 		updaterMap.put(Qualification.class.getSimpleName(), new QualificationUpdater());
 		updaterMap.put(Checkout.class.getSimpleName(), new CheckoutUpdater());
+		updaterMap.put(GradingItem.class.getSimpleName(), new GradingItemUpdater());
+		updaterMap.put(GradingType.class.getSimpleName(), new GradingTypeUpdater());
 	}
 
 	/**

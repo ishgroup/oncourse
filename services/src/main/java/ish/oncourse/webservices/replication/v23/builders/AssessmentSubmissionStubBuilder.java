@@ -19,6 +19,7 @@ public class AssessmentSubmissionStubBuilder extends AbstractWillowStubBuilder<A
 		}
 		stub.setSubmittedOn(entity.getSubmittedOn());
 		stub.setMarkedOn(entity.getMarkedOn());
+		stub.setGrade(entity.getGrade());
 		return stub;
 	}
 }
