@@ -30,6 +30,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="gradingTypeId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="AssessmentClass">
 		<db-attribute name="angelId" type="BIGINT"/>
@@ -71,6 +72,7 @@
 		<db-attribute name="markedById" type="BIGINT"/>
 		<db-attribute name="submittedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="markedOn" type="TIMESTAMP"/>
+		<db-attribute name="grade" type="DECIMAL" length="6" scale="2"/>
 	</db-entity>
 	<db-entity name="Attendance">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -682,6 +684,27 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
+	</db-entity>
+	<db-entity name="GradingItem">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="lowerBound" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
+		<db-attribute name="gradingTypeId" type="BIGINT" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="GradingType">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="min_value" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
+		<db-attribute name="max_value" type="DECIMAL" length="6" scale="2" isMandatory="true"/>
+		<db-attribute name="entryType" type="SMALLINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="Instruction">
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
@@ -1611,6 +1634,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="submittedOn" type="java.util.Date" db-attribute-path="submittedOn"/>
 		<obj-attribute name="markedOn" type="java.util.Date" db-attribute-path="markedOn"/>
+		<obj-attribute name="grade" type="java.math.BigDecimal" db-attribute-path="grade"/>
 	</obj-entity>
 	<obj-entity name="Attendance" className="ish.oncourse.model.Attendance" dbEntityName="Attendance" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -2097,6 +2121,24 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="order" type="java.lang.Integer" db-attribute-path="fieldOrder"/>
+	</obj-entity>
+	<obj-entity name="GradingItem" className="ish.oncourse.model.GradingItem" dbEntityName="GradingItem" superClassName="WillowCayenneObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="itemName" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="lowerBound" type="java.math.BigDecimal" db-attribute-path="lowerBound"/>
+	</obj-entity>
+	<obj-entity name="GradingType" className="ish.oncourse.model.GradingType" dbEntityName="GradingType" superClassName="WillowCayenneObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="typeName" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="minValue" type="java.math.BigDecimal" db-attribute-path="min_value"/>
+		<obj-attribute name="maxValue" type="java.math.BigDecimal" db-attribute-path="max_value"/>
+		<obj-attribute name="entryType" type="ish.common.types.GradingEntryType" db-attribute-path="entryType"/>
 	</obj-entity>
 	<obj-entity name="Instruction" className="ish.oncourse.model.Instruction" dbEntityName="Instruction" superClassName="WillowCayenneObject">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -2821,6 +2863,9 @@
 	<db-relationship name="college" source="Assessment" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="gradingType" source="Assessment" target="GradingType">
+		<db-attribute-pair source="gradingTypeId" target="id"/>
+	</db-relationship>
 	<db-relationship name="assessment" source="AssessmentClass" target="Assessment">
 		<db-attribute-pair source="assessmentId" target="id"/>
 	</db-relationship>
@@ -3053,6 +3098,12 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="fields" source="College" target="Field" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="gradingItems" source="College" target="GradingItem" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="gradingTypes" source="College" target="GradingType" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="instructions" source="College" target="Instruction" toMany="true">
@@ -3675,6 +3726,18 @@
 	</db-relationship>
 	<db-relationship name="fields" source="FieldHeading" target="Field" toMany="true">
 		<db-attribute-pair source="id" target="fieldHeadingId"/>
+	</db-relationship>
+	<db-relationship name="gradingType" source="GradingItem" target="GradingType">
+		<db-attribute-pair source="gradingTypeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="GradingItem" target="College">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="gradingItems" source="GradingType" target="GradingItem" toMany="true">
+		<db-attribute-pair source="id" target="gradingTypeId"/>
+	</db-relationship>
+	<db-relationship name="college" source="GradingType" target="College">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="Instruction" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -4351,6 +4414,7 @@
 	<obj-relationship name="student" source="Application" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="relatedObject" source="ApplicationCustomField" target="Application" deleteRule="Nullify" db-relationship-path="relatedApplication"/>
 	<obj-relationship name="assessmentClasses" source="Assessment" target="AssessmentClass" deleteRule="Deny" db-relationship-path="assessmentClasses"/>
+	<obj-relationship name="gradingType" source="Assessment" target="GradingType" deleteRule="Nullify" db-relationship-path="gradingType"/>
 	<obj-relationship name="college" source="Assessment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="assessment" source="AssessmentClass" target="Assessment" deleteRule="Nullify" db-relationship-path="assessment"/>
 	<obj-relationship name="assessmentClassModules" source="AssessmentClass" target="AssessmentClassModule" deleteRule="Deny" db-relationship-path="assessmentClassModules"/>
@@ -4411,6 +4475,8 @@
 	<obj-relationship name="discounts" source="College" target="Discount" deleteRule="Deny" db-relationship-path="discounts"/>
 	<obj-relationship name="emailTemplates" source="College" target="EmailTemplate" deleteRule="Deny" db-relationship-path="emailTemplates"/>
 	<obj-relationship name="enrolments" source="College" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
+	<obj-relationship name="gradingTypes" source="College" target="GradingType" deleteRule="Deny" db-relationship-path="gradingTypes"/>
+	<obj-relationship name="gradingItems" source="College" target="Enrolment" deleteRule="Deny" db-relationship-path="gradingItems"/>
 	<obj-relationship name="instructions" source="College" target="Instruction" deleteRule="Deny" db-relationship-path="instructions"/>
 	<obj-relationship name="invoiceDueDates" source="College" target="InvoiceDueDate" deleteRule="Deny" db-relationship-path="invoiceDueDates"/>
 	<obj-relationship name="invoiceLineDiscounts" source="College" target="InvoiceLineDiscount" deleteRule="Deny" db-relationship-path="invoiceLineDiscounts"/>
@@ -4602,6 +4668,10 @@
 	<obj-relationship name="college" source="FieldHeading" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="fieldConfiguration" source="FieldHeading" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>
 	<obj-relationship name="fields" source="FieldHeading" target="Field" deleteRule="Nullify" db-relationship-path="fields"/>
+	<obj-relationship name="gradingType" source="GradingItem" target="GradingType" deleteRule="Nullify" db-relationship-path="gradingType"/>
+	<obj-relationship name="college" source="GradingItem" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="gradingItems" source="GradingType" target="GradingItem" deleteRule="Nullify" db-relationship-path="gradingItems"/>
+	<obj-relationship name="college" source="GradingType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="Instruction" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="parameters" source="Instruction" target="InstructionParameter" deleteRule="Cascade" db-relationship-path="parameters"/>
 	<obj-relationship name="instruction" source="InstructionParameter" target="Instruction" deleteRule="Nullify" db-relationship-path="instruction"/>

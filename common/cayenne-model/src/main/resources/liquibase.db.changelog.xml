@@ -385,5 +385,104 @@
 			</column>
 		</addColumn>
 	</changeSet>
+
+	<changeSet id="36" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="GradingType"/>
+			</not>
+		</preConditions>
+		<createTable tableName="GradingType">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="angelId" type="BIGINT"/>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created" type="datetime"/>
+			<column name="modified" type="datetime"/>
+			<column name="name" type="VARCHAR(128)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="min_value" type="DECIMAL(6,2)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="max_value" type="DECIMAL(6,2)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="entryType" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="37" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="GradingItem"/>
+			</not>
+		</preConditions>
+		<createTable tableName="GradingItem">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="angelId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modified" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="name" type="VARCHAR(128)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="lowerBound" type="DECIMAL(6,2)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="gradingTypeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<addForeignKeyConstraint baseTableName="GradingItem"
+								 baseColumnNames="gradingTypeId"
+								 constraintName="fk_GradingItem_type"
+								 referencedTableName="GradingType"
+								 referencedColumnNames="id"
+								 validate="true"/>
+	</changeSet>
+
+	<changeSet id="38" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="gradingTypeId" tableName="Assessment"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Assessment">
+			<column name="gradingTypeId" type="BIGINT"/>
+		</addColumn>
+		<addForeignKeyConstraint baseTableName="Assessment"
+								 baseColumnNames="gradingTypeId"
+								 constraintName="fk_Assessment_GradingType"
+								 referencedTableName="GradingType"
+								 referencedColumnNames="id"
+								 validate="true"/>
+	</changeSet>
+
+	<changeSet id="39" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="grade" tableName="AssessmentSubmission"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="AssessmentSubmission">
+			<column name="grade" type="DECIMAL(6,2)"/>
+		</addColumn>
+	</changeSet>
 	
 </databaseChangeLog>
