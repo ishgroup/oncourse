@@ -178,5 +178,6 @@ export default reduxForm({
   form: FORM,
   initialValues: {
     types: []
-  }
+  },
+  destroyOnUnmount: false
 })(connect(mapStateToProps)(GradingForm));
