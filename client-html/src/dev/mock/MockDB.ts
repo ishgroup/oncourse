@@ -91,6 +91,7 @@ import { mockDocuments } from "./data/entities/documents";
 import { mockPriorLearnings } from "./data/entities/priorLearnings";
 import { mockTutorRoles } from "./data/preference/tutorRoles";
 import { mockFundingContracts } from "./data/preference/fundingContracts";
+import { mockCheckout } from "./data/checkout";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -233,6 +234,8 @@ export class MockDB {
 
   fundingContracts: any;
 
+  checkout: any;
+
   constructor() {
     this.init();
   }
@@ -333,6 +336,9 @@ export class MockDB {
 
     // Timetable
     this.timetable = mockTimetable.call(this);
+
+    // Checkout
+    this.checkout = mockCheckout.call(this);
   }
 
   getList(entity: string) {
