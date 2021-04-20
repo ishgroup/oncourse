@@ -8,7 +8,7 @@ import Source from "../containers/Source";
 
 const getFreeBlocks = (theme, blocks) => {
   const themeBlockIds = [];
-  Object.values(theme.blocks).map((a: any[]) => a.map(a => themeBlockIds.push(a.id)));
+  Object.values(theme.blocks).forEach((a: any[]) => a.forEach(a => themeBlockIds.push(a.id)));
   return blocks.filter(block => !themeBlockIds.includes(block.id));
 };
 
@@ -20,7 +20,6 @@ interface Props {
 }
 
 class Theme extends React.Component<Props, any> {
-
   render() {
     const {theme, blocks, onUpdateLayout} = this.props;
 

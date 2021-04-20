@@ -34,7 +34,7 @@ const styles = theme => ({
     height: "632px",
   },
   activeBlock: {
-    background: theme.statistics.enrolmentText.color,
+    background: theme.palette.primary.main,
   },
   notActiveBlock: {
     background: "#fff",
@@ -56,9 +56,14 @@ class Source extends Component<any, any> {
     };
   }
 
+  componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any) {
+    if (prevProps.list !== this.props.list) {
+      this.setState({ cards: this.props.list });
+    }
+  }
+
   pushCard(card) {
     const {id} = this.props;
-
     this.setState(update(this.state, {
       cards: {
         $push: [card],
@@ -77,9 +82,9 @@ class Source extends Component<any, any> {
           [index, 1],
         ],
       },
-    }));
-
-    this.props.onUpdate && this.props.onUpdate(id, this.state.cards);
+    }), () => {
+      this.props.onUpdate && this.props.onUpdate(id, this.state.cards);
+    });
   }
 
   moveCard(dragIndex, hoverIndex) {
@@ -137,7 +142,8 @@ class Source extends Component<any, any> {
                 listId={this.props.id}
                 card={card}
                 removeCard={this.removeCard.bind(this)}
-                moveCard={this.moveCard.bind(this)}/>
+                moveCard={this.moveCard.bind(this)}
+              />
             ),
           )}
         </div>

@@ -1,40 +1,69 @@
 import React, {Component} from 'react';
 import {DragSource, DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom';
+import CloseIcon from '@material-ui/icons/Close';
 import clsx from "clsx";
 import flow from 'lodash/flow';
 import {withStyles} from "@material-ui/core/styles";
 
 const styles = theme => ({
   themeCard: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
     border: "1px dashed",
-    borderColor: theme.statistics.enrolmentText.color,
+    borderColor: theme.palette.primary.main,
     padding: "0.5rem 1rem",
     margin: ".5rem",
     background: "white",
     cursor: "move",
     opacity: 1,
+    "&:hover": {
+      "& $removeIcon": {
+        display: "block",
+      }
+    }
   },
   dragging: {
     opacity: 0,
     maxWidth: "200px",
-  }
+  },
+  removeIcon: {
+    color: theme.palette.error.main,
+    fontSize: "15px",
+    display: "none",
+    "&:hover": {
+      cursor: "pointer",
+    }
+  },
 });
 
 class Card extends Component<any, any> {
   render() {
-    const {card, classes, isDragging, connectDragSource, connectDropTarget} = this.props;
+    const {
+      card,
+      classes,
+      connectDragSource,
+      connectDropTarget,
+      index,
+      isDragging,
+      listId,
+      removeCard,
+    } = this.props;
+
+    const isDefault = listId === "default";
 
     return connectDragSource(connectDropTarget(
       <div className={clsx(classes.themeCard, isDragging && classes.dragging)}>
-        {card.title}
+        {card.title} {!isDefault && (
+          <CloseIcon className={classes.removeIcon} onClick={() => removeCard(index)}/>
+          )}
       </div>,
     ));
   }
 }
 
 const cardSource = {
-
   beginDrag(props) {
     return {
       index: props.index,
@@ -54,7 +83,6 @@ const cardSource = {
 };
 
 const cardTarget = {
-
   hover(props, monitor, component) {
     const dragIndex = monitor.getItem().index;
     const hoverIndex = props.index;
