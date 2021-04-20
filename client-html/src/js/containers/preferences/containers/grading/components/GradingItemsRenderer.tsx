@@ -7,44 +7,67 @@
  */
 
 import clsx from "clsx";
-import React from "react";
+import React, { useMemo } from "react";
 import { Typography } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircle from "@material-ui/icons/AddCircle";
 import Delete from "@material-ui/icons/Delete";
 import { WrappedFieldArrayProps } from "redux-form";
-import { GradingItem } from "@api/model";
+import { GradingItem, GradingType } from "@api/model";
 import { useHoverShowStyles } from "../../../../../common/styles/hooks";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 
-const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & {classes: any}> = (
-  props
-) => {
-  const hoverClasses = useHoverShowStyles();
+interface Props {
+  classes: any;
+  parent: GradingType;
+  index: number;
+}
 
+const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props> = props => {
   const {
     fields,
     meta: { error },
-    classes
+    classes,
+    parent
   } = props;
 
-  console.log(props);
+  const hoverClasses = useHoverShowStyles();
 
   const onAdd = () => {
+    const prevField = fields.get(fields.length - 1);
+
     fields.push({
       id: null,
       created: null,
       modified: null,
       name: null,
-      lowerBound: null
+      lowerBound: prevField ? prevField.lowerBound - 10 : parent.maxValue || 100
     });
   };
+
+  const label = useMemo(() => {
+    switch (parent.entryType) {
+      case "name":
+        return "Choice list";
+      case "number":
+        return "Display grade";
+    }
+  }, [parent.entryType]);
+
+  const offsetLabel = useMemo(() => {
+    switch (parent.entryType) {
+      case "name":
+        return "equivalent score";
+      case "number":
+        return "above";
+    }
+  }, [parent.entryType]);
 
   return (
     <div id={fields.name} className={classes.gradingItemsRoot}>
       <div className="centeredFlex">
         <Typography component="div" variant="caption" color="textSecondary" noWrap>
-          Grading items
+          {label}
         </Typography>
         <IconButton onClick={onAdd} className="p-0-5">
           <AddCircle className="addButtonColor" />
@@ -70,6 +93,8 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & {clas
                       className="mr-1"
                       required
                     />
+                    {" ( "}
+                    {offsetLabel}
                     <FormField
                       type="number"
                       name={`${f}.lowerBound`}
@@ -77,7 +102,8 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & {clas
                       hideArrows
                       required
                     />
-
+                    {parent.entryType === "name" && "%"}
+                    {" ) "}
                     <IconButton
                       onClick={() => fields.remove(index)}
                       className={clsx(hoverClasses.target, "p-0-5 d-inline-flex vert-align-mid")}

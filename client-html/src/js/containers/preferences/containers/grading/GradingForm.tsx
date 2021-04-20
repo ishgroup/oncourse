@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import {
   FieldArray,
@@ -20,13 +20,13 @@ import { Grid, Fab, Typography } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { Dispatch } from "redux";
 import { State } from "../../../../reducers/state";
-import { Fetch } from "../../../../model/common/Fetch";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import RouteChangeConfirm from "../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import GradingsRenderer from "./components/GradingsRenderer";
+import { getGradingTypes, updateGradingTypes } from "../../actions";
 
 export interface GradingFormData {
   types: GradingType[];
@@ -35,7 +35,6 @@ export interface GradingFormData {
 export interface GradingProps {
   values: GradingFormData;
   gradingTypes: GradingType[];
-  fetch: Fetch;
   showConfirm: ShowConfirmCaller;
   onSave: (types: GradingType[]) => void;
 }
@@ -43,8 +42,6 @@ export interface GradingProps {
 const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispatch }> = (
   {
     values,
-    gradingTypes,
-    fetch,
     showConfirm,
     handleSubmit,
     dispatch,
@@ -54,6 +51,10 @@ const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispa
     array
   }
 ) => {
+  useEffect(() => {
+    dispatch(getGradingTypes());
+  }, []);
+
   const onAddNew = () => {
     const item: GradingType = {
       id: null,
@@ -70,12 +71,23 @@ const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispa
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
 
-  const onClickDelete = (item, index) => {
+  const onClickDelete = index => {
+    const field = values.types[index];
 
+    if (field.id) {
+      return showConfirm(
+        () => {
+          array.remove("types", index);
+        },
+        "Grading type will be deleted permanently",
+        "Delete"
+      );
+    }
+    array.remove("types", index);
   };
 
   const onSave = values => {
-
+    dispatch(updateGradingTypes(values.types));
   };
 
   return (
@@ -124,6 +136,7 @@ const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispa
           name="types"
           component={GradingsRenderer}
           onDelete={onClickDelete}
+          dispatch={dispatch}
         />
       </Grid>
     </Form>
@@ -133,7 +146,6 @@ const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispa
 const validate = (values: GradingFormData) => {
   const errors: any = {};
   const minMaxError = "Max value should be grater than min value";
-  const graidingItemError = "At least one grading item is required";
 
   values?.types?.forEach((t, index) => {
     if (typeof t.minValue === "number" && typeof t.maxValue === "number" && t.minValue >= t.maxValue) {
@@ -146,12 +158,13 @@ const validate = (values: GradingFormData) => {
         ...errors.types[index] || {}
       };
     }
-    if (t.entryType === "name" && !t.gradingItems.length) {
+    if ((t.entryType === "number" && (t.gradingItems.length > 0 && t.gradingItems.length < 2))
+      || (t.entryType === "name" && t.gradingItems.length < 2)) {
       if (!Array.isArray(errors.types)) {
         errors.types = [];
       }
       errors.types[index] = {
-        gradingItems: { _error: graidingItemError },
+        gradingItems: { _error: "At least two grading items required" },
         ...errors.types[index] || {}
       };
     }

@@ -8,11 +8,12 @@
 
 import React from "react";
 import { GradingEntryType, GradingType } from "@api/model";
-import { FieldArray, WrappedFieldArrayProps } from "redux-form";
+import { change, FieldArray, WrappedFieldArrayProps } from "redux-form";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {
  Collapse, Card, Grid, Button
 } from "@material-ui/core";
+import { Dispatch } from "redux";
 import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
@@ -22,10 +23,12 @@ import { AppTheme } from "../../../../../model/common/Theme";
 interface Props {
   classes?: any;
   onDelete?: any;
+  dispatch?: Dispatch;
 }
 
-// @ts-ignore
-const GradingEntryTypes = Object.keys(GradingEntryType).map(value => ({ value, label: value.capitalize() }));
+const GradingEntryTypes = Object.keys(GradingEntryType)
+  // @ts-ignore
+  .map(value => ({ value, label: value === "name" ? "Choice list" : value.capitalize() }));
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   delete: {
@@ -42,10 +45,20 @@ const useStyles = makeStyles((theme: AppTheme) => ({
 
 export default (props: WrappedFieldArrayProps & Props) => {
   const {
-    fields, onDelete
+    fields, meta: { form }, onDelete, dispatch
   } = props;
 
   const classes = useStyles();
+
+  const onTypeChange = (type, item) => {
+    dispatch(change(form, `${item}.gradingItems`, []));
+    switch (type) {
+      case "name": {
+        dispatch(change(form, `${item}.minValue`, 0));
+        dispatch(change(form, `${item}.maxValue`, 100));
+      }
+    }
+  };
 
   return (
     <Grid item xs={12} lg={10}>
@@ -54,7 +67,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
         return (
           <Card className="card" key={field.id + index}>
             <Grid container>
-              <Grid item xs={8}>
+              <Grid item xs={6}>
                 <Grid container>
                   <Grid item xs={6}>
                     <FormField
@@ -72,45 +85,52 @@ export default (props: WrappedFieldArrayProps & Props) => {
                       name={`${item}.entryType`}
                       label="Entry Type"
                       items={GradingEntryTypes}
+                      onChange={val => onTypeChange(val, item)}
                       fullWidth
                     />
                   </Grid>
-                  <Grid item xs={6}>
-                    <FormField
-                      type="number"
-                      name={`${item}.minValue`}
-                      normalize={normalizeNumber}
-                      label="Min value"
-                      required
-                      hideArrows
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormField
-                      type="number"
-                      name={`${item}.maxValue`}
-                      normalize={normalizeNumber}
-                      label="Max value"
-                      required
-                      hideArrows
-                      fullWidth
-                    />
+
+                  <Grid item xs={12}>
+                    <Collapse in={field.entryType === "number"}>
+                      <Grid container>
+                        <Grid item xs={6}>
+                          <FormField
+                            type="number"
+                            name={`${item}.minValue`}
+                            normalize={normalizeNumber}
+                            label="Min value"
+                            required={field.entryType === "number"}
+                            hideArrows
+                            fullWidth
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <FormField
+                            type="number"
+                            name={`${item}.maxValue`}
+                            normalize={normalizeNumber}
+                            label="Max value"
+                            required={field.entryType === "number"}
+                            hideArrows
+                            fullWidth
+                          />
+                        </Grid>
+                      </Grid>
+                    </Collapse>
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={4} className="relative">
-                <Collapse in={field.entryType === "name"}>
-                  <FieldArray
-                    name={`${item}.gradingItems`}
-                    component={GradingItemsRenderer}
-                    classes={classes}
-                  />
-                </Collapse>
+              <Grid item xs={6} className="relative">
+                <FieldArray
+                  name={`${item}.gradingItems`}
+                  component={GradingItemsRenderer}
+                  classes={classes}
+                  parent={field}
+                />
                 <Button
                   size="small"
                   className={classes.delete}
-                  onClick={() => onDelete(field, index)}
+                  onClick={() => onDelete(index)}
                 >
                   Delete
                 </Button>
