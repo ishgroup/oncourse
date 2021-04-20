@@ -45,6 +45,10 @@ databaseChangeLog:
                     nullable: false
                   name: entryType
                   type: SMALLINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: willowId
+                  type: BIGINT
             tableName: GradingType
   - changeSet:
       id: 77-2
@@ -87,6 +91,10 @@ databaseChangeLog:
                     nullable: false
                   name: gradingTypeId
                   type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: willowId
+                  type: BIGINT
             tableName: GradingItem
   - changeSet:
       id: 77-3
@@ -112,7 +120,7 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            tableName: Gradingtype
+            tableName: GradingType
       changes:
         - loadData:
             columns:
