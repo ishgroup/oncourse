@@ -200,6 +200,10 @@ export function listApiMock() {
         return promiseResolve(config, this.db.getCourses());
       }
 
+      case "Discount": {
+        return promiseResolve(config, this.db.getPlainDiscounts(config.params));
+      }
+
       case "Site": {
         return promiseResolve(config, this.db.getSites());
       }
@@ -261,7 +265,7 @@ export function listApiMock() {
       }
 
       case "CourseClass": {
-        return promiseResolve(config, this.db.getPlainCourseClassList());
+        return promiseResolve(config, this.db.getPlainCourseClassList(config.params));
       }
 
       case "ProductItem": {
