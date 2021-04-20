@@ -39,12 +39,12 @@ enum GradingEntryType implements DisplayableExtendedEnumeration<Integer> {
 
     @Override
     String getDisplayName() {
-        return null
+        return this.displayName
     }
 
     @Override
     Integer getDatabaseValue() {
-        return null
+        return this.value
     }
 
     @Override
