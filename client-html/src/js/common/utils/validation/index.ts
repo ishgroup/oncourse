@@ -45,5 +45,5 @@ export const getFirstErrorNodePath = (errors: FormErrors, deepObj?: any, path?: 
     return getFirstErrorNodePath(errors, value, path);
   }
 
-  return path;
+  return path?.replace("._error", "");
 };

@@ -10,7 +10,7 @@ import {
   EnumName,
   ColumnWidth,
   Holiday,
-  DefinedTutorRole
+  DefinedTutorRole, GradingType
 } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
 import { Categories } from "../../../model/preferences";
@@ -160,6 +160,20 @@ export const UPDATE_TUTOR_ROLE_FULFILLED = FULFILLED(UPDATE_TUTOR_ROLE_REQUEST);
 
 export const DELETE_TUTOR_ROLE_REQUEST = _toRequestType("delete/tutor/role");
 export const DELETE_TUTOR_ROLE_FULFILLED = FULFILLED(DELETE_TUTOR_ROLE_REQUEST);
+
+export const GET_GRADING_TYPES_REQUEST = _toRequestType("get/grading/type");
+export const GET_GRADING_TYPES_FULFILLED = FULFILLED(GET_GRADING_TYPES_REQUEST);
+
+export const UPDATE_GRADING_TYPES_REQUEST = _toRequestType("post/grading/type");
+
+export const getGradingTypes = () => ({
+  type: GET_GRADING_TYPES_REQUEST
+});
+
+export const updateGradingTypes = (types: GradingType[]) => ({
+  type: UPDATE_GRADING_TYPES_REQUEST,
+  payload: types
+});
 
 export const getCurrency = () => ({
   type: GET_CURRENCY

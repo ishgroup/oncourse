@@ -1,4 +1,3 @@
-import { DefaultHttpService } from "../../../common/services/HttpService";
 import {
   PreferenceApi,
   HolidayApi,
@@ -14,21 +13,8 @@ import {
   ColumnWidth,
   PaymentMethod,
   TutorRoleApi,
-  AccountApi, 
-  UserPreferenceApi
-} from "@api/model";
-import { AccountStudentEnrolments, Categories } from "../../../model/preferences";
-import { SearchService } from "../../../common/services/SearchService";
-import * as ModelCollege from "../../../model/preferences/College";
-import * as ModelLdap from "../../../model/preferences/Ldap";
-import * as ModelLicences from "../../../model/preferences/Licences";
-import * as ModelMessaging from "../../../model/preferences/Messaging";
-import * as ModelClass from "../../../model/preferences/ClassDefaults";
-import * as ModelMaintenance from "../../../model/preferences/Maintenance";
-import * as ModelAvetmiss from "../../../model/preferences/Avetmiss";
-import * as ModelFinancial from "../../../model/preferences/Financial";
-import * as ModelSecurity from "../../../model/preferences/security";
-import {
+  AccountApi,
+  UserPreferenceApi, GradingApi,
   ContactRelationType,
   EntityRelationType,
   ConcessionType,
@@ -41,28 +27,61 @@ import {
   Currency,
   Holiday,
   DefinedTutorRole,
-  Account
+  Account, GradingType
 } from "@api/model";
+import { DefaultHttpService } from "../../../common/services/HttpService";
+import { AccountStudentEnrolments, Categories } from "../../../model/preferences";
+import { SearchService } from "../../../common/services/SearchService";
+import * as ModelCollege from "../../../model/preferences/College";
+import * as ModelLdap from "../../../model/preferences/Ldap";
+import * as ModelLicences from "../../../model/preferences/Licences";
+import * as ModelMessaging from "../../../model/preferences/Messaging";
+import * as ModelClass from "../../../model/preferences/ClassDefaults";
+import * as ModelMaintenance from "../../../model/preferences/Maintenance";
+import * as ModelAvetmiss from "../../../model/preferences/Avetmiss";
+import * as ModelFinancial from "../../../model/preferences/Financial";
+import * as ModelSecurity from "../../../model/preferences/security";
 
 class PreferencesService {
-  readonly preferenceApi = new PreferenceApi(new DefaultHttpService());
-  readonly holidayApi = new HolidayApi(new DefaultHttpService());
-  readonly dataCollectionApi = new DataCollectionApi(new DefaultHttpService());
-  readonly PaymentApi = new PaymentApi(new DefaultHttpService());
-  readonly TaxApi = new TaxApi(new DefaultHttpService());
-  readonly ConcessionApi = new ConcessionApi(new DefaultHttpService());
-  readonly ContactApi = new ContactApi(new DefaultHttpService());
-  readonly EntityRelationTypeApi = new EntityRelationTypeApi(new DefaultHttpService());
-  readonly CustomFieldApi = new CustomFieldApi(new DefaultHttpService());
-  readonly tutorRoleApi = new TutorRoleApi(new DefaultHttpService());
-  readonly accountApi = new AccountApi(new DefaultHttpService());
-  readonly userPreferenceApi = new UserPreferenceApi(new DefaultHttpService());
+  readonly defaultApi = new DefaultHttpService();
+
+  readonly preferenceApi = new PreferenceApi(this.defaultApi);
+
+  readonly holidayApi = new HolidayApi(this.defaultApi);
+
+  readonly dataCollectionApi = new DataCollectionApi(this.defaultApi);
+
+  readonly PaymentApi = new PaymentApi(this.defaultApi);
+
+  readonly TaxApi = new TaxApi(this.defaultApi);
+
+  readonly ConcessionApi = new ConcessionApi(this.defaultApi);
+
+  readonly ContactApi = new ContactApi(this.defaultApi);
+
+  readonly EntityRelationTypeApi = new EntityRelationTypeApi(this.defaultApi);
+
+  readonly CustomFieldApi = new CustomFieldApi(this.defaultApi);
+
+  readonly tutorRoleApi = new TutorRoleApi(this.defaultApi);
+
+  readonly accountApi = new AccountApi(this.defaultApi);
+
+  readonly userPreferenceApi = new UserPreferenceApi(this.defaultApi);
+
+  readonly gradingApi = new GradingApi(this.defaultApi);
+
+  public getGradingTypes(): Promise<GradingType[]> {
+    return this.gradingApi.get();
+  }
+
+  public updateGradingTypes(types: GradingType[]): Promise<any> {
+    return this.gradingApi.update(types);
+  }
 
   public getDeafaultIncomeAccount(): Promise<Account> {
     return this.userPreferenceApi.get(AccountStudentEnrolments.uniqueKey).then(
-      (prefs): Promise<Account> => {
-        return this.accountApi.get(Number(prefs[AccountStudentEnrolments.uniqueKey]));
-      }
+      (prefs): Promise<Account> => this.accountApi.get(Number(prefs[AccountStudentEnrolments.uniqueKey]))
     );
   }
 
