@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 77-1
+      id: 78-1
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -33,12 +33,12 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: minValue
+                  name: min_value
                   type: DECIMAL(6, 2)
               - column:
                   constraints:
                     nullable: false
-                  name: maxValue
+                  name: max_value
                   type: DECIMAL(6, 2)
               - column:
                   constraints:
@@ -51,7 +51,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: GradingType
   - changeSet:
-      id: 77-2
+      id: 78-2
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -96,18 +96,6 @@ databaseChangeLog:
                   name: willowId
                   type: BIGINT
             tableName: GradingItem
-  - changeSet:
-      id: 77-3
-      author: rostislav
-      preConditions:
-        - onFail: MARK_RAN
-        - and:
-            - tableExists:
-                tableName: GradingType
-            - columnExists:
-                tableName: GradingItem
-                columnName: gradingTypeId
-      changes:
         - addForeignKeyConstraint:
             baseColumnNames: gradingTypeId
             baseTableName: GradingItem
@@ -115,7 +103,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: GradingType
   - changeSet:
-      id: 77-4
+      id: 78-3
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -142,11 +130,11 @@ databaseChangeLog:
                   type: STRING
               - column:
                   header: minValue
-                  name: minValue
+                  name: min_value
                   type: NUMERIC
               - column:
                   header: maxValue
-                  name: maxValue
+                  name: max_value
                   type: NUMERIC
               - column:
                   header: entryType
@@ -159,7 +147,7 @@ databaseChangeLog:
             separator: ','
             tableName: GradingType
   - changeSet:
-      id: 77-5
+      id: 78-4
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -199,7 +187,7 @@ databaseChangeLog:
             separator: ','
             tableName: GradingItem
   - changeSet:
-      id: 77-6
+      id: 78-5
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -216,7 +204,7 @@ databaseChangeLog:
                   type: BIGINT
                   value: -1
   - changeSet:
-      id: 77-7
+      id: 78-6
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -235,7 +223,7 @@ databaseChangeLog:
             columnName: gradingTypeId
             columnDataType: BIGINT
   - changeSet:
-      id: 77-8
+      id: 78-7
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
