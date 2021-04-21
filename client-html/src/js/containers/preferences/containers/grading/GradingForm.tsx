@@ -25,7 +25,7 @@ import RouteChangeConfirm from "../../../../common/components/dialog/confirm/Rou
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import GradingsRenderer from "./components/GradingsRenderer";
-import { updateGradingTypes } from "../../actions";
+import { deleteGradingType, updateGradingTypes } from "../../actions";
 import { showConfirm } from "../../../../common/actions";
 
 export interface GradingFormData {
@@ -81,8 +81,9 @@ const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispa
       return dispatch(showConfirm(
         () => {
           array.remove("types", index);
+          dispatch(deleteGradingType(field.id));
         },
-        "Grading type will be deleted permanently after saving",
+        "Grading type will be deleted permanently",
         "Delete"
       ));
     }

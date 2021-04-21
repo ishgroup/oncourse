@@ -798,7 +798,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         "You have unsaved changes. Do you want to discard them and proceed?",
         "SAVE",
         undefined,
-        "ARE YOU SURE",
+        null,
         "DISCARD CHANGES",
         handler,
         confirmButton
