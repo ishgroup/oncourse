@@ -162,6 +162,8 @@ export const DELETE_TUTOR_ROLE_REQUEST = _toRequestType("delete/tutor/role");
 export const DELETE_TUTOR_ROLE_FULFILLED = FULFILLED(DELETE_TUTOR_ROLE_REQUEST);
 
 export const GET_GRADING_TYPES_REQUEST = _toRequestType("get/grading/type");
+export const GET_GRADING_TYPES_FULFILLED = FULFILLED(GET_GRADING_TYPES_REQUEST);
+
 export const UPDATE_GRADING_TYPES_REQUEST = _toRequestType("post/grading/type");
 
 export const getGradingTypes = () => ({

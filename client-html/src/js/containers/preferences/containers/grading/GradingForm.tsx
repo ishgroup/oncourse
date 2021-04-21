@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import {
   FieldArray,
   Form,
-  getFormValues,
+  getFormValues, initialize,
   InjectedFormProps,
   reduxForm
 } from "redux-form";
@@ -35,7 +35,10 @@ export interface GradingFormData {
 export interface GradingProps {
   values: GradingFormData;
   onSave: (types: GradingType[]) => void;
+  gradingTypes: GradingType[];
 }
+
+export const FORM = "GradingForm";
 
 const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispatch }> = (
   {
@@ -45,9 +48,16 @@ const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispa
     dirty,
     form,
     invalid,
-    array
+    array,
+    gradingTypes
   }
 ) => {
+  useEffect(() => {
+    if (Array.isArray(gradingTypes)) {
+      dispatch(initialize(FORM, { types: gradingTypes }));
+    }
+  }, [gradingTypes]);
+
   const onAddNew = () => {
     const item: GradingType = {
       id: null,
@@ -168,9 +178,8 @@ const validate = (values: GradingFormData) => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("GradingForm")(state),
+  gradingTypes: state.preferences.gradingTypes
 });
-
-export const FORM = "GradingForm";
 
 export default reduxForm({
   onSubmitFail,
@@ -178,6 +187,5 @@ export default reduxForm({
   form: FORM,
   initialValues: {
     types: []
-  },
-  destroyOnUnmount: false
+  }
 })(connect(mapStateToProps)(GradingForm));
