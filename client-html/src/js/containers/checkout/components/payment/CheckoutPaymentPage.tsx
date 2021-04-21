@@ -54,7 +54,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
   return (
     <>
       {[CheckoutPage.previousCredit, CheckoutPage.previousOwing].includes(activeField) ? (
-        <CheckoutPreviousInvoiceList activeField={activeField} titles={titles} />
+        <CheckoutPreviousInvoiceList activeField={activeField} titles={titles} previousInvoices={summary[activeField]} />
       ) : activeField === "vouchers" && voucherItem
         ? <CheckoutDiscountEditView type="voucher" selectedDiscount={voucherItem} />
         : (
