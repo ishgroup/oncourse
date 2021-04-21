@@ -67,7 +67,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
-		<db-attribute name="gradingTypeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="gradingTypeId" type="BIGINT"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="AssessmentClass">

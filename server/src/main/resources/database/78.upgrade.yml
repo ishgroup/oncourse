@@ -218,10 +218,6 @@ databaseChangeLog:
             constraintName: fk_Assessment_GradingType
             referencedColumnNames: id
             referencedTableName: GradingType
-        - addNotNullConstraint:
-            tableName: Assessment
-            columnName: gradingTypeId
-            columnDataType: BIGINT
   - changeSet:
       id: 78-7
       author: rostislav
