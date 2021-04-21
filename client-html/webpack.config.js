@@ -117,6 +117,9 @@ const _main = (NODE_ENV, SOURCE_MAP, BUILD_NUMBER) => {
 
 const plugins = (NODE_ENV, BUILD_NUMBER) => {
   const plugins = [
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     new CleanWebpackPlugin({
       verbose: true,
     }),
