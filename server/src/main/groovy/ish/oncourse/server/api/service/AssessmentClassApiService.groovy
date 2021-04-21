@@ -52,6 +52,7 @@ class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, Ass
         dto.assessmentId = cayenneModel.assessment.id
         dto.assessmentCode = cayenneModel.assessment.code
         dto.assessmentName = cayenneModel.assessment.name
+        dto.gradingTypeId = cayenneModel.assessment.gradingType?.id
         dto.courseClassId = cayenneModel.courseClass.id
         dto.contactIds = cayenneModel.assessmentClassTutors*.tutor*.contact*.id.flatten() as List<Long>
         dto.releaseDate = LocalDateUtils.dateToTimeValue(cayenneModel.releaseDate)
