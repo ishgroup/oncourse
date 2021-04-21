@@ -123,9 +123,11 @@ const AssessmentGeneralTab = React.memo<Props>(
               selectValueMark="id"
               selectLabelMark="name"
               items={gradingTypes}
+              allowEmpty
             />
           </Grid>
           <Grid item xs={12}>
+
             <FormControlLabel
               className="checkbox mb-2"
               control={<FormField type="checkbox" name="active" color="secondary" fullWidth />}

@@ -10,27 +10,29 @@ import clsx from "clsx";
 import { Dispatch } from "redux";
 import { change, Field } from "redux-form";
 import { connect } from "react-redux";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import {
+  Grid, FormControlLabel, IconButton, Tooltip, Typography, Menu, MenuItem
+} from "@material-ui/core";
 import { differenceInDays, format } from "date-fns";
 import {
- Assessment, AssessmentClass, AssessmentSubmission, CourseClassTutor
+  Assessment, AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType
 } from "@api/model";
 import { withStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import DateRange from "@material-ui/icons/DateRange";
-import { Tooltip } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import { DateRange, ExpandMore } from "@material-ui/icons";
+import debounce from "lodash.debounce";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { getArrayFieldMeta, stubComponent } from "../../../../../common/utils/common";
+import { getArrayFieldMeta, stubComponent, stubFunction } from "../../../../../common/utils/common";
 import { defaultContactName } from "../../../contacts/utils";
 import { State } from "../../../../../reducers/state";
 import AssessmentSubmissionIconButton, { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
 import AssessmentSubmissionModal from "./AssessmentSubmissionModal";
 import { III_DD_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import styles from "./styles";
+import AssessmentSubmissionGradeButton from "./AssessmentSubmissionGradeButton";
+import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 
 interface Props {
   form: string;
@@ -42,6 +44,7 @@ interface Props {
   twoColumn?: boolean;
   row?: AssessmentClass;
   rows?: AssessmentClass[];
+  gradingTypes?: GradingType[];
 }
 
 interface StudentForRender {
@@ -68,12 +71,14 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     tutors,
     twoColumn,
     courseClassEnrolments,
+    gradingTypes,
     dispatch
   } = props;
 
   const [studentsForRender, setStudentsForRender] = useState<StudentForRender[]>([]);
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);
   const [allSubmissionsDate, setAllSubmissionsDate] = useState<string>(null);
+  const [gradeMenuAnchorEl, setGradeMenuAnchorEl] = useState(null);
 
   const modalProps = modalOpenedBy ? modalOpenedBy.split("-") : [];
 
@@ -81,6 +86,14 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   const submissionUpdater = useRef<(s: AssessmentSubmission[]) => void>();
 
   const submissionTutors = useMemo(() => tutors.filter(t => row.contactIds.includes(t.contactId)), [tutors, row.contactIds]);
+
+  const gradeType: GradingType = useMemo(() =>
+    gradingTypes?.find(g => g.id === row.gradingTypeId),
+    [row.gradingTypeId, gradingTypes]);
+
+  const gradeItems: GradingItem[] = useMemo(() =>
+      gradeType?.gradingItems,
+    [gradeType]);
 
   useEffect(() => {
     const result = courseClassEnrolments && courseClassEnrolments.reduce((acc, elem) => {
@@ -116,7 +129,8 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
           enrolmentId: Number(elem.id),
           studentId: Number(elem.contactId),
           studentName: elem.student,
-          assessmentId: row.assessmentId
+          assessmentId: row.assessmentId,
+          grade: null
         };
       }).filter(s => s));
       setAllSubmissionsDate(null);
@@ -140,7 +154,8 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
               enrolmentId: Number(elem.enrolmentId),
               studentId: Number(elem.studentId),
               studentName: elem.studentName,
-              assessmentId: row.assessmentId
+              assessmentId: row.assessmentId,
+              grade: null
             };
 
             submissionUpdater.current([newSubmission, ...row.submissions]);
@@ -177,6 +192,60 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     }));
   };
 
+  const onChangeGrade = (value: number, elem: StudentForRender) => {
+    const grade = normalizeNumber(value);
+    if (elem.submissionIndex === -1) {
+      const newSubmission: AssessmentSubmission = {
+        id: null,
+        submittedOn: today,
+        markedById: submissionTutors && submissionTutors.length ? submissionTutors[0].contactId : null,
+        markedOn: today,
+        enrolmentId: Number(elem.enrolmentId),
+        studentId: Number(elem.studentId),
+        studentName: elem.studentName,
+        assessmentId: row.assessmentId,
+        grade
+      };
+      submissionUpdater.current([newSubmission, ...row.submissions]);
+    } else {
+      const updatedSubmissions = row.submissions.map((s, index) => {
+        if (elem.submissionIndex === index) {
+          return { ...s, grade };
+        }
+        return s;
+      });
+      submissionUpdater.current(updatedSubmissions);
+    }
+  };
+
+  const debounceChangeGrade = useCallback<any>(debounce(onChangeGrade, 500), [row, submissionTutors]);
+
+  const onToggleGrade = (elem: StudentForRender, grade: GradingItem) => {
+    if (elem.submissionIndex === -1) {
+      const newSubmission: AssessmentSubmission = {
+        id: null,
+        submittedOn: today,
+        markedById: submissionTutors && submissionTutors.length ? submissionTutors[0].contactId : null,
+        markedOn: today,
+        enrolmentId: Number(elem.enrolmentId),
+        studentId: Number(elem.studentId),
+        studentName: elem.studentName,
+        assessmentId: row.assessmentId,
+        grade: gradeItems ? gradeItems[0]?.lowerBound : null
+      };
+      submissionUpdater.current([newSubmission, ...row.submissions]);
+    } else {
+      const updatedSubmissions = row.submissions.map((s, index) => {
+        if (elem.submissionIndex === index) {
+          const gradeIndex = grade ? gradeItems?.findIndex(g => g.lowerBound === grade.lowerBound) : -1;
+          return { ...s, grade: gradeItems[gradeIndex + 1]?.lowerBound };
+        }
+        return s;
+      });
+      submissionUpdater.current(updatedSubmissions);
+    }
+  };
+
   const onCodeChange = (assessment: Assessment) => {
     dispatch(change(form, `${item}.assessmentName`, assessment ? assessment.name : null));
     dispatch(change(form, `${item}.assessmentId`, assessment ? assessment.id : null));
@@ -185,6 +254,14 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   const onNameChange = (assessment: Assessment) => {
     dispatch(change(form, `${item}.assessmentCode`, assessment ? assessment.code : null));
     dispatch(change(form, `${item}.assessmentId`, assessment ? assessment.id : null));
+  };
+
+  const handleGradeMenuClose = () => {
+    setGradeMenuAnchorEl(null);
+  };
+
+  const handleGradeMenuOpen = e => {
+    setGradeMenuAnchorEl(e.currentTarget);
   };
 
   const triggerAsyncChange = (event, newValue, previousValue, name) => {
@@ -272,6 +349,36 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     });
   }, [tutors, row.contactIds]);
 
+  const gradesMenu = (
+    <Menu
+      id="grades-menu"
+      anchorEl={gradeMenuAnchorEl}
+      keepMounted
+      open={Boolean(gradeMenuAnchorEl)}
+      onClose={handleGradeMenuClose}
+    >
+      <MenuItem onClick={() => {
+        const student = studentsForRender[gradeMenuAnchorEl?.attributes?.id?.value?.replace("stud", "")];
+        onChangeGrade(null, student);
+        handleGradeMenuClose();
+      }}
+      >
+        <span className="placeholderContent">No grade</span>
+      </MenuItem>
+
+      {gradeItems?.map(g => (
+        <MenuItem onClick={() => {
+          const student = studentsForRender[gradeMenuAnchorEl?.attributes?.id?.value?.replace("stud", "")];
+          onChangeGrade(g.lowerBound, student);
+          handleGradeMenuClose();
+        }}
+        >
+          {g.name}
+        </MenuItem>
+    ))}
+    </Menu>
+);
+
   const rowsIds = rows.map(r => r.assessmentId).filter(r => r);
 
   const assessmentAql = `active is true${rowsIds.length ? ` and id not (${rowsIds.toString()})` : ""}`;
@@ -289,6 +396,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
       <Grid item={true} xs={12} container className="pb-3">
         <Grid item xs={twoColumn ? 8 : 12} container>
           <Grid item xs={twoColumn ? 6 : 12}>
+            {gradesMenu}
             <AssessmentSubmissionModal
               name={name}
               modalProps={modalProps}
@@ -392,11 +500,26 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                 </IconButton>
               </span>
             </Grid>
+            <Grid xs={2} className={classes.center}>
+              <span className="relative">
+                Grade
+                {/* <IconButton */}
+                {/*  size="small" */}
+                {/*  className={classes.hiddenTitleIcon} */}
+                {/*  onClick={() => { */}
+                {/*    setAllSubmissionsDate(today); */}
+                {/*    setModalOpenedBy(`Marked-0-all`); */}
+                {/*  }} */}
+                {/* > */}
+                {/*  <DateRange color="disabled" fontSize="small" /> */}
+                {/* </IconButton> */}
+              </span>
+            </Grid>
           </Grid>
           <Grid container xs={12} className={classes.items}>
             {studentsForRender.map((elem, index) => {
               const submittedContent = (
-                <div className="d-flex">
+                <div className="d-flex relative">
                   <AssessmentSubmissionIconButton
                     status={elem.submittedValue}
                     onClick={() => onChangeStatus("Submitted", elem)}
@@ -414,7 +537,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
               );
 
               const markedContent = (
-                <div className="d-flex">
+                <div className="d-flex relative">
                   <AssessmentSubmissionIconButton
                     status={elem.markedValue}
                     onClick={() => onChangeStatus("Marked", elem)}
@@ -431,9 +554,48 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                 </div>
               );
 
+              const currentGrade = typeof elem?.submission?.grade === "number"
+                ? gradeItems?.find(g => g.lowerBound === elem.submission.grade)
+                : null;
+
+              const gradeContent = (
+                <div className="d-flex relative">
+                  {gradeType?.entryType === "name"
+                    ? (
+                      <AssessmentSubmissionGradeButton
+                        onClick={() => onToggleGrade(elem, currentGrade)}
+                        grade={currentGrade?.name}
+                      />
+                      ) : (
+                        <EditInPlaceField
+                          type="number"
+                          meta={{}}
+                          input={{
+                            onChange: e => debounceChangeGrade(e.target.value, elem),
+                            onFocus: stubFunction,
+                            onBlur: stubFunction,
+                            value: elem?.submission?.grade
+                          }}
+                          formatting="inline"
+                          hideArrows
+                        />
+                    )}
+                  {gradeType?.entryType === "name" && (
+                    <IconButton
+                      size="small"
+                      className={classes.hiddenIcon}
+                      onClick={handleGradeMenuOpen}
+                      id={`stud${index}`}
+                    >
+                      <ExpandMore color="disabled" fontSize="small" />
+                    </IconButton>
+                  )}
+                </div>
+              );
+
               return (
                 <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
-                  <Grid item xs={4} className="d-inline-flex-center">
+                  <Grid item xs={4} className="d-inline-flex-center pl-1">
                     {elem.studentName}
                   </Grid>
                   <Grid item xs={2} className={classes.center}>
@@ -482,6 +644,9 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                       </Tooltip>
                     ) : markedContent}
                   </Grid>
+                  <Grid item xs={2} className={classes.center}>
+                    {gradeContent}
+                  </Grid>
                 </Grid>
               );
             })}
@@ -501,6 +666,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
 
 const mapStateToProps = (state: State) => ({
   courseClassEnrolments: state.courseClass.enrolments,
+  gradingTypes: state.preferences.gradingTypes
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(CourseClassAssessmentItem));
