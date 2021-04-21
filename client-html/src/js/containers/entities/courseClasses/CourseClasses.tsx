@@ -43,7 +43,7 @@ import {
  AnyArgFunction, BooleanArgFunction, NoArgFunction, NumberArgFunction
 } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getTutorRoles } from "../../preferences/actions";
+import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
@@ -766,6 +766,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getVirtualSites());
     dispatch(getPlainAccounts());
     dispatch(getPlainTaxes());
+    dispatch(getGradingTypes());
     dispatch(getActiveFundingContracts(true));
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: courseClassBudgetPath, method: "GET" }));

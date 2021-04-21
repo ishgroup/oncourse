@@ -13,7 +13,6 @@ export default (theme: AppTheme) =>
   createStyles({
     rowWrapper: {
       minHeight: "36px",
-      padding: "0 8px",
     },
     items: {
       marginLeft: -8,
@@ -40,7 +39,8 @@ export default (theme: AppTheme) =>
       visibility: "hidden",
       position: "absolute",
       transform: "translate(calc(100% + 2px),-2px)",
-      padding: 0
+      padding: 0,
+      right: 0
     },
     hiddenTitleIcon: {
       visibility: "hidden",
