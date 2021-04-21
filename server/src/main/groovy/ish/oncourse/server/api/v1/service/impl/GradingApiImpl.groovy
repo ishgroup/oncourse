@@ -27,8 +27,8 @@ class GradingApiImpl implements GradingApi {
     }
 
     @Override
-    void remove(String id) {
-        gradingApiService.remove(Long.valueOf(id))
+    void remove(Long id) {
+        gradingApiService.remove(id)
     }
 
     @Override

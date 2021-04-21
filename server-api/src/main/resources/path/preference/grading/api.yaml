@@ -47,7 +47,8 @@ delete:
       in: path
       description: Identifier of grading type which will be deleted.
       required: true
-      type: string
+      type: integer
+      format: int64
   responses:
     '204':
       description: The grading type is successfully deleted
