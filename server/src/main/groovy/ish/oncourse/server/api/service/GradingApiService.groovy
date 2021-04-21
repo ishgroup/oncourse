@@ -121,7 +121,11 @@ class GradingApiService extends EntityApiService<GradingTypeDTO, GradingType, Gr
     }
 
     @Override
-    void validateModelBeforeRemove(GradingType cayenneModel) { }
+    void validateModelBeforeRemove(GradingType cayenneModel) {
+        if (!cayenneModel.assessments.empty) {
+            validator.throwClientErrorException(GradingType.ASSESSMENTS.name, 'This grading type is assigned to at least one assessment. Unassign from it before removing.')
+        }
+    }
 
     static void validateDuplicates(List<GradingTypeDTO> gradingTypes) {
         List<String> names =  gradingTypes*.name.flatten() as List<String>
