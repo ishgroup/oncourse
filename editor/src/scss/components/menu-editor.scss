@@ -10,6 +10,14 @@
     border-color: #e2e1e1;
     box-shadow: 0 2px 2px -3px;
   }
+
+  &__rowSubtitle {
+    font-size: 90%;
+
+    input {
+      width: 300px;
+    }
+  }
   
   &__moveHandle {
     background: #f7941d url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MiIgaGVpZ2h0PSI0MiI+PGcgc3Ryb2tlPSIjRkZGIiBzdHJva2Utd2lkdGg9IjIuOSIgPjxwYXRoIGQ9Ik0xNCAxNS43aDE0LjQiLz48cGF0aCBkPSJNMTQgMjEuNGgxNC40Ii8+PHBhdGggZD0iTTE0IDI3LjFoMTQuNCIvPjwvZz4KPC9zdmc+") no-repeat center;

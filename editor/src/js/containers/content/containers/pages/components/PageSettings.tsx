@@ -17,15 +17,6 @@ const styles: any = (theme: AppTheme) => ({
   links: {
     marginBottom: "10px",
   },
-  linksItem: {
-    position: "relative",
-    color: theme.palette.text.primary,
-    cursor: "pointer",
-    fontFamily: theme.typography.fontFamily,
-    padding: "4px 0",
-    fontSize: "13px",
-    lineHeight: "1em",
-  },
   linkDefault: {
     color: theme.statistics.enrolmentText.color,
     cursor: "default",
@@ -55,6 +46,7 @@ const styles: any = (theme: AppTheme) => ({
     fontFamily: theme.typography.fontFamily,
     fontSize: "13px",
     lineHeight: 1.2,
+    height: "22px",
     "&::after": {
       display: "block",
       visibility: "hidden",
@@ -256,18 +248,16 @@ class PageSettings extends React.PureComponent<Props, any> {
               }}
             />
 
-              <label htmlFor="pageUrl">Page Links (URLs)</label>
+              <label htmlFor="pageUrl" className="pb-1">Page Links (URLs)</label>
 
               <div className={classes.links}>
 
-                <div className={classes.linksItem}>
-                  <div
-                    onClick={() => urls.find(url => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
-                    className={clsx(classes.linkTitle, !urls.find(url => url.isDefault) && classes.linkDefault)}
-                    title={defaultPageUrl.link}
-                  >
-                    {defaultPageUrl.link}
-                  </div>
+                <div
+                  onClick={() => urls.find(url => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
+                  className={clsx(classes.linkTitle, !urls.find(url => url.isDefault) && classes.linkDefault)}
+                  title={defaultPageUrl.link}
+                >
+                  {defaultPageUrl.link}
                 </div>
 
                 {urls.map((url, index) => (

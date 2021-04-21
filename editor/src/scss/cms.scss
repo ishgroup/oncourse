@@ -1,12 +1,6 @@
-  // typography
-  //@import 'typography/fonts';
+@import "fonts";
 
-// include all styles in .cms scope
 .cms-scope {
-  // vendors
-  //@import 'vendors/bootstrap';
-  //@import 'vendors/normilize';
-  
   // base
   @import 'base/theme';
   //@import 'base/base';
@@ -17,20 +11,14 @@
   @import 'layout/sidebar';
   
   //patterns
-  //@import 'patterns/link';
-  //@import 'patterns/form';
-  //@import 'patterns/button';
-  //@import 'patterns/checkbox';
-  //@import 'patterns/table';
   @import 'patterns/loader';
 
   // components
-  //@import 'components/login-form';
   @import 'components/menu-editor';
   @import 'components/editor-area';
   @import 'components/notifications';
-  //@import 'components/links';
-  //@import 'components/theme';
-  //@import 'components/modal';
-  //@import 'components/rules';
+}
+
+#cms-root {
+  font-family: Inter, sans-serif;
 }

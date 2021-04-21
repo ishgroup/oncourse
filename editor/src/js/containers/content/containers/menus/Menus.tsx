@@ -4,14 +4,14 @@ import {Dispatch} from "redux";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {Paper} from "@material-ui/core";
 import clsx from "clsx";
+import 'react-sortable-tree/style.css';
+import {withStyles} from "@material-ui/core/styles";
 import SortableTree, {changeNodeAtPath, removeNodeAtPath} from 'react-sortable-tree';
 import {changeMenuTree, getMenuItems, saveMenuTree} from "./actions";
 import {MenuState} from "./reducers/State";
 import {showModal} from "../../../../common/containers/modal/actions";
 import {State} from "../../../../reducers/state";
 import CustomButton from "../../../../common/components/CustomButton";
-import 'react-sortable-tree/style.css';
-import {withStyles} from "@material-ui/core/styles";
 
 const styles = theme => ({
   deleteButton: {
