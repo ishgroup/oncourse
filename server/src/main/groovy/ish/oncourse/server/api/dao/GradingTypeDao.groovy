@@ -8,6 +8,7 @@
 
 package ish.oncourse.server.api.dao
 
+import ish.oncourse.server.cayenne.GradingItem
 import ish.oncourse.server.cayenne.GradingType
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -18,6 +19,13 @@ class GradingTypeDao implements CayenneLayer<GradingType> {
     @Override
     GradingType newObject(ObjectContext context) {
         return context.newObject(GradingType)
+    }
+
+    GradingItem newGradingItem(GradingType gradingType, ObjectContext context) {
+        return context.newObject(GradingItem).with {item ->
+            item.gradingType = gradingType
+            item
+        }
     }
 
     @Override

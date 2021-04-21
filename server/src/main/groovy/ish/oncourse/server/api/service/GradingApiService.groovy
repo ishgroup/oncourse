@@ -60,18 +60,21 @@ class GradingApiService extends EntityApiService<GradingTypeDTO, GradingType, Gr
         cayenneModel.maxValue = dtoModel.maxValue
         cayenneModel.entryType = dtoModel.entryType.dbType
 
-        updateGradingItems(dtoModel.gradingItems, cayenneModel.gradingItems, cayenneModel.context)
+        updateGradingItems(dtoModel.gradingItems, cayenneModel)
 
         return cayenneModel
     }
 
-    static void updateGradingItems(List<GradingItemDTO> dtoItems, List<GradingItem> cayenneItems, ObjectContext context) {
+    void updateGradingItems(List<GradingItemDTO> dtoItems, GradingType gradingType) {
+        ObjectContext context = gradingType.context
+        List<GradingItem> cayenneItems = gradingType.gradingItems
+
         context.deleteObjects(cayenneItems.findAll { !(it.id in dtoItems*.id) })
 
         dtoItems.each { dtoItem ->
             GradingItem cayenneItem = dtoItem.id ?
                     cayenneItems.find { dtoItem.id == it.id } :
-                    context.newObject(GradingItem)
+                    entityDao.newGradingItem(gradingType, context)
             toCayenneModelGradingItem(dtoItem, cayenneItem)
         }
     }
