@@ -164,6 +164,8 @@ export const DELETE_TUTOR_ROLE_FULFILLED = FULFILLED(DELETE_TUTOR_ROLE_REQUEST);
 export const GET_GRADING_TYPES_REQUEST = _toRequestType("get/grading/type");
 export const GET_GRADING_TYPES_FULFILLED = FULFILLED(GET_GRADING_TYPES_REQUEST);
 
+export const DELETE_GRADING_TYPE_REQUEST = _toRequestType("delete/grading/type");
+
 export const UPDATE_GRADING_TYPES_REQUEST = _toRequestType("post/grading/type");
 
 export const getGradingTypes = () => ({
@@ -173,6 +175,11 @@ export const getGradingTypes = () => ({
 export const updateGradingTypes = (types: GradingType[]) => ({
   type: UPDATE_GRADING_TYPES_REQUEST,
   payload: types
+});
+
+export const deleteGradingType = (id: number) => ({
+  type: DELETE_GRADING_TYPE_REQUEST,
+  payload: id
 });
 
 export const getCurrency = () => ({

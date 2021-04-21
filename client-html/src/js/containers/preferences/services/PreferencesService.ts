@@ -79,6 +79,10 @@ class PreferencesService {
     return this.gradingApi.update(types);
   }
 
+  public deleteGradingType(id): Promise<any> {
+    return this.gradingApi.remove(id);
+  }
+
   public getDeafaultIncomeAccount(): Promise<Account> {
     return this.userPreferenceApi.get(AccountStudentEnrolments.uniqueKey).then(
       (prefs): Promise<Account> => this.accountApi.get(Number(prefs[AccountStudentEnrolments.uniqueKey]))
