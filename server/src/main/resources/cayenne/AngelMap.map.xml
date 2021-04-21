@@ -3907,6 +3907,9 @@
 	<db-relationship name="gradingType" source="GradingItem" target="GradingType">
 		<db-attribute-pair source="gradingTypeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="assessments" source="GradingType" target="Assessment" toMany="true">
+		<db-attribute-pair source="id" target="gradingTypeId"/>
+	</db-relationship>
 	<db-relationship name="gradingItems" source="GradingType" target="GradingItem" toMany="true">
 		<db-attribute-pair source="id" target="gradingTypeId"/>
 	</db-relationship>
@@ -4973,7 +4976,8 @@
 	<obj-relationship name="fundingUpload" source="FundingUploadOutcome" target="FundingUpload" deleteRule="Nullify" db-relationship-path="fundingUpload"/>
 	<obj-relationship name="outcome" source="FundingUploadOutcome" target="Outcome" deleteRule="Nullify" db-relationship-path="outcome"/>
 	<obj-relationship name="gradingType" source="GradingItem" target="GradingType" deleteRule="Nullify" db-relationship-path="gradingType"/>
-	<obj-relationship name="gradingItems" source="GradingType" target="GradingItem" deleteRule="Nullify" db-relationship-path="gradingItems"/>
+	<obj-relationship name="assessments" source="GradingType" target="Assessment" deleteRule="Deny" db-relationship-path="assessments"/>
+	<obj-relationship name="gradingItems" source="GradingType" target="GradingItem" deleteRule="Cascade" db-relationship-path="gradingItems"/>
 	<obj-relationship name="automationBindings" source="Import" target="ImportAutomationBinding" deleteRule="Cascade" db-relationship-path="automationBindings"/>
 	<obj-relationship name="relatedObject" source="ImportAutomationBinding" target="Import" deleteRule="Nullify" db-relationship-path="import"/>
 	<obj-relationship name="integrationProperties" source="IntegrationConfiguration" target="IntegrationProperty" deleteRule="Cascade" db-relationship-path="integrationProperties"/>
