@@ -13,18 +13,19 @@
 
 import { Epic } from "redux-observable";
 
-import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../services/PreferencesService";
-import { GET_GRADING_TYPES_REQUEST } from "../../../actions";
-import { FORM } from "../GradingForm";
+import { GET_GRADING_TYPES_REQUEST, GET_GRADING_TYPES_FULFILLED } from "../../../actions";
 
 const request: EpicUtils.Request = {
   type: GET_GRADING_TYPES_REQUEST,
   getData: () => PreferencesService.getGradingTypes(),
   processData: types => [
-    initialize(FORM, { types })
-  ]
+      {
+        type: GET_GRADING_TYPES_FULFILLED,
+        payload: types
+      }
+    ]
 };
 
 export const EpicGetGradingTypes: Epic<any, any> = EpicUtils.Create(request);

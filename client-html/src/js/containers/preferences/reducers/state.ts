@@ -10,7 +10,8 @@ import {
   ColumnWidth,
   FundingSource,
   DefinedTutorRole,
-  EntityRelationType
+  EntityRelationType,
+  GradingType
 } from "@api/model";
 
 export interface PreferencesState {
@@ -26,6 +27,7 @@ export interface PreferencesState {
   dataCollectionRules?: DataCollectionRule[];
   paymentTypes?: PaymentMethod[];
   tutorRoles?: DefinedTutorRole[];
+  gradingTypes?: GradingType[];
   enums?: any;
   college?: any;
   licences?: any;

@@ -6,33 +6,43 @@
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
-import { Tag } from "@api/model";
+import { Assessment, GradingType, Tag } from "@api/model";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Button from "@material-ui/core/Button";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { CourseClassExtended } from "../../../../model/entities/CourseClass";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
+import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 
-interface Props extends Partial<EditViewProps> {
+interface Props extends Partial<EditViewProps<Assessment>> {
   tags?: Tag[];
-  values?: CourseClassExtended;
   classes?: any;
+  gradingTypes?: GradingType[];
 }
 
 const AssessmentGeneralTab = React.memo<Props>(
-  ({
-    tags, twoColumn, values, isNew, manualLink, rootEntity, onCloseClick, invalid, dirty
-  }) => {
+  (
+    {
+    tags,
+    twoColumn,
+    values,
+    isNew,
+    manualLink,
+    rootEntity,
+    onCloseClick,
+    invalid,
+    dirty,
+    gradingTypes = []
+  }
+) => {
     const validateTagListCallback = useCallback(
       (value, allValues, props) => (tags && tags.length ? validateTagsList(tags, value, allValues, props) : undefined),
       [tags]
     );
-
-    const classCodeField = (
+    const assessmentCodeField = (
       <FormField
         label="Code"
         name="code"
@@ -42,8 +52,7 @@ const AssessmentGeneralTab = React.memo<Props>(
         fullWidth
       />
     );
-
-    const classNameField = (
+    const assessmentNameField = (
       <FormField
         label="Name"
         name="name"
@@ -60,10 +69,10 @@ const AssessmentGeneralTab = React.memo<Props>(
           <CustomAppBar>
             <Grid container className="flex-fill">
               <Grid item xs={3}>
-                {classCodeField}
+                {assessmentCodeField}
               </Grid>
               <Grid item xs={8}>
-                {classNameField}
+                {assessmentNameField}
               </Grid>
             </Grid>
             <div>
@@ -79,35 +88,26 @@ const AssessmentGeneralTab = React.memo<Props>(
               <Button onClick={onCloseClick} className="closeAppBarButton">
                 Close
               </Button>
-              <Button
-                type="submit"
-                classes={{
-                  root: "whiteAppBarButton",
-                  disabled: "whiteAppBarButtonDisabled"
-                }}
-                disabled={invalid || (!isNew && !dirty)}
-              >
-                Save
-              </Button>
+              <FormSubmitButton
+                disabled={(!isNew && !dirty)}
+                invalid={invalid}
+              />
             </div>
           </CustomAppBar>
         )}
-        <Grid container className="pl-3 pt-3 pr-3 relative">
+        <Grid container className="p-3">
           {!twoColumn && (
             <>
               <Grid item xs={12}>
-                {classCodeField}
+                {assessmentCodeField}
               </Grid>
 
               <Grid item xs={12}>
-                {classNameField}
+                {assessmentNameField}
               </Grid>
             </>
           )}
-        </Grid>
-
-        <Grid container className="pl-3 pr-3">
-          <Grid item xs={12} className="pb-2">
+          <Grid item xs={12}>
             <FormField
               type="tags"
               name="tags"
@@ -116,8 +116,18 @@ const AssessmentGeneralTab = React.memo<Props>(
             />
           </Grid>
           <Grid item xs={12}>
+            <FormField
+              type="select"
+              name="gradingTypeId"
+              label="Grading type"
+              selectValueMark="id"
+              selectLabelMark="name"
+              items={gradingTypes}
+            />
+          </Grid>
+          <Grid item xs={12}>
             <FormControlLabel
-              className="checkbox pr-3"
+              className="checkbox mb-2"
               control={<FormField type="checkbox" name="active" color="secondary" fullWidth />}
               label="Active"
             />
@@ -127,7 +137,6 @@ const AssessmentGeneralTab = React.memo<Props>(
               type="multilineText"
               name="description"
               label="Description"
-              className="pt-2"
               required
               fullWidth
             />
@@ -139,7 +148,8 @@ const AssessmentGeneralTab = React.memo<Props>(
 );
 
 const mapStateToProps = (state: State) => ({
-  tags: state.tags.entityTags["Assessment"]
+  tags: state.tags.entityTags["Assessment"],
+  gradingTypes: state.preferences.gradingTypes
 });
 
 export default connect<any, any, any>(
