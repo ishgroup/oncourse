@@ -6,6 +6,7 @@ records.each { Assessment assessment ->
             "Assessment code"       : assessment.code,
             "Assessment name"       : assessment.name,
             "Assessment description": assessment.description,
-            "Active"                : assessment.active
+            "Active"                : assessment.active,
+            "Grading type"          : assessment.gradingType?.typeName
     ]
 }
