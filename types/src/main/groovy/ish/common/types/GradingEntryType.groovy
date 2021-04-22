@@ -27,7 +27,7 @@ enum GradingEntryType implements DisplayableExtendedEnumeration<Integer> {
      * The Grading system is entries, which looks like {name: value}; The value of each entry is a lower bound of range.
      */
     @API
-    NAME(2, "Name");
+    CHOICE_LIST(2, "Choice list");
 
     private int value
     private String displayName
