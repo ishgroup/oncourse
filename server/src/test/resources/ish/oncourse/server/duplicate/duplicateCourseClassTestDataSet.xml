@@ -185,7 +185,7 @@
     <Discount_CourseClass id="2" courseClassId="1" discountId="2" predictedStudentsPercentage="0.1"
                           discountDollar="25"/>
 
-    <GradingType id="-1" createdOn="2021-04-13 10:22:44.0" modifiedOn="2021-04-21 21:30:45.0" name="Pass/Fail" min_value="0.00" max_value="100.00" entryType="2"/>
+    <GradingType id="1" createdOn="2021-04-13 10:22:44.0" modifiedOn="2021-04-21 21:30:45.0" name="Pass/Fail" min_value="0.00" max_value="100.00" entryType="2"/>
 
     <Assessment id="1" active="1" code="ABC1" name="ABC1 name" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" gradingTypeId="1"/>
     <Assessment id="2" active="1" code="ABC2" name="ABC2 name" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" gradingTypeId="1"/>
