@@ -9,8 +9,8 @@ trait GradingEntryTypeDTOTrait {
         switch (this as GradingEntryTypeDTO) {
             case GradingEntryTypeDTO.NUMBER:
                 return GradingEntryType.NUMBER
-            case GradingEntryTypeDTO.NAME:
-                return GradingEntryType.NAME
+            case GradingEntryTypeDTO.CHOICE_LIST:
+                return GradingEntryType.CHOICE_LIST
             default:
                 throw new IllegalArgumentException("${toString()}")
         }
@@ -20,8 +20,8 @@ trait GradingEntryTypeDTOTrait {
         switch (gradingEntryType) {
             case GradingEntryType.NUMBER:
                 return GradingEntryTypeDTO.NUMBER
-            case GradingEntryType.NAME:
-                return GradingEntryTypeDTO.NAME
+            case GradingEntryType.CHOICE_LIST:
+                return GradingEntryTypeDTO.CHOICE_LIST
             default:
                 throw new IllegalArgumentException("$gradingEntryType.displayName")
         }

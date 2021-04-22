@@ -105,7 +105,7 @@ class GradingApiService extends EntityApiService<GradingTypeDTO, GradingType, Gr
             validator.throwClientErrorException(GradingType.ENTRY_TYPE.name, 'You must choose the grading entry type')
         }
 
-        if (GradingEntryTypeDTO.NAME == dtoModel.entryType && dtoModel.gradingItems.size() == 0) {
+        if (GradingEntryTypeDTO.CHOICE_LIST == dtoModel.entryType && dtoModel.gradingItems.size() == 0) {
             validator.throwClientErrorException(GradingType.ENTRY_TYPE.name, 'You must specify at least one grading entry.')
         }
 
