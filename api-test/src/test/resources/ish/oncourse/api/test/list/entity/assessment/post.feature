@@ -20,6 +20,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         "name":"create assessment 1",
         "tags":[{"id":195}],
         "active":true,
+        "gradingTypeId":1,
         "description":"some description 1",
         "documents":[{"id":200}]
         }
@@ -51,6 +52,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         "modifiedOn": "#ignore",
         "code":"code001",
         "name":"create assessment 1",
+        "gradingTypeId":1,
         "tags":[{"id":195,"name":"Journal","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "active":true,
         "description":"some description 1",
@@ -356,6 +358,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         "modifiedOn": "#ignore",
         "code":"code002",
         "name":"create assessment 2",
+        "gradingTypeId":null,
         "tags":[{"id":195,"name":"Journal","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "active":true,
         "description":"some description 2",

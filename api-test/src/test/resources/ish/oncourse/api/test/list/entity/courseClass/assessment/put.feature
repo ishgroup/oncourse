@@ -76,6 +76,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/as
             "courseClassId":6,
             "assessmentCode":"code2",
             "assessmentName":"assessment 2",
+            "gradingTypeId":1,
             "contactIds":[],
             "moduleIds":[],
             "releaseDate":"2020-01-31T14:53:00.000Z",

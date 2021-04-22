@@ -39,6 +39,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
             "assessmentId":1000,
             "assessmentCode":"code1",
             "assessmentName":"assessment 1",
+            "gradingTypeId":1,
             "contactIds":[],
             "moduleIds":[],
             "releaseDate":"2019-01-01T00:00:00.000Z",
@@ -56,7 +57,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
         Given path ishPath + '/' + classId
         When method GET
         Then status 200
-        And match $ == [{"id":"#number","assessmentId":1000,"courseClassId":"#(~~classId)","assessmentCode":"code1","assessmentName":"assessment 1","contactIds":[],"moduleIds":[],"releaseDate":"2019-01-01T00:00:00.000Z","dueDate":"2020-02-01T03:10:00.000Z","submissions":[]}]
+        And match $ == [{"id":"#number","assessmentId":1000,"courseClassId":"#(~~classId)","assessmentCode":"code1","assessmentName":"assessment 1","gradingTypeId":1,"contactIds":[],"moduleIds":[],"releaseDate":"2019-01-01T00:00:00.000Z","dueDate":"2020-02-01T03:10:00.000Z","submissions":[]}]
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
         Given path ishPathClass + '/' + classId
@@ -120,7 +121,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
         Given path ishPath + '/' + classId
         When method GET
         Then status 200
-        And match $ == [{"id":"#number","assessmentId":1000,"courseClassId":"#(~~classId)","assessmentCode":"code1","assessmentName":"assessment 1","contactIds":[],"moduleIds":[],"releaseDate":"2019-01-01T00:00:00.000Z","dueDate":"2020-02-01T03:10:00.000Z","submissions":[]}]
+        And match $ == [{"id":"#number","assessmentId":1000,"courseClassId":"#(~~classId)","assessmentCode":"code1","assessmentName":"assessment 1","gradingTypeId":1,"contactIds":[],"moduleIds":[],"releaseDate":"2019-01-01T00:00:00.000Z","dueDate":"2020-02-01T03:10:00.000Z","submissions":[]}]
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
         Given path '/logout'
