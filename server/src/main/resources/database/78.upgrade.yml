@@ -202,7 +202,7 @@ databaseChangeLog:
               - column:
                   name: gradingTypeId
                   type: BIGINT
-                  value: -1
+                  value: 1
   - changeSet:
       id: 78-6
       author: rostislav
