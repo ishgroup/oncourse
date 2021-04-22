@@ -15,7 +15,7 @@
 
     <SystemUser email="admin@mail.com" createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1" lastLoginOn="2014-10-20 12:33:13.0" login="admin" modifiedOn="2014-10-20 12:33:13.0" password="PBKDF2WithHmacSHA1:1000:5b5814a658527cd9fd6f61224eb05fec699fb20900b4193d:0fd68ff3c15901a1b835cdd571a536f678104c6592f05322" surname="Administrator" isActive="1" isAdmin="1" defaultAdministrationCentreId="100" canEditTara="0" canEditCMS="0" willowid="21" PASSWORDUPDATEREQUIRED="0"/>
 
-    <GradingType id="-1" CREATEDON="2021-04-13 10:22:44.0" MODIFIEDON="2021-04-21 21:30:45.0" NAME="Pass/Fail" MIN_VALUE="0.00" MAX_VALUE="100.00" ENTRYTYPE="2"/>
+    <GradingType id="1" CREATEDON="2021-04-13 10:22:44.0" MODIFIEDON="2021-04-21 21:30:45.0" NAME="Pass/Fail" MIN_VALUE="0.00" MAX_VALUE="100.00" ENTRYTYPE="2"/>
 
     <Assessment id="1" createdOn="2017-07-24 13:24:51" modifiedOn="2017-07-24 13:26:58" active="1" code="test.assessment.101" description="Description" gradingTypeId="1" name="Test Assessment Task" />
     <Assessment id="2" createdOn="2020-03-27 17:59:03" modifiedOn="2020-04-03 05:42:59" active="0" code="test.assessment.103" description="Description" gradingTypeId="1" name="testAssessment" />
