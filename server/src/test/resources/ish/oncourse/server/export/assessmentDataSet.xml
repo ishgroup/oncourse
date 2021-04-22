@@ -8,4 +8,5 @@
 
     <Assessment id="1" createdOn="2017-07-24 13:24:51" modifiedOn="2017-07-24 13:26:58" active="1" code="test.assessment.101" description="Description"  gradingTypeId="1" name="Test Assessment Task" />
     <Assessment id="4" createdOn="2020-03-27 17:59:03" modifiedOn="2020-04-03 05:42:59" active="0" code="test.assessment.103" description="Description"  gradingTypeId="1" name="testAssessment" />
+    <Assessment id="5" createdOn="2020-03-27 17:59:03" modifiedOn="2020-04-03 05:42:59" active="1" code="test.assessment.105" description="Description"  name="withoutGrading" />
 </dataset>

@@ -8,6 +8,7 @@
         <assessmentName>Test Assessment Task</assessmentName>
         <submittedOn>3-1-2021</submittedOn>
         <markedOn>5-1-2021</markedOn>
+        <grade>85.43</grade>
     </assessmentSubmission>
     <assessmentSubmission id='2'>
         <createdOn>3-1-2012 10:00:00</createdOn>
@@ -17,5 +18,6 @@
         <assessmentName>testAssessment</assessmentName>
         <submittedOn>4-1-2021</submittedOn>
         <markedOn />
+        <grade />
     </assessmentSubmission>
 </data>

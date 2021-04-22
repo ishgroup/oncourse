@@ -66,7 +66,7 @@
 
     <AssessmentClass id="2" assessmentId="2" courseClassId="1" dueDate="2032-01-03 11:00:00"  modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
 
-    <AssessmentSubmission id="1" assessmentClassId="1" enrolmentId="1" markedById="3" submittedOn="2021-01-03 11:00:00" markedOn="2021-01-05 11:00:00" modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
+    <AssessmentSubmission id="1" assessmentClassId="1" enrolmentId="1" markedById="3" submittedOn="2021-01-03 11:00:00" markedOn="2021-01-05 11:00:00" grade="85.43" modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
 
     <AssessmentSubmission id="2" assessmentClassId="2" enrolmentId="2" markedById="3" submittedOn="2021-01-04 11:00:00" modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
 
