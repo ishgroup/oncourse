@@ -37,7 +37,8 @@ class GradingApiService extends EntityApiService<GradingTypeDTO, GradingType, Gr
             dtoModel.minValue = cayenneModel.minValue
             dtoModel.maxValue = cayenneModel.maxValue
             dtoModel.entryType = GradingEntryTypeDTO.values()[0].fromDbType(cayenneModel.entryType)
-            dtoModel.gradingItems = cayenneModel.gradingItems.collect { toRestGradingItem(it) }
+            dtoModel.gradingItems = cayenneModel.gradingItems.sort {it.lowerBound }.reverse().
+                    collect { toRestGradingItem(it) }
             dtoModel
         }
     }
