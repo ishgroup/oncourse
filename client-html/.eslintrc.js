@@ -46,6 +46,8 @@ module.exports = {
         "@typescript-eslint/type-annotation-spacing": "off",
         "no-param-reassign": "off",
         "no-nested-ternary": "off",
+        "no-await-in-loop": "off",
+        "no-restricted-syntax": "off",
         "arrow-parens": [
             "error",
             "as-needed"
