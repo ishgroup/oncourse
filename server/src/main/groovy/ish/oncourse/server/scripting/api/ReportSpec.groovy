@@ -20,8 +20,9 @@ import ish.oncourse.API
  *
  * ```
  * report {
+ * 	   fileName "certificate.pdf"
  *     keycode "ish.onCourse.certificate"
- *     records c
+ *     record records
  * }
  * ```
  *
@@ -51,7 +52,7 @@ class ReportSpec {
 	Boolean generatePreview = false
 
 	/**
-	 * Specify the filename of the final file with a fulfilled report
+	 * Specify the filename with extension of the final file with a fulfilled report
 	 *
 	 * @param fileName fileName of the file with the report
 	 */
