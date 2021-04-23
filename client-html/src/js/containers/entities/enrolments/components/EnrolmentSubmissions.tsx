@@ -6,44 +6,126 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { useEffect, useState } from "react";
-import { Tooltip } from "@material-ui/core";
-import { AssessmentSubmission } from "@api/model";
+import React, { useEffect, useState } from "react";
+import { AssessmentSubmission, GradingItem, GradingType } from "@api/model";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import DateRange from "@material-ui/icons/DateRange";
-import clsx from "clsx";
 import { format } from "date-fns";
 import { withStyles } from "@material-ui/core/styles";
 import { Dispatch } from "redux";
-import { arrayInsert, arrayRemove, change } from "redux-form";
-import AssessmentSubmissionIconButton from "../../courseClasses/components/assessments/AssessmentSubmissionIconButton";
-import { III_DD_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
+import {
+ arrayInsert, arrayRemove, change, WrappedFieldArrayProps
+} from "redux-form";
+import Typography from "@material-ui/core/Typography";
+import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import styles from "../../courseClasses/components/assessments/styles";
 import SubmissionModal from "../../courseClasses/components/assessments/SubmissionModal";
-import { EnrolmentExtended } from "../../../../model/entities/Enrolment";
+import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
+import EnrolmentAssessmentStudent from "./EnrolmentAssessmentStudent";
+import GradeModal from "../../courseClasses/components/assessments/GradeModal";
+import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 
 interface Props {
   classes?: any;
   values: EnrolmentExtended;
   dispatch: Dispatch;
-  form: string;
+  gradingTypes: GradingType[];
 }
 
 const today = format(new Date(), YYYY_MM_DD_MINUSED);
 
-const EnrolmentSubmissions: React.FC<Props> = props => {
+const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => {
   const {
-    classes, values, form, dispatch
+    classes, values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = []
   } = props;
 
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);
   const [modalProps, setModalProps] = useState<string[]>([]);
+  const [gradeMenuAnchorEl, setGradeMenuAnchorEl] = useState(null);
 
   useEffect(() => {
     setModalProps(modalOpenedBy ? modalOpenedBy.split("-") : []);
   }, [modalOpenedBy]);
+
+  const handleGradeMenuClose = () => {
+    setGradeMenuAnchorEl(null);
+  };
+
+  const handleGradeMenuOpen = e => {
+    setGradeMenuAnchorEl(e.currentTarget);
+  };
+
+  const onChangeAllGrades = (value: number) => {
+    dispatch(change(form, "submissions", values.assessments.map(a => {
+      const submission = values.submissions.find(s => s.assessmentId === a.id);
+      return {
+        id: submission ? submission.id : null,
+        submittedOn: submission ? submission.submittedOn : null,
+        markedById: submission ? submission.markedById : null,
+        markedOn: submission ? submission.markedOn : null,
+        enrolmentId: values.id,
+        studentId: values.studentContactId,
+        studentName: values.studentName,
+        assessmentId: a.id,
+        grade: value
+      };
+    }).filter(s => s)));
+  };
+
+  const onChangeGrade = (value: number, elem: EnrolmentAssessmentExtended) => {
+    const grade = normalizeNumber(value);
+    const submissionIndex = values.submissions.findIndex(s => s.assessmentId === elem.id);
+    if (submissionIndex === -1) {
+      const newSubmission: AssessmentSubmission = {
+        id: null,
+        submittedOn: today,
+        markedById: elem.tutors?.length ? elem.tutors[0].contactId : null,
+        markedOn: today,
+        enrolmentId: values.id,
+        studentId: values.studentContactId,
+        studentName: values.studentName,
+        assessmentId: elem.id,
+        grade
+      };
+      dispatch(change(form, "submissions", [newSubmission, ...values.submissions]));
+    } else {
+      dispatch(change(form, "submissions", values.submissions.map((s, index) => {
+        if (submissionIndex === index) {
+          return { ...s, grade };
+        }
+        return s;
+      })));
+    }
+  };
+
+  const onToggleGrade = (elem: EnrolmentAssessmentExtended, grade: GradingItem) => {
+    const submissionIndex = values.submissions.findIndex(s => s.assessmentId === elem.id);
+    const gradeItems: GradingItem[] = gradingTypes?.find(g => g.id === elem.gradingTypeId)?.gradingItems;
+
+    if (submissionIndex === -1) {
+      const newSubmission: AssessmentSubmission = {
+        id: null,
+        submittedOn: today,
+        markedById: elem.tutors?.length ? elem.tutors[0].contactId : null,
+        markedOn: today,
+        enrolmentId: values.id,
+        studentId: values.studentContactId,
+        studentName: values.studentName,
+        assessmentId: elem.id,
+        grade: gradeItems ? gradeItems[0]?.lowerBound : null
+      };
+      dispatch(change(form, "submissions", [newSubmission, ...values.submissions]));
+    } else {
+      dispatch(change(form, "submissions", values.submissions.map((s, index) => {
+        if (submissionIndex === index) {
+          const gradeIndex = grade ? gradeItems?.findIndex(g => g.lowerBound === grade.lowerBound) : -1;
+          return { ...s, grade: gradeItems[gradeIndex + 1]?.lowerBound };
+        }
+        return s;
+      })));
+    }
+  };
 
   const onChangeStatus = (type, submissionIndex, prevStatus, assessment, index) => {
     let pathIndex = submissionIndex;
@@ -59,7 +141,8 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
           enrolmentId: values.id,
           studentId: values.studentContactId,
           studentName: values.studentName,
-          assessmentId: assessment.id
+          assessmentId: assessment.id,
+          grade: null
         };
         dispatch(arrayInsert(form, "submissions", pathIndex, newSubmission));
       }
@@ -145,8 +228,22 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
     ? `All assessments ${modalProps[0].toLowerCase()} date`
     : `${modalProps[2]} ${modalProps[0].toLowerCase()} date${titlePostfix}`);
 
+  const modalGradeType = gradingTypes.find(g =>
+    g.id === values.assessments[gradeMenuAnchorEl?.attributes?.id?.value?.replace("grade", "")]?.gradingTypeId);
+
+  const modalGradeItems = modalGradeType?.gradingItems;
+
   return values.assessments && values.assessments.length ? (
-    <Grid item={true} xs={12} container>
+    <Grid item={true} xs={12} id={name} container>
+      <GradeModal
+        gradeMenuAnchorEl={gradeMenuAnchorEl}
+        handleGradeMenuClose={handleGradeMenuClose}
+        gradedItems={values.assessments}
+        onChangeGrade={onChangeGrade}
+        onChangeAllGrades={onChangeAllGrades}
+        gradeType={modalGradeType}
+        gradeItems={modalGradeItems}
+      />
       <SubmissionModal
         modalProps={modalProps}
         tutors={values.assessments[modalProps[3]]?.tutors || []}
@@ -160,7 +257,17 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
           ? values.submissions[modalProps[1]]?.submittedOn || today
           : values.submissions[modalProps[1]]?.markedOn || today}
       />
+
       <div className="heading">Assessments Submissions</div>
+
+      {error && (
+        <Grid item xs={12} className="mt-1 shakingError">
+          <Typography variant="caption" color="error">
+            {error}
+          </Typography>
+        </Grid>
+      )}
+
       <Grid container item={true} xs={12} className={classes.tableHeader}>
         <Grid item xs={4} />
         <Grid item xs={2} className={classes.center}>
@@ -191,107 +298,32 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
             </IconButton>
           </span>
         </Grid>
+        <Grid xs={2} className={classes.center}>
+          Grade
+        </Grid>
       </Grid>
       <Grid container item={true} xs={12} className={classes.items}>
         {values.assessments.map((elem, index) => {
-            const submissionIndex = values.submissions.findIndex(s => s.assessmentId === elem.id);
-            const submission = submissionIndex !== -1 && values.submissions[submissionIndex];
-            const submitStatus = submission && submission.submittedOn ? "Submitted" : "Not submitted";
-            const markedStatus = submission && submission.markedOn ? "Submitted" : "Not submitted";
-
-            const submittedContent = (
-              <div className="d-flex relative">
-                <AssessmentSubmissionIconButton
-                  status={submitStatus}
-                  onClick={() => onChangeStatus("Submitted", submissionIndex, submitStatus, elem, index)}
-                />
-                {submitStatus === "Submitted" && (
-                  <IconButton
-                    size="small"
-                    className={classes.hiddenIcon}
-                    onClick={() => setModalOpenedBy(`Submitted-${submissionIndex}-${elem.name}-${index}`)}
-                  >
-                    <DateRange color="disabled" fontSize="small" />
-                  </IconButton>
-                )}
-              </div>
-            );
-
-            const markedContent = (
-              <div className="d-flex relative">
-                <AssessmentSubmissionIconButton
-                  status={markedStatus}
-                  onClick={() => onChangeStatus("Marked", submissionIndex, markedStatus, elem, index)}
-                />
-                {markedStatus === "Submitted" && (
-                  <IconButton
-                    size="small"
-                    className={classes.hiddenIcon}
-                    onClick={() => setModalOpenedBy(`Marked-${submissionIndex}-${elem.name}-${index}`)}
-                  >
-                    <DateRange color="disabled" fontSize="small" />
-                  </IconButton>
-                )}
-              </div>
-            );
-
-            return (
-              <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
-                <Grid item xs={4} className="d-inline-flex-center pl-1">
-                  {elem.name}
-                </Grid>
-                <Grid item xs={2} className={classes.center}>
-                  {submitStatus === "Submitted"
-                    ? (
-                      <Tooltip
-                        title={(
-                          <span>
-                            Submitted date:
-                            {" "}
-                            {submission && format(new Date(submission.submittedOn), III_DD_MMM_YYYY)}
-                          </span>
-                        )}
-                        placement="top"
-                        disableFocusListener
-                        disableTouchListener
-                      >
-                        {submittedContent}
-                      </Tooltip>
-                    )
-                    : submittedContent}
-                </Grid>
-                <Grid item xs={2} className={classes.center}>
-                  {markedStatus === "Submitted" ? (
-                    <Tooltip
-                      title={(
-                        <span>
-                          Marked date:
-                          {" "}
-                          {submission && format(new Date(submission.markedOn), III_DD_MMM_YYYY)}
-                          <br />
-                          {submission?.markedById && Boolean(elem.tutors?.length) && (
-                            <span>
-                              Assessor:
-                              {" "}
-                              {elem.tutors.find(t => t.contactId === submission.markedById)?.tutorName}
-                            </span>
-                          )}
-                        </span>
-                      )}
-                      placement="top"
-                      disableFocusListener
-                      disableTouchListener
-                    >
-                      {markedContent}
-                    </Tooltip>
-                  ) : markedContent}
-                </Grid>
-              </Grid>
-            );
-          })}
+          const elemGradeType = gradingTypes?.find(g => g.id === elem.gradingTypeId);
+          return (
+            <EnrolmentAssessmentStudent
+              elem={elem}
+              values={values}
+              gradeType={elemGradeType}
+              gradeItems={elemGradeType?.gradingItems}
+              onChangeStatus={onChangeStatus}
+              onToggleGrade={onToggleGrade}
+              onChangeGrade={onChangeGrade}
+              handleGradeMenuOpen={handleGradeMenuOpen}
+              classes={classes}
+              setModalOpenedBy={setModalOpenedBy}
+              index={index}
+            />
+          );
+        })}
       </Grid>
     </Grid>
   ) : null;
 };
 
-export default withStyles(styles)(EnrolmentSubmissions);
+export default withStyles(styles)(EnrolmentSubmissions) as React.FC<Props>;

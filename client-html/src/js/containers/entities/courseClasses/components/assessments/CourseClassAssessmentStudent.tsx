@@ -10,20 +10,18 @@ import React, {
   useEffect, useMemo, useState
 } from "react";
 import { Grid, IconButton, Tooltip } from "@material-ui/core";
-import { DateRange, ExpandMore } from "@material-ui/icons";
+import { DateRange } from "@material-ui/icons";
 import clsx from "clsx";
 import { format } from "date-fns";
 import {
  CourseClassTutor, GradingItem, GradingType
 } from "@api/model";
 import AssessmentSubmissionIconButton from "./AssessmentSubmissionIconButton";
-import AssessmentSubmissionGradeButton from "./AssessmentSubmissionGradeButton";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
-import { stubFunction } from "../../../../../common/utils/common";
 import { III_DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import { StudentForRender } from "./CourseClassAssessmentItem";
 import { StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { useGradeErrors } from "./utils/hooks";
+import GradeContent from "./GradeContent";
 
 interface Props {
   elem: StudentForRender;
@@ -102,45 +100,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
       : gradeItems?.find(g => g.lowerBound < elem.submission.grade || (elem.submission.grade === 0 && g.lowerBound === 0))
     : null), [elem?.submission?.grade, gradeItems]);
 
-  const gradeErrors = useGradeErrors(elem?.submission?.grade,gradeType);
-
-  const gradeContent = (
-    <div className="d-flex relative">
-      {gradeType?.entryType === "choice list"
-        ? (
-          <AssessmentSubmissionGradeButton
-            onClick={() => onToggleGrade(elem, currentGrade)}
-            grade={currentGrade?.name}
-          />
-        ) : (
-          <span className="text-nowrap">
-            <EditInPlaceField
-              type="number"
-              meta={gradeErrors}
-              input={{
-                onChange: e => setGradeVal(e.target.value),
-                onFocus: stubFunction,
-                onBlur: () => onChangeGrade(gradeVal, elem),
-                value: gradeVal
-              }}
-              formatting="inline"
-              hideArrows
-            />
-            {Boolean(currentGrade?.name) && `  ( ${currentGrade.name} )`}
-          </span>
-        )}
-        {gradeType?.entryType === "choice list" && (
-          <IconButton
-            size="small"
-            className={classes.hiddenIcon}
-            onClick={handleGradeMenuOpen}
-            id={`stud${index}`}
-          >
-            <ExpandMore color="disabled" fontSize="small" />
-          </IconButton>
-        )}
-    </div>
-  );
+  const gradeErrors = useGradeErrors(elem?.submission?.grade, gradeType);
 
   return (
     <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
@@ -194,7 +154,19 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
         ) : markedContent}
       </Grid>
       <Grid item xs={2} className={classes.center}>
-        {gradeContent}
+        <GradeContent
+          handleGradeMenuOpen={handleGradeMenuOpen}
+          onToggleGrade={onToggleGrade}
+          onChangeGrade={onChangeGrade}
+          currentGrade={currentGrade}
+          gradeErrors={gradeErrors}
+          setGradeVal={setGradeVal}
+          gradeType={gradeType}
+          gradeVal={gradeVal}
+          classes={classes}
+          index={index}
+          elem={elem}
+        />
       </Grid>
     </Grid>
   );

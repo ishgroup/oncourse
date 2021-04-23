@@ -7,8 +7,7 @@
  */
 
 import React from "react";
-import { ButtonBase } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
+import { ButtonBase, IconButton, Typography } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
@@ -28,7 +27,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const AssessmentSubmissionGradeButton: React.FC<AssessmentSubmissionIconButtonProps> = (
+const GradeButton: React.FC<AssessmentSubmissionIconButtonProps> = (
   {
    onClick,
    grade
@@ -38,7 +37,9 @@ const AssessmentSubmissionGradeButton: React.FC<AssessmentSubmissionIconButtonPr
 
   return grade ? (
     <ButtonBase className="p-0" onClick={onClick}>
-      {grade}
+      <Typography variant="body2">
+        {grade}
+      </Typography>
     </ButtonBase>
   ) : (
     <IconButton size="small" className={`p-0 ${classes.iconButton}`} onClick={onClick}>
@@ -47,4 +48,4 @@ const AssessmentSubmissionGradeButton: React.FC<AssessmentSubmissionIconButtonPr
   );
 };
 
-export default AssessmentSubmissionGradeButton;
+export default GradeButton;
