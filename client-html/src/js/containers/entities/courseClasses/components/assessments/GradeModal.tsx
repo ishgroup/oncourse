@@ -22,12 +22,12 @@ import EditInPlaceField from "../../../../../common/components/form/form-fields/
 import { useGradeErrors } from "./utils/hooks";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 
-const AssessmentGradeModal = (
+const GradeModal = (
   {
     gradeMenuAnchorEl,
     handleGradeMenuClose,
     onChangeAllGrades,
-    studentsForRender,
+    gradedItems,
     onChangeGrade,
     gradeItems,
     gradeType
@@ -38,13 +38,13 @@ const AssessmentGradeModal = (
 
   const onSetGrade = grade => {
     const id = gradeMenuAnchorEl?.attributes?.id?.value;
-    if (id === "allStudents") {
+    if (id === "allGrades") {
       onChangeAllGrades(grade);
       handleGradeMenuClose();
       return;
     }
-    const student = studentsForRender[id?.replace("stud", "")];
-    onChangeGrade(grade, student);
+    const gradedItem = gradedItems[id?.replace("grade", "")];
+    onChangeGrade(grade, gradedItem);
     handleGradeMenuClose();
   };
 
@@ -118,4 +118,4 @@ const AssessmentGradeModal = (
   );
 };
 
-export default AssessmentGradeModal;
+export default GradeModal;

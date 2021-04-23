@@ -28,7 +28,7 @@ import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import styles from "./styles";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 import CourseClassAssessmentStudent from "./CourseClassAssessmentStudent";
-import AssessmentGradeModal from "./AssessmentGradeModal";
+import GradeModal from "./GradeModal";
 
 interface Props {
   form: string;
@@ -383,10 +383,10 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
       <Grid item={true} xs={12} container className="pb-3">
         <Grid item xs={twoColumn ? 8 : 12} container>
           <Grid item xs={twoColumn ? 6 : 12}>
-            <AssessmentGradeModal
+            <GradeModal
               gradeMenuAnchorEl={gradeMenuAnchorEl}
               handleGradeMenuClose={handleGradeMenuClose}
-              studentsForRender={studentsForRender}
+              gradedItems={studentsForRender}
               onChangeGrade={onChangeGrade}
               onChangeAllGrades={onChangeAllGrades}
               gradeItems={gradeItems}
@@ -503,7 +503,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                   size="small"
                   className={classes.hiddenTitleIcon}
                   onClick={handleGradeMenuOpen}
-                  id="allStudents"
+                  id="allGrades"
                   style={gradeType?.entryType === "number" ? { bottom: "unset" } : undefined}
                 >
                   {gradeType?.entryType === "choice list"
