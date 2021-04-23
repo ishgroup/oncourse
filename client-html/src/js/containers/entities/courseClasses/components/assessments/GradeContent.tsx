@@ -44,7 +44,7 @@ const GradeContent = (
               onChange: e => setGradeVal(e.target.value),
               onFocus: stubFunction,
               onBlur: () => onChangeGrade(gradeVal, elem),
-              value: gradeVal
+              value: gradeVal || ""
             }}
             formatting="inline"
             hideArrows
@@ -52,15 +52,15 @@ const GradeContent = (
           {Boolean(currentGrade?.name) && `  ( ${currentGrade.name} )`}
         </span>
       )}
-      {gradeType?.entryType === "choice list" && (
-        <IconButton
-          size="small"
-          className={classes.hiddenIcon}
-          onClick={handleGradeMenuOpen}
-          id={`grade${index}`}
-        >
-          <ExpandMore color="disabled" fontSize="small" />
-        </IconButton>
+    {gradeType?.entryType === "choice list" && (
+    <IconButton
+      size="small"
+      className={classes.hiddenIcon}
+      onClick={handleGradeMenuOpen}
+      id={`grade${index}`}
+    >
+      <ExpandMore color="disabled" fontSize="small" />
+    </IconButton>
         )}
   </div>
 );
