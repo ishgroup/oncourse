@@ -21,7 +21,7 @@ import { arrayInsert, arrayRemove, change } from "redux-form";
 import AssessmentSubmissionIconButton from "../../courseClasses/components/assessments/AssessmentSubmissionIconButton";
 import { III_DD_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import styles from "../../courseClasses/components/assessments/styles";
-import AssessmentSubmissionModal from "../../courseClasses/components/assessments/AssessmentSubmissionModal";
+import SubmissionModal from "../../courseClasses/components/assessments/SubmissionModal";
 import { getArrayFieldMeta } from "../../../../common/utils/common";
 import EntityService from "../../../../common/services/EntityService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -157,17 +157,15 @@ const EnrolmentSubmissions: React.FC<Props> = props => {
 
   return values.assessments && values.assessments.length ? (
     <Grid item={true} xs={12} container>
-      <AssessmentSubmissionModal
-        name={`submissions[${modalProps[1]}]`}
+      <SubmissionModal
         modalProps={modalProps}
         tutors={tutors}
         title={title}
-        onClose={onPickerClose}
-        triggerAsyncChange={triggerAsyncChange}
-        allSubmissionsDate={allSubmissionsDate}
-        setAllSubmissionsDate={setAllSubmissionsDate}
+        onSave={onPickerClose}
+        onClose={() => setModalOpenedBy(null)}
+        selectDefault={null}
+        dateDefault={null}
       />
-
       <div className="heading">Assessments Submissions</div>
       <Grid container item={true} xs={12} className={classes.tableHeader}>
         <Grid item xs={4} />

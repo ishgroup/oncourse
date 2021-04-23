@@ -6,31 +6,43 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
-import { Grid } from "@material-ui/core";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Grid,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogTitle
+} from "@material-ui/core";
 import { stubFunction } from "../../../../../common/utils/common";
 import EditInPlaceDateTimeField from "../../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
+import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
 
-const AssessmentSubmissionModal = (
+const SubmissionModal = (
   {
     modalProps,
-    name,
     tutors,
     onClose,
-    triggerAsyncChange,
+    onSave,
     title,
-    allSubmissionsDate,
-    setAllSubmissionsDate,
+    selectDefault,
+    dateDefault
   }
 ) => {
   const type = modalProps[0];
   const opened = Boolean(modalProps.length);
+
+  const [dateVal, setDateVal] = useState<string>(null);
+  const [selectVal, setSelectVal] = useState<string>(null);
+
+  useEffect(() => {
+    setSelectVal(selectDefault);
+  }, [selectDefault]);
+
+  useEffect(() => {
+    setDateVal(dateDefault);
+  }, [dateDefault]);
 
   return (
     <Dialog
@@ -49,40 +61,35 @@ const AssessmentSubmissionModal = (
         {opened && (
         <Grid container>
           <Grid item xs={6}>
-            {modalProps[2] === "all" ? (
-              <EditInPlaceDateTimeField
-                type="date"
-                label={`${type} date`}
-                input={{
-                  onChange: setAllSubmissionsDate,
-                  onFocus: stubFunction,
-                  onBlur: stubFunction,
-                  value: allSubmissionsDate
-                }}
-                meta={{}}
-              />
-            ) : (
-              <FormField
-                type="date"
-                name={`${name}.${type === "Marked" ? "markedOn" : "submittedOn"}`}
-                label={`${type} date`}
-                onChange={triggerAsyncChange}
-              />
-            )}
-
+            <EditInPlaceDateTimeField
+              type="date"
+              label={`${type} date`}
+              input={{
+                onChange: setDateVal,
+                onFocus: stubFunction,
+                onBlur: stubFunction,
+                value: dateVal
+              }}
+              meta={{}}
+            />
           </Grid>
           <Grid item xs={6}>
             {type === "Marked" && modalProps[2] !== "all" && (
               (
-                <FormField
-                  type="select"
+                <EditInPlaceField
+                  label="Assessor"
                   selectValueMark="contactId"
                   selectLabelMark="tutorName"
-                  name={`${name}.markedById`}
-                  label="Assessor"
+                  input={{
+                    onChange: setSelectVal,
+                    onFocus: stubFunction,
+                    onBlur: stubFunction,
+                    value: selectVal
+                  }}
+                  meta={{}}
                   items={tutors}
-                  onChange={triggerAsyncChange}
                   allowEmpty
+                  select
                 />
               )
             )}
@@ -92,15 +99,22 @@ const AssessmentSubmissionModal = (
       </DialogContent>
 
       <DialogActions>
-        <MuiButton
+        <Button
           color="primary"
           onClick={onClose}
         >
           Close
-        </MuiButton>
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => onSave(dateVal, selectVal)}
+        >
+          Save
+        </Button>
       </DialogActions>
     </Dialog>
 );
 };
 
-export default AssessmentSubmissionModal;
+export default SubmissionModal;

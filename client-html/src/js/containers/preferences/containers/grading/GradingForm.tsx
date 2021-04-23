@@ -77,6 +77,8 @@ const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispa
   const onClickDelete = index => {
     const field = values.types[index];
 
+    console.log(index, values.types);
+
     if (field.id) {
       return dispatch(showConfirm(
         () => {
@@ -141,6 +143,7 @@ const GradingForm: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispa
           component={GradingsRenderer}
           onDelete={onClickDelete}
           dispatch={dispatch}
+          rerenderOnEveryChange
         />
       </Grid>
     </Form>
@@ -163,7 +166,7 @@ const validate = (values: GradingFormData) => {
       };
     }
     if ((t.entryType === "number" && (t.gradingItems.length > 0 && t.gradingItems.length < 2))
-      || (t.entryType === "name" && t.gradingItems.length < 2)) {
+      || (t.entryType === "choice list" && t.gradingItems.length < 2)) {
       if (!Array.isArray(errors.types)) {
         errors.types = [];
       }
