@@ -11,6 +11,9 @@
 
 package ish.oncourse.server.messaging
 
+import java.nio.file.Files
+import java.nio.file.Path
+
 
 class DocumentParam {
 
@@ -20,12 +23,8 @@ class DocumentParam {
 
     private DocumentParam() { }
 
-    static DocumentParam valueOf(Object content) {
-        valueOf(null, null, content)
-    }
-
     static DocumentParam valueOf(String fileName, Object content) {
-        valueOf(fileName, null, content)
+        valueOf(fileName, Files.probeContentType(Path.of(fileName)), content)
     }
 
     static DocumentParam valueOf(String fileName, String type, Object content) {
