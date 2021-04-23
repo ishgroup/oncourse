@@ -16,12 +16,28 @@ import { WrappedFieldArrayProps } from "redux-form";
 import { GradingItem, GradingType } from "@api/model";
 import { useHoverShowStyles } from "../../../../../common/styles/hooks";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
+import { GradingFormData } from "../GradingForm";
+import { getFieldArrayFieldMeta } from "../../../../../common/utils/validation";
 
 interface Props {
   classes: any;
   parent: GradingType;
   index: number;
 }
+
+const validateMinMax = (val: number, all: GradingFormData, props, name: string) => {
+  const { index } = getFieldArrayFieldMeta(name);
+  const parent = all.types[index];
+  let error: string;
+
+  if (val < parent.minValue) {
+    error = `Min value is ${parent.minValue}`;
+  }
+  if (val > parent.maxValue) {
+    error = `Max value is ${parent.maxValue}`;
+  }
+  return error;
+};
 
 const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props> = props => {
   const {
@@ -47,16 +63,16 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
 
   const label = useMemo(() => {
     switch (parent.entryType) {
-      case "name":
+      case "choice list":
         return "Choice list";
       case "number":
-        return "Display grade";
+        return "Display grade (optional)";
     }
   }, [parent.entryType]);
 
   const offsetLabel = useMemo(() => {
     switch (parent.entryType) {
-      case "name":
+      case "choice list":
         return "equivalent score";
       case "number":
         return "above";
@@ -99,10 +115,11 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
                       type="number"
                       name={`${f}.lowerBound`}
                       formatting="inline"
+                      validate={validateMinMax}
                       hideArrows
                       required
                     />
-                    {parent.entryType === "name" && "%"}
+                    {parent.entryType === "choice list" && "%"}
                     {" ) "}
                     <IconButton
                       onClick={() => fields.remove(index)}
