@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import DateRange from "@material-ui/icons/DateRange";
 import Grid from "@material-ui/core/Grid";
@@ -48,6 +48,10 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
   const submission = submissionIndex !== -1 && values.submissions[submissionIndex];
   const submitStatus = submission && submission.submittedOn ? "Submitted" : "Not submitted";
   const markedStatus = submission && submission.markedOn ? "Submitted" : "Not submitted";
+
+  useEffect(() => {
+    setGradeVal(submission?.grade);
+  }, [submission?.grade]);
 
   const submittedContent = (
     <div className="d-flex relative">
