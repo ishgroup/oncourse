@@ -20,6 +20,11 @@ const request: EpicUtils.Request<any, { id: number; enrolment: Enrolment & { not
   type: UPDATE_ENROLMENT_ITEM,
   getData: ({ id, enrolment }) => {
     delete enrolment.notes;
+
+    enrolment.assessments.forEach((a: any) => {
+      delete a.tutors;
+    });
+
     processCustomFields(enrolment);
     return EnrolmentService.updateEnrolment(id, enrolment);
   },
