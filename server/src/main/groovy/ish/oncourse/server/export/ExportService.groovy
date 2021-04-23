@@ -148,6 +148,6 @@ class ExportService {
         build.call()
 
 		String result = performExport(exportSpec.templateKeyCode, exportSpec.entityRecords).toString()
-        return DocumentParam.valueOf(result)
+        return DocumentParam.valueOf(exportSpec.getFileName(), result)
 	}
 }
