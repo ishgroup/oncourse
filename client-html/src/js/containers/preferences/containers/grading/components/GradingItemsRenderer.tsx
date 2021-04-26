@@ -16,8 +16,8 @@ import { WrappedFieldArrayProps } from "redux-form";
 import { GradingItem, GradingType } from "@api/model";
 import { useHoverShowStyles } from "../../../../../common/styles/hooks";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
-import { GradingFormData } from "../GradingForm";
 import { getFieldArrayFieldMeta } from "../../../../../common/utils/validation";
+import { GradingFormData } from "./GradingTypesForm";
 
 interface Props {
   classes: any;
@@ -100,7 +100,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
           <ul className="m-0 pl-3">
             {
               fields.map((f, index) => (
-                <li className={hoverClasses.container}>
+                <li key={index} className={hoverClasses.container}>
                   <Typography variant="body2" color="inherit" className="centeredFlex" noWrap>
                     <FormField
                       type="text"
@@ -129,7 +129,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
                     </IconButton>
                   </Typography>
                 </li>
-                ))
+              ))
             }
           </ul>
         </div>

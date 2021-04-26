@@ -65,7 +65,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
       {fields.map((item, index) => {
         const field: GradingType = fields.get(index);
         return (
-          <Card className="card" key={`${field.id}${index}`}>
+          <Card className="card" key={`${field.id}${index}`} id={`grading-type-${index}`}>
             <Grid container>
               <Grid item xs={6}>
                 <Grid container>
