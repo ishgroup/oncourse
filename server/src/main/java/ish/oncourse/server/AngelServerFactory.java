@@ -267,14 +267,16 @@ public class AngelServerFactory {
             }
             SystemUser user = UserDao.getByEmail(context, email);
             if (user != null) {
-                LOGGER.warn("System user {} already added.", line);
-                return;
+                user.setPassword(null);
+                user.setPasswordLastChanged(null);
+                user.setLoginAttemptNumber(0);
+            } else {
+                user = UserDao.createSystemUser(context, Boolean.TRUE);
+                user.setEmail(email);
             }
 
-            user = UserDao.createSystemUser(context, Boolean.TRUE);
             user.setFirstName(lineData[0]);
             user.setLastName(lineData[1]);
-            user.setEmail(email);
 
             try {
                 String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey, host, port);
@@ -287,11 +289,11 @@ public class AngelServerFactory {
 
             context.commitChanges();
 
-            LOGGER.warn("System user {} have been added successfully.", line);
+            LOGGER.warn("System user {} has been added successfully.", line);
         });
 
         if (systemUsersFile.toFile().delete()) {
-            LOGGER.warn("File with system users have deleted successfully!");
+            LOGGER.warn("The file with system users has been deleted successfully!");
         }
     }
 
