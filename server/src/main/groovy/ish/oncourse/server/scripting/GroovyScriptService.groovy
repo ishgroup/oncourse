@@ -168,10 +168,13 @@ class GroovyScriptService {
 
         // create single thread executor with FIFO task queue
         this.executorService = Executors.newSingleThreadExecutor()
+    }
+
+    void registerThreadInCayenneRuntime() {
         // since executor has just single thread in his pool - it is enough to register this thread to cayenne runtime
         // need to prevent java.lang.IllegalStateException: Transaction must have 'STATUS_ACTIVE' to add a connection. Current status: STATUS_COMMITTED
         // see http://cayenne.195.n3.nabble.com/Transaction-exception-in-concurrent-environment-td4029107.html
-        this.executorService.execute { ObjectSelect.query(SystemUser).selectFirst(cayenneService.newContext) }
+        executorService.execute { ObjectSelect.query(SystemUser).selectFirst(cayenneService.newContext) }
     }
 
     /**
@@ -230,6 +233,7 @@ class GroovyScriptService {
     }
 
     void initTriggers() {
+        registerThreadInCayenneRuntime()
         loadEntityTriggers()
         scheduleCronScripts()
 
