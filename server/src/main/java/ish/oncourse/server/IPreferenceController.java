@@ -8,7 +8,25 @@
 
 package ish.oncourse.server;
 
+import ish.math.Country;
+
 public interface IPreferenceController {
 
     String getOncourseServerDefaultTimezone();
+
+    String getEmailFromAddress();
+
+    String getEmailFromName();
+
+    boolean getReplicationEnabled();
+
+    Long getDefaultAccountId(String preferenceName);
+
+    void setDefaultAccountId(String preferenceName, Long value);
+
+    Object getValueForKey(String key);
+
+    void setValueForKey(String key, Object value);
+
+    boolean hasSurveyForm();
 }

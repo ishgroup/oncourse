@@ -12,7 +12,7 @@
 package ish.oncourse.server.scripting.api
 
 import groovy.transform.CompileDynamic
-import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.IPreferenceController
 /**
  * Preference API helper allowing to express preference query in groovy as a chain of method calls.
  *
@@ -25,7 +25,7 @@ import ish.oncourse.server.PreferenceController
 @CompileDynamic
 class PreferenceHelper {
 
-	PreferenceController preferenceController
+	IPreferenceController preferenceController
 
 	Closure<Object> handleProperty = { String property ->
 		def prefKey = delegate.getMetaKey() ? "${delegate.getMetaKey()}.${property}" : property
@@ -44,7 +44,7 @@ class PreferenceHelper {
 		return result
 	}
 
-	PreferenceHelper(PreferenceController preferenceController) {
+	PreferenceHelper(IPreferenceController preferenceController) {
 		this.preferenceController = preferenceController
 	}
 

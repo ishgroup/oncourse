@@ -24,7 +24,6 @@ import static ish.common.types.TriggerType.ONCOURSE_EVENT
 import static ish.common.types.TriggerType.ON_DEMAND
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.document.DocumentService
