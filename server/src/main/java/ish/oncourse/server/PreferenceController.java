@@ -37,7 +37,7 @@ import static ish.oncourse.DefaultAccount.defaultAccountPreferences;
 import static ish.persistence.Preferences.*;
 
 @Singleton
-public class PreferenceController extends CommonPreferenceController {
+public class PreferenceController extends CommonPreferenceController implements IPreferenceController {
 
 	public static final Integer DEFAULT_TIMEOUT_SEC = 3600;
 	public static final Long DEFAULT_TIMEOUT_MS = DEFAULT_TIMEOUT_SEC * 1000L;
