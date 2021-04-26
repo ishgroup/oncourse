@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DataTypes = Object.keys(DataType).filter(k => !["Record", "List", "Map", "Long text", "URL", "Email"].includes(k));
+const DataTypes = Object.keys(DataType).filter(k => !["Record", "Pattern text", "List", "Map", "Long text", "URL", "Email"].includes(k));
 
 interface BindingEditPopupProps extends InjectedFormProps {
   popupAnchorEl: any;

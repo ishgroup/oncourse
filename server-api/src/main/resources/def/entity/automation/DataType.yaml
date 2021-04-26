@@ -2,6 +2,7 @@ type: string
 enum:
   - Text
   - Long text
+  - Pattern text
   - List
   - Map
   - Date
