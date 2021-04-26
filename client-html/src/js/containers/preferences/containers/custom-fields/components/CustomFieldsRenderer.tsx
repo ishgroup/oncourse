@@ -18,7 +18,7 @@ import EditInPlaceField from "../../../../../common/components/form/form-fields/
 import EditInPlaceMoneyField from "../../../../../common/components/form/form-fields/EditInPlaceMoneyField";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import {
- validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray
+  validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray, validatePattern
 } from "../../../../../common/utils/validation";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import ListMapRenderer from "./ListMapRenderer";
@@ -152,22 +152,6 @@ const validateResolver = (value, allValues, props, name) => {
   }
 
   return undefined;
-};
-
-const validatePattern = pattern => {
-  const parts = pattern.split('/');
-  let regex = pattern;
-  let options = "";
-  if (parts.length > 1) {
-    regex = parts[1];
-    options = parts[2];
-  }
-  try {
-    RegExp(regex, options);
-    return undefined;
-  } catch (e) {
-    return "Please enter valid regex pattern";
-  }
 };
 
 const renderCustomFields = props => {
