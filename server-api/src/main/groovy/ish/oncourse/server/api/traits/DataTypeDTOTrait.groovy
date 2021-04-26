@@ -46,6 +46,8 @@ trait DataTypeDTOTrait {
                 return DataType.MESSAGE_TEMPLATE
             case DataTypeDTO.OBJECT:
                 return DataType.OBJECT
+            case DataTypeDTO.PATTERN_TEXT:
+                return DataType.PATTERN_TEXT
             default:
                 throw new IllegalArgumentException("${toString()}")
         }
@@ -84,6 +86,8 @@ trait DataTypeDTOTrait {
                 return DataTypeDTO.MESSAGE_TEMPLATE
             case DataType.OBJECT:
                 return DataTypeDTO.OBJECT
+            case DataType.PATTERN_TEXT:
+                return DataTypeDTO.PATTERN_TEXT
             default:
                 throw new IllegalArgumentException("$dataType.displayName")
         }
