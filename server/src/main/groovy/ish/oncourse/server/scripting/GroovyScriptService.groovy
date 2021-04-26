@@ -16,6 +16,8 @@ import groovy.transform.CompileStatic
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
+import ish.oncourse.server.IPreferenceController
+
 import static ish.common.types.TriggerType.CRON
 import static ish.common.types.TriggerType.ENTITY_EVENT
 import static ish.common.types.TriggerType.ONCOURSE_EVENT
@@ -137,7 +139,7 @@ class GroovyScriptService {
 
     private ICayenneService cayenneService
     private ISchedulerService schedulerService
-    private PreferenceController preferenceController
+    private IPreferenceController preferenceController
     private AuditService auditService
     private SystemUserService systemUserService
     private TemplateService templateService
@@ -154,7 +156,7 @@ class GroovyScriptService {
 
     @Inject
     GroovyScriptService(ICayenneService cayenneService, ISchedulerService schedulerService,
-                        PreferenceController preferenceController, Injector injector, SystemUserService systemUserService, TemplateService templateService) {
+                        IPreferenceController preferenceController, Injector injector, SystemUserService systemUserService, TemplateService templateService) {
         GroovySystem.getMetaClassRegistry().getMetaClassCreationHandler().setDisableCustomMetaClassLookup(true)
         this.injector = injector
         auditService = injector.getInstance(AuditService.class)

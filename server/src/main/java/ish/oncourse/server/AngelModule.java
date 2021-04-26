@@ -158,7 +158,7 @@ public class AngelModule extends ConfigModule {
         binder.bind(ISessionManager.class).to(SessionManager.class).in(Scopes.SINGLETON);
         binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);
         binder.bind(ICayenneService.class).to(CayenneService.class).in(Scopes.SINGLETON);
-        binder.bind(PreferenceController.class).in(Scopes.SINGLETON);
+        binder.bind(IPreferenceController.class).to(PreferenceController.class).in(Scopes.SINGLETON);
         binder.bind(UserPreferenceService.class).in(Scopes.SINGLETON);
         binder.bind(String.class).annotatedWith(Names.named(ANGEL_VERSION)).toInstance(getVersion());
         binder.bind(EmailService.class).in(Scopes.SINGLETON);
