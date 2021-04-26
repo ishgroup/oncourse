@@ -21,7 +21,8 @@ import {
   EmailTemplate,
   ImportModel,
   EntityRelationType,
-  Language
+  Language,
+  GradingType
 } from "@api/model";
 import { mockPreferences } from "./data/preferences";
 import { mockIntegrations } from "./data/integrations";
@@ -92,6 +93,7 @@ import { mockPriorLearnings } from "./data/entities/priorLearnings";
 import { mockTutorRoles } from "./data/preference/tutorRoles";
 import { mockFundingContracts } from "./data/preference/fundingContracts";
 import { mockCheckout } from "./data/checkout";
+import { mockGradingTypes } from "./data/preference/grading";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -236,6 +238,8 @@ export class MockDB {
 
   checkout: any;
 
+  gradingTypes: GradingType[];
+
   constructor() {
     this.init();
   }
@@ -260,6 +264,7 @@ export class MockDB {
     this.languages = mockLanguages.call(this);
     this.tutorRoles = mockTutorRoles.call(this);
     this.fundingContracts = mockFundingContracts.call(this);
+    this.gradingTypes = mockGradingTypes.call(this);
 
     //  Automation
     this.scripts = mockScripts.call(this);
