@@ -56,7 +56,7 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
      * @param id the session id to check
      * @return true if the session exists in the persistent store, false otherwise
      */
-    @Override
+//    @Override
     boolean doExists(String id) throws Exception {
         return ObjectSelect.query(SystemUser)
                 .where(SystemUser.SESSION_ID.eq(id))
@@ -133,19 +133,17 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
     }
 
     /**
-     * Implemented by subclasses to resolve which sessions in this context
-     * that are being managed by this node that should be expired.
+     * Get all expired sessions from the session ids provided
      *
-     * @param candidates the ids of sessions the SessionCache thinks has expired
-     * @param time the time at which to check for expiry
-     * @return the reconciled set of session ids that have been checked in the store
+     * @param candidates collection of session ids to check
+     * @return
      */
     @Override
-    Set<String> doCheckExpired(Set<String> candidates, long time) {
+    Set<String> doGetExpired(Set<String> candidates) {
         return ObjectSelect
                 .columnQuery(SystemUser, SystemUser.SESSION_ID)
                 .where(SystemUser.SESSION_ID.in(candidates))
-                .and(SystemUser.LAST_ACCESS.lt(preferenceController.getTimeoutThreshold(time)))
+                .and(SystemUser.LAST_ACCESS.lt(preferenceController.timeoutThreshold))
                 .select(context).toSet()
     }
 
@@ -161,7 +159,7 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
      * @return the empty set if there are no sessions expired as at the time, or
      *         otherwise a set of session ids.
      */
-    @Override
+//    @Override
     Set<String> doGetExpired(long before) {
         return ObjectSelect
                 .columnQuery(SystemUser, SystemUser.SESSION_ID)
@@ -182,7 +180,7 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
      *
      * @param time the upper limit of the expiry time to check in msec
      */
-    @Override
+//    @Override
     void doCleanOrphans(long time) {
         // nothing to do here
     }
