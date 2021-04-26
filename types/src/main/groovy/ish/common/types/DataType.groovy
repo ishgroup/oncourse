@@ -130,10 +130,18 @@ public enum DataType implements DisplayableExtendedEnumeration<Integer> {
     /**
      * Extra bindings
      *
-     * Database value: 12
+     * Database value: 13
      */
     @API
-    OBJECT(13, "Object");
+    OBJECT(13, "Object"),
+
+    /**
+     * Pattern text
+     *
+     * Database value: 14
+     */
+    @API
+    PATTERN_TEXT(14, "Pattern text");
 
 
 

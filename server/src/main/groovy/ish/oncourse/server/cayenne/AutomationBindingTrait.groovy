@@ -50,6 +50,7 @@ trait AutomationBindingTrait {
                     return valueString.getBytes()
                 case OBJECT:
                 case MESSAGE_TEMPLATE:
+                case PATTERN_TEXT:
                 case TEXT:
                     return valueString
                 case DATE:
