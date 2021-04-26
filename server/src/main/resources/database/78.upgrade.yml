@@ -234,3 +234,19 @@ databaseChangeLog:
               - column:
                   name: grade
                   type: DECIMAL(6, 2)
+  - changeSet:
+      id: 78-8
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: CustomFieldType
+              columnName: pattern
+      changes:
+        - addColumn:
+            tableName: CustomFieldType
+            columns:
+              - column:
+                  name: pattern
+                  type: VARCHAR(128)
