@@ -106,7 +106,7 @@ export const ParseScriptBody = async (scriptItem: Script) => {
       if (c.trim()) {
         checkDuplicateScriptParts(components, getScriptComponent(c));
       }
-      if (splitMarkesrs[index]) {
+      if (splitMarkesrs && splitMarkesrs[index]) {
         const [,type, cIndex] = splitMarkesrs[index].split("-");
         checkDuplicateScriptParts(components, await getClosureComponent(closures[type][cIndex], type as ScriptComponentType));
       }
