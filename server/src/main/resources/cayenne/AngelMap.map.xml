@@ -476,6 +476,7 @@
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="dataType" type="INTEGER"/>
 		<db-attribute name="defaultValue" type="CLOB" length="32000"/>
+		<db-attribute name="pattern" type="VARCHAR" length="128"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="fieldKey" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -2060,6 +2061,7 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="dataType" type="ish.common.types.DataType" db-attribute-path="dataType"/>
 		<obj-attribute name="defaultValue" type="java.lang.String" db-attribute-path="defaultValue"/>
+		<obj-attribute name="pattern" type="java.lang.String" db-attribute-path="pattern"/>
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isMandatory" type="java.lang.Boolean" db-attribute-path="isMandatory"/>
