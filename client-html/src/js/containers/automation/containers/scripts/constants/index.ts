@@ -40,7 +40,7 @@ const getBodyEntries = body => body.match(closureBodyRegexp)[0]?.match(/(\w+\s?[
 export const getQueryTemplate = (entity: string, query: string, queryClosureReturnValue: string) =>
   `\n${queryClosureReturnValue} = query {
     entity "${entity || ""}"
-    query "${query?.replace(/"/g, '\\"') || ""}"
+    query "${query?.replace(new RegExp("\"","g"), '\\"') || ""}"
   }\n\n`;
 
 export const getQueryComponent = (body: string): ScriptComponent => {
