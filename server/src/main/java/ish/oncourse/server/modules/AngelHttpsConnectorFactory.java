@@ -56,7 +56,7 @@ public class AngelHttpsConnectorFactory extends ConnectorFactory {
     }
 
 
-    SslContextFactory.Server createSslContextFactory()  {
+    SslContextFactory createSslContextFactory()  {
         KeyStore keyStore;
         try {
             //read or create (first run) server key store
@@ -67,7 +67,7 @@ public class AngelHttpsConnectorFactory extends ConnectorFactory {
         }
 
         // SSL Context Factory for HTTPS and HTTP/2
-        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+        SslContextFactory sslContextFactory = new SslContextFactory.Server();
         sslContextFactory.setKeyStore(keyStore);
         sslContextFactory.setKeyStorePassword(KeystoreGenerator.KEYSTORE_PASSWORD);
         sslContextFactory.setSslSessionTimeout(MAX_IDLE_TIME);
