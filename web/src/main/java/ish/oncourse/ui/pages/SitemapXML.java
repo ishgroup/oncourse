@@ -1,6 +1,7 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.*;
+import ish.oncourse.model.auto._Site;
 import ish.oncourse.services.course.GetCourses;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Meta("tapestry.response-content-type=text/xml")
 public class SitemapXML extends ISHCommon {
@@ -97,7 +99,8 @@ public class SitemapXML extends ISHCommon {
 			courses = new GetCourses(cayenneService.sharedContext(), webSiteService.getCurrentCollege())
 					.get();
 
-		sites = webSiteService.getCurrentCollege().getSites();
+		sites = webSiteService.getCurrentCollege().getSites()
+				.stream().filter(Site::isWebVisible).collect(Collectors.toList());
 		tutors = GetNotFinishedTutors.valueOf(cayenneService.sharedContext(),
 				null,
 				webSiteService.getCurrentCollege()).get();

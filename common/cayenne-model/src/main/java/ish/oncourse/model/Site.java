@@ -18,4 +18,8 @@ public class Site extends _Site implements Queueable {
 	public boolean isAsyncReplicationAllowed() {
 		return true;
 	}
+
+	public boolean isWebVisible() {
+		return super.isWebVisible;
+	}
 }
