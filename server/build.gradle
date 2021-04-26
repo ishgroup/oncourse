@@ -72,6 +72,8 @@ dependencies {
 	implementation "org.eclipse.jetty:jetty-alpn-java-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-jmx:$jettyVersion"
 
+	implementation "com.nulab-inc:zxcvbn:1.4.1"
+
 	implementation ("org.apache.maven:maven-artifact:3.3.9")
 	api ("org.liquibase:liquibase-core:4.1.0") {
 		exclude group: "ch.qos.logback"
