@@ -9,6 +9,10 @@ properties:
     example: Agent Commission
   dataType:
     $ref: './automation/DataType.yaml'
+  pattern:
+    type: string
+    description: Regex pattern that field value should match ( for Pattern text type )
+    example: 9[0-9a-z]{15}
   defaultValue:
     type: string
     description: Default value for custom field type

@@ -19,6 +19,7 @@ import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.dao.UserDao;
 import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.db.SchemaUpdateService;
+import ish.oncourse.server.http.HttpFactory;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
@@ -114,7 +115,7 @@ public class AngelServerFactory {
                       CayenneService cayenneService,
                       PluginService pluginService,
                       MailDeliveryService mailDeliveryService,
-                      Server server) {
+                      HttpFactory httpFactory) {
         try {
 
             // Create DB schema
@@ -123,8 +124,7 @@ public class AngelServerFactory {
 
             LOGGER.warn("Upgrade data");
             schemaUpdateService.upgradeData();
-            ServerConnector connector = (ServerConnector)server.getConnectors()[0];
-            createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(),connector.getHost(), connector.getPort(), prefController, mailDeliveryService);
+            createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(), httpFactory.getIp(), httpFactory.getPort(), prefController, mailDeliveryService);
 
         } catch (Throwable e) {
             LOGGER.catching(e);
@@ -145,13 +145,6 @@ public class AngelServerFactory {
             // email hander (every minute)
             schedulerService.scheduleCronJob(EmailDequeueJob.class, EMAIL_DEQUEUEING_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
                     EMAIL_DEQUEUEING_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
-
-            // scheduling backup job only for derby
-            if (Preferences.DATABASE_USED_DERBY.equals(prefController.getDatabaseUsed())) {
-                // backup service (every hour)
-                schedulerService.scheduleCronJob(BackupJob.class, BACKUP_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
-                        BACKUP_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
-            }
 
             // job responsible for GL transfers for delayed income feature
             schedulerService.scheduleCronJob(DelayedEnrolmentIncomePostingJob.class,
@@ -248,7 +241,7 @@ public class AngelServerFactory {
         LOGGER.warn("Server ready");
     }
 
-    private void createSystemUsers(DataContext context, String collegeKey, String host, int port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
+    private void createSystemUsers(DataContext context, String collegeKey, String host, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
         Path systemUsersFile = Paths.get(CSV_SYSTEM_USERS_FILE);
         if (!systemUsersFile.toFile().exists()) {
             systemUsersFile = Paths.get(TXT_SYSTEM_USERS_FILE);
@@ -274,14 +267,16 @@ public class AngelServerFactory {
             }
             SystemUser user = UserDao.getByEmail(context, email);
             if (user != null) {
-                LOGGER.warn("System user {} already added.", line);
-                return;
+                user.setPassword(null);
+                user.setPasswordLastChanged(null);
+                user.setLoginAttemptNumber(0);
+            } else {
+                user = UserDao.createSystemUser(context, Boolean.TRUE);
+                user.setEmail(email);
             }
 
-            user = UserDao.createSystemUser(context, Boolean.TRUE);
             user.setFirstName(lineData[0]);
             user.setLastName(lineData[1]);
-            user.setEmail(email);
 
             try {
                 String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey, host, port);
@@ -294,11 +289,11 @@ public class AngelServerFactory {
 
             context.commitChanges();
 
-            LOGGER.warn("System user {} have been added successfully.", line);
+            LOGGER.warn("System user {} has been added successfully.", line);
         });
 
         if (systemUsersFile.toFile().delete()) {
-            LOGGER.warn("File with system users have deleted successfully!");
+            LOGGER.warn("The file with system users has been deleted successfully!");
         }
     }
 

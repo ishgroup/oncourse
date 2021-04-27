@@ -90,6 +90,8 @@ import { mockLanguages } from "./data/languages";
 import { mockDocuments } from "./data/entities/documents";
 import { mockPriorLearnings } from "./data/entities/priorLearnings";
 import { mockTutorRoles } from "./data/preference/tutorRoles";
+import { mockFundingContracts } from "./data/preference/fundingContracts";
+import { mockCheckout } from "./data/checkout";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -230,6 +232,10 @@ export class MockDB {
 
   tutorRoles: any;
 
+  fundingContracts: any;
+
+  checkout: any;
+
   constructor() {
     this.init();
   }
@@ -253,6 +259,7 @@ export class MockDB {
     this.notes = mockNotes.call(this);
     this.languages = mockLanguages.call(this);
     this.tutorRoles = mockTutorRoles.call(this);
+    this.fundingContracts = mockFundingContracts.call(this);
 
     //  Automation
     this.scripts = mockScripts.call(this);
@@ -329,6 +336,9 @@ export class MockDB {
 
     // Timetable
     this.timetable = mockTimetable.call(this);
+
+    // Checkout
+    this.checkout = mockCheckout.call(this);
   }
 
   getList(entity: string) {

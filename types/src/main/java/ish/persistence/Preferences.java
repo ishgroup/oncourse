@@ -251,7 +251,6 @@ public interface Preferences {
 	String LOGOUT_TIMEOUT = "logout.timeout";
 
 	String DATABASE_USED = "database.used";
-	String DATABASE_USED_DERBY = "database.derby";
 	String DATABASE_USED_MYSQL = "database.mysql";
 	String DATABASE_USED_MSSQL = "database.mssql";
 	String DATABASE_USED_POSTGRE = "database.postgre";

@@ -18,12 +18,12 @@ import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import { concessionTypesStyles } from "../../concession-types/components/styles";
 import EntityRelationTypesRenderer from "./EntityRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
+import { cardsFormStyles } from "../../../styles/formCommonStyles";
 
 const manualLink = getManualLink("generalPrefs_sellableItemsRelationTypes");
 
@@ -242,6 +242,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const EntityRelationTypesForm = reduxForm({
   onSubmitFail,
   form: "EntityRelationTypesForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(concessionTypesStyles)(withRouter(EntityRelationTypesBaseForm) as any)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(cardsFormStyles)(withRouter(EntityRelationTypesBaseForm) as any)));
 
 export default EntityRelationTypesForm;

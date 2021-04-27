@@ -6,7 +6,7 @@
 import React, { useCallback, useMemo } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { change } from "redux-form";
+import { change, FieldArray } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
@@ -14,11 +14,12 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {
+  AssessmentClass,
   ClassFundingSource,
   Enrolment,
   EnrolmentExemptionType,
   EnrolmentStudyReason,
-  FundingSource,
+  FundingSource, GradingType,
   PaymentSource,
   Tag
 } from "@api/model";
@@ -48,6 +49,7 @@ import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import EnrolmentSubmissions from "./EnrolmentSubmissions";
+import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 
 const validateCricosConfirmation = value => validateCharacter(value, 32, "Confirmation of Enrolment");
 
@@ -64,6 +66,7 @@ interface Props extends Partial<EditViewProps> {
   contracts?: FundingSource[];
   tags?: Tag[];
   setSelectedContact?: AnyArgFunction;
+  gradingTypes?: GradingType[];
 }
 
 const EnrolmentGeneralTab: React.FC<Props> = props => {
@@ -81,7 +84,8 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
     rootEntity,
     onCloseClick,
     invalid,
-    dirty
+    dirty,
+    gradingTypes
   } = props;
 
   const onContactChange = useCallback(
@@ -92,6 +96,24 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
     },
     [form]
   );
+
+  const validateAssesments = useCallback((value: AssessmentClass[], allValues: Enrolment) => {
+    let error;
+
+    if (Array.isArray(value) && value.length) {
+      value.forEach(a => {
+        const gradeType: GradingType = gradingTypes?.find(g => g.id === a.gradingTypeId);
+        const submission = allValues.submissions.find(s => s.assessmentId === a.id);
+
+        if (gradeType
+          && submission
+          && (submission.grade > gradeType.maxValue || submission.grade < gradeType.minValue)) {
+          error = "Some assessments grades are invalid";
+        }
+      });
+    }
+    return error;
+  }, [gradingTypes]);
 
   const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), []);
 
@@ -145,16 +167,10 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
             <Button onClick={onCloseClick} className="closeAppBarButton">
               Close
             </Button>
-            <Button
-              type="submit"
-              classes={{
-                root: "whiteAppBarButton",
-                disabled: "whiteAppBarButtonDisabled"
-              }}
-              disabled={invalid || (!isNew && !dirty)}
-            >
-              Save
-            </Button>
+            <FormSubmitButton
+              disabled={(!isNew && !dirty)}
+              invalid={invalid}
+            />
           </div>
         </CustomAppBar>
       )}
@@ -417,10 +433,13 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           </Grid>
         </Grid>
 
-        <EnrolmentSubmissions
-          values={values}
+        <FieldArray
+          name="assessments"
+          component={EnrolmentSubmissions}
+          values={values as any}
+          gradingTypes={gradingTypes}
           dispatch={dispatch}
-          form={form}
+          validate={validateAssesments}
         />
       </Grid>
     </>
@@ -429,7 +448,8 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Enrolment"],
-  contracts: state.export.contracts
+  contracts: state.export.contracts,
+  gradingTypes: state.preferences.gradingTypes
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

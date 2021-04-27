@@ -51,7 +51,8 @@ export function mockEnrolments() {
       vetTrainingContractID: null,
       documents: [],
       notes: [],
-      tags: [this.getTag(1)]
+      tags: [this.getTag(1)],
+      assessments: []
     };
   };
 

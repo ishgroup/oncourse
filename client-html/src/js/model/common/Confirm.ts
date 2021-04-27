@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AnyArgFunction } from "./CommonFunctions";
 import { ReactNode } from "react";
+import { AnyArgFunction } from "./CommonFunctions";
 
 export interface ConfirmState {
   open: boolean;
@@ -21,7 +21,7 @@ export interface ConfirmState {
 
 export type ShowConfirmCaller = (
   onConfirm: any,
-  confirmMessage?: string,
+  confirmMessage?: ReactNode,
   confirmButtonText?: string,
   onCancel?: any,
   title?: string,

@@ -10,7 +10,6 @@ package ish.oncourse.server.integration.s3
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials
-import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.services.s3.model.AccessControlList
@@ -18,12 +17,9 @@ import com.amazonaws.services.s3.model.GroupGrantee
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.Permission
 import com.amazonaws.services.s3.model.PutObjectRequest
-import com.amazonaws.services.s3.model.PutObjectResult
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
-import ish.oncourse.server.scripting.api.FileData
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
+import ish.oncourse.server.messaging.DocumentParam
 
 import java.nio.file.Files
 
@@ -51,27 +47,22 @@ class S3Integration implements PluginTrait {
         this.region = configuration.getIntegrationProperty(S3_REGION).value
     }
     
-    String stroe(Object blob, String name) {
+    String store(Object blob, String name) {
 
         AmazonS3 s3 = AmazonS3ClientBuilder
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(account, key)))
                 .withRegion(region)
                 .build()
-        
-        byte[] bytes
-        if (blob instanceof FileData) {
-            bytes = (blob as FileData).content
-            name = (blob as FileData).name
-        } else if (blob instanceof byte[]) {
-            bytes = blob as byte[]
+
+        DocumentParam documentParam
+        if (blob instanceof DocumentParam) {
+            documentParam = blob as DocumentParam
+            name = documentParam.fileName
         } else {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream()
-            ObjectOutputStream out = new ObjectOutputStream(bos)
-            out.writeObject(blob)
-            out.flush()
-            bytes = bos.toByteArray()
+            documentParam = DocumentParam.valueOf(name, blob)
         }
+        byte[] bytes = documentParam.contentInBytes
 
         InputStream is = new ByteArrayInputStream(bytes)
 

@@ -26,6 +26,7 @@ import { EpicCheckoutGetVoucherToRedeem } from "./summary/EpicCheckoutGetVoucher
 import { EpicGetVoucherRedeemer } from "./summary/EpicGetVoucherRedeemer";
 import { EpicCheckoutGetClassPaymentPlans } from "./item/EpicCheckoutGetClassPaymentPlans";
 import { EpicGetItemRelations } from "./item/EpicGetItemRelations";
+import { EpicGetPreviousCredit } from "./summary/EpicGetPreviousCredit";
 
 export const EpicCheckout = combineEpics(
   EpicGetItemRelations,
@@ -47,6 +48,7 @@ export const EpicCheckout = combineEpics(
   EpicCheckoutGetPaymentStatusDetails,
   EpicUpdateSummaryPrices,
   EpicGetPreviousOwing,
+  EpicGetPreviousCredit,
   EpicCheckoutGetVoucherToRedeem,
   EpicGetVoucherRedeemer,
   EpicTriggerFundingInvoiceCalculate

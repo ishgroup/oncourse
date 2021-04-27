@@ -1,4 +1,3 @@
-import { initialize } from "redux-form";
 import ImportTemplatesService from "../../automation/containers/import-templates/services/ImportTemplatesService";
 import ModuleService from "../modules/services/ModuleService";
 import QualificationService from "../qualifications/services/QualificationService";
@@ -11,9 +10,7 @@ import PayslipService from "../payslips/services/PayslipService";
 import TransactionService from "../transactions/services/TransactionService";
 import CorporatePassService from "../corporatePasses/services/CorporatePassService";
 import BankingService from "../bankings/services/BankingService";
-import ScriptsService from "../../automation/containers/scripts/services/ScriptsService";
 import AuditsService from "../../audits/services/AuditsService";
-import { appendComponents, ParseScriptBody } from "../../automation/containers/scripts/utils";
 import DiscountService from "../discounts/services/DiscountService";
 import { ApiMethods } from "../../../model/common/apiHandlers";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
@@ -89,10 +86,6 @@ export const getEntityItemById = (entity: string, id: number, method?: ApiMethod
 
     case "CorporatePass": {
       return CorporatePassService.getCorporatePass(id);
-    }
-
-    case "Script": {
-      return ScriptsService.getScriptItem(id).then(response => ParseScriptBody(response));
     }
 
     case "Import": {
@@ -213,13 +206,6 @@ export const updateEntityItemById = (entity: string, id: number, item: any, meth
       return BankingService.updateBanking(id, item);
     }
 
-    case "Script": {
-      if (method === "PATCH") {
-        return ScriptsService.patchScriptItem(id, appendComponents(item));
-      }
-      return ScriptsService.saveScriptItem(id, appendComponents(item));
-    }
-
     case "Discount": {
       return DiscountService.updateDiscount(id, item);
     }
@@ -276,10 +262,6 @@ export const updateEntityItemById = (entity: string, id: number, item: any, meth
 
 export const updateEntityItemByIdErrorHandler = (response: any, entity: string, form: string, item: any) => {
   switch (entity) {
-    case "Script": {
-      return [...FetchErrorHandler(response, "Script was not updated"), initialize(form, ParseScriptBody(item))];
-    }
-
     default: {
       return FetchErrorHandler(response, `${entity} was not updated`);
     }

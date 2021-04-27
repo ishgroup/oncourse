@@ -1,17 +1,14 @@
 import org.apache.cayenne.query.SQLTemplate
 
-def dataContext = context
-
-def request = new SQLTemplate(Contact.class, "SELECT * FROM Contact WHERE DAYOFYEAR(BIRTHDATE) BETWEEN DAYOFYEAR(NOW())+1 AND DAYOFYEAR(NOW())+7")
-def contacts = dataContext.performQuery(request)
-
-def product = query {
+records = query {
     entity "VoucherProduct"
     query "sku is \"${birthdayProdSku}\""
-    context dataContext
-}[0]
-
-int counter = 0
+}
+def product = records[0]
+def dataContext = product.context
+def counter = 0
+def request = new SQLTemplate(Contact.class, "SELECT * FROM Contact WHERE DAYOFYEAR(BIRTHDATE) BETWEEN DAYOFYEAR(NOW())+1 AND DAYOFYEAR(NOW())+7")
+def contacts = dataContext.performQuery(request)
 contacts.each { contact ->
 
     //must create an invoice/invoiceline for voucher validation

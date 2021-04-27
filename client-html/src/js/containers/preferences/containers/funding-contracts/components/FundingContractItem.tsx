@@ -44,7 +44,7 @@ const FundingContractItem = props => {
         const field = fields.get(index);
 
         return (
-          <Paper className="card" key={index}>
+          <Paper id={`funding-contracts-item-${index}`} className="card" key={index}>
             <Grid className="container">
               <Grid item container xs={12}>
                 <Grid item xs={5}>

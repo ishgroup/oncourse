@@ -232,7 +232,7 @@ interface Props extends Partial<EditViewProps> {
   salesRelations?: CheckoutSaleRelation[];
 }
 
-const titles = {
+export const titles = {
   [CheckoutPage.default]: "Type in student name or code in order to search",
   [CheckoutPage.contacts]: "Search for a contact by name.",
   [CheckoutPage.items]: "Search for a course, product, membership or voucher by name or code.",
@@ -1209,6 +1209,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             openDiscountView={openDiscountView}
             selectedDiscount={selectedDiscount}
             selectedContacts={selectedContacts}
+            summaryList={summary.list}
           />
         </div>
         <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice) })}>

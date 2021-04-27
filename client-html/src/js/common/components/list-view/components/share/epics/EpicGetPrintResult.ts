@@ -15,12 +15,12 @@ const request: EpicUtils.Request = {
   hideLoadIndicator: true,
   getData: ({ entityName, processId }) => {
     window.open(`${CONTEXT}v1/list/export/pdf/${processId}?entityName=${entityName}`);
-    return new Promise(resolve => resolve());
+    return new Promise(resolve => resolve(null));
   },
   processData: () => [
-      stopSubmit("ListShareForm")
+      stopSubmit("ListShareForm"),
     ],
-  processError: response => [stopSubmit("ListShareForm"), ...FetchErrorHandler(response)]
+  processError: response => [stopSubmit("ListShareForm"), ...FetchErrorHandler(response)],
 };
 
 export const EpicGetPrintResult: Epic<any, any> = EpicUtils.Create(request);

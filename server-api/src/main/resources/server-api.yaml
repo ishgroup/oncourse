@@ -255,6 +255,8 @@ paths:
     $ref: './path/preference/field/type/api.yaml'
   /preference/fundingcontract:
     $ref: './path/preference/fundingcontract/api.yaml'
+  /preference/grading:
+    $ref: './path/preference/grading/api.yaml'
   /preference/ldap:
     $ref: './path/preference/ldap/api.yaml'
   /preference/messagequeued:

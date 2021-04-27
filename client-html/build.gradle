@@ -16,7 +16,7 @@ task webpack(type: YarnTask, dependsOn: 'queryGrammar') {
     outputs.dir("$buildDir/assets")
     inputs.property('version', version)
 
-    args = ['build:prod', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
+    args = ['build:prod', '--env', 'NODE_ENV=production', '--env', 'BUILD_NUMBER=', version ?: 'SNAPSHOT']
 }
 
 clean {
@@ -44,11 +44,13 @@ task jest(type: YarnTask, dependsOn: 'queryGrammar') {
 test.dependsOn(jest)
 
 task apiDoc(type: YarnTask, dependsOn: ':server-api:apiDocs_mergeSwagger') {
+    group = "documentation"
     args = ['build:api-docs',
             '--schema',
             tasks.getByPath(':server-api:apiDocs_mergeSwagger').outputs.files.first().toString()]
 }
 task packageApiDoc (type: Zip, dependsOn: apiDoc) {
+    group = "documentation"
     from file("${buildDir}/api-docs")
     archiveClassifier = 'documentation'
 }

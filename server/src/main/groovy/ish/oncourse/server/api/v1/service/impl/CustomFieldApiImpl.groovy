@@ -59,6 +59,7 @@ class CustomFieldApiImpl implements CustomFieldApi {
                 type.sortOrder = dbType.sortOrder
                 type.mandatory = dbType.isMandatory
                 type.dataType = DataTypeDTO.values()[0].fromDbType(dbType.dataType)
+                type.pattern = dbType.pattern
                 type
             }
         }

@@ -32,6 +32,11 @@ export const selectStyles = theme => createStyles({
       verticalAlign: "middle",
       margin: 0
     },
+    editPencilIcon: {
+      fontSize: "14px",
+      color: theme.palette.divider,
+      verticalAlign: "middle"
+    },
     editable: {
       "&:hover": {
         color: theme.palette.primary.main,

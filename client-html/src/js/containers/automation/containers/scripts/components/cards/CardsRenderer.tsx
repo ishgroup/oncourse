@@ -10,7 +10,6 @@ import { FormControlLabel } from "@material-ui/core";
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
 import { ScriptComponent } from "../../../../../../model/scripts";
 import ScriptCard from "./CardBase";
-import EmailCardContent from "./EmailCardContent";
 import QueryCardContent from "./QueryCardContent";
 import MessageCardContent from "./MessageCardContent";
 import ReportCardContent from "./ReportCardContent";
@@ -26,6 +25,7 @@ const CardsRenderer = props => {
   const {
     fields,
     dispatch,
+    meta: { form },
     onValidateQuery,
     classes,
     showConfirm,
@@ -33,27 +33,25 @@ const CardsRenderer = props => {
     isInternal,
     isValidQuery,
     onInternalSaveClick,
-    emailTemplates,
-    pdfReports,
-    pdfBackgrounds,
+    emailTemplates
   } = props;
 
-  const onDelete = (e, index, fields, showConfirm) => {
+  const onDelete = (e, index, fieldsIns, showConfirm) => {
     e.stopPropagation();
     showConfirm(() => {
-      const component = fields.get(index);
+      const component = fieldsIns.get(index);
       if (component && component.type === "Query") {
-        const allComponents = fields.getAll();
+        const allComponents = fieldsIns.getAll();
         allComponents.splice(index, 1);
         if (!allComponents.some(c => c.type === "Query")) {
           onValidateQuery(true);
         }
       }
-      fields.remove(index);
+      fieldsIns.remove(index);
     }, "Script component will be deleted permanently");
   };
 
-  const renderVariables = (variables, name) => (
+  const renderVariables = (variables, name, disabled) => (
     <>
       {variables.map(elem => (
         elem.type === "Checkbox" ? (
@@ -66,6 +64,7 @@ const CardsRenderer = props => {
                   label={elem.label}
                 />
               )}
+              disabled={disabled}
               label={elem.label}
             />
           </Grid>
@@ -75,6 +74,7 @@ const CardsRenderer = props => {
               type={getType(elem.type)}
               name={`${name}.${elem.name}`}
               label={elem.label}
+              disabled={disabled}
               required
             />
           </Grid>
@@ -109,7 +109,7 @@ const CardsRenderer = props => {
                             <FormField
                               type="code"
                               name={`${item}.content`}
-                              disabled={!hasUpdateAccess}
+                              disabled={isInternal || !hasUpdateAccess}
                               className="mt-3"
                             />
                           </ScriptCard>
@@ -138,6 +138,7 @@ const CardsRenderer = props => {
                               classes={classes}
                               onValidateQuery={onValidateQuery}
                               isValidQuery={isValidQuery}
+                              disabled={isInternal}
                             />
                           </ScriptCard>
                         </div>
@@ -167,6 +168,8 @@ const CardsRenderer = props => {
                               isValidQuery={isValidQuery}
                               emailTemplates={emailTemplates}
                               renderVariables={renderVariables}
+                              form={form}
+                              disabled={isInternal}
                             />
                           </ScriptCard>
                         </div>
@@ -192,33 +195,10 @@ const CardsRenderer = props => {
                               dispatch={dispatch}
                               field={component}
                               name={item}
-                              classes={classes}
-                              pdfReports={pdfReports}
-                              pdfBackgrounds={pdfBackgrounds}
+                              form={form}
+                              disabled={isInternal}
                               renderVariables={renderVariables}
                             />
-                          </ScriptCard>
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                }
-
-                case "Email": {
-                  return (
-                    <Draggable key={component.id} draggableId={index + component.id} index={index} isDragDisabled={isInternal}>
-                      {provided => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
-                          <ScriptCard
-                            heading="Email"
-                            className="mb-3"
-                            onDelete={!isInternal ? e => onDelete(e, index, fields, showConfirm) : null}
-                            onAddItem={() => null}
-                            dragHandlerProps={provided.dragHandleProps}
-                            expanded
-                            onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                          >
-                            <EmailCardContent name={item} field={component} classes={classes} />
                           </ScriptCard>
                         </div>
                       )}

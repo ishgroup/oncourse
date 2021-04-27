@@ -26,7 +26,7 @@ const request: EpicUtils.Request = {
   },
   processError: () => {
     history.push('/login');
-    return null;
+    return [];
   }
 };
 

@@ -1,45 +1,38 @@
-import ish.oncourse.server.cayenne.CourseClass
-
-List<CourseClass> classes = query {
+def classes = query {
     entity "CourseClass"
-    query ""
 }
 
 classes.each { cclass ->
+    records = cclass.getSuccessAndQueuedEnrolments()
     //conditions to send 'Class Confirmed' messages to students
-    if (cclass.getSuccessAndQueuedEnrolments().size() >= cclass.getMinimumPlaces() && cclass.actualTotalProfit >= expectedProfit) {
-        cclass.getSuccessAndQueuedEnrolments().each { enrolment ->
-            message {
-                template classConfirmedTemplate
-                record enrolment
-                key "send-class-confirmed", cclass
-                keyCollision "drop"
-                courseClass cclass
-            }
+    if (records.size() >= cclass.getMinimumPlaces() && cclass.actualTotalProfit >= expectedProfit) {
+        message {
+            template classConfirmedTemplate
+            record records
+            key "send-class-confirmed", cclass
+            keyCollision "drop"
+            courseClass cclass
         }
     }
     //send notification to admin
     else {
         def creatorKey = MessageUtils.generateCreatorKey("send-class-confirmed", cclass)
 
-        Message lastStudentMessage = query {
+        records = query {
             entity "Message"
             query "creatorKey is \"${creatorKey}\""
-            sort "desc"
-            first true
         }
-
+        def lastStudentMessage = records.sort { it.createdOn }.last()
         if (lastStudentMessage) {
 
             //Attention! Set your own 'adminPrefix'
             String prefix = adminPrefix ?: "class no viable ${preference.email.from}"
             String messageUniqueKey = MessageUtils.generateCreatorKey(prefix, cclass)
-            Message lastAdminMessage = query {
+            records = query {
                 entity "Message"
                 query "creatorKey is \"${messageUniqueKey}\""
-                sort "desc"
-                first true
             }
+            def lastAdminMessage = records.sort { it.createdOn }.last()
 
             if (!lastAdminMessage || lastAdminMessage.createdOn < lastStudentMessage.createdOn) {
 

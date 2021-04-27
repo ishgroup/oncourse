@@ -102,7 +102,7 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
           message,
           "SAVE",
           this.onCancel,
-          "ARE YOU SURE",
+          null,
           "DISCARD CHANGES",
           this.onConfirm,
           confirmButton,
@@ -127,7 +127,7 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
 
   onCancel = () => {
     this.setState({ nextLocation: null });
-    this.props.setNextLocation('')
+    this.props.setNextLocation('');
   };
 
   onConfirm = () => {
@@ -144,8 +144,7 @@ const mapStateToProps = (state: State) => ({
   isInvalid: (form: string) => isInvalid(form)(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string, onCancel?: any, title?: string,
                   cancelButtonText?: string, onCancelCustom?: () => void, confirmCustomComponent?: React.ReactNode) =>
       dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText,
@@ -153,8 +152,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     submitForm: (form: string) => dispatch(submit(form)),
     closeConfirm: () => dispatch(closeConfirm()),
     setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-  };
-};
+  });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(RouteChangeConfirm)) as React.ComponentType<
   Props

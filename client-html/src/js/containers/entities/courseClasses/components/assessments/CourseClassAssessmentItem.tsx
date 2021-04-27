@@ -6,31 +6,29 @@
 import React, {
  useCallback, useEffect, useMemo, useRef, useState
 } from "react";
-import clsx from "clsx";
 import { Dispatch } from "redux";
 import { change, Field } from "redux-form";
-import { connect } from "react-redux";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import {
+  Grid, FormControlLabel, IconButton, Typography
+} from "@material-ui/core";
 import { differenceInDays, format } from "date-fns";
 import {
- Assessment, AssessmentClass, AssessmentSubmission, CourseClassTutor
+  Assessment, AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType
 } from "@api/model";
 import { withStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import DateRange from "@material-ui/icons/DateRange";
-import { Tooltip } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import { DateRange, ExpandMore, Edit } from "@material-ui/icons";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { getArrayFieldMeta, stubComponent } from "../../../../../common/utils/common";
+import { stubComponent } from "../../../../../common/utils/common";
 import { defaultContactName } from "../../../contacts/utils";
-import { State } from "../../../../../reducers/state";
-import AssessmentSubmissionIconButton, { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
-import AssessmentSubmissionModal from "./AssessmentSubmissionModal";
-import { III_DD_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
+import { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
+import SubmissionModal from "./SubmissionModal";
+import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import styles from "./styles";
+import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
+import CourseClassAssessmentStudent from "./CourseClassAssessmentStudent";
+import GradeModal from "./GradeModal";
 
 interface Props {
   form: string;
@@ -42,9 +40,10 @@ interface Props {
   twoColumn?: boolean;
   row?: AssessmentClass;
   rows?: AssessmentClass[];
+  gradingTypes?: GradingType[];
 }
 
-interface StudentForRender {
+export interface StudentForRender {
   submittedValue: AssessmentsSubmissionType;
   markedValue: AssessmentsSubmissionType;
   studentName: string;
@@ -68,12 +67,13 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     tutors,
     twoColumn,
     courseClassEnrolments,
+    gradingTypes,
     dispatch
   } = props;
 
   const [studentsForRender, setStudentsForRender] = useState<StudentForRender[]>([]);
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);
-  const [allSubmissionsDate, setAllSubmissionsDate] = useState<string>(null);
+  const [gradeMenuAnchorEl, setGradeMenuAnchorEl] = useState(null);
 
   const modalProps = modalOpenedBy ? modalOpenedBy.split("-") : [];
 
@@ -81,6 +81,14 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   const submissionUpdater = useRef<(s: AssessmentSubmission[]) => void>();
 
   const submissionTutors = useMemo(() => tutors.filter(t => row.contactIds.includes(t.contactId)), [tutors, row.contactIds]);
+
+  const gradeType: GradingType = useMemo(() =>
+    gradingTypes?.find(g => g.id === row.gradingTypeId),
+    [row.gradingTypeId, gradingTypes]);
+
+  const gradeItems: GradingItem[] = useMemo(() =>
+      gradeType?.gradingItems,
+    [gradeType]);
 
   useEffect(() => {
     const result = courseClassEnrolments && courseClassEnrolments.reduce((acc, elem) => {
@@ -103,23 +111,71 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     setStudentsForRender(result);
   }, [courseClassEnrolments, row.submissions]);
 
-  const onPickerClose = () => {
+  const handleGradeMenuClose = () => {
+    setGradeMenuAnchorEl(null);
+  };
+
+  const handleGradeMenuOpen = e => {
+    setGradeMenuAnchorEl(e.currentTarget);
+  };
+
+  const triggerAsyncChange = (newValue, field, index) => {
+    const updatedSubmissions = row.submissions.map((s, sInd) => ({
+      ...s,
+      [field]: sInd === index ? newValue : s[field]
+    }));
+    if (field === "submittedOn") {
+      if (!newValue) {
+        updatedSubmissions.splice(index, 1);
+      }
+      const submission = row.submissions[index];
+      if (!submission && newValue && modalProps[2] !== "all") {
+        const elem = studentsForRender[modalProps[3]];
+        updatedSubmissions.unshift({
+          id: null,
+          submittedOn: newValue,
+          markedById: null,
+          markedOn: null,
+          enrolmentId: Number(elem.enrolmentId),
+          studentId: Number(elem.studentId),
+          studentName: elem.studentName,
+          assessmentId: row.assessmentId,
+          grade: null
+        });
+      }
+    }
+    submissionUpdater.current(updatedSubmissions.filter(s => s.hasOwnProperty("enrolmentId")));
+  };
+
+  const onPickerClose = (dateVal, selectVal) => {
     setModalOpenedBy(null);
+
+    if (modalProps[2] !== "all") {
+      const index = Number(modalProps[1]);
+      if (modalProps[0] === "Submitted") {
+        triggerAsyncChange(dateVal, "submittedOn", index);
+      }
+      if (modalProps[0] === "Marked") {
+        triggerAsyncChange(dateVal, "markedOn", index);
+        triggerAsyncChange(selectVal, "markedById", index);
+      }
+    }
+
     if (modalProps[2] === "all") {
       submissionUpdater.current(courseClassEnrolments.map(elem => {
         const submission = row.submissions.find(s => s.enrolmentId === Number(elem.id));
-        return !allSubmissionsDate && modalProps[0] === "Submitted" ? null : {
-          id: submission ? submission.id : null,
-          submittedOn: modalProps[0] === "Submitted" ? allSubmissionsDate : submission ? submission.submittedOn : allSubmissionsDate,
-          markedById: submission ? submission.markedById : null,
-          markedOn: modalProps[0] === "Marked" ? allSubmissionsDate : submission ? submission.markedOn : null,
+        return !dateVal && modalProps[0] === "Submitted" ? null : {
+          id: submission?.id,
+          submittedOn: modalProps[0] === "Submitted" ? dateVal : submission ? submission.submittedOn : dateVal,
+          markedById: submission?.markedById,
+          markedOn: modalProps[0] === "Marked" ? dateVal : submission ? submission.markedOn : null,
           enrolmentId: Number(elem.id),
           studentId: Number(elem.contactId),
           studentName: elem.student,
-          assessmentId: row.assessmentId
+          assessmentId: row.assessmentId,
+          grade: submission?.grade
         };
       }).filter(s => s));
-      setAllSubmissionsDate(null);
     }
   };
 
@@ -140,7 +196,8 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
               enrolmentId: Number(elem.enrolmentId),
               studentId: Number(elem.studentId),
               studentName: elem.studentName,
-              assessmentId: row.assessmentId
+              assessmentId: row.assessmentId,
+              grade: null
             };
 
             submissionUpdater.current([newSubmission, ...row.submissions]);
@@ -177,6 +234,75 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     }));
   };
 
+  const onChangeAllGrades = (value: number) => {
+    submissionUpdater.current(courseClassEnrolments.map(elem => {
+      const submission = row.submissions.find(s => s.enrolmentId === Number(elem.id));
+      return {
+        id: submission ? submission.id : null,
+        submittedOn: submission ? submission.submittedOn : null,
+        markedById: submission ? submission.markedById : null,
+        markedOn: submission ? submission.markedOn : null,
+        enrolmentId: Number(elem.id),
+        studentId: Number(elem.contactId),
+        studentName: elem.student,
+        assessmentId: row.assessmentId,
+        grade: value
+      };
+    }).filter(s => s));
+  };
+
+  const onChangeGrade = (value: number, elem: StudentForRender) => {
+    const grade = normalizeNumber(value);
+    if (elem.submissionIndex === -1) {
+      const newSubmission: AssessmentSubmission = {
+        id: null,
+        submittedOn: today,
+        markedById: submissionTutors && submissionTutors.length ? submissionTutors[0].contactId : null,
+        markedOn: today,
+        enrolmentId: Number(elem.enrolmentId),
+        studentId: Number(elem.studentId),
+        studentName: elem.studentName,
+        assessmentId: row.assessmentId,
+        grade
+      };
+      submissionUpdater.current([newSubmission, ...row.submissions]);
+    } else {
+      const updatedSubmissions = row.submissions.map((s, index) => {
+        if (elem.submissionIndex === index) {
+          return { ...s, grade };
+        }
+        return s;
+      });
+      submissionUpdater.current(updatedSubmissions);
+    }
+  };
+
+  const onToggleGrade = (elem: StudentForRender, grade: GradingItem) => {
+    if (elem.submissionIndex === -1) {
+      const newSubmission: AssessmentSubmission = {
+        id: null,
+        submittedOn: today,
+        markedById: submissionTutors && submissionTutors.length ? submissionTutors[0].contactId : null,
+        markedOn: today,
+        enrolmentId: Number(elem.enrolmentId),
+        studentId: Number(elem.studentId),
+        studentName: elem.studentName,
+        assessmentId: row.assessmentId,
+        grade: gradeItems ? gradeItems[0]?.lowerBound : null
+      };
+      submissionUpdater.current([newSubmission, ...row.submissions]);
+    } else {
+      const updatedSubmissions = row.submissions.map((s, index) => {
+        if (elem.submissionIndex === index) {
+          const gradeIndex = grade ? gradeItems?.findIndex(g => g.lowerBound === grade.lowerBound) : -1;
+          return { ...s, grade: gradeItems[gradeIndex + 1]?.lowerBound };
+        }
+        return s;
+      });
+      submissionUpdater.current(updatedSubmissions);
+    }
+  };
+
   const onCodeChange = (assessment: Assessment) => {
     dispatch(change(form, `${item}.assessmentName`, assessment ? assessment.name : null));
     dispatch(change(form, `${item}.assessmentId`, assessment ? assessment.id : null));
@@ -185,36 +311,6 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   const onNameChange = (assessment: Assessment) => {
     dispatch(change(form, `${item}.assessmentCode`, assessment ? assessment.code : null));
     dispatch(change(form, `${item}.assessmentId`, assessment ? assessment.id : null));
-  };
-
-  const triggerAsyncChange = (event, newValue, previousValue, name) => {
-    setTimeout(() => {
-      const { field, index } = getArrayFieldMeta(name);
-      const updatedSubmissions = row.submissions.map((s, sInd) => ({
-        ...s,
-        [field]: sInd === index ? newValue : s[field]
-      }));
-      if (field === "submittedOn") {
-        if (!newValue) {
-          updatedSubmissions.splice(index, 1);
-        }
-        const submission = row.submissions[index];
-        if (!submission && newValue && modalProps[2] !== "all") {
-          const elem = studentsForRender[modalProps[3]];
-          updatedSubmissions.unshift({
-            id: null,
-            submittedOn: newValue,
-            markedById: null,
-            markedOn: null,
-            enrolmentId: Number(elem.enrolmentId),
-            studentId: Number(elem.studentId),
-            studentName: elem.studentName,
-            assessmentId: row.assessmentId
-          });
-        }
-      }
-      submissionUpdater.current(updatedSubmissions.filter(s => s.hasOwnProperty("enrolmentId")));
-    }, 500);
   };
 
   const validateDueDate = useCallback(
@@ -282,22 +378,32 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     ? `All students ${modalProps[0].toLowerCase()} date`
     : `${modalProps[2]} ${modalProps[0].toLowerCase()} date${titlePostfix}`);
 
-  const name = `${item}.submissions[${modalProps[1]}]`;
-
   return (
     <Grid container>
       <Grid item={true} xs={12} container className="pb-3">
         <Grid item xs={twoColumn ? 8 : 12} container>
           <Grid item xs={twoColumn ? 6 : 12}>
-            <AssessmentSubmissionModal
-              name={name}
+            <GradeModal
+              gradeMenuAnchorEl={gradeMenuAnchorEl}
+              handleGradeMenuClose={handleGradeMenuClose}
+              gradedItems={studentsForRender}
+              onChangeGrade={onChangeGrade}
+              onChangeAllGrades={onChangeAllGrades}
+              gradeItems={gradeItems}
+              gradeType={gradeType}
+            />
+            <SubmissionModal
               modalProps={modalProps}
               tutors={submissionTutors}
               title={title}
-              allSubmissionsDate={allSubmissionsDate}
-              setAllSubmissionsDate={setAllSubmissionsDate}
-              onClose={onPickerClose}
-              triggerAsyncChange={triggerAsyncChange}
+              onSave={onPickerClose}
+              onClose={() => setModalOpenedBy(null)}
+              selectDefault={modalProps[2] === "all" ? today : modalProps[0] === "Submitted"
+                ? null
+                : row?.submissions[modalProps[1]]?.markedById}
+              dateDefault={modalProps[2] === "all" ? today : modalProps[0] === "Submitted"
+                ? row?.submissions[modalProps[1]]?.submittedOn || today
+                : row?.submissions[modalProps[1]]?.markedOn || today}
             />
             <Field name={`${item}.submissions`} component={submissionFieldStub} />
             <Field name={`${item}.contactIds`} component={tutorsFieldStub} />
@@ -369,9 +475,8 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                   size="small"
                   className={classes.hiddenTitleIcon}
                   onClick={() => {
-                  setAllSubmissionsDate(today);
-                  setModalOpenedBy(`Submitted-0-all`);
-                }}
+                    setModalOpenedBy(`Submitted-0-all`);
+                  }}
                 >
                   <DateRange color="disabled" fontSize="small" />
                 </IconButton>
@@ -384,107 +489,46 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
                   size="small"
                   className={classes.hiddenTitleIcon}
                   onClick={() => {
-                  setAllSubmissionsDate(today);
-                  setModalOpenedBy(`Marked-0-all`);
-                }}
+                    setModalOpenedBy(`Marked-0-all`);
+                  }}
                 >
                   <DateRange color="disabled" fontSize="small" />
                 </IconButton>
               </span>
             </Grid>
+            <Grid xs={2} className={classes.center}>
+              <span className="relative">
+                Grade
+                <IconButton
+                  size="small"
+                  className={classes.hiddenTitleIcon}
+                  onClick={handleGradeMenuOpen}
+                  id="allGrades"
+                  style={gradeType?.entryType === "number" ? { bottom: "unset" } : undefined}
+                >
+                  {gradeType?.entryType === "choice list"
+                      ? <ExpandMore color="disabled" fontSize="small" />
+                      : <Edit color="disabled" className="editInPlaceIcon" />}
+                </IconButton>
+              </span>
+            </Grid>
           </Grid>
           <Grid container xs={12} className={classes.items}>
-            {studentsForRender.map((elem, index) => {
-              const submittedContent = (
-                <div className="d-flex">
-                  <AssessmentSubmissionIconButton
-                    status={elem.submittedValue}
-                    onClick={() => onChangeStatus("Submitted", elem)}
-                  />
-                  {elem.submittedValue === "Submitted" && (
-                    <IconButton
-                      size="small"
-                      className={classes.hiddenIcon}
-                      onClick={() => setModalOpenedBy(`Submitted-${elem.submissionIndex}-${elem.studentName}-${index}`)}
-                    >
-                      <DateRange color="disabled" fontSize="small" />
-                    </IconButton>
-                  )}
-                </div>
-              );
-
-              const markedContent = (
-                <div className="d-flex">
-                  <AssessmentSubmissionIconButton
-                    status={elem.markedValue}
-                    onClick={() => onChangeStatus("Marked", elem)}
-                  />
-                  {elem.markedValue === "Submitted" && (
-                    <IconButton
-                      size="small"
-                      className={classes.hiddenIcon}
-                      onClick={() => setModalOpenedBy(`Marked-${elem.submissionIndex}-${elem.studentName}-${index}`)}
-                    >
-                      <DateRange color="disabled" fontSize="small" />
-                    </IconButton>
-                  )}
-                </div>
-              );
-
-              return (
-                <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
-                  <Grid item xs={4} className="d-inline-flex-center">
-                    {elem.studentName}
-                  </Grid>
-                  <Grid item xs={2} className={classes.center}>
-                    {elem.submittedValue === "Submitted"
-                      ? (
-                        <Tooltip
-                          title={(
-                            <span>
-                              Submitted date:
-                              {" "}
-                              {elem.submission && format(new Date(elem.submission.submittedOn), III_DD_MMM_YYYY)}
-                            </span>
-                          )}
-                          placement="top"
-                          disableFocusListener
-                          disableTouchListener
-                        >
-                          {submittedContent}
-                        </Tooltip>
-                      )
-                      : submittedContent}
-                  </Grid>
-                  <Grid item xs={2} className={classes.center}>
-                    {elem.markedValue === "Submitted" ? (
-                      <Tooltip
-                        title={(
-                          <span>
-                            Marked date:
-                            {" "}
-                            {elem.submission && format(new Date(elem.submission.markedOn), III_DD_MMM_YYYY)}
-                            <br />
-                            {elem?.submission?.markedById && tutors && (
-                              <span>
-                                Assessor:
-                                {" "}
-                                {tutors.find(t => t.contactId === elem.submission.markedById)?.tutorName}
-                              </span>
-                            )}
-                          </span>
-                        )}
-                        placement="top"
-                        disableFocusListener
-                        disableTouchListener
-                      >
-                        {markedContent}
-                      </Tooltip>
-                    ) : markedContent}
-                  </Grid>
-                </Grid>
-              );
-            })}
+            {studentsForRender.map((elem, index) => (
+              <CourseClassAssessmentStudent
+                elem={elem}
+                onChangeStatus={onChangeStatus}
+                classes={classes}
+                setModalOpenedBy={setModalOpenedBy}
+                gradeType={gradeType}
+                gradeItems={gradeItems}
+                onToggleGrade={onToggleGrade}
+                onChangeGrade={onChangeGrade}
+                handleGradeMenuOpen={handleGradeMenuOpen}
+                index={index}
+                tutors={tutors}
+              />
+            ))}
           </Grid>
         </Grid>
       ) : (
@@ -499,8 +543,4 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  courseClassEnrolments: state.courseClass.enrolments,
-});
-
-export default connect(mapStateToProps)(withStyles(styles)(CourseClassAssessmentItem));
+export default withStyles(styles)(CourseClassAssessmentItem);

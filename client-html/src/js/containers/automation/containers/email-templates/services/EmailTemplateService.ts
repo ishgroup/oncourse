@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {DefaultHttpService} from "../../../../../common/services/HttpService";
-import {EmailTemplate, EmailTemplateApi} from "@api/model";
+import { EmailTemplate, EmailTemplateApi } from "@api/model";
+import { DefaultHttpService } from "../../../../../common/services/HttpService";
 
 class EmailTemplateService {
   readonly emailTemplateService = new EmailTemplateApi(new DefaultHttpService());
@@ -27,6 +27,10 @@ class EmailTemplateService {
 
   public remove(id: number): Promise<any> {
     return this.emailTemplateService.remove(id);
+  }
+
+  public getEmailTemplatesWithKeyCode(entityName: string): Promise<EmailTemplate[]> {
+    return this.emailTemplateService.getTemplatesWithKeyCode(entityName);
   }
 }
 

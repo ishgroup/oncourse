@@ -31,7 +31,7 @@ const ConfirmBase: React.FunctionComponent<ConfirmState> = props => {
 
   return (
     <Dialog open={open} onClose={onCancel}>
-      {title && <DialogTitle id="alert-dialog-title" className="heading">{title}</DialogTitle>}
+      {title && <DialogTitle id="alert-dialog-title">{title}</DialogTitle>}
       {confirmMessage && (
         <DialogContent>
           <DialogContentText id="alert-dialog-description">{confirmMessage}</DialogContentText>
@@ -39,7 +39,7 @@ const ConfirmBase: React.FunctionComponent<ConfirmState> = props => {
       )}
 
       <DialogActions>
-        <Button onClick={onCancelCustom ? onCancelCustom : onCancel} color="primary">
+        <Button onClick={onCancelCustom || onCancel} color="primary">
           {cancelButtonText}
         </Button>
         {onConfirm && !confirmCustomComponent && (

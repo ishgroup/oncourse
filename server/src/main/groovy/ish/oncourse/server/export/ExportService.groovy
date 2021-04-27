@@ -20,6 +20,7 @@ import ish.export.ExportResult
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ExportTemplate
+import ish.oncourse.server.messaging.DocumentParam
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.api.CollegePreferenceService
 import ish.oncourse.server.scripting.api.ExportSpec
@@ -140,12 +141,13 @@ class ExportService {
 	/**
 	 * Script API method allowing calling export execution from groovy code.
 	 */
-	def export(@DelegatesTo(ExportSpec) Closure cl) {
+	DocumentParam export(@DelegatesTo(ExportSpec) Closure cl) {
 		ExportSpec exportSpec = new ExportSpec()
         Closure build = cl.rehydrate(exportSpec, cl, this)
         build.setResolveStrategy(Closure.DELEGATE_FIRST)
         build.call()
 
-        return performExport(exportSpec.templateKeyCode, exportSpec.entityRecords).toString()
+		String result = performExport(exportSpec.templateKeyCode, exportSpec.entityRecords).toString()
+        return DocumentParam.valueOf(exportSpec.getFileName(), result)
 	}
 }

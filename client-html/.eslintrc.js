@@ -22,8 +22,9 @@ module.exports = {
         "import/no-unresolved": "off",
         "import/extensions": "off",
         "import/prefer-default-export": "off",
-        "@typescript-eslint/class-name-casing": "error",
+        "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/indent": "off",
+        "@typescript-eslint/comma-dangle": "off",
         "@typescript-eslint/member-delimiter-style": [
             "off",
             {
@@ -46,6 +47,8 @@ module.exports = {
         "@typescript-eslint/type-annotation-spacing": "off",
         "no-param-reassign": "off",
         "no-nested-ternary": "off",
+        "no-await-in-loop": "off",
+        "no-restricted-syntax": "off",
         "arrow-parens": [
             "error",
             "as-needed"
@@ -86,6 +89,8 @@ module.exports = {
         ],
         "new-parens": "off",
         "newline-per-chained-call": "off",
+        "no-restricted-syntax": "off",
+        "no-await-in-loop": "off",
         "no-prototype-builtins": "off",
         "no-duplicate-imports": "error",
         "no-eval": "error",

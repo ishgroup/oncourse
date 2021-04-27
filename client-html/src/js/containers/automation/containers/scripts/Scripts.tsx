@@ -9,7 +9,7 @@ import {
  getFormInitialValues, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { withRouter } from "react-router";
-import { ScheduleType, Script, TriggerType } from "@api/model";
+import { ScheduleType, Script } from "@api/model";
 import { Dispatch } from "redux";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../reducers/state";
@@ -18,11 +18,9 @@ import {
  createScriptItem, deleteScriptItem, getScriptItem, saveScriptItem
 } from "./actions";
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "./constants";
-import { ApiMethods } from "../../../../model/common/apiHandlers";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { setNextLocation, showConfirm } from "../../../../common/actions";
 
-const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);
 
 const ScheduleTypeItems = Object.keys(ScheduleType).map(mapSelectItems);
 
@@ -67,7 +65,6 @@ const ScriptsBase = React.memo<any>(props => {
 
   return (
     <ScriptsForm
-      TriggerTypeItems={TriggerTypeItems}
       ScheduleTypeItems={ScheduleTypeItems}
       dispatch={dispatch}
       isNew={isNew}
@@ -88,15 +85,13 @@ const mapStateToProps = (state: State) => ({
   initialValues: getFormInitialValues(SCRIPT_EDIT_VIEW_FORM_NAME)(state),
   scripts: state.automation.script.scripts,
   emailTemplates: state.automation.emailTemplate.emailTemplates,
-  nextLocation: state.nextLocation,
-  pdfReports: state.automation.pdfReport.pdfReports,
-  pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds
+  nextLocation: state.nextLocation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getScriptItem: (id: number) => dispatch(getScriptItem(id)),
-  onSave: (id: number, script: Script, method?: ApiMethods) => dispatch(saveScriptItem(id, script, method)),
-  onCreate: (script: Script) => dispatch(createScriptItem(script)),
+  onSave: (id, script, method, viewMode) => dispatch(saveScriptItem(id, script, method, viewMode)),
+  onCreate: (script, viewMode) => dispatch(createScriptItem(script, viewMode)),
   onDelete: (id: number) => dispatch(deleteScriptItem(id)),
   openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),

@@ -389,7 +389,7 @@ where schemaname='APP'"""
 //			tryStatement("DROP FUNCTION IFNULL");
 
 		} catch (Exception e) {
-			throw new RuntimeException("cleaning derby database failed", e)
+			throw new RuntimeException("cleaning database failed", e)
 		} finally {
 			if (connection != null) {
 				try {

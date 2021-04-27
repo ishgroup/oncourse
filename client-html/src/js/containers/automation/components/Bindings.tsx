@@ -22,6 +22,7 @@ import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../containers/scripts/constants";
 import DataTypesMenu from "./DataTypesMenu";
 import DataTypeRenderer from "../../../common/components/form/DataTypeRenderer";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
+import { renderAutomationItems } from "../utils";
 
 export type BindingsItemType = "component" | "label";
 
@@ -87,6 +88,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
 
     if (item.type === "Message template") {
       props["items"] = emailTemplateItems;
+      props["selectLabelCondition"] = renderAutomationItems;
     }
 
     return props;
@@ -165,8 +167,10 @@ const Bindings = React.memo<BindingsProps>( props => {
   const isScriptsAutomation = useMemo(() => (form === SCRIPT_EDIT_VIEW_FORM_NAME), [form]);
   const emailTemplateItems = useMemo(
     () => (emailTemplates
-      ? emailTemplates.filter(t => t.keyCode).map(t => ({ value: t.keyCode, label: t.name }))
-      : []), [emailTemplates]
+      ? emailTemplates.filter(t => t.keyCode).map(t => ({
+        value: t.keyCode, label: t.name, hasIcon: t.hasIcon, id: t.id,
+      }))
+      : []), [emailTemplates],
   );
 
   const handleClick = useCallback(event => {

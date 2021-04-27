@@ -7,14 +7,14 @@ interface Props {
   View: (props: any) => any;
   record: (mockedApi: any) => object;
   render: (wrapper: any, initialValues: any) => any;
-  defaultProps?: ({ entity, initialValues }) => object;
+  defaultProps?: ({ entity, initialValues, mockedApi }) => object;
   beforeFn?: () => void;
 }
 
 export const defaultComponents: ({
-  entity, View, record, render, defaultProps, beforeFn
+  entity, View, record, render, defaultProps, beforeFn,
 }: Props) => void = ({
-  entity, View, record, render, defaultProps, beforeFn
+  entity, View, record, render, defaultProps, beforeFn,
 }) => {
   const initialValues = record(mockedAPI);
   let mount;
@@ -30,7 +30,7 @@ export const defaultComponents: ({
   let viewProps = { initialValues, values: initialValues };
 
   if (defaultProps) {
-    viewProps = { ...viewProps, ...defaultProps({ entity, initialValues }) };
+    viewProps = { ...viewProps, ...defaultProps({ entity, initialValues, mockedApi: mockedAPI }) };
   }
 
   const MockedEditView = pr => <View {...{ ...pr, ...viewProps }} />;
@@ -43,10 +43,10 @@ export const defaultComponents: ({
     const wrapper = mount(
       <TestEntry>
         <MockedEditView />
-      </TestEntry>
+      </TestEntry>,
     );
 
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       setTimeout(() => {
         render(wrapper, initialValues);
         resolve();

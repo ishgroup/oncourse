@@ -3,46 +3,32 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {Script} from "@api/model";
+import { Script } from "@api/model";
 import {
-  closureNameRegexp,
-  closureRegexp,
-  emailClosureRegexp,
-  getEmailComponent,
   getQueryComponent,
   getQueryTemplate,
   getScriptComponent,
   getMessageTemplate,
   getMessageComponent,
-  getReportComponent,
   getReportTemplate,
-  importsRegexp
-} from "../constants/index";
+  importsRegexp,
+  queryClosureRegexp,
+  messageClosureRegexp, getReportComponent, reportClosureRegexp, closureSplitRegexp,
+} from "../constants";
+import { ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 
-const getClosureComponent = (body: string) => {
-  const customClosureMatch = body.match(closureNameRegexp);
-  const emailClosureMatch = body.match(emailClosureRegexp);
-
-  if (customClosureMatch) {
-    const type = customClosureMatch[1];
-
-    switch (type) {
-      case "Query": {
-        return getQueryComponent(body);
-      }
-      case "Message": {
-        return getMessageComponent(body);
-      }
-      case "Report": {
-        return getReportComponent(body);
-      }
+const getClosureComponent = async (body: string, type: ScriptComponentType) => {
+  switch (type) {
+    case "Query": {
+      return getQueryComponent(body);
+    }
+    case "Message": {
+      return getMessageComponent(body);
+    }
+    case "Report": {
+      return getReportComponent(body);
     }
   }
-
-  if (emailClosureMatch) {
-    return getEmailComponent(body);
-  }
-
   return null;
 };
 
@@ -56,7 +42,26 @@ const checkDuplicateScriptParts = (components, parsedComponent) => {
   }
 };
 
-export const ParseScriptBody = (scriptItem: Script) => {
+const messageFilter = body => {
+  let pass = true;
+  if (/template\s+/.test(body) && !/record\s+records/.test(body)) {
+    pass = false;
+  }
+  if (/attachment\s+/.test(body) && !/attachment\s+file\s/.test(body)) {
+    pass = false;
+  }
+  return pass;
+};
+
+const reportFilter = body => {
+  let pass = true;
+  if (!/record\s+records/.test(body)) {
+    pass = false;
+  }
+  return pass;
+};
+
+export const ParseScriptBody = async (scriptItem: Script) => {
   let { content } = scriptItem;
   let imports = content.match(importsRegexp);
 
@@ -68,25 +73,44 @@ export const ParseScriptBody = (scriptItem: Script) => {
   const components = [];
 
   try {
-    const customClosures = content.match(closureRegexp);
-    const emailClosures = [];
-    // = content.match(emailClosureRegexp);
+    const closures = {
+      Query: [],
+      Message: [],
+      Report: []
+    };
 
-    const matchComponents = content
-      .replace(closureRegexp, "CLOSURE")
-      // .replace(emailClosureRegexp, "CLOSURE")
-      .split("CLOSURE");
+    const parsedContent = content
+    .replace(queryClosureRegexp, body => {
+      closures.Query.push(body);
+      return `CLOSURE-Query-${closures.Query.length - 1}`;
+    })
+    .replace(messageClosureRegexp, body => {
+      if (messageFilter(body)) {
+        closures.Message.push(body);
+        return `CLOSURE-Message-${closures.Message.length - 1}`;
+      }
+      return body;
+    })
+    .replace(reportClosureRegexp, body => {
+      if (reportFilter(body)) {
+        closures.Report.push(body);
+        return `CLOSURE-Report-${closures.Report.length - 1}`;
+      }
+      return body;
+    });
 
-    const closures = [...(customClosures || []), ...(emailClosures || [])];
+    const matchComponents = parsedContent.split(closureSplitRegexp);
+    const splitMarkesrs = parsedContent.match(closureSplitRegexp);
 
-    matchComponents.forEach((c, index) => {
+    for (const [index, c] of matchComponents.entries()) {
       if (c.trim()) {
         checkDuplicateScriptParts(components, getScriptComponent(c));
       }
-      if (closures[index]) {
-        checkDuplicateScriptParts(components, getClosureComponent(closures[index]));
+      if (splitMarkesrs && splitMarkesrs[index]) {
+        const [,type, cIndex] = splitMarkesrs[index].split("-");
+        checkDuplicateScriptParts(components, await getClosureComponent(closures[type][cIndex], type as ScriptComponentType));
       }
-    });
+    }
   } catch (e) {
     console.error(e);
   }
@@ -99,10 +123,6 @@ const getComponentBody = (component: any) => {
     case "Query": {
       return getQueryTemplate(component.entity, component.query, component.queryClosureReturnValue);
     }
-    // case "Email": {
-    //   delete component.type;
-    //   return getEmailTemplate(component);
-    // }
     case "Script": {
       return component.content;
     }
@@ -117,31 +137,35 @@ const getComponentBody = (component: any) => {
   }
 };
 
-export const appendComponents = (value: any): Script => {
-  let content = "";
+export const appendComponents = (value: ScriptExtended, viewMode: ScriptViewMode): Script => {
+  const result = { ...value };
 
-  if (value.components && value.components.length) {
-    value.components.forEach(c => {
-      content += getComponentBody(c);
-    });
-  }
+  if (viewMode === "Cards") {
+    result.content = "";
 
-  if (value.imports) {
-    content = value.imports
+    if (value.components && value.components.length) {
+      value.components.forEach(c => {
+        result.content += getComponentBody(c);
+      });
+    }
+
+    if (value.imports) {
+      result.content = value.imports
         .filter(i => Boolean(i.trim()))
         .map(i => "import " + i)
         .join("\n") + `
-        \n${content}`;
+      \n${result.content}`;
+    }
   }
 
-  delete value.components;
-  delete value.imports;
-  delete value.body;
+  delete result.components;
+  delete result.imports;
+  delete result.body;
 
-  return { ...value, content };
+  return result;
 };
 
-export const getType = (type) => {
+export const getType = type => {
   switch (type.toLowerCase()) {
     case "date time":
       return "dateTime";
@@ -154,6 +178,6 @@ export const getType = (type) => {
     case "multiline text":
       return "multilineText";
     default:
-      return type.toLowerCase()
+      return type.toLowerCase();
   }
-}
+};

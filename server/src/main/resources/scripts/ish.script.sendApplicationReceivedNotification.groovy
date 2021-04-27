@@ -1,6 +1,6 @@
 message {
     template applicationReceivedTemplate
-    record record
+    record records
 }
 
 message {

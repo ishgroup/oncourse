@@ -6,15 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.scripting.api
+import { Assessment, Enrolment } from "@api/model";
 
-/**
- * Siple value holder object to easy transfer file content + meta data
- */
+export interface EnrolmentAssessmentExtended extends Assessment{
+  tutors: {
+    contactId: number;
+    tutorName: string;
+  }[];
+}
 
-class FileData {
-    String name
-    String mimeType
-    byte[] content
-    File file
+export interface EnrolmentExtended extends Enrolment {
+  assessments?: EnrolmentAssessmentExtended[];
 }

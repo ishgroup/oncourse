@@ -12,7 +12,8 @@ nonVetClasses.each { cc ->
     //def enrolmentsOver80 = cc.successAndQueuedEnrolments.findAll { e -> e.attendancePercent >= 80 }
 
     //change 'cc.successAndQueuedEnrolments' to 'enrolmentsOver80' if you uncommented line before
-    cc.successAndQueuedEnrolments.each { enrolment ->
+    records = cc.successAndQueuedEnrolments
+    records.each { enrolment ->
         def printData = report {
             keycode certificateReportTemplate
             records Arrays.asList(enrolment)
@@ -27,10 +28,9 @@ nonVetClasses.each { cc ->
             permission AttachmentInfoVisibility.STUDENTS
             attach enrolment
         }
-
-        message {
-            template certificateMessageTemplate
-            record enrolment
-        }
+    }
+    message {
+        template certificateMessageTemplate
+        record records
     }
 }

@@ -122,8 +122,7 @@ const InvoiceItemRow: React.FC<any> = props => {
   );
 };
 
-const mapStateToProps = (state: State, props) => ({
-  previousInvoices: state.checkout.summary[props.activeField],
+const mapStateToProps = (state: State) => ({
   currencySymbol: state.currency && state.currency.shortCurrencySymbol
 });
 

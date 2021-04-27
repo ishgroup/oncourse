@@ -29,16 +29,16 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
  * s3 {
  *     name "integration name"
  *     blob bytes
- *     filName "transactions.csv"
+ *     fileName "transactions.csv"
  * }
  * ```
  *
- * If you pass the FileData object in the blob attribute, you can skip the name.
+ * If you pass the DocumentParam object as the blob attribute, you can skip the name.
  *
  * ```
  * s3 {
  *     name "integration name"
- *     blob fileData
+ *     blob documentParam
  * }
  * ```
  *
@@ -65,6 +65,6 @@ class S3ScriptClosure implements ScriptClosureTrait<S3Integration> {
      */
     @Override
     Object execute(S3Integration integration) {
-        return integration.stroe(blob, fileName)
+        return integration.store(blob, fileName)
     }
 }

@@ -12,7 +12,12 @@ import { CheckboxField } from "../../../../common/components/form/form-fields/Ch
 import EditInPlaceDateTimeField from "../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 import EditInPlaceMoneyField from "../../../../common/components/form/form-fields/EditInPlaceMoneyField";
-import { validateEmail, validateSingleMandatoryField, validateURL } from "../../../../common/utils/validation";
+import {
+  validateEmail,
+  validatePattern,
+  validateSingleMandatoryField,
+  validateURL
+} from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
 import EditInPlaceSearchSelect from "../../../../common/components/form/form-fields/EditInPlaceSearchSelect";
 
@@ -113,6 +118,13 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
       component = EditInPlaceField;
       componentProps = {
         validate
+      };
+      break;
+    }
+    case "Pattern text": {
+      component = EditInPlaceField;
+      componentProps = {
+        validate: type.mandatory ? [validateSingleMandatoryField, validatePattern] : validatePattern
       };
       break;
     }

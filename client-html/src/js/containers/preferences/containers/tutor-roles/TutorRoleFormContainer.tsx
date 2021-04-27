@@ -13,7 +13,7 @@ import { DefinedTutorRole } from "@api/model";
 import { State } from "../../../../reducers/state";
 import { usePrevious } from "../../../../common/utils/hooks";
 import {
- createTutorRole, getTutorRole, removeTutorRole, updateTutorRole 
+ createTutorRole, getTutorRole, removeTutorRole, updateTutorRole
 } from "../../actions";
 import TutorRolesForm from "./components/TutorRolesForm";
 import { setNextLocation, showConfirm } from "../../../../common/actions";
@@ -80,7 +80,7 @@ const TutorRoleFormContainer = React.memo<any>(props => {
     },
     [isNew]
   );
-  
+
   return (
     <TutorRolesForm
       dispatch={dispatch}

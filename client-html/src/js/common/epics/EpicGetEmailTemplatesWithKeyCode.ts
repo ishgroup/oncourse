@@ -8,8 +8,8 @@ import { Epic } from "redux-observable";
 import { EmailTemplate } from "@api/model";
 import * as EpicUtils from "./EpicUtils";
 import { GET_EMAIL_TEMPLATES_WITH_KEYCODE, GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED } from "../actions";
-import EmailTemplateService from "../services/EmailTemplateService";
 import FetchErrorHandler from "../api/fetch-errors-handlers/FetchErrorHandler";
+import EmailTemplateService from "../../containers/automation/containers/email-templates/services/EmailTemplateService";
 
 const sortEmailBodyDown = (a, b) => {
   const aName = a.name;
