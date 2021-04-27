@@ -1305,6 +1305,7 @@
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="entityClass" type="VARCHAR" length="128"/>
+		<db-attribute name="entityAttribute" type="VARCHAR" length="128"/>
 		<db-attribute name="entityEventType" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="keyCode" type="VARCHAR" length="80"/>
@@ -2794,6 +2795,7 @@
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
 		<obj-attribute name="entityClass" type="java.lang.String" db-attribute-path="entityClass"/>
+		<obj-attribute name="entityAttribute" type="java.lang.String" db-attribute-path="entityAttribute"/>
 		<obj-attribute name="entityEventType" type="ish.common.types.EntityEvent" db-attribute-path="entityEventType"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="keyCode" type="java.lang.String" db-attribute-path="keyCode"/>
