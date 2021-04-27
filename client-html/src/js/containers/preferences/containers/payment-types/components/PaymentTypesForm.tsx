@@ -6,8 +6,11 @@ import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
 import isEqual from "lodash.isequal";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import {
- FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
+ Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
 import { PaymentMethod } from "@api/model";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
@@ -19,6 +22,8 @@ import { formCommonStyles } from "../../../styles/formCommonStyles";
 import PaymentTypesRenderer from "./PaymentTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { State } from "../../../../../reducers/state";
+import { setNextLocation } from "../../../../../common/actions";
 
 const manualLink = getManualLink("generalPrefs_paymentTypes");
 
@@ -36,8 +41,12 @@ interface Props {
   onUpdate: (paymentTypes: PaymentMethod[]) => void;
   assetAccounts: any;
   touched: any;
+  form: string;
   reset: () => void;
   openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  history?: any,
+  nextLocation?: string,
+  setNextLocation?: (nextLocation: string) => void,
 }
 
 class PaymentTypesBaseForm extends React.Component<Props, any> {
@@ -90,7 +99,12 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
+        const { nextLocation, history, setNextLocation } = this.props;
+
         this.props.dispatch(initialize("PaymentTypesForm", { types: this.props.paymentTypes }));
+
+        nextLocation && history.push(nextLocation);
+        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -156,12 +170,12 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, handleSubmit, data, assetAccounts, dirty, created, modified, invalid
+     classes, handleSubmit, data, assetAccounts, dirty, created, modified, invalid, form
     } = this.props;
 
     return (
-      <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-        <RouteChangeConfirm when={dirty} />
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>
@@ -215,14 +229,22 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
             </Grid>
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
 
+const mapStateToProps = (state: State) => ({
+  nextLocation: state.nextLocation
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+});
+
 const PaymentTypesForm = reduxForm({
   onSubmitFail,
   form: "PaymentTypesForm"
-})(withStyles(formCommonStyles)(PaymentTypesBaseForm) as any);
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(formCommonStyles)(withRouter(PaymentTypesBaseForm)) as any));
 
 export default PaymentTypesForm;

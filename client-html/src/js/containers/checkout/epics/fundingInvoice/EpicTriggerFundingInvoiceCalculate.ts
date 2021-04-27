@@ -2,7 +2,7 @@ import { ActionsObservable, Epic, ofType } from "redux-observable";
 import { debounce, mergeMap } from "rxjs/operators";
 import { interval } from "rxjs";
 import { format, isSameDay } from "date-fns";
-import uniqid from "uniqid";
+
 import { change, getFormValues } from "redux-form";
 import { Session, TrainingPlan } from "@api/model";
 import { State } from "../../../../reducers/state";
@@ -26,6 +26,7 @@ import EntityService from "../../../../common/services/EntityService";
 import { CHECKOUT_CONTACT_COLUMNS } from "../../constants";
 import { getCustomColumnsMap } from "../../../../common/utils/common";
 import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
+import uniqid from "../../../../common/utils/uniqid";
 
 const getAndMergePlans = async (fundingInvoice: CheckoutFundingInvoice) => {
   let plans: TrainingPlan[] = [];
@@ -171,17 +172,19 @@ export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action
 
       const fundingInvoicesUpdated = [];
 
-      formValues.fundingInvoices.forEach(fi => {
-        const updated = JSON.parse(JSON.stringify(fi));
+      if (formValues && formValues.fundingInvoices) {
+        formValues.fundingInvoices.forEach(fi => {
+          const updated = JSON.parse(JSON.stringify(fi));
 
-        updated.item.enrolment.items = fi.item.enrolment.items.filter(i =>
-          summaryList.some(li => li.items.some(l => l.checked && l.type === "course" && l.class.id === i.class.id)));
+          updated.item.enrolment.items = fi.item.enrolment.items.filter(i =>
+            summaryList.some(li => li.items.some(l => l.checked && l.type === "course" && l.class.id === i.class.id)));
 
-        if (updated.item.enrolment.items.length) {
-          fundingInvoicesUpdated.push(updated);
-          added[fi.relatedFundingSourceId] = true;
-        }
-      });
+          if (updated.item.enrolment.items.length) {
+            fundingInvoicesUpdated.push(updated);
+            added[fi.relatedFundingSourceId] = true;
+          }
+        });
+      }
 
       if (summaryList.length === 1 && !summaryList[0].contact.isCompany) {
         const items = [...summaryList[0].items];

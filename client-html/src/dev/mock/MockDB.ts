@@ -21,7 +21,8 @@ import {
   EmailTemplate,
   ImportModel,
   EntityRelationType,
-  Language
+  Language,
+  GradingType
 } from "@api/model";
 import { mockPreferences } from "./data/preferences";
 import { mockIntegrations } from "./data/integrations";
@@ -90,6 +91,9 @@ import { mockLanguages } from "./data/languages";
 import { mockDocuments } from "./data/entities/documents";
 import { mockPriorLearnings } from "./data/entities/priorLearnings";
 import { mockTutorRoles } from "./data/preference/tutorRoles";
+import { mockFundingContracts } from "./data/preference/fundingContracts";
+import { mockCheckout } from "./data/checkout";
+import { mockGradingTypes } from "./data/preference/grading";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -230,6 +234,12 @@ export class MockDB {
 
   tutorRoles: any;
 
+  fundingContracts: any;
+
+  checkout: any;
+
+  gradingTypes: GradingType[];
+
   constructor() {
     this.init();
   }
@@ -253,6 +263,8 @@ export class MockDB {
     this.notes = mockNotes.call(this);
     this.languages = mockLanguages.call(this);
     this.tutorRoles = mockTutorRoles.call(this);
+    this.fundingContracts = mockFundingContracts.call(this);
+    this.gradingTypes = mockGradingTypes.call(this);
 
     //  Automation
     this.scripts = mockScripts.call(this);
@@ -329,6 +341,9 @@ export class MockDB {
 
     // Timetable
     this.timetable = mockTimetable.call(this);
+
+    // Checkout
+    this.checkout = mockCheckout.call(this);
   }
 
   getList(entity: string) {

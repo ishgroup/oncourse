@@ -13,7 +13,7 @@ import ExportTemplatesService from "../services/ExportTemplatesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import { State } from "../../../../../reducers/state";
 
-const request: EpicUtils.Request<State, any, { exportTemplate: ExportTemplate }> = {
+const request: EpicUtils.Request<State, { exportTemplate: ExportTemplate }> = {
   type: CREATE_EXPORT_TEMPLATE,
   getData: ({ exportTemplate }) => ExportTemplatesService.create(exportTemplate),
   processData: (v, s, { exportTemplate }) => [

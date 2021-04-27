@@ -67,12 +67,22 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
 
 
     @Override
-    void execute(CanvasIntegration integration) {
+    Object execute(CanvasIntegration integration) {
         integration.initAuthHeader()
 
         if (enrolment.student.contact.email) {
             Map userResp = integration.getUserByEmail(enrolment.student.contact.email) as Map
             List userJson = integration.responseToJson(userResp) as List
+
+            List course = integration.getCourse(course_code) as List
+
+            if (course.size() == 0) {
+                throw new IllegalArgumentException("Illegal state: There are no courses with specified code ${course_code}")
+            }
+            if (course.size() > 1) {
+                throw new IllegalArgumentException("Illegal state: There are find more that one course for specified course code: ${course_code}. " +
+                        "Please, specify more unique course code.")
+            }
 
             def student
             if (userJson.size() == 0) {
@@ -88,9 +98,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                 student = userJson.first()
             }
 
-            def course = integration.getCourse(course_code)
-
-            def section = integration.getSection(section_code, course["id"])
+            def section = integration.getSection(section_code, course["id"][0])
 
             if (!section) {
                 if (!create_section) {
@@ -103,7 +111,6 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
             integration.enrolUser(student["id"], section["id"])
 
         }
+        return null
     }
-
-
 }

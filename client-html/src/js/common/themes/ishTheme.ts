@@ -3,6 +3,16 @@ import { theme } from "./appTheme";
 
 const createOverrides = palette => ({
   overrides: {
+    MuiButtonBase: {
+      root: {
+        userSelect: "auto",
+      }
+    },
+    MuiDialogActions: {
+      root: {
+        padding: "8px 24px 16px",
+      },
+    },
     MuiCollapse: {
       entered: {
         height: "auto",

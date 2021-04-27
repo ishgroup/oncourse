@@ -49,10 +49,10 @@
     
     <Course id="1" code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
             isSufficientForQualification="0" isVET="0" isTraineeship="0" createdOn="2013-01-01 00:00:00"
-            modifiedOn="2013-02-01" reportableHours="3.0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+            modifiedOn="2013-02-01" reportableHours="3.0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
     <Course id="2" code="ATT2" willowId="2" name="Test 2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
             isSufficientForQualification="0" isVET="0" isTraineeship="0" createdOn="2013-01-01 00:00:00"
-            modifiedOn="2013-02-01" reportableHours="3.0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+            modifiedOn="2013-02-01" reportableHours="3.0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
     <Site id="1" name="Site 1" isAdministrationCentre="0" latitude="53.90" longitude="27.62" postcodeNew="1001"
           state="NSW" street="Main" suburb="Sydney" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"
@@ -83,28 +83,28 @@
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
     <CourseClass id="2" code="124" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
     <CourseClass id="3" code="125" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
     <CourseClass id="4" code="126" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                  createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                  taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
                  isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                  suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+                 attendanceType="0"/>
 
     <Contact id="10" isCompany="0" isStudent="0" isTutor="1" uniqueCode="1abc2323t" deliveryStatusSms="1"
              deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1"
@@ -185,8 +185,10 @@
     <Discount_CourseClass id="2" courseClassId="1" discountId="2" predictedStudentsPercentage="0.1"
                           discountDollar="25"/>
 
-    <Assessment id="1" active="1" code="ABC1" name="ABC1 name" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0"/>
-    <Assessment id="2" active="1" code="ABC2" name="ABC2 name" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0"/>
+    <GradingType id="1" createdOn="2021-04-13 10:22:44.0" modifiedOn="2021-04-21 21:30:45.0" name="Pass/Fail" min_value="0.00" max_value="100.00" entryType="2"/>
+
+    <Assessment id="1" active="1" code="ABC1" name="ABC1 name" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" gradingTypeId="1"/>
+    <Assessment id="2" active="1" code="ABC2" name="ABC2 name" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" gradingTypeId="1"/>
 
     <AssessmentClass id="1" courseClassId="1" assessmentId="1" dueDate="2026-10-17 22:44:15.0" releaseDate="2027-10-17 22:44:15.0" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0"/>
     <AssessmentClass id="2" courseClassId="1" assessmentId="2" dueDate="2026-10-17 22:44:15.0" releaseDate="2027-10-17 22:44:15.0" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0"/>

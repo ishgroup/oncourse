@@ -62,10 +62,12 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
     onUnlink(index);
   };
 
-  renderCreateType(lastVersion, validUrl, readOnly: boolean = false) {
+  renderType(lastVersion, validUrl, type) {
     const {
-      classes, item, itemPath, tags, onClose, dispatch, form
+      classes, item, itemPath, tags, onClose, dispatch, form, onSave
     } = this.props;
+
+    const readOnly = ["view", "edit"].includes(type);
 
     return (
       <div>
@@ -127,10 +129,15 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
 
         <DialogActions classes={{ root: classes.actions }}>
           <Button variant="text" color="primary" onClick={onClose}>
-            {readOnly ? "Close" : "Cancel"}
+            {type === "view" ? "Close" : "Cancel"}
           </Button>
-          {!readOnly && (
-            <Button variant="text" disabled={!item.name} className="documentsSubmitButton" onClick={this.onAdd}>
+          {type !== "view" && (
+            <Button
+              variant="text"
+              disabled={!item.name}
+              className="documentsSubmitButton"
+              onClick={type === "create" ? this.onAdd : onSave}
+            >
               Add
             </Button>
           )}
@@ -220,8 +227,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
 
               {!loading && (
                 <div className={clsx(classes.contentWrapper, "relative overflow-hidden paperBackgroundColor")}>
-                  {type === "create" && this.renderCreateType(lastVersion, validUrl)}
-                  {(type === "view" || type === "edit") && this.renderCreateType(lastVersion, validUrl, true)}
+                  {this.renderType(lastVersion, validUrl, type)}
                 </div>
               )}
             </>

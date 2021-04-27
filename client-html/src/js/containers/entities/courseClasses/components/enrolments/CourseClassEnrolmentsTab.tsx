@@ -13,8 +13,8 @@ import { State } from "../../../../../reducers/state";
 
 const CourseClassEnrolmentsTab: React.FC<EditViewProps<CourseClassExtended>> = props => {
   const {
- values, isNew, dirty, showConfirm, twoColumn
-} = props;
+   values, isNew, dirty, showConfirm, twoColumn
+  } = props;
 
   const hasQePermissions = useSelector<State, any>(state => state.access["ENROLMENT_CREATE"]);
 

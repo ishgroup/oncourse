@@ -6,13 +6,12 @@
 import React, { ReactElement } from "react";
 import { InjectedFormProps } from "redux-form";
 import { Dispatch } from "redux";
-import {
-  DataResponse, EmailTemplate, Filter, Script, SearchQuery
-} from "@api/model";
+import { DataResponse, EmailTemplate, Filter, Script, SearchQuery } from "@api/model";
 import { MenuTag } from "../tags";
 import { AnyArgFunction } from "./CommonFunctions";
 import { ShowConfirmCaller } from "./Confirm";
 import { MessageData } from "./Message";
+import { EntityName } from "../entities/common";
 
 export interface CoreFilter extends Filter {
   active?: boolean;
@@ -76,7 +75,7 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   fullScreenEditView?: any;
   toogleFullScreenEditView: any;
   dispatch?: Dispatch<any>;
-  rootEntity: string;
+  rootEntity: EntityName;
   showConfirm: any;
   openNestedEditView: any;
   manualLink?: any;
@@ -94,7 +93,7 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
 
 export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   manualLink: string;
-  rootEntity: string;
+  rootEntity: EntityName;
   isNew: boolean;
   values: V;
   dispatch: any;

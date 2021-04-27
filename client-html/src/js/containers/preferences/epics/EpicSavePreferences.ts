@@ -11,7 +11,7 @@ import PreferencesService from "../services/PreferencesService";
 import { SAVE_PREFERENCES_FULFILLED, SAVE_PREFERENCES_REQUEST } from "../actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: SAVE_PREFERENCES_REQUEST,
   getData: payload => PreferencesService.savePreferences(payload.fields),
   retrieveData: payload => PreferencesService.getPreferences(payload.category),

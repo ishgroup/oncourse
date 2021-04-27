@@ -7,6 +7,7 @@
         <name>Test Assessment Task</name>
         <description>Description</description>
         <active>true</active>
+        <gradingType>Pass/Fail</gradingType>
     </assessment>
     <assessment id='4'>
         <createdOn>27-3-2020 17:59:03</createdOn>
@@ -15,5 +16,15 @@
         <name>testAssessment</name>
         <description>Description</description>
         <active>false</active>
+        <gradingType>Pass/Fail</gradingType>
+    </assessment>
+    <assessment id='5'>
+        <createdOn>27-3-2020 17:59:03</createdOn>
+        <modifiedOn>3-4-2020 05:42:59</modifiedOn>
+        <code>test.assessment.105</code>
+        <name>withoutGrading</name>
+        <description>Description</description>
+        <active>true</active>
+        <gradingType />
     </assessment>
 </data>

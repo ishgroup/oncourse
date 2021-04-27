@@ -33,11 +33,13 @@ class CourseTest extends CayenneIshTestCase {
         course1.setName("Course 1-1")
         course1.setCode("C11")
         course1.setFieldConfigurationSchema(scheme)
+        course1.setFeeHelpClass(Boolean.FALSE)
 
         Course course2 = context.newObject(Course.class)
         course2.setName("Course 1-2")
         course2.setCode("C12")
         course2.setFieldConfigurationSchema(scheme)
+        course2.setFeeHelpClass(Boolean.FALSE)
 
         context.commitChanges()
 
@@ -51,7 +53,6 @@ class CourseTest extends CayenneIshTestCase {
         try {
 			context.commitChanges()
         } catch (Exception e) {
-			e.printStackTrace()
             fail("the course-course relationship cannot be created.")
         }
 
@@ -77,6 +78,7 @@ class CourseTest extends CayenneIshTestCase {
         course1.setName("Course 4-1")
         course1.setCode("C41")
         course1.setFieldConfigurationSchema(DataGenerator.valueOf(context).getFieldConfigurationScheme())
+        course1.setFeeHelpClass(Boolean.FALSE)
 
         Tax t = context.newObject(Tax.class)
         t.setTaxCode("test")
@@ -101,7 +103,6 @@ class CourseTest extends CayenneIshTestCase {
         try {
 			context.commitChanges()
         } catch (Exception e) {
-			e.printStackTrace()
             fail("the course-product relationship cannot be created.")
         }
 
@@ -122,6 +123,7 @@ class CourseTest extends CayenneIshTestCase {
         course.setName("Course ToCourse")
         course.setCode("CourseFromProduct")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(context).getFieldConfigurationScheme())
+        course.setFeeHelpClass(Boolean.FALSE)
 
         Tax tax = context.newObject(Tax.class)
         tax.setTaxCode("test")
@@ -146,7 +148,6 @@ class CourseTest extends CayenneIshTestCase {
         try {
             context.commitChanges()
         } catch (Exception e) {
-            e.printStackTrace()
             fail("the course-product relationship cannot be created.")
         }
 
@@ -172,11 +173,13 @@ class CourseTest extends CayenneIshTestCase {
         mainCourse.setName("Main Course")
         mainCourse.setCode("MainCourse")
         mainCourse.setFieldConfigurationSchema(scheme)
+        mainCourse.setFeeHelpClass(Boolean.FALSE)
 
         Course toCourse = context.newObject(Course.class)
         toCourse.setName("Course to main course")
         toCourse.setCode("CtoMain")
         toCourse.setFieldConfigurationSchema(scheme)
+        toCourse.setFeeHelpClass(Boolean.FALSE)
 
         context.commitChanges()
 
@@ -193,6 +196,7 @@ class CourseTest extends CayenneIshTestCase {
         fromCourse.setName("Course from main course")
         fromCourse.setCode("CfromMain")
         fromCourse.setFieldConfigurationSchema(scheme)
+        fromCourse.setFeeHelpClass(Boolean.FALSE)
 
         context.commitChanges()
 

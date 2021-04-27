@@ -3,7 +3,6 @@ import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { State } from "../../../../../reducers/state";
 import {
   GET_EMAIL_TEMPLATE,
   GET_EMAIL_TEMPLATES_LIST,
@@ -12,7 +11,7 @@ import {
 } from "../actions";
 import EmailTemplateService from "../services/EmailTemplateService";
 
-const request: EpicUtils.Request<State, any, { emailTemplate: EmailTemplate }> = {
+const request: EpicUtils.Request<{ emailTemplate: EmailTemplate }, { emailTemplate: EmailTemplate }> = {
   type: UPDATE_INTERNAL_EMAIL_TEMPLATE,
   getData: ({ emailTemplate }) => EmailTemplateService.updateInternal(emailTemplate),
   processData: (v, s, { emailTemplate: { id } }) => [

@@ -492,6 +492,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       selectAdornment,
       returnType,
       InputProps: { ...restInputProps } = {},
+      InputLabelProps = {},
       labelAdornment,
       preformatDisplayValue,
       clearOnUnmount,
@@ -609,7 +610,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         min,
         max,
         onKeyDown,
-        size: formatting === "inline" && input.value ? String(input.value.length + 1) : undefined,
         type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
         className: clsx({
           [classes.inlineInput]: formatting === "inline",
@@ -618,7 +618,10 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           [classes.hideArrows]: hideArrows,
           "text-end": rightAligned
         }),
-        placeholder: hidePlaceholderInEditMode ? undefined : placeholder
+        placeholder: hidePlaceholderInEditMode ? undefined : placeholder,
+        style: {
+          width: formatting === "inline" ? String(input.value).length + "ch" : undefined
+        }
       },
       value: input.value,
       onFocus: this.onFocus,
@@ -672,6 +675,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 root: clsx(classes.label, !label && classes.labelTopZeroOffset),
                 shrink: classes.labelShrink
               }}
+              {...InputLabelProps}
             >
               {labelContent}
             </InputLabel>

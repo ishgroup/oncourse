@@ -44,20 +44,6 @@ import {
 } from "../utils";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
-  codeArea: {
-    borderRadius: theme.shape.borderRadius,
-    background: theme.table.contrastRow.main,
-    padding: theme.spacing(1),
-    border: "none",
-    outline: "none",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    fontSize: "inherit",
-    fontFamily: "inherit",
-    color: "inherit",
-    width: "100%"
-  },
   linkButton: {
     fontSize: "1.2em",
     padding: theme.spacing(0.5)
@@ -246,7 +232,6 @@ const DocumentShare:React.FC<Props> = ({
             >
               {`${relationsCount} ${entity.capitalize()}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""} `}
               <IconButton
-                disabled={readOnly}
                 color="secondary"
                 className={classes.linkButton}
                 onClick={() => onAttachmentCategoryClick(entity, relationsMap)}
@@ -256,7 +241,6 @@ const DocumentShare:React.FC<Props> = ({
               {portalEnabled
                 && !["Site", "Room"].includes(entity) && (
                 <IconButton
-                  disabled={readOnly}
                   color="secondary"
                   className={classes.linkButton}
                   onClick={() => onAttachmentPeopleClick(entity, documentSource.access, relations)}
@@ -466,7 +450,7 @@ const DocumentShare:React.FC<Props> = ({
             <CardContent>
               <div className="centeredFlex">
                 <Typography color="textSecondary" className="flex-fill">
-                  <input ref={linkInput} readOnly className={classes.codeArea} type="text" value={validUrl} />
+                  <input ref={linkInput} readOnly className="codeArea" type="text" value={validUrl} />
                 </Typography>
                 <Button color="primary" className="text-nowrap" onClick={onCopyLink}>
                   Copy Link

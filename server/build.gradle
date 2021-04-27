@@ -40,8 +40,7 @@ sourceSets {
 	}
 	test {
 		groovy {
-			srcDirs += 'src/main/java'
-			srcDirs += 'src/main/groovy'
+			srcDirs += 'src/test/groovy'
 		}
 
 	}
@@ -74,7 +73,7 @@ dependencies {
 	implementation "org.eclipse.jetty:jetty-alpn-java-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-jmx:$jettyVersion"
 
-	implementation "org.eclipse.jetty.alpn:alpn-api:1.1.3.v20160715"
+	implementation "com.nulab-inc:zxcvbn:1.4.1"
 
 	implementation ("org.apache.maven:maven-artifact:3.3.9")
 	api ("org.liquibase:liquibase-core:4.1.0") {
@@ -98,12 +97,11 @@ dependencies {
 	api 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
 	implementation 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
 
-	implementation 'com.nulab-inc:zxcvbn:1.2.5'
 	implementation 'com.warrenstrange:googleauth:0.4.5'
 	implementation 'net.glxn.qrgen:javase:2.0'
 
-	implementation 'net.java.dev.jets3t:jets3t:0.9.4'
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.11.939'
+	implementation 'com.azure:azure-storage-blob:12.0.0'
 
 	api 'org.quartz-scheduler:quartz:2.2.2'
 	implementation 'org.apache.pdfbox:pdfbox:2.0.17'
@@ -133,25 +131,15 @@ dependencies {
 	implementation 'com.google.apis:google-api-services-classroom:v1-rev135-1.23.0'
 
 	api 'com.nimbusds:nimbus-jose-jwt:8.9'
-	implementation 'com.bugsnag:bugsnag:3.6.1'
+	implementation 'com.bugsnag:bugsnag:3.6.2'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
-	testImplementation "org.apache.derby:derbytools:$derbyVersion"
 	testImplementation 'commons-dbcp:commons-dbcp:1.4'
 	testImplementation 'xmlunit:xmlunit:1.6' //used for xml export validation tests
 	testImplementation 'org.kohsuke:wordnet-random-name:1.3'
 	testImplementation "io.bootique:bootique-test:$bootiqueVersion"
 	testImplementation "org.testng:testng:6.13.1"
-	testImplementation "org.apache.derby:derbyclient:$derbyVersion"
-	testImplementation "org.apache.derby:derbynet:$derbyVersion"
-
-}
-configurations.all {
-	resolutionStrategy {
-		// this is the last MPL version of iText, so we can't go past this
-		forcedModules = ['com.lowagie:itext:2.1.7.js2']
-	}
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -161,7 +149,7 @@ project.ext {
 }
 
 application {
-	mainClassName = 'ish.oncourse.server.AngelServer'
+	mainClass.set('ish.oncourse.server.AngelServer')
 	applicationDefaultJvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
 }
 
@@ -198,7 +186,7 @@ test {
 		println 'user.language:' + System.getProperty('user.language')
 		println 'Locale.getDefault():' + Locale.getDefault()
 	}
-	
+
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
 	dependsOn "expandConfig"
@@ -264,16 +252,6 @@ task installer_unix(dependsOn: [jar, assembleDist], type: Zip) {
 	destinationDirectory = file("${buildDir}/distributions/unix")
 }
 
-// API swagger ocumentation
-task generateApiDoc (type: SwaggerDoc) {
-	schema = file("${rootDir}/server-api/src/main/resources/server-api.yaml")
-	docOutput = file("${buildDir}/doc")
-}
-task packageApiDoc (type: Zip, dependsOn: generateApiDoc) {
-	from file("${buildDir}/doc/docs")
-	archiveClassifier = 'documentation'
-}
-
 // DSL asciidoc documentation
 dslDocs {
 	source = sourceSets.main.groovy.plus(project(':types').sourceSets.main.groovy).plus(project(':server-api').sourceSets.main.groovy)
@@ -299,11 +277,6 @@ publishing {
 		dsldocs(MavenPublication) {
 			artifact (packageDslDoc) {
 				artifactId "dsldocs"
-			}
-		}
-		docs(MavenPublication) {
-			artifact(packageApiDoc) {
-				artifactId "docs"
 			}
 		}
 		jar(MavenPublication) {

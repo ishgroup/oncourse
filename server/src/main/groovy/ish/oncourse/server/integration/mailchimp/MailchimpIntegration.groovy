@@ -15,7 +15,6 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
-import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.util.LocalDateUtils
@@ -47,18 +46,30 @@ class MailchimpIntegration implements PluginTrait {
 		this.membersUrl = "https://${region}.api.mailchimp.com/3.0/lists/$listId/members/"
 	}
 
-	protected subscribeToList(String email, String firstName, String lastName,  boolean optIn) {
+	protected searchClient(String email) {
+		RESTClient httpClient = new RESTClient(membersUrl + DigestUtils.md5Hex(email))
+
+		httpClient.request(Method.GET, ContentType.JSON) {
+			headers.'Authorization' = authHeader
+			response.success = { resp, result ->
+				return result
+			}
+			response.failure = { resp, result ->
+				logger.error("Mailchimp search client failed: ${result.status} - ${result.title}: ${result.detail}. More information at: ${result.type}.")
+			}
+		}
+
+	}
+
+	protected addToList(String email, Map mergeFields,  String status) {
 		RESTClient httpClient = new RESTClient(membersUrl)
 
 		httpClient.request(Method.POST, ContentType.JSON) {
 			headers.'Authorization' = authHeader
 			body = [
-					status: optIn? 'pending' : 'subscribed',
+					status: status,
 					email_address: email,
-					merge_fields: [
-							FNAME: firstName,
-							LNAME: lastName
-					],
+					merge_fields: mergeFields.size() > 0 ? mergeFields : null,
 			]
 
 			response.success = { resp, result ->
@@ -71,11 +82,29 @@ class MailchimpIntegration implements PluginTrait {
 
 	}
 
-	def subscribeToList(Contact contact, boolean optIn) {
-		subscribeToList(contact.email, contact.firstName, contact.lastName, optIn)
+
+	protected updateClient(String email, Map mergeFields = [:], String status) {
+		RESTClient httpClient = new RESTClient(membersUrl + DigestUtils.md5Hex(email))
+
+		httpClient.request(Method.PATCH, ContentType.JSON) {
+			headers.'Authorization' = authHeader
+			body = [
+					status: status,
+					email_address: email,
+					merge_fields: mergeFields.size() > 0 ? mergeFields : null,
+			]
+
+			response.success = { resp, result ->
+				return result
+			}
+			response.failure = { resp, result ->
+				logger.error("Mailchimp update client failed: ${result.status} - ${result.title}: ${result.detail}. More information at: ${result.type}.")
+			}
+		}
+
 	}
 
-	def unsubscribeFromList(String email) {
+	def deletePermanently(String email) {
 		def httpClient = new RESTClient(membersUrl + DigestUtils.md5Hex(email) + "/actions/delete-permanent")
 
 		httpClient.request(Method.POST, ContentType.JSON) {
@@ -85,13 +114,9 @@ class MailchimpIntegration implements PluginTrait {
 				return result
 			}
 			response.failure = { resp, result ->
-				logger.error("Mailchimp unsubscribe from list failed: ${result.status} - ${result.title}: ${result.detail}. More information at: ${result.type}.")
+				logger.error("Mailchimp deleting subscriber from list failed: ${result.status} - ${result.title}: ${result.detail}. More information at: ${result.type}.")
 			}
 		}
-	}
-
-	def unsubscribeFromList(Contact contact) {
-		unsubscribeFromList(contact.email)
 	}
 
 	String tag(String tagName, String email) {

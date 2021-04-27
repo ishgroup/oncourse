@@ -4,9 +4,9 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useState
+ useCallback, useEffect, useMemo, useState 
 } from "react";
-import { initialize, InjectedFormProps } from "redux-form";
+import { Form, initialize, InjectedFormProps } from "redux-form";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import FileCopy from "@material-ui/icons/FileCopy";
 import Grid from "@material-ui/core/Grid/Grid";
@@ -24,13 +24,13 @@ import FormField from "../../../../../common/components/form/form-fields/FormFie
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import Bindings from "../../../components/Bindings";
 import AvailableFrom, { mapAvailableFrom } from "../../../components/AvailableFrom";
-import { EntityItems, EntityName } from "../../../constants";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { validateKeycode } from "../../../utils";
 import { mapSelectItems } from "../../../../../common/utils/common";
+import { EntityItems, EntityName } from "../../../../../model/entities/common";
 
 const manualUrl = getManualLink("advancedSetup_Export");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;
@@ -45,11 +45,15 @@ interface Props extends InjectedFormProps {
   onUpdateInternal: (template: ExportTemplate) => void;
   onUpdate: (template: ExportTemplate) => void;
   onDelete: NumberArgFunction;
+  history: any,
+  nextLocation: string,
+  setNextLocation: (nextLocation: string) => void,
 }
 
 const ExportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values, dispatch, onCreate, onUpdate, onUpdateInternal, onDelete
+    dirty, form, handleSubmit, isNew, invalid, values,
+     dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation, setNextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
 
@@ -115,12 +119,19 @@ const ExportTemplatesForm = React.memo<Props>(
       }
     }, [values.id, prevId, disableRouteConfirm]);
 
+    useEffect(() => {
+      if (!dirty && nextLocation) {
+        history.push(nextLocation);
+        setNextLocation('');
+      }
+    }, [nextLocation, dirty]);
+
     return (
       <>
         <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} />
 
-        <form onSubmit={handleSubmit(handleSave)}>
-          {(dirty || isNew) && <RouteChangeConfirm when={(dirty || isNew) && !disableRouteConfirm} />}
+        <Form onSubmit={handleSubmit(handleSave)}>
+          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
 
           <CustomAppBar>
             <FormField
@@ -270,7 +281,7 @@ const ExportTemplatesForm = React.memo<Props>(
               </div>
             </Grid>
           </Grid>
-        </form>
+        </Form>
       </>
     );
   }

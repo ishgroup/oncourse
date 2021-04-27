@@ -4,4 +4,4 @@
  */
 
 export const getLabelWithCount = (label: string, count: number): string =>
-  count > 0 ? `${count} ${label}${count > 1 ? "s" : ""}` : label + "s";
+  (count > 0 ? `${count} ${label}${count > 1 ? "s" : ""}` : label + "s");

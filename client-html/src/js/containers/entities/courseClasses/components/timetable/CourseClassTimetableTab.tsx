@@ -14,7 +14,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import {
   addBusinessDays, addDays, addHours, addMinutes, addMonths, addWeeks, addYears, differenceInMinutes, isWeekend, subDays
 } from "date-fns";
-import uniqid from "uniqid";
+
 import { Session, SessionWarning } from "@api/model";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
@@ -55,6 +55,7 @@ import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-han
 import { State } from "../../../../../reducers/state";
 import { SelectItemDefault } from "../../../../../model/entities/common";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
+import uniqid from "../../../../../common/utils/uniqid";
 
 const styles = () => createStyles({
     root: {

@@ -8,7 +8,7 @@ import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/ac
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { id: string }> = {
+const request: EpicUtils.Request<any, { id: string }> = {
   type: GET_SALE,
   getData: payload => SaleService.getSale(Number(payload.id)),
   processData: (productItem: ProductItem) => [

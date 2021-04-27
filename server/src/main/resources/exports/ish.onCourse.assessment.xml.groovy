@@ -9,6 +9,7 @@ xml.data() {
             name(ass?.name)
             description(ass?.description)
             active(ass?.active)
+            gradingType(ass.gradingType?.typeName)
         }
     }
 }

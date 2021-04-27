@@ -8,12 +8,9 @@ import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { FETCH_SUCCESS } from "../../../../../common/actions/index";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import IntegrationService from "../services";
-import {
-  CREATE_INTEGRATION_ITEM_REQUEST,
-  getIntegrations
-} from "../../../actions";
+import { CREATE_INTEGRATION_ITEM_REQUEST, getIntegrations } from "../../../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CREATE_INTEGRATION_ITEM_REQUEST,
   getData: payload => IntegrationService.createIntegration(payload.item),
   retrieveData: () => IntegrationService.getIntegrations(),

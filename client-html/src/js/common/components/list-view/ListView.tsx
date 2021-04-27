@@ -5,21 +5,20 @@
 
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { getFormSyncErrors, initialize, isDirty } from "redux-form";
+import {
+  getFormSyncErrors, initialize, isDirty, isInvalid, submit
+} from "redux-form";
 import clsx from "clsx";
-import { createStyles, withStyles, ThemeProvider } from "@material-ui/core/styles";
+import { createStyles, ThemeProvider, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
-  Currency,
-  LayoutType,
-  TableModel,
-  ExportTemplate,
-  Report, Column, SearchQuery
+  Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel
 } from "@api/model";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import { EntityName } from "../../../containers/automation/constants";
+import ErrorOutline from "@material-ui/icons/ErrorOutline";
+import Button from "@material-ui/core/Button";
 import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
 import { onSubmitFail } from "../../utils/highlightFormClassErrors";
@@ -34,47 +33,54 @@ import LoadingIndicator from "../layout/LoadingIndicator";
 import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEditView";
 import {
   clearListState,
+  deleteCustomFilter,
+  getListNestedEditRecord,
+  getRecords,
   setFilterGroups,
+  setListColumns,
+  setListCreatingNew,
+  setListEditRecord,
+  setListEditRecordFetching,
+  setListEntity,
+  setListFullScreenEditView,
   setListLayout,
+  setListMenuTags,
   setListSelection,
   setListUserAQLSearch,
-  deleteCustomFilter,
-  setListEditRecord,
-  getListNestedEditRecord,
-  setListMenuTags,
-  setListCreatingNew,
-  setListFullScreenEditView,
-  updateTableModel,
-  getRecords,
-  setListColumns,
-  setSearch, setListEditRecordFetching, setListEntity
+  setSearch,
+  updateTableModel
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
 import {
- getScripts, getUserPreferences, setUserPreference, showConfirm
+  closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm
 } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
 import { GAEventTypes } from "../google-tag-manager/services/GoogleAnalyticsService";
 import {
- AnyArgFunction, BooleanArgFunction, NoArgFunction, StringArgFunction
+  AnyArgFunction,
+  BooleanArgFunction,
+  NoArgFunction,
+  StringArgFunction
 } from "../../../model/common/CommonFunctions";
 import {
   EditViewContainerProps,
   FilterGroup,
   FindRelatedItem,
-  ListAqlMenuItemsRenderer, ListState
+  ListAqlMenuItemsRenderer,
+  ListState
 } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
 import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
 import { ENTITY_AQL_STORAGE_NAME, LISTVIEW_MAIN_CONTENT_WIDTH } from "../../../constants/Config";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import { FindEntityState } from "../../../model/entities/common";
+import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
 import ReactTableList, { ListProps } from "./components/list/ReactTableList";
 import { getActiveTags, getFiltersNameString, getTagsUpdatedByIds } from "./utils/listFiltersUtils";
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
+import { LSGetItem } from "../../utils/storage";
 
 export const ListSideBarDefaultWidth = 200;
 export const ListMainContentDefaultWidth = 774;
@@ -129,6 +135,7 @@ interface Props extends Partial<ListState> {
   onCreate?: any;
   classes?: any;
   isDirty?: boolean;
+  isInvalid?: boolean;
   fullScreenEditView?: boolean;
   fetching?: boolean;
   savingFilter?: any;
@@ -199,6 +206,8 @@ interface Props extends Partial<ListState> {
   getListViewPreferences?: () => void;
   preferences?: UserPreferencesState;
   setListviewMainContentWidth?: (value: string) => void;
+  submitForm?: any;
+  closeConfirm?: () => void;
   deleteWithoutConfirmation?: boolean;
 }
 
@@ -210,6 +219,7 @@ interface ComponentState {
   threeColumn: boolean;
   sidebarWidth: number;
   mainContentWidth: number;
+  newSelection: string[] | null;
 }
 
 class ListView extends React.PureComponent<Props, ComponentState> {
@@ -233,7 +243,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       deleteEnabled: !props.defaultDeleteDisabled,
       threeColumn: false,
       sidebarWidth: ListSideBarDefaultWidth,
-      mainContentWidth: this.getMainContentWidth(ListMainContentDefaultWidth, ListSideBarDefaultWidth)
+      mainContentWidth: this.getMainContentWidth(ListMainContentDefaultWidth, ListSideBarDefaultWidth),
+      newSelection: null,
     };
   }
 
@@ -305,8 +316,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       creatingNew,
       resetEditView,
       setListUserAQLSearch,
-      isDirty,
-      onSwipeableDrawerDirtyForm,
       setListCreatingNew,
       deleteDisabledCondition,
       menuTagsLoaded,
@@ -452,13 +461,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       this.onQuerySearchChange(records.search);
     }
 
-    // if (
-    //   onSwipeableDrawerDirtyForm && !fullScreenEditView && rootEntity && !fetch.pending
-    //   && records.rows.length && selection.length && resetEditView
-    // ) {
-    //   onSwipeableDrawerDirtyForm(isDirty || (creatingNew && selection[0] === "new"), resetEditView);
-    // }
-
     if (selection.length && selection[0] !== "new" && typeof deleteDisabledCondition === "function") {
       this.updateDeleteCondition(!deleteDisabledCondition(this.props));
     }
@@ -576,6 +578,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     const { threeColumn } = this.state;
 
     if ((isDirty || (creatingNew && selection[0] === "new")) && !this.ignoreCheckDirtyOnSelection) {
+      this.setState({ newSelection });
       this.showConfirm(() => {
         this.ignoreCheckDirtyOnSelection = true;
         this.onSelection(newSelection);
@@ -590,7 +593,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       setListCreatingNew(false);
     }
 
-    if (!newSelection.length) {
+    if (newSelection && !newSelection.length) {
       this.updateHistory(params.id ? url.replace(`/${params.id}`, "") : url + "", search );
       resetEditView();
     }
@@ -760,14 +763,54 @@ class ListView extends React.PureComponent<Props, ComponentState> {
   };
 
   showConfirm = (handler, confirmMessage?: string, confirmText?: string, ...rest) => {
-    const { openConfirm } = this.props;
+    const {
+ closeConfirm, openConfirm, isInvalid, fullScreenEditView, submitForm
+} = this.props;
 
-    openConfirm(
-      handler,
-      confirmMessage || "You have unsaved changes. Do you want to discard them and proceed?",
-      confirmText || "DISCARD CHANGES",
-      ...rest
+    const afterSubmitButtonHandler = () => {
+      fullScreenEditView ? this.toggleFullWidthView() : this.onSelection(this.state.newSelection);
+    };
+
+    const confirmButton = (
+      <Button
+        classes={{
+          root: "saveButtonEditView",
+          disabled: "saveButtonEditViewDisabled"
+        }}
+        disabled={isInvalid}
+        startIcon={isInvalid && <ErrorOutline color="error" />}
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          submitForm();
+          this.ignoreCheckDirtyOnSelection = true;
+          setTimeout(afterSubmitButtonHandler, 1000);
+          closeConfirm();
+        }}
+      >
+        SAVE
+      </Button>
     );
+
+    if (!confirmMessage && !confirmText) {
+      openConfirm(
+        undefined,
+        "You have unsaved changes. Do you want to discard them and proceed?",
+        "SAVE",
+        undefined,
+        null,
+        "DISCARD CHANGES",
+        handler,
+        confirmButton
+      );
+    } else {
+      openConfirm(
+        handler,
+        confirmMessage,
+        confirmText,
+        ...rest
+      );
+    }
   };
 
   toggleFullWidthView = () => {
@@ -909,7 +952,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
     const message = args.length >= 4 && args[3]
       ? "The filter will be permanently deleted. This action cannot be undone"
-      : "This filter is currently being shared with other users. The filter will be permanently deleted. This action cannot be undone"
+      : "This filter is currently being shared with other users. The filter will be permanently deleted. This action cannot be undone";
 
     openConfirm(() => {
       this.checkDirty(this.onDeleteFilter, args, true);
@@ -922,11 +965,13 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     if (searchParam.getAll("customSearch").length) {
       let customSearch = searchParam.getAll("customSearch")[0];
 
-      const entityState = JSON.parse(localStorage.getItem(ENTITY_AQL_STORAGE_NAME)) as FindEntityState;
-      for (let i = 0; i < entityState.data.length; i++) {
-        if (entityState.data[i].id === customSearch) {
-          saveCategoryAQLLink({ AQL: "", id: customSearch, action: "remove" });
-          customSearch = entityState.data[i].AQL;
+      const entityState = JSON.parse(LSGetItem(ENTITY_AQL_STORAGE_NAME)) as FindEntityState;
+      if (entityState) {
+        for (let i = 0; i < entityState.data.length; i++) {
+          if (entityState.data[i].id === customSearch) {
+            saveCategoryAQLLink({ AQL: "", id: customSearch, action: "remove" });
+            customSearch = entityState.data[i].AQL;
+          }
         }
       }
       return customSearch;
@@ -1145,6 +1190,7 @@ const mapStateToProps = (state: State) => ({
   fetch: state.fetch,
   currency: state.currency,
   isDirty: isDirty(LIST_EDIT_VIEW_FORM_NAME)(state),
+  isInvalid: isInvalid(LIST_EDIT_VIEW_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(LIST_EDIT_VIEW_FORM_NAME)(state),
   ...state.list,
   ...state.share,
@@ -1168,7 +1214,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch)),
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
   openNestedEditView: (entity: string, id: number, threeColumn: boolean) => dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
-  openConfirm: (onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText)),
+  openConfirm: (onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText, onCancelCustom, confirmCustomComponent) => dispatch(
+    showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText, onCancelCustom, confirmCustomComponent)
+),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
@@ -1178,7 +1226,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
   setListEditRecordFetching: () => dispatch(setListEditRecordFetching()),
   onSwipeableDrawerDirtyForm: (isDirty: boolean, resetEditView: any) => dispatch(setSwipeableDrawerDirtyForm(isDirty, resetEditView)),
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),
-  setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value }))
+  setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
+  submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
+  closeConfirm: () => dispatch(closeConfirm())
 });
 
 export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView)));

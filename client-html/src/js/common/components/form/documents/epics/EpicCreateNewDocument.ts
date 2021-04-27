@@ -5,16 +5,15 @@
 
 import { Epic } from "redux-observable";
 
+import { Document } from "@api/model";
+import { arrayPush, arrayRemove } from "redux-form";
 import * as EpicUtils from "../../../../epics/EpicUtils";
 import DocumentsService from "../services/DocumentsService";
 import { CREATE_DOCUMENT, SET_DOCUMENT_FILE, SET_EDITING_DOCUMENT } from "../actions";
-import { Document } from "@api/model";
 import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
-import { arrayPush, arrayRemove } from "redux-form";
 import { State } from "../../../../../reducers/state";
 
 const request: EpicUtils.Request<
-  any,
   any,
   { document: Document; form: string; documentPath: string; index: number }
 > = {
@@ -30,8 +29,7 @@ const request: EpicUtils.Request<
       document.tags.map(t => t.id).toString(),
       state.documents.documentFile ? state.documents.documentFile.name : ""
     ),
-  processData: (newDocument: Document, state: any, { form, documentPath, index }) => {
-    return [
+  processData: (newDocument: Document, state: any, { form, documentPath, index }) => [
       {
         type: SET_EDITING_DOCUMENT,
         payload: { editingDocument: null, editingFormName: null }
@@ -42,8 +40,7 @@ const request: EpicUtils.Request<
       },
       arrayRemove(form, documentPath, index),
       arrayPush(form, documentPath, newDocument)
-    ];
-  },
+    ],
   processError: (error, { form, documentPath, index }) => [
     {
       type: SET_EDITING_DOCUMENT,

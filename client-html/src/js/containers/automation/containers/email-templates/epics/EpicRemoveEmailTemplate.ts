@@ -6,7 +6,7 @@ import history from "../../../../../constants/History";
 import { GET_EMAIL_TEMPLATES_LIST, REMOVE_EMAIL_TEMPLATE, REMOVE_EMAIL_TEMPLATE_FULFILLED } from "../actions";
 import EmailTemplateService from "../services/EmailTemplateService";
 
-const request: EpicUtils.Request<any, any, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: REMOVE_EMAIL_TEMPLATE,
   getData: id => EmailTemplateService.remove(id),
   processData: () => {

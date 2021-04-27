@@ -57,7 +57,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "password":"pass1",
         "expiryDate":"2040-03-31",
         "invoiceEmail":"co3@gmail.com",
-        "linkedDiscounts":[{"id":1001,"name":"discount1","discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.100,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableOnWeb":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"limitPreviousEnrolment":null}],
+        "linkedDiscounts":[{"id":1001,"name":"discount1","discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.100,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableOnWeb":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"limitPreviousEnrolment":null,"relationDiscount":null}],
         "linkedSalables":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"
@@ -150,7 +150,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "password":"pass2",
         "expiryDate":"2040-03-31",
         "invoiceEmail":"co3@gmail.com",
-        "linkedDiscounts":[{"id":1001,"name":"discount1","discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.100,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableOnWeb":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"limitPreviousEnrolment":null}],
+        "linkedDiscounts":[{"id":1001,"name":"discount1","discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.100,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableOnWeb":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"limitPreviousEnrolment":null,"relationDiscount":null}],
         "linkedSalables":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"

@@ -83,8 +83,8 @@
 	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	
-	<Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-	<Course id="2"  code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
+	<Course id="2"  code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
 	<Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00" deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000" workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW" uniqueCode="ST1UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
 
@@ -95,11 +95,11 @@
 	<CourseClass id="1" code="123" taxAdjustment="0.1" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="5" deliveryMode="1" courseId="1" feeExGst="200.00"
-                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 	<CourseClass id="2" code="124" taxAdjustment="0.1" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="5" deliveryMode="1" courseId="2" feeExGst="400.00"
-                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 
 	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="100" invoiceNumber="1" debtorsAccountId="1" contactId="1" amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..." createdByUserId="1" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
 

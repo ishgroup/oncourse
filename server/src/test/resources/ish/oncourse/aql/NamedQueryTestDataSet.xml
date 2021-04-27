@@ -28,19 +28,19 @@
 	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	<Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="100" receivableFromStudentAccountId="100" taxCode="GST" taxrate="0.1"/>
 
-	<Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
 	<CourseClass id="1" code="123" fundingSource="3" taxId="1" sessionCount="3" taxAdjustment="0.0" minimumPlaces="1"
 				 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
 				 isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="1"
 				 feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
-				 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+				 budgetedPlaces="10" attendanceType="0"/>
 
 	<CourseClass id="2" code="123" fundingSource="3" taxId="1" sessionCount="3" taxAdjustment="0.0" minimumPlaces="1"
 				 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
 				 isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="1"
 				 feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
-				 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+				 budgetedPlaces="10" attendanceType="0"/>
 
 	<Node id="1" isVocabulary="1" isWebVisible="1" nodeType="1" name="Subjects"  specialType="1"/>
 	<NodeRequirement id="1" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="1"/>

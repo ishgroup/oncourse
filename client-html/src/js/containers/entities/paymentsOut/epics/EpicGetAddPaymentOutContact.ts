@@ -9,7 +9,7 @@ import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
 import EntityService from "../../../../common/services/EntityService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ADD_PAYMENT_OUT_CONTACT,
   hideLoadIndicator: true,
   getData: invoiceId => {

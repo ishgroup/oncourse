@@ -6,7 +6,7 @@
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { reduxForm, initialize } from "redux-form";
+import { reduxForm, initialize, Form } from "redux-form";
 import isEmpty from "lodash.isempty";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
@@ -45,12 +45,12 @@ class CollegeBaseForm extends React.Component<any, any> {
 
   render() {
     const {
- classes, handleSubmit, onSave, dirty, secKey, timezones, data, invalid
-} = this.props;
+     classes, handleSubmit, onSave, dirty, secKey, timezones, data, invalid, form
+    } = this.props;
 
     return (
-      <form className="container" onSubmit={handleSubmit(onSave)}>
-        <RouteChangeConfirm when={dirty} />
+      <Form className="container" onSubmit={handleSubmit(onSave)}>
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>
@@ -120,7 +120,7 @@ class CollegeBaseForm extends React.Component<any, any> {
             </Typography>
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }

@@ -61,13 +61,14 @@ class CourseClassTest extends CayenneIshTestCase {
         Course course1 = c0.newObject(Course.class)
         course1.setCode("AAAA")
         course1.setName("name1")
-
         course1.setFieldConfigurationSchema(scheme)
+        course1.setFeeHelpClass(Boolean.FALSE)
 
         Course course2 = c0.newObject(Course.class)
         course2.setCode("BBBB")
         course2.setName("name2")
         course2.setFieldConfigurationSchema(scheme)
+        course2.setFeeHelpClass(Boolean.FALSE)
 
         List<String> codes =new ArrayList<>()
         List<CourseClass> classes = new ArrayList<>()
@@ -97,7 +98,6 @@ class CourseClassTest extends CayenneIshTestCase {
                 cclass1.setCourse(course1)
                 cclass1.setCode(code1)
                 cclass1.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-                cclass1.setFeeHelpClass(false)
                 cclass1.setTax(Tax.getTaxWithCode("GST", c0))
                 cclass1.setIncomeAccount(AccountUtil.getDefaultBankAccount(c0, Account.class))
 
@@ -110,7 +110,6 @@ class CourseClassTest extends CayenneIshTestCase {
                 cclass2.setCourse(course2)
                 cclass2.setCode(code2)
                 cclass2.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-                cclass2.setFeeHelpClass(false)
                 cclass2.setTax(Tax.getTaxWithCode("GST", c0))
                 cclass2.setIncomeAccount(AccountUtil.getDefaultBankAccount(c0, Account.class))
 
@@ -199,13 +198,13 @@ class CourseClassTest extends CayenneIshTestCase {
         course.setCode("CODE")
         course.setName("Course")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(cc).getFieldConfigurationScheme())
+        course.setFeeHelpClass(Boolean.FALSE)
 
         cclass.setCourse(course)
         cclass.setCode("" + code)
         cclass.setMaximumPlaces(30)
         cclass.setMinimumPlaces(5)
         cclass.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-        cclass.setFeeHelpClass(false)
         cclass.setTax(Tax.getTaxWithCode("GST", cc))
         cclass.setIncomeAccount(AccountUtil.getDefaultBankAccount(cc, Account.class))
 
@@ -506,6 +505,7 @@ class CourseClassTest extends CayenneIshTestCase {
         course.setCode("ADV")
         course.setName("courseNamwe1")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(newContext).getFieldConfigurationScheme())
+        course.setFeeHelpClass(Boolean.FALSE)
 
         Account account = newContext.newObject(Account.class)
         account.setAccountCode("accountwCode1")
@@ -540,7 +540,6 @@ class CourseClassTest extends CayenneIshTestCase {
         cc.setIsClassFeeApplicationOnly(true)
         cc.setSuppressAvetmissExport(false)
         cc.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-        cc.setFeeHelpClass(false)
 
         logger.warn("3 {}", PersistenceState.persistenceStateName(cc.getIncomeAccount().getPersistenceState()))
         newContext.commitChanges()
@@ -559,6 +558,7 @@ class CourseClassTest extends CayenneIshTestCase {
         course.setCode("courseCode")
         course.setName("courseName")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(newContext).getFieldConfigurationScheme())
+        course.setFeeHelpClass(Boolean.FALSE)
 
         Account account = newContext.newObject(Account.class)
         account.setAccountCode("accountCode")
@@ -589,7 +589,6 @@ class CourseClassTest extends CayenneIshTestCase {
         cc.setIsClassFeeApplicationOnly(true)
         cc.setSuppressAvetmissExport(false)
         cc.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-        cc.setFeeHelpClass(false)
 
         GregorianCalendar gc = new GregorianCalendar()
         Date startTimeForFirstSession = gc.getTime()
@@ -750,6 +749,7 @@ class CourseClassTest extends CayenneIshTestCase {
         course.setCode("ABSEDV")
         course.setName("courseName1")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(newContext).getFieldConfigurationScheme())
+        course.setFeeHelpClass(Boolean.FALSE)
 
         Account account = newContext.newObject(Account.class)
         account.setAccountCode("accountCode1")
@@ -780,7 +780,6 @@ class CourseClassTest extends CayenneIshTestCase {
         cc.setIsClassFeeApplicationOnly(true)
         cc.setSuppressAvetmissExport(false)
         cc.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-        cc.setFeeHelpClass(false)
 
         ClassCost classCost = newContext.newObject(ClassCost.class)
         classCost.setFlowType(ClassCostFlowType.INCOME)

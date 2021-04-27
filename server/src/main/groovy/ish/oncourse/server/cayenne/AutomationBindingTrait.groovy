@@ -41,11 +41,16 @@ trait AutomationBindingTrait {
    }
 
     Object parseValue(String valueString) {
+        if (valueString == null) {
+            return null
+        }
         try {
             switch (dataType) {
                 case FILE:
                     return valueString.getBytes()
+                case OBJECT:
                 case MESSAGE_TEMPLATE:
+                case PATTERN_TEXT:
                 case TEXT:
                     return valueString
                 case DATE:

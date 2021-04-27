@@ -40,7 +40,7 @@ export function mockOutcomes() {
       hoursAttended: 1,
       purchasingContractIdentifier: "test purchasing contract identifier",
       fundingSourceState: "test funding source state",
-      specificProgramIdentifier: "test specific program identifier"
+      specificProgramIdentifier: "4561259787"
     };
   };
 

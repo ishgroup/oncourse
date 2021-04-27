@@ -20,7 +20,7 @@ const request: EpicUtils.Request = {
   type: CHECKOUT_UPDATE_SUMMARY_PRICES,
   hideLoadIndicator: true,
   getData: (p, s) => {
-    const model = getCheckoutModel(s.checkout, null, {}, true);
+    const model = getCheckoutModel(s.checkout, [], null, {}, true);
     return CheckoutService.checkoutSubmitPayment(
       model,
       true,

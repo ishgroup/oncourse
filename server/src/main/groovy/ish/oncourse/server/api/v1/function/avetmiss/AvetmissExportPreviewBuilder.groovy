@@ -91,12 +91,12 @@ class AvetmissExportPreviewBuilder {
                 if (!attendedPendingOutcomes.empty) {
                     result += createFromOutcomes(attendedPendingOutcomes,
                             AvetmissExportOutcomeCategoryDTO.DELIVERED,
-                            AvetmissExportOutcomeStatusDTO.PENDING_STATUS)
+                            AvetmissExportOutcomeStatusDTO.NO_FINAL_STATUS)
                 }
 
                 result += createFromEnrolments(pendingOutcomes*.enrolment.findAll(),
                         AvetmissExportOutcomeCategoryDTO.DELIVERED,
-                        AvetmissExportOutcomeStatusDTO.PENDING_STATUS)
+                        AvetmissExportOutcomeStatusDTO.NO_FINAL_STATUS)
             }
 
             def finalOutcomes = pastOutcomes.findAll { !NOT_FINAL_STATUSES.contains(it.status) }

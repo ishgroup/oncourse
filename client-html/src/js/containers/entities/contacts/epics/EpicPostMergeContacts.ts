@@ -14,7 +14,7 @@ import { FETCH_SUCCESS } from "../../../../common/actions";
 import { openContactLink } from "../utils";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 
-const request: EpicUtils.Request<any, any, MergeRequest> = {
+const request: EpicUtils.Request<any, MergeRequest> = {
   type: POST_MERGE_CONTACTS,
   getData: request => ContactsService.merge(request),
   processData: contactId => {

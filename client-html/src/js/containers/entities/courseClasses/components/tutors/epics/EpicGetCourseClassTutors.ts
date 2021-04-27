@@ -8,7 +8,6 @@ import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../../common/components/list-view/constants";
-import { State } from "../../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_COURSE_CLASS_TUTORS, setCourseClassTutorNamesWarnings } from "../actions";
 import CourseClassTutorService from "../services/CourseClassTutorService";
@@ -18,7 +17,7 @@ import { getTutorNameWarning } from "../utils";
 
 const columns = "firstName,lastName,email,birthDate,tutor.dateFinished,tutor.wwChildrenStatus";
 
-const request: EpicUtils.Request<any, State, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: GET_COURSE_CLASS_TUTORS,
   hideLoadIndicator: true,
   getData: (id, state) => CourseClassTutorService.getCourseClassTutors(id).then(tutors => (tutors.length

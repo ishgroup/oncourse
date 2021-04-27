@@ -12,8 +12,10 @@
 package ish.oncourse.server.cayenne
 
 import ish.oncourse.API
+import ish.oncourse.cayenne.AssessmentSubmissionInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._AssessmentSubmission
+import ish.util.LocalDateUtils
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
@@ -22,9 +24,11 @@ import javax.annotation.Nullable
 //TODO docs
 @API
 @QueueableEntity
-class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, NotableTrait, AttachableTrait {
+class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, NotableTrait, AttachableTrait, AssessmentSubmissionInterface {
 
-
+	public static final String STUDENT_NAME_PROPERTY = "studentName"
+	public static final String CLASS_NAME_PROPERTY = "courseClassName"
+	public static final String ASSESSMENT_NAME_PROPERTY = "assessmentName"
 
 	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {
@@ -61,20 +65,9 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 		return super.getModifiedOn()
 	}
 
-	@Nullable
-	@API
-	@Override
-	String getStudentComments() {
-		return super.getStudentComments()
-	}
-
-	@Nullable
-	@API
-	@Override
-	String getTutorComments() {
-		return super.getTutorComments()
-	}
-
+	/**
+	 * @return the assessment class: connection between a courseClass and the assessment submission
+	 */
 	@Nonnull
 	@API
 	@Override
@@ -82,6 +75,9 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 		return super.getAssessmentClass()
 	}
 
+	/**
+	 * @return the enrolment which is related to the assessment submission
+	 */
 	@Nonnull
 	@API
 	@Override
@@ -89,11 +85,44 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 		return super.getEnrolment()
 	}
 
-	@Nonnull
+	/**
+	 * @return the id of the assessor who marked the assessment submission
+	 */
+	@Nullable
 	@API
 	@Override
-	Contact getSubmittedBy() {
-		return super.getSubmittedBy()
+	Contact getMarkedBy() {
+		return super.getMarkedBy()
+	}
+
+	/**
+	 * @return the full name of student
+	 */
+	@API
+	String getStudentName() {
+		return getEnrolment().getStudent().getContact().getFullName()
+	}
+
+	/**
+	 * @return the courseClass name in next format: 'courseName courseCode-classCode'
+	 */
+	@API
+	String getCourseClassName() {
+		CourseClass courseClass = getAssessmentClass().getCourseClass()
+		return "${courseClass.getCourse().getName()} ${courseClass.getCourse().getCode()}-${courseClass.getCode()}"
+	}
+
+	/**
+	 * @return the assessment name
+	 */
+	@API
+	String getAssessmentName() {
+		return getAssessmentClass().getAssessment().getName()
+	}
+
+	@Override
+	Date getSubmittedDate() {
+		return LocalDateUtils.valueToDate(submittedOn)
 	}
 }
 

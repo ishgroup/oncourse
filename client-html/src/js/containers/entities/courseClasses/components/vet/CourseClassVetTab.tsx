@@ -198,15 +198,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
 
           <Grid item className="pb-3" xs={12} />
 
-          <Grid item xs={12}>
-            <div className="heading">Vet student loans</div>
-            <FormControlLabel
-              className="checkbox"
-              control={<FormField type="checkbox" name="feeHelpClass" />}
-              label="This is a VET Student Loan eligible class"
-            />
-          </Grid>
-
           <Grid item className="pt-3" xs={12}>
             <Collapse in={values.feeHelpClass}>
               <Grid container className="pb-3">
@@ -220,16 +211,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
                 </Grid>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField type="date" name="censusDate" label="Census date" />
-                </Grid>
-                <Grid item xs={twoColumn ? 3 : 12}>
-                  <FormField
-                    type="number"
-                    name="reportingPeriod"
-                    label="Reporting period (Year & Semester)"
-                  />
-                </Grid>
-                <Grid item xs={twoColumn ? 3 : 12}>
-                  <FormField type="text" name="fullTimeLoad" label="Equivalent full-time student load" />
                 </Grid>
               </Grid>
             </Collapse>

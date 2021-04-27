@@ -6,11 +6,8 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
 import { NoArgFunction } from "../../model/common/CommonFunctions";
 import { State } from "../../reducers/state";
-import { AppTheme } from "../../model/common/Theme";
 import { getActiveFundingContracts } from "../avetmiss-export/actions";
 import { getCountries, getLanguages } from "../preferences/actions";
 import {
@@ -114,7 +111,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) =>
     dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText)),
   changeStep: (step: number) => dispatch(changeStep(step)),
-  clearState: () => dispatch(checkoutClearState()),
+  clearState: () => {
+    dispatch(checkoutClearState());
+  },
   getActiveFundingContracts: () => dispatch(getActiveFundingContracts(true)),
   getQePermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));

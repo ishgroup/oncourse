@@ -158,6 +158,8 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             }
             courseDTO.customFields = course.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
             courseDTO.rules = course.unavailableRuleRelations.collect{ toRestHoliday(it.rule) }
+            courseDTO.feeHelpClass = course.feeHelpClass
+            courseDTO.fullTimeLoad = course.fullTimeLoad
             courseDTO
         }
     }
@@ -170,6 +172,8 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         course.allowWaitingLists = courseDTO.allowWaitingLists
         course.fieldConfigurationSchema = fieldConfigurationSchemeDao.getById(course.context, courseDTO.dataCollectionRuleId)
         course.isTraineeship = courseDTO.isTraineeship
+        course.fullTimeLoad = courseDTO.fullTimeLoad
+        course.feeHelpClass = courseDTO.feeHelpClass
         if (course.isTraineeship) {
             course.currentlyOffered = courseDTO.currentlyOffered
         } else {
@@ -248,7 +252,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         if (courseDTO.reportableHours == null) {
             validator.throwClientErrorException(id, 'reportableHours', 'Reportable hours is required.')
         }
-
+        if (courseDTO.feeHelpClass == null) {
+            validator.throwClientErrorException(id, 'feeHelpClass', 'Fee help class flag is required')
+        }
         if (courseDTO.allowWaitingLists == null) {
             validator.throwClientErrorException(id, 'allowWaitingLists', 'Allow waiting lists flag is required.')
         }

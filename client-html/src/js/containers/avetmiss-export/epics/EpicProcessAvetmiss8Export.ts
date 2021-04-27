@@ -63,7 +63,7 @@ const switchByStatus = (process, storedID) => {
   }
 };
 
-const request: EpicUtils.DelayedRequest<any, any, any> = {
+const request: EpicUtils.DelayedRequest = {
   type: GET_AVETMISS8_EXPORT_STATUS,
   delay: 1000,
   getData: (exportID: string) => {

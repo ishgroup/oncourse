@@ -14,13 +14,16 @@ package ish.oncourse.server.lifecycle;
 import ish.oncourse.common.field.PropertyGetSetFactory;
 import ish.oncourse.server.cayenne.Field;
 import ish.oncourse.server.cayenne.Tag;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.annotation.PreRemove;
 import org.apache.cayenne.annotation.PreUpdate;
 import org.apache.cayenne.query.ObjectSelect;
 
-import java.util.List;
 
+/**
+ * The tags can be included to data collection forms.
+ * But not by primary key and by tag name (some analogy of CustomField.fieldKey). 
+ * So, to keep the tags->forms in sync we  need to track tag name changes and also tag ‘removal’ event
+ */
 public class TagLifecycleListener {
 
     private final static String PROPERTY_FORMAT = "%s%s";

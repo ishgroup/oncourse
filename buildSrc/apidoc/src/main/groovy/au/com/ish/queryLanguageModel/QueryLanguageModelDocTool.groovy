@@ -41,9 +41,9 @@ class QueryLanguageModelDocTool {
     private static final NUMERIC_CLASSES = ['int', 'java.lang.Integer', 'java.lang.Long', 'ish.math.Money', 'java.lang.Double', 'java.math.BigDecimal', 'float']
 
     /**
-     * SPECIFIC_ENTITIES specifies some cayenne entities which will be generated except rule - "don't generate entities that don't have super entities"
+     * SPECIFIC_ENTITIES specifies some cayenne entities which will be generated except rule - "don't generate entities that have super entities"
      */
-    private static final List<String> SPECIFIC_ENTITIES = Arrays.asList("Invoice", "SaleOrder", "ArticleProduct")
+    private static final List<String> SPECIFIC_ENTITIES = Arrays.asList("Invoice", "SaleOrder", "ArticleProduct", "Article", "MembershipProduct", "Membership", "VoucherProduct", "Voucher")
 
     private final QueryLanguageModelDocBuilder rootDocBuilder
     private final GStringTemplateEngine engine = new GStringTemplateEngine()

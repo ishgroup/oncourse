@@ -18,6 +18,9 @@ import googleclassroom from "../../../../../images/google_classroom.png";
 import coassemble from "../../../../../images/coassemble.png";
 import talentlms from "../../../../../images/talentlms.png";
 import learndash from "../../../../../images/learndash.png";
+import amazons3 from "../../../../../images/amazons3.png";
+import azure from "../../../../../images/azure.png";
+import servicensw from "../../../../../images/servicensw.svg";
 
 export default {
   moodle,
@@ -34,5 +37,8 @@ export default {
   googleclassroom,
   coassemble,
   talentlms,
-  learndash
+  learndash,
+  amazons3,
+  azure,
+  servicensw
 };

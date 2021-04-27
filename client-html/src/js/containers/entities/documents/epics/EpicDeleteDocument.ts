@@ -6,7 +6,7 @@ import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/act
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { DELETE_DOCUMENT_ITEM } from "../actions";
 
-const request: EpicUtils.Request<any, any, Diff> = {
+const request: EpicUtils.Request<any,  Diff> = {
   type: DELETE_DOCUMENT_ITEM,
   hideLoadIndicator: true,
   getData: diff => DocumentsService.bulkChange(diff),

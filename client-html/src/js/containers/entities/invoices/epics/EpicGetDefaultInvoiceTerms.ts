@@ -11,7 +11,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import UserPreferenceService from "../../../../common/services/UserPreferenceService";
 import { ACCOUNT_INVOICE_TERMS } from "../../../../constants/Config";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_DEFAULT_INVOICE_TERMS,
   getData: () => UserPreferenceService.getUserPreferencesByKeys([ACCOUNT_INVOICE_TERMS]),
   processData: (response: { [key: string]: string }) => {

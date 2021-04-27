@@ -16,6 +16,7 @@ import ish.oncourse.API
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
+import liquibase.pro.packaged.O
 
 /**
  * This integration allows you to push records into SurveyMonkey in order to add them to a survey. Create one integration
@@ -61,8 +62,9 @@ class SurveyMonkeyScriptClosure implements ScriptClosureTrait<SurveyMonkeyIntegr
 	}
 
 	@Override
-	void execute(SurveyMonkeyIntegration integration) {
+	Object execute(SurveyMonkeyIntegration integration) {
 		integration.sendSurvey(email, firstName, lastName)
+		return null
 	}
 
 }

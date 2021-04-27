@@ -27,19 +27,6 @@ public interface IOutcome extends PersistentObjectI {
 	String CODE = "code";
 	String NAME = "name";
 
-	Map<DeliveryMode, String> DELIVERY_MODES_AVETMISS_EXPORT_MAP = new EnumMap<DeliveryMode, String>(DeliveryMode.class) {{
-		put(DeliveryMode.CLASSROOM, "10");
-		put(DeliveryMode.CLASSROOM_AND_ONLINE, "10");
-		put(DeliveryMode.ONLINE, "20");
-		put(DeliveryMode.WORKPLACE, "30");
-		put(DeliveryMode.CLASSROOM_AND_WORKSPACE, "30");
-		put(DeliveryMode.ONLINE_AND_WORKSPACE, "30");
-		put(DeliveryMode.CLASSROOM_ONLINE_AND_WORKSPACE, "30");
-		put(DeliveryMode.OTHER, "40");
-		put(DeliveryMode.NA, "90");
-
-	}};
-
 	IModule getModule();
 
 	IEnrolment getEnrolment();

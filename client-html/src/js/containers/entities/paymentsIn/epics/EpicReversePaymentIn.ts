@@ -5,12 +5,12 @@
 
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_PAYMENT_IN_ITEM, REVERSE_PAYMENT_IN_ITEM_FULFILLED, REVERSE_PAYMENT_IN_ITEM } from "../actions";
+import { GET_PAYMENT_IN_ITEM, REVERSE_PAYMENT_IN_ITEM, REVERSE_PAYMENT_IN_ITEM_FULFILLED } from "../actions";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import PaymentInService from "../services/PaymentInService";
 
-const request: EpicUtils.Request<any, any, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: REVERSE_PAYMENT_IN_ITEM,
   getData: id => PaymentInService.reverse(id),
   processData: (v, s, id ) => [

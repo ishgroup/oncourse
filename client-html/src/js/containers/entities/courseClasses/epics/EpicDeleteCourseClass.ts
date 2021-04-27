@@ -15,11 +15,10 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import { DELETE_COURSE_CLASS } from "../actions";
 import CourseClassService from "../services/CourseClassService";
 
-const request: EpicUtils.Request<any, any, { id: number }> = {
+const request: EpicUtils.Request<any, { id: number }> = {
   type: DELETE_COURSE_CLASS,
   getData: ({ id }) => CourseClassService.deleteCourseClass(id),
-  processData: () => {
-    return [
+  processData: () => [
       {
         type: FETCH_SUCCESS,
         payload: { message: "Class was deleted" }
@@ -30,8 +29,7 @@ const request: EpicUtils.Request<any, any, { id: number }> = {
       },
       setListSelection([]),
       initialize(LIST_EDIT_VIEW_FORM_NAME, null)
-    ];
-  },
+    ],
   processError: response => FetchErrorHandler(response, "Class was not deleted")
 };
 

@@ -9,7 +9,7 @@ import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import FundingContractService from "../services/FundingContractService";
 import { GET_FUNDING_CONTACTS_FULFILLED, GET_FUNDING_CONTACTS_REQUEST } from "../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_FUNDING_CONTACTS_REQUEST,
   getData: () => FundingContractService.getFundingContracts(),
   processData: fundingContracts => {

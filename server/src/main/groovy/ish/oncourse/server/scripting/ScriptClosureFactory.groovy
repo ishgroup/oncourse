@@ -41,23 +41,36 @@ class ScriptClosureFactory {
     private static Logger logger = LogManager.logger
 
 
-    void execute(Closure cl) {
+    Object execute(Closure cl) {
         def spec = this.specClass.getDeclaredConstructor().newInstance()
 
         def build = cl.rehydrate(spec, cl, this)
         build.resolveStrategy = Closure.DELEGATE_FIRST
         build()
 
+        List<Object> result = new ArrayList<>()
         getIntegrationConfiguration(spec, this.type).each {integrationConfig ->
             def i = integrationClass.newInstance(injector:injector,
                     configuration: integrationConfig)
             try {
-                spec.execute(i)
+                Object closureResult = spec.execute(i)
+                if (closureResult) {
+                    result.add(closureResult)
+                }
             } catch (Exception e) {
                 logger.catching(e)
                 throw e
             }
         }
+        
+        if (result.empty) {
+            return null
+        } else if (result.size() == 1) {
+            return result[0]
+        } else {
+            return result
+        }
+        
     }
 
     private List<IntegrationConfiguration> getIntegrationConfiguration(ScriptClosureTrait spec, int type) {

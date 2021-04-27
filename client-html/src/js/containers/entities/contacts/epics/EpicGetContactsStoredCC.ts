@@ -8,14 +8,13 @@ import { Epic } from "redux-observable";
 import { DataResponse, PaymentMethod } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { State } from "../../../../reducers/state";
 import PreferencesService from "../../../preferences/services/PreferencesService";
 import { GET_CONTACTS_STORED_CC, GET_CONTACTS_STORED_CC_FULFILLED } from "../actions";
 import EntityService from "../../../../common/services/EntityService";
 
 const getCardTypeId = (types: PaymentMethod[]): number => types.find(t => t.type === "Credit card").id;
 
-const request: EpicUtils.Request<DataResponse, State, number> = {
+const request: EpicUtils.Request<DataResponse, number> = {
   type: GET_CONTACTS_STORED_CC,
   hideLoadIndicator: true,
   getData: (contactId, s) => {

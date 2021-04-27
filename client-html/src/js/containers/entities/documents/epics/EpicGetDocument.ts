@@ -15,7 +15,7 @@ import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/ac
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { GET_DOCUMENT_EDIT, GET_DOCUMENT_EDIT_FULFILLED } from "../actions";
 
-const request: EpicUtils.Request<any, any, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: GET_DOCUMENT_EDIT,
   hideLoadIndicator: true,
   getData: id => DocumentsService.getDocumentItem(id),

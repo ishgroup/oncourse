@@ -7,8 +7,8 @@ import React, { useCallback, useMemo } from "react";
 import Grid from "@material-ui/core/Grid/Grid";
 import { arrayInsert, arrayRemove } from "redux-form";
 import Typography from "@material-ui/core/Typography";
-import { AssessmentClass } from "@api/model";
-import uniqid from "uniqid";
+import { AssessmentClass, GradingType } from "@api/model";
+import { connect } from "react-redux";
 import MinifiedEntitiesList from "../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import CourseClassAssessmentItems from "./CourseClassAssessmentItem";
 import { EditViewProps } from "../../../../../model/common/ListView";
@@ -17,20 +17,8 @@ import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import CourseClassAssessmentService from "./services/CourseClassAssessmentService";
 import { deleteCourseClassAssessment } from "./actions";
-
-const validateAssesments = (value: AssessmentClass[]) => {
-  let error;
-
-  if (Array.isArray(value) && value.length) {
-    value.forEach(a => {
-      if (!a.assessmentId || !a.assessmentCode || !a.assessmentName || !a.dueDate) {
-        error = "Some assessments are missing required fields";
-      }
-    });
-  }
-
-  return error;
-};
+import uniqid from "../../../../../common/utils/uniqid";
+import { State } from "../../../../../reducers/state";
 
 const assessmentInitial: AssessmentClass = {
   id: null,
@@ -43,25 +31,55 @@ const assessmentInitial: AssessmentClass = {
   dueDate: null
 };
 
-const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExtended>>> = ({
-  values,
-  form,
-  dispatch,
-  isNew,
-  twoColumn,
-  syncErrors,
-  showConfirm
-}) => {
+interface Props {
+  courseClassEnrolments?: any[];
+  gradingTypes?: GradingType[];
+}
+
+const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExtended> & Props>> = (
+  {
+    values,
+    form,
+    dispatch,
+    isNew,
+    twoColumn,
+    syncErrors,
+    showConfirm,
+    courseClassEnrolments,
+    gradingTypes
+}
+) => {
+  const validateAssesments = useCallback((value: AssessmentClass[]) => {
+    let error;
+
+    if (Array.isArray(value) && value.length) {
+      value.forEach(a => {
+        if (!a.assessmentId || !a.assessmentCode || !a.assessmentName || !a.dueDate) {
+          error = "Some assessments are missing required fields";
+        }
+        const gradeType: GradingType = gradingTypes?.find(g => g.id === a.gradingTypeId);
+
+        if (gradeType && a.submissions.some(s => s.grade > gradeType.maxValue || s.grade < gradeType.minValue)) {
+          error = "Some assessments grades are invalid";
+        }
+      });
+    }
+
+    return error;
+  }, [gradingTypes]);
+
   const AssessmentItemsComponent = useCallback(
-    props => (
+    ({ classes, ...rest }) => (
       <CourseClassAssessmentItems
-        {...props}
+        {...rest}
         dispatch={dispatch}
         form={form}
+        courseClassEnrolments={courseClassEnrolments}
+        gradingTypes={gradingTypes}
         tutors={values.tutors.filter(t => t.id)}
       />
       ),
-    [values.tutors, form]
+    [values.tutors, form, gradingTypes, courseClassEnrolments]
   );
 
   const AssessmentHeader = useCallback(
@@ -156,4 +174,9 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
   );
 };
 
-export default CourseClassAssessmentsTab;
+const mapStateToProps = (state: State) => ({
+  courseClassEnrolments: state.courseClass.enrolments,
+  gradingTypes: state.preferences.gradingTypes
+});
+
+export default connect(mapStateToProps)(CourseClassAssessmentsTab);

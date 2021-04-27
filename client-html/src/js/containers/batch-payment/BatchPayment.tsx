@@ -6,7 +6,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Tooltip from "@material-ui/core/Tooltip";
 import clsx from "clsx";
 import React, {
-  memo, useCallback, useEffect, useRef, useState
+  memo, useCallback, useEffect, useRef, useState,
 } from "react";
 import { FormControlLabel } from "@material-ui/core";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -28,10 +28,9 @@ import Zoom from '@material-ui/core/Zoom';
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
-  change, FieldArray, getFormValues, InjectedFormProps, reduxForm
+  change, FieldArray, getFormValues, InjectedFormProps, reduxForm,
 } from "redux-form";
 import instantFetchErrorHandler from "../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import RouteChangeConfirm from "../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarHelpMenu from "../../common/components/form/AppBarHelpMenu";
 import FormField from "../../common/components/form/form-fields/FormField";
 import { Switch } from "../../common/components/form/form-fields/Switch";
@@ -55,46 +54,46 @@ import { getBachCheckoutModel } from "./utils";
 const useStyles = makeStyles((theme: AppTheme) => ({
   checkbox: {
     width: "auto",
-    height: "auto"
+    height: "auto",
   },
   list: {
-    margin: theme.spacing(-0.5)
+    margin: theme.spacing(-0.5),
   },
   tableTab: {
     padding: theme.spacing(0.5, 0, 0.5, 1),
     borderRadius: theme.shape.borderRadius,
     "&:nth-of-type(odd)": {
-      background: theme.table.contrastRow.main
+      background: theme.table.contrastRow.main,
     },
     "&:last-child": {
       background: "inherit",
       "&:hover": {
-        background: "inherit"
-      }
+        background: "inherit",
+      },
     },
   },
   panelSummary: {
     "&:hover $openCheckoutButton": {
-      visibility: "visible"
+      visibility: "visible",
     },
-    padding: theme.spacing(0, 2, 0, 0)
+    padding: theme.spacing(0, 2, 0, 0),
   },
   panelRoot: {
     "&$panelExpanded:last-child": {
-      margin: theme.spacing(2, 0)
+      margin: theme.spacing(2, 0),
     },
     "&$panelExpanded:first-child": {
-      margin: theme.spacing(2, 0)
-    }
+      margin: theme.spacing(2, 0),
+    },
   },
   openCheckoutButton: {
     visibility: "hidden",
-    margin: theme.spacing(0, 1)
+    margin: theme.spacing(0, 1),
   },
   amountMargin: {
-    marginRight: theme.spacing(4.5)
+    marginRight: theme.spacing(4.5),
   },
-  panelExpanded: {}
+  panelExpanded: {},
 }));
 
 const FORM = "Batch payment form";
@@ -114,7 +113,7 @@ interface ContactItemProps {
 }
 
 const ContactItem = memo<ContactItemProps>(({
- name, style, item, classes, currencySymbol, onContactItemSelect, forwardedRef
+ name, style, item, classes, currencySymbol, onContactItemSelect, forwardedRef,
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [animate, setAnimate] = useState(false);
@@ -142,11 +141,11 @@ const ContactItem = memo<ContactItemProps>(({
         onChange={() => setExpanded(!expanded)}
         TransitionProps={{
           unmountOnExit: true,
-          mountOnEnter: true
+          mountOnEnter: true,
         }}
         classes={{
           root: classes.panelRoot,
-          expanded: classes.panelExpanded
+          expanded: classes.panelExpanded,
         }}
 
       >
@@ -154,7 +153,7 @@ const ContactItem = memo<ContactItemProps>(({
           expandIcon={<ExpandMoreIcon />}
           classes={{
           root: clsx("m-0", classes.panelSummary),
-          content: "m-0"
+          content: "m-0",
         }}
         >
           <Grid container className="centeredFlex">
@@ -299,7 +298,7 @@ const ContactRenderer = ({
           estimatedItemSize={56}
           itemData={{
           items,
-          ...rest
+          ...rest,
         }}
         >
           {RowRenderer}
@@ -325,7 +324,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
     null,
     null,
     "dateDue",
-    false
+    false,
   )
     .then(res => {
       setContactsLoading(false);
@@ -348,7 +347,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
         index: 0,
         processed: false,
         processing: false,
-        error: null
+        error: null,
       }];
 
       res.rows.forEach(r => {
@@ -375,8 +374,8 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
               amountOwing,
               dateDue: r.values[4],
               invoiceNumber: r.values[6],
-              checked: hasStoredCard
-            }]
+              checked: hasStoredCard,
+            }],
           });
           counter++;
         } else {
@@ -390,7 +389,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
             amountOwing,
             dateDue: r.values[4],
             invoiceNumber: r.values[6],
-            checked: contacts[matchIndex].hasStoredCard
+            checked: contacts[matchIndex].hasStoredCard,
           });
         }
       });
@@ -410,7 +409,8 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   invalid,
   dispatch,
   currencySymbol,
-  values
+  values,
+  form,
 }) => {
   const [contactsLoading, setContactsLoading] = useState(false);
   const [filterByStoreCard, setFilterByStoreCard] = useState(true);
@@ -447,7 +447,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   const checkedContacts = values.contacts.filter(c => c.checked);
   const total = checkedContacts.reduce(
     (p, c) => decimalPlus(p, c.items.reduce((p, c) => decimalPlus(p, c.checked ? c.amountOwing : 0), 0) ),
-    0
+    0,
   );
 
   const onSave = () => {
@@ -456,7 +456,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
     setContactsLoading(true);
     getContacts(dispatch, setContactsLoading,
       async () => {
-        await checkedContacts.map((c, index) => () => new Promise(resolve => {
+        await checkedContacts.map((c, index) => () => new Promise<void>(resolve => {
           if (cancel.current) {
             resolve();
             return;
@@ -467,14 +467,14 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
             CheckoutService.checkoutSubmitPayment(getBachCheckoutModel(c), null, null, null)
               .then(() => {
                 dispatch(change(FORM, `contacts[${c.index}]`, {
-                  ...c, processing: false, processed: true
+                  ...c, processing: false, processed: true,
                 } ));
                 setTimeout(resolve, 200);
               })
               .catch(res => {
                 instantFetchErrorHandler(dispatch, res, `Payment for ${c.name} failed`);
                 dispatch(change(FORM, `contacts[${c.index}]`, {
-                  ...c, processing: false, processed: true, error: true
+                  ...c, processing: false, processed: true, error: true,
                 } ));
                 setTimeout(resolve, 200);
               });
@@ -488,7 +488,6 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
 
   return (
     <form className="appBarContainer" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
-      <RouteChangeConfirm when={dirty} />
       <LoadingIndicator appBarOffset transparentBackdrop customLoading={contactsLoading} />
 
       <CustomAppBar>
@@ -525,7 +524,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
               type="submit"
               classes={{
                 root: "whiteAppBarButton",
-                disabled: "whiteAppBarButtonDisabled"
+                disabled: "whiteAppBarButtonDisabled",
               }}
               disabled={invalid || processing}
             >
@@ -551,7 +550,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
               />
             )}
             classes={{
-              labelPlacementStart: "m-0"
+              labelPlacementStart: "m-0",
             }}
             label="Only show contacts with a stored card"
             labelPlacement="start"
@@ -594,12 +593,12 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
 const mapStateToProps = (state: State) =>
   ({
     currencySymbol: state.currency.shortCurrencySymbol,
-    values: getFormValues(FORM)(state)
+    values: getFormValues(FORM)(state),
   });
 
 export default reduxForm<any, Props>({
   form: FORM,
   initialValues: {
-    contacts: []
-  }
+    contacts: [],
+  },
 })(connect<any, any, any>(mapStateToProps)(BatchPayment));

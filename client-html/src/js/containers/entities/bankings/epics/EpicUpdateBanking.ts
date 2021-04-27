@@ -4,20 +4,18 @@
  */
 
 import { Epic } from "redux-observable";
-
+import { Banking } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_BANKING_ITEM, UPDATE_BANKING_ITEM, UPDATE_BANKING_ITEM_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { Banking } from "@api/model";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 
-const request: EpicUtils.Request<any, any, { id: number; banking: Banking }> = {
+const request: EpicUtils.Request<any, { id: number; banking: Banking }> = {
   type: UPDATE_BANKING_ITEM,
   getData: ({ id, banking }) => updateEntityItemById("Banking", id, banking),
-  processData: (v, s, { id }) => {
-    return [
+  processData: (v, s, { id }) => [
       {
         type: UPDATE_BANKING_ITEM_FULFILLED
       },
@@ -29,15 +27,12 @@ const request: EpicUtils.Request<any, any, { id: number; banking: Banking }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Banking", listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_BANKING_ITEM,
         payload: id
-      }
-    ];
-  },
-  processError: response => {
-    return [...FetchErrorHandler(response)];
-  }
+      }] : []
+    ],
+  processError: response => [...FetchErrorHandler(response)]
 };
 
 export const EpicUpdateBanking: Epic<any, any> = EpicUtils.Create(request);

@@ -12,7 +12,7 @@ import { Dispatch } from "redux";
 import CreateCertificateMenu from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
 import EntityService from "../../../../common/services/EntityService";
 import { State } from "../../../../reducers/state";
-import AvetmissExportModal from "../../../avetmiss-export/components/modal/AvetmissExportModal";
+import AvetmissExportModal, { manualAvetmisConfirm } from "../../../avetmiss-export/components/modal/AvetmissExportModal";
 import { getPlainAccounts } from "../../accounts/actions";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 import { getPlainTaxes } from "../../taxes/actions";
@@ -29,7 +29,8 @@ const EnrolmentCogWheel = React.memo<any>(props => {
     getAccounts,
     getTaxes,
     dispatch,
-    hasQePermissions
+    hasQePermissions,
+    showConfirm
   } = props;
 
   const [dialogOpened, setDialogOpened] = useState(null);
@@ -67,6 +68,14 @@ const EnrolmentCogWheel = React.memo<any>(props => {
 
   const onClick = useCallback(e => {
     const status = e.target.getAttribute("role");
+
+    if (status === "Avetmiss-Export") {
+      return manualAvetmisConfirm(() => {
+        setDialogOpened(status);
+        },
+        showConfirm);
+    }
+
     setDialogOpened(status);
   }, []);
 

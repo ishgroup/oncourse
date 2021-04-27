@@ -33,7 +33,7 @@ public class BugsnagFactory {
     public void init() {
         String version = ResourcesUtil.getReleaseVersionString();
 
-        if (api != null && !version.matches(".*[a-zA-Z].*")) {
+        if (collegeKey != null && api != null && !version.matches(".*[a-zA-Z].*")) {
             Bugsnag bugsnag = new Bugsnag(api);
             bugsnag.setAppVersion(version);
             bugsnag.addCallback((report) -> report.addToTab("user", "college", this.collegeKey));

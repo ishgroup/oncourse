@@ -12,7 +12,7 @@ import CertificateService from "../services/CertificateService";
 import { SET_PRINT_VALIDATING_STATUS } from "../../../../common/components/list-view/components/share/actions";
 import { CertificateValidationRequest } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: VALIDATE_CERTIFICATES,
   getData: (validationRequest: CertificateValidationRequest) => CertificateService.validateForPrint(validationRequest),
   processData: (validationStatus: string) => {

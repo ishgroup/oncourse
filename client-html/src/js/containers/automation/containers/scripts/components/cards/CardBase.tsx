@@ -1,5 +1,7 @@
 import * as React from "react";
-import { ExpansionPanel, AccordionSummary, AccordionDetails } from "@material-ui/core";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import DragIndicator from "@material-ui/icons/DragIndicator";
 import Typography from "@material-ui/core/Typography";
@@ -42,7 +44,8 @@ const styles = theme =>
       overflow: "visible"
     },
     summaryRoot: {
-      borderBottom: "1px solid transparent"
+      borderBottom: "1px solid transparent",
+      padding: theme.spacing(0, 0, 0, 2)
     },
     summaryExpanded: {
       borderBottomColor: `${theme.palette.divider}`
@@ -71,7 +74,7 @@ const CardBase = props => {
   } = props;
 
   return (
-    <ExpansionPanel
+    <Accordion
       classes={{
         root: classes.panelRoot,
         expanded: disableExpandedBottomMargin ? classes.panelExpandedWithoutMargin : classes.panelExpanded
@@ -129,7 +132,7 @@ const CardBase = props => {
       >
         {children}
       </AccordionDetails>
-    </ExpansionPanel>
+    </Accordion>
   );
 };
 

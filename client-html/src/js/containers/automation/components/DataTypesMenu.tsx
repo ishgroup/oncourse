@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DataTypes = Object.keys(DataType).filter(k => !["Record", "List", "Map", "Long text", "URL", "Email"].includes(k));
+const DataTypes = Object.keys(DataType).filter(k => !["Record", "Pattern text", "List", "Map", "Long text", "URL", "Email"].includes(k));
 
 interface BindingEditPopupProps extends InjectedFormProps {
   popupAnchorEl: any;
@@ -216,6 +216,10 @@ const DataTypesMenu = React.memo<DataTypesMenuProps>(({
           }
           // Show Message template option only in Script options
           if (t === "Message template" && (!isScriptsAutomation || !isOptionsBindingType)) {
+            return null;
+          }
+          // Show Object option only in variables
+          if (t === "Object" && !isVariablesBindingType) {
             return null;
           }
           return <MenuItem onClick={handleClick} key={t} role={t}>{t}</MenuItem>;

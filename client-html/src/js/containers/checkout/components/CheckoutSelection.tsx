@@ -18,7 +18,7 @@ import {
   Category, CheckoutSaleRelation, ColumnWidth, createStringEnum
 } from "@api/model";
 import debounce from "lodash.debounce";
-import uniqid from "uniqid";
+
 import { LinkAdornment } from "../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../common/utils/links";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
@@ -114,6 +114,7 @@ import {
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../common/actions/CommonPlainRecordsActions";
+import uniqid from "../../../common/utils/uniqid";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 export const CONTACT_ENTITY_NAME: string = "Contact";
@@ -231,7 +232,7 @@ interface Props extends Partial<EditViewProps> {
   salesRelations?: CheckoutSaleRelation[];
 }
 
-const titles = {
+export const titles = {
   [CheckoutPage.default]: "Type in student name or code in order to search",
   [CheckoutPage.contacts]: "Search for a contact by name.",
   [CheckoutPage.items]: "Search for a course, product, membership or voucher by name or code.",
@@ -528,6 +529,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           reset();
           setListContacts([]);
         } else {
+          dispatch(change(form, "contacts", null));
           const check = selectedContacts.filter(c => c.id === row.id);
           if (check.length === 0) {
             row.relations = [];
@@ -1207,6 +1209,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             openDiscountView={openDiscountView}
             selectedDiscount={selectedDiscount}
             selectedContacts={selectedContacts}
+            summaryList={summary.list}
           />
         </div>
         <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice) })}>

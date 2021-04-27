@@ -1,0 +1,252 @@
+databaseChangeLog:
+  - changeSet:
+      id: 78-1
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: GradingType
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(128)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: min_value
+                  type: DECIMAL(6, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: max_value
+                  type: DECIMAL(6, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: entryType
+                  type: SMALLINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: willowId
+                  type: BIGINT
+            tableName: GradingType
+  - changeSet:
+      id: 78-2
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: GradingItem
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(128)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: lowerBound
+                  type: DECIMAL(6, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: gradingTypeId
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: willowId
+                  type: BIGINT
+            tableName: GradingItem
+        - addForeignKeyConstraint:
+            baseColumnNames: gradingTypeId
+            baseTableName: GradingItem
+            constraintName: fk_GradingItem_type
+            referencedColumnNames: id
+            referencedTableName: GradingType
+  - changeSet:
+      id: 78-3
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: GradingType
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  header: id
+                  name: id
+                  type: NUMERIC
+              - column:
+                  header: createdOn
+                  name: createdOn
+                  type: DATE
+              - column:
+                  header: modifiedOn
+                  name: modifiedOn
+                  type: DATE
+              - column:
+                  header: name
+                  name: name
+                  type: STRING
+              - column:
+                  header: minValue
+                  name: min_value
+                  type: NUMERIC
+              - column:
+                  header: maxValue
+                  name: max_value
+                  type: NUMERIC
+              - column:
+                  header: entryType
+                  name: entryType
+                  type: NUMERIC
+            commentLineStartsWith: '#'
+            encoding: UTF-8
+            file: database/data/gradingtype.csv
+            quotchar: '"'
+            separator: ','
+            tableName: GradingType
+  - changeSet:
+      id: 78-4
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: GradingItem
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  header: id
+                  name: id
+                  type: NUMERIC
+              - column:
+                  header: createdOn
+                  name: createdOn
+                  type: DATE
+              - column:
+                  header: modifiedOn
+                  name: modifiedOn
+                  type: DATE
+              - column:
+                  header: name
+                  name: name
+                  type: STRING
+              - column:
+                  header: lowerBound
+                  name: lowerBound
+                  type: NUMERIC
+              - column:
+                  header: gradingTypeId
+                  name: gradingTypeId
+                  type: NUMERIC
+            commentLineStartsWith: '#'
+            encoding: UTF-8
+            file: database/data/gradingitem.csv
+            quotchar: '"'
+            separator: ','
+            tableName: GradingItem
+  - changeSet:
+      id: 78-5
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: Assessment
+              columnName: gradingTypeId
+      changes:
+        - addColumn:
+            tableName: Assessment
+            columns:
+              - column:
+                  name: gradingTypeId
+                  type: BIGINT
+                  value: 1
+  - changeSet:
+      id: 78-6
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: Assessment
+            columnName: gradingTypeId
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: gradingTypeId
+            baseTableName: Assessment
+            constraintName: fk_Assessment_GradingType
+            referencedColumnNames: id
+            referencedTableName: GradingType
+  - changeSet:
+      id: 78-7
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: AssessmentSubmission
+              columnName: grade
+      changes:
+        - addColumn:
+            tableName: AssessmentSubmission
+            columns:
+              - column:
+                  name: grade
+                  type: DECIMAL(6, 2)
+  - changeSet:
+      id: 78-8
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: CustomFieldType
+              columnName: pattern
+      changes:
+        - addColumn:
+            tableName: CustomFieldType
+            columns:
+              - column:
+                  name: pattern
+                  type: VARCHAR(128)

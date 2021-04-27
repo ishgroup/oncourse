@@ -15,7 +15,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_BANKING_ITEM,
   getData: (id: number) => BankingService.removeBanking(id),
   processData: (banking: Banking) => {

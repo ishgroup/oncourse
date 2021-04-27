@@ -209,7 +209,7 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
   const edit = () => {
     setIsEditing(true);
     setTimeout(() => {
-      inputNode.current.focus();
+      if (inputNode && inputNode.current) inputNode.current.focus();
     }, 50);
   };
 
@@ -373,14 +373,16 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
             [classes.inlineTextField]: formatting === "inline"
           })}
         >
-          <InputLabel
-            classes={{
-              root: classes.inputLabel,
-              shrink: classes.labelShrink
-            }}
-          >
-            {labelContent}
-          </InputLabel>
+          {Boolean(label) && (
+            <InputLabel
+              classes={{
+                root: classes.inputLabel,
+                shrink: classes.labelShrink
+              }}
+            >
+              {labelContent}
+            </InputLabel>
+          )}
           <Input
             type="text"
             onKeyPress={onKeyPress}

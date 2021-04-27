@@ -15,7 +15,7 @@ import { PlayArrow, Help, Publish } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
- change, Field, FieldArray, getFormValues, initialize, reduxForm
+ change, Field, FieldArray, getFormValues, initialize, reduxForm,
 } from "redux-form";
 import IconButton from "@material-ui/core/IconButton";
 import {
@@ -25,7 +25,7 @@ import {
   ExportTemplate,
   Binding,
   OutputType,
-  Report, SearchQuery
+  Report, SearchQuery,
 } from "@api/model";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -34,7 +34,7 @@ import FormField from "../../../form/form-fields/FormField";
 import { State } from "../../../../../reducers/state";
 import bottomDrawerStyles from "../bottomDrawerStyles";
 import {
- addPrintOverlay, doPrintRequest, getShareList, getExportTemplates, runExport
+ addPrintOverlay, doPrintRequest, getShareList, getExportTemplates, runExport,
 } from "./actions";
 import Button from "../../../buttons/Button";
 import SelectionSwitcher from "./SelectionSwitcher";
@@ -51,6 +51,7 @@ import { CommonListItem } from "../../../../../model/common/sidebar";
 import FilePreview from "../../../form/FilePreview";
 import ConfirmBase from "../../../dialog/confirm/ConfirmBase";
 import { ContactType } from "../../../../../containers/entities/contacts/Contacts";
+import { LSGetItem, LSSetItem } from "../../../../utils/storage";
 
 type PdfReportType = ContactType | "GENERAL";
 
@@ -123,7 +124,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       selectAll: false,
       exportTemplateTypes: null,
       createPreview: true,
-      wrongPdfReportMsg: null
+      wrongPdfReportMsg: null,
     };
 
     this.isContactList = props.rootEntity === "Contact";
@@ -137,13 +138,13 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
   componentDidUpdate(prevProps, prevState) {
     const {
-     pdfReports, exportTemplates, pdfReportsFetching, exportTemplatesFetching, rootEntity
+     pdfReports, exportTemplates, pdfReportsFetching, exportTemplatesFetching, rootEntity,
     } = this.props;
 
     if (prevProps.pdfReportsFetching && !pdfReportsFetching && pdfReports.length) {
       if (typeof prevState.selectedPrimary !== "number") {
-        const savedState: ShareState = localStorage.getItem(LAST_SELECTED_EXPORT)
-          && JSON.parse(localStorage.getItem(LAST_SELECTED_EXPORT))[rootEntity];
+        const savedState: ShareState = LSGetItem(LAST_SELECTED_EXPORT)
+          && JSON.parse(LSGetItem(LAST_SELECTED_EXPORT))[rootEntity];
 
         if (savedState) {
           if (savedState.selectedPrimary === 0) {
@@ -153,7 +154,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         } else {
           this.setState({
             selectedPrimary: 0,
-            selectedSecondary: 0
+            selectedSecondary: 0,
           });
           this.props.dispatch(initialize("ListShareForm", this.props.pdfReports[0]));
         }
@@ -184,8 +185,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       });
 
       if (typeof prevState.selectedPrimary !== "number") {
-        const savedState: ShareState = localStorage.getItem(LAST_SELECTED_EXPORT)
-          && JSON.parse(localStorage.getItem(LAST_SELECTED_EXPORT))[rootEntity];
+        const savedState: ShareState = LSGetItem(LAST_SELECTED_EXPORT)
+          && JSON.parse(LSGetItem(LAST_SELECTED_EXPORT))[rootEntity];
 
         if (savedState && savedState.selectedPrimary > 0 ) {
           this.setState(savedState);
@@ -193,7 +194,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             "ListShareForm",
             exportTemplateTypes[Object.keys(exportTemplateTypes)[savedState.selectedPrimary - 1]][
               savedState.selectedSecondary
-              ]
+              ],
           ));
         }
       } else if (prevState.selectedPrimary > 0) {
@@ -201,7 +202,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
           "ListShareForm",
           exportTemplateTypes[Object.keys(exportTemplateTypes)[prevState.selectedPrimary - 1]][
             this.state.selectedSecondary
-            ]
+            ],
         ));
       }
 
@@ -228,7 +229,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
     if (primary > 0 && exportTemplates.length) {
       dispatch(
-        initialize("ListShareForm", exportTemplateTypes[Object.keys(exportTemplateTypes)[primary - 1]][secondary])
+        initialize("ListShareForm", exportTemplateTypes[Object.keys(exportTemplateTypes)[primary - 1]][secondary]),
       );
     }
   };
@@ -238,16 +239,16 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
     this.setState({
       selectedPrimary,
-      selectedSecondary: 0
+      selectedSecondary: 0,
     });
 
     this.initializeShareForm(selectedPrimary, 0);
 
-    localStorage.setItem(LAST_SELECTED_EXPORT, JSON.stringify({
+    LSSetItem(LAST_SELECTED_EXPORT, JSON.stringify({
       [rootEntity]: {
         selectedPrimary,
-        selectedSecondary: 0
-      }
+        selectedSecondary: 0,
+      },
     }));
   };
 
@@ -257,14 +258,14 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     const { selectedPrimary } = this.state;
 
     this.setState({
-      selectedSecondary
+      selectedSecondary,
     });
 
-    localStorage.setItem(LAST_SELECTED_EXPORT, JSON.stringify({
+    LSSetItem(LAST_SELECTED_EXPORT, JSON.stringify({
       [rootEntity]: {
         selectedPrimary,
-        selectedSecondary
-      }
+        selectedSecondary,
+      },
     }));
 
     this.initializeShareForm(selectedPrimary, selectedSecondary);
@@ -363,7 +364,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
   onSave = values => {
     const {
-     searchQuery, rootEntity, doPrint, doExport, selection, sort
+     searchQuery, rootEntity, doPrint, doExport, selection, sort,
     } = this.props;
 
     const { selectedPrimary, selectAll, createPreview } = this.state;
@@ -380,11 +381,11 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     const requestFilters = selectAll ? {
       search: searchQuery.search,
       filter: searchQuery.filter,
-      tagGroups: searchQuery.tagGroups
+      tagGroups: searchQuery.tagGroups,
     } : {
       search: getExpression(selection),
       filter: "",
-      tagGroups: []
+      tagGroups: [],
     };
 
     return new Promise((resolve, reject) => {
@@ -402,7 +403,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             prev[cur.name] = cur.value;
             return prev;
           }, {}) : {},
-          createPreview
+          createPreview,
         };
 
         return doPrint(rootEntity, printRequest);
@@ -419,7 +420,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
           return prev;
         }, {}) : {},
         sorting: sort,
-        exportToClipboard: this.isClipboardExport
+        exportToClipboard: this.isClipboardExport,
       };
 
       return doExport(exportRequest, outputType, this.isClipboardExport);
@@ -428,7 +429,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
   onClose = () => {
     const {
-      toggleExportDrawer, process, interruptProcess, submitting
+      toggleExportDrawer, process, interruptProcess, submitting,
     } = this.props;
 
     if (submitting) {
@@ -445,13 +446,13 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
   setSelectAll = (selectAll: boolean) => {
     this.setState({
-      selectAll
+      selectAll,
     });
   };
 
   renderPdfFields() {
     const {
-     classes, overlays, pdfReports, values
+     classes, overlays, pdfReports, values,
     } = this.props;
 
     const { selectedSecondary, createPreview } = this.state;
@@ -489,19 +490,19 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                             <span className="ml-1">Upload from disk</span>
                           </div>
                         </MenuItem>
-                      )
+                      ),
                     }}
                     fieldClasses={{
                       text: classes.text,
                       label: classes.customLabel,
-                      placeholder: classes.placeholder
+                      placeholder: classes.placeholder,
                     }}
                     items={overlays || []}
                     allowEmpty
                     fullWidth
                   />
                 </Grid>
-                <FieldArray name="variables" component={this.templatesRenderer} />
+                <FieldArray name="variables" component={this.templatesRenderer as any} />
               </Grid>
             </Grid>
           </Grid>
@@ -551,16 +552,16 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             classes: { label: classes.label },
             uncheckedClass: classes.label,
             color: "primary",
-            stringValue: true
+            stringValue: true,
           }
         : {
             fieldClasses: {
               text: classes.text,
               label: classes.customLabel,
-              placeholder: classes.placeholder
+              placeholder: classes.placeholder,
             },
             ...(item.type === "Date" ? { formatValue: YYYY_MM_DD_MINUSED } : {}),
-            ...(item.type === "Money" ? { stringValue: true } : {})
+            ...(item.type === "Money" ? { stringValue: true } : {}),
           };
 
       return (
@@ -591,7 +592,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             </Typography>
           </Grid>
           <Grid item xs={4}>
-            <FieldArray name="variables" component={this.templatesRenderer} />
+            <FieldArray name="variables" component={this.templatesRenderer as any} />
           </Grid>
         </Grid>
       </Grid>
@@ -615,11 +616,11 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       sidebarWidth,
       count,
       exportTemplatesFetching,
-      pdfReportsFetching
+      pdfReportsFetching,
     } = this.props;
 
     const {
-     selectedPrimary, selectedSecondary, selectAll, exportTemplateTypes
+     selectedPrimary, selectedSecondary, selectAll, exportTemplateTypes,
     } = this.state;
 
     const pdfSelected = selectedPrimary === 0;
@@ -636,8 +637,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         classes={{ paper: classes.exportContainer }}
         PaperProps={{
           style: {
-            left: window.innerWidth >= 1024 ? sidebarWidth : 0
-          }
+            left: window.innerWidth >= 1024 ? sidebarWidth : 0,
+          },
         }}
       >
         <input
@@ -678,7 +679,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     button
                     classes={{
                       root: classes.listItems,
-                      selected: classes.listItemsSelected
+                      selected: classes.listItemsSelected,
                     }}
                     key={0}
                     selected={selectedPrimary === 0}
@@ -697,7 +698,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     button
                     classes={{
                       root: classes.listItems,
-                      selected: classes.listItemsSelected
+                      selected: classes.listItemsSelected,
                     }}
                     key={i + 1}
                     selected={selectedPrimary === i + 1}
@@ -721,7 +722,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       button
                       classes={{
                         root: classes.listItems,
-                        selected: classes.listItemsSelected
+                        selected: classes.listItemsSelected,
                       }}
                       key={index + i.name}
                       selected={selectedSecondary === index}
@@ -745,7 +746,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       button
                       classes={{
                         root: classes.listItems,
-                        selected: classes.listItemsSelected
+                        selected: classes.listItemsSelected,
                       }}
                       key={index + t.name}
                       selected={selectedSecondary === index}
@@ -786,7 +787,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   <Button className={classes.closeButton} onClick={this.onClose} variant="text">
                     Close
                   </Button>
-                  {navigator.userAgent.indexOf("Firefox") <= 0 && templateSelected
+                  {templateSelected
                   && ["Excel", "Text", "XML"].includes(exportTemplateTypesArr[selectedPrimary - 1])
                   && (
                     <Button
@@ -844,7 +845,7 @@ const mapStateToProps = (state: State) => ({
   sort: state.list.records.sort,
   rows: state.list.records.rows,
   columns: state.list.records.columns,
-  process: state.process
+  process: state.process,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -853,11 +854,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   addPrintOverlay: (fileName: string, overlay: File) => dispatch(addPrintOverlay(fileName, overlay)),
   doPrint: (rootEntity: string, printRequest: PrintRequest) => dispatch(doPrintRequest(rootEntity, printRequest)),
   doExport: (exportRequest: ExportRequest, outputType: OutputType, isClipboard) => dispatch(
-    runExport(exportRequest, outputType, isClipboard)
+    runExport(exportRequest, outputType, isClipboard),
   ),
-  interruptProcess: (processId: string) => dispatch(interruptProcess(processId))
+  interruptProcess: (processId: string) => dispatch(interruptProcess(processId)),
 });
 
 export default reduxForm({
-  form: "ListShareForm"
+  form: "ListShareForm",
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(bottomDrawerStyles)(ShareForm))) as any;

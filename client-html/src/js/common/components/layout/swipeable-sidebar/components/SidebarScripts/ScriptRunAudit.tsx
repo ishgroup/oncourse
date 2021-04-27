@@ -6,22 +6,15 @@ import { format } from "date-fns";
 import React, { useMemo } from "react";
 import { Typography } from "@material-ui/core";
 import { Check, Clear } from "@material-ui/icons";
+import clsx from "clsx";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../../../utils/dates/format";
 
 const styles = theme => createStyles({
-  checkIcon: {
+  icon: {
     position: "relative",
     top: "0.3rem",
     marginRight: theme.spacing(1),
-    fontSize: "1.2rem",
-    color: "green"
-  },
-  clearIcon: {
-    position: "relative",
-    top: "0.3rem",
-    marginRight: theme.spacing(1),
-    fontSize: "1.2rem",
-    color: "red"
+    fontSize: "1.2rem"
   },
   auditWrapper: {
     flex: "auto"
@@ -40,10 +33,10 @@ const ScriptRunAudit = React.memo<any>(props => {
         const runTime = format(new Date(a.runDate), III_DD_MMM_YYYY_HH_MM);
         switch (a.action) {
           case "SCRIPT_EXECUTED": {
-            return <Tooltip title={`Succeeded at ${runTime}`}><span><Check className={classes.checkIcon} key={ind} /></span></Tooltip>;
+            return <Tooltip title={`Succeeded at ${runTime}`}><span><Check className={clsx(classes.icon, "successColor")} key={ind} /></span></Tooltip>;
           }
           case "SCRIPT_FAILED": {
-            return <Tooltip title={`Failed at ${runTime}`}><span><Clear className={classes.clearIcon} key={ind} /></span></Tooltip>;
+            return <Tooltip title={`Failed at ${runTime}`}><span><Clear className={clsx(classes.icon, "errorColor")} key={ind} /></span></Tooltip>;
           }
           default: {
             return null;

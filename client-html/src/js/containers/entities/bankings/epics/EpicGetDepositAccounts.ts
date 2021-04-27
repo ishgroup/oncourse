@@ -17,7 +17,7 @@ import { FETCH_FAIL } from "../../../../common/actions";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_DEPOSIT_ACCOUNTS,
   getData: () => AccountService.getDepositAccounts(),
   processData: (accounts: Account[]) => {

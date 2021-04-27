@@ -3,7 +3,7 @@ enum:
 - start in future
 - commenced but absent
 - in progress
-- pending status
+- no final status
 - USI verified
 - USI not verified
 - non-VET

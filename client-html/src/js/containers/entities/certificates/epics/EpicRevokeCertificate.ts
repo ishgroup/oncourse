@@ -5,15 +5,15 @@
 
 import { Epic } from "redux-observable";
 
+import { CertificateRevokeRequest } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { REVOKE_CERTIFICATE_ITEM, GET_CERTIFICATE_ITEM } from "../actions/index";
+import { GET_CERTIFICATE_ITEM, REVOKE_CERTIFICATE_ITEM } from "../actions/index";
 import { FETCH_SUCCESS } from "../../../../common/actions/index";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import CertificateService from "../services/CertificateService";
-import { CertificateRevokeRequest } from "@api/model";
 
-const request: EpicUtils.Request<any, any, { ids: number[]; reason: string }> = {
+const request: EpicUtils.Request<any, { ids: number[]; reason: string }> = {
   type: REVOKE_CERTIFICATE_ITEM,
   getData: ({ ids, reason }) => {
     const revokeRequest: CertificateRevokeRequest = {
@@ -22,8 +22,7 @@ const request: EpicUtils.Request<any, any, { ids: number[]; reason: string }> = 
     };
     return CertificateService.revokeCertificate(revokeRequest);
   },
-  processData: (v, s, { ids }) => {
-    return [
+  processData: (v, s, { ids }) => [
       {
         type: FETCH_SUCCESS,
         payload: { message: "Certificate revoked successfully" }
@@ -36,11 +35,8 @@ const request: EpicUtils.Request<any, any, { ids: number[]; reason: string }> = 
         type: GET_CERTIFICATE_ITEM,
         payload: ids[0]
       }
-    ];
-  },
-  processError: response => {
-    return FetchErrorHandler(response, "Failed to revoke certificate");
-  }
+    ],
+  processError: response => FetchErrorHandler(response, "Failed to revoke certificate")
 };
 
 export const EpicRevokeCertificate: Epic<any, any> = EpicUtils.Create(request);

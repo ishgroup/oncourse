@@ -12,7 +12,7 @@ import { getEntityItemById } from "../../../entities/common/entityItemsService";
 import { CHECKOUT_GET_ITEM_VOUCHER, CHECKOUT_GET_ITEM_VOUCHER_FULFILLED } from "../../actions/chekoutItem";
 import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from "../../components/items/components/CkecoutItemViewForm";
 
-const request: EpicUtils.Request<any, any, CheckoutItem> = {
+const request: EpicUtils.Request<any, CheckoutItem> = {
   type: CHECKOUT_GET_ITEM_VOUCHER,
   getData: ({ id }) => getEntityItemById("VoucherProduct", id),
   processData: (editRecord, s, item) => {

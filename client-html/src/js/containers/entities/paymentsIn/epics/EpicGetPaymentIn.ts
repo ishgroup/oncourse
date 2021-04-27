@@ -14,7 +14,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { getEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_PAYMENT_IN_ITEM,
   getData: (id: number) => getEntityItemById("PaymentIn", id),
 

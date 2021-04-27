@@ -56,13 +56,13 @@
 	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<Course id="10" code="AA" willowId="1" name="Test1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="10" code="AA" willowId="1" name="Test1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 	<NodeRelation id="2002" entityIdentifier="1" entityRecordId="10" nodeId="102"/>
 	<Note id="1" note="Regions_1" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
 	<NoteRelation id="1" noteId="1" entityRecordId="10" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
 	
-	<Course id="11" code="BB" willowId="2" name="Test2a" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-	<Course id="12" code="CC" willowId="3" name="Test2b" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="11" code="BB" willowId="2" name="Test2a" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
+	<Course id="12" code="CC" willowId="3" name="Test2b" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 	<NodeRelation id="2003" entityIdentifier="1" entityRecordId="11" nodeId="103"/>
 	<NodeRelation id="2004" entityIdentifier="1" entityRecordId="12" nodeId="103"/>
 	<Note id="2" note="Regions_2" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
@@ -71,30 +71,30 @@
 	<NoteRelation id="3" noteId="3" entityRecordId="12" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
 
 
-	<Course id="13" code="DD" willowId="4" name="Test3" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="13" code="DD" willowId="4" name="Test3" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 	<NodeRelation id="2006" entityIdentifier="1" entityRecordId="13" nodeId="27"/>
 	<Note id="4" note="Subjects_3_4" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
 	<NoteRelation id="4" noteId="4" entityRecordId="13" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
 
 
-	<Course id="14" code="EE" willowId="5" name="Test4" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="14" code="EE" willowId="5" name="Test4" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 	<NodeRelation id="2007" entityIdentifier="1" entityRecordId="14" nodeId="28"/>
 	<NodeRelation id="2008" entityIdentifier="1" entityRecordId="14" nodeId="104"/>
 	<Note id="5" note="Regions_3 Subjects_3_5" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
 	<NoteRelation id="5" noteId="5" entityRecordId="14" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
 
 
-	<Course id="15" code="FF" willowId="6" name="Test5" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="15" code="FF" willowId="6" name="Test5" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 	<NodeRelation id="2009" entityIdentifier="1" entityRecordId="15" nodeId="20"/>
 	<Note id="6" note="Subjects_2_2" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
 	<NoteRelation id="6" noteId="6" entityRecordId="15" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
 
-	<Course id="16" code="GG" willowId="7" name="Test6" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="16" code="GG" willowId="7" name="Test6" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 	<NodeRelation id="2010" entityIdentifier="1" entityRecordId="16" nodeId="18"/>
 	<Note id="7" note="Subjects_2_1_1" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
 	<NoteRelation id="7" noteId="7" entityRecordId="16" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
 	
-	<Course id="17" code="HH" willowId="8" name="Test7" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="17" code="HH" willowId="8" name="Test7" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 	<NodeRelation id="2011" entityIdentifier="1" entityRecordId="17" nodeId="20"/>
 	<NodeRelation id="2012" entityIdentifier="1" entityRecordId="17" nodeId="107"/>
 	<Note id="8" note="Subjects_2_2 Regions_4" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>

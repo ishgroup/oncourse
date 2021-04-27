@@ -67,6 +67,12 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
         height: "unset",
         padding: "5px 10px"
       },
+      "& .ck-list__item .ck-heading_heading3": {
+        fontSize: "15px"
+      },
+      "& .ck-list__item .ck-heading_heading4": {
+        fontSize: "14px"
+      },
       "& .ck-toolbar": {
         height: "45px",
         background: theme.table.contrastRow.main
@@ -111,6 +117,9 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
           top: "-6px",
           "& .ck-dropdown__button": {
             outline: "none"
+          },
+          "& .paragraph": {
+            marginTop: "1px"
           }
         }
       },
@@ -142,7 +151,8 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
           left: "-1px",
           width: "calc(100% + 2px)",
           "& h1, h2, h3, h4, h5": {
-            border: 0
+            border: 0,
+            all: "revert"
           }
         },
       },
@@ -200,14 +210,8 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
     maxHeight: "300px",
     overflow: "auto",
     fontSize: "inherit",
-    "& h1": {
-      fontSize: "1.5em"
-    },
-    "& h2": {
-      fontSize: "1.17em"
-    },
-    "& h3": {
-      fontSize: "1em"
+    "& h1,h2,h3,h4": {
+      all: "revert"
     }
   },
   readonly: {

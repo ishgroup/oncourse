@@ -30,8 +30,8 @@ const onDragEnd = (result, items, dispatch) => {
 
 const renderCollectionFormFields = props => {
   const {
- fields, classes, deleteField, dispatch, errors
-} = props;
+    fields, classes, deleteField, dispatch, errors
+  } = props;
 
   return (
     <DragDropContext onDragEnd={result => onDragEnd(result, fields.getAll(), dispatch)}>
@@ -45,7 +45,12 @@ const renderCollectionFormFields = props => {
                 return (
                   <Draggable key={field.type.uniqueKey} draggableId={field.type.uniqueKey} index={index}>
                     {(provided, snapshot) => (
-                      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                      <div
+                        id={`data-collection-form-${index}`}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
                         <CollectionFormField
                           item={field}
                           field={item}
@@ -66,6 +71,7 @@ const renderCollectionFormFields = props => {
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
+                      id={`data-collection-form-${index}`}
                     >
                       <CollectionFormHeading
                         item={field}

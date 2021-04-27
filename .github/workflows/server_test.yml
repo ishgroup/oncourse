@@ -9,9 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-#    strategy:
-#      matrix:
-#        java: [11, 15]
+    strategy:
+      matrix:
+        java: [11]
 
     services:
       mysql:
@@ -23,8 +23,6 @@ jobs:
          - 3306
        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
-    name: Java ${{ matrix.java }} server test
-
     steps:
     - name: Setup timezone
       uses: zcong1993/setup-timezone@v1.1.1
@@ -33,10 +31,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Set up JDK
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
-#        java-version: ${{ matrix.java }}
-        java-version: 11
+        distribution: 'adopt'
+        java-version: ${{ matrix.java }}
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
@@ -48,7 +46,14 @@ jobs:
           **/node_modules
           ~/.gradle/caches
           ~/.gradle/wrapper
+          ~/.sonar/cache
         key: ${{ runner.os }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
     - name: Run tests
       run: ./gradlew server:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angelTest_trunk?user=root --stacktrace -Duser.language=en -Duser.country=AU
+
+    - name: sonarqube
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: ./gradlew sonarqube --stacktrace --info

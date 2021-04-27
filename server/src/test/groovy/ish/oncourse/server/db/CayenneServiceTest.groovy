@@ -32,7 +32,7 @@ class CayenneServiceTest extends CayenneIshTestCase {
 	private static final Logger logger = LogManager.getLogger()
 
     /**
-	 * check if the network interface of derby db comes up.
+	 * check if the network interface of the db comes up.
 	 *
 	 * @throws URISyntaxException
 	 */
@@ -51,13 +51,13 @@ class CayenneServiceTest extends CayenneIshTestCase {
 			assertEquals("Checking cayenne context", false, dc.getUserProperty("replicating"))
 
         } catch (Exception e) {
-			logger.warn("the test derby startup failed", e)
-            fail("the test derby startup failed")
+			logger.warn("the test database startup failed", e)
+            fail("the test database startup failed")
         }
 	}
 
 	/**
-	 * check if the network interface of derby db comes up.
+	 * check if the network interface of the db comes up.
 	 *
 	 * @throws URISyntaxException
 	 */
@@ -79,8 +79,8 @@ class CayenneServiceTest extends CayenneIshTestCase {
 //			assertEquals("comparing data map", cayMap.getDbEntities().size(), dbMap.getDbEntities().size());
 //
 //		} catch (Exception e) {
-//			logger.warn("the test derby startup failed", e);
-//			fail("the test derby startup failed");
+//			logger.warn("the test db startup failed", e);
+//			fail("the test db startup failed");
 //		}
 	}
 

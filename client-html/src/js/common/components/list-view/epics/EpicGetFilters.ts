@@ -11,7 +11,7 @@ import { State } from "../../../../reducers/state";
 import { GET_FILTERS_FULFILLED, GET_FILTERS_REQUEST, GET_RECORDS_REQUEST } from "../actions/index";
 import { CoreFilter } from "../../../../model/common/ListView";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_FILTERS_REQUEST,
   getData: payload => CustomFiltersService.getFilters(payload.entity),
   processData: (filters: CoreFilter[], state: State, payload) => {

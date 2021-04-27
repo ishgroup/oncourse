@@ -10,16 +10,18 @@ import { Assessment } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import {
   setListEditRecord, getFilters, clearListState
-} from "../../../common/components/list-view/actions/index";
+} from "../../../common/components/list-view/actions";
 import {
   getAssessment, updateAssessment, removeAssessment, createAssessment
-} from "./actions/index";
+} from "./actions";
 import AssessmentEditView from "./components/AssessmentEditView";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getListTags } from "../../tags/actions";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
+import { getGradingTypes } from "../../preferences/actions";
 
 const manualLink = getManualLink("assessment");
 
@@ -31,6 +33,7 @@ interface AssessmentsProps {
   clearListState?: () => void;
   onDelete?: (id: string) => void;
   getTags?: () => void;
+  getGradingTypes?: () => void;
   onCreate: (assessment: Assessment) => void;
 }
 
@@ -72,6 +75,7 @@ const findRelatedGroup: any = [
     list: "document",
     expression: "attachmentRelations.entityIdentifier == Assessment and attachmentRelations.entityRecordId"
   },
+  { title: "Submissions", list: "assessmentSubmission", expression: "assessmentClass.assessment.id" }
 ];
 
 const setRowClasses = ({ active }) => (active === "Yes" ? undefined : "op05");
@@ -83,6 +87,7 @@ const Assessments: React.FC<AssessmentsProps> = props => {
     onDelete,
     onSave,
     getFilters,
+    getGradingTypes,
     clearListState,
     getTags,
     onCreate
@@ -91,6 +96,7 @@ const Assessments: React.FC<AssessmentsProps> = props => {
   useEffect(() => {
     getFilters();
     getTags();
+    getGradingTypes();
     return () => {
       clearListState();
     };
@@ -109,6 +115,7 @@ const Assessments: React.FC<AssessmentsProps> = props => {
         asyncBlurFields: ["notes[].message"]
       }}
       EditViewContent={AssessmentEditView}
+      CogwheelAdornment={BulkEditCogwheelOption}
       getEditRecord={getAssessmentRecord}
       rootEntity="Assessment"
       onInit={onInit}
@@ -126,6 +133,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setListEditRecord(Initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
+  getGradingTypes: () => dispatch(getGradingTypes()),
   getTags: () => dispatch(getListTags("Assessment")),
   getFilters: () => dispatch(getFilters("Assessment")),
   clearListState: () => dispatch(clearListState()),

@@ -51,7 +51,7 @@ class CoassembleScriptClosure implements ScriptClosureTrait<CoassembleIntegratio
      * @param integration
      */
     @Override
-    void execute(CoassembleIntegration integration) {
+    Object execute(CoassembleIntegration integration) {
         if (enrolment.student.contact.email) {
             // make or get students
             def member = integration.postMember(enrolment)
@@ -74,5 +74,6 @@ class CoassembleScriptClosure implements ScriptClosureTrait<CoassembleIntegratio
             ////add student to group
             integration.enrolMemberToGroup(member["id"], courseClass["id"])
         }
+        return null
     }
 }

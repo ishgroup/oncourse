@@ -89,3 +89,7 @@ properties:
     type: boolean
   currentlyOffered:
     type: boolean
+  feeHelpClass:
+    type: boolean
+  fullTimeLoad:
+    type: string 

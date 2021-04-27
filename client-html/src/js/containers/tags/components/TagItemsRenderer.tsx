@@ -5,7 +5,7 @@
 
 import React from "react";
 import TagItem from "./TagItem";
-import uniqid from "uniqid";
+import uniqid from "../../../common/utils/uniqid";
 
 const TagItemsRenderer = React.memo<any>(props => {
   const { fields, onDelete, openTagEditView } = props;

@@ -110,12 +110,16 @@ const styles = theme => createStyles({
       fontSize: "12px",
       marginRight: "12px",
     },
+    headingMargin: {
+      margin: "10px 0",
+    }
   });
 
 const TotalStatisticInfo = props => {
   const {
     totalStudents, totalEnrolments, classes, currency
   } = props;
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Typography className={clsx(classes.totalText)}>
@@ -123,10 +127,28 @@ const TotalStatisticInfo = props => {
         {' '}
         <span>{totalStudents}</span>
         <strong className={classes.revenueColor}>{currency && currency.shortCurrencySymbol}</strong>
-        <span className="money">{formatCurrency(totalEnrolments, "")}</span>
+        {totalEnrolments && (<span className="money">{formatCurrency(totalEnrolments, "")}</span>)}
       </Typography>
     </div>
   );
+};
+
+const ChartTooltip = args => {
+  const { payload, active } = args;
+
+  return active ? (
+    <Paper className="p-1">
+      {payload.map((i, n) => (
+        <Typography key={n} noWrap>
+          <span style={{ color: i.color }} className="mr-1">
+            {i.name}
+            :
+          </span>
+          <span className={n === 0 ? "money" : undefined}>{i.payload[`${i.name}Value`]}</span>
+        </Typography>
+      ))}
+    </Paper>
+  ) : null;
 };
 
 const Chart = props => (
@@ -150,24 +172,6 @@ const Chart = props => (
   </AutoSizer>
   );
 
-const ChartTooltip = args => {
-  const { payload, active } = args;
-
-  return active ? (
-    <Paper className="p-1">
-      {payload.map((i, n) => (
-        <Typography key={n} noWrap>
-          <span style={{ color: i.color }} className="mr-1">
-            {i.name}
-            :
-          </span>
-          <span className={n === 0 ? "money" : undefined}>{i.payload[`${i.name}Value`]}</span>
-        </Typography>
-      ))}
-    </Paper>
-  ) : null;
-};
-
 const preformatChartNumbers = (values: number[], reduceTo?: number) => {
   const max = Math.max(...values);
 
@@ -187,6 +191,8 @@ interface Props {
   getCurrency?: AnyArgFunction;
   currency?: Currency;
   isUpdating?: boolean;
+  hasScriptsPermissions?: boolean;
+  dispatch?: Dispatch;
 }
 
 class Statistics extends React.Component<Props, any> {
@@ -243,8 +249,8 @@ class Statistics extends React.Component<Props, any> {
 
   render() {
     const {
- classes, hasScriptsPermissions, statisticData, currency 
-} = this.props;
+     classes, hasScriptsPermissions, statisticData, currency, dispatch
+    } = this.props;
 
     const { chartData } = this.state;
 
@@ -367,10 +373,10 @@ class Statistics extends React.Component<Props, any> {
 
         {hasScriptsPermissions && (
           <Grid item xs={12} className="mt-2">
-            <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
+            <Typography className={clsx("heading", classes.headingMargin)}>
               Automation status
             </Typography>
-            <ScriptStatistic />
+            <ScriptStatistic dispatch={dispatch} />
           </Grid>
         )}
       </Grid>
@@ -386,6 +392,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  dispatch,
   getStatistic: () => dispatch(getDashboardStatistic())
 });
 

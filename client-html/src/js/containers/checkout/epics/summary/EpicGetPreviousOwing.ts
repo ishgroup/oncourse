@@ -7,10 +7,10 @@ import { Epic } from "redux-observable";
 import { Invoice } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import InvoiceService from "../../../entities/invoices/services/InvoiceService";
-import { CHECKOUT_SET_PREVIOUS_OWING, CHECKOUT_GET_PREVIOUS_OWING } from "../../actions/checkoutSummary";
+import { CHECKOUT_GET_PREVIOUS_OWING, CHECKOUT_SET_PREVIOUS_OWING } from "../../actions/checkoutSummary";
 import { mergeInvoicePaymentPlans } from "../../utils";
 
-const request: EpicUtils.Request<any, any, string> = {
+const request: EpicUtils.Request<any, string> = {
   type: CHECKOUT_GET_PREVIOUS_OWING,
   getData: id => InvoiceService.searchInvoices(
     `contact.id is ${id} and amountOwing > 0`

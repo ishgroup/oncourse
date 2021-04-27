@@ -3,10 +3,13 @@ import ClassNames from "clsx";
 import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
 import AddIcon from "@material-ui/icons/Add";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
+import { withRouter } from "react-router";
 import {
-  FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
+  Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
 import { ConcessionType } from "@api/model";
 import isEqual from "lodash.isequal";
@@ -18,7 +21,9 @@ import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErro
 import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { concessionTypesStyles } from "./styles";
+import { State } from "../../../../../reducers/state";
+import { setNextLocation } from "../../../../../common/actions";
+import { cardsFormStyles } from "../../../styles/formCommonStyles";
 
 const manualLink = getManualLink("generalPrefs_concessionTypes");
 
@@ -33,8 +38,12 @@ interface Props {
   dirty: boolean;
   invalid: boolean;
   onDelete: (id: string) => void;
+  form: string;
   onUpdate: (concessionTypes: ConcessionType[]) => void;
   openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  history?: any,
+  nextLocation?: string,
+  setNextLocation?: (nextLocation: string) => void,
 }
 
 class ConcessionTypesBaseForm extends React.Component<Props, any> {
@@ -86,7 +95,12 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
+        const { nextLocation, history, setNextLocation } = this.props;
+
         this.props.dispatch(initialize("ConcessionTypesForm", { types: this.props.concessionTypes }));
+
+        nextLocation && history.push(nextLocation);
+        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -148,12 +162,12 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-      classes, handleSubmit, data, dirty, created, modified, invalid
+      classes, handleSubmit, data, dirty, created, modified, invalid, form
     } = this.props;
 
     return (
-      <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-        <RouteChangeConfirm when={dirty} />
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>
@@ -206,14 +220,22 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
             </Grid>
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
 
+const mapStateToProps = (state: State) => ({
+  nextLocation: state.nextLocation,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+});
+
 const ConcessionTypesForm = reduxForm({
   onSubmitFail,
   form: "ConcessionTypesForm"
-})(withStyles(concessionTypesStyles)(ConcessionTypesBaseForm) as any);
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(cardsFormStyles)(withRouter(ConcessionTypesBaseForm)) as any));
 
 export default ConcessionTypesForm;

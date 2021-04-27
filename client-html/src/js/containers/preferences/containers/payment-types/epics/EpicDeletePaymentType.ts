@@ -12,7 +12,7 @@ import { DELETE_PAYMENT_TYPE_FULFILLED, DELETE_PAYMENT_TYPE_REQUEST } from "../.
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { PaymentType } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_PAYMENT_TYPE_REQUEST,
   getData: payload => PreferencesService.deletePaymentType(payload.id),
   retrieveData: () => PreferencesService.getPaymentTypes(),

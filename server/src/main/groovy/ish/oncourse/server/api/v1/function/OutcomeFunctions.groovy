@@ -11,11 +11,8 @@
 
 package ish.oncourse.server.api.v1.function
 
-import ish.common.CalculateEndDate
-import ish.common.CalculateStartDate
 import ish.common.types.OutcomeStatus
 import static ish.common.types.OutcomeStatus.*
-import ish.oncourse.entity.delegator.OutcomeDelegator
 import ish.oncourse.function.CalculateOutcomeReportableHours
 import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.dao.EnrolmentDao
@@ -74,11 +71,13 @@ class OutcomeFunctions {
             outcomeDTO.moduleCode = outcome.module?.nationalCode
             outcomeDTO.moduleName = outcome.module?.title
 
-            outcomeDTO.trainingPlanStartDate = LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(outcome)).calculate())
+            outcomeDTO.trainingPlanStartDate = outcome.trainingPlanStartDate
+            outcomeDTO.actualStartDate = outcome.actualStartDate
             outcomeDTO.startDate = outcome.startDate
             outcomeDTO.startDateOverridden = outcome.startDateOverridden
 
-            outcomeDTO.trainingPlanEndDate = LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(outcome)).calculate())
+            outcomeDTO.trainingPlanEndDate = outcome.trainingPlanEndDate
+            outcomeDTO.actualEndDate = outcome.actualEndDate
             outcomeDTO.endDate = outcome.endDate
             outcomeDTO.endDateOverridden = outcome.endDateOverridden
 
@@ -119,10 +118,10 @@ class OutcomeFunctions {
         }
 
         outcome.startDateOverridden = outcome.priorLearning != null || outcomeDTO.startDateOverridden
-        outcome.startDate = outcome.startDateOverridden ? outcomeDTO.startDate : LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(outcome)).calculate())
+        outcome.startDate = outcome.startDateOverridden ? outcomeDTO.startDate : outcomeDTO.actualStartDate
 
         outcome.endDateOverridden = outcome.priorLearning != null || outcomeDTO.endDateOverridden
-        outcome.endDate = outcome.endDateOverridden ? outcomeDTO.endDate : LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(outcome)).calculate())
+        outcome.endDate = outcome.endDateOverridden ? outcomeDTO.endDate : outcomeDTO.actualEndDate
 
 
         if (outcomeDTO.reportableHours != null) {

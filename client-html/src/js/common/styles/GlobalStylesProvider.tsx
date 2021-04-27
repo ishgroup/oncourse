@@ -54,7 +54,8 @@ const customOSScrollbars = getOS() === "Windows"
 const globalStyles = (theme: AppTheme) =>
   createStyles({
     "@global": {
-      "@font-face": [
+      ...theme.palette.type === "dark" ? { "a": { color: "#90caf9" } } : {},
+        "@font-face": [
         {
           fontFamily: "Inter",
           fontWeight: `100 900`,
@@ -95,6 +96,20 @@ const globalStyles = (theme: AppTheme) =>
       ".container": {
         display: "flex",
         flexWrap: "wrap"
+      },
+      ".codeArea": {
+        borderRadius: theme.shape.borderRadius,
+        background: theme.table.contrastRow.main,
+        padding: theme.spacing(1),
+        border: "none",
+        outline: "none",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        fontSize: "inherit",
+        fontFamily: "inherit",
+        color: "inherit",
+        width: "100%"
       },
       ".appBarContainer": {
         marginTop: theme.spacing(8),
@@ -491,6 +506,11 @@ const globalStyles = (theme: AppTheme) =>
             padding: 17
           }
         }
+      },
+      ".selectItmeIcon": {
+        fontSize: "16px",
+        position: "relative",
+        bottom: "-3px"
       },
       ".hoverIconContainer": {
         "&:hover .hoverIcon": {

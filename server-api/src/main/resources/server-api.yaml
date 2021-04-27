@@ -8,9 +8,10 @@ info:
     email: support@ish.com.au
   license:
     name: AGPLv3
-  version: v1
+  version: 1.0.0
 
 host: sttrinians.cloud.ish.com.au
+
 schemes:
   - https
 consumes:
@@ -23,7 +24,7 @@ securityDefinitions:
     type: basic
     description: HTTP Basic Authentication
 
-basePath: /a/
+basePath: /a/v1/
 
 tags:
   - name: Preference
@@ -86,6 +87,8 @@ paths:
     $ref: './path/list/entity/articleProduct/api.yaml'
   /list/entity/assessment:
     $ref: './path/list/entity/assessment/api.yaml'
+  /list/entity/assessmentSubmission:
+    $ref: './path/list/entity/assessmentSubmission/api.yaml'
   /list/entity/audit:
     $ref: './path/list/entity/audit/api.yaml'
   /list/entity/banking:
@@ -252,6 +255,8 @@ paths:
     $ref: './path/preference/field/type/api.yaml'
   /preference/fundingcontract:
     $ref: './path/preference/fundingcontract/api.yaml'
+  /preference/grading:
+    $ref: './path/preference/grading/api.yaml'
   /preference/ldap:
     $ref: './path/preference/ldap/api.yaml'
   /preference/messagequeued:
@@ -284,6 +289,8 @@ paths:
     $ref: './path/timetable/courseClass/api.yaml'
   /timetable/session/tag:
     $ref: './path/timetable/session/tag/api.yaml'
+  /token:
+    $ref: './path/token/api.yaml'
   /user:
     $ref: './path/user/api.yaml'
   /user/preference:

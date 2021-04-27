@@ -73,7 +73,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
         "documents":"#ignore",
         "customFields":{},
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "assessments":[],
+        "submissions":[]
         }
         """
 
@@ -158,7 +160,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
         "documents":"#ignore",
         "customFields":{},
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "assessments":[],
+        "submissions":[]
         }
         """
 

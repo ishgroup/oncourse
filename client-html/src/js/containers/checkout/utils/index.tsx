@@ -7,7 +7,7 @@ import {
   CheckoutArticle,
   CheckoutEnrolment,
   CheckoutMembership,
-  CheckoutModel,
+  CheckoutModel, CheckoutPaymentPlan,
   CheckoutVoucher,
   ContactNode,
   Invoice,
@@ -155,6 +155,7 @@ export const mergeInvoicePaymentPlans = (paymentPlans: InvoicePaymentPlan[]) => 
 
 export const getCheckoutModel = (
   state: CheckoutState,
+  paymentPlans: CheckoutPaymentPlan[],
   fundingInvoices: CheckoutFundingInvoice[],
   summaryValues: any = {},
   pricesOnly?: boolean
@@ -248,7 +249,7 @@ export const getCheckoutModel = (
 
     paymentDate: summary.paymentDate,
 
-    paymentPlans: state.payment.paymentPlans,
+    paymentPlans,
 
     merchantReference: payment.merchantReference,
 

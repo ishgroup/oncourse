@@ -3,4 +3,3 @@ talentLMS {
     course record.courseClass.course.code
     student record.student
 }
-

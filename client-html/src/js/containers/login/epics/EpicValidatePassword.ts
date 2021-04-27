@@ -7,10 +7,10 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import LoginService from "../services/LoginService";
-import { CHECK_PASSWORD_REQUEST, CHECK_PASSWORD_FULFILLED, FETCH_SUCCESS, FETCH_FAIL } from "../../../common/actions";
+import { CHECK_PASSWORD_FULFILLED, CHECK_PASSWORD_REQUEST, FETCH_FAIL, FETCH_SUCCESS } from "../../../common/actions";
 import { PasswordComplexity } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CHECK_PASSWORD_REQUEST,
   hideLoadIndicator: true,
   getData: payload => LoginService.checkPassword(payload.value, payload.host, payload.port),

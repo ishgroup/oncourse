@@ -9,7 +9,7 @@ import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { GET_IS_LOGGED_FULFILLED, GET_IS_LOGGED_REQUEST } from "../actions";
 import UsersService from "../../security/containers/users/services/UsersService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_IS_LOGGED_REQUEST,
   getData: () => UsersService.isLoggedIn(),
   processData: () => {

@@ -11,7 +11,7 @@ import LoginService from "../../../../login/services/LoginService";
 import { VALIDATE_USER_PASSWORD, VALIDATE_USER_PASSWORD_FULFILLED } from "../../../actions";
 import { PasswordComplexity } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: VALIDATE_USER_PASSWORD,
   hideLoadIndicator: true,
   getData: (value: string) => LoginService.checkPassword(value),

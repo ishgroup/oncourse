@@ -32,7 +32,7 @@ export interface DocumentSearchItem {
   attachedRecordsCount: number;
 }
 
-const request: EpicUtils.Request<any, any, { documentName: string; editingFormName: string }> = {
+const request: EpicUtils.Request<any, { documentName: string; editingFormName: string }> = {
   type: SEARCH_DOCUMENT_BY_NAME,
   hideLoadIndicator: true,
   getData: ({ documentName }) => EntityService.getPlainRecords(

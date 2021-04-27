@@ -68,6 +68,11 @@ export const createAndDownloadFile = (data: any, type: string, name: string) => 
   window.URL.revokeObjectURL(url);
 };
 
+export const getArrayFieldMeta = name => {
+  const match = name.match(/\[(\d)]\.([^.]+)$/);
+  return { field: match[2], index: Number(match[1]) };
+};
+
 export const stubFunction = () => undefined;
 
 export const stubComponent = () => <div className="invisible" />;

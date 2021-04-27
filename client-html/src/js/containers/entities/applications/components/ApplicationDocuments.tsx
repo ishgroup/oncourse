@@ -20,7 +20,6 @@ const ApplicationDocuments: React.FC<ApplicationDocumentsProps> = props => {
         name="documents"
         label="Documents"
         entity="Application"
-        classes={classes}
         component={DocumentsRenderer}
         xsGrid={12}
         mdGrid={twoColumn ? 6 : 12}

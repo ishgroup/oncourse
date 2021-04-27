@@ -43,8 +43,8 @@
 	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-	<Course id="2"  code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
+	<Course id="2"  code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
 	<Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="50" receivableFromStudentAccountId="50" taxCode="GST" taxrate="0.1"/>
 
@@ -61,11 +61,11 @@
 	<CourseClass id="1" code="123" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="50" deliveryMode="1" courseId="1" feeExGst="200.00"
-                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 	<CourseClass id="2" code="124" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
                  isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                  incomeAccountId="50" deliveryMode="1" courseId="2" feeExGst="400.00"
-                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 
 	<MessageTemplate id="131" name="Enrolment confirmation" subject="&lt;college.shortName&gt; [Enrolment confirmation #&lt;invoice.number&gt;]" message="&lt;currentDate&gt;&#xD;&#xA;Thank you for enrolling at &lt;college.name&gt;.&#xD;&#xA;Your Reference Number is &lt;invoice.number&gt;.&#xD;&#xA;&#xD;&#xA;Class List:&#xD;&#xA;------------&#xD;&#xA;&lt;classList&gt;&#xD;&#xA;&#xD;&#xA;Please re-visit &lt;college.webAddress&gt; prior to your course to  check course materials, instructions and for possible changes.  If there are insufficient numbers courses have to be cancelled. We usually cancel courses when necessary, four working days prior to their scheduled start date. It would be wise to check the status your course on the website a day or two prior to its scheduled start date.  Please confirm your course is running prior to purchasing any materials  and equipment.&#xD;&#xA;&#xD;&#xA;The EMERGENCY contact number referred to in the College Brochure is xx xxxx xxxx. This number is for EMERGENCY contact outside College Office hours. Office hours are 9am-5pm Monday to Friday. This number is for use if you are lost, sick or unable to attend a particular session of your course. Our tutors appreciate &quot;apologies&quot; if you are unable to attend.&#xD;&#xA;&#xD;&#xA;Please take this confirmation with you to your course as proof of enrolment.&#xD;&#xA;&#xD;&#xA;Please remember that &quot;Smoking is Prohibited&quot; by Law on School sites.&#xD;&#xA;&#xD;&#xA;We trust that you will enjoy your course(s).&#xD;&#xA;Please do not hesitate to contact the College office should you need any further information.&#xD;&#xA;&#xD;&#xA;----------------------------&#xD;&#xA;Email: &lt;college.email&gt;&#xD;&#xA;Phone: &lt;college.phone&gt;&#xD;&#xA;Fax: &lt;college.fax&gt;&#xD;&#xA;----------------------------&#xD;&#xA;"
         type="0"/>

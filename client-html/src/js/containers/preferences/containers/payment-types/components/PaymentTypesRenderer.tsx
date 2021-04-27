@@ -14,15 +14,15 @@ import { validateSingleMandatoryField, validateUniqueNamesInArray } from "../../
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 
 const PayTypes = Object.keys(PayType)
-  .filter(val => isNaN(Number(val)))
+  .filter(val => Number.isNaN(Number(val)))
   .map(mapSelectItems);
 
 PayTypes.sort(sortDefaultSelectItems);
 
 const renderPaymentTypes = props => {
   const {
- fields, classes, onDelete, assetAccounts
-} = props;
+    fields, classes, onDelete, assetAccounts
+  } = props;
 
   return (
     <Grid item xs={12}>
@@ -30,7 +30,7 @@ const renderPaymentTypes = props => {
         const field = fields.get(index);
 
         return (
-          <Card className="card" key={index}>
+          <Card id={`payment-type-item-${index}`} className="card" key={index}>
             <Grid container spacing={2} className="relative">
               <Grid item xs={12}>
                 <Grid container>

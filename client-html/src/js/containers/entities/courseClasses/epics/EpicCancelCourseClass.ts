@@ -8,7 +8,7 @@ import CourseClassService from "../services/CourseClassService";
 import { CANCEL_COURSE_CLASS, CANCEL_COURSE_CLASS_FULFILLED } from "../actions";
 import { initialize } from "redux-form";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CANCEL_COURSE_CLASS,
   getData: payload => CourseClassService.cancelClass(payload),
   processData: () => {

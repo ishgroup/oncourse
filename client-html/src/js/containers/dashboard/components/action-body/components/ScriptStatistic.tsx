@@ -6,61 +6,56 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { DataResponse } from "@api/model";
 import {
  Grid, Link, List, ListItem, Typography, Tooltip
 } from "@material-ui/core";
 import clsx from "clsx";
 import {
-  differenceInHours, differenceInMinutes, differenceInSeconds, format, parseISO
+  differenceInHours,
+  differenceInMinutes,
+  format
 } from "date-fns";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from "@material-ui/icons/Cancel";
+import { Check, Clear } from "@material-ui/icons";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import EntityService from "../../../../../common/services/EntityService";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../../../common/utils/dates/format";
+import { openInternalLink } from "../../../../../common/utils/links";
+import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import AnimateList from "../../../../../common/utils/animation/AnimateList";
 
 const styles = theme => createStyles({
-  statisticGroup: {
-    padding: "8px 8px 0"
-  },
-  containerStatisticGroup: {
-    width: "calc(100% + 16px)",
-    margin: "-8px"
-  },
-  displayBlock: {
-    display: "block",
-  },
-  doneIcon: {
-    color: "#018759",
-  },
-  failedIcon: {
-    color: "#DE340C",
+  icon: {
+    top: "0.3rem",
+    marginRight: theme.spacing(1),
+    fontSize: "1.2rem",
   },
   smallScriptGroup: {
     display: "flex",
     padding: "0",
+    height: "18px",
   },
   smallScriptText: {
     fontSize: "12px",
     marginRight: "12px",
-    maxWidth: "130px",
-    width: "130px"
+    minWidth: "50%",
   },
   lastRunText: {
     width: "70px",
+    minWidth: "70px",
     fontSize: "12px",
+    marginLeft: theme.spacing(1),
   }
 });
 
-const ScriptStatistic = (props: any) => {
-  const [scripts, setScripts] = useState({});
+const ScriptStatistic = ({ dispatch, classes }) => {
+  const [scripts, setScripts] = useState([]);
 
-  const { classes } = props;
+  const getScriptsData = () => {
+    const today = new Date();
 
-  useEffect(() => {
     EntityService.getPlainRecords(
       "Script",
       "name",
@@ -70,112 +65,108 @@ const ScriptStatistic = (props: any) => {
       "name",
       true
     )
-      .then((response: DataResponse) => {
-        const scripts = [...response.rows];
-        const enabledScripts = response.rows.map(elem => elem.id);
+      .then(async (scriptRes: DataResponse) => {
+        const resultForRender = [];
 
-        EntityService.getPlainRecords(
-          "Audit",
-          "entityId,created,action",
-          `entityIdentifier is "Script" and entityId in (${enabledScripts.toString()}) 
-            and ( action is SCRIPT_FAILED or action is SCRIPT_EXECUTED)`,
-          null,
-          0,
-          'created',
-          false
-        ).then((response: DataResponse) => {
-          const result = {};
-
-          response.rows.forEach(elem => {
-            const arrayWithValues = elem.values;
-
-            const elemForArray = {
-              id: arrayWithValues[0],
-              date: arrayWithValues[1],
-              status: arrayWithValues[2],
-            };
-
-            result[arrayWithValues[0]] = result[arrayWithValues[0]] ? [...result[arrayWithValues[0]], elemForArray] : [elemForArray];
-          });
-
-          const scriptsWithName = {};
-
-          Object.keys(result).forEach((key: string) => {
-            const script = scripts.find((elem: any) => key === elem.id);
-            scriptsWithName[script.values[0]] = [...result[key].slice(0, 7)];
-          });
-
-          const sortable = [];
-          const currentDate = new Date();
-          for (const script in scriptsWithName) {
-            if (differenceInHours(currentDate, parseISO(scriptsWithName[script][0].date)) <= 24) {
-              sortable.push([script, scriptsWithName[script][0].date]);
+        await scriptRes.rows.map(scriptRow => () =>
+          EntityService.getPlainRecords(
+            "Audit",
+            "entityId,created,action",
+            `entityIdentifier is "Script" and entityId is ${scriptRow.id}
+            and ( action is SCRIPT_FAILED or action is SCRIPT_EXECUTED) `,
+            7,
+            0,
+            'created',
+            false
+          ).then(auditRes => {
+            if (!auditRes.rows.length || !auditRes.rows.some(r => differenceInHours(today, new Date(r.values[1])) <= 24)) {
+              return;
             }
-          }
+            const result = auditRes.rows.map(row => ({
+              id: row.values[0],
+              date: row.values[1],
+              status: row.values[2],
+            }));
+            resultForRender.push({ name: scriptRow.values[0], result });
+          })
+          .catch(err => instantFetchErrorHandler(dispatch, err))).reduce(async (a, b) => {
+          await a;
+          await b();
+        }, Promise.resolve());
 
-          sortable.sort((a, b) => differenceInSeconds(
-              parseISO(a[1]),
-              parseISO(b[1]),
-            ));
+        resultForRender.sort((a, b) => (new Date(a.result[0].date) < new Date(b.result[0].date) ? 1 : -1));
+        setScripts(resultForRender);
+      })
+      .catch(err => instantFetchErrorHandler(dispatch, err));
+  };
 
-          const resultForRender = sortable.reverse().reduce((result, elem) => (
-            { ...result, [elem[0]]: [...scriptsWithName[elem[0]]] }), {});
+  useEffect(() => {
+    getScriptsData();
 
-          setScripts(resultForRender);
-        });
-      });
+    const interval = setInterval(getScriptsData, 60000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const getTime = (date: any) => {
     const currentDate = new Date();
 
-    const minutes = differenceInMinutes(currentDate, parseISO(date));
+    const minutes = differenceInMinutes(currentDate, new Date(date));
 
     if (minutes < 60) {
       return minutes + 'm ago';
-    } 
-      return Math.floor(minutes / 60) + 'h ago';
+    }
+    return Math.floor(minutes / 60) + 'h ago';
   };
 
   return (
     <List dense disablePadding>
-      <Grid container className={clsx(classes.containerStatisticGroup, classes.displayBlock)}>
-        {Object.keys(scripts).map((key: string) => (
-          <Grid item className={classes.statisticGroup}>
-            <ListItem dense disableGutters className={classes.smallScriptGroup}>
-              <Typography className={classes.smallScriptText} noWrap>
-                {key}
-              </Typography>
-              <Typography className={classes.lastRunText}>
-                {getTime(scripts[key][0].date)}
-              </Typography>
-              {scripts[key] && scripts[key].reverse().map((elem: any) => (
-                elem.status === "SCRIPT_EXECUTED"
-                  ? (
-                    <Tooltip title={`Succeeded at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
-                      <CheckCircleIcon className={classes.doneIcon} />
-                    </Tooltip>
-                  )
-                  : (
-                    <Tooltip title={`Failed at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
-                      <CancelIcon className={classes.failedIcon} />
-                    </Tooltip>
-                  )
-              ))}
-              <Link
-                href={`${window.location.origin}/audit?search=entityId is ${scripts[key][0].id} and entityIdentifier is "Script"`}
-                target="_blank"
-                color="textSecondary"
-                underline="none"
-              >
-                <Tooltip title="more...">
-                  <span> ...</span>
-                </Tooltip>
-              </Link>
-            </ListItem>
-          </Grid>
+      <AnimateList>
+        {scripts.map(script => (
+          <ListItem ref={createRef() as any} key={script.name} className={classes.smallScriptGroup} dense disableGutters>
+            <Grid container wrap="nowrap">
+              <Grid item xs className="overflow-hidden">
+                <Typography
+                  onClick={() => openInternalLink(`/automation/script/${script.result[0].id}`)}
+                  className={clsx(classes.smallText, "linkDecoration", classes.leftColumn, classes.smallScriptText)}
+                  noWrap
+                >
+                  {script.name}
+                </Typography>
+              </Grid>
+              <Grid item className={classes.smallScriptGroup} xs={6}>
+                <Typography className={classes.lastRunText} color="textSecondary">
+                  {getTime(script.result[0].date)}
+                </Typography>
+                {script.result.map((elem, index) => (
+                  elem.status === "SCRIPT_EXECUTED"
+                    ? (
+                      <Tooltip key={script.name + index} title={`Succeeded at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
+                        <Check className={clsx(classes.icon, "successColor")} />
+                      </Tooltip>
+                    )
+                    : (
+                      <Tooltip key={script.name + index} title={`Failed at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
+                        <Clear className={clsx(classes.icon, "errorColor")} />
+                      </Tooltip>
+                    )
+                ))}
+                <Link
+                  href={`${window.location.origin}/audit?search=entityId is ${script.result[0].id} and entityIdentifier is "Script"`}
+                  target="_blank"
+                  color="textSecondary"
+                  underline="none"
+                >
+                  <Tooltip title="more...">
+                    <span> ...</span>
+                  </Tooltip>
+                </Link>
+              </Grid>
+            </Grid>
+
+          </ListItem>
         ))}
-      </Grid>
+      </AnimateList>
     </List>
   );
 };

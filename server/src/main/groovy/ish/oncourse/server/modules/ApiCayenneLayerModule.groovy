@@ -15,9 +15,11 @@ import com.google.inject.Binder
 import com.google.inject.Module
 import com.google.inject.Scopes
 import ish.oncourse.server.api.dao.AccountDao
+import ish.oncourse.server.api.dao.ApiTokenDao
 import ish.oncourse.server.api.dao.ApplicationDao
 import ish.oncourse.server.api.dao.ArticleProductDao
 import ish.oncourse.server.api.dao.AssessmentDao
+import ish.oncourse.server.api.dao.AssessmentSubmissionDao
 import ish.oncourse.server.api.dao.CertificateDao
 import ish.oncourse.server.api.dao.CertificateOutcomeDao
 import ish.oncourse.server.api.dao.ClassCostDao
@@ -40,6 +42,7 @@ import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.EntityRelationTypeDao
 import ish.oncourse.server.api.dao.ExportTemplateDao
 import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
+import ish.oncourse.server.api.dao.GradingTypeDao
 import ish.oncourse.server.api.dao.ImportDao
 import ish.oncourse.server.api.dao.InvoiceDao
 import ish.oncourse.server.api.dao.InvoiceDueDateDao
@@ -74,6 +77,7 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(ApplicationDao).in(Scopes.SINGLETON)
         binder.bind(ArticleProductDao).in(Scopes.SINGLETON)
         binder.bind(AssessmentDao).in(Scopes.SINGLETON)
+        binder.bind(AssessmentSubmissionDao).in(Scopes.SINGLETON)
 
 
         binder.bind(CertificateDao).in(Scopes.SINGLETON)
@@ -99,6 +103,7 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(ExportTemplateDao).in(Scopes.SINGLETON)
 
         binder.bind(FieldConfigurationSchemeDao).in(Scopes.SINGLETON)
+        binder.bind(GradingTypeDao).in(Scopes.SINGLETON)
 
         binder.bind(ImportDao).in(Scopes.SINGLETON)
         binder.bind(InvoiceDao).in(Scopes.SINGLETON)
@@ -136,6 +141,7 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(UnavailableRuleDao).in(Scopes.SINGLETON)
         binder.bind(UserDao).in(Scopes.SINGLETON)
         binder.bind(WaitingListDao).in(Scopes.SINGLETON)
+        binder.bind(ApiTokenDao).in(Scopes.SINGLETON)
 
     }
 }

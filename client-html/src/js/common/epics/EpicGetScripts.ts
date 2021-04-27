@@ -5,16 +5,14 @@
 
 import { Epic } from "redux-observable";
 
-import {
- Column, DataResponse, Script, DataRow 
-} from "@api/model";
+import { Column, DataResponse, DataRow, Script } from "@api/model";
 import * as EpicUtils from "./EpicUtils";
-import { GET_SCRIPTS_REQUEST, GET_SCRIPTS_FULFILLED } from "../actions";
+import { GET_SCRIPTS_FULFILLED, GET_SCRIPTS_REQUEST } from "../actions";
 import EntityService from "../services/EntityService";
 
 const scriptsMap = { "ProductItem": ["ProductItem", "Voucher", "Article", "Membership"] };
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_SCRIPTS_REQUEST,
   getData: payload => EntityService.getRecords(
     "Script",

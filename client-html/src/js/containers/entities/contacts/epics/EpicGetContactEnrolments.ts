@@ -19,7 +19,7 @@ export const contactEnrolmentMap = ({ values, id }) => ({
   status: values[4]
 });
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_CONTACT_ENROLMENTS,
   hideLoadIndicator: true,
   getData: contactId =>

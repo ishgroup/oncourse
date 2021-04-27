@@ -3,12 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useRef, useState
-} from "react";
-import {
-  change, initialize, InjectedFormProps
-} from "redux-form";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { change, Form, initialize, InjectedFormProps } from "redux-form";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import FileCopy from "@material-ui/icons/FileCopy";
 import Grid from "@material-ui/core/Grid/Grid";
@@ -26,7 +22,6 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import Button from "../../../../../common/components/buttons/Button";
 import Bindings from "../../../components/Bindings";
-import { EntityItems } from "../../../constants";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
@@ -36,6 +31,7 @@ import { createAndDownloadFile } from "../../../../../common/utils/common";
 import FilePreview from "../../../../../common/components/form/FilePreview";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import Uneditable from "../../../../../common/components/form/Uneditable";
+import { EntityItems } from "../../../../../model/entities/common";
 
 const manualUrl = getManualLink("reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
@@ -50,6 +46,9 @@ interface Props extends InjectedFormProps<Report> {
   onDelete: NumberArgFunction;
   pdfBackgrounds: CommonListItem[];
   openConfirm: (onConfirm: any, confirmMessage?: string) => void;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
 }
 
 const reader = new FileReader();
@@ -86,7 +85,10 @@ const PdfReportsForm = React.memo<Props>(
     onDelete,
     pdfBackgrounds,
     openConfirm,
-    initialValues
+    initialValues,
+    history,
+    nextLocation,
+    setNextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
@@ -194,15 +196,22 @@ const PdfReportsForm = React.memo<Props>(
       }
     }, [values.id, prevId, disableRouteConfirm]);
 
+    useEffect(() => {
+      if (!dirty && nextLocation) {
+        history.push(nextLocation);
+        setNextLocation('');
+      }
+    }, [nextLocation, dirty]);
+
     return (
       <>
-        <form onSubmit={handleSubmit(handleSave)}>
+        <Form onSubmit={handleSubmit(handleSave)}>
           <input type="file" ref={fileRef} className="d-none" onChange={handleUpload} />
           <FormField type="stub" name="body" />
 
           <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialodSave} />
 
-          {(dirty || isNew) && <RouteChangeConfirm when={(dirty || isNew) && !disableRouteConfirm} />}
+          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
 
           <CustomAppBar>
             <FormField
@@ -355,7 +364,7 @@ const PdfReportsForm = React.memo<Props>(
               </div>
             </Grid>
           </Grid>
-        </form>
+        </Form>
       </>
     );
   }

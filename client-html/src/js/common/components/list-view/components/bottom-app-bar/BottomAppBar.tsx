@@ -24,11 +24,12 @@ import SearchInput from "./components/SearchInput";
 import ScriptsMenu from "./components/ScriptsMenu";
 import SendMessageMenu from "./components/SendMessageMenu";
 import ViewSwitcher from "./components/ViewSwitcher";
-import { APP_BAR_HEIGHT, EMAIL_FROM_KEY } from "../../../../../constants/Config";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, EMAIL_FROM_KEY } from "../../../../../constants/Config";
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
 import { State } from "../../../../../reducers/state";
 import { getEmailTemplatesWithKeyCode, getScripts, getUserPreferences } from "../../../../actions";
+import { LSGetItem } from "../../../../utils/storage";
 
 const SendMessageEntities = [
   "Invoice",
@@ -48,7 +49,7 @@ const EntitiesToMessageTemplateEntitiesMap = {
   Application: ["Contact", "Application"],
   Contact: ["Contact"],
   Enrolment: ["Contact", "Enrolment"],
-  CourseClass: ["Contact", "CourseClass", "Enrolment"],
+  CourseClass: ["Contact", "CourseClass", "Enrolment", "CourseClassTutor"],
   PaymentIn: ["Contact", "PaymentIn"],
   PaymentOut: ["Contact", "PaymentOut"],
   Payslip: ["Contact", "Payslip"],
@@ -277,6 +278,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
     const settingsItems = [
       (selection.length === 0 || existingRecordSelected) && scripts?.length && (
         <ScriptsMenu
+          key="ScriptsMenu"
           scripts={scripts}
           classes={classes}
           entity={rootEntity}
@@ -284,9 +286,11 @@ class BottomAppBar extends React.PureComponent<any, any> {
           openScriptModal={this.openScriptModal}
         />
       ),
-      isSendMessageAvailable && <SendMessageMenu selection={selection} entity={rootEntity} closeAll={this.handleClose} />,
+      isSendMessageAvailable
+      && <SendMessageMenu key="SendMessageMenu" selection={selection} entity={rootEntity} closeAll={this.handleClose} />,
       CogwheelAdornment && (
         <CogwheelAdornment
+          key="CogwheelAdornment"
           closeMenu={this.handleClose}
           menuItemClass="listItemPadding"
           searchQuery={searchQuery}
@@ -302,6 +306,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
       deleteEnabled
       && (
         <MenuItem
+          key="DeleteRecord"
           disabled={selection.length !== 1 || !existingRecordSelected}
           onClick={this.handleDeleteClick}
           classes={{
@@ -322,7 +327,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
           filteredCount={filteredCount}
         />
 
-        <div className={clsx(classes.root, localStorage.getItem("theme") === "christmas" && "christmasHeader")}>
+        <div className={clsx(classes.root, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}>
           <SearchInput
             innerRef={searchComponentNode}
             onQuerySearch={onQuerySearch}

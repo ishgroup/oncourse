@@ -213,7 +213,7 @@ class DocumentFunctions {
 
 
     static ValidationErrorDTO validateStoragePlace(byte[] content, DocumentService documentService, ObjectContext context) {
-        Long currentStorageSize = DocumentDao.getStoredDocumentsSize(context)
+        Long currentStorageSize = DocumentDao.getStoredDocumentsSize(context)?:0
         if (documentService.storageLimit != null && currentStorageSize + content.length > documentService.storageLimit) {
             String otherwise = BILLING_APP_LINK ? "add additional storage <a href=\"${BILLING_APP_LINK}\">here.</a>" : "contact ish support, please."
             String message
@@ -229,11 +229,13 @@ class DocumentFunctions {
 
     static ValidationErrorDTO validateVersionForSave(byte[] content, ObjectContext context) {
         if (!content && content.length) {
-            return new ValidationErrorDTO(null, 'versions', 'A least one version of document required.')
+            return new ValidationErrorDTO(null, 'versions', 'Your upload has failed. A least one version of document required.')
         }
 
-        if (getDocumentByHash(content, context)) {
-            return new ValidationErrorDTO(null, 'versions', 'This version of document is already exist.')
+        Document document = getDocumentByHash(content, context)
+        if (document) {
+            return new ValidationErrorDTO(null, 'versions',
+                    "Your upload has failed. The file you are trying to upload already exists as a document called '${document.name}' or its history.")
         }
 
         return null

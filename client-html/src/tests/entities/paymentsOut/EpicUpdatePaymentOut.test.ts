@@ -3,7 +3,6 @@ import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicUpdatePaymentOut } from "../../../js/containers/entities/paymentsOut/epics/EpicUpdatePaymenOut";
 import {
-  GET_PAYMENT_OUT_ITEM,
   UPDATE_PAYMENT_OUT_ITEM_FULFILLED,
   updatePaymentOut
 } from "../../../js/containers/entities/paymentsOut/actions";
@@ -23,10 +22,6 @@ describe("Update payment out epic tests", () => {
       {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "PaymentOut", listUpdate: true, savedID: "1" }
-      },
-      {
-        type: GET_PAYMENT_OUT_ITEM,
-        payload: "1"
       }
     ]
   }));

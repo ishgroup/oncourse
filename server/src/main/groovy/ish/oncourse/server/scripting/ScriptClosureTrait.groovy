@@ -28,5 +28,5 @@ trait ScriptClosureTrait<T> {
      *
      * @param integration
      */
-    abstract void execute(T integration)
+    abstract Object execute(T integration)
 }

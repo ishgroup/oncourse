@@ -6,7 +6,6 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { DiscountsState } from "../reducers/state";
 import { Discount } from "@api/model";
 import { GET_DISCOUNT_ITEM, GET_DISCOUNT_ITEM_FULFILLED } from "../actions";
 import { getEntityItemById } from "../../common/entityItemsService";
@@ -14,7 +13,7 @@ import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/ac
 import { initialize } from "redux-form";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<Discount, DiscountsState, number> = {
+const request: EpicUtils.Request<Discount, number> = {
   type: GET_DISCOUNT_ITEM,
   getData: (id: number) => getEntityItemById("Discount", id),
   processData: (discount: Discount) => {

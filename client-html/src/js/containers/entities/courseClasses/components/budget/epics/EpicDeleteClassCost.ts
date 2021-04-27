@@ -5,12 +5,11 @@
 
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
-import { State } from "../../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { DELETE_COURSE_CLASS_COST } from "../actions";
 import CourseClassCostService from "../services/ClassCostService";
 
-const request: EpicUtils.Request<any, State, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: DELETE_COURSE_CLASS_COST,
   getData: id => CourseClassCostService.deleteCourseClassCost(id),
   processData: () => [],

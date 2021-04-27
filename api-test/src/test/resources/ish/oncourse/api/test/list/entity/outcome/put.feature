@@ -78,7 +78,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/outcome'
         "hasCertificate":false,
         "printed":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "actualStartDate":"2018-12-01",
+        "actualEndDate":"2027-12-01"
         }
         """
 
@@ -166,7 +168,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/outcome'
         "hasCertificate":false,
         "printed":false,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "actualStartDate":"2018-12-01",
+        "actualEndDate":"2027-12-01"
         }
         """
 

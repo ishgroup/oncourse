@@ -3,11 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  ClassFundingSource, CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus
-} from "@api/model";
-import { EntityName } from "../../../../../../containers/automation/constants";
-import { SelectItemDefault } from "../../../../../../model/entities/common";
+import { ClassFundingSource, CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus } from "@api/model";
+import { EntityName, SelectItemDefault } from "../../../../../../model/entities/common";
 import { mapSelectItems } from "../../../../../utils/common";
 import {
   validateFundingSourse,
@@ -225,6 +222,44 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
         }
       ];
     }
+    case "AssessmentSubmission": {
+      return [
+        {
+          keyCode: "submittedOn",
+          label: "Submitted On",
+          name: "Submitted On",
+          type: "Date"
+        },
+        {
+          keyCode: "markedOn",
+          label: "Marked On",
+          name: "Marked On",
+          type: "Date"
+        }
+      ];
+    }
+    case "WaitingList":
+    case "Room":
+    case "Site":
+    case "Payslip":
+    case "Assessment":
+    case "Application":
+      return [
+        {
+          keyCode: "bulkTag",
+          label: "Add tags",
+          name: "bulkTag",
+          type: "Tag",
+          defaultValue: []
+        },
+        {
+          keyCode: "bulkUntag",
+          label: "Remove tags",
+          name: "bulkUntag",
+          type: "Tag",
+          defaultValue: []
+        }
+      ];
     default:
       // eslint-disable-next-line no-console
       console.warn(`There is no bulk edit fields for ${entity}`);

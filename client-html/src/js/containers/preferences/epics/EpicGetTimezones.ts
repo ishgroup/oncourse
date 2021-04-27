@@ -7,10 +7,10 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import PreferencesService from "../services/PreferencesService";
-import { GET_TIMEZONES_REQUEST, GET_TIMEZONES_FULFILLED } from "../actions";
+import { GET_TIMEZONES_FULFILLED, GET_TIMEZONES_REQUEST } from "../actions";
 import { SelectItemDefault } from "../../../model/entities/common";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_TIMEZONES_REQUEST,
   getData: () => PreferencesService.getTimezones(),
   processData: (data: string[]) => {

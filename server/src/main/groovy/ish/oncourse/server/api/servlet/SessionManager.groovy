@@ -15,6 +15,8 @@ import com.google.inject.Inject
 import com.google.inject.Provider
 import groovy.transform.CompileStatic
 import io.bootique.jetty.servlet.DefaultServletEnvironment
+import ish.oncourse.server.cayenne.ApiToken
+
 import static ish.oncourse.cayenne.SystemUserInterface.DEFAULT_ISH_USER
 import ish.oncourse.server.CayenneService
 
@@ -49,6 +51,11 @@ class SessionManager implements ISessionManager {
 
     SystemUser getCurrentUser() {
         Request request = defaultServletEnvironment.request().orElse(null) as Request
+        Object token = request?.getAttribute(ApiFilter.AUTHORIZATION)
+        if (token) {
+            return (token as ApiToken).systemUser
+        }
+        
         Session session = request?.session as Session
         if (session) {
             return (SystemUser) session.getAttribute(USER_ATTRIBUTE)
@@ -125,20 +132,6 @@ class SessionManager implements ISessionManager {
             session.invalidate()
             manager.invalidateAll(session.id)
         }
-    }
-
-
-    void setSessionAttribute(String key, Serializable value) {
-        SystemUser user = getCurrentUser()
-        SESSION_ATTRIBUTES[user.id] = [(key): value] as Map<String, Object>
-    }
-
-    Serializable getSessionAttribute(String key) {
-        SystemUser user = getCurrentUser()
-        if (SESSION_ATTRIBUTES[user.id]) {
-            return SESSION_ATTRIBUTES[user.id][key] as Serializable
-        }
-        return null
     }
 
 }

@@ -13,7 +13,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import SaleService from "../services/SaleService";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 
-const request: EpicUtils.Request<any, any, { productItemCancel: ProductItemCancel }> = {
+const request: EpicUtils.Request<any, { productItemCancel: ProductItemCancel }> = {
   type: CANCEL_SALE,
   getData: ({ productItemCancel }) => SaleService.cancelSale(productItemCancel),
   processData: (v, s, { productItemCancel: { id } }) => [

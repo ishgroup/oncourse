@@ -15,7 +15,7 @@ import {
 } from "../../../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: UPDATE_DATA_COLLECTION_FORM_REQUEST,
   getData: payload => PreferencesService.updateDataCollectionForm(payload.id, payload.form),
   retrieveData: () => PreferencesService.getDataCollectionForms(),

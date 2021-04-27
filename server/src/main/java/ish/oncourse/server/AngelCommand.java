@@ -88,6 +88,8 @@ public class AngelCommand extends CommandWithMetadata {
         var serverFactory = serverFactoryProvider.get();
         try {
             CayenneService cayenneService = cayenneServiceProvider.get();
+            Server server = serverProvider.get();
+            HttpFactory httpFactory = httpFactoryProvider.get();
             serverFactory.start(prefControllerProvider.get(),
                     schemaUpdateServiceProvider.get(),
                     schedulerServiceProvider.get(),
@@ -96,14 +98,13 @@ public class AngelCommand extends CommandWithMetadata {
                     licenseServiceProvider.get(),
                     cayenneService,
                     pluginServiceProvider.get(),
-                    mailDeliveryServiceProvider.get()
-                    );
+                    mailDeliveryServiceProvider.get(),
+                    httpFactory);
 
-            Server server = serverProvider.get();
             server.addBean(new AngelSessionDataStoreFactory(cayenneService, prefControllerProvider.get()));
             server.addBean(new MBeanContainer(ManagementFactory.getPlatformMBeanServer()));
             bugsnagFactoryProvider.get().init();
-            httpFactoryProvider.get().init();
+            httpFactory.init();
         } catch (Exception e) {
             return CommandOutcome.failed(1, e);
         }

@@ -10,7 +10,7 @@ import { GET_DASHBOARD_STATISTIC, GET_DASHBOARD_STATISTIC_FULFILLED } from "../a
 import DashboardService from "../services/DashboardService";
 import { StatisticData } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_DASHBOARD_STATISTIC,
   getData: () => DashboardService.getStatisticData(),
   processData: (data: StatisticData) => {

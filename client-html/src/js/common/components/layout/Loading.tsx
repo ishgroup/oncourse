@@ -1,13 +1,13 @@
-/***
- * Common loading component.
- * Show spinner or loading bar
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
  */
 
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { LinearProgress } from "@material-ui/core";
 
-const styles: any = theme => ({
+const styles: any = () => ({
   root: {
     flexGrow: 1,
     position: "fixed",
@@ -31,7 +31,7 @@ class Loading extends React.Component<Props, any> {
   }
 
   componentDidUpdate(prevProps) {
-    if(!prevProps.error && this.props.error) {
+    if (!prevProps.error && this.props.error) {
       console.error(this.props.error);
     }
   }
@@ -62,4 +62,4 @@ class Loading extends React.Component<Props, any> {
   }
 }
 
-export default withStyles(styles)(Loading);
+export default withStyles(styles)(Loading) as any;

@@ -17,13 +17,13 @@ import { ApiMethods } from "../../../../model/common/apiHandlers";
 
 const request: EpicUtils.Request<
   any,
-  any,
   { entity: string; id: number; record: any; index: number; listRootEntity: string; method?: ApiMethods }
 > = {
   type: UPDATE_LIST_NESTED_EDIT_RECORD,
   getData: payload => updateEntityItemById(payload.entity, payload.id, payload.record, payload.method),
-  processData: (record: any, state: State, { entity, id, index, listRootEntity }) => {
-    return [
+  processData: (record: any, state: State, {
+ entity, id, index, listRootEntity 
+}) => [
       {
         type: FETCH_SUCCESS,
         payload: { message: `${entity} was updated` }
@@ -40,8 +40,7 @@ const request: EpicUtils.Request<
           savedID: state.list.editRecord ? state.list.editRecord.id : id
         }
       }
-    ];
-  },
+    ],
   processError: (response, { entity, index, record }) =>
     updateEntityItemByIdErrorHandler(response, entity, `NestedEditViewForm[${index}]`, record)
 };

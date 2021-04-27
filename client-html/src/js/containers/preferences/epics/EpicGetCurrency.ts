@@ -10,7 +10,7 @@ import { GET_CURRENCY, GET_CURRENCY_FULFILLED } from "../actions";
 import { Currency } from "@api/model";
 import PreferencesService from "../services/PreferencesService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_CURRENCY,
   getData: () => {
     return PreferencesService.getCurrency();

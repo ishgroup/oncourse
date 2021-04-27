@@ -16,7 +16,7 @@ import { AvetmissExportOutcome } from "@api/model";
 import { CLEAR_PROCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_AVETMISS_EXPORT_OUTCOMES,
   getData: (outcomesID: string) => AvetmissExportService.getExportOutcomes(outcomesID),
   processData: (outcomes: AvetmissExportOutcome[]) => {

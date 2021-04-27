@@ -5,21 +5,20 @@
 
 import { Epic } from "redux-observable";
 
+import { initialize } from "redux-form";
+import { Payslip } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_PAYSLIP_ITEM, UPDATE_PAYSLIP_ITEM, UPDATE_PAYSLIP_ITEM_FULFILLED } from "../actions/index";
 import { FETCH_SUCCESS } from "../../../../common/actions/index";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { initialize } from "redux-form";
-import { Payslip } from "@api/model";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions/index";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { id: number; payslip: Payslip }> = {
+const request: EpicUtils.Request<any, { id: number; payslip: Payslip }> = {
   type: UPDATE_PAYSLIP_ITEM,
   getData: ({ id, payslip }) => updateEntityItemById("Payslip", id, payslip),
-  processData: (v, s, { id }) => {
-    return [
+  processData: (v, s, { id }) => [
       {
         type: UPDATE_PAYSLIP_ITEM_FULFILLED
       },
@@ -31,15 +30,12 @@ const request: EpicUtils.Request<any, any, { id: number; payslip: Payslip }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Payslip", listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_PAYSLIP_ITEM,
         payload: id
-      }
-    ];
-  },
-  processError: (response, { payslip }) => {
-    return [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, payslip)];
-  }
+      }] : []
+    ],
+  processError: (response, { payslip }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, payslip)]
 };
 
 export const EpicUpdatePayslipItem: Epic<any, any> = EpicUtils.Create(request);

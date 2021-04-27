@@ -11,7 +11,7 @@ import { FETCH_SUCCESS } from "../../../../../common/actions";
 import { DELETE_DATA_COLLECTION_FORM_FULFILLED, DELETE_DATA_COLLECTION_FORM_REQUEST } from "../../../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_DATA_COLLECTION_FORM_REQUEST,
   getData: payload => PreferencesService.deleteDataCollectionForm(payload.id),
   retrieveData: () => PreferencesService.getDataCollectionForms(),

@@ -3,7 +3,7 @@ import {
   flatMap, catchError, mergeMap
 } from "rxjs/operators";
 import { CheckoutSaleRelation } from "@api/model";
-import uniqid from "uniqid";
+
 import { closestIndexTo } from "date-fns";
 import { concat, from } from "rxjs";
 import {
@@ -27,8 +27,8 @@ import {
   CHECKOUT_VOUCHER_COLUMNS
 } from "../../constants";
 import { checkoutUpdateSummaryClassesDiscounts } from "../../actions/checkoutSummary";
-import { FETCH_FINISH, FETCH_START } from "../../../../common/actions";
-
+import uniqid from "../../../../common/utils/uniqid";
+import { FETCH_FINISH, FETCH_START, SHOW_MESSAGE } from "../../../../common/actions";
 
 const assignTypeProps = r => {
   r.toItem.cartItem.cartAction = r.cartAction;
@@ -37,7 +37,7 @@ const assignTypeProps = r => {
   r.toItem.cartItem.relationDiscount = r.discount;
   r.toItem.cartItem.checked = true;
   r.toItem.type = r.toItem.cartItem.fromItemRelation.type;
-}
+};
 
 export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObservable<any>, state$): any => action$
 .ofType(
@@ -62,13 +62,13 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
 
           const cartItems = [];
           const suggestItems = [];
+          const errorActions = [];
 
           if (!state$.value.checkout.contacts.length || !state$.value.checkout.items.length) {
-            return { cartItems, suggestItems };
+            return { cartItems, suggestItems, errorActions };
           }
 
           const relations = [];
-
           await state$.value.checkout.contacts
             .map(c => ({
               id: c.id,
@@ -80,7 +80,17 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
             }))
             .reduce(async (a, b) => {
               await a;
-              const draft = await b.get();
+              const draft = await b.get().catch(e => {
+                if (e && e.data && Array.isArray(e.data) ) {
+                  errorActions.push({
+                    type: SHOW_MESSAGE,
+                    payload: {
+                      message: e.data.reduce((p, c, i) => p + c.error + (i === e.data.length - 1 ? "" : "\n\n"), "")
+                    }
+                  });
+                }
+                return [];
+              });
               const items = draft.filter((d: CheckoutSaleRelation) =>
                 !state$.value.checkout.items.some(i => (i.type === "course" ? i.courseId === d.toItem.id : i.id === d.toItem.id)));
 
@@ -186,14 +196,21 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObse
             }
           });
 
-          return { cartItems, suggestItems };
+          return { cartItems, suggestItems, errorActions };
         })()).pipe(
-          flatMap(data => (data ? [{
-            type: CHECKOUT_UPDATE_RELATED_ITEMS,
-            payload: data
-          },
-            checkoutUpdateSummaryClassesDiscounts()
-          ] : [])),
+          flatMap(data => {
+            if (data) {
+              const { cartItems, suggestItems, errorActions } = data;
+              return [{
+                type: CHECKOUT_UPDATE_RELATED_ITEMS,
+                payload: { cartItems, suggestItems }
+              },
+                checkoutUpdateSummaryClassesDiscounts(),
+                ...errorActions
+              ];
+            }
+            return [];
+          }),
           catchError(data => processError(data, "checkout/get/saleRelations", null, null))
         ),
         [

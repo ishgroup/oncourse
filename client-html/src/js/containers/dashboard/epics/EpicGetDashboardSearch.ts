@@ -10,7 +10,7 @@ import { GET_DASHBOARD_SEARCH, GET_DASHBOARD_SEARCH_FULFILLED } from "../actions
 import DashboardService from "../services/DashboardService";
 import { SearchGroup } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_DASHBOARD_SEARCH,
   getData: ({ search }) => (search ? DashboardService.getSearchResults(search) : new Promise(resolve => resolve(null))),
   processData: (results: SearchGroup[]) => {

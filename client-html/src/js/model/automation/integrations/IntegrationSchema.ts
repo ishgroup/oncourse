@@ -1,3 +1,4 @@
+import React from "react";
 import {
   CanvasFields,
   CloudAssessFields,
@@ -8,7 +9,9 @@ import {
   MYOBFields,
   SurveyGizmoFields,
   SurveyMonkeyFields,
-  XeroFields
+  XeroFields,
+  AmazonS3Fields,
+  AzureFields, ServiceNSWFields
 } from "./IntegrationsFields";
 
 export interface IntegrationSchema {
@@ -29,11 +32,14 @@ export interface IntegrationSchema {
     | CanvasFields
     | CloudAssessFields
     | MicropowerFields
-    | CoassembleFields;
+    | CoassembleFields
+    | AmazonS3Fields
+    | AzureFields
+    | ServiceNSWFields
 }
 
 export interface IntegrationTypeSchema {
   type: number;
   name: string;
-  description: string;
+  description: React.ReactNode;
 }

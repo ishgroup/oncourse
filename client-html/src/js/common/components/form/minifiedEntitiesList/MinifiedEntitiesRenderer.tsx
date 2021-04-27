@@ -11,7 +11,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 import Delete from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
-import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
+import AccordionActions from "@material-ui/core/AccordionActions";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { getDeepValue } from "../../../utils/common";
@@ -137,7 +137,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
               <FieldsContent item={item} classes={classes} row={field} rows={rows} twoColumn={twoColumn} />
             </AccordionDetails>
             {onViewMore && (
-              <ExpansionPanelActions>
+              <AccordionActions>
                 {field.id && (
                   <Button
                     rootClasses="moreOptions"
@@ -147,7 +147,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
                     More options
                   </Button>
                 )}
-              </ExpansionPanelActions>
+              </AccordionActions>
             )}
           </Accordion>
         );

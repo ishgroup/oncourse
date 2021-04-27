@@ -10,7 +10,7 @@ import PreferencesService from "../services/PreferencesService";
 import { GET_COLUMNS_WIDTH_REQUEST, GET_COLUMNS_WIDTH_REQUEST_FULFILLED } from "../actions";
 import { ColumnWidth } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_COLUMNS_WIDTH_REQUEST,
   getData: () => PreferencesService.getColumnsWidth(),
   processData: (columnWidth: ColumnWidth) => {

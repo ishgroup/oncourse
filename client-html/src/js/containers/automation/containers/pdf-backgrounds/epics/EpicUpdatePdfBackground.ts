@@ -11,22 +11,19 @@ import {
   getAutomationPdfBackgroundsList,
   UPDATE_AUTOMATION_PDF_BACKGROUND
 } from "../actions/index";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ReportOverlayService from "../services/ReportOverlayService";
 
-const request: EpicUtils.Request<any, State, { fileName: string; id: number; overlay: File }> = {
+const request: EpicUtils.Request<any, { fileName: string; id: number; overlay: File }> = {
   type: UPDATE_AUTOMATION_PDF_BACKGROUND,
   getData: ({ fileName, id, overlay }) => ReportOverlayService.updateReportOverlay(fileName, id, overlay),
-  processData: (r, s, { id }) => {
-    return [
+  processData: (r, s, { id }) => [
       getAutomationPdfBackgroundsList(),
       {
         type: GET_AUTOMATION_PDF_BACKGROUND,
         payload: id
       }
-    ];
-  },
+    ],
   processError: response => FetchErrorHandler(response, "Failed to update PDF background")
 };
 

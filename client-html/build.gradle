@@ -16,7 +16,7 @@ task webpack(type: YarnTask, dependsOn: 'queryGrammar') {
     outputs.dir("$buildDir/assets")
     inputs.property('version', version)
 
-    args = ['build:prod', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
+    args = ['build:prod', '--env', 'NODE_ENV=production', '--env', 'BUILD_NUMBER=', version ?: 'SNAPSHOT']
 }
 
 clean {
@@ -41,7 +41,6 @@ task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'ge
 task jest(type: YarnTask, dependsOn: 'queryGrammar') {
     args = ['test', '--runInBand']
 }
-
 test.dependsOn(jest)
 
 sourceSets {
@@ -59,3 +58,13 @@ generateQueryLanguageModel {
 }
 
 processResources.dependsOn(':server-api:swagger', "generateQueryLanguageModel")
+
+publishing {
+    publications {
+        docs(MavenPublication) {
+            artifact(packageApiDoc) {
+                artifactId "apiDoc"
+            }
+        }
+    }
+}

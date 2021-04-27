@@ -11,17 +11,13 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.CalculateEndDate
-import ish.common.CalculateStartDate
 import ish.common.types.EnrolmentStatus
 import ish.messaging.IModule
 import ish.messaging.ISession
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.entity.delegator.OutcomeDelegator
 import ish.oncourse.server.cayenne.glue._Session
 import ish.util.DurationFormatter
-import ish.util.LocalDateUtils
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.logging.log4j.LogManager
@@ -107,13 +103,13 @@ class Session extends _Session implements SessionTrait, ISession, Queueable, Att
 	private void updateRelatedOutcomes() {
 		List<Outcome> outcomes = sessionModules*.module*.outcomes*.findAll{o -> courseClass.enrolments*.id.contains(o.enrolment?.id) }.flatten() as List<Outcome>
 
-		outcomes.findAll{it.startDateOverridden == null || it.startDateOverridden == false}
+		outcomes.findAll { !it.startDateOverridden }
 				.each { o ->
-					o.setStartDate(LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(o)).calculate()))
+					o.setStartDate(o.getActualStartDate())
 				}
-		outcomes.findAll{it.endDateOverridden == null || it.endDateOverridden == false}
+		outcomes.findAll { !it.endDateOverridden }
 				.each { o ->
-					o.setEndDate(LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(o)).calculate()))
+					o.setEndDate(o.getActualEndDate())
 				}
 	}
 

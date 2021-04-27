@@ -5,25 +5,24 @@
 
 import { Epic } from "redux-observable";
 
+import { initialize } from "redux-form";
+import { MembershipProduct } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {
   GET_MEMBERSHIP_PRODUCT_ITEM,
   UPDATE_MEMBERSHIP_PRODUCT_ITEM,
   UPDATE_MEMBERSHIP_PRODUCT_ITEM_FULFILLED
-} from "../actions/index";
-import { FETCH_SUCCESS } from "../../../../common/actions/index";
+} from "../actions";
+import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { initialize } from "redux-form";
-import { MembershipProduct } from "@api/model";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import membershipProductService from "../services/MembershipProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { id: number; membershipProduct: MembershipProduct }> = {
+const request: EpicUtils.Request<any, { id: number; membershipProduct: MembershipProduct }> = {
   type: UPDATE_MEMBERSHIP_PRODUCT_ITEM,
   getData: ({ id, membershipProduct }) => membershipProductService.updateMembershipProduct(id, membershipProduct),
-  processData: (v, s, { id }) => {
-    return [
+  processData: (v, s, { id }) => [
       {
         type: UPDATE_MEMBERSHIP_PRODUCT_ITEM_FULFILLED
       },
@@ -35,15 +34,12 @@ const request: EpicUtils.Request<any, any, { id: number; membershipProduct: Memb
         type: GET_RECORDS_REQUEST,
         payload: { entity: "MembershipProduct", listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_MEMBERSHIP_PRODUCT_ITEM,
         payload: id
-      }
-    ];
-  },
-  processError: (response, { membershipProduct }) => {
-    return [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, membershipProduct)];
-  }
+      }] : []
+    ],
+  processError: (response, { membershipProduct }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, membershipProduct)]
 };
 
 export const EpicUpdateMembershipProductItem: Epic<any, any> = EpicUtils.Create(request);

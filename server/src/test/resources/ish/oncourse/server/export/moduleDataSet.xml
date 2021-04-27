@@ -17,7 +17,7 @@
 
     <Course id="1"  code="ATT1" willowId="1" name="Non vet no modules"
             allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0"
-            isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+            isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
     <Module id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1"/>
     <Module id="2" type="1" isOffered="1" nationalCode="TEST2" title="Test module 2"/>

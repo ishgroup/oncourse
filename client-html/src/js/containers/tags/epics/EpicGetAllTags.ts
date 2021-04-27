@@ -7,11 +7,11 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import TagsService from "../services/TagsService";
-import { GET_ALL_TAGS_REQUEST, GET_ALL_TAGS_FULFILLED } from "../actions";
+import { GET_ALL_TAGS_FULFILLED, GET_ALL_TAGS_REQUEST } from "../actions";
 import { Tag } from "@api/model";
 import history from "../../../constants/History";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ALL_TAGS_REQUEST,
   getData: () => TagsService.getTags(),
   processData: (allTags: Tag[]) => {

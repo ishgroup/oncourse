@@ -75,7 +75,7 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
 
     @Inject
     private ExecutorManager executorManager
-    
+
     private ExecutorService executorService = Executors.newSingleThreadExecutor()
 
     @Override
@@ -109,9 +109,9 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
 
                 Long start = System.currentTimeMillis()
                 createFundingUploadRecords(systemUserId, requestParameters.ids, settings)
-                
+
                 Long end = start - System.currentTimeMillis()
-                System.out.println("Create uploads: ${end/1000}")
+                logger.info("Create uploads in {}ms", end)
 
                 String zipName = 'avetmiss8.zip'
                 ZipOutputStream zipFile = new ZipOutputStream(new FileOutputStream(zipName))
@@ -130,7 +130,7 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
         })
     }
 
-    
+
 
     void createFundingUploadRecords(Long systemUserId, List<Long> outcomeIds, String settings) {
         ObjectContext context = cayenneService.newContext

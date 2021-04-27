@@ -9,9 +9,10 @@ export function mockEnrolments() {
       id: row.id,
       associatedCourseIdentifier: null,
       attendanceType: "QLD - Non-concessional participant, WA - Health Care Card (N)",
+      confirmationStatus: "Sent",
       clientIdentifier: null,
-      courseClassName: row.values[3],
       courseClassId: 1,
+      courseClassName: row.values[3],
       creditOfferedValue: null,
       creditUsedValue: null,
       creditFOEId: null,
@@ -34,18 +35,24 @@ export function mockEnrolments() {
       loanTotal: 0,
       source: row.values[0],
       status: row.values[4],
+      displayStatus: row.values[4],
       studentName: row.values[1],
       studentContactId: 1,
       studyReason: "Not stated",
       suppressAvetmissExport: false,
       trainingPlanDeveloped: null,
-      vetPurchasingContractIdentifier: "2",
-      vetInSchools: null,
-      vetTrainingContractID: null,
+      vetClientID: null,
+      vetFeeExemptionType: "Not set",
       vetFeeIndicator: false,
+      vetFundingSourceStateID: null,
+      vetInSchools: null,
+      vetIsFullTime: false,
+      vetPurchasingContractIdentifier: "2",
+      vetTrainingContractID: null,
       documents: [],
       notes: [],
-      tags: [this.getTag(1)]
+      tags: [this.getTag(1)],
+      assessments: []
     };
   };
 
@@ -170,7 +177,7 @@ export function mockEnrolments() {
     { name: "createdOn", type: "Datetime" }
   ]).map(l => ({
     id: l.id,
-    values: [l.source, l.studentName, l.classCode, l.courseClassName, l.status, l.createdOn]
+    values: ["office", l.studentName, l.classCode, l.courseClassName, "Active", l.createdOn]
   }));
 
   return getEntityResponse({
@@ -181,35 +188,38 @@ export function mockEnrolments() {
         title: "Source",
         attribute: "source",
         sortable: true,
-        width: 100
+        width: 200
       },
       {
         title: "Name",
         attribute: "student.contact.fullName",
-        sortable: true
+        sortable: true,
+        width: 200
       },
       {
         title: "Class",
         attribute: "courseClass.uniqueCode",
         sortable: true,
-        width: 138
+        width: 200
       },
       {
         title: "Course name",
         attribute: "courseClass.course.name",
-        sortable: true
+        sortable: true,
+        width: 200
       },
       {
         title: "Status",
-        attribute: "status",
+        attribute: "displayStatus",
         sortable: true,
-        width: 100
+        width: 200
       },
       {
         title: "Enrolled",
         attribute: "createdOn",
         sortable: true,
-        type: "Datetime"
+        type: "Date",
+        width: 200
       }
     ],
     res: {

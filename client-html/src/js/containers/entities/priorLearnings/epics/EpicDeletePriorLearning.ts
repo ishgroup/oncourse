@@ -14,7 +14,7 @@ import { GET_RECORDS_REQUEST, setListSelection } from "../../../../common/compon
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import PriorLearningService from "../services/PriorLearningService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_PRIOR_LEARNING_ITEM,
   getData: (id: number) => PriorLearningService.removePriorLearning(id),
   processData: () => {

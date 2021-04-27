@@ -14,7 +14,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import MessageService from "../services/MessageService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_MESSAGE_ITEM,
   getData: (id: number) => MessageService.getMessage(id),
   processData: (message: Message) => [

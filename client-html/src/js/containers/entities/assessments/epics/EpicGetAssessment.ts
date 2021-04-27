@@ -15,7 +15,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import AssessmentService from "../services/AssessmentService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ASSESSMENT_ITEM,
   getData: (id: number) => AssessmentService.getAssessment(id),
   processData: (assessment: Assessment, s, id) => [

@@ -67,6 +67,12 @@ task swagger (type: Swagger) {
     inputs.dir("src")
 }
 
+// Some documentation scripts can only work on a single merged swagger file
+task apiDocs_mergeSwagger(type: SwaggerMerge) {
+    schema = file("${rootDir}/server-api/src/main/resources/server-api.yaml")
+    outputFile = file("${buildDir}/swagger-merged/swagger.yaml")
+}
+
 compileGroovy {
     dependsOn swagger
     groovyClasspath += classpath.filter { it.absolutePath.contains('jaxb-api') }

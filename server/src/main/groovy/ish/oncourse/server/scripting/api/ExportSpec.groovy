@@ -19,8 +19,9 @@ import ish.oncourse.API
  * Usage example:
  * ```
  * export {
- *     template "ish.contact.list"
- *     records overdueDebtors
+ * 		fileName "export.csv"
+ *      template "ish.contact.list"
+ *		record overdueDebtors
  * }
  * ```
  */
@@ -28,6 +29,17 @@ import ish.oncourse.API
 class ExportSpec {
 	String templateKeyCode
     List entityRecords = []
+	String fileName
+
+	/**
+	 * Specify the filename with extension of the final file with a fulfilled export
+	 *
+	 * @param fileName fileName of the file with the export
+	 */
+	@API
+	void fileName(String fileName) {
+		this.fileName = fileName
+	}
 
     /**
      * Pass the keycode of the export template you want to use

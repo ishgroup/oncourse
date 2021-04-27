@@ -3,17 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import { Epic } from "redux-observable";
-import {
- MessageType, Recipients, SearchQuery
-} from "@api/model";
+import { MessageType, Recipients, SearchQuery } from "@api/model";
 import { MessageData } from "../../../../model/common/Message";
 import * as EpicUtils from "../../../epics/EpicUtils";
 import MessageService from "../../../../containers/entities/messages/services/MessageService";
-import { State } from "../../../../reducers/state";
 import { GET_RECIPIENTS_MESSAGE_DATA, setRecipientsMessageData } from "../actions";
 
 const request:
-  EpicUtils.Request<Recipients, State, { entityName: string, messageType: MessageType, searchQuery: SearchQuery, selection: string[] }> = {
+  EpicUtils.Request<Recipients, { entityName: string, messageType: MessageType, searchQuery: SearchQuery, selection: string[] }> = {
     type: GET_RECIPIENTS_MESSAGE_DATA,
     hideLoadIndicator: true,
     getData: ({

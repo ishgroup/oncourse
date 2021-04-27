@@ -16,6 +16,7 @@ import groovy.lang.DelegatesTo;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.document.DocumentService;
+import ish.oncourse.server.messaging.DocumentParam;
 import ish.oncourse.server.scripting.api.ReportSpec;
 import ish.print.PrintRequest;
 import ish.print.PrintResult;
@@ -111,18 +112,13 @@ public class PrintService {
 		return result;
 	}
 
-	public Object report(@DelegatesTo(ReportSpec.class) Closure cl) throws IOException {
+	public DocumentParam report(@DelegatesTo(ReportSpec.class) Closure cl) throws IOException {
 		ReportSpec reportSpec = new ReportSpec();
 		var build = cl.rehydrate(reportSpec, cl, this);
 		build.setResolveStrategy(Closure.DELEGATE_FIRST);
 		build.call();
 
-		if (reportSpec.getFileName() == null) {
-			return report(reportSpec);
-		}
-		File reportFile = new File(reportSpec.getFileName());
-		FileUtils.writeByteArrayToFile(reportFile, report(reportSpec));
-		return reportFile;
+		return DocumentParam.valueOf(reportSpec.getFileName(), report(reportSpec));
 	}
 
 	public byte[] report(ReportSpec reportSpec) {

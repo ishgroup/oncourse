@@ -106,6 +106,7 @@ class GetCustomFieldTest extends CayenneIshTestCase {
         course.code = SOME_STRING
         course.name = SOME_STRING
         course.fieldConfigurationSchema = scheme
+        course.feeHelpClass = Boolean.FALSE
         
         course
     }
@@ -114,7 +115,6 @@ class GetCustomFieldTest extends CayenneIshTestCase {
         CourseClass cc = context.newObject(CourseClass)
         cc.code = SOME_STRING
         cc.attendanceType = CourseClassAttendanceType.FULL_TIME_ATTENDANCE
-        cc.feeHelpClass = false
         cc.minimumPlaces = 2
         cc.maximumPlaces = 10
 

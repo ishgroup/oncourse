@@ -13,7 +13,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { getFormInitialValues, getFormValues, initialize } from "redux-form";
-import uniqid from "uniqid";
+
 import { format } from "date-fns";
 import {
   TableModel, CourseClass, Course, ClassCost, Account, ClassFundingSource, DeliveryMode, Enrolment, Outcome
@@ -43,7 +43,7 @@ import {
  AnyArgFunction, BooleanArgFunction, NoArgFunction, NumberArgFunction
 } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getTutorRoles } from "../../preferences/actions";
+import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
@@ -71,6 +71,7 @@ import {
 import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../common/utils/dates/format";
 import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
+import uniqid from "../../../common/utils/uniqid";
 
 const manualLink = getManualLink("classes");
 
@@ -140,7 +141,6 @@ const Initial: CourseClassExtended = {
   feeExcludeGST: null,
   feeHelpClass: false,
   finalDetExport: null,
-  fullTimeLoad: null,
   initialDetExport: null,
   isActive: true,
   isCancelled: false,
@@ -154,7 +154,6 @@ const Initial: CourseClassExtended = {
   minStudentAge: null,
   minimumPlaces: null,
   reportableHours: 0,
-  reportingPeriod: null,
   sessionsCount: null,
   suppressAvetmissExport: false,
   vetCourseSiteID: null,
@@ -256,6 +255,7 @@ const findRelatedGroup: any[] = [
   { title: "Outcomes", list: "outcome", expression: "enrolment.courseClass.id" },
   { title: "Payslips", list: "payslip", expression: "paylines.classCost.courseClass.id" },
   { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.id" },
+  { title: "Submissions", list: "assessmentSubmission", expression: "assessmentClass.courseClass.id" },
   { title: "Tutors", list: "contact", expression: "tutor.courseClassRoles.courseClass.id" },
   {
     title: "Withdrawn students",
@@ -640,7 +640,11 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
             "assessments[].releaseDate",
             "notes[].message"
           ],
-          asyncChangeFields: ["tutors[].isInPublicity", "assessments[].contactIds"],
+          asyncChangeFields: [
+            "tutors[].isInPublicity",
+            "assessments[].contactIds",
+            "assessments[].submissions"
+          ],
           hideFullScreenAppBar: true,
           enableReinitialize: true,
           keepDirtyOnReinitialize: true
@@ -762,6 +766,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getVirtualSites());
     dispatch(getPlainAccounts());
     dispatch(getPlainTaxes());
+    dispatch(getGradingTypes());
     dispatch(getActiveFundingContracts(true));
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: courseClassBudgetPath, method: "GET" }));

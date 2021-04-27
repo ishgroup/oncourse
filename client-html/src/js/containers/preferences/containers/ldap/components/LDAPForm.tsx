@@ -11,7 +11,7 @@ import { FormControlLabel } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Checkbox from "@material-ui/core/Checkbox";
 import {
-  reduxForm, getFormValues, initialize
+  Form, reduxForm, getFormValues, initialize
 } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
@@ -47,6 +47,7 @@ class LDAPBaseForm extends React.Component<any, any> {
     this.formModel = props.formatModel(Model);
 
     this.showLicenceWarning = this.showLicenceWarning.bind(this);
+    this.closeLicenceWarning = this.closeLicenceWarning.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -71,15 +72,15 @@ class LDAPBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSave, values, licence, testLdapConnection, dirty, data
+      handleSubmit, onSave, values, licence, testLdapConnection, dirty, data, form
     } = this.props;
 
     const simpleAuthEnabled = values && values[this.formModel.LdapSimpleAuthentication.uniqueKey] === "true";
     const saslAuthEnabled = values && values[this.formModel.LdapSaslAuthentication.uniqueKey] === "true";
 
     return (
-      <form className="container" onSubmit={handleSubmit(onSave)}>
-        <RouteChangeConfirm when={dirty} />
+      <Form className="container" onSubmit={handleSubmit(onSave)}>
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <ConfirmBase
           title=""
@@ -405,7 +406,7 @@ class LDAPBaseForm extends React.Component<any, any> {
             <Grid item sm={3} />
           </Hidden>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }

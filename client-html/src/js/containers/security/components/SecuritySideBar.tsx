@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
@@ -30,29 +30,12 @@ const SecuritySideBar = React.memo<any>(
   ({
     className, userRoles, users, hasLicense, search, history, activeFiltersConditions
   }) => {
-    const [activeLink, setActiveLink] = useState(false);
-
-    const isActiveLink = useCallback(
-      match => {
-        if (match && !activeLink) {
-          setActiveLink(!activeLink);
-          return true;
-        }
-        if (!match && activeLink) {
-          setActiveLink(!activeLink);
-          return true;
-        }
-        return false;
-      },
-      [activeLink]
-    );
-
     const usersItems = useMemo(
       () =>
         users
         && users.map(({
- id, email, active, tfaEnabled, inviteAgain
-}) => ({
+         id, email, active, tfaEnabled, inviteAgain
+        }) => ({
           id,
           name: email || "No email",
           grayOut: !active,
@@ -71,12 +54,22 @@ const SecuritySideBar = React.memo<any>(
       [history, search, activeFiltersConditions]
     );
 
+    const { location: { pathname } } = history;
+
     return (
       <div className={className}>
-        <NavLink to="/security/settings" className="link" isActive={isActiveLink}>
-          <MenuItem button disableGutters className="listHeadingPadding heading" selected={activeLink}>
+        <NavLink to="/security/settings" className="link">
+          <MenuItem button disableGutters className="listHeadingPadding heading" selected={pathname === "/security/settings"}>
             <Typography className="heading pr-2" variant="h6" color="primary">
               Settings
+            </Typography>
+          </MenuItem>
+        </NavLink>
+
+        <NavLink to="/security/api-tokens" className="link">
+          <MenuItem button disableGutters className="listHeadingPadding heading mt-1" selected={pathname === "/security/api-tokens"}>
+            <Typography className="heading pr-2" variant="h6" color="primary">
+              API Tokens
             </Typography>
           </MenuItem>
         </NavLink>

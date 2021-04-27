@@ -7,10 +7,10 @@ import * as React from "react";
 import { withStyles } from "@material-ui/core";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { getPreferences, savePreferences } from "../actions";
-import { Categories } from "../../../model/preferences";
 import { SystemPreference } from "@api/model";
 import { SubmissionError, initialize } from "redux-form";
+import { withRouter, RouteComponentProps } from "react-router";
+import createStyles from "@material-ui/core/styles/createStyles";
 import * as college from "../../../model/preferences/College";
 import * as ldap from "../../../model/preferences/Ldap";
 import * as licences from "../../../model/preferences/Licences";
@@ -18,13 +18,13 @@ import * as messaging from "../../../model/preferences/Messaging";
 import * as classDefaults from "../../../model/preferences/ClassDefaults";
 import * as maintenance from "../../../model/preferences/Maintenance";
 import * as avetmiss from "../../../model/preferences/Avetmiss";
+import { getPreferences, savePreferences } from "../actions";
+import { Categories } from "../../../model/preferences";
 import * as financial from "../../../model/preferences/Financial";
 import * as security from "../../../model/preferences/security";
 import { State } from "../../../reducers/state";
-
 import { Fetch } from "../../../model/common/Fetch";
-import createStyles from "@material-ui/core/styles/createStyles";
-import { showConfirm } from "../../../common/actions";
+import { setNextLocation, showConfirm } from "../../../common/actions";
 
 const styles = () =>
   createStyles({
@@ -42,6 +42,7 @@ interface Props {
   data: any;
   form: any;
   formName: string;
+  history: any;
   onInit?: (category) => void;
   onSubmit?: (category: Categories, fields) => void;
   accounts?: any;
@@ -59,6 +60,8 @@ interface Props {
   skipOnInit?: boolean;
   fetch?: Fetch;
   openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  nextLocation?: string,
+  setNextLocation?: (nextLocation: string) => void,
 }
 
 const FieldsModel = {
@@ -73,7 +76,7 @@ const FieldsModel = {
   security
 };
 
-class FormContainer extends React.Component<Props, any> {
+class FormContainer extends React.Component<Props & RouteComponentProps, any> {
   private resolveValidation;
   private rejectValidation;
   private isValidating: boolean = false;
@@ -151,8 +154,14 @@ class FormContainer extends React.Component<Props, any> {
       this.props.onSubmit(this.props.category, this.parseData(val));
     })
       .then(() => {
-        const { dispatch, data, formName } = this.props;
+        const {
+          dispatch, data, formName, nextLocation, setNextLocation, history
+        } = this.props;
+
         dispatch(initialize(formName, this.formatData(data)));
+
+        nextLocation && history.push(nextLocation);
+        setNextLocation('');
       })
       .catch(error => {
         this.isValidating = false;
@@ -209,22 +218,20 @@ class FormContainer extends React.Component<Props, any> {
   }
 }
 
-const getFormName = form => {
-  return form && Object.keys(form)[0];
-};
+const getFormName = form => form && Object.keys(form)[0];
 
 const mapStateToProps = (state: State) => ({
   fetch: state.fetch,
-  formName: getFormName(state.form)
+  formName: getFormName(state.form),
+  nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch,
     onInit: category => dispatch(getPreferences(category)),
     onSubmit: (category, fields) => dispatch(savePreferences(category, fields)),
-    openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
-  };
-};
+    openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
+    setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(FormContainer));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(FormContainer)));

@@ -24,6 +24,8 @@ import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.function.CustomFieldFunctions
 import ish.oncourse.server.api.v1.function.DocumentFunctions
 import ish.oncourse.server.api.v1.function.TagFunctions
+
+import static ish.oncourse.server.api.v1.function.AssessmentSubmissionFunctions.updateSubmissions
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.CREDIT_LEVEL_MAP
 import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.CREDIT_PROVIDER_TYPE_MAP
@@ -55,7 +57,13 @@ import static org.apache.commons.lang3.StringUtils.trimToNull
 class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, EnrolmentDao> {
 
     @Inject
-    private CancelEnrolmentService cancelEnrolmentService;
+    private CancelEnrolmentService cancelEnrolmentService
+
+    @Inject
+    private AssessmentApiService assessmentApiService
+
+    @Inject
+    private AssessmentSubmissionApiService submissionApiService
 
     @Inject
     private SystemUserService systemUserService
@@ -137,6 +145,8 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.outcomesCount = enrolment.outcomes.size()
             enrolmentDTO.createdOn = LocalDateUtils.dateToTimeValue(enrolment.createdOn)
             enrolmentDTO.modifiedOn = LocalDateUtils.dateToTimeValue(enrolment.modifiedOn)
+            enrolmentDTO.assessments = enrolment.courseClass.assessmentClasses*.assessment.collect { assessmentApiService.toRestModel(it) }
+            enrolmentDTO.submissions = enrolment.assessmentSubmissions.collect { submissionApiService.toRestMinimizedModel(it) }
             enrolmentDTO
         }
     }
@@ -178,6 +188,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.creditType = CREDIT_TYPE_MAP.getByValue(dto.creditType)
         enrolment.creditLevel = CREDIT_LEVEL_MAP.getByValue(dto.creditLevel)
 
+        updateSubmissions(submissionApiService, this, dto.submissions, enrolment.assessmentSubmissions, context)
         TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags*.id, EnrolmentTagRelation, context)
         DocumentFunctions.updateDocuments(enrolment, enrolment.attachmentRelations, dto.documents, EnrolmentAttachmentRelation, context)
         CustomFieldFunctions.updateCustomFields(context, enrolment, dto.customFields, EnrolmentCustomField)

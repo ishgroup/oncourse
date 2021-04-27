@@ -23,12 +23,18 @@ properties:
   trainingPlanStartDate:
     type: string
     format: date
+  actualStartDate:
+    type: string
+    format: date
   startDate:
     type: string
     format: date
   startDateOverridden:
     type: boolean
   trainingPlanEndDate:
+    type: string
+    format: date
+  actualEndDate:
     type: string
     format: date
   endDate:

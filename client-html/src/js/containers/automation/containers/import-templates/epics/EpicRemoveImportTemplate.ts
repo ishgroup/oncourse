@@ -12,7 +12,7 @@ import ImportTemplatesService from "../services/ImportTemplatesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import history from "../../../../../constants/History";
 
-const request: EpicUtils.Request<any, any, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: REMOVE_IMPORT_TEMPLATE,
   getData: id => ImportTemplatesService.remove(id),
   processData: () => {

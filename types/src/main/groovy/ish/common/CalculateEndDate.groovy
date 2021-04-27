@@ -12,19 +12,20 @@
 package ish.common
 
 import groovy.time.TimeCategory
-import groovy.transform.CompileDynamic
-import ish.oncourse.cayenne.AssessmentClassModuleInterface
 import ish.oncourse.cayenne.CourseClassInterface
 import ish.oncourse.cayenne.OutcomeInterface
 import ish.oncourse.cayenne.SessionModuleInterface
 
-@CompileDynamic
+import static ish.common.GetAssessmentDueDate.getAssessmentDueDates
+
 class CalculateEndDate {
 
-	private  OutcomeInterface outcome
+	private OutcomeInterface outcome
+	private boolean attendanceTakenIntoAccount = false
 
-	def CalculateEndDate(OutcomeInterface outcome)  {
+	def CalculateEndDate(OutcomeInterface outcome, Boolean attendanceTakenIntoAccount)  {
 		this.outcome = outcome
+		this.attendanceTakenIntoAccount = attendanceTakenIntoAccount
 	}
 
 	def Date calculate() {
@@ -43,25 +44,28 @@ class CalculateEndDate {
 		}
 
 		if (outcome.module) {
-			List<SessionModuleInterface> sessionModules = courseClass.sessions*.sessionModules
-					.flatten()
-					.findAll { sm -> sm.module == outcome.module } as List<SessionModuleInterface>
 
-			List<AssessmentClassModuleInterface> assessmentClassModules = courseClass.assessmentClasses*.assessmentClassModules
-					.flatten()
-					.findAll { acm -> acm.module == outcome.module } as List<AssessmentClassModuleInterface>
+			List<Date> sessionModuleEndDates = getSessionEndDates(courseClass)
 
-			List<SessionModuleInterface> attendedSessionModules = filterAttendedModulesOnly(sessionModules, outcome)
+			List<Date> assessmentModuleDueDates = getAssessmentDueDates(courseClass, outcome, attendanceTakenIntoAccount)
 
-			if (!attendedSessionModules.isEmpty() || !assessmentClassModules.isEmpty()) {
-				return (attendedSessionModules*.session*.endDatetime + assessmentClassModules*.assessmentClass*.dueDate).sort().last()
+			if (!sessionModuleEndDates.isEmpty() || !assessmentModuleDueDates.isEmpty()) {
+				return (sessionModuleEndDates + assessmentModuleDueDates).sort().last()
 			}
 		}
 		// if the module for the outcome isn't found in the sessions, return the class end date
 		return courseClass.endDateTime
 	}
 
-	private List<SessionModuleInterface> filterAttendedModulesOnly(List<SessionModuleInterface> sessionModule, OutcomeInterface outcome) {
-		sessionModule.findAll { !it.getAttendanceForOutcome(outcome)?.absent }
+	private List<Date> getSessionEndDates(CourseClassInterface courseClass) {
+		List<SessionModuleInterface> sessionModules = (courseClass.sessions*.sessionModules
+				.flatten() as List<SessionModuleInterface>)
+				.findAll { sm -> sm.module == outcome.module }
+
+		if (attendanceTakenIntoAccount) {
+			sessionModules = sessionModules.findAll { !it.getAttendanceForOutcome(outcome)?.absent }
+		}
+
+		return sessionModules*.session*.endDatetime
 	}
 }

@@ -140,6 +140,10 @@ class DocumentsRenderer extends React.PureComponent<any, DocumentsRendererState>
   fileDragEvent = (e, openAddDialog) => {
     e.stopPropagation();
     e.preventDefault();
+    if (!e.dataTransfer.types.some(t => t === "Files")) {
+      return;
+    }
+
     this.setState(prev => ({
       ...prev,
       openAddDialog: prev.editingDocumentIndex !== null ? false : openAddDialog,

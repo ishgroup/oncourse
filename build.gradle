@@ -7,11 +7,10 @@
  */
 buildscript {
 	ext {
-		log4j2Version = '2.13.3'
+		log4j2Version = '2.14.0'
 		cayenneVersion = '4.1'
-		jettyVersion = '9.4.33.v20201020'
-        mariadbVersion = '2.7.1'
-		derbyVersion = '10.14.2.0'
+		jettyVersion = '9.4.40.v20210413'
+        mariadbVersion = '2.7.2'
 		googleGuiceVersion = '4.2.2'
 		groovyVersion = '2.5.13'
 		bouncycastleVersion = '1.67'
@@ -31,11 +30,12 @@ buildscript {
 }
 
 plugins {
-	id 'com.github.ben-manes.versions' version '0.36.0' // adds the task 'dependencyUpdates -Drevision=release'
-	id 'com.github.node-gradle.node' version '2.2.4' apply false
+	id 'com.github.ben-manes.versions' version '0.38.0' // adds the task 'dependencyUpdates -Drevision=release'
+	id 'com.github.node-gradle.node' version '3.0.1' apply false
 	id 'com.github.psxpaul.execfork' version '0.1.13' apply false
 	id 'com.dorongold.task-tree' version '1.5' // adds the task 'taskTree [some task]'
 	id 'application'
+	id "org.sonarqube" version "3.1.1"
 }
 
 taskTree{
@@ -44,12 +44,20 @@ taskTree{
 
 apply plugin: 'idea'
 
+sonarqube {
+	properties {
+		property "sonar.projectKey", "ishgroup_oncourse"
+		property "sonar.organization", "ishgroup"
+		property "sonar.host.url", "https://sonarcloud.io"
+	}
+}
+
 subprojects {
 	repositories {
 		mavenCentral()
 		maven {
 			//needed for itext
-			url 'http://jasperreports.sourceforge.net/maven2'
+			url "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/"
 		}
 	}
 

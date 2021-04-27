@@ -22,6 +22,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
+  Binding,
   EmailTemplate, MessageType, Recipients, /* Recipients, */ SearchQuery
 } from "@api/model";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -36,7 +37,6 @@ import {
   getRecipientsMessageData
 } from "../../../../common/components/list-view/actions";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { EMAIL_FROM_KEY } from "../../../../constants/Config";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -47,6 +47,8 @@ import RecipientsSelectionSwitcher from "./RecipientsSelectionSwitcher";
 import { Switch } from "../../../../common/components/form/form-fields/Switch";
 import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
 import previewSmsImage from "../../../../../images/preview-sms.png";
+import { validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { getMessageRequestModel } from "../utils";
 
 const styles = theme => createStyles({
   previewContent: {
@@ -138,7 +140,7 @@ const initialValues: MessageExtended = {
 };
 
 const bindingsRenderer: any = ({ fields }) => fields.map((i, n) => {
-  const item = fields.get(n);
+  const item: Binding = fields.get(n);
 
   const fieldProps: any = () => {
     switch (item.type) {
@@ -176,18 +178,16 @@ const bindingsRenderer: any = ({ fields }) => fields.map((i, n) => {
   };
 
   return (
-    <Fragment key={item.label}>
-      <Grid item xs={12} className="mb-2">
-        <Field
-          name={`${i}.value`}
-          label={`${item.label}`}
-          type={item.type}
-          component={DataTypeRenderer}
-          validate={validateSingleMandatoryField}
-          {...fieldProps()}
-        />
-      </Grid>
-    </Fragment>
+    <Grid item xs={12} className="mb-2" key={item.label}>
+      <Field
+        name={`${i}.value`}
+        label={`${item.label}`}
+        type={item.type}
+        component={DataTypeRenderer}
+        validate={["Checkbox", "Text"].includes(item.type) ? null : validateSingleMandatoryField}
+        {...fieldProps()}
+      />
+    </Grid>
   );
 });
 
@@ -232,9 +232,9 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
   }, [htmlRef.current]);
 
   const [preview, setPreview] = useState(null);
-  const [isMarketing, setIsMarketing] = useState(true)
+  const [isMarketing, setIsMarketing] = useState(true);
 
-  const [suppressed, setSuppressed] = useState(false)
+  const [suppressed, setSuppressed] = useState(false);
 
   const [selected, setSelected] = useState({
     withdrawnStudents: false,
@@ -277,25 +277,11 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
   const getTemplateById = useCallback(id => templates.find(t => t.id === id), [templates]);
 
   const getPreview = val => {
-    const requestModel = {
-      ...val,
-      searchQuery: { ...listSearchQuery },
-      variables: val.bindings.reduce((prev: any, cur) => {
-        prev[cur.name] = cur.value;
-        return prev;
-      }, {}),
-    };
-
-    delete requestModel.selectAll;
-    delete requestModel.bindings;
-    delete requestModel.recipientsCount;
-    delete requestModel.messageType;
-
-    if (!val.selectAll && Array.isArray(selection) && selection.length) {
-      requestModel.searchQuery.search = `id in (${String(selection)})`;
-    }
-
-    MessageService.getMessagePreview(val.recipientsCount, requestModel, val.messageType)
+    MessageService.getMessagePreview(
+      val.recipientsCount,
+      getMessageRequestModel(val, selection, listSearchQuery),
+      val.messageType
+      )
       .then(r => {
         setPreview(r);
           if (htmlRef.current) {
@@ -324,7 +310,10 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
       const selectedTemplate = getTemplateById(value);
       if (selectedTemplate) {
         setPreview(null);
-        dispatch(change(form, "bindings", selectedTemplate.variables));
+
+        // set variables with default empty values
+        dispatch(change(form, "bindings", selectedTemplate.variables.map(v =>
+          ({ ...v, value: v.type === "Checkbox" ? false : v.type === "Text" ? "" : v.value }))));
 
         if (htmlRef.current && htmlRef.current.shadowRoot) {
           htmlRef.current.shadowRoot.innerHTML = "";
@@ -511,8 +500,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
                 <StyledCheckbox
                   checked={isMarketing}
                   onChange={() => {
-                    setIsMarketing(!isMarketing)
-                    setSuppressed(!suppressed)
+                    setIsMarketing(!isMarketing);
+                    setSuppressed(!suppressed);
                   }}
                   color="secondary"
                 />

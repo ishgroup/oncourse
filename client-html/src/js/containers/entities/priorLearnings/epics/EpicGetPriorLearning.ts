@@ -8,7 +8,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import PriorLearningService from "../services/PriorLearningService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_PRIOR_LEARNING_ITEM,
   getData: (id: number) => PriorLearningService.getPriorLearning(id),
   processData: (priorLearning: PriorLearning) => {

@@ -7,12 +7,12 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import UserRolesService from "../services/UserRolesService";
-import { DELETE_USER_ROLES_REQUEST, DELETE_USER_ROLES_FULFILLED } from "../../../actions";
+import { DELETE_USER_ROLES_FULFILLED, DELETE_USER_ROLES_REQUEST } from "../../../actions";
 import { UserRole } from "@api/model";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_USER_ROLES_REQUEST,
   getData: (id: number) => UserRolesService.removeUserRole(id),
   retrieveData: () => UserRolesService.getUserRoles(),

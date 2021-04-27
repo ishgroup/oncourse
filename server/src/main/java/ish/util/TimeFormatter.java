@@ -133,7 +133,7 @@ public class TimeFormatter extends DefaultFormatter {
 	 * @return the parsed calendar
 	 * @throws ParseException
 	 */
-	public static Calendar parseTimeToCal(String stringValue, TimeZone tz) throws ParseException {
+	public static Calendar parseTimeToCal(String stringValue, TimeZone tz)  {
 		return parseTimeToCal(stringValue, null, tz);
 	}
 
@@ -189,12 +189,10 @@ public class TimeFormatter extends DefaultFormatter {
 							}
 						} catch (NumberFormatException e) {
 							logger.warn(e);
-							// e.printStackTrace();
 						} // we can just ignore any parsing exceptions
 					}
 				}
 
-				// System.out.println("-------- hour "+hour);
 				if (hour > 12) {
 					calendar.set(Calendar.HOUR_OF_DAY, hour);
 

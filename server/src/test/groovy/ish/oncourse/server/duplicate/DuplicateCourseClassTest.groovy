@@ -77,7 +77,6 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
         assertEquals(courseClass.getStartDateTime().getTime() + daysTo * secondsInDay, newClass.getStartDateTime().getTime())
         assertEquals(courseClass.getEndDateTime().getTime() + daysTo * secondsInDay, newClass.getEndDateTime().getTime())
         assertEquals(courseClass.getAttendanceType(), newClass.getAttendanceType())
-        assertEquals(courseClass.getFeeHelpClass(), newClass.getFeeHelpClass())
         assertEquals(courseClass.getMaximumPlaces(), newClass.getMaximumPlaces())
         assertEquals(courseClass.getMinimumPlaces(), newClass.getMinimumPlaces())
         assertEquals(courseClass.getSessionsSkipWeekends(), newClass.getSessionsSkipWeekends())

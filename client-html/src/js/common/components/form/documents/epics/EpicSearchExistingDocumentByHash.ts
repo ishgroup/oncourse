@@ -22,7 +22,7 @@ const getEditingDocumentAction = (
     payload: { editingDocument, editingFormName }
   }));
 
-const request: EpicUtils.Request<any, any, { inputDocument: File; editingFormName: string }> = {
+const request: EpicUtils.Request<any, { inputDocument: File; editingFormName: string }> = {
   type: SEARCH_DOCUMENT_BY_HASH,
   hideLoadIndicator: true,
   getData: ({ inputDocument }) => DocumentsService.searchDocument(inputDocument),

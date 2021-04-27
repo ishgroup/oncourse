@@ -12,7 +12,7 @@ import { UPDATE_TAX_TYPES_FULFILLED, UPDATE_TAX_TYPES_REQUEST } from "../../../a
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { Tax } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: UPDATE_TAX_TYPES_REQUEST,
   getData: payload => PreferencesService.updateTaxTypes(payload.taxTypes),
   retrieveData: () => PreferencesService.getTaxTypes(),

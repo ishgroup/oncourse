@@ -7,10 +7,10 @@ import { Epic } from "redux-observable";
 
 import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { GET_ACTIVE_FUNDING_CONTRACTS_REQUEST, GET_ACTIVE_FUNDING_CONTRACTS_FULFILLED } from "../actions";
+import { GET_ACTIVE_FUNDING_CONTRACTS_FULFILLED, GET_ACTIVE_FUNDING_CONTRACTS_REQUEST } from "../actions";
 import EntityService from "../../../common/services/EntityService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ACTIVE_FUNDING_CONTRACTS_REQUEST,
   getData: () => EntityService.getPlainRecords("FundingSource", "name,flavour", "active == true"),
   processData: (response: DataResponse, s, addNotFunded) => {

@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.v1.function.export
 
 import ish.oncourse.aql.AqlService
+import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.ClassCost
 import ish.oncourse.server.cayenne.CourseClassTutor
 import ish.oncourse.server.cayenne.DiscountCourseClass
@@ -118,6 +119,7 @@ class ExportFunctions {
             (Survey.simpleName.toLowerCase())           : [Survey.simpleName],
             (Outcome.simpleName.toLowerCase())           : [Outcome.simpleName],
             (Assessment.simpleName.toLowerCase())        : [Assessment.simpleName],
+            (AssessmentSubmission.simpleName.toLowerCase()):[AssessmentSubmission.simpleName],
             (TRAINEESHIP_CLASSES_ENTITY)                 : [CourseClass.simpleName],
             (PriorLearning.simpleName.toLowerCase())     : [PriorLearning.simpleName],
             (Document.simpleName.toLowerCase())          : [Document.simpleName]
