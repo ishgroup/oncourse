@@ -18,6 +18,9 @@ export class Field {
    */
   name?: string;
 
+
+  pattern?: string;
+
   /**
    * Field description
    */

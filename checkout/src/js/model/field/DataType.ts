@@ -3,6 +3,7 @@ import {createStringEnum} from "../../common/utils/EnumUtils";
 export const DataType = createStringEnum([
   'STRING',
   'LONG_STRING',
+  'PATTERN_TEXT',
   'BOOLEAN',
   'DATE',
   'DATETIME',

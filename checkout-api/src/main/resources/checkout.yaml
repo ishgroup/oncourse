@@ -267,7 +267,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-            
+
   /v1/course/classes/{courseId}:
     post:
       x-filter:
@@ -411,7 +411,7 @@ paths:
   /v1/createParentChildrenRelation:
     put:
       x-filter:
-      - XValidate 
+      - XValidate
       - CollegeInfo
       summary: Create parent children relation
       operationId: createParentChildrenRelation
@@ -526,7 +526,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-            
+
   /v1/cart/{id}:
     get:
       summary: Get cart
@@ -552,7 +552,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-            
+
     post:
       summary: Create new Cart session
       description: |
@@ -1332,6 +1332,7 @@ definitions:
     enum:
       - STRING
       - LONG_STRING
+      - PATTERN_TEXT
       - BOOLEAN
       - DATE
       - DATETIME
@@ -1373,6 +1374,9 @@ definitions:
       name:
         type: string
         description: Field name
+      pattern:
+        type: string
+        description: Field pattern ( PATTERN_TEXT only )
       description:
         type: string
         description: Field description
@@ -1590,7 +1594,7 @@ definitions:
       relatedClassId:
         type: string
       relatedProductId:
-        type: string  
+        type: string
   checkout.Voucher:
     type: object
     requred:

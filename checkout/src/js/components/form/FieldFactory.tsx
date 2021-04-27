@@ -8,7 +8,13 @@ import {DateField} from "./DateField";
 import SelectField from "../form-new/SelectField";
 import SearchService from "../../enrol/services/SearchService";
 import {connect} from "react-redux";
-import {validateDate, validateDateTime, validateEmail, validateURL} from "../../common/utils/FormControlsValidation";
+import {
+  validateDate,
+  validateDateTime,
+  validateEmail,
+  validatePattern,
+  validateURL
+} from "../../common/utils/FormControlsValidation";
 import {replaceWithNl} from "../../common/utils/HtmlUtils";
 import {DateTimeField} from "./DateTimeField";
 import {MoneyField} from "./MoneyField";
@@ -26,6 +32,14 @@ class FieldFactory extends React.Component<any, any> {
       case DataType.PHONE:
       case DataType.POSTCODE:
         return <Form.Field {...props} component={TextField} type="text"/>;
+
+      case DataType.PATTERN_TEXT:
+        return <Form.Field
+          {...props}
+          component={TextField}
+          validate={val => validatePattern(val,props.pattern)}
+          type="text"
+        />;
 
       case DataType.EMAIL:
         return <Form.Field {...props} component={TextField} validate={validateEmail} type="text"/>;
@@ -132,6 +146,7 @@ export const toFormFieldProps = (field: Field): any => {
     label: replaceWithNl(field.name),
     type: "text",
     required: field.mandatory,
+    pattern: field.pattern,
     placeholder: replaceWithNl(field.description),
   };
 };
