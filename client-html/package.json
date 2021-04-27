@@ -5,8 +5,7 @@
   "description": "react web client for oncourse application",
   "main": "webpack.config.js",
   "scripts": {
-    "build:prod": "webpack --progress --env NODE_ENV=production",
-    "build:api-docs": "webpack --progress --env NODE_ENV=production --config webpack.api.doc.config.js",
+    "build:prod": "webpack --progress --node-env production",
     "test": "jest",
     "start": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx",
     "start:prod": "webpack serve --history-api-fallback --port 8100 --progress --env NODE_ENV=production",
@@ -71,7 +70,6 @@
   "dependencies": {
     "@bugsnag/js": "7.*",
     "@bugsnag/plugin-react": "7.*",
-    "@react-loadable/revised": "^0.1.0-experimental-1",
     "@ckeditor/ckeditor5-autoformat": "latest",
     "@ckeditor/ckeditor5-basic-styles": "latest",
     "@ckeditor/ckeditor5-editor-classic": "latest",
@@ -94,6 +92,7 @@
     "@material-ui/icons": "4.*",
     "@material-ui/lab": "4.0.0-alpha.57",
     "@material-ui/pickers": "3.*",
+    "@react-loadable/revised": "^0.1.0-experimental-1",
     "antlr4-c3": "1.1.16",
     "antlr4ts": "0.5.0-alpha.4",
     "autosuggest-highlight": "3.1.*",
