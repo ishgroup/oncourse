@@ -12,7 +12,13 @@ import { RedocStandalone } from 'redoc';
 
 const start = () => {
   ReactDOM.render(
-    <RedocStandalone specUrl="swagger.yaml" />,
+    <RedocStandalone
+      specUrl="swagger.yaml"
+      options={{
+        noAutoAuth: true,
+        nativeScrollbars: true
+      }}
+    />,
     document.getElementById("docs-root")
   );
 };

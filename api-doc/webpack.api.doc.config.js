@@ -14,7 +14,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = () => {
-  const swaggerPath = process.argv.indexOf("--schema") !== -1 && process.argv[process.argv.indexOf("--schema") + 1];
+  const swaggerPath = process.argv.indexOf("schema") !== -1 && process.argv[process.argv.indexOf("schema") + 1];
 
   if (!swaggerPath) {
     throw new Error("Swagger schema file is required !");
@@ -23,12 +23,12 @@ module.exports = () => {
   return {
     entry: [
       swaggerPath,
-      "./src/api-docs/apiDocs.tsx"
+      "./src/apiDocs.tsx"
     ],
     output: {
       path: path.resolve(__dirname, "build/api-docs"),
     },
-    mode: "development",
+    mode: process.env.NODE_ENV,
     resolve: {
       modules: [
         "node_modules"
@@ -48,7 +48,7 @@ module.exports = () => {
             }
           ],
           include: [
-            path.resolve(__dirname, "src/api-docs/apiDocs.tsx")
+            path.resolve(__dirname, "src/apiDocs.tsx")
           ],
           exclude: [
             path.resolve(__dirname, "node_modules")
@@ -66,20 +66,26 @@ module.exports = () => {
       ]
     },
     plugins: [
-      new HtmlWebpackPlugin({
-        template: "src/api-docs/api-doc-template.html",
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+        Buffer: "buffer"
       }),
-      new webpack.WatchIgnorePlugin([
-        /\.js$/,
-        path.resolve(__dirname, "node_modules")
-      ]),
+      new HtmlWebpackPlugin({
+        template: "src/api-doc-template.html",
+      }),
+      new webpack.WatchIgnorePlugin({
+        paths: [
+          /\.js$/,
+          path.resolve(__dirname, "node_modules"),
+        ],
+      }),
       new MiniCssExtractPlugin({ filename: '[name].css' }),
       new webpack.SourceMapDevToolPlugin({
         filename: "[file].map",
         exclude: [/vendor/, /images/, /hot-update/]
       }),
       new CompressionPlugin({
-        filename: `[path].gz`,
+        filename: `[file].gz`,
         algorithm: "gzip",
         test: /\.(js|html|css)$/,
         threshold: 10240,
@@ -89,8 +95,7 @@ module.exports = () => {
     optimization: {
       minimizer: [
         new TerserPlugin({
-          parallel: 4,
-          sourceMap: true
+          parallel: 4
         })
       ]
     },
@@ -99,9 +104,6 @@ module.exports = () => {
       hot: true,
       port: 8100
     },
-    devtool: false,
-    node: {
-      fs: "empty"
-    }
+    devtool: false
   };
 };

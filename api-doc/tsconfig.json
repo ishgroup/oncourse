@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "rootDirs": [
+      "src"
+    ],
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "strictNullChecks": false,
+    "module": "esnext",
+    "skipLibCheck": true,
+    "target": "es2015",
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "esnext",
+      "es5",
+      "es6",
+      "es7"
+    ]
+  },
+  "compileOnSave": false,
+  "exclude": [
+    "./node_modules*",
+    "./build*"
+  ]
+}
