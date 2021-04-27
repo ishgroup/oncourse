@@ -58,13 +58,3 @@ generateQueryLanguageModel {
 }
 
 processResources.dependsOn(':server-api:swagger', "generateQueryLanguageModel")
-
-publishing {
-    publications {
-        docs(MavenPublication) {
-            artifact(packageApiDoc) {
-                artifactId "apiDoc"
-            }
-        }
-    }
-}
