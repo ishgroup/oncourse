@@ -22,27 +22,30 @@ export class ContactAdd extends React.Component<Props, any> {
         </div>
         <fieldset>
           <br/>
-          <Field component={TextField}
-                 autocomplete="off"
-                 name="firstName"
-                 label="First name"
-                 type="text"
-                 autoFocus
-                 required
+          <Field
+             component={TextField}
+             autocomplete="given-name"
+             name="firstName"
+             label="First name"
+             type="text"
+             autoFocus
+             required
           />
-          <Field component={TextField}
-                 autocomplete="off"
-                 name="lastName"
-                 label="Last name"
-                 type="text"
-                 required
+          <Field
+             component={TextField}
+             autocomplete="family-name"
+             name="lastName"
+             label="Last name"
+             type="text"
+             required
           />
-          <Field component={TextField}
-                 autocomplete="on"
-                 name="email"
-                 label="Email"
-                 type="text"
-                 required
+          <Field
+             component={TextField}
+             autocomplete="email"
+             name="email"
+             label="Email"
+             type="text"
+             required
           />
         </fieldset>
         <p className="note">

@@ -4,7 +4,7 @@ import Bugsnag from '@bugsnag/js';
 
 // workaround for jest failing tests
 let bugsnagClientBase;
-if (typeof jest === 'undefined') {
+if (typeof jest === 'undefined' && window.location.protocol !== "file:") {
   bugsnagClientBase = Bugsnag;
 
   bugsnagClientBase.start({

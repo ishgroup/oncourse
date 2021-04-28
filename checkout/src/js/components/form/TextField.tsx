@@ -17,6 +17,7 @@ function inputComponent(props: any) {
     label,
     placeholder,
     type,
+    autocomplete
   } = props;
   const isShowError = showError({...props, meta: props.meta || {}});
 
@@ -41,6 +42,7 @@ function inputComponent(props: any) {
           {...input}
           className={classnames('input-fixed', 'contact-field', {'t-error': isShowError})}
           placeholder={placeholder || label}
+          autocomplete={autocomplete}
           type={type}
         />
         <ValidateText {...props} meta={props.meta || {}}/>

@@ -17,19 +17,21 @@ export class CompanyAdd extends React.Component<Props, any> {
         </div>
         <fieldset>
           <br/>
-          <Field component={TextField}
-                 autocomplete="off"
-                 name="lastName"
-                 label="Company name"
-                 type="text"
-                 required
+          <Field
+             component={TextField}
+             autocomplete="family-name"
+             name="lastName"
+             label="Company name"
+             type="text"
+             required
           />
-          <Field component={TextField}
-                 autocomplete="on"
-                 name="email"
-                 label="Email"
-                 type="text"
-                 required
+          <Field
+             component={TextField}
+             autocomplete="email"
+             name="email"
+             label="Email"
+             type="text"
+             required
           />
         </fieldset>
         <p className="note">
