@@ -43,7 +43,7 @@ jobs:
           ~/.gradle/caches
           ~/.gradle/wrapper
           ~/.sonar/cache
-        key: ${{ runner.os }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        key: ${{ matrix.java }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
     - name: Run tests
       run: ./gradlew server:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angelTest_trunk?user=root --stacktrace -Duser.language=en -Duser.country=AU
