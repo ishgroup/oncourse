@@ -522,7 +522,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
     const updated = [...values.sessions];
 
     sessionSelection.forEach(sid => {
-      const session = JSON.parse(JSON.stringify(updated.find(s => s.id === sid)));
+      const session = JSON.parse(JSON.stringify(updated.find(s => s.id === sid || s.temporaryId === sid)));
       const startDate = new Date(session.start);
       const endDate = new Date(session.end);
 
@@ -644,7 +644,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
 
   const onSelectAllSession = useCallback(e => {
     if (e.target.checked) {
-      dispatch(courseClassSelectAllSession(values.sessions.map(s => s.id)));
+      dispatch(courseClassSelectAllSession(values.sessions.map(s => s.id || s.temporaryId)));
     } else {
       dispatch(courseClassSelectAllSession([]));
     }
@@ -799,7 +799,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
               onChange={onExpand}
               headerAdornment={(
                 <>
-                  <div className="d-flex">
+                  <div>
                     {values.sessions && values.sessions.length > 0 && (
                       <>
                         <Checkbox

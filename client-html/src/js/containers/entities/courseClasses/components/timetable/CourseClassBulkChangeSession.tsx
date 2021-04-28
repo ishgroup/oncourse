@@ -210,7 +210,7 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
 
   const onRoomIdChange = useCallback(
     room => {
-      dispatch(change(form, "room", room.label));
+      dispatch(change(form, "room", room.name));
     },
     []
   );
