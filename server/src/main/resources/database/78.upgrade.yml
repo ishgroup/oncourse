@@ -250,3 +250,20 @@ databaseChangeLog:
               - column:
                   name: pattern
                   type: VARCHAR(128)
+  - changeSet:
+      id: 78-9
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: Script
+              columnName: triggerOnAttribute
+      changes:
+        - addColumn:
+            tableName: Script
+            columns:
+              - column:
+                  name: triggerOnAttribute
+                  type: VARCHAR(128)
+                  afterColumn: entityClass
