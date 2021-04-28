@@ -58,7 +58,7 @@ dependencies {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
 	api 'javax.xml.bind:jaxb-api:2.3.0'
-	api 'javax.xml.ws:jaxws-api:2.3.0'
+	api 'javax.xml.ws:jaxws-api:2.3.1'
 
 	api "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 	api "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
