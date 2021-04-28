@@ -1,17 +1,13 @@
 name: Server test
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: ubuntu-20.04
+  server-tests:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [11]
+        java: [11, 16]
 
     services:
       mysql:
