@@ -46,7 +46,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/script' withou
         "name":"script with Query panel_upd",
         "description":"some description_upd",
         "enabled":false,
-        "trigger":{"type":"Class cancelled","entityName":null,"cron":null},
+        "trigger":{"type":"Class cancelled","entityName":null,"entityAttribute":null,"cron":null},
         "content":"#string",
         "lastRun":[],
         "keyCode":"test.script_query",
