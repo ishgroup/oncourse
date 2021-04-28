@@ -1,6 +1,6 @@
 name: Server test
 
-on: [push, pull_request]
+on: push
 
 jobs:
   server-tests:
