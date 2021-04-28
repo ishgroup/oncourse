@@ -5,6 +5,9 @@
       <module name="angel.buildSrc" target="11" />
       <module name="angel.buildSrc.main" target="11" />
       <module name="angel.buildSrc.test" target="11" />
+      <module name="onCourse.api-doc" target="11" />
+      <module name="onCourse.api-doc.main" target="11" />
+      <module name="onCourse.api-doc.test" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="TypeScriptCompiler">
