@@ -16,7 +16,7 @@ buildscript {
 		bouncycastleVersion = '1.67'
 		bootiqueVersion = '1.0'
 		cfxVersion = '3.3.5'
-		jacksonVersion = '2.9.9'
+		jacksonVersion = '2.12.3'
 		javaxActivationVersion = '1.2.0'
 	}
 
