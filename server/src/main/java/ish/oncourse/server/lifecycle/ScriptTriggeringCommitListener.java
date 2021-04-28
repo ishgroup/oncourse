@@ -24,7 +24,9 @@ import java.util.Set;
 
 public class ScriptTriggeringCommitListener implements CommitLogListener {
 
-    private GroovyScriptService scriptService;
+    private final GroovyScriptService scriptService;
+    private final static String QUEUED_RECORD = "QueuedRecord";
+    private final static String QUEUED_TRANSACTION = "QueuedTransaction";
 
     public ScriptTriggeringCommitListener(GroovyScriptService scriptService) {
         this.scriptService = scriptService;
@@ -36,6 +38,8 @@ public class ScriptTriggeringCommitListener implements CommitLogListener {
             changes.getChanges()
                     .entrySet()
                     .stream()
+                    .filter(entry -> !QUEUED_RECORD.equals(entry.getKey().getEntityName()) &&
+                            !QUEUED_TRANSACTION.equals(entry.getKey().getEntityName()))
                     .filter(entry -> ObjectChangeType.UPDATE.equals(entry.getValue().getType()))
                     .forEach(entityChange -> {
                         Class<?> entityClass = EntityUtil.entityClassForName(entityChange.getKey().getEntityName());
