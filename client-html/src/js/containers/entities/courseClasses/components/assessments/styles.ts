@@ -38,7 +38,7 @@ export default (theme: AppTheme) =>
     hiddenIcon: {
       visibility: "hidden",
       position: "absolute",
-      transform: "translate(calc(100% + 2px),-2px)",
+      transform: "translate(calc(100% + 2px),0)",
       padding: 0,
       right: 0
     },

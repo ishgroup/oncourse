@@ -89,7 +89,7 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
         <div className={clsx("d-flex align-items-baseline zIndex2 relative", classes.sessionActionButtonWrapper)}>
           <div className="centeredFlex">
             <FormControlLabel
-              control={<Checkbox checked={sessionSelection.includes(session.id)} size="small" onClick={selectSessionItem} />}
+              control={<Checkbox checked={sessionSelection.includes(session.id || session.temporaryId)} size="small" onClick={selectSessionItem} />}
               onClick={event => event.stopPropagation()}
               onFocus={event => event.stopPropagation()}
               label=""
