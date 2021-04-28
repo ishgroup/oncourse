@@ -10,6 +10,11 @@ properties:
     description: entity name
     required: false
     example: Course
+  entityAttribute:
+    type: string
+    description: entity attribute
+    required: false
+    example: code
   cron:
     $ref: './Schedule.yaml'
     description: cron
