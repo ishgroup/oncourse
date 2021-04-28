@@ -33,7 +33,7 @@ dependencies {
     api "org.apache.cxf:cxf-rt-frontend-jaxrs:$cfxVersion"
 
     api 'javax.validation:validation-api:1.1.0.Final'
-    api 'org.apache.bval:org.apache.bval.bundle:1.1.2'
+    api 'org.apache.bval:org.apache.bval.bundle:2.0.5'
     api 'net.java.dev.textile-j:textile-j:2.2.864'
 
     //latest jackson 2.9.9 conflicts with spring AbstractApplicationContext
