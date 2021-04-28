@@ -82,7 +82,7 @@ dependencies {
 	implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
 
 	implementation 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
-	implementation ('net.sf.jasperreports:jasperreports:6.1.1') {
+	implementation ('net.sf.jasperreports:jasperreports:6.16.0') {
 		exclude group:'org.apache.poi', module: 'poi-ooxml'
 		exclude group:'org.codehaus.castor'
 		exclude group:'com.fasterxml.jackson.core'
