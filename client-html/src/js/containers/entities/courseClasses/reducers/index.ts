@@ -18,7 +18,7 @@ import {
   SET_COURSE_CLASS_LATEST_SESSION,
   SET_COURSE_CLASS_BUDGET_MODAL_OPENED,
   SET_COURSE_CLASS_SESSIONS_WARNINGS, SET_DUPLICATE_COURSE_CLASSES_BUDGET
-} from "../actions/index";
+} from "../actions";
 import { CourseClassBulkSession } from "./state";
 import { StringKeyAndValueObject } from "../../../../model/common/CommomObjects";
 import { SET_COURSE_CLASS_TUTOR_NAMES_WARNINGS } from "../components/tutors/actions";
@@ -174,7 +174,7 @@ export const courseClassesBulkSessionReducer = (
 
     case COURSE_CLASS_SELECT_SINGLE_SESSION: {
       const updatedSession = [...state.selection];
-      const { id } = action.payload.session;
+      const id = action.payload.session.id || action.payload.session.temporaryId;
 
       if (updatedSession.includes(id)) {
         const index = updatedSession.findIndex(s => s === id);
