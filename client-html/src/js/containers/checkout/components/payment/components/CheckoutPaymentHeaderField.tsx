@@ -95,6 +95,8 @@ interface PaymentHeaderFieldProps {
 
 const noPaymentItems = [{ value: "No payment", label: "No payment" }];
 
+const validateVoucher = val => !val || val.length > 7 ? undefined : "Voucher code should be 8 or more characters long";
+
 const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props => {
   const {
     activeField,
@@ -326,7 +328,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     if (value && value.length > 7) {
       getVoucher(value);
     }
-  }, 800), []);
+  }, 600), []);
 
   const updateVouchersAppliedValue = totalExVouchers => {
     const priceVouchers = checkoutSummary.vouchers.filter(v => v.maxCoursesRedemption === null);
@@ -557,6 +559,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         name="vouchers"
         placeholder="Enter voucher code"
         onFocus={clearSelectedDiscount}
+        validate={validateVoucher}
         form={form}
         dispatch={dispatch}
         onSearch={onGetPromoVoucher}
