@@ -72,6 +72,7 @@ import { UserPreferencesState } from "../../../common/reducers/userPreferencesRe
 import { III_DD_MMM_YYYY_HH_MM } from "../../../common/utils/dates/format";
 import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
 import uniqid from "../../../common/utils/uniqid";
+import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
 
 const manualLink = getManualLink("classes");
 
@@ -780,6 +781,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
         DEFAULT_MINIMUM_PLACES_KEY
       ])
     );
+    dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone"));
   },
   getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
