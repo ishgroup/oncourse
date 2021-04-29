@@ -135,6 +135,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                     break
                 case TriggerType.ON_DEMAND:
                     st.type = ON_DEMAND
+                    st.entityName = dbScript.entityClass
                     break
                 case TriggerType.ONCOURSE_EVENT:
                     switch (dbScript.systemEventType) {
