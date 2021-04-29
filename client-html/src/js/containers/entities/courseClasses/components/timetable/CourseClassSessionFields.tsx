@@ -18,7 +18,7 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { FormControl, FormHelperText } from "@material-ui/core";
 import clsx from "clsx";
-import { ClashType, Room, SessionWarning } from "@api/model";
+import { ClashType, Room, SessionWarning, Site } from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
@@ -43,6 +43,7 @@ interface Props {
   classes: any;
   session?: TimetableSession;
   rooms?: Room[];
+  sites?: Site[];
   getRooms?: StringArgFunction;
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
@@ -56,7 +57,8 @@ const validateDuration = value => (value < 5 || value > 1440
     ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
     : undefined);
 
-const CourseClassSessionFields: React.FC<Props> = ({
+const CourseClassSessionFields: React.FC<Props> = (
+  {
   form,
   dispatch,
   session,
@@ -66,7 +68,8 @@ const CourseClassSessionFields: React.FC<Props> = ({
   triggerDebounseUpdate,
   classes,
   warnings,
-  prevTutorsState
+  prevTutorsState,
+  sites
 }) => {
   const isMounted = useRef(false);
 
@@ -347,7 +350,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
       </Grid>
       <Grid item xs={6}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="searchSelect"
           entity="Site"
           name={`sessions[${session.index}].siteId`}
           label="Site"
@@ -360,6 +363,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           onInnerValueChange={onSiteIdChange}
           className={warningTypes.Site.length ? "errorColor" : undefined}
           rowHeight={36}
+          items={sites}
           allowEmpty
         />
         {warningTypes.Site
@@ -413,6 +417,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: State, ownProps: Props) => ({
   rooms: state.plainSearchRecords["Room"].items,
+  sites: state.plainSearchRecords["Site"].items,
   session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {}
 });
 
