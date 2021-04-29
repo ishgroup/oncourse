@@ -219,7 +219,7 @@ const ScriptsForm = React.memo<Props>(props => {
   );
 
   const onValidateQuery = (isValid, input?) => {
-    if(input && input.includes("${")) {
+    if (input && input.includes("${")) {
       setIsValidQuery(true);
       return;
     }
@@ -288,34 +288,20 @@ const ScriptsForm = React.memo<Props>(props => {
   ]);
 
   const handleSave = useCallback(
-    valuesToSave => {
+    (valuesToSave: Script) => {
       setDisableRouteConfirm(true);
-
-      const requestValues = { ...valuesToSave };
-
-      if (isSystemTrigger) requestValues.entity = null;
-
-      if (requestValues.trigger) {
-        if (requestValues.entity) {
-          requestValues.trigger.entityName = requestValues.entity;
-        } else {
-          requestValues.trigger.entityName = null;
-        }
-      }
 
       if (isNew) {
         onCreate(valuesToSave);
         return;
       }
 
-      // const formState = getDeepValue(formsState, SCRIPT_EDIT_VIEW_FORM_NAME);
-      // const scriptBodyNotChanged = JSON.stringify([formState.initial.components, formState.initial.imports])
-      //   === JSON.stringify([values.components, values.imports]);
+      valuesToSave.entity = valuesToSave?.trigger?.entityName;
 
       if (isInternal) {
-        onSave(requestValues.id, requestValues, "PATCH", viewMode);
+        onSave(valuesToSave.id, valuesToSave, "PATCH", viewMode);
       } else {
-        onSave(requestValues.id, requestValues, "PUT", viewMode);
+        onSave(valuesToSave.id, valuesToSave, "PUT", viewMode);
       }
     },
     [formsState, isNew, isSystemTrigger, values],
