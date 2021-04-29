@@ -40,6 +40,7 @@ export type CheckoutDiscount = Discount & VoucherProduct & {
   productId?: number;
   courseIds?: number[];
   redeemableById?: number;
+  statusValue?: string;
 }
 
 export interface CheckoutCourseClass extends CourseClass {
