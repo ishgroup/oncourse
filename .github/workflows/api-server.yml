@@ -1,6 +1,6 @@
 name: API test
 
-on: [push, pull_request]
+on: push
 
 jobs:
   api-tests:
@@ -39,7 +39,7 @@ jobs:
           **/node_modules
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        key: ${{ matrix.java }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
     - name: Run tests
       run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angel_api_test?user=root
