@@ -17,8 +17,7 @@ import static org.junit.Assert.assertEquals;
 public class ExportTemplatesApiTest {
     @Test
     public void test() {
-        Results results = Runner.path(  "classpath:ish/oncourse/api/test/list/entity/exportTemplate",
-                "classpath:ish/oncourse/api/test/list/entity/script").tags("~@ignore").parallel(1);
+        Results results = Runner.path(  "classpath:ish/oncourse/api/test/list/entity/exportTemplate").tags("~@ignore").parallel(1);
         assertEquals(results.getErrorMessages(), results.getFailCount(), 0);
     }
 }
