@@ -17,8 +17,6 @@ const TriggerCardContent = props => {
     TriggerTypeItems, ScheduleTypeItems, enableEntityNameField, values, isInternal, dispatch, form
   } = props;
 
-  const isNew = !values.id;
-
   const isScheduleOrOnDemand = useMemo(() => Boolean(
     (values.trigger && values.trigger.type === "On demand") || (values.trigger && values.trigger.type === "Schedule")
   ), [
