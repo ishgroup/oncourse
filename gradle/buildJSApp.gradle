@@ -10,7 +10,7 @@ yarn_install.args = ['--verbose']
 
 task webpack(type: NodeTask, dependsOn: 'yarn_install') {
     script = file('node_modules/.bin/webpack')
-    args = ['--progress', '--env', 'NODE_ENV=production', '--env', 'BUILD_NUMBER=', version ?: '99-SNAPSHOT']
+    args = ['--progress', '--env', 'NODE_ENV=production', '--env', "BUILD_NUMBER=${version ?: '99-SNAPSHOT'}"]
 }
 
 task jest(type: YarnTask, dependsOn: 'yarn_install') {
