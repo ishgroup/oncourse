@@ -4,8 +4,6 @@ import {Contact, Course, WaitingList} from "../../../../model";
 import {ItemWrapper} from "./ItemWrapper";
 import {toFormKey} from "../../../../components/form/FieldFactory";
 import EnrolmentFieldsForm from "./EnrolmentFieldsForm";
-import {TextField} from "../../../../components/form/TextField";
-import {TextAreaField} from "../../../../components/form/TextAreaField";
 
 export interface Props {
   contact: Contact;
