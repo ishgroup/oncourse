@@ -18,15 +18,6 @@ export interface Props {
 }
 
 class WaitingListComp extends React.Component<Props, any> {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      errors: {},
-    };
-  }
-
   getFieldInitialValues(headings) {
     const initialValues = {};
 
@@ -43,36 +34,15 @@ class WaitingListComp extends React.Component<Props, any> {
     return null;
   }
 
-  onChangeField(e, key) {
-    this.setState({errors: {...this.state.errors, [key]: false}});
-    const value = e.target.value;
-
-    this.setState({
-      [key]: value,
-    });
-
-  }
-  onBlurField(key) {
-    const {onUpdate} = this.props;
-
-
-    this.setState({
-      errors: {...this.state.errors, [key]: false},
-    });
-
-    onUpdate({[key]: this.state[key]});
-  }
-
   public render(): JSX.Element {
     const {waitingList, product, contact, onChange, onChangeFields, readonly} = this.props;
-    const {errors} = this.state;
 
     const divClass = classnames("row waitingList", {disabled: !waitingList.selected});
     const name = `application-${contact.id}-${waitingList.courseId}`;
-    const title = <span><span className="checkout-course-type">Waiting List for</span> {product.name}</span>;
+    const title = product?.name ? <span><span className="checkout-course-type">Waiting List for</span> {product.name}</span> : "";
 
-    const warning = waitingList.warnings && waitingList.warnings.length ? this.props.waitingList.warnings[0] : null;
-    const error = waitingList.warnings && waitingList.errors.length ? this.props.waitingList.errors[0] : null;
+    const warning = waitingList.warnings && waitingList.warnings.length ? waitingList.warnings[0] : null;
+    const error = waitingList.errors && waitingList.errors.length ? waitingList.errors[0] : null;
 
     return (
       <div className={divClass}>
