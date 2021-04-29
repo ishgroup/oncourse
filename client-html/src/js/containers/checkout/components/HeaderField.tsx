@@ -5,7 +5,7 @@
 
 import React from "react";
 import clsx from "clsx";
-import { change, Field } from "redux-form";
+import { change, Field, Validator } from "redux-form";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Search from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
@@ -54,6 +54,7 @@ interface Props {
   value?: any;
   showArrowButton?: boolean;
   disabled?: boolean;
+  validate?: Validator;
 }
 
 const HeaderField: React.FC<Props> = props => {
@@ -72,7 +73,8 @@ const HeaderField: React.FC<Props> = props => {
     onClearSearch,
     value,
     showArrowButton,
-    disabled
+    disabled,
+    validate
   } = props;
 
   const handleTextChange = value => {
@@ -130,6 +132,7 @@ const HeaderField: React.FC<Props> = props => {
                 </>
               )
             }}
+            validate={validate}
             fullWidth
           />
         )}
