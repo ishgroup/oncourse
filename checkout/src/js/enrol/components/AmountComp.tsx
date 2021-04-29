@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import debounce from "debounce-promise";
 import {Promotion} from "../../model";
 import AddCodeComp from "./AddCodeComp";
 import {Tabs} from "../containers/payment/reducers/State";
@@ -16,41 +16,25 @@ interface Props {
   currentTab?: Tabs;
 }
 
-interface State {
-  payNowVal:any
-}
-class AmountComp extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
+class AmountComp extends React.Component<Props> {
+  handleChange = debounce((value): Promise<any> => {
+    const {onUpdatePayNow} = this.props;
 
-    this.state = {
-      payNowVal: props.amount.payNow || 0
-    };
-  }
+    const payNowVal = parseFloat(value);
 
-  componentWillReceiveProps(props: Props) {
-    this.setState({
-      payNowVal: props.amount.payNow,
-    });
-  }
-
-  handleChangePayNow(val) {
-    const payNowVal = parseFloat(val);
     if (!isNaN(payNowVal) && payNowVal > 0) {
-      this.setState({
-        payNowVal
-      });
+      onUpdatePayNow(payNowVal.toFixed(2), true);
     }
-  }
+
+    return Promise.resolve();
+  },600);
 
   handleBlur = () => {
-    const val = this.state.payNowVal;
-    const {onUpdatePayNow} = this.props;
-    onUpdatePayNow(val.toFixed(2), true);
+    this.forceUpdate();
   }
 
   render(): JSX.Element {
-    const {amount, onAddCode, promotions, onUpdatePayNow, redeemVouchers, onToggleVoucher, currentTab} = this.props;
+    const {amount, onAddCode, promotions, redeemVouchers, onToggleVoucher, currentTab} = this.props;
     const activeVoucherWithPayer = redeemVouchers && redeemVouchers.find(v => v.payer && v.enabled);
 
     return (
@@ -81,8 +65,8 @@ class AmountComp extends React.Component<Props, State> {
           {(amount && currentTab !== Tabs.corporatePass) &&
           (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
           <PayNow
-            payNow={this.state.payNowVal}
-            onChange={onUpdatePayNow ? val => this.handleChangePayNow(val) : undefined}
+            payNow={amount.payNow}
+            onChange={this.handleChange}
             onBlur={this.handleBlur}
           />
           }
