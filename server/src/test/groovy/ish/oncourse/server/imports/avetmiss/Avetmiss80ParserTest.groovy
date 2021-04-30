@@ -2,6 +2,8 @@ package ish.oncourse.server.imports.avetmiss
 
 import groovy.mock.interceptor.MockFor
 import ish.common.types.AvetmissStudentDisabilityType
+import ish.common.types.UsiStatus
+
 import static ish.common.types.AvetmissStudentEnglishProficiency.VERY_WELL
 import static ish.common.types.AvetmissStudentIndigenousStatus.NEITHER
 import static ish.common.types.AvetmissStudentLabourStatus.PART_TIME
@@ -43,7 +45,7 @@ class Avetmiss80ParserTest {
     @Test
     void test() {
 
-        def text = "0000000205Castejon, Ed Karlvincent                                    102014M20111999625846511025204NNY1Manjimup                                          4YLJ9VMZU705                                                                                31             Crowea Street                                                                             "
+        def text = "0000000205Castejon, Ed Karlvincent                                    10M20111999625846511025204NNYManjimup                                          4YLJ9VMZU705                                                                                31             Crowea Street                                                                             "
 
         def parser = getParser(text)
         def result = parser.parse()
@@ -59,14 +61,15 @@ class Avetmiss80ParserTest {
                 suburb             : "Manjimup",
                 language           : language,
                 highestSchoolLevel : COMPLETED_YEAR_10,
-                yearSchoolCompleted: 2014,
                 indigenousStatus   : NEITHER,
                 labourForceStatus  : PART_TIME,
                 countryOfBirth     : country,
                 disabilityType     : AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION,
                 priorEducationCode : AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION,
                 isStillAtSchool    : true,
-                englishProficiency : VERY_WELL,
+                usi                : "4YLJ9VMZU7",
+                usiStatus          : UsiStatus.DEFAULT_NOT_SUPPLIED,
+                street             : "31, Crowea Street",
         ]
 
         assertEquals("Wrong values:" + expected*.key.findAll { expected[it] != result[it] }, expected, result)
