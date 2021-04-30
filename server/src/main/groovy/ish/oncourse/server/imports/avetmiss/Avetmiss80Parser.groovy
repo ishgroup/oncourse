@@ -18,6 +18,7 @@ import ish.common.types.AvetmissStudentIndigenousStatus
 import ish.common.types.AvetmissStudentLabourStatus
 import ish.common.types.AvetmissStudentPriorEducation
 import ish.common.types.Gender
+import ish.common.types.UsiStatus
 import ish.oncourse.server.cayenne.Contact
 import ish.util.EnumUtil
 import org.apache.cayenne.ObjectContext
@@ -39,14 +40,15 @@ class Avetmiss80Parser extends AbstractAvetmissParser {
             suburb             : null,
             language           : null,
             highestSchoolLevel : null,
-            yearSchoolCompleted: null,
             indigenousStatus   : null,
             labourForceStatus  : null,
             countryOfBirth     : null,
             disabilityType     : null,
             priorEducationCode : null,
             isStillAtSchool    : null,
-            englishProficiency : null,
+            usi                : null,
+            usiStatus          : null,
+            street             : null,
     ]
 
     private Avetmiss80Parser() {
@@ -54,10 +56,11 @@ class Avetmiss80Parser extends AbstractAvetmissParser {
 
     @Override
     /**
-     * clientId(1+10),names(11+60), highestSchoolLevel(71+2), yearSchoolCompleted(73+4),
-     * gender(77+1),birthDate(78+8),postcode(86+4), indigenousStatus(90+1),language(91+4),
-     * labourForceStatus(95+2), countryOfBirth(97+4),disabilityType(101+1),priorEducationCode(102+1)
-     * isStillAtSchool(103+1),englishProficiency(104+1), suburb(105+50)
+     * clientId(1+10),names(11+60), highestSchoolLevel(71+2),
+     * gender(73+1), birthDate(74+8), postcode(82+4), indigenousStatus(86+1), language(87+4),
+     * labourForceStatus(91+2), countryOfBirth(93+4), disabilityType(97+1), priorEducationCode(98+1)
+     * isStillAtSchool(99+1), suburb(100+50), usi(150+10), stateIdentifier(160+2), buildingName(162+50),
+     * unit(212+30), streetNumber(242+15), streetName(257+70)
      */
     def parse() {
 
@@ -78,11 +81,6 @@ class Avetmiss80Parser extends AbstractAvetmissParser {
         // ------------------
         // highest school level completed p43
         result.highestSchoolLevel = service.parseHighestSchoolLevel(line.readInteger(2))
-
-        // ------------------
-        // year highest school level completed p126
-        // valid 4 digit year, not in the future
-        result.yearSchoolCompleted = line.readInteger(4)
 
         // ------------------
         // sex p94
@@ -168,25 +166,43 @@ class Avetmiss80Parser extends AbstractAvetmissParser {
         result.isStillAtSchool = "Y".equals(stillAtSchool) ? Boolean.TRUE : "N".equals(stillAtSchool) ? Boolean.FALSE : null
 
         // ------------------
-        // proficiency in spoken English identifier p79
-        // 1 (very well)
-        // 2 (well)
-        // 3 (not well)
-        // 4 (not at all)
-        // blank (if language spoken at home is 1201 - English)
-        // @ (not stated)
-        Integer engProficiency = line.readInteger(1)
-        if (engProficiency != null) {
-            result.englishProficiency = (AvetmissStudentEnglishProficiency) EnumUtil.enumForDatabaseValue(
-                    AvetmissStudentEnglishProficiency, engProficiency)
-        } else {
-            result.englishProficiency = AvetmissStudentEnglishProficiency.DEFAULT_POPUP_OPTION
-        }
-
-        // ------------------
         // address suburb or town or locality p4
         String suburb = line.readString(50)
         result.suburb = "NOT PROVIDED".equalsIgnoreCase(suburb) ? null : suburb
+
+        // ------------------
+        // Unique student identifier
+        String usi = line.readString(10)
+        switch (usi) {
+            case "INTOFF":
+                result.usiStatus = UsiStatus.INTERNATIONAL
+                break
+            case "INDIV":
+                result.usiStatus = UsiStatus.EXEMPTION
+                break
+            default:
+                result.usiStatus = UsiStatus.DEFAULT_NOT_SUPPLIED
+                result.usi = usi
+                break
+        }
+        // ------------------
+        // State identifier
+        line.readString(2)
+        // ------------------
+        // Street
+        String buildingName = line.readString(50)
+        String unit = line.readString(30)
+        String streetNumber = line.readString(15)
+        if ("NOT SPECIFIED".equalsIgnoreCase(streetNumber)) {
+            streetNumber = null
+        }
+        String streetName = line.readString(70)
+        if ("NOT SPECIFIED".equalsIgnoreCase(streetName)) {
+            streetName = null
+        }
+
+        result.street = [buildingName, unit, streetNumber, streetName]
+                .findAll { s -> StringUtils.trimToNull(s) != null }.join(", ")
         return result
     }
 
@@ -199,16 +215,17 @@ class Avetmiss80Parser extends AbstractAvetmissParser {
         contact.birthDate = result.birthDate
         contact.postcode = result.postcode
         contact.suburb = result.suburb
+        contact.street = result.street
         contact.student.language = result.language
         contact.student.highestSchoolLevel = result.highestSchoolLevel
-        contact.student.yearSchoolCompleted = result.yearSchoolCompleted
         contact.student.indigenousStatus = result.indigenousStatus
         contact.student.labourForceStatus = result.labourForceStatus
         contact.student.countryOfBirth = result.countryOfBirth
         contact.student.disabilityType = result.disabilityType
         contact.student.priorEducationCode = result.priorEducationCode
         contact.student.isStillAtSchool = result.isStillAtSchool
-        contact.student.englishProficiency = result.englishProficiency
+        contact.student.usi = result.usi
+        contact.student.usiStatus = result.usiStatus
     }
 
     static valueOf(InputLine line, Integer lineNumber,
