@@ -102,7 +102,7 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
           message,
           "SAVE",
           this.onCancel,
-          null,
+          undefined,
           "DISCARD CHANGES",
           this.onConfirm,
           confirmButton,
