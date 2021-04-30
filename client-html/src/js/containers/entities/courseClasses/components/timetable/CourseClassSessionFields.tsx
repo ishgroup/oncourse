@@ -411,7 +411,7 @@ const CourseClassSessionFields: React.FC<Props> = (
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getRooms: (search: string) => {
     dispatch(setCommonPlainSearch("Room", search));
-    dispatch(getCommonPlainRecords("Room", 0, "name"));
+    dispatch(getCommonPlainRecords("Room", 0, "name", true, "name"));
   }
 });
 
