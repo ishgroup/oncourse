@@ -62,8 +62,8 @@ export const getScriptItem = (id: number) => ({
 export const saveScriptItem = (id: number, script: Script, method: ApiMethods, viewMode: ScriptViewMode) => ({
   type: UPDATE_SCRIPT_ENTITY_REQUEST,
   payload: {
- id, script, method, viewMode 
-}
+   id, script, method, viewMode
+  }
 });
 
 export const createScriptItem = (script: Script, viewMode: ScriptViewMode) => ({

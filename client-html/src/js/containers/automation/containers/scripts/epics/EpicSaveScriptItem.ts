@@ -18,8 +18,8 @@ import { appendComponents } from "../utils";
 const request: EpicUtils.Request = {
   type: UPDATE_SCRIPT_ENTITY_REQUEST,
   getData: ({
- id, script, method, viewMode 
-}) => {
+   id, script, method, viewMode
+  }) => {
     if (method === "PATCH") {
       return ScriptsService.patchScriptItem(id, appendComponents(script, viewMode));
     }
