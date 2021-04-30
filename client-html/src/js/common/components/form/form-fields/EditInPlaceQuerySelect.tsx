@@ -28,7 +28,7 @@ import * as Entities from "@aql/queryLanguageModel";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import getCaretCoordinates from "../../../utils/getCaretCoordinates";
-import { BooleanArgFunction, HTMLTagArgFunction } from "../../../../model/common/CommonFunctions";
+import { HTMLTagArgFunction } from "../../../../model/common/CommonFunctions";
 import { selectStyles } from "./SelectCustomComponents";
 import { DD_MM_YYYY_SLASHED, HH_MM_COLONED } from "../../../utils/dates/format";
 import {
@@ -434,7 +434,9 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       this.setState({
         error: true
       });
-      onValidateQuery(false, inputValue);
+      if (onValidateQuery) {
+        onValidateQuery(false, inputValue);
+      }
     }
 
     if (hasSuggestionsForIncomplete) {
@@ -864,7 +866,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     }
 
     if (lastIdentifier) {
-      this.setIdentifierFilters(lastIdentifier.text, value);
+      this.setIdentifierFilters(lastIdentifier.text);
     }
 
     if (!lastIdentifier && this.pathFilter) {
@@ -1001,7 +1003,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         const filteredOptions = options.filter(this.filterOptions);
 
         if (filteredOptions.length === 1 && filteredOptions[0].value === lastToken.text) {
-          this.setIdentifierFilters(lastToken.text, value);
+          this.setIdentifierFilters(lastToken.text);
           if (this.operatorsFilter === "SEPARATOR") {
             this.setState({
               searchValue: "",
@@ -1028,7 +1030,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     }
   };
 
-  setIdentifierFilters = (tokenText, value) => {
+  setIdentifierFilters = tokenText => {
     const { rootEntity, customFields } = this.props;
 
     if (customFields && customFields.includes(tokenText)) {
@@ -1333,7 +1335,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                     })}
                   >
                     {editableComponent || this.getValue(classes)}
-                    <CreateIcon className={clsx("hoverIcon", classes.editPencilIcon)} />
+                    {!disabled && <CreateIcon className={clsx("hoverIcon", classes.editPencilIcon)} />}
                   </span>
                 </ButtonBase>
               )}
