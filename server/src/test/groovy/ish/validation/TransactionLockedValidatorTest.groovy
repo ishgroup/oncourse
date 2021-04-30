@@ -1,10 +1,11 @@
 package ish.validation
 
 import ish.persistence.Preferences
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
+
+import static org.junit.Assert.assertEquals
 
 /**
  * Created by anarut on 5/25/16.

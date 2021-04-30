@@ -4,20 +4,17 @@ import ish.common.types.AccountTransactionType
 import ish.math.Money
 import ish.oncourse.server.accounting.AccountTransactionDetail
 import ish.oncourse.server.accounting.TransactionSettings
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.PaymentOutLine
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertFalse
-import org.junit.Before
-import org.junit.Test
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import ish.oncourse.server.cayenne.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
+
+import static junit.framework.TestCase.assertEquals
+import static junit.framework.TestCase.assertFalse
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
 
 class DepositTransactionsBuilderTest {
 
@@ -36,8 +33,7 @@ class DepositTransactionsBuilderTest {
     private LocalDate transactionDate1
     private LocalDate transactionDate2
 
-
-    @Before
+    @BeforeEach
     void prepareData() {
         undepositAccountOut = mock(Account)
         when(undepositAccountOut.id).thenReturn(111L)

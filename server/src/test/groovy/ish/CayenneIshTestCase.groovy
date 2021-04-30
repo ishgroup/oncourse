@@ -6,7 +6,6 @@ import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.PaymentMethod
 import ish.oncourse.server.db.SanityCheckService
 import ish.util.AccountUtil
-import static junit.framework.TestCase.fail
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
 import org.apache.cayenne.access.DataContext
@@ -15,11 +14,7 @@ import org.apache.cayenne.access.DataNode
 import org.apache.cayenne.access.DbGenerator
 import org.apache.cayenne.dba.DbAdapter
 import org.apache.cayenne.log.JdbcEventLogger
-import org.apache.cayenne.map.DataMap
-import org.apache.cayenne.map.DbAttribute
-import org.apache.cayenne.map.DbEntity
-import org.apache.cayenne.map.DbRelationship
-import org.apache.cayenne.map.Relationship
+import org.apache.cayenne.map.*
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.ValidationFailure
@@ -28,35 +23,29 @@ import org.apache.logging.log4j.Logger
 import org.dbunit.database.IDatabaseConnection
 import org.dbunit.dataset.IDataSet
 import org.dbunit.operation.DatabaseOperation
-import org.junit.Before
-import org.junit.BeforeClass
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 
 import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 
-/**
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
- */
 abstract class CayenneIshTestCase extends IshTestCase {
 	private static final Logger logger = LogManager.getLogger()
 
-	private static final String RESET_AUTO_INCREMENT_TEMPLATE_DERBY = "ALTER TABLE %s ALTER COLUMN ID RESTART WITH %d"
 	private static final String RESET_AUTO_INCREMENT_TEMPLATE_MYSQL = "ALTER TABLE %s AUTO_INCREMENT = %d"
-	private static final String RESET_AUTO_INCREMENT_TEMPLATE_MSSQL = "DBCC CHECKIDENT ('%s', RESEED, %d)"
 	private static final int NEXT_ID = 10000
 
 	private static final String CUSTOM_FIELD = "CustomField"
 
-	@BeforeClass
+	@BeforeAll
 	static void setUpOnce() throws Exception {
 		generateTables()
 		resetAutoIncrement()
 	}
 
-	@Before
+	@BeforeEach
 	void setup() throws Exception {
 		validateAccountAndTaxDefaults()
 		checkPaymentMethods()
@@ -328,7 +317,7 @@ abstract class CayenneIshTestCase extends IshTestCase {
 				try {
 					connection.close()
 				} catch (SQLException e) {
-					logger.warn("Filed to close connection.", e)
+					logger.warn("Failed to close connection.", e)
 				}
 			}
 		}

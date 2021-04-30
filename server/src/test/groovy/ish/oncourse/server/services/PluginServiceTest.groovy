@@ -14,29 +14,26 @@ package ish.oncourse.server.services
 import groovy.transform.CompileDynamic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.integration.PluginTrait
-
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.getIntegrationByName
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.hasIntegration
 import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.IntegrationProperty
+import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.integration.PluginService
 import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertNull
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import javax.ws.rs.ClientErrorException
 import java.lang.reflect.Method
+
+import static ish.oncourse.server.api.v1.function.IntegrationFunctions.getIntegrationByName
+import static ish.oncourse.server.api.v1.function.IntegrationFunctions.hasIntegration
+import static org.junit.Assert.*
 
 class PluginServiceTest extends CayenneIshTestCase {
 
@@ -49,7 +46,7 @@ class PluginServiceTest extends CayenneIshTestCase {
 
     private List<IntegrationPropDTO> defaultProperties
 
-    @Before
+    @BeforeEach
     void setup() {
         wipeTables()
 

@@ -15,18 +15,17 @@ import ish.oncourse.server.PreferenceController
 import ish.util.AccountUtil
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.access.DataContext
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-/**
- */
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
+
 class InvoiceTest extends CayenneIshTestCase {
 
-	@Before
+	@BeforeEach
     void setup() throws Exception {
 		super.setup()
         injector.getInstance(PreferenceController.class).setReplicationEnabled(true)

@@ -3,13 +3,7 @@
  */
 package ish.oncourse.server.services
 
-
-import org.quartz.Job
-import org.quartz.JobBuilder
-import org.quartz.JobDetail
-import org.quartz.JobKey
-import org.quartz.SchedulerException
-import org.quartz.Trigger
+import org.quartz.*
 
 import java.text.ParseException
 

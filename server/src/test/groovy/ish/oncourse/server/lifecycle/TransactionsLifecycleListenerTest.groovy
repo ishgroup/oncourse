@@ -1,33 +1,31 @@
 package ish.oncourse.server.lifecycle
 
 import ish.CayenneIshTestCase
-import static ish.common.types.PaymentStatus.SUCCESS
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.PaymentIn
-import static junit.framework.Assert.assertEquals
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
-/**
- * Created by Artem on 30/12/2016.
- */
+import static ish.common.types.PaymentStatus.SUCCESS
+import static junit.framework.Assert.assertEquals
+import static org.junit.Assert.assertTrue
+
 class TransactionsLifecycleListenerTest extends CayenneIshTestCase {
 
     ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         cayenneService = injector.getInstance(ICayenneService.class)

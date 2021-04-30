@@ -8,23 +8,22 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Certificate
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
-import org.apache.commons.lang3.time.DateUtils
-import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
+
+import static org.junit.Assert.assertEquals
 
 class CertificateServiceTest extends CayenneIshTestCase {
 	
 	private ICayenneService cayenneService
     private CertificateService certificateService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
 

@@ -5,47 +5,22 @@ import ish.common.types.Gender
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.MergeLineDTO
-import ish.oncourse.server.cayenne.Attendance
-import ish.oncourse.server.cayenne.Certificate
-import ish.oncourse.server.cayenne.ClassCost
-import ish.oncourse.server.cayenne.ConcessionType
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.ContactCustomField
-import ish.oncourse.server.cayenne.ContactDuplicate
-import ish.oncourse.server.cayenne.ContactNoteRelation
-import ish.oncourse.server.cayenne.ContactRelation
-import ish.oncourse.server.cayenne.ContactUnavailableRuleRelation
-import ish.oncourse.server.cayenne.CorporatePass
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.Payslip
-import ish.oncourse.server.cayenne.PriorLearning
-import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.StudentConcession
-import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.cayenne.TagRelation
-import ish.oncourse.server.cayenne.Tutor
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
+import static org.junit.Assert.*
 
 class ContactMergeServiceTest extends CayenneIshTestCase {
 
     private ContactMergeService contactMergeService
     private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() {
         wipeTables()
         contactMergeService = injector.getInstance(ContactMergeService)

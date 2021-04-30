@@ -4,13 +4,13 @@
  */
 package ish.util
 
-import static junit.framework.Assert.assertEquals
-import org.apache.commons.collections.CollectionUtils
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 import java.text.ParseException
+
+import static junit.framework.Assert.assertEquals
 
 @RunWith(Parameterized.class)
 class DurationFormatterTest {

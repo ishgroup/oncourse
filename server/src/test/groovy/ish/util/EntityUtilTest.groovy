@@ -7,26 +7,21 @@ package ish.util
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Country
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Site
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertNotNull
-import static junit.framework.TestCase.assertTrue
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.SelectQuery
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
+import static junit.framework.TestCase.*
 
 @CompileStatic
 class EntityUtilTest extends CayenneIshTestCase {
 
-	@Before
+	@BeforeEach
     void setupTest() throws Exception {
 		wipeTables()
 

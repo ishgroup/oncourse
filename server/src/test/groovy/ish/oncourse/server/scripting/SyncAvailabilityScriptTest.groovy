@@ -16,16 +16,16 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-import java.nio.charset.Charset
 import java.text.SimpleDateFormat
+
+import static org.junit.Assert.assertEquals
 
 class SyncAvailabilityScriptTest extends CayenneIshTestCase {
 
-	@Before
+	@BeforeEach
     void setup() throws Exception {
 		wipeTables()
         InputStream st = GroovyScriptService.class.getClassLoader().getResourceAsStream("ish/oncourse/server/scripting/syncAvailabilityScriptTest.xml")

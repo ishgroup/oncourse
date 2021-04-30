@@ -12,15 +12,15 @@ import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
 class ClassPublishedTriggeringTest extends CayenneIshTestCase {
 
     private ObjectContext context
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         context = injector.getInstance(ICayenneService.class).getNewContext()

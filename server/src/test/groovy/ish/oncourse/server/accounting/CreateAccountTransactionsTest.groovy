@@ -7,22 +7,20 @@ import ish.math.Money
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertFalse
-import static junit.framework.TestCase.assertNotNull
-import static junit.framework.TestCase.assertTrue
 import org.apache.cayenne.query.ObjectSelect
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
+
+import static junit.framework.TestCase.*
 
 class CreateAccountTransactionsTest extends CayenneIshTestCase {
 
     private ICayenneService cayenneService
     
-    @Before
+    @BeforeEach
     void setup() {
         cayenneService = injector.getInstance(ICayenneService)
         super.setup()

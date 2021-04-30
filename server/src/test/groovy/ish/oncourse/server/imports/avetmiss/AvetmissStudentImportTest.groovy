@@ -15,16 +15,17 @@ import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertTrue
+
 class AvetmissStudentImportTest extends CayenneIshTestCase {
 
-	@Before
+	@BeforeEach
     void setup() throws Exception {
 		wipeTables()
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)

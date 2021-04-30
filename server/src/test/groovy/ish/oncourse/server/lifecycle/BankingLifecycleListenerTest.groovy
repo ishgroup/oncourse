@@ -12,21 +12,19 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.After
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-/**
- * Created by anarut on 7/4/16.
- */
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertTrue
+
 class BankingLifecycleListenerTest extends CayenneIshTestCase {
 
     private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         cayenneService = injector.getInstance(ICayenneService.class)

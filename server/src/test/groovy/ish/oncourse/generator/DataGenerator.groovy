@@ -1,12 +1,6 @@
 package ish.oncourse.generator
 
-
-import ish.oncourse.server.cayenne.ApplicationFieldConfiguration
-import ish.oncourse.server.cayenne.EnrolmentFieldConfiguration
-import ish.oncourse.server.cayenne.FieldConfiguration
-import ish.oncourse.server.cayenne.FieldConfigurationLink
-import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.WaitingListFieldConfiguration
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 
 class DataGenerator {

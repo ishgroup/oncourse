@@ -2,7 +2,8 @@ package ish.validation;
 
 import ish.oncourse.cayenne.ConcessionTypeInterface;
 import ish.oncourse.cayenne.StudentConcessionInterface;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class StudentConcessionValidatorTest {
 
 		when(studentConcession.getConcessionType()).thenReturn(null);
 		
-		assertEquals(1, StudentConcessionValidator.valueOf(studentConcession).validate().size());
+		Assertions.assertEquals(1, StudentConcessionValidator.valueOf(studentConcession).validate().size());
 
 
 		StudentConcessionInterface studentConcession1 = mock(StudentConcessionInterface.class);
@@ -29,7 +30,7 @@ public class StudentConcessionValidatorTest {
 
 		when(studentConcession1.getConcessionType()).thenReturn(concessionType1);
 
-		assertEquals(0, StudentConcessionValidator.valueOf(studentConcession1).validate().size());
+		Assertions.assertEquals(0, StudentConcessionValidator.valueOf(studentConcession1).validate().size());
 	}
 	
 	
@@ -42,7 +43,7 @@ public class StudentConcessionValidatorTest {
 		when(concessionType.getHasConcessionNumber()).thenReturn(true);
 		when(studentConcession.getConcessionNumber()).thenReturn("");
 
-		assertEquals(1, StudentConcessionValidator.valueOf(studentConcession).validate().size());
+		Assertions.assertEquals(1, StudentConcessionValidator.valueOf(studentConcession).validate().size());
 
 		
 		
@@ -53,7 +54,7 @@ public class StudentConcessionValidatorTest {
 		when(concessionType1.getHasConcessionNumber()).thenReturn(true);
 		when(studentConcession1.getConcessionNumber()).thenReturn("  ");
 
-		assertEquals(1, StudentConcessionValidator.valueOf(studentConcession1).validate().size());
+		Assertions.assertEquals(1, StudentConcessionValidator.valueOf(studentConcession1).validate().size());
 
 
 
@@ -64,7 +65,7 @@ public class StudentConcessionValidatorTest {
 		when(concessionType2.getHasConcessionNumber()).thenReturn(true);
 		when(studentConcession2.getConcessionNumber()).thenReturn(null);
 
-		assertEquals(1, StudentConcessionValidator.valueOf(studentConcession2).validate().size());
+		Assertions.assertEquals(1, StudentConcessionValidator.valueOf(studentConcession2).validate().size());
 
 
 		
@@ -75,7 +76,7 @@ public class StudentConcessionValidatorTest {
 		when(concessionType3.getHasConcessionNumber()).thenReturn(false);
 		when(studentConcession3.getConcessionNumber()).thenReturn("");
 
-		assertEquals(0, StudentConcessionValidator.valueOf(studentConcession3).validate().size());
+		Assertions.assertEquals(0, StudentConcessionValidator.valueOf(studentConcession3).validate().size());
 
 
 
@@ -86,7 +87,7 @@ public class StudentConcessionValidatorTest {
 		when(concessionType4.getHasConcessionNumber()).thenReturn(true);
 		when(studentConcession4.getConcessionNumber()).thenReturn("666");
 
-		assertEquals(0, StudentConcessionValidator.valueOf(studentConcession4).validate().size());
+		Assertions.assertEquals(0, StudentConcessionValidator.valueOf(studentConcession4).validate().size());
 	}
 
 
@@ -99,7 +100,7 @@ public class StudentConcessionValidatorTest {
 		when(concessionType.getHasExpiryDate()).thenReturn(true);
 		when(studentConcession.getExpiresOn()).thenReturn(null);
 
-		assertEquals(1, StudentConcessionValidator.valueOf(studentConcession).validate().size());
+		Assertions.assertEquals(1, StudentConcessionValidator.valueOf(studentConcession).validate().size());
 
 
 
@@ -110,6 +111,6 @@ public class StudentConcessionValidatorTest {
 		when(concessionType1.getHasExpiryDate()).thenReturn(true);
 		when(studentConcession1.getExpiresOn()).thenReturn(new Date());
 
-		assertEquals(0, StudentConcessionValidator.valueOf(studentConcession1).validate().size());
+		Assertions.assertEquals(0, StudentConcessionValidator.valueOf(studentConcession1).validate().size());
 	}
 }

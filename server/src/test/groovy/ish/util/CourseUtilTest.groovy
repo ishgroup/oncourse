@@ -5,9 +5,10 @@ import ish.messaging.ICourseClass
 import ish.messaging.ICourseModule
 import ish.messaging.IModule
 import org.apache.cayenne.ObjectContext
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.Matchers
 import org.mockito.Mockito
+
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.when
 

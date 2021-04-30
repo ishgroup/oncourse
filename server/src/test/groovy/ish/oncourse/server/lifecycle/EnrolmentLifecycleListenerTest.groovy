@@ -5,23 +5,12 @@
 package ish.oncourse.server.lifecycle
 
 import ish.CayenneIshTestCase
-import ish.common.types.ConfirmationStatus
-import ish.common.types.CourseClassAttendanceType
-import ish.common.types.EnrolmentStatus
-import ish.common.types.PaymentSource
-import ish.common.types.StudyReason
+import ish.common.types.*
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Certificate
-import ish.oncourse.server.cayenne.CertificateOutcome
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.WaitingList
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.exp.Expression
-import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
@@ -29,21 +18,16 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.After
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
+import static org.junit.Assert.*
 
-/**
- */
 class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)

@@ -1,10 +1,10 @@
 package ish.oncourse.server.services
 
 import ish.CayenneIshTestCase
-import ish.oncourse.types.FundingStatus
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.FundingUpload
 import ish.oncourse.server.cayenne.FundingUploadOutcome
+import ish.oncourse.types.FundingStatus
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.time.DateUtils
@@ -12,9 +12,10 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.After
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
 
 class FundingContractUpdateJobTest extends CayenneIshTestCase {
 
@@ -22,7 +23,7 @@ class FundingContractUpdateJobTest extends CayenneIshTestCase {
 
     private FundingContractUpdateJob fundingContractUpdateJob
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         // creating date, the object cannot be exactly the same as system time to allow safe comparison of time by delayed Income posting job

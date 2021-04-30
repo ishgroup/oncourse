@@ -5,26 +5,19 @@ import ish.duplicate.ClassDuplicationRequest
 import ish.oncourse.entity.services.CourseClassService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.cayenne.AssessmentClass
-import ish.oncourse.server.cayenne.ClassCost
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.DiscountCourseClass
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.SessionTest
+import ish.oncourse.server.cayenne.*
 import ish.util.DateTimeUtil
-import static junit.framework.Assert.assertEquals
-import static junit.framework.Assert.assertFalse
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.SelectById
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-/**
- * Created by anarut on 9/8/16.
- */
+import static junit.framework.Assert.assertEquals
+import static junit.framework.Assert.assertFalse
+
 class DuplicateCourseClassTest extends CayenneIshTestCase {
 
     private CourseClassService courseClassService
@@ -34,7 +27,7 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
     private int daysTo = 13
 
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/duplicate/duplicateCourseClassTestDataSet.xml")

@@ -1,18 +1,19 @@
 package ish.oncourse.server.quality
 
-import ish.oncourse.types.Severity
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Outcome
+import ish.oncourse.types.Severity
 import ish.quality.QualityResult
 import ish.util.LocalDateUtils
+
+import java.time.LocalDate
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
-
-import java.time.LocalDate
 
 /**
  * Created by akoiro on 17/03/2016.

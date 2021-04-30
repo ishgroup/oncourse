@@ -10,9 +10,10 @@ import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertNotEquals
 import static org.junit.Assert.fail
-import org.junit.Test
 
 class DataPopulationTest extends CayenneIshTestCase {
 	

@@ -4,7 +4,6 @@
  */
 package ish.oncourse.server.cayenne
 
-import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.math.Money
 import ish.oncourse.server.ICayenneService
@@ -17,18 +16,17 @@ import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-/**
- */
+import static org.junit.Assert.assertEquals
+
 class DiscountTest extends CayenneIshTestCase {
 	private static final Logger logger = LogManager.getLogger()
 
     private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
 

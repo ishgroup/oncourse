@@ -2,11 +2,12 @@ package ish.oncourse.server.entity.mixins
 
 import ish.IshTestCase
 import ish.oncourse.server.cayenne.Session
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
 import java.time.format.DateTimeFormatter
+
+import static org.junit.Assert.assertEquals
 
 /**
  * Created by anarut on 8/4/16.

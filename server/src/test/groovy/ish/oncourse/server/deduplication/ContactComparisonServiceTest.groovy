@@ -1,9 +1,9 @@
 package ish.oncourse.server.deduplication
 
 import ish.oncourse.server.cayenne.Contact
-import org.junit.Before
 import org.junit.Ignore
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
@@ -13,7 +13,7 @@ class ContactComparisonServiceTest {
     Contact c1, c2
     ContactComparisonService comparison
 
-    @Before
+    @BeforeEach
     void setUp() throws Exception {
         this.c1 = new Contact()
         this.c2 = new Contact()

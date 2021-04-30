@@ -10,16 +10,11 @@ import ish.export.ExportResult
 import ish.oncourse.common.ResourceProperty
 import ish.oncourse.common.ResourceType
 import ish.oncourse.common.ResourcesUtil
-   import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ExportTemplate
 import ish.oncourse.server.cayenne.ExportTemplateAutomationBinding
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.upgrades.DataPopulation
-
-import java.time.LocalDate
-
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.fail
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
@@ -31,10 +26,15 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+
+import java.time.LocalDate
+
+import static junit.framework.TestCase.assertEquals
+import static junit.framework.TestCase.fail
 
 /**
  */
@@ -59,7 +59,7 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
         this.sampleOutputFile = sampleOutputFile
     }
 
-	@Before
+	@BeforeEach
     void setup() {
 		wipeTables()
 

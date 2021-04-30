@@ -14,13 +14,14 @@ import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperReport
 import net.sf.jasperreports.engine.type.OrientationEnum
 import org.apache.commons.io.IOUtils
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.fail
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 import java.nio.charset.Charset
+
+import static org.junit.Assert.assertNotNull
+import static org.junit.Assert.fail
 
 @RunWith(Parameterized.class)
 class ReportTest extends IshTestCase {

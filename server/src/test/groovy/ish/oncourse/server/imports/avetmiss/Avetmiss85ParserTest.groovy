@@ -4,12 +4,9 @@ import groovy.mock.interceptor.MockFor
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Language
 import org.apache.cayenne.ObjectContext
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions
 
-/**
- * Created by akoiro on 5/03/2016.
- */
 class Avetmiss85ParserTest {
     private language = new Language()
     private country = new Country()
@@ -50,7 +47,7 @@ class Avetmiss85ParserTest {
                 mobilePhone: "",
                 email      : "vincentcastejon@kearnan.wa.edu.au"
         ]
-        assertEquals("Wrong values:" + expected*.key.findAll{ expected[it] != result[it]}, expected, result)
+        Assertions.assertEquals("Wrong values:" + expected*.key.findAll{ expected[it] != result[it]}, expected, result)
     }
 
 }

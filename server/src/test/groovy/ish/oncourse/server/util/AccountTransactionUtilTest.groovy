@@ -12,17 +12,7 @@ import ish.common.types.PaymentType
 import ish.math.Money
 import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.AccountTransaction
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.PaymentOutLine
-import ish.oncourse.server.cayenne.Tax
+import ish.oncourse.server.cayenne.*
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.QueryCacheStrategy
@@ -33,20 +23,19 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.After
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
+
+import static org.junit.Assert.*
 
 /**
  */
 @CompileStatic
 class AccountTransactionUtilTest extends CayenneIshTestCase {
 
-	@Before
+	@BeforeEach
     void setupTest() throws Exception {
 		wipeTables()
 

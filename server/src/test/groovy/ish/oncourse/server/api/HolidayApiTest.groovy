@@ -9,11 +9,12 @@ import ish.oncourse.server.api.v1.model.RepeatEnumDTO
 import ish.oncourse.server.api.v1.service.HolidayApi
 import ish.oncourse.server.api.v1.service.impl.HolidayApiImpl
 import ish.oncourse.server.cayenne.UnavailableRule
-import static ish.util.LocalDateUtils.*
 import org.apache.cayenne.query.ObjectSelect
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.testng.annotations.BeforeTest
+
+import static ish.util.LocalDateUtils.stringToValue
+import static org.junit.Assert.assertEquals
 
 class HolidayApiTest extends CayenneIshTestCase {
 

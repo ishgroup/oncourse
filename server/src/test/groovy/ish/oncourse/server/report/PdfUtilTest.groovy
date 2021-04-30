@@ -6,10 +6,9 @@ package ish.oncourse.server.report
 
 import ish.IshTestCase
 import org.apache.commons.io.FileUtils
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.fail
-import org.junit.Test
+import org.junit.jupiter.api.Test
+
+import static org.junit.Assert.*
 
 class PdfUtilTest extends IshTestCase {
 

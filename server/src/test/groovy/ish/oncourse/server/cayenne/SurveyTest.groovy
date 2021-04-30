@@ -14,9 +14,10 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
 
 /**
  */
@@ -24,7 +25,7 @@ class SurveyTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)

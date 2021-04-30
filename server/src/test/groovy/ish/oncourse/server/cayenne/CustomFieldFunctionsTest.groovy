@@ -7,21 +7,18 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.validation.EntityValidator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import javax.ws.rs.ClientErrorException
 
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.fail
-
+import static org.junit.Assert.*
 
 class CustomFieldFunctionsTest extends CayenneIshTestCase {
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
     }

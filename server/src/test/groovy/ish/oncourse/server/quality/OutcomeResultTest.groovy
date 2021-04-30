@@ -2,8 +2,9 @@ package ish.oncourse.server.quality
 
 import ish.oncourse.server.cayenne.QualityRule
 import org.apache.cayenne.query.Select
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
-import org.junit.Test
 import static org.mockito.Matchers.any
 import static org.mockito.Mockito.when
 

@@ -2,10 +2,11 @@ package ish.oncourse.server.messaging
 
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.MessagePerson
+import org.junit.jupiter.api.Test
+import org.mockito.Mockito
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
-import org.junit.Test
-import org.mockito.Mockito
 
 /**
  * Created by anarut on 8/23/16.

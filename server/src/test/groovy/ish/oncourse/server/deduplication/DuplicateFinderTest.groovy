@@ -1,7 +1,7 @@
 package ish.oncourse.server.deduplication
 
 import ish.oncourse.server.cayenne.Contact
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 

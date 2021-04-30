@@ -1,13 +1,14 @@
 package ish.oncourse.server.duplicate
 
 import ish.oncourse.server.cayenne.Course
-import static ish.oncourse.server.duplicate.DuplicateCourseService.DuplicateCourseCode
 import org.apache.cayenne.ObjectContext
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
-import static org.mockito.Matchers.any
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+
+import static ish.oncourse.server.duplicate.DuplicateCourseService.DuplicateCourseCode
+import static org.junit.Assert.assertEquals
+import static org.mockito.Matchers.any
 import static org.mockito.Mockito.when
 
 class DuplicateCourseCodeTest {
@@ -15,8 +16,7 @@ class DuplicateCourseCodeTest {
     private ObjectContext context
     private Course oldCourse
 
-
-    @Before
+    @BeforeEach
     void setUp() throws Exception {
         context = Mockito.mock(ObjectContext.class)
         oldCourse = Mockito.mock(Course.class)

@@ -3,11 +3,7 @@ package ish.oncourse.server.cayenne.changeFilterTests;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.oncourse.entity.services.SetPaymentMethod;
-import ish.oncourse.server.cayenne.Banking;
-import ish.oncourse.server.cayenne.Invoice;
-import ish.oncourse.server.cayenne.PaymentMethod;
-import ish.oncourse.server.cayenne.PaymentOut;
-import ish.oncourse.server.cayenne.PaymentOutLine;
+import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.lifecycle.BankingChangeHandler;
 import ish.oncourse.server.lifecycle.ChangeFilter;
 import ish.util.PaymentMethodUtil;
@@ -15,8 +11,8 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.annotation.PrePersist;
 import org.apache.cayenne.annotation.PreUpdate;
 import org.apache.cayenne.query.SelectById;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
@@ -33,10 +29,10 @@ public class ChangeBankingTest extends ChangeFilterTest {
                 ChangeFilter.preCommitGraphDiff(paymentOut.getObjectContext()).apply(changeHandler);
 
                 Banking oldValue = changeHandler.getOldValueFor(paymentOut.getObjectId());
-                Assert.assertNull(oldValue);
+                Assertions.assertNull(oldValue);
 
                 Banking newValue = changeHandler.getNewValueFor(paymentOut.getObjectId());
-                Assert.assertEquals(Long.valueOf(100L), newValue.getId());
+                Assertions.assertEquals(Long.valueOf(100L), newValue.getId());
 
             }
 
@@ -46,10 +42,10 @@ public class ChangeBankingTest extends ChangeFilterTest {
                 ChangeFilter.preCommitGraphDiff(paymentOut.getObjectContext()).apply(changeHandler);
 
                 Banking oldValue = changeHandler.getOldValueFor(paymentOut.getObjectId());
-                Assert.assertEquals(Long.valueOf(100L), oldValue.getId());
+                Assertions.assertEquals(Long.valueOf(100L), oldValue.getId());
 
                 Banking newValue = changeHandler.getNewValueFor(paymentOut.getObjectId());
-                Assert.assertEquals(Long.valueOf(200L), newValue.getId());
+                Assertions.assertEquals(Long.valueOf(200L), newValue.getId());
             }
 
         });

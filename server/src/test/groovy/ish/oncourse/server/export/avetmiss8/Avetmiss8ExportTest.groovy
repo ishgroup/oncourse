@@ -6,7 +6,6 @@ package ish.oncourse.server.export.avetmiss8
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.OutcomeStatus
-
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.entity.services.CertificateService
@@ -16,20 +15,21 @@ import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.export.avetmiss.AvetmissExport
 import ish.oncourse.server.export.avetmiss.AvetmissExportResult
 import ish.util.RuntimeUtil
-import static junit.framework.TestCase.fail
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.hamcrest.CoreMatchers.equalTo
-import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.rules.ErrorCollector
 
 import java.time.LocalDate
 import java.time.Month
+
+import static junit.framework.TestCase.fail
+import static org.hamcrest.CoreMatchers.equalTo
 
 @CompileStatic
 class Avetmiss8ExportTest extends CayenneIshTestCase {
@@ -44,7 +44,7 @@ class Avetmiss8ExportTest extends CayenneIshTestCase {
     @Rule
 	public ErrorCollector errorCollector= new ErrorCollector()
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
         cayenneService = injector.getInstance(ICayenneService.class)

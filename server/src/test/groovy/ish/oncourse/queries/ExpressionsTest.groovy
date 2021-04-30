@@ -19,9 +19,10 @@ import org.apache.cayenne.query.SelectQuery
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
 
 /**
  * Test cases to check the correctness of expressions, mostly the complicated ones, related to multiple tags. <br/>
@@ -87,7 +88,7 @@ import org.junit.Test
 @CompileStatic
 class ExpressionsTest extends CayenneIshTestCase {
 
-	@Before
+	@BeforeEach
     void setupTest() throws Exception {
 		wipeTables()
 

@@ -1,25 +1,17 @@
 package ish.oncourse.server.payroll
 
-import ish.oncourse.server.cayenne.Tutor
-
-import static ish.common.types.ClassCostFlowType.WAGES
 import ish.common.types.ClassCostRepetitionType
 import ish.math.Money
 import ish.oncourse.entity.services.SessionService
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.ClassCost
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.DefinedTutorRole
-import ish.oncourse.server.cayenne.PayRate
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.DataObject
 import org.apache.cayenne.exp.Expression
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
+import static ish.common.types.ClassCostFlowType.WAGES
+import static org.junit.Assert.*
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
@@ -28,7 +20,7 @@ class PayrollGenerationSelfPacedTest {
     protected ICayenneService cayenneService = null
     protected SessionService sessionService = null
 
-    @Before
+    @BeforeEach
     void prepare() {
         cayenneService = mock(ICayenneService.class)
         sessionService = mock(SessionService.class)

@@ -27,9 +27,8 @@ import org.dbunit.database.DatabaseConfig
 import org.dbunit.database.DatabaseConnection
 import org.dbunit.database.IDatabaseConnection
 import org.dbunit.ext.mysql.MySqlDataTypeFactory
-import org.junit.AfterClass
-import org.junit.BeforeClass
-import org.junit.ClassRule
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.reflections.Reflections
 
 import javax.sql.DataSource
@@ -59,7 +58,7 @@ abstract class IshTestCase {
     @ClassRule
 	public static BQTestFactory testFactory = new BQTestFactory()
 
-    @BeforeClass
+    @BeforeAll
     static void setupOnceRoot() throws Exception {
 		System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
         //set JRGroovy compiler as default for tests
@@ -168,7 +167,7 @@ abstract class IshTestCase {
 	/**
 	 * cleans up after the test, dropping the database. we might change it in the future, so it only drops once per whole run cycyle
 	 */
-	@AfterClass
+	@AfterAll
     static void cleanUp() {
 
 		// need to stop stop CayenneService in order to dispose connection pool created for it

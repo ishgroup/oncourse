@@ -8,16 +8,14 @@ import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-/**
- * Created by anarut on 6/30/16.
- */
+import static org.junit.Assert.assertEquals
+
 class CustomFieldTypeServiceTest extends CayenneIshTestCase {
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
 

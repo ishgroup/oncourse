@@ -87,13 +87,14 @@ subprojects {
 
 		implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
-		testImplementation 'junit:junit:4.13'
-		testImplementation 'org.dbunit:dbunit:2.6.0'
-
+		testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.0-M1'
+		testImplementation 'org.dbunit:dbunit:2.7.0'
 		testImplementation "org.codehaus.groovy:groovy-test:$groovyVersion"
 		testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
-		testImplementation "org.codehaus.groovy:groovy-testng:$groovyVersion"
 		testImplementation "org.codehaus.groovy:groovy-sql:$groovyVersion"
+	}
+	configurations {
+		testImplementation.exclude group: 'junit' // exclude junit4
 	}
 
 	group = 'ish.oncourse.angel'

@@ -32,16 +32,14 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.Ignore
-
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.fail
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+
+import static org.junit.Assert.*
 
 /**
  * executes multiple print jobs at the same time simulating multiple users
@@ -57,7 +55,7 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
     List<String> keyCodeList = new ArrayList<>()
 
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
 

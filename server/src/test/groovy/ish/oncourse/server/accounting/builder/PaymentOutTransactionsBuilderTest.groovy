@@ -4,21 +4,17 @@ import ish.common.types.AccountTransactionType
 import ish.math.Money
 import ish.oncourse.server.accounting.AccountTransactionDetail
 import ish.oncourse.server.accounting.TransactionSettings
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Banking
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.PaymentOutLine
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertTrue
-import org.junit.Before
-import org.junit.Test
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import ish.oncourse.server.cayenne.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
+
+import static junit.framework.TestCase.assertEquals
+import static junit.framework.TestCase.assertTrue
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
 
 class PaymentOutTransactionsBuilderTest {
 
@@ -30,9 +26,8 @@ class PaymentOutTransactionsBuilderTest {
     private Money amount
     private LocalDate transactionDate
     private Long foreignRecordId
-    
 
-    @Before
+    @BeforeEach
     void prepareData() {
         foreignRecordId = 123456L
         

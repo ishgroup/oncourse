@@ -9,13 +9,13 @@ import ish.oncourse.server.cayenne.DoublePrefetchTest
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
+import org.junit.jupiter.api.BeforeEach
 
 abstract class ChangeFilterTest extends CayenneIshTestCase {
 
 	protected ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)

@@ -2,13 +2,10 @@ package ish.oncourse.entity.services
 
 import ish.common.types.AttendanceType
 import ish.common.types.EnrolmentStatus
-import ish.oncourse.server.cayenne.Attendance
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.Student
+import ish.oncourse.server.cayenne.*
 import junit.framework.TestCase
 import org.apache.commons.lang3.time.DateUtils
+
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 

@@ -3,7 +3,7 @@ package ish.oncourse.server.print
 import ish.math.Money
 import net.sf.jasperreports.engine.util.DefaultFormatFactory
 import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import java.text.NumberFormat
 

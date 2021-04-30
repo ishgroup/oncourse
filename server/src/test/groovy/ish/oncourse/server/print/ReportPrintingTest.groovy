@@ -4,7 +4,6 @@
  */
 package ish.oncourse.server.print
 
-import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
@@ -32,12 +31,9 @@ import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.fail
-import org.junit.Before
 import org.junit.Ignore
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
@@ -45,6 +41,8 @@ import org.junit.runners.Parameterized.Parameters
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+
+import static org.junit.Assert.*
 
 /**
  * Report printing test which tries to print all existing reports using mock entities.
@@ -82,7 +80,7 @@ class ReportPrintingTest extends CayenneIshTestCase {
 
 	private static final List<String> EXTRA_REPORTS = Arrays.asList("ish.onCourse.trialBalance","ish.onCourse.shedule","ish.onCourse.trainingPlanDetailsReport")
 
-    @Before
+    @BeforeEach
     void init() throws Exception {
 		wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)

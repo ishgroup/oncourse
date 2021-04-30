@@ -10,21 +10,22 @@
  */
 package ish.oncourse.server.services
 
-import ish.oncourse.server.ICayenneService;
+import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.Query
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-import org.junit.Before
-import org.junit.Test
-
-import static org.junit.Assert.*
+import static org.junit.Assert.assertEquals
+import static org.mockito.ArgumentMatchers.any
+import static org.mockito.ArgumentMatchers.anyString
 import static org.mockito.Mockito.*
 
 class ClusteredAutoincrementServiceTest {
 
     ClusteredAutoincrementService service
 
-    @Before
+    @BeforeEach
     void initService() {
         def context = mock(DataContext.class)
         when(context.selectOne(any(Query.class)))

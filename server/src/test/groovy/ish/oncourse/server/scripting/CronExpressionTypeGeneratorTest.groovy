@@ -1,9 +1,10 @@
 package ish.oncourse.server.scripting
 
 import ish.scripting.CronExpressionType
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.quartz.CronScheduleBuilder
+
+import static org.junit.Assert.assertEquals
 
 class CronExpressionTypeGeneratorTest {
 

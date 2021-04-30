@@ -16,16 +16,10 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Ignore
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
-import static org.mockito.Mockito.any
-import static org.mockito.Mockito.doCallRealMethod
-import static org.mockito.Mockito.doNothing
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.times
-import static org.mockito.Mockito.verify
 
 import javax.mail.MessagingException
 import javax.script.Bindings
@@ -34,6 +28,9 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.temporal.WeekFields
 
+import static org.mockito.ArgumentMatchers.any
+import static org.mockito.Mockito.*
+
 //TODO replace or delete
 @Ignore
 class CceSendWaitingListClassPublished extends CayenneIshTestCase {
@@ -41,7 +38,7 @@ class CceSendWaitingListClassPublished extends CayenneIshTestCase {
     private ObjectContext context
     private EmailService emailService = mock(EmailService.class)
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         this.context = injector.getInstance(ICayenneService.class).getNewContext()

@@ -17,7 +17,6 @@ import ish.oncourse.server.print.PrintWorker
 import ish.print.PrintRequest
 import ish.print.PrintResult
 import ish.report.ImportReportResult
-import static ish.report.ImportReportResult.ReportValidationError.ReportBuildingError
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
 import net.sf.jasperreports.engine.JRPropertiesUtil
 import org.apache.cayenne.access.DataContext
@@ -27,18 +26,17 @@ import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.junit.After
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.fail
-import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Ignore
 import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
 
 import java.awt.*
 import java.nio.charset.Charset
 import java.util.List
+
+import static ish.report.ImportReportResult.ReportValidationError.ReportBuildingError
+import static org.junit.Assert.*
 
 /**
  */
@@ -58,7 +56,7 @@ class ReportServiceTest extends CayenneIshTestCase {
         new JRRuntimeConfig().config()
     }
 
-	@Before
+	@BeforeEach
     void setup() throws Exception {
         documentService = injector.getInstance(DocumentService.class)
         context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()

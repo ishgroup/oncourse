@@ -2,11 +2,12 @@ package ish.oncourse.function
 
 import ish.oncourse.cayenne.FinancialItem
 import org.apache.cayenne.query.Ordering
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
 import java.time.LocalDate
+
+import static org.junit.Assert.assertEquals
 
 /**
  * Created by anarut on 11/10/16.

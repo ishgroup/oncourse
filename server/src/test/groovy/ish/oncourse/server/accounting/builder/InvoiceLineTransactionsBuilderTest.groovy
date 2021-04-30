@@ -8,15 +8,16 @@ import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.Tax
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertTrue
-import org.junit.Before
-import org.junit.Test
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
+
+import static junit.framework.TestCase.assertEquals
+import static junit.framework.TestCase.assertTrue
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
 
 class InvoiceLineTransactionsBuilderTest {
 
@@ -33,10 +34,8 @@ class InvoiceLineTransactionsBuilderTest {
     private Money amount3
     private Money amount4
     private LocalDate transactionDate
-    
-    
-    
-    @Before
+
+    @BeforeEach
     void prepareData() {
         taxAccount = mock(Account)
         when(taxAccount.id).thenReturn(32L)

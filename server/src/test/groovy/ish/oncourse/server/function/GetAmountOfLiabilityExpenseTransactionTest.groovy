@@ -1,15 +1,11 @@
 package ish.oncourse.server.function
 
 import ish.math.Money
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.cayenne.VoucherPaymentIn
-import ish.oncourse.server.cayenne.VoucherProduct
+import ish.oncourse.server.cayenne.*
 import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
@@ -27,7 +23,7 @@ class GetAmountOfLiabilityExpenseTransactionTest {
      * Voucher real price wasn't change, when it was bought.
      * Voucher covers whole paymentIn's amount.
      */
-    @Before
+    @BeforeEach
     void before(){
         VoucherPaymentIn voucherPaymentIn = mock(VoucherPaymentIn.class)
         voucherProduct = mock(VoucherProduct.class)

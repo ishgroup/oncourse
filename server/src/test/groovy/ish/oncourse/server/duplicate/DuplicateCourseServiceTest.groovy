@@ -1,35 +1,19 @@
 package ish.oncourse.server.duplicate
 
 import ish.CayenneIshTestCase
-import ish.common.types.AccountType
-import ish.common.types.AttachmentInfoVisibility
-import ish.common.types.CourseEnrolmentType
-import ish.common.types.EntityRelationCartAction
-import ish.common.types.ModuleType
-import ish.common.types.QualificationType
+import ish.common.types.*
 import ish.duplicate.CourseDuplicationRequest
 import ish.math.Money
 import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseAttachmentRelation
-import ish.oncourse.server.cayenne.CourseModule
-
-import ish.oncourse.server.cayenne.Document
-import ish.oncourse.server.cayenne.EntityRelation
-import ish.oncourse.server.cayenne.EntityRelationType
-import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.Module
-import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.Qualification
-import ish.oncourse.server.cayenne.Tax
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
-import org.junit.Test
 
 class DuplicateCourseServiceTest extends CayenneIshTestCase {
 

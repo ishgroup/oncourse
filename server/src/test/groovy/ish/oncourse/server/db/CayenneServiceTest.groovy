@@ -14,16 +14,11 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.tx.TransactionalOperation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.fail
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutionException
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
+import java.util.concurrent.*
+
+import static org.junit.Assert.*
 
 /**
  */

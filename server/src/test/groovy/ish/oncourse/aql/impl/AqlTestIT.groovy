@@ -15,17 +15,18 @@ import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
 
 class AqlTestIT extends CayenneIshTestCase {
 
     private DataContext cayenneContext
     private AqlService aqlService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/aql/SyntheticPathTestDataSet.xml")

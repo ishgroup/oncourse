@@ -7,18 +7,10 @@ package ish.oncourse.server
 import ish.common.types.PaymentType
 import ish.math.Money
 import ish.oncourse.entity.services.SetPaymentMethod
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.Student
-import ish.unit.MockCourse
-import ish.unit.MockCourseClass
-import ish.unit.MockEnrolment
-import ish.unit.MockObjectContext
-import ish.unit.MockPaymentIn
-import ish.unit.MockStudent
+import ish.oncourse.server.cayenne.*
+import ish.unit.*
 import org.apache.cayenne.ObjectContext
+
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 

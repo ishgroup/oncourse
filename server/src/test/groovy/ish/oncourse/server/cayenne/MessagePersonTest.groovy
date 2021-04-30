@@ -8,18 +8,17 @@ import ish.CayenneIshTestCase
 import ish.common.types.MessageStatus
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.ObjectContext
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
 
-/**
- */
 class MessagePersonTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() {
 		this.cayenneService = injector.getInstance(ICayenneService.class)
     }

@@ -5,36 +5,22 @@
 package ish.util
 
 import ish.CayenneIshTestCase
-import ish.common.types.AccountType
-import ish.common.types.CourseClassAttendanceType
-import ish.common.types.DeliveryMode
-import ish.common.types.EnrolmentStatus
-import ish.common.types.PaymentSource
+import ish.common.types.*
 import ish.math.Money
 import ish.messaging.ISessionModule
 import ish.oncourse.cayenne.CourseClassUtil
 import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Module
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.SessionModule
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tax
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
-import static org.junit.Assert.assertEquals
-import org.junit.Test
-import static org.mockito.Matchers.any
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+
+import static org.junit.Assert.assertEquals
+import static org.mockito.Matchers.any
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.when
 
-/**
- */
 class CourseClassUtilTest extends CayenneIshTestCase {
 
 	private static int codeSequence = 0

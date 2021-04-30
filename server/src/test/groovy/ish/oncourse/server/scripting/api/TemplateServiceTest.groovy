@@ -9,8 +9,9 @@ import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.EmailTemplate
 import ish.oncourse.server.scripting.ScriptParameters
 import org.apache.cayenne.ObjectContext
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
-import org.junit.Test
 
 class TemplateServiceTest extends CayenneIshTestCase {
 

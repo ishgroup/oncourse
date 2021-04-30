@@ -1,12 +1,13 @@
 package ish.math;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MoneyTest {
 	Money[][] list = new Money[][] {
@@ -124,35 +125,35 @@ public class MoneyTest {
 // System.out.println("----");
 
 			// no rounding
-			assertEquals("non rounding failed for value" + value, aList[1], new Money(value.toBigDecimal()).round(MoneyRounding.ROUNDING_NONE));
+			Assertions.assertEquals(aList[1], new Money(value.toBigDecimal()).round(MoneyRounding.ROUNDING_NONE), "non rounding failed for value" + value);
 			// 10c rounding
-			assertEquals("10c rounding failed for value" + value, aList[2], new Money(value.toBigDecimal()).round(MoneyRounding.ROUNDING_10C));
+			Assertions.assertEquals(aList[2], new Money(value.toBigDecimal()).round(MoneyRounding.ROUNDING_10C), "10c rounding failed for value" + value);
 			// 50c rounding
-			assertEquals("50c rounding failed for value" + value, aList[3], new Money(value.toBigDecimal()).round(MoneyRounding.ROUNDING_50C));
+			Assertions.assertEquals(aList[3], new Money(value.toBigDecimal()).round(MoneyRounding.ROUNDING_50C), "50c rounding failed for value" + value);
 			// 1$ rounding
-			assertEquals("1d rounding failed for value" + value, aList[4], new Money(value.toBigDecimal()).round(MoneyRounding.ROUNDING_1D));
+			Assertions.assertEquals(aList[4], new Money(value.toBigDecimal()).round(MoneyRounding.ROUNDING_1D), "1d rounding failed for value" + value);
 
 			// no rounding
-			assertEquals("non rounding failed for value" + value.negate(), aList[1].negate(),
-					new Money(value.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_NONE));
+			Assertions.assertEquals(aList[1].negate(),
+					new Money(value.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_NONE), "non rounding failed for value" + value.negate());
 			// 10c rounding
-			assertEquals("10c rounding failed for value" + value.negate(), aList[2].negate(),
-					new Money(value.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_10C));
+			Assertions.assertEquals(aList[2].negate(),
+					new Money(value.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_10C), "10c rounding failed for value" + value.negate());
 			// 50c rounding
-			assertEquals("50c rounding failed for value" + value.negate(), aList[3].negate(),
-					new Money(value.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_50C));
+			Assertions.assertEquals(aList[3].negate(),
+					new Money(value.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_50C), "50c rounding failed for value" + value.negate());
 			// 1$ rounding
-			assertEquals("1d rounding failed for value" + value.negate(), aList[4].negate(),
-					new Money(value.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_1D));
+			Assertions.assertEquals(aList[4].negate(),
+					new Money(value.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_1D), "1d rounding failed for value" + value.negate());
 		}
 	}
 
 	@Test
 	public void testCents() {
-		assertEquals(99, Money.valueOf(new BigDecimal("10.99")).getCents());
-		assertEquals(1, Money.valueOf(new BigDecimal("10.01")).getCents());
-		assertEquals(-1, Money.valueOf(new BigDecimal("-10.01")).getCents());
-		assertEquals(-99, Money.valueOf(new BigDecimal("-10.99")).getCents());
+		Assertions.assertEquals(99, Money.valueOf(new BigDecimal("10.99")).getCents());
+		Assertions.assertEquals(1, Money.valueOf(new BigDecimal("10.01")).getCents());
+		Assertions.assertEquals(-1, Money.valueOf(new BigDecimal("-10.01")).getCents());
+		Assertions.assertEquals(-99, Money.valueOf(new BigDecimal("-10.99")).getCents());
 	}
 
 	@Test
@@ -163,38 +164,38 @@ public class MoneyTest {
 		Money exTaxAmount = valueEnteredIncTax.divide(BigDecimal.ONE.add(taxRate));
 
 		Money expectedResult = new Money(204, 55);
-		assertEquals("Ex tax rounding error", expectedResult.toBigDecimal(), exTaxAmount.toBigDecimal());
+		Assertions.assertEquals(expectedResult.toBigDecimal(), exTaxAmount.toBigDecimal(), "Ex tax rounding error");
 
 		// multiplier = rate * 10 / 11
 		// we MUST expand scale to get an accurate result.
 		BigDecimal taxMultiplier = taxRate.movePointRight(1).setScale(6).divide(BigDecimal.valueOf(11), RoundingMode.HALF_UP);
 		Money taxAmount = valueEnteredIncTax.multiply(taxMultiplier);
 		BigDecimal expectedTaxAmount = BigDecimal.valueOf(2045, 2);
-		assertEquals("Tax rounding error:", expectedTaxAmount, taxAmount.toBigDecimal());
+		Assertions.assertEquals(expectedTaxAmount, taxAmount.toBigDecimal(), "Tax rounding error:");
 
 		Money newTotalIncTax = exTaxAmount.add(taxAmount);
-		assertEquals("Ex tax rounding error", valueEnteredIncTax.toBigDecimal(), newTotalIncTax.toBigDecimal());
+		Assertions.assertEquals(valueEnteredIncTax.toBigDecimal(), newTotalIncTax.toBigDecimal(), "Ex tax rounding error");
 	}
 
 	@Test
 	public void testMoneyConstructorDollarWithCents() {
 		Money actualResult = new Money(204, 55);
 		BigDecimal expectedResult = BigDecimal.valueOf(20455, 2);
-		assertEquals("Money construction error", expectedResult, actualResult.toBigDecimal());
+		Assertions.assertEquals(expectedResult, actualResult.toBigDecimal(), "Money construction error");
 	}
 
 	@Test
 	public void testMoneyConstructorWithNULLString() {
 		Money actualResult = new Money((String) null);
 		BigDecimal expectedResult = BigDecimal.ZERO.setScale(2);
-		assertEquals("Money construction error", expectedResult, actualResult.toBigDecimal());
+		Assertions.assertEquals(expectedResult, actualResult.toBigDecimal(), "Money construction error");
 	}
 
 	@Test
 	public void testMoneyConstructorWithNULLBigDecimal() {
 		Money actualResult = new Money((BigDecimal) null);
 		BigDecimal expectedResult = BigDecimal.ZERO.setScale(2);
-		assertEquals("Money construction error", expectedResult, actualResult.toBigDecimal());
+		Assertions.assertEquals(expectedResult, actualResult.toBigDecimal(), "Money construction error");
 	}
 
 	@Test
@@ -204,7 +205,7 @@ public class MoneyTest {
 
 		Money taxAmount = valueEnteredIncTax.multiply(taxRate); // $20.455
 		BigDecimal expectedResult = BigDecimal.valueOf(2046, 2); // $20.46
-		assertEquals("Money rounding error", expectedResult, taxAmount.toBigDecimal());
+		Assertions.assertEquals(expectedResult, taxAmount.toBigDecimal(), "Money rounding error");
 	}
 
 	@Test
@@ -232,21 +233,21 @@ public class MoneyTest {
 		exTaxAmount = exTaxAmount.setScale(2, Money.DEFAULT_ROUND);
 		taxAmount = taxAmount.setScale(2, Money.DEFAULT_ROUND);
 
-		assertEquals("Ex tax rounding error", exTaxAmount.unscaledValue(), moneyExTaxAmount.toBigDecimal().unscaledValue());
-		assertEquals("Tax rounding error", taxAmount.unscaledValue(), moneyTaxAmount.toBigDecimal().unscaledValue());
+		Assertions.assertEquals(exTaxAmount.unscaledValue(), moneyExTaxAmount.toBigDecimal().unscaledValue(), "Ex tax rounding error");
+		Assertions.assertEquals(taxAmount.unscaledValue(), moneyTaxAmount.toBigDecimal().unscaledValue(), "Tax rounding error");
 	}
 
 	@Test
 	public void testEquals() {
-		assertFalse("Checking equals", new Money("20.44").equals(new Money("30.55")));
-		assertTrue("Checking equals", new Money("20.44").equals(new Money("20.44")));
-		assertFalse("Checking equals", Money.ZERO.equals(new Money("20.44")));
-		assertFalse("Checking equals", new Money("20.44").equals(new Money("-20.44")));
-		assertTrue("Checking equals", new Money("40.66").equals(new Money("30.55").add(new Money("10.11"))));
-		assertTrue("Checking equals", new Money("40.66").equals(new Money("30.55").add(new BigDecimal("10.11"))));
+		assertFalse(new Money("20.44").equals(new Money("30.55")), "Checking equals");
+		assertTrue(new Money("20.44").equals(new Money("20.44")), "Checking equals");
+		assertFalse(Money.ZERO.equals(new Money("20.44")), "Checking equals");
+		assertFalse(new Money("20.44").equals(new Money("-20.44")), "Checking equals");
+		assertTrue(new Money("40.66").equals(new Money("30.55").add(new Money("10.11"))), "Checking equals");
+		assertTrue(new Money("40.66").equals(new Money("30.55").add(new BigDecimal("10.11"))), "Checking equals");
 
-		assertTrue("Checking equals", new Money("20.44").hashCode() == new Money("20.44").hashCode());
-		assertFalse("Checking equals", new Money("20.44").hashCode() == new Money("20.45").hashCode());
+		assertTrue(new Money("20.44").hashCode() == new Money("20.44").hashCode(), "Checking equals");
+		assertFalse(new Money("20.44").hashCode() == new Money("20.45").hashCode(), "Checking equals");
 	}
 
 	@Test
@@ -255,46 +256,46 @@ public class MoneyTest {
 		
 		//division without rounding, 5/13 == 0.38
 		Money money1 = money.divide(new BigDecimal(13));
-		assertEquals("division failed for value " + money1, new Money("0.38"), money1);
+		Assertions.assertEquals(new Money("0.38"), money1, "division failed for value " + money1);
 		
 		//Rounded up to the nearest dollar, 5/13 == 0.38 (less then 0.50) should be rounded to the 1.00
 		Money money2 = money.divide(new BigDecimal(13), true);
-		assertEquals("1d rounding failed for value " + money2, Money.ONE, money2);
+		Assertions.assertEquals(Money.ONE, money2, "1d rounding failed for value " + money2);
 
 		//should be rounded to the 2.00
 		Money money3 = money.divide(new BigDecimal(4), true);
-		assertEquals("2d rounding failed for value " + money3, new Money("2.00"), money3);
+		Assertions.assertEquals(new Money("2.00"), money3, "2d rounding failed for value " + money3);
 
 		// do nothing if value is already integer, 5/5 == 1
 		Money money4 = money.divide(new BigDecimal(5), true);
-		assertEquals("1d rounding failed for value " + money4, Money.ONE, money4);
+		Assertions.assertEquals(Money.ONE, money4, "1d rounding failed for value " + money4);
 		
 		money = new Money("-5.00");
 
 		//the same test for negative value 
 		Money money5 = money.divide(new BigDecimal(13), true);
-		assertEquals("1d rounding failed for value " + money3, new Money("-1.00"), money5);
+		Assertions.assertEquals(new Money("-1.00"), money5, "1d rounding failed for value " + money3);
 		
 	}
 
 	@Test
 	public void testNumberFormatter() {
 		Money money = new Money("5.00");
-		assertEquals("5.00", money.toPlainString());
+		Assertions.assertEquals("5.00", money.toPlainString());
 		
 		money = new Money("-5.00");
-		assertEquals("-5.00", money.toPlainString());
+		Assertions.assertEquals("-5.00", money.toPlainString());
 
 		money = new Money("-005.55");
-		assertEquals("-5.55", money.toPlainString());
+		Assertions.assertEquals("-5.55", money.toPlainString());
 		
 		money = Money.valueOf(new BigDecimal(-34.5555));
-		assertEquals("-34.56", money.toPlainString());
+		Assertions.assertEquals("-34.56", money.toPlainString());
 
 		money = Money.valueOf(new BigDecimal(1892.5555));
-		assertEquals("1892.56", money.toPlainString());
+		Assertions.assertEquals("1892.56", money.toPlainString());
 
 		money = Money.ZERO;
-		assertEquals("0.00", money.toPlainString());
+		Assertions.assertEquals("0.00", money.toPlainString());
 	}
 }

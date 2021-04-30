@@ -2,13 +2,14 @@ package ish.oncourse.server.security.api
 
 import io.bootique.BQRuntime
 import io.bootique.test.junit.BQTestFactory
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.ClassRule
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import javax.ws.rs.HttpMethod
+
+import static org.junit.Assert.assertFalse
+import static org.junit.Assert.assertTrue
 
 class PermissionTest {
 
@@ -19,7 +20,7 @@ class PermissionTest {
     @ClassRule
     public static BQTestFactory testFactory = new BQTestFactory()
 
-    @Before
+    @BeforeEach
     void before() {
         BQRuntime runtime = testFactory.app(CONFIG_PATH)
                 .module(PermissionModule.class)

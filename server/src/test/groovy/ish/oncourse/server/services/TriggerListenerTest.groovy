@@ -3,25 +3,15 @@
  */
 package ish.oncourse.server.services
 
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.fail
-import org.junit.Test
-import org.quartz.CronScheduleBuilder
-import org.quartz.CronTrigger
-import org.quartz.DisallowConcurrentExecution
-import org.quartz.Job
-import org.quartz.JobBuilder
-import org.quartz.JobDetail
-import org.quartz.JobExecutionContext
-import org.quartz.JobExecutionException
-import org.quartz.Scheduler
-import org.quartz.SchedulerException
-import org.quartz.SchedulerFactory
-import org.quartz.TriggerBuilder
+import org.junit.jupiter.api.Test
+import org.quartz.*
 import org.quartz.impl.StdSchedulerFactory
 import org.reflections.Reflections
 
 import java.text.ParseException
+
+import static org.junit.Assert.assertTrue
+import static org.junit.Assert.fail
 
 /**
  * This tests whether the jobs executed with quartz scheduler are not executed concurrently.

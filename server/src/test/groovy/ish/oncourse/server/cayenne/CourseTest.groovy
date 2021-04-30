@@ -10,12 +10,12 @@ import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.ICayenneService
 import ish.util.AccountUtil
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.access.DataContext
+import org.junit.jupiter.api.Test
 
 import static junit.framework.Assert.assertTrue
 import static junit.framework.Assert.fail
 import static junit.framework.TestCase.assertEquals
-import org.apache.cayenne.access.DataContext
-import org.junit.Test
 
 class CourseTest extends CayenneIshTestCase {
 

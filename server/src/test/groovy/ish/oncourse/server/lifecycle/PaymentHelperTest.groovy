@@ -8,29 +8,20 @@ import ish.common.types.PaymentType
 import ish.math.Money
 import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Banking
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.PaymentOutLine
+import ish.oncourse.server.cayenne.*
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertNull
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
+import static org.junit.Assert.*
+
 class PaymentHelperTest extends CayenneIshTestCase {
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         super.setup()

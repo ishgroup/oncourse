@@ -13,9 +13,11 @@ import org.apache.logging.log4j.Logger
 import org.eclipse.jetty.testing.AngelServletTester
 import org.eclipse.jetty.testing.HttpTester
 import org.junit.AfterClass
-import static org.junit.Assert.assertEquals
 import org.junit.BeforeClass
-import org.junit.Test
+import org.junit.jupiter.api.Test
+
+import static org.junit.Assert.assertEquals
+
 /**
  */
 class ServletsTest extends CayenneIshTestCase {

@@ -1,8 +1,9 @@
 package ish.oncourse.server.messaging
 
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
-import org.junit.Test
 
 /**
  * Created by anarut on 8/23/16.

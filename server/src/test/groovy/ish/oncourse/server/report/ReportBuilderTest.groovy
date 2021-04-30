@@ -3,8 +3,9 @@ package ish.oncourse.server.report
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.cayenne.Report
 import org.apache.commons.io.IOUtils
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
-import org.junit.Test
 
 class ReportBuilderTest {
 

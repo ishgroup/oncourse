@@ -8,15 +8,16 @@ import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.VoucherProduct
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertFalse
-import org.junit.Before
-import org.junit.Test
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
+
+import static junit.framework.TestCase.assertEquals
+import static junit.framework.TestCase.assertFalse
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
 
 class VoucherExpiryTransactionsBuilderTest {
 
@@ -29,7 +30,7 @@ class VoucherExpiryTransactionsBuilderTest {
     private Money amount2
     private LocalDate transactionDate
 
-    @Before
+    @BeforeEach
     void prepareData() {
         voucherExpiryAccount = mock(Account)
         when(voucherExpiryAccount.id).thenReturn(32L)

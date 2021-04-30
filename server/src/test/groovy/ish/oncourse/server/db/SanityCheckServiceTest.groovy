@@ -8,9 +8,10 @@ import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Account
 import ish.util.AccountUtil
-import static junit.framework.TestCase.assertNotNull
 import org.apache.cayenne.access.DataContext
-import org.junit.Test
+import org.junit.jupiter.api.Test
+
+import static junit.framework.TestCase.assertNotNull
 
 class SanityCheckServiceTest extends CayenneIshTestCase {
 

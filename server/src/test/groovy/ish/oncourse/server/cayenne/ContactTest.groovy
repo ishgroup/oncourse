@@ -7,10 +7,9 @@ package ish.oncourse.server.cayenne
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.access.DataContext
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Test
+
+import static org.junit.Assert.*
 
 /**
  */

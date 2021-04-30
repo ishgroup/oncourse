@@ -1,6 +1,7 @@
 package ish.validation;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -12,10 +13,10 @@ public class PreferenceValidatorTest {
 
 	@Test
 	public void testAccountInvoiceTermsValidation() {
-		assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(0));
-		assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(7));
-		assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(100));
-		assertFalse(PreferenceValidator.isValidAccountInvoiceTerms(null));
-		assertFalse(PreferenceValidator.isValidAccountInvoiceTerms(-30));
+		Assertions.assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(0));
+		Assertions.assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(7));
+		Assertions.assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(100));
+		Assertions.assertFalse(PreferenceValidator.isValidAccountInvoiceTerms(null));
+		Assertions.assertFalse(PreferenceValidator.isValidAccountInvoiceTerms(-30));
 	}
 }

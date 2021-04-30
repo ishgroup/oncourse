@@ -12,18 +12,20 @@ import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDateTime
+
+import static org.junit.Assert.assertEquals
+
 @CompileStatic
 class SessionValidatorTest extends CayenneIshTestCase {
 
     private SessionValidator validator
 
 
-    @Before
+    @BeforeEach
     void before(){
         wipeTables()
         InputStream st = SessionValidatorTest.classLoader.getResourceAsStream('ish/oncourse/server/api/v1/function/SessionValidatorTest.xml')

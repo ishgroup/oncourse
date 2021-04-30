@@ -9,14 +9,15 @@ import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.integration.myob.MyobIntegration
 import org.apache.cayenne.query.ObjectSelect
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
 
 @CompileStatic
 class IntegrationApiTest extends CayenneIshTestCase {
 
-    @Before
+    @BeforeEach
     void before(){
         wipeTables()
     }

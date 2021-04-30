@@ -5,24 +5,14 @@ import ish.CayenneIshTestCase
 import ish.common.types.AccountType
 import ish.common.types.CourseClassAttendanceType
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.ContactCustomField
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassCustomField
-import ish.oncourse.server.cayenne.CourseCustomField
-import ish.oncourse.server.cayenne.CustomField
-import ish.oncourse.server.cayenne.CustomFieldType
-import ish.oncourse.server.cayenne.ExpandableTrait
-import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.Tax
-import static junit.framework.TestCase.assertNull
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.junit.After
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
+import static junit.framework.TestCase.assertNull
 import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
 
 @CompileStatic
 class GetCustomFieldTest extends CayenneIshTestCase {
@@ -42,7 +32,7 @@ class GetCustomFieldTest extends CayenneIshTestCase {
     private static final String NULL_FIELD_NAME = "Null field"
     private static final String NULL_FIELD_KEY = "nullField"
     
-    @Before
+    @BeforeEach
     void before(){
         wipeTables()
     }

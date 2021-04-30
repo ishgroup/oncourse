@@ -10,15 +10,13 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
 import org.junit.Assert
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-/**
- * Created by akoiro on 24/03/2016.
- */
+import static org.junit.Assert.assertEquals
+
 class AvetmissStudentUpdateImportTest extends CayenneIshTestCase {
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)

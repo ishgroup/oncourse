@@ -6,46 +6,23 @@ package ish.util
 
 import ish.CayenneIshTestCase
 import ish.common.payable.PayableLineInterface
-import ish.common.types.AccountType
-import ish.common.types.CourseClassAttendanceType
-import ish.common.types.DeliveryMode
-import ish.common.types.EnrolmentStatus
-import ish.common.types.PaymentSource
-import ish.common.types.PaymentStatus
-import ish.common.types.PaymentType
+import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PaymentLineInterface
 import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.PaymentOutLine
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tax
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.fail
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
+
+import static org.junit.Assert.*
 
 /**
  */

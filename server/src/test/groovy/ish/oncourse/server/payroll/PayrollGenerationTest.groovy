@@ -12,8 +12,8 @@ import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import static junit.framework.TestCase.assertEquals
 
@@ -25,7 +25,7 @@ class PayrollGenerationTest extends CayenneIshTestCase {
 
     private ObjectContext context
 
-    @Before
+    @BeforeEach
     void setup() {
         wipeTables()
         InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/payroll/payslipGenerationTest.xml")

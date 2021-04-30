@@ -6,7 +6,6 @@ package ish.oncourse.server.scripting.api
 import ish.CayenneIshTestCase
 import ish.common.types.MessageType
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.MessagePerson
@@ -16,19 +15,19 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
-import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.fail
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import javax.mail.MessagingException
 
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.fail
+
 class EmailServiceTest extends CayenneIshTestCase {
 	
-	@Before
+	@BeforeEach
 	void setup() throws Exception {
 		wipeTables()
 		InputStream st = GroovyScriptService.class.getClassLoader().getResourceAsStream("ish/oncourse/server/scripting/api/emailServiceTestDataSet.xml")

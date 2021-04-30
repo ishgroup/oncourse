@@ -8,7 +8,6 @@ import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.document.DocumentService
@@ -16,21 +15,21 @@ import ish.print.PrintRequest
 import ish.print.PrintTransformationsFactory
 import ish.print.transformations.PrintTransformation
 import ish.print.transformations.PrintTransformationField
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertTrue
-import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
+import static junit.framework.TestCase.assertEquals
+import static junit.framework.TestCase.assertTrue
 
 @CompileStatic
 class PrintWorkerTest extends CayenneIshTestCase {
 
 	private DocumentService documentService
 
-    @Before
+    @BeforeEach
     void setupTest() throws Exception {
 		wipeTables()
         InputStream st = PrintWorkerTest.class.getClassLoader().getResourceAsStream("ish/util/entityUtilTest.xml")

@@ -2,23 +2,20 @@ package ish.oncourse.server.imports.avetmiss
 
 import groovy.mock.interceptor.MockFor
 import ish.common.types.AvetmissStudentDisabilityType
-import static ish.common.types.AvetmissStudentEnglishProficiency.VERY_WELL
-import static ish.common.types.AvetmissStudentIndigenousStatus.NEITHER
-import static ish.common.types.AvetmissStudentLabourStatus.PART_TIME
 import ish.common.types.AvetmissStudentPriorEducation
-import static ish.common.types.AvetmissStudentSchoolLevel.COMPLETED_YEAR_10
 import ish.common.types.Gender
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Language
 import org.apache.cayenne.ObjectContext
-import static org.junit.Assert.assertEquals
-import org.junit.Test
-
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions
 import java.time.LocalDate
 
-/**
- * Created by akoiro on 4/03/2016.
- */
+import static ish.common.types.AvetmissStudentEnglishProficiency.VERY_WELL
+import static ish.common.types.AvetmissStudentIndigenousStatus.NEITHER
+import static ish.common.types.AvetmissStudentLabourStatus.PART_TIME
+import static ish.common.types.AvetmissStudentSchoolLevel.COMPLETED_YEAR_10
+
 class Avetmiss80ParserTest {
     private language
     private country
@@ -69,6 +66,6 @@ class Avetmiss80ParserTest {
                 englishProficiency : VERY_WELL,
         ]
 
-        assertEquals("Wrong values:" + expected*.key.findAll { expected[it] != result[it] }, expected, result)
+        Assertions.assertEquals("Wrong values:" + expected*.key.findAll { expected[it] != result[it] }, expected, result)
     }
 }

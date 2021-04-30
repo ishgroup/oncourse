@@ -10,11 +10,7 @@ import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
 import ish.math.Money
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.Voucher
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.cayenne.ObjectContext
@@ -26,20 +22,19 @@ import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
 
-/**
- */
 @CompileStatic
 class EmailQueuingListenerTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
     private static final Logger logger = LogManager.getLogger()
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
 

@@ -3,46 +3,36 @@ package ish.oncourse.aql.impl
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
-import static ish.oncourse.aql.impl.AntlrAqlServiceTest.MockEnum.ACTIVE
-import static ish.oncourse.aql.impl.AntlrAqlServiceTest.MockEnum.EXPIRED
-import static ish.oncourse.aql.impl.AntlrAqlServiceTest.MockEnum.SUCCESS
-import static java.util.Arrays.asList
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.exp.Expression
-import static org.apache.cayenne.exp.ExpressionFactory.exp
 import org.apache.cayenne.exp.TraversalHandler
 import org.apache.cayenne.exp.parser.ASTAnd
 import org.apache.cayenne.exp.parser.SimpleNode
-import org.apache.cayenne.map.DbAttribute
-import org.apache.cayenne.map.DbEntity
-import org.apache.cayenne.map.EntityResolver
-import org.apache.cayenne.map.ObjAttribute
-import org.apache.cayenne.map.ObjEntity
-import org.apache.cayenne.map.ObjRelationship
+import org.apache.cayenne.map.*
 import org.apache.cayenne.query.Select
-import static org.hamcrest.CoreMatchers.instanceOf
-import static org.hamcrest.CoreMatchers.not
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertThat
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
-import static org.mockito.ArgumentMatchers.any
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import org.junit.jupiter.api.Test
 
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
+import static ish.oncourse.aql.impl.AntlrAqlServiceTest.MockEnum.*
+import static java.util.Arrays.asList
+import static org.apache.cayenne.exp.ExpressionFactory.exp
+import static org.hamcrest.CoreMatchers.instanceOf
+import static org.hamcrest.CoreMatchers.not
+import static org.junit.Assert.*
+import static org.mockito.ArgumentMatchers.any
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
+
 class AntlrAqlServiceTest {
 
     private AqlService service
 
-    @Before
+    @BeforeEach
     void setUp() {
         service = new AntlrAqlService()
     }

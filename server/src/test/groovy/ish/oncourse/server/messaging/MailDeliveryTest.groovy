@@ -4,12 +4,13 @@
  */
 package ish.oncourse.server.messaging
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.fail
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import javax.mail.internet.AddressException
 import javax.mail.internet.InternetAddress
+
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.fail
 
 /**
  * contains lots of simplistic tests. I could not understand from the API how the InternetAddress relates/translates to the emails sent from javamail.<br>

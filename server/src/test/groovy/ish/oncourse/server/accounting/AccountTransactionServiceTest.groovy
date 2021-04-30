@@ -8,20 +8,21 @@ import ish.oncourse.server.accounting.builder.TransactionsBuilder
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
 import ish.request.AccountTransactionRequest
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertTrue
 import org.apache.cayenne.query.ObjectSelect
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
+
+import static junit.framework.TestCase.assertEquals
+import static junit.framework.TestCase.assertTrue
 
 class AccountTransactionServiceTest extends CayenneIshTestCase {
 
     private AccountTransactionService accountTransactionService
     private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() {
         cayenneService = injector.getInstance(ICayenneService)
         accountTransactionService = injector.getInstance(AccountTransactionService)

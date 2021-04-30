@@ -3,8 +3,9 @@ package ish.oncourse.server.print
 import net.sf.jasperreports.engine.fonts.FontExtensionsRegistry
 import net.sf.jasperreports.engine.fonts.FontFamily
 import net.sf.jasperreports.extensions.ExtensionsRegistry
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
-import org.junit.Test
 
 /**
  * Created by anarut on 2/21/17.

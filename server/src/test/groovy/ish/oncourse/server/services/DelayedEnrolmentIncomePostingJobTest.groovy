@@ -12,16 +12,7 @@ import ish.math.Money
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.accounting.AccountTransactionService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.AccountTransaction
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.Outcome
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tax
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.cayenne.glue._AccountTransaction
 import ish.persistence.Preferences
 import org.apache.cayenne.access.DataContext
@@ -36,16 +27,12 @@ import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNull
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.fail
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.quartz.JobExecutionException
 
-/**
- */
+import static org.junit.Assert.*
+
 @CompileStatic
 class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 	private static final Logger logger = LogManager.getLogger()
@@ -58,7 +45,7 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 	Date start3 = DateUtils.addDays(date, 2)
 	Date start4 = DateUtils.addDays(date, 4)
 
-	@Before
+	@BeforeEach
 	void setup() throws Exception {
 		wipeTables()
 		this.cayenneService = injector.getInstance(ICayenneService.class)

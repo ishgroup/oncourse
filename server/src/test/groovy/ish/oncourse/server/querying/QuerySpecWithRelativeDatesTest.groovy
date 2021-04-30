@@ -7,18 +7,13 @@ import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
 import ish.scripting.ScriptResult
-import static java.time.LocalDateTime.now
-import static java.time.LocalTime.MAX
-import static java.time.LocalTime.MIN
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.fail
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.sql.Timestamp
 import java.time.DayOfWeek
@@ -27,12 +22,18 @@ import java.time.LocalDateTime
 import java.time.Month
 import java.time.temporal.TemporalAdjusters
 
+import static java.time.LocalDateTime.now
+import static java.time.LocalTime.MAX
+import static java.time.LocalTime.MIN
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.fail
+
 class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
     private static ObjectContext context
     private List<Student> students
 
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         context = injector.getInstance(ICayenneService).newContext

@@ -7,16 +7,16 @@ import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
 import ish.scripting.ScriptResult
 import org.apache.cayenne.ObjectContext
-import org.apache.commons.lang3.ArrayUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.fail
 import org.junit.BeforeClass
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.fail
 
 @RunWith(value = Parameterized)
 class QuerySpecTest extends CayenneIshTestCase {

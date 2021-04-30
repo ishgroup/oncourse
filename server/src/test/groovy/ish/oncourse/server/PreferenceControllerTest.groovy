@@ -4,10 +4,11 @@ import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.services.ISystemUserService
 import org.apache.cayenne.access.DataContext
-import static org.junit.Assert.assertEquals
-import org.junit.Test
-import static org.mockito.Matchers.any
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+
+import static org.junit.Assert.assertEquals
+import static org.mockito.Matchers.any
 import static org.mockito.Mockito.when
 
 class PreferenceControllerTest {

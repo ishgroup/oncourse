@@ -19,10 +19,10 @@ import org.apache.cayenne.query.SelectQuery
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
-
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertEquals
 /**
  * Test cases to check the correctness of expressions, mostly the complicated ones, related to multiple tags. <br/>
  * <br/>
@@ -87,7 +87,7 @@ import org.junit.Test
 @CompileStatic
 class ExpressionsTest2 extends CayenneIshTestCase {
 
-	@Before
+	@BeforeEach
     void setupTest() throws Exception {
 		wipeTables()
 
@@ -121,8 +121,8 @@ class ExpressionsTest2 extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("testSingleTag", 1, result.size())
-        assertEquals("testSingleTag", tag.getName(), result.get(0).getNotes())
+        assertEquals(1, result.size(), "testSingleTag")
+        assertEquals(tag.getName(), result.get(0).getNotes(), "testSingleTag")
     }
 
 	/**
@@ -146,26 +146,29 @@ class ExpressionsTest2 extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("testSingleTag", 1, result.size())
-        assertEquals("testSingleTag", tag.getName(), result.get(0).getNotes())
+        Assertions.assertEquals(1, result.size(), "testSingleTag")
+        Assertions.assertEquals(tag.getName(), result.get(0).getNotes(), "testSingleTag")
     }
 
 	/**
 	 * queries for Course records tagged with Regions_2 OR Subjects_3_4 <br/>
 	 * it should fail, as the tags belong to different trees
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
     void testTwoTagsDifferentTagTrees() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext newContext = cayenneService.getNewContext()
+        Assertions.assertThrows(IllegalArgumentException.class, {  ->
 
-        Tag tag1 = getRecordWithId(newContext, Tag.class, 27L)
-        Tag tag2 = getRecordWithId(newContext, Tag.class, 103L)
-        List<Tag> list = new ArrayList<>()
-        list.add(tag1)
-        list.add(tag2)
+            ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+            DataContext newContext = cayenneService.getNewContext()
 
-        TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(tag1).hashCode() + "", list, TaggableClasses.COURSE)
+            Tag tag1 = getRecordWithId(newContext, Tag.class, 27L)
+            Tag tag2 = getRecordWithId(newContext, Tag.class, 103L)
+            List<Tag> list = new ArrayList<>()
+            list.add(tag1)
+            list.add(tag2)
+
+            TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(tag1).hashCode() + "", list, TaggableClasses.COURSE)
+        })
 
     }
 
@@ -196,7 +199,7 @@ class ExpressionsTest2 extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("testSingleTag", 3, result.size())
+        assertEquals(3, result.size(), "testSingleTag")
     }
 
 	/**
@@ -226,7 +229,7 @@ class ExpressionsTest2 extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("should return one result", 0, result.size())
+        assertEquals(0, result.size(), "should return one result")
     }
 
 	/**
@@ -258,7 +261,7 @@ class ExpressionsTest2 extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("should return one result", 1, result.size())
+        assertEquals(1, result.size(), "should return one result")
     }
 
 	/**
@@ -284,6 +287,6 @@ class ExpressionsTest2 extends CayenneIshTestCase {
         query.aliasPathSplits(Course.TAGGING_RELATIONS_PROPERTY, alias1)
         List<Course> result = newContext.select(query)
 
-        assertEquals("should return one result", 3, result.size())
+        assertEquals(3, result.size(), "should return one result")
     }
 }

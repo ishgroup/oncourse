@@ -1,9 +1,9 @@
 package ish.common.types;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AvetmissStudentSchoolLevelTest {
 
@@ -53,6 +53,5 @@ public class AvetmissStudentSchoolLevelTest {
 		assertFalse(AvetmissStudentSchoolLevel.isValid(AvetmissStudentSchoolLevel.COMPLETED_YEAR_12, 11));
 		assertFalse(AvetmissStudentSchoolLevel.isValid(AvetmissStudentSchoolLevel.COMPLETED_YEAR_12, 12));
 		assertTrue(AvetmissStudentSchoolLevel.isValid(AvetmissStudentSchoolLevel.COMPLETED_YEAR_12, 13));
-
 	}
 }

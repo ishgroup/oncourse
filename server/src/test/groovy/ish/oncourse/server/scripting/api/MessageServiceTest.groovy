@@ -4,7 +4,6 @@ import ish.CayenneIshTestCase
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.MessagePerson
@@ -19,23 +18,20 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
 
 import javax.mail.Multipart
 import javax.mail.internet.InternetAddress
-import java.util.function.Function
 
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertNotNull
-import static junit.framework.TestCase.assertNull
+import static junit.framework.TestCase.*
 import static org.mockito.Mockito.doNothing
 import static org.mockito.Mockito.mock
 
 class MessageServiceTest extends CayenneIshTestCase {
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         InputStream st = GroovyScriptService.class.getClassLoader().getResourceAsStream("ish/oncourse/server/scripting/api/messageServiceTestDataSet.xml")

@@ -5,7 +5,7 @@
 package ish.util
 
 import ish.CayenneIshTestCase
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import static junit.framework.TestCase.assertEquals
 

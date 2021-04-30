@@ -13,11 +13,7 @@ package ish.oncourse.server.services
 
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.IntegrationProperty
-import ish.oncourse.server.integration.GetProps
-import ish.oncourse.server.integration.OnSave
-import ish.oncourse.server.integration.OnStart
-import ish.oncourse.server.integration.Plugin
-import ish.oncourse.server.integration.PluginTrait
+import ish.oncourse.server.integration.*
 import org.apache.cayenne.ObjectContext
 
 @Plugin(type = 1000, oneOnly = true)

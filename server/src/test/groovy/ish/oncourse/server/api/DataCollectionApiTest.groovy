@@ -5,36 +5,16 @@ import ish.common.types.DataType
 import ish.common.types.DeliverySchedule
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.function.DataCollectionFunctions
-import ish.oncourse.server.api.v1.model.DataCollectionFormDTO
-import ish.oncourse.server.api.v1.model.DataCollectionRuleDTO
-import ish.oncourse.server.api.v1.model.DataCollectionTypeDTO
-import ish.oncourse.server.api.v1.model.DeliveryScheduleTypeDTO
-import ish.oncourse.server.api.v1.model.FieldDTO
-import ish.oncourse.server.api.v1.model.FieldTypeDTO
-import ish.oncourse.server.api.v1.model.HeadingDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.impl.DataCollectionApiImpl
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.ApplicationFieldConfiguration
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CustomFieldType
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.EnrolmentFieldConfiguration
-import ish.oncourse.server.cayenne.Field
-import ish.oncourse.server.cayenne.FieldConfiguration
-import ish.oncourse.server.cayenne.FieldConfigurationLink
-import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.FieldHeading
-import ish.oncourse.server.cayenne.SurveyFieldConfiguration
-import ish.oncourse.server.cayenne.WaitingListFieldConfiguration
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
-import static org.junit.Assert.assertArrayEquals
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.testng.annotations.BeforeTest
 
 import javax.ws.rs.ClientErrorException
+
+import static org.junit.Assert.*
 
 class DataCollectionApiTest  extends CayenneIshTestCase {
 

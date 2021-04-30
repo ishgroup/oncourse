@@ -1,9 +1,10 @@
 package ish.oncourse.server.messaging
 
 import ish.oncourse.server.scripting.api.TemplateService
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+
+import static org.junit.Assert.assertEquals
 
 /**
  * Created by anarut on 8/23/16.

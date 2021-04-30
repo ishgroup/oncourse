@@ -11,16 +11,12 @@ import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertNull
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
+
+import static org.junit.Assert.*
 
 class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
     public static final String ANGIE_CONTACT_FIRST_NAME = "ANGIE"
@@ -29,7 +25,7 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
     ObjectContext context
     ImportParameter parameter
     
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         DataPopulation dataPopulation = injector.getInstance(DataPopulation)

@@ -1,33 +1,9 @@
 package ish.oncourse.server.lifecycle
 
-
-import ish.common.types.AvetmissStudentDisabilityType
-import ish.common.types.AvetmissStudentEnglishProficiency
-import ish.common.types.AvetmissStudentIndigenousStatus
-import ish.common.types.AvetmissStudentPriorEducation
-import ish.common.types.AvetmissStudentSchoolLevel
-import ish.common.types.CourseClassAttendanceType
-import ish.common.types.EnrolmentStatus
-import ish.common.types.Gender
-import ish.common.types.MessageStatus
-import ish.common.types.MessageType
-import ish.common.types.PaymentSource
+import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.generator.DataGenerator
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Country
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.Language
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.server.cayenne.Qualification
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tax
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 

@@ -12,18 +12,11 @@ import ish.math.Money
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.AccountTransaction
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentMethod
+import ish.oncourse.server.cayenne.*
 import ish.print.AdditionalParameters
 import ish.print.PrintTransformationsFactory
 import ish.print.transformations.PrintTransformation
 import ish.util.PaymentMethodUtil
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertTrue
-import static junit.framework.TestCase.fail
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
@@ -31,11 +24,13 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertNotNull
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
+
+import static junit.framework.TestCase.*
+import static org.junit.Assert.assertNotNull
 
 @CompileStatic
 class PrintTransformationTest extends CayenneIshTestCase {
@@ -46,7 +41,7 @@ class PrintTransformationTest extends CayenneIshTestCase {
     static Date end = DateUtils.addDays(new Date(), -2)
     static Date after = DateUtils.addDays(new Date(), -1)
 
-    @Before
+    @BeforeEach
     void setupTest() throws Exception {
 		wipeTables()
         InputStream st = PrintTransformationTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/print/printTransformationTest.xml")

@@ -9,9 +9,10 @@ import org.apache.logging.log4j.Logger
 import org.jfree.data.time.Day
 import org.jfree.data.time.TimeSeries
 import org.jfree.data.time.TimeSeriesCollection
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertTrue
-import org.junit.Test
 
 /**
  */

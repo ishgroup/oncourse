@@ -8,18 +8,19 @@ import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.service.impl.TimetableApiImpl
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertArrayEquals
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDateTime
+
+import static org.junit.Assert.assertArrayEquals
+import static org.junit.Assert.assertEquals
 
 class TimetableApiTest extends CayenneIshTestCase {
 
     TimetableApiImpl api
     
-    @Before
+    @BeforeEach
     void before() {
         wipeTables()
         InputStream st = TimetableApiTest.classLoader.getResourceAsStream('ish/oncourse/server/api/TimetableApiTest.xml')

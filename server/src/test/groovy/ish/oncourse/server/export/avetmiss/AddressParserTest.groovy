@@ -3,10 +3,11 @@
  */
 package ish.oncourse.server.export.avetmiss
 
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+
+import static org.junit.Assert.assertEquals
 
 @RunWith(Parameterized.class)
 class AddressParserTest {

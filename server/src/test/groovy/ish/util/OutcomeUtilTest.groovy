@@ -3,17 +3,15 @@ package ish.util
 import ish.messaging.ICertificate
 import ish.messaging.ICertificateOutcome
 import ish.messaging.IOutcome
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertTrue
-import org.junit.Test
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-/**
- * Created by anarut on 11/14/16.
- */
+import static org.junit.Assert.assertFalse
+import static org.junit.Assert.assertTrue
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
+
 class OutcomeUtilTest {
 
     @Test

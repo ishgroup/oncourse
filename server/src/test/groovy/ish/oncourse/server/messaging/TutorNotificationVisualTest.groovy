@@ -10,14 +10,14 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
 import org.junit.Ignore
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import javax.mail.MessagingException
 
 class TutorNotificationVisualTest extends CayenneIshTestCase {
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         InputStream st = GroovyScriptService.class.getClassLoader().getResourceAsStream("ish/oncourse/server/messaging/tutorNotificationVisualTestDataSet.xml")
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()

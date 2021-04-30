@@ -4,15 +4,8 @@
  */
 package ish
 
+import org.quartz.*
 
-import org.quartz.Calendar
-import org.quartz.Job
-import org.quartz.JobDataMap
-import org.quartz.JobDetail
-import org.quartz.JobExecutionContext
-import org.quartz.Scheduler
-import org.quartz.Trigger
-import org.quartz.TriggerKey
 /**
  */
 class FakeJobExecutionContext implements JobExecutionContext {

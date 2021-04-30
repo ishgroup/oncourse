@@ -17,21 +17,18 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-/**
- */
+import static org.junit.Assert.*
+
 class PaymentOutTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)

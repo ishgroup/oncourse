@@ -5,6 +5,7 @@ import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.QualityRule
 import org.apache.cayenne.access.DataContext
 import org.apache.commons.io.IOUtils
+
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 

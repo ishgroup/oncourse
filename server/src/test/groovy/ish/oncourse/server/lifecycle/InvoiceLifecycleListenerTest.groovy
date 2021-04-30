@@ -11,16 +11,7 @@ import ish.common.types.PaymentSource
 import ish.common.types.StudyReason
 import ish.math.Money
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tax
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.scripting.GroovyScriptService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
@@ -30,19 +21,18 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.After
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
 
-/**
- */
 @CompileStatic
 class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)

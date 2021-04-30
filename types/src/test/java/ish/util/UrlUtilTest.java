@@ -3,7 +3,8 @@
  */
 package ish.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,9 +23,9 @@ public class UrlUtilTest {
 		
 		String url = UrlUtil.createPortalUsiLink("uniqueCode", expiry, "saltstring");
 		
-		assertTrue(url.startsWith("https://www.skillsoncourse.com.au/portal/usi"));
+		Assertions.assertTrue(url.startsWith("https://www.skillsoncourse.com.au/portal/usi"));
 		
-		assertTrue(UrlUtil.validatePortalUsiLink(url, "saltstring", format.parse("01/01/2015")));
+		Assertions.assertTrue(UrlUtil.validatePortalUsiLink(url, "saltstring", format.parse("01/01/2015")));
 	}
 	
 	@Test
@@ -33,7 +34,7 @@ public class UrlUtilTest {
 
 		String url = UrlUtil.createPortalUsiLink("uniqueCode", format.parse("31/12/2014"), "saltstring");
 
-		assertFalse(UrlUtil.validatePortalUsiLink(url, "saltstring", format.parse("01/01/2015")));
+		Assertions.assertFalse(UrlUtil.validatePortalUsiLink(url, "saltstring", format.parse("01/01/2015")));
 	}
 
 	@Test
@@ -42,7 +43,7 @@ public class UrlUtilTest {
 
 		String url = UrlUtil.createPortalUsiLink("uniqueCode", format.parse("31/12/2014"), "wrongsalt");
 
-		assertFalse(UrlUtil.validatePortalUsiLink(url, "saltstring", format.parse("01/01/2015")));
+		Assertions.assertFalse(UrlUtil.validatePortalUsiLink(url, "saltstring", format.parse("01/01/2015")));
 	}
 
 	@Test
@@ -52,9 +53,9 @@ public class UrlUtilTest {
 
 		String url = UrlUtil.createSignedPortalUrl("survey/1531", expiry, "saltstring");
 
-		assertTrue(url.startsWith("https://www.skillsoncourse.com.au/portal/survey/1531"));
+		Assertions.assertTrue(url.startsWith("https://www.skillsoncourse.com.au/portal/survey/1531"));
 
-		assertTrue(UrlUtil.validateSignedPortalUrl(url, "saltstring", format.parse("01/01/2015")));
+		Assertions.assertTrue(UrlUtil.validateSignedPortalUrl(url, "saltstring", format.parse("01/01/2015")));
 	}
 
 	@Test
@@ -64,9 +65,9 @@ public class UrlUtilTest {
 
 		String url = UrlUtil.createSignedPortalUrl("/survey/1531?param=test", expiry, "saltstring");
 
-		assertTrue(url.startsWith("https://www.skillsoncourse.com.au/portal/survey/1531?param=test"));
+		Assertions.assertTrue(url.startsWith("https://www.skillsoncourse.com.au/portal/survey/1531?param=test"));
 
-		assertTrue(UrlUtil.validateSignedPortalUrl(url, "saltstring", format.parse("01/01/2015")));
+		Assertions.assertTrue(UrlUtil.validateSignedPortalUrl(url, "saltstring", format.parse("01/01/2015")));
 	}
 
 	@Test
@@ -75,7 +76,7 @@ public class UrlUtilTest {
 
 		String url = UrlUtil.createSignedPortalUrl("/survey/1531", format.parse("31/12/2014"), "saltstring");
 
-		assertFalse(UrlUtil.validateSignedPortalUrl(url, "saltstring", format.parse("01/01/2015")));
+		Assertions.assertFalse(UrlUtil.validateSignedPortalUrl(url, "saltstring", format.parse("01/01/2015")));
 	}
 
 	@Test
@@ -84,15 +85,15 @@ public class UrlUtilTest {
 
 		String url = UrlUtil.createSignedPortalUrl("survey/1531",format.parse("31/12/2014"), "wrongsalt");
 
-		assertFalse(UrlUtil.validateSignedPortalUrl(url, "saltstring", format.parse("01/01/2015")));
+		Assertions.assertFalse(UrlUtil.validateSignedPortalUrl(url, "saltstring", format.parse("01/01/2015")));
 	}
 
 	@Test
 	public void test() throws ParseException {
-		assertTrue(UrlUtil.validateSignedPortalUrl("https://www.skillsoncourse.com.au/portal/class/5034179?contactId=cvKcLp3qQabLXhf6&valid=20160303&key=CAnB0aQQpCLqN6nJB3fEQerjjm4",
+		Assertions.assertTrue(UrlUtil.validateSignedPortalUrl("https://www.skillsoncourse.com.au/portal/class/5034179?contactId=cvKcLp3qQabLXhf6&valid=20160303&key=CAnB0aQQpCLqN6nJB3fEQerjjm4",
 				"oJRJarnFPk9xoPVQ", new SimpleDateFormat("yyy-MM-dd").parse("2016-03-02")));
 
-		assertFalse(UrlUtil.validateSignedPortalUrl("https://www.skillsoncourse.com.au/portal/class/5034179?contactId=cvKcLp3qQabLXhf6&valid=20160303&key=CAnB0aQQpCLqN6nJB3fEQerjjm4",
+		Assertions.assertFalse(UrlUtil.validateSignedPortalUrl("https://www.skillsoncourse.com.au/portal/class/5034179?contactId=cvKcLp3qQabLXhf6&valid=20160303&key=CAnB0aQQpCLqN6nJB3fEQerjjm4",
 				"oJRJarnFPk9xoPVQ", new SimpleDateFormat("yyy-MM-dd").parse("2016-03-04")));
 	}
 }

@@ -3,15 +3,14 @@ package ish.oncourse.server.report
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.cayenne.Report
 import ish.report.ImportReportResult.ReportValidationError
-import static ish.report.ImportReportResult.ReportValidationError.ImportedFileDoesNotContainJasperReportTag
-import static ish.report.ImportReportResult.ReportValidationError.MultipleReportsWithTheSameKeyCode
-import static ish.report.ImportReportResult.ReportValidationError.TheParamReportIsEmpty
 import org.apache.cayenne.access.DataContext
 import org.apache.commons.io.IOUtils
-import static org.junit.Assert.assertEquals
-import org.junit.Test
-import static org.mockito.Matchers.any
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+
+import static ish.report.ImportReportResult.ReportValidationError.*
+import static org.junit.Assert.assertEquals
+import static org.mockito.Matchers.any
 import static org.mockito.Mockito.when
 
 class ReportValidatorTest {

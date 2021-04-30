@@ -13,19 +13,18 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.validation.ValidationResult
 import org.junit.Assert
+import org.junit.Ignore
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Ignore
-import org.junit.Test
 
-/**
- */
 class VoucherTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		this.cayenneService = injector.getInstance(ICayenneService.class)
         super.setup()

@@ -19,16 +19,7 @@
 
 package ish.unit
 
-
-import org.apache.cayenne.DataChannel
-import org.apache.cayenne.DeleteDenyException
-import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.ObjectId
-import org.apache.cayenne.Persistent
-import org.apache.cayenne.QueryResponse
-import org.apache.cayenne.ResultBatchIterator
-import org.apache.cayenne.ResultIterator
-import org.apache.cayenne.ResultIteratorCallback
+import org.apache.cayenne.*
 import org.apache.cayenne.event.EventManager
 import org.apache.cayenne.graph.GraphDiff
 import org.apache.cayenne.graph.GraphManager

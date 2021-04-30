@@ -4,29 +4,24 @@ import ish.CayenneIshTestCase
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.AccountTransaction
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.SessionTest
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.Assert
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
 
 class SyntheticPathTest extends CayenneIshTestCase {
 
     private DataContext cayenneContext
     private AqlService aqlService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
         InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/aql/SyntheticPathTestDataSet.xml")

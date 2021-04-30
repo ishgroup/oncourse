@@ -5,15 +5,16 @@ import ish.math.Money
 import ish.oncourse.server.accounting.AccountTransactionDetail
 import ish.oncourse.server.accounting.TransactionSettings
 import ish.oncourse.server.cayenne.Account
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertFalse
-import org.junit.Before
-import org.junit.Test
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
+
+import static junit.framework.TestCase.assertEquals
+import static junit.framework.TestCase.assertFalse
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
 
 class JournalTransactionsBuilderTest {
 
@@ -22,7 +23,7 @@ class JournalTransactionsBuilderTest {
     private Money amount
     private LocalDate transactionDate
     
-    @Before
+    @BeforeEach
     void prepareData() {
         primaryAccount = mock(Account)
         when(primaryAccount.id).thenReturn(55L)

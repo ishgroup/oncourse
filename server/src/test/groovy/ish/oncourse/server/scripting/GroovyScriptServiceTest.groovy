@@ -5,12 +5,7 @@ package ish.oncourse.server.scripting
 
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.IntegrationConfiguration
-import ish.oncourse.server.cayenne.IntegrationProperty
-import ish.oncourse.server.cayenne.Script
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.services.TestSchedulerService
 import ish.scripting.ScriptResult
@@ -20,11 +15,10 @@ import org.apache.cayenne.query.SelectById
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertNull
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.quartz.JobDetail
+
+import static org.junit.Assert.*
 
 class GroovyScriptServiceTest extends CayenneIshTestCase {
 

@@ -24,8 +24,6 @@ import javax.servlet.Servlet;
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
 
-/**
- */
 public class AngelServletTester extends ContainerLifeCycle {
 
 	private static PreferenceController prefController;

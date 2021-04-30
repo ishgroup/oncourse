@@ -11,9 +11,6 @@ import ish.math.Money
 import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.server.ICayenneService
 import ish.util.PaymentMethodUtil
-import static junit.framework.Assert.assertTrue
-import static junit.framework.Assert.fail
-import static junit.framework.TestCase.assertEquals
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.validation.ValidationException
@@ -22,19 +19,23 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.text.ParseException
 import java.time.LocalDate
 import java.time.Month
+
+import static junit.framework.Assert.assertTrue
+import static junit.framework.Assert.fail
+import static junit.framework.TestCase.assertEquals
 
 class EffectiveDatesServerTest extends CayenneIshTestCase {
 
 	private static final Logger logger = LogManager.getLogger()
     private DataContext context
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
         injector.getInstance(ICayenneService.class)

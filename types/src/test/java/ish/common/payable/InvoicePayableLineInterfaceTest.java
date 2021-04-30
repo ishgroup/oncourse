@@ -1,7 +1,8 @@
 package ish.common.payable;
 
 import ish.math.Money;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import java.math.BigDecimal;
 
@@ -16,29 +17,29 @@ public class InvoicePayableLineInterfaceTest {
 		MockInvoiceLine mil = new MockInvoiceLine(new Money("100"), Money.ZERO, BigDecimal.ONE, BigDecimal.ZERO);
 
 		// testing simple values ex tax
-		assertEquals("assuming discount each ex", Money.ZERO, mil.getDiscountEachExTax());
-		assertEquals("assuming price each ex", new Money("100"), mil.getPriceEachExTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountEachExTax(), "assuming discount each ex");
+		Assertions.assertEquals(new Money("100"), mil.getPriceEachExTax(), "assuming price each ex");
 
 		// testing simple values inc tax
-		assertEquals("assuming discount each inc", Money.ZERO, mil.getDiscountEachIncTax());
-		assertEquals("assuming price each inc", new Money("100"), mil.getPriceEachIncTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountEachIncTax(), "assuming discount each inc");
+		Assertions.assertEquals(new Money("100"), mil.getPriceEachIncTax(), "assuming price each inc");
 
 		// testing total values ex tax
-		assertEquals("assuming total price ex", new Money("100"), mil.getPriceTotalExTax());
-		assertEquals("assuming total discount ex", Money.ZERO, mil.getDiscountTotalExTax());
-		assertEquals("assuming total discounted price ex", new Money("100"), mil.getDiscountedPriceTotalExTax());
+		Assertions.assertEquals(new Money("100"), mil.getPriceTotalExTax(), "assuming total price ex");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountTotalExTax(), "assuming total discount ex");
+		Assertions.assertEquals(new Money("100"), mil.getDiscountedPriceTotalExTax(), "assuming total discounted price ex");
 
 		// testing total values inc tax
-		assertEquals("assuming total price inc", new Money("100"), mil.getPriceTotalIncTax());
-		assertEquals("assuming total discount inc", Money.ZERO, mil.getDiscountTotalIncTax());
+		Assertions.assertEquals(new Money("100"), mil.getPriceTotalIncTax(), "assuming total price inc");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountTotalIncTax(), "assuming total discount inc");
 
 		// testing tax values
-		assertEquals("assuming total tax on discounted price", Money.ZERO, mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming tax on each discounted price", Money.ZERO, mil.getDiscountedTaxOnPriceEach());
-		assertEquals("assuming total tax on discounted price", Money.ZERO, mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming total tax", Money.ZERO, mil.getTotalTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedTaxOnPriceEach(), "assuming tax on each discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getTotalTax(), "assuming total tax");
 
-		assertEquals("assuming final price to pay", new Money("100"), mil.getFinalPriceToPayIncTax());
+		Assertions.assertEquals(new Money("100"), mil.getFinalPriceToPayIncTax(), "assuming final price to pay");
 	}
 
 	@Test
@@ -47,29 +48,29 @@ public class InvoicePayableLineInterfaceTest {
 		MockInvoiceLine mil = new MockInvoiceLine(new Money("100"), new Money("10"), BigDecimal.ONE, BigDecimal.ZERO);
 
 		// testing simple values ex tax
-		assertEquals("assuming discount each ex", new Money("10"), mil.getDiscountEachExTax());
-		assertEquals("assuming price each ex", new Money("100"), mil.getPriceEachExTax());
+		Assertions.assertEquals(new Money("10"), mil.getDiscountEachExTax(), "assuming discount each ex");
+		Assertions.assertEquals(new Money("100"), mil.getPriceEachExTax(), "assuming price each ex");
 
 		// testing simple values inc tax
-		assertEquals("assuming discount each inc", new Money("10"), mil.getDiscountEachIncTax());
-		assertEquals("assuming price each inc", new Money("100"), mil.getPriceEachIncTax());
+		Assertions.assertEquals(new Money("10"), mil.getDiscountEachIncTax(), "assuming discount each inc");
+		Assertions.assertEquals(new Money("100"), mil.getPriceEachIncTax(), "assuming price each inc");
 
 		// testing total values ex tax
-		assertEquals("assuming total price ex", new Money("100"), mil.getPriceTotalExTax());
-		assertEquals("assuming total discount ex", new Money("10"), mil.getDiscountTotalExTax());
-		assertEquals("assuming total discounted price ex", new Money("90"), mil.getDiscountedPriceTotalExTax());
+		Assertions.assertEquals(new Money("100"), mil.getPriceTotalExTax(), "assuming total price ex");
+		Assertions.assertEquals(new Money("10"), mil.getDiscountTotalExTax(), "assuming total discount ex");
+		Assertions.assertEquals(new Money("90"), mil.getDiscountedPriceTotalExTax(), "assuming total discounted price ex");
 
 		// testing total values inc tax
-		assertEquals("assuming total price inc", new Money("100"), mil.getPriceTotalIncTax());
-		assertEquals("assuming total discount inc", new Money("10"), mil.getDiscountTotalIncTax());
+		Assertions.assertEquals(new Money("100"), mil.getPriceTotalIncTax(), "assuming total price inc");
+		Assertions.assertEquals(new Money("10"), mil.getDiscountTotalIncTax(), "assuming total discount inc");
 
 		// testing tax values
-		assertEquals("assuming total tax on discounted price", Money.ZERO, mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming tax on each discounted price", Money.ZERO, mil.getDiscountedTaxOnPriceEach());
-		assertEquals("assuming total tax on discounted price", Money.ZERO, mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming total tax", Money.ZERO, mil.getTotalTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedTaxOnPriceEach(), "assuming tax on each discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getTotalTax(), "assuming total tax");
 
-		assertEquals("assuming final price to pay", new Money("90"), mil.getFinalPriceToPayIncTax());
+		Assertions.assertEquals(new Money("90"), mil.getFinalPriceToPayIncTax(), "assuming final price to pay");
 	}
 
 	@Test
@@ -78,29 +79,29 @@ public class InvoicePayableLineInterfaceTest {
 		MockInvoiceLine mil = new MockInvoiceLine(new Money("100"), Money.ZERO, BigDecimal.ONE, new BigDecimal("0.1"));
 
 		// testing simple values ex tax
-		assertEquals("assuming discount each ex", Money.ZERO, mil.getDiscountEachExTax());
-		assertEquals("assuming price each ex", new Money("100"), mil.getPriceEachExTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountEachExTax(), "assuming discount each ex");
+		Assertions.assertEquals(new Money("100"), mil.getPriceEachExTax(), "assuming price each ex");
 
 		// testing simple values inc tax
-		assertEquals("assuming discount each inc", Money.ZERO, mil.getDiscountEachIncTax());
-		assertEquals("assuming price each inc", new Money("110"), mil.getPriceEachIncTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountEachIncTax(), "assuming discount each inc");
+		Assertions.assertEquals(new Money("110"), mil.getPriceEachIncTax(), "assuming price each inc");
 
 		// testing total values ex tax
-		assertEquals("assuming total price ex", new Money("100"), mil.getPriceTotalExTax());
-		assertEquals("assuming total discount ex", Money.ZERO, mil.getDiscountTotalExTax());
-		assertEquals("assuming total discounted price ex", new Money("100"), mil.getDiscountedPriceTotalExTax());
+		Assertions.assertEquals(new Money("100"), mil.getPriceTotalExTax(), "assuming total price ex");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountTotalExTax(), "assuming total discount ex");
+		Assertions.assertEquals(new Money("100"), mil.getDiscountedPriceTotalExTax(), "assuming total discounted price ex");
 
 		// testing total values inc tax
-		assertEquals("assuming total price inc", new Money("110"), mil.getPriceTotalIncTax());
-		assertEquals("assuming total discount inc", Money.ZERO, mil.getDiscountTotalIncTax());
+		Assertions.assertEquals(new Money("110"), mil.getPriceTotalIncTax(), "assuming total price inc");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountTotalIncTax(), "assuming total discount inc");
 
 		// testing tax values
-		assertEquals("assuming total tax on discounted price", new Money("10"), mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming tax on each discounted price", new Money("10"), mil.getDiscountedTaxOnPriceEach());
-		assertEquals("assuming total tax on discounted price", new Money("10"), mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming total tax", new Money("10"), mil.getTotalTax());
+		Assertions.assertEquals(new Money("10"), mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(new Money("10"), mil.getDiscountedTaxOnPriceEach(), "assuming tax on each discounted price");
+		Assertions.assertEquals(new Money("10"), mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(new Money("10"), mil.getTotalTax(), "assuming total tax");
 
-		assertEquals("assuming final price to pay", new Money("110"), mil.getFinalPriceToPayIncTax());
+		Assertions.assertEquals(new Money("110"), mil.getFinalPriceToPayIncTax(), "assuming final price to pay");
 	}
 
 	@Test
@@ -109,29 +110,29 @@ public class InvoicePayableLineInterfaceTest {
 		MockInvoiceLine mil = new MockInvoiceLine(new Money("100"), new Money("10"), BigDecimal.ONE, new BigDecimal("0.1"));
 
 		// testing simple values ex tax
-		assertEquals("assuming discount each ex", new Money("10"), mil.getDiscountEachExTax());
-		assertEquals("assuming price each ex", new Money("100"), mil.getPriceEachExTax());
+		Assertions.assertEquals(new Money("10"), mil.getDiscountEachExTax(), "assuming discount each ex");
+		Assertions.assertEquals(new Money("100"), mil.getPriceEachExTax(), "assuming price each ex");
 
 		// testing simple values inc tax
-		assertEquals("assuming discount each inc", new Money("11"), mil.getDiscountEachIncTax());
-		assertEquals("assuming price each inc", new Money("110"), mil.getPriceEachIncTax());
+		Assertions.assertEquals(new Money("11"), mil.getDiscountEachIncTax(), "assuming discount each inc");
+		Assertions.assertEquals(new Money("110"), mil.getPriceEachIncTax(), "assuming price each inc");
 
 		// testing total values ex tax
-		assertEquals("assuming total price ex", new Money("100"), mil.getPriceTotalExTax());
-		assertEquals("assuming total discount ex", new Money("10"), mil.getDiscountTotalExTax());
-		assertEquals("assuming total discounted price ex", new Money("90"), mil.getDiscountedPriceTotalExTax());
+		Assertions.assertEquals(new Money("100"), mil.getPriceTotalExTax(), "assuming total price ex");
+		Assertions.assertEquals(new Money("10"), mil.getDiscountTotalExTax(), "assuming total discount ex");
+		Assertions.assertEquals(new Money("90"), mil.getDiscountedPriceTotalExTax(), "assuming total discounted price ex");
 
 		// testing total values inc tax
-		assertEquals("assuming total price inc", new Money("110"), mil.getPriceTotalIncTax());
-		assertEquals("assuming total discount inc", new Money("11"), mil.getDiscountTotalIncTax());
+		Assertions.assertEquals(new Money("110"), mil.getPriceTotalIncTax(), "assuming total price inc");
+		Assertions.assertEquals(new Money("11"), mil.getDiscountTotalIncTax(), "assuming total discount inc");
 
 		// testing tax values
-		assertEquals("assuming total tax on discounted price", new Money("9"), mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming tax on each discounted price", new Money("10"), mil.getDiscountedTaxOnPriceEach());
-		assertEquals("assuming total tax on discounted price", new Money("9"), mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming total tax", new Money("9"), mil.getTotalTax());
+		Assertions.assertEquals(new Money("9"), mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(new Money("10"), mil.getDiscountedTaxOnPriceEach(), "assuming tax on each discounted price");
+		Assertions.assertEquals(new Money("9"), mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(new Money("9"), mil.getTotalTax(), "assuming total tax");
 
-		assertEquals("assuming final price to pay", new Money("99"), mil.getFinalPriceToPayIncTax());
+		Assertions.assertEquals(new Money("99"), mil.getFinalPriceToPayIncTax(), "assuming final price to pay");
 	}
 
 	@Test
@@ -140,29 +141,29 @@ public class InvoicePayableLineInterfaceTest {
 		MockInvoiceLine mil = new MockInvoiceLine(new Money("100"), new Money("10"), new BigDecimal("3"), new BigDecimal("0.1"));
 
 		// testing simple values ex tax
-		assertEquals("assuming discount each ex", new Money("10"), mil.getDiscountEachExTax());
-		assertEquals("assuming price each ex", new Money("100"), mil.getPriceEachExTax());
+		Assertions.assertEquals(new Money("10"), mil.getDiscountEachExTax(), "assuming discount each ex");
+		Assertions.assertEquals(new Money("100"), mil.getPriceEachExTax(), "assuming price each ex");
 
 		// testing simple values inc tax
-		assertEquals("assuming discount each inc", new Money("11"), mil.getDiscountEachIncTax());
-		assertEquals("assuming price each inc", new Money("110"), mil.getPriceEachIncTax());
+		Assertions.assertEquals(new Money("11"), mil.getDiscountEachIncTax(), "assuming discount each inc");
+		Assertions.assertEquals(new Money("110"), mil.getPriceEachIncTax(), "assuming price each inc");
 
 		// testing total values ex tax
-		assertEquals("assuming total price ex", new Money("300"), mil.getPriceTotalExTax());
-		assertEquals("assuming total discount ex", new Money("30"), mil.getDiscountTotalExTax());
-		assertEquals("assuming total discounted price ex", new Money("270"), mil.getDiscountedPriceTotalExTax());
+		Assertions.assertEquals(new Money("300"), mil.getPriceTotalExTax(), "assuming total price ex");
+		Assertions.assertEquals(new Money("30"), mil.getDiscountTotalExTax(), "assuming total discount ex");
+		Assertions.assertEquals(new Money("270"), mil.getDiscountedPriceTotalExTax(), "assuming total discounted price ex");
 
 		// testing total values inc tax
-		assertEquals("assuming total price inc", new Money("330"), mil.getPriceTotalIncTax());
-		assertEquals("assuming total discount inc", new Money("33"), mil.getDiscountTotalIncTax());
+		Assertions.assertEquals(new Money("330"), mil.getPriceTotalIncTax(), "assuming total price inc");
+		Assertions.assertEquals(new Money("33"), mil.getDiscountTotalIncTax(), "assuming total discount inc");
 
 		// testing tax values
-		assertEquals("assuming total tax on discounted price", new Money("27"), mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming tax on each discounted price", new Money("10"), mil.getDiscountedTaxOnPriceEach());
-		assertEquals("assuming total tax on discounted price", new Money("27"), mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming total tax", new Money("27"), mil.getTotalTax());
+		Assertions.assertEquals(new Money("27"), mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(new Money("10"), mil.getDiscountedTaxOnPriceEach(), "assuming tax on each discounted price");
+		Assertions.assertEquals(new Money("27"), mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(new Money("27"), mil.getTotalTax(), "assuming total tax");
 
-		assertEquals("assuming final price to pay", new Money("297"), mil.getFinalPriceToPayIncTax());
+		Assertions.assertEquals(new Money("297"), mil.getFinalPriceToPayIncTax(), "assuming final price to pay");
 	}
 
 	@Test
@@ -171,29 +172,29 @@ public class InvoicePayableLineInterfaceTest {
 		MockInvoiceLine mil = new MockInvoiceLine(new Money("100"), Money.ZERO, null, BigDecimal.ZERO);
 
 		// testing simple values ex tax
-		assertEquals("assuming discount each ex", Money.ZERO, mil.getDiscountEachExTax());
-		assertEquals("assuming price each ex", new Money("100"), mil.getPriceEachExTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountEachExTax(), "assuming discount each ex");
+		Assertions.assertEquals(new Money("100"), mil.getPriceEachExTax(), "assuming price each ex");
 
 		// testing simple values inc tax
-		assertEquals("assuming discount each inc", Money.ZERO, mil.getDiscountEachIncTax());
-		assertEquals("assuming price each inc", new Money("100"), mil.getPriceEachIncTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountEachIncTax(), "assuming discount each inc");
+		Assertions.assertEquals(new Money("100"), mil.getPriceEachIncTax(), "assuming price each inc");
 
 		// testing total values ex tax
-		assertEquals("assuming total price ex", Money.ZERO, mil.getPriceTotalExTax());
-		assertEquals("assuming total discount ex", Money.ZERO, mil.getDiscountTotalExTax());
-		assertEquals("assuming total discounted price ex", Money.ZERO, mil.getDiscountedPriceTotalExTax());
+		Assertions.assertEquals(Money.ZERO, mil.getPriceTotalExTax(), "assuming total price ex");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountTotalExTax(), "assuming total discount ex");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedPriceTotalExTax(), "assuming total discounted price ex");
 
 		// testing total values inc tax
-		assertEquals("assuming total price inc", Money.ZERO, mil.getPriceTotalIncTax());
-		assertEquals("assuming total discount inc", Money.ZERO, mil.getDiscountTotalIncTax());
+		Assertions.assertEquals(Money.ZERO, mil.getPriceTotalIncTax(), "assuming total price inc");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountTotalIncTax(), "assuming total discount inc");
 
 		// testing tax values
-		assertEquals("assuming total tax on discounted price", Money.ZERO, mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming tax on each discounted price", Money.ZERO, mil.getDiscountedTaxOnPriceEach());
-		assertEquals("assuming total tax on discounted price", Money.ZERO, mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming total tax", Money.ZERO, mil.getTotalTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedTaxOnPriceEach(), "assuming tax on each discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getTotalTax(), "assuming total tax");
 
-		assertEquals("assuming final price to pay", Money.ZERO, mil.getFinalPriceToPayIncTax());
+		Assertions.assertEquals(Money.ZERO, mil.getFinalPriceToPayIncTax(), "assuming final price to pay");
 	}
 
 	@Test
@@ -202,29 +203,29 @@ public class InvoicePayableLineInterfaceTest {
 		MockInvoiceLine mil = new MockInvoiceLine(new Money("100"), null, new BigDecimal("3"), new BigDecimal("0.1"));
 
 		// testing simple values ex tax
-		assertNull("assuming discount each ex", mil.getDiscountEachExTax());
-		assertEquals("assuming price each ex", new Money("100"), mil.getPriceEachExTax());
+		Assertions.assertNull(mil.getDiscountEachExTax(), "assuming discount each ex");
+		Assertions.assertEquals(new Money("100"), mil.getPriceEachExTax(), "assuming price each ex");
 
 		// testing simple values inc tax
-		assertEquals("assuming discount each inc", Money.ZERO, mil.getDiscountEachIncTax());
-		assertEquals("assuming price each inc", new Money("110"), mil.getPriceEachIncTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountEachIncTax(), "assuming discount each inc");
+		Assertions.assertEquals(new Money("110"), mil.getPriceEachIncTax(), "assuming price each inc");
 
 		// testing total values ex tax
-		assertEquals("assuming total price ex", new Money("300"), mil.getPriceTotalExTax());
-		assertEquals("assuming total discount ex", Money.ZERO, mil.getDiscountTotalExTax());
-		assertEquals("assuming total discounted price ex", new Money("300"), mil.getDiscountedPriceTotalExTax());
+		Assertions.assertEquals(new Money("300"), mil.getPriceTotalExTax(), "assuming total price ex");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountTotalExTax(), "assuming total discount ex");
+		Assertions.assertEquals(new Money("300"), mil.getDiscountedPriceTotalExTax(), "assuming total discounted price ex");
 
 		// testing total values inc tax
-		assertEquals("assuming total price inc", new Money("330"), mil.getPriceTotalIncTax());
-		assertEquals("assuming total discount inc", Money.ZERO, mil.getDiscountTotalIncTax());
+		Assertions.assertEquals(new Money("330"), mil.getPriceTotalIncTax(), "assuming total price inc");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountTotalIncTax(), "assuming total discount inc");
 
 		// testing tax values
-		assertEquals("assuming total tax on discounted price", new Money("30"), mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming tax on each discounted price", new Money("10"), mil.getDiscountedTaxOnPriceEach());
-		assertEquals("assuming total tax on discounted price", new Money("30"), mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming total tax", new Money("30"), mil.getTotalTax());
+		Assertions.assertEquals(new Money("30"), mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(new Money("10"), mil.getDiscountedTaxOnPriceEach(), "assuming tax on each discounted price");
+		Assertions.assertEquals(new Money("30"), mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(new Money("30"), mil.getTotalTax(), "assuming total tax");
 
-		assertEquals("assuming final price to pay", new Money("330"), mil.getFinalPriceToPayIncTax());
+		Assertions.assertEquals(new Money("330"), mil.getFinalPriceToPayIncTax(), "assuming final price to pay");
 	}
 
 	@Test
@@ -233,29 +234,29 @@ public class InvoicePayableLineInterfaceTest {
 		MockInvoiceLine mil = new MockInvoiceLine(null, new Money("10"), new BigDecimal("3"), new BigDecimal("0.1"));
 
 		// testing simple values ex tax
-		assertEquals("assuming discount each ex", new Money("10"), mil.getDiscountEachExTax());
-		assertNull("assuming price each ex", mil.getPriceEachExTax());
+		Assertions.assertEquals(new Money("10"), mil.getDiscountEachExTax(), "assuming discount each ex");
+		Assertions.assertNull(mil.getPriceEachExTax(), "assuming price each ex");
 
 		// testing simple values inc tax
-		assertEquals("assuming discount each inc", new Money("11"), mil.getDiscountEachIncTax());
-		assertEquals("assuming price each inc", Money.ZERO, mil.getPriceEachIncTax());
+		Assertions.assertEquals(new Money("11"), mil.getDiscountEachIncTax(), "assuming discount each inc");
+		Assertions.assertEquals(Money.ZERO, mil.getPriceEachIncTax(), "assuming price each inc");
 
 		// testing total values ex tax
-		assertEquals("assuming total price ex", Money.ZERO, mil.getPriceTotalExTax());
-		assertEquals("assuming total discount ex", new Money("30"), mil.getDiscountTotalExTax());
-		assertEquals("assuming total discounted price ex", new Money("-30"), mil.getDiscountedPriceTotalExTax());
+		Assertions.assertEquals(Money.ZERO, mil.getPriceTotalExTax(), "assuming total price ex");
+		Assertions.assertEquals(new Money("30"), mil.getDiscountTotalExTax(), "assuming total discount ex");
+		Assertions.assertEquals(new Money("-30"), mil.getDiscountedPriceTotalExTax(), "assuming total discounted price ex");
 
 		// testing total values inc tax
-		assertEquals("assuming total price inc", Money.ZERO, mil.getPriceTotalIncTax());
-		assertEquals("assuming total discount inc", new Money("33"), mil.getDiscountTotalIncTax());
+		Assertions.assertEquals(Money.ZERO, mil.getPriceTotalIncTax(), "assuming total price inc");
+		Assertions.assertEquals(new Money("33"), mil.getDiscountTotalIncTax(), "assuming total discount inc");
 
 		// testing tax values
-		assertEquals("assuming total tax on discounted price", new Money("-3"), mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming tax on each discounted price", Money.ZERO, mil.getDiscountedTaxOnPriceEach());
-		assertEquals("assuming total tax on discounted price", new Money("-3"), mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming total tax", new Money("-3"), mil.getTotalTax());
+		Assertions.assertEquals(new Money("-3"), mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedTaxOnPriceEach(), "assuming tax on each discounted price");
+		Assertions.assertEquals(new Money("-3"), mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(new Money("-3"), mil.getTotalTax(), "assuming total tax");
 
-		assertEquals("assuming final price to pay", new Money("-33"), mil.getFinalPriceToPayIncTax());
+		Assertions.assertEquals(new Money("-33"), mil.getFinalPriceToPayIncTax(), "assuming final price to pay");
 	}
 
 	@Test
@@ -264,29 +265,29 @@ public class InvoicePayableLineInterfaceTest {
 		MockInvoiceLine mil = new MockInvoiceLine(new Money("100"), new Money("10"), new BigDecimal("3"), null);
 
 		// testing simple values ex tax
-		assertEquals("assuming discount each ex", new Money("10"), mil.getDiscountEachExTax());
-		assertEquals("assuming price each ex", new Money("100"), mil.getPriceEachExTax());
+		Assertions.assertEquals(new Money("10"), mil.getDiscountEachExTax(), "assuming discount each ex");
+		Assertions.assertEquals(new Money("100"), mil.getPriceEachExTax(), "assuming price each ex");
 
 		// testing simple values inc tax
-		assertEquals("assuming discount each inc", Money.ZERO, mil.getDiscountEachIncTax());
-		assertEquals("assuming price each inc", Money.ZERO, mil.getPriceEachIncTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountEachIncTax(), "assuming discount each inc");
+		Assertions.assertEquals(Money.ZERO, mil.getPriceEachIncTax(), "assuming price each inc");
 
 		// testing total values ex tax
-		assertEquals("assuming total price ex", new Money("300"), mil.getPriceTotalExTax());
-		assertEquals("assuming total discount ex", Money.ZERO, mil.getDiscountTotalExTax());
-		assertEquals("assuming total discounted price ex", new Money("300"), mil.getDiscountedPriceTotalExTax());
+		Assertions.assertEquals(new Money("300"), mil.getPriceTotalExTax(), "assuming total price ex");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountTotalExTax(), "assuming total discount ex");
+		Assertions.assertEquals(new Money("300"), mil.getDiscountedPriceTotalExTax(), "assuming total discounted price ex");
 
 		// testing total values inc tax
-		assertEquals("assuming total price inc", Money.ZERO, mil.getPriceTotalIncTax());
-		assertEquals("assuming total discount inc", Money.ZERO, mil.getDiscountTotalIncTax());
+		Assertions.assertEquals(Money.ZERO, mil.getPriceTotalIncTax(), "assuming total price inc");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountTotalIncTax(), "assuming total discount inc");
 
 		// testing tax values
-		assertEquals("assuming total tax on discounted price", Money.ZERO, mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming tax on each discounted price", Money.ZERO, mil.getDiscountedTaxOnPriceEach());
-		assertEquals("assuming total tax on discounted price", Money.ZERO, mil.getDiscountedPriceTotalTax());
-		assertEquals("assuming total tax", Money.ZERO, mil.getTotalTax());
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedTaxOnPriceEach(), "assuming tax on each discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getDiscountedPriceTotalTax(), "assuming total tax on discounted price");
+		Assertions.assertEquals(Money.ZERO, mil.getTotalTax(), "assuming total tax");
 
-		assertEquals("assuming final price to pay", Money.ZERO, mil.getFinalPriceToPayIncTax());
+		Assertions.assertEquals(Money.ZERO, mil.getFinalPriceToPayIncTax(), "assuming final price to pay");
 	}
 
 }

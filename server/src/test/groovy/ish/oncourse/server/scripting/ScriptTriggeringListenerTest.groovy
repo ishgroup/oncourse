@@ -13,12 +13,12 @@ import org.apache.cayenne.map.LifecycleEvent
 import org.apache.cayenne.query.SQLTemplate
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.junit.jupiter.api.Test
+import org.quartz.JobKey
+import org.quartz.SchedulerException
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
-import org.junit.Test
-import org.quartz.JobKey
-import org.quartz.SchedulerException
 
 /**
  * Created by Artem on 12/10/2016.

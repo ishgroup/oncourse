@@ -4,38 +4,32 @@
 package ish.oncourse.server.cayenne
 
 import ish.CayenneIshTestCase
-import ish.common.types.AccountTransactionType
-import ish.common.types.CreditCardType
-import ish.common.types.PaymentSource
-import ish.common.types.PaymentStatus
-import ish.common.types.VoucherPaymentStatus
+import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.common.BankingType
 import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.server.ICayenneService
 import ish.util.AccountUtil
 import ish.util.PaymentMethodUtil
-import static junit.framework.TestCase.assertEquals
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
-import static org.testng.Assert.assertFalse
-import static org.testng.Assert.assertNotNull
-import static org.testng.Assert.assertNull
-import static org.testng.Assert.assertTrue
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
+
+import static junit.framework.TestCase.assertEquals
+import static org.testng.Assert.*
 
 class TransactionsCreationServerTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)

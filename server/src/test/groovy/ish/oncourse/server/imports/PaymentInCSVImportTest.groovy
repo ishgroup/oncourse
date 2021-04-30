@@ -16,16 +16,14 @@ import org.apache.commons.io.IOUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-/**
- * Created by anarut on 7/6/17.
- */
+import static org.junit.Assert.assertEquals
+
 class PaymentInCSVImportTest extends CayenneIshTestCase {
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
         wipeTables()
 

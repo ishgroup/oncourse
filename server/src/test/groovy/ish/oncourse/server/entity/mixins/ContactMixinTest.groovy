@@ -2,9 +2,10 @@ package ish.oncourse.server.entity.mixins
 
 import ish.IshTestCase
 import ish.oncourse.server.cayenne.Contact
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+
+import static org.junit.Assert.assertEquals
 
 /**
  * Created by anarut on 7/6/16.

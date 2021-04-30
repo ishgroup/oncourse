@@ -7,19 +7,16 @@ import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.print.PrintWorker
 import ish.oncourse.server.print.ReportDataSource
 import ish.print.PrintRequest
-import net.sf.jasperreports.engine.JRException
-import net.sf.jasperreports.engine.JasperCompileManager
-import net.sf.jasperreports.engine.JasperFillManager
-import net.sf.jasperreports.engine.JasperPrint
-import net.sf.jasperreports.engine.JasperReport
+import net.sf.jasperreports.engine.*
 import net.sf.jasperreports.engine.export.JRPdfExporter
 import net.sf.jasperreports.export.ExporterInput
 import net.sf.jasperreports.export.OutputStreamExporterOutput
 import net.sf.jasperreports.export.SimpleExporterInput
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput
 import org.apache.commons.io.IOUtils
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
@@ -28,7 +25,7 @@ class CertificateAccendanceTest {
     private Report report
     private PrintWorker printWorker
 
-    @Before
+    @BeforeEach
     void before () throws IOException {
         InputStream is = CertificateAccendanceTest.class.getClassLoader().getResourceAsStream("reports/Certificate/CertificateAttendanceReport.jrxml")
         report = mock(Report.class)

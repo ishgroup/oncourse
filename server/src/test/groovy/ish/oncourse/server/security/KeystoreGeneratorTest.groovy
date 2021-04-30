@@ -8,16 +8,13 @@ import ish.IshTestCase
 import org.apache.commons.lang3.time.DateUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.fail
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.security.KeyStore
 import java.security.cert.X509Certificate
+
+import static org.junit.Assert.*
 
 /**
  */
@@ -52,7 +49,7 @@ class KeystoreGeneratorTest extends IshTestCase {
 			"-storetype",
 			"jks"]
 
-    @Before
+    @BeforeEach
     void setup() {
 		deleteKeystoreFile()
     }

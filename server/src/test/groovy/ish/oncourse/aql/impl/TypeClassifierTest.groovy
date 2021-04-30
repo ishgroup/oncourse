@@ -1,20 +1,10 @@
 package ish.oncourse.aql.impl
 
-import static ish.oncourse.aql.impl.TypeClassifier.BOOLEAN
-import static ish.oncourse.aql.impl.TypeClassifier.DATE
-import static ish.oncourse.aql.impl.TypeClassifier.ENUM
-import static ish.oncourse.aql.impl.TypeClassifier.NUMERIC
-import static ish.oncourse.aql.impl.TypeClassifier.PERSISTENT
-import static ish.oncourse.aql.impl.TypeClassifier.STRING
-import static ish.oncourse.aql.impl.TypeClassifier.UNKNOWN
-import static ish.oncourse.aql.impl.TypeClassifier.of
-import org.apache.cayenne.BaseDataObject
-import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.ObjectId
-import org.apache.cayenne.Persistent
-import org.apache.cayenne.PersistentObject
+import org.apache.cayenne.*
+import org.junit.jupiter.api.Test
+
+import static ish.oncourse.aql.impl.TypeClassifier.*
 import static org.junit.Assert.assertEquals
-import org.junit.Test
 
 class TypeClassifierTest {
 

@@ -6,13 +6,7 @@ package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
-import ish.common.types.AccountType
-import ish.common.types.AttendanceType
-import ish.common.types.DeliveryMode
-import ish.common.types.EnrolmentStatus
-import ish.common.types.OutcomeStatus
-import ish.common.types.PaymentSource
-import ish.common.types.StudyReason
+import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
@@ -26,20 +20,17 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import static org.junit.Assert.*
 
-/**
- */
 @CompileStatic
 class EnrolmentTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
 
-
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)

@@ -17,14 +17,13 @@ import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.DiscountCourseClass
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
-import org.apache.commons.lang3.time.DateUtils
-import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
-import org.junit.Before
-import org.junit.Test
 
 /**
  */
@@ -33,7 +32,7 @@ class ClassCostUtilTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 		wipeTables()
 

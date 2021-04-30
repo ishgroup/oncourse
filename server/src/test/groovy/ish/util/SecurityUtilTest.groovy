@@ -1,14 +1,14 @@
 package ish.util
 
-import ish.IshTestCase
+
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.junit.jupiter.api.Test
+
+import java.util.regex.Pattern
 
 import static ish.util.SecurityUtil.VOUCHER_CODE_LENGTH
 import static junit.framework.TestCase.*
-import org.junit.Test
-
-import java.util.regex.Pattern
 
 class SecurityUtilTest  {
 	private static final String ILLEGAL_VOUCHER_CODE_CHARACTERS = "[^01LlOoIi]+"

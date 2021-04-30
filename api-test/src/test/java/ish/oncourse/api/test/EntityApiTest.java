@@ -2,10 +2,8 @@ package ish.oncourse.api.test;
 
 import com.intuit.karate.Results;
 import com.intuit.karate.Runner;
-import com.intuit.karate.junit4.Karate;
-import cucumber.api.CucumberOptions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,6 +20,6 @@ public class EntityApiTest {
                 "classpath:ish/oncourse/api/test/removeEntity.feature",
                 "classpath:ish/oncourse/api/test/removeEntityById.feature",
                 "classpath:ish/oncourse/api/test/signIn.feature").tags("~@ignore").parallel(1);
-        assertEquals(results.getErrorMessages(), results.getFailCount(), 0);
+        Assertions.assertEquals(results.getFailCount(), 0, results.getErrorMessages());
     }
 }

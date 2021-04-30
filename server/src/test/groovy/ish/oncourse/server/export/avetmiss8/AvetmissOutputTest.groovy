@@ -3,8 +3,9 @@
  */
 package ish.oncourse.server.export.avetmiss8
 
+import org.junit.jupiter.api.Test
+
 import static ish.oncourse.server.export.avetmiss8.AvetmissOutput.avetmissPostCodeID
-import org.junit.Test
 
 class AvetmissOutputTest {
 	@Test

@@ -4,27 +4,11 @@
 package ish.oncourse.server.lifecycle
 
 import ish.CayenneIshTestCase
-import ish.common.types.EnrolmentStatus
-import ish.common.types.PaymentSource
-import ish.common.types.PaymentStatus
-import ish.common.types.ProductStatus
-import ish.common.types.StudyReason
+import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.MembershipProduct
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.cayenne.VoucherProduct
+import ish.oncourse.server.cayenne.*
 import ish.util.AccountUtil
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
@@ -33,19 +17,20 @@ import org.apache.cayenne.query.SelectById
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNull
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNull
 
 class InvoiceLineInitHelperTest extends CayenneIshTestCase {
 
 	private ICayenneService cayenneService
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
 
 		wipeTables()

@@ -15,17 +15,16 @@ import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.server.ICayenneService
 import ish.util.PaymentMethodUtil
 import ish.validation.ValidationFailure
-import static junit.framework.Assert.assertTrue
-import static junit.framework.Assert.fail
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.validation.ValidationException
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotSame
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
+
+import static junit.framework.Assert.assertTrue
+import static junit.framework.Assert.fail
+import static org.junit.Assert.*
 
 class PaymentInTest extends CayenneIshTestCase {
 

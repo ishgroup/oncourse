@@ -1,7 +1,8 @@
 package ish.validation;
 
 import ish.oncourse.cayenne.StudentInterface;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
 
 import java.util.Calendar;
@@ -19,7 +20,7 @@ public class StudentValidatorTest {
 
         Map<String, StudentErrorCode> errorCodeMap = validateStudent(student);
 
-        assertEquals(0, errorCodeMap.size());
+        Assertions.assertEquals(0, errorCodeMap.size());
     }
 
     @Test
@@ -29,7 +30,7 @@ public class StudentValidatorTest {
 
         Map<String, StudentErrorCode> errorCodeMap = validateStudent(student);
 
-        assertEquals(1, errorCodeMap.size());
+        Assertions.assertEquals(1, errorCodeMap.size());
     }
 
     @Test
@@ -39,7 +40,7 @@ public class StudentValidatorTest {
 
         Map<String, StudentErrorCode> errorCodeMap = validateStudent(student);
 
-        assertEquals(1, errorCodeMap.size());
+        Assertions.assertEquals(1, errorCodeMap.size());
     }
 
     private Map<String, StudentErrorCode> validateStudent(StudentInterface student) {

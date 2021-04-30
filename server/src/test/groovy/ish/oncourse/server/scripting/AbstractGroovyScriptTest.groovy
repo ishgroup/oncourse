@@ -2,9 +2,10 @@ package ish.oncourse.server.scripting
 
 import ish.oncourse.server.cayenne.Script
 import org.apache.cayenne.access.DataContext
-import org.junit.Before
 import org.junit.Ignore
+import org.junit.jupiter.api.BeforeEach
 import org.mockito.Mock
+
 import static org.mockito.Mockito.when
 import static org.mockito.MockitoAnnotations.initMocks
 
@@ -23,7 +24,7 @@ abstract class AbstractGroovyScriptTest {
     @Mock
     Script script
 
-    @Before
+    @BeforeEach
     void before() {
         mockInjector = new MockInjector()
         mockInjector.init()

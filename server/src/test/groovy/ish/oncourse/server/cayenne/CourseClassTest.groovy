@@ -5,14 +5,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.CayenneIshTestCase
-import ish.common.types.AccountType
-import ish.common.types.AttendanceType
-import ish.common.types.ClassCostFlowType
-import ish.common.types.ClassCostRepetitionType
-import ish.common.types.CourseClassAttendanceType
-import ish.common.types.DeliveryMode
-import ish.common.types.DiscountType
-import ish.common.types.NodeType
+import ish.common.types.*
 import ish.duplicate.ClassDuplicationRequest
 import ish.math.Money
 import ish.math.MoneyRounding
@@ -21,25 +14,19 @@ import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.duplicate.DuplicateClassService
 import ish.util.AccountUtil
-import static junit.framework.Assert.assertEquals
-import static junit.framework.Assert.assertNull
-import static junit.framework.TestCase.assertFalse
-import static junit.framework.TestCase.assertNotNull
-import static junit.framework.TestCase.assertTrue
 import org.apache.cayenne.Cayenne
 import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.access.DataContext
-import org.apache.cayenne.query.ObjectIdQuery
-import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.Ordering
-import org.apache.cayenne.query.RefreshQuery
-import org.apache.cayenne.query.SelectQuery
-import org.apache.cayenne.query.SortOrder
+import org.apache.cayenne.query.*
 import org.apache.cxf.common.util.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.junit.jupiter.api.Test
+
+import static junit.framework.Assert.assertEquals
+import static junit.framework.Assert.assertNull
+import static junit.framework.TestCase.*
 import static org.junit.Assert.assertNotSame
-import org.junit.Test
 
 /**
  */

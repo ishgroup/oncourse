@@ -28,29 +28,18 @@ import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.fail
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.text.SimpleDateFormat
 
-/**
- */
+import static org.junit.Assert.*
+
 class InvoiceLineTest extends CayenneIshTestCase {
 	private static final Logger logger = LogManager.getLogger()
     private ICayenneService cayenneService
 
-//	private IAngelQueueService queueService;
-//
-//	private IAngelStubBuilder stubBuilder;
-//
-//	private PreferenceController pref;
-//
-//	private ITransactionStubBuilder transactionBuilder;
-
-	@Before
+	@BeforeEach
     void setup() throws Exception {
 		wipeTables()
 

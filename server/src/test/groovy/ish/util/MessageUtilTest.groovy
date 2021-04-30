@@ -11,13 +11,9 @@ import ish.oncourse.server.cayenne.MessagePerson
 import ish.oncourse.server.scripting.api.MessageReceived
 import org.apache.cayenne.access.DataContext
 import org.junit.After
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.fail
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
+import static org.junit.Assert.*
 
 class MessageUtilTest extends CayenneIshTestCase {
 

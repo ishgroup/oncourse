@@ -3,25 +3,12 @@
  */
 package ish.print
 
+import ish.print.transformations.*
+import org.junit.jupiter.api.Test
+
 import static ish.print.PrintTransformationsFactory.getPrintTransformationFor
-import ish.print.transformations.AccountAccountTransactionTransformation
-import ish.print.transformations.AccountTransactionTransformation
-import ish.print.transformations.BankingPaymentInterfaceTransformation
-import ish.print.transformations.ContactAccountTransactionTransformation
-import ish.print.transformations.CourseClassEnrolmentTransformation
-import ish.print.transformations.CourseClassOutcomeTransformation
-import ish.print.transformations.CourseClassSessionTransformation
-import ish.print.transformations.CourseClassTutorAttendanceTransformation
-import ish.print.transformations.DiscountDiscountTransformation
-import ish.print.transformations.PaymentInterfaceTransformation
-import ish.print.transformations.PayslipPayLineTransformation
-import ish.print.transformations.RoomSessionTransformation
-import ish.print.transformations.SiteSessionTransformation
-import ish.print.transformations.StatementLineReportTransformation
-import ish.print.transformations.TagContactTransformation
 import static org.apache.commons.lang3.StringUtils.EMPTY
 import static org.junit.Assert.assertEquals
-import org.junit.Test
 
 class PrintTransformationsFactoryTest {
 	@Test
