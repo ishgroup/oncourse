@@ -27,7 +27,8 @@ const chekcoutVoucherCodeColumns = "product.name,"
   + "redeemedCourseCount,"
   + "createdOn,"
   + "product.id,"
-  + "redeemableBy.id";
+  + "redeemableBy.id,"
+  + "status";
 
 const defaultVoucherColunmsMap = ({ id, values }): CheckoutDiscount => ({
   id: Number(id),
@@ -44,7 +45,8 @@ const defaultVoucherColunmsMap = ({ id, values }): CheckoutDiscount => ({
   courseIds: [],
   appliedValue: 0,
   availableValue: parseFloat(values[3]),
-  redeemableById: Number(values[9])
+  redeemableById: Number(values[9]),
+  statusValue: values[10]
 });
 
 const request: EpicUtils.Request = {
@@ -54,16 +56,24 @@ const request: EpicUtils.Request = {
     : EntityService.getPlainRecords(
       "Voucher",
       chekcoutVoucherCodeColumns,
-      `code is "${code}" and status is ACTIVE and expiryDate after today`,
-      100,
+      `code is "${code}"`,
+      null,
       0,
       "",
       true
     ).then(vouchers => {
     const vouchersItem = vouchers.rows.map(v => defaultVoucherColunmsMap(v as any))[0];
 
-    if (!vouchersItem) {
-      throw { message: "The code you have entered was incorrect or not available." };
+    if (!vouchersItem || !["Redeemed", "Expired", "Active"].includes(vouchersItem.statusValue)) {
+      throw { message: "The code you have entered was incorrect or not available" };
+    }
+
+    if (vouchersItem.statusValue === "Redeemed") {
+      throw { message: "The voucher code you have entered has already been redeemed" };
+    }
+
+    if (vouchersItem.statusValue === "Expired") {
+      throw { message: "The voucher code you have entered has expired and cannot be used" };
     }
 
     if (vouchersItem.redeemableById && checkout.summary.vouchers.some(sv => sv.redeemableById)) {
