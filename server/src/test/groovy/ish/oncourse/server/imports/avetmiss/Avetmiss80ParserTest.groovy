@@ -3,6 +3,11 @@ package ish.oncourse.server.imports.avetmiss
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.common.types.AvetmissStudentDisabilityType
+import ish.common.types.UsiStatus
+
+import static ish.common.types.AvetmissStudentEnglishProficiency.VERY_WELL
+import static ish.common.types.AvetmissStudentIndigenousStatus.NEITHER
+import static ish.common.types.AvetmissStudentLabourStatus.PART_TIME
 import ish.common.types.AvetmissStudentPriorEducation
 import ish.common.types.Gender
 import ish.oncourse.server.cayenne.Country
@@ -13,21 +18,14 @@ import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-import static ish.common.types.AvetmissStudentEnglishProficiency.VERY_WELL
-import static ish.common.types.AvetmissStudentIndigenousStatus.NEITHER
-import static ish.common.types.AvetmissStudentLabourStatus.PART_TIME
-import static ish.common.types.AvetmissStudentSchoolLevel.COMPLETED_YEAR_10
-import static org.mockito.Mockito.*
-
-@CompileStatic
 class Avetmiss80ParserTest {
-    private Language language = new Language()
-    private Country country = new Country()
+    private language
+    private country
 
 
     @CompileDynamic
     private Avetmiss80Parser getParser(String text) {
-        
+
         ObjectContext contextMock = mock(ObjectContext)
         AvetmissImportService parsersMock = mock(AvetmissImportService)
         when(parsersMock.parseNames("Castejon, Ed Karlvincent", 0))
@@ -42,11 +40,11 @@ class Avetmiss80ParserTest {
         return parser
     }
 
-    
+
     @Test
     void test() {
 
-        def text = "0000000205Castejon, Ed Karlvincent                                    102014M20111999625846511025204NNY1Manjimup                                          4YLJ9VMZU705                                                                                31             Crowea Street                                                                             "
+        def text = "0000000205Castejon, Ed Karlvincent                                    10M20111999625846511025204NNYManjimup                                          4YLJ9VMZU705                                                                                31             Crowea Street                                                                             "
 
         def parser = getParser(text)
         def result = parser.parse()
@@ -62,16 +60,17 @@ class Avetmiss80ParserTest {
                 suburb             : "Manjimup",
                 language           : language,
                 highestSchoolLevel : COMPLETED_YEAR_10,
-                yearSchoolCompleted: 2014,
                 indigenousStatus   : NEITHER,
                 labourForceStatus  : PART_TIME,
                 countryOfBirth     : country,
                 disabilityType     : AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION,
                 priorEducationCode : AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION,
                 isStillAtSchool    : true,
-                englishProficiency : VERY_WELL,
+                usi                : "4YLJ9VMZU7",
+                usiStatus          : UsiStatus.DEFAULT_NOT_SUPPLIED,
+                street             : "31, Crowea Street",
         ]
-        
+
         Assertions.assertEquals(expected, result,"Wrong values:" + expected*.key.findAll { expected[it] != result[it] })
     }
 }

@@ -26,7 +26,7 @@ import java.time.LocalDate
 @CompileStatic
 class AvetmissStudentImportTest extends CayenneIshTestCase {
 
-    
+
     @BeforeEach
     void setup() throws Exception {
         wipeTables()
@@ -35,7 +35,7 @@ class AvetmissStudentImportTest extends CayenneIshTestCase {
         dataPopulation.run()
     }
 
-    
+
     @Test
     void testImport() throws Exception {
         ImportService importService = injector.getInstance(ImportService.class)
