@@ -40,7 +40,7 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
         parameter.setKeyCode("ish.onCourse.import.update.avetmiss.student")
     }
 
-    
+
     @Test
     void updateNotStudent() {
         Contact notStudent = createAngieContact(context)
@@ -58,7 +58,7 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
         Assertions.assertNotNull(notStudent.getStudent(), "contact was not a student, after import it is")
     }
 
-    
+
     @Test
     void createStudentFromNat80Nat85ByImportUpdateScript() {
         Assertions.assertTrue(ObjectSelect.query(Contact).select(context).isEmpty(), "There are no contacts in DB before Import")
@@ -71,7 +71,7 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
     /**
      * Contact duplication case!
      */
-    
+
     @Test
     void updateStudentWithoutBirthdate() {
         Contact withoutBirthdate = createAngieContact(context)
@@ -89,7 +89,7 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
     /**
      * Contact duplication case!
      */
-    
+
     @Test
     void updateStudentWithoutEmail() {
         Contact withoutEmail = createAngieContact(context)
@@ -106,7 +106,7 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
      * we can change contact's name or/and surname
      * Condition: contact must be NEW (NOT exist in DB)
      */
-    
+
     @Test
     void changeNameViaImportForNewContact() {
         Assertions.assertTrue(ObjectSelect.query(Contact).select(context).isEmpty())
@@ -122,7 +122,7 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
      * Contact duplication case!
      * we CAN'T change contact's name or/and surname during update of existing contact
      */
-    
+
     @Test
     void changeNameViaImportForExistingContact() {
         createAngieContact(context)
@@ -140,7 +140,7 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
      * it was a case, where 2+ same CustomFieldTypes were created
      * case: nat80 contains first existing contact and 2+ new contacts, nat85 also contains 1+ new contacts
      */
-    
+
     @Test
     void oneCustomFieldTypeCreated() {
         createAngieContact(context)

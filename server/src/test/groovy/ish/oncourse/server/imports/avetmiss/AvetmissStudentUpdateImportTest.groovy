@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 class AvetmissStudentUpdateImportTest extends CayenneIshTestCase {
-    
+
     @BeforeEach
     void setup() throws Exception {
         wipeTables()
@@ -26,7 +26,7 @@ class AvetmissStudentUpdateImportTest extends CayenneIshTestCase {
         dataPopulation.run()
     }
 
-    
+
     @Test
     void test() throws IOException {
         ImportService importService = injector.getInstance(ImportService.class)
