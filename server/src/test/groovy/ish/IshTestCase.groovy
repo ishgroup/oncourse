@@ -9,7 +9,6 @@ import io.bootique.jdbc.DataSourceListener
 import io.bootique.jdbc.JdbcModule
 import io.bootique.jdbc.managed.ManagedDataSourceStarter
 import io.bootique.jdbc.tomcat.JdbcTomcatModule
-import io.bootique.test.junit.BQTestFactory
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.ICayenneService
@@ -29,6 +28,8 @@ import org.dbunit.database.IDatabaseConnection
 import org.dbunit.ext.mysql.MySqlDataTypeFactory
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.extension.RegisterExtension
 import org.reflections.Reflections
 
 import javax.sql.DataSource
@@ -55,11 +56,13 @@ abstract class IshTestCase {
 
     private static final Logger logger = LogManager.getLogger()
 
-    @ClassRule
-	public static BQTestFactory testFactory = new BQTestFactory()
+    @RegisterExtension
+	public static BootiqueTestFactory testFactory = new BootiqueTestFactory()
 
     @BeforeAll
     static void setupOnceRoot() throws Exception {
+        testFactory = new BootiqueTestFactory()
+
 		System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
         //set JRGroovy compiler as default for tests
 		new JRRuntimeConfig().config()
@@ -92,7 +95,7 @@ abstract class IshTestCase {
 
 //        url: jdbc:mariadb://localhost/angelTest_trunk?autocommit=true&useUnicode=true&characterEncoding=utf8
 
-        BQTestFactory.Builder builder = testFactory
+        BootiqueTestFactory.Builder builder = testFactory
                 .app(String.format("--config=classpath:%s", yamlTestConfig))
 				.module(AngelModule.class)
 				.module(JdbcModule.class)
