@@ -336,7 +336,7 @@ def import85(String data, Map<String, Student> importedStudents, ObjectContext c
 		aStudent.contact.workPhone = line.readString(20)
 		aStudent.contact.mobilePhone = line.readString(20)
 		String email = line.readString(80)
-		aStudent.contact.email = !isValidEmailAddress(email) ? email : ""
+		aStudent.contact.email = !isValidEmailAddress(email) ? email : null
 
 		// ------------------
 		// end of line
