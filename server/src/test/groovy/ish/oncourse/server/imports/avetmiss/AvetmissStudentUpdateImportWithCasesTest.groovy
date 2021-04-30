@@ -151,9 +151,9 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
     private void processImport(String nat80Name, String nat85Name) {
         Map<String, byte[]> data = new HashMap<>()
         data.put("avetmiss80", IOUtils.toByteArray(
-            ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/export/avetmiss8/import/" + nat80Name)))
+            ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/imports/avetmiss8/" + nat80Name)))
         data.put("avetmiss85", IOUtils.toByteArray(
-            ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/export/avetmiss8/import/" + nat85Name)))
+            ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/imports/avetmiss8/" + nat85Name)))
         parameter.setData(data)
         
         importService.performImport(parameter)
