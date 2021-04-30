@@ -217,8 +217,8 @@ const ScriptsForm = React.memo<Props>(props => {
     [values, viewMode],
   );
 
-  const addComponent = (componentName: ScriptComponentType) => {
-    dispatch(arrayInsert(form, "components", 0, getInitComponentBody(componentName)));
+  const addComponent = async (componentName: ScriptComponentType) => {
+    dispatch(arrayInsert(form, "components", 0, await getInitComponentBody(componentName)));
   };
 
   const addImport = e => {
