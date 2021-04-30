@@ -147,3 +147,41 @@ databaseChangeLog:
           "entityName": "EntityRelation",
           "selectQuery": "select id, willowId from EntityRelation"
         }
+  - changeSet:
+      id: 58-1
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - and:
+            - tableExists:
+                tableName: GradingType
+            - not:
+                - changeSetExecuted:
+                    id: 58-1
+                    author: rostislav
+                    changeLogFile: database/replication.yml
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.commercial.replication.upgrades.liquibase.change.AddToQueueRecords",
+          "entityName": "GradingType",
+          "selectQuery": "select id, willowId from GradingType"
+        }
+  - changeSet:
+      id: 58-2
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - and:
+            - tableExists:
+                tableName: GradingItem
+            - not:
+                - changeSetExecuted:
+                    id: 58-2
+                    author: rostislav
+                    changeLogFile: database/replication.yml
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.commercial.replication.upgrades.liquibase.change.AddToQueueRecords",
+          "entityName": "GradingItem",
+          "selectQuery": "select id, willowId from GradingItem"
+        }
