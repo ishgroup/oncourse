@@ -133,7 +133,7 @@ interface Props {
   openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
   handleSubmit?: any;
   onSave?: (id: number, script: Script, method: ApiMethods, viewMode: ScriptViewMode) => void;
-  onCreate?: any;
+  onCreate?: (script: Script, viewMode: ScriptViewMode) => void;
   onDelete?: any;
   formsState?: any;
   emailTemplates?: CommonListItem[];
@@ -212,10 +212,10 @@ const ScriptsForm = React.memo<Props>(props => {
         id: null,
         keyCode,
         name,
-      });
+      }, viewMode);
       onDialogClose();
     },
-    [values],
+    [values, viewMode],
   );
 
   const onValidateQuery = (isValid, input?) => {
@@ -292,7 +292,7 @@ const ScriptsForm = React.memo<Props>(props => {
       setDisableRouteConfirm(true);
 
       if (isNew) {
-        onCreate(valuesToSave);
+        onCreate(valuesToSave, viewMode);
         return;
       }
 
@@ -304,7 +304,7 @@ const ScriptsForm = React.memo<Props>(props => {
         onSave(valuesToSave.id, valuesToSave, "PUT", viewMode);
       }
     },
-    [formsState, isNew, isSystemTrigger, values],
+    [formsState, isNew, isSystemTrigger, values, viewMode],
   );
 
   const toogleViewMode = () => {
