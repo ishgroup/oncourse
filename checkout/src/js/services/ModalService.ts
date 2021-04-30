@@ -16,5 +16,5 @@ export interface ModalOptions {
   readonly height?: number;
   readonly showCloseButton?: boolean;
   readonly animation?: 'zoom' | 'fade' | 'flip' | 'door' | 'rotate' | 'slideUp' | 'slideDown' | 'slideLeft' | 'slideRight';
-  readonly duration?: string;
+  readonly duration?: number;
 }

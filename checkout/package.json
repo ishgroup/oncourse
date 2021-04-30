@@ -13,7 +13,7 @@
     "build:dev:watch": "webpack --debug --watch --env SOURCE_MAP=eval-source-map",
     "test": "jest --ci  --testResultsProcessor=jest-junit",
     "test:watch": "karma start ./karma.conf.js --auto-watch --no-single-run",
-    "start": "webpack serve --progress --open --config webpack.dev.config.js --entry ./src/js/app.ts  --content-base ./dev-server",
+    "start": "webpack serve --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx  --content-base ./dev-server",
     "start:dev": "webpack serve --progress --open --config webpack.dev.config.js --content-base ./dev-server",
     "start:dev:CheckoutApp": "webpack serve --progress --open --config webpack.dev.config.js --entry ./src/dev/checkout/CheckoutApp.tsx  --content-base ./dev-server",
     "start:dev:SummaryApp": "webpack serve --progress --open --config webpack.dev.config.js --entry ./src/dev/checkout/summary/SummaryApp.tsx  --content-base ./dev-server",

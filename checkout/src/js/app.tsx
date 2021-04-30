@@ -1,3 +1,4 @@
+import React from "react";
 import {CreateStore, RestoreState} from "./CreateStore";
 import {Bootstrap} from "./common/utils/Bootstrap";
 import {configLoader} from "./configLoader";
@@ -5,12 +6,16 @@ import {Level, Logger, LogMessage} from "./services/Logger";
 import {ConfigConstants} from "./config/ConfigConstants";
 import {WindowService} from "./services/WindowService";
 import {HTMLMarkers} from "./common/services/HTMLMarker";
-import "../scss/index.scss";
+import {render} from "react-dom";
 import {getPreferences} from "./common/actions/Actions";
 import {getCookie, setCookie} from "./common/utils/Cookie";
 import {v4 as uuid} from "uuid";
 import moment from "moment-timezone";
 import localforage from "localforage";
+import BrowserDetector from "./common/utils/Browser";
+import "../scss/index.scss";
+import {LegacyModal} from "./web/components/modal/LegacyModal";
+
 
 // Intersection Observer polyfill
 require('intersection-observer');
@@ -21,6 +26,35 @@ if (window["NodeList"] && !NodeList.prototype["forEach"]) {
 }
 
 const appStart = () => {
+  const isSupportedBrowser = new BrowserDetector().isSupported();
+
+  if (!isSupportedBrowser) {
+    const modalBody = document.createElement("div");
+    document.body.append(modalBody);
+
+    render(
+      <LegacyModal />,
+      modalBody
+    );
+
+    WindowService.get("modal").openModal({
+      animation: "slideUp",
+      content: '<div style="\n' +
+        '    padding: 40px;\n' +
+        '    font-size: 24px;\n' +
+        '">\n' +
+        '    <p style="\n' +
+        '    font-weight: bold;\n' +
+        '"> Your current browser is not supported</p>Please ensure you are using Internet Explorer 11 or an up to date version of Chrome, Firefox, Edge, Safari or Opera</div>',
+      duration: 600,
+      height: 400,
+      width: 1000.
+    });
+
+    return;
+  }
+
+
   setCookie(
     'clientTimezoneName',
     moment.tz.guess(true),

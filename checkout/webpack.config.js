@@ -33,7 +33,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
         'redux',
         'react-redux',
         'rxjs',
-        path.resolve(__dirname, 'src', 'js', 'app.ts')
+        path.resolve(__dirname, 'src', 'js', 'app.tsx')
       ]
     },
     output: {
