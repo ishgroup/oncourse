@@ -1,5 +1,4 @@
 // Entries from webpack.conf.js
-require("babel-polyfill");
 require("react");
 require("redux");
 require("react-redux");
