@@ -13,16 +13,16 @@ public class CommonPreferenceControllerTest {
 
 	@Test
 	public void testWrappingQuotationMarksPattern() {
-		Assertions.assertTrue(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"testWrapping\"").matches());
-		Assertions.assertTrue(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"test\"Wrapping\"").matches());
-		Assertions.assertTrue(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"test\"\"Wrapping\"").matches());
-		Assertions.assertTrue(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"\"").matches());
+		Assertions.Assertions.assertTrue(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"testWrapping\"").matches());
+		Assertions.Assertions.assertTrue(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"test\"Wrapping\"").matches());
+		Assertions.Assertions.assertTrue(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"test\"\"Wrapping\"").matches());
+		Assertions.Assertions.assertTrue(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"\"").matches());
 
-		Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("testWrapping\"").matches());
-		Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"testWrapping").matches());
-		Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("quote\"testWrapping\"").matches());
-		Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"testWrapping\"quote").matches());
-		Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("q\"testWrapping\"q").matches());
-		Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"\"test").matches());
+		Assertions.Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("testWrapping\"").matches());
+		Assertions.Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"testWrapping").matches());
+		Assertions.Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("quote\"testWrapping\"").matches());
+		Assertions.Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"testWrapping\"quote").matches());
+		Assertions.Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("q\"testWrapping\"q").matches());
+		Assertions.Assertions.assertFalse(CommonPreferenceController.WRAPPING_QUOTATION_MARKS.matcher("\"\"test").matches());
 	}
 }

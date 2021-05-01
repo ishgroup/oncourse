@@ -5,7 +5,7 @@
     <transactionDate>2013-02-01</transactionDate>
     <sourse>Invoice</sourse>
     <invoiceNumber>1</invoiceNumber>
-    <paymentType />
+    <paymentType/>
     <contactName>firstName3 lastName</contactName>
     <transactionDescription>invoice #1, firstName3 lastName</transactionDescription>
     <accountCode>01.24.2801.000/NV1CB0P01</accountCode>
@@ -15,7 +15,7 @@
     <amount>20.00</amount>
     <transactionDate>2013-02-01</transactionDate>
     <sourse>Payment in</sourse>
-    <invoiceNumber />
+    <invoiceNumber/>
     <paymentType>Credit card</paymentType>
     <contactName>firstName1 lastName</contactName>
     <transactionDescription>payment in, Credit card, firstName1 lastName</transactionDescription>
@@ -27,7 +27,7 @@
     <transactionDate>2013-02-01</transactionDate>
     <sourse>Invoice</sourse>
     <invoiceNumber>1</invoiceNumber>
-    <paymentType />
+    <paymentType/>
     <contactName>firstName3 lastName</contactName>
     <transactionDescription>invoice #1, firstName3 lastName</transactionDescription>
     <accountCode>01.24.2801.000/NV1CB0P01</accountCode>

@@ -13,10 +13,10 @@ public class PreferenceValidatorTest {
 
 	@Test
 	public void testAccountInvoiceTermsValidation() {
-		Assertions.assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(0));
-		Assertions.assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(7));
-		Assertions.assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(100));
-		Assertions.assertFalse(PreferenceValidator.isValidAccountInvoiceTerms(null));
-		Assertions.assertFalse(PreferenceValidator.isValidAccountInvoiceTerms(-30));
+		Assertions.Assertions.assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(0));
+		Assertions.Assertions.assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(7));
+		Assertions.Assertions.assertTrue(PreferenceValidator.isValidAccountInvoiceTerms(100));
+		Assertions.Assertions.assertFalse(PreferenceValidator.isValidAccountInvoiceTerms(null));
+		Assertions.Assertions.assertFalse(PreferenceValidator.isValidAccountInvoiceTerms(-30));
 	}
 }
