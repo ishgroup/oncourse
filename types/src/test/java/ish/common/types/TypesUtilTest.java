@@ -7,7 +7,7 @@ import java.math.BigInteger;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+
 
 public class TypesUtilTest {
 
@@ -21,18 +21,18 @@ public class TypesUtilTest {
 			mapM2.put(t.getDisplayName(), t);
 		}
 
-		assertEquals(mapM, mapM2);
+	Assertions.assertEquals(mapM, mapM2);
 
 		// check if the values are the same
 		Map<String, PaymentType> mapP = TypesUtil.getValuesAsMap(PaymentType.class);
-		assertEquals(mapP.size(), PaymentType.values().length);
+	Assertions.assertEquals(mapP.size(), PaymentType.values().length);
 
 		for (String s : mapP.keySet()) {
 			boolean valueFound = false;
 			for (PaymentType t : PaymentType.values()) {
 				valueFound = valueFound || t.equals(mapP.get(s));
 			}
-			assertTrue(valueFound);
+			Assertions.assertTrue(valueFound);
 		}
 	}
 
@@ -40,39 +40,39 @@ public class TypesUtilTest {
 	public void testFaultingDatabaseValues() {
 		// check matching value class
 		MessageType mt = TypesUtil.getEnumForDatabaseValue(MessageType.EMAIL.getDatabaseValue(), MessageType.class);
-		assertEquals(MessageType.EMAIL, mt);
+	Assertions.assertEquals(MessageType.EMAIL, mt);
 
 		// check string value class
 		mt = TypesUtil.getEnumForDatabaseValue(MessageType.EMAIL.getDatabaseValue() + "", MessageType.class);
-		assertEquals(MessageType.EMAIL, mt);
+	Assertions.assertEquals(MessageType.EMAIL, mt);
 
 		// check Long value class
 		mt = TypesUtil.getEnumForDatabaseValue(MessageType.EMAIL.getDatabaseValue().longValue(), MessageType.class);
-		assertEquals(MessageType.EMAIL, mt);
+	Assertions.assertEquals(MessageType.EMAIL, mt);
 
 		// check BigInteger value class
 		mt = TypesUtil.getEnumForDatabaseValue(BigInteger.valueOf(MessageType.EMAIL.getDatabaseValue().longValue()), MessageType.class);
-		assertEquals(MessageType.EMAIL, mt);
+	Assertions.assertEquals(MessageType.EMAIL, mt);
 
 		// check non existing enum value
 		mt = TypesUtil.getEnumForDatabaseValue(10000, MessageType.class);
-		assertNull(mt);
+		Assertions.assertNull(mt);
 
 		// check null value
 		mt = TypesUtil.getEnumForDatabaseValue(null, MessageType.class);
-		assertNull(mt);
+		Assertions.assertNull(mt);
 	}
 
 	@Test
 	public void testFaultingDisplayValues() {
 		MessageStatus ms = TypesUtil.getEnumForDisplayName(MessageStatus.QUEUED.getDisplayName(), MessageStatus.class);
-		assertEquals(MessageStatus.QUEUED, ms);
+	Assertions.assertEquals(MessageStatus.QUEUED, ms);
 
 		ms = TypesUtil.getEnumForDisplayName("invalid value", MessageStatus.class);
-		assertNull(ms);
+		Assertions.assertNull(ms);
 
 		ms = TypesUtil.getEnumForDisplayName(null, MessageStatus.class);
-		assertNull(ms);
+		Assertions.assertNull(ms);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

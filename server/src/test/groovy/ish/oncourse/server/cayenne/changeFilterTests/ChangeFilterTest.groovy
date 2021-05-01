@@ -3,6 +3,8 @@
  */
 package ish.oncourse.server.cayenne.changeFilterTests
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.DoublePrefetchTest
@@ -11,13 +13,15 @@ import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.BeforeEach
 
+@CompileStatic
 abstract class ChangeFilterTest extends CayenneIshTestCase {
 
-	protected ICayenneService cayenneService
+    protected ICayenneService cayenneService
 
+    
     @BeforeEach
     void setup() throws Exception {
-		wipeTables()
+        wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
         InputStream st = DoublePrefetchTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/ChangeFilterTestDataSet.xml")

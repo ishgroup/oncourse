@@ -4,6 +4,7 @@
  */
 package ish.util
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.payable.PayableLineInterface
 import ish.common.types.*
@@ -18,23 +19,23 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
+import static org.junit.jupiter.api.Assertions.assertEquals
 
-import static org.junit.Assert.*
 
-/**
- */
+@CompileStatic
 class InvoiceUtilTest extends CayenneIshTestCase {
 
-	private static final Logger logger = LogManager.getLogger()
+    private static final Logger logger = LogManager.getLogger()
 
     private static int codeSequence = 0
 
     @Test
     void testNewPaymentLineForInvoiceAndPayment() {
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Account account = newContext.newObject(Account.class)
         account.setType(AccountType.ASSET)
@@ -48,47 +49,47 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         PaymentInLine pInLine = (PaymentInLine) InvoiceUtil.paymentLineForInvoiceAndPayment(pIn, invoice)
         PaymentOutLine pOutLine = (PaymentOutLine) InvoiceUtil.paymentLineForInvoiceAndPayment(pOut, invoice)
 
-        assertEquals("Checking the payment line type", PaymentInLine.class, pInLine.getClass())
-        assertEquals("Checking the payment in", pIn, pInLine.getPaymentIn())
-        assertEquals("Checking the invoice", invoice, pInLine.getInvoice())
-        assertEquals("Checking the account", account, pInLine.getAccountOut())
+        assertEquals(PaymentInLine.class, pInLine.getClass(), "Checking the payment line type")
+        assertEquals(pIn, pInLine.getPaymentIn(), "Checking the payment in")
+        assertEquals(invoice, pInLine.getInvoice(), "Checking the invoice")
+        assertEquals(account, pInLine.getAccountOut(), "Checking the account")
 
-        assertEquals("Checking the payment line type", PaymentOutLine.class, pOutLine.getClass())
-        assertEquals("Checking the payment out", pOut, pOutLine.getPaymentOut())
-        assertEquals("Checking the invoice", invoice, pOutLine.getInvoice())
-        assertEquals("Checking the account", account, pOutLine.getAccountIn())
+        assertEquals(PaymentOutLine.class, pOutLine.getClass(), "Checking the payment line type")
+        assertEquals(pOut, pOutLine.getPaymentOut(), "Checking the payment out")
+        assertEquals(invoice, pOutLine.getInvoice(), "Checking the invoice")
+        assertEquals(account, pOutLine.getAccountIn(), "Checking the account")
 
     }
 
-	@Test
+    @Test
     void testGetSuccessfulPaymentLines() {
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
         Invoice invoice = newContext.newObject(Invoice.class)
         List<? extends PaymentLineInterface> result = InvoiceUtil.getSuccessfulPaymentLines(invoice)
-        assertTrue("Empty list should be returned for invoice without linked payments", result.isEmpty())
+        Assertions.assertTrue(result.isEmpty(), "Empty list should be returned for invoice without linked payments")
 
         PaymentInLine pInLine = newContext.newObject(PaymentInLine.class)
         pInLine.setInvoice(invoice)
         result = InvoiceUtil.getSuccessfulPaymentLines(invoice)
-        assertTrue("Empty list should be returned for invoice without linked payments to paymentinline", result.isEmpty())
+        Assertions.assertTrue(result.isEmpty(), "Empty list should be returned for invoice without linked payments to paymentinline")
 
         PaymentIn pIn = newContext.newObject(PaymentIn.class)
         pInLine.setPaymentIn(pIn)
 
         result = InvoiceUtil.getSuccessfulPaymentLines(invoice)
-        assertTrue("Empty list should be returned for invoice without linked payments to paymentinline", result.isEmpty())
+        Assertions.assertTrue(result.isEmpty(), "Empty list should be returned for invoice without linked payments to paymentinline")
 
         pIn.setStatus(PaymentStatus.SUCCESS)
         result = InvoiceUtil.getSuccessfulPaymentLines(invoice)
-        assertFalse(result.isEmpty())
-        assertEquals("1 paymentInLine should returns", 1, result.size())
-        assertNotNull("this paymentInLine should be linked with payment", result.get(0).getPayment())
-        assertTrue("this paymentInLine should be linked with success payment", result.get(0).getPayment().isSuccess())
+        Assertions.assertFalse(result.isEmpty())
+        assertEquals(1, result.size(), "1 paymentInLine should returns")
+        Assertions.assertNotNull(result.get(0).getPayment(), "this paymentInLine should be linked with payment")
+        Assertions.assertTrue(result.get(0).getPayment().isSuccess(), "this paymentInLine should be linked with success payment")
     }
 
-	@Test
+    @Test
     void testExistingPaymentLineForInvoiceAndPayment() {
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Account account = newContext.newObject(Account.class)
         account.setType(AccountType.ASSET)
@@ -104,31 +105,31 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         pInLine.setInvoice(invoice)
         pInLine.setPaymentIn(pIn)
 
-        assertEquals("Checking the uniqueness of payment in line", pInLine, InvoiceUtil.paymentLineForInvoiceAndPayment(pIn, invoice))
-        assertNotEquals(pInLine, InvoiceUtil.paymentLineForInvoiceAndPayment(pIn, invoice2))
-        assertNotEquals(pInLine, InvoiceUtil.paymentLineForInvoiceAndPayment(newContext.newObject(PaymentIn.class), invoice))
+        assertEquals(pInLine, InvoiceUtil.paymentLineForInvoiceAndPayment(pIn, invoice), "Checking the uniqueness of payment in line")
+        Assertions.assertNotEquals(pInLine, InvoiceUtil.paymentLineForInvoiceAndPayment(pIn, invoice2))
+        Assertions.assertNotEquals(pInLine, InvoiceUtil.paymentLineForInvoiceAndPayment(newContext.newObject(PaymentIn.class), invoice))
 
         PaymentOut pOut = newContext.newObject(PaymentOut.class)
         PaymentOutLine pOutLine = newContext.newObject(PaymentOutLine.class)
         pOutLine.setInvoice(invoice)
         pOutLine.setPaymentOut(pOut)
 
-        assertEquals("Checking the uniqueness of payment out line", pOutLine, InvoiceUtil.paymentLineForInvoiceAndPayment(pOut, invoice))
-        assertNotEquals(pInLine, InvoiceUtil.paymentLineForInvoiceAndPayment(pOut, invoice2))
-        assertNotEquals(pInLine, InvoiceUtil.paymentLineForInvoiceAndPayment(newContext.newObject(PaymentOut.class), invoice))
+        assertEquals(pOutLine, InvoiceUtil.paymentLineForInvoiceAndPayment(pOut, invoice), "Checking the uniqueness of payment out line")
+        Assertions.assertNotEquals(pInLine, InvoiceUtil.paymentLineForInvoiceAndPayment(pOut, invoice2))
+        Assertions.assertNotEquals(pInLine, InvoiceUtil.paymentLineForInvoiceAndPayment(newContext.newObject(PaymentOut.class), invoice))
 
     }
 
-	@Test
+    @Test
     void testSuccessfullPaymentLines() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         // commented out parts are for future evaluation, in case the behaviour after commit will change
-		// Account aAsset = newContext.newObject(Account.class);
-		// aAsset.setType(AccountType.ASSET);
+        // Account aAsset = newContext.newObject(Account.class);
+        // aAsset.setType(AccountType.ASSET);
 
-		Account aDebtors = newContext.newObject(Account.class)
+        Account aDebtors = newContext.newObject(Account.class)
         aDebtors.setType(AccountType.ASSET)
         aDebtors.setAccountCode("11100")
 
@@ -136,33 +137,33 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoice.setDebtorsAccount(aDebtors)
 
         // int i = 0;
-		for (PaymentStatus ps : PaymentStatus.values()) {
-			PaymentInLine pInLine = (PaymentInLine) InvoiceUtil.paymentLineForInvoiceAndPayment(newContext.newObject(PaymentIn.class), invoice)
+        for (PaymentStatus ps : PaymentStatus.values()) {
+            PaymentInLine pInLine = (PaymentInLine) InvoiceUtil.paymentLineForInvoiceAndPayment(newContext.newObject(PaymentIn.class), invoice)
             // pInLine.getPaymentIn().setAccountIn(aAsset);
-			// pInLine.getPaymentIn().setAmount(Money.valueOf(new BigDecimal("" + Math.pow(2, i))));
-			pInLine.getPaymentIn().setStatus(ps)
+            // pInLine.getPaymentIn().setAmount(Money.valueOf(new BigDecimal("" + Math.pow(2, i))));
+            pInLine.getPaymentIn().setStatus(ps)
             // i++;
-		}
+        }
 
-		// there is only one successful state
-		assertEquals("Checking the number of successfull payment lines", 1, InvoiceUtil.getSuccessfulPaymentLines(invoice).size())
+        // there is only one successful state
+        assertEquals(1, InvoiceUtil.getSuccessfulPaymentLines(invoice).size(), "Checking the number of successfull payment lines")
 
         // newContext.commitChanges();
-		// assertEquals("Checking the number of successfull payment lines", 3, InvoiceUtil.getSuccessfulPaymentLines(invoice));
-	}
+        // assertEquals("Checking the number of successfull payment lines", 3, InvoiceUtil.getSuccessfulPaymentLines(invoice));
+    }
 
-	@Test
+    @Test
     void testSumPaymentLines() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         ArrayList<PaymentLineInterface> list = new ArrayList<>()
         for (int i = 0; i < 8; i++) {
-			PaymentIn pIn = newContext.newObject(PaymentIn.class)
+            PaymentIn pIn = newContext.newObject(PaymentIn.class)
             PaymentInLine pInLine = newContext.newObject(PaymentInLine.class)
             pInLine.setPaymentIn(pIn)
             // payments are powers of 2, every second is success
-			pInLine.setAmount(Money.valueOf(new BigDecimal("" + Math.pow(2, i))))
+            pInLine.setAmount(Money.valueOf(new BigDecimal("" + Math.pow(2, i))))
             pInLine.getPaymentIn().setStatus(i % 2 == 0 ? PaymentStatus.FAILED : PaymentStatus.SUCCESS)
             list.add(pInLine)
 
@@ -170,28 +171,28 @@ class InvoiceUtilTest extends CayenneIshTestCase {
             PaymentOutLine pOutLine = newContext.newObject(PaymentOutLine.class)
             pOutLine.setPaymentOut(pOut)
             // payments are powers of 2, every second is success
-			pOutLine.setAmount(Money.valueOf(new BigDecimal("" + Math.pow(2, i))))
+            pOutLine.setAmount(Money.valueOf(new BigDecimal("" + Math.pow(2, i))))
             pOutLine.getPaymentOut().setStatus(i % 2 != 0 ? PaymentStatus.FAILED : PaymentStatus.SUCCESS)
 
             list.add(pOutLine)
         }
 
-		Money sum1 = new Money("" + Integer.parseInt("10101010", 2))
+        Money sum1 = new Money("" + Integer.parseInt("10101010", 2))
         Money sum2 = new Money("" + Integer.parseInt("01010101", 2))
 
-        assertEquals("Checking sum of payment in lines", sum1, InvoiceUtil.sumPaymentLines(list, PaymentInterface.TYPE_IN, true))
-        assertEquals("Checking sum of payment out lines", sum2, InvoiceUtil.sumPaymentLines(list, PaymentInterface.TYPE_OUT, true))
+        assertEquals(sum1, InvoiceUtil.sumPaymentLines(list, PaymentInterface.TYPE_IN, true), "Checking sum of payment in lines")
+        assertEquals(sum2, InvoiceUtil.sumPaymentLines(list, PaymentInterface.TYPE_OUT, true), "Checking sum of payment out lines")
 
         sum1 = sum2 = new Money("255")
-        assertEquals("Checking sum of payment in lines", sum1, InvoiceUtil.sumPaymentLines(list, PaymentInterface.TYPE_IN, false))
-        assertEquals("Checking sum of payment out lines", sum2, InvoiceUtil.sumPaymentLines(list, PaymentInterface.TYPE_OUT, false))
+        assertEquals(sum1, InvoiceUtil.sumPaymentLines(list, PaymentInterface.TYPE_IN, false), "Checking sum of payment in lines")
+        assertEquals(sum2, InvoiceUtil.sumPaymentLines(list, PaymentInterface.TYPE_OUT, false), "Checking sum of payment out lines")
 
     }
 
-	@Test
+    @Test
     void testSumInvoiceLinesNoTax() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Tax tax = newContext.newObject(Tax.class)
         tax.setRate(BigDecimal.ZERO)
@@ -214,21 +215,21 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         list.add(invoiceLine2)
 
         Money expectedValueExTax = new Money("300")
-        assertEquals("Checking sum of invoice lines", expectedValueExTax, InvoiceUtil.sumInvoiceLines(list, false))
-        assertEquals("Checking sum of invoice lines", expectedValueExTax, InvoiceUtil.sumInvoiceLines(list))
+        assertEquals(expectedValueExTax, InvoiceUtil.sumInvoiceLines(list, false), "Checking sum of invoice lines")
+        assertEquals(expectedValueExTax, InvoiceUtil.sumInvoiceLines(list), "Checking sum of invoice lines")
 
         Money discount = new Money("10")
         invoiceLine1.setDiscountEachExTax(discount)
         expectedValueExTax = expectedValueExTax.subtract(discount)
-        assertEquals("Checking sum of invoice lines", expectedValueExTax, InvoiceUtil.sumInvoiceLines(list, false))
-        assertEquals("Checking sum of invoice lines", expectedValueExTax, InvoiceUtil.sumInvoiceLines(list))
+        assertEquals(expectedValueExTax, InvoiceUtil.sumInvoiceLines(list, false), "Checking sum of invoice lines")
+        assertEquals(expectedValueExTax, InvoiceUtil.sumInvoiceLines(list), "Checking sum of invoice lines")
 
     }
 
-	@Test
+    @Test
     void testSumInvoiceLinesWithTax() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Tax tax = newContext.newObject(Tax.class)
         tax.setRate(BigDecimal.valueOf(0.1d))
@@ -252,23 +253,23 @@ class InvoiceUtilTest extends CayenneIshTestCase {
 
         Money expectedValueExTax = new Money("300")
         Money expectedValueIncTax = expectedValueExTax.multiply(BigDecimal.ONE.add(tax.getRate()))
-        assertEquals("Checking sum of invoice lines", expectedValueExTax, InvoiceUtil.sumInvoiceLines(list, false))
-        assertEquals("Checking sum of invoice lines", expectedValueIncTax, InvoiceUtil.sumInvoiceLines(list))
+        assertEquals(expectedValueExTax, InvoiceUtil.sumInvoiceLines(list, false), "Checking sum of invoice lines")
+        assertEquals(expectedValueIncTax, InvoiceUtil.sumInvoiceLines(list), "Checking sum of invoice lines")
 
         Money discount = new Money("10")
         invoiceLine1.setDiscountEachExTax(discount)
         invoiceLine1.setTaxEach(invoiceLine1.getTaxEach().subtract(new Money("1")))
         expectedValueExTax = expectedValueExTax.subtract(discount)
         expectedValueIncTax = expectedValueExTax.multiply(BigDecimal.ONE.add(tax.getRate()))
-        assertEquals("Checking sum of invoice lines", expectedValueExTax, InvoiceUtil.sumInvoiceLines(list, false))
-        assertEquals("Checking sum of invoice lines", expectedValueIncTax, InvoiceUtil.sumInvoiceLines(list))
+        assertEquals(expectedValueExTax, InvoiceUtil.sumInvoiceLines(list, false), "Checking sum of invoice lines")
+        assertEquals(expectedValueIncTax, InvoiceUtil.sumInvoiceLines(list), "Checking sum of invoice lines")
 
     }
 
-	@Test
+    @Test
     void testUpdateAmountOwingWithoutCommits() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Account aDebtors = newContext.newObject(Account.class)
         aDebtors.setType(AccountType.ASSET)
@@ -291,7 +292,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine.setInvoice(invoice)
 
         InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals("Checking amount owing", new Money("110"), invoice.getAmountOwing())
+        assertEquals(new Money("110"), invoice.getAmountOwing(), "Checking amount owing")
 
         Tax tax2 = newContext.newObject(Tax.class)
         tax2.setRate(BigDecimal.ZERO)
@@ -303,7 +304,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine2.setInvoice(invoice)
 
         InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals("Checking amount owing", new Money("360"), invoice.getAmountOwing())
+        assertEquals(new Money("360"), invoice.getAmountOwing(), "Checking amount owing")
 
         PaymentIn payment = newContext.newObject(PaymentIn.class)
         payment.setAccountIn(aDebtors)
@@ -318,20 +319,20 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         pinLine.setAmount(new Money("100"))
 
         InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals("Checking amount owing", new Money("260"), invoice.getAmountOwing())
+        assertEquals(new Money("260"), invoice.getAmountOwing(), "Checking amount owing")
 
         payment.setAmount(new Money("360"))
         pinLine.setAmount(new Money("360"))
 
         InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals("Checking amount owing", Money.ZERO, invoice.getAmountOwing())
+        assertEquals(Money.ZERO, invoice.getAmountOwing(), "Checking amount owing")
 
     }
 
-	@Test
+    @Test
     void testUpdateAmountOwingWithCommits() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Account account = newContext.newObject(Account.class)
         account.setType(AccountType.ASSET)
@@ -345,7 +346,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         account3.setIsEnabled(true)
         account3.setDescription("testUpdateAmountOwingWithCommits2")
         //commit accounts first than link to taxes (avoid exception with circular dependency on tables)
-		newContext.commitChanges()
+        newContext.commitChanges()
 
         Contact contact = newContext.newObject(Contact.class)
         contact.setFirstName("testUpdateAmountOwingWithCommits")
@@ -375,7 +376,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine.setPrepaidFeesAccount(account3)
 
         newContext.commitChanges()
-        assertEquals("Checking amount owing", new Money("110"), invoice.getAmountOwing())
+        assertEquals(new Money("110"), invoice.getAmountOwing(), "Checking amount owing")
 
         Tax tax2 = newContext.newObject(Tax.class)
         tax2.setRate(BigDecimal.ZERO)
@@ -395,7 +396,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine2.setPrepaidFeesAccount(account3)
 
         newContext.commitChanges()
-        assertEquals("Checking amount owing", new Money("360"), invoice.getAmountOwing())
+        assertEquals(new Money("360"), invoice.getAmountOwing(), "Checking amount owing")
 
         Account account2 = newContext.newObject(Account.class)
         account2.setType(AccountType.ASSET)
@@ -415,11 +416,11 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         pinLine.setPayment(payment)
         invoice.addToPaymentInLines(pinLine)
         // pinLine.setInvoice(invoice);
-		pinLine.setAmount(new Money("100"))
+        pinLine.setAmount(new Money("100"))
         pinLine.setAccountOut(account2)
 
         newContext.commitChanges()
-        assertEquals("Checking amount owing", new Money("260"), invoice.getAmountOwing())
+        assertEquals(new Money("260"), invoice.getAmountOwing(), "Checking amount owing")
 
         PaymentIn payment2 = newContext.newObject(PaymentIn.class)
         payment2.setPaymentDate(LocalDate.now())
@@ -432,19 +433,19 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         PaymentInLine pinLine2 = newContext.newObject(PaymentInLine.class)
         pinLine2.setPayment(payment2)
         // pinLine2.setInvoice(invoice);
-		invoice.addToPaymentInLines(pinLine2)
+        invoice.addToPaymentInLines(pinLine2)
         pinLine2.setAmount(new Money("260"))
         pinLine2.setAccountOut(account2)
 
         newContext.commitChanges()
-        assertEquals("Checking amount owing", Money.ZERO, invoice.getAmountOwing())
+        assertEquals(Money.ZERO, invoice.getAmountOwing(), "Checking amount owing")
 
     }
 
-	@Test
+    @Test
     void testUpdateAmountOwingWithoutCommitsPaymentInAndOut() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Account account = newContext.newObject(Account.class)
         account.setType(AccountType.ASSET)
@@ -485,7 +486,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine.setPrepaidFeesAccount(account3)
 
         InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals("Checking amount owing", new Money("110"), invoice.getAmountOwing())
+        assertEquals(new Money("110"), invoice.getAmountOwing(), "Checking amount owing")
 
         Tax tax2 = newContext.newObject(Tax.class)
         tax2.setRate(BigDecimal.ZERO)
@@ -504,7 +505,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine2.setPrepaidFeesAccount(account3)
 
         InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals("Checking amount owing", new Money("360"), invoice.getAmountOwing())
+        assertEquals(new Money("360"), invoice.getAmountOwing(), "Checking amount owing")
 
         Account account2 = newContext.newObject(Account.class)
         account2.setType(AccountType.ASSET)
@@ -523,11 +524,11 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         pinLine.setPayment(payment)
         invoice.addToPaymentInLines(pinLine)
         // pinLine.setInvoice(invoice);
-		pinLine.setAmount(new Money("460"))
+        pinLine.setAmount(new Money("460"))
         pinLine.setAccountOut(account2)
 
         InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals("Checking amount owing", new Money("100").negate(), invoice.getAmountOwing())
+        assertEquals(new Money("100").negate(), invoice.getAmountOwing(), "Checking amount owing")
 
         PaymentOut payment2 = newContext.newObject(PaymentOut.class)
         payment2.setAccountOut(account2)
@@ -539,19 +540,19 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         PaymentOutLine pinLine2 = newContext.newObject(PaymentOutLine.class)
         pinLine2.setPayment(payment2)
         // pinLine2.setInvoice(invoice);
-		invoice.addToPaymentOutLines(pinLine2)
+        invoice.addToPaymentOutLines(pinLine2)
         pinLine2.setAmount(new Money("100"))
         pinLine2.setAccountIn(account2)
 
         InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals("Checking amount owing", Money.ZERO, invoice.getAmountOwing())
+        assertEquals(Money.ZERO, invoice.getAmountOwing(), "Checking amount owing")
 
     }
 
-	@Test
+    @Test
     void testUpdateAmountOwingWithCommitsPaymentInAndOut() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Account account = newContext.newObject(Account.class)
         account.setType(AccountType.ASSET)
@@ -565,7 +566,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         account3.setIsEnabled(true)
         account3.setDescription("testUpdateAmountOwingWithCommits2")
         //commit accounts first than link to taxes (avoid exception with circular dependency on tables)
-		newContext.commitChanges()
+        newContext.commitChanges()
 
         Contact contact = newContext.newObject(Contact.class)
         contact.setFirstName("testUpdateAmountOwingWithCommits")
@@ -595,7 +596,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine.setPrepaidFeesAccount(account3)
 
         newContext.commitChanges()
-        assertEquals("Checking amount owing", new Money("110"), invoice.getAmountOwing())
+        assertEquals(new Money("110"), invoice.getAmountOwing(), "Checking amount owing")
 
         Tax tax2 = newContext.newObject(Tax.class)
         tax2.setRate(BigDecimal.ZERO)
@@ -615,7 +616,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine2.setPrepaidFeesAccount(account3)
 
         newContext.commitChanges()
-        assertEquals("Checking amount owing", new Money("360"), invoice.getAmountOwing())
+        assertEquals(new Money("360"), invoice.getAmountOwing(), "Checking amount owing")
 
         Account account2 = newContext.newObject(Account.class)
         account2.setType(AccountType.ASSET)
@@ -635,11 +636,11 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         pinLine.setPayment(payment)
         invoice.addToPaymentInLines(pinLine)
         // pinLine.setInvoice(invoice);
-		pinLine.setAmount(new Money("460"))
+        pinLine.setAmount(new Money("460"))
         pinLine.setAccountOut(account2)
 
         newContext.commitChanges()
-        assertEquals("Checking amount owing", new Money("100").negate(), invoice.getAmountOwing())
+        assertEquals(new Money("100").negate(), invoice.getAmountOwing(), "Checking amount owing")
 
         PaymentOut payment2 = newContext.newObject(PaymentOut.class)
         payment2.setPaymentDate(LocalDate.now())
@@ -652,22 +653,22 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         PaymentOutLine pinLine2 = newContext.newObject(PaymentOutLine.class)
         pinLine2.setPayment(payment2)
         // pinLine2.setInvoice(invoice);
-		invoice.addToPaymentOutLines(pinLine2)
+        invoice.addToPaymentOutLines(pinLine2)
         pinLine2.setAmount(new Money("100"))
         pinLine2.setAccountIn(account2)
 
         newContext.commitChanges()
-        assertEquals("Checking amount owing", Money.ZERO, invoice.getAmountOwing())
+        assertEquals(Money.ZERO, invoice.getAmountOwing(), "Checking amount owing")
 
     }
 
-	@Test
+    @Test
     void testAllocateSingleInvoice() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         // setup required accounts, taxes
-		Account aDebtors = newContext.newObject(Account.class)
+        Account aDebtors = newContext.newObject(Account.class)
         aDebtors.setType(AccountType.ASSET)
         aDebtors.setAccountCode("123")
         aDebtors.setDescription("123")
@@ -697,7 +698,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         account3.setIsEnabled(true)
         account3.setDescription("testUpdateAmountOwingWithCommits2")
         //commit accounts first than link to taxes (avoid exception with circular dependency on tables)
-		newContext.commitChanges()
+        newContext.commitChanges()
 
         Tax tax = newContext.newObject(Tax.class)
         tax.setRate(BigDecimal.valueOf(0.1d))
@@ -711,13 +712,13 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         newContext.commitChanges()
 
         // this is the invoice we are going to test
-		Invoice invoice = newContext.newObject(Invoice.class)
+        Invoice invoice = newContext.newObject(Invoice.class)
         invoice.setDebtorsAccount(aDebtors)
         invoice.setContact(contact)
         invoice.setAllowAutoPay(Boolean.FALSE)
 
         // ... and its invoice line
-		InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
+        InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
         invoiceLine.setTax(tax)
         invoiceLine.setQuantity(BigDecimal.ONE)
         invoiceLine.setPriceEachExTax(new Money("100"))
@@ -729,7 +730,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine.setPrepaidFeesAccount(account3)
 
         // lets create first payment
-		PaymentIn payment = newContext.newObject(PaymentIn.class)
+        PaymentIn payment = newContext.newObject(PaymentIn.class)
         payment.setPaymentDate(LocalDate.now())
         payment.setStatus(PaymentStatus.SUCCESS)
         payment.setPayer(contact)
@@ -739,78 +740,78 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         ArrayList<PaymentLineInterface> list = new ArrayList<>()
 
         // first user chooses to pay invoice in full
-		Money result = InvoiceUtil.invoiceAllocate(invoice, new Money("110"), payment, list, false)
-        assertEquals("Checking money allocation for invoice", new Money("110"), result)
-        assertEquals("Checking number of payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", new Money("110"), payment.getPaymentLines().get(0).getAmount())
+        Money result = InvoiceUtil.invoiceAllocate(invoice, new Money("110"), payment, list, false)
+        assertEquals(new Money("110"), result, "Checking money allocation for invoice")
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(new Money("110"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // then just half
-		result = InvoiceUtil.invoiceAllocate(invoice, new Money("55"), payment, list, false)
-        assertEquals("Checking money allocation for invoice", new Money("55"), result)
-        assertEquals("Checking number of payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", new Money("55"), payment.getPaymentLines().get(0).getAmount())
+        result = InvoiceUtil.invoiceAllocate(invoice, new Money("55"), payment, list, false)
+        assertEquals(new Money("55"), result, "Checking money allocation for invoice")
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(new Money("55"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // then actually types some wrong amount
-		result = InvoiceUtil.invoiceAllocate(invoice, new Money("150"), payment, list, false)
-        assertEquals("Checking money allocation for invoice", new Money("110"), result)
-        assertEquals("Checking number of payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", new Money("110"), payment.getPaymentLines().get(0).getAmount())
+        result = InvoiceUtil.invoiceAllocate(invoice, new Money("150"), payment, list, false)
+        assertEquals(new Money("110"), result, "Checking money allocation for invoice")
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(new Money("110"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // then removes the payment alltogether
-		InvoiceUtil.invoiceDeallocate(invoice, payment, list)
+        InvoiceUtil.invoiceDeallocate(invoice, payment, list)
 
-        assertEquals("Checking number of payment lines", 0, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 0, payment.getPaymentLines().size())
+        assertEquals(0, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(0, payment.getPaymentLines().size(), "Checking number of payment lines")
 
         // then creates a $0 payment
-		result = InvoiceUtil.invoiceAllocate(invoice, Money.ZERO, payment, list, false)
-        assertEquals("Checking money allocation for invoice", Money.ZERO, result)
-        assertEquals("Checking number of payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", Money.ZERO, payment.getPaymentLines().get(0).getAmount())
+        result = InvoiceUtil.invoiceAllocate(invoice, Money.ZERO, payment, list, false)
+        assertEquals(Money.ZERO, result, "Checking money allocation for invoice")
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(Money.ZERO, payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // removes it again
-		InvoiceUtil.invoiceDeallocate(invoice, payment, list)
+        InvoiceUtil.invoiceDeallocate(invoice, payment, list)
 
         // finally create a payment for half the invoice
-		result = InvoiceUtil.invoiceAllocate(invoice, new Money("55"), payment, list, false)
-        assertEquals("Checking money allocation for invoice", new Money("55"), result)
-        assertEquals("Checking number of payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", new Money("55"), payment.getPaymentLines().get(0).getAmount())
+        result = InvoiceUtil.invoiceAllocate(invoice, new Money("55"), payment, list, false)
+        assertEquals(new Money("55"), result, "Checking money allocation for invoice")
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(new Money("55"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         payment.setAmount(payment.getPaymentInLines().get(0).getAmount())
 
         // save
-		newContext.commitChanges()
+        newContext.commitChanges()
 
         // confirm the values are ok
-		InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals("Checking money allocation for invoice", new Money("55"), result)
-        assertEquals("Checking money owing for invoice", new Money("55"), invoice.getAmountOwing())
-        assertEquals("Checking number of payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", new Money("55"), payment.getPaymentLines().get(0).getAmount())
+        InvoiceUtil.updateAmountOwing(invoice)
+        assertEquals(new Money("55"), result, "Checking money allocation for invoice")
+        assertEquals(new Money("55"), invoice.getAmountOwing(), "Checking money owing for invoice")
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(new Money("55"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // editing existing payment line should not be allowed
-		try {
-			result = InvoiceUtil.invoiceAllocate(invoice, new Money("10"), payment, list, false)
-            fail("The editing of existing payment line should be forbidden")
+        try {
+            result = InvoiceUtil.invoiceAllocate(invoice, new Money("10"), payment, list, false)
+            Assertions.fail("The editing of existing payment line should be forbidden")
         } catch (IllegalStateException ex) {
-			assertEquals("The amount can be only altered for a new payment line.", ex.getMessage())
+            assertEquals(ex.getMessage(), "The amount can be only altered for a new payment line.")
         }
 
-		// verify the values again
-		assertEquals("Checking money owing for invoice", new Money("55"), invoice.getAmountOwing())
-        assertEquals("Checking number of payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", new Money("55"), payment.getPaymentLines().get(0).getAmount())
+        // verify the values again
+        assertEquals(new Money("55"), invoice.getAmountOwing(), "Checking money owing for invoice")
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(new Money("55"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // create second payment
-		PaymentIn payment2 = newContext.newObject(PaymentIn.class)
+        PaymentIn payment2 = newContext.newObject(PaymentIn.class)
         payment2.setPaymentDate(LocalDate.now())
         payment2.setStatus(PaymentStatus.SUCCESS)
         payment2.setPayer(contact)
@@ -819,62 +820,62 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         ArrayList<PaymentLineInterface> list2 = new ArrayList<>()
 
         // first just small
-		result = InvoiceUtil.invoiceAllocate(invoice, new Money("11"), payment2, list2, false)
-        assertEquals("Checking money allocation for invoice", new Money("11"), result)
-        assertEquals("Checking number of payment lines", 2, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment2.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", new Money("55"), payment.getPaymentLines().get(0).getAmount())
-        assertEquals("Checking money allocation for paymentline", new Money("11"), payment2.getPaymentLines().get(0).getAmount())
+        result = InvoiceUtil.invoiceAllocate(invoice, new Money("11"), payment2, list2, false)
+        assertEquals(new Money("11"), result, "Checking money allocation for invoice")
+        assertEquals(2, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment2.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(new Money("55"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
+        assertEquals(new Money("11"), payment2.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // then $0
-		result = InvoiceUtil.invoiceAllocate(invoice, Money.ZERO, payment2, list2, false)
-        assertEquals("Checking money allocation for invoice", Money.ZERO, result)
-        assertEquals("Checking number of payment lines", 2, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment2.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", new Money("55"), payment.getPaymentLines().get(0).getAmount())
-        assertEquals("Checking money allocation for paymentline", Money.ZERO, payment2.getPaymentLines().get(0).getAmount())
+        result = InvoiceUtil.invoiceAllocate(invoice, Money.ZERO, payment2, list2, false)
+        assertEquals(Money.ZERO, result, "Checking money allocation for invoice")
+        assertEquals(2, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment2.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(new Money("55"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
+        assertEquals(Money.ZERO, payment2.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // then removes the payment alltogether
-		InvoiceUtil.invoiceDeallocate(invoice, payment2, list2)
+        InvoiceUtil.invoiceDeallocate(invoice, payment2, list2)
 
-        assertEquals("Checking number of payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 0, payment2.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", new Money("55"), payment.getPaymentLines().get(0).getAmount())
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(0, payment2.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(new Money("55"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // then pay second half
-		result = InvoiceUtil.invoiceAllocate(invoice, new Money("55"), payment2, list2, false)
-        assertEquals("Checking money allocation for invoice", new Money("55"), result)
-        assertEquals("Checking number of payment lines", 2, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment2.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", new Money("55"), payment.getPaymentLines().get(0).getAmount())
-        assertEquals("Checking money allocation for paymentline", new Money("55"), payment2.getPaymentLines().get(0).getAmount())
+        result = InvoiceUtil.invoiceAllocate(invoice, new Money("55"), payment2, list2, false)
+        assertEquals(new Money("55"), result, "Checking money allocation for invoice")
+        assertEquals(2, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment2.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(new Money("55"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
+        assertEquals(new Money("55"), payment2.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         payment2.setAmount(payment2.getPaymentInLines().get(0).getAmount())
 
         // save
-		newContext.commitChanges()
+        newContext.commitChanges()
 
         // verify all
-		InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals("Checking money owing for invoice", Money.ZERO, invoice.getAmountOwing())
-        assertEquals("Checking number of payment lines", 2, invoice.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 1, payment2.getPaymentLines().size())
-        assertEquals("Checking money allocation for paymentline", new Money("55"), payment.getPaymentLines().get(0).getAmount())
-        assertEquals("Checking money allocation for paymentline", new Money("55"), payment2.getPaymentLines().get(0).getAmount())
+        InvoiceUtil.updateAmountOwing(invoice)
+        assertEquals(Money.ZERO, invoice.getAmountOwing(), "Checking money owing for invoice")
+        assertEquals(2, invoice.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(1, payment2.getPaymentLines().size(), "Checking number of payment lines")
+        assertEquals(new Money("55"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
+        assertEquals(new Money("55"), payment2.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
     }
 
-	@Test
+    @Test
     void testAllocateMultipleInvoices() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         // setup required accounts, taxes
-		Account aDebtors = newContext.newObject(Account.class)
+        Account aDebtors = newContext.newObject(Account.class)
         aDebtors.setType(AccountType.ASSET)
         aDebtors.setAccountCode("123")
         aDebtors.setDescription("123")
@@ -904,7 +905,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         account3.setIsEnabled(true)
         account3.setDescription("testUpdateAmountOwingWithCommits2")
         //commit accounts first than link to taxes (avoid exception with circular dependency on tables)
-		newContext.commitChanges()
+        newContext.commitChanges()
 
         Tax tax = newContext.newObject(Tax.class)
         tax.setRate(BigDecimal.valueOf(0.1d))
@@ -917,7 +918,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         contact.setLastName("Sklodowska-Curie")
 
         // first invoice
-		Invoice invoice = newContext.newObject(Invoice.class)
+        Invoice invoice = newContext.newObject(Invoice.class)
         invoice.setDebtorsAccount(aDebtors)
         invoice.setContact(contact)
         invoice.setAllowAutoPay(Boolean.FALSE)
@@ -925,7 +926,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         Enrolment enrl = createEnrolment(newContext, aIncome, tax)
         enrl.setStatus(EnrolmentStatus.IN_TRANSACTION)
         // ... and its invoice line
-		InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
+        InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
         invoiceLine.setEnrolment(enrl)
         invoiceLine.setTax(tax)
         invoiceLine.setQuantity(BigDecimal.ONE)
@@ -938,7 +939,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine.setPrepaidFeesAccount(account3)
 
         // second invoice
-		Invoice invoice2 = newContext.newObject(Invoice.class)
+        Invoice invoice2 = newContext.newObject(Invoice.class)
         invoice2.setDebtorsAccount(aDebtors)
         invoice2.setContact(contact)
         invoice2.setAllowAutoPay(Boolean.FALSE)
@@ -946,7 +947,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         Enrolment enrolment = createEnrolment(newContext, aIncome, tax)
         enrolment.setStatus(EnrolmentStatus.SUCCESS)
         // ... and its invoice line
-		InvoiceLine invoiceLine2 = newContext.newObject(InvoiceLine.class)
+        InvoiceLine invoiceLine2 = newContext.newObject(InvoiceLine.class)
         invoiceLine2.setTax(tax)
         invoiceLine2.setEnrolment(enrolment)
         invoiceLine2.setQuantity(BigDecimal.ONE)
@@ -959,12 +960,12 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine2.setPrepaidFeesAccount(account3)
 
         // save
-		newContext.commitChanges()
+        newContext.commitChanges()
 
-        assertEquals("Checking the amount owing", new Money("220"), InvoiceUtil.amountOwingForPayer(contact))
+        assertEquals(new Money("220"), InvoiceUtil.amountOwingForPayer(contact), "Checking the amount owing")
 
         // lets create first payment
-		PaymentIn payment = newContext.newObject(PaymentIn.class)
+        PaymentIn payment = newContext.newObject(PaymentIn.class)
         payment.setPaymentDate(LocalDate.now())
         payment.setStatus(PaymentStatus.SUCCESS)
         payment.setPayer(contact)
@@ -975,43 +976,43 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         ArrayList<PaymentLineInterface> list = new ArrayList<>()
 
         Money result = InvoiceUtil.allocateMoneyToInvoices(payment.getAmount(), contact.getInvoices(), payment, list)
-        assertEquals("Checking money left over", Money.ZERO, result)
-        assertEquals("Checking number of invoice payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of invoice payment lines", 1, invoice2.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 2, payment.getPaymentLines().size())
+        assertEquals(Money.ZERO, result, "Checking money left over")
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of invoice payment lines")
+        assertEquals(1, invoice2.getPaymentLines().size(), "Checking number of invoice payment lines")
+        assertEquals(2, payment.getPaymentLines().size(), "Checking number of payment lines")
         PaymentInLine pLine1 = payment.getPaymentInLines().get(0)
         PaymentInLine pLine2 = payment.getPaymentInLines().get(1)
         if (pLine1.getAmount().compareTo(pLine2.getAmount()) > 0) {
-			assertEquals("Checking money allocation for paymentline", new Money("110"), pLine1.getAmount())
-            assertEquals("Checking money allocation for paymentline", new Money("40"), pLine2.getAmount())
+            assertEquals(new Money("110"), pLine1.getAmount(), "Checking money allocation for paymentline")
+            assertEquals(new Money("40"), pLine2.getAmount(), "Checking money allocation for paymentline")
         } else {
-			assertEquals("Checking money allocation for paymentline", new Money("110"), pLine2.getAmount())
-            assertEquals("Checking money allocation for paymentline", new Money("40"), pLine1.getAmount())
+            assertEquals(new Money("110"), pLine2.getAmount(), "Checking money allocation for paymentline")
+            assertEquals(new Money("40"), pLine1.getAmount(), "Checking money allocation for paymentline")
         }
-		assertEquals("Checking payment total", new Money("150"), payment.getAmount())
-        assertEquals("Checking the amount owing", new Money("70"), InvoiceUtil.amountOwingForPayer(contact))
+        assertEquals(new Money("150"), payment.getAmount(), "Checking payment total")
+        assertEquals(new Money("70"), InvoiceUtil.amountOwingForPayer(contact), "Checking the amount owing")
 
         // save...
-		newContext.commitChanges()
+        newContext.commitChanges()
         // and verify again
-		assertEquals("Checking money left over", Money.ZERO, result)
-        assertEquals("Checking number of invoice payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of invoice payment lines", 1, invoice2.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 2, payment.getPaymentLines().size())
+        assertEquals(Money.ZERO, result, "Checking money left over")
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of invoice payment lines")
+        assertEquals(1, invoice2.getPaymentLines().size(), "Checking number of invoice payment lines")
+        assertEquals(2, payment.getPaymentLines().size(), "Checking number of payment lines")
         pLine1 = payment.getPaymentInLines().get(0)
         pLine2 = payment.getPaymentInLines().get(1)
         if (pLine1.getAmount().compareTo(pLine2.getAmount()) > 0) {
-			assertEquals("Checking money allocation for paymentline", new Money("110"), pLine1.getAmount())
-            assertEquals("Checking money allocation for paymentline", new Money("40"), pLine2.getAmount())
+            assertEquals(new Money("110"), pLine1.getAmount(), "Checking money allocation for paymentline")
+            assertEquals(new Money("40"), pLine2.getAmount(), "Checking money allocation for paymentline")
         } else {
-			assertEquals("Checking money allocation for paymentline", new Money("110"), pLine2.getAmount())
-            assertEquals("Checking money allocation for paymentline", new Money("40"), pLine1.getAmount())
+            assertEquals(new Money("110"), pLine2.getAmount(), "Checking money allocation for paymentline")
+            assertEquals(new Money("40"), pLine1.getAmount(), "Checking money allocation for paymentline")
         }
-		assertEquals("Checking payment total", new Money("150"), payment.getAmount())
-        assertEquals("Checking the amount owing", new Money("70"), InvoiceUtil.amountOwingForPayer(contact))
+        assertEquals(new Money("150"), payment.getAmount(), "Checking payment total")
+        assertEquals(new Money("70"), InvoiceUtil.amountOwingForPayer(contact), "Checking the amount owing")
 
         // now third invoice - credit note
-		Invoice invoice3 = newContext.newObject(Invoice.class)
+        Invoice invoice3 = newContext.newObject(Invoice.class)
         invoice3.setDebtorsAccount(aDebtors)
         invoice3.setContact(contact)
         invoice3.setAllowAutoPay(Boolean.FALSE)
@@ -1019,7 +1020,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         Enrolment enrl3 = createEnrolment(newContext, aIncome, tax)
         enrl3.setStatus(EnrolmentStatus.NEW)
         // ... and its invoice line
-		InvoiceLine invoiceLine3 = newContext.newObject(InvoiceLine.class)
+        InvoiceLine invoiceLine3 = newContext.newObject(InvoiceLine.class)
         invoiceLine3.setEnrolment(enrl3)
         invoiceLine3.setTax(tax)
         invoiceLine3.setQuantity(BigDecimal.ONE)
@@ -1033,7 +1034,7 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         invoiceLine3.setPrepaidFeesAccount(account3)
 
         // creating a $0 payment should make everything square
-		PaymentIn payment2 = newContext.newObject(PaymentIn.class)
+        PaymentIn payment2 = newContext.newObject(PaymentIn.class)
         payment2.setPaymentDate(LocalDate.now())
         payment2.setStatus(PaymentStatus.SUCCESS)
         payment2.setPayer(contact)
@@ -1044,47 +1045,47 @@ class InvoiceUtilTest extends CayenneIshTestCase {
         ArrayList<PaymentLineInterface> list2 = new ArrayList<>()
 
         result = InvoiceUtil.allocateMoneyToInvoices(payment2.getAmount(), contact.getInvoices(), payment2, list2)
-        assertEquals("Checking money left over", Money.ZERO, result)
-        assertEquals("Checking number of invoice payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of invoice payment lines", 2, invoice2.getPaymentLines().size())
-        assertEquals("Checking number of invoice payment lines", 1, invoice3.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 2, payment2.getPaymentLines().size())
+        assertEquals(Money.ZERO, result, "Checking money left over")
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of invoice payment lines")
+        assertEquals(2, invoice2.getPaymentLines().size(), "Checking number of invoice payment lines")
+        assertEquals(1, invoice3.getPaymentLines().size(), "Checking number of invoice payment lines")
+        assertEquals(2, payment2.getPaymentLines().size(), "Checking number of payment lines")
         pLine1 = payment2.getPaymentInLines().get(0)
         pLine2 = payment2.getPaymentInLines().get(1)
         if (pLine1.getAmount().compareTo(pLine2.getAmount()) > 0) {
-			assertEquals("Checking money allocation for paymentline", new Money("70"), pLine1.getAmount())
-            assertEquals("Checking money allocation for paymentline", new Money("-70"), pLine2.getAmount())
+            assertEquals(new Money("70"), pLine1.getAmount(), "Checking money allocation for paymentline")
+            assertEquals(new Money("-70"), pLine2.getAmount(), "Checking money allocation for paymentline")
         } else {
-			assertEquals("Checking money allocation for paymentline", new Money("70"), pLine2.getAmount())
-            assertEquals("Checking money allocation for paymentline", new Money("-70"), pLine1.getAmount())
+            assertEquals(new Money("70"), pLine2.getAmount(), "Checking money allocation for paymentline")
+            assertEquals(new Money("-70"), pLine1.getAmount(), "Checking money allocation for paymentline")
         }
-		assertEquals("Checking payment total", Money.ZERO, payment2.getAmount())
-        assertEquals("Checking the amount owing", Money.ZERO, InvoiceUtil.amountOwingForPayer(contact))
+        assertEquals(Money.ZERO, payment2.getAmount(), "Checking payment total")
+        assertEquals(Money.ZERO, InvoiceUtil.amountOwingForPayer(contact), "Checking the amount owing")
 
         // save...
-		newContext.commitChanges()
+        newContext.commitChanges()
         // and verify again
-		assertEquals("Checking money left over", Money.ZERO, result)
-        assertEquals("Checking number of invoice payment lines", 1, invoice.getPaymentLines().size())
-        assertEquals("Checking number of invoice payment lines", 2, invoice2.getPaymentLines().size())
-        assertEquals("Checking number of invoice payment lines", 1, invoice3.getPaymentLines().size())
-        assertEquals("Checking number of payment lines", 2, payment2.getPaymentLines().size())
+        assertEquals(Money.ZERO, result, "Checking money left over")
+        assertEquals(1, invoice.getPaymentLines().size(), "Checking number of invoice payment lines")
+        assertEquals(2, invoice2.getPaymentLines().size(), "Checking number of invoice payment lines")
+        assertEquals(1, invoice3.getPaymentLines().size(), "Checking number of invoice payment lines")
+        assertEquals(2, payment2.getPaymentLines().size(), "Checking number of payment lines")
         pLine1 = payment2.getPaymentInLines().get(0)
         pLine2 = payment2.getPaymentInLines().get(1)
         if (pLine1.getAmount().compareTo(pLine2.getAmount()) > 0) {
-			assertEquals("Checking money allocation for paymentline", new Money("70"), pLine1.getAmount())
-            assertEquals("Checking money allocation for paymentline", new Money("-70"), pLine2.getAmount())
+            assertEquals(new Money("70"), pLine1.getAmount(), "Checking money allocation for paymentline")
+            assertEquals(new Money("-70"), pLine2.getAmount(), "Checking money allocation for paymentline")
         } else {
-			assertEquals("Checking money allocation for paymentline", new Money("70"), pLine2.getAmount())
-            assertEquals("Checking money allocation for paymentline", new Money("-70"), pLine1.getAmount())
+            assertEquals(new Money("70"), pLine2.getAmount(), "Checking money allocation for paymentline")
+            assertEquals(new Money("-70"), pLine1.getAmount(), "Checking money allocation for paymentline")
         }
-		assertEquals("Checking payment total", Money.ZERO, payment2.getAmount())
-        assertEquals("Checking the amount owing", Money.ZERO, InvoiceUtil.amountOwingForPayer(contact))
+        assertEquals(Money.ZERO, payment2.getAmount(), "Checking payment total")
+        assertEquals(Money.ZERO, InvoiceUtil.amountOwingForPayer(contact), "Checking the amount owing")
     }
 
-	private Enrolment createEnrolment(ObjectContext newContext, Account account, Tax tax) {
+    private static Enrolment createEnrolment(ObjectContext newContext, Account account, Tax tax) {
 
-		Course course = newContext.newObject(Course.class)
+        Course course = newContext.newObject(Course.class)
         course.setCode("AABBDD" + codeSequence++)
         course.setName("courseName")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(newContext).getFieldConfigurationScheme())

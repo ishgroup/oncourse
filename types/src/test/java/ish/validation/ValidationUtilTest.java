@@ -3,8 +3,8 @@ package ish.validation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+
 
 public class ValidationUtilTest {
 	
@@ -40,11 +40,11 @@ public class ValidationUtilTest {
 	@Test
 	public void testEmail() {
 		for (String validEmail : validEmails) {
-			Assertions.assertTrue(ValidationUtil.isValidEmailAddress(validEmail), String.format("This email should be valid %s", validEmail));
+			Assertions.Assertions.assertTrue(ValidationUtil.isValidEmailAddress(validEmail), String.format("This email should be valid %s", validEmail));
 		}
 
 		for (String invalidEmail : invalidEmails) {
-			Assertions.assertFalse(ValidationUtil.isValidEmailAddress(invalidEmail), String.format("This email should be invalid %s", invalidEmail));
+			Assertions.Assertions.assertFalse(ValidationUtil.isValidEmailAddress(invalidEmail), String.format("This email should be invalid %s", invalidEmail));
 		}
 	}
 }

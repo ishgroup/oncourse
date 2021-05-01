@@ -4,68 +4,68 @@
  */
 package ish.oncourse.server.cayenne
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.access.DataContext
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.*
-
-/**
- */
+@CompileStatic
 class ContactTest extends CayenneIshTestCase {
 
-	@Test
+    @Test
     void testUpdateUniqueCode() {
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Contact contact = newContext.newObject(Contact.class)
         contact.setFirstName("firstName")
         contact.setLastName("lastName")
 
-        assertNotNull("Checking uniqueCode: ", contact.getUniqueCode())
+        Assertions.assertNotNull("Checking uniqueCode: ", contact.getUniqueCode())
     }
 
-	@Test
+    @Test
     void testUpdateStudentTutorFlags() {
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Contact contact = newContext.newObject(Contact.class)
         contact.setFirstName("firstName1")
         contact.setLastName("lastName1")
 
-        assertFalse("Checking isStudent: ", contact.getIsStudent())
-        assertFalse("Checking isTutor: ", contact.getIsTutor())
+        Assertions.assertFalse(contact.getIsStudent())
+        Assertions.assertFalse(contact.getIsTutor())
 
         Tutor tutor = newContext.newObject(Tutor.class)
         contact.setTutor(tutor)
 
-        assertNotNull(tutor.getContact())
-        assertFalse("Checking isStudent: ", contact.getIsStudent())
-        assertTrue("Checking isTutor: ", contact.getIsTutor())
+        Assertions.assertNotNull(tutor.getContact())
+        Assertions.assertFalse(contact.getIsStudent())
+        Assertions.assertTrue(contact.getIsTutor())
 
         newContext.commitChanges()
 
-        assertNotNull(contact.getTutor())
-        assertFalse("Checking isStudent: ", contact.getIsStudent())
-        assertTrue("Checking isTutor: ", contact.getIsTutor())
+        Assertions.assertNotNull(contact.getTutor())
+        Assertions.assertFalse(contact.getIsStudent())
+        Assertions.assertTrue(contact.getIsTutor())
 
         contact.setIsStudent(true)
         contact.setIsTutor(false)
 
-        assertTrue("Checking isStudent: ", contact.getIsStudent())
-        assertFalse("Checking isTutor: ", contact.getIsTutor())
+        Assertions.assertTrue(contact.getIsStudent())
+        Assertions.assertFalse(contact.getIsTutor())
 
         newContext.commitChanges()
 
-        assertFalse("Checking isStudent: ", contact.getIsStudent())
-        assertTrue("Checking isTutor: ", contact.getIsTutor())
+        Assertions.assertFalse(contact.getIsStudent())
+        Assertions.assertTrue(contact.getIsTutor())
 
         newContext.deleteObjects(tutor)
         newContext.commitChanges()
 
-        assertFalse("Checking isStudent: ", contact.getIsStudent())
-        assertFalse("Checking isTutor: ", contact.getIsTutor())
+        Assertions.assertFalse(contact.getIsStudent())
+        Assertions.assertFalse(contact.getIsTutor())
 
         Contact contact2 = newContext.newObject(Contact.class)
         contact2.setFirstName("firstName2")
@@ -74,31 +74,31 @@ class ContactTest extends CayenneIshTestCase {
         Student student = newContext.newObject(Student.class)
         contact2.setStudent(student)
 
-        assertNotNull(student.getContact())
-        assertTrue("Checking isStudent: ", contact2.getIsStudent())
-        assertFalse("Checking isTutor: ", contact2.getIsTutor())
+        Assertions.assertNotNull(student.getContact())
+        Assertions.assertTrue(contact2.getIsStudent())
+        Assertions.assertFalse(contact2.getIsTutor())
 
         newContext.commitChanges()
 
-        assertNotNull(contact2.getStudent())
-        assertTrue("Checking isStudent: ", contact2.getIsStudent())
-        assertFalse("Checking isTutor: ", contact2.getIsTutor())
+        Assertions.assertNotNull(contact2.getStudent())
+        Assertions.assertTrue(contact2.getIsStudent())
+        Assertions.assertFalse(contact2.getIsTutor())
 
         contact2.setIsStudent(false)
         contact2.setIsTutor(true)
 
-        assertFalse("Checking isStudent: ", contact2.getIsStudent())
-        assertTrue("Checking isTutor: ", contact2.getIsTutor())
+        Assertions.assertFalse(contact2.getIsStudent())
+        Assertions.assertTrue(contact2.getIsTutor())
 
         newContext.commitChanges()
 
-        assertTrue("Checking isStudent: ", contact2.getIsStudent())
-        assertFalse("Checking isTutor: ", contact2.getIsTutor())
+        Assertions.assertTrue(contact2.getIsStudent())
+        Assertions.assertFalse(contact2.getIsTutor())
 
         newContext.deleteObjects(student)
         newContext.commitChanges()
 
-        assertFalse("Checking isStudent: ", contact2.getIsStudent())
-        assertFalse("Checking isTutor: ", contact2.getIsTutor())
+        Assertions.assertFalse(contact2.getIsStudent())
+        Assertions.assertFalse(contact2.getIsTutor())
     }
 }

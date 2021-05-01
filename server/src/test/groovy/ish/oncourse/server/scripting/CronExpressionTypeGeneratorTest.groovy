@@ -1,59 +1,64 @@
 package ish.oncourse.server.scripting
 
+
+import groovy.transform.CompileStatic
 import ish.scripting.CronExpressionType
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.quartz.CronScheduleBuilder
 
-import static org.junit.Assert.assertEquals
-
+@CompileStatic
 class CronExpressionTypeGeneratorTest {
 
-	private static final String SPLITTER = " "
+    private static final String SPLITTER = " "
 
     @Test
     void testDailyMorningExpression() {
-		String cronExpression = CronExpressionGenerator.generate(CronExpressionType.DAILY_MORNING.getDatabaseValue())
+        String cronExpression = CronExpressionGenerator.generate(CronExpressionType.DAILY_MORNING.getDatabaseValue())
 
         String generatedNumber = cronExpression.split(SPLITTER)[1]
-        assertEquals(String.format("30 %s 5 * * ?", generatedNumber) , cronExpression)
+        Assertions.assertEquals(String.format("30 %s 5 * * ?", generatedNumber), cronExpression)
 
         CronScheduleBuilder.cronSchedule(cronExpression)
     }
 
-	@Test
+    @Test
     void testDailyEveningExpression() {
-		String cronExpression = CronExpressionGenerator.generate(CronExpressionType.DAILY_EVENING.getDatabaseValue())
+        String cronExpression = CronExpressionGenerator.generate(CronExpressionType.DAILY_EVENING.getDatabaseValue())
 
         String generatedNumber = cronExpression.split(SPLITTER)[1]
-        assertEquals(String.format("30 %s 19 * * ?", generatedNumber) , cronExpression)
+        Assertions.assertEquals(String.format("30 %s 19 * * ?", generatedNumber), cronExpression)
 
         CronScheduleBuilder.cronSchedule(cronExpression)
     }
 
-	@Test
+    
+    @Test
     void testWeeklyMondayExpression() {
-		String cronExpression = CronExpressionGenerator.generate(CronExpressionType.WEEKLY_MONDAY.getDatabaseValue())
+        String cronExpression = CronExpressionGenerator.generate(CronExpressionType.WEEKLY_MONDAY.getDatabaseValue())
 
         String generatedNumber = cronExpression.split(SPLITTER)[1]
-        assertEquals(String.format("30 %s 6 ? * MON *", generatedNumber) , cronExpression)
+        Assertions.assertEquals(String.format("30 %s 6 ? * MON *", generatedNumber), cronExpression)
 
         CronScheduleBuilder.cronSchedule(cronExpression)
     }
-	
-	@Test
+
+    
+    @Test
     void testHourlyExpression() {
-		String cronExpression = CronExpressionGenerator.generate(CronExpressionType.HOURLY.getDatabaseValue())
+        String cronExpression = CronExpressionGenerator.generate(CronExpressionType.HOURLY.getDatabaseValue())
 
         String generatedNumber = cronExpression.split(SPLITTER)[1]
-        assertEquals(String.format("30 %s 0/1 * * ?", generatedNumber) , cronExpression)
+        Assertions.assertEquals(String.format("30 %s 0/1 * * ?", generatedNumber), cronExpression)
 
         CronScheduleBuilder.cronSchedule(cronExpression)
     }
 
-	@Test
+    
+    @Test
     void testCustomExpression() {
-		String cronExpression = CronExpressionGenerator.generate("0 0 9 * * ?")
+        String cronExpression = CronExpressionGenerator.generate("0 0 9 * * ?")
 
-        assertEquals("0 0 9 * * ?", cronExpression)
+        Assertions.assertEquals("0 0 9 * * ?", cronExpression)
     }
 }

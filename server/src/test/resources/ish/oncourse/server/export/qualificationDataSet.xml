@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Qualification id="1" nationalCode="QUALCODE1" title="Qualification 1" isAccreditedCourse="1" isOffered="1" qualLevel="Level 1" nominalHours="3.5" fieldOfEducation="field1" anzsco="ANZSC1" newApprenticeship="text1" reviewDate="2013-01-01 00:00:00" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-	<Qualification id="2" nationalCode="QUALCODE2" title="Qualification 2" isAccreditedCourse="1" isOffered="1" qualLevel="Level 2" nominalHours="2.0" fieldOfEducation="field2" anzsco="ANZSC2" newApprenticeship="text2" reviewDate="2013-01-01 00:00:00" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Qualification id="1" nationalCode="QUALCODE1" title="Qualification 1" isAccreditedCourse="1" isOffered="1"
+                 qualLevel="Level 1" nominalHours="3.5" fieldOfEducation="field1" anzsco="ANZSC1"
+                 newApprenticeship="text1" reviewDate="2013-01-01 00:00:00" createdOn="2013-01-01 00:00:00"
+                 modifiedOn="2013-01-01 00:00:00"/>
+  <Qualification id="2" nationalCode="QUALCODE2" title="Qualification 2" isAccreditedCourse="1" isOffered="1"
+                 qualLevel="Level 2" nominalHours="2.0" fieldOfEducation="field2" anzsco="ANZSC2"
+                 newApprenticeship="text2" reviewDate="2013-01-01 00:00:00" createdOn="2013-01-01 00:00:00"
+                 modifiedOn="2013-01-01 00:00:00"/>
 </dataset>

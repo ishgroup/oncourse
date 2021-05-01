@@ -4,14 +4,14 @@
  */
 package ish.util
 
+import groovy.transform.CompileStatic
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 import java.text.ParseException
 
-import static junit.framework.Assert.assertEquals
-
+@CompileStatic
 @RunWith(Parameterized.class)
 class DurationFormatterTest {
 
@@ -72,7 +72,7 @@ class DurationFormatterTest {
         ]
 
         Collection<Object[]> dataList = new ArrayList<>()
-        for(int i = 0; i < data.length; i++) {
+        for (int i = 0; i < data.length; i++) {
             dataList.add([data[i][0] as String, data[i][1] as String[]] as Object[])
         }
         return dataList
@@ -83,40 +83,40 @@ class DurationFormatterTest {
         long time = DurationFormatter.parseDuration(input)
 
         int[] duration = DurationFormatter.splitMillisecondsIntoDaysHoursMinutes(time)
-        assertEquals(input, days, duration[0])
-        assertEquals(input, hours, duration[1])
-        assertEquals(input, minutes, duration[2])
+        Assertions.assertEquals(input, days, duration[0])
+        Assertions.assertEquals(input, hours, duration[1])
+        Assertions.assertEquals(input, minutes, duration[2])
     }
 
     @Test
     void testFormatterDDHHMM() throws ParseException {
         String result = DurationFormatter.formatDuration(DurationFormatter.parseDuration(input), DurationFormatter.FORMAT_DD_HH_MM)
-        assertEquals(input, outputDDHHMM, result)
+        Assertions.assertEquals(input, outputDDHHMM, result)
     }
 
     @Test
     void testFormatterHHMM() throws ParseException {
         String result = DurationFormatter.formatDuration(DurationFormatter.parseDuration(input), DurationFormatter.FORMAT_HH_MM)
-        assertEquals(input, outputHHMM, result)
+        Assertions.assertEquals(input, outputHHMM, result)
     }
 
     @Test
     void testFormatterMM() throws ParseException {
         String result = DurationFormatter.formatDuration(DurationFormatter.parseDuration(input), DurationFormatter.FORMAT_MM)
-        assertEquals(input, outputMM, result)
+        Assertions.assertEquals(input, outputMM, result)
     }
 
     @Test
     void testParseDurationInMinutes() throws ParseException {
         Integer result = DurationFormatter.parseDurationInMinutes(DurationFormatter.parseDuration(input))
 
-        assertEquals(input, lengthInMinutes, result)
+        Assertions.assertEquals(input, lengthInMinutes, result)
     }
 
     @Test
     void testParseDurationInHours() throws ParseException {
         BigDecimal result = DurationFormatter.parseDurationInHours(DurationFormatter.parseDuration(input))
 
-        assertEquals(input, lengthInHours, result)
+        Assertions.assertEquals(input, lengthInHours, result)
     }
 }

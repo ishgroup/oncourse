@@ -1,5 +1,7 @@
 package ish.oncourse.server.duplicate
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.*
 import ish.duplicate.CourseDuplicationRequest
@@ -10,13 +12,11 @@ import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-
+@CompileStatic
 class DuplicateCourseServiceTest extends CayenneIshTestCase {
-
 
     @Test
     void testDuplicateCourseCode() throws Exception {
@@ -96,32 +96,32 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
                 .and(Course.ID.ne(relatedCourse.getId()))
                 .select(context)
 
-        assertEquals(1, duplicatedCourses.size())
+        Assertions.assertEquals(1, duplicatedCourses.size())
         Course duplicatedCourse = duplicatedCourses.get(0)
 
-        assertEquals("Code1", duplicatedCourse.getCode())
-        assertEquals("TestCourse", duplicatedCourse.getName())
-        assertEquals("Test web description", duplicatedCourse.getWebDescription())
-        assertEquals(true, duplicatedCourse.getIsTraineeship())
-        assertEquals(true, duplicatedCourse.getIsSufficientForQualification())
-        assertEquals(true, duplicatedCourse.getCurrentlyOffered())
-        assertEquals(CourseEnrolmentType.ENROLMENT_BY_APPLICATION, duplicatedCourse.getEnrolmentType())
-        assertEquals(true, duplicatedCourse.getIsVET())
-        assertEquals("fTest", duplicatedCourse.getFieldOfEducation())
-        assertEquals(1, duplicatedCourse.getModules().size())
+        Assertions.assertEquals("Code1", duplicatedCourse.getCode())
+        Assertions.assertEquals("TestCourse", duplicatedCourse.getName())
+        Assertions.assertEquals("Test web description", duplicatedCourse.getWebDescription())
+        Assertions.assertEquals(true, duplicatedCourse.getIsTraineeship())
+        Assertions.assertEquals(true, duplicatedCourse.getIsSufficientForQualification())
+        Assertions.assertEquals(true, duplicatedCourse.getCurrentlyOffered())
+        Assertions.assertEquals(CourseEnrolmentType.ENROLMENT_BY_APPLICATION, duplicatedCourse.getEnrolmentType())
+        Assertions.assertEquals(true, duplicatedCourse.getIsVET())
+        Assertions.assertEquals("fTest", duplicatedCourse.getFieldOfEducation())
+        Assertions.assertEquals(1, duplicatedCourse.getModules().size())
 
         List<CourseModule> courseModules = ObjectSelect.query(CourseModule.class)
                 .where(CourseModule.COURSE.dot(Course.ID).eq(duplicatedCourse.getId()))
                 .select(context)
-        assertEquals(1, courseModules.size())
+        Assertions.assertEquals(1, courseModules.size())
         CourseModule courseModule = courseModules.get(0)
-        assertNotNull(courseModule.getCreatedOn())
-        assertNotNull(courseModule.getModifiedOn())
+        Assertions.assertNotNull(courseModule.getCreatedOn())
+        Assertions.assertNotNull(courseModule.getModifiedOn())
 
-        assertNotNull(duplicatedCourse.getQualification())
-        assertEquals("Test qualification", duplicatedCourse.getQualification().getTitle())
-        assertEquals(true, duplicatedCourse.getAllowWaitingLists())
-        assertEquals(course.getReportableHours(), duplicatedCourse.getReportableHours())
+        Assertions.assertNotNull(duplicatedCourse.getQualification())
+        Assertions.assertEquals("Test qualification", duplicatedCourse.getQualification().getTitle())
+        Assertions.assertEquals(true, duplicatedCourse.getAllowWaitingLists())
+        Assertions.assertEquals(course.getReportableHours(), duplicatedCourse.getReportableHours())
 
         List<EntityRelation> courseCourseRelations = ObjectSelect.query(EntityRelation.class)
                 .where(EntityRelation.FROM_ENTITY_ANGEL_ID.eq(duplicatedCourse.id))
@@ -129,11 +129,11 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
                 .and(EntityRelation.TO_ENTITY_ANGEL_ID.eq(relatedCourse.id))
                 .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
                 .select(context)
-        assertEquals(1, courseCourseRelations.size())
-        assertNotNull(courseCourseRelations.get(0).getCreatedOn())
-        assertNotNull(courseCourseRelations.get(0).getModifiedOn())
-        assertEquals(duplicatedCourse.id, courseCourseRelations.get(0).getFromEntityAngelId())
-        assertEquals(relatedCourse.id, courseCourseRelations.get(0).getToEntityAngelId())
+        Assertions.assertEquals(1, courseCourseRelations.size())
+        Assertions.assertNotNull(courseCourseRelations.get(0).getCreatedOn())
+        Assertions.assertNotNull(courseCourseRelations.get(0).getModifiedOn())
+        Assertions.assertEquals(duplicatedCourse.id, courseCourseRelations.get(0).getFromEntityAngelId())
+        Assertions.assertEquals(relatedCourse.id, courseCourseRelations.get(0).getToEntityAngelId())
 
 
         List<EntityRelation> courseProductRelations = ObjectSelect.query(EntityRelation.class)
@@ -142,24 +142,25 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
                 .and(EntityRelation.TO_ENTITY_ANGEL_ID.eq(product.id))
                 .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Product.simpleName))
                 .select(context)
-        assertEquals(1, courseProductRelations.size())
-        assertNotNull(courseProductRelations.get(0).getCreatedOn())
-        assertNotNull(courseProductRelations.get(0).getModifiedOn())
-        assertEquals(duplicatedCourse.id, courseProductRelations.get(0).getFromEntityAngelId())
-        assertEquals(product.id, courseProductRelations.get(0).getToEntityAngelId())
+        Assertions.assertEquals(1, courseProductRelations.size())
+        Assertions.assertNotNull(courseProductRelations.get(0).getCreatedOn())
+        Assertions.assertNotNull(courseProductRelations.get(0).getModifiedOn())
+        Assertions.assertEquals(duplicatedCourse.id, courseProductRelations.get(0).getFromEntityAngelId())
+        Assertions.assertEquals(product.id, courseProductRelations.get(0).getToEntityAngelId())
 
 
         List<CourseAttachmentRelation> courseAttachmentRelations = ObjectSelect.query(CourseAttachmentRelation.class)
                 .where(CourseAttachmentRelation.ENTITY_RECORD_ID.eq(duplicatedCourse.getId()))
                 .select(context)
 
-        assertEquals(1, courseAttachmentRelations.size())
-        assertNotNull(courseAttachmentRelations.get(0).getCreatedOn())
-        assertNotNull(courseAttachmentRelations.get(0).getModifiedOn())
-        assertEquals(duplicatedCourse, courseAttachmentRelations.get(0).getAttachedCourse())
-        assertEquals("TestDocument", courseAttachmentRelations.get(0).getDocument().getName())
+        Assertions.assertEquals(1, courseAttachmentRelations.size())
+        Assertions.assertNotNull(courseAttachmentRelations.get(0).getCreatedOn())
+        Assertions.assertNotNull(courseAttachmentRelations.get(0).getModifiedOn())
+        Assertions.assertEquals(duplicatedCourse, courseAttachmentRelations.get(0).getAttachedCourse())
+        Assertions.assertEquals("TestDocument", courseAttachmentRelations.get(0).getDocument().getName())
     }
 
+    
     private Product createProduct(DataContext context) {
         Account account = context.newObject(Account.class)
         account.setAccountCode("1")

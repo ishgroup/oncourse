@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 import java.util.Calendar;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+
 import static org.mockito.Mockito.when;
 
 public class StudentValidatorTest {

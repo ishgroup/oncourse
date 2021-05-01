@@ -1,5 +1,7 @@
 package ish.oncourse.server.report
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.cayenne.Report
 import ish.report.ImportReportResult.ReportValidationError
@@ -9,12 +11,13 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
 import static ish.report.ImportReportResult.ReportValidationError.*
-import static org.junit.Assert.assertEquals
 import static org.mockito.Matchers.any
 import static org.mockito.Mockito.when
 
+@CompileStatic
 class ReportValidatorTest {
 
+    
     @Test
     void testEmptyReport() throws Exception {
         DataContext context = Mockito.mock(DataContext.class)
@@ -23,9 +26,10 @@ class ReportValidatorTest {
         String reportXml = IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFileName))
 
         ReportValidationError validationError = ReportValidator.valueOf(reportXml, context).validate()
-        assertEquals(TheParamReportIsEmpty, validationError)
+        Assertions.assertEquals(TheParamReportIsEmpty, validationError)
     }
 
+    
     @Test
     void testReportWithoutJasperReportTag() throws Exception {
         DataContext context = Mockito.mock(DataContext.class)
@@ -34,9 +38,10 @@ class ReportValidatorTest {
         String reportXml = IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFileName))
 
         ReportValidationError validationError = ReportValidator.valueOf(reportXml, context).validate()
-        assertEquals(ImportedFileDoesNotContainJasperReportTag, validationError)
+        Assertions.assertEquals(ImportedFileDoesNotContainJasperReportTag, validationError)
     }
 
+    
     @Test
     void testMultipleRecords() throws Exception {
         List reports = new ArrayList<>()
@@ -50,6 +55,6 @@ class ReportValidatorTest {
         String reportXml = IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFileName))
 
         ReportValidationError validationError = ReportValidator.valueOf(reportXml, context).validate()
-        assertEquals(MultipleReportsWithTheSameKeyCode, validationError)
+        Assertions.assertEquals(MultipleReportsWithTheSameKeyCode, validationError)
     }
 }

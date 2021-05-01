@@ -3,6 +3,8 @@
  */
 package ish.oncourse.server.scripting
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.TriggerType
 import ish.oncourse.server.ICayenneService
@@ -16,18 +18,19 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.text.SimpleDateFormat
 
-import static org.junit.Assert.assertEquals
-
+@CompileStatic
 class SyncAvailabilityScriptTest extends CayenneIshTestCase {
 
-	@BeforeEach
+    
+    @BeforeEach
     void setup() throws Exception {
-		wipeTables()
+        wipeTables()
         InputStream st = GroovyScriptService.class.getClassLoader().getResourceAsStream("ish/oncourse/server/scripting/syncAvailabilityScriptTest.xml")
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
         builder.setColumnSensing(true)
@@ -39,16 +42,17 @@ class SyncAvailabilityScriptTest extends CayenneIshTestCase {
         executeDatabaseOperation(rDataSet)
     }
 
-	@Test
+    
+    @Test
     void testSyncAvailabilityEnrolment() throws Exception {
-		GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
+        GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
         ObjectContext context = injector.getInstance(ICayenneService.class).getNewContext()
 
         Script script = context.newObject(Script.class)
 
         script.setScript(IOUtils.toString(
-				SyncAvailabilityScriptTest.class.getClassLoader().getResourceAsStream(
-						"scripts/ish.script.syncAvailabilityEnrolment.groovy")))
+                SyncAvailabilityScriptTest.class.getClassLoader().getResourceAsStream(
+                        "scripts/ish.script.syncAvailabilityEnrolment.groovy")))
         script.setName("Sync availability enrolment")
         script.setEnabled(true)
         script.setTriggerType(TriggerType.ON_DEMAND)
@@ -64,31 +68,32 @@ class SyncAvailabilityScriptTest extends CayenneIshTestCase {
         CourseClass class4 = SelectById.query(CourseClass.class, 209).selectOne(context)
         CourseClass class5 = SelectById.query(CourseClass.class, 210).selectOne(context)
 
-        assertEquals(new Integer(10), class1.getMaximumPlaces())
-        assertEquals(new Integer(10), class2.getMaximumPlaces())
-        assertEquals(new Integer(10), class3.getMaximumPlaces())
-        assertEquals(new Integer(10), class4.getMaximumPlaces())
-        assertEquals(new Integer(10), class5.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class1.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class2.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class3.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class4.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class5.getMaximumPlaces())
 
         scriptService.runAndWait(script, ScriptParameters.from("record", enrolment))
 
-        assertEquals(new Integer(10), class1.getMaximumPlaces())
-        assertEquals(new Integer(9), class2.getMaximumPlaces())
-        assertEquals(new Integer(10), class3.getMaximumPlaces())
-        assertEquals(new Integer(10), class4.getMaximumPlaces())
-        assertEquals(new Integer(10), class5.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class1.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(9), class2.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class3.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class4.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class5.getMaximumPlaces())
     }
 
-	@Test
+    
+    @Test
     void testSyncAvailabilityCancellation() throws Exception {
-		GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
+        GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
         ObjectContext context = injector.getInstance(ICayenneService.class).getNewContext()
 
         Script script = context.newObject(Script.class)
 
         script.setScript(IOUtils.toString(
-				SyncAvailabilityScriptTest.class.getClassLoader().getResourceAsStream(
-						"scripts/ish.script.syncAvailabilityCancellation.groovy")))
+                SyncAvailabilityScriptTest.class.getClassLoader().getResourceAsStream(
+                        "scripts/ish.script.syncAvailabilityCancellation.groovy")))
         script.setName("Sync availability cancellation")
         script.setEnabled(true)
         script.setTriggerType(TriggerType.ON_DEMAND)
@@ -104,18 +109,18 @@ class SyncAvailabilityScriptTest extends CayenneIshTestCase {
         CourseClass class4 = SelectById.query(CourseClass.class, 209).selectOne(context)
         CourseClass class5 = SelectById.query(CourseClass.class, 210).selectOne(context)
 
-        assertEquals(new Integer(10), class1.getMaximumPlaces())
-        assertEquals(new Integer(10), class2.getMaximumPlaces())
-        assertEquals(new Integer(10), class3.getMaximumPlaces())
-        assertEquals(new Integer(10), class4.getMaximumPlaces())
-        assertEquals(new Integer(10), class5.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class1.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class2.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class3.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class4.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class5.getMaximumPlaces())
 
         scriptService.runAndWait(script, ScriptParameters.from("record", enrolment))
 
-        assertEquals(new Integer(10), class1.getMaximumPlaces())
-        assertEquals(new Integer(11), class2.getMaximumPlaces())
-        assertEquals(new Integer(10), class3.getMaximumPlaces())
-        assertEquals(new Integer(10), class4.getMaximumPlaces())
-        assertEquals(new Integer(10), class5.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class1.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(11), class2.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class3.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class4.getMaximumPlaces())
+        Assertions.assertEquals(new Integer(10), class5.getMaximumPlaces())
     }
 }

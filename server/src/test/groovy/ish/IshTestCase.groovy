@@ -3,6 +3,7 @@ package ish
 import com.google.inject.Binder
 import com.google.inject.Inject
 import com.google.inject.Module
+import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
 import io.bootique.cayenne.CayenneModule
 import io.bootique.jdbc.DataSourceListener
@@ -28,7 +29,6 @@ import org.dbunit.database.IDatabaseConnection
 import org.dbunit.ext.mysql.MySqlDataTypeFactory
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.RegisterExtension
 import org.reflections.Reflections
 
@@ -38,9 +38,10 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 
+@CompileStatic
 abstract class IshTestCase {
 
-	private static final String ANGEL_NODE = "AngelNode"
+    private static final String ANGEL_NODE = "AngelNode"
     private static final String MARIADB = "mariadb"
     private static final String MYSQL = "mysql"
     private static final String MSSQL = "mssql"
@@ -57,31 +58,31 @@ abstract class IshTestCase {
     private static final Logger logger = LogManager.getLogger()
 
     @RegisterExtension
-	public static BootiqueTestFactory testFactory = new BootiqueTestFactory()
+    public static BootiqueTestFactory testFactory = new BootiqueTestFactory()
 
     @BeforeAll
     static void setupOnceRoot() throws Exception {
         testFactory = new BootiqueTestFactory()
 
-		System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
+        System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
         //set JRGroovy compiler as default for tests
-		new JRRuntimeConfig().config()
+        new JRRuntimeConfig().config()
 
         workingDirectory = new File(".").getAbsolutePath()
         workingDirectory = workingDirectory.substring(0, workingDirectory.lastIndexOf("."))
 
         if (!loggingInitialised) {
-			ResourcesUtil.initialiseLogging(false)
+            ResourcesUtil.initialiseLogging(false)
             loggingInitialised = true
         }
 
-		createInjectors()
+        createInjectors()
         cleanUpMySql()
 //        LiquibaseJavaContext.fill(injector);
     }
 
     static void shutdownCayenne() {
-		ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
         cayenneService.getServerRuntime().shutdown()
         injector.shutdown()
     }
@@ -97,8 +98,8 @@ abstract class IshTestCase {
 
         BootiqueTestFactory.Builder builder = testFactory
                 .app(String.format("--config=classpath:%s", yamlTestConfig))
-				.module(AngelModule.class)
-				.module(JdbcModule.class)
+                .module(AngelModule.class)
+                .module(JdbcModule.class)
                 .module(new Module() {
                     @Override
                     void configure(Binder binder) {
@@ -110,14 +111,14 @@ abstract class IshTestCase {
                             @Override
                             void beforeStartup(String name, String jdbcUrl) {
                                 ManagedDataSourceStarter dataSourceStarter = starters.get("angel-test-creation")
-                                if(dataSourceStarter != null) {
+                                if (dataSourceStarter != null) {
                                     createMariaDbSchema(dataSourceStarter)
                                 }
                             }
                         })
                     }
                 })
-				.module(JdbcTomcatModule.class)
+                .module(JdbcTomcatModule.class)
                 .module(CayenneModule.class)
                 .module(new Module() {
                     @Override
@@ -131,7 +132,7 @@ abstract class IshTestCase {
                         })
                     }
                 })
-				.module(TestModule.class)
+                .module(TestModule.class)
                 .module(ApiCayenneLayerModule.class)
 
         testModules.each {
@@ -148,33 +149,33 @@ abstract class IshTestCase {
     }
 
     static Set<Class> getTestModules() {
-        new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(ish.TestModule)
+        new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(ish.TestModule) as Set<Class>
     }
 
     static boolean testEnvMariadb() {
-		return databaseType.equalsIgnoreCase(MARIADB)
+        return databaseType.equalsIgnoreCase(MARIADB)
     }
 
-	protected static IDatabaseConnection getTestDatabaseConnection() throws Exception {
+    protected static IDatabaseConnection getTestDatabaseConnection() throws Exception {
 
-		DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection(), null)
+        DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection(), null)
 
         DatabaseConfig config = dbConnection.getConfig()
         config.setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true)
         config.setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false)
         config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory())
 
-		return dbConnection
+        return dbConnection
     }
 
-	/**
-	 * cleans up after the test, dropping the database. we might change it in the future, so it only drops once per whole run cycyle
-	 */
-	@AfterAll
+    /**
+     * cleans up after the test, dropping the database. we might change it in the future, so it only drops once per whole run cycyle
+     */
+    @AfterAll
     static void cleanUp() {
 
-		// need to stop stop CayenneService in order to dispose connection pool created for it
-		shutdownCayenne()
+        // need to stop stop CayenneService in order to dispose connection pool created for it
+        shutdownCayenne()
     }
 
     private static void createMariaDbSchema(ManagedDataSourceStarter dataSourceStarter) {
@@ -206,8 +207,8 @@ abstract class IshTestCase {
         }
     }
 
-	protected static void cleanUpMySql() {
-		Connection connection = null
+    protected static void cleanUpMySql() {
+        Connection connection = null
         try {
             connection = dataSource.getConnection()
             connection.setAutoCommit(true)
@@ -238,54 +239,54 @@ abstract class IshTestCase {
 
             connection.setCatalog(databaseName)
         } catch (Exception e) {
-			throw new RuntimeException("cleaning mysql database failed", e)
+            throw new RuntimeException("cleaning mysql database failed", e)
         } finally {
-			if (connection != null) {
-				try {
-					connection.close()
+            if (connection != null) {
+                try {
+                    connection.close()
                 } catch (SQLException e) {
                     logger.catching(e)
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 
-	/**
-	 * used to execute statements which can fail, used by mssql cleanup, where we are not sure which tables might have been created/dropped
-	 *
-	 * @param statement
-	 */
-	protected static void tryStatement(String statement) {
-		Connection connection = null
+    /**
+     * used to execute statements which can fail, used by mssql cleanup, where we are not sure which tables might have been created/dropped
+     *
+     * @param statement
+     */
+    protected static void tryStatement(String statement) {
+        Connection connection = null
         try {
-			connection = dataSource.getConnection()
+            connection = dataSource.getConnection()
             connection.setAutoCommit(true)
             Statement stmt = connection.createStatement()
             stmt.execute(statement)
             stmt.close()
 
         } catch (Exception e) {
-			// nothing
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close()
+            // nothing
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close()
                 } catch (SQLException e) {
                     logger.catching(e)
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 
-	protected static File getResourceAsFile(final String relativePath) {
-		logger.entry(relativePath)
+    protected static File getResourceAsFile(final String relativePath) {
+        logger.entry(relativePath)
 
         URL resourceURL = ClassLoader.getSystemClassLoader().getResource(relativePath)
         try {
-			return new File(resourceURL.toURI())
+            return new File(resourceURL.toURI())
         } catch (URISyntaxException e) {
-			logger.warn("resource not found, searched in paths:\n {}", ResourcesUtil.getClasspathString())
+            logger.warn("resource not found, searched in paths:\n {}", ResourcesUtil.getClasspathString())
         }
-		return null
+        return null
     }
 }

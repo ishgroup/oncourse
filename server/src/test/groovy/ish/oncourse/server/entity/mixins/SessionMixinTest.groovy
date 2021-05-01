@@ -1,17 +1,14 @@
 package ish.oncourse.server.entity.mixins
 
+
 import ish.IshTestCase
 import ish.oncourse.server.cayenne.Session
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
 import java.time.format.DateTimeFormatter
 
-import static org.junit.Assert.assertEquals
-
-/**
- * Created by anarut on 8/4/16.
- */
 class SessionMixinTest extends IshTestCase {
 
     private static final String PATTERN = 'h:mm a EEEE d MMMM yyyy'
@@ -23,6 +20,7 @@ class SessionMixinTest extends IshTestCase {
     private TimeZone timeZoneSydney = TimeZone.getTimeZone("Australia/Sydney")
     private TimeZone timeZoneNewYork = TimeZone.getTimeZone("America/New_York")
 
+    
     @Test
     void testStart() {
         Calendar calendar = Calendar.getInstance(timeZoneSydney)
@@ -34,21 +32,21 @@ class SessionMixinTest extends IshTestCase {
         Mockito.when(session1.startDatetime).thenReturn(testDate)
         Mockito.when(session1.timeZone).thenReturn(timeZoneSydney)
 
-        assertEquals(SYDNEY_TIME, session1.startDatetime.format(PATTERN, session1.timeZone))
-        assertEquals(SYDNEY_TIME, session1.start.format(DateTimeFormatter.ofPattern(PATTERN)))
-        assertEquals(session1.startDatetime.format(PATTERN, session1.timeZone), session1.start.format(DateTimeFormatter.ofPattern(PATTERN)))
-
+        Assertions.assertEquals(SYDNEY_TIME, session1.startDatetime.format(PATTERN, session1.timeZone))
+        Assertions.assertEquals(SYDNEY_TIME, session1.start.format(DateTimeFormatter.ofPattern(PATTERN)))
+        Assertions.assertEquals(session1.startDatetime.format(PATTERN, session1.timeZone), session1.start.format(DateTimeFormatter.ofPattern(PATTERN)))
 
 
         Session session2 = Mockito.mock(Session)
         Mockito.when(session2.startDatetime).thenReturn(testDate)
         Mockito.when(session2.timeZone).thenReturn(timeZoneNewYork)
 
-        assertEquals(NEW_YORK_TIME, session2.startDatetime.format(PATTERN, session2.timeZone))
-        assertEquals(NEW_YORK_TIME, session2.start.format(DateTimeFormatter.ofPattern(PATTERN)))
-        assertEquals(session2.startDatetime.format(PATTERN, session2.timeZone), session2.start.format(DateTimeFormatter.ofPattern(PATTERN)))
+        Assertions.assertEquals(NEW_YORK_TIME, session2.startDatetime.format(PATTERN, session2.timeZone))
+        Assertions.assertEquals(NEW_YORK_TIME, session2.start.format(DateTimeFormatter.ofPattern(PATTERN)))
+        Assertions.assertEquals(session2.startDatetime.format(PATTERN, session2.timeZone), session2.start.format(DateTimeFormatter.ofPattern(PATTERN)))
     }
 
+    
     @Test
     void testEnd() {
         Calendar calendar = Calendar.getInstance(timeZoneSydney)
@@ -59,17 +57,17 @@ class SessionMixinTest extends IshTestCase {
         Mockito.when(session1.endDatetime).thenReturn(testDate)
         Mockito.when(session1.timeZone).thenReturn(timeZoneSydney)
 
-        assertEquals(SYDNEY_TIME, session1.endDatetime.format(PATTERN, session1.timeZone))
-        assertEquals(SYDNEY_TIME, session1.end.format(DateTimeFormatter.ofPattern(PATTERN)))
-        assertEquals(session1.endDatetime.format(PATTERN, session1.timeZone), session1.end.format(DateTimeFormatter.ofPattern(PATTERN)))
+        Assertions.assertEquals(SYDNEY_TIME, session1.endDatetime.format(PATTERN, session1.timeZone))
+        Assertions.assertEquals(SYDNEY_TIME, session1.end.format(DateTimeFormatter.ofPattern(PATTERN)))
+        Assertions.assertEquals(session1.endDatetime.format(PATTERN, session1.timeZone), session1.end.format(DateTimeFormatter.ofPattern(PATTERN)))
 
 
         Session session2 = Mockito.mock(Session)
         Mockito.when(session2.endDatetime).thenReturn(testDate)
         Mockito.when(session2.timeZone).thenReturn(timeZoneNewYork)
 
-        assertEquals(NEW_YORK_TIME, session2.endDatetime.format(PATTERN, session2.timeZone))
-        assertEquals(NEW_YORK_TIME, session2.end.format(DateTimeFormatter.ofPattern(PATTERN)))
-        assertEquals(session2.endDatetime.format(PATTERN, session2.timeZone), session2.end.format(DateTimeFormatter.ofPattern(PATTERN)))
+        Assertions.assertEquals(NEW_YORK_TIME, session2.endDatetime.format(PATTERN, session2.timeZone))
+        Assertions.assertEquals(NEW_YORK_TIME, session2.end.format(DateTimeFormatter.ofPattern(PATTERN)))
+        Assertions.assertEquals(session2.endDatetime.format(PATTERN, session2.timeZone), session2.end.format(DateTimeFormatter.ofPattern(PATTERN)))
     }
 }

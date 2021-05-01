@@ -1,5 +1,7 @@
 package ish.oncourse.server.print.transformations
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
@@ -20,13 +22,15 @@ import org.junit.jupiter.api.Test
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
+@CompileStatic
 class CertificateAccendanceTest {
 
     private Report report
     private PrintWorker printWorker
 
+    
     @BeforeEach
-    void before () throws IOException {
+    void before() throws IOException {
         InputStream is = CertificateAccendanceTest.class.getClassLoader().getResourceAsStream("reports/Certificate/CertificateAttendanceReport.jrxml")
         report = mock(Report.class)
         when(report.getData()).thenReturn(IOUtils.toByteArray(is))
@@ -52,6 +56,7 @@ class CertificateAccendanceTest {
         exporter.exportReport()
     }
 
+    
     private List<Enrolment> getItem() {
         Enrolment enrolment = mock(Enrolment.class)
         CourseClass courseClass = mock(CourseClass.class)

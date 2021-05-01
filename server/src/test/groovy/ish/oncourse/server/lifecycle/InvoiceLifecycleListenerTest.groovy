@@ -4,6 +4,7 @@
  */
 package ish.oncourse.server.lifecycle
 
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.EnrolmentStatus
@@ -20,21 +21,20 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.After
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
 
 @CompileStatic
 class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
 
-	private ICayenneService cayenneService
+    private ICayenneService cayenneService
 
+    
     @BeforeEach
     void setup() throws Exception {
-		wipeTables()
+        wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
         InputStream st = InvoiceLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/lifecycle/invoiceLifecycleTest.xml")
@@ -55,15 +55,16 @@ class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
         super.setup()
     }
 
-	@After
+    @AfterEach
     void tearDown() {
-		wipeTables()
+        wipeTables()
     }
 
-	@Test
+    
+    @Test
     void testConfirmationEmailsQueued() throws Exception {
 
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
         Account account = getAccountWithId(context, 50L)
         Tax tax = SelectById.query(Tax.class, 3).selectOne(context)
@@ -126,8 +127,8 @@ class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
 
         context.commitChanges()
 
-        assertTrue(context.select(SelectQuery.query(MessagePerson.class)).isEmpty())
-        assertTrue(context.select(SelectQuery.query(Message.class)).isEmpty())
+        Assertions.assertTrue(context.select(SelectQuery.query(MessagePerson.class)).isEmpty())
+        Assertions.assertTrue(context.select(SelectQuery.query(Message.class)).isEmpty())
 
         invoice.setModifiedOn(new Date())
         enrol1.setStatus(EnrolmentStatus.SUCCESS)
@@ -136,8 +137,8 @@ class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
 
         // still should be no messages, need to wait until all enrolments will be successful
 
-		assertTrue(context.select(SelectQuery.query(MessagePerson.class)).isEmpty())
-        assertTrue(context.select(SelectQuery.query(Message.class)).isEmpty())
+        Assertions.assertTrue(context.select(SelectQuery.query(MessagePerson.class)).isEmpty())
+        Assertions.assertTrue(context.select(SelectQuery.query(Message.class)).isEmpty())
 
         invoice.setModifiedOn(new Date())
         enrol2.setStatus(EnrolmentStatus.SUCCESS)
@@ -145,19 +146,20 @@ class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         // give script running in separate thread some time to queue emails
-		Thread.sleep(5000)
+        Thread.sleep(5000)
 
         List<Message> messages = context.select(SelectQuery.query(Message.class))
         List<MessagePerson> messagePersons = context.select(SelectQuery.query(MessagePerson.class))
 
-        assertEquals(3, messages.size())
-        assertEquals(3, messagePersons.size())
+        Assertions.assertEquals(3, messages.size())
+        Assertions.assertEquals(3, messagePersons.size())
     }
 
-	@Test
+    
+    @Test
     void testInstantlySuccesfulEnrolmentConfirmationQueued() throws Exception {
 
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
         Account account = getAccountWithId(context, 50L)
         Tax tax = SelectById.query(Tax.class, 3).selectOne(context)
@@ -198,14 +200,14 @@ class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         // give script running in separate thread some time to queue emails
-		Thread.sleep(5000)
+        Thread.sleep(5000)
 
         List<Message> messages = context.select(SelectQuery.query(Message.class))
         List<MessagePerson> messagePersons = context.select(SelectQuery.query(MessagePerson.class))
 
-        assertEquals(2, messages.size())
-        assertEquals(2, messagePersons.size())
+        Assertions.assertEquals(2, messages.size())
+        Assertions.assertEquals(2, messagePersons.size())
     }
-    
+
 
 }

@@ -1,5 +1,7 @@
 package ish.oncourse.server.lifecycle
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.AccountTransaction
@@ -11,19 +13,19 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.After
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-
+@CompileStatic
 class BankingLifecycleListenerTest extends CayenneIshTestCase {
 
     private ICayenneService cayenneService
 
+    
     @BeforeEach
     void setup() throws Exception {
         wipeTables()
@@ -45,19 +47,20 @@ class BankingLifecycleListenerTest extends CayenneIshTestCase {
         super.setup()
     }
 
-    @After
+    @AfterEach
     void tearDown() {
         wipeTables()
     }
 
 
+    
     @Test
     void testSettlementDateChanged() {
         DataContext context = cayenneService.getNewContext()
 
         List<AccountTransaction> accountTransactionsBefore = ObjectSelect.query(AccountTransaction.class)
                 .select(context)
-        assertTrue(accountTransactionsBefore.isEmpty())
+        Assertions.assertTrue(accountTransactionsBefore.isEmpty())
 
         Banking banking = SelectById.query(Banking.class, 1)
                 .selectOne(context)
@@ -69,13 +72,13 @@ class BankingLifecycleListenerTest extends CayenneIshTestCase {
         List<AccountTransaction> accountTransactionsAfter = ObjectSelect.query(AccountTransaction.class)
                 .select(context)
 
-        assertEquals(16, accountTransactionsAfter.size())
+        Assertions.assertEquals(16, accountTransactionsAfter.size())
 
         banking.setSettlementDate(LocalDate.now().minusDays(2))
         context.commitChanges()
 
         List<AccountTransaction> accountTransactionsAfter2 = ObjectSelect.query(AccountTransaction.class)
                 .select(context)
-        assertEquals(32, accountTransactionsAfter2.size())
+        Assertions.assertEquals(32, accountTransactionsAfter2.size())
     }
 }

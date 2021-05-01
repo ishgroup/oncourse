@@ -1,5 +1,6 @@
 package ish.util
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.MessageStatus
 import ish.common.types.MessageType
@@ -10,20 +11,20 @@ import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.MessagePerson
 import ish.oncourse.server.scripting.api.MessageReceived
 import org.apache.cayenne.access.DataContext
-import org.junit.After
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.*
-
+@CompileStatic
 class MessageUtilTest extends CayenneIshTestCase {
 
-    @After
+    @AfterEach
     void teardown() {
         wipeTables()
     }
 
     @Test
-    void testGenerateCreatorKey(){
+    void testGenerateCreatorKey() {
         DataContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Contact contact = context.newObject(Contact.class)
@@ -33,48 +34,51 @@ class MessageUtilTest extends CayenneIshTestCase {
         fillCountry(country)
 
         //check creatorKey generate without any entity
-        assertEquals('numb123!@#$%^&*()+=-0', MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0'))
+        Assertions.assertEquals('numb123!@#$%^&*()+=-0', MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0'))
 
         //check creatorKey generate with not committed entities. Runtime exception expected
         try {
-            assertEquals('numb123!@#$%^&*()+=-0', MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact, contact1))
-            fail()
-        } catch (RuntimeException e){}
+            Assertions.assertEquals('numb123!@#$%^&*()+=-0', MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact, contact1))
+            Assertions.fail()
+        } catch (RuntimeException e) {
+        }
 
         //check creatorKey generate with 1 entity
         context.commitChanges()
-        assertEquals('numb123!@#$%^&*()+=-0_Contact_' + contact.getId(), MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact))
+        Assertions.assertEquals('numb123!@#$%^&*()+=-0_Contact_' + contact.getId(), MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact))
 
         //check creatorKey generate with several instances of entity
-        assertEquals(String.format('numb1230_Contact_%s_Contact_%s', contact.getId(), contact1.getId()), MessageUtils.generateCreatorKey("numb1230", contact, contact1))
+        Assertions.assertEquals(String.format('numb1230_Contact_%s_Contact_%s', contact.getId(), contact1.getId()), MessageUtils.generateCreatorKey("numb1230", contact, contact1))
 
         //check creatorKey generate with different entities
-        assertEquals(String.format('numb1230_Contact_%s_Country_%s_Contact_%s',
+        Assertions.assertEquals(String.format('numb1230_Contact_%s_Country_%s_Contact_%s',
                 contact.getId(), country.getObjectId().getIdSnapshot().get("id"), contact1.getId()),
                 MessageUtils.generateCreatorKey("numb1230", contact, country, contact1))
 
         //check creatorKey generate with deleted entities. Runtime exception expected
         context.deleteObject(contact)
         try {
-            assertNotNull(MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact))
-            fail()
-        } catch (RuntimeException e){}
+            Assertions.assertNotNull(MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact))
+            Assertions.fail()
+        } catch (RuntimeException e) {
+        }
 
         //check creatorKey generate with deleted and committed entity. Runtime exception expected
         context.commitChanges()
         try {
-            assertNotNull(MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact, contact1))
-            fail()
-        } catch (RuntimeException e){}
+            Assertions.assertNotNull(MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact, contact1))
+            Assertions.fail()
+        } catch (RuntimeException e) {
+        }
     }
 
     @Test
-    void testGetLastMessageByKey(){
+    void testGetLastMessageByKey() {
         DataContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         //no messages
-        assertFalse(MessageReceived.valueOf(context, "noMessages").isPresent())
-        assertFalse(MessageReceived.valueOf(context, "someKey").isPresent())
+        Assertions.assertFalse(MessageReceived.valueOf(context, "noMessages").isPresent())
+        Assertions.assertFalse(MessageReceived.valueOf(context, "someKey").isPresent())
 
         //no messages with key
         //no committed messages
@@ -83,20 +87,20 @@ class MessageUtilTest extends CayenneIshTestCase {
         fillMessage(message)
         context.commitChanges()
 
-        assertFalse(MessageReceived.valueOf(context, "notExistedKey").isPresent())
+        Assertions.assertFalse(MessageReceived.valueOf(context, "notExistedKey").isPresent())
         //check message returned
-        assertTrue(MessageReceived.valueOf(context, "someKey").isPresent())
+        Assertions.assertTrue(MessageReceived.valueOf(context, "someKey").isPresent())
 
         Message lastMessage = context.newObject(Message.class)
         lastMessage.setCreatorKey("someKey")
         fillMessage(lastMessage)
         context.commitChanges()
 
-        assertTrue(MessageReceived.valueOf(context, "someKey").isPresent())
+        Assertions.assertTrue(MessageReceived.valueOf(context, "someKey").isPresent())
     }
 
     @Test
-    void testGetLastMessageByKeyForContact(){
+    void testGetLastMessageByKeyForContact() {
         DataContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Contact contact = context.newObject(Contact.class)
@@ -106,7 +110,7 @@ class MessageUtilTest extends CayenneIshTestCase {
 
         //no messages
 
-        assertFalse(MessageReceived.valueOf(context, "noMessages", contact).isPresent())
+        Assertions.assertFalse(MessageReceived.valueOf(context, "noMessages", contact).isPresent())
 
         //contact1 has message, but not contact
         //expected: lastMessageByKey for contact will return null, for contact1 - return message
@@ -118,8 +122,8 @@ class MessageUtilTest extends CayenneIshTestCase {
         message.addToMessagePersons(mPerson)
         contact1.addToMessages(mPerson)
         context.commitChanges()
-        assertFalse(MessageReceived.valueOf(context, "someKey", contact).isPresent())
-        assertTrue(MessageReceived.valueOf(context, "someKey", contact1).isPresent())
+        Assertions.assertFalse(MessageReceived.valueOf(context, "someKey", contact).isPresent())
+        Assertions.assertTrue(MessageReceived.valueOf(context, "someKey", contact1).isPresent())
 
         mPerson = context.newObject(MessagePerson.class)
         fillMessagePerson(mPerson)
@@ -130,10 +134,10 @@ class MessageUtilTest extends CayenneIshTestCase {
         contact1.addToMessages(mPerson)
         context.commitChanges()
 
-        assertTrue(MessageReceived.valueOf(context, "someKey", contact1).isPresent())
+        Assertions.assertTrue(MessageReceived.valueOf(context, "someKey", contact1).isPresent())
     }
 
-    private void fillMessage(Message... messages){
+    private void fillMessage(Message... messages) {
         for (Message message : messages) {
             message.setEmailSubject("someSubject")
             message.setPostDescription("somePostDesc")
@@ -143,21 +147,21 @@ class MessageUtilTest extends CayenneIshTestCase {
         }
     }
 
-    private void fillContact(Contact... contacts){
-        for (Contact contact : contacts){
+    private void fillContact(Contact... contacts) {
+        for (Contact contact : contacts) {
             contact.setFirstName("FirstName")
             contact.setLastName("Last Name")
         }
     }
 
     private void fillCountry(Country... countries) {
-        for (Country country : countries){
+        for (Country country : countries) {
             country.setName("Belarus")
         }
     }
 
-    private void fillMessagePerson(MessagePerson... mPersons){
-        for (MessagePerson mPerson : mPersons){
+    private void fillMessagePerson(MessagePerson... mPersons) {
+        for (MessagePerson mPerson : mPersons) {
             mPerson.setStatus(MessageStatus.SENT)
             mPerson.setType(MessageType.EMAIL)
             mPerson.setAttemptCount(1)

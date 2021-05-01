@@ -4,6 +4,8 @@
  */
 package ish.oncourse.server.lifecycle
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.*
 import ish.oncourse.server.ICayenneService
@@ -17,19 +19,20 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.After
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.*
-
+@CompileStatic
 class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
 
-	private ICayenneService cayenneService
+    private ICayenneService cayenneService
 
+    
     @BeforeEach
     void setup() throws Exception {
-		wipeTables()
+        wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
         InputStream st = EnrolmentLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/lifecycle/enrolmentLifecycleTest.xml")
@@ -47,15 +50,16 @@ class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
         executeDatabaseOperation(rDataSet)
     }
 
-	@After
+    @AfterEach
     void tearDown() {
-		wipeTables()
+        wipeTables()
     }
 
-	@Test
+    
+    @Test
     void testUnsubscribeWaitingList() {
 
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
         Course course1 = SelectById.query(Course.class, 1).selectOne(context)
         Course course2 = SelectById.query(Course.class, 2).selectOne(context)
@@ -68,7 +72,7 @@ class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
         Expression studentCourse1WaitListQualifier = WaitingList.COURSE.eq(course1).andExp(WaitingList.STUDENT.eq(student))
         Expression studentCourse2WaitListQualifier = WaitingList.COURSE.eq(course2).andExp(WaitingList.STUDENT.eq(student))
 
-        assertEquals(2, context.select(SelectQuery.query(WaitingList.class)).size())
+        Assertions.assertEquals(2, context.select(SelectQuery.query(WaitingList.class)).size())
 
         Enrolment enrol1 = context.newObject(Enrolment.class)
         enrol1.setStudent(student)
@@ -82,21 +86,22 @@ class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
 
         context.commitChanges()
 
-        assertFalse(context.select(SelectQuery.query(WaitingList.class, studentCourse1WaitListQualifier)).isEmpty())
+        Assertions.assertFalse(context.select(SelectQuery.query(WaitingList.class, studentCourse1WaitListQualifier)).isEmpty())
 
         enrol1.setStatus(EnrolmentStatus.SUCCESS)
 
         context.commitChanges()
 
-        assertTrue(context.select(SelectQuery.query(WaitingList.class, studentCourse1WaitListQualifier)).isEmpty())
-        assertFalse(context.select(SelectQuery.query(WaitingList.class, studentCourse2WaitListQualifier)).isEmpty())
-        assertEquals(1, context.select(SelectQuery.query(WaitingList.class)).size())
+        Assertions.assertTrue(context.select(SelectQuery.query(WaitingList.class, studentCourse1WaitListQualifier)).isEmpty())
+        Assertions.assertFalse(context.select(SelectQuery.query(WaitingList.class, studentCourse2WaitListQualifier)).isEmpty())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(WaitingList.class)).size())
     }
 
-	@Test
+    
+    @Test
     void testCancelEnrolmentWithCertificates() {
 
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
         Student student1 = SelectById.query(Student.class, 1).selectOne(context)
         Student student2 = SelectById.query(Student.class, 2).selectOne(context)
@@ -138,8 +143,8 @@ class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
 
         enrol1.setPersistenceState(PersistenceState.HOLLOW)
         enrol2.setPersistenceState(PersistenceState.HOLLOW)
-        assertFalse(enrol1.getOutcomes().isEmpty())
-        assertFalse(enrol2.getOutcomes().isEmpty())
+        Assertions.assertFalse(enrol1.getOutcomes().isEmpty())
+        Assertions.assertFalse(enrol2.getOutcomes().isEmpty())
 
         Certificate cert = context.newObject(Certificate.class)
         cert.setCertificateNumber(1L)
@@ -165,8 +170,8 @@ class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
         enrol2 = SelectById.query(Enrolment, enrol2.objectId).selectOne(context)
 
         // do not delete outcomes when user perform cancel/refund
-        assertFalse(enrol1.getOutcomes().isEmpty())
-        assertNotNull(enrol1.getOutcomes().get(0).getCertificateOutcomes())
-        assertFalse(enrol2.getOutcomes().isEmpty())
+        Assertions.assertFalse(enrol1.getOutcomes().isEmpty())
+        Assertions.assertNotNull(enrol1.getOutcomes().get(0).getCertificateOutcomes())
+        Assertions.assertFalse(enrol2.getOutcomes().isEmpty())
     }
 }

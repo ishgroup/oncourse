@@ -19,10 +19,10 @@ import org.apache.cayenne.query.SelectQuery
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
 
 /**
  * Test cases to check the correctness of expressions, mostly the complicated ones, related to multiple tags. <br/>
@@ -83,14 +83,14 @@ import static org.junit.Assert.assertEquals
  * <li>Regions_4 (tagged records: Course HH)</li>
  * </ul>
  * </li> </ul>
- * 
+ *
  */
 @CompileStatic
 class ExpressionsTest extends CayenneIshTestCase {
 
-	@BeforeEach
+    @BeforeEach
     void setupTest() throws Exception {
-		wipeTables()
+        wipeTables()
 
         InputStream st = ExpressionsTest.class.getClassLoader().getResourceAsStream("ish/queries/expressions-test.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
@@ -102,12 +102,12 @@ class ExpressionsTest extends CayenneIshTestCase {
         pref.setReplicationEnabled(true)
     }
 
-	/**
-	 * tests a simple query. queries for Course records tagged with Regions_1 (there is one course meeting the criteria)
-	 */
-	@Test
+    /**
+     * tests a simple query. queries for Course records tagged with Regions_1 (there is one course meeting the criteria)
+     */
+    @Test
     void testSingleTag() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
@@ -118,16 +118,16 @@ class ExpressionsTest extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("testSingleTag", 1, result.size())
-        assertEquals("testSingleTag", tag.getName(), result.get(0).getNotes())
+        Assertions.assertEquals( 1, result.size(), "testSingleTag")
+        Assertions.assertEquals("testSingleTag", tag.getName(), result.get(0).getNotes())
     }
 
-	/**
-	 * tests a simple query. queries for Course records tagged with Regions_2 and code 'BB' (there is one course matching the criteria)
-	 */
-	@Test
+    /**
+     * tests a simple query. queries for Course records tagged with Regions_2 and code 'BB' (there is one course matching the criteria)
+     */
+    @Test
     void testSingleTagWithExtraExpression() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
@@ -140,16 +140,16 @@ class ExpressionsTest extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("testSingleTag", 1, result.size())
-        assertEquals("testSingleTag", tag.getName(), result.get(0).getNotes())
+        Assertions.assertEquals( 1, result.size(), "testSingleTag")
+        Assertions.assertEquals(tag.getName(), result.get(0).getNotes(), "testSingleTag")
     }
 
-	/**
-	 * queries for Course records tagged with Regions_2 OR Subjects_3_4 (there are 3 courses meeting the criteria)
-	 */
-	@Test
+    /**
+     * queries for Course records tagged with Regions_2 OR Subjects_3_4 (there are 3 courses meeting the criteria)
+     */
+    @Test
     void testTwoTags() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
@@ -165,17 +165,17 @@ class ExpressionsTest extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("should return 3 results", 3, result.size())
+        Assertions.assertEquals(3, result.size())
     }
 
-	/**
-	 * queries for Course records tagged with Regions_3 OR Subjects_3_5 (there is one course tagged with both, query should return 1 record) <br/>
-	 * <br/>
-	 * this is not an example of what we are doing, as those tags belong to different tag trees the expression should contain AND
-	 */
-	@Test
+    /**
+     * queries for Course records tagged with Regions_3 OR Subjects_3_5 (there is one course tagged with both, query should return 1 record) <br/>
+     * <br/>
+     * this is not an example of what we are doing, as those tags belong to different tag trees the expression should contain AND
+     */
+    @Test
     void testOrQueryForOneRecordWithTwoTags() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
@@ -191,17 +191,17 @@ class ExpressionsTest extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("should return one result", 1, result.size())
+        Assertions.assertEquals(1, result.size(), "should return one result")
     }
 
-	/**
-	 * queries for Course records tagged with Regions_4 AND Subjects_2_1_1 <br/>
-	 * <br/>
-	 * there is one course tagged with both, query should return 1 record. yet the AND does not allow to join two tag trees.
-	 */
-	@Test
+    /**
+     * queries for Course records tagged with Regions_4 AND Subjects_2_1_1 <br/>
+     * <br/>
+     * there is one course tagged with both, query should return 1 record. yet the AND does not allow to join two tag trees.
+     */
+    @Test
     void testAndQueryForOneRecordWithTwoTagsIncorrect() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
@@ -217,15 +217,15 @@ class ExpressionsTest extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("should return one result", 0, result.size())
+        Assertions.assertEquals(0, result.size(), "should return one result")
     }
 
-	/**
-	 * queries for Course records tagged with Regions_4 AND Subjects_2_1_1 (there is one course tagged with both, query should return 1 record)
-	 */
-	@Test
+    /**
+     * queries for Course records tagged with Regions_4 AND Subjects_2_1_1 (there is one course tagged with both, query should return 1 record)
+     */
+    @Test
     void testAndQueryForOneRecordWithTwoTagsCorrect() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
@@ -245,15 +245,15 @@ class ExpressionsTest extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("should return one result", 1, result.size())
+        Assertions.assertEquals(1, result.size(), "should return one result")
     }
 
-	/**
-	 * queries for Course records tagged with Regions_4 AND Subjects_2_1_2 (there is no course tagged with both)
-	 */
-	@Test
+    /**
+     * queries for Course records tagged with Regions_4 AND Subjects_2_1_2 (there is no course tagged with both)
+     */
+    @Test
     void testAndQueryForOneRecordWithTwoTagsCorrect2() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
@@ -273,15 +273,15 @@ class ExpressionsTest extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("should return one result", 0, result.size())
+        Assertions.assertEquals(0, result.size(), "should return one result")
     }
 
-	/**
-	 * queries for Course records tagged with (Regions_4 AND (Subjects_2_1_2 OR Subjects_2_1_1)) (the query should return 1 record)
-	 */
-	@Test
+    /**
+     * queries for Course records tagged with (Regions_4 AND (Subjects_2_1_2 OR Subjects_2_1_1)) (the query should return 1 record)
+     */
+    @Test
     void testAndQueryForOneRecordWithTwoTagsCorrect3() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
@@ -305,17 +305,17 @@ class ExpressionsTest extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("should return one result", 1, result.size())
+        Assertions.assertEquals(1, result.size(), "should return one result")
     }
 
-	/**
-	 * queries for Course records tagged with (Regions_4 AND (Subjects_2_1_2 OR Subjects_2_1_1)) (the query should return 1 record) <br/>
-	 * <br/>
-	 * (with reuse of aliases, shortening the JOINS section)
-	 */
-	@Test
+    /**
+     * queries for Course records tagged with (Regions_4 AND (Subjects_2_1_2 OR Subjects_2_1_1)) (the query should return 1 record) <br/>
+     * <br/>
+     * (with reuse of aliases, shortening the JOINS section)
+     */
+    @Test
     void testAndQueryForOneRecordWithTwoTagsCorrect4() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
@@ -339,15 +339,15 @@ class ExpressionsTest extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("should return one result", 1, result.size())
+        Assertions.assertEquals(1, result.size(), "should return one result")
     }
 
-	/**
-	 * queries for Course records tagged with Subjects_2 or any subtags (there are 3 courses)
-	 */
-	@Test
+    /**
+     * queries for Course records tagged with Subjects_2 or any subtags (there are 3 courses)
+     */
+    @Test
     void testTagTree() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
@@ -363,11 +363,11 @@ class ExpressionsTest extends CayenneIshTestCase {
 
         List<Course> result = newContext.select(query)
 
-        assertEquals("should return one result", 3, result.size())
+        Assertions.assertEquals(3, result.size(), "should return one result")
     }
 
-	private Expression createExpressionForTagAndEntity(Tag tag, TaggableClasses entityIdentifier) {
-		Expression result = ExpressionFactory.matchExp(Course.TAGGING_RELATIONS_PROPERTY + "+." + TagRelation.TAG_PROPERTY, tag)
+    private Expression createExpressionForTagAndEntity(Tag tag, TaggableClasses entityIdentifier) {
+        Expression result = ExpressionFactory.matchExp(Course.TAGGING_RELATIONS_PROPERTY + "+." + TagRelation.TAG_PROPERTY, tag)
         result = result.andExp(ExpressionFactory.matchExp(Course.TAGGING_RELATIONS_PROPERTY + "+." + TagRelation.ENTITY_IDENTIFIER_PROPERTY, entityIdentifier))
         return result
     }

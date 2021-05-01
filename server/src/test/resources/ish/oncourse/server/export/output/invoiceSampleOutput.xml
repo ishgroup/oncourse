@@ -1,155 +1,159 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
-    <contact id='100'>
-        <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
-        <createdOn>2012-05-10T00:00:00Z</createdOn>
-        <allowEmail>true</allowEmail>
-        <allowPost>false</allowPost>
-        <allowSms>true</allowSms>
-        <deliveryStatusEmail>0</deliveryStatusEmail>
-        <deliveryStatusPost>0</deliveryStatusPost>
-        <deliveryStatusSms>0</deliveryStatusSms>
-        <email>test@test.test</email>
-        <fax />
-        <firstName>Test</firstName>
-        <homePhone>331110000</homePhone>
-        <company>false</company>
-        <male>true</male>
-        <lastName>Student</lastName>
-        <message />
-        <mobilePhone>331110000</mobilePhone>
-        <notes>firstContactNote1
-            secondContactNote1</notes>
-        <postcode>1001</postcode>
-        <state>NSW</state>
-        <street>Main</street>
-        <suburb>Sydney</suburb>
-        <tfn />
-        <uniqueCode>ST1UNIQUE</uniqueCode>
-        <workPhone>331110000</workPhone>
-        <title />
-        <invoice id='100'>
-            <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
-            <createdOn>2012-05-10T00:00:00Z</createdOn>
-            <amountOwing>100.00</amountOwing>
-            <billToAddress>Address 1</billToAddress>
-            <dateDue>2013-03-01</dateDue>
-            <description>Description 1...</description>
-            <invoiceDate>2013-02-01</invoiceDate>
-            <invoiceNumber>1</invoiceNumber>
-            <privateNotes>firstInvoiceNote1
-                secondInvoiceNote1</privateNotes>
-            <publicNotes>Public notes 1...</publicNotes>
-            <shippingAddress>Shipping Address 1...</shippingAddress>
-            <source>office</source>
-            <total>200.00</total>
-            <totalIncTax>220.00</totalIncTax>
-            <totalTax>20.00</totalTax>
-            <createdByUserName>admin admin</createdByUserName>
-            <customerReference />
-            <invoiceLine id='100'>
-                <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-                <createdOn>2013-01-01T00:00:00Z</createdOn>
-                <price>
-                    <amount>110.00</amount>
-                    <taxAmount>10.00</taxAmount>
-                    <taxName>GST</taxName>
-                    <discountAmount>0.00</discountAmount>
-                </price>
-                <description />
-                <discountEachExTax>0.00</discountEachExTax>
-                <quantity>1.00</quantity>
-                <title>test invoiceline1</title>
-                <unit />
-                <prepaidFeesRemaining>0.00</prepaidFeesRemaining>
-                <accountCode>11500</accountCode>
-                <accountType>asset</accountType>
-            </invoiceLine>
-            <invoiceLine id='200'>
-                <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-                <createdOn>2013-01-01T00:00:00Z</createdOn>
-                <price>
-                    <amount>110.00</amount>
-                    <taxAmount>10.00</taxAmount>
-                    <taxName>GST</taxName>
-                    <discountAmount>0.00</discountAmount>
-                </price>
-                <description />
-                <discountEachExTax>0.00</discountEachExTax>
-                <quantity>1.00</quantity>
-                <title>test invoiceline2</title>
-                <unit />
-                <prepaidFeesRemaining>33.00</prepaidFeesRemaining>
-                <accountCode>11500</accountCode>
-                <accountType>asset</accountType>
-            </invoiceLine>
-        </invoice>
-    </contact>
-    <contact id='200'>
-        <modifiedOn>2012-05-20T00:00:00Z</modifiedOn>
-        <createdOn>2012-05-20T00:00:00Z</createdOn>
-        <allowEmail>true</allowEmail>
-        <allowPost>false</allowPost>
-        <allowSms>false</allowSms>
-        <deliveryStatusEmail>0</deliveryStatusEmail>
-        <deliveryStatusPost>0</deliveryStatusPost>
-        <deliveryStatusSms>0</deliveryStatusSms>
-        <email>tutor@tutor.tutor</email>
-        <fax />
-        <firstName>Test</firstName>
-        <homePhone>331110001</homePhone>
-        <company>false</company>
-        <male>true</male>
-        <lastName>Tutor</lastName>
-        <message />
-        <mobilePhone>331110001</mobilePhone>
-        <notes>firstContactNote2
-            secondContactNote2</notes>
-        <postcode>1002</postcode>
-        <state>NSW</state>
-        <street>1st</street>
-        <suburb>Sydney</suburb>
-        <tfn />
-        <uniqueCode>TUT1UNIQUE</uniqueCode>
-        <workPhone>331110001</workPhone>
-        <title />
-        <invoice id='200'>
-            <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
-            <createdOn>2012-05-10T00:00:00Z</createdOn>
-            <amountOwing>210.00</amountOwing>
-            <billToAddress>Address 2</billToAddress>
-            <dateDue>2013-03-01</dateDue>
-            <description>Description 2...</description>
-            <invoiceDate>2013-02-01</invoiceDate>
-            <invoiceNumber>2</invoiceNumber>
-            <privateNotes>firstInvoiceNote2
-                secondInvoiceNote2</privateNotes>
-            <publicNotes>Public notes 2...</publicNotes>
-            <shippingAddress>Shipping Address 2...</shippingAddress>
-            <source>web</source>
-            <total>100.00</total>
-            <totalIncTax>110.00</totalIncTax>
-            <totalTax>10.00</totalTax>
-            <createdByUserName>admin admin</createdByUserName>
-            <customerReference />
-            <invoiceLine id='300'>
-                <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-                <createdOn>2013-01-01T00:00:00Z</createdOn>
-                <price>
-                    <amount>110.00</amount>
-                    <taxAmount>10.00</taxAmount>
-                    <taxName>GST</taxName>
-                    <discountAmount>0.00</discountAmount>
-                </price>
-                <description />
-                <discountEachExTax>0.00</discountEachExTax>
-                <quantity>1.00</quantity>
-                <title>test invoiceline3</title>
-                <unit />
-                <prepaidFeesRemaining>0.00</prepaidFeesRemaining>
-                <accountCode>11500</accountCode>
-                <accountType>asset</accountType>
-            </invoiceLine>
-        </invoice>
-    </contact>
+  <contact id='100'>
+    <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
+    <createdOn>2012-05-10T00:00:00Z</createdOn>
+    <allowEmail>true</allowEmail>
+    <allowPost>false</allowPost>
+    <allowSms>true</allowSms>
+    <deliveryStatusEmail>0</deliveryStatusEmail>
+    <deliveryStatusPost>0</deliveryStatusPost>
+    <deliveryStatusSms>0</deliveryStatusSms>
+    <email>test@test.test</email>
+    <fax/>
+    <firstName>Test</firstName>
+    <homePhone>331110000</homePhone>
+    <company>false</company>
+    <male>true</male>
+    <lastName>Student</lastName>
+    <message/>
+    <mobilePhone>331110000</mobilePhone>
+    <notes>firstContactNote1
+      secondContactNote1
+    </notes>
+    <postcode>1001</postcode>
+    <state>NSW</state>
+    <street>Main</street>
+    <suburb>Sydney</suburb>
+    <tfn/>
+    <uniqueCode>ST1UNIQUE</uniqueCode>
+    <workPhone>331110000</workPhone>
+    <title/>
+    <invoice id='100'>
+      <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
+      <createdOn>2012-05-10T00:00:00Z</createdOn>
+      <amountOwing>100.00</amountOwing>
+      <billToAddress>Address 1</billToAddress>
+      <dateDue>2013-03-01</dateDue>
+      <description>Description 1...</description>
+      <invoiceDate>2013-02-01</invoiceDate>
+      <invoiceNumber>1</invoiceNumber>
+      <privateNotes>firstInvoiceNote1
+        secondInvoiceNote1
+      </privateNotes>
+      <publicNotes>Public notes 1...</publicNotes>
+      <shippingAddress>Shipping Address 1...</shippingAddress>
+      <source>office</source>
+      <total>200.00</total>
+      <totalIncTax>220.00</totalIncTax>
+      <totalTax>20.00</totalTax>
+      <createdByUserName>admin admin</createdByUserName>
+      <customerReference/>
+      <invoiceLine id='100'>
+        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
+        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <price>
+          <amount>110.00</amount>
+          <taxAmount>10.00</taxAmount>
+          <taxName>GST</taxName>
+          <discountAmount>0.00</discountAmount>
+        </price>
+        <description/>
+        <discountEachExTax>0.00</discountEachExTax>
+        <quantity>1.00</quantity>
+        <title>test invoiceline1</title>
+        <unit/>
+        <prepaidFeesRemaining>0.00</prepaidFeesRemaining>
+        <accountCode>11500</accountCode>
+        <accountType>asset</accountType>
+      </invoiceLine>
+      <invoiceLine id='200'>
+        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
+        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <price>
+          <amount>110.00</amount>
+          <taxAmount>10.00</taxAmount>
+          <taxName>GST</taxName>
+          <discountAmount>0.00</discountAmount>
+        </price>
+        <description/>
+        <discountEachExTax>0.00</discountEachExTax>
+        <quantity>1.00</quantity>
+        <title>test invoiceline2</title>
+        <unit/>
+        <prepaidFeesRemaining>33.00</prepaidFeesRemaining>
+        <accountCode>11500</accountCode>
+        <accountType>asset</accountType>
+      </invoiceLine>
+    </invoice>
+  </contact>
+  <contact id='200'>
+    <modifiedOn>2012-05-20T00:00:00Z</modifiedOn>
+    <createdOn>2012-05-20T00:00:00Z</createdOn>
+    <allowEmail>true</allowEmail>
+    <allowPost>false</allowPost>
+    <allowSms>false</allowSms>
+    <deliveryStatusEmail>0</deliveryStatusEmail>
+    <deliveryStatusPost>0</deliveryStatusPost>
+    <deliveryStatusSms>0</deliveryStatusSms>
+    <email>tutor@tutor.tutor</email>
+    <fax/>
+    <firstName>Test</firstName>
+    <homePhone>331110001</homePhone>
+    <company>false</company>
+    <male>true</male>
+    <lastName>Tutor</lastName>
+    <message/>
+    <mobilePhone>331110001</mobilePhone>
+    <notes>firstContactNote2
+      secondContactNote2
+    </notes>
+    <postcode>1002</postcode>
+    <state>NSW</state>
+    <street>1st</street>
+    <suburb>Sydney</suburb>
+    <tfn/>
+    <uniqueCode>TUT1UNIQUE</uniqueCode>
+    <workPhone>331110001</workPhone>
+    <title/>
+    <invoice id='200'>
+      <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
+      <createdOn>2012-05-10T00:00:00Z</createdOn>
+      <amountOwing>210.00</amountOwing>
+      <billToAddress>Address 2</billToAddress>
+      <dateDue>2013-03-01</dateDue>
+      <description>Description 2...</description>
+      <invoiceDate>2013-02-01</invoiceDate>
+      <invoiceNumber>2</invoiceNumber>
+      <privateNotes>firstInvoiceNote2
+        secondInvoiceNote2
+      </privateNotes>
+      <publicNotes>Public notes 2...</publicNotes>
+      <shippingAddress>Shipping Address 2...</shippingAddress>
+      <source>web</source>
+      <total>100.00</total>
+      <totalIncTax>110.00</totalIncTax>
+      <totalTax>10.00</totalTax>
+      <createdByUserName>admin admin</createdByUserName>
+      <customerReference/>
+      <invoiceLine id='300'>
+        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
+        <createdOn>2013-01-01T00:00:00Z</createdOn>
+        <price>
+          <amount>110.00</amount>
+          <taxAmount>10.00</taxAmount>
+          <taxName>GST</taxName>
+          <discountAmount>0.00</discountAmount>
+        </price>
+        <description/>
+        <discountEachExTax>0.00</discountEachExTax>
+        <quantity>1.00</quantity>
+        <title>test invoiceline3</title>
+        <unit/>
+        <prepaidFeesRemaining>0.00</prepaidFeesRemaining>
+        <accountCode>11500</accountCode>
+        <accountType>asset</accountType>
+      </invoiceLine>
+    </invoice>
+  </contact>
 </data>

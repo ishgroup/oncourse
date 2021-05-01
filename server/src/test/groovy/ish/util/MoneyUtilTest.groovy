@@ -4,16 +4,14 @@
  */
 package ish.util
 
-
+import groovy.transform.CompileStatic
 import ish.math.Money
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
 
-/**
- */
-class MoneyUtilTest  {
-	private static HashMap<Money, Money> listOne = new HashMap<>()
+@CompileStatic
+class MoneyUtilTest {
+    private static HashMap<Money, Money> listOne = new HashMap<>()
     private static HashMap<Money, Money> listTwo = new HashMap<>()
 
     static {
@@ -97,32 +95,32 @@ class MoneyUtilTest  {
         listTwo.put(new Money("95.98"), Money.ZERO)
     }
 
-	@Test
+    @Test
     void testGetPriceIncGst() {
-		System.out.println("test getPriceIncGst")
+        System.out.println("test getPriceIncGst")
 
         for (Money input : listOne.keySet()) {
-			// System.out.println("testFormatValue input: " + input);
-			Money output = MoneyUtil.getPriceIncTax(input, new BigDecimal("0.1"), Money.ZERO)
+            // System.out.println("testFormatValue input: " + input);
+            Money output = MoneyUtil.getPriceIncTax(input, new BigDecimal("0.1"), Money.ZERO)
             // System.out.println("testFormatValue output: " + output);
-			assertEquals(listOne.get(input).doubleValue(), output.doubleValue(), 0.001)
+            Assertions.assertEquals(listOne.get(input).doubleValue(), output.doubleValue(), 0.001)
         }
-	}
+    }
 
-	@Test
+    @Test
     void testCalculateTaxAdjustment() {
-		System.out.println("test calculateTaxAdjustment")
+        System.out.println("test calculateTaxAdjustment")
 
         for (Money inc : listTwo.keySet()) {
-			Money taxajd = listTwo.get(inc)
+            Money taxajd = listTwo.get(inc)
             BigDecimal taxRate = new BigDecimal("1.1")
             Money ex = inc.divide(taxRate)
             // System.out.println("testFormatValue input: " + inc);
-			Money output = MoneyUtil.calculateTaxAdjustment(inc, ex, new BigDecimal("0.1"))
+            Money output = MoneyUtil.calculateTaxAdjustment(inc, ex, new BigDecimal("0.1"))
             // System.out.println("testFormatValue input: " + inc + " ... " + output);
 
-			assertEquals(taxajd.doubleValue(), output.doubleValue(), 0.001)
+            Assertions.assertEquals(taxajd.doubleValue(), output.doubleValue(), 0.001)
         }
-	}
+    }
 
 }

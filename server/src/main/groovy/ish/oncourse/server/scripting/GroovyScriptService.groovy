@@ -171,6 +171,8 @@ class GroovyScriptService {
         this.executorService = Executors.newSingleThreadExecutor()
     }
 
+    GroovyScriptService(ICayenneService iCayenneService, ISchedulerService iSchedulerService, PreferenceController preferenceController, BQRuntime bqRuntime) {}
+
     void registerThreadInCayenneRuntime() {
         // since executor has just single thread in his pool - it is enough to register this thread to cayenne runtime
         // need to prevent java.lang.IllegalStateException: Transaction must have 'STATUS_ACTIVE' to add a connection. Current status: STATUS_COMMITTED

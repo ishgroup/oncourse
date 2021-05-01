@@ -1,5 +1,6 @@
 package ish.oncourse.server.messaging
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.MessagePerson
 import org.junit.Ignore
@@ -12,6 +13,7 @@ import javax.mail.MessagingException
 /**
  * Manual test of sending email through our implementation
  */
+@CompileStatic
 class MailDeliveryServiceTest {
 
     //need to set all these parameters(could be extended with additional parameters)
@@ -36,7 +38,6 @@ class MailDeliveryServiceTest {
     private static final String CONTENT_PLAIN = 'content plain'
 
     //------------------------------------------------------------------------------
-
 
 
     private MailDeliveryService service

@@ -1,13 +1,15 @@
 package ish.oncourse.server.deduplication
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Contact
-import org.junit.Ignore
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-@Ignore
+@CompileStatic
+@Disabled
 class ContactComparisonServiceTest {
 
     Contact c1, c2
@@ -30,8 +32,8 @@ class ContactComparisonServiceTest {
         c2.email = "test@example.com"
         assert comparison.getScore() == 0.5263158f
 
-        c1.birthDate = LocalDate.of( 1972 , 1 , 8 )
-        c2.birthDate = LocalDate.of( 1972 , 1 , 8 )
+        c1.birthDate = LocalDate.of(1972, 1, 8)
+        c2.birthDate = LocalDate.of(1972, 1, 8)
         assert comparison.getScore() == 0.75757575f
 
         c1.firstName = "Robert"

@@ -1,5 +1,7 @@
 package ish.oncourse.server.querying
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Script
@@ -12,6 +14,7 @@ import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -25,10 +28,9 @@ import java.time.temporal.TemporalAdjusters
 import static java.time.LocalDateTime.now
 import static java.time.LocalTime.MAX
 import static java.time.LocalTime.MIN
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.fail
 
-class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
+@CompileStatic
+class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase {
     private static ObjectContext context
     private List<Student> students
 
@@ -54,7 +56,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
 
 
     @Test
-    void todayYesterdayTomorrowOperatorTest(){
+    void todayYesterdayTomorrowOperatorTest() {
         LocalDateTime today = now()
         LocalDateTime todayStart = now().with(MIN)
         LocalDateTime todayEnd = now().with(MAX).withNano(0)
@@ -67,15 +69,15 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
         LocalDateTime tomorrowStart = tomorrow.with(MIN)
         LocalDateTime tomorrowEnd = tomorrow.with(MAX).withNano(0)
 
-        students.get(0).visaExpiryDate = Timestamp.valueOf( today )
-        students.get(1).visaExpiryDate = Timestamp.valueOf( todayStart )
-        students.get(2).visaExpiryDate = Timestamp.valueOf( todayEnd )
-        students.get(3).visaExpiryDate = Timestamp.valueOf( yesterday )
-        students.get(4).visaExpiryDate = Timestamp.valueOf( yesterdayStart )
-        students.get(5).visaExpiryDate = Timestamp.valueOf( yesterdayEnd )
-        students.get(6).visaExpiryDate = Timestamp.valueOf( tomorrow )
-        students.get(7).visaExpiryDate = Timestamp.valueOf( tomorrowStart )
-        students.get(8).visaExpiryDate = Timestamp.valueOf( tomorrowEnd )
+        students.get(0).visaExpiryDate = Timestamp.valueOf(today)
+        students.get(1).visaExpiryDate = Timestamp.valueOf(todayStart)
+        students.get(2).visaExpiryDate = Timestamp.valueOf(todayEnd)
+        students.get(3).visaExpiryDate = Timestamp.valueOf(yesterday)
+        students.get(4).visaExpiryDate = Timestamp.valueOf(yesterdayStart)
+        students.get(5).visaExpiryDate = Timestamp.valueOf(yesterdayEnd)
+        students.get(6).visaExpiryDate = Timestamp.valueOf(tomorrow)
+        students.get(7).visaExpiryDate = Timestamp.valueOf(tomorrowStart)
+        students.get(8).visaExpiryDate = Timestamp.valueOf(tomorrowEnd)
 
         context.commitChanges()
 
@@ -98,7 +100,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
 
 
     @Test
-    void lastThisNextWeekOperatorTest(){
+    void lastThisNextWeekOperatorTest() {
         LocalDateTime lastWeek = now().minusWeeks(1)
         LocalDateTime lastWeekStart = lastWeek.with(MIN)
         LocalDateTime lastWeekEnd = lastWeek.with(MAX).withNano(0)
@@ -111,15 +113,15 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
         LocalDateTime nextWeekStart = nextWeek.with(MIN).with(DayOfWeek.MONDAY)
         LocalDateTime nextWeekEnd = nextWeek.with(MAX).withNano(0).with(DayOfWeek.SUNDAY)
 
-        students.get(0).visaExpiryDate = Timestamp.valueOf( lastWeek )
-        students.get(1).visaExpiryDate = Timestamp.valueOf( lastWeekStart )
-        students.get(2).visaExpiryDate = Timestamp.valueOf( lastWeekEnd )
-        students.get(3).visaExpiryDate = Timestamp.valueOf( thisWeek )
-        students.get(4).visaExpiryDate = Timestamp.valueOf( thisWeekStart )
-        students.get(5).visaExpiryDate = Timestamp.valueOf( thisWeekEnd )
-        students.get(6).visaExpiryDate = Timestamp.valueOf( nextWeek )
-        students.get(7).visaExpiryDate = Timestamp.valueOf( nextWeekStart )
-        students.get(8).visaExpiryDate = Timestamp.valueOf( nextWeekEnd )
+        students.get(0).visaExpiryDate = Timestamp.valueOf(lastWeek)
+        students.get(1).visaExpiryDate = Timestamp.valueOf(lastWeekStart)
+        students.get(2).visaExpiryDate = Timestamp.valueOf(lastWeekEnd)
+        students.get(3).visaExpiryDate = Timestamp.valueOf(thisWeek)
+        students.get(4).visaExpiryDate = Timestamp.valueOf(thisWeekStart)
+        students.get(5).visaExpiryDate = Timestamp.valueOf(thisWeekEnd)
+        students.get(6).visaExpiryDate = Timestamp.valueOf(nextWeek)
+        students.get(7).visaExpiryDate = Timestamp.valueOf(nextWeekStart)
+        students.get(8).visaExpiryDate = Timestamp.valueOf(nextWeekEnd)
 
         context.commitChanges()
 
@@ -131,7 +133,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
 
 
     @Test
-    void lastThisNextMonthOperatorTest(){
+    void lastThisNextMonthOperatorTest() {
         LocalDateTime lastMonth = now().minusMonths(1)
         LocalDateTime lastMonthStart = lastMonth.with(MIN).withDayOfMonth(1)
         LocalDateTime lastMonthEnd = lastMonth.with(MAX).withNano(0).with(TemporalAdjusters.lastDayOfMonth())
@@ -144,15 +146,15 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
         LocalDateTime nextMonthStart = nextMonth.with(MIN).withDayOfMonth(1)
         LocalDateTime nextMonthEnd = nextMonth.with(MAX).withNano(0).with(TemporalAdjusters.lastDayOfMonth())
 
-        students.get(0).visaExpiryDate = Timestamp.valueOf( lastMonth )
-        students.get(1).visaExpiryDate = Timestamp.valueOf( lastMonthStart )
-        students.get(2).visaExpiryDate = Timestamp.valueOf( lastMonthEnd )
-        students.get(3).visaExpiryDate = Timestamp.valueOf( thisMonth )
-        students.get(4).visaExpiryDate = Timestamp.valueOf( thisMonthStart )
-        students.get(5).visaExpiryDate = Timestamp.valueOf( thisMonthEnd )
-        students.get(6).visaExpiryDate = Timestamp.valueOf( nextMonth )
-        students.get(7).visaExpiryDate = Timestamp.valueOf( nextMonthStart )
-        students.get(8).visaExpiryDate = Timestamp.valueOf( nextMonthEnd )
+        students.get(0).visaExpiryDate = Timestamp.valueOf(lastMonth)
+        students.get(1).visaExpiryDate = Timestamp.valueOf(lastMonthStart)
+        students.get(2).visaExpiryDate = Timestamp.valueOf(lastMonthEnd)
+        students.get(3).visaExpiryDate = Timestamp.valueOf(thisMonth)
+        students.get(4).visaExpiryDate = Timestamp.valueOf(thisMonthStart)
+        students.get(5).visaExpiryDate = Timestamp.valueOf(thisMonthEnd)
+        students.get(6).visaExpiryDate = Timestamp.valueOf(nextMonth)
+        students.get(7).visaExpiryDate = Timestamp.valueOf(nextMonthStart)
+        students.get(8).visaExpiryDate = Timestamp.valueOf(nextMonthEnd)
 
         context.commitChanges()
 
@@ -163,7 +165,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
 
 
     @Test
-    void lastThisNextYearOperatorTest(){
+    void lastThisNextYearOperatorTest() {
         LocalDateTime lastYear = now().minusYears(1)
         LocalDateTime lastYearStart = lastYear.with(MIN).with(Month.JANUARY).withDayOfMonth(1)
         LocalDateTime lastYearEnd = lastYear.with(MAX).withNano(0).with(Month.DECEMBER).with(TemporalAdjusters.lastDayOfMonth())
@@ -176,15 +178,15 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
         LocalDateTime nextYearStart = nextYear.with(MIN).with(Month.JANUARY).withDayOfMonth(1)
         LocalDateTime nextYearEnd = nextYear.with(MAX).withNano(0).with(Month.DECEMBER).with(TemporalAdjusters.lastDayOfMonth())
 
-        students.get(0).visaExpiryDate = Timestamp.valueOf( lastYear )
-        students.get(1).visaExpiryDate = Timestamp.valueOf( lastYearStart )
-        students.get(2).visaExpiryDate = Timestamp.valueOf( lastYearEnd )
-        students.get(3).visaExpiryDate = Timestamp.valueOf( thisYear )
-        students.get(4).visaExpiryDate = Timestamp.valueOf( thisYearStart )
-        students.get(5).visaExpiryDate = Timestamp.valueOf( thisYearEnd )
-        students.get(6).visaExpiryDate = Timestamp.valueOf( nextYear )
-        students.get(7).visaExpiryDate = Timestamp.valueOf( nextYearStart )
-        students.get(8).visaExpiryDate = Timestamp.valueOf( nextYearEnd )
+        students.get(0).visaExpiryDate = Timestamp.valueOf(lastYear)
+        students.get(1).visaExpiryDate = Timestamp.valueOf(lastYearStart)
+        students.get(2).visaExpiryDate = Timestamp.valueOf(lastYearEnd)
+        students.get(3).visaExpiryDate = Timestamp.valueOf(thisYear)
+        students.get(4).visaExpiryDate = Timestamp.valueOf(thisYearStart)
+        students.get(5).visaExpiryDate = Timestamp.valueOf(thisYearEnd)
+        students.get(6).visaExpiryDate = Timestamp.valueOf(nextYear)
+        students.get(7).visaExpiryDate = Timestamp.valueOf(nextYearStart)
+        students.get(8).visaExpiryDate = Timestamp.valueOf(nextYearEnd)
 
         context.commitChanges()
 
@@ -198,7 +200,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
      *  relative date using today/yesterday/tomorrow constants with math operators
      */
     @Test
-    void mathOperatorsWithDatesTest(){
+    void mathOperatorsWithDatesTest() {
         LocalDateTime plusMonth = now().plusMonths(1)
         LocalDateTime plusMonthStart = plusMonth.with(MIN)
         LocalDateTime plusMonthEnd = plusMonth.with(MAX).withNano(0)
@@ -209,13 +211,13 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
 
         LocalDate definiteDate = LocalDate.of(2012, 12, 13)
 
-        students.get(0).visaExpiryDate = Timestamp.valueOf( plusMonth )
-        students.get(1).visaExpiryDate = Timestamp.valueOf( plusMonthStart )
-        students.get(2).visaExpiryDate = Timestamp.valueOf( plusMonthEnd )
-        students.get(3).visaExpiryDate = Timestamp.valueOf( minus8Days )
-        students.get(4).visaExpiryDate = Timestamp.valueOf( minus8DaysStart )
-        students.get(5).visaExpiryDate = Timestamp.valueOf( minus8DaysEnd )
-        students.get(6).visaExpiryDate = Timestamp.valueOf( definiteDate.atStartOfDay() )
+        students.get(0).visaExpiryDate = Timestamp.valueOf(plusMonth)
+        students.get(1).visaExpiryDate = Timestamp.valueOf(plusMonthStart)
+        students.get(2).visaExpiryDate = Timestamp.valueOf(plusMonthEnd)
+        students.get(3).visaExpiryDate = Timestamp.valueOf(minus8Days)
+        students.get(4).visaExpiryDate = Timestamp.valueOf(minus8DaysStart)
+        students.get(5).visaExpiryDate = Timestamp.valueOf(minus8DaysEnd)
+        students.get(6).visaExpiryDate = Timestamp.valueOf(definiteDate.atStartOfDay())
 
         context.commitChanges()
 
@@ -235,6 +237,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
     }
 
 
+    
     static void executeQuery(String query, String expectedResult) throws Exception {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService)
 
@@ -242,17 +245,17 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase{
         script.setEnabled(true)
 
         script.setScript("def result = query {\n" +
-            "       entity \"Student\"\n" +
-            "       query '${query}'\n" +
-            "       context args.context" +
-            "}\n" +
-            "\n" +
-            "result*.id.sort()")
+                "       entity \"Student\"\n" +
+                "       query '${query}'\n" +
+                "       context args.context" +
+                "}\n" +
+                "\n" +
+                "result*.id.sort()")
 
         ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), context)
 
         if (result.getType() == ScriptResult.ResultType.SUCCESS)
-            assertEquals(expectedResult, result.getResultValue().toString())
+            Assertions.assertEquals(expectedResult, result.getResultValue().toString())
         else
             fail("Incorrect syntax: " + result.error)
     }

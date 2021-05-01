@@ -1,266 +1,448 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Account id="5" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
-	<Account id="6" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="3"/>
-	<Account id="7" accountCode="ASSET7" description="Test asset account" isEnabled="1" type="1"/>
-	<Account id="8" accountCode="INC8" description="Test income account" isEnabled="1" type="4" taxId="3"/>
-	<Account id="9" accountCode="FEE9" description="Test fees account" isEnabled="1" type="2"/>
+  <Account id="5" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
+  <Account id="6" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="3"/>
+  <Account id="7" accountCode="ASSET7" description="Test asset account" isEnabled="1" type="1"/>
+  <Account id="8" accountCode="INC8" description="Test income account" isEnabled="1" type="4" taxId="3"/>
+  <Account id="9" accountCode="FEE9" description="Test fees account" isEnabled="1" type="2"/>
 
-	<FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	
-	<Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-	<Course id="2"  code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-	
-	<Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney" isVirtual="0"/>
-	
-	<Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
-	
-	<Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="7" receivableFromStudentAccountId="8" taxCode="GST" taxrate="0.1"/>
-	
-	<CourseClass id="1" code="123" fundingSource="3" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1"
-                 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
-                 isCancelled="1" isActive="1" incomeAccountId="5" deliveryMode="1" courseId="1"
-                 feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
-                 budgetedPlaces="10" attendanceType="0"/>
-	<CourseClass id="2" code="124" fundingSource="3" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1"
-                 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
-                 isCancelled="1" isActive="1" incomeAccountId="5" deliveryMode="1" courseId="2"
-                 feeExGst="400.00" suppressAvetmissExport="0" roomId="1"
-                 budgetedPlaces="10" attendanceType="0"/>
-	
-	<Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name" lastName="name" email="test@test.te"/>
-	<Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1" lastName="name" email="test2@test.te"/>
-	<Contact id="3" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name2" lastName="name" email="test3@test.te"/>
-	<Contact id="4" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name3" lastName="name" email="test4@test.te"/>
-	<Contact id="5" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name4" lastName="name" email="test5@test.te"/>
-	<Contact id="6" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name5" lastName="name" email="test6@test.te"/>
-	<Contact id="7" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name6" lastName="name" email="test7@test.te"/>
-	<Contact id="8" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name7" lastName="name" email="test8@test.te"/>
-	<Contact id="9" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name8" lastName="name" email="test9@test.te"/>
-	<Contact id="10" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name9" lastName="name" email="test10@test.te"/>
-	<Contact id="11" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name10" lastName="name" email="test11@test.te"/>
-	<Contact id="12" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name11" lastName="name" email="test12@test.te"/>
-	<Contact id="13" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name12" lastName="name" email="test13@test.te"/>
-	<Contact id="14" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name13" lastName="name" email="test14@test.te"/>
-	<Contact id="15" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name14" lastName="name" email="test15@test.te"/>
-	<Contact id="16" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name15" lastName="name" email="test16@test.te"/>
-	<Contact id="17" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name16" lastName="name" email="test17@test.te"/>
-	<Contact id="18" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name17" lastName="name" email="test18@test.te"/>
-	<Contact id="19" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name18" lastName="name" email="test19@test.te"/>
-	<Contact id="20" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name19" lastName="name" email="test20@test.te"/>
-	<Contact id="21" isCompany="0" isStudent="0" isTutor="1" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="tutor1" lastName="name" email="test21@test.te"/>
-	<Contact id="22" isCompany="0" isStudent="0" isTutor="1" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="tutor2" lastName="name" email="test22@test.te"/>
-	
-	<Tutor id="1" contactId="21" wwChildrenStatus="0"/>
-	<Tutor id="2" contactId="22" wwChildrenStatus="0"/>
-	
-	<Student id="1" contactId="1" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="1" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="2" contactId="2" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="2" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="3" contactId="3" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="3" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="4" contactId="4" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="4" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="5" contactId="5" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="5" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="6" contactId="6" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="6" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="7" contactId="7" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="7" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="8" contactId="8" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="8" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="9" contactId="9" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="9" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="10" contactId="10" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="10" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="11" contactId="11" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="11" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="12" contactId="12" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="12" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="13" contactId="13" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="13" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="14" contactId="14" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="14" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="15" contactId="15" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="15" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="16" contactId="16" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="16" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="17" contactId="17" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="17" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="18" contactId="18" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="18" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="19" contactId="19" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="19" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="20" contactId="20" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="20" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<CourseSession id="1" startDatetime="2012-01-01 15:00:00" endDatetime="2012-01-01 16:00:00" courseClass_Id="1" payAdjustment="0"/>
-	<CourseSession id="2" startDatetime="2012-01-03 17:00:00" endDatetime="2012-01-03 19:00:00" courseClass_Id="1" payAdjustment="0" />
-	<CourseSession id="3" startDatetime="2012-01-05 17:00:00" endDatetime="2012-01-05 19:00:00" courseClass_Id="1" payAdjustment="0" />
-	
-	<CourseSession id="4" startDatetime="2012-02-01 17:00:00" endDatetime="2012-02-01 19:00:00" courseClass_Id="2" payAdjustment="0" />
-	<CourseSession id="5" startDatetime="2012-02-03 17:00:00" endDatetime="2012-02-03 19:00:00" courseClass_Id="2" payAdjustment="0" />
-	<CourseSession id="6" startDatetime="2012-02-05 17:00:00" endDatetime="2012-02-05 19:00:00" courseClass_Id="2" payAdjustment="0" />
-				
-	<DefinedTutorRole id="1" name="definedTutorRoleName" active="1"/>
-	
-	<CourseClassTutor id="1" tutorId="1" courseClassId="1" inPublicity="1" definedTutorRoleId="1"/>
-	<CourseClassTutor id="2" tutorId="1" courseClassId="2" inPublicity="1" definedTutorRoleId="1"/>
-	<CourseClassTutor id="3" tutorId="2" courseClassId="1" inPublicity="1" definedTutorRoleId="1"/>
-	<CourseClassTutor id="4" tutorId="2" courseClassId="2" inPublicity="1" definedTutorRoleId="1"/>
-			
-	<Enrolment id="1" status="3" studentId="1" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2"  feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="2" status="3" studentId="1" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="3" status="3" studentId="2" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="4" status="3" studentId="2" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="5" status="3" studentId="3" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="6" status="3" studentId="3" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="7" status="3" studentId="4" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="8" status="3" studentId="4" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="9" status="3" studentId="5" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="10" status="3" studentId="5" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="11" status="3" studentId="6" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="12" status="3" studentId="6" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="13" status="3" studentId="7" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="14" status="3" studentId="7" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="15" status="3" studentId="8" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="16" status="3" studentId="8" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="17" status="3" studentId="9" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="18" status="3" studentId="9" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="19" status="3" studentId="10" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="20" status="7" studentId="10" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="21" status="3" studentId="11" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="22" status="9" studentId="11" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="23" status="3" studentId="12" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="24" status="3" studentId="12" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="25" status="3" studentId="13" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="26" status="3" studentId="13" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="27" status="8" studentId="14" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="28" status="3" studentId="14" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="29" status="3" studentId="14" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="30" status="6" studentId="15" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="31" status="3" studentId="15" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="32" status="3" studentId="15" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="33" status="3" studentId="16" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="34" status="3" studentId="16" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="36" status="6" studentId="17" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="37" status="6" studentId="17" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="38" status="0" studentId="17" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="39" status="1" studentId="18" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="40" status="6" studentId="18" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="41" status="6" studentId="18" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="42" status="6" studentId="18" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="45" status="2" studentId="19" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="49" status="4" studentId="19" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="51" status="6" studentId="19" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="52" status="7" studentId="19" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="53" status="8" studentId="19" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="54" status="9" studentId="19" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="55" status="3" studentId="20" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="58" status="3" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="59" status="4" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="61" status="6" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="62" status="7" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="63" status="8" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="64" status="9" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	
-	<Attendance id="1" sessionId="1" studentId="1" attendanceType="0"/>
-	<Attendance id="2" sessionId="2" studentId="1" attendanceType="0"/>
-	<Attendance id="3" sessionId="3" studentId="1" attendanceType="0"/>
-	<Attendance id="4" sessionId="4" studentId="1" attendanceType="0"/>
-	<Attendance id="5" sessionId="5" studentId="1" attendanceType="0"/>
-	<Attendance id="6" sessionId="6" studentId="1" attendanceType="0"/>
-	<Attendance id="7" sessionId="1" studentId="2" attendanceType="0"/>
-	<Attendance id="8" sessionId="2" studentId="2" attendanceType="0"/>
-	<Attendance id="9" sessionId="4" studentId="2" attendanceType="0"/>
-	<Attendance id="10" sessionId="6" studentId="2" attendanceType="0"/>
-	<Attendance id="11" sessionId="1" studentId="3" attendanceType="0"/>
-	<Attendance id="12" sessionId="1" studentId="4" attendanceType="0"/>
-	<Attendance id="13" sessionId="1" studentId="5" attendanceType="0"/>
-	<Attendance id="14" sessionId="1" studentId="7" attendanceType="0"/>
-	<Attendance id="15" sessionId="1" studentId="8" attendanceType="0"/>
-	<Attendance id="16" sessionId="1" studentId="9" attendanceType="0"/>
-	<Attendance id="17" sessionId="1" studentId="10" attendanceType="0"/>
-	<Attendance id="18" sessionId="1" studentId="11" attendanceType="0"/>
-	<Attendance id="19" sessionId="1" studentId="15" attendanceType="0"/>
-	<Attendance id="20" sessionId="2" studentId="15" attendanceType="0"/>
-	<Attendance id="21" sessionId="3" studentId="15" attendanceType="0"/>
-	<Attendance id="22" sessionId="4" studentId="15" attendanceType="0"/>
-	<Attendance id="23" sessionId="5" studentId="15" attendanceType="0"/>
-	<Attendance id="24" sessionId="6" studentId="15" attendanceType="0"/>
-	
-	<Discount id="1" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent1" rounding="0" validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
-	<Discount id="2" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent2" rounding="0" validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
-	<Discount id="3" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent3" rounding="0" validFrom="2000-01-01 16:00:00" validTo="2001-01-01 16:00:00" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
-	<Discount id="4" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent4" rounding="0" validFrom="2000-01-01 16:00:00" validTo="2100-01-01 16:00:00" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
-	<Discount id="5" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent5" rounding="0" validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
-	<Discount id="6" code="acodea" discountType="1" discountPercent="0.05" name="discountPercent6" rounding="0" validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
-	
-	<Discount_CourseClass id="1" courseClassId="1" discountId="5"/>
-	<Discount_CourseClass id="2" courseClassId="2" discountId="5"/>
-	<Discount_CourseClass id="3" courseClassId="1" discountId="3"/>
-	<Discount_CourseClass id="4" courseClassId="1" discountId="4"/>
-	<Discount_CourseClass id="5" courseClassId="1" discountId="6"/>
-		
-	<ConcessionType id="1" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType1"/>
-	<ConcessionType id="2" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType2"/>
-	<ConcessionType id="3" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="0" name="ConcessionType3"/>
-	<ConcessionType id="4" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="0" name="ConcessionType4"/>
-	<ConcessionType id="5" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType5"/>
-	<ConcessionType id="6" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType6"/>
-	<ConcessionType id="7" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType7"/>
-	<ConcessionType id="8" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType8"/>
-	<ConcessionType id="9" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType9"/>
-	<ConcessionType id="10" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType10"/>
-	<ConcessionType id="11" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="0" name="ConcessionType11"/>
-	<ConcessionType id="12" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="0" name="ConcessionType12"/>
-	<ConcessionType id="13" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType13"/>
-	<ConcessionType id="14" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType14"/>
-	<ConcessionType id="15" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType15"/>
-	<ConcessionType id="16" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType16"/>
-	
-	<Discount_ConcessionType id="1" concessionTypeId="1" discountId="1"/>
-	<Discount_ConcessionType id="2" concessionTypeId="2" discountId="2"/>
-	<Discount_ConcessionType id="3" concessionTypeId="3" discountId="1"/>
-	<Discount_ConcessionType id="4" concessionTypeId="4" discountId="2"/>
-	
-	<StudentConcession id="1" concessionTypeId="1" studentId="1" expiresOn="[null]"/>
-	<StudentConcession id="2" concessionTypeId="2" studentId="2" expiresOn="2000-01-01 16:00:00"/>
-	<StudentConcession id="3" concessionTypeId="2" studentId="3" expiresOn="2100-01-01 16:00:00"/>
-	<StudentConcession id="4" concessionTypeId="2" studentId="4" expiresOn="[null]"/>
-	<StudentConcession id="5" concessionTypeId="3" studentId="5" expiresOn="[null]"/>
-	<StudentConcession id="6" concessionTypeId="4" studentId="6" expiresOn="2000-01-01 16:00:00"/>
-	<StudentConcession id="7" concessionTypeId="4" studentId="7" expiresOn="2100-01-01 16:00:00"/>
-	<StudentConcession id="8" concessionTypeId="4" studentId="8" expiresOn="[null]"/>
-	
-	
+  <Course id="1" code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1"
+          isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+  <Course id="2" code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1"
+          isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+
+  <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney"
+        isVirtual="0"/>
+
+  <Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
+
+  <Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="7" receivableFromStudentAccountId="8" taxCode="GST"
+       taxrate="0.1"/>
+
+  <CourseClass id="1" code="123" fundingSource="3" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1"
+               maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
+               isCancelled="1" isActive="1" incomeAccountId="5" deliveryMode="1" courseId="1"
+               feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
+               budgetedPlaces="10" attendanceType="0"/>
+  <CourseClass id="2" code="124" fundingSource="3" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1"
+               maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
+               isCancelled="1" isActive="1" incomeAccountId="5" deliveryMode="1" courseId="2"
+               feeExGst="400.00" suppressAvetmissExport="0" roomId="1"
+               budgetedPlaces="10" attendanceType="0"/>
+
+  <Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name"
+           lastName="name" email="test@test.te"/>
+  <Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1"
+           lastName="name" email="test2@test.te"/>
+  <Contact id="3" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name2"
+           lastName="name" email="test3@test.te"/>
+  <Contact id="4" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name3"
+           lastName="name" email="test4@test.te"/>
+  <Contact id="5" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name4"
+           lastName="name" email="test5@test.te"/>
+  <Contact id="6" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name5"
+           lastName="name" email="test6@test.te"/>
+  <Contact id="7" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name6"
+           lastName="name" email="test7@test.te"/>
+  <Contact id="8" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name7"
+           lastName="name" email="test8@test.te"/>
+  <Contact id="9" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name8"
+           lastName="name" email="test9@test.te"/>
+  <Contact id="10" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name9"
+           lastName="name" email="test10@test.te"/>
+  <Contact id="11" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name10"
+           lastName="name" email="test11@test.te"/>
+  <Contact id="12" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name11"
+           lastName="name" email="test12@test.te"/>
+  <Contact id="13" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name12"
+           lastName="name" email="test13@test.te"/>
+  <Contact id="14" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name13"
+           lastName="name" email="test14@test.te"/>
+  <Contact id="15" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name14"
+           lastName="name" email="test15@test.te"/>
+  <Contact id="16" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name15"
+           lastName="name" email="test16@test.te"/>
+  <Contact id="17" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name16"
+           lastName="name" email="test17@test.te"/>
+  <Contact id="18" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name17"
+           lastName="name" email="test18@test.te"/>
+  <Contact id="19" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name18"
+           lastName="name" email="test19@test.te"/>
+  <Contact id="20" isCompany="0" isStudent="1" isTutor="0" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name19"
+           lastName="name" email="test20@test.te"/>
+  <Contact id="21" isCompany="0" isStudent="0" isTutor="1" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="tutor1"
+           lastName="name" email="test21@test.te"/>
+  <Contact id="22" isCompany="0" isStudent="0" isTutor="1" uniqueCode="456AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="tutor2"
+           lastName="name" email="test22@test.te"/>
+
+  <Tutor id="1" contactId="21" wwChildrenStatus="0"/>
+  <Tutor id="2" contactId="22" wwChildrenStatus="0"/>
+
+  <Student id="1" contactId="1" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="1" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="2" contactId="2" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="2" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="3" contactId="3" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="3" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="4" contactId="4" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="4" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="5" contactId="5" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="5" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="6" contactId="6" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="6" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="7" contactId="7" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="7" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="8" contactId="8" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="8" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="9" contactId="9" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="9" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="10" contactId="10" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="10" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="11" contactId="11" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="11" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="12" contactId="12" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="12" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="13" contactId="13" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="13" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="14" contactId="14" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="14" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="15" contactId="15" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="15" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="16" contactId="16" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="16" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="17" contactId="17" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="17" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="18" contactId="18" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="18" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="19" contactId="19" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="19" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="20" contactId="20" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="20" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+
+  <CourseSession id="1" startDatetime="2012-01-01 15:00:00" endDatetime="2012-01-01 16:00:00" courseClass_Id="1"
+                 payAdjustment="0"/>
+  <CourseSession id="2" startDatetime="2012-01-03 17:00:00" endDatetime="2012-01-03 19:00:00" courseClass_Id="1"
+                 payAdjustment="0"/>
+  <CourseSession id="3" startDatetime="2012-01-05 17:00:00" endDatetime="2012-01-05 19:00:00" courseClass_Id="1"
+                 payAdjustment="0"/>
+
+  <CourseSession id="4" startDatetime="2012-02-01 17:00:00" endDatetime="2012-02-01 19:00:00" courseClass_Id="2"
+                 payAdjustment="0"/>
+  <CourseSession id="5" startDatetime="2012-02-03 17:00:00" endDatetime="2012-02-03 19:00:00" courseClass_Id="2"
+                 payAdjustment="0"/>
+  <CourseSession id="6" startDatetime="2012-02-05 17:00:00" endDatetime="2012-02-05 19:00:00" courseClass_Id="2"
+                 payAdjustment="0"/>
+
+  <DefinedTutorRole id="1" name="definedTutorRoleName" active="1"/>
+
+  <CourseClassTutor id="1" tutorId="1" courseClassId="1" inPublicity="1" definedTutorRoleId="1"/>
+  <CourseClassTutor id="2" tutorId="1" courseClassId="2" inPublicity="1" definedTutorRoleId="1"/>
+  <CourseClassTutor id="3" tutorId="2" courseClassId="1" inPublicity="1" definedTutorRoleId="1"/>
+  <CourseClassTutor id="4" tutorId="2" courseClassId="2" inPublicity="1" definedTutorRoleId="1"/>
+
+  <Enrolment id="1" status="3" studentId="1" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="2" status="3" studentId="1" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="3" status="3" studentId="2" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="4" status="3" studentId="2" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="5" status="3" studentId="3" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="6" status="3" studentId="3" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="7" status="3" studentId="4" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="8" status="3" studentId="4" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="9" status="3" studentId="5" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="10" status="3" studentId="5" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="11" status="3" studentId="6" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="12" status="3" studentId="6" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="13" status="3" studentId="7" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="14" status="3" studentId="7" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="15" status="3" studentId="8" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="16" status="3" studentId="8" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="17" status="3" studentId="9" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="18" status="3" studentId="9" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="19" status="3" studentId="10" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="20" status="7" studentId="10" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="21" status="3" studentId="11" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="22" status="9" studentId="11" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="23" status="3" studentId="12" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="24" status="3" studentId="12" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="25" status="3" studentId="13" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="26" status="3" studentId="13" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="27" status="8" studentId="14" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="28" status="3" studentId="14" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="29" status="3" studentId="14" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="30" status="6" studentId="15" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="31" status="3" studentId="15" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="32" status="3" studentId="15" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="33" status="3" studentId="16" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="34" status="3" studentId="16" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="36" status="6" studentId="17" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="37" status="6" studentId="17" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="38" status="0" studentId="17" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="39" status="1" studentId="18" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="40" status="6" studentId="18" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="41" status="6" studentId="18" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="42" status="6" studentId="18" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="45" status="2" studentId="19" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="49" status="4" studentId="19" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="51" status="6" studentId="19" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="52" status="7" studentId="19" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="53" status="8" studentId="19" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="54" status="9" studentId="19" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="55" status="3" studentId="20" courseClass_Id="1" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="58" status="3" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="59" status="4" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="61" status="6" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="62" status="7" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="63" status="8" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="64" status="9" studentId="20" courseClass_Id="2" source="O" eligibilityExemptionIndicator="0"
+             studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+
+  <Attendance id="1" sessionId="1" studentId="1" attendanceType="0"/>
+  <Attendance id="2" sessionId="2" studentId="1" attendanceType="0"/>
+  <Attendance id="3" sessionId="3" studentId="1" attendanceType="0"/>
+  <Attendance id="4" sessionId="4" studentId="1" attendanceType="0"/>
+  <Attendance id="5" sessionId="5" studentId="1" attendanceType="0"/>
+  <Attendance id="6" sessionId="6" studentId="1" attendanceType="0"/>
+  <Attendance id="7" sessionId="1" studentId="2" attendanceType="0"/>
+  <Attendance id="8" sessionId="2" studentId="2" attendanceType="0"/>
+  <Attendance id="9" sessionId="4" studentId="2" attendanceType="0"/>
+  <Attendance id="10" sessionId="6" studentId="2" attendanceType="0"/>
+  <Attendance id="11" sessionId="1" studentId="3" attendanceType="0"/>
+  <Attendance id="12" sessionId="1" studentId="4" attendanceType="0"/>
+  <Attendance id="13" sessionId="1" studentId="5" attendanceType="0"/>
+  <Attendance id="14" sessionId="1" studentId="7" attendanceType="0"/>
+  <Attendance id="15" sessionId="1" studentId="8" attendanceType="0"/>
+  <Attendance id="16" sessionId="1" studentId="9" attendanceType="0"/>
+  <Attendance id="17" sessionId="1" studentId="10" attendanceType="0"/>
+  <Attendance id="18" sessionId="1" studentId="11" attendanceType="0"/>
+  <Attendance id="19" sessionId="1" studentId="15" attendanceType="0"/>
+  <Attendance id="20" sessionId="2" studentId="15" attendanceType="0"/>
+  <Attendance id="21" sessionId="3" studentId="15" attendanceType="0"/>
+  <Attendance id="22" sessionId="4" studentId="15" attendanceType="0"/>
+  <Attendance id="23" sessionId="5" studentId="15" attendanceType="0"/>
+  <Attendance id="24" sessionId="6" studentId="15" attendanceType="0"/>
+
+  <Discount id="1" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent1" rounding="0"
+            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1"
+            addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
+  <Discount id="2" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent2" rounding="0"
+            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1"
+            addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
+  <Discount id="3" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent3" rounding="0"
+            validFrom="2000-01-01 16:00:00" validTo="2001-01-01 16:00:00" predictedStudentsPercentage="0" HIDEONWEB="0"
+            ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
+  <Discount id="4" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent4" rounding="0"
+            validFrom="2000-01-01 16:00:00" validTo="2100-01-01 16:00:00" predictedStudentsPercentage="0" HIDEONWEB="0"
+            ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
+  <Discount id="5" code="[null]" discountType="1" discountPercent="0.05" name="discountPercent5" rounding="0"
+            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1"
+            addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
+  <Discount id="6" code="acodea" discountType="1" discountPercent="0.05" name="discountPercent6" rounding="0"
+            validFrom="[null]" validTo="[null]" predictedStudentsPercentage="0" HIDEONWEB="0" ISAVAILABLEONWEB="1"
+            addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
+
+  <Discount_CourseClass id="1" courseClassId="1" discountId="5"/>
+  <Discount_CourseClass id="2" courseClassId="2" discountId="5"/>
+  <Discount_CourseClass id="3" courseClassId="1" discountId="3"/>
+  <Discount_CourseClass id="4" courseClassId="1" discountId="4"/>
+  <Discount_CourseClass id="5" courseClassId="1" discountId="6"/>
+
+  <ConcessionType id="1" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType1"/>
+  <ConcessionType id="2" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType2"/>
+  <ConcessionType id="3" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="0" name="ConcessionType3"/>
+  <ConcessionType id="4" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="0" name="ConcessionType4"/>
+  <ConcessionType id="5" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType5"/>
+  <ConcessionType id="6" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType6"/>
+  <ConcessionType id="7" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType7"/>
+  <ConcessionType id="8" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType8"/>
+  <ConcessionType id="9" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType9"/>
+  <ConcessionType id="10" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType10"/>
+  <ConcessionType id="11" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="0" name="ConcessionType11"/>
+  <ConcessionType id="12" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="0" name="ConcessionType12"/>
+  <ConcessionType id="13" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType13"/>
+  <ConcessionType id="14" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType14"/>
+  <ConcessionType id="15" hasConcessionNumber="0" hasExpiryDate="0" isEnabled="1" name="ConcessionType15"/>
+  <ConcessionType id="16" hasConcessionNumber="0" hasExpiryDate="1" isEnabled="1" name="ConcessionType16"/>
+
+  <Discount_ConcessionType id="1" concessionTypeId="1" discountId="1"/>
+  <Discount_ConcessionType id="2" concessionTypeId="2" discountId="2"/>
+  <Discount_ConcessionType id="3" concessionTypeId="3" discountId="1"/>
+  <Discount_ConcessionType id="4" concessionTypeId="4" discountId="2"/>
+
+  <StudentConcession id="1" concessionTypeId="1" studentId="1" expiresOn="[null]"/>
+  <StudentConcession id="2" concessionTypeId="2" studentId="2" expiresOn="2000-01-01 16:00:00"/>
+  <StudentConcession id="3" concessionTypeId="2" studentId="3" expiresOn="2100-01-01 16:00:00"/>
+  <StudentConcession id="4" concessionTypeId="2" studentId="4" expiresOn="[null]"/>
+  <StudentConcession id="5" concessionTypeId="3" studentId="5" expiresOn="[null]"/>
+  <StudentConcession id="6" concessionTypeId="4" studentId="6" expiresOn="2000-01-01 16:00:00"/>
+  <StudentConcession id="7" concessionTypeId="4" studentId="7" expiresOn="2100-01-01 16:00:00"/>
+  <StudentConcession id="8" concessionTypeId="4" studentId="8" expiresOn="[null]"/>
+
+
 </dataset>

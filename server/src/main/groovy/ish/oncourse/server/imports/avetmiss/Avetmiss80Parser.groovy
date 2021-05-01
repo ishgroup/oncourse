@@ -59,7 +59,7 @@ class Avetmiss80Parser extends AbstractAvetmissParser {
      * labourForceStatus(95+2), countryOfBirth(97+4),disabilityType(101+1),priorEducationCode(102+1)
      * isStillAtSchool(103+1),englishProficiency(104+1), suburb(105+50)
      */
-    def parse() {
+    Map<Object, Object> parse() {
 
         // ------------------
         // client identifier p9

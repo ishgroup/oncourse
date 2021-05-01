@@ -3,6 +3,8 @@
  */
 package ish.oncourse.server.cayenne
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.CreditCardType
 import ish.common.types.PaymentSource
@@ -19,6 +21,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -26,18 +29,16 @@ import java.text.ParseException
 import java.time.LocalDate
 import java.time.Month
 
-import static junit.framework.Assert.assertTrue
-import static junit.framework.Assert.fail
-import static junit.framework.TestCase.assertEquals
-
+@CompileStatic
 class EffectiveDatesServerTest extends CayenneIshTestCase {
 
-	private static final Logger logger = LogManager.getLogger()
+    private static final Logger logger = LogManager.getLogger()
     private DataContext context
 
+    
     @BeforeEach
     void setup() throws Exception {
-		wipeTables()
+        wipeTables()
         injector.getInstance(ICayenneService.class)
 
         InputStream st = EffectiveDatesServerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/EffectiveDatesServerTestDataSet.xml")
@@ -53,19 +54,20 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
         context = cayenneService.getNewContext()
     }
 
-	@Test
+    
+    @Test
     void testInvoice() throws ParseException {
 
-		fillInvoiceWitDate(LocalDate.of(2015, Month.DECEMBER, 30))
+        fillInvoiceWitDate(LocalDate.of(2015, Month.DECEMBER, 30))
 
         try {
-			context.commitChanges()
-            fail()
+            context.commitChanges()
+            Assertions.fail()
         } catch (Exception ex) {
-			checkError(ex)
+            checkError(ex)
         }
 
-		context.rollbackChanges()
+        context.rollbackChanges()
         fillInvoiceWitDate(LocalDate.now())
         context.commitChanges()
         checkTransactions()
@@ -73,28 +75,28 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
     }
 
 
-
-	@Test
+    @Test
     void testPaymentIn() {
 
-		fillPaymentIn()
+        fillPaymentIn()
 
         context.commitChanges()
         checkTransactions()
 
     }
 
-	@Test
-    void testPaymentOut()  {
+    @Test
+    void testPaymentOut() {
 
-		fillPaymentOut()
+        fillPaymentOut()
 
         context.commitChanges()
         checkTransactions()
     }
 
-	private void fillInvoiceWitDate(LocalDate effectiveDate) {
-		Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(context)
+    
+    private void fillInvoiceWitDate(LocalDate effectiveDate) {
+        Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(context)
 
         Invoice invoice = context.newObject(Invoice.class)
         invoice.setContact(contact)
@@ -102,7 +104,7 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
         invoice.setInvoiceDate(effectiveDate)
         invoice.setDateDue(effectiveDate)
 
-        InvoiceLine line =  context.newObject(InvoiceLine.class)
+        InvoiceLine line = context.newObject(InvoiceLine.class)
         line.setInvoice(invoice)
         line.setDiscountEachExTax(Money.ZERO)
         line.setPriceEachExTax(Money.ONE)
@@ -115,8 +117,9 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
         line.setQuantity(BigDecimal.ONE)
     }
 
-	private void fillPaymentIn() {
-		Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(context)
+    
+    private void fillPaymentIn() {
+        Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(context)
 
         Invoice invoice = ObjectSelect.query(Invoice.class).where(Invoice.ID.eq(1L)).selectOne(context)
 
@@ -140,8 +143,9 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
         paymentInLine.setInvoice(invoice)
     }
 
-	private void fillPaymentOut() {
-		Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(context)
+    
+    private void fillPaymentOut() {
+        Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(context)
 
         Invoice invoice = ObjectSelect.query(Invoice.class).where(Invoice.ID.eq(2L)).selectOne(context)
 
@@ -161,22 +165,24 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
     }
 
 
-	private void checkTransactions() {
+    
+    private void checkTransactions() {
 
-		List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
+        List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
 
-        assertTrue(transactions.size() > 0)
+        Assertions.assertTrue(transactions.size() > 0)
         transactions.each { t ->
-            assertEquals(t.getTransactionDate(), LocalDate.now())
+            Assertions.assertEquals(t.getTransactionDate(), LocalDate.now())
         }
     }
 
-	private void checkError(Exception ex) {
-		logger.catching(ex)
-        Throwable th =  ExceptionUtils.getThrowables(ex)[0]
-        assertTrue(th instanceof ValidationException)
-        assertTrue(((ValidationException) th).getValidationResult().hasFailures())
-        assertEquals(1, ((ValidationException) th).getValidationResult().getFailures().size())
-        assertEquals("You must choose a date after 31-Dec-2015",((ValidationException) th).getValidationResult().getFailures().get(0).getDescription())
+    
+    private void checkError(Exception ex) {
+        logger.catching(ex)
+        Throwable th = ExceptionUtils.getThrowables(ex)[0]
+        Assertions.assertTrue(th instanceof ValidationException)
+        Assertions.assertTrue(((ValidationException) th).getValidationResult().hasFailures())
+        Assertions.assertEquals(1, ((ValidationException) th).getValidationResult().getFailures().size())
+        Assertions.assertEquals("You must choose a date after 31-Dec-2015", ((ValidationException) th).getValidationResult().getFailures().get(0).getDescription())
     }
 }

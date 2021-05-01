@@ -10,24 +10,25 @@
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
     <email>test@test.test</email>
-    <fax />
+    <fax/>
     <firstName>Test</firstName>
     <homePhone>331110000</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>Student</lastName>
-    <message />
+    <message/>
     <mobilePhone>331110000</mobilePhone>
     <notes>first note1
-second note1</notes>
+      second note1
+    </notes>
     <postcode>1001</postcode>
     <state>NSW</state>
     <street>Main</street>
     <suburb>Sydney</suburb>
-    <tfn />
+    <tfn/>
     <uniqueCode>ST1UNIQUE</uniqueCode>
     <workPhone>331110000</workPhone>
-    <title />
+    <title/>
     <student>
       <disabilityType>Hearing/Deaf</disabilityType>
       <englishProficiency>Very Well</englishProficiency>
@@ -40,7 +41,7 @@ second note1</notes>
       <studentNumber>1</studentNumber>
       <yearSchoolCompleted>2009</yearSchoolCompleted>
     </student>
-    <tutor />
+    <tutor/>
   </contact>
   <contact id='2'>
     <modifiedOn>2012-05-20T00:00:00Z</modifiedOn>
@@ -52,30 +53,31 @@ second note1</notes>
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
     <email>tutor@tutor.tutor</email>
-    <fax />
+    <fax/>
     <firstName>Test</firstName>
     <homePhone>331110001</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>Tutor</lastName>
-    <message />
+    <message/>
     <mobilePhone>331110001</mobilePhone>
     <notes>first note2
-second note2</notes>
+      second note2
+    </notes>
     <postcode>1002</postcode>
     <state>NSW</state>
     <street>1st</street>
     <suburb>Sydney</suburb>
-    <tfn />
+    <tfn/>
     <uniqueCode>TUT1UNIQUE</uniqueCode>
     <workPhone>331110001</workPhone>
-    <title />
-    <student />
+    <title/>
+    <student/>
     <tutor>
       <dateStarted>2012-01-01</dateStarted>
       <dateFinished>2013-01-01</dateFinished>
       <resume>some text</resume>
-      <payrollRef />
+      <payrollRef/>
     </tutor>
   </contact>
 </data>

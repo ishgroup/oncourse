@@ -1,5 +1,7 @@
 package ish.oncourse.server.lifecycle
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.AccountTransaction
@@ -9,6 +11,7 @@ import org.apache.cayenne.query.SelectById
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -18,13 +21,13 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
 import static ish.common.types.PaymentStatus.SUCCESS
-import static junit.framework.Assert.assertEquals
-import static org.junit.Assert.assertTrue
 
+@CompileStatic
 class TransactionsLifecycleListenerTest extends CayenneIshTestCase {
 
     ICayenneService cayenneService
 
+    
     @BeforeEach
     void setup() throws Exception {
         wipeTables()
@@ -38,6 +41,7 @@ class TransactionsLifecycleListenerTest extends CayenneIshTestCase {
     }
 
 
+    
     @Test
     void testCayenneTransaction() {
         PaymentIn paymentIn = SelectById.query(PaymentIn, 1L).selectOne(cayenneService.newContext)
@@ -63,14 +67,14 @@ class TransactionsLifecycleListenerTest extends CayenneIshTestCase {
                 //do nothing, need to keep main thread
             }
         } catch (InterruptedException e) {
-            assertTrue(false)
+            Assertions.assertTrue(false)
         } catch (ExecutionException e) {
-            assertTrue(false)
+            Assertions.assertTrue(false)
         } finally {
             asyncThreadExecutor.shutdown()
         }
 
         List<AccountTransaction> lines = ObjectSelect.query(AccountTransaction).select(cayenneService.newContext)
-        assertEquals(2, lines.size())
+        Assertions.assertEquals(2, lines.size())
     }
 }

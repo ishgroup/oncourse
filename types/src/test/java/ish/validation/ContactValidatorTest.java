@@ -12,8 +12,8 @@ import org.mockito.Mockito;
 import java.util.Date;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+
+
 import static org.mockito.Mockito.when;
 
 public class ContactValidatorTest {
@@ -66,7 +66,7 @@ public class ContactValidatorTest {
         Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         Assertions.assertEquals(1, errorCodeMap.size());
-        Assertions.assertNotNull(errorCodeMap.get(ContactInterface.BIRTH_DATE_KEY));
+        Assertions.Assertions.assertNotNull(errorCodeMap.get(ContactInterface.BIRTH_DATE_KEY));
     }
 
 
@@ -210,7 +210,7 @@ public class ContactValidatorTest {
         Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         Assertions.assertEquals(1, errorCodeMap.size());
-        Assertions.assertNotNull(errorCodeMap.get(ContactInterface.STREET_KEY));
+        Assertions.Assertions.assertNotNull(errorCodeMap.get(ContactInterface.STREET_KEY));
     }
 
     @Test
@@ -252,7 +252,7 @@ public class ContactValidatorTest {
         Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         Assertions.assertEquals(1, errorCodeMap.size());
-        Assertions.assertNotNull(errorCodeMap.get(ContactInterface.EMAIL_KEY));
+        Assertions.Assertions.assertNotNull(errorCodeMap.get(ContactInterface.EMAIL_KEY));
     }
 
     /**
@@ -276,7 +276,7 @@ public class ContactValidatorTest {
         Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         Assertions.assertEquals(1, errorCodeMap.size());
-        Assertions.assertNotNull(errorCodeMap.get(ContactInterface.EMAIL_KEY));
+        Assertions.Assertions.assertNotNull(errorCodeMap.get(ContactInterface.EMAIL_KEY));
     }
 
     @Test

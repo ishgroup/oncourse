@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.fail;
+
 
 /**
  * This test shows us what paths from server-api.yaml aren't covered with karate features

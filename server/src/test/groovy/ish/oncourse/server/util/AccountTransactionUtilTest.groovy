@@ -4,6 +4,7 @@
  */
 package ish.oncourse.server.util
 
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
@@ -22,22 +23,22 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.After
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
-
-import static org.junit.Assert.*
 
 /**
  */
 @CompileStatic
 class AccountTransactionUtilTest extends CayenneIshTestCase {
 
-	@BeforeEach
+    
+    @BeforeEach
     void setupTest() throws Exception {
-		wipeTables()
+        wipeTables()
 
         InputStream st = AccountTransactionUtilTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/ishDataContextTestDataSet.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
@@ -51,23 +52,24 @@ class AccountTransactionUtilTest extends CayenneIshTestCase {
         rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
 
         executeDatabaseOperation(rDataSet)
-	}
+    }
 
-	/**
-	 * as tests include here rely on the number of transactions created during some processes, we must make sure that there are no transactions in the database.
-	 */
-	@After
+    /**
+     * as tests include here rely on the number of transactions created during some processes, we must make sure that there are no transactions in the database.
+     */
+    @AfterEach
     void deleteTransactions() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         ObjectContext context = cayenneService.getNewNonReplicatingContext()
         List<AccountTransaction> list = context.select(SelectQuery.query(AccountTransaction.class))
         context.deleteObjects(list)
         context.commitChanges()
     }
 
-	@Test
+    
+    @Test
     void testInvoiceTransactions() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         ObjectContext context = cayenneService.getNewNonReplicatingContext()
 
         Account account = SelectById.query(Account.class, 50).selectOne(context)
@@ -98,31 +100,32 @@ class AccountTransactionUtilTest extends CayenneIshTestCase {
         q.setCacheStrategy(QueryCacheStrategy.NO_CACHE)
 
         List<AccountTransaction> transactions = context.select(q)
-        assertEquals(0, transactions.size())
+        Assertions.assertEquals(0, transactions.size())
 
         context.commitChanges()
 
         transactions = context.select(q)
-        assertEquals(4, transactions.size())
+        Assertions.assertEquals(4, transactions.size())
 
         invoice.setModifiedOn(new Date())
 
         context.commitChanges()
 
         List<AccountTransaction> newTransactions = context.select(q)
-        assertEquals(4, newTransactions.size())
+        Assertions.assertEquals(4, newTransactions.size())
 
         // check if they are same transaction records
-		assertTrue(newTransactions.containsAll(transactions))
+        Assertions.assertTrue(newTransactions.containsAll(transactions))
 
         for (AccountTransaction transaction : transactions) {
-			assertNotNull(AccountTransaction.getInvoiceLineForTransaction(context, transaction))
+            Assertions.assertNotNull(AccountTransaction.getInvoiceLineForTransaction(context, transaction))
         }
-	}
+    }
 
-	@Test
+    
+    @Test
     void testPaymentTransactions() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         ObjectContext context = cayenneService.getNewNonReplicatingContext()
 
         Account accountIn = SelectById.query(Account.class, 60).selectOne(context)
@@ -158,36 +161,37 @@ class AccountTransactionUtilTest extends CayenneIshTestCase {
         q.setCacheStrategy(QueryCacheStrategy.NO_CACHE)
 
         List<AccountTransaction> transactions = context.select(q)
-        assertEquals(0, transactions.size())
+        Assertions.assertEquals(0, transactions.size())
 
         payment.succeed()
 
         context.commitChanges()
 
         transactions = context.select(q)
-        assertEquals(4, transactions.size())
+        Assertions.assertEquals(4, transactions.size())
 
         // touch records to trigger callbacks on them
-		payment.setModifiedOn(new Date())
+        payment.setModifiedOn(new Date())
         pil1.setModifiedOn(new Date())
         pil2.setModifiedOn(new Date())
 
         context.commitChanges()
 
         List<AccountTransaction> newTransactions = context.select(q)
-        assertEquals(4, newTransactions.size())
+        Assertions.assertEquals(4, newTransactions.size())
 
         // check if they are same transaction records
-		assertTrue(newTransactions.containsAll(transactions))
+        Assertions.assertTrue(newTransactions.containsAll(transactions))
 
         for (AccountTransaction transaction : transactions) {
-			assertNotNull(AccountTransaction.getPaymentInLineForTransaction(context, transaction))
+            Assertions.assertNotNull(AccountTransaction.getPaymentInLineForTransaction(context, transaction))
         }
-	}
+    }
 
-	@Test
+    
+    @Test
     void testPaymentOutTransactions() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         ObjectContext context = cayenneService.getNewNonReplicatingContext()
 
         Account accountOut = SelectById.query(Account.class, 60).selectOne(context)
@@ -215,28 +219,29 @@ class AccountTransactionUtilTest extends CayenneIshTestCase {
         q.setCacheStrategy(QueryCacheStrategy.NO_CACHE)
 
         List<AccountTransaction> transactions = context.select(q)
-        assertEquals(2, transactions.size())
+        Assertions.assertEquals(2, transactions.size())
 
         // touch records to trigger callbacks on them
-		payment.setModifiedOn(new Date())
+        payment.setModifiedOn(new Date())
         pil1.setModifiedOn(new Date())
 
         context.commitChanges()
 
         List<AccountTransaction> newTransactions = context.select(q)
-        assertEquals(2, newTransactions.size())
+        Assertions.assertEquals(2, newTransactions.size())
 
         // check if they are same transaction records
-		assertTrue(newTransactions.containsAll(transactions))
+        Assertions.assertTrue(newTransactions.containsAll(transactions))
 
         for (AccountTransaction transaction : transactions) {
-			assertNotNull(AccountTransaction.getPaymentOutLineForTransaction(context, transaction))
+            Assertions.assertNotNull(AccountTransaction.getPaymentOutLineForTransaction(context, transaction))
         }
-	}
-	
-	@Test
+    }
+
+    
+    @Test
     void testVoucherPurchaseTransactions() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         ObjectContext context = cayenneService.getNewNonReplicatingContext()
 
         Account account = SelectById.query(Account.class, 50).selectOne(context)
@@ -254,7 +259,7 @@ class AccountTransactionUtilTest extends CayenneIshTestCase {
         InvoiceLine line = context.newObject(InvoiceLine.class)
         line.setAccount(account)
         line.setTax(tax)
-		line.setDiscountEachExTax(Money.ZERO)
+        line.setDiscountEachExTax(Money.ZERO)
         line.setInvoice(invoice)
         line.setPrepaidFeesAccount(account)
         line.setPrepaidFeesRemaining(Money.ZERO)
@@ -267,25 +272,25 @@ class AccountTransactionUtilTest extends CayenneIshTestCase {
         q.setCacheStrategy(QueryCacheStrategy.NO_CACHE)
 
         List<AccountTransaction> transactions = context.select(q)
-        assertEquals(0, transactions.size())
+        Assertions.assertEquals(0, transactions.size())
 
         context.commitChanges()
 
         transactions = context.select(q)
-        assertEquals(4, transactions.size())
+        Assertions.assertEquals(4, transactions.size())
 
         invoice.setModifiedOn(new Date())
 
         context.commitChanges()
 
         List<AccountTransaction> newTransactions = context.select(q)
-        assertEquals(4, newTransactions.size())
+        Assertions.assertEquals(4, newTransactions.size())
 
         // check if they are same transaction records
-		assertTrue(newTransactions.containsAll(transactions))
+        Assertions.assertTrue(newTransactions.containsAll(transactions))
 
         for (AccountTransaction transaction : transactions) {
-			assertNotNull(AccountTransaction.getInvoiceLineForTransaction(context, transaction))
+            Assertions.assertNotNull(AccountTransaction.getInvoiceLineForTransaction(context, transaction))
         }
-	}
+    }
 }

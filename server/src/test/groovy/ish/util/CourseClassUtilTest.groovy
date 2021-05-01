@@ -4,6 +4,7 @@
  */
 package ish.util
 
+
 import ish.CayenneIshTestCase
 import ish.common.types.*
 import ish.math.Money
@@ -13,21 +14,21 @@ import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
-import static org.junit.Assert.assertEquals
 import static org.mockito.Matchers.any
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.when
 
 class CourseClassUtilTest extends CayenneIshTestCase {
 
-	private static int codeSequence = 0
+    private static int codeSequence = 0
 
     @Test
     void testSuccessAndQueuedEnrolments() {
-		ObjectContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        ObjectContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Student student = createStudent(context)
 
@@ -42,14 +43,14 @@ class CourseClassUtilTest extends CayenneIshTestCase {
 
         context.commitChanges()
 
-        assertEquals(8, student.getEnrolments().size())
-        assertEquals(5, CourseClassUtil.getSuccessAndQueuedEnrolments(student.getEnrolments()).size())
-        assertEquals(2, CourseClassUtil.getRefundedAndCancelledEnrolments(student.getEnrolments()).size())
+        Assertions.assertEquals(8, student.getEnrolments().size())
+        Assertions.assertEquals(5, CourseClassUtil.getSuccessAndQueuedEnrolments(student.getEnrolments()).size())
+        Assertions.assertEquals(2, CourseClassUtil.getRefundedAndCancelledEnrolments(student.getEnrolments()).size())
     }
 
-	private Enrolment createEnrolment(ObjectContext context, EnrolmentStatus status, Student student) {
+    private Enrolment createEnrolment(ObjectContext context, EnrolmentStatus status, Student student) {
 
-		Course course = context.newObject(Course.class)
+        Course course = context.newObject(Course.class)
         course.setCode("AABBDD" + codeSequence++)
         course.setName("courseName")
         course.setFieldConfigurationSchema(DataGenerator.valueOf(context).getFieldConfigurationScheme())
@@ -61,7 +62,7 @@ class CourseClassUtilTest extends CayenneIshTestCase {
         account.setType(AccountType.INCOME)
         account.setIsEnabled(true)
         //commit accounts first than link to taxes (avoid exception with circular dependency on tables)
-		context.commitChanges()
+        context.commitChanges()
 
         Tax tax = context.newObject(Tax.class)
         tax.setIsGSTTaxType(Boolean.FALSE)
@@ -94,9 +95,9 @@ class CourseClassUtilTest extends CayenneIshTestCase {
         return enrl
     }
 
-	@Test
+    @Test
     void testAddModuleToAllSessions() throws Exception {
-		ISessionModule sessionModule = Mockito.mock(SessionModule.class)
+        ISessionModule sessionModule = Mockito.mock(SessionModule.class)
 
         ObjectContext context = Mockito.mock(ObjectContext.class)
         when(context.newObject(SessionModule.class)).thenReturn((SessionModule) sessionModule)
@@ -117,9 +118,9 @@ class CourseClassUtilTest extends CayenneIshTestCase {
         verify(sessionModule, Mockito.times(1)).setModule(any())
     }
 
-	private Student createStudent(ObjectContext context) {
+    private Student createStudent(ObjectContext context) {
 
-		Contact contact = context.newObject(Contact.class)
+        Contact contact = context.newObject(Contact.class)
         contact.setFirstName("firstName1")
         contact.setLastName("lastName1")
 

@@ -1,5 +1,7 @@
 package ish.oncourse.server.imports
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
@@ -16,12 +18,13 @@ import org.apache.commons.io.IOUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
-
+@CompileStatic
 class PaymentInCSVImportTest extends CayenneIshTestCase {
+
 
     @BeforeEach
     void setup() throws Exception {
@@ -40,14 +43,15 @@ class PaymentInCSVImportTest extends CayenneIshTestCase {
         sanityCheckService.performCheck()
     }
 
+
     @Test
     void test() throws IOException {
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext context = cayenneService.getNewContext()
 
-        assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(PaymentInLine.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(PaymentInLine.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
 
         ImportService importService = injector.getInstance(ImportService.class)
@@ -63,9 +67,9 @@ class PaymentInCSVImportTest extends CayenneIshTestCase {
         importService.performImport(parameter)
 
 
-        assertEquals(185, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(187, ObjectSelect.query(PaymentInLine.class).select(context).size())
-        assertEquals(16, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(185, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(187, ObjectSelect.query(PaymentInLine.class).select(context).size())
+        Assertions.assertEquals(16, ObjectSelect.query(Banking.class).select(context).size())
     }
 
     private static final String[] EXPECTED_HEADERS = [
@@ -79,6 +83,7 @@ class PaymentInCSVImportTest extends CayenneIshTestCase {
     ]
 
     //the attached example contains '\uFEFF' which blocks right
+
     @Test
     void testHeaderValues() throws IOException {
         InputStream inputStream = ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/imports/PaymentInCSVImportTest.csv")
@@ -89,10 +94,10 @@ class PaymentInCSVImportTest extends CayenneIshTestCase {
 
         String[] header = (String[]) csvParser.getHeader()
 
-        assertEquals(7, header.length)
+        Assertions.assertEquals(7, header.length)
 
-        for (int i = 0; i < 7; i ++) {
-            assertEquals(EXPECTED_HEADERS[i], header[i])
+        for (int i = 0; i < 7; i++) {
+            Assertions.assertEquals(EXPECTED_HEADERS[i], header[i])
         }
     }
 }

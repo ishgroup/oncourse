@@ -1,5 +1,6 @@
 package ish.oncourse.server.script
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.CourseClass
@@ -64,8 +65,7 @@ class CceSendWaitingListClassPublished extends CayenneIshTestCase {
      * id 4: not actual - cancelled
      * id 5: not actual - not shown on web
      *
-     * @throws IOException
-     * @throws MessagingException
+     * @throws IOException* @throws MessagingException
      */
     @Test
     void testSendWaitingListClassPublish() throws IOException, MessagingException {
@@ -82,6 +82,7 @@ class CceSendWaitingListClassPublished extends CayenneIshTestCase {
         checkEmailBindings()
     }
 
+    @CompileStatic
     private Bindings prepareBindings() throws MessagingException {
 
         Bindings bindings = new SimpleBindings()
@@ -91,6 +92,7 @@ class CceSendWaitingListClassPublished extends CayenneIshTestCase {
         return bindings
     }
 
+    @CompileStatic
     private Script prepareScript(String url) throws IOException {
 
         BufferedReader reader = new BufferedReader(
@@ -112,7 +114,7 @@ class CceSendWaitingListClassPublished extends CayenneIshTestCase {
         ArgumentCaptor<EmailSpec> emailCaptor = ArgumentCaptor.forClass(EmailSpec.class)
         verify(emailService, times(3)).createEmail(emailCaptor.capture())
 
-        emailCaptor.getAllValues().each{EmailSpec s ->
+        emailCaptor.getAllValues().each { EmailSpec s ->
 
             Assert.assertEquals(String.format("Classes published %s_Course_1", LocalDate.now().with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1)), s.getCreatorKey())
             List<CourseClass> bindedClasses = (List) s.getBindings().get("classes")

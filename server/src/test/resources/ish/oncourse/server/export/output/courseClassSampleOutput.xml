@@ -6,14 +6,14 @@
     <allowWaitingLists>true</allowWaitingLists>
     <code>ATT1</code>
     <currentlyOffered>true</currentlyOffered>
-    <fieldOfEducation />
+    <fieldOfEducation/>
     <isWebVisible>true</isWebVisible>
     <isSufficientForQualification>false</isSufficientForQualification>
     <isVET>false</isVET>
     <name>Test 1</name>
-    <printedBrochureDescription />
+    <printedBrochureDescription/>
     <reportableHours>3.00</reportableHours>
-    <webDescription />
+    <webDescription/>
     <courseClass id='1'>
       <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
       <createdOn>2013-01-01T00:00:00Z</createdOn>
@@ -41,28 +41,29 @@
       <isDistantLearningCourse>true</isDistantLearningCourse>
       <isWebVisible>true</isWebVisible>
       <maximumPlaces>100</maximumPlaces>
-      <message />
+      <message/>
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote1
-        secondCourseClassNote1</notes>
+        secondCourseClassNote1
+      </notes>
       <startDateTime>2013-01-01T00:00:00Z</startDateTime>
-      <webDescription />
+      <webDescription/>
       <accountCode>11500</accountCode>
       <enrolment id='1'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='3' />
+        <vetClientID/>
+        <contact id='3'/>
         <outcome id='1'>
           <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
           <createdOn>2013-01-01T00:00:00Z</createdOn>
-          <startDate />
-          <endDate />
+          <startDate/>
+          <endDate/>
           <status>Competency achieved/pass (20)</status>
-          <module nationalCode='TESTCODE1' />
+          <module nationalCode='TESTCODE1'/>
         </outcome>
       </enrolment>
       <enrolment id='2'>
@@ -70,15 +71,15 @@
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='4' />
+        <vetClientID/>
+        <contact id='4'/>
         <outcome id='2'>
           <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
           <createdOn>2013-01-01T00:00:00Z</createdOn>
           <startDate>2013-01-01T12:00:00Z</startDate>
           <endDate>2013-02-01T12:00:00Z</endDate>
           <status>Competency not achieved/fail (30)</status>
-          <module nationalCode='TESTCODE2' />
+          <module nationalCode='TESTCODE2'/>
         </outcome>
       </enrolment>
       <session id='1'>
@@ -107,14 +108,14 @@
     <allowWaitingLists>true</allowWaitingLists>
     <code>ATT2</code>
     <currentlyOffered>true</currentlyOffered>
-    <fieldOfEducation />
+    <fieldOfEducation/>
     <isWebVisible>true</isWebVisible>
     <isSufficientForQualification>false</isSufficientForQualification>
     <isVET>false</isVET>
     <name>Test 2</name>
-    <printedBrochureDescription />
+    <printedBrochureDescription/>
     <reportableHours>3.00</reportableHours>
-    <webDescription />
+    <webDescription/>
     <courseClass id='2'>
       <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
       <createdOn>2013-01-01T00:00:00Z</createdOn>
@@ -142,69 +143,70 @@
       <isDistantLearningCourse>true</isDistantLearningCourse>
       <isWebVisible>true</isWebVisible>
       <maximumPlaces>100</maximumPlaces>
-      <message />
+      <message/>
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote2
-        secondCourseClassNote2</notes>
+        secondCourseClassNote2
+      </notes>
       <startDateTime>2013-01-01T00:00:00Z</startDateTime>
-      <webDescription />
+      <webDescription/>
       <accountCode>11500</accountCode>
       <enrolment id='3'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='3' />
+        <vetClientID/>
+        <contact id='3'/>
       </enrolment>
       <enrolment id='4'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='4' />
+        <vetClientID/>
+        <contact id='4'/>
       </enrolment>
       <enrolment id='7'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='7' />
+        <vetClientID/>
+        <contact id='7'/>
       </enrolment>
       <enrolment id='8'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='8' />
+        <vetClientID/>
+        <contact id='8'/>
       </enrolment>
       <enrolment id='9'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='9' />
+        <vetClientID/>
+        <contact id='9'/>
       </enrolment>
       <enrolment id='10'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='10' />
+        <vetClientID/>
+        <contact id='10'/>
       </enrolment>
       <enrolment id='11'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Cancelled</status>
-        <vetClientID />
-        <contact id='10' />
+        <vetClientID/>
+        <contact id='10'/>
       </enrolment>
       <session id='4'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
@@ -252,21 +254,22 @@
       <isDistantLearningCourse>true</isDistantLearningCourse>
       <isWebVisible>true</isWebVisible>
       <maximumPlaces>100</maximumPlaces>
-      <message />
+      <message/>
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote3
-        secondCourseClassNote3</notes>
+        secondCourseClassNote3
+      </notes>
       <startDateTime>2013-01-01T00:00:00Z</startDateTime>
-      <webDescription />
+      <webDescription/>
       <accountCode>11500</accountCode>
       <enrolment id='5'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='5' />
+        <vetClientID/>
+        <contact id='5'/>
       </enrolment>
       <session id='7'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
@@ -308,29 +311,30 @@
       <isDistantLearningCourse>true</isDistantLearningCourse>
       <isWebVisible>true</isWebVisible>
       <maximumPlaces>100</maximumPlaces>
-      <message />
+      <message/>
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote4
-        secondCourseClassNote4</notes>
+        secondCourseClassNote4
+      </notes>
       <startDateTime>2013-01-01T00:00:00Z</startDateTime>
-      <webDescription />
+      <webDescription/>
       <accountCode>11500</accountCode>
       <enrolment id='6'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='6' />
+        <vetClientID/>
+        <contact id='6'/>
       </enrolment>
       <enrolment id='12'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Failed</status>
-        <vetClientID />
-        <contact id='10' />
+        <vetClientID/>
+        <contact id='10'/>
       </enrolment>
       <session id='9'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>

@@ -4,22 +4,21 @@
  */
 package ish.oncourse.server.cayenne
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.access.DataContext
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-
-/**
- */
+@CompileStatic
 class SiteTest extends CayenneIshTestCase {
 
-	@Test
+    @Test
     void testLifecycleCallbacks() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Site site = newContext.newObject(Site.class)
         site.setName("name")
@@ -38,18 +37,18 @@ class SiteTest extends CayenneIshTestCase {
         su.setLastName("lastName")
         site.addToUsers(su)
 
-        assertNotNull("Check defaultAdministrationCentre", su.getDefaultAdministrationCentre())
-        assertEquals("Check users size: ", 1, site.getUsers().size())
+        Assertions.assertNotNull(su.getDefaultAdministrationCentre(), "Check defaultAdministrationCentre")
+        Assertions.assertEquals(1, site.getUsers().size(), "Check users size: ")
 
         // check prePersist in SystemUser
-		newContext.commitChanges()
+        newContext.commitChanges()
 
         SystemUser localSu = newContext.localObject(su)
-        assertNotNull("Check defaultAdministrationCentre", localSu.getDefaultAdministrationCentre())
+        Assertions.assertNotNull(localSu.getDefaultAdministrationCentre(), "Check defaultAdministrationCentre")
 
-        assertNotNull("Check defaultAdministrationCentre", su.getDefaultAdministrationCentre())
+        Assertions.assertNotNull(su.getDefaultAdministrationCentre(), "Check defaultAdministrationCentre")
 
-        assertEquals("Check users size: ", 1, site.getUsers().size())
+        Assertions.assertEquals(1, site.getUsers().size(), "Check users size: ")
 
     }
 }

@@ -10,21 +10,24 @@
  */
 package ish.oncourse.server.services
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.Query
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
 import static org.mockito.ArgumentMatchers.any
 import static org.mockito.ArgumentMatchers.anyString
 import static org.mockito.Mockito.*
 
+@CompileStatic
 class ClusteredAutoincrementServiceTest {
 
     ClusteredAutoincrementService service
 
+    
     @BeforeEach
     void initService() {
         def context = mock(DataContext.class)
@@ -43,34 +46,36 @@ class ClusteredAutoincrementServiceTest {
                 .nextId("invoice")
     }
 
+    
     @Test
     void getStudentId() {
         long nextId
 
         nextId = service.nextStudentNumber
-        assertEquals(123L, nextId)
+        Assertions.assertEquals(123L, nextId)
 
         nextId = service.nextStudentNumber
-        assertEquals(124L, nextId)
+        Assertions.assertEquals(124L, nextId)
 
         nextId = service.nextStudentNumber
-        assertEquals(125L, nextId)
+        Assertions.assertEquals(125L, nextId)
 
         verify(service, times(1)).nextId(anyString())
     }
 
+    
     @Test
     void getInvoiceId() {
         long nextId
 
         nextId = service.nextInvoiceNumber
-        assertEquals(12L, nextId)
+        Assertions.assertEquals(12L, nextId)
 
         nextId = service.nextInvoiceNumber
-        assertEquals(13L, nextId)
+        Assertions.assertEquals(13L, nextId)
 
         nextId = service.nextInvoiceNumber
-        assertEquals(14L, nextId)
+        Assertions.assertEquals(14L, nextId)
 
         verify(service, times(1)).nextId(anyString())
     }

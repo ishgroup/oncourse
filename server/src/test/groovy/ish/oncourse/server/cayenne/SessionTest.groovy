@@ -4,6 +4,8 @@
  */
 package ish.oncourse.server.cayenne
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.AttendanceType
 import ish.common.types.EnrolmentStatus
@@ -17,18 +19,19 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
-
+@CompileStatic
 class SessionTest extends CayenneIshTestCase {
 
-	private ICayenneService cayenneService
+    private ICayenneService cayenneService
 
+    
     @BeforeEach
     void setup() throws Exception {
-		wipeTables()
+        wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
         InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/sessionTest.xml")
@@ -44,18 +47,19 @@ class SessionTest extends CayenneIshTestCase {
         executeDatabaseOperation(rDataSet)
     }
 
-	@Test
+    
+    @Test
     void testCreateNotMarkedAttendance() {
 
-		// create "not marked" attendance records for all valid enrolments
+        // create "not marked" attendance records for all valid enrolments
 
-		DataContext newContext = cayenneService.getNewNonReplicatingContext()
+        DataContext newContext = cayenneService.getNewNonReplicatingContext()
 
         Student student = newContext.select(SelectQuery.query(Student.class, ExpressionFactory.matchExp(Student.ID_PROPERTY, 1L))).get(0)
         Student student2 = newContext.select(SelectQuery.query(Student.class, ExpressionFactory.matchExp(Student.ID_PROPERTY, 2L))).get(0)
         Student student3 = newContext.select(SelectQuery.query(Student.class, ExpressionFactory.matchExp(Student.ID_PROPERTY, 3L))).get(0)
         CourseClass cc = newContext.select(SelectQuery.query(CourseClass.class, ExpressionFactory.matchExp(CourseClass.ID_PROPERTY, 1L)))
-				.get(0)
+                .get(0)
         Session session = newContext.select(SelectQuery.query(Session.class, ExpressionFactory.matchExp(Session.ID_PROPERTY, 100L))).get(0)
 
         Enrolment enrolment = newContext.newObject(Enrolment.class)
@@ -64,21 +68,21 @@ class SessionTest extends CayenneIshTestCase {
         enrolment.setCourseClass(cc)
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
 
-        assertEquals("Check attendances ", 0, session.getAttendance().size())
-        assertEquals("Check attendances ", 0, student.getAttendances().size())
-        assertEquals("Check attendances ", 0, student2.getAttendances().size())
-        assertEquals("Check attendances ", 0, student3.getAttendances().size())
+        Assertions.assertEquals(0, session.getAttendance().size(), "Check attendances ")
+        Assertions.assertEquals(0, student.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(0, student2.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(0, student3.getAttendances().size(), "Check attendances ")
 
         newContext.commitChanges()
         student.setPersistenceState(PersistenceState.HOLLOW)
         session.setPersistenceState(PersistenceState.HOLLOW)
-        assertEquals("Check attendances ", 1, session.getAttendance().size())
-        assertEquals("Check attendances ", 2, student.getAttendances().size())
-        assertEquals("Check attendances ", 0, student2.getAttendances().size())
-        assertEquals("Check attendances ", 0, student3.getAttendances().size())
-        assertEquals("Check attendances type ", AttendanceType.UNMARKED, student.getAttendances().get(0).getAttendanceType())
-        assertEquals("Check attendances session ", session, session.getAttendance().get(0).getSession())
-        assertEquals("Check attendances student ", student, student.getAttendances().get(0).getStudent())
+        Assertions.assertEquals(1, session.getAttendance().size(), "Check attendances ")
+        Assertions.assertEquals(2, student.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(0, student2.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(0, student3.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(AttendanceType.UNMARKED, student.getAttendances().get(0).getAttendanceType(), "Check attendances type ")
+        Assertions.assertEquals(session, session.getAttendance().get(0).getSession(), "Check attendances session ")
+        Assertions.assertEquals(student, student.getAttendances().get(0).getStudent(), "Check attendances student ")
 
         Enrolment enrolment2 = newContext.newObject(Enrolment.class)
         enrolment2.setStatus(EnrolmentStatus.SUCCESS)
@@ -90,10 +94,10 @@ class SessionTest extends CayenneIshTestCase {
         student.setPersistenceState(PersistenceState.HOLLOW)
         student2.setPersistenceState(PersistenceState.HOLLOW)
         session.setPersistenceState(PersistenceState.HOLLOW)
-        assertEquals("Check attendances ", 2, session.getAttendance().size())
-        assertEquals("Check attendances ", 2, student.getAttendances().size())
-        assertEquals("Check attendances ", 2, student2.getAttendances().size())
-        assertEquals("Check attendances ", 0, student3.getAttendances().size())
+        Assertions.assertEquals(2, session.getAttendance().size(), "Check attendances ")
+        Assertions.assertEquals(2, student.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(2, student2.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(0, student3.getAttendances().size(), "Check attendances ")
 
         Enrolment enrolment3 = newContext.newObject(Enrolment.class)
         enrolment3.setStatus(EnrolmentStatus.IN_TRANSACTION)
@@ -113,18 +117,18 @@ class SessionTest extends CayenneIshTestCase {
         student2.setPersistenceState(PersistenceState.HOLLOW)
         student3.setPersistenceState(PersistenceState.HOLLOW)
         session.setPersistenceState(PersistenceState.HOLLOW)
-        assertEquals("Check attendances ", 3, session.getAttendance().size())
-        assertEquals("Check attendances ", 2, student.getAttendances().size())
-        assertEquals("Check attendances ", 2, student2.getAttendances().size())
-        assertEquals("Check attendances ", 2, student3.getAttendances().size())
+        Assertions.assertEquals(3, session.getAttendance().size(), "Check attendances ")
+        Assertions.assertEquals(2, student.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(2, student2.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(2, student3.getAttendances().size(), "Check attendances ")
 
         // add second session
-		Session session3 = newContext.newObject(Session.class)
+        Session session3 = newContext.newObject(Session.class)
         session3.setCourseClass(cc)
         session3.setPayAdjustment(4)
         cc.addToSessions(session3)
 
-        assertEquals("Check attendances ", 0, session3.getAttendance().size())
+        Assertions.assertEquals(0, session3.getAttendance().size(), "Check attendances ")
 
         newContext.commitChanges()
         student.setPersistenceState(PersistenceState.HOLLOW)
@@ -132,14 +136,14 @@ class SessionTest extends CayenneIshTestCase {
         student3.setPersistenceState(PersistenceState.HOLLOW)
         session.setPersistenceState(PersistenceState.HOLLOW)
         session3.setPersistenceState(PersistenceState.HOLLOW)
-        assertEquals("Check attendances ", 3, session.getAttendance().size())
-        assertEquals("Check attendances ", 0, session3.getAttendance().size())
-        assertEquals("Check attendances ", 2, student.getAttendances().size())
-        assertEquals("Check attendances ", 2, student2.getAttendances().size())
-        assertEquals("Check attendances ", 2, student3.getAttendances().size())
+        Assertions.assertEquals(3, session.getAttendance().size(), "Check attendances ")
+        Assertions.assertEquals(0, session3.getAttendance().size(), "Check attendances ")
+        Assertions.assertEquals(2, student.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(2, student2.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(2, student3.getAttendances().size(), "Check attendances ")
 
         // set SUCESS to 3th entity
-		enrolment3.setStatus(EnrolmentStatus.SUCCESS)
+        enrolment3.setStatus(EnrolmentStatus.SUCCESS)
 
         newContext.commitChanges()
         student.setPersistenceState(PersistenceState.HOLLOW)
@@ -147,32 +151,32 @@ class SessionTest extends CayenneIshTestCase {
         student3.setPersistenceState(PersistenceState.HOLLOW)
         session.setPersistenceState(PersistenceState.HOLLOW)
         session3.setPersistenceState(PersistenceState.HOLLOW)
-        assertEquals("Check attendances ", 3, session.getAttendance().size())
-        assertEquals("Check attendances ", 1, session3.getAttendance().size())
-        assertEquals("Check attendances ", 2, student.getAttendances().size())
-        assertEquals("Check attendances ", 2, student2.getAttendances().size())
-        assertEquals("Check attendances ", 3, student3.getAttendances().size())
+        Assertions.assertEquals(3, session.getAttendance().size(), "Check attendances ")
+        Assertions.assertEquals(1, session3.getAttendance().size(), "Check attendances ")
+        Assertions.assertEquals(2, student.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(2, student2.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(3, student3.getAttendances().size(), "Check attendances ")
 
         // remove enrolment2
-		enrolment2.setStatus(EnrolmentStatus.CANCELLED)
+        enrolment2.setStatus(EnrolmentStatus.CANCELLED)
         newContext.commitChanges()
         student.setPersistenceState(PersistenceState.HOLLOW)
         student2.setPersistenceState(PersistenceState.HOLLOW)
         student3.setPersistenceState(PersistenceState.HOLLOW)
         session.setPersistenceState(PersistenceState.HOLLOW)
         session3.setPersistenceState(PersistenceState.HOLLOW)
-        assertEquals("Check attendances ", 2, session.getAttendance().size())
-        assertEquals("Check attendances ", 1, session3.getAttendance().size())
-        assertEquals("Check attendances ", 2, student.getAttendances().size())
-        assertEquals("Check attendances ", 0, student2.getAttendances().size())
-        assertEquals("Check attendances ", 3, student3.getAttendances().size())
+        Assertions.assertEquals(2, session.getAttendance().size(), "Check attendances ")
+        Assertions.assertEquals(1, session3.getAttendance().size(), "Check attendances ")
+        Assertions.assertEquals(2, student.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(0, student2.getAttendances().size(), "Check attendances ")
+        Assertions.assertEquals(3, student3.getAttendances().size(), "Check attendances ")
 
         newContext.deleteObjects(enrolment3)
 
         newContext.commitChanges()
         session.setPersistenceState(PersistenceState.HOLLOW)
         session3.setPersistenceState(PersistenceState.HOLLOW)
-        assertEquals("Check attendances ", 1, session.getAttendance().size())
-        assertEquals("Check attendances ", 0, session3.getAttendance().size())
+        Assertions.assertEquals(1, session.getAttendance().size(), "Check attendances ")
+        Assertions.assertEquals(0, session3.getAttendance().size(), "Check attendances ")
     }
 }

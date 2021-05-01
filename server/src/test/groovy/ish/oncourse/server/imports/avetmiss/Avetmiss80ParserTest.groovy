@@ -1,14 +1,17 @@
 package ish.oncourse.server.imports.avetmiss
 
 import groovy.mock.interceptor.MockFor
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.common.types.AvetmissStudentDisabilityType
 import ish.common.types.AvetmissStudentPriorEducation
 import ish.common.types.Gender
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Language
 import org.apache.cayenne.ObjectContext
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+
 import java.time.LocalDate
 
 import static ish.common.types.AvetmissStudentEnglishProficiency.VERY_WELL
@@ -16,10 +19,12 @@ import static ish.common.types.AvetmissStudentIndigenousStatus.NEITHER
 import static ish.common.types.AvetmissStudentLabourStatus.PART_TIME
 import static ish.common.types.AvetmissStudentSchoolLevel.COMPLETED_YEAR_10
 
+@CompileStatic
 class Avetmiss80ParserTest {
     private language
     private country
 
+    
     private Avetmiss80Parser getParser(String text) {
         MockFor contextMock = new MockFor(ObjectContext)
         language = new Language()
@@ -37,6 +42,7 @@ class Avetmiss80ParserTest {
         return parser
     }
 
+    
     @Test
     void test() {
 

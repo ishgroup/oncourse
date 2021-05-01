@@ -4,6 +4,7 @@
  */
 package ish.oncourse.server.print
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
@@ -32,6 +33,7 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.Ignore
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
@@ -42,15 +44,13 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
-import static org.junit.Assert.*
-
 /**
  * Report printing test which tries to print all existing reports using mock entities.
  */
 @Ignore
 @RunWith(Parameterized.class)
 class ReportPrintingTest extends CayenneIshTestCase {
-	private static final Logger logger = LogManager.getLogger()
+    private static final Logger logger = LogManager.getLogger()
 
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd")
     protected static final Integer TEST_BUNCH_SIZE = 70
@@ -66,10 +66,10 @@ class ReportPrintingTest extends CayenneIshTestCase {
 
     private static Map<String, List<String>> AVAILABLE_TRANSFORMATIONS
     static {
-		Map<String, List<String>> aMap = new HashMap<>()
+        Map<String, List<String>> aMap = new HashMap<>()
         // map, what report entity can be printed from what source:ie.
-		// AccountTransaction can be printed from Accoutn and AccountTransaction
-		aMap.put("AccountTransaction", Arrays.asList("Account", "AccountTransaction"))
+        // AccountTransaction can be printed from Accoutn and AccountTransaction
+        aMap.put("AccountTransaction", Arrays.asList("Account", "AccountTransaction"))
         aMap.put("InvoiceLine", Arrays.asList("Invoice"))
         aMap.put("ClassCost", Arrays.asList("CourseClass"))
         aMap.put("Outcome", Arrays.asList("CourseClass"))
@@ -78,11 +78,11 @@ class ReportPrintingTest extends CayenneIshTestCase {
         AVAILABLE_TRANSFORMATIONS = Collections.unmodifiableMap(aMap)
     }
 
-	private static final List<String> EXTRA_REPORTS = Arrays.asList("ish.onCourse.trialBalance","ish.onCourse.shedule","ish.onCourse.trainingPlanDetailsReport")
+    private static final List<String> EXTRA_REPORTS = Arrays.asList("ish.onCourse.trialBalance", "ish.onCourse.shedule", "ish.onCourse.trainingPlanDetailsReport")
 
     @BeforeEach
     void init() throws Exception {
-		wipeTables()
+        wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
         InputStream st = ReportPrintingTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/sampleData.xml")
@@ -98,15 +98,15 @@ class ReportPrintingTest extends CayenneIshTestCase {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 
         try {
-			// can only really test export templates, the other imports require window server...
-			dataPopulation.run()
+            // can only really test export templates, the other imports require window server...
+            dataPopulation.run()
         } catch (Exception e) {
-			logger.warn("fail", e)
+            logger.warn("fail", e)
             fail("could not import one of the resources " + e)
         }
 
-		//add backgrounds
-		DataContext cc = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        //add backgrounds
+        DataContext cc = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
         ReportOverlay overlayPortrait = cc.newObject(ReportOverlay.class)
         overlayPortrait.setOverlay(FileUtils.readFileToByteArray(overlay2pagePortrait))
         overlayPortrait.setName("Test overlay portrait")
@@ -117,58 +117,61 @@ class ReportPrintingTest extends CayenneIshTestCase {
         cc.commitChanges()
     }
 
+    @CompileStatic
     ReportPrintingTest(String reportCode, String sourceEntity, String reportFolder) {
-		this.reportCode = reportCode
+        this.reportCode = reportCode
         this.reportFolder = reportFolder
         this.sourceEntity = sourceEntity
     }
 
-	@Parameters(name = "{0}")
+    @CompileStatic
+    @Parameters(name = "{0}")
     static Collection<String[]> reportCodes() throws Exception {
 
-		List<String> reportsList = IOUtils.readLines(ResourcesUtil.getResourceAsInputStream("reports/manifest"))
+        List<String> reportsList = IOUtils.readLines(ResourcesUtil.getResourceAsInputStream("reports/manifest"))
         List<String[]> keyCodeList = new ArrayList<>()
 
         for (int i = 0; i < reportsList.size() && i < TEST_BUNCH_SIZE; i++) {
-			String reportFile = reportsList.get(i)
+            String reportFile = reportsList.get(i)
             prepareReport(reportFile, keyCodeList)
         }
 
-		return keyCodeList
+        return keyCodeList
     }
 
-	protected static void prepareReport(String reportFile, List<String[]> keyCodeList) {
+    @CompileStatic
+    protected static void prepareReport(String reportFile, List<String[]> keyCodeList) {
 
-		if (reportFile.endsWith(".jrxml")) {
-			StringBuffer buffer = new StringBuffer(ResourcesUtil.readFile(reportFile))
+        if (reportFile.endsWith(".jrxml")) {
+            StringBuffer buffer = new StringBuffer(ResourcesUtil.readFile(reportFile))
 
             String isVisible = DataPopulation.getPropertyFromXml(buffer, Report.IS_VISIBLE_PROPERTY)
             String keycode = DataPopulation.getPropertyFromXml(buffer, Report.KEY_CODE_PROPERTY)
 
-            if (Boolean.parseBoolean(isVisible) ||  EXTRA_REPORTS.contains(keycode)) {
+            if (Boolean.parseBoolean(isVisible) || EXTRA_REPORTS.contains(keycode)) {
 
-				String[] temp = reportFile.split("/")
+                String[] temp = reportFile.split("/")
 
                 String entity = DataPopulation.getPropertyFromXml(buffer, Report.ENTITY_PROPERTY)
 
                 if (AVAILABLE_TRANSFORMATIONS.get(entity) != null) {
-					for (String s : AVAILABLE_TRANSFORMATIONS.get(entity)) {
-						keyCodeList.add([keycode, s, temp[temp.length - 2]] as String[])
+                    for (String s : AVAILABLE_TRANSFORMATIONS.get(entity)) {
+                        keyCodeList.add([keycode, s, temp[temp.length - 2]] as String[])
                     }
-				} else if ("PaymentInterface" == entity) {
-					keyCodeList.add([keycode, "PaymentIn", temp[temp.length - 2]] as String[])
+                } else if ("PaymentInterface" == entity) {
+                    keyCodeList.add([keycode, "PaymentIn", temp[temp.length - 2]] as String[])
                     keyCodeList.add([keycode, "PaymentOut", temp[temp.length - 2]] as String[])
                 } else {
-					keyCodeList.add([keycode, entity, temp[temp.length - 2]] as String[])
+                    keyCodeList.add([keycode, entity, temp[temp.length - 2]] as String[])
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 
-	@Test
+    @Test
     void testReportWithRealData() throws Exception {
 
-		ObjectContext context = cayenneService.getNewNonReplicatingContext()
+        ObjectContext context = cayenneService.getNewNonReplicatingContext()
 
         Report report = context.selectOne(SelectQuery.query(Report.class, Report.KEY_CODE.eq(reportCode)))
 
@@ -182,7 +185,7 @@ class ReportPrintingTest extends CayenneIshTestCase {
         request.setValueForKey(AdditionalParameters.LOCALDATERANGE_TO.toString(), LocalDate.of(2013, 1, 1))
 
         request.addPrintTransformation(sourceEntity,
-				PrintTransformationsFactory.getPrintTransformationFor(sourceEntity, report.getEntity(), report.getKeyCode()))
+                PrintTransformationsFactory.getPrintTransformationFor(sourceEntity, report.getEntity(), report.getKeyCode()))
 
         Map<String, List<Long>> mapOfIds = new HashMap<>()
 
@@ -190,27 +193,27 @@ class ReportPrintingTest extends CayenneIshTestCase {
 
         List<PersistentObjectI> list = new ArrayList<>()
         if (entityClass instanceof PaymentInterface) {
-			list.addAll(cayenneService.getNewContext().select(SelectQuery.query(PaymentIn.class)))
+            list.addAll(cayenneService.getNewContext().select(SelectQuery.query(PaymentIn.class)))
             list.addAll(cayenneService.getNewContext().select(SelectQuery.query(PaymentOut.class)))
         } else {
-			list.addAll(cayenneService.getNewContext().select(SelectQuery.query(entityClass)))
+            list.addAll(cayenneService.getNewContext().select(SelectQuery.query(entityClass)))
         }
-		if (list.size() == 0) {
-			logger.warn("Printing of {} failed, there is no records to print.", report.getKeyCode())
+        if (list.size() == 0) {
+            logger.warn("Printing of {} failed, there is no records to print.", report.getKeyCode())
             return
         }
 
-		for (Object o : list) {
-			if (mapOfIds.get(o.getClass().getSimpleName()) == null) {
-				List<Long> idsToPrint = new ArrayList<>()
+        for (Object o : list) {
+            if (mapOfIds.get(o.getClass().getSimpleName()) == null) {
+                List<Long> idsToPrint = new ArrayList<>()
                 mapOfIds.put(o.getClass().getSimpleName(), idsToPrint)
             }
-			if (o instanceof CayenneDataObject) {
-				mapOfIds.get(o.getClass().getSimpleName()).add(((CayenneDataObject) o).getPrimaryKeyValue().longValue())
+            if (o instanceof CayenneDataObject) {
+                mapOfIds.get(o.getClass().getSimpleName()).add(((CayenneDataObject) o).getPrimaryKeyValue().longValue())
             }
-		}
+        }
 
-		request.setIds(mapOfIds)
+        request.setIds(mapOfIds)
 
         PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class))
         logger.warn("printing {} from {} {}(s)", reportCode, list.size(), sourceEntity)
@@ -218,12 +221,12 @@ class ReportPrintingTest extends CayenneIshTestCase {
         worker.run()
 
         while (ResultType.IN_PROGRESS == worker.getResult().getResultType()) {
-			Thread.sleep(200)
+            Thread.sleep(200)
         }
 
-		assertEquals(String.format("Printing failed for %s", report.getName()), ResultType.SUCCESS, worker.getResult().getResultType())
-        assertNotNull(String.format("Empty printing result for %s", report.getName()), worker.getResult().getResult())
+        Assertions.assertEquals(String.format("Printing failed for %s", report.getName()), ResultType.SUCCESS, worker.getResult().getResultType())
+        Assertions.assertNotNull(String.format("Empty printing result for %s", report.getName()), worker.getResult().getResult())
 
-        FileUtils.writeByteArrayToFile(new File("build/test-data/printing/"+reportFolder+"/"+report.getName()+"-"+sourceEntity+".pdf"), worker.getResult().getResult())
+        FileUtils.writeByteArrayToFile(new File("build/test-data/printing/" + reportFolder + "/" + report.getName() + "-" + sourceEntity + ".pdf"), worker.getResult().getResult())
     }
 }

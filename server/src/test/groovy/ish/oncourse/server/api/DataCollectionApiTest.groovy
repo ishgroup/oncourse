@@ -1,5 +1,7 @@
 package ish.oncourse.server.api
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.DataType
 import ish.common.types.DeliverySchedule
@@ -9,20 +11,21 @@ import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.impl.DataCollectionApiImpl
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.testng.annotations.BeforeTest
 
 import javax.ws.rs.ClientErrorException
 
-import static org.junit.Assert.*
-
-class DataCollectionApiTest  extends CayenneIshTestCase {
+@CompileStatic
+class DataCollectionApiTest extends CayenneIshTestCase {
 
     @BeforeTest
     void before() {
         wipeTables()
     }
 
+    
     @Test
     void testFieldType() {
 
@@ -63,15 +66,15 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
 
         List<FieldTypeDTO> fieldTypes = integrationApi.getFieldTypes(DataCollectionTypeDTO.ENROLMENT.toString())
 
-        assertEquals(32,fieldTypes.size())
-        assertNotNull(fieldTypes.find {it.uniqueKey == 'customField.contact.passportNumber'})
-        assertNotNull(fieldTypes.find {it.uniqueKey == 'customField.enrolment.enrolmentNumber'})
+        Assertions.assertEquals(32, fieldTypes.size())
+        Assertions.assertNotNull(fieldTypes.find { it.uniqueKey == 'customField.contact.passportNumber' })
+        Assertions.assertNotNull(fieldTypes.find { it.uniqueKey == 'customField.enrolment.enrolmentNumber' })
 
         fieldTypes = integrationApi.getFieldTypes(DataCollectionTypeDTO.APPLICATION.toString())
 
-        assertEquals(32,fieldTypes.size())
-        assertNotNull(fieldTypes.find {it.uniqueKey == 'customField.contact.passportNumber'})
-        assertNotNull(fieldTypes.find {it.uniqueKey == 'customField.application.applicationNumber'})
+        Assertions.assertEquals(32, fieldTypes.size())
+        Assertions.assertNotNull(fieldTypes.find { it.uniqueKey == 'customField.contact.passportNumber' })
+        Assertions.assertNotNull(fieldTypes.find { it.uniqueKey == 'customField.application.applicationNumber' })
 
     }
 
@@ -86,24 +89,24 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
 
         DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
         integrationApi.cayenneService = cayenneService
-        assertEquals(1, integrationApi.rules.size())
+        Assertions.assertEquals(1, integrationApi.rules.size())
 
         DataCollectionRuleDTO rule = integrationApi.rules[0]
 
-        assertEquals('Def rule', rule.name)
-        assertEquals('Enrol form', rule.enrolmentFormName)
-        assertEquals('Application form', rule.applicationFormName)
-        assertEquals('WaitingList form', rule.waitingListFormName)
-        assertArrayEquals(['Survey form MIDWAY', 'Survey form ON_ENROL'].toArray(),
+        Assertions.assertEquals('Def rule', rule.name)
+        Assertions.assertEquals('Enrol form', rule.enrolmentFormName)
+        Assertions.assertEquals('Application form', rule.applicationFormName)
+        Assertions.assertEquals('WaitingList form', rule.waitingListFormName)
+        Assertions.assertArrayEquals(['Survey form MIDWAY', 'Survey form ON_ENROL'].toArray(),
                 rule.surveyForms.sort().toArray())
 
         List<DataCollectionFormDTO> forms = integrationApi.forms
 
-        assertEquals(5, forms.size())
+        Assertions.assertEquals(5, forms.size())
 
-        assertEquals(new File(getClass().getResource('/ish/oncourse/server/api/DataCollectionForms.txt')
+        Assertions.assertEquals(new File(getClass().getResource('/ish/oncourse/server/api/DataCollectionForms.txt')
                 .toURI()).text,
-                forms.sort{it.name}.toString()
+                forms.sort { it.name }.toString()
                         .replaceAll(/id: .+\n/, '\n')
                         .replaceAll(/.+created: .+\n/, '')
                         .replaceAll(/.+modified: .+\n/, '')
@@ -119,9 +122,9 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
             it.name = 'form_1'
             it.type = DataCollectionTypeDTO.SURVEY
             it.deliverySchedule = DeliveryScheduleTypeDTO.MIDWAY
-            it.headings = [new HeadingDTO(name: 'Heading_1',description: 'Heading', fields: [createField('suburb'), createField('state')]),
-                           new HeadingDTO(name: 'Heading_1',description: 'Heading', fields: [createField('suburb'), createField('postcode')])]
-            it.fields = [createField('street'),createField('postcode')]
+            it.headings = [new HeadingDTO(name: 'Heading_1', description: 'Heading', fields: [createField('suburb'), createField('state')]),
+                           new HeadingDTO(name: 'Heading_1', description: 'Heading', fields: [createField('suburb'), createField('postcode')])]
+            it.fields = [createField('street'), createField('postcode')]
             it
         }
 
@@ -133,16 +136,16 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
             integrationApi.createForm(form)
             assert false
         } catch (ClientErrorException e) {
-           assertEquals('Header name should be unique: Heading_1', (e.response.entity as ValidationErrorDTO).errorMessage)
+            Assertions.assertEquals('Header name should be unique: Heading_1', (e.response.entity as ValidationErrorDTO).errorMessage)
         }
 
         form = new DataCollectionFormDTO().with {
             it.name = 'form_1'
             it.type = DataCollectionTypeDTO.SURVEY
             it.deliverySchedule = DeliveryScheduleTypeDTO.MIDWAY
-            it.headings = [new HeadingDTO(name: 'Heading_1',description: 'Heading', fields: [createField('suburb'), createField('state')]),
-                           new HeadingDTO(name: 'Heading_2',description: 'Heading', fields: [createField('suburb'), createField('postcode')])]
-            it.fields = [createField('street'),createField('postcode')]
+            it.headings = [new HeadingDTO(name: 'Heading_1', description: 'Heading', fields: [createField('suburb'), createField('state')]),
+                           new HeadingDTO(name: 'Heading_2', description: 'Heading', fields: [createField('suburb'), createField('postcode')])]
+            it.fields = [createField('street'), createField('postcode')]
             it
         }
 
@@ -150,24 +153,24 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
             integrationApi.createForm(form)
             assert false
         } catch (ClientErrorException e) {
-            assertEquals('Field duplication found for type: postcode, suburb', (e.response.entity as ValidationErrorDTO).errorMessage)
+            Assertions.assertEquals('Field duplication found for type: postcode, suburb', (e.response.entity as ValidationErrorDTO).errorMessage)
         }
 
         form = new DataCollectionFormDTO().with {
             it.name = 'form_1'
             it.type = DataCollectionTypeDTO.SURVEY
             it.deliverySchedule = DeliveryScheduleTypeDTO.MIDWAY
-            it.headings = [new HeadingDTO(name: 'Heading_1',description: 'Heading', fields: [createField('netPromoterScore'), createField('courseScore')]),
-                           new HeadingDTO(name: 'Heading_2',description: 'Heading', fields: [createField('venueScore'), createField('tutorScore')])]
+            it.headings = [new HeadingDTO(name: 'Heading_1', description: 'Heading', fields: [createField('netPromoterScore'), createField('courseScore')]),
+                           new HeadingDTO(name: 'Heading_2', description: 'Heading', fields: [createField('venueScore'), createField('tutorScore')])]
             it.fields = [createField('comment')]
             it
         }
 
         integrationApi.createForm(form)
-        FieldConfiguration fieldConfiguration = DataCollectionFunctions.getFormByName(cayenneService.newContext,'form_1')
-        assertEquals(5, fieldConfiguration.fields.size())
-        assertEquals(2, fieldConfiguration.fieldHeadings.size())
-        assertEquals('[netPromoterScore, courseScore, venueScore, tutorScore, comment]', fieldConfiguration.fields.sort().collect {it.name}.toString())
+        FieldConfiguration fieldConfiguration = DataCollectionFunctions.getFormByName(cayenneService.newContext, 'form_1')
+        Assertions.assertEquals(5, fieldConfiguration.fields.size())
+        Assertions.assertEquals(2, fieldConfiguration.fieldHeadings.size())
+        Assertions.assertEquals('[netPromoterScore, courseScore, venueScore, tutorScore, comment]', fieldConfiguration.fields.sort().collect { it.name }.toString())
 
     }
 
@@ -181,7 +184,7 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
     }
 
     private static void createRule(ObjectContext context) {
-        FieldConfigurationScheme rule =  context.newObject(FieldConfigurationScheme)
+        FieldConfigurationScheme rule = context.newObject(FieldConfigurationScheme)
         rule.name = 'Def rule'
         context.newObject(FieldConfigurationLink).with { link ->
             link.fieldConfigurationScheme = rule
@@ -208,7 +211,7 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
     private static SurveyFieldConfiguration cretaeSurveyForm(ObjectContext context, String name, DeliverySchedule deliverySchedule) {
         return context.newObject(SurveyFieldConfiguration).with { form ->
             form.name = name
-            form.addToFieldHeadings  context.newObject(FieldHeading).with { heading ->
+            form.addToFieldHeadings context.newObject(FieldHeading).with { heading ->
                 heading.name = 'Enrol heading 1'
                 heading.description = 'Enrol heading 1'
                 heading.fieldOrder = 1
@@ -221,7 +224,7 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
                     field.fieldConfiguration = form
                     field
                 } as Field
-                heading.addToFields context.newObject(Field).with {field ->
+                heading.addToFields context.newObject(Field).with { field ->
                     field.name = 'Net promoter score'
                     field.property = 'netPromoterScore'
                     field.mandatory = true
@@ -230,7 +233,7 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
                     field.fieldConfiguration = form
                     field
                 }
-                heading.addToFields context.newObject(Field).with {field ->
+                heading.addToFields context.newObject(Field).with { field ->
                     field.name = 'Venue score'
                     field.property = 'venueScore'
                     field.mandatory = true
@@ -250,11 +253,11 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
     private static FieldConfiguration cretaeForm(ObjectContext context, String name, Class<? extends FieldConfiguration> clazz) {
         return context.newObject(clazz).with { form ->
             form.name = name
-            form.addToFieldHeadings  context.newObject(FieldHeading).with { heading ->
+            form.addToFieldHeadings context.newObject(FieldHeading).with { heading ->
                 heading.name = 'Enrol heading 1'
                 heading.description = 'Enrol heading 1'
                 heading.fieldOrder = 1
-                heading.addToFields context.newObject(Field).with {field ->
+                heading.addToFields context.newObject(Field).with { field ->
                     field.name = 'Postcode'
                     field.property = 'postcode'
                     field.mandatory = true
@@ -263,7 +266,7 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
                     field.fieldConfiguration = form
                     field
                 }
-                heading.addToFields context.newObject(Field).with {field ->
+                heading.addToFields context.newObject(Field).with { field ->
                     field.name = 'State'
                     field.property = 'state'
                     field.mandatory = true
@@ -278,7 +281,7 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
                 heading.name = 'Enrol heading 2'
                 heading.description = 'Enrol heading 2'
                 heading.fieldOrder = 4
-                heading.addToFields context.newObject(Field).with {field ->
+                heading.addToFields context.newObject(Field).with { field ->
                     field.name = 'Country'
                     field.property = 'country'
                     field.mandatory = true
@@ -287,7 +290,7 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
                     field.fieldConfiguration = form
                     field
                 }
-                heading.addToFields context.newObject(Field).with {field ->
+                heading.addToFields context.newObject(Field).with { field ->
                     field.name = 'Suburb'
                     field.property = 'suburb'
                     field.mandatory = true
@@ -298,7 +301,7 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
                 }
                 heading
             }
-            form.addToFields context.newObject(Field).with {field ->
+            form.addToFields context.newObject(Field).with { field ->
                 field.name = 'Street'
                 field.property = 'street'
                 field.mandatory = true
@@ -307,7 +310,7 @@ class DataCollectionApiTest  extends CayenneIshTestCase {
                 field.fieldConfiguration = form
                 field
             }
-            form.addToFields context.newObject(Field).with {field ->
+            form.addToFields context.newObject(Field).with { field ->
                 field.name = 'Citizenship'
                 field.property = 'citizenship'
                 field.mandatory = true

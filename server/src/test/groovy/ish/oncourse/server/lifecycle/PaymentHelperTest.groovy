@@ -1,5 +1,7 @@
 package ish.oncourse.server.lifecycle
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.AccountType
 import ish.common.types.PaymentSource
@@ -12,13 +14,13 @@ import ish.oncourse.server.cayenne.*
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-import static org.junit.Assert.*
-
+@CompileStatic
 class PaymentHelperTest extends CayenneIshTestCase {
 
     @BeforeEach
@@ -27,12 +29,13 @@ class PaymentHelperTest extends CayenneIshTestCase {
         super.setup()
     }
 
+    
     @Test
     void testAssignAutoBankingForAutomaticallyPayments() {
         DataContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
-        assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
         Contact contact = context.newObject(Contact.class)
         contact.setFirstName("firstName1")
@@ -70,26 +73,27 @@ class PaymentHelperTest extends CayenneIshTestCase {
         pIn.addToPaymentInLines(piLine)
         context.commitChanges()
 
-        assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
         pIn.setStatus(PaymentStatus.SUCCESS)
         context.commitChanges()
 
         List<PaymentIn> paymentIns = ObjectSelect.query(PaymentIn.class).select(context)
-        assertEquals(1, paymentIns.size())
-        assertNotNull(paymentIns.get(0).getBanking())
-        assertEquals(1, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(1, paymentIns.size())
+        Assertions.assertNotNull(paymentIns.get(0).getBanking())
+        Assertions.assertEquals(1, ObjectSelect.query(Banking.class).select(context).size())
 
     }
 
 
+    
     @Test
     void testAssignAutoBankingForNonAutomaticallyPayments() {
         DataContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
-        assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
         Contact contact = context.newObject(Contact.class)
         contact.setFirstName("firstName1")
@@ -127,23 +131,24 @@ class PaymentHelperTest extends CayenneIshTestCase {
         pIn.addToPaymentInLines(piLine)
         context.commitChanges()
 
-        assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
         pIn.setStatus(PaymentStatus.SUCCESS)
         context.commitChanges()
 
-        assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
     }
 
 
+    
     @Test
     void testAssignAutoBankingForSystemTypePayments() {
         DataContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
-        assertEquals(0, ObjectSelect.query(PaymentOut.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(PaymentOut.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
         Contact contact = context.newObject(Contact.class)
         contact.setFirstName("firstName1")
@@ -181,22 +186,23 @@ class PaymentHelperTest extends CayenneIshTestCase {
         pIn.addToPaymentInLines(piLine)
         context.commitChanges()
 
-        assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
         pIn.setStatus(PaymentStatus.SUCCESS)
         context.commitChanges()
 
-        assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
     }
 
+    
     @Test
     void testAssignAutoBankingForAutomaticallyPaymentOuts() {
         DataContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
-        assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
         Contact contact = context.newObject(Contact.class)
         contact.setFirstName("firstName1")
@@ -232,25 +238,26 @@ class PaymentHelperTest extends CayenneIshTestCase {
         pOut.addToPaymentOutLines(pLine)
         context.commitChanges()
 
-        assertEquals(1, ObjectSelect.query(PaymentOut.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(1, ObjectSelect.query(PaymentOut.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
         pOut.setStatus(PaymentStatus.SUCCESS)
         context.commitChanges()
 
         List<PaymentOut> paymentIns = ObjectSelect.query(PaymentOut.class).select(context)
-        assertEquals(1, paymentIns.size())
-        assertNotNull(paymentIns.get(0).getBanking())
-        assertEquals(1, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(1, paymentIns.size())
+        Assertions.assertNotNull(paymentIns.get(0).getBanking())
+        Assertions.assertEquals(1, ObjectSelect.query(Banking.class).select(context).size())
     }
 
+    
     @Test
     void testAssignAutoBankingForReversedPayments() {
         // create automatic payment
         DataContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
-        assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
         Contact contact = context.newObject(Contact.class)
         contact.setFirstName("firstName1")
@@ -290,27 +297,27 @@ class PaymentHelperTest extends CayenneIshTestCase {
         pIn.addToPaymentInLines(piLine)
         context.commitChanges()
 
-        assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(1, ObjectSelect.query(PaymentIn.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
         pIn.setStatus(PaymentStatus.SUCCESS)
         context.commitChanges()
 
         List<PaymentIn> paymentIns = ObjectSelect.query(PaymentIn.class).select(context)
-        assertEquals(1, paymentIns.size())
-        assertNotNull(paymentIns.get(0).getBanking())
+        Assertions.assertEquals(1, paymentIns.size())
+        Assertions.assertNotNull(paymentIns.get(0).getBanking())
         List<Banking> bankings = ObjectSelect.query(Banking.class).select(context)
-        assertEquals(1, bankings.size())
+        Assertions.assertEquals(1, bankings.size())
 
         //remove banking
         context.deleteObjects(bankings.get(0))
         context.commitChanges()
 
         List<PaymentIn> paymentIns2 = ObjectSelect.query(PaymentIn.class).select(context)
-        assertEquals(1, paymentIns2.size())
-        assertNull(paymentIns2.get(0).getBanking())
+        Assertions.assertEquals(1, paymentIns2.size())
+        Assertions.assertNull(paymentIns2.get(0).getBanking())
 
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
         //make reverse payment
 
@@ -335,11 +342,11 @@ class PaymentHelperTest extends CayenneIshTestCase {
         context.commitChanges()
 
         List<PaymentIn> allPaymentIns = ObjectSelect.query(PaymentIn.class).select(context)
-        assertEquals(2, allPaymentIns.size())
-        assertNull(allPaymentIns.get(0).getBanking())
-        assertNull(allPaymentIns.get(1).getBanking())
+        Assertions.assertEquals(2, allPaymentIns.size())
+        Assertions.assertNull(allPaymentIns.get(0).getBanking())
+        Assertions.assertNull(allPaymentIns.get(1).getBanking())
 
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
 
     }
 }

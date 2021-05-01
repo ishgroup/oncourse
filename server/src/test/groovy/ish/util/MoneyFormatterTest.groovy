@@ -4,16 +4,17 @@
  */
 package ish.util
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-import static junit.framework.TestCase.assertEquals
-
+@CompileStatic
 class MoneyFormatterTest extends CayenneIshTestCase {
 
-	private static HashMap<String, String> list = new HashMap<>()
+    private static HashMap<String, String> list = new HashMap<>()
 
-    static  {
+    static {
         list.put('15', '$15.00')
         list.put('15.', '$15.00')
         list.put('15.5', '$15.50')
@@ -44,7 +45,7 @@ class MoneyFormatterTest extends CayenneIshTestCase {
         list.put('-$0.5', '-$0.50')
     }
 
-	@Test
+    @Test
     void testBoth() throws Exception {
         MoneyFormatter formatter = MoneyFormatter.getInstance()
 
@@ -54,7 +55,7 @@ class MoneyFormatterTest extends CayenneIshTestCase {
             // System.out.println("testBoth input: " + stringInput);
             String result = formatter.valueToString(formatter.stringToValue(stringInput))
             // System.out.println("testBoth output: " + result);
-            assertEquals(correctResult, correctResult, result)
+            Assertions.assertEquals(correctResult, result)
         }
-	}
+    }
 }

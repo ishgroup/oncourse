@@ -6,14 +6,14 @@
     <allowWaitingLists>true</allowWaitingLists>
     <code>ATT1</code>
     <currentlyOffered>true</currentlyOffered>
-    <fieldOfEducation />
+    <fieldOfEducation/>
     <isWebVisible>true</isWebVisible>
     <isSufficientForQualification>false</isSufficientForQualification>
     <isVET>false</isVET>
     <name>Test 1</name>
-    <printedBrochureDescription />
+    <printedBrochureDescription/>
     <reportableHours>3.00</reportableHours>
-    <webDescription />
+    <webDescription/>
     <courseClass id='100'>
       <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
       <createdOn>2013-01-01T00:00:00Z</createdOn>
@@ -41,21 +41,22 @@
       <isDistantLearningCourse>true</isDistantLearningCourse>
       <isWebVisible>true</isWebVisible>
       <maximumPlaces>100</maximumPlaces>
-      <message />
+      <message/>
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote1
-secondCourseClassNote1</notes>
+        secondCourseClassNote1
+      </notes>
       <startDateTime>2013-01-01T00:00:00Z</startDateTime>
-      <webDescription />
+      <webDescription/>
       <accountCode>11500</accountCode>
       <enrolment id='100'>
         <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>office</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='100' />
+        <vetClientID/>
+        <contact id='100'/>
       </enrolment>
     </courseClass>
   </course>
@@ -65,14 +66,14 @@ secondCourseClassNote1</notes>
     <allowWaitingLists>true</allowWaitingLists>
     <code>ATT2</code>
     <currentlyOffered>true</currentlyOffered>
-    <fieldOfEducation />
+    <fieldOfEducation/>
     <isWebVisible>true</isWebVisible>
     <isSufficientForQualification>false</isSufficientForQualification>
     <isVET>false</isVET>
     <name>Test 2</name>
-    <printedBrochureDescription />
+    <printedBrochureDescription/>
     <reportableHours>3.00</reportableHours>
-    <webDescription />
+    <webDescription/>
     <courseClass id='200'>
       <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
       <createdOn>2013-01-01T00:00:00Z</createdOn>
@@ -100,21 +101,22 @@ secondCourseClassNote1</notes>
       <isDistantLearningCourse>true</isDistantLearningCourse>
       <isWebVisible>true</isWebVisible>
       <maximumPlaces>100</maximumPlaces>
-      <message />
+      <message/>
       <minimumPlaces>1</minimumPlaces>
       <budgetedPlaces>10</budgetedPlaces>
       <notes>firstCourseClassNote2
-secondCourseClassNote2</notes>
+        secondCourseClassNote2
+      </notes>
       <startDateTime>2013-01-01T00:00:00Z</startDateTime>
-      <webDescription />
+      <webDescription/>
       <accountCode>11500</accountCode>
       <enrolment id='200'>
         <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
         <source>web</source>
         <status>Active</status>
-        <vetClientID />
-        <contact id='100' />
+        <vetClientID/>
+        <contact id='100'/>
       </enrolment>
     </courseClass>
   </course>
@@ -128,34 +130,34 @@ secondCourseClassNote2</notes>
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>1</deliveryStatusSms>
     <email>test@test.te</email>
-    <fax />
+    <fax/>
     <firstName>name1</firstName>
     <homePhone>331110000</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>name</lastName>
-    <message />
+    <message/>
     <mobilePhone>331110000</mobilePhone>
-    <notes />
+    <notes/>
     <postcode>1001</postcode>
     <state>NSW</state>
     <street>Main</street>
     <suburb>Sydney</suburb>
-    <tfn />
+    <tfn/>
     <uniqueCode>1abc</uniqueCode>
     <workPhone>331110000</workPhone>
-    <title />
+    <title/>
     <student>
       <disabilityType>not stated</disabilityType>
       <englishProficiency>not stated</englishProficiency>
       <highestSchoolLevel>not stated</highestSchoolLevel>
       <indigenousStatus>not stated</indigenousStatus>
       <isOverseasClient>false</isOverseasClient>
-      <isStillAtSchool />
+      <isStillAtSchool/>
       <labourForceStatus>not stated</labourForceStatus>
       <priorEducationCode>not stated</priorEducationCode>
       <studentNumber>1</studentNumber>
-      <yearSchoolCompleted />
+      <yearSchoolCompleted/>
     </student>
   </contact>
 </data>

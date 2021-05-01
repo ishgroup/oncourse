@@ -12,6 +12,7 @@
 package ish.oncourse.server.services
 
 import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.IntegrationDTO
@@ -25,6 +26,7 @@ import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -33,8 +35,8 @@ import java.lang.reflect.Method
 
 import static ish.oncourse.server.api.v1.function.IntegrationFunctions.getIntegrationByName
 import static ish.oncourse.server.api.v1.function.IntegrationFunctions.hasIntegration
-import static org.junit.Assert.*
 
+@CompileStatic
 class PluginServiceTest extends CayenneIshTestCase {
 
     private final static int TEST_TYPE_VALUE = 1000
@@ -46,6 +48,7 @@ class PluginServiceTest extends CayenneIshTestCase {
 
     private List<IntegrationPropDTO> defaultProperties
 
+    
     @BeforeEach
     void setup() {
         wipeTables()
@@ -70,6 +73,7 @@ class PluginServiceTest extends CayenneIshTestCase {
     }
 
 
+    
     @Test
     void findIntegrationByTypeWithPluginService() {
         Integer type = ObjectSelect.query(IntegrationConfiguration)
@@ -77,56 +81,58 @@ class PluginServiceTest extends CayenneIshTestCase {
                 .column(IntegrationConfiguration.TYPE)
                 .selectOne(cayenneService.newContext)
 
-        assertNull(PluginService.getPluginClass(type))
+        Assertions.assertNull(PluginService.getPluginClass(type))
     }
 
 
+    
     @Test
     void callOnStartMethodOfClassWithPluginService() {
         injector.getInstance(PluginService).onStart()
 
         def users = ObjectSelect.query(SystemUser).orderBy(SystemUser.ID.asc()).select(cayenneService.newContext)
         def user = ObjectSelect.query(SystemUser).orderBy(SystemUser.ID.asc()).selectFirst(cayenneService.newContext)
-        assertEquals('John', user.firstName)
+        Assertions.assertEquals('John', user.firstName)
     }
 
 
+    
     @Test
     void createNewIntegrationAndWorkWithPropertiesByPluginService() {
 
         createIntegration(TEST_NAME_VALUE)
-        assertEquals(Boolean.TRUE, hasIntegration(cayenneService.newContext, TEST_TYPE_VALUE))
+        Assertions.assertEquals(Boolean.TRUE, hasIntegration(cayenneService.newContext, TEST_TYPE_VALUE))
 
         IntegrationConfiguration configuration = getIntegrationByName(cayenneService.newContext, TEST_NAME_VALUE)
-        assertNotNull(configuration)
+        Assertions.assertNotNull(configuration)
 
         Method methodForGetProps = PluginService.getProps(TEST_TYPE_VALUE)
-        assertNotNull(methodForGetProps)
+        Assertions.assertNotNull(methodForGetProps)
 
         List<IntegrationProperty> integrationProperties = methodForGetProps.invoke(null, configuration) as List<IntegrationProperty>
 
-        assertEquals(3, integrationProperties.size())
-        assertEquals(configuration.integrationProperties.size(), integrationProperties.size())
-        assertEquals(TestPluginIntegration.FIRST_PROPERTY, integrationProperties[0].keyCode)
-        assertEquals(TestPluginIntegration.SECOND_PROPERTY, integrationProperties[1].keyCode)
-        assertEquals(TestPluginIntegration.THIRD_PROPERTY, integrationProperties[2].keyCode)
+        Assertions.assertEquals(3, integrationProperties.size())
+        Assertions.assertEquals(configuration.integrationProperties.size(), integrationProperties.size())
+        Assertions.assertEquals(TestPluginIntegration.FIRST_PROPERTY, integrationProperties[0].keyCode)
+        Assertions.assertEquals(TestPluginIntegration.SECOND_PROPERTY, integrationProperties[1].keyCode)
+        Assertions.assertEquals(TestPluginIntegration.THIRD_PROPERTY, integrationProperties[2].keyCode)
 
         Map<String, String> newPropertiesValue = integrationProperties.collectEntries { property ->
             [property.keyCode, property.value.concat("New")]
         } as Map<String, String>
 
         Method methodForSave = PluginService.onSave(configuration.type)
-        assertNotNull(methodForSave)
+        Assertions.assertNotNull(methodForSave)
 
         methodForSave.invoke(null, configuration, newPropertiesValue)
         configuration.context.commitChanges()
 
         integrationProperties = methodForGetProps.invoke(null, configuration) as List<IntegrationProperty>
 
-        assertEquals(3, integrationProperties.size())
-        assertEquals("valueFirstPropertyNew", integrationProperties[0].value)
-        assertEquals("valueSecondPropertyNew", integrationProperties[1].value)
-        assertEquals("valueThirdPropertyNew", integrationProperties[2].value)
+        Assertions.assertEquals(3, integrationProperties.size())
+        Assertions.assertEquals("valueFirstPropertyNew", integrationProperties[0].value)
+        Assertions.assertEquals("valueSecondPropertyNew", integrationProperties[1].value)
+        Assertions.assertEquals("valueThirdPropertyNew", integrationProperties[2].value)
     }
 
 
@@ -136,13 +142,13 @@ class PluginServiceTest extends CayenneIshTestCase {
         if (!hasIntegration(cayenneService.newContext, TEST_TYPE_VALUE)) {
             createIntegration(TEST_NAME_VALUE)
         }
-        assertEquals(Boolean.TRUE, hasIntegration(cayenneService.newContext, TEST_TYPE_VALUE))
-        assertEquals(Boolean.TRUE, PluginService.onlyOne(TEST_TYPE_VALUE))
+        Assertions.assertEquals(Boolean.TRUE, hasIntegration(cayenneService.newContext, TEST_TYPE_VALUE))
+        Assertions.assertEquals(Boolean.TRUE, PluginService.onlyOne(TEST_TYPE_VALUE))
 
         try {
             createIntegration(TEST_NAME_VALUE.concat("_NEW"))
         } catch (ClientErrorException ex) {
-            assertEquals("Then only one integration of this type can be created", ex.response.entity.errorMessage)
+            Assertions.assertEquals("Then only one integration of this type can be created", ex.response.entity.errorMessage)
         }
     }
 

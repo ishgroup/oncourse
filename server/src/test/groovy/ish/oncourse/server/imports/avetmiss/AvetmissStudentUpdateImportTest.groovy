@@ -1,5 +1,7 @@
 package ish.oncourse.server.imports.avetmiss
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
@@ -9,13 +11,13 @@ import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
-import org.junit.Assert
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
-
+@CompileStatic
 class AvetmissStudentUpdateImportTest extends CayenneIshTestCase {
+    
     @BeforeEach
     void setup() throws Exception {
         wipeTables()
@@ -24,8 +26,9 @@ class AvetmissStudentUpdateImportTest extends CayenneIshTestCase {
         dataPopulation.run()
     }
 
+    
     @Test
-    void  test() throws IOException {
+    void test() throws IOException {
         ImportService importService = injector.getInstance(ImportService.class)
 
         ImportParameter parameter = new ImportParameter()
@@ -42,15 +45,15 @@ class AvetmissStudentUpdateImportTest extends CayenneIshTestCase {
         importService.performImport(parameter)
 
         ObjectContext context = importService.getCayenneService().getNewContext()
-        assertEquals(13, ObjectSelect.query(Contact.class).select(context).size())
+        Assertions.assertEquals(13, ObjectSelect.query(Contact.class).select(context).size())
 
         Contact contact1 = ObjectSelect.query(Contact.class)
                 .where(Contact.FIRST_NAME.eq("MOHAMODA").andExp(Contact.LAST_NAME.eq("AALAX"))).selectOne(context)
-        Assert.assertNotNull(contact1)
+        Assertions.assertNotNull(contact1)
 
         importService.performImport(parameter)
         contact1 = ObjectSelect.query(Contact.class)
                 .where(Contact.FIRST_NAME.eq("MOHAMODA").andExp(Contact.LAST_NAME.eq("AALAX"))).selectOne(context)
-        Assert.assertNotNull(contact1)
+        Assertions.assertNotNull(contact1)
     }
 }

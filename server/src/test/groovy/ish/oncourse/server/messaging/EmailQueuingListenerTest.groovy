@@ -4,6 +4,7 @@
  */
 package ish.oncourse.server.messaging
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
@@ -22,21 +23,20 @@ import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
 
 @CompileStatic
 class EmailQueuingListenerTest extends CayenneIshTestCase {
 
-	private ICayenneService cayenneService
+    private ICayenneService cayenneService
     private static final Logger logger = LogManager.getLogger()
 
+    
     @BeforeEach
     void setup() throws Exception {
-		wipeTables()
+        wipeTables()
 
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
@@ -69,16 +69,17 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 
         try {
-			dataPopulation.run()
+            dataPopulation.run()
         } catch (UnsupportedEncodingException e) {
             logger.catching(e)
         }
-	}
+    }
 
-	@Test
+    
+    @Test
     void testVoucherPurchaseConfirmation() throws Exception {
 
-		ObjectContext context = cayenneService.getNewNonReplicatingContext()
+        ObjectContext context = cayenneService.getNewNonReplicatingContext()
 
         Product vp = SelectById.query(Product.class, 1L).selectOne(context)
         InvoiceLine il = SelectById.query(InvoiceLine.class, 1).selectOne(context)
@@ -96,35 +97,36 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         // give the script running in separate thread some time to queue emails
-		Thread.sleep(3000)
+        Thread.sleep(3000)
 
-        assertTrue(context.select(SelectQuery.query(MessagePerson.class)).isEmpty())
-        assertTrue(context.select(SelectQuery.query(Message.class)).isEmpty())
+        Assertions.assertTrue(context.select(SelectQuery.query(MessagePerson.class)).isEmpty())
+        Assertions.assertTrue(context.select(SelectQuery.query(Message.class)).isEmpty())
 
         voucher.setStatus(ProductStatus.ACTIVE)
         context.commitChanges()
 
         // give the script running in separate thread some time to queue emails
-		Thread.sleep(3000)
+        Thread.sleep(3000)
 
-        assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
-        assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
 
         voucher.setRedeemedCourseCount(1)
         voucher.setStatus(ProductStatus.ACTIVE)
         context.commitChanges()
 
         // give the script running in separate thread some time to queue emails
-		Thread.sleep(3000)
+        Thread.sleep(3000)
 
-        assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
-        assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
 
     }
 
-	@Test
+    
+    @Test
     void testVoucherPersistedActivePurchaseConfirmation() throws Exception {
-		ObjectContext context = cayenneService.getNewNonReplicatingContext()
+        ObjectContext context = cayenneService.getNewNonReplicatingContext()
 
         Product vp = SelectById.query(Product.class, 1L).selectOne(context)
         InvoiceLine il = SelectById.query(InvoiceLine.class, 1).selectOne(context)
@@ -143,20 +145,20 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         // give the script running in separate thread some time to queue emails
-		Thread.sleep(3000)
+        Thread.sleep(3000)
 
-        assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
-        assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
 
         voucher.setRedeemedCourseCount(1)
         voucher.setStatus(ProductStatus.ACTIVE)
         context.commitChanges()
 
         // give the script running in separate thread some time to queue emails
-		Thread.sleep(3000)
+        Thread.sleep(3000)
 
-        assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
-        assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
 
     }
 

@@ -4,17 +4,18 @@
 
 package ish.util
 
+import groovy.transform.CompileStatic
 import org.apache.commons.collections.CollectionUtils
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
-import static org.junit.Assert.assertEquals
-
+@CompileStatic
 @RunWith(Parameterized.class)
 class TimeFormatterTest2 {
 
-	private String expectedSydney
+    private String expectedSydney
     private String expectedPerth
     private String expectedPerthDST
     private String expectedBrisbane
@@ -26,7 +27,7 @@ class TimeFormatterTest2 {
     private static TimeZone brisbane = TimeZone.getTimeZone("Australia/Brisbane")
 
     TimeFormatterTest2(String inputSydney, String expectedSydney, String expectedPerth, String expectedPerthDST, String expectedBrisbane, String expectedBrisbaneDST) {
-		this.inputSydney = inputSydney
+        this.inputSydney = inputSydney
         this.expectedSydney = expectedSydney
         this.expectedPerth = expectedPerth
         this.expectedPerthDST = expectedPerthDST
@@ -34,63 +35,63 @@ class TimeFormatterTest2 {
         this.expectedBrisbaneDST = expectedBrisbaneDST
     }
 
-	@Parameterized.Parameters
+    @Parameterized.Parameters
     static Collection<String[]> setUp() {
-		def data =  [
-				//input      sydney,    perth, perthDST, bris, brisDST
-				[ "11",      "11am",    "9am", "8am",   "11am", "10am"],
-				[ "11p",     "11pm",    "9pm", "8pm",   "11pm", "10pm"],
-				[ "11pm",    "11pm",    "9pm", "8pm",   "11pm", "10pm"],
-				[ "11a",     "11am",    "9am", "8am",   "11am", "10am"],
-				[ "23",      "11pm",    "9pm", "8pm",   "11pm", "10pm"],
+        def data = [
+                //input      sydney,    perth, perthDST, bris, brisDST
+                ["11", "11am", "9am", "8am", "11am", "10am"],
+                ["11p", "11pm", "9pm", "8pm", "11pm", "10pm"],
+                ["11pm", "11pm", "9pm", "8pm", "11pm", "10pm"],
+                ["11a", "11am", "9am", "8am", "11am", "10am"],
+                ["23", "11pm", "9pm", "8pm", "11pm", "10pm"],
 
-				[ "11:10",   "11:10am", "9:10am", "8:10am", "11:10am", "10:10am"],
-				[ "11:10a",  "11:10am", "9:10am", "8:10am", "11:10am", "10:10am"],
-				[ "11:10p",  "11:10pm", "9:10pm", "8:10pm", "11:10pm", "10:10pm"],
-				[ "11:10AM", "11:10am", "9:10am", "8:10am", "11:10am", "10:10am"],
-				[ "11:10 AM","11:10am", "9:10am", "8:10am", "11:10am", "10:10am"],
-				[ "23:10",   "11:10pm", "9:10pm", "8:10pm", "11:10pm", "10:10pm"]
+                ["11:10", "11:10am", "9:10am", "8:10am", "11:10am", "10:10am"],
+                ["11:10a", "11:10am", "9:10am", "8:10am", "11:10am", "10:10am"],
+                ["11:10p", "11:10pm", "9:10pm", "8:10pm", "11:10pm", "10:10pm"],
+                ["11:10AM", "11:10am", "9:10am", "8:10am", "11:10am", "10:10am"],
+                ["11:10 AM", "11:10am", "9:10am", "8:10am", "11:10am", "10:10am"],
+                ["23:10", "11:10pm", "9:10pm", "8:10pm", "11:10pm", "10:10pm"]
 
-		] as String[][]
+        ] as String[][]
 
         Collection<String[]> dataList = new ArrayList<>()
         CollectionUtils.addAll(dataList, data)
         return dataList
     }
 
-	@Test
+    @Test
     void parseAndFormat() throws Exception {
-		// check sydney input sydney output
-		String result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendar(), sydney).getTime(), sydney)
-        assertEquals(this.inputSydney, this.expectedSydney, result)
+        // check sydney input sydney output
+        String result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendar(), sydney).getTime(), sydney)
+        Assertions.assertEquals(this.inputSydney, this.expectedSydney, result)
 
         // check sydney input perth output
-		result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendar(), sydney).getTime(), perth)
-        assertEquals(this.inputSydney, this.expectedPerth, result)
+        result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendar(), sydney).getTime(), perth)
+        Assertions.assertEquals(this.inputSydney, this.expectedPerth, result)
 
         // check sydney input brisbane output
-		result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendar(), sydney).getTime(), brisbane)
-        assertEquals(this.inputSydney, this.expectedBrisbane, result)
+        result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendar(), sydney).getTime(), brisbane)
+        Assertions.assertEquals(this.inputSydney, this.expectedBrisbane, result)
     }
 
 
-	@Test
+    @Test
     void parseAndFormatDST() throws Exception {
-		// check sydney input sydney output
-		String result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendarDST(), sydney).getTime(), sydney)
-        assertEquals(this.inputSydney, this.expectedSydney, result)
+        // check sydney input sydney output
+        String result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendarDST(), sydney).getTime(), sydney)
+        Assertions.assertEquals(this.inputSydney, this.expectedSydney, result)
 
         // check sydney input perth output
-		result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendarDST(), sydney).getTime(), perth)
-        assertEquals(this.inputSydney, this.expectedPerthDST, result)
+        result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendarDST(), sydney).getTime(), perth)
+        Assertions.assertEquals(this.inputSydney, this.expectedPerthDST, result)
 
         // check sydney input brisbane output
-		result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendarDST(), sydney).getTime(), brisbane)
-        assertEquals(this.inputSydney, this.expectedBrisbaneDST, result)
+        result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(this.inputSydney, getTestCalendarDST(), sydney).getTime(), brisbane)
+        Assertions.assertEquals(this.inputSydney, this.expectedBrisbaneDST, result)
     }
 
-	private Calendar getTestCalendar() {
-		Calendar cal = Calendar.getInstance(sydney)
+    private Calendar getTestCalendar() {
+        Calendar cal = Calendar.getInstance(sydney)
         cal.clear()
         cal.set(Calendar.YEAR, 2013)
         cal.set(Calendar.MONTH, Calendar.JULY)
@@ -98,8 +99,8 @@ class TimeFormatterTest2 {
         return cal
     }
 
-	private Calendar getTestCalendarDST() {
-		Calendar cal = Calendar.getInstance(sydney)
+    private Calendar getTestCalendarDST() {
+        Calendar cal = Calendar.getInstance(sydney)
         cal.clear()
         cal.set(Calendar.YEAR, 2013)
         cal.set(Calendar.MONTH, Calendar.JANUARY)

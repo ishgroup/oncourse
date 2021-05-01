@@ -19,9 +19,9 @@
 
 package ish;
 
+import groovy.transform.CompileStatic;
 import io.bootique.BQRuntime;
 import io.bootique.command.CommandOutcome;
-import io.bootique.config.ConfigurationFactory;
 import io.bootique.test.junit.BQTestRuntimeBuilder;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -30,7 +30,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
+@CompileStatic
 public class BootiqueTestFactory implements AfterEachCallback, BeforeEachCallback {
 
     private Collection<BQRuntime> runtimes;

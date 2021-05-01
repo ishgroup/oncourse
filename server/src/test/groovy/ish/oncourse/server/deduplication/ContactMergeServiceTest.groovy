@@ -1,5 +1,7 @@
 package ish.oncourse.server.deduplication
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.Gender
 import ish.oncourse.server.ICayenneService
@@ -10,16 +12,17 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.*
-
+@CompileStatic
 class ContactMergeServiceTest extends CayenneIshTestCase {
 
     private ContactMergeService contactMergeService
     private ICayenneService cayenneService
 
+    
     @BeforeEach
     void setup() {
         wipeTables()
@@ -34,13 +37,14 @@ class ContactMergeServiceTest extends CayenneIshTestCase {
         super.setup()
     }
 
+    
     @Test
     void testGetDiffData() {
         ObjectContext context = cayenneService.newContext
         Contact contactA = ObjectSelect.query(Contact).where(Contact.ID.eq(1L)).selectFirst(context)
         Contact contactB = ObjectSelect.query(Contact).where(Contact.ID.eq(2L)).selectFirst(context)
         List<MergeLineDTO> mergeLines = contactMergeService.getDifferenceAttributes(contactA, contactB)
-        assertEquals("[class MergeLineDTO {\n" +
+        Assertions.assertEquals("[class MergeLineDTO {\n" +
                 "    key: Contact.birthDate\n" +
                 "    label: Birth date\n" +
                 "    a: 1991-01-01\n" +
@@ -195,110 +199,111 @@ class ContactMergeServiceTest extends CayenneIshTestCase {
                 "    label: Ww children status\n" +
                 "    a: Not checked\n" +
                 "    b: Application in progress\n" +
-                    "}]", mergeLines.toString())
+                "}]", mergeLines.toString())
     }
 
+    
     @Test
     void testMerge() throws Exception {
         ObjectContext context = cayenneService.newContext
         Contact a = ObjectSelect.query(Contact).where(Contact.ID.eq(1L)).selectFirst(context)
         Contact b = ObjectSelect.query(Contact).where(Contact.ID.eq(2L)).selectFirst(context)
 
-        Map<String, String> diffMap = ['Contact.birthDate'     : 'A',
-                                       'Contact.email'         : 'B',
-                                       'Contact.firstName'     : 'A',
-                                       'Contact.homePhone'     : 'A',
-                                       'Contact.gender'        : 'B',
-                                       'Contact.lastName'      : 'A',
-                                       'Contact.middleName'    : 'B',
-                                       'Contact.mobilePhone'   : 'A',
-                                       'Contact.postcode'      : 'B',
-                                       'Contact.state'         : 'A',
-                                       'Contact.street'        : 'B',
-                                       'Contact.suburb'        : 'A',
-                                       'Contact.workPhone'     : 'B',
+        Map<String, String> diffMap = ['Contact.birthDate'         : 'A',
+                                       'Contact.email'             : 'B',
+                                       'Contact.firstName'         : 'A',
+                                       'Contact.homePhone'         : 'A',
+                                       'Contact.gender'            : 'B',
+                                       'Contact.lastName'          : 'A',
+                                       'Contact.middleName'        : 'B',
+                                       'Contact.mobilePhone'       : 'A',
+                                       'Contact.postcode'          : 'B',
+                                       'Contact.state'             : 'A',
+                                       'Contact.street'            : 'B',
+                                       'Contact.suburb'            : 'A',
+                                       'Contact.workPhone'         : 'B',
 
-                                       'Student.studentNumber' : 'B',
-                                       'Student.citizenship'   : 'A',
-                                       'Student.disabilityType': 'B',
+                                       'Student.studentNumber'     : 'B',
+                                       'Student.citizenship'       : 'A',
+                                       'Student.disabilityType'    : 'B',
                                        'Student.englishProficiency': 'A',
-                                       'Student.feeHelpEligible': 'B',
+                                       'Student.feeHelpEligible'   : 'B',
                                        'Student.highestSchoolLevel': 'A',
-                                       'Student.indigenousStatus': 'B',
-                                       'Student.isOverseasClient': 'A',
-                                       'Student.labourForceStatus': 'B',
+                                       'Student.indigenousStatus'  : 'B',
+                                       'Student.isOverseasClient'  : 'A',
+                                       'Student.labourForceStatus' : 'B',
                                        'Student.priorEducationCode': 'A',
 
-                                       'Tutor.dateFinished'    : 'B',
-                                       'Tutor.dateStarted'     : 'A',
-                                       'Tutor.payrollRef'      : 'B',
-                                       'Tutor.resume'          : 'A',
-                                       'Tutor.wwChildrenStatus': 'B',
+                                       'Tutor.dateFinished'        : 'B',
+                                       'Tutor.dateStarted'         : 'A',
+                                       'Tutor.payrollRef'          : 'B',
+                                       'Tutor.resume'              : 'A',
+                                       'Tutor.wwChildrenStatus'    : 'B',
 
-                                       'customField.someField1': 'A',
-                                       'customField.someField2': 'B',
-                                       'tags'                  : 'A'
+                                       'customField.someField1'    : 'A',
+                                       'customField.someField2'    : 'B',
+                                       'tags'                      : 'A'
         ]
 
         contactMergeService.merge(a, b, diffMap)
 
-        assertEquals(3, ObjectSelect.query(Contact).selectCount(context))
-        assertEquals(1, ObjectSelect.query(Student).selectCount(context))
-        assertEquals(1, ObjectSelect.query(Tutor).selectCount(context))
+        Assertions.assertEquals(3, ObjectSelect.query(Contact).selectCount(context))
+        Assertions.assertEquals(1, ObjectSelect.query(Student).selectCount(context))
+        Assertions.assertEquals(1, ObjectSelect.query(Tutor).selectCount(context))
 
-        assertEquals(2, ObjectSelect.query(ContactCustomField).where(ContactCustomField.RELATED_OBJECT.eq(a)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(Tag).where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER).eq(8).andExp(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(1L))).selectCount(context))
-        assertEquals(1, ObjectSelect.query(ContactRelation).where(ContactRelation.TO_CONTACT.eq(a)).selectCount(context))
-        assertEquals(1, ObjectSelect.query(ContactRelation).where(ContactRelation.FROM_CONTACT.eq(a)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(ClassCost).where(ClassCost.CONTACT.eq(a)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(CorporatePass).where(CorporatePass.CONTACT.eq(a)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(Invoice).where(Invoice.CONTACT.eq(a)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(Message).where(Message.MESSAGE_PERSONS.dot(MessagePerson.CONTACT).eq(a)).selectCount(context))
-        assertEquals(3, ObjectSelect.query(ContactNoteRelation).where(ContactNoteRelation.NOTED_CONTACT.eq(a)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(PaymentIn).where(PaymentIn.PAYER.eq(a)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(PaymentOut).where(PaymentOut.PAYEE.eq(a)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(Payslip).where(Payslip.CONTACT.eq(a)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(ProductItem).where(ProductItem.CONTACT.eq(a)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(ContactUnavailableRuleRelation).where(ContactUnavailableRuleRelation.CONTACT.eq(a)).selectCount(context))
-        assertEquals(3, ObjectSelect.query(ContactDuplicate).where(ContactDuplicate.CONTACT_TO_UPDATE.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(ContactCustomField).where(ContactCustomField.RELATED_OBJECT.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(Tag).where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER).eq(8).andExp(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(1L))).selectCount(context))
+        Assertions.assertEquals(1, ObjectSelect.query(ContactRelation).where(ContactRelation.TO_CONTACT.eq(a)).selectCount(context))
+        Assertions.assertEquals(1, ObjectSelect.query(ContactRelation).where(ContactRelation.FROM_CONTACT.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(ClassCost).where(ClassCost.CONTACT.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(CorporatePass).where(CorporatePass.CONTACT.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(Invoice).where(Invoice.CONTACT.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(Message).where(Message.MESSAGE_PERSONS.dot(MessagePerson.CONTACT).eq(a)).selectCount(context))
+        Assertions.assertEquals(3, ObjectSelect.query(ContactNoteRelation).where(ContactNoteRelation.NOTED_CONTACT.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(PaymentIn).where(PaymentIn.PAYER.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(PaymentOut).where(PaymentOut.PAYEE.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(Payslip).where(Payslip.CONTACT.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(ProductItem).where(ProductItem.CONTACT.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(ContactUnavailableRuleRelation).where(ContactUnavailableRuleRelation.CONTACT.eq(a)).selectCount(context))
+        Assertions.assertEquals(3, ObjectSelect.query(ContactDuplicate).where(ContactDuplicate.CONTACT_TO_UPDATE.eq(a)).selectCount(context))
 
-        assertEquals(2, ObjectSelect.query(Attendance).where(Attendance.STUDENT.eq(a.student)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(Certificate).where(Certificate.STUDENT.eq(a.student)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(PriorLearning).where(PriorLearning.STUDENT.eq(a.student)).selectCount(context))
-        assertEquals(2, ObjectSelect.query(ConcessionType).where(ConcessionType.STUDENT_CONCESSIONS.dot(StudentConcession.STUDENT).eq(a.student)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(Attendance).where(Attendance.STUDENT.eq(a.student)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(Certificate).where(Certificate.STUDENT.eq(a.student)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(PriorLearning).where(PriorLearning.STUDENT.eq(a.student)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(ConcessionType).where(ConcessionType.STUDENT_CONCESSIONS.dot(StudentConcession.STUDENT).eq(a.student)).selectCount(context))
 
-        assertEquals(2, ObjectSelect.query(CourseClassTutor).where(CourseClassTutor.TUTOR.eq(a.tutor)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(CourseClassTutor).where(CourseClassTutor.TUTOR.eq(a.tutor)).selectCount(context))
 
-        assertEquals('1991-01-01', a.birthDate.toString())
-        assertEquals('test2@test.te', a.email)
-        assertEquals('fname1', a.firstName)
-        assertEquals('331110000', a.homePhone)
-        assertEquals(Gender.MALE, a.gender)
-        assertEquals('lname1', a.lastName)
-        assertEquals('mname2', a.middleName)
-        assertEquals('331110000', a.mobilePhone)
-        assertEquals('0110', a.postcode)
-        assertEquals('NSW', a.state)
-        assertEquals('Down', a.street)
-        assertEquals('Sydney', a.suburb)
-        assertEquals('123456723', a.workPhone)
+        Assertions.assertEquals('1991-01-01', a.birthDate.toString())
+        Assertions.assertEquals('test2@test.te', a.email)
+        Assertions.assertEquals('fname1', a.firstName)
+        Assertions.assertEquals('331110000', a.homePhone)
+        Assertions.assertEquals(Gender.MALE, a.gender)
+        Assertions.assertEquals('lname1', a.lastName)
+        Assertions.assertEquals('mname2', a.middleName)
+        Assertions.assertEquals('331110000', a.mobilePhone)
+        Assertions.assertEquals('0110', a.postcode)
+        Assertions.assertEquals('NSW', a.state)
+        Assertions.assertEquals('Down', a.street)
+        Assertions.assertEquals('Sydney', a.suburb)
+        Assertions.assertEquals('123456723', a.workPhone)
 
-        assertEquals(2, a.student.studentNumber)
-        assertEquals(9, a.student.citizenship.databaseValue)
-        assertEquals(1, a.student.disabilityType.databaseValue)
-        assertEquals(0, a.student.englishProficiency.databaseValue)
-        assertTrue(a.student.feeHelpEligible)
-        assertEquals(0, a.student.highestSchoolLevel.databaseValue)
-        assertEquals(1, a.student.indigenousStatus.databaseValue)
-        assertFalse(a.student.isOverseasClient)
-        assertEquals(1, a.student.labourForceStatus.databaseValue)
-        assertEquals(0, a.student.priorEducationCode.databaseValue)
+        Assertions.assertEquals(2, a.student.studentNumber)
+        Assertions.assertEquals(9, a.student.citizenship.databaseValue)
+        Assertions.assertEquals(1, a.student.disabilityType.databaseValue)
+        Assertions.assertEquals(0, a.student.englishProficiency.databaseValue)
+        Assertions.assertTrue(a.student.feeHelpEligible)
+        Assertions.assertEquals(0, a.student.highestSchoolLevel.databaseValue)
+        Assertions.assertEquals(1, a.student.indigenousStatus.databaseValue)
+        Assertions.assertFalse(a.student.isOverseasClient)
+        Assertions.assertEquals(1, a.student.labourForceStatus.databaseValue)
+        Assertions.assertEquals(0, a.student.priorEducationCode.databaseValue)
 
-        assertEquals('2014-01-01 00:00:00', a.tutor.dateFinished.format('YYYY-MM-DD HH:mm:ss'))
-        assertEquals('2012-01-01 00:00:00', a.tutor.dateStarted.format('YYYY-MM-DD HH:mm:ss'))
-        assertEquals('0987654321', a.tutor.payrollRef)
-        assertEquals('some text', a.tutor.resume)
-        assertEquals(1, a.tutor.wwChildrenStatus.databaseValue)
+        Assertions.assertEquals('2014-01-01 00:00:00', a.tutor.dateFinished.format('YYYY-MM-DD HH:mm:ss'))
+        Assertions.assertEquals('2012-01-01 00:00:00', a.tutor.dateStarted.format('YYYY-MM-DD HH:mm:ss'))
+        Assertions.assertEquals('0987654321', a.tutor.payrollRef)
+        Assertions.assertEquals('some text', a.tutor.resume)
+        Assertions.assertEquals(1, a.tutor.wwChildrenStatus.databaseValue)
 
     }
 }

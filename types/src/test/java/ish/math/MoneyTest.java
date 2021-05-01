@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+
+
 
 public class MoneyTest {
 	Money[][] list = new Money[][] {
@@ -239,15 +239,15 @@ public class MoneyTest {
 
 	@Test
 	public void testEquals() {
-		assertFalse(new Money("20.44").equals(new Money("30.55")), "Checking equals");
-		assertTrue(new Money("20.44").equals(new Money("20.44")), "Checking equals");
-		assertFalse(Money.ZERO.equals(new Money("20.44")), "Checking equals");
-		assertFalse(new Money("20.44").equals(new Money("-20.44")), "Checking equals");
-		assertTrue(new Money("40.66").equals(new Money("30.55").add(new Money("10.11"))), "Checking equals");
-		assertTrue(new Money("40.66").equals(new Money("30.55").add(new BigDecimal("10.11"))), "Checking equals");
+		Assertions.assertFalse(new Money("20.44").equals(new Money("30.55")), "Checking equals");
+		Assertions.assertTrue(new Money("20.44").equals(new Money("20.44")), "Checking equals");
+		Assertions.assertFalse(Money.ZERO.equals(new Money("20.44")), "Checking equals");
+		Assertions.assertFalse(new Money("20.44").equals(new Money("-20.44")), "Checking equals");
+		Assertions.assertTrue(new Money("40.66").equals(new Money("30.55").add(new Money("10.11"))), "Checking equals");
+		Assertions.assertTrue(new Money("40.66").equals(new Money("30.55").add(new BigDecimal("10.11"))), "Checking equals");
 
-		assertTrue(new Money("20.44").hashCode() == new Money("20.44").hashCode(), "Checking equals");
-		assertFalse(new Money("20.44").hashCode() == new Money("20.45").hashCode(), "Checking equals");
+		Assertions.assertTrue(new Money("20.44").hashCode() == new Money("20.44").hashCode(), "Checking equals");
+		Assertions.assertFalse(new Money("20.44").hashCode() == new Money("20.45").hashCode(), "Checking equals");
 	}
 
 	@Test

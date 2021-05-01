@@ -3,6 +3,7 @@
  */
 package ish.oncourse.server.services
 
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.AccountTransactionType
@@ -20,173 +21,175 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
-
 @CompileStatic
 class VoucherExpiryJobTest extends CayenneIshTestCase {
-	
-	private ICayenneService cayenneService
-	private AccountTransactionService accountTransactionService
 
-	@BeforeEach
-	void setup() throws Exception {
-		wipeTables()
+    private ICayenneService cayenneService
+    private AccountTransactionService accountTransactionService
 
-		this.cayenneService = injector.getInstance(ICayenneService.class)
-		this.accountTransactionService = injector.getInstance(AccountTransactionService.class)
+    
+    @BeforeEach
+    void setup() throws Exception {
+        wipeTables()
 
-		InputStream st = VoucherExpiryJobTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/server/services/voucherExpiryJobTestDataSet.xml")
-		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-		builder.setColumnSensing(true)
+        this.cayenneService = injector.getInstance(ICayenneService.class)
+        this.accountTransactionService = injector.getInstance(AccountTransactionService.class)
 
-		FlatXmlDataSet dataSet = builder.build(st)
-		ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-		Date start1 = DateUtils.addDays(new Date(), -4)
-		Date start2 = DateUtils.addDays(new Date(), -2)
-		Date start3 = DateUtils.addDays(new Date(), 2)
-		Date start4 = DateUtils.addDays(new Date(), 4)
-		rDataSet.addReplacementObject("[start_date1]", start1)
-		rDataSet.addReplacementObject("[start_date2]", start2)
-		rDataSet.addReplacementObject("[start_date3]", start3)
-		rDataSet.addReplacementObject("[start_date4]", start4)
-		rDataSet.addReplacementObject("[end_date1]", DateUtils.addHours(start1, 2))
-		rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
-		rDataSet.addReplacementObject("[end_date3]", DateUtils.addHours(start3, 2))
-		rDataSet.addReplacementObject("[end_date4]", DateUtils.addHours(start4, 2))
-		rDataSet.addReplacementObject("[null]", null)
+        InputStream st = VoucherExpiryJobTest.class.getClassLoader().getResourceAsStream(
+                "ish/oncourse/server/services/voucherExpiryJobTestDataSet.xml")
+        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
+        builder.setColumnSensing(true)
 
-		executeDatabaseOperation(rDataSet)
-		super.setup()
-	}
-	
-	@Test
-	void testVoucherExpiry() {
-		ObjectContext context = cayenneService.getNewContext()
-		
-		Voucher expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
-		Voucher expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
-		Voucher unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
+        FlatXmlDataSet dataSet = builder.build(st)
+        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+        Date start1 = DateUtils.addDays(new Date(), -4)
+        Date start2 = DateUtils.addDays(new Date(), -2)
+        Date start3 = DateUtils.addDays(new Date(), 2)
+        Date start4 = DateUtils.addDays(new Date(), 4)
+        rDataSet.addReplacementObject("[start_date1]", start1)
+        rDataSet.addReplacementObject("[start_date2]", start2)
+        rDataSet.addReplacementObject("[start_date3]", start3)
+        rDataSet.addReplacementObject("[start_date4]", start4)
+        rDataSet.addReplacementObject("[end_date1]", DateUtils.addHours(start1, 2))
+        rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
+        rDataSet.addReplacementObject("[end_date3]", DateUtils.addHours(start3, 2))
+        rDataSet.addReplacementObject("[end_date4]", DateUtils.addHours(start4, 2))
+        rDataSet.addReplacementObject("[null]", null)
 
-		assertEquals(ProductStatus.ACTIVE, expiredMoneyVoucher.getStatus())
-		assertEquals(ProductStatus.ACTIVE, expiredCourseVoucher.getStatus())
-		assertEquals(ProductStatus.ACTIVE, unexpiredVoucher.getStatus())
+        executeDatabaseOperation(rDataSet)
+        super.setup()
+    }
 
-		VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, accountTransactionService)
+    
+    @Test
+    void testVoucherExpiry() {
+        ObjectContext context = cayenneService.getNewContext()
 
-		voucherExpiryJob.executeWithDate(new Date())
+        Voucher expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
+        Voucher expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
+        Voucher unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
 
-		//create new context to avoid data cache 
-		context = cayenneService.getNewContext()
+        Assertions.assertEquals(ProductStatus.ACTIVE, expiredMoneyVoucher.getStatus())
+        Assertions.assertEquals(ProductStatus.ACTIVE, expiredCourseVoucher.getStatus())
+        Assertions.assertEquals(ProductStatus.ACTIVE, unexpiredVoucher.getStatus())
 
-		Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(context)
-		Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(context)
+        VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, accountTransactionService)
 
-		expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
-		expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
-		unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
+        voucherExpiryJob.executeWithDate(new Date())
 
-		assertEquals(ProductStatus.EXPIRED, expiredMoneyVoucher.getStatus())
-		assertEquals(ProductStatus.EXPIRED, expiredCourseVoucher.getStatus())
-		assertEquals(ProductStatus.ACTIVE, unexpiredVoucher.getStatus())
+        //create new context to avoid data cache
+        context = cayenneService.getNewContext()
 
-		SelectQuery<AccountTransaction> transactionQuery = SelectQuery.query(AccountTransaction.class)
+        Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(context)
+        Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(context)
 
-		// sorting transactions by account id and amount... although this is not a chronological order
-		// this is the only way to get predictable transaction order to compare with the expected result
-		transactionQuery.addOrdering(AccountTransaction.ACCOUNT.dot(Account.ID).asc())
-		transactionQuery.addOrdering(AccountTransaction.AMOUNT.asc())
+        expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
+        expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
+        unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
 
-		List<AccountTransaction> transactions = context.select(transactionQuery)
+        Assertions.assertEquals(ProductStatus.EXPIRED, expiredMoneyVoucher.getStatus())
+        Assertions.assertEquals(ProductStatus.EXPIRED, expiredCourseVoucher.getStatus())
+        Assertions.assertEquals(ProductStatus.ACTIVE, unexpiredVoucher.getStatus())
 
-		assertEquals(4, transactions.size())
+        SelectQuery<AccountTransaction> transactionQuery = SelectQuery.query(AccountTransaction.class)
 
-		// voucher for 4 enrolments sold for $10, 2 enrolments are currently redeemed
-		assertEquals(voucherLiabilityAccount, transactions.get(0).getAccount())
-		assertEquals(new Money("-5.0"), transactions.get(0).getAmount())
-		assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(0).getTableName())
+        // sorting transactions by account id and amount... although this is not a chronological order
+        // this is the only way to get predictable transaction order to compare with the expected result
+        transactionQuery.addOrdering(AccountTransaction.ACCOUNT.dot(Account.ID).asc())
+        transactionQuery.addOrdering(AccountTransaction.AMOUNT.asc())
 
-		assertEquals(vouchersExpiredAccount, transactions.get(3).getAccount())
-		assertEquals(new Money("5.0"), transactions.get(3).getAmount())
-		assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(3).getTableName())
+        List<AccountTransaction> transactions = context.select(transactionQuery)
 
-		// voucher with $200 value sold for $11, $90 is remaining
-		assertEquals(voucherLiabilityAccount, transactions.get(1).getAccount())
-		assertEquals(new Money("-4.95"), transactions.get(1).getAmount())
-		assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(1).getTableName())
+        Assertions.assertEquals(4, transactions.size())
 
-		assertEquals(vouchersExpiredAccount, transactions.get(2).getAccount())
-		assertEquals(new Money("4.95"), transactions.get(2).getAmount())
-		assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(2).getTableName())
-	}
+        // voucher for 4 enrolments sold for $10, 2 enrolments are currently redeemed
+        Assertions.assertEquals(voucherLiabilityAccount, transactions.get(0).getAccount())
+        Assertions.assertEquals(new Money("-5.0"), transactions.get(0).getAmount())
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(0).getTableName())
 
-	@Test
-	void testVoucherProductPriceChange() {
-		ObjectContext context = cayenneService.getNewContext()
+        Assertions.assertEquals(vouchersExpiredAccount, transactions.get(3).getAccount())
+        Assertions.assertEquals(new Money("5.0"), transactions.get(3).getAmount())
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(3).getTableName())
 
-		Voucher expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
-		Voucher expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
-		Voucher unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
+        // voucher with $200 value sold for $11, $90 is remaining
+        Assertions.assertEquals(voucherLiabilityAccount, transactions.get(1).getAccount())
+        Assertions.assertEquals(new Money("-4.95"), transactions.get(1).getAmount())
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(1).getTableName())
 
-		assertEquals(ProductStatus.ACTIVE, expiredMoneyVoucher.getStatus())
-		assertEquals(ProductStatus.ACTIVE, expiredCourseVoucher.getStatus())
-		assertEquals(ProductStatus.ACTIVE, unexpiredVoucher.getStatus())
+        Assertions.assertEquals(vouchersExpiredAccount, transactions.get(2).getAccount())
+        Assertions.assertEquals(new Money("4.95"), transactions.get(2).getAmount())
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(2).getTableName())
+    }
 
-		// change voucher product price
-		expiredMoneyVoucher.getVoucherProduct().setPriceExTax(new Money("1.00"))
-		expiredCourseVoucher.getVoucherProduct().setPriceExTax(new Money("1.00"))
+    
+    @Test
+    void testVoucherProductPriceChange() {
+        ObjectContext context = cayenneService.getNewContext()
 
-		context.commitChanges()
+        Voucher expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
+        Voucher expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
+        Voucher unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
 
-		VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, accountTransactionService)
+        Assertions.assertEquals(ProductStatus.ACTIVE, expiredMoneyVoucher.getStatus())
+        Assertions.assertEquals(ProductStatus.ACTIVE, expiredCourseVoucher.getStatus())
+        Assertions.assertEquals(ProductStatus.ACTIVE, unexpiredVoucher.getStatus())
 
-		voucherExpiryJob.executeWithDate(new Date())
+        // change voucher product price
+        expiredMoneyVoucher.getVoucherProduct().setPriceExTax(new Money("1.00"))
+        expiredCourseVoucher.getVoucherProduct().setPriceExTax(new Money("1.00"))
 
-		//create new context to avoid data cache
-		context = cayenneService.getNewContext()
+        context.commitChanges()
 
-		Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(context)
-		Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(context)
+        VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, accountTransactionService)
 
-		expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
-		expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
-		unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
+        voucherExpiryJob.executeWithDate(new Date())
 
-		assertEquals(ProductStatus.EXPIRED, expiredMoneyVoucher.getStatus())
-		assertEquals(ProductStatus.EXPIRED, expiredCourseVoucher.getStatus())
-		assertEquals(ProductStatus.ACTIVE, unexpiredVoucher.getStatus())
+        //create new context to avoid data cache
+        context = cayenneService.getNewContext()
 
-		SelectQuery<AccountTransaction> transactionQuery = SelectQuery.query(AccountTransaction.class)
+        Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(context)
+        Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(context)
 
-		// sorting transactions by account id and amount... although this is not a chronological order
-		// this is the only way to get predictable transaction order to compare with the expected result
-		transactionQuery.addOrdering(AccountTransaction.ACCOUNT.dot(Account.ID).asc())
-		transactionQuery.addOrdering(AccountTransaction.AMOUNT.asc())
+        expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
+        expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
+        unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
 
-		List<AccountTransaction> transactions = context.select(transactionQuery)
+        Assertions.assertEquals(ProductStatus.EXPIRED, expiredMoneyVoucher.getStatus())
+        Assertions.assertEquals(ProductStatus.EXPIRED, expiredCourseVoucher.getStatus())
+        Assertions.assertEquals(ProductStatus.ACTIVE, unexpiredVoucher.getStatus())
 
-		assertEquals(4, transactions.size())
+        SelectQuery<AccountTransaction> transactionQuery = SelectQuery.query(AccountTransaction.class)
 
-		// voucher for 4 enrolments sold for $10, 2 enrolments are currently redeemed
-		assertEquals(voucherLiabilityAccount, transactions.get(0).getAccount())
-		assertEquals(new Money("-5.0"), transactions.get(0).getAmount())
-		assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(0).getTableName())
+        // sorting transactions by account id and amount... although this is not a chronological order
+        // this is the only way to get predictable transaction order to compare with the expected result
+        transactionQuery.addOrdering(AccountTransaction.ACCOUNT.dot(Account.ID).asc())
+        transactionQuery.addOrdering(AccountTransaction.AMOUNT.asc())
 
-		assertEquals(vouchersExpiredAccount, transactions.get(3).getAccount())
-		assertEquals(new Money("5.0"), transactions.get(3).getAmount())
-		assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(3).getTableName())
+        List<AccountTransaction> transactions = context.select(transactionQuery)
 
-		// voucher with $200 value sold for $11, $90 is remaining
-		assertEquals(voucherLiabilityAccount, transactions.get(1).getAccount())
-		assertEquals(new Money("-4.95"), transactions.get(1).getAmount())
-		assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(1).getTableName())
+        Assertions.assertEquals(4, transactions.size())
 
-		assertEquals(vouchersExpiredAccount, transactions.get(2).getAccount())
-		assertEquals(new Money("4.95"), transactions.get(2).getAmount())
-		assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(2).getTableName())
-	}
+        // voucher for 4 enrolments sold for $10, 2 enrolments are currently redeemed
+        Assertions.assertEquals(voucherLiabilityAccount, transactions.get(0).getAccount())
+        Assertions.assertEquals(new Money("-5.0"), transactions.get(0).getAmount())
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(0).getTableName())
+
+        Assertions.assertEquals(vouchersExpiredAccount, transactions.get(3).getAccount())
+        Assertions.assertEquals(new Money("5.0"), transactions.get(3).getAmount())
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(3).getTableName())
+
+        // voucher with $200 value sold for $11, $90 is remaining
+        Assertions.assertEquals(voucherLiabilityAccount, transactions.get(1).getAccount())
+        Assertions.assertEquals(new Money("-4.95"), transactions.get(1).getAmount())
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(1).getTableName())
+
+        Assertions.assertEquals(vouchersExpiredAccount, transactions.get(2).getAccount())
+        Assertions.assertEquals(new Money("4.95"), transactions.get(2).getAmount())
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(2).getTableName())
+    }
 
 }

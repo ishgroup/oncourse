@@ -1,5 +1,7 @@
 package ish.oncourse.server.messaging
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.EmailTemplate
@@ -16,7 +18,9 @@ import org.junit.jupiter.api.Test
 
 import javax.mail.MessagingException
 
+@CompileStatic
 class TutorNotificationVisualTest extends CayenneIshTestCase {
+    
     @BeforeEach
     void setup() throws Exception {
         InputStream st = GroovyScriptService.class.getClassLoader().getResourceAsStream("ish/oncourse/server/messaging/tutorNotificationVisualTestDataSet.xml")
@@ -33,6 +37,7 @@ class TutorNotificationVisualTest extends CayenneIshTestCase {
      *
      * @throws FileNotFoundException if there are no html or plain bodies for header, footer and Tutor-Payrun-Notification
      */
+    
     @Ignore
     @Test
     void sendTutorNotification() throws MessagingException, FileNotFoundException {
@@ -58,7 +63,8 @@ class TutorNotificationVisualTest extends CayenneIshTestCase {
      * @param context
      * @throws FileNotFoundException
      */
-    private void fillHeaderTemplateWithActualData (ObjectContext context) throws FileNotFoundException{
+    
+    private void fillHeaderTemplateWithActualData(ObjectContext context) throws FileNotFoundException {
         EmailTemplate header = SelectById.query(EmailTemplate.class, 2).selectOne(context)
 
         String headerBodyPlain = new Scanner(new File("../private-resources/cce/email/CCE-Header.plain")).useDelimiter("\\Z").next()
@@ -75,7 +81,8 @@ class TutorNotificationVisualTest extends CayenneIshTestCase {
      * @param context
      * @throws FileNotFoundException
      */
-    private void fillFooterTemplateWithActualData (ObjectContext context) throws FileNotFoundException{
+    
+    private void fillFooterTemplateWithActualData(ObjectContext context) throws FileNotFoundException {
         EmailTemplate header = SelectById.query(EmailTemplate.class, 3).selectOne(context)
 
         String footerBodyPlain = new Scanner(new File("../private-resources/cce/email/CCE-Footer.plain")).useDelimiter("\\Z").next()
@@ -92,7 +99,8 @@ class TutorNotificationVisualTest extends CayenneIshTestCase {
      * @param context
      * @throws FileNotFoundException
      */
-    private EmailTemplate fillBodyTemplateWithActualData (ObjectContext context) throws FileNotFoundException{
+    
+    private EmailTemplate fillBodyTemplateWithActualData(ObjectContext context) throws FileNotFoundException {
         EmailTemplate template = SelectById.query(EmailTemplate.class, 1).selectOne(context)
 
         String bodyPlain = new Scanner(new File("../private-resources/cce/email/Tutor-Payrun-Notification.plain")).useDelimiter("\\Z").next()
@@ -106,7 +114,8 @@ class TutorNotificationVisualTest extends CayenneIshTestCase {
         return template
     }
 
-    private MailDeliveryParam prepareDeliveryParam (Map map, EmailTemplate template){
+    
+    private MailDeliveryParam prepareDeliveryParam(Map map, EmailTemplate template) {
         TemplateService templateService = injector.getInstance(TemplateService.class)
 
         GetFrom getFrom = GetFrom.valueOf("test@from")

@@ -1,212 +1,438 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-    <Account accountCode="10000" createdOn="2012-06-20 10:22:44.0" description="Assets" id="1" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="1"/>
-    <Account accountCode="11000" createdOn="2012-06-20 10:22:44.0" description="Current assets" id="2" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="1"/>
-    <Account accountCode="11100" createdOn="2012-06-20 10:22:44.0" description="Cheque account" id="3" isEnabled="1" modifiedOn="2014-10-17 22:47:53.0" type="1"/>
-    <Account accountCode="11200" createdOn="2012-06-20 10:22:44.0" description="Petty cash" id="4" isEnabled="1" modifiedOn="2012-06-20 10:22:44.0" type="1"/>
-    <Account accountCode="11500" createdOn="2012-06-20 10:22:44.0" description="Trade debtors" id="5" isEnabled="1" modifiedOn="2014-10-17 22:47:58.0" type="1"/>
-    <Account accountCode="11600" createdOn="2012-06-20 10:22:44.0" description="GST payable to suppliers" id="6" isEnabled="1" modifiedOn="2012-06-20 10:22:44.0" type="1"/>
-    <Account accountCode="15000" createdOn="2012-06-20 10:22:44.0" description="Non-current assets" id="7" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="1"/>
-    <Account accountCode="20000" createdOn="2012-06-20 10:22:44.0" description="Liabilities" id="8" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="2"/>
-    <Account accountCode="21000" createdOn="2012-06-20 10:22:44.0" description="Current liabilities" id="9" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="2"/>
-    <Account accountCode="21500" createdOn="2012-06-20 10:22:44.0" description="Trade creditors" id="10" isEnabled="1" modifiedOn="2012-06-20 10:22:44.0" type="2"/>
-    <Account accountCode="21600" createdOn="2012-06-20 10:22:44.0" description="GST receivable from customers" id="11" isEnabled="1" modifiedOn="2014-10-17 22:47:58.0" type="2"/>
-    <Account accountCode="25000" createdOn="2012-06-20 10:22:44.0" description="Non-current liabilities" id="12" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="2"/>
-    <Account accountCode="30000" createdOn="2012-06-20 10:22:44.0" description="Equity" id="13" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="3"/>
-    <Account accountCode="40000" createdOn="2012-06-20 10:22:44.0" description="Income" id="14" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="4" taxId="1"/>
-    <Account accountCode="41000" createdOn="2012-06-20 10:22:44.0" description="Student enrolments" id="15" isEnabled="1" modifiedOn="2014-10-17 22:47:53.0" type="4" taxId="1"/>
-    <Account accountCode="41100" createdOn="2012-06-20 10:22:44.0" description="General courses" id="16" isEnabled="1" modifiedOn="2012-06-20 10:22:44.0" type="4" taxId="1"/>
-    <Account accountCode="42000" createdOn="2012-06-20 10:22:44.0" description="Merchandise" id="17" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="4" taxId="1"/>
-    <Account accountCode="42100" createdOn="2012-06-20 10:22:44.0" description="Class materials" id="18" isEnabled="1" modifiedOn="2012-06-20 10:22:44.0" type="4" taxId="1"/>
-    <Account accountCode="42200" createdOn="2012-06-20 10:22:44.0" description="Publications" id="19" isEnabled="1" modifiedOn="2012-06-20 10:22:44.0" type="4" taxId="1"/>
-    <Account accountCode="50000" createdOn="2012-06-20 10:22:44.0" description="Cost of Sales" id="20" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="5"/>
-    <Account accountCode="51000" createdOn="2012-06-20 10:22:44.0" description="Student enrolments" id="21" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="5"/>
-    <Account accountCode="51100" createdOn="2012-06-20 10:22:44.0" description="General courses contractors" id="22" isEnabled="1" modifiedOn="2012-06-20 10:22:44.0" type="5"/>
-    <Account accountCode="52000" createdOn="2012-06-20 10:22:44.0" description="Merchandise" id="23" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="5"/>
-    <Account accountCode="52100" createdOn="2012-06-20 10:22:44.0" description="Class materials" id="24" isEnabled="1" modifiedOn="2012-06-20 10:22:44.0" type="5"/>
-    <Account accountCode="52200" createdOn="2012-06-20 10:22:44.0" description="Publications" id="25" isEnabled="1" modifiedOn="2012-06-20 10:22:44.0" type="5"/>
-    <Account accountCode="60000" createdOn="2012-06-20 10:22:44.0" description="Expenses" id="26" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="6"/>
-    <Account accountCode="61000" createdOn="2012-06-20 10:22:44.0" description="General and admin" id="27" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="6"/>
-    <Account accountCode="62000" createdOn="2012-06-20 10:22:44.0" description="Advertising and promotion" id="28" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="6"/>
-    <Account accountCode="63000" createdOn="2012-06-20 10:22:44.0" description="Financial" id="29" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="6"/>
-    <Account accountCode="64000" createdOn="2012-06-20 10:22:44.0" description="Employment" id="30" isEnabled="0" modifiedOn="2014-10-17 22:29:41.0" type="6"/>
-    <Account accountCode="65000" createdOn="2012-06-20 10:22:44.0" description="Occupancy" id="31" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="6"/>
-    <Account accountCode="66000" createdOn="2012-06-20 10:22:44.0" description="Motor vehicle" id="32" isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="6"/>
-    <Account accountCode="21010" description="Prepaid fees liability account" id="40" isEnabled="1" modifiedOn="2014-10-17 22:47:58.0" type="2"/>
-    <Account accountCode="54020" description="Discounts given" id="41" isEnabled="1" type="5"/>
-    <Account accountCode="21400" description="Voucher liability" id="200" isEnabled="1" type="2"/>
-    <Account accountCode="65387" description="Voucher underpayment" id="201" isEnabled="1" type="6"/>
-    <Account accountCode="45387" description="Vouchers expired" id="202" isEnabled="1" type="4" taxId="1"/>
+  <Account accountCode="10000" createdOn="2012-06-20 10:22:44.0" description="Assets" id="1" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="1"/>
+  <Account accountCode="11000" createdOn="2012-06-20 10:22:44.0" description="Current assets" id="2" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="1"/>
+  <Account accountCode="11100" createdOn="2012-06-20 10:22:44.0" description="Cheque account" id="3" isEnabled="1"
+           modifiedOn="2014-10-17 22:47:53.0" type="1"/>
+  <Account accountCode="11200" createdOn="2012-06-20 10:22:44.0" description="Petty cash" id="4" isEnabled="1"
+           modifiedOn="2012-06-20 10:22:44.0" type="1"/>
+  <Account accountCode="11500" createdOn="2012-06-20 10:22:44.0" description="Trade debtors" id="5" isEnabled="1"
+           modifiedOn="2014-10-17 22:47:58.0" type="1"/>
+  <Account accountCode="11600" createdOn="2012-06-20 10:22:44.0" description="GST payable to suppliers" id="6"
+           isEnabled="1" modifiedOn="2012-06-20 10:22:44.0" type="1"/>
+  <Account accountCode="15000" createdOn="2012-06-20 10:22:44.0" description="Non-current assets" id="7" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="1"/>
+  <Account accountCode="20000" createdOn="2012-06-20 10:22:44.0" description="Liabilities" id="8" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="2"/>
+  <Account accountCode="21000" createdOn="2012-06-20 10:22:44.0" description="Current liabilities" id="9" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="2"/>
+  <Account accountCode="21500" createdOn="2012-06-20 10:22:44.0" description="Trade creditors" id="10" isEnabled="1"
+           modifiedOn="2012-06-20 10:22:44.0" type="2"/>
+  <Account accountCode="21600" createdOn="2012-06-20 10:22:44.0" description="GST receivable from customers" id="11"
+           isEnabled="1" modifiedOn="2014-10-17 22:47:58.0" type="2"/>
+  <Account accountCode="25000" createdOn="2012-06-20 10:22:44.0" description="Non-current liabilities" id="12"
+           isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="2"/>
+  <Account accountCode="30000" createdOn="2012-06-20 10:22:44.0" description="Equity" id="13" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="3"/>
+  <Account accountCode="40000" createdOn="2012-06-20 10:22:44.0" description="Income" id="14" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="4" taxId="1"/>
+  <Account accountCode="41000" createdOn="2012-06-20 10:22:44.0" description="Student enrolments" id="15" isEnabled="1"
+           modifiedOn="2014-10-17 22:47:53.0" type="4" taxId="1"/>
+  <Account accountCode="41100" createdOn="2012-06-20 10:22:44.0" description="General courses" id="16" isEnabled="1"
+           modifiedOn="2012-06-20 10:22:44.0" type="4" taxId="1"/>
+  <Account accountCode="42000" createdOn="2012-06-20 10:22:44.0" description="Merchandise" id="17" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="4" taxId="1"/>
+  <Account accountCode="42100" createdOn="2012-06-20 10:22:44.0" description="Class materials" id="18" isEnabled="1"
+           modifiedOn="2012-06-20 10:22:44.0" type="4" taxId="1"/>
+  <Account accountCode="42200" createdOn="2012-06-20 10:22:44.0" description="Publications" id="19" isEnabled="1"
+           modifiedOn="2012-06-20 10:22:44.0" type="4" taxId="1"/>
+  <Account accountCode="50000" createdOn="2012-06-20 10:22:44.0" description="Cost of Sales" id="20" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="5"/>
+  <Account accountCode="51000" createdOn="2012-06-20 10:22:44.0" description="Student enrolments" id="21" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="5"/>
+  <Account accountCode="51100" createdOn="2012-06-20 10:22:44.0" description="General courses contractors" id="22"
+           isEnabled="1" modifiedOn="2012-06-20 10:22:44.0" type="5"/>
+  <Account accountCode="52000" createdOn="2012-06-20 10:22:44.0" description="Merchandise" id="23" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="5"/>
+  <Account accountCode="52100" createdOn="2012-06-20 10:22:44.0" description="Class materials" id="24" isEnabled="1"
+           modifiedOn="2012-06-20 10:22:44.0" type="5"/>
+  <Account accountCode="52200" createdOn="2012-06-20 10:22:44.0" description="Publications" id="25" isEnabled="1"
+           modifiedOn="2012-06-20 10:22:44.0" type="5"/>
+  <Account accountCode="60000" createdOn="2012-06-20 10:22:44.0" description="Expenses" id="26" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="6"/>
+  <Account accountCode="61000" createdOn="2012-06-20 10:22:44.0" description="General and admin" id="27" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="6"/>
+  <Account accountCode="62000" createdOn="2012-06-20 10:22:44.0" description="Advertising and promotion" id="28"
+           isEnabled="0" modifiedOn="2012-06-20 10:22:44.0" type="6"/>
+  <Account accountCode="63000" createdOn="2012-06-20 10:22:44.0" description="Financial" id="29" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="6"/>
+  <Account accountCode="64000" createdOn="2012-06-20 10:22:44.0" description="Employment" id="30" isEnabled="0"
+           modifiedOn="2014-10-17 22:29:41.0" type="6"/>
+  <Account accountCode="65000" createdOn="2012-06-20 10:22:44.0" description="Occupancy" id="31" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="6"/>
+  <Account accountCode="66000" createdOn="2012-06-20 10:22:44.0" description="Motor vehicle" id="32" isEnabled="0"
+           modifiedOn="2012-06-20 10:22:44.0" type="6"/>
+  <Account accountCode="21010" description="Prepaid fees liability account" id="40" isEnabled="1"
+           modifiedOn="2014-10-17 22:47:58.0" type="2"/>
+  <Account accountCode="54020" description="Discounts given" id="41" isEnabled="1" type="5"/>
+  <Account accountCode="21400" description="Voucher liability" id="200" isEnabled="1" type="2"/>
+  <Account accountCode="65387" description="Voucher underpayment" id="201" isEnabled="1" type="6"/>
+  <Account accountCode="45387" description="Vouchers expired" id="202" isEnabled="1" type="4" taxId="1"/>
 
-    <Tax createdOn="2012-06-20 10:22:44.0" description="Australian GST" id="1" isGSTTaxType="1" modifiedOn="2014-10-17 22:47:53.0" payableToSupplierAccountId="6" receivableFromStudentAccountId="11" taxCode="GST" taxrate="0.1000"/>
-    <Tax createdOn="2012-06-20 10:22:44.0" description="GST exempt" id="2" isGSTTaxType="0" modifiedOn="2014-10-17 22:47:53.0" payableToSupplierAccountId="6" receivableFromStudentAccountId="11" taxCode="N" taxrate="0.0000"/>
+  <Tax createdOn="2012-06-20 10:22:44.0" description="Australian GST" id="1" isGSTTaxType="1"
+       modifiedOn="2014-10-17 22:47:53.0" payableToSupplierAccountId="6" receivableFromStudentAccountId="11"
+       taxCode="GST" taxrate="0.1000"/>
+  <Tax createdOn="2012-06-20 10:22:44.0" description="GST exempt" id="2" isGSTTaxType="0"
+       modifiedOn="2014-10-17 22:47:53.0" payableToSupplierAccountId="6" receivableFromStudentAccountId="11" taxCode="N"
+       taxrate="0.0000"/>
 
-    <TrainingPackage createdOn="2011-03-25 17:50:25.0" id="228" modifiedOn="2014-10-17 22:21:14.0" nationalISC="AUM08" title="Automotive Manufacturing" type="TrainingPackage" willowId="164"/>
+  <TrainingPackage createdOn="2011-03-25 17:50:25.0" id="228" modifiedOn="2014-10-17 22:21:14.0" nationalISC="AUM08"
+                   title="Automotive Manufacturing" type="TrainingPackage" willowId="164"/>
 
-    <Contact createdOn="2014-10-17 22:23:24.0" id="2" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0" isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1" allowEmail="1" willowId="5139314" uniqueCode="zHMi47fTnM4TdxmD" firstName="Tutor" lastName="One"/>
-    <Contact createdOn="2014-10-17 22:23:36.0" id="3" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0" isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1" allowEmail="1" willowId="5139316" uniqueCode="kCxk5G4iAS2nhDCe" firstName="Tutor" lastName="Two"/>
-    <Contact createdOn="2014-10-17 22:23:58.0" id="4" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0" isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1" allowEmail="1" willowId="5139312" uniqueCode="8BaAGtUkQium2Euu" firstName="Tutor" lastName="Three"/>
-    <Contact createdOn="2014-10-17 22:24:14.0" id="5" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0" isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1" allowEmail="1" willowId="5139315" uniqueCode="AKc4KcKsqheDpZFP" firstName="Tutor" lastName="Four"/>
-    <Contact createdOn="2014-10-17 22:24:22.0" id="6" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0" isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1" allowEmail="1" willowId="5139311" uniqueCode="KxLk5AKdNGaKeqQC" firstName="Tutor" lastName="Five"/>
-    <Contact createdOn="2014-10-17 22:24:30.0" id="7" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0" isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1" allowEmail="1" willowId="5139310" uniqueCode="4qiowUbCjZudux4h" firstName="Tutor" lastName="Six"/>
-    <Contact createdOn="2014-10-17 22:47:53.0" id="8" isCompany="0" modifiedOn="2014-10-17 23:08:50.0" isStudent="1" isTutor="0" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1" allowEmail="1" willowId="5139318" uniqueCode="XaLrytzaF8mshqPv" firstName="Student" lastName="Two"/>
-    <Contact createdOn="2014-10-17 22:47:53.0" id="9" isCompany="0" modifiedOn="2014-10-17 23:08:50.0" isStudent="1" isTutor="0" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1" allowEmail="1" willowId="5139317" uniqueCode="pZ4vjEeYW72JSLXr" firstName="Student" lastName="One"/>
-    <Contact createdOn="2014-10-17 22:47:53.0" id="10" isCompany="0" modifiedOn="2014-10-17 23:08:50.0" isStudent="1" isTutor="0" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1" allowEmail="1" willowId="5139313" uniqueCode="2NA5mmC53StJ8j2x" firstName="Student" lastName="Three"/>
+  <Contact createdOn="2014-10-17 22:23:24.0" id="2" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0"
+           isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1"
+           allowEmail="1" willowId="5139314" uniqueCode="zHMi47fTnM4TdxmD" firstName="Tutor" lastName="One"/>
+  <Contact createdOn="2014-10-17 22:23:36.0" id="3" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0"
+           isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1"
+           allowEmail="1" willowId="5139316" uniqueCode="kCxk5G4iAS2nhDCe" firstName="Tutor" lastName="Two"/>
+  <Contact createdOn="2014-10-17 22:23:58.0" id="4" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0"
+           isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1"
+           allowEmail="1" willowId="5139312" uniqueCode="8BaAGtUkQium2Euu" firstName="Tutor" lastName="Three"/>
+  <Contact createdOn="2014-10-17 22:24:14.0" id="5" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0"
+           isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1"
+           allowEmail="1" willowId="5139315" uniqueCode="AKc4KcKsqheDpZFP" firstName="Tutor" lastName="Four"/>
+  <Contact createdOn="2014-10-17 22:24:22.0" id="6" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0"
+           isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1"
+           allowEmail="1" willowId="5139311" uniqueCode="KxLk5AKdNGaKeqQC" firstName="Tutor" lastName="Five"/>
+  <Contact createdOn="2014-10-17 22:24:30.0" id="7" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0"
+           isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1"
+           allowEmail="1" willowId="5139310" uniqueCode="4qiowUbCjZudux4h" firstName="Tutor" lastName="Six"/>
+  <Contact createdOn="2014-10-17 22:47:53.0" id="8" isCompany="0" modifiedOn="2014-10-17 23:08:50.0" isStudent="1"
+           isTutor="0" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1"
+           allowEmail="1" willowId="5139318" uniqueCode="XaLrytzaF8mshqPv" firstName="Student" lastName="Two"/>
+  <Contact createdOn="2014-10-17 22:47:53.0" id="9" isCompany="0" modifiedOn="2014-10-17 23:08:50.0" isStudent="1"
+           isTutor="0" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1"
+           allowEmail="1" willowId="5139317" uniqueCode="pZ4vjEeYW72JSLXr" firstName="Student" lastName="One"/>
+  <Contact createdOn="2014-10-17 22:47:53.0" id="10" isCompany="0" modifiedOn="2014-10-17 23:08:50.0" isStudent="1"
+           isTutor="0" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1"
+           allowEmail="1" willowId="5139313" uniqueCode="2NA5mmC53StJ8j2x" firstName="Student" lastName="Three"/>
 
-    <Student createdOn="2014-10-17 22:47:53.0" disabilityType="0" employmentCategoryId="0" englishProficiency="0" highestSchoolLevel="0" id="200" indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0" modifiedOn="2014-10-17 23:08:50.0" priorEducationCode="0" willowId="5128291" studentNumber="3" contactId="10" usiStatus="0" feeHelpEligible="0" citizenship="9" specialNeedsAssistance="0"/>
-    <Student createdOn="2014-10-17 22:47:53.0" disabilityType="0" employmentCategoryId="0" englishProficiency="0" highestSchoolLevel="0" id="201" indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0" modifiedOn="2014-10-17 23:08:50.0" priorEducationCode="0" willowId="5128292" studentNumber="1" contactId="9" usiStatus="0" feeHelpEligible="0" citizenship="9" specialNeedsAssistance="0"/>
-    <Student createdOn="2014-10-17 22:47:53.0" disabilityType="0" employmentCategoryId="0" englishProficiency="0" highestSchoolLevel="0" id="202" indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0" modifiedOn="2014-10-17 23:08:50.0" priorEducationCode="0" willowId="5128290" studentNumber="2" contactId="8" usiStatus="0" feeHelpEligible="0" citizenship="9" specialNeedsAssistance="0"/>
+  <Student createdOn="2014-10-17 22:47:53.0" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" id="200" indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+           modifiedOn="2014-10-17 23:08:50.0" priorEducationCode="0" willowId="5128291" studentNumber="3" contactId="10"
+           usiStatus="0" feeHelpEligible="0" citizenship="9" specialNeedsAssistance="0"/>
+  <Student createdOn="2014-10-17 22:47:53.0" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" id="201" indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+           modifiedOn="2014-10-17 23:08:50.0" priorEducationCode="0" willowId="5128292" studentNumber="1" contactId="9"
+           usiStatus="0" feeHelpEligible="0" citizenship="9" specialNeedsAssistance="0"/>
+  <Student createdOn="2014-10-17 22:47:53.0" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" id="202" indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+           modifiedOn="2014-10-17 23:08:50.0" priorEducationCode="0" willowId="5128290" studentNumber="2" contactId="8"
+           usiStatus="0" feeHelpEligible="0" citizenship="9" specialNeedsAssistance="0"/>
 
-    <Tutor createdOn="2014-10-17 22:23:24.0" id="2" modifiedOn="2014-10-17 23:08:51.0" willowId="5020722" contactId="2" wwChildrenStatus="0"/>
-    <Tutor createdOn="2014-10-17 22:23:46.0" id="3" modifiedOn="2014-10-17 23:08:51.0" willowId="5020720" contactId="3" wwChildrenStatus="0"/>
-    <Tutor createdOn="2014-10-17 22:23:58.0" id="4" modifiedOn="2014-10-17 23:08:50.0" willowId="5020718" contactId="4" wwChildrenStatus="0"/>
-    <Tutor createdOn="2014-10-17 22:24:14.0" id="5" modifiedOn="2014-10-17 23:08:51.0" willowId="5020721" contactId="5" wwChildrenStatus="0"/>
-    <Tutor createdOn="2014-10-17 22:24:22.0" id="6" modifiedOn="2014-10-17 23:08:50.0" willowId="5020719" contactId="6" wwChildrenStatus="0"/>
-    <Tutor createdOn="2014-10-17 22:24:30.0" id="7" modifiedOn="2014-10-17 23:08:51.0" willowId="5020723" contactId="7" wwChildrenStatus="0"/>
+  <Tutor createdOn="2014-10-17 22:23:24.0" id="2" modifiedOn="2014-10-17 23:08:51.0" willowId="5020722" contactId="2"
+         wwChildrenStatus="0"/>
+  <Tutor createdOn="2014-10-17 22:23:46.0" id="3" modifiedOn="2014-10-17 23:08:51.0" willowId="5020720" contactId="3"
+         wwChildrenStatus="0"/>
+  <Tutor createdOn="2014-10-17 22:23:58.0" id="4" modifiedOn="2014-10-17 23:08:50.0" willowId="5020718" contactId="4"
+         wwChildrenStatus="0"/>
+  <Tutor createdOn="2014-10-17 22:24:14.0" id="5" modifiedOn="2014-10-17 23:08:51.0" willowId="5020721" contactId="5"
+         wwChildrenStatus="0"/>
+  <Tutor createdOn="2014-10-17 22:24:22.0" id="6" modifiedOn="2014-10-17 23:08:50.0" willowId="5020719" contactId="6"
+         wwChildrenStatus="0"/>
+  <Tutor createdOn="2014-10-17 22:24:30.0" id="7" modifiedOn="2014-10-17 23:08:51.0" willowId="5020723" contactId="7"
+         wwChildrenStatus="0"/>
 
-    <Qualification createdOn="2011-03-26 04:20:07.0" fieldOfEducation="0301" id="3966" isAccreditedCourse="0" isOffered="0" qualLevel="Certificate I in" modifiedOn="2014-10-17 22:29:18.0" nationalCode="AUM10108" title="Automotive Manufacturing (Passenger Motor Vehicle)" trainingPackageId="228" willowId="9313" ANZSCO="832211"/>
+  <Qualification createdOn="2011-03-26 04:20:07.0" fieldOfEducation="0301" id="3966" isAccreditedCourse="0"
+                 isOffered="0" qualLevel="Certificate I in" modifiedOn="2014-10-17 22:29:18.0" nationalCode="AUM10108"
+                 title="Automotive Manufacturing (Passenger Motor Vehicle)" trainingPackageId="228" willowId="9313"
+                 ANZSCO="832211"/>
 
-    <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
 
-    <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-    <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    
-    <Course code="pc1" createdOn="2014-10-17 22:29:18.0" id="200" isShownOnWeb="1" isVET="1" modifiedOn="2014-10-17 23:09:57.0" qualificationId="3966" willowId="5004616" allowWaitingLists="1" fieldOfEducation="0301" isSufficientForQualification="1" currentlyOffered="1" reportableHours="40.0" isTraineeship="0" name="Payroll Course" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
+  <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
 
-    <Country id="268" isoCodeAlpha3="AUS" isoCodeNumeric="36" modifiedOn="2014-10-17 22:39:31.0" name="Australia" saccCode="1101" willowId="4"/>
+  <Course code="pc1" createdOn="2014-10-17 22:29:18.0" id="200" isShownOnWeb="1" isVET="1"
+          modifiedOn="2014-10-17 23:09:57.0" qualificationId="3966" willowId="5004616" allowWaitingLists="1"
+          fieldOfEducation="0301" isSufficientForQualification="1" currentlyOffered="1" reportableHours="40.0"
+          isTraineeship="0" name="Payroll Course" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
-    <Site createdOn="2012-06-20 10:27:51.0" id="200" modifiedOn="2014-10-17 23:09:56.0" name="Default site" willowId="5001184" isAdministrationCentre="1" isShownOnWeb="0" localTimezone="Australia/Brisbane" isVirtual="0"/>
-    <Site createdOn="2014-10-17 22:39:31.0" id="220" modifiedOn="2014-10-17 23:09:56.0" name="New Site 1" willowId="5001185" countryId="268" isAdministrationCentre="0" isShownOnWeb="0" localTimezone="Europe/Minsk" isVirtual="0"/>
+  <Country id="268" isoCodeAlpha3="AUS" isoCodeNumeric="36" modifiedOn="2014-10-17 22:39:31.0" name="Australia"
+           saccCode="1101" willowId="4"/>
 
-    <SystemUser email="admin@mail.com" createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1" lastLoginOn="2014-10-20 12:33:13.0" login="admin" modifiedOn="2014-10-20 12:33:13.0" password="PBKDF2WithHmacSHA1:1000:5b5814a658527cd9fd6f61224eb05fec699fb20900b4193d:0fd68ff3c15901a1b835cdd571a536f678104c6592f05322" surname="Administrator" isActive="1" isAdmin="1" defaultAdministrationCentreId="200" canEditTara="0" canEditCMS="0" willowid="21" PASSWORDUPDATEREQUIRED="0"/>
+  <Site createdOn="2012-06-20 10:27:51.0" id="200" modifiedOn="2014-10-17 23:09:56.0" name="Default site"
+        willowId="5001184" isAdministrationCentre="1" isShownOnWeb="0" localTimezone="Australia/Brisbane"
+        isVirtual="0"/>
+  <Site createdOn="2014-10-17 22:39:31.0" id="220" modifiedOn="2014-10-17 23:09:56.0" name="New Site 1"
+        willowId="5001185" countryId="268" isAdministrationCentre="0" isShownOnWeb="0" localTimezone="Europe/Minsk"
+        isVirtual="0"/>
 
-    <Room createdOn="2014-10-17 22:39:31.0" id="200" modifiedOn="2014-10-17 23:09:57.0" seatedCapacity="100" siteId="220" willowId="5001387" name="New Room 1"/>
-    <Room createdOn="2014-10-17 22:41:44.0" id="201" modifiedOn="2014-10-17 23:09:57.0" seatedCapacity="100" siteId="220" willowId="5001385" name="New Room 5"/>
-    <Room createdOn="2014-10-17 22:41:44.0" id="202" modifiedOn="2014-10-17 23:09:57.0" seatedCapacity="100" siteId="220" willowId="5001384" name="New Room 3"/>
-    <Room createdOn="2014-10-17 22:41:44.0" id="203" modifiedOn="2014-10-17 23:09:56.0" seatedCapacity="100" siteId="220" willowId="5001383" name="New Room 2"/>
-    <Room createdOn="2014-10-17 22:41:44.0" id="204" modifiedOn="2014-10-17 23:09:57.0" seatedCapacity="100" siteId="220" willowId="5001388" name="New Room 6"/>
-    <Room createdOn="2014-10-17 22:41:44.0" id="205" modifiedOn="2014-10-17 23:09:57.0" seatedCapacity="100" siteId="220" willowId="5001386" name="New Room 4"/>
+  <SystemUser email="admin@mail.com" createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1"
+              lastLoginOn="2014-10-20 12:33:13.0" login="admin" modifiedOn="2014-10-20 12:33:13.0"
+              password="PBKDF2WithHmacSHA1:1000:5b5814a658527cd9fd6f61224eb05fec699fb20900b4193d:0fd68ff3c15901a1b835cdd571a536f678104c6592f05322"
+              surname="Administrator" isActive="1" isAdmin="1" defaultAdministrationCentreId="200" canEditTara="0"
+              canEditCMS="0" willowid="21" PASSWORDUPDATEREQUIRED="0"/>
 
-    <CourseClass code="4" courseId="200" createdOn="2014-10-17 22:44:15.0" endDateTime="2015-01-10 23:42:33.0" feeExGst="400.00" id="204" incomeAccountId="15" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1" minutesPerSession="60" modifiedOn="2014-10-17 23:10:57.0" roomId="205" sessionCount="10" startDateTime="2015-01-01 22:42:33.0" taxId="1" willowId="5034373" deliveryMode="1" fundingSource="3" budgetedPlaces="0" sessionsSkipWeekends="0" sessionrepeatType="6" sessionrepeatInterval="1" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="400.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
+  <Room createdOn="2014-10-17 22:39:31.0" id="200" modifiedOn="2014-10-17 23:09:57.0" seatedCapacity="100" siteId="220"
+        willowId="5001387" name="New Room 1"/>
+  <Room createdOn="2014-10-17 22:41:44.0" id="201" modifiedOn="2014-10-17 23:09:57.0" seatedCapacity="100" siteId="220"
+        willowId="5001385" name="New Room 5"/>
+  <Room createdOn="2014-10-17 22:41:44.0" id="202" modifiedOn="2014-10-17 23:09:57.0" seatedCapacity="100" siteId="220"
+        willowId="5001384" name="New Room 3"/>
+  <Room createdOn="2014-10-17 22:41:44.0" id="203" modifiedOn="2014-10-17 23:09:56.0" seatedCapacity="100" siteId="220"
+        willowId="5001383" name="New Room 2"/>
+  <Room createdOn="2014-10-17 22:41:44.0" id="204" modifiedOn="2014-10-17 23:09:57.0" seatedCapacity="100" siteId="220"
+        willowId="5001388" name="New Room 6"/>
+  <Room createdOn="2014-10-17 22:41:44.0" id="205" modifiedOn="2014-10-17 23:09:57.0" seatedCapacity="100" siteId="220"
+        willowId="5001386" name="New Room 4"/>
 
-    <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-01 23:42:33.0" id="240" modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-01 22:42:33.0" willowId="5145712" payAdjustment="0"/>
-    <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-02 23:42:33.0" id="241" modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-02 22:42:33.0" willowId="5145690" payAdjustment="0"/>
-    <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-03 23:42:33.0" id="242" modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-03 22:42:33.0" willowId="5145706" payAdjustment="0"/>
-    <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-04 23:42:33.0" id="243" modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-04 22:42:33.0" willowId="5145707" payAdjustment="0"/>
-    <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-05 23:42:33.0" id="244" modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-05 22:42:33.0" willowId="5145702" payAdjustment="0"/>
-    <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-06 23:42:33.0" id="245" modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-06 22:42:33.0" willowId="5145708" payAdjustment="0"/>
-    <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-07 23:42:33.0" id="246" modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-07 22:42:33.0" willowId="5145700" payAdjustment="0"/>
-    <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-08 23:42:33.0" id="247" modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-08 22:42:33.0" willowId="5145722" payAdjustment="0"/>
-    <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-09 23:42:33.0" id="248" modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-09 22:42:33.0" willowId="5145699" payAdjustment="0"/>
-    <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-10 23:42:33.0" id="249" modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-10 22:42:33.0" willowId="5145715" payAdjustment="0"/>
+  <CourseClass code="4" courseId="200" createdOn="2014-10-17 22:44:15.0" endDateTime="2015-01-10 23:42:33.0"
+               feeExGst="400.00" id="204" incomeAccountId="15" isCancelled="0" isDistantLearningCourse="0"
+               isShownOnWeb="0" maximumPlaces="10" minimumPlaces="1" minutesPerSession="60"
+               modifiedOn="2014-10-17 23:10:57.0" roomId="205" sessionCount="10" startDateTime="2015-01-01 22:42:33.0"
+               taxId="1" willowId="5034373" deliveryMode="1" fundingSource="3" budgetedPlaces="0"
+               sessionsSkipWeekends="0" sessionrepeatType="6" sessionrepeatInterval="1" isClassFeeApplicationOnly="0"
+               taxAdjustment="0.00" deposit="400.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
 
-    <DefinedTutorRole description="Tutor" name="Tutor" id="1" active="1"/>
-    <DefinedTutorRole description="Lecturer" name="Lecturer" id="2" active="1"/>
-    <DefinedTutorRole description="Supervisor" name="Supervisor" id="3" active="1"/>
-    <DefinedTutorRole description="Coordinator" name="Coordinator" id="4" active="1"/>
-    <DefinedTutorRole description="Demonstrator" name="Demonstrator" id="5" active="1"/>
-    <DefinedTutorRole description="Helper" name="Helper" id="6" active="1"/>
-    <DefinedTutorRole description="Technician" name="Technician" id="7" active="1"/>
-    <DefinedTutorRole description="Tutor 1" name="Tutor 1" id="200" active="1"/>
-    <DefinedTutorRole description="Tutor 2" name="Tutor 2" id="201" active="1"/>
-    <DefinedTutorRole description="Tutor 3" name="Tutor 3" id="202" active="1"/>
-    <DefinedTutorRole description="Tutor 4" name="Tutor 4" id="203" active="1"/>
-    <DefinedTutorRole description="Tutor 5" name="Tutor 5" id="204" active="1"/>
-    <DefinedTutorRole description="Tutor 6" name="Tutor 6" id="205" active="1"/>
+  <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-01 23:42:33.0" id="240"
+                 modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-01 22:42:33.0"
+                 willowId="5145712" payAdjustment="0"/>
+  <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-02 23:42:33.0" id="241"
+                 modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-02 22:42:33.0"
+                 willowId="5145690" payAdjustment="0"/>
+  <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-03 23:42:33.0" id="242"
+                 modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-03 22:42:33.0"
+                 willowId="5145706" payAdjustment="0"/>
+  <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-04 23:42:33.0" id="243"
+                 modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-04 22:42:33.0"
+                 willowId="5145707" payAdjustment="0"/>
+  <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-05 23:42:33.0" id="244"
+                 modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-05 22:42:33.0"
+                 willowId="5145702" payAdjustment="0"/>
+  <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-06 23:42:33.0" id="245"
+                 modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-06 22:42:33.0"
+                 willowId="5145708" payAdjustment="0"/>
+  <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-07 23:42:33.0" id="246"
+                 modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-07 22:42:33.0"
+                 willowId="5145700" payAdjustment="0"/>
+  <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-08 23:42:33.0" id="247"
+                 modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-08 22:42:33.0"
+                 willowId="5145722" payAdjustment="0"/>
+  <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-09 23:42:33.0" id="248"
+                 modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-09 22:42:33.0"
+                 willowId="5145699" payAdjustment="0"/>
+  <CourseSession courseClass_Id="204" createdOn="2014-10-17 22:44:15.0" endDatetime="2015-01-10 23:42:33.0" id="249"
+                 modifiedOn="2014-10-20 14:59:46.0" roomId="205" startDatetime="2015-01-10 22:42:33.0"
+                 willowId="5145715" payAdjustment="0"/>
 
-    <CourseClassTutor courseClassId="204" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 23:10:57.0" id="5" tutorId="5" willowId="21555663471170771" definedTutorRoleId="1" inPublicity="1"/>
-    <CourseClassTutor courseClassId="204" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 23:10:57.0" id="6" tutorId="5" willowId="21555663471170774" definedTutorRoleId="2" inPublicity="1"/>
+  <DefinedTutorRole description="Tutor" name="Tutor" id="1" active="1"/>
+  <DefinedTutorRole description="Lecturer" name="Lecturer" id="2" active="1"/>
+  <DefinedTutorRole description="Supervisor" name="Supervisor" id="3" active="1"/>
+  <DefinedTutorRole description="Coordinator" name="Coordinator" id="4" active="1"/>
+  <DefinedTutorRole description="Demonstrator" name="Demonstrator" id="5" active="1"/>
+  <DefinedTutorRole description="Helper" name="Helper" id="6" active="1"/>
+  <DefinedTutorRole description="Technician" name="Technician" id="7" active="1"/>
+  <DefinedTutorRole description="Tutor 1" name="Tutor 1" id="200" active="1"/>
+  <DefinedTutorRole description="Tutor 2" name="Tutor 2" id="201" active="1"/>
+  <DefinedTutorRole description="Tutor 3" name="Tutor 3" id="202" active="1"/>
+  <DefinedTutorRole description="Tutor 4" name="Tutor 4" id="203" active="1"/>
+  <DefinedTutorRole description="Tutor 5" name="Tutor 5" id="204" active="1"/>
+  <DefinedTutorRole description="Tutor 6" name="Tutor 6" id="205" active="1"/>
 
-    <SessionCourseClassTutor id="42" approvedByUserId="1" attendanceType="1" courseClassTutorId="5" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="240" durationMinutes="60"/>
-    <SessionCourseClassTutor id="43" approvedByUserId="1" attendanceType="1" courseClassTutorId="5" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="241" durationMinutes="60"/>
-    <SessionCourseClassTutor id="44" approvedByUserId="1" attendanceType="1" courseClassTutorId="5" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="242" durationMinutes="60"/>
-    <SessionCourseClassTutor id="45" approvedByUserId="1" attendanceType="1" courseClassTutorId="5" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="243" durationMinutes="60"/>
-    <SessionCourseClassTutor id="46" approvedByUserId="1" attendanceType="1" courseClassTutorId="5" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="244" durationMinutes="60"/>
-    <SessionCourseClassTutor id="47" approvedByUserId="1" attendanceType="1" courseClassTutorId="5" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="245" durationMinutes="60"/>
-    <SessionCourseClassTutor id="48" approvedByUserId="1" attendanceType="1" courseClassTutorId="5" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="246" durationMinutes="60"/>
-    <SessionCourseClassTutor id="49" approvedByUserId="1" attendanceType="1" courseClassTutorId="5" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="247" durationMinutes="60"/>
-    <SessionCourseClassTutor id="50" approvedByUserId="1" attendanceType="1" courseClassTutorId="5" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="248" durationMinutes="60"/>
-    <SessionCourseClassTutor id="51" approvedByUserId="1" attendanceType="1" courseClassTutorId="5" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="249" durationMinutes="60"/>
+  <CourseClassTutor courseClassId="204" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 23:10:57.0" id="5"
+                    tutorId="5" willowId="21555663471170771" definedTutorRoleId="1" inPublicity="1"/>
+  <CourseClassTutor courseClassId="204" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 23:10:57.0" id="6"
+                    tutorId="5" willowId="21555663471170774" definedTutorRoleId="2" inPublicity="1"/>
 
-    <SessionCourseClassTutor id="52" approvedByUserId="1" attendanceType="1" courseClassTutorId="6" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="240" durationMinutes="60"/>
-    <SessionCourseClassTutor id="53" approvedByUserId="1" attendanceType="1" courseClassTutorId="6" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="241" durationMinutes="60"/>
-    <SessionCourseClassTutor id="54" approvedByUserId="1" attendanceType="1" courseClassTutorId="6" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="242" durationMinutes="60"/>
-    <SessionCourseClassTutor id="55" approvedByUserId="1" attendanceType="1" courseClassTutorId="6" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="243" durationMinutes="60"/>
-    <SessionCourseClassTutor id="56" approvedByUserId="1" attendanceType="1" courseClassTutorId="6" createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1" sessionId="244" durationMinutes="60"/>
+  <SessionCourseClassTutor id="42" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="240" durationMinutes="60"/>
+  <SessionCourseClassTutor id="43" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="241" durationMinutes="60"/>
+  <SessionCourseClassTutor id="44" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="242" durationMinutes="60"/>
+  <SessionCourseClassTutor id="45" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="243" durationMinutes="60"/>
+  <SessionCourseClassTutor id="46" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="244" durationMinutes="60"/>
+  <SessionCourseClassTutor id="47" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="245" durationMinutes="60"/>
+  <SessionCourseClassTutor id="48" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="246" durationMinutes="60"/>
+  <SessionCourseClassTutor id="49" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="247" durationMinutes="60"/>
+  <SessionCourseClassTutor id="50" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="248" durationMinutes="60"/>
+  <SessionCourseClassTutor id="51" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="249" durationMinutes="60"/>
 
-    <Enrolment courseClass_Id="204" createdOn="2014-10-17 22:47:53.0" id="200" modifiedOn="2014-10-17 22:47:57.0" source="O" status="3" studentId="201" studyReason="-1" vetFeeExemptionType="-1" vetIsFullTime="0" eligibilityExemptionIndicator="0" vetFeeIndicator="0" confirmationStatus="3" feeHelpAmount="0.00" attendanceType="9"/>
-    <Enrolment courseClass_Id="204" createdOn="2014-10-17 22:47:53.0" id="202" modifiedOn="2014-10-17 22:47:57.0" source="O" status="3" studentId="200" studyReason="-1" vetFeeExemptionType="-1" vetIsFullTime="0" eligibilityExemptionIndicator="0" vetFeeIndicator="0" confirmationStatus="3" feeHelpAmount="0.00" attendanceType="9"/>
-    <Enrolment courseClass_Id="204" createdOn="2014-10-17 22:47:53.0" id="214" modifiedOn="2014-10-17 22:47:57.0" source="O" status="3" studentId="202" studyReason="-1" vetFeeExemptionType="-1" vetIsFullTime="0" eligibilityExemptionIndicator="0" vetFeeIndicator="0" confirmationStatus="3" feeHelpAmount="0.00" attendanceType="9"/>
+  <SessionCourseClassTutor id="52" approvedByUserId="1" attendanceType="1" courseClassTutorId="6"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="240" durationMinutes="60"/>
+  <SessionCourseClassTutor id="53" approvedByUserId="1" attendanceType="1" courseClassTutorId="6"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="241" durationMinutes="60"/>
+  <SessionCourseClassTutor id="54" approvedByUserId="1" attendanceType="1" courseClassTutorId="6"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="242" durationMinutes="60"/>
+  <SessionCourseClassTutor id="55" approvedByUserId="1" attendanceType="1" courseClassTutorId="6"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="243" durationMinutes="60"/>
+  <SessionCourseClassTutor id="56" approvedByUserId="1" attendanceType="1" courseClassTutorId="6"
+                           createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
+                           sessionId="244" durationMinutes="60"/>
 
-    <Attendance attendanceType="0" id="1090" sessionID="247" studentID="201" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1091" sessionID="249" studentID="201" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1092" sessionID="245" studentID="201" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1093" sessionID="243" studentID="201" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1094" sessionID="241" studentID="201" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1095" sessionID="242" studentID="201" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1096" sessionID="244" studentID="201" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1097" sessionID="248" studentID="201" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1098" sessionID="240" studentID="201" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1099" sessionID="246" studentID="201" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1100" sessionID="241" studentID="202" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1101" sessionID="244" studentID="202" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1102" sessionID="247" studentID="202" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1103" sessionID="243" studentID="202" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1104" sessionID="246" studentID="202" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1105" sessionID="240" studentID="202" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1106" sessionID="248" studentID="202" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1107" sessionID="249" studentID="202" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1108" sessionID="245" studentID="202" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1109" sessionID="242" studentID="202" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1110" sessionID="243" studentID="200" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1111" sessionID="248" studentID="200" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1112" sessionID="249" studentID="200" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1113" sessionID="242" studentID="200" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1114" sessionID="247" studentID="200" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1115" sessionID="240" studentID="200" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1116" sessionID="241" studentID="200" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1117" sessionID="246" studentID="200" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1118" sessionID="244" studentID="200" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
-    <Attendance attendanceType="0" id="1119" sessionID="245" studentID="200" createdOn="2014-10-17 22:47:54.0" modifiedOn="2014-10-17 22:47:54.0"/>
+  <Enrolment courseClass_Id="204" createdOn="2014-10-17 22:47:53.0" id="200" modifiedOn="2014-10-17 22:47:57.0"
+             source="O" status="3" studentId="201" studyReason="-1" vetFeeExemptionType="-1" vetIsFullTime="0"
+             eligibilityExemptionIndicator="0" vetFeeIndicator="0" confirmationStatus="3" feeHelpAmount="0.00"
+             attendanceType="9"/>
+  <Enrolment courseClass_Id="204" createdOn="2014-10-17 22:47:53.0" id="202" modifiedOn="2014-10-17 22:47:57.0"
+             source="O" status="3" studentId="200" studyReason="-1" vetFeeExemptionType="-1" vetIsFullTime="0"
+             eligibilityExemptionIndicator="0" vetFeeIndicator="0" confirmationStatus="3" feeHelpAmount="0.00"
+             attendanceType="9"/>
+  <Enrolment courseClass_Id="204" createdOn="2014-10-17 22:47:53.0" id="214" modifiedOn="2014-10-17 22:47:57.0"
+             source="O" status="3" studentId="202" studyReason="-1" vetFeeExemptionType="-1" vetIsFullTime="0"
+             eligibilityExemptionIndicator="0" vetFeeIndicator="0" confirmationStatus="3" feeHelpAmount="0.00"
+             attendanceType="9"/>
 
-    <Invoice allowAutoPay="1" type="1" overdue="0.00" amoutOwing="0.00" billToAddress="" createdByUserId="1" createdOn="2014-10-17 22:47:53.0" dateDue="2014-10-17" debtorsAccountId="5" id="200" invoiceDate="2014-10-17" invoiceNumber="1" modifiedOn="2014-10-17 22:47:53.0" contactId="9" source="O" confirmationStatus="3"/>
+  <Attendance attendanceType="0" id="1090" sessionID="247" studentID="201" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1091" sessionID="249" studentID="201" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1092" sessionID="245" studentID="201" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1093" sessionID="243" studentID="201" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1094" sessionID="241" studentID="201" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1095" sessionID="242" studentID="201" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1096" sessionID="244" studentID="201" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1097" sessionID="248" studentID="201" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1098" sessionID="240" studentID="201" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1099" sessionID="246" studentID="201" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1100" sessionID="241" studentID="202" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1101" sessionID="244" studentID="202" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1102" sessionID="247" studentID="202" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1103" sessionID="243" studentID="202" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1104" sessionID="246" studentID="202" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1105" sessionID="240" studentID="202" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1106" sessionID="248" studentID="202" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1107" sessionID="249" studentID="202" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1108" sessionID="245" studentID="202" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1109" sessionID="242" studentID="202" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1110" sessionID="243" studentID="200" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1111" sessionID="248" studentID="200" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1112" sessionID="249" studentID="200" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1113" sessionID="242" studentID="200" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1114" sessionID="247" studentID="200" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1115" sessionID="240" studentID="200" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1116" sessionID="241" studentID="200" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1117" sessionID="246" studentID="200" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1118" sessionID="244" studentID="200" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
+  <Attendance attendanceType="0" id="1119" sessionID="245" studentID="200" createdOn="2014-10-17 22:47:54.0"
+              modifiedOn="2014-10-17 22:47:54.0"/>
 
-    <InvoiceLine accountId="15" createdOn="2014-10-17 22:47:53.0" description="Student Three (pc1-4 Payroll Course)" discountEachexTax="0.00" enrolmentId="202" id="208" invoiceId="200" modifiedOn="2014-10-17 22:47:53.0" priceEachexTax="400.00" quantity="1.00" sortOrder="11" taxEach="40.00" taxId="1" title="Student Three enrolled in pc1-4" prepaidFeesRemaining="400.00" prepaidFeesAccountId="40"/>
-    <InvoiceLine accountId="15" createdOn="2014-10-17 22:47:53.0" description="Student One (pc1-4 Payroll Course)" discountEachexTax="0.00" enrolmentId="200" id="209" invoiceId="200" modifiedOn="2014-10-17 22:47:53.0" priceEachexTax="400.00" quantity="1.00" sortOrder="9" taxEach="40.00" taxId="1" title="Student One enrolled in pc1-4" prepaidFeesRemaining="400.00" prepaidFeesAccountId="40"/>
-    <InvoiceLine accountId="15" createdOn="2014-10-17 22:47:53.0" description="Student Two (pc1-4 Payroll Course)" discountEachexTax="0.00" enrolmentId="214" id="216" invoiceId="200" modifiedOn="2014-10-17 22:47:53.0" priceEachexTax="400.00" quantity="1.00" sortOrder="10" taxEach="40.00" taxId="1" title="Student Two enrolled in pc1-4" prepaidFeesRemaining="400.00" prepaidFeesAccountId="40"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" amoutOwing="0.00" billToAddress="" createdByUserId="1"
+           createdOn="2014-10-17 22:47:53.0" dateDue="2014-10-17" debtorsAccountId="5" id="200" invoiceDate="2014-10-17"
+           invoiceNumber="1" modifiedOn="2014-10-17 22:47:53.0" contactId="9" source="O" confirmationStatus="3"/>
 
-    <PaymentMethod id="1" name="Cash" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-    <PaymentMethod id="2" name="Cheque" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="1"/>
-    <PaymentMethod id="3" name="Credit card" accountId="3" active="1" bankedAutomatically="1" reconcilable="1"  type="2"/>
-    <PaymentMethod id="4" name="EFT" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
-    <PaymentMethod id="5" name="B-Pay" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-    <PaymentMethod id="6" name="Zero" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="5"/>
-    <PaymentMethod id="7" name="Other" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-    <PaymentMethod id="8" name="Contra" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="7"/>
-    <PaymentMethod id="9" name="Voucher" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="8"/>
-    <PaymentMethod id="10" name="PayPal" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-    <PaymentMethod id="11" name="Reverse" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="10"/>
-    <PaymentMethod id="12" name="EFTPOS" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
+  <InvoiceLine accountId="15" createdOn="2014-10-17 22:47:53.0" description="Student Three (pc1-4 Payroll Course)"
+               discountEachexTax="0.00" enrolmentId="202" id="208" invoiceId="200" modifiedOn="2014-10-17 22:47:53.0"
+               priceEachexTax="400.00" quantity="1.00" sortOrder="11" taxEach="40.00" taxId="1"
+               title="Student Three enrolled in pc1-4" prepaidFeesRemaining="400.00" prepaidFeesAccountId="40"/>
+  <InvoiceLine accountId="15" createdOn="2014-10-17 22:47:53.0" description="Student One (pc1-4 Payroll Course)"
+               discountEachexTax="0.00" enrolmentId="200" id="209" invoiceId="200" modifiedOn="2014-10-17 22:47:53.0"
+               priceEachexTax="400.00" quantity="1.00" sortOrder="9" taxEach="40.00" taxId="1"
+               title="Student One enrolled in pc1-4" prepaidFeesRemaining="400.00" prepaidFeesAccountId="40"/>
+  <InvoiceLine accountId="15" createdOn="2014-10-17 22:47:53.0" description="Student Two (pc1-4 Payroll Course)"
+               discountEachexTax="0.00" enrolmentId="214" id="216" invoiceId="200" modifiedOn="2014-10-17 22:47:53.0"
+               priceEachexTax="400.00" quantity="1.00" sortOrder="10" taxEach="40.00" taxId="1"
+               title="Student Two enrolled in pc1-4" prepaidFeesRemaining="400.00" prepaidFeesAccountId="40"/>
 
-    <PaymentIn PAYMENTDATE="2010-10-14 22:04:34.551" accountInId="3" amount="6330.00" createdOn="2014-10-17 22:47:52.0" id="200" modifiedOn="2014-10-17 22:47:53.0" privateNotes="" reconciled="0" status="3" paymentMethodId="1" payerId="9" source="O" administrationCentreId="200" createdByUserId="1" confirmationStatus="3"/>
+  <PaymentMethod id="1" name="Cash" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="2" name="Cheque" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="1"/>
+  <PaymentMethod id="3" name="Credit card" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="2"/>
+  <PaymentMethod id="4" name="EFT" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
+  <PaymentMethod id="5" name="B-Pay" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="6" name="Zero" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="5"/>
+  <PaymentMethod id="7" name="Other" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="8" name="Contra" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="7"/>
+  <PaymentMethod id="9" name="Voucher" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="8"/>
+  <PaymentMethod id="10" name="PayPal" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="11" name="Reverse" accountId="3" active="1" bankedAutomatically="0" reconcilable="1" type="10"/>
+  <PaymentMethod id="12" name="EFTPOS" accountId="3" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
 
-    <PaymentInLine accountOutId="5" amount="6330.00" createdOn="2014-10-17 22:47:53.0" id="200" invoiceId="200" modifiedOn="2014-10-17 22:47:53.0" paymentInId="200"/>
+  <PaymentIn PAYMENTDATE="2010-10-14 22:04:34.551" accountInId="3" amount="6330.00" createdOn="2014-10-17 22:47:52.0"
+             id="200" modifiedOn="2014-10-17 22:47:53.0" privateNotes="" reconciled="0" status="3" paymentMethodId="1"
+             payerId="9" source="O" administrationCentreId="200" createdByUserId="1" confirmationStatus="3"/>
 
-    <ClassCost createdOn="2014-10-17 22:44:15.0" courseClassId="204" description="Student fee" id="208" isFunding="1" modifiedOn="2014-10-17 22:44:15.0" perUnitAmountExTax="400.00" taxId="1" type="3" taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
+  <PaymentInLine accountOutId="5" amount="6330.00" createdOn="2014-10-17 22:47:53.0" id="200" invoiceId="200"
+                 modifiedOn="2014-10-17 22:47:53.0" paymentInId="200"/>
 
-    <ClassCost createdbyUserID="1" createdOn="2014-10-17 22:44:15.0" courseClassId="204" description="Wage for Four, Tutor" id="1" isFunding="2" modifiedOn="2014-10-20 14:59:46.0" type="6" contactId="5" perUnitAmountExTax="20.00" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" tutorRoleId="5"/>
-    <ClassCost createdbyUserID="1" createdOn="2014-10-17 22:44:15.0" courseClassId="204" description="Wage for Four, Tutor" id="2" isFunding="2" modifiedOn="2014-10-20 14:59:46.0" type="2" contactId="5" perUnitAmountExTax="30.00" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" tutorRoleId="6"/>
-    <ClassCost createdbyUserID="1" createdOn="2014-10-17 22:44:15.0" courseClassId="204" description="Wage for Four, Tutor" id="3" isFunding="2" modifiedOn="2014-10-20 14:59:46.0" type="1" contactId="5" perUnitAmountExTax="100.00" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" tutorRoleId="6"/>
+  <ClassCost createdOn="2014-10-17 22:44:15.0" courseClassId="204" description="Student fee" id="208" isFunding="1"
+             modifiedOn="2014-10-17 22:44:15.0" perUnitAmountExTax="400.00" taxId="1" type="3" taxAdjustment="0.00"
+             invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
 
-    <PayRate createdOn="2014-10-17 22:25:30.0" definedTutorRoleId="200" editedById="1" rate="100.0000" id="200" modifiedOn="2014-10-17 22:25:30.0" validFrom="2009-10-17 08:00:00.0" type="1" oncostRate="0.0000"/>
-    <PayRate createdOn="2014-10-17 22:26:00.0" definedTutorRoleId="201" editedById="1" rate="20.0000" id="201" modifiedOn="2014-10-17 22:26:48.0" validFrom="2009-10-17 08:00:00.0" type="2" oncostRate="0.0000"/>
-    <PayRate createdOn="2014-10-17 22:26:22.0" definedTutorRoleId="202" editedById="1" rate="30.0000" id="202" modifiedOn="2014-10-17 22:26:54.0" validFrom="2009-10-17 08:00:00.0" type="3" oncostRate="0.0000"/>
-    <PayRate createdOn="2014-10-17 22:27:19.0" definedTutorRoleId="203" editedById="1" rate="40.0000" id="203" modifiedOn="2014-10-17 22:27:19.0" validFrom="2009-10-17 08:00:00.0" type="6" oncostRate="0.0000"/>
-    <PayRate createdOn="2014-10-17 22:27:39.0" definedTutorRoleId="204" editedById="1" rate="50.0000" id="204" modifiedOn="2014-10-17 22:27:39.0" validFrom="2009-10-17 08:00:00.0" type="7" oncostRate="0.0000"/>
-    <PayRate createdOn="2014-10-17 22:29:41.0" definedTutorRoleId="205" editedById="1" rate="60.0000" id="205" modifiedOn="2014-10-17 22:29:41.0" validFrom="2009-10-17 08:00:00.0" type="6" oncostRate="0.0000"/>
+  <ClassCost createdbyUserID="1" createdOn="2014-10-17 22:44:15.0" courseClassId="204"
+             description="Wage for Four, Tutor" id="1" isFunding="2" modifiedOn="2014-10-20 14:59:46.0" type="6"
+             contactId="5" perUnitAmountExTax="20.00" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1"
+             isSunk="0" tutorRoleId="5"/>
+  <ClassCost createdbyUserID="1" createdOn="2014-10-17 22:44:15.0" courseClassId="204"
+             description="Wage for Four, Tutor" id="2" isFunding="2" modifiedOn="2014-10-20 14:59:46.0" type="2"
+             contactId="5" perUnitAmountExTax="30.00" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1"
+             isSunk="0" tutorRoleId="6"/>
+  <ClassCost createdbyUserID="1" createdOn="2014-10-17 22:44:15.0" courseClassId="204"
+             description="Wage for Four, Tutor" id="3" isFunding="2" modifiedOn="2014-10-20 14:59:46.0" type="1"
+             contactId="5" perUnitAmountExTax="100.00" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1"
+             isSunk="0" tutorRoleId="6"/>
+
+  <PayRate createdOn="2014-10-17 22:25:30.0" definedTutorRoleId="200" editedById="1" rate="100.0000" id="200"
+           modifiedOn="2014-10-17 22:25:30.0" validFrom="2009-10-17 08:00:00.0" type="1" oncostRate="0.0000"/>
+  <PayRate createdOn="2014-10-17 22:26:00.0" definedTutorRoleId="201" editedById="1" rate="20.0000" id="201"
+           modifiedOn="2014-10-17 22:26:48.0" validFrom="2009-10-17 08:00:00.0" type="2" oncostRate="0.0000"/>
+  <PayRate createdOn="2014-10-17 22:26:22.0" definedTutorRoleId="202" editedById="1" rate="30.0000" id="202"
+           modifiedOn="2014-10-17 22:26:54.0" validFrom="2009-10-17 08:00:00.0" type="3" oncostRate="0.0000"/>
+  <PayRate createdOn="2014-10-17 22:27:19.0" definedTutorRoleId="203" editedById="1" rate="40.0000" id="203"
+           modifiedOn="2014-10-17 22:27:19.0" validFrom="2009-10-17 08:00:00.0" type="6" oncostRate="0.0000"/>
+  <PayRate createdOn="2014-10-17 22:27:39.0" definedTutorRoleId="204" editedById="1" rate="50.0000" id="204"
+           modifiedOn="2014-10-17 22:27:39.0" validFrom="2009-10-17 08:00:00.0" type="7" oncostRate="0.0000"/>
+  <PayRate createdOn="2014-10-17 22:29:41.0" definedTutorRoleId="205" editedById="1" rate="60.0000" id="205"
+           modifiedOn="2014-10-17 22:29:41.0" validFrom="2009-10-17 08:00:00.0" type="6" oncostRate="0.0000"/>
 </dataset>

@@ -4,6 +4,7 @@
 
 package ish.oncourse.server.print
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.PersistentObjectI
@@ -18,20 +19,19 @@ import ish.print.transformations.PrintTransformationField
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertTrue
 
 @CompileStatic
 class PrintWorkerTest extends CayenneIshTestCase {
 
-	private DocumentService documentService
+    private DocumentService documentService
 
+    
     @BeforeEach
     void setupTest() throws Exception {
-		wipeTables()
+        wipeTables()
         InputStream st = PrintWorkerTest.class.getClassLoader().getResourceAsStream("ish/util/entityUtilTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
@@ -40,9 +40,10 @@ class PrintWorkerTest extends CayenneIshTestCase {
         executeDatabaseOperation(replacementDataSet)
     }
 
-	@Test
+    
+    @Test
     void testGetRecords() throws Exception {
-		ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
         documentService = injector.getInstance(DocumentService.class)
 
         List<Long> siteIds = Arrays.asList(1L, 2L, 3L, 4L)
@@ -61,13 +62,14 @@ class PrintWorkerTest extends CayenneIshTestCase {
         List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), null, null)
 
         for (PersistentObjectI po : records) {
-			assertTrue(po instanceof Site)
+            Assertions.assertTrue(po instanceof Site)
         }
-	}
+    }
 
-	@Test
+    
+    @Test
     void testGetRecordsWithTraverse() throws Exception {
-		ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
 
         List<Long> siteIds = Arrays.asList(1L, 2L, 3L, 4L)
 
@@ -83,19 +85,20 @@ class PrintWorkerTest extends CayenneIshTestCase {
         PrintTransformation trans = PrintTransformationsFactory.getPrintTransformationFor("Site", "Room", null)
 
         PrintWorker pw = new PrintWorker(request, cayenneService, documentService)
-        assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
-        assertEquals(trans.getTransformationFilterParamsCount(), 1)
+        Assertions.assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
+        Assertions.assertEquals(trans.getTransformationFilterParamsCount(), 1)
         List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), trans, null)
 
 
         for (PersistentObjectI po : records) {
-			assertTrue(po instanceof Room)
+            Assertions.assertTrue(po instanceof Room)
         }
-	}
+    }
 
-	@Test
+    
+    @Test
     void testGetRecordsWithFilter() throws Exception {
-		ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
 
         List<Long> siteIds = Arrays.asList(1L, 2L, 3L, 4L)
 
@@ -117,21 +120,22 @@ class PrintWorkerTest extends CayenneIshTestCase {
         request.setValueForKey(isOn.getFieldCode(), 1)
 
         PrintWorker pw = new PrintWorker(request, cayenneService, documentService)
-        assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
-        assertEquals(trans.getTransformationFilterParamsCount(), 2)
+        Assertions.assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
+        Assertions.assertEquals(trans.getTransformationFilterParamsCount(), 2)
         List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), trans, null)
 
 
         for (PersistentObjectI po : records) {
-			assertTrue(po instanceof Site)
-            assertTrue(po.getValueForKey(Site.IS_SHOWN_ON_WEB.getName()) instanceof Boolean)
-            assertTrue(((Boolean)po.getValueForKey(Site.IS_SHOWN_ON_WEB.getName())))
+            Assertions.assertTrue(po instanceof Site)
+            Assertions.assertTrue(po.getValueForKey(Site.IS_SHOWN_ON_WEB.getName()) instanceof Boolean)
+            Assertions.assertTrue(((Boolean) po.getValueForKey(Site.IS_SHOWN_ON_WEB.getName())))
         }
-	}
+    }
 
-	@Test
+    
+    @Test
     void testGetRecordsWithTraverseAndFilter() throws Exception {
-		ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
 
         List<Long> siteIds = Arrays.asList(1L, 2L, 3L, 4L)
 
@@ -152,14 +156,14 @@ class PrintWorkerTest extends CayenneIshTestCase {
         request.setValueForKey(maxSeats.getFieldCode(), 30)
 
         PrintWorker pw = new PrintWorker(request, cayenneService, documentService)
-        assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
-        assertEquals(trans.getTransformationFilterParamsCount(), 2)
+        Assertions.assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
+        Assertions.assertEquals(trans.getTransformationFilterParamsCount(), 2)
         List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), trans, null)
 
         for (PersistentObjectI po : records) {
-			assertTrue(po instanceof Room)
-            assertTrue(po.getValueForKey(Room.SEATED_CAPACITY.getName()) instanceof Number)
-            assertTrue(((Number)po.getValueForKey(Room.SEATED_CAPACITY.getName())).intValue()<30)
+            Assertions.assertTrue(po instanceof Room)
+            Assertions.assertTrue(po.getValueForKey(Room.SEATED_CAPACITY.getName()) instanceof Number)
+            Assertions.assertTrue(((Number) po.getValueForKey(Room.SEATED_CAPACITY.getName())).intValue() < 30)
         }
-	}
+    }
 }

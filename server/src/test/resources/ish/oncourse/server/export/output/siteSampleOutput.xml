@@ -3,13 +3,13 @@
   <site id='1'>
     <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
     <createdOn>2013-01-01T00:00:00Z</createdOn>
-    <drivingDirections />
+    <drivingDirections/>
     <isAdministrationCentre>false</isAdministrationCentre>
     <latitude>53.90000000</latitude>
     <longitude>27.62000000</longitude>
     <name>Site 1</name>
     <postcode>1001</postcode>
-    <publicTransportDirections />
+    <publicTransportDirections/>
     <state>NSW</state>
     <street>Main</street>
     <suburb>Sydney</suburb>
@@ -17,13 +17,13 @@
   <site id='2'>
     <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
     <createdOn>2013-01-01T00:00:00Z</createdOn>
-    <drivingDirections />
+    <drivingDirections/>
     <isAdministrationCentre>false</isAdministrationCentre>
     <latitude>-33.90000000</latitude>
     <longitude>153.17000000</longitude>
     <name>Site 2</name>
     <postcode>1002</postcode>
-    <publicTransportDirections />
+    <publicTransportDirections/>
     <state>NSW</state>
     <street>1st</street>
     <suburb>Sydney</suburb>

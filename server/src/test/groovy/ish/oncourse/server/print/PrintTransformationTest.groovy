@@ -4,6 +4,7 @@
 
 package ish.oncourse.server.print
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
@@ -24,26 +25,25 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-import static junit.framework.TestCase.*
-import static org.junit.Assert.assertNotNull
-
 @CompileStatic
 class PrintTransformationTest extends CayenneIshTestCase {
 
-	static Date before = DateUtils.addDays(new Date(), -5)
+    static Date before = DateUtils.addDays(new Date(), -5)
     static Date start = DateUtils.addDays(new Date(), -4)
     static Date within = DateUtils.addDays(new Date(), -3)
     static Date end = DateUtils.addDays(new Date(), -2)
     static Date after = DateUtils.addDays(new Date(), -1)
 
+    
     @BeforeEach
     void setupTest() throws Exception {
-		wipeTables()
+        wipeTables()
         InputStream st = PrintTransformationTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/print/printTransformationTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
@@ -57,9 +57,10 @@ class PrintTransformationTest extends CayenneIshTestCase {
         super.setup()
     }
 
-	@Test(expected = IllegalArgumentException.class)
+    
+    @Test(expected = IllegalArgumentException.class)
     void testMissingIds() {
-		ICayenneService service = (ICayenneService) injector.getInstance(ICayenneService.class)
+        ICayenneService service = (ICayenneService) injector.getInstance(ICayenneService.class)
         ObjectContext oc = service.getNewNonReplicatingContext()
 
         List<Long> ids = []
@@ -69,31 +70,33 @@ class PrintTransformationTest extends CayenneIshTestCase {
         params.put(AdditionalParameters.LOCALDATERANGE_TO.toString(), end)
 
         PrintTransformation printTransformation = PrintTransformationsFactory.getPrintTransformationFor("Account", "AccountTransaction", null)
-        assertEquals(2000, printTransformation.getBatchSize() + printTransformation.getTransformationFilterParamsCount())
-        assertEquals(printTransformation.getTransformationFilterParamsCount(), 3)
+        Assertions.assertEquals(2000, printTransformation.getBatchSize() + printTransformation.getTransformationFilterParamsCount())
+        Assertions.assertEquals(printTransformation.getTransformationFilterParamsCount(), 3)
         printTransformation.applyTransformation(oc, ids, params)
         fail()
     }
 
-	@Test
+    
+    @Test
     void testMissingParam() {
-		ICayenneService service = (ICayenneService) injector.getInstance(ICayenneService.class)
+        ICayenneService service = (ICayenneService) injector.getInstance(ICayenneService.class)
         ObjectContext oc = service.getNewNonReplicatingContext()
 
         List<Long> ids = [100L, 200L, 300L, 600L]
 
         Map<String, Object> params = new HashMap<>()
         PrintTransformation printTransformation = PrintTransformationsFactory.getPrintTransformationFor("Account", "AccountTransaction", null)
-        assertEquals(2000, printTransformation.getBatchSize() + printTransformation.getTransformationFilterParamsCount())
-        assertEquals(printTransformation.getTransformationFilterParamsCount(), 3)
+        Assertions.assertEquals(2000, printTransformation.getBatchSize() + printTransformation.getTransformationFilterParamsCount())
+        Assertions.assertEquals(printTransformation.getTransformationFilterParamsCount(), 3)
         List<? extends PersistentObjectI> result = printTransformation.applyTransformation(oc, ids, params)
-        assertEquals(9, result.size())
-        assertTrue(result.get(0) instanceof AccountTransaction)
+        Assertions.assertEquals(9, result.size())
+        Assertions.assertTrue(result.get(0) instanceof AccountTransaction)
     }
 
-	@Test
+    
+    @Test
     void testWithTimeLimits() {
-		ICayenneService service = (ICayenneService) injector.getInstance(ICayenneService.class)
+        ICayenneService service = (ICayenneService) injector.getInstance(ICayenneService.class)
         ObjectContext oc = service.getNewNonReplicatingContext()
 
         List<Long> ids = [100L, 200L, 300L, 600L]
@@ -103,27 +106,28 @@ class PrintTransformationTest extends CayenneIshTestCase {
         params.put(AdditionalParameters.LOCALDATERANGE_TO.toString(), end)
 
         PrintTransformation printTransformation = PrintTransformationsFactory.getPrintTransformationFor("Account", "AccountTransaction", null)
-        assertEquals(2000, printTransformation.getBatchSize() + printTransformation.getTransformationFilterParamsCount())
-        assertEquals(printTransformation.getTransformationFilterParamsCount(), 3)
+        Assertions.assertEquals(2000, printTransformation.getBatchSize() + printTransformation.getTransformationFilterParamsCount())
+        Assertions.assertEquals(printTransformation.getTransformationFilterParamsCount(), 3)
         List<? extends PersistentObjectI> result = printTransformation.applyTransformation(oc, ids, params)
-        assertEquals(3, result.size())
-        assertTrue(result.get(0) instanceof AccountTransaction)
+        Assertions.assertEquals(3, result.size())
+        Assertions.assertTrue(result.get(0) instanceof AccountTransaction)
 
     }
 
-	@Test
+    
+    @Test
     void testBatchSize() {
-		ICayenneService service = (ICayenneService) injector.getInstance(ICayenneService.class)
+        ICayenneService service = (ICayenneService) injector.getInstance(ICayenneService.class)
         ObjectContext oc = service.getNewNonReplicatingContext()
 
         //create payments
-		Contact contact = SelectById.query(Contact.class, 100).selectOne(oc)
-        assertNotNull(contact)
+        Contact contact = SelectById.query(Contact.class, 100).selectOne(oc)
+        Assertions.assertNotNull(contact)
         Account account = SelectById.query(Account.class, 300).selectOne(oc)
-        assertNotNull(account)
+        Assertions.assertNotNull(account)
 
-        for (int i = 0 ; i<= 2001 ;i++) {
-			PaymentIn paymentIn = oc.newObject(PaymentIn.class)
+        for (int i = 0; i <= 2001; i++) {
+            PaymentIn paymentIn = oc.newObject(PaymentIn.class)
             paymentIn.setPaymentDate(LocalDate.now())
             paymentIn.setAmount(Money.ZERO)
             paymentIn.setStatus(PaymentStatus.SUCCESS)
@@ -133,22 +137,22 @@ class PrintTransformationTest extends CayenneIshTestCase {
             paymentIn.setAccountIn(account)
         }
 
-		oc.commitChanges()
+        oc.commitChanges()
 
         List<Long> paymentIds = new ArrayList<>()
         List<PaymentIn> paymentIns = oc.performQuery(SelectQuery.query(PaymentIn.class))
         for (PaymentIn paymentIn : paymentIns) {
-			paymentIds.add(paymentIn.getId())
+            paymentIds.add(paymentIn.getId())
         }
-		Map<String, Object> params = new HashMap<>()
+        Map<String, Object> params = new HashMap<>()
         params.put(AdditionalParameters.DATERANGE_FROM.toString(), start)
         params.put(AdditionalParameters.DATERANGE_TO.toString(), new Date())
         PrintTransformation printTransformation = PrintTransformationsFactory.getPrintTransformationFor("PaymentIn", "PaymentInterface", null)
         //check batch size
-        assertEquals(2000, printTransformation.getBatchSize() + printTransformation.getTransformationFilterParamsCount())
-        assertEquals(printTransformation.getTransformationFilterParamsCount(), 3)
+        Assertions.assertEquals(2000, printTransformation.getBatchSize() + printTransformation.getTransformationFilterParamsCount())
+        Assertions.assertEquals(printTransformation.getTransformationFilterParamsCount(), 3)
         List<? extends PersistentObjectI> result = printTransformation.applyTransformation(oc, paymentIds, params)
         //check result
-		assertEquals(2002, result.size())
+        Assertions.assertEquals(2002, result.size())
     }
 }

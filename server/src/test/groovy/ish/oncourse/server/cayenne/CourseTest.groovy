@@ -4,6 +4,8 @@
 
 package ish.oncourse.server.cayenne
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.EntityRelationCartAction
 import ish.oncourse.generator.DataGenerator
@@ -11,25 +13,24 @@ import ish.oncourse.server.ICayenneService
 import ish.util.AccountUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-import static junit.framework.Assert.assertTrue
-import static junit.framework.Assert.fail
-import static junit.framework.TestCase.assertEquals
-
+@CompileStatic
 class CourseTest extends CayenneIshTestCase {
 
-	/**
-	 * test create course-course relationship, assigning relationships from inside the relation object
-	 */
-	@Test
+    /**
+     * test create course-course relationship, assigning relationships from inside the relation object
+     */
+    
+    @Test
     void testCourseCourses1() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext context = cayenneService.getNewNonReplicatingContext()
 
         FieldConfigurationScheme scheme = DataGenerator.valueOf(context).getFieldConfigurationScheme()
         //setup courses
-		Course course1 = context.newObject(Course.class)
+        Course course1 = context.newObject(Course.class)
         course1.setName("Course 1-1")
         course1.setCode("C11")
         course1.setFieldConfigurationSchema(scheme)
@@ -51,27 +52,28 @@ class CourseTest extends CayenneIshTestCase {
         courseCourseRelation.setToEntityIdentifier(Course.simpleName)
 
         try {
-			context.commitChanges()
-        } catch (Exception e) {
-            fail("the course-course relationship cannot be created.")
+            context.commitChanges()
+        } catch (Exception ignored) {
+            Assertions.fail("the course-course relationship cannot be created.")
         }
 
-		//verify the relatioships
-		assertEquals(course1.relatedToCourses.size(), 1)
-        assertEquals(course1.relatedFromCourses.size(), 0)
+        //verify the relatioships
+        Assertions.assertEquals(course1.relatedToCourses.size(), 1)
+        Assertions.assertEquals(course1.relatedFromCourses.size(), 0)
 
 
-        assertEquals(course2.relatedToCourses.size(), 0)
-        assertEquals(course2.relatedFromCourses.size(), 1)
+        Assertions.assertEquals(course2.relatedToCourses.size(), 0)
+        Assertions.assertEquals(course2.relatedFromCourses.size(), 1)
 
-        assertTrue(course1.relatedToCourses[0].equalsIgnoreContext(course2))
-        assertTrue(course2.relatedFromCourses[0].equalsIgnoreContext(course1))
+        Assertions.assertTrue(course1.relatedToCourses[0].equalsIgnoreContext(course2))
+        Assertions.assertTrue(course2.relatedFromCourses[0].equalsIgnoreContext(course1))
 
     }
 
-	@Test
+    
+    @Test
     void testCreateCourseProductRelation() {
-		ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         DataContext context = cayenneService.getNewNonReplicatingContext()
 
         Course course1 = context.newObject(Course.class)
@@ -101,19 +103,20 @@ class CourseTest extends CayenneIshTestCase {
         courseProductRelation.setToEntityAngelId(product1.id)
 
         try {
-			context.commitChanges()
-        } catch (Exception e) {
-            fail("the course-product relationship cannot be created.")
+            context.commitChanges()
+        } catch (Exception ignored) {
+            Assertions.fail("the course-product relationship cannot be created.")
         }
 
-		assertEquals(course1.relatedToCourses.size(), 0)
-        assertEquals(course1.relatedFromCourses.size(), 0)
-        assertEquals(course1.relatedProducts.size(), 1)
+        Assertions.assertEquals(course1.relatedToCourses.size(), 0)
+        Assertions.assertEquals(course1.relatedFromCourses.size(), 0)
+        Assertions.assertEquals(course1.relatedProducts.size(), 1)
 
-        assertTrue(course1.relatedToProducts[0].equalsIgnoreContext(product1))
+        Assertions.assertTrue(course1.relatedToProducts[0].equalsIgnoreContext(product1))
 
     }
 
+    
     @Test
     void testCreateProductCourseRelation() {
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
@@ -147,21 +150,22 @@ class CourseTest extends CayenneIshTestCase {
 
         try {
             context.commitChanges()
-        } catch (Exception e) {
-            fail("the course-product relationship cannot be created.")
+        } catch (Exception ignored) {
+            Assertions.fail("the course-product relationship cannot be created.")
         }
 
-        assertEquals(course.relatedCourses.size(), 0)
-        assertEquals(course.relatedToProducts.size(), 0)
-        assertEquals(course.relatedFromProducts.size(), 1)
-        assertEquals(product.relatedCourses.size(), 1)
+        Assertions.assertEquals(course.relatedCourses.size(), 0)
+        Assertions.assertEquals(course.relatedToProducts.size(), 0)
+        Assertions.assertEquals(course.relatedFromProducts.size(), 1)
+        Assertions.assertEquals(product.relatedCourses.size(), 1)
 
-        assertTrue(course.relatedFromProducts[0].equalsIgnoreContext(product))
-        assertTrue(product.relatedCourses[0].equalsIgnoreContext(course))
+        Assertions.assertTrue(course.relatedFromProducts[0].equalsIgnoreContext(product))
+        Assertions.assertTrue(product.relatedCourses[0].equalsIgnoreContext(course))
 
     }
 
 
+    
     @Test
     void testGettingRelatedEntitiesOfCourseApiMethods() {
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
@@ -189,7 +193,6 @@ class CourseTest extends CayenneIshTestCase {
         fromMainToCourse.setFromEntityAngelId(mainCourse.id)
         fromMainToCourse.setToEntityIdentifier(Course.simpleName)
         fromMainToCourse.setToEntityAngelId(toCourse.id)
-
 
 
         Course fromCourse = context.newObject(Course.class)
@@ -245,22 +248,22 @@ class CourseTest extends CayenneIshTestCase {
 
         context.commitChanges()
 
-        assertEquals(mainCourse.getRelatedCourses().size(), 2)
-        assertEquals(mainCourse.getRelatedToCourses().size(), 1)
-        assertEquals(mainCourse.getRelatedFromCourses().size(), 1)
+        Assertions.assertEquals(mainCourse.getRelatedCourses().size(), 2)
+        Assertions.assertEquals(mainCourse.getRelatedToCourses().size(), 1)
+        Assertions.assertEquals(mainCourse.getRelatedFromCourses().size(), 1)
 
-        assertEquals(mainCourse.getRelatedProducts().size(), 2)
-        assertEquals(mainCourse.getRelatedToProducts().size(), 1)
-        assertEquals(mainCourse.getRelatedFromProducts().size(), 1)
+        Assertions.assertEquals(mainCourse.getRelatedProducts().size(), 2)
+        Assertions.assertEquals(mainCourse.getRelatedToProducts().size(), 1)
+        Assertions.assertEquals(mainCourse.getRelatedFromProducts().size(), 1)
 
-        assertEquals(mainCourse.getRelatedCourses("Test relation type").size(), 2)
-        assertEquals(mainCourse.getRelatedCourses("Test relation type wrong").size(), 0)
-        assertEquals(mainCourse.getRelatedToCourses("Test relation type").size(), 1)
-        assertEquals(mainCourse.getRelatedFromCourses("Test relation type").size(), 1)
+        Assertions.assertEquals(mainCourse.getRelatedCourses("Test relation type").size(), 2)
+        Assertions.assertEquals(mainCourse.getRelatedCourses("Test relation type wrong").size(), 0)
+        Assertions.assertEquals(mainCourse.getRelatedToCourses("Test relation type").size(), 1)
+        Assertions.assertEquals(mainCourse.getRelatedFromCourses("Test relation type").size(), 1)
     }
 
 
-    private EntityRelationType getRelationType(ObjectContext context) {
+    private static EntityRelationType getRelationType(ObjectContext context) {
         context.newObject(EntityRelationType).with { it ->
             it.name = "Test relation type"
             it.toName = "To name"

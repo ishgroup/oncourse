@@ -1,5 +1,6 @@
 package ish.util
 
+import groovy.transform.CompileStatic
 import ish.messaging.ICourse
 import ish.messaging.ICourseClass
 import ish.messaging.ICourseModule
@@ -12,6 +13,7 @@ import org.mockito.Mockito
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.when
 
+@CompileStatic
 class CourseUtilTest {
 
     @Test
@@ -33,7 +35,7 @@ class CourseUtilTest {
         ICourse course = Mockito.mock(ICourse.class)
         when(course.getContext()).thenReturn(context)
         when(course.getModules()).thenReturn(Collections.emptyList())
-        when(course.getCourseClasses()).thenReturn(courseClasses)
+        when(course.getCourseClasses()).thenReturn(courseClasses as List<? extends ICourseClass>)
         when(course.isModifiedRecord()).thenReturn(false)
 
         CourseUtil.addModule(course, module, ICourseModule.class)

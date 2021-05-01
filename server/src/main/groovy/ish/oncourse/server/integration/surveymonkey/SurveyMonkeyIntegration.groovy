@@ -47,7 +47,7 @@ class SurveyMonkeyIntegration implements PluginTrait {
 	/**
 	 * Retrieves a paged list of surveys in a user's account.
 	 */
-	def getSurveyId(String surveyTitle) {
+    Object getSurveyId(String surveyTitle) {
 		def httpClient = new RESTClient(BASE_URL)
 
 		httpClient.headers['Authorization'] = "bearer ${authToken}"
@@ -65,7 +65,7 @@ class SurveyMonkeyIntegration implements PluginTrait {
 	/**
 	 * Retrieves a paged list of collectors for a survey in a user's account.
 	 */
-	def getCollectorList(String survey_id) {
+    Object getCollectorList(String survey_id) {
 		def httpClient = new RESTClient(BASE_URL)
 
 		httpClient.headers['Authorization'] = "bearer ${authToken}"
@@ -81,7 +81,7 @@ class SurveyMonkeyIntegration implements PluginTrait {
 
 	}
 
-	def getMessage(String collectorId) {
+    Object getMessage(String collectorId) {
 		def httpClient = new RESTClient(BASE_URL)
 
 		httpClient.headers['Authorization'] = "bearer ${authToken}"
@@ -100,7 +100,7 @@ class SurveyMonkeyIntegration implements PluginTrait {
 
 	}
 
-	def getRecipient(String collectorId, String messageId, String email, String firstName, String lastName) {
+    Object getRecipient(String collectorId, String messageId, String email, String firstName, String lastName) {
 		def httpClient = new RESTClient(BASE_URL)
 
 		httpClient.headers['Authorization'] = "bearer ${authToken}"
@@ -122,7 +122,7 @@ class SurveyMonkeyIntegration implements PluginTrait {
 	}
 
 
-	def send(String collectorId, String messageId) {
+    Object send(String collectorId, String messageId) {
 		String now = new Date().format("yyyy-MM-dd'T'hh:mm:ssXXX")
 		def httpClient = new RESTClient(BASE_URL)
 

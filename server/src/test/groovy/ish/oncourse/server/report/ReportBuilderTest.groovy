@@ -1,14 +1,17 @@
 package ish.oncourse.server.report
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.cayenne.Report
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
 
+@CompileStatic
 class ReportBuilderTest {
 
+    
     @Test
     void buildTest() throws Exception {
         String reportFileName = "resources/schema/referenceData/reports/ReportBuilderTest.jrxml"
@@ -16,13 +19,13 @@ class ReportBuilderTest {
         String reportXml = IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFileName))
         Report report = ReportBuilder.valueOf(reportXml).build()
 
-        assertEquals("Test Report" ,report.getName())
-        assertEquals("Test Description" ,report.getDescription())
-        assertEquals("Test Entity" ,report.getEntity())
-        assertEquals("test.key.code" ,report.getKeyCode())
-        assertEquals(true ,report.getIsVisible())
-        assertEquals("test.test;test" ,report.getSortOn())
-        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        Assertions.assertEquals("Test Report", report.getName())
+        Assertions.assertEquals("Test Description", report.getDescription())
+        Assertions.assertEquals("Test Entity", report.getEntity())
+        Assertions.assertEquals("test.key.code", report.getKeyCode())
+        Assertions.assertEquals(true, report.getIsVisible())
+        Assertions.assertEquals("test.test;test", report.getSortOn())
+        Assertions.assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->\n" +
                 "<jasperReport xmlns=\"http://jasperreports.sourceforge.net/jasperreports\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd\" name=\"TransactionDetailReport\" language=\"groovy\" pageWidth=\"595\" pageHeight=\"842\" columnWidth=\"539\" leftMargin=\"28\" rightMargin=\"28\" topMargin=\"28\" bottomMargin=\"28\" whenResourceMissingType=\"Empty\" uuid=\"bb9b77bc-db0e-4603-9203-7dcd1c50a4fd\">\n" +
                 "    <property name=\"name\" value=\"Test Report\"/>\n" +
@@ -47,6 +50,6 @@ class ReportBuilderTest {
                 "        <paragraph spacingAfter=\"9\"/>\n" +
                 "    </style>\n" +
                 "    <style name=\"header 1\" style=\"default\" forecolor=\"#4F0018\" vTextAlign=\"Middle\" fontName=\"Open Sans Light\" fontSize=\"18\" pdfFontName=\"Open Sans Light\"/>\n" +
-                "</jasperReport>\n" ,report.getReport())
+                "</jasperReport>\n", report.getReport())
     }
 }

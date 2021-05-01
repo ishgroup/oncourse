@@ -4,6 +4,8 @@
 
 package ish.oncourse.server.print
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
@@ -32,6 +34,7 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.Ignore
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -39,14 +42,13 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
-import static org.junit.Assert.*
-
 /**
  * executes multiple print jobs at the same time simulating multiple users
  */
+@CompileStatic
 @Ignore
 class ConcurrentReportPrintingTest extends CayenneIshTestCase {
-	private static final Logger logger = LogManager.getLogger()
+    private static final Logger logger = LogManager.getLogger()
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd")
 
@@ -55,9 +57,10 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
     List<String> keyCodeList = new ArrayList<>()
 
 
+    
     @BeforeEach
     void setup() throws Exception {
-		wipeTables()
+        wipeTables()
 
         InputStream st = ConcurrentReportPrintingTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/sampleData.xml")
 
@@ -72,13 +75,13 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 
         try {
-			// can only really test export templates, the other imports require window server...
-			dataPopulation.run()
+            // can only really test export templates, the other imports require window server...
+            dataPopulation.run()
         } catch (Exception e) {
-			logger.warn("fail", e)
+            logger.warn("fail", e)
             fail("could not import one of the resources " + e)
         }
-		new JRRuntimeConfig().config()
+        new JRRuntimeConfig().config()
 
 
         this.cayenneService = injector.getInstance(ICayenneService.class)
@@ -86,36 +89,37 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
         def reportsList = PluginService.getPluggableResources(ResourceType.REPORT.getResourcePath(), ResourceType.REPORT.getFilePattern())
 
         for (String reportFile : reportsList) {
-			if (reportFile.endsWith(".jrxml")) {
-				StringBuffer buffer = new StringBuffer(ResourcesUtil.readFile(reportFile))
+            if (reportFile.endsWith(".jrxml")) {
+                StringBuffer buffer = new StringBuffer(ResourcesUtil.readFile(reportFile))
 
                 String isVisible = DataPopulation.getPropertyFromXml(buffer, Report.IS_VISIBLE_PROPERTY)
 
                 if (Boolean.parseBoolean(isVisible)) {
-					String keycode = DataPopulation.getPropertyFromXml(buffer, Report.KEY_CODE_PROPERTY)
+                    String keycode = DataPopulation.getPropertyFromXml(buffer, Report.KEY_CODE_PROPERTY)
                     if (keycode.equals("ish.onCourse.banking2")) {
-						continue
+                        continue
                     }
-					keyCodeList.add(keycode)
+                    keyCodeList.add(keycode)
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 
-	/**
-	 * this test method can eb simplified (ie. testing PrintService instead), but its requried for now to test the inner doings of the classes.
-	 * @throws Exception
-	 */
-	@Test
+    /**
+     * this test method can eb simplified (ie. testing PrintService instead), but its requried for now to test the inner doings of the classes.
+     * @throws Exception
+     */
+    
+    @Test
     void testReport() throws Exception {
-		//semi randomised list of records
-		int[] reportsToTest = [4, 7, 8, 11, 15, 17, 20]
+        //semi randomised list of records
+        int[] reportsToTest = [4, 7, 8, 11, 15, 17, 20]
 
         Map<PrintRequest, PrintWorker> reportsToRun = new HashMap<>()
         ObjectContext context = cayenneService.getNewNonReplicatingContext()
 
-        for (int counter: reportsToTest) {
-			String reportCode = keyCodeList.get(counter)
+        for (int counter : reportsToTest) {
+            String reportCode = keyCodeList.get(counter)
             Report report = context.selectOne(SelectQuery.query(Report.class, Report.KEY_CODE.eq(reportCode)))
 
             final PrintRequest request = new PrintRequest()
@@ -129,66 +133,66 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
 
             String entityName = report.getEntity()
             if (entityName.indexOf('.') > 0) {
-				entityName = entityName.substring(0, entityName.indexOf("."))
+                entityName = entityName.substring(0, entityName.indexOf("."))
             }
-			Class<? extends PersistentObjectI> entityClass = EntityUtil.entityClassForName(entityName)
+            Class<? extends PersistentObjectI> entityClass = EntityUtil.entityClassForName(entityName)
 
             List<PersistentObjectI> list = new ArrayList<>()
             if (PaymentInterface.class.equals(entityClass)) {
-				list.addAll(cayenneService.getNewContext().select(SelectQuery.query(PaymentIn.class)))
+                list.addAll(cayenneService.getNewContext().select(SelectQuery.query(PaymentIn.class)))
                 list.addAll(cayenneService.getNewContext().select(SelectQuery.query(PaymentOut.class)))
 
                 request.addPrintTransformation("PaymentIn", PrintTransformationsFactory.getPrintTransformationFor(
-						"PaymentIn", "PaymentInterface", report.getKeyCode()))
+                        "PaymentIn", "PaymentInterface", report.getKeyCode()))
                 request.addPrintTransformation("PaymentOut", PrintTransformationsFactory.getPrintTransformationFor(
-						"PaymentOut", "PaymentInterface", report.getKeyCode()))
+                        "PaymentOut", "PaymentInterface", report.getKeyCode()))
             } else {
-				list.addAll(cayenneService.getNewContext().select(SelectQuery.query(entityClass)))
+                list.addAll(cayenneService.getNewContext().select(SelectQuery.query(entityClass)))
             }
-			if (list.size() == 0) {
-				logger.warn("Printing of {} failed, there is no records to print.", report.getKeyCode())
+            if (list.size() == 0) {
+                logger.warn("Printing of {} failed, there is no records to print.", report.getKeyCode())
                 return
             }
 
-			for (Object o : list) {
-				if (mapOfIds.get(o.getClass().getSimpleName()) == null) {
-					List<Long> idsToPrint = new ArrayList<>()
+            for (Object o : list) {
+                if (mapOfIds.get(o.getClass().getSimpleName()) == null) {
+                    List<Long> idsToPrint = new ArrayList<>()
                     mapOfIds.put(o.getClass().getSimpleName(), idsToPrint)
                 }
-				if (o instanceof CayenneDataObject) {
-					mapOfIds.get(o.getClass().getSimpleName()).add(((CayenneDataObject) o).getPrimaryKeyValue().longValue())
+                if (o instanceof CayenneDataObject) {
+                    mapOfIds.get(o.getClass().getSimpleName()).add(((CayenneDataObject) o).getPrimaryKeyValue().longValue())
                 }
-			}
+            }
 
-			request.setIds(mapOfIds)
+            request.setIds(mapOfIds)
 
             PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class))
 
             reportsToRun.put(request, worker)
         }
 
-		for (PrintWorker w : reportsToRun.values()) {
-			new Thread(w).start()
+        for (PrintWorker w : reportsToRun.values()) {
+            new Thread(w).start()
         }
 
-		boolean workersFinished = false
+        boolean workersFinished = false
         while (!workersFinished) {
-			int workersRunning = 0
+            int workersRunning = 0
             Thread.sleep(200)
             for (PrintWorker w : reportsToRun.values()) {
-				if (PrintResult.ResultType.IN_PROGRESS.equals(w.getResult().getResultType())) {
-					workersRunning = workersRunning + 1
+                if (PrintResult.ResultType.IN_PROGRESS.equals(w.getResult().getResultType())) {
+                    workersRunning = workersRunning + 1
                 }
-			}
-			workersFinished = workersRunning == 0
+            }
+            workersFinished = workersRunning == 0
         }
 
-            for (Map.Entry<PrintRequest, PrintWorker> e : reportsToRun.entrySet()) {
-			assertEquals(String.format("Printing failed for %s", e.getKey().getReportCode()), PrintResult.ResultType.SUCCESS, e.getValue().getResult().getResultType())
-            assertNotNull(String.format("Empty printing result for %s",  e.getKey().getReportCode()), e.getValue().getResult().getResult())
+        for (Map.Entry<PrintRequest, PrintWorker> e : reportsToRun.entrySet()) {
+            Assertions.assertEquals(String.format("Printing failed for %s", e.getKey().getReportCode()), PrintResult.ResultType.SUCCESS, e.getValue().getResult().getResultType())
+            Assertions.assertNotNull(String.format("Empty printing result for %s", e.getKey().getReportCode()), e.getValue().getResult().getResult())
 
 
-            FileUtils.writeByteArrayToFile(new File("build/test-data/concurrentReportTestOutput/"+e.getKey().getReportCode()+".pdf"), e.getValue().getResult().getResult())
+            FileUtils.writeByteArrayToFile(new File("build/test-data/concurrentReportTestOutput/" + e.getKey().getReportCode() + ".pdf"), e.getValue().getResult().getResult())
         }
-	}
+    }
 }

@@ -1,10 +1,10 @@
 package ish.oncourse.server.integration
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.oncourse.server.integration.surveymonkey.SurveyMonkeyIntegration
 
-/**
- * Created by anarut on 7/27/16.
- */
+@CompileStatic
 class SurveyMonkeyIntegrationTestHelper {
 
     static String surveyName = 'test '
@@ -26,6 +26,7 @@ class SurveyMonkeyIntegrationTestHelper {
     static String customId = '33'
 
 
+    
     static void main(String[] args) {
         def surveyMonkey = new SurveyMonkeyIntegration(
                 apiKey: apiKey,
@@ -47,7 +48,7 @@ class SurveyMonkeyIntegrationTestHelper {
             c.name == 'onCourse'
         }?.id
         if (!collector_id) {
-            collector_id  = allEmailCollectors[0]?.id
+            collector_id = allEmailCollectors[0]?.id
         }
 
         println "collector_id = ${collector_id}"

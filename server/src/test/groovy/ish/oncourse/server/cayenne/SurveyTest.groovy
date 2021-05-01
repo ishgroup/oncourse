@@ -4,6 +4,7 @@
  */
 package ish.oncourse.server.cayenne
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
@@ -14,17 +15,16 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
-
-/**
- */
+@CompileStatic
 class SurveyTest extends CayenneIshTestCase {
 
-	private ICayenneService cayenneService
+    private ICayenneService cayenneService
 
+    
     @BeforeEach
     void setup() throws Exception {
         wipeTables()
@@ -42,13 +42,12 @@ class SurveyTest extends CayenneIshTestCase {
         rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
 
         executeDatabaseOperation(rDataSet)
-
     }
 
 
+    
     @Test
-    void testSurvey()
-    {
+    void testSurvey() {
         ObjectContext context = cayenneService.getNewContext()
 
         Enrolment enrolment = context.newObject(Enrolment.class)
@@ -71,12 +70,12 @@ class SurveyTest extends CayenneIshTestCase {
 
         context.commitChanges()
 
-        Survey survey1 = SelectById.query(survey.getClass(), survey.getObjectId()).selectOne(cayenneService.getNewContext())
-        assertEquals(survey.getComment(), survey1.getComment())
-        assertEquals(survey.getCourseScore(), survey1.getCourseScore())
-        assertEquals(survey.getTutorScore(), survey1.getTutorScore())
-        assertEquals(survey.getVenueScore(), survey1.getVenueScore())
-        assertEquals(survey.getEnrolment().getId(), survey1.getEnrolment().getId())
+        Survey survey1 = SelectById.query(survey.getClass() as Class<Object>, survey.getObjectId()).selectOne(cayenneService.getNewContext()) as Survey
+        Assertions.assertEquals(survey.getComment(), survey1.getComment())
+        Assertions.assertEquals(survey.getCourseScore(), survey1.getCourseScore())
+        Assertions.assertEquals(survey.getTutorScore(), survey1.getTutorScore())
+        Assertions.assertEquals(survey.getVenueScore(), survey1.getVenueScore())
+        Assertions.assertEquals(survey.getEnrolment().getId(), survey1.getEnrolment().getId())
     }
 
 }

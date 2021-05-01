@@ -4,6 +4,8 @@
  */
 package ish.oncourse.server.cayenne
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentStatus
 import ish.math.Money
@@ -17,20 +19,21 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-import static org.junit.Assert.*
-
+@CompileStatic
 class PaymentOutTest extends CayenneIshTestCase {
 
-	private ICayenneService cayenneService
+    private ICayenneService cayenneService
 
+    
     @BeforeEach
     void setup() throws Exception {
-		wipeTables()
+        wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
         InputStream st = PaymentOutTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/ishDataContextTestDataSet.xml")
@@ -47,10 +50,11 @@ class PaymentOutTest extends CayenneIshTestCase {
         executeDatabaseOperation(rDataSet)
     }
 
-	@Test
+    
+    @Test
     void testCCPaymentOutProcessing() {
 
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
         Account accountOut = SelectById.query(Account.class, 50).selectOne(context)
         Contact payer = SelectById.query(Contact.class, 1).selectOne(context)
@@ -83,100 +87,102 @@ class PaymentOutTest extends CayenneIshTestCase {
         payment.setPersistenceState(PersistenceState.HOLLOW)
 
         // payment processor should be invoked and failed, payment should left in IN_TRANSACTION state
-		assertEquals(PaymentStatus.IN_TRANSACTION, payment.getStatus())
+        Assertions.assertEquals(PaymentStatus.IN_TRANSACTION, payment.getStatus())
 
         context.deleteObjects(payment, pol1, pol2)
 
         context.commitChanges()
     }
 
-	@Test
+    
+    @Test
     void testStatusConstraints() {
-		/**
-		 * List of allowed status changes: <br>
-		 * <ul>
-		 * <li>null -> anything</li>
-		 * <li>NEW -> anything but null</li>
-		 * <li>QUEUED -> anything but null/NEW</li>
-		 * <li>IN_TRANSACTION -> anything but null/NEW/QUEUED</li>
-		 * <li>CARD_DETAILS_REQUIRED -> anything but null/NEW/QUEUED</li>
-		 * <li>SUCCESS -> only STATUS_CANCELLED/STATUS_REFUNDED allowed</li>
-		 * <li>FAILED/FAILED_CARD_DECLINED/FAILED_NO_PLACES -> no further status change allowed</li>
-		 * <li>STATUS_CANCELLED/STATUS_REFUNDED -> no further status change allowed</li>
-		 * </ul>
-		 */
+        /**
+         * List of allowed status changes: <br>
+         * <ul>
+         * <li>null -> anything</li>
+         * <li>NEW -> anything but null</li>
+         * <li>QUEUED -> anything but null/NEW</li>
+         * <li>IN_TRANSACTION -> anything but null/NEW/QUEUED</li>
+         * <li>CARD_DETAILS_REQUIRED -> anything but null/NEW/QUEUED</li>
+         * <li>SUCCESS -> only STATUS_CANCELLED/STATUS_REFUNDED allowed</li>
+         * <li>FAILED/FAILED_CARD_DECLINED/FAILED_NO_PLACES -> no further status change allowed</li>
+         * <li>STATUS_CANCELLED/STATUS_REFUNDED -> no further status change allowed</li>
+         * </ul>
+         */
 
-		ObjectContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        ObjectContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         // allowed changes
 
-		assertFalse(checkStatusChangeAvailability(context, PaymentStatus.NEW, null))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.QUEUED))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.IN_TRANSACTION))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.SUCCESS))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.FAILED))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.FAILED_CARD_DECLINED))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.FAILED_NO_PLACES))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.NEW, null))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.QUEUED))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.IN_TRANSACTION))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.SUCCESS))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.FAILED))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.FAILED_CARD_DECLINED))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.NEW, PaymentStatus.FAILED_NO_PLACES))
 
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, null))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.NEW))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.IN_TRANSACTION))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.SUCCESS))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.FAILED))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.FAILED_CARD_DECLINED))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.FAILED_NO_PLACES))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, null))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.NEW))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.IN_TRANSACTION))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.SUCCESS))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.FAILED))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.FAILED_CARD_DECLINED))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.QUEUED, PaymentStatus.FAILED_NO_PLACES))
 
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, null))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.NEW))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.QUEUED))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.SUCCESS))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.FAILED))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.FAILED_CARD_DECLINED))
-        assertTrue(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.FAILED_NO_PLACES))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, null))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.NEW))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.QUEUED))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.SUCCESS))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.FAILED))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.FAILED_CARD_DECLINED))
+        Assertions.assertTrue(checkStatusChangeAvailability(context, PaymentStatus.IN_TRANSACTION, PaymentStatus.FAILED_NO_PLACES))
 
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, null))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.NEW))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.IN_TRANSACTION))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.QUEUED))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.FAILED))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.FAILED_CARD_DECLINED))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.FAILED_NO_PLACES))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, null))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.NEW))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.IN_TRANSACTION))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.QUEUED))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.FAILED))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.FAILED_CARD_DECLINED))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.SUCCESS, PaymentStatus.FAILED_NO_PLACES))
 
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, null))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.NEW))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.IN_TRANSACTION))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.QUEUED))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.SUCCESS))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.FAILED_CARD_DECLINED))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.FAILED_NO_PLACES))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, null))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.NEW))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.IN_TRANSACTION))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.QUEUED))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.SUCCESS))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.FAILED_CARD_DECLINED))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED, PaymentStatus.FAILED_NO_PLACES))
 
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, null))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.NEW))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.IN_TRANSACTION))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.QUEUED))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.SUCCESS))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.FAILED))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.FAILED_NO_PLACES))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, null))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.NEW))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.IN_TRANSACTION))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.QUEUED))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.SUCCESS))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.FAILED))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_CARD_DECLINED, PaymentStatus.FAILED_NO_PLACES))
 
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, null))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.NEW))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.IN_TRANSACTION))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.QUEUED))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.SUCCESS))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.FAILED_CARD_DECLINED))
-        assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.FAILED))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, null))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.NEW))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.IN_TRANSACTION))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.QUEUED))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.SUCCESS))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.FAILED_CARD_DECLINED))
+        Assertions.assertFalse(checkStatusChangeAvailability(context, PaymentStatus.FAILED_NO_PLACES, PaymentStatus.FAILED))
     }
 
-	private boolean checkStatusChangeAvailability(ObjectContext context, PaymentStatus from, PaymentStatus to) {
-		try {
-			PaymentOut payment = context.newObject(PaymentOut.class)
+    
+    private boolean checkStatusChangeAvailability(ObjectContext context, PaymentStatus from, PaymentStatus to) {
+        try {
+            PaymentOut payment = context.newObject(PaymentOut.class)
 
             payment.setStatus(from)
             payment.setStatus(to)
 
             return true
         } catch (IllegalArgumentException e) {
-			return false
+            return false
         }
-	}
+    }
 }

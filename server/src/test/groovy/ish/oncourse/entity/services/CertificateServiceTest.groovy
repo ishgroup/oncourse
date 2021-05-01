@@ -3,6 +3,7 @@
  */
 package ish.oncourse.entity.services
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Certificate
@@ -10,22 +11,22 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
 
-import static org.junit.Assert.assertEquals
-
+@CompileStatic
 class CertificateServiceTest extends CayenneIshTestCase {
-	
-	private ICayenneService cayenneService
+
+    private ICayenneService cayenneService
     private CertificateService certificateService
 
     @BeforeEach
     void setup() throws Exception {
-		wipeTables()
+        wipeTables()
 
         this.cayenneService = injector.getInstance(ICayenneService.class)
         this.certificateService = injector.getInstance(CertificateService.class)
@@ -36,26 +37,26 @@ class CertificateServiceTest extends CayenneIshTestCase {
         FlatXmlDataSet dataSet = builder.build(st)
         executeDatabaseOperation(dataSet)
     }
-	
-	@Test
+
+    @Test
     void testGetCommencedOn() throws Exception {
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
         Certificate certificate1 = SelectById.query(Certificate.class, 1).selectOne(context)
         Certificate certificate2 = SelectById.query(Certificate.class, 2).selectOne(context)
 
-        assertEquals(LocalDate.of(2013, Month.FEBRUARY, 1), certificateService.getCommencedOn(certificate1))
-        assertEquals(LocalDate.of(2012, Month.JANUARY, 1), certificateService.getCommencedOn(certificate2))
+        Assertions.assertEquals(LocalDate.of(2013, Month.FEBRUARY, 1), certificateService.getCommencedOn(certificate1))
+        Assertions.assertEquals(LocalDate.of(2012, Month.JANUARY, 1), certificateService.getCommencedOn(certificate2))
     }
 
-	@Test
+    @Test
     void testCompletedOn() throws Exception {
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
         Certificate certificate1 = SelectById.query(Certificate.class, 1).selectOne(context)
         Certificate certificate2 = SelectById.query(Certificate.class, 2).selectOne(context)
 
-        assertEquals(LocalDate.of(2013, Month.JANUARY, 2), certificateService.getCompletedOn(certificate1))
-        assertEquals(LocalDate.of(2015, Month.JANUARY, 1), certificateService.getCompletedOn(certificate2))
+        Assertions.assertEquals(LocalDate.of(2013, Month.JANUARY, 2), certificateService.getCompletedOn(certificate1))
+        Assertions.assertEquals(LocalDate.of(2015, Month.JANUARY, 1), certificateService.getCompletedOn(certificate2))
     }
 }

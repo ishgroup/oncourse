@@ -7,6 +7,7 @@ package ish.oncourse.server.modules
 import com.google.inject.Binder
 import com.google.inject.Module
 import com.google.inject.Scopes
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.oncourse.GoogleGuiceInjector
 import ish.oncourse.aql.AqlService
@@ -42,8 +43,9 @@ import org.mockito.Mockito
 @CompileStatic
 class TestModule implements Module {
 
-	private static final Logger logger = LogManager.getLogger()
+    private static final Logger logger = LogManager.getLogger()
 
+    
     @Override
     void configure(Binder binder) {
 
@@ -63,12 +65,12 @@ class TestModule implements Module {
         binder.bind(MessageService.class).in(Scopes.SINGLETON)
 
         // dummy scheduler service for tests
-		binder.bind(ISchedulerService.class).toInstance(new TestSchedulerService())
+        binder.bind(ISchedulerService.class).toInstance(new TestSchedulerService())
 
         binder.bind(GoogleGuiceInjector.class).asEagerSingleton()
 
         // entity service classes
-		binder.bind(ContactService.class).in(Scopes.SINGLETON)
+        binder.bind(ContactService.class).in(Scopes.SINGLETON)
         binder.bind(CourseClassService.class).in(Scopes.SINGLETON)
         binder.bind(StudentConcessionService.class).in(Scopes.SINGLETON)
         binder.bind(TagService.class).in(Scopes.SINGLETON)

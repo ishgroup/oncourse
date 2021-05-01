@@ -1,5 +1,7 @@
 package ish.oncourse.server.print.transformations
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.print.PrintWorker
@@ -21,6 +23,7 @@ import static org.mockito.Matchers.any
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
+@CompileStatic
 class CourseCompletionSurveyTest {
 
     private Report report
@@ -28,8 +31,9 @@ class CourseCompletionSurveyTest {
     private PrintWorker printWorker
     ICayenneService cayenneService
 
+    
     @BeforeEach
-    void before () throws IOException {
+    void before() throws IOException {
         InputStream is = CourseCompletionSurveyTest.class.getClassLoader().getResourceAsStream("reports/CourseClass/CourseCompletionSurvey.jrxml")
         report = mock(Report.class)
         when(report.getData()).thenReturn(IOUtils.toByteArray(is))
@@ -64,7 +68,7 @@ class CourseCompletionSurveyTest {
         exporter.exportReport()
     }
 
-    private List<CourseClass> getItems(){
+    private List<CourseClass> getItems() {
         List<CourseClass> classes = new ArrayList<>()
 
         for (int i = 0; i < 4; i++) {
@@ -74,6 +78,7 @@ class CourseCompletionSurveyTest {
         return classes
     }
 
+    
     CourseClass getItem(int i) {
         CourseClass courseClass = mock(CourseClass.class)
         Room room = mock(Room.class)

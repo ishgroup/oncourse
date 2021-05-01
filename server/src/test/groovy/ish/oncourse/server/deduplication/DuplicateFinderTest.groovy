@@ -1,10 +1,13 @@
 package ish.oncourse.server.deduplication
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Contact
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
+@CompileStatic
 class DuplicateFinderTest {
 
     @Test
@@ -45,12 +48,13 @@ class DuplicateFinderTest {
         assert 35062030 == finder.getHash()
     }
 
+    
     @Test
     void build() {
         def finder = new DuplicateFinder()
 
         def c = new Contact()
-        c.birthDate = new LocalDate( 1972 ,1 , 8 )
+        c.birthDate = new LocalDate(1972, 1, 8)
         finder.build(c)
         assert 183239159 == finder.getHash()
 

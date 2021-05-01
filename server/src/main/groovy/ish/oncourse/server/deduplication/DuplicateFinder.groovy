@@ -24,7 +24,7 @@ class DuplicateFinder {
 
     int[] bits = new int[32]
 
-    def build(Contact c) {
+    Collection<? extends Object> build(Contact c) {
         addToken(c.birthDate, 2)
 
         addToken(c.email,3)

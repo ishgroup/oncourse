@@ -3,15 +3,17 @@
  */
 package ish.oncourse.server.export.avetmiss8
 
+import groovy.transform.CompileStatic
 import org.junit.jupiter.api.Test
 
 import static ish.oncourse.server.export.avetmiss8.AvetmissOutput.avetmissPostCodeID
 
+@CompileStatic
 class AvetmissOutputTest {
-	@Test
+    @Test
     void testAppend() throws Exception {
 
-		AvetmissOutput line = new AvetmissOutput()
+        AvetmissOutput line = new AvetmissOutput()
         line.append(2, null as String)
         assert line.toString() == "  "
 

@@ -16,9 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-/**
- * This class needs to be Java as of October 2019 since groovy doesn't handle the @PreUpdate annotation properly
- */
 public class ChangeBankingTest extends ChangeFilterTest {
     @Test
     public void testChangeBanking() {

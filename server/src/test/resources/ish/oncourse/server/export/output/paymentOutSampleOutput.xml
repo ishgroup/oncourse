@@ -10,23 +10,23 @@
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
     <email>test@test.test</email>
-    <fax />
+    <fax/>
     <firstName>Test</firstName>
     <homePhone>331110000</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>Student</lastName>
-    <message />
+    <message/>
     <mobilePhone>331110000</mobilePhone>
-    <notes />
+    <notes/>
     <postcode>1001</postcode>
     <state>NSW</state>
     <street>Main</street>
     <suburb>Sydney</suburb>
-    <tfn />
+    <tfn/>
     <uniqueCode>ST1UNIQUE</uniqueCode>
     <workPhone>331110000</workPhone>
-    <title />
+    <title/>
     <paymentOut id='100'>
       <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
       <createdOn>2012-05-10T00:00:00Z</createdOn>
@@ -50,29 +50,29 @@
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
     <email>tutor@tutor.tutor</email>
-    <fax />
+    <fax/>
     <firstName>Test</firstName>
     <homePhone>331110001</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>Tutor</lastName>
-    <message />
+    <message/>
     <mobilePhone>331110001</mobilePhone>
-    <notes />
+    <notes/>
     <postcode>1002</postcode>
     <state>NSW</state>
     <street>1st</street>
     <suburb>Sydney</suburb>
-    <tfn />
+    <tfn/>
     <uniqueCode>TUT1UNIQUE</uniqueCode>
     <workPhone>331110001</workPhone>
-    <title />
+    <title/>
     <paymentOut id='200'>
       <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
       <createdOn>2012-05-10T00:00:00Z</createdOn>
       <amount>10.00</amount>
-      <creditCardExpiry />
-      <creditCardType />
+      <creditCardExpiry/>
+      <creditCardType/>
       <dateBanked>2013-01-01</dateBanked>
       <privateNotes>Notes...</privateNotes>
       <reconciled>false</reconciled>

@@ -38,7 +38,7 @@ class Avetmiss85Parser extends AbstractAvetmissParser {
     ]
 
     @Override
-    def parse() {
+    Map<String, String> parse() {
 
         // ------------------
         // client identifier p9

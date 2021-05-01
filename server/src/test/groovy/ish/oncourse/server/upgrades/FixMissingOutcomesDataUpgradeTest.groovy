@@ -4,6 +4,7 @@
  */
 package ish.oncourse.server.upgrades
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.EnrolmentStatus
@@ -18,71 +19,73 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-
-import static org.junit.Assert.assertEquals
 
 /**
  */
 @CompileStatic
 class FixMissingOutcomesDataUpgradeTest extends CayenneIshTestCase {
-	private static final Logger logger = LogManager.getLogger()
+    private static final Logger logger = LogManager.getLogger()
 
     private ICayenneService cayenneService
 
+    
     @BeforeEach
     void setup() throws Exception {
-		wipeTables()
+        wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
     }
 
-	@Test
+    
+    @Test
     void testDataUpgrade() throws Exception {
-		InputStream st = FixMissingOutcomesDataUpgradeTest.class.getClassLoader()
-				.getResourceAsStream("ish/oncourse/server/upgrades/atttendanceUpgradeDataSet.xml")
+        InputStream st = FixMissingOutcomesDataUpgradeTest.class.getClassLoader()
+                .getResourceAsStream("ish/oncourse/server/upgrades/atttendanceUpgradeDataSet.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
         executeDatabaseOperation(dataSet)
 
         DataContext context = this.cayenneService.getNewContext()
         List<Attendance> attendance = context.select(SelectQuery.query(Attendance.class))
-        assertEquals("there should be some attendance defined", 24, attendance.size())
+        Assertions.assertEquals("there should be some attendance defined", 24, attendance.size())
 
         fixEnrolments(context)
 
         attendance = context.select(SelectQuery.query(Attendance.class))
-        assertEquals("now there shoudl be all the attendance", 105, attendance.size())
+        Assertions.assertEquals("now there shoudl be all the attendance", 105, attendance.size())
 
         fixEnrolments(context)
 
         attendance = context.select(SelectQuery.query(Attendance.class))
-        assertEquals("now there shoudl be all the attendance", 105, attendance.size())
+        Assertions.assertEquals("now there shoudl be all the attendance", 105, attendance.size())
 
         List<Student> students = context.select(SelectQuery.query(Student.class))
 
         for (Student s : students) {
-			int expectedNumberOfAttendance = 0
+            int expectedNumberOfAttendance = 0
 
             String enrol = ""
             for (Enrolment e : s.getEnrolments()) {
-				if (!(EnrolmentStatus.STATUSES_FAILED.contains(e.getStatus()) || EnrolmentStatus.STATUSES_CANCELLATIONS.contains(e.getStatus()))) {
-					expectedNumberOfAttendance = expectedNumberOfAttendance + e.getCourseClass().getSessionsCount()
+                if (!(EnrolmentStatus.STATUSES_FAILED.contains(e.getStatus()) || EnrolmentStatus.STATUSES_CANCELLATIONS.contains(e.getStatus()))) {
+                    expectedNumberOfAttendance = expectedNumberOfAttendance + e.getCourseClass().getSessionsCount()
                     enrol = enrol + " " + e.getId()
                 }
 
-			}
-			assertEquals("student " + s.getId() + " enrolments(" + enrol + ")", expectedNumberOfAttendance, s.getAttendances().size())
+            }
+            Assertions.assertEquals("student " + s.getId() + " enrolments(" + enrol + ")", expectedNumberOfAttendance, s.getAttendances().size())
         }
 
-	}
+    }
 
-	private void fixEnrolments(ObjectContext context) {
-		SelectQuery<Enrolment> sq = SelectQuery.query(Enrolment.class)
+    
+    private void fixEnrolments(ObjectContext context) {
+        SelectQuery<Enrolment> sq = SelectQuery.query(Enrolment.class)
         List<Enrolment> enrolments = context.select(sq)
         for (Enrolment e : enrolments) {
-			e.setModifiedOn(new Date())
+            e.setModifiedOn(new Date())
         }
-		context.commitChanges()
+        context.commitChanges()
 
     }
 }

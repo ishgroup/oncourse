@@ -1,5 +1,7 @@
 package ish.oncourse.server.payroll
 
+
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PayslipPayType
 import ish.oncourse.entity.services.SessionService
@@ -12,11 +14,11 @@ import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import static junit.framework.TestCase.assertEquals
-
+@CompileStatic
 class PayrollGenerationTest extends CayenneIshTestCase {
 
     private PayrollService payrollService
@@ -25,6 +27,7 @@ class PayrollGenerationTest extends CayenneIshTestCase {
 
     private ObjectContext context
 
+    
     @BeforeEach
     void setup() {
         wipeTables()
@@ -39,6 +42,7 @@ class PayrollGenerationTest extends CayenneIshTestCase {
         context = cayenneService.newContext
     }
 
+    
     @Test
     void generatePayslipWithPayType() {
         List<Long> contactIds = [1l]
@@ -53,12 +57,13 @@ class PayrollGenerationTest extends CayenneIshTestCase {
         payrollService.generatePayslips(request)
 
         List<Payslip> payslips = ObjectSelect.query(Payslip).select(context)
-        assertEquals(payslips.size(), 1)
+        Assertions.assertEquals(payslips.size(), 1)
 
         Payslip payslip = payslips[0]
-        assertEquals("Pay type should be equal to tutor pay type", payslip.payType, PayslipPayType.CONTRACTOR)
+        Assertions.assertEquals(payslip.payType, PayslipPayType.CONTRACTOR, "Pay type should be equal to tutor pay type")
     }
 
+    
     @Test
     void generatePayslipWithoutPayType() {
         List<Long> contactIds = [2l]
@@ -73,6 +78,6 @@ class PayrollGenerationTest extends CayenneIshTestCase {
         payrollService.generatePayslips(request)
 
         List<Payslip> payslips = ObjectSelect.query(Payslip).select(context)
-        assertEquals("There are no payslips should be created for tutor without pay type", payslips.size(), 0)
+        Assertions.assertEquals(payslips.size(), 0, "There are no payslips should be created for tutor without pay type")
     }
 }

@@ -4,6 +4,8 @@
  */
 package ish.oncourse.server.cayenne
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
@@ -15,25 +17,26 @@ import ish.oncourse.server.PreferenceController
 import ish.util.AccountUtil
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.access.DataContext
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-
+@CompileStatic
 class InvoiceTest extends CayenneIshTestCase {
 
-	@BeforeEach
+    
+    @BeforeEach
     void setup() throws Exception {
-		super.setup()
+        super.setup()
         injector.getInstance(PreferenceController.class).setReplicationEnabled(true)
     }
 
-	@Test
+    
+    @Test
     void testAmountOwing() throws Exception {
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Money invoiceMoney = new Money("90").negate()
         Money paymentMoney = new Money("40")
@@ -65,12 +68,12 @@ class InvoiceTest extends CayenneIshTestCase {
         newContext.commitChanges()
 
         // check onPostAdd
-		assertNotNull(invoice.getInvoiceDate())
-        assertNotNull(invoice.getDateDue())
-        assertNotNull(invoice.getInvoiceNumber())
+        Assertions.assertNotNull(invoice.getInvoiceDate())
+        Assertions.assertNotNull(invoice.getDateDue())
+        Assertions.assertNotNull(invoice.getInvoiceNumber())
 
         // check onPostUpdate
-		assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
 
         PaymentOut paymentOut = newContext.newObject(PaymentOut.class)
         paymentOut.setPaymentDate(LocalDate.now())
@@ -88,18 +91,19 @@ class InvoiceTest extends CayenneIshTestCase {
 
         invoice.addToPaymentOutLines(paymentOutLine)
 
-        assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
 
         newContext.commitChanges()
 
         // check onPostUpdate
-		assertEquals("Check AmountOwing: ", invoiceMoney.add(paymentMoney), invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney.add(paymentMoney), invoice.getAmountOwing())
 
     }
 
-	@Test
+    
+    @Test
     void testAmountOwing2() throws Exception {
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Money invoiceMoney = new Money("90")
         Money paymentMoney = new Money("40")
@@ -131,12 +135,12 @@ class InvoiceTest extends CayenneIshTestCase {
         newContext.commitChanges()
 
         // check onPostAdd
-		assertNotNull(invoice.getInvoiceDate())
-        assertNotNull(invoice.getDateDue())
-        assertNotNull(invoice.getInvoiceNumber())
+        Assertions.assertNotNull(invoice.getInvoiceDate())
+        Assertions.assertNotNull(invoice.getDateDue())
+        Assertions.assertNotNull(invoice.getInvoiceNumber())
 
         // check onPostUpdate
-		assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
 
         PaymentIn paymentin = newContext.newObject(PaymentIn.class)
         paymentin.setPaymentDate(LocalDate.now())
@@ -153,18 +157,19 @@ class InvoiceTest extends CayenneIshTestCase {
 
         invoice.addToPaymentInLines(paymentInLine)
 
-        assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
 
         newContext.commitChanges()
 
         // check onPostUpdate
-		assertEquals("Check AmountOwing: ", invoiceMoney.subtract(paymentMoney), invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney.subtract(paymentMoney), invoice.getAmountOwing())
 
     }
 
-	@Test
+    
+    @Test
     void testAmountOwing3() throws Exception {
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Money invoiceMoney = new Money("90")
         Money paymentMoney = new Money("40")
@@ -208,27 +213,28 @@ class InvoiceTest extends CayenneIshTestCase {
 
         invoice.addToPaymentInLines(paymentInLine)
 
-        assertEquals("Check AmountOwing: ", Money.ZERO, invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", Money.ZERO, invoice.getAmountOwing())
 
         newContext.commitChanges()
 
         // check onPostUpdate
-		assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
 
         paymentin.setStatus(PaymentStatus.SUCCESS)
 
-        assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
 
         newContext.commitChanges()
 
         // check onPostUpdate
-		assertEquals("Check AmountOwing: ", invoiceMoney.subtract(paymentMoney), invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney.subtract(paymentMoney), invoice.getAmountOwing())
 
     }
 
-	@Test
+    
+    @Test
     void testAmountOwing4() throws Exception {
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Money invoiceMoney = new Money("90")
         Money paymentMoney = new Money("40")
@@ -272,12 +278,12 @@ class InvoiceTest extends CayenneIshTestCase {
 
         invoice.addToPaymentInLines(paymentInLine)
 
-        assertEquals("Check AmountOwing: ", Money.ZERO, invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", Money.ZERO, invoice.getAmountOwing())
 
         newContext.commitChanges()
 
         // check onPostUpdate
-		assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney, invoice.getAmountOwing())
 
         DataContext newContext2 = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
@@ -286,19 +292,20 @@ class InvoiceTest extends CayenneIshTestCase {
 
         paymentInOtherContext.setStatus(PaymentStatus.SUCCESS)
 
-        assertEquals("Check AmountOwing: ", invoiceMoney, invoiceInOtherContext.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney, invoiceInOtherContext.getAmountOwing())
 
         newContext2.commitChanges()
 
         // check onPostUpdate
-		assertEquals("Check AmountOwing: ", invoiceMoney.subtract(paymentMoney), invoiceInOtherContext.getAmountOwing())
+        Assertions.assertEquals("Check AmountOwing: ", invoiceMoney.subtract(paymentMoney), invoiceInOtherContext.getAmountOwing())
 
     }
 
-	@Test
+    
+    @Test
     void testNextInvoiceNumber() {
 
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
         Invoice invoice = newContext.newObject(Invoice.class)
 
@@ -313,7 +320,7 @@ class InvoiceTest extends CayenneIshTestCase {
 
         newContext.commitChanges()
 
-        assertNotNull("Check invoiceNumber ", invoice.getInvoiceNumber())
+        Assertions.assertNotNull("Check invoiceNumber ", invoice.getInvoiceNumber())
 
         Invoice invoice2 = newContext.newObject(Invoice.class)
 
@@ -328,7 +335,7 @@ class InvoiceTest extends CayenneIshTestCase {
 
         newContext.commitChanges()
 
-        assertEquals("Check invoiceNumbers ", 1, invoice2.getInvoiceNumber() - invoice.getInvoiceNumber())
+        Assertions.assertEquals("Check invoiceNumbers ", 1, invoice2.getInvoiceNumber() - invoice.getInvoiceNumber())
 
     }
 }

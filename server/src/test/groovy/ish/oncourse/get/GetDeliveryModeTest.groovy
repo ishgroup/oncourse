@@ -1,19 +1,17 @@
 package ish.oncourse.get
 
+import groovy.transform.CompileStatic
 import ish.common.types.DeliveryMode
 import ish.messaging.ICourseClass
 import ish.messaging.IEnrolment
 import ish.messaging.IOutcome
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNull
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
-/**
- * Created by anarut on 8/10/16.
- */
+@CompileStatic
 class GetDeliveryModeTest {
 
     @Test
@@ -27,7 +25,7 @@ class GetDeliveryModeTest {
         when(courseClass1.getDeliveryMode()).thenReturn(DeliveryMode.CLASSROOM)
 
         GetDeliveryMode getDeliveryMode1 = GetDeliveryMode.valueOf(outcome1)
-        assertEquals(DeliveryMode.NOT_SET, getDeliveryMode1.get())
+        Assertions.assertEquals(DeliveryMode.NOT_SET, getDeliveryMode1.get())
 
 
         IOutcome outcome2 = mock(IOutcome.class)
@@ -39,7 +37,7 @@ class GetDeliveryModeTest {
         when(courseClass2.getDeliveryMode()).thenReturn(DeliveryMode.CLASSROOM)
 
         GetDeliveryMode getDeliveryMode2 = GetDeliveryMode.valueOf(outcome2)
-        assertEquals(DeliveryMode.CLASSROOM, getDeliveryMode2.get())
+        Assertions.assertEquals(DeliveryMode.CLASSROOM, getDeliveryMode2.get())
 
 
         IOutcome outcome3 = mock(IOutcome.class)
@@ -47,6 +45,6 @@ class GetDeliveryModeTest {
         when(outcome3.getEnrolment()).thenReturn(null)
 
         GetDeliveryMode getDeliveryMode3 = GetDeliveryMode.valueOf(outcome3)
-        assertNull(getDeliveryMode3.get())
+        Assertions.assertNull(getDeliveryMode3.get())
     }
 }

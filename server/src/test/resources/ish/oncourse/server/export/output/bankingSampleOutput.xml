@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
-    <banking id='100'>
-        <reconciled>No</reconciled>
-        <date>1-1-2013 12:00:00</date>
-        <type>MANUAL</type>
-        <site />
-        <user />
-        <total>20.00</total>
-    </banking>
+  <banking id='100'>
+    <reconciled>No</reconciled>
+    <date>1-1-2013 12:00:00</date>
+    <type>MANUAL</type>
+    <site/>
+    <user/>
+    <total>20.00</total>
+  </banking>
 </data>

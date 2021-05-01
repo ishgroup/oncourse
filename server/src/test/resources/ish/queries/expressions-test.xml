@@ -1,103 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Node id="11" isVocabulary="1" isWebVisible="1" nodeType="1" name="Subjects"  specialType="1" parentId="[null]"/>
-	
-	<Node id="12" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_1" specialType="[null]" parentId="11"/>
-	<Node id="13" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_1_1" specialType="[null]" parentId="12"/>
-	<Node id="14" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_1_2" specialType="[null]" parentId="12"/>
-	<Node id="15" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_1_3" specialType="[null]" parentId="12"/>
+  <Node id="11" isVocabulary="1" isWebVisible="1" nodeType="1" name="Subjects" specialType="1" parentId="[null]"/>
 
-	<Node id="16" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2" specialType="[null]" parentId="11"/>
-	<Node id="17" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_1" specialType="[null]" parentId="16"/>
-	<Node id="18" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_1_1" specialType="[null]" parentId="17"/>
-	<Node id="19" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_1_2" specialType="[null]" parentId="17"/>
-	<Node id="20" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_2" specialType="[null]" parentId="16"/>
-	<Node id="21" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_2_1" specialType="[null]" parentId="20"/>
-	<Node id="22" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_2_2" specialType="[null]" parentId="20"/>
+  <Node id="12" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_1" specialType="[null]" parentId="11"/>
+  <Node id="13" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_1_1" specialType="[null]" parentId="12"/>
+  <Node id="14" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_1_2" specialType="[null]" parentId="12"/>
+  <Node id="15" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_1_3" specialType="[null]" parentId="12"/>
 
-	<Node id="23" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3" specialType="[null]" parentId="11"/>
-	<Node id="24" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3_1" specialType="[null]" parentId="23"/>
-	<Node id="25" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3_2" specialType="[null]" parentId="23"/>
-	<Node id="26" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3_3" specialType="[null]" parentId="23"/>
-	<Node id="27" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3_4" specialType="[null]" parentId="23"/>
-	<Node id="28" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3_5" specialType="[null]" parentId="23"/>
+  <Node id="16" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2" specialType="[null]" parentId="11"/>
+  <Node id="17" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_1" specialType="[null]" parentId="16"/>
+  <Node id="18" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_1_1" specialType="[null]"
+        parentId="17"/>
+  <Node id="19" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_1_2" specialType="[null]"
+        parentId="17"/>
+  <Node id="20" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_2" specialType="[null]" parentId="16"/>
+  <Node id="21" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_2_1" specialType="[null]"
+        parentId="20"/>
+  <Node id="22" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_2_2_2" specialType="[null]"
+        parentId="20"/>
 
-	<Node id="101" isVocabulary="1" isWebVisible="1" name="Regions" nodeType="1" specialType="[null]" parentId="[null]"/>
-	<Node id="102" isVocabulary="0" isWebVisible="1" name="Regions_1" nodeType="1" specialType="[null]" parentId="101"/>
-	<Node id="103" isVocabulary="0" isWebVisible="1" name="Regions_2" nodeType="1" specialType="[null]" parentId="101"/>
-	<Node id="104" isVocabulary="0" isWebVisible="1" name="Regions_3" nodeType="1" specialType="[null]" parentId="101"/>
-	<Node id="105" isVocabulary="0" isWebVisible="1" name="Regions_3_1" nodeType="1" specialType="[null]" parentId="105"/>
-	<Node id="106" isVocabulary="0" isWebVisible="1" name="Regions_3_2" nodeType="1" specialType="[null]" parentId="105"/>
-	<Node id="107" isVocabulary="0" isWebVisible="1" name="Regions_4" nodeType="1" specialType="[null]" parentId="101"/>
+  <Node id="23" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3" specialType="[null]" parentId="11"/>
+  <Node id="24" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3_1" specialType="[null]" parentId="23"/>
+  <Node id="25" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3_2" specialType="[null]" parentId="23"/>
+  <Node id="26" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3_3" specialType="[null]" parentId="23"/>
+  <Node id="27" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3_4" specialType="[null]" parentId="23"/>
+  <Node id="28" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects_3_5" specialType="[null]" parentId="23"/>
 
-	<NodeRequirement id="1" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="11"/>
-	
-	<NodeRequirement id="2" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="101"/>
-	<NodeRequirement id="3" entityIdentifier="9" isRequired="0" manyTermsAllowed="1" nodeId="101"/>
+  <Node id="101" isVocabulary="1" isWebVisible="1" name="Regions" nodeType="1" specialType="[null]" parentId="[null]"/>
+  <Node id="102" isVocabulary="0" isWebVisible="1" name="Regions_1" nodeType="1" specialType="[null]" parentId="101"/>
+  <Node id="103" isVocabulary="0" isWebVisible="1" name="Regions_2" nodeType="1" specialType="[null]" parentId="101"/>
+  <Node id="104" isVocabulary="0" isWebVisible="1" name="Regions_3" nodeType="1" specialType="[null]" parentId="101"/>
+  <Node id="105" isVocabulary="0" isWebVisible="1" name="Regions_3_1" nodeType="1" specialType="[null]" parentId="105"/>
+  <Node id="106" isVocabulary="0" isWebVisible="1" name="Regions_3_2" nodeType="1" specialType="[null]" parentId="105"/>
+  <Node id="107" isVocabulary="0" isWebVisible="1" name="Regions_4" nodeType="1" specialType="[null]" parentId="101"/>
 
-	<Site id="10" isAdministrationCentre="1" isShownOnWeb="1" name="Site A" localTimezone="Australia/Sydney" isVirtual="0"/>
-	<Site id="11" isAdministrationCentre="1" isShownOnWeb="1" name="Site B" localTimezone="Australia/Sydney" isVirtual="0"/>
-	<Site id="12" isAdministrationCentre="1" isShownOnWeb="1" name="Site C" localTimezone="Australia/Sydney" isVirtual="0"/>
-	<Site id="13" isAdministrationCentre="1" isShownOnWeb="1" name="Site D" localTimezone="Australia/Sydney" isVirtual="0"/>
-	<Site id="14" isAdministrationCentre="1" isShownOnWeb="1" name="Site E" localTimezone="Australia/Sydney" isVirtual="0"/>
-	<NodeRelation id="1000" entityIdentifier="9" entityRecordId="10" nodeId="102"/>
-	<NodeRelation id="1001" entityIdentifier="9" entityRecordId="11" nodeId="103"/>
-	<NodeRelation id="1002" entityIdentifier="9" entityRecordId="12" nodeId="104"/>
-	<NodeRelation id="1003" entityIdentifier="9" entityRecordId="13" nodeId="105"/>
-	<NodeRelation id="1004" entityIdentifier="9" entityRecordId="14" nodeId="106"/>
+  <NodeRequirement id="1" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="11"/>
 
-	<FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <NodeRequirement id="2" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="101"/>
+  <NodeRequirement id="3" entityIdentifier="9" isRequired="0" manyTermsAllowed="1" nodeId="101"/>
 
-	<FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <Site id="10" isAdministrationCentre="1" isShownOnWeb="1" name="Site A" localTimezone="Australia/Sydney"
+        isVirtual="0"/>
+  <Site id="11" isAdministrationCentre="1" isShownOnWeb="1" name="Site B" localTimezone="Australia/Sydney"
+        isVirtual="0"/>
+  <Site id="12" isAdministrationCentre="1" isShownOnWeb="1" name="Site C" localTimezone="Australia/Sydney"
+        isVirtual="0"/>
+  <Site id="13" isAdministrationCentre="1" isShownOnWeb="1" name="Site D" localTimezone="Australia/Sydney"
+        isVirtual="0"/>
+  <Site id="14" isAdministrationCentre="1" isShownOnWeb="1" name="Site E" localTimezone="Australia/Sydney"
+        isVirtual="0"/>
+  <NodeRelation id="1000" entityIdentifier="9" entityRecordId="10" nodeId="102"/>
+  <NodeRelation id="1001" entityIdentifier="9" entityRecordId="11" nodeId="103"/>
+  <NodeRelation id="1002" entityIdentifier="9" entityRecordId="12" nodeId="104"/>
+  <NodeRelation id="1003" entityIdentifier="9" entityRecordId="13" nodeId="105"/>
+  <NodeRelation id="1004" entityIdentifier="9" entityRecordId="14" nodeId="106"/>
 
-	<FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<Course id="10" code="AA" willowId="1" name="Test1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-	<NodeRelation id="2002" entityIdentifier="1" entityRecordId="10" nodeId="102"/>
-	<Note id="1" note="Regions_1" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-	<NoteRelation id="1" noteId="1" entityRecordId="10" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-	
-	<Course id="11" code="BB" willowId="2" name="Test2a" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-	<Course id="12" code="CC" willowId="3" name="Test2b" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-	<NodeRelation id="2003" entityIdentifier="1" entityRecordId="11" nodeId="103"/>
-	<NodeRelation id="2004" entityIdentifier="1" entityRecordId="12" nodeId="103"/>
-	<Note id="2" note="Regions_2" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-	<Note id="3" note="Regions_2" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-	<NoteRelation id="2" noteId="2" entityRecordId="11" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-	<NoteRelation id="3" noteId="3" entityRecordId="12" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+
+  <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+
+  <Course id="10" code="AA" willowId="1" name="Test1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+  <NodeRelation id="2002" entityIdentifier="1" entityRecordId="10" nodeId="102"/>
+  <Note id="1" note="Regions_1" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <NoteRelation id="1" noteId="1" entityRecordId="10" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
+                modifiedOn="2015-03-09 17:20:32.0"/>
+
+  <Course id="11" code="BB" willowId="2" name="Test2a" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+  <Course id="12" code="CC" willowId="3" name="Test2b" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+  <NodeRelation id="2003" entityIdentifier="1" entityRecordId="11" nodeId="103"/>
+  <NodeRelation id="2004" entityIdentifier="1" entityRecordId="12" nodeId="103"/>
+  <Note id="2" note="Regions_2" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Note id="3" note="Regions_2" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <NoteRelation id="2" noteId="2" entityRecordId="11" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
+                modifiedOn="2015-03-09 17:20:32.0"/>
+  <NoteRelation id="3" noteId="3" entityRecordId="12" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
+                modifiedOn="2015-03-09 17:20:32.0"/>
 
 
-	<Course id="13" code="DD" willowId="4" name="Test3" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-	<NodeRelation id="2006" entityIdentifier="1" entityRecordId="13" nodeId="27"/>
-	<Note id="4" note="Subjects_3_4" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-	<NoteRelation id="4" noteId="4" entityRecordId="13" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Course id="13" code="DD" willowId="4" name="Test3" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+  <NodeRelation id="2006" entityIdentifier="1" entityRecordId="13" nodeId="27"/>
+  <Note id="4" note="Subjects_3_4" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <NoteRelation id="4" noteId="4" entityRecordId="13" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
+                modifiedOn="2015-03-09 17:20:32.0"/>
 
 
-	<Course id="14" code="EE" willowId="5" name="Test4" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-	<NodeRelation id="2007" entityIdentifier="1" entityRecordId="14" nodeId="28"/>
-	<NodeRelation id="2008" entityIdentifier="1" entityRecordId="14" nodeId="104"/>
-	<Note id="5" note="Regions_3 Subjects_3_5" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-	<NoteRelation id="5" noteId="5" entityRecordId="14" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Course id="14" code="EE" willowId="5" name="Test4" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+  <NodeRelation id="2007" entityIdentifier="1" entityRecordId="14" nodeId="28"/>
+  <NodeRelation id="2008" entityIdentifier="1" entityRecordId="14" nodeId="104"/>
+  <Note id="5" note="Regions_3 Subjects_3_5" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <NoteRelation id="5" noteId="5" entityRecordId="14" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
+                modifiedOn="2015-03-09 17:20:32.0"/>
 
 
-	<Course id="15" code="FF" willowId="6" name="Test5" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-	<NodeRelation id="2009" entityIdentifier="1" entityRecordId="15" nodeId="20"/>
-	<Note id="6" note="Subjects_2_2" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-	<NoteRelation id="6" noteId="6" entityRecordId="15" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Course id="15" code="FF" willowId="6" name="Test5" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+  <NodeRelation id="2009" entityIdentifier="1" entityRecordId="15" nodeId="20"/>
+  <Note id="6" note="Subjects_2_2" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <NoteRelation id="6" noteId="6" entityRecordId="15" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
+                modifiedOn="2015-03-09 17:20:32.0"/>
 
-	<Course id="16" code="GG" willowId="7" name="Test6" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-	<NodeRelation id="2010" entityIdentifier="1" entityRecordId="16" nodeId="18"/>
-	<Note id="7" note="Subjects_2_1_1" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-	<NoteRelation id="7" noteId="7" entityRecordId="16" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-	
-	<Course id="17" code="HH" willowId="8" name="Test7" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-	<NodeRelation id="2011" entityIdentifier="1" entityRecordId="17" nodeId="20"/>
-	<NodeRelation id="2012" entityIdentifier="1" entityRecordId="17" nodeId="107"/>
-	<Note id="8" note="Subjects_2_2 Regions_4" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
-	<NoteRelation id="8" noteId="8" entityRecordId="17" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <Course id="16" code="GG" willowId="7" name="Test6" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+  <NodeRelation id="2010" entityIdentifier="1" entityRecordId="16" nodeId="18"/>
+  <Note id="7" note="Subjects_2_1_1" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <NoteRelation id="7" noteId="7" entityRecordId="16" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
+                modifiedOn="2015-03-09 17:20:32.0"/>
+
+  <Course id="17" code="HH" willowId="8" name="Test7" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+  <NodeRelation id="2011" entityIdentifier="1" entityRecordId="17" nodeId="20"/>
+  <NodeRelation id="2012" entityIdentifier="1" entityRecordId="17" nodeId="107"/>
+  <Note id="8" note="Subjects_2_2 Regions_4" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>
+  <NoteRelation id="8" noteId="8" entityRecordId="17" entityIdentifier="Course" createdOn="2015-03-09 17:00:51.0"
+                modifiedOn="2015-03-09 17:20:32.0"/>
 
 </dataset>

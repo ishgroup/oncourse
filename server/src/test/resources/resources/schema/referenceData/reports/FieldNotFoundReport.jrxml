@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TestFontsReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c96ccbe8-8f2d-4b11-8da0-9c0783455266">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="71"/>
-	<property name="name" value="Invalid Field Report"/>
-	<property name="entity" value="Site"/>
-	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-	<property name="versionNumber" value="1"/>
-	<property name="keyCode" value="ish.onCourse.test.simple"/>
-	<title>
-		<band height="802" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="eb5e45a2-bd0e-428e-b2d5-6b63a883230c" x="33" y="32" width="415" height="20"/>
-				<textElement>
-					<font size="14" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[$F{invalidField}]]></text>
-			</staticText>
-		</band>
-	</title>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="TestFontsReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20" uuid="c96ccbe8-8f2d-4b11-8da0-9c0783455266">
+  <property name="ireport.zoom" value="1.0"/>
+  <property name="ireport.x" value="0"/>
+  <property name="ireport.y" value="71"/>
+  <property name="name" value="Invalid Field Report"/>
+  <property name="entity" value="Site"/>
+  <property name="isSubreport" value="false"/>
+  <property name="isVisible" value="true"/>
+  <property name="versionNumber" value="1"/>
+  <property name="keyCode" value="ish.onCourse.test.simple"/>
+  <title>
+    <band height="802" splitType="Stretch">
+      <staticText>
+        <reportElement uuid="eb5e45a2-bd0e-428e-b2d5-6b63a883230c" x="33" y="32" width="415" height="20"/>
+        <textElement>
+          <font size="14" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[$F{invalidField}]]></text>
+      </staticText>
+    </band>
+  </title>
 </jasperReport>

@@ -4,94 +4,93 @@
  */
 package ish.util
 
+import groovy.transform.CompileStatic
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
-
-/**
- */
+@CompileStatic
 class TextileTest {
 
-	@Test
+    @Test
     void testSimpleText() {
-		String input = "some text"
+        String input = "some text"
         String expected = "<p>some text</p>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
 
         input = "some text with" + RuntimeUtil.LINE_SEPARATOR + "new line"
         expected = "<p>some text with<br/>new line</p>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testSimpleBold() {
-		String input = "some *bold* text"
+        String input = "some *bold* text"
         String expected = "<p>some <strong>bold</strong> text</p>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testHeader() {
-		String input = "h4. header"
+        String input = "h4. header"
         String expected = "<h4 id=\"header\">header</h4>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testSimpleLink() {
-		String input = "\"A Hyperlink\":www.ish.com.au"
+        String input = "\"A Hyperlink\":www.ish.com.au"
         String expected = "<p><a href=\"www.ish.com.au\">A Hyperlink</a></p>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testSimpleEmailLink() {
-		String input = "\"A mail to link\":mailto:test@ish.com.au"
+        String input = "\"A mail to link\":mailto:test@ish.com.au"
         String expected = "<p><a href=\"mailto:test@ish.com.au\">A mail to link</a></p>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testSimpleCode() {
-		String input = "@some code@"
+        String input = "@some code@"
         String expected = "<p><code>some code</code></p>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testSimpleBlockqoute() {
-		String input = "bq. This text will be enclosed in an HTML blockquote element."
+        String input = "bq. This text will be enclosed in an HTML blockquote element."
         String expected = "<blockquote><p>This text will be enclosed in an HTML blockquote element.</p></blockquote>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testSimpleSuperscript() {
-		String input = "Brand ^TM^"
+        String input = "Brand ^TM^"
         String expected = "<p>Brand <sup>TM</sup></p>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testSimpleSubscript() {
-		String input = "Text ~subscript~"
+        String input = "Text ~subscript~"
         String expected = "<p>Text <sub>subscript</sub></p>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testSimpleTable() {
-		String input = "|_. Header |_. Header |_. Header |" + RuntimeUtil.LINE_SEPARATOR
+        String input = "|_. Header |_. Header |_. Header |" + RuntimeUtil.LINE_SEPARATOR
         input = input + "| Cell 1 | Cell 2 | Cell 3 |" + RuntimeUtil.LINE_SEPARATOR
         input = input + "| Cell 1 | Cell 2 | Cell 3 |" + RuntimeUtil.LINE_SEPARATOR
 
@@ -99,13 +98,13 @@ class TextileTest {
         expected = expected + "<tr><td>Cell 1 </td><td>Cell 2 </td><td>Cell 3 </td></tr>"
         expected = expected + "<tr><td>Cell 1 </td><td>Cell 2 </td><td>Cell 3 </td></tr></table>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testBullets() {
 
-		String input = "* bullet one" + RuntimeUtil.LINE_SEPARATOR
+        String input = "* bullet one" + RuntimeUtil.LINE_SEPARATOR
         input = input + "* bullet two" + RuntimeUtil.LINE_SEPARATOR
         input = input + "* bullet three" + RuntimeUtil.LINE_SEPARATOR
 
@@ -115,13 +114,13 @@ class TextileTest {
         expected = expected + "<li>bullet three</li>"
         expected = expected + "</ul>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testNumberedBullets() {
 
-		String input = "# bullet 1" + RuntimeUtil.LINE_SEPARATOR
+        String input = "# bullet 1" + RuntimeUtil.LINE_SEPARATOR
         input = input + "# bullet 2" + RuntimeUtil.LINE_SEPARATOR
         input = input + "# bullet 3" + RuntimeUtil.LINE_SEPARATOR
 
@@ -131,10 +130,10 @@ class TextileTest {
         expected = expected + "<li>bullet 3</li>"
         expected = expected + "</ol>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testProcessToJasperHtml() {
         StringBuilder input =
                 new StringBuilder()
@@ -143,14 +142,14 @@ class TextileTest {
                         .append("{some textile code name:“another speaking bootcamp slider”} some text 3")
                         .append(RuntimeUtil.LINE_SEPARATOR)
         String expected = "<p>some text 1  some text 2<br/> some text 3</p>"
-        assertEquals("testing textile procesing", expected,
+        Assertions.assertEquals("testing textile procesing", expected,
                 Textile.processToJasperHtml(input.toString()).trim())
     }
 
-	@Test
+    @Test
     void testComplexText() {
 
-		String input = "some text" + RuntimeUtil.LINE_SEPARATOR
+        String input = "some text" + RuntimeUtil.LINE_SEPARATOR
         input = input + "* bullet one" + RuntimeUtil.LINE_SEPARATOR
         input = input + "* bullet two" + RuntimeUtil.LINE_SEPARATOR
         input = input + "* bullet three" + RuntimeUtil.LINE_SEPARATOR
@@ -186,12 +185,12 @@ class TextileTest {
         expected = expected + "<p><strong>lorem ipsum lorem</strong><br/>"
         expected = expected + "lorem <strong>ipsum</strong> lorem</p>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 
-	@Test
+    @Test
     void testComplex2() {
-		String input = "h4. Important information" + RuntimeUtil.LINE_SEPARATOR + RuntimeUtil.LINE_SEPARATOR
+        String input = "h4. Important information" + RuntimeUtil.LINE_SEPARATOR + RuntimeUtil.LINE_SEPARATOR
         input = input + "* So that individual needs can be met students will be learning from a self-paced manual." + RuntimeUtil.LINE_SEPARATOR
         input = input + "** The computer lab can be hot - it is recommended that you wear layers." + RuntimeUtil.LINE_SEPARATOR
         input = input + "* Children must not accompany adults to Adult Education classes." + RuntimeUtil.LINE_SEPARATOR
@@ -235,6 +234,6 @@ class TextileTest {
         expected = expected + "Brand <sup>TM</sup><br/>"
         expected = expected + "Text <sub>subscript</sub></p>"
 
-        assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
     }
 }

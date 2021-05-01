@@ -1,5 +1,7 @@
 package ish.oncourse.server.scripting.api
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.ICayenneService
@@ -18,6 +20,7 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
@@ -25,12 +28,13 @@ import org.mockito.ArgumentCaptor
 import javax.mail.Multipart
 import javax.mail.internet.InternetAddress
 
-import static junit.framework.TestCase.*
 import static org.mockito.Mockito.doNothing
 import static org.mockito.Mockito.mock
 
+@CompileStatic
 class MessageServiceTest extends CayenneIshTestCase {
 
+    
     @BeforeEach
     void setup() throws Exception {
         wipeTables()
@@ -43,6 +47,7 @@ class MessageServiceTest extends CayenneIshTestCase {
         executeDatabaseOperation(dataSet)
     }
 
+    
     @Test
     void sendMessageFromEmailTemplateTest() {
         ObjectContext context = injector.getInstance(ICayenneService).newContext
@@ -65,21 +70,22 @@ class MessageServiceTest extends CayenneIshTestCase {
         List<MessagePerson> messagePeople = ObjectSelect.query(MessagePerson).select(context)
 
 
-        assertEquals(3, messages.size())
-        assertEquals(2, messagePeople.size())
+        Assertions.assertEquals(3, messages.size())
+        Assertions.assertEquals(2, messagePeople.size())
 
         Message messageToFirstStudent = messages.find { it.messagePersons.find { it.contact.id == 1l } }
-        assertNotNull("The email would be sent to the first student!", messageToFirstStudent)
-        assertEquals("Hello Student First", messageToFirstStudent.emailSubject)
-        assertEquals("Thank you for you enrolment to our course TestCourse! Common cost is 100", messageToFirstStudent.emailBody)
-        assertEquals("&lt;p&gt; Thank you for you enrolment to our course TestCourse!&lt;br/&gt; Common cost is 100 &lt;/p&gt;", messageToFirstStudent.emailHtmlBody)
-        assertEquals("test@gmail.com", messageToFirstStudent.emailFrom)
-        assertEquals(systemUser, messageToFirstStudent.createdBy)
-        assertNull(messageToFirstStudent.creatorKey)
-        assertNull(messageToFirstStudent.smsText)
+        Assertions.assertNotNull("The email would be sent to the first student!", messageToFirstStudent)
+        Assertions.assertEquals("Hello Student First", messageToFirstStudent.emailSubject)
+        Assertions.assertEquals("Thank you for you enrolment to our course TestCourse! Common cost is 100", messageToFirstStudent.emailBody)
+        Assertions.assertEquals("&lt;p&gt; Thank you for you enrolment to our course TestCourse!&lt;br/&gt; Common cost is 100 &lt;/p&gt;", messageToFirstStudent.emailHtmlBody)
+        Assertions.assertEquals("test@gmail.com", messageToFirstStudent.emailFrom)
+        Assertions.assertEquals(systemUser, messageToFirstStudent.createdBy)
+        Assertions.assertNull(messageToFirstStudent.creatorKey)
+        Assertions.assertNull(messageToFirstStudent.smsText)
     }
 
 
+    
     @Test
     void sendMessageFromSMSTemplateTest() {
         ObjectContext context = injector.getInstance(ICayenneService).newContext
@@ -101,20 +107,21 @@ class MessageServiceTest extends CayenneIshTestCase {
         List<MessagePerson> messagePeople = ObjectSelect.query(MessagePerson).select(context)
 
 
-        assertEquals(3, messages.size())
-        assertEquals(1, messagePeople.size())
+        Assertions.assertEquals(3, messages.size())
+        Assertions.assertEquals(1, messagePeople.size())
 
         Message messageToSecondStudent = messages.find { it.messagePersons.find { it.contact.id == 2l } }
-        assertNotNull("The SMS would be sent to the second student!", messageToSecondStudent)
-        assertEquals("Hi, Student Second. Thank you!", messageToSecondStudent.smsText)
-        assertNull("The subject should be null", messageToSecondStudent.emailSubject)
-        assertNull("The textBody should be null", messageToSecondStudent.emailBody)
-        assertNull("The htmlBody should be null", messageToSecondStudent.emailHtmlBody)
-        assertNull("The email from should be null", messageToSecondStudent.emailFrom)
-        assertEquals(systemUser, messageToSecondStudent.createdBy)
-        assertNull(messageToSecondStudent.creatorKey)
+        Assertions.assertNotNull("The SMS would be sent to the second student!", messageToSecondStudent)
+        Assertions.assertEquals("Hi, Student Second. Thank you!", messageToSecondStudent.smsText)
+        Assertions.assertNull("The subject should be null", messageToSecondStudent.emailSubject)
+        Assertions.assertNull("The textBody should be null", messageToSecondStudent.emailBody)
+        Assertions.assertNull("The htmlBody should be null", messageToSecondStudent.emailHtmlBody)
+        Assertions.assertNull("The email from should be null", messageToSecondStudent.emailFrom)
+        Assertions.assertEquals(systemUser, messageToSecondStudent.createdBy)
+        Assertions.assertNull(messageToSecondStudent.creatorKey)
     }
 
+    
     @Test
     void sendSMTPMessageTest() {
         ICayenneService cayenneService = injector.getInstance(CayenneService)
@@ -141,22 +148,22 @@ class MessageServiceTest extends CayenneIshTestCase {
         messageService.sendMessage(messageSpec)
 
         MailDeliveryParam mailDeliveryParamValue = mailDeliveryParamCapture.getValue()
-        assertNotNull(mailDeliveryParamValue)
-        assertEquals("Hello World", mailDeliveryParamValue.getSubject.get())
-        assertEquals(1, mailDeliveryParamValue.getAddressesTO.get().size())
-        assertEquals(1, mailDeliveryParamValue.getAddressesCC.get().size())
-        assertEquals(1, mailDeliveryParamValue.getAddressesBCC.get().size())
+        Assertions.assertNotNull(mailDeliveryParamValue)
+        Assertions.assertEquals("Hello World", mailDeliveryParamValue.getSubject.get())
+        Assertions.assertEquals(1, mailDeliveryParamValue.getAddressesTO.get().size())
+        Assertions.assertEquals(1, mailDeliveryParamValue.getAddressesCC.get().size())
+        Assertions.assertEquals(1, mailDeliveryParamValue.getAddressesBCC.get().size())
 
-        assertNotNull(mailDeliveryParamValue.getFrom.get())
+        Assertions.assertNotNull(mailDeliveryParamValue.getFrom.get())
         InternetAddress address = mailDeliveryParamValue.getFrom.get()
-        assertEquals("fromEmail@gmail.com", address.address)
-        assertEquals("test college", address.personal)
+        Assertions.assertEquals("fromEmail@gmail.com", address.address)
+        Assertions.assertEquals("test college", address.personal)
 
-        assertNotNull(mailDeliveryParamValue.getContent.get())
+        Assertions.assertNotNull(mailDeliveryParamValue.getContent.get())
         Multipart multipart = mailDeliveryParamValue.getContent.get()
-        assertEquals("That is content.", multipart.getBodyPart(0).content)
-        assertEquals("text/plain", multipart.getBodyPart(0).contentType)
-        assertEquals("Example of attachment", multipart.getBodyPart(1).content)
-        assertEquals("text/plain", multipart.getBodyPart(1).contentType)
+        Assertions.assertEquals("That is content.", multipart.getBodyPart(0).content)
+        Assertions.assertEquals("text/plain", multipart.getBodyPart(0).contentType)
+        Assertions.assertEquals("Example of attachment", multipart.getBodyPart(1).content)
+        Assertions.assertEquals("text/plain", multipart.getBodyPart(1).contentType)
     }
 }

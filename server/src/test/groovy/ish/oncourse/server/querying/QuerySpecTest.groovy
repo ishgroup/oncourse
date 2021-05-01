@@ -1,5 +1,6 @@
 package ish.oncourse.server.querying
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Script
@@ -11,12 +12,10 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.BeforeClass
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.fail
 
 @RunWith(value = Parameterized)
 class QuerySpecTest extends CayenneIshTestCase {
@@ -27,6 +26,7 @@ class QuerySpecTest extends CayenneIshTestCase {
     private String result
     private String description
 
+    @CompileStatic
     QuerySpecTest(String entity, String description, String result, String query) {
         this.query = query
         this.entity = entity
@@ -34,6 +34,7 @@ class QuerySpecTest extends CayenneIshTestCase {
         this.description = description
     }
 
+    @CompileStatic
     @BeforeClass
     static void setup() throws Exception {
         wipeTables()
@@ -52,12 +53,13 @@ class QuerySpecTest extends CayenneIshTestCase {
     }
 
 
+    @CompileStatic
     @Parameterized.Parameters(name = "{1}: {3}")
     static Collection<String[]> data() {
         List<String[]> result = new ArrayList<>()
 
 //Query rules:
-    //1) Date:
+        //1) Date:
         // - range inclusive
         String[] dateRangeInclusive = ["CourseClass", "Date range inclusive", "[200, 202, 220, 222, 223, 224]"]
         result.add(dateRangeInclusive + "startDateTime in 2018-03-15 .. 2018-03-20")
@@ -128,7 +130,7 @@ class QuerySpecTest extends CayenneIshTestCase {
         result.add(rangeWithTimeOfDay + "startDateTime in 2018-03-15 08:00 .. 2018-03-15 19:00")
 
 
-    // 2) Enum
+        // 2) Enum
         // - match one enum
         String[] correctOneEnum = ["Enrolment", "Match one enum correct syntax", "[200, 201, 202, 203, 204]"]
         result.add(correctOneEnum + "confirmationStatus is NOT_SENT")
@@ -152,7 +154,7 @@ class QuerySpecTest extends CayenneIshTestCase {
         result.add(correctNotAnyOfEnums + "confirmationStatus not NOT_SENT, SENT")
         result.add(correctNotAnyOfEnums + "confirmationStatus not (NOT_SENT, SENT)")
 
-    // 3) Number
+        // 3) Number
         // - definite number
         result.add(["Invoice", "By definite number", "[222]", "amountOwing = 1320"].toArray() as String[])
         result.add(["Invoice", "By definite number", "[222]", "amountOwing is 1320"].toArray() as String[])
@@ -192,7 +194,7 @@ class QuerySpecTest extends CayenneIshTestCase {
         // - less or equal
         result.add(["Invoice", "Less or equals to number", "[200, 220, 221, 222, 223, 240]", "amountOwing <= 1320"].toArray() as String[])
 
-    // 4) String
+        // 4) String
         // - contains char
         result.add(["Qualification", "Contains char sequence", "[4138, 8058]", "level contains 'IV'"].toArray() as String[])
 
@@ -218,7 +220,7 @@ class QuerySpecTest extends CayenneIshTestCase {
         // - not match
         result.add(["Qualification", "Not match char sequence", "[1372, 10082, 10655, 12085]", "level not is 'Certificate IV in'"].toArray() as String[])
 
-    // 5) boolean
+        // 5) boolean
         // - true
         String[] correctTrueCondition = ["Contact", "Boolean true condition correct syntax", "[2, 3, 4, 5, 17, 18, 20, 24, 27, 28, 29]"]
         result.add(correctTrueCondition + "gender is  MALE")
@@ -234,7 +236,7 @@ class QuerySpecTest extends CayenneIshTestCase {
         result.add(correctFalseCondition + "gender != MALE")
         result.add(correctFalseCondition + "gender not is MALE")
 
-    // 6) All types
+        // 6) All types
         // - null
         String[] correctNullOrEmpty = ["Qualification", "Null or empty string condition correct syntax", "[12085]"]
         result.add(correctNullOrEmpty + "newApprenticeship = null")
@@ -308,18 +310,18 @@ class QuerySpecTest extends CayenneIshTestCase {
         script.setEnabled(true)
 
         script.setScript(
-            "    \n" +
-            "   def result = query {\n" +
-            "       entity \"${entity}\"\n" +
-            "       query \"${query}\"\n" +
-                "}\n" +
-            "\n" +
-            "   result*.id.sort()")
+                "    \n" +
+                        "   def result = query {\n" +
+                        "       entity \"${entity}\"\n" +
+                        "       query \"${query}\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "   result*.id.sort()")
 
         ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), cayenneService.getNewContext())
 
         if (result.getType() == ScriptResult.ResultType.SUCCESS)
-            assertEquals(this.result, result.getResultValue().toString())
+            Assertions.assertEquals(this.result, result.getResultValue().toString())
         else
             fail("Incorrect syntax: " + result.error)
     }
