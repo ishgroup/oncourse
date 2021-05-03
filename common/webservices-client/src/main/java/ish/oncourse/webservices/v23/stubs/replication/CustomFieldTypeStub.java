@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *       &lt;sequence&gt;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="defaultValue" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="pattern" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="mandatory" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *         &lt;element name="key" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="entityName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
@@ -37,6 +38,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "customFieldTypeStub", propOrder = {
     "name",
     "defaultValue",
+    "pattern",
     "mandatory",
     "key",
     "entityName",
@@ -50,6 +52,8 @@ public class CustomFieldTypeStub
     protected String name;
     @XmlElement(required = true)
     protected String defaultValue;
+    @XmlElement(required = true)
+    protected String pattern;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
@@ -109,6 +113,30 @@ public class CustomFieldTypeStub
      */
     public void setDefaultValue(String value) {
         this.defaultValue = value;
+    }
+
+    /**
+     * Gets the value of the pattern property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPattern() {
+        return pattern;
+    }
+
+    /**
+     * Sets the value of the pattern property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPattern(String value) {
+        this.pattern = value;
     }
 
     /**
