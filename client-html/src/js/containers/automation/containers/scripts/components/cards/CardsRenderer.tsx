@@ -26,28 +26,18 @@ const CardsRenderer = props => {
     fields,
     dispatch,
     meta: { form },
-    onValidateQuery,
     classes,
     showConfirm,
     hasUpdateAccess,
     isInternal,
-    isValidQuery,
     onInternalSaveClick,
     emailTemplates
   } = props;
 
-  const onDelete = (e, index, fieldsIns, showConfirm) => {
+  const onDelete = (e, index) => {
     e.stopPropagation();
     showConfirm(() => {
-      const component = fieldsIns.get(index);
-      if (component && component.type === "Query") {
-        const allComponents = fieldsIns.getAll();
-        allComponents.splice(index, 1);
-        if (!allComponents.some(c => c.type === "Query")) {
-          onValidateQuery(true);
-        }
-      }
-      fieldsIns.remove(index);
+      fields.remove(index);
     }, "Script component will be deleted permanently");
   };
 
@@ -100,7 +90,7 @@ const CardsRenderer = props => {
                           <ScriptCard
                             heading="Script"
                             className="mb-3"
-                            onDelete={!isInternal && hasUpdateAccess ? e => onDelete(e, index, fields, showConfirm) : null}
+                            onDelete={!isInternal && hasUpdateAccess ? e => onDelete(e, index) : null}
                             dragHandlerProps={provided.dragHandleProps}
                             expanded
                             noPadding
@@ -126,7 +116,7 @@ const CardsRenderer = props => {
                           <ScriptCard
                             heading="Query"
                             className="mb-3"
-                            onDelete={!isInternal ? e => onDelete(e, index, fields, showConfirm) : null}
+                            onDelete={!isInternal ? e => onDelete(e, index) : null}
                             dragHandlerProps={provided.dragHandleProps}
                             expanded
                             onDetailsClick={isInternal ? onInternalSaveClick : undefined}
@@ -136,8 +126,6 @@ const CardsRenderer = props => {
                               field={component}
                               name={item}
                               classes={classes}
-                              onValidateQuery={onValidateQuery}
-                              isValidQuery={isValidQuery}
                               disabled={isInternal}
                             />
                           </ScriptCard>
@@ -154,7 +142,7 @@ const CardsRenderer = props => {
                           <ScriptCard
                             heading="Message"
                             className="mb-3"
-                            onDelete={!isInternal ? e => onDelete(e, index, fields, showConfirm) : null}
+                            onDelete={!isInternal ? e => onDelete(e, index) : null}
                             dragHandlerProps={provided.dragHandleProps}
                             expanded
                             onDetailsClick={isInternal ? onInternalSaveClick : undefined}
@@ -164,8 +152,6 @@ const CardsRenderer = props => {
                               field={component}
                               name={item}
                               classes={classes}
-                              onValidateQuery={onValidateQuery}
-                              isValidQuery={isValidQuery}
                               emailTemplates={emailTemplates}
                               renderVariables={renderVariables}
                               form={form}
@@ -186,7 +172,7 @@ const CardsRenderer = props => {
                           <ScriptCard
                             heading="Report"
                             className="mb-3"
-                            onDelete={!isInternal ? e => onDelete(e, index, fields, showConfirm) : null}
+                            onDelete={!isInternal ? e => onDelete(e, index) : null}
                             dragHandlerProps={provided.dragHandleProps}
                             expanded
                             onDetailsClick={isInternal ? onInternalSaveClick : undefined}

@@ -133,7 +133,7 @@ interface Props {
   openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
   handleSubmit?: any;
   onSave?: (id: number, script: Script, method: ApiMethods, viewMode: ScriptViewMode) => void;
-  onCreate?: any;
+  onCreate?: (script: Script, viewMode: ScriptViewMode) => void;
   onDelete?: any;
   formsState?: any;
   emailTemplates?: CommonListItem[];
@@ -184,7 +184,6 @@ const ScriptsForm = React.memo<Props>(props => {
     setNextLocation
   } = props;
 
-  const [isValidQuery, setIsValidQuery] = useState<boolean>(true);
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<ScriptViewMode>("Cards");
 
@@ -212,22 +211,15 @@ const ScriptsForm = React.memo<Props>(props => {
         id: null,
         keyCode,
         name,
-      });
+      }, viewMode);
       onDialogClose();
     },
-    [values],
+    [values, viewMode],
   );
 
-  const onValidateQuery = (isValid, input?) => {
-    if (input && input.includes("${")) {
-      setIsValidQuery(true);
-      return;
-    }
-    setIsValidQuery(isValid);
-  };
 
-  const addComponent = (componentName: ScriptComponentType) => {
-    dispatch(arrayInsert(form, "components", 0, getInitComponentBody(componentName)));
+  const addComponent = async (componentName: ScriptComponentType) => {
+    dispatch(arrayInsert(form, "components", 0, await getInitComponentBody(componentName)));
   };
 
   const addImport = e => {
@@ -255,11 +247,6 @@ const ScriptsForm = React.memo<Props>(props => {
     }
   }, [values && values.id, prevId, disableRouteConfirm]);
 
-  useEffect(() => {
-    if (!isValidQuery && values && values.id !== prevId) {
-      setIsValidQuery(true);
-    }
-  }, [values && values.id, prevId, isValidQuery]);
 
   useEffect(() => {
     if (!dirty && nextLocation) {
@@ -292,7 +279,7 @@ const ScriptsForm = React.memo<Props>(props => {
       setDisableRouteConfirm(true);
 
       if (isNew) {
-        onCreate(valuesToSave);
+        onCreate(valuesToSave, viewMode);
         return;
       }
 
@@ -304,7 +291,7 @@ const ScriptsForm = React.memo<Props>(props => {
         onSave(valuesToSave.id, valuesToSave, "PUT", viewMode);
       }
     },
-    [formsState, isNew, isSystemTrigger, values],
+    [formsState, isNew, isSystemTrigger, values, viewMode],
   );
 
   const toogleViewMode = () => {
@@ -404,7 +391,7 @@ const ScriptsForm = React.memo<Props>(props => {
               />
 
               <FormSubmitButton
-                disabled={!dirty || !isValidQuery}
+                disabled={!dirty || invalid}
                 invalid={invalid}
               />
             </Grid>
@@ -467,12 +454,10 @@ const ScriptsForm = React.memo<Props>(props => {
                       component={CardsRenderer}
                       hasUpdateAccess={hasUpdateAccess}
                       dispatch={dispatch}
-                      onValidateQuery={onValidateQuery}
                       showConfirm={openConfirm}
                       classes={classes}
                       rerenderOnEveryChange
                       isInternal={isInternal}
-                      isValidQuery={isValidQuery}
                       onInternalSaveClick={onInternalSaveClick}
                       emailTemplates={emailTemplates}
                     />

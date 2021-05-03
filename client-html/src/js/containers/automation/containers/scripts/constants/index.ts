@@ -35,12 +35,16 @@ export const closureSplitRegexp = /CLOSURE-\w+-\d+/g;
 
 export const closureBodyRegexp = /{((?:[^{}]|{[^}]*})*)}/;
 
-const getBodyEntries = body => body.match(closureBodyRegexp)[0]?.match(/(\w+\s?["']?.+["']?\n)+/g);
+const getBodyEntries = body => {
+  const bodyMatch = body.match(closureBodyRegexp);
+  const entries = Array.isArray(bodyMatch) ? bodyMatch[0].match(/(\w+\s?["']?.+["']?\n)+/g) : [];
+  return Array.isArray(entries) ? entries : [];
+};
 
 export const getQueryTemplate = (entity: string, query: string, queryClosureReturnValue: string) =>
   `\n${queryClosureReturnValue} = query {
     entity "${entity || ""}"
-    query "${query?.replace(new RegExp("\"","g"), '\\"') || ""}"
+    query "${query?.replace(new RegExp("\"", "g"), '\\"') || ""}"
   }\n\n`;
 
 export const getQueryComponent = (body: string): ScriptComponent => {

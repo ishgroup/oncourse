@@ -21,12 +21,21 @@ const records = Object.keys(Entities)
 
 const QueryCardContent = props => {
   const {
-    field, name, classes, onValidateQuery, isValidQuery, disabled
+    field, name, classes, disabled
   } = props;
 
   const [queryResultsPending, setQueryResultsPending] = useState(false);
   const [hideQueryResults, setQueryHideResults] = useState(false);
   const [queryResults, setQueryResults] = useState(0);
+  const [isValidQuery, setIsValidQuery] = useState(true);
+
+  const onValidateQuery = (isValid, input?) => {
+    if (input && input.includes("${")) {
+      setIsValidQuery(true);
+      return;
+    }
+    setIsValidQuery(isValid);
+  };
 
   const debounseSearch = useCallback<any>(
     debounce((isValid, entity, query, queryResultsPending) => {
