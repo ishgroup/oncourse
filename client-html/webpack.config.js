@@ -145,8 +145,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
         new webpack.SourceMapDevToolPlugin({
           filename: `[file].map`,
           test: /^[a-zA-Z-]*.js/,
-          exclude: [/vendor/],
-          noSources: true,
+          exclude: [/vendor/]
         }),
         new webpack.EnvironmentPlugin({
           RELEASE_VERSION: BUILD_NUMBER,
