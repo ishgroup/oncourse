@@ -429,6 +429,7 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="defaultValue" type="VARCHAR" length="32000"/>
+		<db-attribute name="pattern" type="VARCHAR" length="128"/>
 		<db-attribute name="entityName" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="fieldKey" type="VARCHAR" length="200"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -1923,6 +1924,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="defaultValue" type="java.lang.String" db-attribute-path="defaultValue"/>
 		<obj-attribute name="entityName" type="java.lang.String" db-attribute-path="entityName"/>
+		<obj-attribute name="pattern" type="java.lang.String" db-attribute-path="pattern"/>
 		<obj-attribute name="isMandatory" type="java.lang.Boolean" db-attribute-path="isMandatory"/>
 		<obj-attribute name="key" type="java.lang.String" db-attribute-path="fieldKey"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
