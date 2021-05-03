@@ -13,7 +13,10 @@ if (typeof jest === 'undefined' && window.location.protocol !== "file:" && proce
     appVersion:  String(process.env.BUILD_NUMBER),
     releaseStage: process.env.NODE_ENV,
     onError (event) {
-      return !(!event.errors.length || !event.errors[0].stacktrace.some(s => s.file.includes("dynamic.js")));
+      return !(!event.errors.length
+        || !event.errors[0].stacktrace.some(s => s.file.includes("dynamic.js"))
+        || event.errors[0].stacktrace.some(s => s.file.includes("gtm.js"))
+      );
     },
   });
 } else {
