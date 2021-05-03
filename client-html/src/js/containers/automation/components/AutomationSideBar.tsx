@@ -47,23 +47,6 @@ const AutomationSideBar = React.memo<Props>(
     pdfReports,
     pdfBackgrounds
   }) => {
-    // const [activeLink, setActiveLink] = useState(false);
-
-    // const isActiveLink = useCallback(
-    //   match => {
-    //     if (match && !activeLink) {
-    //       setActiveLink(!activeLink);
-    //       return true;
-    //     }
-    //     if (!match && activeLink) {
-    //       setActiveLink(!activeLink);
-    //       return true;
-    //     }
-    //     return false;
-    //   },
-    //   [activeLink]
-    // );
-
     const integrationLinkCondition = useCallback(int => `/automation/integrations/edit/${int.type}/${int.name}`, []);
 
     const sharedProps = useMemo<SidebarSharedProps>(() => ({
@@ -72,12 +55,6 @@ const AutomationSideBar = React.memo<Props>(
 
     return (
       <div className={className}>
-        {/* <NavLink className={"link"} isActive={isActiveLink}> */}
-        {/* <MenuItem button disableGutters className="heading listHeadingPadding" selected={activeLink}> */}
-        {/* Settings */}
-        {/* </MenuItem> */}
-        {/* </NavLink> */}
-
         <CollapseMenuList
           name="Import Templates"
           basePath="/automation/import-templates/"
@@ -106,8 +83,6 @@ const AutomationSideBar = React.memo<Props>(
           sharedProps={sharedProps}
           ItemIcon={LockOutlined}
           defaultCollapsed
-          // match={match}
-          // disablePadding
         />
 
         <CollapseMenuList
@@ -133,7 +108,7 @@ const AutomationSideBar = React.memo<Props>(
         <CollapseMenuList
           name="Integrations"
           basePath="/automation/integrations"
-          plusIconFullPath="/automation/integrations"
+          plusIconFullPath="/automation/integrations/list"
           linkCondition={integrationLinkCondition}
           data={integrations}
           sharedProps={sharedProps}
