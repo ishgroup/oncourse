@@ -484,5 +484,16 @@
 			<column name="grade" type="DECIMAL(6,2)"/>
 		</addColumn>
 	</changeSet>
+
+	<changeSet id="40" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="pattern" tableName="CustomFieldType"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="CustomFieldType">
+			<column name="pattern" type="VARCHAR(128)"/>
+		</addColumn>
+	</changeSet>
 	
 </databaseChangeLog>
