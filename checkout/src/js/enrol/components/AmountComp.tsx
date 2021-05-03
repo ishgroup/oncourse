@@ -59,7 +59,7 @@ class AmountComp extends React.Component<Props> {
 
           {(amount && currentTab !== Tabs.corporatePass) && amount.credit !== 0 && <Credit credit={amount.credit}/> }
 
-          {(amount && currentTab !== Tabs.corporatePass) && (amount.voucherPayments.length !== 0 || amount.credit !== 0)
+          {(amount && currentTab !== Tabs.corporatePass) && ((amount.voucherPayments && amount.voucherPayments.length !== 0) || amount.credit !== 0)
           && amount.ccPayment !== 0 && <CCPayment credit={amount.ccPayment}/> }
 
           {(amount && currentTab !== Tabs.corporatePass) &&
