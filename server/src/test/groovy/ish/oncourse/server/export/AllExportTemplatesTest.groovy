@@ -44,8 +44,7 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
     private static final String SS_BULK_UPLOAD_KEYCODE = "ish.onCourse.ssBulkUpload.csv"
     private static final String LINE_SEPARATOR = StringUtils.LF
 
-    @BeforeEach
-    void setup() {
+    void setup(String testDataFile) {
         wipeTables()
 
         // set default timezone to UTC to receive same export output regardless of
@@ -115,7 +114,8 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
 
     @ParameterizedTest(name = "{1}-{0}")
     @MethodSource("values")
-    void testExport(String keyCode, String entityName, dataSet, output) throws Exception {
+    void testExport(String keyCode, String entityName, String dataSet, output) throws Exception {
+        setup(dataSet)
         // exclude exports for Script entity - IshTestCase updates scripts from resources after table wipe
         if (entityName != "Script") {
             ExportParameter param = new ExportParameter()
