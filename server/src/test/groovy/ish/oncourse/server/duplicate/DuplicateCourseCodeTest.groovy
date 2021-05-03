@@ -4,6 +4,7 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Course
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.Select
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -55,7 +56,7 @@ class DuplicateCourseCodeTest {
     @Test
     void testCourseCodeDuplication2() throws Exception {
         String oldCourseCode = "Code"
-        when(context.select(any())).thenReturn(new ArrayList<>())
+        when(context.select(any(Select))).thenReturn(new ArrayList<>())
 
         when(oldCourse.getCode()).thenReturn(oldCourseCode)
         DuplicateCourseCode duplicateCourseCode = DuplicateCourseCode.valueOf(oldCourse)

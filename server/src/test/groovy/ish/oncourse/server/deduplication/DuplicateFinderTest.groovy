@@ -54,7 +54,7 @@ import java.time.LocalDate
         def finder = new DuplicateFinder()
 
         def c = new Contact()
-        c.birthDate = new LocalDate(1972, 1, 8)
+        c.birthDate = LocalDate.parse('1972-01-08')
         finder.build(c)
         assert 183239159 == finder.getHash()
 
