@@ -16,6 +16,7 @@ class CustomFieldTypeUpdater extends AbstractAngelUpdater<CustomFieldTypeStub, C
 
 		entity.setName(stub.getName())
 		entity.setDefaultValue(stub.getDefaultValue())
+		entity.setPattern(stub.getPattern())
 		entity.setIsMandatory(stub.isMandatory())
 		entity.setKey(stub.getKey())
 

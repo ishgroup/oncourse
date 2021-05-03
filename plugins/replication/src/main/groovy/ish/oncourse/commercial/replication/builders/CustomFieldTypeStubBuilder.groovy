@@ -18,6 +18,7 @@ class CustomFieldTypeStubBuilder extends AbstractAngelStubBuilder<CustomFieldTyp
 
 		stub.setName(entity.getName())
 		stub.setDefaultValue(entity.getDefaultValue())
+		stub.setPattern(entity.getPattern())
 		stub.setMandatory(entity.getIsMandatory())
 		stub.setKey(entity.getKey())
 
