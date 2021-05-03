@@ -89,6 +89,7 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
                                         EntityRelationDao.getRelatedTo(articleProduct.context, Product.simpleName, articleProduct.id).collect { toRestToEntityRelation(it) })
             articleProductDTO.createdOn = articleProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             articleProductDTO.modifiedOn = articleProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
+            articleProductDTO.customFields = articleProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             articleProductDTO
         }
     }

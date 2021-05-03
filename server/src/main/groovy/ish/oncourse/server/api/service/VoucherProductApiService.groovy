@@ -108,6 +108,7 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                     EntityRelationDao.getRelatedTo(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestToEntityRelation(it) })
             voucherProductDTO.createdOn = voucherProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             voucherProductDTO.modifiedOn = voucherProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
+            voucherProductDTO.customFields = voucherProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             voucherProductDTO
         }
     }
