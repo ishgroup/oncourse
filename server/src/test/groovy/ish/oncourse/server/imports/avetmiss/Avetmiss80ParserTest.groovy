@@ -1,7 +1,5 @@
 package ish.oncourse.server.imports.avetmiss
 
-import groovy.mock.interceptor.MockFor
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.common.types.AvetmissStudentDisabilityType
 import ish.common.types.AvetmissStudentPriorEducation
@@ -18,6 +16,7 @@ import static ish.common.types.AvetmissStudentEnglishProficiency.VERY_WELL
 import static ish.common.types.AvetmissStudentIndigenousStatus.NEITHER
 import static ish.common.types.AvetmissStudentLabourStatus.PART_TIME
 import static ish.common.types.AvetmissStudentSchoolLevel.COMPLETED_YEAR_10
+import static org.mockito.Mockito.*
 
 @CompileStatic
 class Avetmiss80ParserTest {
@@ -25,20 +24,19 @@ class Avetmiss80ParserTest {
     private country
 
     
-    private Avetmiss80Parser getParser(String text) {
-        MockFor contextMock = new MockFor(ObjectContext)
-        language = new Language()
-        country = new Country()
+    private static Avetmiss80Parser getParser(String text) {
+        
+        ObjectContext contextMock = mock(ObjectContext)
+        Language language = new Language()
+        Country country = new Country()
+        AvetmissImportService parsersMock = mock(AvetmissImportService)
+        when(parsersMock.getCountryBy(5204)).thenReturn(country)
 
-        MockFor parsersMock = new MockFor(AvetmissImportService)
-        parsersMock.ignore(~'parseNames')
-        parsersMock.ignore(~'parseHighestSchoolLevel')
-        parsersMock.ignore.getCountryBy { if (it == 5204) return country }
-        parsersMock.ignore.getLanguageBy { if (it == 6511) return language }
+        when(parsersMock.getLanguageBy(6511)).thenReturn(language)
 
         InputLine line = new InputLine(text)
-        Avetmiss80Parser parser = Avetmiss80Parser.valueOf(line, 0, contextMock.proxyDelegateInstance())
-        parser.service = parsersMock.proxyDelegateInstance()
+        Avetmiss80Parser parser = Avetmiss80Parser.valueOf(line, 0, contextMock)
+        parser.service = parsersMock
         return parser
     }
 
@@ -71,7 +69,7 @@ class Avetmiss80ParserTest {
                 isStillAtSchool    : true,
                 englishProficiency : VERY_WELL,
         ]
-
-        Assertions.assertEquals("Wrong values:" + expected*.key.findAll { expected[it] != result[it] }, expected, result)
+        
+        Assertions.assertEquals(expected, result,"Wrong values:" + expected*.key.findAll { expected[it] != result[it] })
     }
 }

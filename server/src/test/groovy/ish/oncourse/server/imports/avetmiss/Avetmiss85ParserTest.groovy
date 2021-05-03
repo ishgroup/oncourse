@@ -1,6 +1,5 @@
 package ish.oncourse.server.imports.avetmiss
 
-import groovy.mock.interceptor.MockFor
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Country
@@ -9,24 +8,28 @@ import org.apache.cayenne.ObjectContext
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
+
 @CompileStatic
 class Avetmiss85ParserTest {
-    private Language language = new Language()
-    private Country country = new Country()
+
 
     @CompileDynamic
     private Avetmiss85Parser getParser(String text) {
-        MockFor contextMock = new MockFor(ObjectContext)
 
-        MockFor parsersMock = new MockFor(AvetmissImportService)
-        parsersMock.ignore(~'parseNames')
-        parsersMock.ignore(~'parseHighestSchoolLevel')
-        parsersMock.ignore.getCountryBy { if (it == 5204) return country }
-        parsersMock.ignore.getLanguageBy { if (it == 6511) return language }
+        ObjectContext contextMock = mock(ObjectContext)
+        Language language = new Language()
+        Country country = new Country()
+        AvetmissImportService parsersMock = mock(AvetmissImportService)
+        when(parsersMock.getCountryBy(5204)).thenReturn(country)
+
+        when(parsersMock.getLanguageBy(6511)).thenReturn(language)
+
 
         InputLine line = new InputLine(text)
-        Avetmiss85Parser parser = Avetmiss85Parser.valueOf(line, 0, contextMock.proxyDelegateInstance())
-        parser.service = parsersMock.proxyDelegateInstance()
+        Avetmiss85Parser parser = Avetmiss85Parser.valueOf(line, 0, contextMock)
+        parser.service = parsersMock
         return parser
     }
 
