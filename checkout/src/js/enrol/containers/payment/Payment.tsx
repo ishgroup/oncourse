@@ -8,12 +8,12 @@ import {addCode, toggleRedeemVoucher, updatePayNow} from "../../actions/Actions"
 
 const PropsBy = (state: IshState): any => {
   return {
-    contacts: Object.values(state.checkout.contacts.entities.contact),
+    contacts: Object.values(state?.checkout?.contacts?.entities?.contact || {}),
     amount: state.checkout.amount,
     currentTab: state.checkout.payment.currentTab,
     redeemVouchers: state.checkout.redeemVouchers,
     paymentForm: <PaymentForm/>,
-    promotions:  Object.values(state.cart.promotions.entities),
+    promotions:  Object.values(state?.cart?.promotions?.entities || {}),
   };
 };
 
