@@ -23,7 +23,7 @@ export const EpicUpdateEnrolmentFields: Epic<any, any> = (action$: ActionsObserv
     if (state.form[form] && state.form[form].values) {
 
       const values = state.form[form].values;
-      const headings = state.checkout.summary.entities[type][form].fieldHeadings;
+      const headings = state.checkout.summary.entities[type][form]?.fieldHeadings || [];
 
       headings.forEach(h => {
         h.fields.forEach((f: Field) => {
