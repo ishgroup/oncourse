@@ -204,7 +204,7 @@ abstract class CayenneIshTestCase extends IshTestCase {
         DbRelationship circularDependencyRelationship = datamap.getDbEntity("Account").getRelationship("tax")
         datamap.getDbEntity("Account").removeRelationship(circularDependencyRelationship.getName())
 
-        DbGenerator generator = new DbGenerator(jdbcAdapter, datamap, Collections.emptyList(), domain, jdbcEventLogger)
+        DbGenerator generator = new DbGenerator(jdbcAdapter, datamap, Collections.emptyList()  as Collection<DbEntity>, domain, jdbcEventLogger)
         generator.setShouldCreateTables(true)
         generator.setShouldCreateFKConstraints(true)
         generator.setShouldCreatePKSupport(false)

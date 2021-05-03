@@ -43,7 +43,7 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
                 .select(cayenneService.newContext)
         Assertions.assertTrue(accounts.size() > 2)
 
-        AccountTransactionRequest request = AccountTransactionRequest.valueOf(new Money(70), accounts[0].id, accounts[1].id, LocalDate.now())
+        AccountTransactionRequest request = AccountTransactionRequest.valueOf(new Money(70,0), accounts[0].id, accounts[1].id, LocalDate.now())
         accountTransactionService.createManualTransactions(request)
 
         List<AccountTransaction> after = ObjectSelect.query(AccountTransaction)

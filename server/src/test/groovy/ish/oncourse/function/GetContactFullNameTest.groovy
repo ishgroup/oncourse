@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource
 class GetContactFullNameTest {
 
     static Collection<Arguments> values() {
-        Object[][] data = [
+       Object[][] data = [
                 ["Steve Rogers", "Steve", null, "Rogers", false, true],
                 ["Rogers, Steve", "Steve", null, "Rogers", false, false],
                 ["Steve Joseph Rogers", "Steve", "Joseph", "Rogers", false, true],
@@ -18,7 +18,8 @@ class GetContactFullNameTest {
                 ["Steve", "Steve", null, "Steve", false, true],
                 ["Steve", "Steve", null, "Steve", false, false],
                 ["Rogers", "Steve", null, "Rogers", true, true]
-        ]
+        ] as Object[][]
+        
         Collection<Arguments> resultData = new ArrayList<>()
         for (Object[] test : data) {
             resultData.add(Arguments.of(test[0], test[1], test[2], test[3], test[4], test[5]))

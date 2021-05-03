@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
-class DuplicateFinderTest {
+        class DuplicateFinderTest {
 
     @Test
     void ngram() {

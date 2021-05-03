@@ -33,6 +33,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.testng.asserts.Assertion
 
 import java.text.SimpleDateFormat
 
@@ -86,7 +87,7 @@ class InvoiceLineTest extends CayenneIshTestCase {
             // in this case the default tax will be applied and exception wont be thrown
             return
         }
-        fail("No exception thrown")
+        Assertions.fail("No exception thrown")
         // this actually might not be an issue, just added a test because there are parts of code which rely on the order of setting those fields.
 
     }
@@ -107,7 +108,7 @@ class InvoiceLineTest extends CayenneIshTestCase {
             invoiceLine.setPriceEachExTax(amount)
             invoiceLine.setTaxEach(amount.multiply(tax.getRate()))
         } catch (IllegalArgumentException e) {
-            fail("Exception thrown when setting the invoice line price")
+            Assertions.fail("Exception thrown when setting the invoice line price")
         }
 
         Assertions.assertEquals(amount.multiply(BigDecimal.ONE.add(tax.getRate())), invoiceLine.getPriceEachIncTax())
@@ -161,28 +162,28 @@ class InvoiceLineTest extends CayenneIshTestCase {
         SelectQuery<AccountTransaction> sq = SelectQuery.query(AccountTransaction.class, e)
         List<AccountTransaction> list = newContext.select(sq)
 
-        Assertions.assertEquals("Checking tax transactions", 0, list.size())
+        Assertions.assertEquals(0, list.size(), "Checking tax transactions")
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountIncome)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         sq = SelectQuery.query(AccountTransaction.class, e)
         list = newContext.select(sq)
 
-        Assertions.assertEquals("Checking " + accountIncome.getDescription() + " transactions", 0, list.size())
+        Assertions.assertEquals( 0, list.size(),"Checking " + accountIncome.getDescription() + " transactions")
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountPrepaidFees)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         sq = SelectQuery.query(AccountTransaction.class, e)
         list = newContext.select(sq)
 
-        Assertions.assertEquals("Checking " + accountPrepaidFees.getDescription() + " transactions", 0, list.size())
+        Assertions.assertEquals(0, list.size(), "Checking " + accountPrepaidFees.getDescription() + " transactions")
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountDebtors)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         sq = SelectQuery.query(AccountTransaction.class, e)
         list = newContext.select(sq)
 
-        Assertions.assertEquals("Checking " + accountDebtors.getDescription() + " transactions", 0, list.size())
+        Assertions.assertEquals(0, list.size(),"Checking " + accountDebtors.getDescription() + " transactions")
 
     }
 
@@ -236,38 +237,38 @@ class InvoiceLineTest extends CayenneIshTestCase {
                 SelectQuery<AccountTransaction> sq = SelectQuery.query(AccountTransaction.class, e)
                 List<AccountTransaction> list = newContext.select(sq)
 
-                Assertions.assertEquals("Checking tax transactions", 1, list.size())
-                Assertions.assertEquals("Checking tax transactions amount", expectedTax, list.get(0).getAmount())
+                Assertions.assertEquals(1, list.size(), "Checking tax transactions")
+                Assertions.assertEquals(expectedTax, list.get(0).getAmount(), "Checking tax transactions amount")
 
                 e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountIncome)
                 e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
                 sq = SelectQuery.query(AccountTransaction.class, e)
                 list = newContext.select(sq)
 
-                Assertions.assertEquals("Checking " + accountIncome.getDescription() + " transactions", 1, list.size())
-                Assertions.assertEquals("Checking " + accountIncome.getDescription() + " transactions amount", expectedTotal, list.get(0).getAmount())
+                Assertions.assertEquals(1, list.size(), "Checking " + accountIncome.getDescription() + " transactions")
+                Assertions.assertEquals(expectedTotal, list.get(0).getAmount(), "Checking " + accountIncome.getDescription() + " transactions amount")
 
                 e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountPrepaidFees)
                 e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
                 sq = SelectQuery.query(AccountTransaction.class, e)
                 list = newContext.select(sq)
 
-                Assertions.assertEquals("Checking " + accountPrepaidFees.getDescription() + " transactions", 0, list.size())
+                Assertions.assertEquals(0, list.size(), "Checking " + accountPrepaidFees.getDescription() + " transactions")
 
                 e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountDebtors)
                 e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
                 sq = SelectQuery.query(AccountTransaction.class, e)
                 list = newContext.select(sq)
 
-                Assertions.assertEquals("Checking " + accountDebtors.getDescription() + " transactions", 2, list.size())
+                Assertions.assertEquals(2, list.size(), "Checking " + accountDebtors.getDescription() + " transactions")
                 Money amount1 = list.get(0).getAmount()
                 Money amount2 = list.get(1).getAmount()
                 if (amount1.abs().isGreaterThan(amount2.abs())) {
                     amount2 = list.get(0).getAmount()
                     amount1 = list.get(1).getAmount()
                 }
-                Assertions.assertEquals("Checking " + accountDebtors.getDescription() + " transactions amount", expectedTax, amount1)
-                Assertions.assertEquals("Checking " + accountDebtors.getDescription() + " transactions amount", expectedTotal, amount2)
+                Assertions.assertEquals(expectedTax, amount1,"Checking " + accountDebtors.getDescription() + " transactions amount")
+                Assertions.assertEquals(expectedTotal, amount2, "Checking " + accountDebtors.getDescription() + " transactions amount")
             }
         }
     }
@@ -311,10 +312,10 @@ class InvoiceLineTest extends CayenneIshTestCase {
         try {
             newContext.commitChanges()
         } catch (ValidationException e) {
-            Assertions.assertTrue("expecting exception", e.getMessage().contains("The prepaid fees remaining must be zero for invoice line without enrolment."))
+            Assertions.assertTrue(e.getMessage().contains("The prepaid fees remaining must be zero for invoice line without enrolment."),"expecting exception")
             return
         }
-        fail("was expecting exception")
+        Assertions.fail("was expecting exception")
     }
 
     /*
@@ -356,10 +357,10 @@ class InvoiceLineTest extends CayenneIshTestCase {
         try {
             newContext.commitChanges()
         } catch (ValidationException e) {
-            Assertions.assertTrue("expecting exception", e.getMessage().contains("The prepaid fees remaining must be zero for invoice line without enrolment."))
+            Assertions.assertTrue( e.getMessage().contains("The prepaid fees remaining must be zero for invoice line without enrolment."))
             return
         }
-        fail("was expecting exception")
+        Assertions.fail("was expecting exception")
 
     }
 
@@ -410,35 +411,35 @@ class InvoiceLineTest extends CayenneIshTestCase {
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         List<AccountTransaction> list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking tax transactions", 1, list.size())
-        Assertions.assertEquals("Checking tax transactions amount", new Money("10.00"), list.get(0).getAmount())
+        Assertions.assertEquals( 1, list.size(), "Checking tax transactions")
+        Assertions.assertEquals(new Money("10.00"), list.get(0).getAmount(),"Checking tax transactions amount")
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountIncome)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking " + accountIncome.getDescription() + " transactions", 1, list.size())
-        Assertions.assertEquals("Checking " + accountIncome.getDescription() + " transactions amount", new Money("100.00"), list.get(0).getAmount())
+        Assertions.assertEquals(1, list.size(), "Checking " + accountIncome.getDescription() + " transactions")
+        Assertions.assertEquals(new Money("100.00"), list.get(0).getAmount(), "Checking " + accountIncome.getDescription() + " transactions amount")
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountPrepaidFees)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking " + accountPrepaidFees.getDescription() + " transactions", 0, list.size())
+        Assertions.assertEquals(0, list.size(), "Checking " + accountPrepaidFees.getDescription() + " transactions")
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountDebtors)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking " + accountDebtors.getDescription() + " transactions", 2, list.size())
+        Assertions.assertEquals(2, list.size(),"Checking " + accountDebtors.getDescription() + " transactions")
         Money amount1 = list.get(0).getAmount()
         Money amount2 = list.get(1).getAmount()
         if (amount1.abs().isGreaterThan(amount2.abs())) {
             amount2 = list.get(0).getAmount()
             amount1 = list.get(1).getAmount()
         }
-        Assertions.assertEquals("Checking " + accountDebtors.getDescription() + " transactions amount", new Money("10.00"), amount1)
-        Assertions.assertEquals("Checking " + accountDebtors.getDescription() + " transactions amount", new Money("100.00"), amount2)
+        Assertions.assertEquals(new Money("10.00"), amount1, "Checking " + accountDebtors.getDescription() + " transactions amount")
+        Assertions.assertEquals(new Money("100.00"), amount2, "Checking " + accountDebtors.getDescription() + " transactions amount")
 
     }
 
@@ -489,22 +490,22 @@ class InvoiceLineTest extends CayenneIshTestCase {
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         List<AccountTransaction> list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking tax transactions", 1, list.size())
-        Assertions.assertEquals("Checking tax transactions amount", new Money("10.00"), list.get(0).getAmount())
+        Assertions.assertEquals(1, list.size(), "Checking tax transactions")
+        Assertions.assertEquals(new Money("10.00"), list.get(0).getAmount(), "Checking tax transactions amount")
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountIncome)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking " + accountIncome.getDescription() + " transactions", 1, list.size())
-        Assertions.assertEquals("Checking " + accountIncome.getDescription(), new Money("40"), list.get(0).getAmount())
+        Assertions.assertEquals(1, list.size(), "Checking " + accountIncome.getDescription() + " transactions")
+        Assertions.assertEquals(new Money("40"), list.get(0).getAmount(), "Checking " + accountIncome.getDescription())
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountPrepaidFees)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking " + accountPrepaidFees.getDescription() + " transactions", 1, list.size())
-        Assertions.assertEquals("Checking " + accountPrepaidFees.getDescription(), new Money("60"), list.get(0).getAmount())
+        Assertions.assertEquals(1, list.size(), "Checking " + accountPrepaidFees.getDescription() + " transactions")
+        Assertions.assertEquals(new Money("60"), list.get(0).getAmount(), "Checking " + accountPrepaidFees.getDescription())
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountDebtors)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
@@ -512,10 +513,10 @@ class InvoiceLineTest extends CayenneIshTestCase {
         sq.addOrdering(new Ordering(_AccountTransaction.AMOUNT_PROPERTY, SortOrder.ASCENDING))
         list = newContext.select(sq)
 
-        Assertions.assertEquals("Checking " + accountDebtors.getDescription() + " transactions", 3, list.size())
-        Assertions.assertEquals("Checking " + accountDebtors.getDescription(), new Money("10"), list.get(0).getAmount())
-        Assertions.assertEquals("Checking " + accountDebtors.getDescription(), new Money("40"), list.get(1).getAmount())
-        Assertions.assertEquals("Checking " + accountDebtors.getDescription(), new Money("60"), list.get(2).getAmount())
+        Assertions.assertEquals(3, list.size(),"Checking " + accountDebtors.getDescription() + " transactions")
+        Assertions.assertEquals(new Money("10"), list.get(0).getAmount(), "Checking " + accountDebtors.getDescription())
+        Assertions.assertEquals(new Money("40"), list.get(1).getAmount(), "Checking " + accountDebtors.getDescription())
+        Assertions.assertEquals(new Money("60"), list.get(2).getAmount(), "Checking " + accountDebtors.getDescription())
 
     }
 
@@ -575,23 +576,23 @@ class InvoiceLineTest extends CayenneIshTestCase {
         e = e.andExp(AccountTransaction.FOREIGN_RECORD_ID.eq(invoiceLine.getId()))
         List<AccountTransaction> list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking tax transactions", 1, list.size())
-        Assertions.assertEquals("Checking tax transactions amount", new Money("10.00"), list.get(0).getAmount())
+        Assertions.assertEquals( 1, list.size(),"Checking tax transactions")
+        Assertions.assertEquals(new Money("10.00"), list.get(0).getAmount(),"Checking tax transactions amount")
 
-        Assertions.assertEquals("Checking transactions dates ", invoice.getInvoiceDate(), list.get(0).getTransactionDate())
+        Assertions.assertEquals( invoice.getInvoiceDate(), list.get(0).getTransactionDate(), "Checking transactions dates ")
 
         e = AccountTransaction.ACCOUNT.eq(accountIncome)
         e = e.andExp(AccountTransaction.FOREIGN_RECORD_ID.eq(invoiceLine.getId()))
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking " + accountIncome.getDescription() + " transactions", 0, list.size())
+        Assertions.assertEquals(0, list.size(), "Checking " + accountIncome.getDescription() + " transactions")
 
         e = AccountTransaction.ACCOUNT.eq(accountPrepaidFees)
         e = e.andExp(AccountTransaction.FOREIGN_RECORD_ID.eq(invoiceLine.getId()))
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking " + accountPrepaidFees.getDescription() + " transactions", 1, list.size())
-        Assertions.assertEquals("Checking " + accountPrepaidFees.getDescription(), new Money("100"), list.get(0).getAmount())
+        Assertions.assertEquals(1, list.size(), "Checking " + accountPrepaidFees.getDescription() + " transactions")
+        Assertions.assertEquals(new Money("100"), list.get(0).getAmount(), "Checking " + accountPrepaidFees.getDescription())
 
         e = AccountTransaction.ACCOUNT.eq(accountDebtors)
         e = e.andExp(AccountTransaction.FOREIGN_RECORD_ID.eq(invoiceLine.getId()))
@@ -599,9 +600,9 @@ class InvoiceLineTest extends CayenneIshTestCase {
         sq.addOrdering(AccountTransaction.AMOUNT.asc())
         list = newContext.select(sq)
 
-        Assertions.assertEquals("Checking " + accountDebtors.getDescription() + " transactions", 2, list.size())
-        Assertions.assertEquals("Checking " + accountDebtors.getDescription(), new Money("10"), list.get(0).getAmount())
-        Assertions.assertEquals("Checking " + accountDebtors.getDescription(), new Money("100"), list.get(1).getAmount())
+        Assertions.assertEquals( 2, list.size(), "Checking " + accountDebtors.getDescription() + " transactions")
+        Assertions.assertEquals(new Money("10"), list.get(0).getAmount(), "Checking " + accountDebtors.getDescription())
+        Assertions.assertEquals(new Money("100"), list.get(1).getAmount(), "Checking " + accountDebtors.getDescription())
     }
 
     
@@ -656,14 +657,14 @@ class InvoiceLineTest extends CayenneIshTestCase {
         e = e.andExp(AccountTransaction.FOREIGN_RECORD_ID.eq(invoiceLine.getId()))
         List<AccountTransaction> list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking " + incomeAccount.getDescription() + " transactions", 0, list.size())
+        Assertions.assertEquals(0, list.size(), "Checking " + incomeAccount.getDescription() + " transactions")
 
         e = AccountTransaction.ACCOUNT.eq(liabilityAccount)
         e = e.andExp(AccountTransaction.FOREIGN_RECORD_ID.eq(invoiceLine.getId()))
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
-        Assertions.assertEquals("Checking " + liabilityAccount.getDescription() + " transactions", 1, list.size())
-        Assertions.assertEquals("Checking " + liabilityAccount.getDescription(), new Money("100"), list.get(0).getAmount())
+        Assertions.assertEquals( 1, list.size(),"Checking " + liabilityAccount.getDescription() + " transactions")
+        Assertions.assertEquals( new Money("100"), list.get(0).getAmount(), "Checking " + liabilityAccount.getDescription())
 
         e = AccountTransaction.ACCOUNT.eq(debtorsAccount)
         e = e.andExp(AccountTransaction.FOREIGN_RECORD_ID.eq(invoiceLine.getId()))
@@ -671,7 +672,7 @@ class InvoiceLineTest extends CayenneIshTestCase {
         sq.addOrdering(AccountTransaction.AMOUNT.asc())
         list = newContext.select(sq)
 
-        Assertions.assertEquals("Checking " + debtorsAccount.getDescription() + " transactions", 1, list.size())
-        Assertions.assertEquals("Checking " + debtorsAccount.getDescription(), new Money("100"), list.get(0).getAmount())
+        Assertions.assertEquals(1, list.size(), "Checking " + debtorsAccount.getDescription() + " transactions")
+        Assertions.assertEquals(new Money("100"), list.get(0).getAmount(), "Checking " + debtorsAccount.getDescription())
     }
 }

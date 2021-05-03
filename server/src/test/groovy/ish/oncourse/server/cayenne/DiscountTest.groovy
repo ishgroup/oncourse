@@ -66,7 +66,7 @@ class DiscountTest extends CayenneIshTestCase {
                 [5L, 2L, 0L],
                 [6L, 2L, 0L],
                 [7L, 2L, 1L],
-                [8L, 2L, 0L]]
+                [8L, 2L, 0L]] as Long[][]
 
         for (Long[] expectedResult1 : expectedResults) {
             Student s = Student.ID.eq(expectedResult1[0]).filterObjects(students).get(0)
@@ -95,7 +95,7 @@ class DiscountTest extends CayenneIshTestCase {
                 [1L, 1L, 0L],
                 [1L, 3L, 0L],
                 [1L, 4L, 1L],
-                [1L, 6L, 0L]]
+                [1L, 6L, 0L]] as Long[][]
 
         for (Long[] expectedResult1 : expectedResults) {
             CourseClass cc = ExpressionFactory.matchExp(CourseClass.ID_PROPERTY, expectedResult1[0]).filterObjects(classes).get(0)

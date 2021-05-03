@@ -53,7 +53,7 @@ class HolidayApiTest extends CayenneIshTestCase {
             easter.endDate = stringToValue("1992-11-06")
             easter.repeat = RepeatEnumDTO.YEAR
             easter.repeatEnd = RepeatEndEnumDTO.AFTER
-            easter.repeatEndAfter = 2
+            easter.repeatEndAfter = BigDecimal.valueOf(2)
             easter
         }
 
@@ -90,7 +90,7 @@ class HolidayApiTest extends CayenneIshTestCase {
         Assertions.assertEquals(expect.repeat, actual.repeat)
         Assertions.assertEquals(expect.repeatEnd, actual.repeatEnd)
         if (expect.repeatEndAfter && actual.repeatEndAfter) {
-            Assertions.assertEquals(expect.repeatEndAfter, actual.repeatEndAfter, 0)
+            Assertions.assertEquals(expect.repeatEndAfter, actual.repeatEndAfter)
         } else if (expect.repeatEndAfter != actual.repeatEndAfter) {
             assert false
         }

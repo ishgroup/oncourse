@@ -6,6 +6,7 @@ import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.services.ISystemUserService
 import org.apache.cayenne.access.DataContext
+import org.apache.cayenne.query.Select
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
@@ -41,8 +42,8 @@ class PreferenceControllerTest {
         DataContext dataContext = Mockito.mock(DataContext.class)
         when(iCayenneService.getNewContext()).thenReturn(dataContext)
 
-        when(dataContext.selectFirst(any())).thenReturn(preference)
-        when(dataContext.localObject(any())).thenReturn(preference)
+        when(dataContext.selectFirst(any(Select))).thenReturn(preference)
+        when(dataContext.localObject(any(Preference))).thenReturn(preference)
 
         ISystemUserService systemUserService = Mockito.mock(ISystemUserService.class)
         LicenseService licenseService = Mockito.mock(LicenseService.class)
