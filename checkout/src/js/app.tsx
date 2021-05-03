@@ -45,7 +45,7 @@ const appStart = () => {
         '">\n' +
         '    <p style="\n' +
         '    font-weight: bold;\n' +
-        '"> Your current browser is not supported</p>Please ensure you are using Internet Explorer 11 or an up to date version of Chrome, Firefox, Edge, Safari or Opera</div>',
+        '"> Your current browser is not supported</p>Please ensure you are using an up to date version of Chrome, Firefox, Edge, Safari, Opera desktop or Internet Explorer 11</div>',
       duration: 600,
       height: 400,
       width: 1000.

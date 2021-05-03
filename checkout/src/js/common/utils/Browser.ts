@@ -97,6 +97,6 @@ export default class BrowserDetector {
     if (this.unsupportedBrowsers.hasOwnProperty(this.browser.name)) {
       return  +this.browser.version > this.unsupportedBrowsers[this.browser.name];
     }
-    return !this.isOperaMini();
+    return !this.isOperaMini;
   }
 }
