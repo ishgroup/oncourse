@@ -34,8 +34,8 @@ const automationRoutes = [
   },
   {
     title: "Integrations",
-    path: "/automation/integrations",
-    url: "/automation/integrations",
+    path: "/automation/integrations/list",
+    url: "/automation/integrations/list",
     noMenuLink: true,
     main: Integrations
   },
