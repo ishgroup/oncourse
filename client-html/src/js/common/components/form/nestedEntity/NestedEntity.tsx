@@ -42,12 +42,6 @@ const NestedEntity: React.FC<Props> = ({
 }) => {
   const openEntityLink = useCallback(
     link => {
-      // if (dirty) {
-      //   showConfirm(() => history.push(link));
-      // } else {
-      // history.push(link);
-      // }
-
       openInternalLink(link);
     },
     [dirty]
@@ -63,22 +57,11 @@ const NestedEntity: React.FC<Props> = ({
     );
 
   const openAddLink = useCallback(() => {
-    // if (dirty) {
-    //   showConfirm(() => history.push(addLink));
-    // } else {
-    // history.push(addLink);
-    // }
     openInternalLink(addLink);
   }, [dirty, addLink]);
 
   const openTimetableLink = useCallback(
     link => {
-      // if (dirty) {
-      //   showConfirm(() => history.push(link));
-      // } else {
-      // history.push(link);
-      // }
-
       openInternalLink(link);
     },
     [dirty]

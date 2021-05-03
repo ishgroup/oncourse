@@ -38,7 +38,7 @@ const ConfirmBase: React.FunctionComponent<ConfirmState> = props => {
         </DialogContent>
       )}
 
-      <DialogActions>
+      <DialogActions className="p-0">
         <Button onClick={onCancelCustom || onCancel} color="primary">
           {cancelButtonText}
         </Button>
