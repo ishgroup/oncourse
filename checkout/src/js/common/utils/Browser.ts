@@ -5,6 +5,7 @@ export default class BrowserDetector {
   constructor() {
     this.browser = {};
     this.unsupportedBrowsers = {
+      MSIE: 10,
       IE: 10
     };
 
@@ -51,10 +52,6 @@ export default class BrowserDetector {
     return this.browser.name === 'Edge';
   }
 
-  get isOperaMini() {
-    return navigator.userAgent.includes("Opera Mini");
-  }
-
   get isMicrosoft() {
     return this.isIE || this.isEdge;
   }
@@ -95,8 +92,8 @@ export default class BrowserDetector {
 
   isSupported() {
     if (this.unsupportedBrowsers.hasOwnProperty(this.browser.name)) {
-      return  +this.browser.version > this.unsupportedBrowsers[this.browser.name];
+      return +this.browser.version > this.unsupportedBrowsers[this.browser.name];
     }
-    return !this.isOperaMini;
+    return true;
   }
 }

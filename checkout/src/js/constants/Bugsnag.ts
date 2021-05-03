@@ -22,7 +22,7 @@ if (typeof jest === 'undefined' && window.location.protocol !== "file:" && proce
 } else {
   bugsnagClientBase = {
     getPlugin: () => ({
-      createErrorBoundary: () => null,
+      createErrorBoundary: () => "div",
     }),
     notify:() => null,
   };

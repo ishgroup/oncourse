@@ -20,6 +20,11 @@ import {LegacyModal} from "./web/components/modal/LegacyModal";
 // Intersection Observer polyfill
 require('intersection-observer');
 
+// Crypto polyfill
+if ( !(window as any)?.crypto?.getRandomValues ) {
+  (window as any).crypto = { getRandomValues: require('polyfill-crypto.getrandomvalues') }
+}
+
 // NodeList forEach polyfill
 if (window["NodeList"] && !NodeList.prototype["forEach"]) {
   NodeList.prototype["forEach"] = Array.prototype.forEach as any;
