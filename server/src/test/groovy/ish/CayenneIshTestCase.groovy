@@ -24,6 +24,7 @@ import org.apache.logging.log4j.Logger
 import org.dbunit.database.IDatabaseConnection
 import org.dbunit.dataset.IDataSet
 import org.dbunit.operation.DatabaseOperation
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 
@@ -258,7 +259,7 @@ abstract class CayenneIshTestCase extends IshTestCase {
         if (testEnvMariadb()) {
             wipeTablesMariadb()
         } else {
-            fail("Not recognised database: " + databaseType)
+            Assertions.fail("Not recognised database: " + databaseType)
         }
     }
 

@@ -16,30 +16,25 @@ import net.sf.jasperreports.engine.JasperReport
 import net.sf.jasperreports.engine.type.OrientationEnum
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 import java.nio.charset.Charset
 
 @CompileStatic
-@RunWith(Parameterized.class)
 class ReportTest extends IshTestCase {
 
-    private List<String> errorList = new ArrayList<>()
-    private String reportFile
 
-    ReportTest(String reportFile) {
-        this.reportFile = reportFile
-    }
+    private static final int A4_WIDTH = 595
+    private static final int A4_HEIGHT = 842
 
-    @Parameterized.Parameters(name = '${0}')
-    static Collection<String[]> setUp() throws IOException {
+    static Collection<Arguments> values() throws IOException {
 
         def reportsList = PluginService.getPluggableResources(ResourceType.REPORT.getResourcePath(), ResourceType.REPORT.getFilePattern())
         Assertions.assertNotNull(reportsList)
 
-        Collection<String[]> dataList = new ArrayList<>()
+        Collection<Arguments> dataList = new ArrayList<>()
         for (String reportFile : reportsList) {
             if (reportFile.endsWith(".jrxml")) {
                 List<String> untrimmedReport = IOUtils.readLines(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset())
@@ -48,18 +43,19 @@ class ReportTest extends IshTestCase {
                 Assertions.assertNotNull(report)
 
                 if (shouldVerify(report)) {
-                    dataList.add([reportFile] as String[])
+                    dataList.add(Arguments.of(reportFile))
                 }
             }
         }
         return dataList
     }
 
-    private static final int A4_WIDTH = 595
-    private static final int A4_HEIGHT = 842
 
-    @Test
-    void testDefaultReportsLayout() throws JRException {
+    @ParameterizedTest(name = '${0}')
+    @MethodSource("values")
+    void testDefaultReportsLayout(String reportFile) throws JRException {
+        List<String> errorList = new ArrayList<>()
+
         JasperReport jasperReport = JasperCompileManager.compileReport(ResourcesUtil.getResourceAsInputStream(reportFile))
         boolean isPortrait = jasperReport.getOrientationValue().equals(OrientationEnum.PORTRAIT)
 
@@ -83,11 +79,10 @@ class ReportTest extends IshTestCase {
                 result.append(s)
                 result.append(RuntimeUtil.LINE_SEPARATOR)
             }
-            fail(result.toString())
+            Assertions.fail(result.toString())
         }
     }
 
-    @CompileStatic
     private static List<String> trim(List<String> list) {
         List<String> result = new ArrayList<>()
         for (String s : list) {
@@ -96,7 +91,6 @@ class ReportTest extends IshTestCase {
         return result
     }
 
-    @CompileStatic
     private static boolean shouldVerify(List<String> list) {
         List<String> exceptedReports = new ArrayList<>()
         exceptedReports.add("ish.oncourse.certificate.attainment")

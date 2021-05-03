@@ -5,31 +5,16 @@ package ish.oncourse.server.export.avetmiss
 
 import groovy.transform.CompileStatic
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @CompileStatic
-@RunWith(Parameterized.class)
 class AddressParserTest {
 
-
-    private String input
-    private String expectedBuilding
-    private String expectedUnit
-    private String expectedNumber
-    private String expectedStreet
-
-    AddressParserTest(String input, String expectedBuilding, String expectedUnit, String expectedNumber, String expectedStreet) {
-        this.expectedBuilding = expectedBuilding
-        this.expectedUnit = expectedUnit
-        this.expectedNumber = expectedNumber
-        this.expectedStreet = expectedStreet
-        this.input = input
-    }
-
-    @Test
-    void testParseAdress() throws Exception {
+    @ParameterizedTest(name = "{index}-- {0}")
+    @MethodSource("values")
+    void testParseAdress(String input, String expectedBuilding, String expectedUnit, String expectedNumber, String expectedStreet) throws Exception {
         AddressParser addressParser = new AddressParser(input)
 
         Assertions.assertEquals("building", expectedBuilding, addressParser.getBuilding())
@@ -38,8 +23,7 @@ class AddressParserTest {
         Assertions.assertEquals("street", expectedStreet, addressParser.getStreetName())
     }
 
-    @Parameterized.Parameters(name = "{index}-- {0}")
-    static Collection<Object[]> data() {
+    static Collection<Arguments> values() {
         Object[][] data = [
                 [null, "", "", "", "not specified"],
                 ["", "", "", "", "not specified"],
@@ -92,6 +76,10 @@ class AddressParserTest {
                 ["The Hermitage, 1 Gorod Cred", "The Hermitage", "", "1", "Gorod Cred"],
                 ["The Cage, 12 Port Veil", "The Cage", "", "12", "Port Veil"]
         ]
-        return Arrays.asList(data)
+        Collection<Arguments> dataList = new ArrayList<>()
+        for (Object[] test : data) {
+            dataList.add(Arguments.of(test[0], test[1], test[2], test[3], test[4]))
+        }
+        return dataList
     }
 }

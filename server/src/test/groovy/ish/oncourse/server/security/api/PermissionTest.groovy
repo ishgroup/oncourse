@@ -1,15 +1,13 @@
 package ish.oncourse.server.security.api
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
 import io.bootique.test.junit.BQTestFactory
-import org.junit.ClassRule
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import javax.ws.rs.HttpMethod
-
 
 @CompileStatic
 class PermissionTest {
@@ -18,10 +16,9 @@ class PermissionTest {
 
     private IPermissionService permissionService
 
-    @ClassRule
     public static BQTestFactory testFactory = new BQTestFactory()
 
-    
+
     @BeforeEach
     void before() {
         BQRuntime runtime = testFactory.app(CONFIG_PATH)

@@ -4,7 +4,7 @@
 
 package ish.oncourse.server.print
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.PaymentInterface
@@ -17,6 +17,7 @@ import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentOut
 import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.report.JRRuntimeConfig
 import ish.oncourse.server.upgrades.DataPopulation
@@ -33,9 +34,9 @@ import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Ignore
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 import java.text.DateFormat
@@ -46,7 +47,7 @@ import java.time.LocalDate
  * executes multiple print jobs at the same time simulating multiple users
  */
 @CompileStatic
-@Ignore
+@Disabled
 class ConcurrentReportPrintingTest extends CayenneIshTestCase {
     private static final Logger logger = LogManager.getLogger()
 
@@ -79,7 +80,7 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
             dataPopulation.run()
         } catch (Exception e) {
             logger.warn("fail", e)
-            fail("could not import one of the resources " + e)
+            Assertions.fail("could not import one of the resources " + e)
         }
         new JRRuntimeConfig().config()
 
@@ -166,7 +167,7 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
 
             request.setIds(mapOfIds)
 
-            PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class))
+            PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService)
 
             reportsToRun.put(request, worker)
         }
@@ -188,8 +189,8 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
         }
 
         for (Map.Entry<PrintRequest, PrintWorker> e : reportsToRun.entrySet()) {
-            Assertions.assertEquals(String.format("Printing failed for %s", e.getKey().getReportCode()), PrintResult.ResultType.SUCCESS, e.getValue().getResult().getResultType())
-            Assertions.assertNotNull(String.format("Empty printing result for %s", e.getKey().getReportCode()), e.getValue().getResult().getResult())
+            Assertions.assertEquals(PrintResult.ResultType.SUCCESS, e.getValue().getResult().getResultType(), String.format("Printing failed for %s", e.getKey().getReportCode()))
+            Assertions.assertNotNull(e.getValue().getResult().getResult(), String.format("Empty printing result for %s", e.getKey().getReportCode()))
 
 
             FileUtils.writeByteArrayToFile(new File("build/test-data/concurrentReportTestOutput/" + e.getKey().getReportCode() + ".pdf"), e.getValue().getResult().getResult())

@@ -1,6 +1,6 @@
 package ish.oncourse.server.messaging
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
@@ -12,8 +12,8 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Ignore
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 import javax.mail.MessagingException
@@ -38,7 +38,7 @@ class TutorNotificationVisualTest extends CayenneIshTestCase {
      * @throws FileNotFoundException if there are no html or plain bodies for header, footer and Tutor-Payrun-Notification
      */
     
-    @Ignore
+    @Disabled
     @Test
     void sendTutorNotification() throws MessagingException, FileNotFoundException {
         ObjectContext context = injector.getInstance(ICayenneService.class).getNewContext()

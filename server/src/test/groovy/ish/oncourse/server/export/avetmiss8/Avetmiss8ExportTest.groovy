@@ -3,7 +3,7 @@
  */
 package ish.oncourse.server.export.avetmiss8
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.OutcomeStatus
@@ -21,15 +21,12 @@ import org.apache.commons.io.IOUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Rule
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.rules.ErrorCollector
 
 import java.time.LocalDate
 import java.time.Month
-
-import static org.hamcrest.CoreMatchers.equalTo
 
 @CompileStatic
 class Avetmiss8ExportTest extends CayenneIshTestCase {
@@ -41,10 +38,6 @@ class Avetmiss8ExportTest extends CayenneIshTestCase {
     private ICayenneService cayenneService
     private CertificateService certificateService
 
-    @Rule
-    public ErrorCollector errorCollector = new ErrorCollector()
-
-    
     @BeforeEach
     void setup() throws Exception {
         wipeTables()
@@ -207,7 +200,7 @@ class Avetmiss8ExportTest extends CayenneIshTestCase {
         }
         String error = errorMsg.toString()
         if (!error.isEmpty()) {
-            fail(error)
+            Assertions.fail(error)
         }
     }
 
@@ -239,14 +232,14 @@ class Avetmiss8ExportTest extends CayenneIshTestCase {
             f.close()
             LocalDate.now().plusDays(7)
             try {
-                errorCollector.checkThat(filename + " row count wrong", actual.size(), equalTo(expected.size()))
+                Assertions.assertEquals(actual.size(), expected.size(), filename + " row count wrong")
                 for (int i = 0; i < expected.size(); i++) {
                     String expectedLine = expected.get(i)
                     expectedLine = expectedLine.replaceAll("now_plus_7_days", now_plus_7_days)
-                    errorCollector.checkThat(filename, actual.get(i), equalTo(expectedLine))
+                    Assertions.assertEquals(actual.get(i), expectedLine, filename)
                 }
             } catch (Exception e) {
-                errorCollector.addError(e)
+                Assertions.fail(e)
             }
         }
     }

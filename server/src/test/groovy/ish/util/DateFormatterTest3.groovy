@@ -6,25 +6,15 @@
 package ish.util
 
 import groovy.transform.CompileStatic
-import org.apache.commons.collections.CollectionUtils
-import org.junit.jupiter.api.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @CompileStatic
-@RunWith(Parameterized.class)
 class DateFormatterTest3 {
 
-    private Calendar expected
-    private String input
-
-    DateFormatterTest3(String input, Calendar expected) {
-        this.input = input
-        this.expected = expected
-    }
-
-    @Parameterized.Parameters
-    static Collection<Object[]> setUp() {
+    private static Collection<Arguments> values() {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR)
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH)
         int currentDate = Calendar.getInstance().get(Calendar.DATE)
@@ -102,42 +92,45 @@ class DateFormatterTest3 {
                 ["Friday 12 Feb 04", new GregorianCalendar(2004, Calendar.FEBRUARY, 12)]
         ]
 
-        Collection<Object[]> dataList = new ArrayList<>()
-        CollectionUtils.addAll(dataList, data)
+        Collection<Arguments> dataList = new ArrayList<>()
+        for (Object[] test : data) {
+            dataList.add(Arguments.of(test[0], test[1]))
+        }
 
         Calendar temp = Calendar.getInstance()
         temp.add(Calendar.MONTH, 4)
-        dataList.add(["+4m", temp] as Object[])
+        dataList.add(Arguments.of("+4m", temp))
 
         temp = Calendar.getInstance()
         temp.add(Calendar.MONTH, -5)
-        dataList.add(["-5m", temp] as Object[])
+        dataList.add(Arguments.of("-5m", temp))
 
         temp = Calendar.getInstance()
         temp.add(Calendar.WEEK_OF_YEAR, 6)
-        dataList.add(["+6w", temp] as Object[])
+        dataList.add(Arguments.of("+6w", temp))
 
         temp = Calendar.getInstance()
         temp.add(Calendar.WEEK_OF_YEAR, -3)
-        dataList.add(["-3w", temp] as Object[])
+        dataList.add(Arguments.of("-3w", temp))
 
         temp = Calendar.getInstance()
         temp.add(Calendar.DATE, -4)
-        dataList.add(["-4", temp] as Object[])
+        dataList.add(Arguments.of("-4", temp))
 
         temp = Calendar.getInstance()
-        dataList.add(["now", temp] as Object[])
+        dataList.add(Arguments.of("now", temp))
 
         temp = Calendar.getInstance()
         temp.add(Calendar.DATE, 3)
-        dataList.add(["+3d", temp] as Object[])
+        dataList.add(Arguments.of("+3d", temp))
 
         return dataList
     }
 
-    @Test
-    void parseAndFormat() throws Exception {
-        String result1 = DateFormatter.formatDate(DateFormatter.parseDate(this.input, TimeZone.getDefault()))
+    @ParameterizedTest
+    @MethodSource("values")
+    void parseAndFormat(String input, Calendar expected) throws Exception {
+        String result1 = DateFormatter.formatDate(DateFormatter.parseDate(input, TimeZone.getDefault()))
         String result2 = DateFormatter.formatDate(expected.getTime())
         Assertions.assertEquals(result1, result2)
     }

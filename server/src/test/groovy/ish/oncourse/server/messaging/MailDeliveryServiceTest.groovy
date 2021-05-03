@@ -3,13 +3,12 @@ package ish.oncourse.server.messaging
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.MessagePerson
-import org.junit.Ignore
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
 import javax.mail.MessagingException
-
 /**
  * Manual test of sending email through our implementation
  */
@@ -74,7 +73,7 @@ class MailDeliveryServiceTest {
         param = MailDeliveryParam.valueOf(getFrom, getEnvelopeFrom, getAddressesTO, getAddressesCC, getAddressesBCC, getSubject, getContent)
     }
 
-    @Ignore
+    @Disabled
     @Test
     void testSendEmail() throws MessagingException {
         service.sendEmail(param)

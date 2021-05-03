@@ -16,6 +16,7 @@ import ish.oncourse.server.cayenne.PaymentOut
 import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.cayenne.ReportOverlay
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.upgrades.DataPopulation
 import ish.print.AdditionalParameters
 import ish.print.PrintRequest
@@ -32,23 +33,21 @@ import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Ignore
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Parameterized.Parameters
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-
 /**
  * Report printing test which tries to print all existing reports using mock entities.
  */
-@Ignore
-@RunWith(Parameterized.class)
+@Disabled
+@CompileStatic
 class ReportPrintingTest extends CayenneIshTestCase {
     private static final Logger logger = LogManager.getLogger()
 
@@ -59,10 +58,6 @@ class ReportPrintingTest extends CayenneIshTestCase {
     private static File overlay2pageLandscape = getResourceAsFile("resources/schema/referenceData/reports/transparencyTestLandscape.pdf")
 
     protected ICayenneService cayenneService
-
-    private String reportCode
-    private String reportFolder
-    private String sourceEntity
 
     private static Map<String, List<String>> AVAILABLE_TRANSFORMATIONS
     static {
@@ -102,7 +97,7 @@ class ReportPrintingTest extends CayenneIshTestCase {
             dataPopulation.run()
         } catch (Exception e) {
             logger.warn("fail", e)
-            fail("could not import one of the resources " + e)
+            Assertions.fail("could not import one of the resources " + e)
         }
 
         //add backgrounds
@@ -117,19 +112,10 @@ class ReportPrintingTest extends CayenneIshTestCase {
         cc.commitChanges()
     }
 
-    @CompileStatic
-    ReportPrintingTest(String reportCode, String sourceEntity, String reportFolder) {
-        this.reportCode = reportCode
-        this.reportFolder = reportFolder
-        this.sourceEntity = sourceEntity
-    }
-
-    @CompileStatic
-    @Parameters(name = "{0}")
-    static Collection<String[]> reportCodes() throws Exception {
+    static Collection<Arguments> values() throws Exception {
 
         List<String> reportsList = IOUtils.readLines(ResourcesUtil.getResourceAsInputStream("reports/manifest"))
-        List<String[]> keyCodeList = new ArrayList<>()
+        List<Arguments> keyCodeList = new ArrayList<>()
 
         for (int i = 0; i < reportsList.size() && i < TEST_BUNCH_SIZE; i++) {
             String reportFile = reportsList.get(i)
@@ -139,8 +125,7 @@ class ReportPrintingTest extends CayenneIshTestCase {
         return keyCodeList
     }
 
-    @CompileStatic
-    protected static void prepareReport(String reportFile, List<String[]> keyCodeList) {
+    protected static void prepareReport(String reportFile, List<Arguments> keyCodeList) {
 
         if (reportFile.endsWith(".jrxml")) {
             StringBuffer buffer = new StringBuffer(ResourcesUtil.readFile(reportFile))
@@ -156,20 +141,21 @@ class ReportPrintingTest extends CayenneIshTestCase {
 
                 if (AVAILABLE_TRANSFORMATIONS.get(entity) != null) {
                     for (String s : AVAILABLE_TRANSFORMATIONS.get(entity)) {
-                        keyCodeList.add([keycode, s, temp[temp.length - 2]] as String[])
+                        keyCodeList.add(Arguments.of(keycode, s, temp[temp.length - 2]))
                     }
                 } else if ("PaymentInterface" == entity) {
-                    keyCodeList.add([keycode, "PaymentIn", temp[temp.length - 2]] as String[])
-                    keyCodeList.add([keycode, "PaymentOut", temp[temp.length - 2]] as String[])
+                    keyCodeList.add(Arguments.of(keycode, "PaymentIn", temp[temp.length - 2]))
+                    keyCodeList.add(Arguments.of(keycode, "PaymentOut", temp[temp.length - 2]))
                 } else {
-                    keyCodeList.add([keycode, entity, temp[temp.length - 2]] as String[])
+                    keyCodeList.add(Arguments.of(keycode, entity, temp[temp.length - 2]))
                 }
             }
         }
     }
 
-    @Test
-    void testReportWithRealData() throws Exception {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("values")
+    void testReportWithRealData(String reportCode, String sourceEntity, String reportFolder) throws Exception {
 
         ObjectContext context = cayenneService.getNewNonReplicatingContext()
 
@@ -215,7 +201,7 @@ class ReportPrintingTest extends CayenneIshTestCase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class))
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService)
         logger.warn("printing {} from {} {}(s)", reportCode, list.size(), sourceEntity)
         logger.warn("printing {}", request)
         worker.run()
@@ -224,8 +210,8 @@ class ReportPrintingTest extends CayenneIshTestCase {
             Thread.sleep(200)
         }
 
-        Assertions.assertEquals(String.format("Printing failed for %s", report.getName()), ResultType.SUCCESS, worker.getResult().getResultType())
-        Assertions.assertNotNull(String.format("Empty printing result for %s", report.getName()), worker.getResult().getResult())
+        Assertions.assertEquals(ResultType.SUCCESS, worker.getResult().getResultType(), String.format("Printing failed for %s", report.getName()))
+        Assertions.assertNotNull(worker.getResult().getResult(), String.format("Empty printing result for %s", report.getName()))
 
         FileUtils.writeByteArrayToFile(new File("build/test-data/printing/" + reportFolder + "/" + report.getName() + "-" + sourceEntity + ".pdf"), worker.getResult().getResult())
     }

@@ -29,14 +29,13 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 import java.time.LocalDate
 
 @CompileStatic
-@RunWith(Parameterized.class)
 class AllExportTemplatesTest extends CayenneIshTestCase {
     private static final Logger logger = LogManager.getLogger()
     private static final String UTC_TIMEZONE_ID = "UTC"
@@ -44,18 +43,6 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
     private static final String PAYSLIP_MICROPAY_KEYCODE = "ish.onCourse.payslipMicropay.csv"
     private static final String SS_BULK_UPLOAD_KEYCODE = "ish.onCourse.ssBulkUpload.csv"
     private static final String LINE_SEPARATOR = StringUtils.LF
-
-    private String exportCode
-    private String entityName
-    private String testDataFile
-    private String sampleOutputFile
-
-    AllExportTemplatesTest(String exportCode, String entityName, String testDataFile, String sampleOutputFile) {
-        this.exportCode = exportCode
-        this.entityName = entityName
-        this.testDataFile = testDataFile
-        this.sampleOutputFile = sampleOutputFile
-    }
 
     @BeforeEach
     void setup() {
@@ -104,10 +91,9 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
         TimeZone.setDefault(null)
     }
 
-    @Parameterized.Parameters(name = "{1}-{0}")
-    static Collection<String[]> reportCodes() throws Exception {
+    static Collection<Arguments> values() throws Exception {
 
-        List<String[]> result = new ArrayList<>()
+        List<Arguments> result = new ArrayList<>()
         def resourcesList = PluginService.getPluggableResources(ResourceType.EXPORT.getResourcePath(), ResourceType.EXPORT.getFilePattern())
 
         for (String propFile : resourcesList) {
@@ -119,29 +105,30 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
             String entityName = ((String) props.get(ResourceProperty.ENTITY_CLASS.getDisplayName()))
             String outputExtention = keyCode.split("\\.")[3]
             String dataSet = keyCode.split("\\.")[2].concat("DataSet.xml")
-            String outPut = keyCode.split("\\.")[2].concat("SampleOutput.").concat(outputExtention)
+            String output = keyCode.split("\\.")[2].concat("SampleOutput.").concat(outputExtention)
 
-            result.add([keyCode, entityName, dataSet, outPut] as String[])
+            result.add(Arguments.of(keyCode, entityName, dataSet, output))
 
         }
         return result
     }
 
-    @Test
-    void testExport() throws Exception {
+    @ParameterizedTest(name = "{1}-{0}")
+    @MethodSource("values")
+    void testExport(String keyCode, String entityName, dataSet, output) throws Exception {
         // exclude exports for Script entity - IshTestCase updates scripts from resources after table wipe
-        if (!entityName.equals("Script")) {
+        if (entityName != "Script") {
             ExportParameter param = new ExportParameter()
 
             param.setEntity(entityName)
-            param.setXslKeyCode(exportCode)
+            param.setXslKeyCode(keyCode)
             param.setExpression(ExpressionFactory.expTrue())
 
             ExportService export = injector.getInstance(ExportService.class)
 
             ExportResult result = export.export(param)
 
-            byte[] sampleExport = IOUtils.toByteArray(AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/output/" + sampleOutputFile))
+            byte[] sampleExport = IOUtils.toByteArray(AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/output/" + output))
 
             String sampleExportString = StringUtils.replace(new String(sampleExport), StringUtils.CR, StringUtils.EMPTY)
             String resultExportString = StringUtils.replace(new String(result.getResult()), StringUtils.CR, StringUtils.EMPTY)
@@ -155,10 +142,10 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
             for (int i = 0; i < sampleExportSplit.length; i++) {
                 //skipped comparison the first line for payslip Micropay export from the unit test
                 //because it contains the current data
-                if (SS_BULK_UPLOAD_KEYCODE.equals(exportCode)) {
+                if (SS_BULK_UPLOAD_KEYCODE.equals(keyCode)) {
                     sampleExportSplit[i] = sampleExportSplit[i].replace("diff", (LocalDate.now().getYear() - 2014).toString())
                 }
-                if (!(PAYSLIP_MICROPAY_KEYCODE.equals(exportCode) && i == 0)) {
+                if (!(PAYSLIP_MICROPAY_KEYCODE.equals(keyCode) && i == 0)) {
                     Assertions.assertEquals(sampleExportSplit[i].trim(), resultExportSplit[i].trim())
                 }
             }
