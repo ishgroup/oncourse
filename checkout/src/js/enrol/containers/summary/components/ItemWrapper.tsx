@@ -66,8 +66,8 @@ export class ItemWrapper extends React.Component<Props, any> {
               type="text"
               name="quantityValue"
               value={quantity}
-              onChange={e => onQuantityChange(e.target.value)}
-              onBlur={e => onQuantityBlur(e)}
+              onChange={onQuantityChange ? e => onQuantityChange(e.target.value) : () => null}
+              onBlur={onQuantityBlur ? e => onQuantityBlur(e) : () => null}
               style={styles.inputStyle}
             />}
 
