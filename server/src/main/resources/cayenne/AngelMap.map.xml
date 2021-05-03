@@ -1652,6 +1652,9 @@
 		<qualifier><![CDATA[type = 1]]></qualifier>
 		<obj-attribute name="weight" type="java.lang.Double" db-attribute-path="weight"/>
 	</obj-entity>
+	<obj-entity name="ArticleCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.ArticleCustomField">
+		<qualifier><![CDATA[entityIdentifier = "ArticleProduct"]]></qualifier>
+	</obj-entity>
 	<obj-entity name="Assessment" className="ish.oncourse.server.cayenne.Assessment" clientClassName="ish.oncourse.cayenne.Assessment" dbEntityName="Assessment" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
 		<obj-attribute name="active" type="java.lang.Boolean" db-attribute-path="active"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
@@ -2440,6 +2443,9 @@
 	<obj-entity name="MembershipProduct" superEntityName="Product" className="ish.oncourse.server.cayenne.MembershipProduct" clientClassName="ish.oncourse.cayenne.MembershipProduct">
 		<qualifier><![CDATA[type = 2]]></qualifier>
 	</obj-entity>
+	<obj-entity name="MembershipCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.MembershipCustomField">
+		<qualifier><![CDATA[entityIdentifier = "MembershipProduct"]]></qualifier>
+	</obj-entity>
 	<obj-entity name="Message" className="ish.oncourse.server.cayenne.Message" clientClassName="ish.oncourse.cayenne.Message" dbEntityName="Message" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="creatorKey" type="java.lang.String" db-attribute-path="creatorKey"/>
@@ -3097,6 +3103,9 @@
 		<obj-attribute name="maxCoursesRedemption" type="java.lang.Integer" db-attribute-path="maxCoursesRedemption"/>
 		<obj-attribute name="value" type="ish.math.Money" db-attribute-path="value"/>
 	</obj-entity>
+	<obj-entity name="VoucherCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.VoucherCustomField">
+		<qualifier><![CDATA[entityIdentifier = "VoucherProduct"]]></qualifier>
+	</obj-entity>
 	<obj-entity name="VoucherProductCourse" className="ish.oncourse.server.cayenne.VoucherProductCourse" clientClassName="ish.oncourse.cayenne.VoucherProductCourse" dbEntityName="VoucherProduct_Course" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
@@ -3713,6 +3722,9 @@
 	<db-relationship name="relatedSurvey" source="CustomField" target="Survey">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
+	<db-relationship name="relatedProduct" source="CustomField" target="Product">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
 	<db-relationship name="relatedWaitingList" source="CustomField" target="WaitingList">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
@@ -4313,6 +4325,9 @@
 	<db-relationship name="corporatePassProduct" source="Product" target="CorporatePass_Product" toMany="true">
 		<db-attribute-pair source="id" target="productId"/>
 	</db-relationship>
+	<db-relationship name="customFields" source="Product" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>c
 	<db-relationship name="discountMembershipProducts" source="Product" target="Discount_Membership" toMany="true">
 		<db-attribute-pair source="id" target="membershipProductId"/>
 	</db-relationship>
@@ -4746,6 +4761,7 @@
 	<obj-relationship name="relatedObject" source="ApplicationCustomField" target="Application" deleteRule="Nullify" db-relationship-path="relatedApplication"/>
 	<obj-relationship name="notedApplication" source="ApplicationNoteRelation" target="Application" deleteRule="Nullify" db-relationship-path="notedApplication"/>
 	<obj-relationship name="taggedApplication" source="ApplicationTagRelation" target="Application" deleteRule="Nullify" db-relationship-path="taggedApplication"/>
+	<obj-relationship name="relatedObject" source="ArticleCustomField" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="relatedProduct"/>
 	<obj-relationship name="assessmentClasses" source="Assessment" target="AssessmentClass" deleteRule="Deny" db-relationship-path="assessmentClasses"/>
 	<obj-relationship name="attachmentRelations" source="Assessment" target="AssessmentAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="noteRelations" source="Assessment" target="AssessmentNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
@@ -5004,6 +5020,7 @@
 	<obj-relationship name="students" source="Language" target="Student" deleteRule="Deny" db-relationship-path="students"/>
 	<obj-relationship name="discountMemberships" source="MembershipProduct" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discountMembershipProducts"/>
 	<obj-relationship name="discountsAvailable" source="MembershipProduct" target="Discount" deleteRule="Deny" db-relationship-path="discountMembershipProducts.discount"/>
+	<obj-relationship name="relatedObject" source="MembershipCustomField" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="relatedProduct"/>
 	<obj-relationship name="contacts" source="Message" target="Contact" deleteRule="Nullify" db-relationship-path="messagePerson.contact"/>
 	<obj-relationship name="createdBy" source="Message" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy"/>
 	<obj-relationship name="messagePersons" source="Message" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePerson"/>
@@ -5082,6 +5099,7 @@
 	<obj-relationship name="attachedPriorLearning" source="PriorLearningAttachmentRelation" target="PriorLearning" deleteRule="Nullify" db-relationship-path="attachedPriorLearning"/>
 	<obj-relationship name="corporatePassProducts" source="Product" target="CorporatePassProduct" deleteRule="Deny" db-relationship-path="corporatePassProduct"/>
 	<obj-relationship name="incomeAccount" source="Product" target="Account" deleteRule="Nullify" db-relationship-path="incomeAccount"/>
+	<obj-relationship name="customFields" source="Product" target="CustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
 	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="tax" source="Product" target="Tax" deleteRule="Nullify" db-relationship-path="tax"/>
 	<obj-relationship name="contact" source="ProductItem" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
@@ -5227,6 +5245,7 @@
 	<obj-relationship name="voucherProductCourses" source="VoucherProduct" target="VoucherProductCourse" deleteRule="Cascade" db-relationship-path="voucherProductCourses"/>
 	<obj-relationship name="course" source="VoucherProductCourse" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="voucherProduct" source="VoucherProductCourse" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="voucherProduct"/>
+	<obj-relationship name="relatedObject" source="VoucherCustomField" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="relatedProduct"/>
 	<obj-relationship name="course" source="WaitingList" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="customFields" source="WaitingList" target="WaitingListCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
 	<obj-relationship name="sites" source="WaitingList" target="Site" db-relationship-path="waitingList_Site.site"/>
