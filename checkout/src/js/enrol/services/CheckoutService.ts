@@ -433,7 +433,7 @@ export class BuildGetCorporatePassRequest {
       .filter(key => entities.enrolments[key].selected)
       .map(key => entities.enrolments[key].classId)));
 
-    products.map(p => Object.keys(entities[p])
+    products.map(p => Object.keys(entities[p] || [])
       .filter(key => entities[p][key].selected)
       .map(key => productIds.push(entities[p][key].productId)));
 
