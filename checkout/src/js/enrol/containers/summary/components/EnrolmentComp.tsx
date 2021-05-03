@@ -167,7 +167,7 @@ class ClassDetails extends React.PureComponent<ClassDetailsProps, any>{
         labelKey="id"
         input={{
           onChange: result => {
-            if (result.id === courseClass.id) {
+            if (!result || result.id === courseClass.id) {
               return;
             }
             onChangeClass(result.id,availableClasses)
