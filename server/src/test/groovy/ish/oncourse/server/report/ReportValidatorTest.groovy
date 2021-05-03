@@ -1,12 +1,13 @@
 package ish.oncourse.server.report
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.cayenne.Report
 import ish.report.ImportReportResult.ReportValidationError
 import org.apache.cayenne.access.DataContext
 import org.apache.commons.io.IOUtils
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 

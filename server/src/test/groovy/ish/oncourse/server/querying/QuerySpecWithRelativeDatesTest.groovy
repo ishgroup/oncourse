@@ -1,6 +1,6 @@
 package ish.oncourse.server.querying
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
@@ -257,6 +257,6 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase {
         if (result.getType() == ScriptResult.ResultType.SUCCESS)
             Assertions.assertEquals(expectedResult, result.getResultValue().toString())
         else
-            fail("Incorrect syntax: " + result.error)
+            Assertions.fail("Incorrect syntax: " + result.error)
     }
 }

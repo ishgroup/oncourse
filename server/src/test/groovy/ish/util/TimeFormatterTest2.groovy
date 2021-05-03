@@ -18,7 +18,7 @@ class TimeFormatterTest2 {
     private static TimeZone brisbane = TimeZone.getTimeZone("Australia/Brisbane")
 
     private static Collection<Arguments> values() {
-        Object[][] data = [
+        def data = [
                 ["11", "11am", "9am", "8am", "11am", "10am"],
                 ["11p", "11pm", "9pm", "8pm", "11pm", "10pm"],
                 ["11pm", "11pm", "9pm", "8pm", "11pm", "10pm"],
@@ -34,7 +34,7 @@ class TimeFormatterTest2 {
         ]
 
         Collection<Arguments> dataList = new ArrayList<>()
-        for (Object[] test : data) {
+        for (List<String> test : data) {
             dataList.add(Arguments.of(test[0], test[1]))
         }
         return dataList

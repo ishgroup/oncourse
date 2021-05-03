@@ -1,10 +1,8 @@
 package ish.oncourse.server.integration
 
 import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
 
-
-@CompileStatic
+@CompileDynamic
 class MicropowerIntegrationTest {
 
     

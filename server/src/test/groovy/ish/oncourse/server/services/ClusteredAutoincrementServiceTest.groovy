@@ -10,15 +10,17 @@
  */
 package ish.oncourse.server.services
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.Query
+import org.apache.cayenne.query.Select
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers
 
-import static org.mockito.ArgumentMatchers.any
 import static org.mockito.ArgumentMatchers.anyString
 import static org.mockito.Mockito.*
 
@@ -31,7 +33,7 @@ class ClusteredAutoincrementServiceTest {
     @BeforeEach
     void initService() {
         def context = mock(DataContext.class)
-        when(context.selectOne(any(Query.class)))
+        when(context.selectOne(ArgumentMatchers.any(Query.class) as Select<Object>))
                 .thenReturn(123L)
 
         def cayenne = mock(ICayenneService.class)

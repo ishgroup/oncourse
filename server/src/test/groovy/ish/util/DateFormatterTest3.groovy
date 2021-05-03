@@ -19,7 +19,7 @@ class DateFormatterTest3 {
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH)
         int currentDate = Calendar.getInstance().get(Calendar.DATE)
 
-        Object[][] data = [
+        def data = [
                 ["15-1-1975", new GregorianCalendar(1975, Calendar.JANUARY, 15)],
                 ["15/1/1975", new GregorianCalendar(1975, Calendar.JANUARY, 15)],
                 ["15.1.1975", new GregorianCalendar(1975, Calendar.JANUARY, 15)],
@@ -93,7 +93,7 @@ class DateFormatterTest3 {
         ]
 
         Collection<Arguments> dataList = new ArrayList<>()
-        for (Object[] test : data) {
+        for (List test : data) {
             dataList.add(Arguments.of(test[0], test[1]))
         }
 

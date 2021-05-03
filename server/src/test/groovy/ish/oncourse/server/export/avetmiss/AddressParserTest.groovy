@@ -24,7 +24,7 @@ class AddressParserTest {
     }
 
     static Collection<Arguments> values() {
-        Object[][] data = [
+        def data = [
                 [null, "", "", "", "not specified"],
                 ["", "", "", "", "not specified"],
 
@@ -77,7 +77,7 @@ class AddressParserTest {
                 ["The Cage, 12 Port Veil", "The Cage", "", "12", "Port Veil"]
         ]
         Collection<Arguments> dataList = new ArrayList<>()
-        for (Object[] test : data) {
+        for (List<String> test : data) {
             dataList.add(Arguments.of(test[0], test[1], test[2], test[3], test[4]))
         }
         return dataList

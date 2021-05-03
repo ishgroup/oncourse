@@ -1,6 +1,6 @@
 package ish.oncourse.server.scripting.api
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.CayenneService
@@ -74,7 +74,7 @@ class MessageServiceTest extends CayenneIshTestCase {
         Assertions.assertEquals(2, messagePeople.size())
 
         Message messageToFirstStudent = messages.find { it.messagePersons.find { it.contact.id == 1l } }
-        Assertions.assertNotNull("The email would be sent to the first student!", messageToFirstStudent)
+        Assertions.assertNotNull(messageToFirstStudent, "The email would be sent to the first student!")
         Assertions.assertEquals("Hello Student First", messageToFirstStudent.emailSubject)
         Assertions.assertEquals("Thank you for you enrolment to our course TestCourse! Common cost is 100", messageToFirstStudent.emailBody)
         Assertions.assertEquals("&lt;p&gt; Thank you for you enrolment to our course TestCourse!&lt;br/&gt; Common cost is 100 &lt;/p&gt;", messageToFirstStudent.emailHtmlBody)
@@ -111,7 +111,7 @@ class MessageServiceTest extends CayenneIshTestCase {
         Assertions.assertEquals(1, messagePeople.size())
 
         Message messageToSecondStudent = messages.find { it.messagePersons.find { it.contact.id == 2l } }
-        Assertions.assertNotNull("The SMS would be sent to the second student!", messageToSecondStudent)
+        Assertions.assertNotNull(messageToSecondStudent, "The SMS would be sent to the second student!")
         Assertions.assertEquals("Hi, Student Second. Thank you!", messageToSecondStudent.smsText)
         Assertions.assertNull("The subject should be null", messageToSecondStudent.emailSubject)
         Assertions.assertNull("The textBody should be null", messageToSecondStudent.emailBody)

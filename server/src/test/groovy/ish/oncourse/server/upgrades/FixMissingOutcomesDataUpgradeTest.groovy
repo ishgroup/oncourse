@@ -4,7 +4,6 @@
  */
 package ish.oncourse.server.upgrades
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.EnrolmentStatus
@@ -23,8 +22,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-/**
- */
 @CompileStatic
 class FixMissingOutcomesDataUpgradeTest extends CayenneIshTestCase {
     private static final Logger logger = LogManager.getLogger()
@@ -48,17 +45,17 @@ class FixMissingOutcomesDataUpgradeTest extends CayenneIshTestCase {
 
         DataContext context = this.cayenneService.getNewContext()
         List<Attendance> attendance = context.select(SelectQuery.query(Attendance.class))
-        Assertions.assertEquals("there should be some attendance defined", 24, attendance.size())
+        Assertions.assertEquals(24, attendance.size(), "there should be some attendance defined")
 
         fixEnrolments(context)
 
         attendance = context.select(SelectQuery.query(Attendance.class))
-        Assertions.assertEquals("now there shoudl be all the attendance", 105, attendance.size())
+        Assertions.assertEquals(105, attendance.size(), "now there should be all the attendance")
 
         fixEnrolments(context)
 
         attendance = context.select(SelectQuery.query(Attendance.class))
-        Assertions.assertEquals("now there shoudl be all the attendance", 105, attendance.size())
+        Assertions.assertEquals(105, attendance.size(), "now there should be all the attendance")
 
         List<Student> students = context.select(SelectQuery.query(Student.class))
 
@@ -73,7 +70,7 @@ class FixMissingOutcomesDataUpgradeTest extends CayenneIshTestCase {
                 }
 
             }
-            Assertions.assertEquals("student " + s.getId() + " enrolments(" + enrol + ")", expectedNumberOfAttendance, s.getAttendances().size())
+            Assertions.assertEquals(expectedNumberOfAttendance, s.getAttendances().size(), "student " + s.getId() + " enrolments(" + enrol + ")")
         }
 
     }

@@ -6,6 +6,7 @@ package ish.util
 
 import groovy.transform.CompileStatic
 import ish.math.Money
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 
@@ -97,29 +98,21 @@ class MoneyUtilTest {
 
     @Test
     void testGetPriceIncGst() {
-        System.out.println("test getPriceIncGst")
-
         for (Money input : listOne.keySet()) {
-            // System.out.println("testFormatValue input: " + input);
             Money output = MoneyUtil.getPriceIncTax(input, new BigDecimal("0.1"), Money.ZERO)
-            // System.out.println("testFormatValue output: " + output);
-            Assertions.assertEquals(listOne.get(input).doubleValue(), output.doubleValue(), 0.001)
+            Assertions.assertEquals(listOne.get(input), output)
         }
     }
 
     @Test
     void testCalculateTaxAdjustment() {
-        System.out.println("test calculateTaxAdjustment")
-
         for (Money inc : listTwo.keySet()) {
             Money taxajd = listTwo.get(inc)
             BigDecimal taxRate = new BigDecimal("1.1")
             Money ex = inc.divide(taxRate)
-            // System.out.println("testFormatValue input: " + inc);
             Money output = MoneyUtil.calculateTaxAdjustment(inc, ex, new BigDecimal("0.1"))
-            // System.out.println("testFormatValue input: " + inc + " ... " + output);
 
-            Assertions.assertEquals(taxajd.doubleValue(), output.doubleValue(), 0.001)
+            Assertions.assertEquals(taxajd, output)
         }
     }
 

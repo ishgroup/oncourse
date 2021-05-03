@@ -1,10 +1,9 @@
 package ish.oncourse.server.integration
 
 import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
 import ish.oncourse.server.integration.moodle.MoodleIntegration
 
-@CompileStatic
+@CompileDynamic
 class MoodleIntegrationTestHelper {
 
     final static String BASE_URI = "http://localhost:8888/moodle29/"

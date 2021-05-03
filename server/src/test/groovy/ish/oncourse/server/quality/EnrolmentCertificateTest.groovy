@@ -8,9 +8,6 @@ import org.junit.jupiter.api.Test
 import static org.mockito.Matchers.any
 import static org.mockito.Mockito.when
 
-/**
- * Created by akoiro on 17/03/2016.
- */
 @CompileStatic
 class EnrolmentCertificateTest {
     @Test
@@ -21,7 +18,7 @@ class EnrolmentCertificateTest {
 
         QualityService qualityService = testService.qualityService
 
-        def data = outcomeResultData.testData()
+        def data = outcomeResultData.testData
         when(testService.context.select(any(Select))).thenReturn(data as List<Object>)
 
         QualityRule qualityRule = testService.getQualityRuleBy("enrolmentCertificate")

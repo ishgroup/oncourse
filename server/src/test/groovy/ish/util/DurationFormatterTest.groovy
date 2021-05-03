@@ -17,7 +17,7 @@ class DurationFormatterTest {
 
 
     static Collection<Arguments> values() {
-        Object[][] data = [
+        def data = [
                 ["15min", "15min", "15min", "15min", "15", "0.25", "0", "0", "15"],     //0
 
                 ["0d 1h 15min", "1h 15min", "1h 15min", "75min", "75", "1.25", "0", "1", "15"],
@@ -47,7 +47,7 @@ class DurationFormatterTest {
         ]
 
         Collection<Arguments> dataList = new ArrayList<>()
-        for (Object[] test : data) {
+        for (List<String> test : data) {
             dataList.add(Arguments.of(test[0], test[1], test[2], test[3], test[4], test[5], test[6], test[7]))
         }
         return dataList

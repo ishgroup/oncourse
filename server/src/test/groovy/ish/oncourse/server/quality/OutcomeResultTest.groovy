@@ -1,17 +1,15 @@
 package ish.oncourse.server.quality
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.QualityRule
 import org.apache.cayenne.query.Select
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 import static org.mockito.Matchers.any
 import static org.mockito.Mockito.when
 
-/**
- * Created by akoiro on 17/03/2016.
- */
 @CompileStatic
 class OutcomeResultTest {
     
@@ -20,7 +18,7 @@ class OutcomeResultTest {
         ScriptTestService testService = new ScriptTestService()
         OutcomeResultData outcomeResultData = new OutcomeResultData()
 
-        def data = outcomeResultData.testData()
+        def data = outcomeResultData.testData as List<Object>
         when(testService.context.select(any(Select))).thenReturn(data)
 
         QualityRule qualityRule = testService.getQualityRuleBy("outcomeResult")

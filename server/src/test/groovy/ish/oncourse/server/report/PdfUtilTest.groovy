@@ -4,12 +4,12 @@
 
 package ish.oncourse.server.report
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.IshTestCase
 import org.apache.commons.io.FileUtils
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-
 
 @CompileStatic
 class PdfUtilTest extends IshTestCase {
@@ -26,7 +26,7 @@ class PdfUtilTest extends IshTestCase {
         } catch (Exception e) {
             return
         }
-        fail("an exception should be thrown!")
+        Assertions.fail("an exception should be thrown!")
     }
 
     
@@ -39,7 +39,7 @@ class PdfUtilTest extends IshTestCase {
         PdfUtil.overlayPDFs(testingCopy, overlay2page)
 
         //so far there is no better way of testing the overlay
-        Assertions.assertTrue("new file should be larger than original", testingCopy.length() > original.length())
+        Assertions.assertTrue(testingCopy.length() > original.length(), "new file should be larger than original")
 
         testingCopy.delete()
     }
@@ -53,7 +53,7 @@ class PdfUtilTest extends IshTestCase {
         PdfUtil.overlayPDFs(testingCopy, overlay1page)
 
         //so far there is no better way of testing the overlay
-        Assertions.assertTrue("new file should be larger than original", testingCopy.length() > original.length())
+        Assertions.assertTrue(testingCopy.length() > original.length(), "new file should be larger than original")
 
         testingCopy.delete()
     }
@@ -67,7 +67,7 @@ class PdfUtilTest extends IshTestCase {
         PdfUtil.overlayPDFs(testingCopy, null)
 
         //so far there is no better way of testing the overlay
-        Assertions.assertEquals("new file should be same as original", testingCopy.length(), original.length())
+        Assertions.assertEquals(testingCopy.length(), original.length(), "new file should be same as original")
 
         testingCopy.delete()
     }

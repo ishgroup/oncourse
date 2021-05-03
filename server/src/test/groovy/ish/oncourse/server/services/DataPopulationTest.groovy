@@ -4,7 +4,7 @@
  */
 package ish.oncourse.server.services
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.common.ResourceType
@@ -12,6 +12,7 @@ import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
@@ -25,7 +26,7 @@ class DataPopulationTest extends CayenneIshTestCase {
 
         for (ResourceType type : ResourceType.values()) {
             def count = PluginService.getPluggableResources(type.resourcePath, type.filePattern).size()
-            assertNotEquals(0, count)
+            Assertions.assertNotEquals(0, count)
         }
 
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
@@ -34,8 +35,7 @@ class DataPopulationTest extends CayenneIshTestCase {
             // can only really test export templates, the other imports require window server...
             dataPopulation.run()
         } catch (Exception e) {
-            logger.warn("fail", e)
-            fail("could not import one of the resources " + e)
+            Assertions.fail("could not import one of the resources " + e)
         }
     }
 }

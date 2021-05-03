@@ -32,8 +32,8 @@ class TestSchedulerService implements ISchedulerService {
 
     @Override
     void removeJob(JobKey jobKey) throws SchedulerException {
-        for (JobDetail jobDetail : new ArrayList<>(jobs)) {
-            if (jobKey.equals(jobDetail.getKey())) {
+        for (JobDetail jobDetail : jobs) {
+            if (jobKey == jobDetail.getKey()) {
                 jobs.remove(jobDetail)
             }
         }

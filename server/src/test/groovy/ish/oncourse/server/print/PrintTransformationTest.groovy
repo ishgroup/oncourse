@@ -58,7 +58,7 @@ class PrintTransformationTest extends CayenneIshTestCase {
     }
 
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     void testMissingIds() {
         ICayenneService service = (ICayenneService) injector.getInstance(ICayenneService.class)
         ObjectContext oc = service.getNewNonReplicatingContext()
@@ -72,8 +72,10 @@ class PrintTransformationTest extends CayenneIshTestCase {
         PrintTransformation printTransformation = PrintTransformationsFactory.getPrintTransformationFor("Account", "AccountTransaction", null)
         Assertions.assertEquals(2000, printTransformation.getBatchSize() + printTransformation.getTransformationFilterParamsCount())
         Assertions.assertEquals(printTransformation.getTransformationFilterParamsCount(), 3)
-        printTransformation.applyTransformation(oc, ids, params)
-        fail()
+
+        Assertions.assertThrows(IllegalArgumentException, { ->
+            printTransformation.applyTransformation(oc, ids, params)
+        })
     }
 
     

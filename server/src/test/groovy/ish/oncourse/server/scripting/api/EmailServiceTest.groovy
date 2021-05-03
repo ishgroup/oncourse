@@ -3,7 +3,7 @@
  */
 package ish.oncourse.server.scripting.api
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.MessageType
@@ -106,11 +106,9 @@ class EmailServiceTest extends CayenneIshTestCase {
 
         // 3) trying to enter NULL creatorKey
         //expected: nullPointerException
-        try {
+        Assertions.assertThrows(NullPointerException, { ->
             spec.key(null)
-            fail()
-        } catch (NullPointerException e) {
-        }
+        })
 
 
         // 4) with creatorKey and drop collision
@@ -128,20 +126,16 @@ class EmailServiceTest extends CayenneIshTestCase {
 
         // 6) with the same creatorKey and collision, written in wrong case ('Drop')
         //expected: IllegalArgumentException
-        try {
+        Assertions.assertThrows(IllegalArgumentException, { ->
             spec.keyCollision("Drop")
-            fail()
-        } catch (IllegalArgumentException e) {
-        }
+        })
 
 
         // 7) with the same creatorKey and non existing collision
         //expected: IllegalArgumentException
-        try {
+        Assertions.assertThrows(IllegalArgumentException, { ->
             spec.keyCollision("error1")
-            fail()
-        } catch (IllegalArgumentException e) {
-        }
+        })
 
 
         // 8) the same creatorKey and 'error' collision

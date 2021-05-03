@@ -1,16 +1,13 @@
 package ish.oncourse.server.print
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import net.sf.jasperreports.engine.fonts.FontExtensionsRegistry
 import net.sf.jasperreports.engine.fonts.FontFamily
 import net.sf.jasperreports.extensions.ExtensionsRegistry
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-
-/**
- * Created by anarut on 2/21/17.
- */
 @CompileStatic
 class FontExtensionsRegistryTest {
 

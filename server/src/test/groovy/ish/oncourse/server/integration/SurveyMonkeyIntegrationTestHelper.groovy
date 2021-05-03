@@ -4,7 +4,7 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.oncourse.server.integration.surveymonkey.SurveyMonkeyIntegration
 
-@CompileStatic
+@CompileDynamic
 class SurveyMonkeyIntegrationTestHelper {
 
     static String surveyName = 'test '
