@@ -36,6 +36,7 @@ import {
 } from "../../../../common/actions/CommonPlainRecordsActions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
+import { PreferencesState } from "../../../preferences/reducers/state";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -48,6 +49,7 @@ interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   foundCourses?: Course[];
   submitSucceeded?: any;
   getMinMaxFee?: (ids: string) => void;
+  dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
 const parseFloatValue = value => (value ? parseFloat(value) : value);
@@ -123,13 +125,13 @@ const getInitialRedemptionIndex = (isNew: boolean, voucher: VoucherProduct) => {
 };
 
 const coursesToNestedListItems = (courses: VoucherProductCourse[]): NestedListItem[] => courses.map(course => ({
-      id: course.id.toString(),
-      entityId: course.id,
-      primaryText: course.name,
-      secondaryText: course.code,
-      link: `/course/${course.id}`,
-      active: true
-    }));
+  id: course.id.toString(),
+  entityId: course.id,
+  primaryText: course.name,
+  secondaryText: course.code,
+  link: `/course/${course.id}`,
+  active: true
+}));
 
 const onAddCourses = props => (items: NestedListItem[]) => {
   const {
@@ -171,7 +173,8 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     getMinMaxFee,
     dispatch,
     form,
-    rootEntity
+    rootEntity,
+    dataCollectionRules
   } = props;
   const [redemptionIndex, setRedemptionIndex] = useState(null);
   const initialRedemptionIndex = getInitialRedemptionIndex(isNew, values);
@@ -208,7 +211,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     <div className="generalRoot">
       <div className="pt-1">
         <Grid container>
-          <Grid item xs={twoColumn ? 2 : 6}>
+          <Grid item xs={twoColumn ? 4 : 6}>
             <FormField
               type="text"
               name="name"
@@ -216,7 +219,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
               required
             />
           </Grid>
-          <Grid item xs={twoColumn ? 2 : 6}>
+          <Grid item xs={twoColumn ? 4 : 6}>
             <FormField
               type="text"
               name="code"
@@ -311,6 +314,16 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         items={productStatusItems}
         selectLabelMark="value"
       />
+      <FormField
+        type="select"
+        name="dataCollectionRuleId"
+        label="Data collection rule"
+        selectValueMark="id"
+        selectLabelMark="name"
+        items={dataCollectionRules || []}
+        allowEmpty
+        sort
+      />
       <FormEditorField
         name="description"
         label="Web description"
@@ -341,7 +354,8 @@ const mapStateToProps = (state: State) => ({
   minFee: state.voucherProducts.minFee,
   maxFee: state.voucherProducts.maxFee,
   foundCourses: state.plainSearchRecords["Course"].items,
-  pendingCourses: state.plainSearchRecords["Course"].loading
+  pendingCourses: state.plainSearchRecords["Course"].loading,
+  dataCollectionRules: state.preferences.dataCollectionRules
 });
 
 export default connect<any, any, any>(

@@ -25,6 +25,9 @@ properties:
       $ref: './VoucherProductCourse.yaml'
   description:
     type: string
+  dataCollectionRuleId:
+    type: integer
+    format: int64
   status:
     $ref: '../../enum/ProductStatus.yaml'
   corporatePasses:

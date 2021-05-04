@@ -28,7 +28,7 @@ import { getIncomeAccounts } from "../accounts/actions";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { getEntityRelationTypes } from "../../preferences/actions";
+import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
 
 interface MembershipProductsProps {
@@ -42,6 +42,7 @@ interface MembershipProductsProps {
   getAccounts?: () => void;
   getTaxes?: () => void;
   clearListState?: () => void;
+  getDataCollectionRules?: () => void;
   getDefaultIncomeAccount?: () => void;
   accounts?: Account[];
   taxes?: Tax[];
@@ -135,7 +136,8 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
     preferences,
     getMembershipProductContactRelationTypes,
     checkPermissions,
-    getRelationTypes
+    getRelationTypes,
+    getDataCollectionRules
   } = props;
 
   useEffect(() => {
@@ -159,6 +161,7 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
     getFilters();
     checkPermissions();
     getRelationTypes();
+    getDataCollectionRules();
     return () => {
       clearListState();
     };
@@ -208,7 +211,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: string, membershipProduct: MembershipProduct) => dispatch(updateMembershipProduct(id, membershipProduct)),
   onCreate: (membershipProduct: MembershipProduct) => dispatch(createMembershipProduct(membershipProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
-  getRelationTypes: () => dispatch(getEntityRelationTypes())
+  getRelationTypes: () => dispatch(getEntityRelationTypes()),
+  getDataCollectionRules: () => dispatch(getDataCollectionRules()),
 });
 
 const mapStateToProps = (state: State) => ({

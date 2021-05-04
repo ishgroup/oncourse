@@ -24,7 +24,7 @@ import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { ACCOUNT_DEFAULT_VOUCHER_LIABILITY_ID } from "../../../constants/Config";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getEntityTags } from "../../tags/actions";
-import { getEntityRelationTypes } from "../../preferences/actions";
+import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 
 interface VoucherProductsProps {
   getVoucherProductRecord?: () => void;
@@ -38,6 +38,7 @@ interface VoucherProductsProps {
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   getDefaultLiabilityAccount?: () => void;
   getAccounts?: () => void;
+  getDataCollectionRules?: () => void;
   updatingAccounts?: boolean;
   accounts?: Account[];
   preferences?: any;
@@ -113,7 +114,8 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
     preferences,
     accounts,
     checkPermissions,
-    getRelationTypes
+    getRelationTypes,
+    getDataCollectionRules
   } = props;
 
   const [initNew, setInitNew] = useState(false);
@@ -138,6 +140,7 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
     getTagsForClassesSearch();
     checkPermissions();
     getRelationTypes();
+    getDataCollectionRules();
     return () => {
       clearListState();
     };
@@ -186,7 +189,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: string, voucherProduct: VoucherProduct) => dispatch(updateVoucherProduct(id, voucherProduct)),
   onCreate: (voucherProduct: VoucherProduct) => dispatch(createVoucherProduct(voucherProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
-  getRelationTypes: () => dispatch(getEntityRelationTypes())
+  getRelationTypes: () => dispatch(getEntityRelationTypes()),
+  getDataCollectionRules: () => dispatch(getDataCollectionRules()),
 });
 
 const mapStateToProps = (state: State) => ({

@@ -10,6 +10,9 @@ properties:
     type: string
   description:
     type: string
+  dataCollectionRuleId:
+    type: integer
+    format: int64
   feeExTax:
     type: number
   totalFee:
