@@ -2,6 +2,10 @@
 export function mockGradingTypes() {
   this.getGradingTypes = () => this.gradingTypes;
 
+  this.removeGradingType = id => {
+    this.gradingTypes = this.gradingTypes.filter(type => Number(type.id) !== Number(id));
+  };
+
   return [
     {
       "id": 1,
