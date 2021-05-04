@@ -1,6 +1,6 @@
 package ish.oncourse.server.report
 
-
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.cayenne.Report
@@ -42,7 +42,7 @@ class ReportValidatorTest {
         Assertions.assertEquals(ImportedFileDoesNotContainJasperReportTag, validationError)
     }
 
-    
+    @CompileDynamic
     @Test
     void testMultipleRecords() throws Exception {
         List reports = new ArrayList<>()

@@ -43,7 +43,7 @@ class QuerySpecTest extends CayenneIshTestCase {
     static Collection<Arguments> values() {
         List<Arguments> result = new ArrayList<>()
 
-        Object[][] data = [
+        def data = [
                 
         //Query rules:
         //1) Date:
@@ -262,7 +262,7 @@ class QuerySpecTest extends CayenneIshTestCase {
                 ]
 
         Collection<Arguments> resultData = new ArrayList<>()
-        for (Object[] test : data) {
+        for (List<String> test : data) {
             resultData.add(Arguments.of(test[0], test[1], test[2], test[3], test[4], test[5]))
         }
         return resultData

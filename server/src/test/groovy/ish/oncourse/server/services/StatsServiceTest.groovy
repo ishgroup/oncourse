@@ -4,7 +4,7 @@
  */
 package ish.oncourse.server.services
 
-
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -22,6 +22,7 @@ class StatsServiceTest {
      * plot is saved as a png file in the current working directory, allowing to test plotting itself.<br/>
      * cannot be used on headless machines, as the plot requires graphic env.
      */
+    @CompileDynamic
     @Test
     void testSparkLine() {
 

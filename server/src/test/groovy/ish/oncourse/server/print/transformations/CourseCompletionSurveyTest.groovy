@@ -31,7 +31,7 @@ class CourseCompletionSurveyTest {
     private PrintWorker printWorker
     ICayenneService cayenneService
 
-    
+    @CompileDynamic
     @BeforeEach
     void before() throws IOException {
         InputStream is = CourseCompletionSurveyTest.class.getClassLoader().getResourceAsStream("reports/CourseClass/CourseCompletionSurvey.jrxml")

@@ -1,6 +1,6 @@
 package ish.oncourse.server.scripting
 
-
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.SystemEventType
@@ -44,7 +44,7 @@ class ClassPublishedTriggeringTest extends CayenneIshTestCase {
         wipeTables()
     }
 
-    
+    @CompileDynamic
     @Test
     void testClassPublishEventRun() {
         OnCourseEventListener listener = Mockito.mock(OnCourseEventListener.class)

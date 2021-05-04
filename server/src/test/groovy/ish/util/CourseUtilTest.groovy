@@ -1,5 +1,6 @@
 package ish.util
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.messaging.ICourse
 import ish.messaging.ICourseClass
@@ -16,6 +17,7 @@ import static org.mockito.Mockito.when
 @CompileStatic
 class CourseUtilTest {
 
+    @CompileDynamic
     @Test
     void testAddModule() throws Exception {
         IModule module = Mockito.mock(IModule.class)

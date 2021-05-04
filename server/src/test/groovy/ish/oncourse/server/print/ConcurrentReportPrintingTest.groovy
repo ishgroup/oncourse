@@ -139,7 +139,7 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
             Class<? extends PersistentObjectI> entityClass = EntityUtil.entityClassForName(entityName)
 
             List<PersistentObjectI> list = new ArrayList<>()
-            if (PaymentInterface.class.equals(entityClass)) {
+            if (entityClass == PaymentInterface) {
                 list.addAll(cayenneService.getNewContext().select(SelectQuery.query(PaymentIn.class)))
                 list.addAll(cayenneService.getNewContext().select(SelectQuery.query(PaymentOut.class)))
 

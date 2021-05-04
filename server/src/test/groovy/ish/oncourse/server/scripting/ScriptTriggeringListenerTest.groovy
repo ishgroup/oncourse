@@ -1,6 +1,6 @@
 package ish.oncourse.server.scripting
 
-
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.EntityEvent
@@ -27,7 +27,7 @@ class ScriptTriggeringListenerTest extends CayenneIshTestCase {
     private TestSchedulerService schedulerService
     private static final Logger logger = LogManager.getLogger()
 
-    
+    @CompileDynamic
     void setup() throws SchedulerException {
         this.cayenneService = injector.getInstance(ICayenneService.class)
         this.scriptService = injector.getInstance(GroovyScriptService.class)

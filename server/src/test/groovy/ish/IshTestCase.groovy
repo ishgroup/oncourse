@@ -50,7 +50,7 @@ abstract class IshTestCase {
 
     protected static String workingDirectory
 
-    protected static BQRuntime injector
+    public static BQRuntime injector
 
     protected static DataSource dataSource
     protected static String databaseType

@@ -1,5 +1,6 @@
 package ish.oncourse.server.imports.avetmiss
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.common.types.AvetmissStudentDisabilityType
 import ish.common.types.AvetmissStudentPriorEducation
@@ -23,7 +24,8 @@ class Avetmiss80ParserTest {
     private language
     private country
 
-    
+
+    @CompileDynamic
     private static Avetmiss80Parser getParser(String text) {
         
         ObjectContext contextMock = mock(ObjectContext)

@@ -152,7 +152,7 @@ class PluginServiceTest extends CayenneIshTestCase {
         }
     }
 
-
+    @CompileDynamic
     private void createIntegration(String name) {
         IntegrationDTO dto = new IntegrationDTO(type: TEST_TYPE_VALUE, name: name, props: defaultProperties)
         integrationApi.create(dto)
