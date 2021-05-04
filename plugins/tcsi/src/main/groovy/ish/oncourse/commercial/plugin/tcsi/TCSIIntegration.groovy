@@ -37,6 +37,8 @@ import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.URLENC
 import static groovyx.net.http.Method.POST
 import static groovyx.net.http.Method.GET
+import static groovyx.net.http.Method.PUT
+
 
 @CompileDynamic
 @Plugin(type = 11, oneOnly = true)
@@ -58,11 +60,15 @@ class TCSIIntegration implements PluginTrait {
     static final String DHS_PRODUCT_ID_TEST = '858d06ed-7fbe-423c-be45-ac5742cf137c'
     static final String BASE_URL_TEST = 'https://test.5.rsp.humanservices.gov.au'
     static final String AUTH_URL_TEST= 'https://vnd.PRODA.humanservices.gov.au'
+    static final String AUTH_HOST_TEST = 'vnd.proda.humanservices.gov.au'
+
     static final String TCSI_BASE_URL_TEST = 'https://test.api.humanservices.gov.au/centrelink/ext-vend/tcsi/b2g/v1'
-    
+
     static final String DHS_PRODUCT_ID = test ? DHS_PRODUCT_ID_TEST : '08b1e117-5efa-4b4d-b3d7-65ae18908671'
     static final String BASE_URL = test ? BASE_URL_TEST : 'https://5.rsp.humanservices.gov.au'
     static final String AUTH_URL = test ? AUTH_URL_TEST : 'https://PRODA.humanservices.gov.au'
+    static final String AUTH_HOST = test ? AUTH_HOST_TEST : 'proda.humanservices.gov.a'
+
     static final String TCSI_BASE_URL = test ? TCSI_BASE_URL_TEST :'https://api.humanservices.gov.au/centrelink/ext-vend/tcsi/b2g/v1'
 
     static final String BASE_API_PATH = '/centrelink/ext-vend/tcsi/b2g/v1'
@@ -76,12 +82,12 @@ class TCSIIntegration implements PluginTrait {
     String organisationId
     String jwkCertificate
     ObjectContext context
+    
     EntityRelationType highEducationType
     Course highEducation
+    Enrolment enrolment
 
     private String authToken
-    
-    private Enrolment enrolment
     
 
     private static Logger logger = LogManager.logger
@@ -174,6 +180,7 @@ class TCSIIntegration implements PluginTrait {
             headers.'dhs-auditIdType'= 'http://humanservices.gov.au/PRODA/org'
             headers.'dhs-subjectId'= deviceName
             headers.'dhs-subjectIdType'= 'http://humanservices.gov.au/PRODA/device'
+            headers.'Host' = AUTH_HOST
             body = "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=$jwtString&client_id=$DHS_PRODUCT_ID"
             response.success = { resp, body ->
                 logger.warn("Device authentication success: $deviceName, $organisationId,  $jwkCertificate")

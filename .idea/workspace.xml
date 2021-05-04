@@ -8,56 +8,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="Set up gradle properly, add Intellij settings and set copyright.">
+      <change afterPath="$PROJECT_DIR$/plugins/tcsi/src/main/groovy/ish/oncourse/commercial/plugin/tcsi/test.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish/oncourse/commercial/plugin/cloudassess/CloudAssessIntegration.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish/oncourse/commercial/plugin/cloudassess/CloudAssessIntegration.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish/oncourse/commercial/plugin/cloudassess/CloudAssessScriptClosure.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/groovy/ish/oncourse/commercial/plugin/cloudassess/CloudAssessScriptClosure.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/cloud-assess/src/main/resources/scripts/ish.script.cloudAssessEnrolmentCreate.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/cloud-assess/src/main/resources/scripts/ish.script.cloudAssessEnrolmentCreate.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/Replication.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/Replication.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/modules/PortFiller.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/modules/PortFiller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/ReferenceJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/ReferenceJob.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/ReferenceUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/ReferenceUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/BaseReferenceUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/BaseReferenceUpdater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/CountryUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/CountryUpdater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/IReferenceUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/IReferenceUpdater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/IReferenceUpdaterFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/IReferenceUpdaterFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/LanguageUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/LanguageUpdater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/ModuleUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/ModuleUpdater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/PostcodeUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/PostcodeUpdater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/QualificationUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/QualificationUpdater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/ReferenceUpdaterFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/ReferenceUpdaterFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/TrainingPackageUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater/TrainingPackageUpdater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/ISHDataContextTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/ISHDataContextTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/builders/SurveyStubBuilderTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/builders/SurveyStubBuilderTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/AbstractReplicationPortType.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/AbstractReplicationPortType.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/AbstractSoapPortLocator.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/AbstractSoapPortLocator.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/InboundReplicationHandlerTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/InboundReplicationHandlerTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/InstructionHandlerTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/InstructionHandlerTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/OutboundReplicationActionNullTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/OutboundReplicationActionNullTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/OutboundReplicationHandlerTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/handler/OutboundReplicationHandlerTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/lifecycle/QueueableLifecycleListenerTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/lifecycle/QueueableLifecycleListenerTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/services/AngelQueueServiceTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/services/AngelQueueServiceTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/services/DeduperFactoryTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/services/DeduperFactoryTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/updaters/InvoiceLineUpdaterTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/updaters/InvoiceLineUpdaterTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/updaters/PaymentInUpdaterTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/updaters/PaymentInUpdaterTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/updaters/RelatedObjectCustomFieldUpdaterTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/updaters/RelatedObjectCustomFieldUpdaterTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/upgrades/ContactUpdaterTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/upgrades/ContactUpdaterTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/upgrades/QueueAllRecordsForFirstTimeReplicationTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/groovy/ish/oncourse/commercial/replication/upgrades/QueueAllRecordsForFirstTimeReplicationTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/enrolment-outcomeTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/enrolment-outcomeTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/handler/actionNullDataSet.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/handler/actionNullDataSet.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/handler/courseClassTutorDataSet.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/handler/courseClassTutorDataSet.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/handler/instructionHandlerTestDataSet.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/handler/instructionHandlerTestDataSet.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/handler/testDataSet.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/handler/testDataSet.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/ishDataContextTestDataSet.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/ishDataContextTestDataSet.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/lifecycle/invoiceLifecycleTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/lifecycle/invoiceLifecycleTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/lifecycle/queuDataSet.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/lifecycle/queuDataSet.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/services/angelQueueServiceTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/services/angelQueueServiceTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/updaters/InvoiceLineUpdaterTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/updaters/InvoiceLineUpdaterTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/updaters/PaymentInUpdaterTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/updaters/PaymentInUpdaterTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/updaters/RelatedObjectCustomFieldUpdaterTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/updaters/RelatedObjectCustomFieldUpdaterTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/upgrades/recordQueuingTestDataSet.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/upgrades/recordQueuingTestDataSet.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/xero/src/main/resources/scripts/ish.script.xeroJournal.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/xero/src/main/resources/scripts/ish.script.xeroJournal.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/xero/src/main/resources/scripts/ish.script.xeroPayroll.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/xero/src/main/resources/scripts/ish.script.xeroPayroll.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins" beforeDir="true" afterPath="$PROJECT_DIR$/plugins" afterDir="true" />
+      <change beforePath="$PROJECT_DIR$/plugins/tcsi" beforeDir="true" afterPath="$PROJECT_DIR$/plugins/tcsi" afterDir="true" />
+      <change beforePath="$PROJECT_DIR$/plugins/tcsi/src/main/groovy/ish/oncourse/commercial/plugin/tcsi/TCSIIntegration.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/tcsi/src/main/groovy/ish/oncourse/commercial/plugin/tcsi/TCSIIntegration.groovy" afterDir="false" />
     </list>
+    <list id="bb6a737a-b326-4518-9528-cd61bc199048" name="local" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -113,6 +70,14 @@
       </state>
     </system>
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="JupyterTrust" id="fc7f12ea-0133-409d-9925-fb3e2d76f7dd" />
   <component name="ProjectId" id="1iuHCiUw59PKWFOXRKyRfQyCwLV" />
   <component name="ProjectLevelVcsManager">
@@ -154,7 +119,22 @@
       <recent name="$PROJECT_DIR$/plugins/replication/src/test/resources/ish/oncourse/commercial/replication/lifecycle" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.QueueAllRecordsForFirstTimeReplicationTest">
+  <component name="RunManager" selected="Application.test">
+    <configuration name="test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="/Library/Java/JavaVirtualMachines/jdk-16.0.1.jdk/Contents/Home" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="ish.oncourse.commercial.plugin.tcsi.test" />
+      <module name="onCourse_commercial.plugins.tcsi.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ish.oncourse.commercial.plugin.tcsi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="QueueAllRecordsForFirstTimeReplicationTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -172,26 +152,9 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="trunk [deps]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="deps" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
     <configuration name="trunk [fatJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -210,7 +173,9 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
     <configuration name="trunk [sourcesJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -229,7 +194,9 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
     <configuration name="trunk [te]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -248,16 +215,25 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.test" />
+      <item itemvalue="Gradle.QueueAllRecordsForFirstTimeReplicationTest" />
+      <item itemvalue="Gradle.trunk [fatJar]" />
+      <item itemvalue="Gradle.trunk [sourcesJar]" />
+      <item itemvalue="Gradle.trunk [te]" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.test" />
         <item itemvalue="Gradle.QueueAllRecordsForFirstTimeReplicationTest" />
         <item itemvalue="Gradle.trunk [fatJar]" />
         <item itemvalue="Gradle.trunk [sourcesJar]" />
         <item itemvalue="Gradle.trunk [te]" />
-        <item itemvalue="Gradle.trunk [deps]" />
       </list>
     </recent_temporary>
   </component>
@@ -668,7 +644,6 @@
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix wrong imports" />
     <MESSAGE value="Fix imports" />
     <MESSAGE value="Move replication version to plugin" />
     <MESSAGE value="Remove useless voucher service. Fix imports" />
@@ -693,148 +668,8 @@
     <MESSAGE value="fix column name" />
     <MESSAGE value="Do not interrupt payroll scrip execution, and just skip payslip record and proceed with other" />
     <MESSAGE value="OD-15334 Add production API key" />
-    <option name="LAST_COMMIT_MESSAGE" value="OD-15334 Add production API key" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="463" y="201" key="#Project_Structure" timestamp="1605276259505">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="463" y="201" key="#Project_Structure/68.23.1612.1027@68.23.1612.1027" timestamp="1605276259505" />
-    <state x="685" y="253" key="#com.intellij.ide.util.MemberChooser" timestamp="1605522701338">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="685" y="253" key="#com.intellij.ide.util.MemberChooser/68.23.1612.1027@68.23.1612.1027" timestamp="1605522701338" />
-    <state x="567" y="415" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1605526422931">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="567" y="415" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/68.23.1612.1027@68.23.1612.1027" timestamp="1605526422931" />
-    <state x="728" y="410" key="#xdebugger.evaluate" timestamp="1604929197024">
-      <screen x="65" y="23" width="1615" height="1027" />
-    </state>
-    <state x="728" y="410" key="#xdebugger.evaluate/65.23.1615.1027@65.23.1615.1027" timestamp="1604929197024" />
-    <state x="2035" y="763" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1606875221278">
-      <screen x="0" y="25" width="3360" height="1865" />
-    </state>
-    <state x="2035" y="762" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/-1440.538.1440.900/0.23.3360.1867@0.23.3360.1867" timestamp="1602799146937" />
-    <state x="2035" y="763" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/-1440.538.1440.900/0.25.3360.1865@0.25.3360.1865" timestamp="1606875221278" />
-    <state x="548" y="314" width="1477" height="1138" key="CommitChangelistDialog2" timestamp="1606796330989">
-      <screen x="0" y="25" width="3360" height="1865" />
-    </state>
-    <state x="548" y="314" width="1477" height="1138" key="CommitChangelistDialog2/-1440.538.1440.900/0.25.3360.1865@0.25.3360.1865" timestamp="1606796330989" />
-    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1605899295352" />
-    <state x="331" y="182" key="CommitChangelistDialog2/68.23.1612.1027@68.23.1612.1027" timestamp="1606425355841" />
-    <state x="229" y="115" width="1289" height="821" key="DiffContextDialog" timestamp="1606130807117">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="226" y="115" width="1292" height="821" key="DiffContextDialog/65.23.1615.1027@65.23.1615.1027" timestamp="1604924518521" />
-    <state x="229" y="115" width="1289" height="821" key="DiffContextDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1606130807117" />
-    <state width="1567" height="280" key="GridCell.Tab.0.bottom" timestamp="1605815542239">
-      <screen x="65" y="23" width="1615" height="1027" />
-    </state>
-    <state width="1567" height="280" key="GridCell.Tab.0.bottom/65.23.1615.1027@65.23.1615.1027" timestamp="1605815542239" />
-    <state width="1567" height="280" key="GridCell.Tab.0.bottom/68.23.1612.1027@68.23.1612.1027" timestamp="1605712427592" />
-    <state width="1567" height="280" key="GridCell.Tab.0.center" timestamp="1605815542238">
-      <screen x="65" y="23" width="1615" height="1027" />
-    </state>
-    <state width="1567" height="280" key="GridCell.Tab.0.center/65.23.1615.1027@65.23.1615.1027" timestamp="1605815542238" />
-    <state width="1567" height="280" key="GridCell.Tab.0.center/68.23.1612.1027@68.23.1612.1027" timestamp="1605712427591" />
-    <state width="1567" height="280" key="GridCell.Tab.0.left" timestamp="1605815542237">
-      <screen x="65" y="23" width="1615" height="1027" />
-    </state>
-    <state width="1567" height="280" key="GridCell.Tab.0.left/65.23.1615.1027@65.23.1615.1027" timestamp="1605815542237" />
-    <state width="1567" height="280" key="GridCell.Tab.0.left/68.23.1612.1027@68.23.1612.1027" timestamp="1605712427591" />
-    <state width="1567" height="280" key="GridCell.Tab.0.right" timestamp="1605815542238">
-      <screen x="65" y="23" width="1615" height="1027" />
-    </state>
-    <state width="1567" height="280" key="GridCell.Tab.0.right/65.23.1615.1027@65.23.1615.1027" timestamp="1605815542238" />
-    <state width="1567" height="280" key="GridCell.Tab.0.right/68.23.1612.1027@68.23.1612.1027" timestamp="1605712427592" />
-    <state width="1567" height="345" key="GridCell.Tab.1.bottom" timestamp="1605166948428">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state width="1567" height="345" key="GridCell.Tab.1.bottom/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385532" />
-    <state width="1567" height="345" key="GridCell.Tab.1.bottom/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948428" />
-    <state width="1567" height="345" key="GridCell.Tab.1.center" timestamp="1605166948428">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state width="1567" height="345" key="GridCell.Tab.1.center/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385531" />
-    <state width="1567" height="345" key="GridCell.Tab.1.center/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948428" />
-    <state width="1567" height="345" key="GridCell.Tab.1.left" timestamp="1605166948427">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state width="1567" height="345" key="GridCell.Tab.1.left/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385531" />
-    <state width="1567" height="345" key="GridCell.Tab.1.left/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948427" />
-    <state width="1567" height="345" key="GridCell.Tab.1.right" timestamp="1605166948428">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state width="1567" height="345" key="GridCell.Tab.1.right/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385532" />
-    <state width="1567" height="345" key="GridCell.Tab.1.right/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948428" />
-    <state x="485" y="237" key="NewModule_or_Project.wizard" timestamp="1605857457562">
-      <screen x="65" y="23" width="1615" height="1027" />
-    </state>
-    <state x="485" y="237" key="NewModule_or_Project.wizard/65.23.1615.1027@65.23.1615.1027" timestamp="1605857457562" />
-    <state x="487" y="237" key="NewModule_or_Project.wizard/68.23.1612.1027@68.23.1612.1027" timestamp="1605857007071" />
-    <state x="622" y="254" key="RollbackChangesDialog" timestamp="1605711605349">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="620" y="254" key="RollbackChangesDialog/65.23.1615.1027@65.23.1615.1027" timestamp="1604934620926" />
-    <state x="622" y="254" key="RollbackChangesDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1605711605349" />
-    <state x="242" y="148" width="1002" height="665" key="SettingsEditor" timestamp="1605696419891">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="787" y="482" width="1861" height="1208" key="SettingsEditor/-1440.538.1440.900/0.23.3360.1867@0.23.3360.1867" timestamp="1602799221787" />
-    <state x="360" y="118" key="SettingsEditor/65.23.1615.1027@65.23.1615.1027" timestamp="1605187225589" />
-    <state x="242" y="148" width="1002" height="665" key="SettingsEditor/68.23.1612.1027@68.23.1612.1027" timestamp="1605696419891" />
-    <state x="728" y="404" key="VCS.ChangeListViewerDialog" timestamp="1606131020646">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="728" y="404" key="VCS.ChangeListViewerDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1606131020646" />
-    <state x="549" y="369" key="com.intellij.ide.util.TipDialog" timestamp="1606111895721">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="549" y="369" key="com.intellij.ide.util.TipDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1606111895721" />
-    <state x="685" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606125587567">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.23.1615.1027@65.23.1615.1027" timestamp="1604642898300" />
-    <state x="685" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/68.23.1612.1027@68.23.1612.1027" timestamp="1606125587567" />
-    <state x="171" y="123" width="1409" height="827" key="dock-window-1" timestamp="1605186620738">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="171" y="123" width="1409" height="827" key="dock-window-1/68.23.1612.1027@68.23.1612.1027" timestamp="1605186620738" />
-    <state x="523" y="293" width="853" height="550" key="find.popup" timestamp="1605706002684">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="521" y="293" width="883" height="550" key="find.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1605187362291" />
-    <state x="523" y="293" width="853" height="550" key="find.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1605706002684" />
-    <state x="247" y="150" key="new project wizard" timestamp="1606424555730">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="247" y="150" key="new project wizard/68.23.1612.1027@68.23.1612.1027" timestamp="1606424555730" />
-    <state x="633" y="160" key="refactoring.ChangeSignatureDialog" timestamp="1605102492405">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="633" y="160" key="refactoring.ChangeSignatureDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1605102492405" />
-    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1606399137189">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="536" y="250" width="674" height="676" key="search.everywhere.popup/62.23.1618.1027@62.23.1618.1027" timestamp="1604661701986" />
-    <state x="538" y="250" width="672" height="676" key="search.everywhere.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1605791424565" />
-    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1606399137189" />
-    <state x="542" y="250" width="670" height="676" key="search.everywhere.popup/71.23.1609.1027@71.23.1609.1027" timestamp="1604411205487" />
-    <state x="731" y="381" key="svn.propertyDialog" timestamp="1605711596810">
-      <screen x="68" y="23" width="1612" height="1027" />
-    </state>
-    <state x="731" y="381" key="svn.propertyDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1605711596810" />
-    <state x="664" y="457" key="svn.upgradeDialog" timestamp="1605857402035">
-      <screen x="65" y="23" width="1615" height="1027" />
-    </state>
-    <state x="664" y="457" key="svn.upgradeDialog/65.23.1615.1027@65.23.1615.1027" timestamp="1605857402035" />
-    <state x="666" y="457" key="svn.upgradeDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1605856966010" />
-    <state x="628" y="409" key="svn4idea.checkout.options" timestamp="1605857400329">
-      <screen x="65" y="23" width="1615" height="1027" />
-    </state>
-    <state x="628" y="409" key="svn4idea.checkout.options/65.23.1615.1027@65.23.1615.1027" timestamp="1605857400329" />
-    <state x="630" y="409" key="svn4idea.checkout.options/68.23.1612.1027@68.23.1612.1027" timestamp="1605856964361" />
+    <MESSAGE value="OD-16014 Fix the authenintification request" />
+    <option name="LAST_COMMIT_MESSAGE" value="OD-16014 Fix the authenintification request" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -842,6 +677,26 @@
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/ReplicationPlugin.groovy</url>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/plugins/tcsi/src/main/groovy/ish/oncourse/commercial/plugin/tcsi/test.groovy</url>
+          <line>14</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/plugins/tcsi/src/main/groovy/ish/oncourse/commercial/plugin/tcsi/TCSIIntegration.groovy</url>
+          <line>190</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.2.1/3f6caf5334fa83607b82e2f32dd128a9d8a0ea5e/httpcore-4.2.1-sources.jar!/org/apache/http/protocol/RequestContent.java</url>
+          <line>83</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/plugins/tcsi/src/main/groovy/ish/oncourse/commercial/plugin/tcsi/TCSIIntegration.groovy</url>
+          <line>167</line>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
