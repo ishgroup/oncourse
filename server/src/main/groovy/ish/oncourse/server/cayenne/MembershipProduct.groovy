@@ -72,9 +72,4 @@ class MembershipProduct extends _MembershipProduct {
 	List<Discount> getDiscountsAvailable() {
 		return super.getDiscountsAvailable()
 	}
-
-	@Override
-	Class<? extends CustomField> getCustomFieldClass() {
-		return MembershipCustomField
-	}
 }

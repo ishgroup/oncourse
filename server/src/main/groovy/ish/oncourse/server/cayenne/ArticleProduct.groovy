@@ -127,9 +127,4 @@ class ArticleProduct extends _ArticleProduct {
 	@Nullable Double getWeight() {
 		return super.getWeight()
 	}
-
-	@Override
-	Class<? extends CustomField> getCustomFieldClass() {
-		return ArticleCustomField
-	}
 }

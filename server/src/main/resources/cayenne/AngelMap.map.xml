@@ -2703,6 +2703,9 @@
 		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
+	<obj-entity name="ProductItemCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.ProductItemCustomField">
+		<qualifier><![CDATA[entityIdentifier = "ProductItem"]]></qualifier>
+	</obj-entity>
 	<obj-entity name="Qualification" className="ish.oncourse.server.cayenne.Qualification" clientClassName="ish.oncourse.cayenne.Qualification" dbEntityName="Qualification" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="anzsco" type="java.lang.String" db-attribute-path="ANZSCO"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -3719,6 +3722,9 @@
 	<db-relationship name="relatedEnrolment" source="CustomField" target="Enrolment">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
+	<db-relationship name="relatedSale" source="CustomField" target="ProductItem">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
 	<db-relationship name="relatedSurvey" source="CustomField" target="Survey">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
@@ -4360,6 +4366,9 @@
 	</db-relationship>
 	<db-relationship name="voucherPayments" source="ProductItem" target="Voucher_PaymentIn" toMany="true">
 		<db-attribute-pair source="id" target="voucherId"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="ProductItem" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="certificates" source="Qualification" target="Certificate" toMany="true">
 		<db-attribute-pair source="id" target="qualificationId"/>
@@ -5105,6 +5114,8 @@
 	<obj-relationship name="contact" source="ProductItem" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="invoiceLine" source="ProductItem" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="product" source="ProductItem" target="Product" deleteRule="Nullify" db-relationship-path="product"/>
+	<obj-relationship name="customFields" source="ProductItem" target="ProductItemCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="ProductItemCustomField" target="ProductItem" deleteRule="Nullify" db-relationship-path="relatedSale"/>
 	<obj-relationship name="certificates" source="Qualification" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="courses" source="Qualification" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
 	<obj-relationship name="defaultModules" source="Qualification" target="Module" deleteRule="Deny" db-relationship-path="defaultModules"/>

@@ -34,7 +34,7 @@ import javax.swing.text.DefaultFormatter
  */
 @API
 @QueueableEntity
-class Product extends _Product implements Queueable, ExpandableTrait {
+class Product extends _Product implements Queueable {
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -281,10 +281,5 @@ class Product extends _Product implements Queueable, ExpandableTrait {
 	@Override
 	Tax getTax() {
 		return super.getTax()
-	}
-
-	@Override
-	Class<? extends CustomField> getCustomFieldClass() {
-		return null
 	}
 }
