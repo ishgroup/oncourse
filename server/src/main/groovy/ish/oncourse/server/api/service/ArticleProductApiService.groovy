@@ -24,7 +24,6 @@ import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.cayenne.Product
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
@@ -90,7 +89,6 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
                                         EntityRelationDao.getRelatedTo(articleProduct.context, Product.simpleName, articleProduct.id).collect { toRestToEntityRelation(it) })
             articleProductDTO.createdOn = articleProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             articleProductDTO.modifiedOn = articleProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
-            articleProductDTO.customFields = articleProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             articleProductDTO
         }
     }
@@ -177,8 +175,6 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
                 validator.throwClientErrorException(id, 'corporatePasses', "CorporatePass with id=$it.id doesn't exist.")
             }
         }
-
-        validateCustomFields(context, ArticleProduct.class.simpleName, articleProductDTO.customFields, id as String, validator)
     }
 
     @Override

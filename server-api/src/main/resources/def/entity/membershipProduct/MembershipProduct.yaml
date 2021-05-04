@@ -47,7 +47,3 @@ properties:
   modifiedOn:
     type: string
     format: date-time
-  customFields:
-    type: object
-    additionalProperties:
-      type: string

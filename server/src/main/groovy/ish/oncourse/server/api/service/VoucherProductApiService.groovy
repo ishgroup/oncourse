@@ -28,7 +28,6 @@ import ish.oncourse.server.api.dao.VoucherProductDao
 import ish.oncourse.server.cayenne.Product
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
@@ -109,7 +108,6 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                     EntityRelationDao.getRelatedTo(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestToEntityRelation(it) })
             voucherProductDTO.createdOn = voucherProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             voucherProductDTO.modifiedOn = voucherProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
-            voucherProductDTO.customFields = voucherProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             voucherProductDTO
         }
     }
@@ -243,8 +241,6 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                 validator.throwClientErrorException(id, 'feeExTax', 'Fee ex tax is required for money value voucher.')
             }
         }
-
-        validateCustomFields(context, VoucherProduct.class.simpleName, voucherProductDTO.customFields, id as String, validator)
     }
 
     @Override

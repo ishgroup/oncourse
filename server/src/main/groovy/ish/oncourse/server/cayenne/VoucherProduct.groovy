@@ -123,9 +123,4 @@ class VoucherProduct extends _VoucherProduct {
 	List<VoucherProductCourse> getVoucherProductCourses() {
 		return super.getVoucherProductCourses()
 	}
-
-	@Override
-	Class<? extends CustomField> getCustomFieldClass() {
-		return VoucherCustomField
-	}
 }

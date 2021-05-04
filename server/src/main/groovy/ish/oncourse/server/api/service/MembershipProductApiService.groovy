@@ -25,13 +25,10 @@ import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.MembershipProductDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import ish.oncourse.server.cayenne.Product
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import ish.oncourse.server.api.v1.function.MembershipProductFunctions
-
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
@@ -112,7 +109,6 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
                     EntityRelationDao.getRelatedTo(membershipProduct.context, Product.simpleName, membershipProduct.id).collect { toRestToEntityRelation(it) })
             membershipProductDTO.createdOn = membershipProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO.modifiedOn = membershipProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
-            membershipProductDTO.customFields = membershipProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             membershipProductDTO
         }
     }
@@ -142,7 +138,6 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
         membershipProduct.isWebVisible = membershipProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE
         updateCorporatePasses(membershipProduct, membershipProductDTO.corporatePasses, corporatePassProductDao, corporatePassDao)
         updateDiscountMemberships(membershipProduct, membershipProductDTO.membershipDiscounts)
-        updateCustomFields(context, membershipProduct, membershipProductDTO.customFields, membershipProduct.customFieldClass)
         membershipProduct
     }
 
@@ -242,8 +237,6 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
         } else if (membershipProductDTO.expiryType != ExpiryTypeDTO.DAYS && membershipProductDTO.expiryDays) {
             validator.throwClientErrorException(id, 'expiryDays', 'Expiry days must be null for this expiry type.')
         }
-
-        validateCustomFields(context, MembershipProduct.class.simpleName, membershipProductDTO.customFields, id as String, validator)
     }
 
     @Override
