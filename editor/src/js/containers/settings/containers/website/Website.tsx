@@ -20,6 +20,11 @@ const styles = () => ({
   number: {
     width: "50px",
   },
+  websiteWrapper: {
+    maxHeight: "calc(100vh - 30px)",
+    overflowY: "auto",
+    boxSizing: "border-box",
+  }
 });
 
 const conditionItems = [
@@ -156,12 +161,12 @@ export class Website extends React.Component<Props, any> {
 
   render() {
     const {
-      enableSocialMedia, addThisId, enableForCourse, enableForWebpage, classAge, suburbAutocompleteState,
+      enableSocialMedia, addThisId, enableForCourse, enableForWebpage, classAge, suburbAutocompleteState, moveGTM, rootTagFilter
     } = this.state;
     const {classes, fetching} = this.props;
 
     return (
-      <Paper className={clsx((fetching && "fetching"), "p-3")}>
+      <Paper className={clsx((fetching && "fetching"), "p-3", classes.websiteWrapper)}>
         <div>
           <h4 className="heading mb-1">ADD THIS</h4>
           <FormControlLabel
@@ -319,6 +324,38 @@ export class Website extends React.Component<Props, any> {
           />
         </div>
 
+        <Grid container className="mt-1">
+          <Grid item xs={3} className={"mr-2"}>
+            <EditInPlaceField
+              label="Move GTM"
+              name="moveGTM"
+              id="moveGTM"
+              meta={{}}
+              input={{
+                onChange: e => this.onChange(e.target.value, 'moveGTM'),
+                onFocus: stubFunction,
+                onBlur: stubFunction,
+                value: moveGTM,
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={3}>
+            <EditInPlaceField
+              label="Root tag filter"
+              name="rootTagFilter"
+              id="rootTagFilter"
+              meta={{}}
+              input={{
+                onChange: e => this.onChange(e.target.value, 'rootTagFilter'),
+                onFocus: stubFunction,
+                onBlur: stubFunction,
+                value: rootTagFilter,
+              }}
+            />
+          </Grid>
+        </Grid>
+
         <CustomButton
           onClick={() => this.onSave()}
           styleType="submit"
@@ -344,4 +381,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Website));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(Website));

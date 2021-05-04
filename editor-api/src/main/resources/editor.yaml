@@ -1172,6 +1172,10 @@ definitions:
       addThisId:
         type: string
         example: agd5465274
+      moveGTM:
+        type: string
+      rootTagFilter:
+        type: string
       enableForCourse:
         type: boolean
       enableForWebpage:
