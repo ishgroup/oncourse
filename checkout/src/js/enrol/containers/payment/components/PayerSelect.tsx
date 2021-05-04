@@ -21,7 +21,7 @@ export class PayerSelect extends React.Component<Props, any> {
     });
 
     const input = {
-      value: payer.id,
+      value: payer?.id,
     };
 
     return (
