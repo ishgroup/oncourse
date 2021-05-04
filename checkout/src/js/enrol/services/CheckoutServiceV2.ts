@@ -25,9 +25,9 @@ class CheckoutServiceV2 {
     if (item.selected) {
       const request: ContactNodeRequest = BuildContactNodeRequest.fromPurchaseItem(item, state);
       return this.checkoutApi.getContactNodeV2(request)
-          .then(data => {
-            return Promise.resolve(ContactNodeService.getPurchaseItem(data, item));
-          });
+      .then(data => {
+        return Promise.resolve(ContactNodeService.getPurchaseItem(data, item));
+      })
     } else {
       return Promise.resolve(item);
     }

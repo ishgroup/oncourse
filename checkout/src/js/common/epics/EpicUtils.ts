@@ -10,7 +10,7 @@ import {IAction} from "../../actions/IshAction";
 import Bugsnag from "@bugsnag/js";
 
 const notifyBugsnagApiError = (error: any) => {
-  if (typeof error === "object") {
+  if (typeof error === "object" && error.status !== 400) {
     Bugsnag.notify(new Error('Checkout API error'), function (event) {
       event.errors[0].errorClass = 'Checkout API error';
       event.addMetadata('Checkout API error data', {
