@@ -15,7 +15,7 @@ export interface Props {
 
 export class ContactEdit extends React.Component<Props, any> {
   render() {
-    const {contact, fields, header, touch, onChangeSuburb, form } = this.props;
+    const {contact, fields, touch, onChangeSuburb, form } = this.props;
 
     const headings = isNil(fields) ? [] : fields.headings.map((h, index) => (
       <HeadingComp heading={h} key={index} touch={touch} onChangeSuburb={onChangeSuburb} form={form}/>

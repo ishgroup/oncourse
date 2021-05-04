@@ -15,13 +15,14 @@ export class ContactInfo extends React.Component<Props, any> {
 
   handleChangeGuardian(e) {
     e.preventDefault();
-
     const {onChangeParent, contact} = this.props;
-    onChangeParent(contact.id);
+    if (onChangeParent && contact) {
+      onChangeParent(contact.id);
+    }
   }
 
   public render() {
-    const {contact, controls, concessions, memberships, onRemoveContact} = this.props;
+    const {contact, controls, concessions, memberships, onRemoveContact, onChangeParent} = this.props;
 
     return (
       <div className="col-xs-24 student-name">
@@ -29,7 +30,7 @@ export class ContactInfo extends React.Component<Props, any> {
           <h3>{`${contact.firstName || ''}  ${contact.lastName || ''} `}</h3>
           <span className="student-email">{contact.email}</span>
 
-          {contact.parent &&
+          {onChangeParent && contact.parent &&
           <span className="student-affilation">
               child of <strong>{` ${contact.parent.firstName} ${contact.parent.lastName} `}</strong>
               <a className="add-Guardian" href="#" onClick={e => this.handleChangeGuardian(e)}>change...</a>
