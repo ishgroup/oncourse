@@ -31,6 +31,7 @@ import ish.oncourse.server.cayenne.Product
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import ish.oncourse.server.api.v1.function.MembershipProductFunctions
 
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
@@ -241,6 +242,8 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
         } else if (membershipProductDTO.expiryType != ExpiryTypeDTO.DAYS && membershipProductDTO.expiryDays) {
             validator.throwClientErrorException(id, 'expiryDays', 'Expiry days must be null for this expiry type.')
         }
+
+        validateCustomFields(context, MembershipProduct.class.simpleName, membershipProductDTO.customFields, id as String, validator)
     }
 
     @Override

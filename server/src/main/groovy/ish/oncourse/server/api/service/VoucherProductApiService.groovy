@@ -28,6 +28,7 @@ import ish.oncourse.server.api.dao.VoucherProductDao
 import ish.oncourse.server.cayenne.Product
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
@@ -242,6 +243,8 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                 validator.throwClientErrorException(id, 'feeExTax', 'Fee ex tax is required for money value voucher.')
             }
         }
+
+        validateCustomFields(context, VoucherProduct.class.simpleName, voucherProductDTO.customFields, id as String, validator)
     }
 
     @Override
