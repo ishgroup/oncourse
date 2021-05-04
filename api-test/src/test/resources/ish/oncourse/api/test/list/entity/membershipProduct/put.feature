@@ -28,7 +28,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -62,7 +63,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":8,
         "status":"Can be purchased in office",
         "corporatePasses":[{"id":1001}],
-        "membershipDiscounts":[{"discountId":1001,"discountName":"discount1","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1001,"discountName":"discount1","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -91,7 +93,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "corporatePasses":[{"id":1001,"contactFullName":"company #1"}],
         "membershipDiscounts":[{"discountId":1001,"discountName":"discount1","applyToMemberOnly":true,"contactRelationTypes":[]}],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -114,7 +117,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -160,7 +164,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":8,
         "status":"Disabled",
         "corporatePasses":[],
-        "membershipDiscounts":[]
+        "membershipDiscounts":[],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -189,7 +194,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "corporatePasses":[],
         "membershipDiscounts":[],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -212,7 +218,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -258,7 +265,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":8,
         "status":"Disabled",
         "corporatePasses":[],
-        "membershipDiscounts":[]
+        "membershipDiscounts":[],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -287,7 +295,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -321,7 +330,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -347,7 +357,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -373,7 +384,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -399,7 +411,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -425,7 +438,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -454,7 +468,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -488,7 +503,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -517,7 +533,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -551,7 +568,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
         }
         """
 
@@ -560,6 +578,70 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         When method PUT
         Then status 400
         And match $.errorMessage == "Code must be unique."
+
+
+    Scenario: (-) Update MembershipProduct without mandatory custom field
+
+#       <----->  Add a new entity to update and define its id:
+        * def newMembershipProduct =
+        """
+        {
+        "name":"MembershipProduct206",
+        "code":"mprod206",
+        "description":"Membership description",
+        "feeExTax":50.00,
+        "totalFee":55.00,
+        "taxId":1,
+        "expiryType":"1st January",
+        "expiryDays":null,
+        "incomeAccountId":7,
+        "status":"Can be purchased in office & online",
+        "corporatePasses":[{"id":1002}],
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{"mf1":"MembershipValue1"}
+        }
+        """
+
+        Given path ishPath
+        And request newMembershipProduct
+        When method POST
+        Then status 204
+
+        Given path ishPathPlain
+        And param entity = 'MembershipProduct'
+        And param columns = 'sku'
+        When method GET
+        Then status 200
+
+        * def id = get[0] response.rows[?(@.values == ["mprod206"])].id
+        * print "id = " + id
+
+#       <--->  Update MembershipProduct Code to 11 symbols:
+        * def membershipProductToUpdate =
+        """
+        {
+        "id":"#(id)",
+        "name":"MembershipProduct206",
+        "code":"mprod206",
+        "description":"Membership description",
+        "feeExTax":50.00,
+        "totalFee":55.00,
+        "taxId":1,
+        "expiryType":"1st January",
+        "expiryDays":null,
+        "incomeAccountId":7,
+        "status":"Can be purchased in office & online",
+        "corporatePasses":[{"id":1002}],
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
+        "customFields":{}
+        }
+        """
+
+        Given path ishPath + '/' + id
+        And request membershipProductToUpdate
+        When method PUT
+        Then status 400
+        And match $.errorMessage == "MembershipField1 is required."
 
 
 

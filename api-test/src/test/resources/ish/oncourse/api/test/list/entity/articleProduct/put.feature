@@ -25,7 +25,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -56,7 +57,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":2,
         "incomeAccountId":8,
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "customFields":{}
         }
         """
 
@@ -80,7 +82,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":2,
         "incomeAccountId":8,
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002,"contactFullName":"company #2"}]
+        "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
+        "customFields":{}
         }
         """
 
@@ -100,7 +103,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -143,7 +147,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":2,
         "incomeAccountId":8,
         "status":"Disabled",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "customFields":{}
         }
         """
 
@@ -167,7 +172,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":2,
         "incomeAccountId":8,
         "status":"Disabled",
-        "corporatePasses":[{"id":1002,"contactFullName":"company #2"}]
+        "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
+        "customFields":{}
         }
         """
 
@@ -187,7 +193,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -230,7 +237,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":2,
         "incomeAccountId":8,
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "customFields":{}
         }
         """
 
@@ -256,7 +264,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -287,7 +296,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -310,7 +320,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -336,7 +347,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -367,7 +379,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -393,7 +406,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -424,7 +438,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":2,
         "incomeAccountId":8,
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "customFields":{}
         }
         """
 
@@ -450,7 +465,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -481,7 +497,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/articleProduct
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
