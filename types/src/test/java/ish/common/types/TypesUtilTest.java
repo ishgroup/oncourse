@@ -1,12 +1,12 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 
 
 public class TypesUtilTest {
@@ -75,19 +75,25 @@ public class TypesUtilTest {
 		Assertions.assertNull(ms);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNonCompliantArgument1() {
-		TypesUtil.getValuesAsMap(FakeEnum.class);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			TypesUtil.getValuesAsMap(FakeEnum.class);
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNonCompliantArgument2() {
-		TypesUtil.getEnumForDatabaseValue("something", FakeEnum.class);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			TypesUtil.getEnumForDatabaseValue("something", FakeEnum.class);
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNonCompliantArgument3() {
-		TypesUtil.getEnumForDisplayName("something", FakeEnum.class);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			TypesUtil.getEnumForDisplayName("something", FakeEnum.class);
+		});
 	}
 
 	private class FakeEnum implements DisplayableExtendedEnumeration {

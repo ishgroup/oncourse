@@ -203,7 +203,7 @@ public class InvoicePayableLineInterfaceTest {
 		MockInvoiceLine mil = new MockInvoiceLine(new Money("100"), null, new BigDecimal("3"), new BigDecimal("0.1"));
 
 		// testing simple values ex tax
-		Assertions.Assertions.assertNull(mil.getDiscountEachExTax(), "assuming discount each ex");
+		Assertions.assertNull(mil.getDiscountEachExTax(), "assuming discount each ex");
 		Assertions.assertEquals(new Money("100"), mil.getPriceEachExTax(), "assuming price each ex");
 
 		// testing simple values inc tax
@@ -235,7 +235,7 @@ public class InvoicePayableLineInterfaceTest {
 
 		// testing simple values ex tax
 		Assertions.assertEquals(new Money("10"), mil.getDiscountEachExTax(), "assuming discount each ex");
-		Assertions.Assertions.assertNull(mil.getPriceEachExTax(), "assuming price each ex");
+		Assertions.assertNull(mil.getPriceEachExTax(), "assuming price each ex");
 
 		// testing simple values inc tax
 		Assertions.assertEquals(new Money("11"), mil.getDiscountEachIncTax(), "assuming discount each inc");
