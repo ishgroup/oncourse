@@ -48,7 +48,7 @@ export const getFirstErrorNodePath = (errors: FormErrors, deepObj?: any, path?: 
   return path?.replace("._error", "");
 };
 
-export const validatePattern = pattern => {
+export const validateRegex = pattern => {
   if (!pattern) return undefined;
   const parts = pattern.split('/');
   let regex = pattern;
@@ -63,4 +63,10 @@ export const validatePattern = pattern => {
   } catch (e) {
     return "Please enter valid regex pattern";
   }
+};
+
+export const validatePattern = (value, pattern) => {
+  if (!value || !pattern) return undefined;
+
+  return value.replace(new RegExp(pattern),"").trim() ? "Value has invalid format" : undefined;
 };
