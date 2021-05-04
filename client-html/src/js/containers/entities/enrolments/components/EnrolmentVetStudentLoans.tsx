@@ -14,11 +14,14 @@ import {
   EnrolmentFeeStatus,
   Enrolment
 } from "@api/model";
+import { Collapse, FormControlLabel } from "@material-ui/core";
+import { change } from "redux-form";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
+import { Switch } from "../../../../common/components/form/form-fields/Switch";
 
 const validateCharacter = (value, len, msg) => (value && value.length > len ? msg : undefined);
 
@@ -44,7 +47,14 @@ const enrolmentCreditLevelItems = Object.keys(EnrolmentCreditLevel).map(mapSelec
 
 const enrolmentCreditTotalItems = Object.keys(EnrolmentCreditTotal).map(mapSelectItems);
 
-const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = ({ twoColumn, values }) => {
+const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
+  {
+    twoColumn,
+    values,
+    form,
+    dispatch
+  }
+) => {
   const loanData = useMemo(() => {
     let loanFee = 0;
     let loanTotal = values.feeHelpAmount;
@@ -61,41 +71,67 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = ({ twoColum
     return { loanFee, loanTotal };
   }, [values.feeHelpAmount, values.feeStatus]);
 
+  const showVSL = Boolean(values.feeHelpAmount) || values.feeStatus !== null;
+
+  const onShowCheck = (e, checked) => {
+    if (checked) {
+      dispatch(change(form, "feeStatus", enrolmentFeeStatusItems[0].value));
+    } else {
+      dispatch(change(form, "feeStatus", null));
+      dispatch(change(form, "feeHelpAmount", 0));
+    }
+  };
+
   return (
     <Grid container className="pl-3 pr-3">
-      <Grid item xs={12} className="centeredFlex">
-        <div className="heading mt-2 mb-2">VET Student Loans</div>
-      </Grid>
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <Uneditable label="Fee charged" value={values.feeCharged} money />
-      </Grid>
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField type="money" name="feeHelpAmount" label="Fee HELP requested" />
-      </Grid>
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <Uneditable label="Loan fee" value={loanData.loanFee} money />
-      </Grid>
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <Uneditable label="Total loan" value={loanData.loanTotal} money />
-      </Grid>
+      {values.feeHelpClass && (
+        <>
+          <Grid item xs={12} className="centeredFlex mt-2 mb-2">
+            <FormControlLabel
+              className="switchWrapper"
+              control={<Switch checked={showVSL} onChange={onShowCheck} />}
+              label={<span className="heading mr-1">VET Student Loans</span>}
+              labelPlacement="start"
+            />
+          </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField
-          type="select"
-          name="feeStatus"
-          label="Fee subsidy"
-          items={enrolmentFeeStatusItems}
-          allowEmpty
-        />
-      </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField
-          type="select"
-          name="attendanceType"
-          label="Type of attendance"
-          items={courseClassAttendanceTypeItems}
-        />
-      </Grid>
+          <Grid item xs={12}>
+            <Collapse in={showVSL}>
+              <Grid container item={true} xs={12}>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <Uneditable label="Fee charged" value={values.feeCharged} money />
+                </Grid>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField type="money" name="feeHelpAmount" label="Fee help requested" />
+                </Grid>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <Uneditable label="Loan fee" value={loanData.loanFee} money />
+                </Grid>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <Uneditable label="Total loan" value={loanData.loanTotal} money />
+                </Grid>
+                <Grid item xs={twoColumn ? 6 : 12}>
+                  <FormField
+                    type="select"
+                    name="feeStatus"
+                    label="Fee subsidy"
+                    items={enrolmentFeeStatusItems}
+                    allowEmpty
+                  />
+                </Grid>
+                <Grid item xs={twoColumn ? 6 : 12}>
+                  <FormField
+                    type="select"
+                    name="attendanceType"
+                    label="Type of attendance"
+                    items={courseClassAttendanceTypeItems}
+                  />
+                </Grid>
+              </Grid>
+            </Collapse>
+          </Grid>
+        </>
+      )}
 
       <Grid item xs={12} className="centeredFlex">
         <div className="heading mt-2 mb-2">Credit and rpl</div>
