@@ -26,7 +26,7 @@ import { getIncomeAccounts } from "../accounts/actions";
 import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../constants/Config";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { getEntityRelationTypes } from "../../preferences/actions";
+import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 
 interface ArticleProductsProps {
   getArticleProductRecord?: () => void;
@@ -41,6 +41,7 @@ interface ArticleProductsProps {
   getTaxes?: () => void;
   checkPermissions?: () => void;
   getDefaultIncomeAccount?: () => void;
+  getDataCollectionRules?: () => void;
   accounts?: Account[];
   taxes?: Tax[];
   preferences?: any;
@@ -132,7 +133,8 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
     updatingAccounts,
     updatingTaxes,
     checkPermissions,
-    getRelationTypes
+    getRelationTypes,
+    getDataCollectionRules
   } = props;
 
   useEffect(() => {
@@ -155,6 +157,7 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
     getFilters();
     checkPermissions();
     getRelationTypes();
+    getDataCollectionRules();
     return () => {
       clearListState();
     };
@@ -201,7 +204,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: string, articleProduct: ArticleProduct) => dispatch(updateArticleProduct(id, articleProduct)),
   onCreate: (articleProduct: ArticleProduct) => dispatch(createArticleProduct(articleProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
-  getRelationTypes: () => dispatch(getEntityRelationTypes())
+  getRelationTypes: () => dispatch(getEntityRelationTypes()),
+  getDataCollectionRules: () => dispatch(getDataCollectionRules()),
 });
 
 const mapStateToProps = (state: State) => ({

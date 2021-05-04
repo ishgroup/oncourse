@@ -16,10 +16,12 @@ import { FormEditorField } from "../../../../common/components/markdown-editor/F
 import { State } from "../../../../reducers/state";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { PreferencesState } from "../../../preferences/reducers/state";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
   taxes?: Tax[];
+  dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
 const validateNonNegative = value => (value < 0 ? "Must be non negative" : undefined);
@@ -56,13 +58,13 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
 
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, taxes, values, dispatch, form, submitSucceeded, rootEntity
+    twoColumn, accounts, taxes, values, dispatch, form, submitSucceeded, rootEntity, dataCollectionRules
   } = props;
   return (
     <div className="generalRoot">
       <div className="pt-1">
         <Grid container>
-          <Grid item xs={twoColumn ? 2 : 6}>
+          <Grid item xs={twoColumn ? 4 : 6}>
             <FormField
               type="text"
               name="name"
@@ -70,7 +72,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
               required
             />
           </Grid>
-          <Grid item xs={twoColumn ? 2 : 6}>
+          <Grid item xs={twoColumn ? 4 : 6}>
             <FormField
               type="text"
               name="code"
@@ -93,50 +95,62 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
         />
       </div>
-      <div className="mr-2">
-        <Grid container>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="money"
-              name="feeExTax"
-              label="Fee ex tax"
-              validate={validateNonNegative}
-              onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
-              required
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="money"
-              name="totalFee"
-              label="Total fee"
-              validate={validateNonNegative}
-              onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="select"
-              label="Tax"
-              name="taxId"
-              onChange={handleChangeTax(values, taxes, dispatch, form)}
-              items={taxes}
-              selectValueMark="id"
-              selectLabelCondition={tax => tax.code}
-              required
-            />
-          </Grid>
+      <Grid container>
+        <Grid item xs={twoColumn ? 4 : 6}>
+          <FormField
+            type="money"
+            name="feeExTax"
+            label="Fee ex tax"
+            validate={validateNonNegative}
+            onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
+            required
+          />
         </Grid>
-      </div>
-      <div>
-        <FormField
-          type="select"
-          name="status"
-          label="Status"
-          items={productStatusItems}
-          selectLabelMark="value"
-        />
-      </div>
+        <Grid item xs={twoColumn ? 4 : 6}>
+          <FormField
+            type="money"
+            name="totalFee"
+            label="Total fee"
+            validate={validateNonNegative}
+            onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 6}>
+          <FormField
+            type="select"
+            label="Tax"
+            name="taxId"
+            onChange={handleChangeTax(values, taxes, dispatch, form)}
+            items={taxes}
+            selectValueMark="id"
+            selectLabelCondition={tax => tax.code}
+            required
+          />
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={twoColumn ? 4 : 6}>
+          <FormField
+            type="select"
+            name="status"
+            label="Status"
+            items={productStatusItems}
+            selectLabelMark="value"
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 6}>
+          <FormField
+            type="select"
+            name="dataCollectionRuleId"
+            label="Data collection rule"
+            selectValueMark="id"
+            selectLabelMark="name"
+            items={dataCollectionRules || []}
+            allowEmpty
+            sort
+          />
+        </Grid>
+      </Grid>
       <RelationsCommon
         values={values}
         dispatch={dispatch}
@@ -150,7 +164,8 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 
 const mapStateToProps = (state: State) => ({
   accounts: state.accounts.incomeItems,
-  taxes: state.taxes.items
+  taxes: state.taxes.items,
+  dataCollectionRules: state.preferences.dataCollectionRules
 });
 
 export default connect<any, any, any>(mapStateToProps, null)(ArticleProductGeneral);

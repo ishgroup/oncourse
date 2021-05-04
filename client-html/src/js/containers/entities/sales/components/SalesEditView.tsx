@@ -23,6 +23,7 @@ import ContactSelectItemRenderer from "../../contacts/components/ContactSelectIt
 import { contactLabelCondition } from "../../contacts/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { buildUrl, productUrl } from "../utils";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface SalesGeneralViewProps {
   classes?: any;
@@ -121,6 +122,15 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
           <Uneditable value={formatSaleDate(values.purchasedOn)} label="Purchased on" />
         </Grid>
       </Grid>
+
+      <CustomFields
+        entityName={type}
+        fieldName="customFields"
+        entityValues={values}
+        dispatch={dispatch}
+        form={form}
+      />
+
       <Grid container>
         {type === ProductType.Voucher && (
           <Grid item xs={twoColumn ? 6 : 12}>

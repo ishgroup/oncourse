@@ -22,6 +22,7 @@ import { State } from "../../../../reducers/state";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { PreferencesState } from "../../../preferences/reducers/state";
 
 interface MembershipProductGeneralProps {
   twoColumn?: boolean;
@@ -31,6 +32,7 @@ interface MembershipProductGeneralProps {
   values?: MembershipProduct;
   dispatch?: any;
   form?: string;
+  dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
 const validateNonNegative = value => (value < 0 ? "Must be non negative" : undefined);
@@ -126,7 +128,7 @@ const handleChangeAccount = (values: MembershipProduct, taxes: Tax[], accounts: 
 
 const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, taxes, values, dispatch, form
+    twoColumn, accounts, taxes, values, dispatch, form, dataCollectionRules
   } = props;
   const initialIndexExpiry = getInitialIndexExpiry(values);
   return (
@@ -217,6 +219,16 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         items={productStatusItems}
         selectLabelMark="value"
       />
+      <FormField
+        type="select"
+        name="dataCollectionRuleId"
+        label="Data collection rule"
+        selectValueMark="id"
+        selectLabelMark="name"
+        items={dataCollectionRules || []}
+        allowEmpty
+        sort
+      />
       <div className="mb-2">
         <CustomSelector
           caption="Expires"
@@ -230,8 +242,9 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
 };
 
 const mapStateToProps = (state: State) => ({
+  dataCollectionRules: state.preferences.dataCollectionRules,
   accounts: state.accounts.incomeItems,
   taxes: state.taxes.items
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(MembershipProductGeneral);
+export default connect<any, any, any>(mapStateToProps)(MembershipProductGeneral);

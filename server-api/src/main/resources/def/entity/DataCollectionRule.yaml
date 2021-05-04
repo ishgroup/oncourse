@@ -25,6 +25,15 @@ properties:
   parentFormName:
     type: string
     description: Unique record identifier
+  productFormName:
+    type: string
+    description: Unique record identifier
+  voucherFormName:
+    type: string
+    description: Unique record identifier
+  membershipFormName:
+    type: string
+    description: Unique record identifier
   surveyForms:
     type: array
     items:
