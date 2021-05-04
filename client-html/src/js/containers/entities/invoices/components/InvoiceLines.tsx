@@ -327,7 +327,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           discountValue: parseFloat(discountDollar)
         },
         taxes.find(t => t.id === row.taxId),
-        row.total
+        (row && row.total) || 1
       )
     ));
   };
