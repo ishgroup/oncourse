@@ -8,6 +8,6 @@ enum:
   - CourseClass
   - WaitingList
   - Survey
-  - ArticleProduct
-  - MembershipProduct
-  - VoucherProduct
+  - Product
+  - Membership
+  - Voucher
