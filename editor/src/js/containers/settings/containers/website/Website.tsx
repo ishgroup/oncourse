@@ -98,6 +98,8 @@ export class Website extends React.Component<Props, any> {
     this.state = {
       enableSocialMedia: website.enableSocialMedia || false,
       addThisId: website.addThisId || "",
+      moveGTM: website.moveGTM || "",
+      rootTagFilter: website.rootTagFilter || "",
       enableForCourse: website.enableForCourse || false,
       enableForWebpage: website.enableForWebpage || false,
       suburbAutocompleteState: website.suburbAutocompleteState,
