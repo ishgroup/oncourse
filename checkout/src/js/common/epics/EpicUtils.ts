@@ -10,12 +10,14 @@ import {IAction} from "../../actions/IshAction";
 import Bugsnag from "@bugsnag/js";
 
 const notifyBugsnagApiError = (error: any) => {
-  Bugsnag.notify(new Error('Checkout API error'), function (event) {
-    event.errors[0].errorClass = 'Checkout API error';
-    event.addMetadata('Checkout API error data', {
-      ...typeof error === "object" ? error : {}
+  if (typeof error === "object") {
+    Bugsnag.notify(new Error('Checkout API error'), function (event) {
+      event.errors[0].errorClass = 'Checkout API error';
+      event.addMetadata('Checkout API error data', {
+        ...error
+      });
     });
-  });
+  }
 };
 
 export function mapPayload(actionType: string) {
