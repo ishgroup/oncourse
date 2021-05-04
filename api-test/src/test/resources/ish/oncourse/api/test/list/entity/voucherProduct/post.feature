@@ -26,7 +26,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":1}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "customFields":{}
         }
         """
 
@@ -65,7 +66,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "soldVouchersCount":0,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "customFields":{}
         }
         """
 
@@ -86,7 +88,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[],
         "description":"some description",
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -125,7 +128,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "soldVouchersCount":0,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "customFields":{}
         }
         """
 
@@ -146,7 +150,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[],
         "description":"some description",
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -185,7 +190,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "soldVouchersCount":0,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "customFields":{}
         }
         """
 
@@ -219,7 +225,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[],
         "description":"some description",
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "customFields":{}
         }
         """
 
@@ -258,7 +265,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "soldVouchersCount":0,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "customFields":{}
         }
         """
 
@@ -292,7 +300,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":2}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "customFields":{}
         }
         """
 
@@ -319,7 +328,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":1}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "customFields":{}
         }
         """
 
@@ -346,7 +356,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":1}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "customFields":{}
         }
         """
 
