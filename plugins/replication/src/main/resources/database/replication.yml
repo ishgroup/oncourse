@@ -185,3 +185,22 @@ databaseChangeLog:
           "entityName": "GradingItem",
           "selectQuery": "select id, willowId from GradingItem"
         }
+  - changeSet:
+      id: 58-3
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - and:
+            - tableExists:
+                tableName: Assessment
+            - not:
+                - changeSetExecuted:
+                    id: 58-3
+                    author: rostislav
+                    changeLogFile: database/replication.yml
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.commercial.replication.upgrades.liquibase.change.AddToQueueRecords",
+          "entityName": "Assessment",
+          "selectQuery": "select id, willowId from Assessment"
+        }
