@@ -15,9 +15,15 @@ import com.nimbusds.jose.jwk.RSAKey
 import groovy.transform.CompileDynamic
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
+import ish.common.types.DataType
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.ContactCustomField
 import ish.oncourse.server.cayenne.Course
+import ish.oncourse.server.cayenne.CourseCustomField
+import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.EnrolmentCustomField
 import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.integration.OnSave
@@ -36,7 +42,6 @@ import javax.ws.rs.core.Response
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.URLENC
 import static groovyx.net.http.Method.POST
-import static groovyx.net.http.Method.GET
 import static groovyx.net.http.Method.PUT
 
 
@@ -67,7 +72,7 @@ class TCSIIntegration implements PluginTrait {
     static final String DHS_PRODUCT_ID = test ? DHS_PRODUCT_ID_TEST : '08b1e117-5efa-4b4d-b3d7-65ae18908671'
     static final String BASE_URL = test ? BASE_URL_TEST : 'https://5.rsp.humanservices.gov.au'
     static final String AUTH_URL = test ? AUTH_URL_TEST : 'https://PRODA.humanservices.gov.au'
-    static final String AUTH_HOST = test ? AUTH_HOST_TEST : 'proda.humanservices.gov.a'
+    static final String AUTH_HOST = test ? AUTH_HOST_TEST : 'proda.humanservices.gov.au'
 
     static final String TCSI_BASE_URL = test ? TCSI_BASE_URL_TEST :'https://api.humanservices.gov.au/centrelink/ext-vend/tcsi/b2g/v1'
 
@@ -83,9 +88,19 @@ class TCSIIntegration implements PluginTrait {
     String jwkCertificate
     ObjectContext context
     
+    static final String TCSI_COURSE_UID  = 'tsciCourseUid'
+    CustomFieldType courseUidField
+
+    static final String TCSI_COURSE_ADMISSION_UID  = 'tsciCourseAdmissionUid'
+    CustomFieldType courseAdmissionUidField
+
+    static final String TCSI_STUDENT_UID  = 'tsciStudentUid'
+    CustomFieldType studentUidField
+    
     EntityRelationType highEducationType
     Course highEducation
     Enrolment enrolment
+    Enrolment courseAdmission
 
     private String authToken
     
@@ -109,6 +124,47 @@ class TCSIIntegration implements PluginTrait {
         this.highEducationType = ObjectSelect.query(EntityRelationType)
                 .where(EntityRelationType.NAME.eq(HIGH_EDUCATION_TYPE))
                 .selectOne(context)
+        this.loadCustomField()
+    }
+
+
+    private loadCustomField() {
+        
+        courseUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_COURSE_UID)).selectOne(context)
+        if (!courseUidField) {
+            courseUidField = context.newObject(CustomFieldType)
+            courseUidField.dataType = DataType.TEXT
+            courseUidField.entityIdentifier = Course.simpleName
+            courseUidField.key = TCSI_COURSE_UID
+            courseUidField.name = 'TCSI course identifier'
+            courseUidField.isMandatory = false
+            courseUidField.sortOrder = 1001l
+            context.commitChanges()
+        }
+        
+        courseAdmissionUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_COURSE_ADMISSION_UID)).selectOne(context)
+        if (!courseAdmissionUidField) {
+            courseAdmissionUidField = context.newObject(CustomFieldType)
+            courseAdmissionUidField.dataType = DataType.TEXT
+            courseAdmissionUidField.entityIdentifier = Enrolment.simpleName
+            courseAdmissionUidField.key = TCSI_COURSE_UID
+            courseAdmissionUidField.name = 'TCSI course admission identifier'
+            courseAdmissionUidField.isMandatory = false
+            courseAdmissionUidField.sortOrder = 1002l
+            context.commitChanges()
+        }
+
+        studentUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_STUDENT_UID)).selectOne(context)
+        if (!studentUidField) {
+            studentUidField = context.newObject(CustomFieldType)
+            studentUidField.dataType = DataType.TEXT
+            studentUidField.entityIdentifier = Contact.simpleName
+            studentUidField.key = TCSI_COURSE_UID
+            studentUidField.name = 'TCSI student identifier'
+            studentUidField.isMandatory = false
+            studentUidField.sortOrder = 1003l
+            context.commitChanges()
+        }
     }
 
     String activateDevice(String activationCode) {
@@ -220,91 +276,75 @@ class TCSIIntegration implements PluginTrait {
     void export(Enrolment e) {
         enrolment = context.localObject(e)
         highEducation = TCSIUtils.getHighEducation(context, highEducationType, enrolment)
+        courseAdmission = enrolment.student.enrolments.find {it.courseClass.course.equalsIgnoreContext(highEducation)}
+        
+        if (!courseAdmission) {
+            interraptExport("$enrolment.student.fullName has no enrolment for high education course: $highEducation.name")
+        }
+        
         if (!highEducation) {
             interraptExport("Enrolment is not a high education or unit of study")
         }
-        if (!getStudent()) {
-            createStudent()
-        }
-//        if (!getCourseGroup()) {
-//            createCourseGroup()
-//        }
         
+        def studentUid = enrolment.student.contact.getCustomFieldValue(TCSI_STUDENT_UID)?.toString() ?: createStudent()
+        def courseUid = highEducation.getCustomFieldValue(TCSI_COURSE_UID)?.toString() ?: createCourseGroup()
+        def admissionUid = courseAdmission.getCustomFieldValue(TCSI_COURSE_ADMISSION_UID) ?: createCourseAdmission()
         
     }
     
-    private Object createCourseAdmission() {
+    String createCourseAdmission(String studentUID, String courseUid) {
 
         getClient().request(POST, JSON) {
             uri.path = ADMISSIONS_PATH
-            body = TCSIUtils.getAdmissionData(enrolment)
+            body = TCSIUtils.getAdmissionData(courseAdmission, studentUID, courseUid)
 
-            response.success = { resp, result ->
-                return result["result"]["course"]
+            response.success = { resp, result -> 
+                def admission =  handleResponce(result as List, "Create admission")
+                def uid = admission['course_admissions_uid'].toString()
+                EnrolmentCustomField customField = context.newObject(EnrolmentCustomField)
+                customField.relatedObject = courseAdmission
+                customField.customFieldType = courseAdmissionUidField
+                customField.value = uid
+                context.commitChanges()
+                return uid
             }
-            response.failure =   { resp, result ->
-                if (resp.status == 404) {
-                    return null
-                } else {
-                    failureHangler(resp, result)
-                }
-            }
+            response.failure = failureHangler
         } 
     }
     
-    private Object getCourseGroup() {
-        
-        getClient().request(GET, JSON) {
-            uri.path = COURSES_PATH + "/$highEducation.code"
-            response.success = { resp, result ->
-                return result["result"]["course"]
-            }
-            response.failure =   { resp, result ->
-                if (resp.status == 404) {
-                    return null
-                } else {
-                    failureHangler(resp, result)
-                }
-            }
-        }
-    }
 
-    Object createCourseGroup() {
+    String createCourseGroup() {
         getClient().request(POST, JSON) {
             uri.path = COURSES_PATH
             body = TCSIUtils.getCourseData(enrolment.courseClass.course, highEducationType)
             response.success = { resp, result ->
-                return handleResponce(result as List, "Create course")
+                def course = handleResponce(result as List, "Create course")
+                def uid = course['courses_uid'].toString()
+                CourseCustomField customField = context.newObject(CourseCustomField)
+                customField.relatedObject = highEducation
+                customField.customFieldType = courseUidField
+                customField.value = uid
+                context.commitChanges()
+                return uid
             }
             response.failure = failureHangler
         }
     }
     
     
-    def getStudent() {
-        getClient().request(GET, JSON) {
-            uri.path = STUDENTS_PATH + "/students-uid/" + enrolment.student.studentNumber
-            response.success = { resp, result ->
-                return result["result"][0]["student"]
-            }
-            response.failure =   { resp, result ->
-                if (resp.status == 404) {
-                    return null
-                } else {
-                    failureHangler(resp, result)
-                }
-            }
-        }
-                
-    }
-    
-    
-    def createStudent() {
+    String createStudent() {
         getClient().request(POST, JSON) {
             uri.path = STUDENTS_PATH
             body = TCSIUtils.getStudentData(enrolment.student)
             response.success = { resp, result ->
-                return handleResponce(result as List, "Create student")
+                def student = handleResponce(result as List, "Create student")
+                def uid = student['students_uid'].toString()
+                ContactCustomField customField = context.newObject(ContactCustomField)
+                customField.relatedObject = enrolment.student.contact
+                customField.customFieldType = studentUidField
+                customField.value = uid
+                context.commitChanges()
+                return uid
             }
             response.failure = failureHangler
         }

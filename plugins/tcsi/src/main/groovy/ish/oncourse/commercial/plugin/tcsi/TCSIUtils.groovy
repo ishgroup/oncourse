@@ -10,6 +10,7 @@ import groovy.transform.CompileDynamic
 import ish.common.types.AvetmissStudentDisabilityType
 import ish.common.types.AvetmissStudentIndigenousStatus
 import ish.common.types.AvetmissStudentSchoolLevel
+import ish.common.types.EnrolmentStatus
 import ish.common.types.Gender
 import ish.common.types.StudentCitizenship
 import ish.oncourse.server.cayenne.Course
@@ -18,10 +19,12 @@ import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.Student
+import ish.statistics.EnrolmentStats
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import java.time.Duration
+import java.time.LocalDate
 
 
 class TCSIUtils {
@@ -263,12 +266,37 @@ class TCSIUtils {
         
     }
 
-    static String getAdmissionData(Enrolment enrolment) {
+    static String getAdmissionData(Enrolment courseAdmission, String studentsUid, String courseUid) {
         
         Map<String, Object> admission = [:]
 
-        admission["student_identification_code"] = enrolment.student.studentNumber.toString() // E313
-        admission["course_code"] = enrolment.courseClass.course.code // E307
+        admission["students_uid"] = studentsUid
+        admission["courses_uid"] = courseUid
+        admission["course_of_study_commencement_date"] = courseAdmission.courseClass.startDateTime?.format(DATE_FORMAT)
+        admission["type_of_attendance_code"]  = courseAdmission.courseClass.attendanceType.databaseValue.toString()
+
+        admission["highest_attainment_code"] = courseAdmission.student.priorEducationCode.toString()
+        admission["study_reason_code"] = courseAdmission.studyReason.databaseValue.toString()
+        admission["labour_force_status_code"] = courseAdmission.student.labourForceStatus.toString()
+        if (courseAdmission.status == EnrolmentStatus.CANCELLED) {
+            admission["course_outcome_code"] = '3'  
+        } else if (courseAdmission.courseClass.endDateTime?.before(new Date())) {
+            admission["course_outcome_code"] = '1'
+            LocalDate endDate = courseAdmission.outcomes.findAll {it.endDate != null}*.endDate.sort().reverse().first()
+            if (endDate) {
+                admission["course_outcome_date"] =  endDate.format(DATE_FORMAT)
+            }
+        }
+
+        String basisForAdmissionCode =  courseAdmission.getCustomFieldValue('basisForAdmissionCode').toString()
+        if (basisForAdmissionCode) {
+            admission['bases_for_admission'] = []
+            def basesForAdmission = [:]
+            basesForAdmission['correlation_id'] = "bases_for_admission_${System.currentTimeMillis()}"
+            basesForAdmission['basis_for_admission'] = ['basis_for_admission_code' : basisForAdmissionCode]
+            admission['bases_for_admission'] << basesForAdmission
+        }
+
         def courseData  = [
                 'correlation_id' : "admissionData_${System.currentTimeMillis()}",
                 'course_admission' : admission
@@ -319,7 +347,7 @@ class TCSIUtils {
     static String testCourse() {
         Map<String, Object> course = [:]
 
-        course["course_code"] = '5CHCF06'
+        course["course_code"] = 'V5SHBBEA02'
         course["course_name"] = 'Community Services 6'
         course["course_of_study_load"] = 1
         course["standard_course_duration"] = 1
