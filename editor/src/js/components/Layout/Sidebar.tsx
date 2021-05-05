@@ -358,7 +358,7 @@ class Sidebar extends React.Component<Props, any> {
           <div className={classes.sidebarContent}>
 
             {/*<ModalPublish show={showModal} onHide={(val: boolean) => this.modalToggle(val)}/>*/}
-/
+
             {routes.map((route, index) => (
               <RouteWrapper
                 key={index}
