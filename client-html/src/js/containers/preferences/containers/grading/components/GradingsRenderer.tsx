@@ -53,7 +53,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
   const onTypeChange = (type, item) => {
     dispatch(change(form, `${item}.gradingItems`, []));
     switch (type) {
-      case "name": {
+      case "choice list": {
         dispatch(change(form, `${item}.minValue`, 0));
         dispatch(change(form, `${item}.maxValue`, 100));
       }
