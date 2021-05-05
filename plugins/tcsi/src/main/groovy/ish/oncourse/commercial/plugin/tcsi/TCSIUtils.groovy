@@ -265,7 +265,8 @@ class TCSIUtils {
         return JsonOutput.toJson([courseData])
         
     }
-
+    
+    @CompileDynamic
     static String getAdmissionData(Enrolment courseAdmission, String studentsUid, String courseUid) {
         
         Map<String, Object> admission = [:]
