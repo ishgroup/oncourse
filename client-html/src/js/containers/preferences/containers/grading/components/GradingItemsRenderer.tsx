@@ -101,7 +101,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
             {
               fields.map((f, index) => (
                 <li key={index} className={hoverClasses.container}>
-                  <Typography variant="body2" color="inherit" className="centeredFlex" noWrap>
+                  <Typography variant="body2" color="inherit" noWrap>
                     <FormField
                       type="text"
                       name={`${f}.name`}
@@ -123,7 +123,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
                     {" ) "}
                     <IconButton
                       onClick={() => fields.remove(index)}
-                      className={clsx(hoverClasses.target, "p-0-5 d-inline-flex vert-align-mid")}
+                      className={clsx(hoverClasses.target, "p-0-5 mb-0-5 d-inline-flex vert-align-mid")}
                     >
                       <Delete className="editInPlaceIcon" />
                     </IconButton>

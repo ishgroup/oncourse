@@ -8,11 +8,6 @@ const createOverrides = palette => ({
         userSelect: "auto",
       }
     },
-    MuiDialogActions: {
-      root: {
-        padding: "8px 24px 16px",
-      },
-    },
     MuiCollapse: {
       entered: {
         height: "auto",
