@@ -14,9 +14,9 @@ import EditInPlaceField from "../../../../common/components/form/form-fields/Edi
 import EditInPlaceMoneyField from "../../../../common/components/form/form-fields/EditInPlaceMoneyField";
 import {
   validateEmail,
-  validatePattern,
   validateSingleMandatoryField,
-  validateURL
+  validateURL,
+  validatePattern
 } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
 import EditInPlaceSearchSelect from "../../../../common/components/form/form-fields/EditInPlaceSearchSelect";
@@ -25,6 +25,7 @@ const Field: any = FormField;
 
 const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => {
   const validate = type.mandatory ? validateSingleMandatoryField : undefined;
+  const validateFieldPattern = val => validatePattern(val, type.pattern);
 
   let component = EditInPlaceField;
   let componentProps: any = { validate };
@@ -124,7 +125,7 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
     case "Pattern text": {
       component = EditInPlaceField;
       componentProps = {
-        validate: type.mandatory ? [validateSingleMandatoryField, validatePattern] : validatePattern
+        validate: type.mandatory ? [validateSingleMandatoryField, validateFieldPattern] : validateFieldPattern
       };
       break;
     }

@@ -18,7 +18,7 @@ import EditInPlaceField from "../../../../../common/components/form/form-fields/
 import EditInPlaceMoneyField from "../../../../../common/components/form/form-fields/EditInPlaceMoneyField";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import {
-  validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray, validatePattern
+  validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray, validateRegex
 } from "../../../../../common/utils/validation";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import ListMapRenderer from "./ListMapRenderer";
@@ -312,7 +312,7 @@ const renderCustomFields = props => {
                                     label="Pattern"
                                     disabled={field.id}
                                     className={classes.field}
-                                    validate={validatePattern}
+                                    validate={validateRegex}
                                     required
                                   />
                                 </Collapse>
