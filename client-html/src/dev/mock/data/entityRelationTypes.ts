@@ -3,6 +3,10 @@ import { EntityRelationType } from "@api/model";
 export function mockEntityRelationTypes(): EntityRelationType[] {
   this.getEntityRelationTypes = () => this.entityRelationTypes;
 
+  this.removeEntityRelationType = id => {
+    this.entityRelationTypes = this.entityRelationTypes.filter(type => Number(type.id) !== Number(id));
+  };
+
   return [
     {
       "id": -1,
