@@ -35,7 +35,7 @@ class TimeFormatterTest2 {
 
         Collection<Arguments> dataList = new ArrayList<>()
         for (List<String> test : data) {
-            dataList.add(Arguments.of(test[0], test[1]))
+            dataList.add(Arguments.of(test[0], test[1], test[2], test[3], test[4], test[5]))
         }
         return dataList
 
@@ -71,7 +71,7 @@ class TimeFormatterTest2 {
         Assertions.assertEquals(inputSydney, expectedBrisbaneDST, result)
     }
 
-    private Calendar getTestCalendar() {
+    private static Calendar getTestCalendar() {
         Calendar cal = Calendar.getInstance(sydney)
         cal.clear()
         cal.set(Calendar.YEAR, 2013)
@@ -80,7 +80,7 @@ class TimeFormatterTest2 {
         return cal
     }
 
-    private Calendar getTestCalendarDST() {
+    private static Calendar getTestCalendarDST() {
         Calendar cal = Calendar.getInstance(sydney)
         cal.clear()
         cal.set(Calendar.YEAR, 2013)

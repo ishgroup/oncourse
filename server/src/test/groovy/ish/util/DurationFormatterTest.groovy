@@ -48,7 +48,7 @@ class DurationFormatterTest {
 
         Collection<Arguments> dataList = new ArrayList<>()
         for (List<String> test : data) {
-            dataList.add(Arguments.of(test[0], test[1], test[2], test[3], test[4], test[5], test[6], test[7]))
+            dataList.add(Arguments.of(test[0], test[1], test[2], test[3], test[4], test[5], test[6], test[7], test[8]))
         }
         return dataList
     }

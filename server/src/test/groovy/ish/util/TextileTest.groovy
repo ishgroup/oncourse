@@ -16,12 +16,12 @@ class TextileTest {
         String input = "some text"
         String expected = "<p>some text</p>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
 
         input = "some text with" + RuntimeUtil.LINE_SEPARATOR + "new line"
         expected = "<p>some text with<br/>new line</p>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -29,7 +29,7 @@ class TextileTest {
         String input = "some *bold* text"
         String expected = "<p>some <strong>bold</strong> text</p>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -37,7 +37,7 @@ class TextileTest {
         String input = "h4. header"
         String expected = "<h4 id=\"header\">header</h4>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -45,7 +45,7 @@ class TextileTest {
         String input = "\"A Hyperlink\":www.ish.com.au"
         String expected = "<p><a href=\"www.ish.com.au\">A Hyperlink</a></p>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -53,7 +53,7 @@ class TextileTest {
         String input = "\"A mail to link\":mailto:test@ish.com.au"
         String expected = "<p><a href=\"mailto:test@ish.com.au\">A mail to link</a></p>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -61,7 +61,7 @@ class TextileTest {
         String input = "@some code@"
         String expected = "<p><code>some code</code></p>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -69,7 +69,7 @@ class TextileTest {
         String input = "bq. This text will be enclosed in an HTML blockquote element."
         String expected = "<blockquote><p>This text will be enclosed in an HTML blockquote element.</p></blockquote>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -77,7 +77,7 @@ class TextileTest {
         String input = "Brand ^TM^"
         String expected = "<p>Brand <sup>TM</sup></p>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -85,7 +85,7 @@ class TextileTest {
         String input = "Text ~subscript~"
         String expected = "<p>Text <sub>subscript</sub></p>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -98,7 +98,7 @@ class TextileTest {
         expected = expected + "<tr><td>Cell 1 </td><td>Cell 2 </td><td>Cell 3 </td></tr>"
         expected = expected + "<tr><td>Cell 1 </td><td>Cell 2 </td><td>Cell 3 </td></tr></table>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -114,7 +114,7 @@ class TextileTest {
         expected = expected + "<li>bullet three</li>"
         expected = expected + "</ul>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -130,7 +130,7 @@ class TextileTest {
         expected = expected + "<li>bullet 3</li>"
         expected = expected + "</ol>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -142,8 +142,7 @@ class TextileTest {
                         .append("{some textile code name:“another speaking bootcamp slider”} some text 3")
                         .append(RuntimeUtil.LINE_SEPARATOR)
         String expected = "<p>some text 1  some text 2<br/> some text 3</p>"
-        Assertions.assertEquals("testing textile procesing", expected,
-                Textile.processToJasperHtml(input.toString()).trim())
+        Assertions.assertEquals(expected, Textile.processToJasperHtml(input.toString()).trim())
     }
 
     @Test
@@ -185,7 +184,7 @@ class TextileTest {
         expected = expected + "<p><strong>lorem ipsum lorem</strong><br/>"
         expected = expected + "lorem <strong>ipsum</strong> lorem</p>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 
     @Test
@@ -234,6 +233,6 @@ class TextileTest {
         expected = expected + "Brand <sup>TM</sup><br/>"
         expected = expected + "Text <sub>subscript</sub></p>"
 
-        Assertions.assertEquals("testing textile procesing", expected, Textile.process(input).trim())
+        Assertions.assertEquals(expected, Textile.process(input).trim())
     }
 }

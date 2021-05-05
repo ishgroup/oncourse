@@ -86,35 +86,35 @@ class TimeFormatterTest {
         gc.set(GregorianCalendar.SECOND, 30)
         gc.set(GregorianCalendar.MILLISECOND, 0)
         d = gc.getTime()
-        Assertions.assertEquals("11:20 AM", "11:20am", TimeFormatter.formatTime(d, TimeZone.getDefault()))
+        Assertions.assertEquals("11:20am", TimeFormatter.formatTime(d, TimeZone.getDefault()))
 
         gc.set(GregorianCalendar.HOUR_OF_DAY, 6)
         gc.set(GregorianCalendar.MINUTE, 45)
         gc.set(GregorianCalendar.SECOND, 0)
         gc.set(GregorianCalendar.MILLISECOND, 0)
         d = gc.getTime()
-        Assertions.assertEquals("6:45 AM", "6:45am", TimeFormatter.formatTime(d, TimeZone.getDefault()))
+        Assertions.assertEquals("6:45am", TimeFormatter.formatTime(d, TimeZone.getDefault()))
 
         gc.set(GregorianCalendar.HOUR_OF_DAY, 21)
         gc.set(GregorianCalendar.MINUTE, 8)
         gc.set(GregorianCalendar.SECOND, 0)
         gc.set(GregorianCalendar.MILLISECOND, 0)
         d = gc.getTime()
-        Assertions.assertEquals("9:12 PM", "9:08pm", TimeFormatter.formatTime(d, TimeZone.getDefault()))
+        Assertions.assertEquals("9:08pm", TimeFormatter.formatTime(d, TimeZone.getDefault()))
 
         gc.set(GregorianCalendar.HOUR_OF_DAY, 12)
         gc.set(GregorianCalendar.MINUTE, 0)
         gc.set(GregorianCalendar.SECOND, 0)
         gc.set(GregorianCalendar.MILLISECOND, 0)
         d = gc.getTime()
-        Assertions.assertEquals("12:00 PM", "12pm", TimeFormatter.formatTime(d, TimeZone.getDefault()))
+        Assertions.assertEquals("12pm", TimeFormatter.formatTime(d, TimeZone.getDefault()))
 
         gc.set(GregorianCalendar.HOUR_OF_DAY, 0)
         gc.set(GregorianCalendar.MINUTE, 0)
         gc.set(GregorianCalendar.SECOND, 0)
         gc.set(GregorianCalendar.MILLISECOND, 0)
         d = gc.getTime()
-        Assertions.assertEquals("12:00 AM", "12am", TimeFormatter.formatTime(d, TimeZone.getDefault()))
+        Assertions.assertEquals("12am", TimeFormatter.formatTime(d, TimeZone.getDefault()))
 
         gc.set(GregorianCalendar.HOUR, 10)
         gc.set(GregorianCalendar.MINUTE, 2)
@@ -122,7 +122,7 @@ class TimeFormatterTest {
         gc.set(GregorianCalendar.MILLISECOND, 0)
         gc.set(GregorianCalendar.AM_PM, GregorianCalendar.AM)
         d = gc.getTime()
-        Assertions.assertEquals("10:02 AM", "10:02am", TimeFormatter.formatTime(d, TimeZone.getDefault()))
+        Assertions.assertEquals("10:02am", TimeFormatter.formatTime(d, TimeZone.getDefault()))
 
         // HOUR = 21 ... this is just wrong. so the test is checking for failure
         // HOUR_OF_DAY = 21 would be ok. (see testFormatTime3)
@@ -131,7 +131,7 @@ class TimeFormatterTest {
         gc.set(GregorianCalendar.SECOND, 0)
         gc.set(GregorianCalendar.MILLISECOND, 0)
         d = gc.getTime()
-        Assertions.assertNotSame("9:35 PM", "9:35pm", TimeFormatter.formatTime(d, TimeZone.getDefault()))
+        Assertions.assertNotSame("9:35pm", TimeFormatter.formatTime(d, TimeZone.getDefault()))
     }
 
     @Test

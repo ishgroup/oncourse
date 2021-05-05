@@ -9,12 +9,15 @@ import groovy.transform.CompileStatic
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @CompileStatic
 class DateTimeFormatterTest {
 
     private static HashMap<String, GregorianCalendar> dateList = new HashMap<>()
-    private static HashMap<String, String> dateList2 = new HashMap<>()
+    private static TimeZone tz = TimeZone.getDefault()
 
     @BeforeAll
     static void setUp() throws Exception {
@@ -31,32 +34,41 @@ class DateTimeFormatterTest {
         dateList.put("+10d 08:05 AM", new GregorianCalendar(currentYear, currentMonth, currentDate + 10, 8, 5, 0))
         dateList.put("+10d 08:05 PM", new GregorianCalendar(currentYear, currentMonth, currentDate + 10, 20, 5, 0))
         dateList.put("+10d 08:05", new GregorianCalendar(currentYear, currentMonth, currentDate + 10, 8, 5, 0))
+    }
 
-        dateList2.put("2/10/04 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2/10/2004 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2/10/04 11:24", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2/10/2004 11:24AM", "Sat 2 Oct 2004 11:24am")
+    static Collection<Arguments> values() {
+        def data = [
+            ["2/10/04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2/10/2004 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2/10/04 11:24", "Sat 2 Oct 2004 11:24am"],
+            ["2/10/2004 11:24AM", "Sat 2 Oct 2004 11:24am"],
 
-        dateList2.put("2/10/04 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2\\10\\04 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2.10.04 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2,10,04 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2-10-04 11:24 AM", "Sat 2 Oct 2004 11:24am")
+            ["2/10/04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2\\10\\04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2.10.04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2,10,04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2-10-04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
 
-        dateList2.put("2/10/04", "Sat 2 Oct 2004 12am")
+            ["2/10/04", "Sat 2 Oct 2004 12am"],
 
-        dateList2.put("2/5/06 3:30 p", "Tue 2 May 2006 3:30pm")
-        dateList2.put("2/5/06 15:30 p", "Tue 2 May 2006 3:30pm")
+            ["2/5/06 3:30 p", "Tue 2 May 2006 3:30pm"],
+            ["2/5/06 15:30 p", "Tue 2 May 2006 3:30pm"],
 
-        dateList2.put("2/5/06 15:30:21 p", "Tue 2 May 2006 3:30pm")
+            ["2/5/06 15:30:21 p", "Tue 2 May 2006 3:30pm"],
 
-        dateList2.put("Sun 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm")
-        dateList2.put("Wed 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm")
-        dateList2.put("Xxx 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm")
-        dateList2.put("Sun 18 Feb 2007 6:30 pm", "Sun 18 Feb 2007 6:30pm")
-        dateList2.put("Sun 18 Feb 2007 6:30 A", "Sun 18 Feb 2007 6:30am")
-        dateList2.put("Sun 18 Feb 2007 6:30x", "Sun 18 Feb 2007 6:30am")
-        dateList2.put("Sun 18 Feb 2007 6:30pmm", "Sun 18 Feb 2007 6:30pm")
+            ["Sun 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm"],
+            ["Wed 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm"],
+            ["Xxx 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm"],
+            ["Sun 18 Feb 2007 6:30 pm", "Sun 18 Feb 2007 6:30pm"],
+            ["Sun 18 Feb 2007 6:30 A", "Sun 18 Feb 2007 6:30am"],
+            ["Sun 18 Feb 2007 6:30x", "Sun 18 Feb 2007 6:30am"],
+            ["Sun 18 Feb 2007 6:30pmm", "Sun 18 Feb 2007 6:30pm"]
+        ]
+        Collection<Arguments> dataList = new ArrayList<>()
+        for (List test : data) {
+            dataList.add(Arguments.of(test[0], test[1]))
+        }
+        return dataList
     }
 
     @Test
@@ -143,16 +155,12 @@ class DateTimeFormatterTest {
         Assertions.assertEquals(expResult, result)
     }
 
-    @Test
-    void testBoth() throws Exception {
-        for (Map.Entry<String, String> entry : dateList2.entrySet()) {
-            String correctResult = entry.getValue()
-            String stringInput = entry.getKey()
-
-            String result = DateTimeFormatter.formatDateTime(DateTimeFormatter.parseDateTime(stringInput, TimeZone.getDefault()), TimeZone.getDefault())
-
-            Assertions.assertEquals(stringInput, correctResult, result)
-        }
+    @ParameterizedTest
+    @MethodSource("values")
+    void testBoth(String stringInput, String correctResult) throws Exception {
+        def d = DateTimeFormatter.parseDateTime(stringInput, tz)
+        def result = DateTimeFormatter.formatDateTime(d, tz)
+        Assertions.assertEquals(correctResult, result, stringInput)
     }
 
     @Test
@@ -160,6 +168,6 @@ class DateTimeFormatterTest {
         String dateTimeInput = "6/4/2008 11pm"
         Calendar cal = Calendar.getInstance()
         cal.setTime(DateTimeFormatter.parseDateTime(dateTimeInput, TimeZone.getDefault()))
-        Assertions.assertEquals(23, cal.get(Calendar.HOUR_OF_DAY), "DateTime parsed wrong")
+        Assertions.assertEquals(23, cal.get(Calendar.HOUR_OF_DAY))
     }
 }
