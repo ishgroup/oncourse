@@ -9,9 +9,16 @@ const useStyles = makeStyles(theme =>
       alignItems: "center",
       justifyContent: "center",
       position: 'absolute',
-      border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+    },
+    modalTitle: {
+      fontSize: "20px",
+      fontFamily: "Inter, sans-serif",
+      fontWeight: 600,
+      paddingBottom: theme.spacing(2),
+      color: theme.palette.text.primary,
+      textAlign: "left",
     },
     modalContent: {
       position: "relative",
@@ -20,20 +27,22 @@ const useStyles = makeStyles(theme =>
       backgroundColor: "#fff",
       backgroundClip: "padding-box",
       border: "1px solid rgba(0, 0, 0, 0.2)",
-      borderRadius: "2px",
+      borderRadius: "4px",
       outline: 0,
-      textAlign: "center",
-      padding: "30px 15px",
+      padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
       maxWidth: "600px",
     },
     modalText: {
-      paddingBottom: "30px",
+      paddingBottom: "20px",
+      paddingTop: theme.spacing(1),
+      fontSize: "16px",
+      fontFamily: theme.typography.fontFamily,
+      fontWeight: 300,
+      textAlign: "center",
     },
     buttonsWrapper: {
       display: "flex",
-      justifyContent: "space-around",
-      paddingTop: "20px",
-      borderTop: "1px solid #eceeef",
+      justifyContent: "flex-end",
     },
     cancelButton: {
       marginRight: "15px",
@@ -48,10 +57,12 @@ interface Props {
   onConfirm?: () => any;
   onCancel?: () => any;
   onHide?: () => any;
+  children?: any;
+  confirmButtonText?: string;
 }
 
 const ModalWindow = (props: Props) => {
-  const {title, text, show, onConfirm, onCancel, onHide} = props;
+  const {children, confirmButtonText, title, text, show, onConfirm, onCancel, onHide} = props;
 
   const classes = useStyles();
 
@@ -66,13 +77,19 @@ const ModalWindow = (props: Props) => {
       onClose={onClickCancel}
       className={classes.paper}
     >
-      {/*{title &&*/}
-      {/*  <ModalHeader toggle={() => onClickCancel()}>{title}</ModalHeader>*/}
-      {/*}*/}
       <div className={classes.modalContent}>
-        <div className={classes.modalText}>
-          {text || 'Are you sure?'}
+        <div className={classes.modalTitle}>
+          {title || 'Are you sure?'}
         </div>
+        <div className={classes.modalText}>
+          {text}
+        </div>
+
+        {children && (
+          <div>
+            {children}
+          </div>
+        )}
 
         <div className={classes.buttonsWrapper}>
           <CustomButton
@@ -86,7 +103,7 @@ const ModalWindow = (props: Props) => {
             styleType="submit"
             onClick={() => onConfirm()}
           >
-            Confirm
+            {confirmButtonText || "Confirm"}
           </CustomButton>
         </div>
       </div>

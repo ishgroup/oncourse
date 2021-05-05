@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {DragSource, DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom';
-import CloseIcon from '@material-ui/icons/Close';
+import DeleteIcon from '@material-ui/icons/Delete';
 import clsx from "clsx";
 import flow from 'lodash/flow';
 import {withStyles} from "@material-ui/core/styles";
@@ -29,9 +29,9 @@ const styles = theme => ({
     maxWidth: "200px",
   },
   removeIcon: {
-    color: theme.palette.error.main,
     fontSize: "15px",
     display: "none",
+    color: "rgba(0, 0, 0, 0.2);",
     "&:hover": {
       cursor: "pointer",
     }
@@ -56,8 +56,8 @@ class Card extends Component<any, any> {
     return connectDragSource(connectDropTarget(
       <div className={clsx(classes.themeCard, isDragging && classes.dragging)}>
         {card.title} {!isDefault && (
-          <CloseIcon className={classes.removeIcon} onClick={() => removeCard(index)}/>
-          )}
+          <DeleteIcon className={classes.removeIcon} onClick={() => removeCard(index)}/>
+        )}
       </div>,
     ));
   }

@@ -9,6 +9,7 @@ import {blockReducer} from "../containers/content/containers/blocks/reducers";
 import {themesReducer} from "../containers/design/containers/themes/reducers";
 import {historyReducer} from "../containers/history/reducers";
 import {modalReducer} from "../common/containers/modal/reducers";
+import {navigationReducer} from "../common/containers/Navigation/reducers";
 
 import {websiteSettingsReducer} from "../containers/settings/containers/website/reducers";
 import {redirectSettingsReducer} from "../containers/settings/containers/redirect/reducers";
@@ -28,6 +29,7 @@ export const combinedReducers = combineReducers({
   theme: themesReducer,
   history: historyReducer,
   modal: modalReducer,
+  navigation: navigationReducer,
   settings: combineReducers({
     websiteSettings: websiteSettingsReducer,
     redirectSettings: redirectSettingsReducer,

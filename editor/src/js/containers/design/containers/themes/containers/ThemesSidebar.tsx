@@ -11,6 +11,7 @@ import SidebarList from "../../../../../components/Sidebar/SidebarList";
 import {State} from "../../../../../reducers/state";
 import {showModal} from "../../../../../common/containers/modal/actions";
 import {notificationParams} from "../../../../../common/utils/NotificationSettings";
+import {showNavigation} from "../../../../../common/containers/Navigation/actions";
 
 interface Props {
   themes: Theme[];
@@ -23,6 +24,7 @@ interface Props {
   fetching: boolean;
   showError: (title) => any;
   showModal: (props) => any;
+  showNavigation: () => any;
 }
 
 class ThemesSidebar extends React.Component<Props, any> {
@@ -41,7 +43,7 @@ class ThemesSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {themes, match, onEditSettings, onDeleteTheme, showError, showModal, fetching, layouts} = this.props;
+    const {themes, match, onEditSettings, onDeleteTheme, showError, showModal, fetching, layouts, showNavigation} = this.props;
     const activeTheme = match.params.id && themes.find(theme => theme.id == match.params.id);
 
     return (
@@ -65,6 +67,7 @@ class ThemesSidebar extends React.Component<Props, any> {
           showError={showError}
           onDelete={id => onDeleteTheme(id)}
           showModal={showModal}
+          showNavigation={showNavigation}
         />
         }
       </div>
@@ -85,6 +88,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     onDeleteTheme: title => dispatch(deleteTheme(title)),
     onAddTheme: () => dispatch(addTheme()),
     showModal: props => dispatch(showModal(props)),
+    showNavigation: () => dispatch(showNavigation()),
   };
 };
 

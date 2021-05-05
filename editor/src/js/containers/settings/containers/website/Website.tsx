@@ -326,37 +326,37 @@ export class Website extends React.Component<Props, any> {
           />
         </div>
 
-        <Grid container className="mt-1">
-          <Grid item xs={3} className={"mr-2"}>
-            <EditInPlaceField
-              label="Move GTM"
-              name="moveGTM"
-              id="moveGTM"
-              meta={{}}
-              input={{
-                onChange: e => this.onChange(e.target.value, 'moveGTM'),
-                onFocus: stubFunction,
-                onBlur: stubFunction,
-                value: moveGTM,
-              }}
-            />
-          </Grid>
+        {/*<Grid container className="mt-1">*/}
+        {/*  <Grid item xs={3} className={"mr-2"}>*/}
+        {/*    <EditInPlaceField*/}
+        {/*      label="Move GTM"*/}
+        {/*      name="moveGTM"*/}
+        {/*      id="moveGTM"*/}
+        {/*      meta={{}}*/}
+        {/*      input={{*/}
+        {/*        onChange: e => this.onChange(e.target.value, 'moveGTM'),*/}
+        {/*        onFocus: stubFunction,*/}
+        {/*        onBlur: stubFunction,*/}
+        {/*        value: moveGTM,*/}
+        {/*      }}*/}
+        {/*    />*/}
+        {/*  </Grid>*/}
 
-          <Grid item xs={3}>
-            <EditInPlaceField
-              label="Root tag filter"
-              name="rootTagFilter"
-              id="rootTagFilter"
-              meta={{}}
-              input={{
-                onChange: e => this.onChange(e.target.value, 'rootTagFilter'),
-                onFocus: stubFunction,
-                onBlur: stubFunction,
-                value: rootTagFilter,
-              }}
-            />
-          </Grid>
-        </Grid>
+        {/*  <Grid item xs={3}>*/}
+        {/*    <EditInPlaceField*/}
+        {/*      label="Root tag filter"*/}
+        {/*      name="rootTagFilter"*/}
+        {/*      id="rootTagFilter"*/}
+        {/*      meta={{}}*/}
+        {/*      input={{*/}
+        {/*        onChange: e => this.onChange(e.target.value, 'rootTagFilter'),*/}
+        {/*        onFocus: stubFunction,*/}
+        {/*        onBlur: stubFunction,*/}
+        {/*        value: rootTagFilter,*/}
+        {/*      }}*/}
+        {/*    />*/}
+        {/*  </Grid>*/}
+        {/*</Grid>*/}
 
         <CustomButton
           onClick={() => this.onSave()}

@@ -6,6 +6,10 @@ import {addContentMarker} from "../../../utils";
 import CustomButton from "../../../../../common/components/CustomButton";
 import {stubFunction} from "../../../../../common/utils/Components";
 import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import clsx from "clsx";
+import MenuIcon from "@material-ui/icons/Menu";
+import {IconButton} from "@material-ui/core";
+import {showNavigation} from "../../../../../common/containers/Navigation/actions";
 
 const styles: any = theme => ({
   linkBack: {
@@ -25,6 +29,10 @@ const styles: any = theme => ({
   sideBarSetting: {
     padding: "10px 20px",
   },
+  actionsGroup: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
 });
 
 interface Props {
@@ -34,6 +42,7 @@ interface Props {
   onEdit?: (settings) => void;
   onDelete?: (id) => void;
   showModal?: (props) => any;
+  showNavigation?: () => any;
 }
 
 class BlockSettings extends React.Component<Props, any> {
@@ -71,26 +80,32 @@ class BlockSettings extends React.Component<Props, any> {
     const {onDelete, block, showModal} = this.props;
 
     showModal({
-      text: `You are want to delete block '${block.title}'. Are you sure?`,
+      text: `You are want to delete block '${block.title}'.`,
       onConfirm: () => onDelete(block.id),
     });
   }
 
   render () {
-    const {block, classes} = this.props;
+    const {block, classes, showNavigation} = this.props;
     const {title} = this.state;
 
     return (
       <div>
         <ul>
-          <li>
-            <a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>
-              <IconBack text={block.title || 'New Block'}/>
-            </a>
+          <li className={"pl-1"}>
+            <IconButton onClick={showNavigation}>
+              <MenuIcon/>
+            </IconButton>
+
+            {/*<a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>*/}
+            {/*  <IconBack text="Blocks"/>*/}
+            {/*</a>*/}
           </li>
         </ul>
 
         <div className={classes.sideBarSetting}>
+          <div className="heading mb-2">Blocks</div>
+
           <div>
             <EditInPlaceField
               label="Title"
@@ -107,23 +122,21 @@ class BlockSettings extends React.Component<Props, any> {
             />
           </div>
 
-          <div className="mt-3">
-            <div className="buttons-inline">
-              <CustomButton
-                styleType="delete"
-                onClick={this.onClickDelete}
-                styles={classes.removeButton}
-              >
-                Remove
-              </CustomButton>
+          <div className={clsx(classes.actionsGroup, "mt-3")}>
+            <CustomButton
+              styleType="delete"
+              onClick={this.onClickDelete}
+              styles={classes.removeButton}
+            >
+              Remove
+            </CustomButton>
 
-              <CustomButton
-                styleType="submit"
-                onClick={this.onSave}
-              >
-                Save
-              </CustomButton>
-            </div>
+            <CustomButton
+              styleType="submit"
+              onClick={this.onSave}
+            >
+              Save
+            </CustomButton>
           </div>
         </div>
       </div>

@@ -18,6 +18,13 @@ const buttonsStyles: any = theme => ({
       backgroundColor: "rgba(248, 169, 74, 0.2)",
     },
   },
+  outlineButton: {
+    color: theme.palette.primary.main,
+    border: `2px solid ${theme.palette.primary.main}`,
+    "&:hover": {
+      backgroundColor: "rgba(248, 169, 74, 0.2)",
+    },
+  },
   deleteButton: {
     color: theme.palette.error.main,
   },
@@ -28,6 +35,7 @@ const CustomButton = (props: any) => {
 
   const getClass = () => {
     if (styleType === "submit") return classes.submitButton;
+    if (styleType === "outline") return classes.outlineButton;
     if (styleType === "cancel") return classes.cancelButton;
     if (styleType === "delete") return classes.deleteButton;
   }

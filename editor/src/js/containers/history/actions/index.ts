@@ -18,6 +18,11 @@ export const publish = (id, status) => ({
   payload: {id, status},
 });
 
+// export const publish = (id, status, description) => ({
+//   type: PUBLISH_REQUEST,
+//   payload: {id, status, description},
+// });
+
 export const setVersion = (id, status) => ({
   type: SET_VERSION_REQUEST,
   payload: {id, status}

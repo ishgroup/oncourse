@@ -1,12 +1,20 @@
 import React from 'react';
 import {Route as DomRoute, NavLink} from 'react-router-dom';
 import clsx from "clsx";
+import {matchPath, withRouter} from "react-router";
+import Avatar from '@material-ui/core/Avatar';
 import {withStyles} from "@material-ui/core/styles";
+import Popover from '@material-ui/core/Popover';
+import {Grid, Typography} from "@material-ui/core";
 import {Route, routes} from '../../routes';
-import {User} from "../../model";
+import {Page, Theme, User} from "../../model";
 import {getHistoryInstance} from "../../history";
 import CustomButton from "../../common/components/CustomButton";
-import {Grid} from "@material-ui/core";
+// import ModalPublish from "../../common/components/ModalPublish";
+import {BlockState} from "../../containers/content/containers/blocks/reducers/State";
+import PageService from "../../services/PageService";
+
+const includedSubMenus = ["Blocks", "Pages", "Themes"];
 
 const styles: any = theme => ({
   sidebarWrapper: {
@@ -26,6 +34,7 @@ const styles: any = theme => ({
     position: "fixed",
     height: "100vh",
     width: "16.666667%",
+    zIndex: 1100,
   },
   sidebarSlim: {
     width: "4%",
@@ -44,6 +53,9 @@ const styles: any = theme => ({
     padding: "15px",
     color: "gray",
     borderTop: "1px solid #bbbbbb",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   sidebarFooterSlim: {
     position: "absolute",
@@ -54,6 +66,9 @@ const styles: any = theme => ({
     padding: "15px 5px",
     color: "gray",
     borderTop: "1px solid #bbbbbb",
+    display: "flex",
+    flexDirection: "column-reverse",
+    alignItems: "center",
   },
   link: {
     color: theme.palette.text.secondary,
@@ -66,6 +81,9 @@ const styles: any = theme => ({
       color: theme.palette.text.primary,
     },
   },
+  subMenuLink: {
+    padding: "6px 16px",
+  },
   activeLink: {
     color: theme.palette.primary.main,
     "&:hover": {
@@ -73,20 +91,18 @@ const styles: any = theme => ({
       color: theme.palette.primary.main,
     },
   },
+  subLinkWrapper: {
+    position: "relative",
+    "&:hover": {
+      "& $subMenuWrapper": {
+        display: "flex",
+        position: "absolute",
+        left: "100%",
+      }
+    }
+  },
   subLink: {
     padding: "10px 20px 10px 50px",
-  },
-  logoutLink: {
-    padding: "5px 0",
-    textAlign: "center",
-    fontSize: "12px",
-    display: "inline-block",
-    marginTop: "10px",
-    "&:hover": {
-      textDecoration: "underline",
-      backgroundColor: "transparent",
-      color: theme.palette.text.secondary,
-    },
   },
   slimPublishButton: {
     fontSize: "10px",
@@ -96,15 +112,75 @@ const styles: any = theme => ({
   listItem: {
     borderBottom: "1px solid #bbb",
   },
+  avatar: {
+    height: "27px",
+    width: "27px",
+    fontSize: "14px",
+    textTransform: "uppercase",
+    "&:hover": {
+      cursor: "pointer",
+    }
+  },
+  userNameLabel: {
+    fontSize: "12px",
+    color: "rgba(0, 0, 0, 0.87)",
+    padding: "8px 16px 0",
+    opacity: .5,
+  },
+  userName: {
+    fontSize: "16px",
+    padding: "0 16px 6px",
+    color: "rgba(0, 0, 0, 0.87)",
+    opacity: .5,
+  },
+  logout: {
+    fontSize: "16px",
+    padding: "6px 16px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  subMenuWrapper: {
+    backgroundColor: "#fff",
+    boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px",
+    display: "none",
+    width: "200px",
+    maxHeight: "100vh",
+    overflowY: "auto",
+    zIndex: 1100,
+  },
+  small: {
+    display: "block",
+    color: theme.palette.text.primary,
+    paddingTop: "3px",
+    lineHeight: "12px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+  linkTitle: {
+    fontWeight: 400,
+  },
+  sidebarList: {
+    overflowY: "auto",
+    maxHeight: "calc(100vh - 265px)",
+    width: "100%",
+  },
 });
 
 interface Props {
   classes: any;
-  slim?: boolean;
   user: User;
   onLogout: () => void;
+  location: any;
+  match: any;
   onPublish: () => void;
   showModal: (props) => any;
+  hideNavigation?: () => void;
+  navigation?: any;
+  blocks?: BlockState[];
+  pages?: Page[];
+  slim?: boolean;
+  themes?: Theme[];
 }
 
 const firstChar = (str: string) => (
@@ -115,7 +191,23 @@ class Sidebar extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
-    this.state = {activeUrl: '/'};
+    this.state = {
+      activeUrl: '/',
+      anchorEl: null,
+      // showModal: false,
+    };
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<any>, snapshot?: any) {
+    if (this.state.activeUrl === '/' && this.props.location.pathname !== prevProps.location.pathname) {
+      const match = matchPath(this.props.location.pathname, {
+        path: "/page/:id?",
+        exact: false,
+        strict: false
+      });
+
+      if (match) this.setState({activeUrl: "/content"});
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -130,19 +222,21 @@ class Sidebar extends React.Component<Props, any> {
 
     showModal({
       text: `You are about to push your changes onto the live site. Are you sure?`,
+      confirmButtonText: "Publish",
       onConfirm: () => onPublish(),
     });
   }
 
+  modalToggle(value) {
+    this.setState({showModal: value});
+  }
+
   onClickMenu(url) {
+    this.props.hideNavigation();
+
     this.setState({
       activeUrl: url,
     });
-  }
-
-  onClickHistory() {
-    return false;
-    // getHistoryInstance().push('/history');
   }
 
   onClickLogout(e) {
@@ -152,18 +246,76 @@ class Sidebar extends React.Component<Props, any> {
     onLogout();
   }
 
+  handleClick = (event: any) => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  renderSubMenu(title) {
+    const {blocks, classes, hideNavigation, pages, themes} = this.props;
+
+    const items: any[] = title === "Blocks" && blocks || title === "Pages" && pages || title === "Themes" && themes || [];
+    const category: string = title === "Blocks" && "blocks" || title === "Pages" && "page" || title === "Themes" && "themes" || "";
+    const subTitleKey: string = title === "Pages" ? "urls" : null;
+    const idKey: string = "id";
+
+    let subTitleFilterFunc: any = null;
+    if (title === "Pages") subTitleFilterFunc = (items, page) => getDefaultLink(items, page) || null;
+
+    const getDefaultLink = (items, page) => {
+      const defaultUrl = items.find(item => item.isDefault);
+      return defaultUrl ? defaultUrl.link : PageService.generateBasetUrl(page).link;
+    }
+
+    const getSubtitle = (item: any) => (
+      subTitleFilterFunc ? subTitleFilterFunc(item[subTitleKey], item) : item[subTitleKey]
+    );
+
+    return (
+      <ul className={classes.sidebarList}>
+        {items
+          .map(item => (
+            <li key={item[idKey]}>
+              <NavLink
+                exact={false}
+                className={clsx(classes.link, classes.subMenuLink)}
+                to={`/${category}/${item[idKey]}`}
+                activeClassName="active"
+                onClick={hideNavigation}
+              >
+                <span>
+                  <span className={classes.linkTitle}>{item.title}</span>
+                  {item[subTitleKey] && <small className={classes.small}>{getSubtitle(item)}</small>}
+                </span>
+              </NavLink>
+            </li>
+          ))}
+      </ul>
+    )
+  }
+
   render() {
-    const {classes, slim, user} = this.props;
-    const userName = slim
-      ? `${firstChar(user.firstName) || ''}${firstChar(user.lastName) || ''}`
-      : `${user.firstName || ''} ${user.lastName || ''}`;
+    const {classes, hideNavigation, navigation, slim, user} = this.props;
+    const {anchorEl, showModal} = this.state;
+
+    const userName = `${user.firstName || ''} ${user.lastName || ''}`;
 
     const getSubRoutes = url => (
       routes.filter(route => !route.isPublic && route.parent === url).map((route: Route, index) => (
-        <li key={index} className={clsx((this.state.activeUrl !== url || slim) && "d-none")}>
+        <li key={index} className={clsx((this.state.activeUrl !== url || slim) && "d-none", classes.subLinkWrapper)}>
+          {includedSubMenus.includes(route.title) && (
+            <div className={classes.subMenuWrapper}>
+              {this.renderSubMenu(route.title)}
+            </div>
+          )}
+
           <NavLink
             exact={route.exact}
             className={clsx(classes.subLink, classes.link)}
+            onClick={hideNavigation}
             to={route.url}
             activeClassName={classes.activeLink}
           >
@@ -197,45 +349,78 @@ class Sidebar extends React.Component<Props, any> {
       </ul>
     );
 
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
     return (
       <Grid item xs={2} className={clsx(classes.sidebarWrapper, slim && classes.sidebarWrapperSlim)}>
         <div className={clsx(classes.sidebar, slim && classes.sidebarSlim)}>
           <div className={classes.sidebarContent}>
 
+            {/*<ModalPublish show={showModal} onHide={(val: boolean) => this.modalToggle(val)}/>*/}
+/
             {routes.map((route, index) => (
               <RouteWrapper
                 key={index}
                 path={route.path}
                 exact={route.exact}
                 isPublic={route.isPublic}
-                component={route.sidebar || mainSidebar}
+                component={navigation.showNavigation ? mainSidebar : (route.sidebar || mainSidebar)}
               />
             ))}
 
             <div className={slim ? classes.sidebarFooterSlim : classes.sidebarFooter}>
-              <Grid container className="center">
-                <Grid item xs={6}>
-                  <CustomButton
-                    styleType="submit"
-                    size="small"
-                    styles={slim ? classes.slimPublishButton : null}
-                    onClick={() => this.onClickPublish()}
-                  >
-                    Publish
-                  </CustomButton>
-                </Grid>
-                <Grid item xs={6}>
+              <Avatar
+                aria-describedby={id}
+                className={clsx(classes.avatar, slim && "mt-1")}
+                onClick={(e) => this.handleClick(e)}
+              >
+                {userName.substring(0, 2)}
+              </Avatar>
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={this.handleClose}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'center',
+                  horizontal: 'left',
+                }}
+              >
+                <div className={"pt-1 pb-1"}>
+                  <Typography className={classes.userNameLabel}>
+                    User name
+                  </Typography>
+                  <Typography className={classes.userName}>
+                    {userName}
+                  </Typography>
+                  <Typography className={classes.logout}>
+                    <CustomButton
+                      styleType="cancel"
+                      size="small"
+                      styles={classes.slimPublishButton}
+                      onClick={e => this.onClickLogout(e)}
+                    >
+                      Logout
+                    </CustomButton>
+                  </Typography>
+                </div>
+              </Popover>
 
-                </Grid>
-              </Grid>
-
-              <Grid container className="center">
-                <Grid item xs={12}>
-                  <a href="#" className={classes.logoutLink} onClick={e => this.onClickLogout(e)}>
-                    <span className="user">{userName} {userName && ':'} logout</span>
-                  </a>
-                </Grid>
-              </Grid>
+              <div className="center">
+                <CustomButton
+                  styleType="outline"
+                  size="small"
+                  styles={classes.slimPublishButton}
+                  onClick={this.modalToggle.bind(this, true)}
+                >
+                  Publish
+                </CustomButton>
+              </div>
             </div>
           </div>
         </div>
@@ -244,7 +429,7 @@ class Sidebar extends React.Component<Props, any> {
   }
 }
 
-const RouteWrapper = ({component: Component, ...rest}) => {
+export const RouteWrapper = ({component: Component, ...rest}) => {
   return (
     <DomRoute {...rest} render={props => (
       <Component {...props}/>
@@ -252,5 +437,5 @@ const RouteWrapper = ({component: Component, ...rest}) => {
   );
 };
 
-export default (withStyles(styles)(Sidebar));
+export default withRouter((withStyles(styles)(Sidebar)));
 

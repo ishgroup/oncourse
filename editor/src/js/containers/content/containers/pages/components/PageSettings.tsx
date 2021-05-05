@@ -1,11 +1,14 @@
 import React from 'react';
 import {Checkbox, FormControlLabel, IconButton} from '@material-ui/core';
 import clsx from "clsx";
-import CloseIcon from '@material-ui/icons/Close';
 import {withStyles} from "@material-ui/core/styles";
 import AddIcon from '@material-ui/icons/Add';
-import IconBack from "../../../../../common/components/IconBack";
+import DeleteIcon from '@material-ui/icons/Delete';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
+import MenuIcon from '@material-ui/icons/Menu';
 import PageService from "../../../../../services/PageService";
+import IconBack from "../../../../../common/components/IconBack";
 import {addContentMarker} from "../../../utils";
 import {PageState} from "../reducers/State";
 import CustomButton from "../../../../../common/components/CustomButton";
@@ -14,17 +17,12 @@ import {stubFunction} from "../../../../../common/utils/Components";
 import {AppTheme} from "../../../../../styles/themeInterface";
 
 const styles: any = (theme: AppTheme) => ({
+  navWrapper: {
+    display: "flex",
+    paddingLeft: "8px",
+  },
   links: {
     marginBottom: "10px",
-  },
-  linkDefault: {
-    color: theme.statistics.enrolmentText.color,
-    cursor: "default",
-    "&:hover": {
-      "&::after": {
-        display: "none",
-      },
-    },
   },
   linkBack: {
     textTransform: "capitalize",
@@ -42,11 +40,12 @@ const styles: any = (theme: AppTheme) => ({
     transition: "color .15s",
     textOverflow: "ellipsis",
     overflow: "hidden",
-    fontWeight: 600,
     fontFamily: theme.typography.fontFamily,
-    fontSize: "13px",
+    fontSize: "14px",
     lineHeight: 1.2,
     height: "22px",
+    color: theme.palette.text.secondary,
+    fontWeight: 300,
     "&::after": {
       display: "block",
       visibility: "hidden",
@@ -54,14 +53,13 @@ const styles: any = (theme: AppTheme) => ({
       pointerEvents: "none",
       padding: "3px",
       fontSize: "12px",
-      fontWeight: 400,
       borderRadius: "2px",
       position: "absolute",
       content: "'Make Default'",
       fontFamily: theme.typography.fontFamily,
       left: "100%",
-      color: theme.palette.text.primary,
-      background: theme.statistics.enrolmentText.color,
+      color: "#fff",
+      background: theme.palette.primary.main,
       marginLeft: "10px",
       whiteSpace: "nowrap",
       transition: "opacity .25s",
@@ -75,11 +73,20 @@ const styles: any = (theme: AppTheme) => ({
       },
     },
   },
+  linkDefault: {
+    color: theme.palette.primary.main,
+    cursor: "default",
+    "&:hover": {
+      "&::after": {
+        display: "none",
+      },
+    },
+  },
   removeButton: {
     marginRight: theme.spacing(2),
   },
   removeIcon: {
-    color: theme.palette.error.main,
+    color: "rgba(0, 0, 0, 0.2)",
     fontSize: "1rem",
   },
   addIconButton: {
@@ -94,6 +101,8 @@ const styles: any = (theme: AppTheme) => ({
     padding: "10px 20px",
   },
   actionsGroup: {
+    display: "flex",
+    justifyContent: "space-between",
     marginTop: "30px",
     paddingTop: "20px",
     borderTop: "1px solid #bbbbbb",
@@ -101,6 +110,16 @@ const styles: any = (theme: AppTheme) => ({
   inputWrapper: {
     marginBottom: theme.spacing(2),
   },
+  linkWrapper: {
+    "&:hover": {
+      "& $iconButton": {
+        display: "flex",
+      }
+    }
+  },
+  iconButton: {
+    display: "none",
+  }
 });
 
 interface Props {
@@ -112,6 +131,8 @@ interface Props {
   onDelete?: (id) => void;
   showModal?: (props) => any;
   showError?: (title) => any;
+  hideNavigation?: () => void;
+  showNavigation?: () => void;
   themes?: any;
 }
 
@@ -185,7 +206,7 @@ class PageSettings extends React.PureComponent<Props, any> {
     const {onDelete, page, showModal} = this.props;
 
     showModal({
-      text: `You are want to delete page '${page.title}'. Are you sure?`,
+      text: `You are want to delete page '${page.title}'.`,
       onConfirm: () => onDelete(page.id),
     });
   }
@@ -218,21 +239,28 @@ class PageSettings extends React.PureComponent<Props, any> {
   }
 
   render () {
-    const {classes, page} = this.props;
+    const {classes, page, showNavigation} = this.props;
     const {title, visible, urls, newLink, suppressOnSitemap} = this.state;
     const defaultPageUrl = PageService.generateBasetUrl(page);
 
     return (
       <div>
         <ul>
-          <li>
-            <a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>
-              <IconBack text={page.title || 'New Page'}/>
-            </a>
+          <li className={classes.navWrapper}>
+
+            <IconButton onClick={showNavigation}>
+              <MenuIcon/>
+            </IconButton>
+
+            {/*<a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>*/}
+            {/*  <IconBack text="Pages"/>*/}
+            {/*</a>*/}
           </li>
         </ul>
 
         <div className={classes.sideBarSetting}>
+          <div className="heading mb-2">Pages</div>
+
           <form>
             <EditInPlaceField
               label="Title"
@@ -248,35 +276,35 @@ class PageSettings extends React.PureComponent<Props, any> {
               }}
             />
 
-              <label htmlFor="pageUrl" className="pb-1">Page Links (URLs)</label>
+              <label htmlFor="pageUrl" className="pb-1 secondaryHeading">Page Links (URLs)</label>
 
               <div className={classes.links}>
 
-                <div
-                  onClick={() => urls.find(url => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
-                  className={clsx(classes.linkTitle, !urls.find(url => url.isDefault) && classes.linkDefault)}
-                  title={defaultPageUrl.link}
-                >
-                  {defaultPageUrl.link}
+                <div className="centeredFlex justify-content-space-between relative">
+                  <div
+                    onClick={() => urls.find(url => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
+                    className={clsx(classes.linkTitle, !urls.find(url => url.isDefault) && classes.linkDefault)}
+                    title={defaultPageUrl.link}
+                  >
+                    {defaultPageUrl.link}
+                  </div>
                 </div>
 
                 {urls.map((url, index) => (
-                  <div className="centeredFlex justify-content-space-between relative" key={index}>
+                  <div className={clsx(classes.linkWrapper, "centeredFlex justify-content-space-between relative")} key={index}>
                     <div
                       onClick={() => !url.isDefault && this.onSetDefaultUrl(url)}
                       className={clsx(classes.linkTitle, url.isDefault && classes.linkDefault)}
-                      title={url.link}
                     >
                       {url.link}
                     </div>
 
                     {!url.isDefault &&
-
-                    <IconButton size="small" onClick={() => !url.isDefault && this.onDeleteUrl(url)}>
-                      <CloseIcon
-                        className={classes.removeIcon}
-                      />
-                    </IconButton>
+                      <IconButton size="small" className={classes.iconButton} onClick={() => !url.isDefault && this.onDeleteUrl(url)}>
+                        <DeleteIcon
+                          className={classes.removeIcon}
+                        />
+                      </IconButton>
                     }
                   </div>
                 ))}
@@ -329,22 +357,20 @@ class PageSettings extends React.PureComponent<Props, any> {
             />
 
             <div className={classes.actionsGroup}>
-              <div className="buttons-inline">
-                <CustomButton
-                  styleType="delete"
-                  onClick={this.onClickDelete}
-                  styles={classes.removeButton}
-                >
-                  Remove
-                </CustomButton>
+              <CustomButton
+                styleType="delete"
+                onClick={this.onClickDelete}
+                styles={classes.removeButton}
+              >
+                Remove
+              </CustomButton>
 
-                <CustomButton
-                  styleType="submit"
-                  onClick={this.onSave}
-                >
-                  Save
-                </CustomButton>
-              </div>
+              <CustomButton
+                styleType="submit"
+                onClick={this.onSave}
+              >
+                Save
+              </CustomButton>
             </div>
           </form>
         </div>

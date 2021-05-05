@@ -101,10 +101,10 @@ class SidebarList extends React.Component<Props, any> {
 
     return (
       <ul>
-
         <li>
           <a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>
-            <IconBack text={category}/>
+            <IconBack text="Menu"/>
+            {/*<IconBack text={category}/>*/}
           </a>
         </li>
 
@@ -150,7 +150,7 @@ class SidebarList extends React.Component<Props, any> {
                     <span>
                       <span
                         dangerouslySetInnerHTML={{__html: item.title.replace(reg, str => (`<mark>${str}</mark>`))}
-                    }/>
+                      }/>
 
                       {item[subTitleKey] &&
                         <small
@@ -166,15 +166,12 @@ class SidebarList extends React.Component<Props, any> {
                     {!this.state.filter &&
                     <span>
                       <span className={classes.linkTitle}>{item.title}</span>
-
                       {item[subTitleKey] &&
                         <small className={classes.small}>{getSubtitle(item)}</small>
                       }
                     </span>
                     }
-
                   </NavLink>
-
                 </li>
               ))}
           </ul>

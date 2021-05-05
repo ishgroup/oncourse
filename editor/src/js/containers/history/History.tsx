@@ -14,8 +14,9 @@ import TimeAgo from 'react-timeago';
 import {getHistory, publish, setVersion} from "./actions";
 import {Version, VersionStatus} from "../../model";
 import {State} from "../../reducers/state";
-import {showModal} from "../../common/containers/modal/actions";
 import CustomButton from "../../common/components/CustomButton";
+// import ModalPublish from "../../common/components/ModalPublish";
+import {showModal} from "../../common/containers/modal/actions";
 
 const styles = theme => ({
   historyWrapper: {
@@ -37,11 +38,19 @@ interface Props {
 class History extends React.Component<Props, any> {
   constructor(props) {
     super(props);
+
+    this.state = {
+      showModal: false,
+    };
   }
 
   componentDidMount() {
     this.props.onInit();
   }
+
+  // modalToggle(value) {
+  //   this.setState({showModal: value});
+  // }
 
   onPublish(id) {
     this.props.showModal({
@@ -52,7 +61,7 @@ class History extends React.Component<Props, any> {
 
   onRevert(id) {
     this.props.showModal({
-      text: `You are about to revert draft version to this revision. Are you sure?`,
+      text: `You are about to revert draft version to this revision.`,
       onConfirm: () => this.props.onRevert(id),
     });
 
@@ -60,9 +69,12 @@ class History extends React.Component<Props, any> {
 
   render() {
     const {classes, versions, fetching} = this.props;
+    const {showModal} = this.state;
 
     return (
       <div className={clsx(classes.historyWrapper, (fetching && "fetching"))}>
+        {/*<ModalPublish show={showModal} onHide={(val: boolean) => this.modalToggle(val)}/>*/}
+
         <TableContainer component={Paper} className="p-3">
           <Table  className="table table--row-center" aria-label="simple table">
             <TableHead>
@@ -88,6 +100,7 @@ class History extends React.Component<Props, any> {
                     {version.status === VersionStatus.draft &&
                       <CustomButton
                         styleType="submit"
+                        // onClick={() => this.modalToggle(true)}
                         onClick={() => this.onPublish(version.id)}
                       >
                         Publish

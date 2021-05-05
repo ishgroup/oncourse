@@ -12,12 +12,14 @@ import {showModal} from "../../../../../common/containers/modal/actions";
 import {State} from "../../../../../reducers/state";
 import {notificationParams} from "../../../../../common/utils/NotificationSettings";
 import PageService from "../../../../../services/PageService";
+import {hideNavigation, showNavigation} from "../../../../../common/containers/Navigation/actions";
 
 interface Props {
   pages: Page[];
   themes: Theme[];
   match: any;
   onEditSettings: (id, settings) => any;
+  showNavigation: () => void;
   onDeletePage: (page) => any;
   onAddPage: () => any;
   showError: (title) => any;
@@ -47,7 +49,7 @@ export class PagesSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {pages, match, onEditSettings, onDeletePage, showModal, fetching, showError, themes} = this.props;
+    const {pages, match, onEditSettings, onDeletePage, showModal, showNavigation, fetching, showError, themes} = this.props;
     const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
@@ -74,6 +76,7 @@ export class PagesSidebar extends React.Component<Props, any> {
             onDelete={pageId => onDeletePage(pageId)}
             showModal={showModal}
             showError={showError}
+            showNavigation={showNavigation}
           />
         }
       </div>
@@ -94,6 +97,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     showError: title => dispatch(error({...notificationParams, title})),
     onAddPage: () => dispatch(addPage()),
     showModal: props => dispatch(showModal(props)),
+    showNavigation: () => dispatch(showNavigation()),
   };
 };
 

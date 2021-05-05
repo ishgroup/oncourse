@@ -9,25 +9,29 @@ import {withStyles} from "@material-ui/core/styles";
 const styles = theme => ({
   themeSource: {
     height: "200px",
-    border: "1px solid gray",
+    // border: "1px solid gray",
+    // border: "1px solid rgba(0, 0, 0, 0.12)",
     background: "transparent",
     overflowY: "auto",
     overflowX: "hidden",
     position: "static",
     transition: "all .3s",
+  },
+  placeholder: {
+    position: "absolute",
+    width: "100%",
+    textAlign: "center",
+    top: "50%",
+    left: 0,
+    marginTop: "-17px",
+    fontSize: "34px",
+    color: "gray",
+    opacity: .3,
+    pointerEvents: "none",
+  },
+  upperCaseAfter: {
     "&:after": {
-      position: "absolute",
-      width: "100%",
-      content: "attr(data-placeholder)",
-      textAlign: "center",
-      top: "50%",
-      left: 0,
-      marginTop: "-17px",
-      fontSize: "34px",
-      color: "gray",
       textTransform: "uppercase",
-      opacity: .3,
-      pointerEvents: "none",
     },
   },
   blocks: {
@@ -112,15 +116,18 @@ class Source extends Component<any, any> {
 
   render() {
     const {cards, filter} = this.state;
-    const {canDrop, classes, isOver, connectDropTarget, placeholder, className, showFilter} = this.props;
+    const {canDrop, classes, isOver, connectDropTarget, placeholder, className, showFilter, noUpperCase} = this.props;
     const isActive = canDrop && isOver;
 
     return connectDropTarget(
       <div className="relative">
+        <div className={classes.placeholder}>
+          {placeholder}
+        </div>
         <div
           className={clsx(classes.themeSource, className === "blocks" && classes.blocks,
-            isActive && classes.activeBlock || classes.notActiveBlock)}
-          data-placeholder={placeholder}
+            isActive && classes.activeBlock || classes.notActiveBlock, !noUpperCase && classes.upperCaseAfter)}
+          // data-placeholder={placeholder}
         >
           {cards && cards.length > 0 && showFilter &&
             <TextField
@@ -128,7 +135,7 @@ class Source extends Component<any, any> {
               name="filter"
               placeholder="Filter"
               id="filter"
-              className="w-100"
+              className="w-100 pl-1 pr-1"
               value={filter}
               onChange={e => this.onChangeFilter(e)}
             />

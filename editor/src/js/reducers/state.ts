@@ -11,6 +11,7 @@ import {SkillsOnCourseState} from "../containers/settings/containers/skillsOnCou
 import {CheckoutSettingsState} from "../containers/settings/containers/checkout/reducers/State";
 import {SpecialPageSettingsState} from "../containers/settings/containers/specialPages/reducers/State";
 import {CmsConfig} from "../configLoader";
+import {NavigationState} from "../common/containers/Navigation/reducers/State";
 
 interface SettingsState {
   redirectSettings: RedirectSettingsState;
@@ -32,6 +33,7 @@ export interface State {
   history: HistoryState;
   settings: SettingsState;
   modal: any;
+  navigation: NavigationState;
   fetching: boolean;
 }
 

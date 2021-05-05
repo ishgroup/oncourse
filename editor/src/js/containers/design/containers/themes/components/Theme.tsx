@@ -38,7 +38,8 @@ class Theme extends React.Component<Props, any> {
             <Source
               className="blocks"
               showFilter={true}
-              placeholder="Drag into regions to the left"
+              placeholder={(<span>BLOCKS<br/>Drag into regions<br/>to the left.</span>)}
+              noUpperCase={true}
               id="default"
               list={getFreeBlocks(theme, blocks)}
             />

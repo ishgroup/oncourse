@@ -1,14 +1,15 @@
 import React from 'react';
-import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 import {withStyles} from "@material-ui/core/styles";
+import DeleteIcon from '@material-ui/icons/Delete';
+import {IconButton} from "@material-ui/core";
 import clsx from "clsx";
 import {Theme, Layout} from "../../../../../model";
 import IconBack from "../../../../../common/components/IconBack";
 import CustomButton from "../../../../../common/components/CustomButton";
-import {IconButton} from "@material-ui/core";
 import {stubFunction} from "../../../../../common/utils/Components";
 import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import MenuIcon from "@material-ui/icons/Menu";
 
 const styles: any = theme => ({
   linkBack: {
@@ -26,7 +27,7 @@ const styles: any = theme => ({
     marginRight: theme.spacing(2),
   },
   removeIcon: {
-    color: theme.palette.error.main,
+    color: "rgba(0, 0, 0, 0.2)",
     fontSize: "1.2rem",
   },
   addIconButton: {
@@ -41,6 +42,8 @@ const styles: any = theme => ({
     padding: "10px 20px",
   },
   actionsGroup: {
+    display: "flex",
+    justifyContent: "space-between",
     paddingTop: "20px",
     borderTop: "1px solid #bbbbbb",
   },
@@ -49,7 +52,7 @@ const styles: any = theme => ({
     transition: "color .15s",
     textOverflow: "ellipsis",
     overflow: "hidden",
-    fontWeight: 600,
+    fontWeight: 300,
     "&:hover": {
       cursor: "pointer",
     },
@@ -62,6 +65,16 @@ const styles: any = theme => ({
   linksWrapper: {
     paddingRight: "20px",
   },
+  linkWrapper: {
+    "&:hover": {
+      "& $iconButton": {
+        display: "flex",
+      }
+    }
+  },
+  iconButton: {
+    display: "none",
+  }
 });
 
 interface Props {
@@ -74,6 +87,7 @@ interface Props {
   showError?: (title) => any;
   onDelete?: (title) => void;
   showModal?: (props) => void;
+  showNavigation?: () => void;
 }
 
 const urlsOptions = [
@@ -83,7 +97,7 @@ const urlsOptions = [
   },
   {
     value: true,
-    title: "Exact matching",
+    title: "Exact match",
   },
 ];
 
@@ -182,26 +196,32 @@ class ThemeSettings extends React.Component<Props, any> {
     const {onDelete, theme, showModal} = this.props;
 
     showModal({
-      text: `You are want to delete theme '${theme.title}'. Are you sure?`,
+      text: `You are want to delete theme '${theme.title}'.`,
       onConfirm: () => onDelete(theme.id),
     });
   }
 
   render () {
-    const {classes, theme, layouts} = this.props;
+    const {classes, theme, layouts, showNavigation} = this.props;
     const {layoutId, newLink, title, urls} = this.state;
 
     return (
       <div>
         <ul>
-          <li>
-            <a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>
-              <IconBack text={theme.title}/>
-            </a>
+          <li className={"pl-1"}>
+            <IconButton onClick={showNavigation}>
+              <MenuIcon/>
+            </IconButton>
+
+            {/*<a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>*/}
+            {/*  <IconBack text="Themes"/>*/}
+            {/*</a>*/}
           </li>
         </ul>
 
         <div className={classes.sideBarSetting}>
+          <div className="heading mb-2">Themes</div>
+
           <form>
             <EditInPlaceField
               label="Theme title"
@@ -234,10 +254,10 @@ class ThemeSettings extends React.Component<Props, any> {
             />
 
             <div className={classes.urlsWrapper}>
-              <label htmlFor="pageUrl" className="mt-2 mb-1">Pages</label>
+              <label htmlFor="pageUrl" className="mt-2 mb-1 secondaryHeading">Apply this theme to urls</label>
               <div className={clsx("links", classes.linksWrapper)}>
                 {urls.map((url, index) => (
-                  <div className={"centeredFlex"} key={index}>
+                  <div className={clsx(classes.linkWrapper, "centeredFlex")} key={index}>
                     <EditInPlaceField
                       select
                       label={url.path}
@@ -257,8 +277,8 @@ class ThemeSettings extends React.Component<Props, any> {
                       }}
                       items={urlsOptions}
                     />
-                    <IconButton size="small" onClick={() => this.onDeleteUrl(url.path)}>
-                      <CloseIcon className={classes.removeIcon} />
+                    <IconButton size="small" onClick={() => this.onDeleteUrl(url.path)} className={classes.iconButton}>
+                      <DeleteIcon className={classes.removeIcon} />
                     </IconButton>
                   </div>
                 ))}
@@ -288,21 +308,19 @@ class ThemeSettings extends React.Component<Props, any> {
             </div>
 
             <div className={classes.actionsGroup}>
-              <div className="buttons-inline">
-                <CustomButton
-                  styleType="delete"
-                  onClick={e => this.onClickDelete(e)}
-                  styles={classes.removeButton}
-                >
-                  Remove
-                </CustomButton>
-                <CustomButton
-                  styleType="submit"
-                  onClick={e => this.onSave()}
-                >
-                  Save
-                </CustomButton>
-              </div>
+              <CustomButton
+                styleType="delete"
+                onClick={e => this.onClickDelete(e)}
+                styles={classes.removeButton}
+              >
+                Remove
+              </CustomButton>
+              <CustomButton
+                styleType="submit"
+                onClick={e => this.onSave()}
+              >
+                Save
+              </CustomButton>
             </div>
           </form>
         </div>
