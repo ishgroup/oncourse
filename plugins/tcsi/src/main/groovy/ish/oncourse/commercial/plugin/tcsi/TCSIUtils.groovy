@@ -12,7 +12,9 @@ import ish.common.types.AvetmissStudentIndigenousStatus
 import ish.common.types.AvetmissStudentSchoolLevel
 import ish.common.types.EnrolmentStatus
 import ish.common.types.Gender
+import ish.common.types.OutcomeStatus
 import ish.common.types.StudentCitizenship
+import ish.math.Money
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
@@ -313,7 +315,7 @@ class TCSIUtils {
         unit["course_admissions_uid"] = admissionUid
         unit["unit_of_study_code"] =  clazz.course.code
         // TODO:  implement sites export
-        unit["campuses_uid"] = null
+//        unit["campuses_uid"] = null
         unit["unit_of_study_census_date"] = clazz.censusDate?.format(DATE_FORMAT)
         unit["discipline_code"] = clazz.course.qualification?.fieldOfEducation
         if (clazz.startDateTime && clazz.endDateTime) {
@@ -324,9 +326,37 @@ class TCSIUtils {
             unit["unit_of_study_commencement_date"] = strtDate.format(DATE_FORMAT)
         }
         unit['eftsl'] = clazz.course.fullTimeLoad
-        
-        unit[""] = null
 
+        OutcomeStatus outcomeStatus = enrolmentUnit.outcomes.findAll{it.status}*.status.first()
+        if (outcomeStatus) {
+            if (outcomeStatus in [OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN,OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN_INCOMPLETE_DUE_TO_RTO]) {
+                unit["unit_of_study_status_code"] = "1" 
+            } else if (outcomeStatus in OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE) {
+                unit["unit_of_study_status_code"] = "3"
+            } else  {
+                unit["unit_of_study_status_code"] = "2"
+            }
+        }
+
+        LocalDate endDate = enrolmentUnit.outcomes.findAll {it.endDate}*.endDate.sort().last()
+        if (endDate) {
+            unit["unit_of_study_outcome_date"] = endDate.format(DATE_FORMAT)
+        }
+
+        unit["course_assurance_indicator"] = true
+        unit["mode_of_attendance_code"] = enrolmentUnit.attendanceType?.databaseValue?.toString()
+        unit["student_status_code"] = "201" 
+        String feeCharged =  enrolmentUnit.invoiceLines.empty ?
+                Money.ZERO.toPlainString() :
+                enrolmentUnit.originalInvoiceLine.priceTotalIncTax.toPlainString()
+        unit["amount_charged"] = feeCharged
+        unit["amount_paid_upfront"] = feeCharged
+        if (enrolmentUnit.feeHelpAmount) {
+            unit["loan_fee"] =  enrolmentUnit.feeHelpAmount.multiply(0.2).toPlainString()
+            unit["help_loan_amount"] =  enrolmentUnit.feeHelpAmount.toPlainString()
+        }
+        unit["recognition_of_prior_learning_code"] = enrolmentUnit.creditType.getDatabaseValue().toString()
+        
         def unitData  = [
                 'correlation_id' : "unit_${System.currentTimeMillis()}",
                 'unit_enrolment' : unit
