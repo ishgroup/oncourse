@@ -305,6 +305,37 @@ class TCSIUtils {
 
         return JsonOutput.toJson([courseData])
     }
+    
+    @CompileDynamic
+    static String getUnitData(Enrolment enrolmentUnit, String admissionUid) {
+        Map<String, Object> unit = [:]
+        CourseClass clazz = enrolmentUnit.courseClass
+        unit["course_admissions_uid"] = admissionUid
+        unit["unit_of_study_code"] =  clazz.course.code
+        // TODO:  implement sites export
+        unit["campuses_uid"] = null
+        unit["unit_of_study_census_date"] = clazz.censusDate?.format(DATE_FORMAT)
+        unit["discipline_code"] = clazz.course.qualification?.fieldOfEducation
+        if (clazz.startDateTime && clazz.endDateTime) {
+            unit["unit_of_study_year_long_indicator"] = Duration.between(clazz.startDateTime.toInstant(), clazz.endDateTime.toInstant()).toDays() > 300
+        }
+        LocalDate strtDate = enrolmentUnit.outcomes.findAll {it.startDate}*.startDate.sort().first()
+        if (strtDate) {
+            unit["unit_of_study_commencement_date"] = strtDate.format(DATE_FORMAT)
+        }
+        unit['eftsl'] = clazz.course.fullTimeLoad
+        
+        unit[""] = null
+
+        def unitData  = [
+                'correlation_id' : "unit_${System.currentTimeMillis()}",
+                'unit_enrolment' : unit
+        ]
+        
+        return JsonOutput.toJson([unitData])
+    }
+
+
 
     static List<Course> getUnitCourses(Course hihgEducation, EntityRelationType highEducationType) {
         ObjectContext context =  hihgEducation.context

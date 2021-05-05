@@ -80,6 +80,7 @@ class TCSIIntegration implements PluginTrait {
     static final String STUDENTS_PATH = BASE_API_PATH + '/students'
     static final String COURSES_PATH = BASE_API_PATH + '/courses'
     static final String ADMISSIONS_PATH = '/course-admissions'
+    static final String UNITS_PATH = '/unit-enrolments'
     
     static final String HIGH_EDUCATION_TYPE  = 'Higher education'
 
@@ -96,6 +97,9 @@ class TCSIIntegration implements PluginTrait {
 
     static final String TCSI_STUDENT_UID  = 'tsciStudentUid'
     CustomFieldType studentUidField
+
+    static final String TCSI_ENROLMENT_UNIT_UID  = 'tsciEnrolmentUnitUid'
+    CustomFieldType enrolmentUnitUidField
     
     EntityRelationType highEducationType
     Course highEducation
@@ -147,7 +151,7 @@ class TCSIIntegration implements PluginTrait {
             courseAdmissionUidField = context.newObject(CustomFieldType)
             courseAdmissionUidField.dataType = DataType.TEXT
             courseAdmissionUidField.entityIdentifier = Enrolment.simpleName
-            courseAdmissionUidField.key = TCSI_COURSE_UID
+            courseAdmissionUidField.key = TCSI_COURSE_ADMISSION_UID
             courseAdmissionUidField.name = 'TCSI course admission identifier'
             courseAdmissionUidField.isMandatory = false
             courseAdmissionUidField.sortOrder = 1002l
@@ -159,10 +163,22 @@ class TCSIIntegration implements PluginTrait {
             studentUidField = context.newObject(CustomFieldType)
             studentUidField.dataType = DataType.TEXT
             studentUidField.entityIdentifier = Contact.simpleName
-            studentUidField.key = TCSI_COURSE_UID
+            studentUidField.key = TCSI_STUDENT_UID
             studentUidField.name = 'TCSI student identifier'
             studentUidField.isMandatory = false
             studentUidField.sortOrder = 1003l
+            context.commitChanges()
+        }
+        
+        enrolmentUnitUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_ENROLMENT_UNIT_UID)).selectOne(context)
+        if (!enrolmentUnitUidField) {
+            enrolmentUnitUidField = context.newObject(CustomFieldType)
+            enrolmentUnitUidField.dataType = DataType.TEXT
+            enrolmentUnitUidField.entityIdentifier = Enrolment.simpleName
+            enrolmentUnitUidField.key = TCSI_ENROLMENT_UNIT_UID
+            enrolmentUnitUidField.name = 'TCSI enrolment unit identifier'
+            enrolmentUnitUidField.isMandatory = false
+            enrolmentUnitUidField.sortOrder = 1004l
             context.commitChanges()
         }
     }
@@ -288,8 +304,37 @@ class TCSIIntegration implements PluginTrait {
         
         def studentUid = enrolment.student.contact.getCustomFieldValue(TCSI_STUDENT_UID)?.toString() ?: createStudent()
         def courseUid = highEducation.getCustomFieldValue(TCSI_COURSE_UID)?.toString() ?: createCourseGroup()
-        def admissionUid = courseAdmission.getCustomFieldValue(TCSI_COURSE_ADMISSION_UID) ?: createCourseAdmission()
+        def admissionUid = courseAdmission.getCustomFieldValue(TCSI_COURSE_ADMISSION_UID) ?: createCourseAdmission(studentUid,courseUid)
         
+        if (!enrolment.courseClass.course.equalsIgnoreContext(highEducation)) {
+            // export unit
+            def unitUid  = enrolment.getCustomFieldValue(TCSI_ENROLMENT_UNIT_UID)
+            if (unitUid) {
+//                updateUnit()
+            } else {
+                createUnit()
+            }
+            
+        }
+    }
+
+    String createUnit(String admissionUid) {
+        getClient().request(POST, JSON) {
+            uri.path = ADMISSIONS_PATH
+            body = TCSIUtils.getUnitData(enrolment, admissionUid)
+
+            response.success = { resp, result ->
+                def unit =  handleResponce(result as List, "Create enrolment unit")
+                def uid = unit['unit_enrolments_uid'].toString()
+                EnrolmentCustomField customField = context.newObject(EnrolmentCustomField)
+                customField.relatedObject = enrolment
+                customField.customFieldType = enrolmentUnitUidField
+                customField.value = uid
+                context.commitChanges()
+                return uid
+            }
+            response.failure = failureHangler
+        }
     }
     
     String createCourseAdmission(String studentUID, String courseUid) {
