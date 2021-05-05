@@ -80,9 +80,9 @@ class TCSIIntegration implements PluginTrait {
     static final String BASE_API_PATH = '/centrelink/ext-vend/tcsi/b2g/v1'
     static final String STUDENTS_PATH = BASE_API_PATH + '/students'
     static final String COURSES_PATH = BASE_API_PATH + '/courses'
-    static final String ADMISSIONS_PATH = '/course-admissions'
-    static final String UNITS_PATH = '/unit-enrolments'
-    static final String CAMPUSES_PATH =  '/campuses'
+    static final String ADMISSIONS_PATH = BASE_API_PATH + '/course-admissions'
+    static final String UNITS_PATH = BASE_API_PATH + '/unit-enrolments'
+    static final String CAMPUSES_PATH =  BASE_API_PATH + '/campuses'
     
     static final String HIGH_EDUCATION_TYPE  = 'Higher education'
 
@@ -304,11 +304,11 @@ class TCSIIntegration implements PluginTrait {
             interraptExport("Enrolment is not a high education or unit of study")
         }
         
-        def studentUid = enrolment.student.contact.getCustomFieldValue(TCSI_STUDENT_UID)?.toString() ?: createStudent()
-        def courseUid = highEducation.getCustomFieldValue(TCSI_COURSE_UID)?.toString() ?: createCourseGroup()
-        def admissionUid = courseAdmission.getCustomFieldValue(TCSI_COURSE_ADMISSION_UID) ?: createCourseAdmission(studentUid,courseUid)
-        
-        def campuseUid = getCampus()
+        String studentUid = enrolment.student.contact.getCustomFieldValue(TCSI_STUDENT_UID)?.toString() ?: createStudent()
+        String courseUid = highEducation.getCustomFieldValue(TCSI_COURSE_UID)?.toString() ?: createCourseGroup()
+        String admissionUid = courseAdmission.getCustomFieldValue(TCSI_COURSE_ADMISSION_UID) ?: createCourseAdmission(studentUid,courseUid)
+
+        String campuseUid = getCampus()
         if (!campuseUid) {
             campuseUid = createCampus()
         }
@@ -332,11 +332,11 @@ class TCSIIntegration implements PluginTrait {
             headers.'tcsi-pagination-pagesize'='1000'
 
             response.success = { resp, result ->
-                def campuses =  handleResponce(result as List, "get campuses ")
+                def campuses =  handleResponce(result, "get campuses ")
 
-                def campus = campuses.find { it['delivery_location_code'] == enrolment.courseClass.room.site.id.toString()}
+                def campus = campuses.find { it['campus']['delivery_location_code'] == enrolment.courseClass.room.site.id.toString()}
                 if (campus) {
-                    return campus['campuses_uid']
+                    return campus['campus']['campuses_uid']
                 }
                 return null
             }
@@ -349,8 +349,8 @@ class TCSIIntegration implements PluginTrait {
             uri.path = CAMPUSES_PATH
             body = TCSIUtils.getCampusData(enrolment.courseClass.room.site)
             response.success = { resp, result ->
-                def unit =  handleResponce(result as List, "Create campus")
-                return unit['campuses_uid'].toString()
+                def campus =  handleResponce(result, "Create campus")
+                return campus['campuses_uid'].toString()
             }
             response.failure = failureHangler
         }
@@ -457,8 +457,9 @@ class TCSIIntegration implements PluginTrait {
         return client
     }
     
-    private Object handleResponce(List responceArray, String description) {
-        def response = responceArray[0]
+    private Object handleResponce(Object responceObject, String description) {
+        
+        def response = responceObject instanceof List ? (responceObject as List)[0] : responceObject
         if (response['success']) {
             return response['result']
         }

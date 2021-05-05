@@ -326,7 +326,7 @@ class TCSIUtils {
                 'campus' : campus
         ]
 
-        return JsonOutput.toJson([campuseData])
+        return JsonOutput.toJson(campuseData)
     }
 
 
@@ -334,7 +334,7 @@ class TCSIUtils {
     static String testCampusData () {
         Map<String, Object> campus = [:]
 
-        campus["delivery_location_code"] = '200'
+        campus["delivery_location_code"] = '201'
         campus["campus_effective_from_date"] = '2000-01-01'
         campus["delivery_location_street_address"] ='Suite 302, Level 3, 468 George Street'
         campus["delivery_location_suburb"] ='Sydney'
@@ -348,7 +348,7 @@ class TCSIUtils {
                 'campus' : campus
         ]
 
-        return JsonOutput.toJson([campuseData])
+        return JsonOutput.toJson(campuseData)
     }
     
     
