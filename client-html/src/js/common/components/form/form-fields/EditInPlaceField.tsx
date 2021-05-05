@@ -270,7 +270,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
   };
 
   onFocus = () => {
-    const { input } = this.props;
+    const { input, type } = this.props;
 
     if (!this.state.isEditing) {
       this.setState({
@@ -278,6 +278,14 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       });
     }
     input.onFocus();
+
+    if (!this.props.select && type === "number") {
+      this.timeout = setTimeout(() => {
+        this.inputNode.type = "text";
+        this.inputNode.setSelectionRange(this.inputNode.value.length, this.inputNode.value.length);
+        this.inputNode.type = "number";
+      }, 50);
+    }
   };
 
   onEditButtonFocus = (e, type) => {

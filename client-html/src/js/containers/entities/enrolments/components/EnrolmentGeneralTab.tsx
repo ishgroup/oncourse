@@ -107,6 +107,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
 
         if (gradeType
           && submission
+          && typeof submission.grade === "number"
           && (submission.grade > gradeType.maxValue || submission.grade < gradeType.minValue)) {
           error = "Some assessments grades are invalid";
         }
