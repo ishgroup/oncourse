@@ -95,9 +95,10 @@ subprojects {
 		testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
 		testImplementation "org.codehaus.groovy:groovy-sql:$groovyVersion"
 	}
-	configurations {
-		testImplementation.exclude group: 'junit' // exclude junit4
-	}
+	// uncomment when dbunit is detached from junit
+//	configurations {
+//		testImplementation.exclude group: 'junit' // exclude junit4
+//	}
 
 	group = 'ish.oncourse.angel'
 
