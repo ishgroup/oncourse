@@ -20,8 +20,8 @@ import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
+import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.Student
-import ish.statistics.EnrolmentStats
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -307,15 +307,59 @@ class TCSIUtils {
 
         return JsonOutput.toJson([courseData])
     }
+
+    @CompileDynamic
+    static String getCampusData (Site site) {
+        Map<String, Object> campus = [:]
+
+        campus["delivery_location_code"] = site.id.toString()
+        campus["campus_effective_from_date"] = '2000-01-01'
+        campus["delivery_location_street_address"] = site.street
+        campus["delivery_location_suburb"] = site.suburb
+        campus["delivery_location_country_code"] = site.country?.saccCode?.toString()
+        campus["delivery_location_postcode"] = site.postcode    
+        campus["delivery_location_state"] = site.state
+        
+        
+        def campuseData  = [
+                'correlation_id' : "campuse_${System.currentTimeMillis()}",
+                'campus' : campus
+        ]
+
+        return JsonOutput.toJson([campuseData])
+    }
+
+
+    @CompileDynamic
+    static String testCampusData () {
+        Map<String, Object> campus = [:]
+
+        campus["delivery_location_code"] = '200'
+        campus["campus_effective_from_date"] = '2000-01-01'
+        campus["delivery_location_street_address"] ='Suite 302, Level 3, 468 George Street'
+        campus["delivery_location_suburb"] ='Sydney'
+        campus["delivery_location_country_code"] = '2301'
+        campus["delivery_location_postcode"] = '2000'
+        campus["delivery_location_state"] = 'NSW'
+
+
+        def campuseData  = [
+                'correlation_id' : "campuse_${System.currentTimeMillis()}",
+                'campus' : campus
+        ]
+
+        return JsonOutput.toJson([campuseData])
+    }
+    
+    
     
     @CompileDynamic
-    static String getUnitData(Enrolment enrolmentUnit, String admissionUid) {
+    static String getUnitData(Enrolment enrolmentUnit, String admissionUid, String campuseUid) {
         Map<String, Object> unit = [:]
         CourseClass clazz = enrolmentUnit.courseClass
         unit["course_admissions_uid"] = admissionUid
         unit["unit_of_study_code"] =  clazz.course.code
-        // TODO:  implement sites export
-//        unit["campuses_uid"] = null
+        unit["campuses_uid"] = campuseUid
         unit["unit_of_study_census_date"] = clazz.censusDate?.format(DATE_FORMAT)
         unit["discipline_code"] = clazz.course.qualification?.fieldOfEducation
         if (clazz.startDateTime && clazz.endDateTime) {

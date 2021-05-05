@@ -41,6 +41,7 @@ import javax.ws.rs.core.Response
 
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.URLENC
+import static groovyx.net.http.Method.GET
 import static groovyx.net.http.Method.POST
 import static groovyx.net.http.Method.PUT
 
@@ -81,6 +82,7 @@ class TCSIIntegration implements PluginTrait {
     static final String COURSES_PATH = BASE_API_PATH + '/courses'
     static final String ADMISSIONS_PATH = '/course-admissions'
     static final String UNITS_PATH = '/unit-enrolments'
+    static final String CAMPUSES_PATH =  '/campuses'
     
     static final String HIGH_EDUCATION_TYPE  = 'Higher education'
 
@@ -306,22 +308,58 @@ class TCSIIntegration implements PluginTrait {
         def courseUid = highEducation.getCustomFieldValue(TCSI_COURSE_UID)?.toString() ?: createCourseGroup()
         def admissionUid = courseAdmission.getCustomFieldValue(TCSI_COURSE_ADMISSION_UID) ?: createCourseAdmission(studentUid,courseUid)
         
+        def campuseUid = getCampus()
+        if (!campuseUid) {
+            campuseUid = createCampus()
+        }
+        
         if (!enrolment.courseClass.course.equalsIgnoreContext(highEducation)) {
             // export unit
             def unitUid  = enrolment.getCustomFieldValue(TCSI_ENROLMENT_UNIT_UID)
             if (unitUid) {
 //                updateUnit()
             } else {
-                createUnit()
+                createUnit(admissionUid, campuseUid)
             }
             
         }
     }
+    
+    String getCampus() {
+        getClient().request(GET, JSON) {
+            uri.path = CAMPUSES_PATH
+            headers.'tcsi-pagination-page'='1'
+            headers.'tcsi-pagination-pagesize'='1000'
 
-    String createUnit(String admissionUid) {
+            response.success = { resp, result ->
+                def campuses =  handleResponce(result as List, "get campuses ")
+
+                def campus = campuses.find { it['delivery_location_code'] == enrolment.courseClass.room.site.id.toString()}
+                if (campus) {
+                    return campus['campuses_uid']
+                }
+                return null
+            }
+            response.failure = failureHangler
+        }
+    }
+
+    String createCampus() {
         getClient().request(POST, JSON) {
-            uri.path = ADMISSIONS_PATH
-            body = TCSIUtils.getUnitData(enrolment, admissionUid)
+            uri.path = CAMPUSES_PATH
+            body = TCSIUtils.getCampusData(enrolment.courseClass.room.site)
+            response.success = { resp, result ->
+                def unit =  handleResponce(result as List, "Create campus")
+                return unit['campuses_uid'].toString()
+            }
+            response.failure = failureHangler
+        }
+    }
+
+    String createUnit(String admissionUid, String campuseUid) {
+        getClient().request(POST, JSON) {
+            uri.path = UNITS_PATH
+            body = TCSIUtils.getUnitData(enrolment, admissionUid, campuseUid)
 
             response.success = { resp, result ->
                 def unit =  handleResponce(result as List, "Create enrolment unit")
