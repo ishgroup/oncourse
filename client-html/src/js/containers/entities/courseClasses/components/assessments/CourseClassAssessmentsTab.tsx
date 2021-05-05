@@ -27,6 +27,7 @@ const assessmentInitial: AssessmentClass = {
   assessmentName: null,
   contactIds: [],
   moduleIds: [],
+  submissions: [],
   releaseDate: null,
   dueDate: null
 };
@@ -59,7 +60,8 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
         }
         const gradeType: GradingType = gradingTypes?.find(g => g.id === a.gradingTypeId);
 
-        if (gradeType && a.submissions.some(s => s.grade > gradeType.maxValue || s.grade < gradeType.minValue)) {
+        if (gradeType && a.submissions.some(s => typeof s.grade === "number"
+          && (s.grade > gradeType.maxValue || s.grade < gradeType.minValue))) {
           error = "Some assessments grades are invalid";
         }
       });
