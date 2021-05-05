@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import { differenceInDays, format } from "date-fns";
 import {
-  Assessment, AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType
+  AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType
 } from "@api/model";
 import { withStyles } from "@material-ui/core/styles";
 import { DateRange, ExpandMore, Edit } from "@material-ui/icons";
@@ -303,14 +303,20 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     }
   };
 
-  const onCodeChange = (assessment: Assessment) => {
-    dispatch(change(form, `${item}.assessmentName`, assessment ? assessment.name : null));
-    dispatch(change(form, `${item}.assessmentId`, assessment ? assessment.id : null));
+  const onAssessmentChange = assessment => {
+    dispatch(change(form, `${item}.assessmentId`, assessment?.id));
+    dispatch(change(form, `${item}.gradingTypeId`, assessment && assessment["gradingType.id"] && Number(assessment["gradingType.id"])));
+    dispatch(change(form, `${item}.submissions`, row.submissions.map(s => ({ ...s, assessmentId: assessment.id }))));
   };
 
-  const onNameChange = (assessment: Assessment) => {
-    dispatch(change(form, `${item}.assessmentCode`, assessment ? assessment.code : null));
-    dispatch(change(form, `${item}.assessmentId`, assessment ? assessment.id : null));
+  const onCodeChange = assessment => {
+    dispatch(change(form, `${item}.assessmentName`, assessment?.name));
+    onAssessmentChange(assessment);
+  };
+
+  const onNameChange = assessment => {
+    dispatch(change(form, `${item}.assessmentCode`, assessment?.code));
+    onAssessmentChange(assessment);
   };
 
   const validateDueDate = useCallback(
@@ -372,6 +378,8 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
 
   const assessmentAql = `active is true${rowsIds.length ? ` and id not (${rowsIds.toString()})` : ""}`;
 
+  const assessmentAqlCols = "code,name,gradingType.id";
+
   const titlePostfix = modalProps[0] === "Marked" ? " and assessor" : "";
 
   const title = modalProps[0] && (modalProps[2] === "all"
@@ -411,6 +419,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
               type="remoteDataSearchSelect"
               entity="Assessment"
               aqlFilter={assessmentAql}
+              aqlColumns={assessmentAqlCols}
               name={`${item}.assessmentCode`}
               label="Code"
               selectValueMark="code"
@@ -426,6 +435,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
               type="remoteDataSearchSelect"
               entity="Assessment"
               aqlFilter={assessmentAql}
+              aqlColumns={assessmentAqlCols}
               name={`${item}.assessmentName`}
               label="Name"
               selectValueMark="name"
