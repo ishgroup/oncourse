@@ -81,7 +81,6 @@ class RouteChangeConfirm extends React.Component<Props & RouteComponentProps, St
         const confirmButton = (
           <Button
             classes={{
-              root: "saveButtonEditView",
               disabled: "saveButtonEditViewDisabled"
             }}
             startIcon={isInvalidForm && <ErrorOutline color="error" />}
