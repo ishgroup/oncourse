@@ -1,5 +1,9 @@
 
 export function setCookie(name, value, options: any = {}) {
+  if (!navigator.cookieEnabled) {
+    return;
+  }
+
   options = {
     path: '/',
     ...options,
