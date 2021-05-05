@@ -44,7 +44,7 @@ const GradeContent = (
               onChange: e => setGradeVal(e.target.value),
               onFocus: stubFunction,
               onBlur: () => onChangeGrade(gradeVal, elem),
-              value: gradeVal || ""
+              value: typeof gradeVal === "number" ? String(gradeVal) : gradeVal
             }}
             formatting="inline"
             hideArrows
