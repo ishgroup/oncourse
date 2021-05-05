@@ -134,31 +134,42 @@ const styles: any = theme => ({
     opacity: .5,
   },
   logout: {
-    fontSize: "16px",
+    color: "rgba(0, 0, 0, 0.87)",
+    opacity: .5,
+    fontSize: "1rem",
+    boxSizing: "border-box",
+    minHeight: "36px",
+    fontFamily: "Inter, sans-serif",
+    lineHeight: "1.5",
     padding: "6px 16px",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    fontWeight: 300,
+    "&:hover": {
+      backgroundColor: "rgba(0, 0, 0, 0.04)",
+      cursor: "pointer",
+    },
   },
   subMenuWrapper: {
     backgroundColor: "#fff",
     boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px",
     display: "none",
-    width: "200px",
+    minWidth: "200px",
+    width: "130%",
     maxHeight: "100vh",
     overflowY: "auto",
     zIndex: 1100,
   },
   small: {
-    display: "block",
+    // display: "block",
     color: theme.palette.text.primary,
-    paddingTop: "3px",
     lineHeight: "12px",
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
   linkTitle: {
     fontWeight: 400,
+    textOverflow: "ellipsis",
   },
   sidebarList: {
     overflowY: "auto",
@@ -287,7 +298,7 @@ class Sidebar extends React.Component<Props, any> {
                 onClick={hideNavigation}
               >
                 <span>
-                  <span className={classes.linkTitle}>{item.title}</span>
+                  <span className={clsx(classes.linkTitle, "mr-1")}>{item.title}</span>
                   {item[subTitleKey] && <small className={classes.small}>{getSubtitle(item)}</small>}
                 </span>
               </NavLink>
@@ -392,21 +403,11 @@ class Sidebar extends React.Component<Props, any> {
                 }}
               >
                 <div className={"pt-1 pb-1"}>
-                  <Typography className={classes.userNameLabel}>
-                    User name
-                  </Typography>
                   <Typography className={classes.userName}>
                     {userName}
                   </Typography>
-                  <Typography className={classes.logout}>
-                    <CustomButton
-                      styleType="cancel"
-                      size="small"
-                      styles={classes.slimPublishButton}
-                      onClick={e => this.onClickLogout(e)}
-                    >
-                      Logout
-                    </CustomButton>
+                  <Typography className={classes.logout} onClick={e => this.onClickLogout(e)}>
+                    Logout
                   </Typography>
                 </div>
               </Popover>
