@@ -61,3 +61,62 @@ databaseChangeLog:
             quotchar: '"'
             separator: ','
             tableName: EntityRelationType
+            
+  - changeSet:
+      id: tsciAdmissionCodeField
+      author: artyom
+      validCheckSum: ANY
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: 'select count(*) from CustomFieldType where name = "Basis for admission code"'
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  header: isMandatory
+                  name: isMandatory
+                  type: NUMERIC
+              - column:
+                  header: createdOn
+                  name: createdOn
+                  type: DATE
+              - column:
+                  header: defaultValue
+                  name: defaultValue
+                  type: STRING                  
+              - column:
+                  header: modifiedOn
+                  name: modifiedOn
+                  type: DATE
+              - column:
+                  header: name
+                  name: name
+                  type: STRING
+              - column:
+                  header: fieldKey
+                  name: fieldKey
+                  type: STRING
+              - column:
+                  header: entityIdentifier
+                  name: entityIdentifier
+                  type: STRING
+              - column:
+                  header: sortOrder
+                  name: sortOrder
+                  type: NUMERIC
+              - column:
+                  header: dataType
+                  name: dataType
+                  type: NUMERIC
+              - column:
+                  header: willowId
+                  name: willowId
+                  type: NUMERIC
+            commentLineStartsWith: '#'
+            encoding: UTF-8
+            file: database/data/tsciAdmissionCodeField.csv
+            quotchar: '"'
+            separator: ','
+            tableName: CustomFieldType
