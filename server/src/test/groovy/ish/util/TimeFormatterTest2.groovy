@@ -46,29 +46,29 @@ class TimeFormatterTest2 {
     void parseAndFormat(String inputSydney, String expectedSydney, String expectedPerth, String expectedPerthDST, String expectedBrisbane, String expectedBrisbaneDST) throws Exception {
         // check sydney input sydney output
         String result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(inputSydney, getTestCalendar(), sydney).getTime(), sydney)
-        Assertions.assertEquals(inputSydney, expectedSydney, result)
+        Assertions.assertEquals(expectedSydney, result, inputSydney)
 
         // check sydney input perth output
         result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(inputSydney, getTestCalendar(), sydney).getTime(), perth)
-        Assertions.assertEquals(inputSydney, expectedPerth, result)
+        Assertions.assertEquals(expectedPerth, result, inputSydney)
 
         // check sydney input brisbane output
         result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(inputSydney, getTestCalendar(), sydney).getTime(), brisbane)
-        Assertions.assertEquals(inputSydney, expectedBrisbane, result)
+        Assertions.assertEquals(expectedBrisbane, result, inputSydney)
 
         // DST
 
         // check sydney input sydney output
         result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(inputSydney, getTestCalendarDST(), sydney).getTime(), sydney)
-        Assertions.assertEquals(inputSydney, expectedSydney, result)
+        Assertions.assertEquals(expectedSydney, result, inputSydney)
 
         // check sydney input perth output
         result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(inputSydney, getTestCalendarDST(), sydney).getTime(), perth)
-        Assertions.assertEquals(inputSydney, expectedPerthDST, result)
+        Assertions.assertEquals(expectedPerthDST, result, inputSydney)
 
         // check sydney input brisbane output
         result = TimeFormatter.formatTime(TimeFormatter.parseTimeToCal(inputSydney, getTestCalendarDST(), sydney).getTime(), brisbane)
-        Assertions.assertEquals(inputSydney, expectedBrisbaneDST, result)
+        Assertions.assertEquals(expectedBrisbaneDST, result, inputSydney)
     }
 
     private static Calendar getTestCalendar() {

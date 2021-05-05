@@ -18,36 +18,36 @@ class DurationFormatterTest {
 
     static Collection<Arguments> values() {
         def data = [
-                ["15min", "15min", "15min", "15min", "15", "0.25", "0", "0", "15"],     //0
+                ["15min", "15min", "15min", "15min", 15, 0.25, 0, 0, 15],     //0
 
-                ["0d 1h 15min", "1h 15min", "1h 15min", "75min", "75", "1.25", "0", "1", "15"],
-                ["1h 15min", "1h 15min", "1h 15min", "75min", "75", "1.25", "0", "1", "15"],
+                ["0d 1h 15min", "1h 15min", "1h 15min", "75min", 75, 1.25, 0, 1, 15],
+                ["1h 15min", "1h 15min", "1h 15min", "75min", 75, 1.25, 0, 1, 15],
 
-                ["0d 0h 75min", "1h 15min", "1h 15min", "75min", "75", "1.25", "0", "1", "15"],
-                ["0h 75min", "1h 15min", "1h 15min", "75min", "75", "1.25", "0", "1", "15"],
-                ["75min", "1h 15min", "1h 15min", "75min", "75", "1.25", "0", "1", "15"], //5
+                ["0d 0h 75min", "1h 15min", "1h 15min", "75min", 75, 1.25, 0, 1, 15],
+                ["0h 75min", "1h 15min", "1h 15min", "75min", 75, 1.25, 0, 1, 15],
+                ["75min", "1h 15min", "1h 15min", "75min", 75, 1.25, 0, 1, 15], //5
 
-                ["2h 15min", "2h 15min", "2h 15min", "135min", "135", "2.25", "0", "2", "15"],
-                ["1h 75min", "2h 15min", "2h 15min", "135min", "135", "2.25", "0", "2", "15"],
-                ["0h 135min", "2h 15min", "2h 15min", "135min", "135", "2.25", "0", "2", "15"],
+                ["2h 15min", "2h 15min", "2h 15min", "135min", 135, 2.25, 0, 2, 15],
+                ["1h 75min", "2h 15min", "2h 15min", "135min", 135, 2.25, 0, 2, 15],
+                ["0h 135min", "2h 15min", "2h 15min", "135min", 135, 2.25, 0, 2, 15],
 
-                ["1", "1h 0min", "1h 0min", "60min", "60", "1.00", "0", "1", "0"],
-                ["1d", "1d 0h 0min", "24h 0min", "1440min", "1440", "24.00", "1", "0", "0"],//10
-                ["1h", "1h 0min", "1h 0min", "60min", "60", "1.00", "0", "1", "0"],
-                ["1m", "1min", "1min", "1min", "1", "0.02", "0", "0", "1"],
+                ["1", "1h 0min", "1h 0min", "60min", 60, 1.00, 0, 1, 0],
+                ["1d", "1d 0h 0min", "24h 0min", "1440min", 1440, 24.00, 1, 0, 0],//10
+                ["1h", "1h 0min", "1h 0min", "60min", 60, 1.00, 0, 1, 0],
+                ["1m", "1min", "1min", "1min", 1, 0.02, 0, 0, 1],
 
-                ["1 1", "1h 1min", "1h 1min", "61min", "61", "1.02", "0", "1", "1"],
+                ["1 1", "1h 1min", "1h 1min", "61min", 61, 1.02, 0, 1, 1],
                 // line below is a bug
-                //["1d 1h",          ["1d 1h 0min", "25h 0min", "1500min", "1500", "25.00", "1", "1", "0"]],
-                ["1d 1m", "1h 1min", "1h 1min", "61min", "61", "1.02", "0", "1", "1"],     //15
-                ["1h 1m", "1h 1min", "1h 1min", "61min", "61", "1.02", "0", "1", "1"],
+                //["1d 1h",          ["1d 1h 0min", "25h 0min", "1500min", 1500, 25.00, 1, 1, 0]],
+                ["1d 1m", "1h 1min", "1h 1min", "61min", 61, 1.02, 0, 1, 1],     //15
+                ["1h 1m", "1h 1min", "1h 1min", "61min", 61, 1.02, 0, 1, 1],
 
-                ["1 1 1", "1d 1h 1min", "25h 1min", "1501min", "1501", "25.02", "1", "1", "1"],
-                ["2d 1h 15min", "2d 1h 15min", "49h 15min", "2955min", "2955", "49.25", "2", "1", "15"],
+                ["1 1 1", "1d 1h 1min", "25h 1min", "1501min", 1501, 25.02, 1, 1, 1],
+                ["2d 1h 15min", "2d 1h 15min", "49h 15min", "2955min", 2955, 49.25, 2, 1, 15],
         ]
 
         Collection<Arguments> dataList = new ArrayList<>()
-        for (List<String> test : data) {
+        for (def test : data) {
             dataList.add(Arguments.of(test[0], test[1], test[2], test[3], test[4], test[5], test[6], test[7], test[8]))
         }
         return dataList
@@ -55,7 +55,7 @@ class DurationFormatterTest {
 
     @ParameterizedTest
     @MethodSource("values")
-    void durationTests(String input, String outputDDHHMM, outputHHMM, outputMM, lengthInMinutes, lengthInHours, String days, String hours, String minutes ) throws ParseException {
+    void durationTests(String input, String outputDDHHMM, outputHHMM, outputMM, lengthInMinutes, lengthInHours, int days, int hours, int minutes ) throws ParseException {
         long time = DurationFormatter.parseDuration(input)
 
         int[] duration = DurationFormatter.splitMillisecondsIntoDaysHoursMinutes(time)
