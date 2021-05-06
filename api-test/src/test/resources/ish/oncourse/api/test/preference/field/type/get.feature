@@ -11,4 +11,4 @@ Feature: Main feature for all GET requests with path 'preference/field/type'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 2
+        And match karate.sizeOf(response) == 4

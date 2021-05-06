@@ -66,7 +66,7 @@ Feature: Main feature for all GET requests with path 'list/entity/voucherProduct
         "soldVouchersCount": "#number",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "customFields":{}
+        "dataCollectionRuleId":null
         }
         """
 
@@ -107,7 +107,7 @@ Feature: Main feature for all GET requests with path 'list/entity/voucherProduct
         "soldVouchersCount": "#number",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "customFields":{}
+        "dataCollectionRuleId":null
         }
         """
 

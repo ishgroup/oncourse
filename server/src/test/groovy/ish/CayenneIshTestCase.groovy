@@ -189,7 +189,7 @@ abstract class CayenneIshTestCase extends IshTestCase {
 		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedApplication"))
 		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedWaitingList"))
 		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedSurvey"))
-		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedProduct"))
+		customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedSale"))
 		for (Relationship rel : customFieldRelationships) {
 			datamap.getDbEntity("CustomField").removeRelationship(rel.getName())
 		}

@@ -24,8 +24,7 @@ Feature: Main feature for all POST requests with path 'list/entity/articleProduc
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1002}],
-        "customFields":{}
+        "corporatePasses":[{"id":1002}]
         }
         """
 
@@ -62,7 +61,7 @@ Feature: Main feature for all POST requests with path 'list/entity/articleProduc
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "customFields":{}
+        "dataCollectionRuleId":null
         }
         """
 
@@ -94,8 +93,7 @@ Feature: Main feature for all POST requests with path 'list/entity/articleProduc
         "taxId":1,
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1002}],
-        "customFields":{}
+        "corporatePasses":[{"id":1002}]
         }
         """
 
@@ -132,7 +130,7 @@ Feature: Main feature for all POST requests with path 'list/entity/articleProduc
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "customFields":{}
+        "dataCollectionRuleId":null
         }
         """
 

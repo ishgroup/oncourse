@@ -27,8 +27,7 @@ Feature: Main feature for all POST requests with path 'list/entity/membershipPro
         "incomeAccountId":7,
         "status":"Can be purchased in office & online",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
-        "customFields":{"mf1":"MembershipValue1"}
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
         }
         """
 
@@ -68,7 +67,7 @@ Feature: Main feature for all POST requests with path 'list/entity/membershipPro
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "customFields":{"mf1":"MembershipValue1"}
+        "dataCollectionRuleId":null
         }
         """
 
@@ -103,8 +102,7 @@ Feature: Main feature for all POST requests with path 'list/entity/membershipPro
         "incomeAccountId":7,
         "status":"Can be purchased in office",
         "corporatePasses":[{"id":1002}],
-        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
-        "customFields":{"mf1":"MembershipValue2"}
+        "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}]
         }
         """
 
@@ -144,7 +142,7 @@ Feature: Main feature for all POST requests with path 'list/entity/membershipPro
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "customFields":{"mf1":"MembershipValue2"}
+        "dataCollectionRuleId":null
         }
         """
 
