@@ -67,7 +67,7 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "customFields":{}
+        "dataCollectionRuleId":null
         }
         """
 
@@ -109,7 +109,7 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "customFields":{}
+        "dataCollectionRuleId":null
         }
         """
 

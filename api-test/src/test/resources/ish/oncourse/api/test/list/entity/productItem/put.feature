@@ -32,7 +32,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -63,7 +64,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -74,53 +76,55 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         * def productItemToUpdate =
         """
         {
-        "id":1000,
+        "id":1016,
         "productId":1003,
         "productType":"Membership",
-        "productName":"Membership#1",
+        "productName":"MembershipWithVoucher",
         "purchasedById":14,
         "purchasedByName":"stud8",
         "purchasedOn":"2019-07-22",
-        "expiresOn":"2030-01-02",
-        "purchasePrice":50,
+        "expiresOn":"2129-01-02",
+        "purchasePrice":500,
         "status":"Active",
         "payments":[],
         "validFrom":null,
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{"mcf1":"updatedValue"}
         }
         """
 
-        Given path ishPath + '/1000'
+        Given path ishPath + '/1016'
         And request productItemToUpdate
         When method PUT
         Then status 204
 
 #       <---> Assertion:
-        Given path ishPath + '/1000'
+        Given path ishPath + '/1016'
         When method GET
         Then status 200
         And match $ ==
         """
         {
-        "id":1000,
+        "id":1016,
         "productId":1003,
         "productType":"Membership",
         "productName":"Membership#1",
-        "purchasedById":14,
-        "purchasedByName":"stud8",
+        "purchasedById":32,
+        "purchasedByName":"voucher customField",
         "purchasedOn":"2019-07-22",
-        "expiresOn":"2030-01-02",
-        "purchasePrice":50.00,
+        "expiresOn":"2129-01-02",
+        "purchasePrice":500.00,
         "status":"Active",
         "payments":[],
-        "validFrom":"2029-01-02",
+        "validFrom":"2128-01-02",
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{"mcf1":"updatedValue"}
         }
         """
 
@@ -128,14 +132,14 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         * def productItemToDefault =
         """
         {
-        "id":1000,
+        "id":1016,
         "productId":1003,
         "productType":"Membership",
-        "productName":"Membership#1",
+        "productName":"MembershipWithCustomField#1",
         "purchasedById":14,
         "purchasedByName":"stud8",
         "purchasedOn":"2019-07-22",
-        "expiresOn":"2029-01-01",
+        "expiresOn":"2129-01-01",
         "purchasePrice":50,
         "status":"Active",
         "payments":[],
@@ -143,11 +147,12 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{"mcf1":"12345"}
         }
         """
 
-        Given path ishPath + '/1000'
+        Given path ishPath + '/1016'
         And request productItemToDefault
         When method PUT
         Then status 204
@@ -187,7 +192,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -218,7 +224,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -241,7 +248,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -273,7 +281,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":"1 classes",
         "voucherCode":"2zMEaTEz",
         "redeemableById":15,
-        "redeemableByName":"stud8"
+        "redeemableByName":"stud8",
+        "customFields":{}
         }
         """
 
@@ -304,7 +313,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":"1 classes",
         "voucherCode":"2zMEaTEz",
         "redeemableById":15,
-        "redeemableByName":"stud9"
+        "redeemableByName":"stud9",
+        "customFields":{}
         }
         """
 
@@ -327,7 +337,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":"1 classes",
         "voucherCode":"2zMEaTEz",
         "redeemableById":14,
-        "redeemableByName":"stud9"
+        "redeemableByName":"stud9",
+        "customFields":{}
         }
         """
 
@@ -355,7 +366,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
 #       <---> Change expiresOn and redeemableById:
         * def productItemToUpdate =
         """
-        {"id":1001,"productId":1002,"productType":"Voucher","productName":"voucherType1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2019-07-22","expiresOn":"2030-07-22","purchasePrice":50,"status":"Active","payments":[],"validFrom":null,"valueRemaining":"1 classes","voucherCode":"2zMEaTEz","redeemableById":15,"redeemableByName":"stud8"}
+        {"id":1001,"productId":1002,"productType":"Voucher","productName":"voucherType1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2019-07-22","expiresOn":"2030-07-22","purchasePrice":50,"status":"Active","payments":[],"validFrom":null,"valueRemaining":"1 classes","voucherCode":"2zMEaTEz","redeemableById":15,"redeemableByName":"stud8","customFields":{}}
         """
 
         Given path ishPath + '/1001'
@@ -369,13 +380,13 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         Then status 200
         And match $ ==
         """
-        {"id":1001,"productId":1002,"productType":"Voucher","productName":"voucherType1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2019-07-22","expiresOn":"2030-07-22","purchasePrice":50.00,"status":"Active","payments":[],"validFrom":null,"valueRemaining":"1 classes","voucherCode":"2zMEaTEz","redeemableById":15,"redeemableByName":"stud9"}
+        {"id":1001,"productId":1002,"productType":"Voucher","productName":"voucherType1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2019-07-22","expiresOn":"2030-07-22","purchasePrice":50.00,"status":"Active","payments":[],"validFrom":null,"valueRemaining":"1 classes","voucherCode":"2zMEaTEz","redeemableById":15,"redeemableByName":"stud9","customFields":{}}
         """
 
 #       <--->  Scenario have been finished. Now change back entity:
         * def productItemToDefault =
         """
-        {"id":1001,"productId":1002,"productType":"Voucher","productName":"voucherType1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2019-07-22","expiresOn":"2029-07-21","purchasePrice":50,"status":"Active","payments":[],"validFrom":null,"valueRemaining":"1 classes","voucherCode":"2zMEaTEz","redeemableById":14,"redeemableByName":"stud9"}
+        {"id":1001,"productId":1002,"productType":"Voucher","productName":"voucherType1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2019-07-22","expiresOn":"2029-07-21","purchasePrice":50,"status":"Active","payments":[],"validFrom":null,"valueRemaining":"1 classes","voucherCode":"2zMEaTEz","redeemableById":14,"redeemableByName":"stud9","customFields":{}}
         """
 
         Given path ishPath + '/1001'
@@ -418,7 +429,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -447,7 +459,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
 #       <---> Change expiresOn and redeemableById:
         * def productItemToUpdate =
         """
-        {"id":1001,"productId":1002,"productType":"Voucher","productName":"voucherType1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2019-07-22","expiresOn":"2030-07-22","purchasePrice":50,"status":"Active","payments":[],"validFrom":null,"valueRemaining":"1 classes","voucherCode":"2zMEaTEz","redeemableById":15,"redeemableByName":"stud8"}
+        {"id":1001,"productId":1002,"productType":"Voucher","productName":"voucherType1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2019-07-22","expiresOn":"2030-07-22","purchasePrice":50,"status":"Active","payments":[],"validFrom":null,"valueRemaining":"1 classes","voucherCode":"2zMEaTEz","redeemableById":15,"redeemableByName":"stud8","customFields":{}}
         """
 
         Given path ishPath + '/1001'
@@ -479,7 +491,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -510,7 +523,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -537,7 +551,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":"1 classes upd",
         "voucherCode":"2zMEaTEzUPD",
         "redeemableById":14,
-        "redeemableByName":"stud8"
+        "redeemableByName":"stud8",
+        "customFields":{}
         }
         """
 
@@ -568,7 +583,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":"1 classes",
         "voucherCode":"2zMEaTEz",
         "redeemableById":14,
-        "redeemableByName":"stud8"
+        "redeemableByName":"stud8",
+        "customFields":{}
         }
         """
 
@@ -595,7 +611,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 

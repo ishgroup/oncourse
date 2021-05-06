@@ -66,7 +66,8 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -74,28 +75,29 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
 
     Scenario: (+) Get productItem (Voucher) by admin
 
-        Given path ishPath + '/1001'
+        Given path ishPath + '/1015'
         When method GET
         Then status 200
         And match $ ==
         """
         {
-        "id":1001,
-        "productId":1002,
+        "id":1015,
+        "productId":1005,
         "productType":"Voucher",
-        "productName":"voucherType1",
-        "purchasedById":14,
-        "purchasedByName":"stud8",
-        "purchasedOn":"2019-07-22",
-        "expiresOn":"2029-07-21",
-        "purchasePrice":50.00,
+        "productName":"voucherType2",
+        "purchasedById":32,
+        "purchasedByName":"voucher customField",
+        "purchasedOn":"2019-08-30",
+        "expiresOn":"2120-08-29",
+        "purchasePrice":170.00,
         "status":"Active",
         "payments":[],
         "validFrom":null,
         "valueRemaining":"1 classes",
-        "voucherCode":"2zMEaTEz",
-        "redeemableById":14,
-        "redeemableByName":"stud8"
+        "voucherCode":"g3zEmUdf",
+        "redeemableById":null,
+        "redeemableByName":null,
+        "customFields":{"vcf1":"ABCDEF"}
         }
         """
 
@@ -124,7 +126,8 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -165,7 +168,8 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 

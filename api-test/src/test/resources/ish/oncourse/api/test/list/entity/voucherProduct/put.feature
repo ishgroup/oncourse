@@ -60,8 +60,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/voucherProduct
         "courses":[{"id":2}],
         "description":"some description upd",
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}],
-        "customFields":{}
+        "corporatePasses":[{"id":1001}]
         }
         """
 
@@ -91,7 +90,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/voucherProduct
         "soldVouchersCount":0,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "customFields":{}
+        "dataCollectionRuleId":null
         }
         """
 
@@ -188,7 +187,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/voucherProduct
         "soldVouchersCount":0,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "customFields":{}
+        "dataCollectionRuleId":null
         }
         """
 
