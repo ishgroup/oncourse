@@ -30,8 +30,9 @@ class FieldFactory extends React.Component<any, any> {
     switch (field.dataType) {
       case DataType.STRING:
       case DataType.PHONE:
+        return <Form.Field {...props} component={TextField} type="text" autocomplete="tel"/>;
       case DataType.POSTCODE:
-        return <Form.Field {...props} component={TextField} type="text"/>;
+        return <Form.Field {...props} component={TextField} type="text" autocomplete="postal-code"/>;
 
       case DataType.PATTERN_TEXT:
         return <Form.Field
@@ -42,10 +43,10 @@ class FieldFactory extends React.Component<any, any> {
         />;
 
       case DataType.EMAIL:
-        return <Form.Field {...props} component={TextField} validate={validateEmail} type="text"/>;
+        return <Form.Field {...props} component={TextField} validate={validateEmail} autocomplete="email" type="text"/>;
 
       case DataType.URL:
-        return <Form.Field {...props} component={TextField} validate={validateURL} type="text"/>;
+        return <Form.Field {...props} component={TextField} validate={validateURL} autocomplete="url" type="text"/>;
 
       case DataType.LONG_STRING:
         return <Form.Field {...props} component={TextAreaField} type="text"/>;
@@ -225,6 +226,7 @@ const SuburbFieldBase = (props): any => {
       allowEditSelected={true}
       returnType="object"
       onChange={val => updateRelativeFields(val)}
+      autocomplete="street-address"
     /> :
     <Form.Field {...props} component={TextField} type="text"/> ;
 };
@@ -243,6 +245,7 @@ const CountryField = (props): any => {
     {...props}
     component={SelectField}
     loadOptions={countries}
+    autocomplete="country-name"
   />;
 };
 

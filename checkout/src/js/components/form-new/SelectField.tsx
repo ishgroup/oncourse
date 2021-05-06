@@ -29,6 +29,7 @@ interface Props {
   label: string;
   hint?: string;
   allowEditSelected?: boolean;
+  autocomplete?: string;
   searchable?: boolean;
   fullWidth?: boolean;
   onBlurSelect?: (field) => void;
@@ -119,6 +120,7 @@ class SelectField extends React.Component<any, any> {
       newOptionEnable: this.props.newOptionEnable || false,
       onBlurSelect: this.props.onBlurSelect ? this.props.onBlurSelect : undefined,
       allowEditSelected: this.props.allowEditSelected,
+      autocomplete: this.props.autocomplete,
     };
   }
 
@@ -146,7 +148,7 @@ class SelectField extends React.Component<any, any> {
           'has-error': isShowError,
         })}>
           <RenderSelectWrapper
-            inputProps={{autoComplete: 'off', autoCorrect: 'off', spellCheck: 'off'}}
+            inputProps={{autoComplete: props.autocomplete || 'off', autoCorrect: 'off', spellCheck: 'off'}}
             className={classnames({'t-error': isShowError, 'always-full-width': props.fullWidth})}
             placeholder={props.placeholder}
             name={name}
