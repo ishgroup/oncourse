@@ -14,12 +14,14 @@ import ish.common.types.EnrolmentStatus
 import ish.common.types.Gender
 import ish.common.types.OutcomeStatus
 import ish.common.types.StudentCitizenship
+import ish.common.types.StudentStatusForUnitOfStudy
 import ish.math.Money
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
+import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.Student
 import org.apache.cayenne.ObjectContext
@@ -269,7 +271,7 @@ class TCSIUtils {
     }
     
     @CompileDynamic
-    static String getAdmissionData(Enrolment courseAdmission, String studentsUid, String courseUid) {
+    static String getAdmissionData(Student student, Course highEducation, EntityRelationType highEducationType, Enrolment courseAdmission, String studentsUid, String courseUid) {
         
         Map<String, Object> admission = [:]
 
@@ -281,9 +283,26 @@ class TCSIUtils {
         admission["highest_attainment_code"] = courseAdmission.student.priorEducationCode.toString()
         admission["study_reason_code"] = courseAdmission.studyReason.databaseValue.toString()
         admission["labour_force_status_code"] = courseAdmission.student.labourForceStatus.toString()
+        
         if (courseAdmission.status == EnrolmentStatus.CANCELLED) {
-            admission["course_outcome_code"] = '3'  
-        } else if (courseAdmission.courseClass.endDateTime?.before(new Date())) {
+            admission["course_outcome_code"] = '2'  
+        } else {
+            //looking throuhg all unit enrolments + high education course enrolment
+            List<Course> units = getUnitCourses(highEducation, highEducationType)
+            List<Enrolment> allEnrolments = student.enrolments.findAll {it.courseClass.course in units}
+            allEnrolments << courseAdmission
+            List<Outcome> allOutcomes = allEnrolments*.outcomes.flatten() as List<Outcome>
+            
+            // if all related outcomes in both parent and all children courses have 'successful' status
+            if (!allOutcomes.any {it.status == null || !(it.status in OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE) }) {
+                admission["course_outcome_code"] = '1'
+                LocalDate endDate = allOutcomes.findAll {it.endDate != null}*.endDate.sort().last()
+                if (endDate) {
+                    admission["course_outcome_date"] =  endDate.format(DATE_FORMAT)
+                }
+            }
+            
+            
             admission["course_outcome_code"] = '1'
             LocalDate endDate = courseAdmission.outcomes.findAll {it.endDate != null}*.endDate.sort().reverse().first()
             if (endDate) {
@@ -338,7 +357,7 @@ class TCSIUtils {
         campus["campus_effective_from_date"] = '2000-01-01'
         campus["delivery_location_street_address"] ='Suite 302, Level 3, 468 George Street'
         campus["delivery_location_suburb"] ='Sydney'
-        campus["delivery_location_country_code"] = '2301'
+        campus["delivery_location_country_code"] = '1101'
         campus["delivery_location_postcode"] = '2000'
         campus["delivery_location_state"] = 'NSW'
 
@@ -371,25 +390,61 @@ class TCSIUtils {
         }
         unit['eftsl'] = clazz.course.fullTimeLoad
 
-        OutcomeStatus outcomeStatus = enrolmentUnit.outcomes.findAll{it.status}*.status.first()
-        if (outcomeStatus) {
-            if (outcomeStatus in [OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN,OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN_INCOMPLETE_DUE_TO_RTO]) {
-                unit["unit_of_study_status_code"] = "1" 
-            } else if (outcomeStatus in OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE) {
+
+        if (enrolmentUnit.status = EnrolmentStatus.CANCELLED) {
+            unit["unit_of_study_status_code"] = "1" 
+        } else {
+            if (enrolmentUnit.outcomes.any {(it.endDate?.isAfter(LocalDate.now())) || !(it.status in OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE)}) {
                 unit["unit_of_study_status_code"] = "3"
-            } else  {
-                unit["unit_of_study_status_code"] = "2"
+            } else {
+                unit["unit_of_study_status_code"] = "4"
             }
         }
+        
 
         LocalDate endDate = enrolmentUnit.outcomes.findAll {it.endDate}*.endDate.sort().last()
         if (endDate) {
             unit["unit_of_study_outcome_date"] = endDate.format(DATE_FORMAT)
         }
 
-        unit["course_assurance_indicator"] = true
+        unit["course_assurance_indicator"] = false
         unit["mode_of_attendance_code"] = enrolmentUnit.attendanceType?.databaseValue?.toString()
-        unit["student_status_code"] = "201" 
+        
+        if (enrolmentUnit.feeStatus) {
+            switch (enrolmentUnit.feeStatus)  {
+                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NON_STATE_GOVERNMENT_SUBSIDISED:
+                    unit["student_status_code"] = "401"
+                    break
+                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_RESTRICTED_ACCESS_ARRANGEMENT:
+                    unit["student_status_code"] = "402"
+                    break
+                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_VICTORIAN_STATE_GOVERNMENT_SUBSIDISED:
+                    unit["student_status_code"] = "403"
+                    break
+                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NEW_SOUTH_WALES_STATE_GOVERNMENT_SUBSIDISED:
+                    unit["student_status_code"] = "404"
+                    break
+                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_QUEENSLAND_STATE_GOVERNMENT_SUBSIDISED:
+                    unit["student_status_code"] = "405"
+                    break
+                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_SOUTH_AUSTRALIAN_STATE_GOVERNMENT_SUBSIDISED:
+                    unit["student_status_code"] = "406"
+                    break
+                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_WESTERN_AUSTRALIAN_STATE_GOVERNMENT_SUBSIDISED:
+                    unit["student_status_code"] = "407"
+                    break
+                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_TASMANIA_STATE_GOVERNMENT_SUBSIDISED:
+                    unit["student_status_code"] = "408"
+                    break
+                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NORTHERN_TERRITORY_GOVERNMENT_SUBSIDISED:
+                    unit["student_status_code"] = "409"
+                    break
+                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_AUSTRALIAN_CAPITAL_TERRITORY_GOVERNMENT_SUBSIDISED:
+                    unit["student_status_code"] = "410"
+                    break
+            }
+        }
+        
         String feeCharged =  enrolmentUnit.invoiceLines.empty ?
                 Money.ZERO.toPlainString() :
                 enrolmentUnit.originalInvoiceLine.priceTotalIncTax.toPlainString()

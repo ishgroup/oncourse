@@ -379,7 +379,7 @@ class TCSIIntegration implements PluginTrait {
 
         getClient().request(POST, JSON) {
             uri.path = ADMISSIONS_PATH
-            body = TCSIUtils.getAdmissionData(courseAdmission, studentUID, courseUid)
+            body = TCSIUtils.getAdmissionData(enrolment.student, highEducation, highEducationType, courseAdmission, studentUID, courseUid)
 
             response.success = { resp, result -> 
                 def admission =  handleResponce(result as List, "Create admission")
