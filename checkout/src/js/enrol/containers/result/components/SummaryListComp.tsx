@@ -28,9 +28,9 @@ export class SummaryListComp extends React.Component<StateProps, any> {
             Invoice email was sent to {corporatePass.name} on <a href={`mailto:${corporatePass.email}`}>{corporatePass.email}</a> email
           </div>
         </div>}
-      {contacts.map(item => <ContactComp
+      {contacts.map((item, index) => <ContactComp
         {...item}
-        key={item.contact.id}
+        key={item.contact?.id || index}
         isPayer={corporatePass ? false : item.isPayer}
         readonly
       />)}
