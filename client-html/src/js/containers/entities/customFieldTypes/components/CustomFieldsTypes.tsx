@@ -153,29 +153,34 @@ const CustomField: React.FC<CustomFieldProps> = ({
 }) => {
   const [items, setItems] = useState([]);
 
-  const getItems = (type: CustomFieldType, value: string) => {
-    let items = [];
+  const getItems = (cfType: CustomFieldType, val: string) => {
+    let result = [];
 
-    if (type.dataType) {
-      switch (type.dataType) {
-        case "Map": {
-          items = type.defaultValue
-            ? JSON.parse(type.defaultValue).map(v => ({ ...v, label: `${v.label} (${v.value})` }))
-            : [];
-          break;
-        }
-        case "List": {
-          items = type.defaultValue ? JSON.parse(type.defaultValue)
-            .filter(v => v && !v.value.includes("*"))
-            .map(v => (v.label ? v : { ...v, label: v.value })) : [];
+    if (cfType.dataType) {
+      try {
+        switch (cfType.dataType) {
+          case "Map": {
+            result = cfType.defaultValue
+              ? JSON.parse(cfType.defaultValue).map(v => ({ ...v, label: `${v.label} (${v.value})` }))
+              : [];
+            break;
+          }
+          case "List": {
+            result = cfType.defaultValue ? JSON.parse(cfType.defaultValue)
+              .filter(v => v && !v.value.includes("*"))
+              .map(v => (v.label ? v : { ...v, label: v.value })) : [];
+          }
         }
       }
+      catch (e) {
+        console.error(e);
+      }
     }
-    if (value && Array.isArray(items) && items.findIndex(item => item.value === value) < 0) {
-      items.unshift({ label: value, value });
+    if (val && Array.isArray(result) && result.findIndex(item => item.value === val) < 0) {
+      result.unshift({ label: val, value: val });
     }
 
-    return items;
+    return result;
   };
 
   useEffect(() => {
