@@ -391,7 +391,7 @@ class TCSIUtils {
         unit['eftsl'] = clazz.course.fullTimeLoad
 
 
-        if (enrolmentUnit.status = EnrolmentStatus.CANCELLED) {
+        if (enrolmentUnit.status == EnrolmentStatus.CANCELLED) {
             unit["unit_of_study_status_code"] = "1" 
         } else {
             if (enrolmentUnit.outcomes.any {(it.endDate?.isAfter(LocalDate.now())) || !(it.status in OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE)}) {
