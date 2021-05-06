@@ -47,7 +47,7 @@ const SubmitPaymentForWaitingCoursesRequest: Request<any, IshState> = {
     const actions = [];
 
     response?.data?.contactNodes?.forEach((cn: ContactNode) => {
-      cn.waitingLists.forEach(wl => {
+      cn?.waitingLists?.forEach(wl => {
         actions.push(showFormValidation(response,`${wl.contactId}-${wl.courseId}`));
       });
     });
