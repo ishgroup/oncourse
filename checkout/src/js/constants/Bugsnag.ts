@@ -16,6 +16,7 @@ if (typeof jest === 'undefined' && window.location.protocol !== "file:" && proce
       return !(!event.errors.length
         || !event.errors[0].stacktrace.some(s => s.file.includes("dynamic.js"))
         || event.errors[0].stacktrace.some(s => s.file.includes("gtm.js"))
+        || event.errors[0].stacktrace.some(s => s.file.includes("all.js"))
       );
     },
   });
