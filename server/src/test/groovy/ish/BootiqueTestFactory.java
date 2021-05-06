@@ -98,6 +98,9 @@ public class BootiqueTestFactory implements AfterEachCallback, BeforeEachCallbac
          */
         public BQRuntime createRuntime() {
             BQRuntime runtime = bootique.createRuntime();
+            if (runtimes == null) {
+                runtimes = new ArrayList<>();
+            }
             runtimes.add(runtime);
             return runtime;
         }
