@@ -44,5 +44,8 @@ export function syncCartStore(store) {
         console.log('Observable destroyed!');
       },
     });
+  })
+  .catch(e => {
+    console.error(e);
   });
 }

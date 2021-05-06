@@ -11,6 +11,9 @@ import {autoRehydrate, OnComplete, persistStore} from "redux-persist";
 import {syncCartStore} from "./SyncCartStore";
 import {createBlacklistFilter} from 'redux-persist-transform-filter';
 
+localforage.ready().catch(e => {
+  console.error(e);
+});
 
 const getMiddleware = (): StoreEnhancer<IshState> => {
   const logger = createLogger({
