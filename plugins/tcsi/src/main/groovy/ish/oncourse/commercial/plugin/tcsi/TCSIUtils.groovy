@@ -33,7 +33,42 @@ import java.time.LocalDate
 
 class TCSIUtils {
     static final String DATE_FORMAT='yyyy-MM-dd'
+    
+    @CompileDynamic
+    static String testStudent() {
+        Map<String, Object> student = [:]
+        student["student_identification_code"] = '123' // E313
+            student["date_of_birth"] = '1991-07-20'  // E314
+        
 
+        student["student_family_name"] = 'artyom' // E402
+        student["student_given_name_first"] ='kravchenko'   // E403
+
+
+        student["gender_code"] = "M"
+        student["atsi_code"] = "9"
+        student["country_of_birth_code"] = "1101"
+        student["language_spoken_at_home_code"] = "9999"
+        student["year_left_school"] = '9999'
+        student["level_left_school"] = '10'
+        student["term_address_country_code"] = "1101"
+
+
+        student["term_address_postcode"] = '2000' // E319
+        student["residential_address_postcode"] = '2000' // E320
+        student["residential_address_street"] = 'Consulrisk 12'   // E410
+        student["residential_address_suburb"] = 'Sydney'   //E469
+        student["residential_address_state"] = 'NSW'  // E470
+
+        
+        def studentData  = [
+                'correlation_id' : "studentData_${System.currentTimeMillis()}",
+                'student' : student
+        ]
+
+        return JsonOutput.toJson([studentData])
+    }
+    
     @CompileDynamic
     static String getStudentData(Student s) {
         Map<String, Object> student = [:]

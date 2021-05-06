@@ -113,13 +113,6 @@ class TCSIIntegration implements PluginTrait {
 
     private static Logger logger = LogManager.logger
     
-    private static final Closure failureHangler = { resp, body ->
-        interraptExport("Something unexpected happend, please contact ish support for more details\n" +
-                "$resp.toString()\n" +
-                "$body.toString()" 
-        )
-    }
-    
     TCSIIntegration(Map args) {
         loadConfig(args)
         this.context = cayenneService.newContext
@@ -237,7 +230,7 @@ class TCSIIntegration implements PluginTrait {
         return errorMessage
     }
 
-    void authenticatDevice() {
+    Object authenticatDevice() {
 
         String jwtString = AuthHelper.generateJwt(jwkCertificate,
                 deviceName,
@@ -272,6 +265,8 @@ class TCSIIntegration implements PluginTrait {
                 throw new RuntimeException('Device authentication error')
             }
         }
+
+        return true
     }
 
     @OnSave
@@ -340,7 +335,9 @@ class TCSIIntegration implements PluginTrait {
                 }
                 return null
             }
-            response.failure = failureHangler
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
         }
     }
 
@@ -352,7 +349,9 @@ class TCSIIntegration implements PluginTrait {
                 def campus =  handleResponce(result, "Create campus")
                 return campus['campuses_uid'].toString()
             }
-            response.failure = failureHangler
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
         }
     }
 
@@ -371,7 +370,9 @@ class TCSIIntegration implements PluginTrait {
                 context.commitChanges()
                 return uid
             }
-            response.failure = failureHangler
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
         }
     }
     
@@ -391,7 +392,9 @@ class TCSIIntegration implements PluginTrait {
                 context.commitChanges()
                 return uid
             }
-            response.failure = failureHangler
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
         } 
     }
     
@@ -410,7 +413,9 @@ class TCSIIntegration implements PluginTrait {
                 context.commitChanges()
                 return uid
             }
-            response.failure = failureHangler
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
         }
     }
     
@@ -429,7 +434,9 @@ class TCSIIntegration implements PluginTrait {
                 context.commitChanges()
                 return uid
             }
-            response.failure = failureHangler
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
         }
     }
 
@@ -438,7 +445,7 @@ class TCSIIntegration implements PluginTrait {
             authenticatDevice()
         }
         Date currentDate = new Date()
-        String timestamp = (currentDate.getTime() / 1000).toString()
+        String timestamp = (currentDate.getTime() / 1000).toPlainString()
         RESTClient client  = new RESTClient(TCSI_BASE_URL)
         client.headers["date-timestamp"] = timestamp
         client.headers["Content-Type"] = "application/json"
@@ -448,7 +455,7 @@ class TCSIIntegration implements PluginTrait {
         client.headers['organisation-name'] = "ish onCourse"
         client.headers['provider-type'] = "VET"
         client.headers['user-name'] = "ish"
-        client.headers['message-id'] = timestamp.toString()
+        client.headers['message-id'] = timestamp
         client.headers['software-name'] = "onCourse"
         client.headers['software-version'] = '1.0.0'
         client.headers['access-token'] = authToken
@@ -464,19 +471,19 @@ class TCSIIntegration implements PluginTrait {
             return response['result']
         }
 
-        String errorInfo = "Interrapt tcsi export for: $enrolment.student.contact.fullName, error happend while $description\n" +
-                "Error info:\n"
+        String errorInfo = "Interrapt tcsi export for: $enrolment.student.contact.fullName, error happend while $description\nError info:\n"
 
         List<Map> errors =  response['result']['errors']
+        
         errors.each {error ->
             errorInfo += error["error_description"]
             errorInfo +="\n"
         }
 
-        interraptExport(errorInfo)
+        this.interraptExport(errorInfo)
     }
     
-    private interraptExport(String message) {
+   void interraptExport(String message) {
         logger.error(message)
 
         emailService.email {
