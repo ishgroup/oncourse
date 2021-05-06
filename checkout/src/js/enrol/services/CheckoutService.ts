@@ -64,12 +64,12 @@ export class CheckoutService {
   }
 
   public isOnlyWaitingCourseSelected = (summary: State) => {
-    return summary.entities.waitingLists && Object.values<any>(summary.entities.waitingLists).some(e => e.selected)
-      && summary.entities.enrolments && !Object.values<any>(summary.entities.enrolments).some(e => e.selected)
-      && summary.entities.applications && !Object.values<any>(summary.entities.applications).some(e => e.selected)
-      && summary.entities.vouchers && !Object.values<any>(summary.entities.vouchers).some(e => e.selected)
-      && summary.entities.articles && !Object.values<any>(summary.entities.articles).some(e => e.selected)
-      && summary.entities.memberships && !Object.values<any>(summary.entities.memberships).some(e => e.selected);
+    return summary.entities.waitingLists && Object.values<any>(summary.entities.waitingLists || {}).some(e => e.selected)
+      && summary.entities.enrolments && !Object.values<any>(summary.entities.enrolments || {}).some(e => e.selected)
+      && summary.entities.applications && !Object.values<any>(summary.entities.applications || {}).some(e => e.selected)
+      && summary.entities.vouchers && !Object.values<any>(summary.entities.vouchers || {}).some(e => e.selected)
+      && summary.entities.articles && !Object.values<any>(summary.entities.articles || {}).some(e => e.selected)
+      && summary.entities.memberships && !Object.values<any>(summary.entities.memberships || {}).some(e => e.selected);
   }
 
   public ifCodeExist = (code, state): boolean => {
@@ -310,11 +310,11 @@ export class BuildContactFieldsRequest {
     const products = ['vouchers', 'memberships', 'articles'];
     const waitingLists = ['waitingLists'];
 
-    enrolments.map(item => Object.values<any>(summary.entities[item])
+    enrolments.map(item => Object.values<any>(summary.entities[item] || {})
       .filter(e => e.contactId === contact.id && e.selected)
       .map(e => result.classIds.push(e.classId)));
 
-    products.map(item => Object.values<any>(summary.entities[item])
+    products.map(item => Object.values<any>(summary.entities[item] || {})
       .filter(e => e.contactId === contact.id && e.selected)
       .map(e => {
         const productContainer: ProductContainer = new ProductContainer();
@@ -323,7 +323,7 @@ export class BuildContactFieldsRequest {
         result.products = [productContainer];
       }));
 
-    waitingLists.map(item => Object.values<any>(summary.entities[item])
+    waitingLists.map(item => Object.values<any>(summary.entities[item] || {})
       .filter(e => e.contactId === contact.id && e.selected)
       .map(e => result.waitingCourseIds.push(e.courseId)));
 
@@ -448,7 +448,7 @@ export class BuildGetCorporatePassRequest {
 export class BuildWaitingCoursesResult {
   static fromState = (state: IshState): any => {
     const result = [];
-    const nodes = Object.values<any>(state.checkout.summary.entities.contactNodes)
+    const nodes = Object.values<any>(state.checkout.summary.entities.contactNodes || {})
       .map(item => ({
         contactId: item.contactId,
         coursesIds: item.waitingLists,
