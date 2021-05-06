@@ -8,11 +8,11 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.oncourse.server.cayenne.glue._ArticleCustomField
+import ish.oncourse.server.cayenne.glue._VoucherCustomField
 
-class ArticleCustomField extends _ArticleCustomField {
+class VoucherCustomField extends _VoucherCustomField {
     @Override
     void setRelatedObject(ExpandableTrait relatedObject) {
-        super.setRelatedObject((Article) relatedObject)
+        super.setRelatedObject((Voucher) relatedObject)
     }
 }
