@@ -131,7 +131,7 @@ class TCSIIntegration implements PluginTrait {
 
     private loadCustomField() {
         
-        courseUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_COURSE_UID)).selectOne(context)
+        courseUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_COURSE_UID)).selectOne(objectContext)
         if (!courseUidField) {
             courseUidField = objectContext.newObject(CustomFieldType)
             courseUidField.dataType = DataType.TEXT
@@ -143,7 +143,7 @@ class TCSIIntegration implements PluginTrait {
             objectContext.commitChanges()
         }
         
-        courseAdmissionUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_COURSE_ADMISSION_UID)).selectOne(context)
+        courseAdmissionUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_COURSE_ADMISSION_UID)).selectOne(objectContext)
         if (!courseAdmissionUidField) {
             courseAdmissionUidField = objectContext.newObject(CustomFieldType)
             courseAdmissionUidField.dataType = DataType.TEXT
@@ -155,7 +155,7 @@ class TCSIIntegration implements PluginTrait {
             objectContext.commitChanges()
         }
 
-        studentUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_STUDENT_UID)).selectOne(context)
+        studentUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_STUDENT_UID)).selectOne(objectContext)
         if (!studentUidField) {
             studentUidField = objectContext.newObject(CustomFieldType)
             studentUidField.dataType = DataType.TEXT
@@ -167,7 +167,7 @@ class TCSIIntegration implements PluginTrait {
             objectContext.commitChanges()
         }
         
-        enrolmentUnitUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_ENROLMENT_UNIT_UID)).selectOne(context)
+        enrolmentUnitUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_ENROLMENT_UNIT_UID)).selectOne(objectContext)
         if (!enrolmentUnitUidField) {
             enrolmentUnitUidField = objectContext.newObject(CustomFieldType)
             enrolmentUnitUidField.dataType = DataType.TEXT
@@ -304,17 +304,19 @@ class TCSIIntegration implements PluginTrait {
         String studentUid = enrolment.student.contact.getCustomFieldValue(TCSI_STUDENT_UID)?.toString() ?: createStudent()
         String courseUid = highEducation.getCustomFieldValue(TCSI_COURSE_UID)?.toString() ?: createCourseGroup()
         String admissionUid = courseAdmission.getCustomFieldValue(TCSI_COURSE_ADMISSION_UID) ?: createCourseAdmission(studentUid,courseUid)
-
-        String campuseUid = getCampus()
-        if (!campuseUid) {
-            campuseUid = createCampus()
+        String campuseUid = null
+        if (enrolment.courseClass.room) {
+            campuseUid = getCampus()
+            if (!campuseUid) {
+                campuseUid = createCampus()
+            }
         }
         
         if (!enrolment.courseClass.course.equalsIgnoreContext(highEducation)) {
             // export unit
             def unitUid  = enrolment.getCustomFieldValue(TCSI_ENROLMENT_UNIT_UID)
             if (unitUid) {
-//                updateUnit()
+                interraptExport("Enrolment unit already exported")
             } else {
                 createUnit(admissionUid, campuseUid)
             }
@@ -404,7 +406,7 @@ class TCSIIntegration implements PluginTrait {
     String createCourseGroup() {
         getClient().request(POST, JSON) {
             uri.path = COURSES_PATH
-            body = TCSIUtils.getCourseData(enrolment.courseClass.course, highEducationType)
+            body = TCSIUtils.getCourseData(highEducation, highEducationType)
             response.success = { resp, result ->
                 def course = handleResponce(result as List, "Create course")
                 def uid = course['courses_uid'].toString()

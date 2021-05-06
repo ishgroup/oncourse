@@ -9,12 +9,17 @@ import groovy.json.JsonOutput
 import groovy.transform.CompileDynamic
 import ish.common.types.AvetmissStudentDisabilityType
 import ish.common.types.AvetmissStudentIndigenousStatus
+import ish.common.types.AvetmissStudentLabourStatus
+import ish.common.types.AvetmissStudentPriorEducation
 import ish.common.types.AvetmissStudentSchoolLevel
+import ish.common.types.CourseClassAttendanceType
 import ish.common.types.EnrolmentStatus
 import ish.common.types.Gender
 import ish.common.types.OutcomeStatus
+import ish.common.types.RecognitionOfPriorLearningIndicator
 import ish.common.types.StudentCitizenship
 import ish.common.types.StudentStatusForUnitOfStudy
+import ish.common.types.StudyReason
 import ish.math.Money
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
@@ -274,8 +279,15 @@ class TCSIUtils {
 
         course["course_code"] = c.code
         course["course_name"] = c.name
-
-        course["course_of_study_load"]  = c.fullTimeLoad?:'0'
+        
+        if (c.fullTimeLoad) {
+            try {
+                course["course_of_study_load"]  = new BigDecimal(c.fullTimeLoad) 
+            } catch(Exception ignored) {
+                course["course_of_study_load"] =  0
+            }
+        }
+        
         
         List<Course> units = getUnitCourses(c, highEducationType)
         units << c
@@ -294,7 +306,7 @@ class TCSIUtils {
             }
         }
         
-        course["standard_course_duration"] =  String.format("%.1f", duration.toDays() / 365) 
+        course["standard_course_duration"] =  new BigDecimal(duration.toDays()).divide(new BigDecimal(365)) 
         
         def courseData  = [
                 'correlation_id' : "courseData_${System.currentTimeMillis()}",
@@ -310,14 +322,128 @@ class TCSIUtils {
         
         Map<String, Object> admission = [:]
 
-        admission["students_uid"] = studentsUid
-        admission["courses_uid"] = courseUid
+        admission["students_uid"] = Long.valueOf(studentsUid)
+        admission["courses_uid"] = Long.valueOf(courseUid)
         admission["course_of_study_commencement_date"] = courseAdmission.courseClass.startDateTime?.format(DATE_FORMAT)
-        admission["type_of_attendance_code"]  = courseAdmission.courseClass.attendanceType.databaseValue.toString()
+        
+        if (CourseClassAttendanceType.FULL_TIME_ATTENDANCE ==  courseAdmission.courseClass.attendanceType) {
+            admission["type_of_attendance_code"] = '1'
+        } else {
+            admission["type_of_attendance_code"] = '2'
+        }
+        
+        if(courseAdmission.student.priorEducationCode) {
+            switch (courseAdmission.student.priorEducationCode) {
+                case AvetmissStudentPriorEducation.BACHELOR:
+                    admission["highest_attainment_code"] = '300'
+                    break
+                case AvetmissStudentPriorEducation.ADVANCED_DIPLOMA:
+                    admission["highest_attainment_code"] = '410'
+                    break
+                case AvetmissStudentPriorEducation.DIPLOMA:
+                    admission["highest_attainment_code"] = '410'
+                    break
+                case AvetmissStudentPriorEducation.CERTIFICATE_IV:
+                    admission["highest_attainment_code"] = '511'
 
-        admission["highest_attainment_code"] = courseAdmission.student.priorEducationCode.toString()
-        admission["study_reason_code"] = courseAdmission.studyReason.databaseValue.toString()
-        admission["labour_force_status_code"] = courseAdmission.student.labourForceStatus.toString()
+                    break
+                case AvetmissStudentPriorEducation.CERTIFICATE_III:
+                    admission["highest_attainment_code"] = '514'
+                    break
+                case AvetmissStudentPriorEducation.CERTIFICATE_II:
+                    admission["highest_attainment_code"] = '521'
+                    break
+                case AvetmissStudentPriorEducation.CERTIFICATE_I:
+                    admission["highest_attainment_code"] = '524'
+                    break
+                case AvetmissStudentPriorEducation.MISC:
+                case AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION:
+                case AvetmissStudentPriorEducation.NONE:
+                    admission["highest_attainment_code"] = '000'
+                    break
+            }
+        } else {
+            admission["highest_attainment_code"] = '000'
+        }
+        
+        if (courseAdmission.studyReason) {
+            switch (courseAdmission.studyReason) {
+                case StudyReason.STUDY_REASON_JOB:
+                    admission["study_reason_code"] = '01'
+                    break
+                case StudyReason.STUDY_REASON_DEVELOP_BUSINESS:
+                    admission["study_reason_code"] = '02'
+                    break
+                case StudyReason.STUDY_REASON_START_BUSINESS:
+                    admission["study_reason_code"] = '03'
+                    break
+                case StudyReason.STUDY_REASON_CAREER_CHANGE:
+                    admission["study_reason_code"] = '04'
+                    break
+                case StudyReason.STUDY_REASON_BETTER_JOB:
+                    admission["study_reason_code"] = '05'
+                    break
+                case StudyReason.STUDY_REASON_VOLUNTARY_WORK:
+                    admission["study_reason_code"] = '13'
+                    break
+                case StudyReason.STUDY_REASON_JOB_REQUIREMENT:
+                    admission["study_reason_code"] = '06'
+                    break
+                case StudyReason.STUDY_REASON_EXTRA_JOB_SKILLS:
+                    admission["study_reason_code"] = '07'
+                    break
+                case StudyReason.STUDY_REASON_FOR_ANOTHER_COURSE:
+                    admission["study_reason_code"] = '08'
+                    break
+                case StudyReason.STUDY_REASON_OTHER:
+                    admission["study_reason_code"] = '11'
+                    break
+                case StudyReason.STUDY_REASON_PERSONAL_INTEREST:
+                    admission["study_reason_code"] = '12'
+                    break
+                case StudyReason.STUDY_REASON_NOT_STATED:
+                    admission["study_reason_code"] = '99'
+                    break
+            }
+        } else {
+            admission["study_reason_code"] = '99'
+        }
+        
+        if (courseAdmission.student.labourForceStatus) {
+            switch (courseAdmission.student.labourForceStatus) {
+
+                case AvetmissStudentLabourStatus.DEFAULT_POPUP_OPTION:
+                    admission["labour_force_status_code"] = '99'
+                    break
+                case AvetmissStudentLabourStatus.FULL_TIME:
+                    admission["labour_force_status_code"] = '01'
+                    break
+                case AvetmissStudentLabourStatus.PART_TIME:
+                    admission["labour_force_status_code"] = '02'
+                    break
+                case AvetmissStudentLabourStatus.SELF_EMPLOYED:
+                    admission["labour_force_status_code"] = '03'
+                    break
+                case AvetmissStudentLabourStatus.EMPLOYER:
+                    admission["labour_force_status_code"] = '04'
+                    break
+                case AvetmissStudentLabourStatus.UNPAID_FAMILY_WORKER:
+                    admission["labour_force_status_code"] = '05'
+                    break
+                case AvetmissStudentLabourStatus.UNEMPLOYED_SEEKING_FULL_TIME:
+                    admission["labour_force_status_code"] = '06'
+                    break
+                case AvetmissStudentLabourStatus.UNEMPLOYED_SEEKING_PART_TIME:
+                    admission["labour_force_status_code"] = '07'
+                    break
+                case AvetmissStudentLabourStatus.UNEMPLOYED_NOT_SEEKING:
+                    admission["labour_force_status_code"] = '08'
+                    break
+            }
+        } else {
+            admission["labour_force_status_code"] = '99'
+        }
+        
         
         if (courseAdmission.status == EnrolmentStatus.CANCELLED) {
             admission["course_outcome_code"] = '2'  
@@ -333,7 +459,7 @@ class TCSIUtils {
                 admission["course_outcome_code"] = '1'
                 LocalDate endDate = allOutcomes.findAll {it.endDate != null}*.endDate.sort().last()
                 if (endDate) {
-                    admission["course_outcome_date"] =  endDate.format(DATE_FORMAT)
+                    admission["course_outcome_date"] =  endDate.format(DATE_FORMAT) //E592  
                 }
             }
             
@@ -411,20 +537,32 @@ class TCSIUtils {
     static String getUnitData(Enrolment enrolmentUnit, String admissionUid, String campuseUid) {
         Map<String, Object> unit = [:]
         CourseClass clazz = enrolmentUnit.courseClass
-        unit["course_admissions_uid"] = admissionUid
+        unit["course_admissions_uid"] = Long.valueOf(admissionUid)
         unit["unit_of_study_code"] =  clazz.course.code
-        unit["campuses_uid"] = campuseUid
-        unit["unit_of_study_census_date"] = clazz.censusDate?.format(DATE_FORMAT)
-        unit["discipline_code"] = clazz.course.qualification?.fieldOfEducation
+        if (campuseUid) {
+            unit["campuses_uid"] = Long.valueOf(campuseUid)
+        }
+        if (clazz.censusDate) {
+            unit["unit_of_study_census_date"] = clazz.censusDate.format(DATE_FORMAT)
+        }
+        if (!enrolmentUnit.outcomes.empty  && enrolmentUnit.outcomes[0].module?.fieldOfEducation ) {
+            unit["discipline_code"] =enrolmentUnit.outcomes[0].module?.fieldOfEducation
+        }
+        
         if (clazz.startDateTime && clazz.endDateTime) {
-            unit["unit_of_study_year_long_indicator"] = Duration.between(clazz.startDateTime.toInstant(), clazz.endDateTime.toInstant()).toDays() > 300
+            unit["unit_of_study_year_long_indicator"] = (Duration.between(clazz.startDateTime.toInstant(), clazz.endDateTime.toInstant()).toDays() > 300)
         }
         LocalDate strtDate = enrolmentUnit.outcomes.findAll {it.startDate}*.startDate.sort().first()
         if (strtDate) {
             unit["unit_of_study_commencement_date"] = strtDate.format(DATE_FORMAT)
         }
-        unit['eftsl'] = clazz.course.fullTimeLoad
-
+        if (clazz.course.fullTimeLoad) {
+            try {
+                unit['eftsl'] = new BigDecimal(clazz.course.fullTimeLoad)
+            } catch  (Exception ignor) {
+                unit['eftsl'] = 0
+            }
+        }
 
         if (enrolmentUnit.status == EnrolmentStatus.CANCELLED) {
             unit["unit_of_study_status_code"] = "1" 
@@ -439,11 +577,13 @@ class TCSIUtils {
 
         LocalDate endDate = enrolmentUnit.outcomes.findAll {it.endDate}*.endDate.sort().last()
         if (endDate) {
-            unit["unit_of_study_outcome_date"] = endDate.format(DATE_FORMAT)
+            unit["unit_of_study_outcome_date"] = endDate.format(DATE_FORMAT) //E601 
         }
 
         unit["course_assurance_indicator"] = false
-        unit["mode_of_attendance_code"] = enrolmentUnit.attendanceType?.databaseValue?.toString()
+        unit["mode_of_attendance_code"] = '1'
+
+        
         
         if (enrolmentUnit.feeStatus) {
             switch (enrolmentUnit.feeStatus)  {
@@ -480,16 +620,27 @@ class TCSIUtils {
             }
         }
         
-        String feeCharged =  enrolmentUnit.invoiceLines.empty ?
-                Money.ZERO.toPlainString() :
-                enrolmentUnit.originalInvoiceLine.priceTotalIncTax.toPlainString()
+        BigDecimal feeCharged =  enrolmentUnit.invoiceLines.empty ?
+                Money.ZERO.toBigDecimal() :
+                enrolmentUnit.originalInvoiceLine.priceTotalIncTax.toBigDecimal()
         unit["amount_charged"] = feeCharged
         unit["amount_paid_upfront"] = feeCharged
         if (enrolmentUnit.feeHelpAmount) {
-            unit["loan_fee"] =  enrolmentUnit.feeHelpAmount.multiply(0.2).toPlainString()
-            unit["help_loan_amount"] =  enrolmentUnit.feeHelpAmount.toPlainString()
+            unit["loan_fee"] =  enrolmentUnit.feeHelpAmount.multiply(0.2).toBigDecimal()
+            unit["help_loan_amount"] =  enrolmentUnit.feeHelpAmount.toBigDecimal()
         }
-        unit["recognition_of_prior_learning_code"] = enrolmentUnit.creditType.getDatabaseValue().toString()
+        if (enrolmentUnit.creditTotal) {
+            switch (enrolmentUnit.creditTotal) {
+                case RecognitionOfPriorLearningIndicator.NOT_RPL_UNIT_OF_STUDY:
+                    break
+                case RecognitionOfPriorLearningIndicator.UNIT_OF_STUDY_CONSISTS_WHOLLY_OF_RPL:
+                    unit["recognition_of_prior_learning_code"]='1'
+                    break
+                case RecognitionOfPriorLearningIndicator.UNIT_OF_STUDY_HAS_A_COMPONENT_OF_RPL:
+                    unit["recognition_of_prior_learning_code"]='2'
+                    break
+            }
+        }
         
         def unitData  = [
                 'correlation_id' : "unit_${System.currentTimeMillis()}",
