@@ -28,7 +28,6 @@ import ish.oncourse.server.api.v1.model.ProductItemCancelDTO
 import ish.oncourse.server.api.v1.model.ProductItemDTO
 import ish.oncourse.server.api.v1.model.ProductItemPaymentDTO
 import ish.oncourse.server.api.v1.model.ProductItemStatusDTO
-import ish.oncourse.server.api.v1.model.ProductStatusDTO
 import ish.oncourse.server.api.v1.model.ProductTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Account
@@ -44,15 +43,18 @@ import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
 import ish.oncourse.server.cayenne.ProductItem
+import ish.oncourse.server.cayenne.ProductItemCustomField
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tax
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.VoucherProduct
+
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.util.LocalDateUtils.dateToValue
 import static ish.util.LocalDateUtils.valueToDate
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.ValidationResult
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -109,6 +111,7 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
             productItemDTO.redeemableById = type == ProductTypeDTO.VOUCHER ? (productItem as Voucher).redeemableBy?.id : null
             productItemDTO.redeemableByName = (type == ProductTypeDTO.VOUCHER && (productItem as Voucher).redeemableBy != null) ? GetContactFullName.valueOf((productItem as Voucher).redeemableBy, true).get() : null
             productItemDTO.payments = getPayments(type, productItem)
+            productItemDTO.customFields = productItem.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
 
             return productItemDTO
         }
@@ -245,6 +248,7 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
                 voucher.redeemableBy = null
             }
         }
+        updateCustomFields(productItem.context, productItem, productItemDTO.customFields, ProductItemCustomField)
         productItem
     }
 
@@ -269,6 +273,8 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
                 validator.throwClientErrorException(id, "redeemableById", "Contact with id=${productItemDTO.redeemableById} doesn't exist.")
             }
         }
+
+        validateCustomFields(context, ProductItem.class.simpleName, productItemDTO.customFields, id as String, validator)
     }
 
     @Override
