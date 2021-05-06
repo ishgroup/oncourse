@@ -120,14 +120,14 @@ class TCSIUtils {
 
         // E346
         if (s.countryOfBirth) {
-            student["country_of_birth_code"] = s.countryOfBirth?.saccCode   // E346
+            student["country_of_birth_code"] = s.countryOfBirth?.saccCode?.toString()   // E346
         } else {
             student["country_of_birth_code"] = "9999"
         }
 
         // E348
         if (s.language) {
-            student["language_spoken_at_home_code"] = s.language?.absCode
+            student["language_spoken_at_home_code"] = s.language?.absCode?.toString()
         } else {
             student["language_spoken_at_home_code"] = "9999"
         }

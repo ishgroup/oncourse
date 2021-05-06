@@ -89,7 +89,7 @@ class TCSIIntegration implements PluginTrait {
     String deviceName
     String organisationId
     String jwkCertificate
-    ObjectContext context
+    ObjectContext objectContext
     
     static final String TCSI_COURSE_UID  = 'tsciCourseUid'
     CustomFieldType courseUidField
@@ -115,15 +115,17 @@ class TCSIIntegration implements PluginTrait {
     
     TCSIIntegration(Map args) {
         loadConfig(args)
-        this.context = cayenneService.newContext
         this.organisationId = configuration.getIntegrationProperty(TCSI_ORGANISATION_ID).value
         this.deviceName = configuration.getIntegrationProperty(TCSI_DEVICE_NAME).value
         this.jwkCertificate = configuration.getIntegrationProperty(TCSI_JWK_CERTIFICATE).value
-        
-        this.highEducationType = ObjectSelect.query(EntityRelationType)
-                .where(EntityRelationType.NAME.eq(HIGH_EDUCATION_TYPE))
-                .selectOne(context)
-        this.loadCustomField()
+        if (cayenneService) {
+            this.objectContext = cayenneService.newContext
+            this.highEducationType = ObjectSelect.query(EntityRelationType)
+                    .where(EntityRelationType.NAME.eq(HIGH_EDUCATION_TYPE))
+                    .selectOne(objectContext)
+            this.loadCustomField()
+        }
+
     }
 
 
@@ -131,50 +133,50 @@ class TCSIIntegration implements PluginTrait {
         
         courseUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_COURSE_UID)).selectOne(context)
         if (!courseUidField) {
-            courseUidField = context.newObject(CustomFieldType)
+            courseUidField = objectContext.newObject(CustomFieldType)
             courseUidField.dataType = DataType.TEXT
             courseUidField.entityIdentifier = Course.simpleName
             courseUidField.key = TCSI_COURSE_UID
             courseUidField.name = 'TCSI course identifier'
             courseUidField.isMandatory = false
             courseUidField.sortOrder = 1001l
-            context.commitChanges()
+            objectContext.commitChanges()
         }
         
         courseAdmissionUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_COURSE_ADMISSION_UID)).selectOne(context)
         if (!courseAdmissionUidField) {
-            courseAdmissionUidField = context.newObject(CustomFieldType)
+            courseAdmissionUidField = objectContext.newObject(CustomFieldType)
             courseAdmissionUidField.dataType = DataType.TEXT
             courseAdmissionUidField.entityIdentifier = Enrolment.simpleName
             courseAdmissionUidField.key = TCSI_COURSE_ADMISSION_UID
             courseAdmissionUidField.name = 'TCSI course admission identifier'
             courseAdmissionUidField.isMandatory = false
             courseAdmissionUidField.sortOrder = 1002l
-            context.commitChanges()
+            objectContext.commitChanges()
         }
 
         studentUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_STUDENT_UID)).selectOne(context)
         if (!studentUidField) {
-            studentUidField = context.newObject(CustomFieldType)
+            studentUidField = objectContext.newObject(CustomFieldType)
             studentUidField.dataType = DataType.TEXT
             studentUidField.entityIdentifier = Contact.simpleName
             studentUidField.key = TCSI_STUDENT_UID
             studentUidField.name = 'TCSI student identifier'
             studentUidField.isMandatory = false
             studentUidField.sortOrder = 1003l
-            context.commitChanges()
+            objectContext.commitChanges()
         }
         
         enrolmentUnitUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_ENROLMENT_UNIT_UID)).selectOne(context)
         if (!enrolmentUnitUidField) {
-            enrolmentUnitUidField = context.newObject(CustomFieldType)
+            enrolmentUnitUidField = objectContext.newObject(CustomFieldType)
             enrolmentUnitUidField.dataType = DataType.TEXT
             enrolmentUnitUidField.entityIdentifier = Enrolment.simpleName
             enrolmentUnitUidField.key = TCSI_ENROLMENT_UNIT_UID
             enrolmentUnitUidField.name = 'TCSI enrolment unit identifier'
             enrolmentUnitUidField.isMandatory = false
             enrolmentUnitUidField.sortOrder = 1004l
-            context.commitChanges()
+            objectContext.commitChanges()
         }
     }
 
@@ -287,8 +289,8 @@ class TCSIIntegration implements PluginTrait {
     }
     
     void export(Enrolment e) {
-        enrolment = context.localObject(e)
-        highEducation = TCSIUtils.getHighEducation(context, highEducationType, enrolment)
+        enrolment = objectContext.localObject(e)
+        highEducation = TCSIUtils.getHighEducation(objectContext, highEducationType, enrolment)
         courseAdmission = enrolment.student.enrolments.find {it.courseClass.course.equalsIgnoreContext(highEducation)}
         
         if (!courseAdmission) {
@@ -363,11 +365,11 @@ class TCSIIntegration implements PluginTrait {
             response.success = { resp, result ->
                 def unit =  handleResponce(result as List, "Create enrolment unit")
                 def uid = unit['unit_enrolments_uid'].toString()
-                EnrolmentCustomField customField = context.newObject(EnrolmentCustomField)
+                EnrolmentCustomField customField = objectContext.newObject(EnrolmentCustomField)
                 customField.relatedObject = enrolment
                 customField.customFieldType = enrolmentUnitUidField
                 customField.value = uid
-                context.commitChanges()
+                objectContext.commitChanges()
                 return uid
             }
             response.failure =  { resp, body ->
@@ -385,11 +387,11 @@ class TCSIIntegration implements PluginTrait {
             response.success = { resp, result -> 
                 def admission =  handleResponce(result as List, "Create admission")
                 def uid = admission['course_admissions_uid'].toString()
-                EnrolmentCustomField customField = context.newObject(EnrolmentCustomField)
+                EnrolmentCustomField customField = objectContext.newObject(EnrolmentCustomField)
                 customField.relatedObject = courseAdmission
                 customField.customFieldType = courseAdmissionUidField
                 customField.value = uid
-                context.commitChanges()
+                objectContext.commitChanges()
                 return uid
             }
             response.failure =  { resp, body ->
@@ -406,11 +408,11 @@ class TCSIIntegration implements PluginTrait {
             response.success = { resp, result ->
                 def course = handleResponce(result as List, "Create course")
                 def uid = course['courses_uid'].toString()
-                CourseCustomField customField = context.newObject(CourseCustomField)
+                CourseCustomField customField = objectContext.newObject(CourseCustomField)
                 customField.relatedObject = highEducation
                 customField.customFieldType = courseUidField
                 customField.value = uid
-                context.commitChanges()
+                objectContext.commitChanges()
                 return uid
             }
             response.failure =  { resp, body ->
@@ -427,11 +429,11 @@ class TCSIIntegration implements PluginTrait {
             response.success = { resp, result ->
                 def student = handleResponce(result as List, "Create student")
                 def uid = student['students_uid'].toString()
-                ContactCustomField customField = context.newObject(ContactCustomField)
+                ContactCustomField customField = objectContext.newObject(ContactCustomField)
                 customField.relatedObject = enrolment.student.contact
                 customField.customFieldType = studentUidField
                 customField.value = uid
-                context.commitChanges()
+                objectContext.commitChanges()
                 return uid
             }
             response.failure =  { resp, body ->
