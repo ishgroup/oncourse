@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when
 class DelayedIncomeTransactionsBuilderTest {
 
     private InvoiceLine invoiceLine
-    private invLineId
+    private Long invLineId
     private Account primaryAccount
     private Account secondaryAccount
     private Money amount
@@ -34,7 +34,7 @@ class DelayedIncomeTransactionsBuilderTest {
         secondaryAccount = mock(Account)
         when(secondaryAccount.id).thenReturn(61L)
 
-        Long invLineId = 45L
+        invLineId = 45L
         invoiceLine = mock(InvoiceLine)
         when(invoiceLine.account).thenReturn(primaryAccount)
         when(invoiceLine.prepaidFeesAccount).thenReturn(secondaryAccount)
