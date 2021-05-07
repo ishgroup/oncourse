@@ -44,6 +44,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
     String section_code
     boolean create_section
     boolean create_student
+    boolean isCanvasAuthenticationProvider = false
 
     def enrolment(Enrolment enrolment) {
         this.enrolment = enrolment
@@ -63,6 +64,10 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
 
     def create_student(boolean create_student) {
         this.create_student = create_student
+    }
+
+    def authentication_provider(boolean isCanvasAuthenticationProvider) {
+        this.isCanvasAuthenticationProvider = isCanvasAuthenticationProvider
     }
 
 
@@ -91,7 +96,8 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                     throw new IllegalArgumentException("Illegal state, no student with email ${enrolment.student.contact.email} with student creation disabled.")
                 }
 
-                student = integration.createNewUser(enrolment.student.contact.fullName, enrolment.student.contact.email)
+                student = integration.createNewUser(enrolment.student.contact.fullName,
+                        enrolment.student.contact.email, isCanvasAuthenticationProvider)
             } else {
 
                 // will return a list of one students, take the first item in the list
