@@ -9,7 +9,7 @@
     <tutorScore>1</tutorScore>
     <venueScore>2</venueScore>
     <netPromoterScore>1</netPromoterScore>
-    <testimonial/>
+    <testimonial />
     <studentName>name1 name</studentName>
     <courseName>Test 1</courseName>
     <courseClassUniqueCode>ATT1-123</courseClassUniqueCode>
@@ -26,11 +26,11 @@
     <createdOn>2013-01-01T00:00:00Z</createdOn>
     <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
     <publicComment>true</publicComment>
-    <comment/>
+    <comment />
     <courseScore>5</courseScore>
     <tutorScore>4</tutorScore>
     <venueScore>2</venueScore>
-    <netPromoterScore/>
+    <netPromoterScore />
     <testimonial>qwerty</testimonial>
     <studentName>name1 name</studentName>
     <courseName>Test 2</courseName>

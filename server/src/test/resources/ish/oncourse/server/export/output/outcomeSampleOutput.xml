@@ -4,22 +4,22 @@
     <id>1</id>
     <createdOn>1-1-2013 00:00:00</createdOn>
     <modifiedOn>1-2-2013 00:00:00</modifiedOn>
-    <startDate/>
-    <endDate/>
+    <startDate />
+    <endDate />
     <course>Test 1</course>
     <code>ATT1-123</code>
     <nationalCode>TESTCODE1</nationalCode>
     <status>Competency achieved/pass (20)</status>
     <deliveryMode>Online</deliveryMode>
-    <reportableHours/>
-    <hoursAttended/>
-    <fundingSource/>
-    <vetPurchasingContractId/>
-    <vetPurchasingContractScheduleId/>
-    <vetFundingSourceStateId/>
-    <specificProgramIdentifier/>
-    <markedByTutor/>
-    <markedByTutorDate/>
+    <reportableHours />
+    <hoursAttended />
+    <fundingSource />
+    <vetPurchasingContractId />
+    <vetPurchasingContractScheduleId />
+    <vetFundingSourceStateId />
+    <specificProgramIdentifier />
+    <markedByTutor />
+    <markedByTutorDate />
     <startDateOverridden>false</startDateOverridden>
     <endDateOverridden>false</endDateOverridden>
   </outcome>
@@ -33,16 +33,16 @@
     <code>ATT1-123</code>
     <nationalCode>TESTCODE2</nationalCode>
     <status>Competency not achieved/fail (30)</status>
-    <deliveryMode/>
-    <reportableHours/>
-    <hoursAttended/>
-    <fundingSource/>
-    <vetPurchasingContractId/>
-    <vetPurchasingContractScheduleId/>
-    <vetFundingSourceStateId/>
-    <specificProgramIdentifier/>
-    <markedByTutor/>
-    <markedByTutorDate/>
+    <deliveryMode />
+    <reportableHours />
+    <hoursAttended />
+    <fundingSource />
+    <vetPurchasingContractId />
+    <vetPurchasingContractScheduleId />
+    <vetFundingSourceStateId />
+    <specificProgramIdentifier />
+    <markedByTutor />
+    <markedByTutorDate />
     <startDateOverridden>true</startDateOverridden>
     <endDateOverridden>true</endDateOverridden>
   </outcome>

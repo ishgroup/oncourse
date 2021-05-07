@@ -17,7 +17,7 @@
     <courseClassName>Test Course TEST-123</courseClassName>
     <assessmentName>testAssessment</assessmentName>
     <submittedOn>4-1-2021</submittedOn>
-    <markedOn/>
-    <grade/>
+    <markedOn />
+    <grade />
   </assessmentSubmission>
 </data>

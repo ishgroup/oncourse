@@ -25,6 +25,6 @@
     <name>withoutGrading</name>
     <description>Description</description>
     <active>true</active>
-    <gradingType/>
+    <gradingType />
   </assessment>
 </data>

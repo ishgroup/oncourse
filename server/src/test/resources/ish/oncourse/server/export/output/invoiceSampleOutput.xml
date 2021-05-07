@@ -10,25 +10,24 @@
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
     <email>test@test.test</email>
-    <fax/>
+    <fax />
     <firstName>Test</firstName>
     <homePhone>331110000</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>Student</lastName>
-    <message/>
+    <message />
     <mobilePhone>331110000</mobilePhone>
     <notes>firstContactNote1
-      secondContactNote1
-    </notes>
+      secondContactNote1</notes>
     <postcode>1001</postcode>
     <state>NSW</state>
     <street>Main</street>
     <suburb>Sydney</suburb>
-    <tfn/>
+    <tfn />
     <uniqueCode>ST1UNIQUE</uniqueCode>
     <workPhone>331110000</workPhone>
-    <title/>
+    <title />
     <invoice id='100'>
       <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
       <createdOn>2012-05-10T00:00:00Z</createdOn>
@@ -39,8 +38,7 @@
       <invoiceDate>2013-02-01</invoiceDate>
       <invoiceNumber>1</invoiceNumber>
       <privateNotes>firstInvoiceNote1
-        secondInvoiceNote1
-      </privateNotes>
+        secondInvoiceNote1</privateNotes>
       <publicNotes>Public notes 1...</publicNotes>
       <shippingAddress>Shipping Address 1...</shippingAddress>
       <source>office</source>
@@ -48,7 +46,7 @@
       <totalIncTax>220.00</totalIncTax>
       <totalTax>20.00</totalTax>
       <createdByUserName>admin admin</createdByUserName>
-      <customerReference/>
+      <customerReference />
       <invoiceLine id='100'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
@@ -58,11 +56,11 @@
           <taxName>GST</taxName>
           <discountAmount>0.00</discountAmount>
         </price>
-        <description/>
+        <description />
         <discountEachExTax>0.00</discountEachExTax>
         <quantity>1.00</quantity>
         <title>test invoiceline1</title>
-        <unit/>
+        <unit />
         <prepaidFeesRemaining>0.00</prepaidFeesRemaining>
         <accountCode>11500</accountCode>
         <accountType>asset</accountType>
@@ -76,11 +74,11 @@
           <taxName>GST</taxName>
           <discountAmount>0.00</discountAmount>
         </price>
-        <description/>
+        <description />
         <discountEachExTax>0.00</discountEachExTax>
         <quantity>1.00</quantity>
         <title>test invoiceline2</title>
-        <unit/>
+        <unit />
         <prepaidFeesRemaining>33.00</prepaidFeesRemaining>
         <accountCode>11500</accountCode>
         <accountType>asset</accountType>
@@ -97,25 +95,24 @@
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
     <email>tutor@tutor.tutor</email>
-    <fax/>
+    <fax />
     <firstName>Test</firstName>
     <homePhone>331110001</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>Tutor</lastName>
-    <message/>
+    <message />
     <mobilePhone>331110001</mobilePhone>
     <notes>firstContactNote2
-      secondContactNote2
-    </notes>
+      secondContactNote2</notes>
     <postcode>1002</postcode>
     <state>NSW</state>
     <street>1st</street>
     <suburb>Sydney</suburb>
-    <tfn/>
+    <tfn />
     <uniqueCode>TUT1UNIQUE</uniqueCode>
     <workPhone>331110001</workPhone>
-    <title/>
+    <title />
     <invoice id='200'>
       <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
       <createdOn>2012-05-10T00:00:00Z</createdOn>
@@ -126,8 +123,7 @@
       <invoiceDate>2013-02-01</invoiceDate>
       <invoiceNumber>2</invoiceNumber>
       <privateNotes>firstInvoiceNote2
-        secondInvoiceNote2
-      </privateNotes>
+        secondInvoiceNote2</privateNotes>
       <publicNotes>Public notes 2...</publicNotes>
       <shippingAddress>Shipping Address 2...</shippingAddress>
       <source>web</source>
@@ -135,7 +131,7 @@
       <totalIncTax>110.00</totalIncTax>
       <totalTax>10.00</totalTax>
       <createdByUserName>admin admin</createdByUserName>
-      <customerReference/>
+      <customerReference />
       <invoiceLine id='300'>
         <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
         <createdOn>2013-01-01T00:00:00Z</createdOn>
@@ -145,11 +141,11 @@
           <taxName>GST</taxName>
           <discountAmount>0.00</discountAmount>
         </price>
-        <description/>
+        <description />
         <discountEachExTax>0.00</discountEachExTax>
         <quantity>1.00</quantity>
         <title>test invoiceline3</title>
-        <unit/>
+        <unit />
         <prepaidFeesRemaining>0.00</prepaidFeesRemaining>
         <accountCode>11500</accountCode>
         <accountType>asset</accountType>

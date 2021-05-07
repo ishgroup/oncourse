@@ -14,15 +14,15 @@
       }
       }
     </script>
-    <modifiedOn/>
-    <createdOn/>
+    <modifiedOn />
+    <createdOn />
     <enabled>true</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>Invoice</entityClass>
     <entityEventType>CREATE</entityEventType>
-    <description/>
-    <systemEventType/>
+    <description />
+    <systemEventType />
   </script>
   <script id='2'>
     <name>send_enrolment</name>
@@ -39,15 +39,15 @@
       }
       }
     </script>
-    <modifiedOn/>
-    <createdOn/>
+    <modifiedOn />
+    <createdOn />
     <enabled>true</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>Enrolment</entityClass>
     <entityEventType>CREATE_OR_UPDATE</entityEventType>
-    <description/>
-    <systemEventType/>
+    <description />
+    <systemEventType />
   </script>
   <script id='1673'>
     <name>mailchimp unsubscribe</name>
@@ -69,11 +69,11 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>ContactTagRelation</entityClass>
     <entityEventType>REMOVE</entityEventType>
     <description>Unsubscribe contact from a mailchimp list</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1674'>
     <name>SurveyGizmo send invite on enrolment</name>
@@ -102,9 +102,9 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ONCOURSE_EVENT</triggerType>
-    <cronSchedule/>
-    <entityClass/>
-    <entityEventType/>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
     <description>Send SurveyGizmo invite upon enrolment</description>
     <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
   </script>
@@ -128,11 +128,11 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>true</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>Article</entityClass>
     <entityEventType>CREATE</entityEventType>
     <description>email notification when someone purchases a product though the onCourse website</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1676'>
     <name>send application decision</name>
@@ -164,11 +164,11 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>Application</entityClass>
     <entityEventType>CREATE_OR_UPDATE</entityEventType>
     <description>Send an email to the student about whether their application has been offered or rejected</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1677'>
     <name>SurveyMonkey send invite on enrolment completion</name>
@@ -209,10 +209,10 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 9 * * ?</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send SurveyMonkey survey invite upon enrolment completion</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1678'>
     <name>send class confirmed</name>
@@ -275,10 +275,10 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 20 1/1 * ? *</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send an email to students when course class is confirmed</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1679'>
     <name>send payment receipt</name>
@@ -302,11 +302,11 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>true</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>PaymentIn</entityClass>
     <entityEventType>CREATE_OR_UPDATE</entityEventType>
     <description>Send a payment receipt email to the payer</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1680'>
     <name>Synchronise availability (enrolment)</name>
@@ -335,9 +335,9 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ONCOURSE_EVENT</triggerType>
-    <cronSchedule/>
-    <entityClass/>
-    <entityEventType/>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
     <description>This script finds all single session classes taught by the same tutor in the same room with overlapping
       times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class
       B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where
@@ -375,9 +375,9 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ONCOURSE_EVENT</triggerType>
-    <cronSchedule/>
-    <entityClass/>
-    <entityEventType/>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
     <description>Send an email to the student with information about class cancellation</description>
     <systemEventType>CLASS_CANCELLED</systemEventType>
   </script>
@@ -403,11 +403,11 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>ContactTagRelation</entityClass>
     <entityEventType>CREATE</entityEventType>
     <description>Subscribe contact to a mailchimp list</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1683'>
     <name>send certificate vet created notification</name>
@@ -470,13 +470,13 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 5 ? * *</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Print and upload to the portal VET certifcates where the student meets the requirements for
       certification, including having supplied their USI. Send an email to notify the student that their certificate is
       available in the portal.
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1684'>
     <name>send enrolment</name>
@@ -501,11 +501,11 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>true</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>Enrolment</entityClass>
     <entityEventType>CREATE_OR_UPDATE</entityEventType>
     <description>Send the enrolment confirmation email to the student</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1685'>
     <name>Xero manual journal</name>
@@ -538,10 +538,10 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 3 * * ?</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Create Xero manual journal for transactions created on previous day</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1686'>
     <name>Course Completion Survey</name>
@@ -574,10 +574,10 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 8 1/1 * ? *</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send the completion survey to all students who completed a course recently.</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1687'>
     <name>ecoach enrol</name>
@@ -711,9 +711,9 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ONCOURSE_EVENT</triggerType>
-    <cronSchedule/>
-    <entityClass/>
-    <entityEventType/>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
     <description>Enrol user to eCoach course upon onCourse enrolment. eCoach course must have the same title as onCourse
       course name
     </description>
@@ -758,12 +758,12 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 9 ? * MON</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send an email to the student remindering them to supply their USI number, and send a notice to the
       default onCourse admin of how many students were contacted each time this message is sent
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1689'>
     <name>send voucher</name>
@@ -786,11 +786,11 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>true</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>Voucher</entityClass>
     <entityEventType>CREATE_OR_UPDATE</entityEventType>
     <description>Send an email to the student with information about a voucher they have purchased</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1690'>
     <name>notify tutor of unmarked attendance</name>
@@ -830,12 +830,12 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 3 ? * *</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>This script runs at 3am each day and checks for every session run on the previous 7 days. If any
       student attendance is unmarked, sends to the tutors email notification to mark their class roll.
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1691'>
     <name>send enrolment notice for tutors</name>
@@ -859,9 +859,9 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ONCOURSE_EVENT</triggerType>
-    <cronSchedule/>
-    <entityClass/>
-    <entityEventType/>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
     <description>Send an enrolment notification email to tutors attached to classes with the role 'Course Manager',
       where the class is tagged with 'Notify Manager'
     </description>
@@ -894,9 +894,9 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ONCOURSE_EVENT</triggerType>
-    <cronSchedule/>
-    <entityClass/>
-    <entityEventType/>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
     <description>Send SurveyMonkey survey invite upon enrolment</description>
     <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
   </script>
@@ -934,11 +934,11 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 3 1 * ? *</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send a statement report to all contacts with outstanding balances on the first on the month
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1694'>
     <name>automatic creation of VET Certificates</name>
@@ -994,15 +994,15 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 4 * * ?</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>For each enrolment, at 4am every day check for outcomes which have been modified in the previous 24
       hrs. If any outcomes attached to the enrolment are not yet marked, skip this enrolment. For students with at least
       one successful outcome, create the certificate record (statement of attainment or qualification, based on the
       isFullQual flag at the course level). If the outcome is already joined to a certificate, do not create a new
       certificate containing that outcome
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1695'>
     <name>VET Course completion survey</name>
@@ -1037,10 +1037,10 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 3 * * ?</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send the VET completion survey to all students who completed a VET course recently.</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1696'>
     <name>moodle enrol</name>
@@ -1065,9 +1065,9 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ONCOURSE_EVENT</triggerType>
-    <cronSchedule/>
-    <entityClass/>
-    <entityEventType/>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
     <description>Enrol user to Moodle course upon onCourse enrolment</description>
     <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
   </script>
@@ -1104,12 +1104,12 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 9 * * ?</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send an email to the tutor with information about when their class is starting, two days before it
       starts
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1698'>
     <name>mailchimp subscribe on enrolment</name>
@@ -1131,9 +1131,9 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ONCOURSE_EVENT</triggerType>
-    <cronSchedule/>
-    <entityClass/>
-    <entityEventType/>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
     <description>Subscribe user to Mailchimp upon enrolment</description>
     <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
   </script>
@@ -1163,12 +1163,12 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 3 ? * MON</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>This script identifies members whose membership will expire in the next 7 days and send an email with
       notification.
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1700'>
     <name>send refund advice</name>
@@ -1192,11 +1192,11 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>PaymentOut</entityClass>
     <entityEventType>CREATE_OR_UPDATE</entityEventType>
     <description>Send an email to the payer about a refund that has been processed</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1701'>
     <name>Synchronise availability (cancellation)</name>
@@ -1225,9 +1225,9 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ONCOURSE_EVENT</triggerType>
-    <cronSchedule/>
-    <entityClass/>
-    <entityEventType/>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
     <description>This script finds all single session classes taught by the same tutor in the same room with overlapping
       times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class
       B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where
@@ -1303,13 +1303,13 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 3 ? * *</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>This script runs at 3am each day and checks for every session run on the previous day, if any student
       attendance is unmarked. A summary of the session details containing unmarked attendance is sent to the default
       admin email address.
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1703'>
     <name>send waiting list reminder</name>
@@ -1342,12 +1342,12 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 9 ? * MON</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send an email to the student if they are on the waiting list with information about upcoming classes
       scheduled
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1704'>
     <name>cloudassess course enrolment create</name>
@@ -1365,9 +1365,9 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ONCOURSE_EVENT</triggerType>
-    <cronSchedule/>
-    <entityClass/>
-    <entityEventType/>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
     <description>Create course enrolment in Cloud Assess</description>
     <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
   </script>
@@ -1400,10 +1400,10 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 3 * * ?</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Create MYOB manual journal for transactions created on previous day</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1706'>
     <name>send student class commencement notice 7 days</name>
@@ -1441,12 +1441,12 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 15 9 1/1 * ? *</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send an email to the student with information about when their class is starting, 7 days before it
       starts
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1707'>
     <name>send student class commencement notice</name>
@@ -1481,12 +1481,12 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 9 * * ?</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send an email to the student with information about when their class is starting, the day before it
       starts
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1708'>
     <name>SurveyGizmo send invite on enrolment completion</name>
@@ -1527,10 +1527,10 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 9 * * ?</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send SurveyGizmo invite upon enrolment completion</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1709'>
     <name>cancelled class notice for tutor</name>
@@ -1551,9 +1551,9 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ONCOURSE_EVENT</triggerType>
-    <cronSchedule/>
-    <entityClass/>
-    <entityEventType/>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
     <description>Send an email to the tutor with information about class cancellation</description>
     <systemEventType>CLASS_CANCELLED</systemEventType>
   </script>
@@ -1627,13 +1627,13 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>CourseClass</entityClass>
     <entityEventType>CREATE_OR_UPDATE</entityEventType>
     <description>email notification to promote the class to a short list of students who attended a previously class of
       the same tutor in the past.
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1711'>
     <name>send weekly finance summary report</name>
@@ -1675,10 +1675,10 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 3 ? * MON</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send an email with weekly finance summary based on 'Trial Balance' report.</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1712'>
     <name>send payment plan reminder</name>
@@ -1716,10 +1716,10 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 2 3 ? * *</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Send an email reminder with payment due date to the payer.</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1713'>
     <name>send application received notification</name>
@@ -1744,11 +1744,11 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>false</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>Application</entityClass>
     <entityEventType>CREATE</entityEventType>
     <description>Send an email to the student when their application has been received</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1714'>
     <name>send birthday voucher</name>
@@ -1821,14 +1821,14 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 4 ? * SUN *</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>This script sends a student a birthday voucher on the week of their birthday. Before activating this
       script, you will need to create a new VoucherType with the sku 'birthday'. Vouchers of this type will be created
       and sent to students on the week of their birthday. This VoucherType must also be ticked as 'Is on sale' to be
       able to be redeemed by students.
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1715'>
     <name>send invoice</name>
@@ -1853,11 +1853,11 @@
     <createdOn>2019-02-13T16:53:24Z</createdOn>
     <enabled>true</enabled>
     <triggerType>ENTITY_EVENT</triggerType>
-    <cronSchedule/>
+    <cronSchedule />
     <entityClass>Invoice</entityClass>
     <entityEventType>CREATE_OR_UPDATE</entityEventType>
     <description>Send an email to the payer with their invoice</description>
-    <systemEventType/>
+    <systemEventType />
   </script>
   <script id='1716'>
     <name>send certificate created notification</name>
@@ -1910,13 +1910,13 @@
     <enabled>false</enabled>
     <triggerType>CRON</triggerType>
     <cronSchedule>0 0 6 ? * *</cronSchedule>
-    <entityClass/>
-    <entityEventType/>
+    <entityClass />
+    <entityEventType />
     <description>Create a certificate of attendance for non-VET training with your custom
       certificate_attendance_backgound.pdf, upload the certificate to the portal and send an email to the student
       containing the link. There are options in the script to check attendance requirements before creating
       certificates, which are commented out by default.
     </description>
-    <systemEventType/>
+    <systemEventType />
   </script>
 </data>

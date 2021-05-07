@@ -5,8 +5,8 @@
     <createdOn>2013-01-01T00:00:00Z</createdOn>
     <code>tst1</code>
     <discountPercent>0.20</discountPercent>
-    <discountMax/>
-    <discountMin/>
+    <discountMax />
+    <discountMin />
     <rounding>No Rounding</rounding>
     <name>test discount 1</name>
     <publicDescription>some text</publicDescription>
@@ -20,7 +20,7 @@
     <discountDollar>20.00</discountDollar>
     <rounding>No Rounding</rounding>
     <name>test discount 2</name>
-    <publicDescription/>
+    <publicDescription />
     <validFrom>2013-01-01</validFrom>
     <validTo>2013-02-01</validTo>
   </discount>

@@ -1,21 +1,8 @@
-<?xml version='1.0' encoding='utf-8'?>
-<brochure>
-  <Tag>Subjects
-    <Tag>Creative Arts
-      <Course>
-        <CourseName>Test 1</CourseName>
-        <Description>Printed Brochure text</Description>
-        <Class>
-          <Tutor>name1 name</Tutor>
-          <ClassCode>ATT1-123</ClassCode>
-          <Site>Site 1</Site>
-          Tue 1 January 12:00AM-12:00AM
-          3 sessions of
-          <AverageHours>24 hr</AverageHours>
-          <Price>110.00</Price>
-        </Class>
-        <courseHorizontalLine/>
-      </Course>
-    </Tag>
-  </Tag>
-</brochure>
+<?xml version='1.0' encoding='utf-8'?><brochure><Tag>Subjects
+  <Tag>Creative Arts
+    <Course><CourseName>Test 1</CourseName>
+      <Description>Printed Brochure text</Description><Class><Tutor>name1 name</Tutor>
+        <ClassCode>ATT1-123</ClassCode>	<Site>Site 1</Site>
+        Tue 1 January 12:00AM-12:00AM
+        3 sessions of<AverageHours>24 hr</AverageHours><Price>110.00</Price></Class>
+      <courseHorizontalLine /></Course></Tag></Tag></brochure>

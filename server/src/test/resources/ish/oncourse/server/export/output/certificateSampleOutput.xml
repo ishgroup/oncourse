@@ -10,25 +10,24 @@
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
     <email>test@test.test</email>
-    <fax/>
+    <fax />
     <firstName>Test</firstName>
     <homePhone>331110000</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>Student</lastName>
-    <message/>
+    <message />
     <mobilePhone>331110000</mobilePhone>
     <notes>some notes
-      second note
-    </notes>
+      second note</notes>
     <postcode>1001</postcode>
     <state>NSW</state>
     <street>Main</street>
     <suburb>Sydney</suburb>
-    <tfn/>
+    <tfn />
     <uniqueCode>ST1UNIQUE</uniqueCode>
     <workPhone>331110000</workPhone>
-    <title/>
+    <title />
     <student>
       <disabilityType>Hearing/Deaf</disabilityType>
       <englishProficiency>Very Well</englishProficiency>
@@ -61,23 +60,23 @@
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
     <email>test@mail.com</email>
-    <fax/>
+    <fax />
     <firstName>TestFirstName</firstName>
     <homePhone>331110000</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>TestLastName</lastName>
-    <message/>
+    <message />
     <mobilePhone>331110000</mobilePhone>
-    <notes/>
+    <notes />
     <postcode>1111</postcode>
     <state>NSW</state>
     <street>Main st.</street>
     <suburb>Sydney</suburb>
-    <tfn/>
+    <tfn />
     <uniqueCode>ST1UNIQUE</uniqueCode>
     <workPhone>331110000</workPhone>
-    <title/>
+    <title />
     <student>
       <disabilityType>Hearing/Deaf</disabilityType>
       <englishProficiency>Very Well</englishProficiency>
@@ -97,7 +96,7 @@
       <printed>2013-01-01</printed>
       <firstName>TestFirstName</firstName>
       <lastName>TestLastName</lastName>
-      <nationalCode/>
+      <nationalCode />
     </certificate>
   </contact>
 </data>

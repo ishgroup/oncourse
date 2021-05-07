@@ -5,24 +5,24 @@
     <createdOn>2012-05-10T00:00:00Z</createdOn>
     <studentCount>1</studentCount>
     <notes>Notes 1...</notes>
-    <course id='100'/>
-    <contact id='100'/>
+    <course id='100' />
+    <contact id='100' />
   </waitingList>
   <waitingList id='200'>
     <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
     <createdOn>2012-05-10T00:00:00Z</createdOn>
     <studentCount>2</studentCount>
     <notes>Notes 2...</notes>
-    <course id='200'/>
-    <contact id='100'/>
+    <course id='200' />
+    <contact id='100' />
   </waitingList>
   <waitingList id='300'>
     <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
     <createdOn>2012-05-10T00:00:00Z</createdOn>
     <studentCount>1</studentCount>
     <notes>Notes 3...</notes>
-    <course id='100'/>
-    <contact id='200'/>
+    <course id='100' />
+    <contact id='200' />
   </waitingList>
   <course id='100'>
     <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
@@ -62,23 +62,23 @@
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
     <email>test@test.test</email>
-    <fax/>
+    <fax />
     <firstName>Test</firstName>
     <homePhone>331110000</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>Student</lastName>
-    <message/>
+    <message />
     <mobilePhone>331110000</mobilePhone>
-    <notes/>
+    <notes />
     <postcode>1001</postcode>
     <state>NSW</state>
     <street>Main</street>
     <suburb>Sydney</suburb>
-    <tfn/>
+    <tfn />
     <uniqueCode>ST1UNIQUE</uniqueCode>
     <workPhone>331110000</workPhone>
-    <title/>
+    <title />
     <student>
       <disabilityType>Hearing/Deaf</disabilityType>
       <englishProficiency>Very Well</englishProficiency>
@@ -92,10 +92,10 @@
       <yearSchoolCompleted>2009</yearSchoolCompleted>
     </student>
     <tutor>
-      <dateStarted/>
-      <dateFinished/>
-      <resume/>
-      <dateFinished/>
+      <dateStarted />
+      <dateFinished />
+      <resume />
+      <dateFinished />
     </tutor>
   </contact>
   <contact id='200'>
@@ -108,23 +108,23 @@
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
     <email>test@test.test</email>
-    <fax/>
+    <fax />
     <firstName>Test2</firstName>
     <homePhone>331110000</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>Student2</lastName>
-    <message/>
+    <message />
     <mobilePhone>331110000</mobilePhone>
-    <notes/>
+    <notes />
     <postcode>1001</postcode>
     <state>NSW</state>
     <street>Main</street>
     <suburb>Sydney</suburb>
-    <tfn/>
+    <tfn />
     <uniqueCode>ST2UNIQUE</uniqueCode>
     <workPhone>331110000</workPhone>
-    <title/>
+    <title />
     <student>
       <disabilityType>Hearing/Deaf</disabilityType>
       <englishProficiency>Very Well</englishProficiency>
@@ -138,10 +138,10 @@
       <yearSchoolCompleted>2009</yearSchoolCompleted>
     </student>
     <tutor>
-      <dateStarted/>
-      <dateFinished/>
-      <resume/>
-      <dateFinished/>
+      <dateStarted />
+      <dateFinished />
+      <resume />
+      <dateFinished />
     </tutor>
   </contact>
 </data>

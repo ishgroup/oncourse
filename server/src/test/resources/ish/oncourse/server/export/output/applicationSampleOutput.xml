@@ -4,9 +4,9 @@
     <confirmationStatus>DO_NOT_SEND</confirmationStatus>
     <createdOn>23-6-2017 12:00:00</createdOn>
     <modifiedOn>23-6-2017 12:00:00</modifiedOn>
-    <enrolBy/>
-    <feeOverride/>
-    <reason/>
+    <enrolBy />
+    <feeOverride />
+    <reason />
     <source>office</source>
     <status>New</status>
     <studentFirstName>name1</studentFirstName>

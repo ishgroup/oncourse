@@ -1,71 +1,71 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
   <priorLearning id='1'>
-    <createdOn/>
-    <modifiedOn/>
+    <createdOn />
+    <modifiedOn />
     <title>Student 1 prior learning</title>
-    <notes/>
+    <notes />
     <externalRef>WPE</externalRef>
-    <outcomeIdTrainingOrg/>
+    <outcomeIdTrainingOrg />
     <student id='1'>
       <disabilityType>not stated</disabilityType>
       <englishProficiency>not stated</englishProficiency>
       <highestSchoolLevel>not stated</highestSchoolLevel>
       <indigenousStatus>not stated</indigenousStatus>
       <isOverseasClient>false</isOverseasClient>
-      <isStillAtSchool/>
+      <isStillAtSchool />
       <labourForceStatus>not stated</labourForceStatus>
       <priorEducationCode>not stated</priorEducationCode>
       <studentNumber>1</studentNumber>
-      <yearSchoolCompleted/>
+      <yearSchoolCompleted />
     </student>
     <qualification id=''>
-      <title/>
-      <nationalCode/>
-      <modifiedOn/>
-      <createdOn/>
-      <isAccreditedCourse/>
-      <level/>
-      <nominalHours/>
-      <reviewDate/>
-      <anzsco/>
-      <fieldOfEducation/>
-      <isOffered/>
-      <newApprenticeship/>
+      <title />
+      <nationalCode />
+      <modifiedOn />
+      <createdOn />
+      <isAccreditedCourse />
+      <level />
+      <nominalHours />
+      <reviewDate />
+      <anzsco />
+      <fieldOfEducation />
+      <isOffered />
+      <newApprenticeship />
     </qualification>
   </priorLearning>
   <priorLearning id='2'>
-    <createdOn/>
-    <modifiedOn/>
+    <createdOn />
+    <modifiedOn />
     <title>Student 2 prior learning</title>
-    <notes/>
+    <notes />
     <externalRef>WPA</externalRef>
-    <outcomeIdTrainingOrg/>
+    <outcomeIdTrainingOrg />
     <student id='2'>
       <disabilityType>Hearing/Deaf</disabilityType>
       <englishProficiency>Very Well</englishProficiency>
       <highestSchoolLevel>Did not go to school</highestSchoolLevel>
       <indigenousStatus>Aboriginal</indigenousStatus>
       <isOverseasClient>true</isOverseasClient>
-      <isStillAtSchool/>
+      <isStillAtSchool />
       <labourForceStatus>Full-time employee</labourForceStatus>
       <priorEducationCode>Bachelor degree or higher degree level</priorEducationCode>
       <studentNumber>2</studentNumber>
-      <yearSchoolCompleted/>
+      <yearSchoolCompleted />
     </student>
     <qualification id=''>
-      <title/>
-      <nationalCode/>
-      <modifiedOn/>
-      <createdOn/>
-      <isAccreditedCourse/>
-      <level/>
-      <nominalHours/>
-      <reviewDate/>
-      <anzsco/>
-      <fieldOfEducation/>
-      <isOffered/>
-      <newApprenticeship/>
+      <title />
+      <nationalCode />
+      <modifiedOn />
+      <createdOn />
+      <isAccreditedCourse />
+      <level />
+      <nominalHours />
+      <reviewDate />
+      <anzsco />
+      <fieldOfEducation />
+      <isOffered />
+      <newApprenticeship />
     </qualification>
   </priorLearning>
 </data>
