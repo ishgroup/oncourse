@@ -13,6 +13,7 @@ import ish.common.types.AvetmissStudentLabourStatus
 import ish.common.types.AvetmissStudentPriorEducation
 import ish.common.types.AvetmissStudentSchoolLevel
 import ish.common.types.CourseClassAttendanceType
+import ish.common.types.DeliveryMode
 import ish.common.types.EnrolmentStatus
 import ish.common.types.Gender
 import ish.common.types.OutcomeStatus
@@ -581,8 +582,23 @@ class TCSIUtils {
         }
 
         unit["course_assurance_indicator"] = false
-        unit["mode_of_attendance_code"] = '1'
 
+        if (clazz.deliveryMode) { //E329
+            switch (clazz.deliveryMode) {
+                case DeliveryMode.CLASSROOM:
+                case DeliveryMode.CLASSROOM_AND_WORKSPACE:
+                    unit["mode_of_attendance_code"] = '1' 
+                    break
+                case DeliveryMode.WORKPLACE:
+                    unit["mode_of_attendance_code"] = '6'
+                    break
+                default:
+                    unit["mode_of_attendance_code"] = '3'
+                    break
+            }
+        } else {
+            unit["mode_of_attendance_code"] = '3'
+        }
         
         
         if (enrolmentUnit.feeStatus) {
