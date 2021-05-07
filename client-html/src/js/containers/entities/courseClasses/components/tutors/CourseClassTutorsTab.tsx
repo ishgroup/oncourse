@@ -97,8 +97,8 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
       (index: number, tutor: CourseClassTutorExtended, fields: WrappedFieldArrayProps["fields"]) => {
         const hasWages = isTutorWageExist(values.budget, tutor);
 
-        showConfirm(
-          () => {
+        showConfirm({
+          onConfirm: () => {
             const upadted = [...fields.getAll()];
             upadted.splice(index, 1);
 
@@ -115,9 +115,9 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
                     "budget",
                     values.budget.filter(
                       b => !(
-                          b.flowType === "Wages"
-                          && (tutor.id ? b.courseClassTutorId === tutor.id : b.temporaryTutorId === tutor.temporaryId)
-                        )
+                        b.flowType === "Wages"
+                        && (tutor.id ? b.courseClassTutorId === tutor.id : b.temporaryTutorId === tutor.temporaryId)
+                      )
                     )
                   )
                 );
@@ -137,11 +137,11 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
 
             onDeleteConfirm();
           },
-          hasWages
+          confirmMessage: hasWages
             ? `Wages for ${tutor.tutorName} will be removed too, do you really want to continue?`
             : "Tutor will be deleted permanently",
-          "Delete"
-        );
+          cancelButtonText: "Delete"
+        });
       },
       [expanded, values.budget && values.budget.length, values.sessions]
     );

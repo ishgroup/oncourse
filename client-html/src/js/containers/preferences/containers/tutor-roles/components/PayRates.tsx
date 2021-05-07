@@ -7,6 +7,7 @@ import { TutorRolePayRate } from "@api/model";
 import { format, subYears } from "date-fns";
 import PayRateItem from "./PayRateItem";
 import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const styles = () => createStyles({
   payRateItem: {
@@ -21,7 +22,7 @@ interface Props {
   form: string;
   value: any;
   dispatch: any;
-  showConfirm?: any;
+  showConfirm?: ShowConfirmCaller;
 }
 
 const newPayRate: TutorRolePayRate = {
@@ -44,9 +45,13 @@ class PayRates extends React.Component<Props, any> {
    deletePayRate = (index: number) => {
      const { form, dispatch, showConfirm } = this.props;
 
-     showConfirm(() => {
-       dispatch(arrayRemove(form, FIELD_NAME, index));
-    }, "This item will be removed from pay rate list");
+     showConfirm({
+       onConfirm: () => {
+         dispatch(arrayRemove(form, FIELD_NAME, index));
+       },
+       confirmMessage: "This item will be removed from pay rate list",
+       confirmButtonText: "Delete"
+     });
   };
 
   render() {

@@ -107,7 +107,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onDelete: (id: string, tutorRoles: DefinedTutorRole[]) => dispatch(removeTutorRole(id, tutorRoles)),
   onCreate: (role: DefinedTutorRole) => dispatch(createTutorRole(role)),
   getTutorRole: (id: string) => dispatch(getTutorRole(id)),
-  showConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
+  showConfirm: props => dispatch(showConfirm(props)),
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 

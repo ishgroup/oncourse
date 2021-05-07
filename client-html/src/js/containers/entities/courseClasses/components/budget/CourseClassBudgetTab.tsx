@@ -551,18 +551,17 @@ const CourseClassBudgetTab = React.memo<Props>(
 
         if (isStudentFee) {
           showConfirm(
-            null,
-            `The class must have at least one income fee line. Fee amount can be set to ${currencySymbol}0.00`,
-            null,
-            null,
-            null,
-            "Ok"
+            {
+              title: null,
+              confirmMessage: `The class must have at least one income fee line. Fee amount can be set to ${currencySymbol}0.00`,
+              cancelButtonText: "Ok"
+            }
           );
           return;
         }
 
-        showConfirm(
-          () => {
+        showConfirm({
+          onConfirm: () => {
             if (!values.budget[index]["temporaryId"]) {
               ClassCostService.validateDelete(id)
                 .then(() => {
@@ -579,9 +578,9 @@ const CourseClassBudgetTab = React.memo<Props>(
               dispatch(removeActionsFromQueue([{ entity: "ClassCost", id: values.budget[index]["temporaryId"] }]));
             }
           },
-          "Budget item will be deleted permanently",
-          "DELETE"
-        );
+          confirmMessage: "Budget item will be deleted permanently",
+          cancelButtonText: "DELETE"
+        });
       },
       [values.budget, form]
     );

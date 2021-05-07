@@ -6,14 +6,15 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { updateContactRelationTypes, deleteContactRelationType, getContactRelationTypes } from "../../actions";
 import { getFormValues } from "redux-form";
-import { State } from "../../../../reducers/state";
 import { ContactRelationType } from "@api/model";
+import { updateContactRelationTypes, deleteContactRelationType, getContactRelationTypes } from "../../actions";
+import { State } from "../../../../reducers/state";
 import { Fetch } from "../../../../model/common/Fetch";
 import ContactRelationTypesForm from "./components/ContactRelationTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { showConfirm } from "../../../../common/actions";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 
 interface Props {
   getTypes: () => void;
@@ -23,7 +24,7 @@ interface Props {
   data: ContactRelationType[];
   timestamps: Date[];
   fetch: Fetch;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
 }
 
 class ContactRelationTypes extends React.Component<Props, any> {
@@ -69,14 +70,12 @@ const mapStateToProps = (state: State) => ({
   fetch: state.fetch
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getTypes: () => dispatch(getContactRelationTypes()),
     updateContactRelationTypes: (contactRelationTypes: ContactRelationType[]) =>
       dispatch(updateContactRelationTypes(contactRelationTypes)),
     deleteContactRelationType: (id: string) => dispatch(deleteContactRelationType(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
-  };
-};
+    openConfirm: props => dispatch(showConfirm(props))
+  });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ContactRelationTypes);

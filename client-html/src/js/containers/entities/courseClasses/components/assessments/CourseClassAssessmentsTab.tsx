@@ -110,36 +110,37 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
 
   const deleteAssessmentItem = useCallback(
     (index: number) => {
-      showConfirm(
-        () => {
-          const onDeleteConfirm = () => {
-            dispatch(arrayRemove(form, "assessments", index));
-          };
+      showConfirm({
+          onConfirm: () => {
+            const onDeleteConfirm = () => {
+              dispatch(arrayRemove(form, "assessments", index));
+            };
 
-          const assessment = values.assessments[index];
+            const assessment = values.assessments[index];
 
-          if (assessment.id) {
-            CourseClassAssessmentService.validateDelete(assessment.id)
-              .then(() => {
-                onDeleteConfirm();
-                dispatch(
-                  addActionToQueue(
-                    deleteCourseClassAssessment(assessment.id),
-                    "DELETE",
-                    "AssessmentClass",
-                    assessment.id
-                  )
-                );
-              })
-              .catch(response => instantFetchErrorHandler(dispatch, response));
-            return;
-          }
-          dispatch(removeActionsFromQueue([{ entity: "AssessmentClass", id: assessment.temporaryId }]));
+            if (assessment.id) {
+              CourseClassAssessmentService.validateDelete(assessment.id)
+                .then(() => {
+                  onDeleteConfirm();
+                  dispatch(
+                    addActionToQueue(
+                      deleteCourseClassAssessment(assessment.id),
+                      "DELETE",
+                      "AssessmentClass",
+                      assessment.id
+                    )
+                  );
+                })
+                .catch(response => instantFetchErrorHandler(dispatch, response));
+              return;
+            }
+            dispatch(removeActionsFromQueue([{ entity: "AssessmentClass", id: assessment.temporaryId }]));
 
-          onDeleteConfirm();
-        },
-        "Assessment will be deleted permanently",
-        "Delete"
+            onDeleteConfirm();
+          },
+          confirmButtonText: "Delete",
+          confirmMessage: "Assessment will be deleted permanently"
+        }
       );
     },
     [values.assessments && values.assessments.length]

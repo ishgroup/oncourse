@@ -8,7 +8,7 @@ import { InjectedFormProps } from "redux-form";
 import { Dispatch } from "redux";
 import { DataResponse, EmailTemplate, Filter, Script, SearchQuery } from "@api/model";
 import { MenuTag } from "../tags";
-import { AnyArgFunction } from "./CommonFunctions";
+import { AnyArgFunction, NoArgFunction } from "./CommonFunctions";
 import { ShowConfirmCaller } from "./Confirm";
 import { MessageData } from "./Message";
 import { EntityName } from "../entities/common";
@@ -35,6 +35,19 @@ export interface FindRelatedItem {
 export interface SavingFilterState {
   aqlSearch: string;
   isPrivate: boolean;
+}
+
+export interface CogwhelAdornmentProps {
+  closeMenu: NoArgFunction;
+  menuItemClass: string;
+  searchQuery: string;
+  selection: string[];
+  showConfirm: ShowConfirmCaller;
+  onCreate: NoArgFunction;
+  entity: EntityName;
+  showBulkEditDrawer: boolean;
+  toggleBulkEditDrawer: NoArgFunction;
+  records: DataResponse;
 }
 
 export interface ListState {
@@ -76,7 +89,7 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   toogleFullScreenEditView: any;
   dispatch?: Dispatch<any>;
   rootEntity: EntityName;
-  showConfirm: any;
+  showConfirm: ShowConfirmCaller;
   openNestedEditView: any;
   manualLink?: any;
   isNested?: boolean;
