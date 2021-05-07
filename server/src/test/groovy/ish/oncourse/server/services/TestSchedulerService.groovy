@@ -3,12 +3,10 @@
  */
 package ish.oncourse.server.services
 
-import groovy.transform.CompileStatic
 import org.quartz.*
 
 import java.text.ParseException
 
-@CompileStatic
 class TestSchedulerService implements ISchedulerService {
 
     private List<JobDetail> jobs = new ArrayList<>()
@@ -32,7 +30,8 @@ class TestSchedulerService implements ISchedulerService {
 
     @Override
     void removeJob(JobKey jobKey) throws SchedulerException {
-        for (JobDetail jobDetail : jobs) {
+        List<JobDetail> clonJobs = new ArrayList<>(jobs)
+        for (JobDetail jobDetail : clonJobs) {
             if (jobKey == jobDetail.getKey()) {
                 jobs.remove(jobDetail)
             }
