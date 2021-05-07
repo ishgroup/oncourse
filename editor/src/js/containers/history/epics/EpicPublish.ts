@@ -9,7 +9,7 @@ import {REJECTED} from "../../../common/actions/ActionUtils";
 
 const request: EpicUtils.Request<any, any> = {
   type: PUBLISH_REQUEST,
-  getData: (payload, state) => PublishService.setVersion(payload.id, payload.status),
+  getData: (payload) => PublishService.setVersion(payload.id, payload.status, payload.description),
   processData: (response: any, state: any) => {
     return [
       success({

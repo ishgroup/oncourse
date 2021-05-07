@@ -17,6 +17,7 @@ import {State} from "../../reducers/state";
 import CustomButton from "../../common/components/CustomButton";
 // import ModalPublish from "../../common/components/ModalPublish";
 import {showModal} from "../../common/containers/modal/actions";
+import ModalPublish from "../../common/components/ModalPublish";
 
 const styles = theme => ({
   historyWrapper: {
@@ -29,7 +30,7 @@ interface Props {
   classes: any;
   versions: Version[];
   onInit: () => any;
-  onPublish: (id) => any;
+  // onPublish: (id) => any;
   onRevert: (id) => any;
   showModal: (props) => any;
   fetching: boolean;
@@ -48,16 +49,16 @@ class History extends React.Component<Props, any> {
     this.props.onInit();
   }
 
-  // modalToggle(value) {
-  //   this.setState({showModal: value});
-  // }
-
-  onPublish(id) {
-    this.props.showModal({
-      text: 'You are about to push your changes onto the live site. Are you sure?',
-      onConfirm: () => this.props.onPublish(id),
-    });
+  modalToggle(value) {
+    this.setState({showModal: value});
   }
+
+  // onPublish(id) {
+  //   this.props.showModal({
+  //     text: 'You are about to push your changes onto the live site. Are you sure?',
+  //     onConfirm: () => this.props.onPublish(id),
+  //   });
+  // }
 
   onRevert(id) {
     this.props.showModal({
@@ -73,7 +74,7 @@ class History extends React.Component<Props, any> {
 
     return (
       <div className={clsx(classes.historyWrapper, (fetching && "fetching"))}>
-        {/*<ModalPublish show={showModal} onHide={(val: boolean) => this.modalToggle(val)}/>*/}
+        <ModalPublish show={showModal} onHide={(val: boolean) => this.modalToggle(val)}/>
 
         <TableContainer component={Paper} className="p-3">
           <Table  className="table table--row-center" aria-label="simple table">
@@ -100,8 +101,8 @@ class History extends React.Component<Props, any> {
                     {version.status === VersionStatus.draft &&
                       <CustomButton
                         styleType="submit"
-                        // onClick={() => this.modalToggle(true)}
-                        onClick={() => this.onPublish(version.id)}
+                        onClick={() => this.modalToggle(true)}
+                        // onClick={() => this.onPublish(version.id)}
                       >
                         Publish
                       </CustomButton>
@@ -133,7 +134,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => dispatch(getHistory()),
-    onPublish: id => dispatch(publish(id, VersionStatus.published)),
+    // onPublish: id => dispatch(publish(id, VersionStatus.published)),
     onRevert: id => dispatch(setVersion(id, VersionStatus.draft)),
     showModal: props => dispatch(showModal(props)),
   };

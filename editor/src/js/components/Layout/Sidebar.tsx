@@ -13,6 +13,7 @@ import CustomButton from "../../common/components/CustomButton";
 // import ModalPublish from "../../common/components/ModalPublish";
 import {BlockState} from "../../containers/content/containers/blocks/reducers/State";
 import PageService from "../../services/PageService";
+import ModalPublish from "../../common/components/ModalPublish";
 
 const includedSubMenus = ["Blocks", "Pages", "Themes"];
 
@@ -372,7 +373,7 @@ class Sidebar extends React.Component<Props, any> {
         <div className={clsx(classes.sidebar, slim && classes.sidebarSlim)}>
           <div className={classes.sidebarContent}>
 
-            {/*<ModalPublish show={showModal} onHide={(val: boolean) => this.modalToggle(val)}/>*/}
+            <ModalPublish show={showModal} onHide={(val: boolean) => this.modalToggle(val)}/>
 
             {routes.map((route, index) => (
               <RouteWrapper
@@ -381,7 +382,6 @@ class Sidebar extends React.Component<Props, any> {
                 exact={route.exact}
                 isPublic={route.isPublic}
                 component={route.sidebar || mainSidebar}
-                // component={navigation.showNavigation ? mainSidebar : (route.sidebar || mainSidebar)}
               />
             ))}
 

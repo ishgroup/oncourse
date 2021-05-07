@@ -8,7 +8,7 @@ import {notificationParams} from "../../../common/utils/NotificationSettings";
 
 const request: EpicUtils.Request<any, any> = {
   type: SET_VERSION_REQUEST,
-  getData: (payload, state) => PublishService.setVersion(payload.id, payload.status),
+  getData: (payload) => PublishService.setVersion(payload.id, payload.status),
   processData: (response: any, state: any, payload) => {
     return [
       success({...notificationParams,title: `Draft reverted to version #${payload.id}`}),
