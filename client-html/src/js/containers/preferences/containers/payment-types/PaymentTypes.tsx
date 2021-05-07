@@ -6,16 +6,17 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { getPaymentTypes, updatePaymentTypes, deletePaymentType } from "../../actions";
 import { getFormMeta, getFormValues } from "redux-form";
-import { State } from "../../../../reducers/state";
 import { Account, PaymentMethod } from "@api/model";
+import { getPaymentTypes, updatePaymentTypes, deletePaymentType } from "../../actions";
+import { State } from "../../../../reducers/state";
 import { Fetch } from "../../../../model/common/Fetch";
 import PaymentTypesForm from "./components/PaymentTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { getPlainAccounts } from "../../../entities/accounts/actions";
 import { showConfirm } from "../../../../common/actions";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 
 interface Props {
   getTypes: () => void;
@@ -28,7 +29,7 @@ interface Props {
   timestamps: Date[];
   fetch: Fetch;
   touched: any;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: ShowConfirmCaller;
 }
 
 class PaymentTypes extends React.Component<Props, any> {
@@ -52,9 +53,8 @@ class PaymentTypes extends React.Component<Props, any> {
     const created = timestamps && timestamps[0];
     const modified = timestamps && timestamps[1];
 
-    const assetAccounts =
-      accounts &&
-      accounts
+    const assetAccounts = accounts
+      && accounts
         .filter(account => account.type === "asset")
         .map(item => ({
           value: Number(item.id),
@@ -91,14 +91,12 @@ const mapStateToProps = (state: State) => ({
   fetch: state.fetch
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getTypes: () => dispatch(getPaymentTypes()),
     getAccounts: () => dispatch(getPlainAccounts()),
     updatePaymentTypes: (paymentTypes: PaymentMethod[]) => dispatch(updatePaymentTypes(paymentTypes)),
     deletePaymentType: (id: string) => dispatch(deletePaymentType(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
-  };
-};
+    openConfirm: props => dispatch(showConfirm(props))
+  });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PaymentTypes);

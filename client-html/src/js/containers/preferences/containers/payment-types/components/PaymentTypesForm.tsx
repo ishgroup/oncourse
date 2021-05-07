@@ -24,6 +24,7 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const manualLink = getManualLink("generalPrefs_paymentTypes");
 
@@ -43,7 +44,7 @@ interface Props {
   touched: any;
   form: string;
   reset: () => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
   history?: any,
   nextLocation?: string,
   setNextLocation?: (nextLocation: string) => void,
@@ -165,7 +166,7 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from funding contracts list", "DELETE");
+    openConfirm({ onConfirm, confirmMessage: "This item will be removed from funding contracts list", confirmButtonText: "DELETE" });
   };
 
   render() {

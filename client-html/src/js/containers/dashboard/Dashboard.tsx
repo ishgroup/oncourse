@@ -117,8 +117,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getDashboardPreferences: () => dispatch(getUserPreferences([DASHBOARD_CATEGORY_WIDTH_KEY, DASHBOARD_NEWS_LATEST_READ])),
   setDashboardColumnWidth: (key: PreferenceEnum, value: string) => dispatch(setUserPreference({ key, value })),
   setPreferencesTheme: (value: ThemeValues) => dispatch(setUserPreference({ key: DASHBOARD_THEME_KEY, value })),
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) =>
-    dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText)),
+  openConfirm: props => dispatch(showConfirm(props)),
   toggleSwipeableDrawer: () => dispatch(toggleSwipeableDrawer(VARIANTS.persistent)),
   setDashboardNewsLatestReadDate: (value: string) => dispatch(setUserPreference({ key: DASHBOARD_NEWS_LATEST_READ, value }))
 });

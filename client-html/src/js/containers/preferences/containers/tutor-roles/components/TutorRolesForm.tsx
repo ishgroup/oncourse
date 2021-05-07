@@ -18,6 +18,7 @@ import PayRates from "./PayRates";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
@@ -29,7 +30,7 @@ interface Props extends InjectedFormProps {
   handleDelete: any;
   onSubmit: (val: any) => void;
   disableRouteConfirm: boolean;
-  showConfirm?: any;
+  showConfirm?: ShowConfirmCaller;
   history?: any;
   tutorRoles?: any;
   fetch?: any;

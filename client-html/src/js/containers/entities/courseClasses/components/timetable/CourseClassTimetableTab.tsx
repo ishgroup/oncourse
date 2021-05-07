@@ -258,8 +258,8 @@ const CourseClassTimetableTab: React.FC<Props> = ({
     (e, value) => {
       if (!values.isDistantLearningCourse && !isNew) {
         e.preventDefault();
-        showConfirm(() => {
-          CourseClassTimetableService.validateUpdate(values.id, [])
+        showConfirm({
+          onConfirm: () => CourseClassTimetableService.validateUpdate(values.id, [])
             .then(sessionWarnings => {
               dispatch(change(form, "isDistantLearningCourse", value));
               dispatch(change(form, "sessions", []));
@@ -271,10 +271,10 @@ const CourseClassTimetableTab: React.FC<Props> = ({
               dispatch(addActionToQueue(postCourseClassSessions(values.id, []), "POST", "Session", values.id));
               dispatch(setCourseClassSessionsWarnings(sessionWarnings));
             })
-            .catch(res => instantFetchErrorHandler(dispatch, res));
-        },
-        "You are about to delete all sessions from this class. This will also remove any attendance records and any training plan details",
-        "Delete");
+            .catch(res => instantFetchErrorHandler(dispatch, res)),
+          confirmMessage: "You are about to delete all sessions from this class. This will also remove any attendance records and any training plan details",
+          confirmButtonText: "Delete"
+        });
       }
     },
     [values.isDistantLearningCourse, values.sessions, isNew]
@@ -380,29 +380,29 @@ const CourseClassTimetableTab: React.FC<Props> = ({
   const onDeleteHandler = useCallback(
     (e, index) => {
       e.stopPropagation();
-      showConfirm(
-        () => {
-          const updated: TimetableSession[] = [...values.sessions];
+      showConfirm({
+        onConfirm: () => {
+        const updated: TimetableSession[] = [...values.sessions];
 
-          updated.splice(index, 1);
+        updated.splice(index, 1);
 
-          dispatch(arrayRemove(form, "sessions", index));
+        dispatch(arrayRemove(form, "sessions", index));
 
-          if (!updated.length) {
-            dispatch(change(form, "startDateTime", null));
-            dispatch(change(form, "endDateTime", null));
+        if (!updated.length) {
+          dispatch(change(form, "startDateTime", null));
+          dispatch(change(form, "endDateTime", null));
 
-            if (!values.id) {
-              dispatch(removeActionsFromQueue([{ entity: "Session" }]));
-              return;
-            }
+          if (!values.id) {
+            dispatch(removeActionsFromQueue([{ entity: "Session" }]));
+            return;
           }
+        }
 
-          validateSessionUpdate(values.id, updated, dispatch, form);
-        },
-        "Session will be deleted permanently",
-        "Agree"
-      );
+        validateSessionUpdate(values.id, updated, dispatch, form);
+      },
+        confirmMessage: "Session will be deleted permanently",
+        cancelButtonText: "Delete"
+      });
     },
     [form, values.sessions]
   );
@@ -488,8 +488,8 @@ const CourseClassTimetableTab: React.FC<Props> = ({
   }, []);
 
   const onDeleteTimetableEvents = useCallback(() => {
-    showConfirm(
-      () => {
+    showConfirm({
+      onConfirm: () => {
         const updated: TimetableSession[] = [...values.sessions];
         sessionSelection.forEach(session => {
           const index = updated.findIndex(s => s.id === session);
@@ -513,9 +513,9 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         }
         validateSessionUpdate(values.id, updated, dispatch, form);
       },
-      `${sessionSelection.length} Session${sessionSelection.length > 1 ? "s" : ""} will be deleted permanently`,
-      "Agree"
-    );
+      confirmMessage: `${sessionSelection.length} Session${sessionSelection.length > 1 ? "s" : ""} will be deleted permanently`,
+      cancelButtonText: "Delete"
+    });
   }, [form, values.sessions, sessionSelection]);
 
   const onBulkSessionUpdate = useCallback(bulkValue => {

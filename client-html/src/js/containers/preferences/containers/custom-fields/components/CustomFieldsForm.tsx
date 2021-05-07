@@ -60,7 +60,6 @@ interface Props {
   form: string;
   onDelete: (id: string) => void;
   onUpdate: (customFields: CustomFieldType[]) => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
   history?: any,
   nextLocation?: string,
   setNextLocation?: (nextLocation: string) => void,

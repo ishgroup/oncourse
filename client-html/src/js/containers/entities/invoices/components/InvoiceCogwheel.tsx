@@ -4,7 +4,7 @@
  */
 
 import React, {
- useMemo, memo, useCallback, useEffect, useState 
+ useMemo, memo, useCallback, useEffect, useState
 } from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Dispatch } from "redux";
@@ -21,8 +21,22 @@ import { getRecords, setListNestedEditRecord } from "../../../../common/componen
 import { PaymentOutModel } from "../../paymentsOut/reducers/state";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import history from "../../../../constants/History";
+import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
 
-const InvoiceCogwheel = memo<any>(props => {
+interface Props extends CogwhelAdornmentProps {
+  clearContraInvoices: any;
+  duplicateAndReverseInvoice: any;
+  contraInvoices: any;
+  selectedInvoiceAmountOwing: any;
+  getAmountOwing: any;
+  getAddPaymentOutContact: any;
+  isFormDirty: boolean;
+  resetEditView: any;
+  openAddPaymentOutEditView: any;
+  hasQePermissions: any;
+}
+
+const InvoiceCogwheel = memo<Props>(props => {
   const {
     selection,
     menuItemClass,
@@ -116,9 +130,11 @@ const InvoiceCogwheel = memo<any>(props => {
       }
       case "Duplicate": {
         if (isFormDirty) {
-          showConfirm(() => {
-            resetEditView();
-            setTimeout(duplicateCallback, 100);
+          showConfirm({
+            onConfirm: () => {
+              resetEditView();
+              setTimeout(duplicateCallback, 100);
+            }
           });
         } else {
           duplicateCallback();

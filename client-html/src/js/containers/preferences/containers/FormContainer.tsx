@@ -25,6 +25,7 @@ import * as security from "../../../model/preferences/security";
 import { State } from "../../../reducers/state";
 import { Fetch } from "../../../model/common/Fetch";
 import { setNextLocation, showConfirm } from "../../../common/actions";
+import { ShowConfirmCaller } from "../../../model/common/Confirm";
 
 const styles = () =>
   createStyles({
@@ -59,7 +60,7 @@ interface Props {
   enums?: any;
   skipOnInit?: boolean;
   fetch?: Fetch;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: ShowConfirmCaller;
   nextLocation?: string,
   setNextLocation?: (nextLocation: string) => void,
 }
@@ -227,11 +228,11 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    dispatch,
-    onInit: category => dispatch(getPreferences(category)),
-    onSubmit: (category, fields) => dispatch(savePreferences(category, fields)),
-    openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
-    setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-  });
+  dispatch,
+  onInit: category => dispatch(getPreferences(category)),
+  onSubmit: (category, fields) => dispatch(savePreferences(category, fields)),
+  openConfirm: props => dispatch(showConfirm(props)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(FormContainer)));

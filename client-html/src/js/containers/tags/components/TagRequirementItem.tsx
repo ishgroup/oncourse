@@ -5,8 +5,10 @@ import { withStyles, createStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Delete from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
+import { Dispatch } from "redux";
 import { PillCheckboxField } from "../../../common/components/form/PillCheckbox";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
+import { ShowConfirmCaller } from "../../../model/common/Confirm";
 
 const styles = () => createStyles({
   deleteButton: {
@@ -31,7 +33,18 @@ const styles = () => createStyles({
   }
 });
 
-const TagRequirementItem = props => {
+interface Props {
+  classes: any;
+  disabled: boolean;
+  item: any;
+  parent: any;
+  onDelete: any;
+  index: number;
+  openConfirm: ShowConfirmCaller;
+  dispatch: Dispatch;
+}
+
+const TagRequirementItem: React.FC<Props> = props => {
   const {
     classes, disabled, item, parent, onDelete, index, openConfirm, dispatch
   } = props;
@@ -40,24 +53,20 @@ const TagRequirementItem = props => {
     if (newValue) {
       e.preventDefault();
 
-      let text = "";
+      let confirmMessage = "";
 
       if (name.endsWith("mandatory")) {
-        text = "You are setting this tag group as mandatory. If some records aren't already tagged from this group, you\n"
+        confirmMessage = "You are setting this tag group as mandatory. If some records aren't already tagged from this group, you\n"
           + "              will be prompted to add a tag next time you edit those records.";
       }
       if (name.endsWith("limitToOneTag")) {
-        text = "You are setting this tag group to limit to one. If some records already have more than one tag from this group, you'll be prompted to remove some tags next time you edit those records.";
+        confirmMessage = "You are setting this tag group to limit to one. If some records already have more than one tag from this group, you'll be prompted to remove some tags next time you edit those records.";
       }
-      openConfirm(
-        () => {
-          dispatch(change("TagsForm", name, newValue));
-        },
-        text,
-        "Ok",
-        null,
-        null
-      );
+      openConfirm({
+        onConfirm: () => dispatch(change("TagsForm", name, newValue)),
+        confirmMessage,
+        confirmButtonText: "Ok"
+      });
     }
   }, []);
 

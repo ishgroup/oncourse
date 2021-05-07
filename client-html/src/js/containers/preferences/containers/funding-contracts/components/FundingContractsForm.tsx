@@ -37,6 +37,7 @@ import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps"
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
 import { setNextLocation } from "../../../../../common/actions";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 interface Props {
   values: any;
@@ -51,7 +52,7 @@ interface Props {
   hasLicence: boolean;
   form: string;
   timestamps: Date[];
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
   fetch?: Fetch;
   history?: any;
   nextLocation?: string;
@@ -131,7 +132,9 @@ class FundingContractsForm extends React.Component<Props, any> {
       this.props.onSave(this.getTouchedAndNew(value.fundingContracts), this.props.hasLicence ? "POST" : "PATCH");
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation, dispatch } = this.props;
+        const {
+ nextLocation, history, setNextLocation, dispatch
+} = this.props;
         dispatch(initialize("FundingContractsForm", { fundingContracts: this.props.fundingContracts }));
 
         nextLocation && history.push(nextLocation);
@@ -180,7 +183,7 @@ class FundingContractsForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from funding contracts list", "DELETE");
+    openConfirm({ onConfirm, confirmMessage: "This item will be removed from funding contracts list", confirmButtonText: "DELETE" });
   };
 
   render() {
