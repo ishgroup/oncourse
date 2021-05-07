@@ -98,7 +98,7 @@ export class Website extends React.Component<Props, any> {
     this.state = {
       enableSocialMedia: website.enableSocialMedia || false,
       addThisId: website.addThisId || "",
-      moveGTM: website.moveGTM || "",
+      googleTM: website.googleTM || "",
       rootTagFilter: website.rootTagFilter || "",
       enableForCourse: website.enableForCourse || false,
       enableForWebpage: website.enableForWebpage || false,
@@ -163,7 +163,7 @@ export class Website extends React.Component<Props, any> {
 
   render() {
     const {
-      enableSocialMedia, addThisId, enableForCourse, enableForWebpage, classAge, suburbAutocompleteState, moveGTM, rootTagFilter
+      enableSocialMedia, addThisId, enableForCourse, enableForWebpage, classAge, suburbAutocompleteState, googleTM, rootTagFilter
     } = this.state;
     const {classes, fetching} = this.props;
 
@@ -334,10 +334,10 @@ export class Website extends React.Component<Props, any> {
               id="googleTM"
               meta={{}}
               input={{
-                onChange: e => this.onChange(e.target.value, 'moveGTM'),
+                onChange: e => this.onChange(e.target.value, 'googleTM'),
                 onFocus: stubFunction,
                 onBlur: stubFunction,
-                value: moveGTM,
+                value: googleTM,
               }}
             />
           </Grid>
