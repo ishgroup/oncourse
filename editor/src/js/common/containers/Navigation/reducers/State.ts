@@ -1,3 +1,4 @@
 export class NavigationState {
-  showNavigation: boolean;
+  showNavigation: boolean = false;
+  activeUrl: string = "";
 }

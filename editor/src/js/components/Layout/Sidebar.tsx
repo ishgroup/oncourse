@@ -185,6 +185,7 @@ interface Props {
   location: any;
   match: any;
   onPublish: () => void;
+  setActiveUrl: (url: string) => void;
   showModal: (props) => any;
   hideNavigation?: () => void;
   navigation?: any;
@@ -210,21 +211,23 @@ class Sidebar extends React.Component<Props, any> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<any>, snapshot?: any) {
-    if (this.state.activeUrl === '/' && this.props.location.pathname !== prevProps.location.pathname) {
+    if (this.props.navigation.activeUrl === '/' && this.props.location.pathname !== prevProps.location.pathname) {
       const match = matchPath(this.props.location.pathname, {
         path: "/page/:id?",
         exact: false,
         strict: false
       });
 
-      if (match) this.setState({activeUrl: "/content"});
+      if (match) this.props.setActiveUrl("/content");
+      // if (match) this.setState({activeUrl: "/content"});
     }
   }
 
   componentWillReceiveProps(props) {
     const history = getHistoryInstance();
     if (history.location.state && history.location.state.updateActiveUrl) {
-      this.setState({activeUrl: history.location.pathname});
+      this.props.setActiveUrl(history.location.pathname)
+      // this.setState({activeUrl: history.location.pathname});
     }
   }
 
@@ -245,9 +248,11 @@ class Sidebar extends React.Component<Props, any> {
   onClickMenu(url) {
     this.props.hideNavigation();
 
-    this.setState({
-      activeUrl: url,
-    });
+    this.props.setActiveUrl(url);
+
+    // this.setState({
+    //   activeUrl: url,
+    // });
   }
 
   onClickLogout(e) {
@@ -316,7 +321,7 @@ class Sidebar extends React.Component<Props, any> {
 
     const getSubRoutes = url => (
       routes.filter(route => !route.isPublic && route.parent === url).map((route: Route, index) => (
-        <li key={index} className={clsx((this.state.activeUrl !== url || slim) && "d-none", classes.subLinkWrapper)}>
+        <li key={index} className={clsx((navigation.activeUrl !== url || slim) && "d-none", classes.subLinkWrapper)}>
           {includedSubMenus.includes(route.title) && (
             <div className={classes.subMenuWrapper}>
               {this.renderSubMenu(route.title)}
@@ -356,7 +361,6 @@ class Sidebar extends React.Component<Props, any> {
           </li>,
           getSubRoutes(route.url),
         ]))}
-
       </ul>
     );
 
@@ -376,7 +380,8 @@ class Sidebar extends React.Component<Props, any> {
                 path={route.path}
                 exact={route.exact}
                 isPublic={route.isPublic}
-                component={navigation.showNavigation ? mainSidebar : (route.sidebar || mainSidebar)}
+                component={route.sidebar || mainSidebar}
+                // component={navigation.showNavigation ? mainSidebar : (route.sidebar || mainSidebar)}
               />
             ))}
 

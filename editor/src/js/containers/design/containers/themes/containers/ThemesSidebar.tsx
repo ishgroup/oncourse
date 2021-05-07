@@ -54,6 +54,7 @@ class ThemesSidebar extends React.Component<Props, any> {
           category="themes"
           onBack={() => this.goBack()}
           onAdd={() => this.onAddTheme()}
+          showNavigation={showNavigation}
         />
         }
 

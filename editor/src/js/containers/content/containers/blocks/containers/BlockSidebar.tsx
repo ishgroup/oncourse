@@ -50,6 +50,7 @@ export class BlockSidebar extends React.Component<Props, any> {
             category="blocks"
             onBack={() => this.goBack()}
             onAdd={() => this.onAddBlock()}
+            showNavigation={showNavigation}
           />
         }
 

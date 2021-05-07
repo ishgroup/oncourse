@@ -63,6 +63,7 @@ export class PagesSidebar extends React.Component<Props, any> {
             subTitleFilterFunc={(items, page) => this.getDefaultLink(items, page)}
             onBack={() => this.goBack()}
             onAdd={() => this.onAddPage()}
+            showNavigation={showNavigation}
           />
         }
 

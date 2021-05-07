@@ -2,10 +2,11 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {withStyles} from "@material-ui/core/styles";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import {IconButton, TextField} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
 import {Page, Block, Theme} from "../../model";
 import IconBack from "../../common/components/IconBack";
 import CustomButton from "../../common/components/CustomButton";
-import {TextField} from "@material-ui/core";
 
 type Item = (Page | Block | Theme);
 
@@ -57,6 +58,7 @@ interface Props {
   items: Item[];
   onBack: () => void;
   category: string;
+  showNavigation: () => any;
   subTitleKey?: string;
   idKey?: string;
   subTitleFilterFunc?: (items, parent?) => any;
@@ -86,7 +88,7 @@ class SidebarList extends React.Component<Props, any> {
   }
 
   render() {
-    const {classes, items, category, subTitleKey, subTitleFilterFunc, onAdd, idKey = 'id'} = this.props;
+    const {classes, items, category, subTitleKey, subTitleFilterFunc, onAdd, idKey = 'id', showNavigation} = this.props;
     const reg = new RegExp(this.state.filter.replace('(', '\\(').replace(')', '\\)'), 'gi');
 
     const getSubtitle = (item: Item) => (
@@ -102,10 +104,10 @@ class SidebarList extends React.Component<Props, any> {
     return (
       <ul>
         <li>
-          <a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>
-            <IconBack text="Menu"/>
-            {/*<IconBack text={category}/>*/}
-          </a>
+          <IconButton onClick={() => showNavigation()}>
+          {/*<IconButton onClick={e => this.clickBack(e)}>*/}
+            <MenuIcon/>
+          </IconButton>
         </li>
 
         <li>

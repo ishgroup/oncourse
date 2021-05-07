@@ -27,7 +27,8 @@ import {ThemeContext} from "../styles/ThemeContext";
 import {defaultTheme} from "../styles/ishTheme";
 import GlobalStylesProvider from "../styles/GlobalStylesProvider";
 import {BlockState} from "./content/containers/blocks/reducers/State";
-import {hideNavigation} from "../common/containers/Navigation/actions";
+import {hideNavigation, setActiveUrl} from "../common/containers/Navigation/actions";
+import SwipeableNavigation from "../common/containers/Navigation/SwipeableNavigation";
 
 const styles: any = theme => ({
   cms: {
@@ -64,6 +65,7 @@ interface Props {
   getUser: () => any;
   getPageByUrl: (url) => any;
   getHistory: () => any;
+  setActiveUrl: () => void;
   draftVersion: Version;
   history: any;
   pageEditMode: boolean;
@@ -104,7 +106,22 @@ class Cms extends React.Component<Props, any> {
   }
 
   render() {
-    const {classes, blocks,logout, auth, notifications, modal, hideNavigation, navigation, hideModal, showModal, pageEditMode, pages, themes} = this.props;
+    const {
+      classes,
+      blocks,
+      logout,
+      auth,
+      notifications,
+      modal,
+      hideNavigation,
+      navigation,
+      hideModal,
+      showModal,
+      pageEditMode,
+      pages,
+      themes,
+      setActiveUrl
+    } = this.props;
     const {isAuthenticated, user} = auth;
     const viewMode: boolean = checkViewMode(this.props.history, pageEditMode);
     const slimSidebar: boolean = checkSlimSidebar(this.props.history);
@@ -142,6 +159,7 @@ class Cms extends React.Component<Props, any> {
               {hasBrowserWarning && <BrowserWarning />}
               <Notifications notifications={notifications} />
               <Modal {...modal} onHide={hideModal}/>
+              <SwipeableNavigation open={navigation.showNavigation} hideNavigation={hideNavigation}/>
 
               <Layout
                 sidebar={
@@ -157,6 +175,7 @@ class Cms extends React.Component<Props, any> {
                       hideNavigation={hideNavigation}
                       onPublish={() => this.publish()}
                       showModal={showModal}
+                      setActiveUrl={setActiveUrl}
                     />
                 }
                 content={<Content isAuthenticated={isAuthenticated}/>}
@@ -191,6 +210,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     getPageByUrl: url => dispatch(getPageByUrl(url)),
     getHistory: () => dispatch(getHistory()),
     getUser: () => dispatch(getUser()),
+    setActiveUrl: (url) => dispatch(setActiveUrl(url)),
   };
 };
 
