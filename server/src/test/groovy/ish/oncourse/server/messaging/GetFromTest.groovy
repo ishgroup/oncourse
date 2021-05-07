@@ -36,7 +36,7 @@ class GetFromTest {
 
         // test email and personal provided
         GetFrom getFrom6 = GetFrom.valueOf(emailAddressStringSimple, emailAddressPersonal)
-        Assertions.assertEquals("checking the address ", emailAddressStringSimple, getFrom6.get().address)
+        Assertions.assertEquals(emailAddressStringSimple, getFrom6.get().address, "checking the address ")
         Assertions.assertEquals(emailAddressPersonal, getFrom6.get().personal, "checking the personal ")
 
         // test invalid email provided, no personal info

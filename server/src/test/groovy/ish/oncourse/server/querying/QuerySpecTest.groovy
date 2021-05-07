@@ -121,7 +121,7 @@ class QuerySpecTest extends CayenneIshTestCase {
 
         // - not match any of enums
         ["Enrolment", "Not Match any of enums correct syntax", "[237, 238, 240, 241, 242, 243]", "confirmationStatus not NOT_SENT, SENT"], 
-        ["Enrolment", "Not Match any of enums correct syntax", "[237, 238, 240, 241, 242, 243]", "confirmationStatus not (NOT_SENT, SENT],"],
+        ["Enrolment", "Not Match any of enums correct syntax", "[237, 238, 240, 241, 242, 243]", "confirmationStatus not (NOT_SENT, SENT)"],
         
         // 3) Num,,
         // - definite num

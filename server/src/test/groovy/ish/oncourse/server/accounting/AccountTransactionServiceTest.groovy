@@ -11,7 +11,7 @@ import ish.oncourse.server.cayenne.AccountTransaction
 import ish.request.AccountTransactionRequest
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
@@ -22,7 +22,7 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
     private AccountTransactionService accountTransactionService
     private ICayenneService cayenneService
 
-    @BeforeAll
+    @BeforeEach
     void setup() {
         cayenneService = injector.getInstance(ICayenneService)
         accountTransactionService = injector.getInstance(AccountTransactionService)
