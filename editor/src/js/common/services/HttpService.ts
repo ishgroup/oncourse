@@ -41,8 +41,8 @@ export class DefaultHttpService implements HttpService {
     ) as Promise<T>;
   }
 
-  PATCH<T>(path: string, config?: AxiosRequestConfig): Promise<T> {
-    return this.client.patch(path, config).then(
+  PATCH<T>(path: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    return this.client.patch(path, data, config).then(
       payload => payload.data,
       payload => Promise.reject(payload.response),
     ) as Promise<T>;
