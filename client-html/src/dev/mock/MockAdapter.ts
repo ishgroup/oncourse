@@ -66,6 +66,7 @@ import { TutorRoleApiMock } from "./api/preference/TutorRoleApiMock";
 import { FundingContractsApiMock } from "./api/preference/FundingContractsApiMock";
 import { CheckoutApiMock } from "./api/checkout/CheckoutApiMock";
 import { GradingTypesApiMock } from "./api/preference/GradingTypesApiMock";
+import { SecurityApiMock } from "./api/security/SecurityApiMock";
 
 export const initMockDB = () => new MockAdapter();
 
@@ -156,6 +157,9 @@ export class MockAdapter {
 
     // Checkout
     CheckoutApiMock.apply(this);
+
+    // Security
+    SecurityApiMock.apply(this);
 
     // Handle get login request
     this.api.onGet("/").reply(config => promiseResolve(config));
