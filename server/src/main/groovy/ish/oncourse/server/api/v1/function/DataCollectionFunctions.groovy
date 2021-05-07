@@ -12,7 +12,9 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
-import ish.common.types.DataType
+import ish.oncourse.server.cayenne.ArticleFieldConfiguration
+import ish.oncourse.server.cayenne.MembershipFieldConfiguration
+import ish.oncourse.server.cayenne.VoucherFieldConfiguration
 import ish.oncourse.server.cayenne.WaitingList
 
 import static ish.common.types.DataType.LIST
@@ -78,7 +80,10 @@ class DataCollectionFunctions {
                 (DataCollectionTypeDTO.WAITINGLIST) : WaitingListFieldConfiguration,
                 (DataCollectionTypeDTO.SURVEY) : SurveyFieldConfiguration,
                 (DataCollectionTypeDTO.PAYER) : PayerFieldConfiguration,
-                (DataCollectionTypeDTO.PARENT) : ParentFieldConfiguration
+                (DataCollectionTypeDTO.PARENT) : ParentFieldConfiguration,
+                (DataCollectionTypeDTO.PRODUCT) : ArticleFieldConfiguration,
+                (DataCollectionTypeDTO.MEMBERSHIP) : MembershipFieldConfiguration,
+                (DataCollectionTypeDTO.VOUCHER) : VoucherFieldConfiguration
         ]
     }
 
@@ -291,7 +296,8 @@ class DataCollectionFunctions {
 
 
     static FieldConfigurationScheme toDbRule(ObjectContext context, DataCollectionRuleDTO rule, FieldConfigurationScheme persistRule = null) {
-        List<String> forms = [rule.enrolmentFormName, rule.applicationFormName, rule.waitingListFormName] + rule.surveyForms
+        List<String> forms = [rule.enrolmentFormName, rule.applicationFormName, rule.waitingListFormName, rule.productFormName,
+                              rule.membershipFormName, rule.voucherFormName] + rule.surveyForms
 
         if (rule.payerFormName) {
             forms += rule.payerFormName

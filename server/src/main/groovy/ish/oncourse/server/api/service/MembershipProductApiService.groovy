@@ -22,9 +22,11 @@ import ish.oncourse.server.api.dao.DiscountDao
 import ish.oncourse.server.api.dao.DiscountMembershipDao
 import ish.oncourse.server.api.dao.DiscountMembershipRelationTypeDao
 import ish.oncourse.server.api.dao.EntityRelationDao
+import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.MembershipProductDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
+import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
@@ -70,6 +72,9 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
     private CorporatePassProductDao corporatePassProductDao
 
     @Inject
+    private FieldConfigurationSchemeDao fieldConfigurationSchemeDao
+
+    @Inject
     private ProductDao productDao
 
     @Inject
@@ -109,6 +114,7 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
                     EntityRelationDao.getRelatedTo(membershipProduct.context, Product.simpleName, membershipProduct.id).collect { toRestToEntityRelation(it) })
             membershipProductDTO.createdOn = membershipProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO.modifiedOn = membershipProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
+            membershipProductDTO.dataCollectionRuleId = membershipProduct.fieldConfigurationScheme?.id
             membershipProductDTO
         }
     }
@@ -136,6 +142,9 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
         membershipProduct.incomeAccount = accountDao.getById(context, membershipProductDTO.incomeAccountId.toLong())
         membershipProduct.isOnSale = membershipProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE || membershipProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE
         membershipProduct.isWebVisible = membershipProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE
+        membershipProduct.fieldConfigurationScheme = membershipProductDTO.dataCollectionRuleId ?
+                fieldConfigurationSchemeDao.getById(membershipProduct.context, membershipProductDTO.dataCollectionRuleId) :
+                null as FieldConfigurationScheme
         updateCorporatePasses(membershipProduct, membershipProductDTO.corporatePasses, corporatePassProductDao, corporatePassDao)
         updateDiscountMemberships(membershipProduct, membershipProductDTO.membershipDiscounts)
         membershipProduct
