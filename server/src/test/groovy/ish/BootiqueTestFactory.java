@@ -23,21 +23,19 @@ import groovy.transform.CompileStatic;
 import io.bootique.BQRuntime;
 import io.bootique.command.CommandOutcome;
 import io.bootique.test.junit.BQTestRuntimeBuilder;
-import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 @CompileStatic
-public class BootiqueTestFactory implements AfterEachCallback, BeforeEachCallback {
+public class BootiqueTestFactory implements AfterAllCallback, BeforeAllCallback {
 
     private Collection<BQRuntime> runtimes;
     private boolean autoLoadModules;
 
     @Override
-    public void afterEach(ExtensionContext context) {
+    public void afterAll(ExtensionContext context) {
         Collection<BQRuntime> localRuntimes = this.runtimes;
 
         if (localRuntimes != null) {
@@ -52,7 +50,7 @@ public class BootiqueTestFactory implements AfterEachCallback, BeforeEachCallbac
     }
 
     @Override
-    public void beforeEach(ExtensionContext context) {
+    public void beforeAll(ExtensionContext context) {
         this.runtimes = new ArrayList<>();
     }
 
@@ -98,9 +96,6 @@ public class BootiqueTestFactory implements AfterEachCallback, BeforeEachCallbac
          */
         public BQRuntime createRuntime() {
             BQRuntime runtime = bootique.createRuntime();
-            if (runtimes == null) {
-                runtimes = new ArrayList<>();
-            }
             runtimes.add(runtime);
             return runtime;
         }
