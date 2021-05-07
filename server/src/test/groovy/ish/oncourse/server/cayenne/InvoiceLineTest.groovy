@@ -4,7 +4,7 @@
  */
 package ish.oncourse.server.cayenne
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
@@ -33,7 +33,6 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.testng.asserts.Assertion
 
 import java.text.SimpleDateFormat
 
@@ -80,7 +79,7 @@ class InvoiceLineTest extends CayenneIshTestCase {
         try {
             invoiceLine.setPriceEachExTax(new Money("100"))
         } catch (IllegalStateException e) {
-            Assertions.assertEquals("Checking if the invoice price can be set before tax", "You must set the tax rate before setting the price.", e.getMessage())
+            Assertions.assertEquals("You must set the tax rate before setting the price.", e.getMessage(), "Checking if the invoice price can be set before tax")
             return
         }
         if (PreferenceController.getController().getTaxPK() != null) {

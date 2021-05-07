@@ -34,8 +34,8 @@ import java.nio.charset.Charset
 import java.util.List
 
 import static ish.report.ImportReportResult.ReportValidationError.ReportBuildingError
-/**
- */
+
+
 @CompileStatic
 class ReportServiceTest extends CayenneIshTestCase {
     private static final Logger logger = LogManager.getLogger()
@@ -53,7 +53,6 @@ class ReportServiceTest extends CayenneIshTestCase {
         new JRRuntimeConfig().config()
     }
 
-    
     @BeforeEach
     void setup() throws Exception {
         documentService = injector.getInstance(DocumentService.class)
@@ -65,7 +64,6 @@ class ReportServiceTest extends CayenneIshTestCase {
         wipeTables()
     }
 
-    
     @Test
     void testImportAndCompileAllReportsBasedOnManifest() throws IOException {
         logger.warn("performing testImportAndCompileAllReportsBasedOnManifest")
@@ -97,8 +95,8 @@ class ReportServiceTest extends CayenneIshTestCase {
         }
     }
 
-//	@Test
-    
+	@Test
+    @Disabled
     void testImportAndCompileAllCustomReports() {
         logger.warn("performing testImportAndCompileAllCustomReports")
         File privateResourceFolder = new File("../private-resources")
@@ -149,7 +147,7 @@ class ReportServiceTest extends CayenneIshTestCase {
             Report report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
                     .selectOne(context)
-            Assertions.assertEquals("Report entity should be 'CourseClass'", "CourseClass", report.getEntity())
+            Assertions.assertEquals("CourseClass", report.getEntity(), "Report entity should be 'CourseClass'")
         } catch (Exception e) {
             Assertions.fail("could not import the report " + oldReportFile)
         }
@@ -160,7 +158,7 @@ class ReportServiceTest extends CayenneIshTestCase {
             Report report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
                     .selectOne(context)
-            Assertions.assertEquals("Report entity should be 'Enrolment'", "Enrolment", report.getEntity())
+            Assertions.assertEquals("Enrolment", report.getEntity(), "Report entity should be 'Enrolment'")
         } catch (Exception e) {
             Assertions.fail("could not import the report " + newReportFile)
         }
@@ -276,7 +274,6 @@ class ReportServiceTest extends CayenneIshTestCase {
 
         PrintWorker worker = new PrintWorker(request, cayenneService, documentService) {
 
-            @CompileStatic
             @Override
             protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
                 return recordsToPrint
@@ -339,7 +336,6 @@ class ReportServiceTest extends CayenneIshTestCase {
 
         PrintWorker worker = new PrintWorker(request, cayenneService, documentService) {
 
-            @CompileStatic
             @Override
             protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
                 return recordsToPrint

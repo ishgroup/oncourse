@@ -1,5 +1,6 @@
 package ish.oncourse.server.quality
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Module
@@ -7,29 +8,29 @@ import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.types.Severity
 import ish.quality.QualityResult
 import ish.util.LocalDateUtils
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
-/**
- * Created by akoiro on 17/03/2016.
- */
+@CompileStatic
 class OutcomeResultData {
 
-    Closure<ArrayList<Enrolment>> testData = { ->
-        return [enrolment(1, LocalDate.now().minusDays(30)),
-                enrolment(2, LocalDate.now().minusDays(31)),
-                enrolment(3, LocalDate.now().minusDays(27)),
-                enrolment(4, LocalDate.now().minusDays(8)),
-                enrolment(5, LocalDate.now().minusDays(6)),
-                enrolment(6, LocalDate.now().minusDays(1)),
+    def testData = { ->
+        return [enrolment(1L, LocalDate.now().minusDays(30)),
+                enrolment(2L, LocalDate.now().minusDays(31)),
+                enrolment(3L, LocalDate.now().minusDays(27)),
+                enrolment(4L, LocalDate.now().minusDays(8)),
+                enrolment(5L, LocalDate.now().minusDays(6)),
+                enrolment(6L, LocalDate.now().minusDays(1)),
         ]
 
     }
 
-    Closure<Enrolment> enrolment = { long id, LocalDate endDate ->
+    Enrolment enrolment(Long id, LocalDate endDate) {
         def module = mock(Module)
 
         def outcome = mock(Outcome)
@@ -50,10 +51,11 @@ class OutcomeResultData {
         return enrolment
     }
 
-    Object assetResults(Collection<QualityResult> result) {
+    @Test
+    static assetResults(Collection<QualityResult> result) {
         Assertions.assertEquals(3, result.size())
 
-        def qr28 = result.getAt(0)
+        def qr28 = result[0]
 
         Assertions.assertEquals('Enrolment', qr28.entity)
         Assertions.assertEquals(2, qr28.records.size())
@@ -61,7 +63,7 @@ class OutcomeResultData {
         Assertions.assertNotNull(qr28.records.find { it == 1L })
         Assertions.assertNotNull(qr28.records.find { it == 2L })
 
-        def qr7 = result.getAt(1)
+        def qr7 = result[1]
         Assertions.assertEquals('Enrolment', qr7.entity)
         Assertions.assertEquals(Severity.WARNING.level, qr7.severity)
         Assertions.assertEquals(2, qr7.records.size())
@@ -69,7 +71,7 @@ class OutcomeResultData {
         Assertions.assertNotNull(qr7.records.find { it == 4L })
 
 
-        def qr0 = result.getAt(2)
+        def qr0 = result[2]
         Assertions.assertEquals('Enrolment', qr0.entity)
         Assertions.assertEquals(Severity.ADVICE.level, qr0.severity)
         Assertions.assertEquals(2, qr0.records.size())

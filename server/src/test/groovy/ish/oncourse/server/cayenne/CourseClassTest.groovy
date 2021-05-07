@@ -119,7 +119,7 @@ class CourseClassTest extends CayenneIshTestCase {
 
                 c1.performQuery(new RefreshQuery(query))
                 CourseClass oldClass = (CourseClass) Cayenne.objectForQuery(c1, query)
-                Assertions.assertNotNull("Query for an existing class failed! : " + aClass, oldClass)
+                Assertions.assertNotNull(oldClass, "Query for an existing class failed! : " + aClass)
 
                 ClassDuplicationRequest request = new ClassDuplicationRequest()
                 request.setClasses(Arrays.asList(oldClass))
@@ -138,7 +138,7 @@ class CourseClassTest extends CayenneIshTestCase {
 
                 Assertions.assertEquals(id, newClass.id)
                 Assertions.assertFalse(StringUtils.isEmpty(newClass.getCode()))
-                Assertions.assertFalse("new code shouldn't be yet in use: " + newClass.getCode(), codes.contains(newClass.getUniqueCode()))
+                Assertions.assertFalse(codes.contains(newClass.getUniqueCode()), "new code shouldn't be yet in use: " + newClass.getCode())
                 newClasses.add(newClass)
                 codes.add(newClass.getUniqueCode())
             }
@@ -150,13 +150,13 @@ class CourseClassTest extends CayenneIshTestCase {
             course2.setPersistenceState(PersistenceState.HOLLOW)
             c1.performQuery(new RefreshQuery(q))
 
-            Assertions.assertEquals("there should be as many codes as classes", course1.getCourseClasses().size() + course2.getCourseClasses().size(), codes.size())
-            Assertions.assertEquals("there should be as many codes as classes", classes.size(), codes.size())
+            Assertions.assertEquals(course1.getCourseClasses().size() + course2.getCourseClasses().size(), codes.size(), "there should be as many codes as classes")
+            Assertions.assertEquals(classes.size(), codes.size(), "there should be as many codes as classes")
             DataContext c3 = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-            Assertions.assertEquals("there should be as many codes as classes", c3.select(q).size(), codes.size())
+            Assertions.assertEquals(c3.select(q).size(), codes.size(), "there should be as many codes as classes")
         }
 
-        Assertions.assertEquals("there should be as many codes", 1024, codes.size())
+        Assertions.assertEquals(1024, codes.size(), "there should be as many codes")
     }
 
     @Test
@@ -467,13 +467,13 @@ class CourseClassTest extends CayenneIshTestCase {
         Course course = newContext.newObject(Course.class)
         course.setCode(courseCode)
         cc.setCourse(course)
-        Assertions.assertEquals("Checking uniqueCode ", courseCode + "-", cc.getUniqueCode())
+        Assertions.assertEquals(courseCode + "-", cc.getUniqueCode(), "Checking uniqueCode ")
 
         cc.setCode(code)
-        Assertions.assertEquals("Checking uniqueCode ", courseCode + "-" + code, cc.getUniqueCode())
+        Assertions.assertEquals(courseCode + "-" + code, cc.getUniqueCode(), "Checking uniqueCode ")
 
         cc.setCourse(null)
-        Assertions.assertEquals("Checking uniqueCode ", "-" + code, cc.getUniqueCode())
+        Assertions.assertEquals("-" + code, cc.getUniqueCode(), "Checking uniqueCode ")
     }
 
     @Test
@@ -578,8 +578,8 @@ class CourseClassTest extends CayenneIshTestCase {
         gc_end.add(GregorianCalendar.DATE, 28)
         Date endTimeForFirstSession = gc_end.getTime()
 
-        Assertions.assertNull("Checking startDateTime for CourseClasse ", cc.getStartDateTime())
-        Assertions.assertNull("Checking endDateTime for CourseClasse ", cc.getEndDateTime())
+        Assertions.assertNull(cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
+        Assertions.assertNull(cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
 
         GregorianCalendar gc1 = new GregorianCalendar()
         gc1.add(GregorianCalendar.DATE, 1)
@@ -594,15 +594,15 @@ class CourseClassTest extends CayenneIshTestCase {
         session.setCourseClass(cc)
         session.setPayAdjustment(4)
 
-        Assertions.assertEquals("Checking startDateTime for CourseClasse ", gc1.getTime(), cc.getStartDateTime())
-        Assertions.assertNull("Checking endDateTime for CourseClasse ", cc.getEndDateTime())
-        Assertions.assertEquals("Checking sessionCount for CourseClasse ", new Integer(0), cc.getSessionsCount())
+        Assertions.assertEquals(gc1.getTime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
+        Assertions.assertNull(cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
+        Assertions.assertEquals(new Integer(0), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
         newContext.commitChanges()
 
-        Assertions.assertEquals("Checking startDateTime for CourseClasse ", session.getStartDatetime(), cc.getStartDateTime())
-        Assertions.assertEquals("Checking endDateTime for CourseClasse ", session.getEndDatetime(), cc.getEndDateTime())
-        Assertions.assertEquals("Checking sessionCount for CourseClasse ", new Integer(1), cc.getSessionsCount())
+        Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
+        Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
+        Assertions.assertEquals(new Integer(1), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
         // reload committed class from db since different dbs handle dates differently and actually stored
         // value may differ from what we tried to store (e.g. MySQL timestamp doesn't store milliseconds
@@ -611,8 +611,8 @@ class CourseClassTest extends CayenneIshTestCase {
 
         Date createOn = cc.getCreatedOn()
         Date modifiedOn = cc.getModifiedOn()
-        Assertions.assertNotNull("Checking createdOn ", cc.getCreatedOn())
-        Assertions.assertNotNull("Checking modifiedOn ", cc.getModifiedOn())
+        Assertions.assertNotNull(cc.getCreatedOn(), "Checking createdOn ")
+        Assertions.assertNotNull(cc.getModifiedOn(), "Checking modifiedOn ")
 //Assertions.assertEquals(cc.getCreatedOn(), cc.getModifiedOn());
 
         // if set new StartDateTime for CourseClass (newDateTime.after(startTimeForFirstSession))
@@ -627,8 +627,8 @@ class CourseClassTest extends CayenneIshTestCase {
 
         Assertions.assertTrue(newDateTime.after(startTimeForFirstSession))
 
-        Assertions.assertEquals("Checking startDateTime for CourseClasse ", session.getStartDatetime(), cc.getStartDateTime())
-        Assertions.assertEquals("Checking endDateTime for CourseClasse ", session.getEndDatetime(), cc.getEndDateTime())
+        Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
+        Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
 
         // if set new StartDateTime for CourseClass (newDateTime2.before(startTimeForFirstSession))
         // after commit the start time for the first session and class should be the same
@@ -644,13 +644,13 @@ class CourseClassTest extends CayenneIshTestCase {
         newContext.commitChanges()
 
         Assertions.assertTrue(newDateTime2.before(startTimeForFirstSession))
-        Assertions.assertEquals("Checking startDateTime for CourseClasse ", session.getStartDatetime(), cc.getStartDateTime())
-        Assertions.assertEquals("Checking endDateTime for CourseClasse ", session.getEndDatetime(), cc.getEndDateTime())
+        Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
+        Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
 
         // test for update correct update fields createdOn and modifiedOn
-        Assertions.assertEquals("Checking createdOn ", createOn, cc.getCreatedOn())
-        assertNotSame("Checking modifiedOn ", modifiedOn, cc.getModifiedOn())
-        assertNotSame(cc.getCreatedOn(), cc.getModifiedOn())
+        Assertions.assertEquals(createOn, cc.getCreatedOn(), "Checking createdOn ")
+        Assertions.assertNotEquals(modifiedOn, cc.getModifiedOn(), "Checking modifiedOn ")
+        Assertions.assertNotEquals(cc.getCreatedOn(), cc.getModifiedOn())
         Assertions.assertTrue(cc.getCreatedOn().before(cc.getModifiedOn()))
 
         // add new session with startDateTime after startDateTime in CourseClasse
@@ -667,14 +667,14 @@ class CourseClassTest extends CayenneIshTestCase {
         secondSession.setCourseClass(cc)
         secondSession.setPayAdjustment(4)
 
-        Assertions.assertEquals("Checking sessionCount for CourseClasse ", new Integer(1), cc.getSessionsCount())
+        Assertions.assertEquals(new Integer(1), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
         newContext.commitChanges()
 
         Assertions.assertTrue(startTimeForSecondSession.after(startTimeForFirstSession))
-        Assertions.assertEquals("Checking startDateTime for CourseClasse ", session.getStartDatetime(), cc.getStartDateTime())
-        Assertions.assertEquals("Checking endDateTime for CourseClasse ", session.getEndDatetime(), cc.getEndDateTime())
-        Assertions.assertEquals("Checking sessionCount for CourseClasse ", new Integer(2), cc.getSessionsCount())
+        Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
+        Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
+        Assertions.assertEquals(new Integer(2), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
         // add new session with startDateTime before startDateTime in CourseClasse
         gc.add(GregorianCalendar.DATE, -2)
@@ -691,17 +691,17 @@ class CourseClassTest extends CayenneIshTestCase {
         newContext.commitChanges()
 
         Assertions.assertTrue(startTimeForNextSession.before(startTimeForFirstSession))
-        Assertions.assertEquals("Checking startDateTime for CourseClasse ", nextSession.getStartDatetime(), cc.getStartDateTime())
-        Assertions.assertEquals("Checking endDateTime for CourseClasse ", nextSession.getEndDatetime(), cc.getEndDateTime())
-        Assertions.assertEquals("Checking sessionCount for CourseClasse ", new Integer(3), cc.getSessionsCount())
+        Assertions.assertEquals(nextSession.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
+        Assertions.assertEquals(nextSession.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
+        Assertions.assertEquals(new Integer(3), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
         // remove 3th session
         newContext.deleteObjects(nextSession)
         newContext.commitChanges()
 
-        Assertions.assertEquals("Checking startDateTime for CourseClasse ", session.getStartDatetime(), cc.getStartDateTime())
-        Assertions.assertEquals("Checking endDateTime for CourseClasse ", session.getEndDatetime(), cc.getEndDateTime())
-        Assertions.assertEquals("Checking sessionCount for CourseClasse ", new Integer(2), cc.getSessionsCount())
+        Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
+        Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
+        Assertions.assertEquals(new Integer(2), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
         // remove second and first session
         newContext.deleteObjects(secondSession)
@@ -710,9 +710,9 @@ class CourseClassTest extends CayenneIshTestCase {
         newContext.deleteObjects(session)
         newContext.commitChanges()
 
-        Assertions.assertEquals("Checking startDateTime for CourseClasse ", session.getStartDatetime(), cc.getStartDateTime())
-        Assertions.assertEquals("Checking endDateTime for CourseClasse ", session.getEndDatetime(), cc.getEndDateTime())
-        Assertions.assertEquals("Checking sessionCount for CourseClasse ", new Integer(0), cc.getSessionsCount())
+        Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
+        Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
+        Assertions.assertEquals(new Integer(0), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
     }
 
@@ -770,9 +770,9 @@ class CourseClassTest extends CayenneIshTestCase {
 
         cc.addToCosts(classCost)
 
-        Assertions.assertEquals("Checking FeeExGst ", Money.ZERO, cc.getFeeExGst())
-        Assertions.assertEquals("Checking FeeGST ", Money.ZERO, cc.getFeeGST())
-        Assertions.assertEquals("Checking FeeIncGst ", Money.ZERO, cc.getFeeIncGst())
+        Assertions.assertEquals(Money.ZERO, cc.getFeeExGst(), "Checking FeeExGst ")
+        Assertions.assertEquals(Money.ZERO, cc.getFeeGST(), "Checking FeeGST ")
+        Assertions.assertEquals(Money.ZERO, cc.getFeeIncGst(), "Checking FeeIncGst ")
 
         feeExGst = money
         feeGST = Money.ZERO
@@ -781,10 +781,10 @@ class CourseClassTest extends CayenneIshTestCase {
 
         newContext.commitChanges()
 
-        Assertions.assertEquals("Checking FeeExGst ", feeExGst, cc.getFeeExGst())
-        Assertions.assertEquals("Checking FeeGST ", feeGST, cc.getFeeGST())
-        Assertions.assertEquals("Checking FeeIncGst ", feeIncGst, cc.getFeeIncGst())
-        Assertions.assertEquals("Checking deposit ", deposit, cc.getDeposit())
+        Assertions.assertEquals(feeExGst, cc.getFeeExGst(), "Checking FeeExGst ")
+        Assertions.assertEquals(feeGST, cc.getFeeGST(), "Checking FeeGST ")
+        Assertions.assertEquals(feeIncGst, cc.getFeeIncGst(), "Checking FeeIncGst ")
+        Assertions.assertEquals(deposit, cc.getDeposit(), "Checking deposit ")
 
         Money money2 = new Money("40")
 
@@ -803,10 +803,10 @@ class CourseClassTest extends CayenneIshTestCase {
 
         newContext.commitChanges()
 
-        Assertions.assertEquals("Checking deposit ", deposit, cc.getDeposit())
-        Assertions.assertEquals("Checking FeeExGst ", feeExGst, cc.getFeeExGst())
-        Assertions.assertEquals("Checking FeeGST ", feeGST, cc.getFeeGST())
-        Assertions.assertEquals("Checking FeeIncGst ", feeIncGst, cc.getFeeIncGst())
+        Assertions.assertEquals(deposit, cc.getDeposit(), "Checking deposit ")
+        Assertions.assertEquals(feeExGst, cc.getFeeExGst(), "Checking FeeExGst ")
+        Assertions.assertEquals(feeGST, cc.getFeeGST(), "Checking FeeGST ")
+        Assertions.assertEquals(feeIncGst, cc.getFeeIncGst(), "Checking FeeIncGst ")
 
         BigDecimal rate = new BigDecimal(0.20)
         cc.getTax().setRate(rate)
@@ -816,8 +816,8 @@ class CourseClassTest extends CayenneIshTestCase {
         feeGST = feeExGst.multiply(rate)
         feeIncGst = feeExGst.multiply(rate.add(BigDecimal.ONE))
 
-        Assertions.assertEquals("Checking FeeGST ", feeGST, cc.getFeeGST())
-        Assertions.assertEquals("Checking FeeIncGst ", feeIncGst, cc.getFeeIncGst())
+        Assertions.assertEquals(feeGST, cc.getFeeGST(), "Checking FeeGST ")
+        Assertions.assertEquals(feeIncGst, cc.getFeeIncGst(), "Checking FeeIncGst ")
 
     }
 

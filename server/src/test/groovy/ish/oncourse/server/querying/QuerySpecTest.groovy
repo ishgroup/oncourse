@@ -278,14 +278,14 @@ class QuerySpecTest extends CayenneIshTestCase {
         Script script = context.newObject(Script.class)
         script.setEnabled(true)
 
-        script.setScript(
-                "    \n" +
-                        "   def result = query {\n" +
-                        "       entity \"${entity}\"\n" +
-                        "       query \"${query}\"\n" +
-                        "}\n" +
-                        "\n" +
-                        "   result*.id.sort()")
+        script.setScript("""
+                           def result = query {
+                               entity "${entity}"
+                               query "${query}"
+                        }
+
+                           result*.id.sort()
+                        """)
 
         ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), cayenneService.getNewContext())
 

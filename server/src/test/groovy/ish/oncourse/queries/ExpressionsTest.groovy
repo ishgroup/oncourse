@@ -119,7 +119,7 @@ class ExpressionsTest extends CayenneIshTestCase {
         List<Course> result = newContext.select(query)
 
         Assertions.assertEquals( 1, result.size(), "testSingleTag")
-        Assertions.assertEquals("testSingleTag", tag.getName(), result.get(0).getNotes())
+        Assertions.assertEquals(tag.getName(), result.get(0).getNotes(), "testSingleTag")
     }
 
     /**

@@ -24,7 +24,6 @@ class MailDeliveryTest {
     /**
      * A silly test to check the internetaddress class, it seems not to work as expected
      */
-    
     @Test
     void testInternetAddress() {
         String emailAddressStringSimple = "test@test.te"
@@ -34,7 +33,7 @@ class MailDeliveryTest {
         // simple, strict
         try {
             InternetAddress address = new InternetAddress(emailAddressStringSimple)
-            Assertions.assertEquals("checking the address ", emailAddressStringSimple, address.getAddress())
+            Assertions.assertEquals(emailAddressStringSimple, address.getAddress(), "checking the address ")
         } catch (AddressException e) {
             fail("cannot parse the address")
         }
@@ -42,7 +41,7 @@ class MailDeliveryTest {
         // simple, not strict
         try {
             InternetAddress address = new InternetAddress(emailAddressStringSimple, false)
-            Assertions.assertEquals("checking the address ", emailAddressStringSimple, address.getAddress())
+            Assertions.assertEquals(emailAddressStringSimple, address.getAddress(), "checking the address ")
         } catch (AddressException e) {
             fail("cannot parse the address")
         }
@@ -50,7 +49,7 @@ class MailDeliveryTest {
         // complex, strict
         try {
             InternetAddress address = new InternetAddress(emailAddressStringComplex)
-            Assertions.assertEquals("checking the address ", emailAddressStringSimple, address.getAddress())
+            Assertions.assertEquals(emailAddressStringSimple, address.getAddress(), "checking the address ")
         } catch (AddressException e) {
             fail("cannot parse the address")
         }
@@ -58,7 +57,7 @@ class MailDeliveryTest {
         // complex, not strict
         try {
             InternetAddress address = new InternetAddress(emailAddressStringComplex)
-            Assertions.assertEquals("checking the address ", emailAddressStringSimple, address.getAddress())
+            Assertions.assertEquals(emailAddressStringSimple, address.getAddress(), "checking the address ")
         } catch (AddressException e) {
             fail("cannot parse the address")
         }
@@ -66,7 +65,7 @@ class MailDeliveryTest {
         // simple, personal
         try {
             InternetAddress address = new InternetAddress(emailAddressStringSimple, emailAddressPersonal)
-            Assertions.assertEquals("checking the address ", emailAddressStringSimple, address.getAddress())
+            Assertions.assertEquals(emailAddressStringSimple, address.getAddress(), "checking the address ")
         } catch (UnsupportedEncodingException e) {
             fail("cannot parse the address")
         }
@@ -74,7 +73,7 @@ class MailDeliveryTest {
         // complex, personal
         try {
             InternetAddress address = new InternetAddress(emailAddressStringComplex, emailAddressPersonal)
-            Assertions.assertEquals("checking the address ", emailAddressStringComplex, address.getAddress())
+            Assertions.assertEquals(emailAddressStringComplex, address.getAddress(), "checking the address ")
         } catch (UnsupportedEncodingException e) {
             fail("cannot parse the address")
         }
@@ -82,7 +81,7 @@ class MailDeliveryTest {
         // complex, personal
         try {
             InternetAddress address = new InternetAddress(emailAddressStringComplex, "not matching")
-            Assertions.assertEquals("checking the address ", emailAddressStringComplex, address.getAddress())
+            Assertions.assertEquals(emailAddressStringComplex, address.getAddress(), "checking the address ")
         } catch (UnsupportedEncodingException e) {
             fail("cannot parse the address")
         }

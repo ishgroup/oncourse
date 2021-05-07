@@ -17,10 +17,10 @@ class AddressParserTest {
     void testParseAdress(String input, String expectedBuilding, String expectedUnit, String expectedNumber, String expectedStreet) throws Exception {
         AddressParser addressParser = new AddressParser(input)
 
-        Assertions.assertEquals("building", expectedBuilding, addressParser.getBuilding())
-        Assertions.assertEquals("unit", expectedUnit, addressParser.getUnit())
-        Assertions.assertEquals("number", expectedNumber, addressParser.getStreetNumber())
-        Assertions.assertEquals("street", expectedStreet, addressParser.getStreetName())
+        Assertions.assertEquals(expectedBuilding, addressParser.getBuilding(), "building")
+        Assertions.assertEquals(expectedUnit, addressParser.getUnit(), "unit")
+        Assertions.assertEquals(expectedNumber, addressParser.getStreetNumber(), "number")
+        Assertions.assertEquals(expectedStreet, addressParser.getStreetName(), "street")
     }
 
     static Collection<Arguments> values() {

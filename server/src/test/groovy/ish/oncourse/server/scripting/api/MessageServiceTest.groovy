@@ -112,11 +112,11 @@ class MessageServiceTest extends CayenneIshTestCase {
 
         Message messageToSecondStudent = messages.find { it.messagePersons.find { it.contact.id == 2l } }
         Assertions.assertNotNull(messageToSecondStudent, "The SMS would be sent to the second student!")
-        Assertions.assertEquals("Hi, Student Second. Thank you!", messageToSecondStudent.smsText)
-        Assertions.assertNull("The subject should be null", messageToSecondStudent.emailSubject)
-        Assertions.assertNull("The textBody should be null", messageToSecondStudent.emailBody)
-        Assertions.assertNull("The htmlBody should be null", messageToSecondStudent.emailHtmlBody)
-        Assertions.assertNull("The email from should be null", messageToSecondStudent.emailFrom)
+        Assertions.assertEquals(messageToSecondStudent.smsText, "Hi, Student Second. Thank you!")
+        Assertions.assertNull(messageToSecondStudent.emailSubject, "The subject should be null")
+        Assertions.assertNull(messageToSecondStudent.emailBody, "The textBody should be null")
+        Assertions.assertNull(messageToSecondStudent.emailHtmlBody, "The htmlBody should be null")
+        Assertions.assertNull(messageToSecondStudent.emailFrom, "The email from should be null")
         Assertions.assertEquals(systemUser, messageToSecondStudent.createdBy)
         Assertions.assertNull(messageToSecondStudent.creatorKey)
     }

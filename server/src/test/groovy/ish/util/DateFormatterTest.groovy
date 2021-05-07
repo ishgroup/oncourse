@@ -23,19 +23,19 @@ class DateFormatterTest {
         Calendar gc = Calendar.getInstance()
         gc.add(Calendar.DATE, -1)
         Date d = gc.getTime()
-        Assertions.assertEquals("yesterday", "yesterday", DateFormatter.formatDate(d))
+        Assertions.assertEquals("yesterday", DateFormatter.formatDate(d), "yesterday")
 
         gc.set(Calendar.YEAR, 2004)
         gc.set(Calendar.MONTH, Calendar.OCTOBER)
         gc.set(Calendar.DAY_OF_MONTH, 1)
         d = gc.getTime()
-        Assertions.assertEquals("Fri 1 Oct 04", "Fri 1 Oct 2004", DateFormatter.formatDate(d))
+        Assertions.assertEquals("Fri 1 Oct 2004", DateFormatter.formatDate(d), "Fri 1 Oct 04")
 
         gc.set(Calendar.YEAR, 1996)
         gc.set(Calendar.MONTH, Calendar.DECEMBER)
         gc.set(Calendar.DAY_OF_MONTH, 5)
         d = gc.getTime()
-        Assertions.assertEquals("5/12/96", "Thu 5 Dec 1996", DateFormatter.formatDate(d))
+        Assertions.assertEquals("Thu 5 Dec 1996", DateFormatter.formatDate(d), "5/12/96")
     }
 
     @Test

@@ -1,6 +1,5 @@
 package ish.oncourse.server.accounting
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.AccountTransactionType
@@ -12,7 +11,7 @@ import ish.oncourse.server.cayenne.AccountTransaction
 import ish.request.AccountTransactionRequest
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
@@ -23,15 +22,12 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
     private AccountTransactionService accountTransactionService
     private ICayenneService cayenneService
 
-    @BeforeEach
+    @BeforeAll
     void setup() {
         cayenneService = injector.getInstance(ICayenneService)
         accountTransactionService = injector.getInstance(AccountTransactionService)
         super.setup()
-
-
     }
-
     
     @Test
     void test() {
@@ -52,7 +48,6 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
 
 
         TransactionsBuilder builder = new TransactionsBuilder() {
-            @CompileStatic
             TransactionSettings build() {
                 AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[0], accounts[1], new Money(35 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
                 AccountTransactionDetail detail2 = AccountTransactionDetail.valueOf(accounts[0], accounts[1], new Money(50 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
@@ -68,7 +63,6 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
         Assertions.assertEquals(6, after.size())
 
         builder = new TransactionsBuilder() {
-            @CompileStatic
             TransactionSettings build() {
                 AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], new Money(90 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
                 AccountTransactionDetail detail2 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], new Money(70 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
@@ -85,7 +79,6 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
 
 
         builder = new TransactionsBuilder() {
-            @CompileStatic
             TransactionSettings build() {
                 AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], new Money(190 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
                 TransactionSettings.valueOf(detail1)
@@ -100,7 +93,6 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
 
 
         builder = new TransactionsBuilder() {
-            @CompileStatic
             TransactionSettings build() {
                 AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], new Money(120 as BigDecimal), AccountTransactionType.INVOICE_LINE, 7L, LocalDate.now())
                 TransactionSettings.valueOf(detail1)
