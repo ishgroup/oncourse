@@ -532,6 +532,11 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/Version'
+        - name: description
+          in: query
+          description: Commit message
+          required: true
+          type: string
       responses:
         '200':
           description: Version changed successfully
