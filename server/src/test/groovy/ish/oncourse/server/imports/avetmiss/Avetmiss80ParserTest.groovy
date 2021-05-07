@@ -21,19 +21,19 @@ import static org.mockito.Mockito.*
 
 @CompileStatic
 class Avetmiss80ParserTest {
-    private language
-    private country
+    private Language language = new Language()
+    private Country country = new Country()
 
 
     @CompileDynamic
-    private static Avetmiss80Parser getParser(String text) {
+    private Avetmiss80Parser getParser(String text) {
         
         ObjectContext contextMock = mock(ObjectContext)
-        Language language = new Language()
-        Country country = new Country()
         AvetmissImportService parsersMock = mock(AvetmissImportService)
+        when(parsersMock.parseNames("Castejon, Ed Karlvincent", 0))
+                .thenReturn([firstName: "Ed", lastName: "Castejon", middleName: "Karlvincent"])
+        when(parsersMock.parseHighestSchoolLevel(10)).thenReturn(COMPLETED_YEAR_10)
         when(parsersMock.getCountryBy(5204)).thenReturn(country)
-
         when(parsersMock.getLanguageBy(6511)).thenReturn(language)
 
         InputLine line = new InputLine(text)
