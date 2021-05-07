@@ -62,7 +62,6 @@ abstract class IshTestCase {
 
     @BeforeAll
     static void setupOnceRoot() throws Exception {
-        testFactory = new BootiqueTestFactory()
 
         System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
         //set JRGroovy compiler as default for tests
