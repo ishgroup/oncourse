@@ -43,7 +43,7 @@ const styles: any = (theme: AppTheme) => ({
     fontFamily: theme.typography.fontFamily,
     fontSize: "14px",
     lineHeight: 1.2,
-    height: "22px",
+    minHeight: "22px",
     color: theme.palette.text.secondary,
     fontWeight: 300,
     "&::after": {
