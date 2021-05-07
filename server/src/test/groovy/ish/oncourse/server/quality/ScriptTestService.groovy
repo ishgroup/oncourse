@@ -24,7 +24,7 @@ class ScriptTestService {
         init()
     }
 
-    private QualityService init() {
+    private void init() {
         context = mock(DataContext)
         preferenceController = mock(PreferenceController)
         cayenneService = mock(ICayenneService)

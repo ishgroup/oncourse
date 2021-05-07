@@ -1,6 +1,5 @@
 package ish.oncourse.server.quality
 
-import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.QualityRule
 import org.apache.cayenne.query.Select
 import org.junit.jupiter.api.Test
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.Test
 import static org.mockito.Matchers.any
 import static org.mockito.Mockito.when
 
-@CompileStatic
 class EnrolmentCertificateTest {
     @Test
     void test() {
@@ -18,8 +16,8 @@ class EnrolmentCertificateTest {
 
         QualityService qualityService = testService.qualityService
 
-        def data = outcomeResultData.testData
-        when(testService.context.select(any(Select))).thenReturn(data as List<Object>)
+        def data = outcomeResultData.testData()
+        when(testService.context.select(any(Select))).thenReturn(data)
 
         QualityRule qualityRule = testService.getQualityRuleBy("enrolmentCertificate")
 

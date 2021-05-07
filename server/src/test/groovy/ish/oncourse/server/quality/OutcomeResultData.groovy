@@ -16,21 +16,20 @@ import java.time.LocalDate
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
-@CompileStatic
 class OutcomeResultData {
 
-    def testData = { ->
-        return [enrolment(1L, LocalDate.now().minusDays(30)),
-                enrolment(2L, LocalDate.now().minusDays(31)),
-                enrolment(3L, LocalDate.now().minusDays(27)),
-                enrolment(4L, LocalDate.now().minusDays(8)),
-                enrolment(5L, LocalDate.now().minusDays(6)),
-                enrolment(6L, LocalDate.now().minusDays(1)),
+    Closure<ArrayList<Enrolment>> testData = { ->
+        return [enrolment(1l, LocalDate.now().minusDays(30)),
+                enrolment(2l, LocalDate.now().minusDays(31)),
+                enrolment(3l, LocalDate.now().minusDays(27)),
+                enrolment(4l, LocalDate.now().minusDays(8)),
+                enrolment(5l, LocalDate.now().minusDays(6)),
+                enrolment(6l, LocalDate.now().minusDays(1)),
         ]
 
     }
 
-    Enrolment enrolment(Long id, LocalDate endDate) {
+    Closure<Enrolment> enrolment = { Long id, LocalDate endDate ->
         def module = mock(Module)
 
         def outcome = mock(Outcome)
@@ -51,8 +50,7 @@ class OutcomeResultData {
         return enrolment
     }
 
-    @Test
-    static assetResults(Collection<QualityResult> result) {
+    Object assetResults(Collection<QualityResult> result) {
         Assertions.assertEquals(3, result.size())
 
         def qr28 = result[0]
