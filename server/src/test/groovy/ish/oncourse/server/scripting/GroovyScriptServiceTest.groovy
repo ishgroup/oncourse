@@ -18,16 +18,17 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.quartz.JobDetail
 
 @CompileStatic
 class GroovyScriptServiceTest extends CayenneIshTestCase {
 
-    private ICayenneService cayenneService
+    private static ICayenneService cayenneService
 
-    
-    void setup() throws Exception {
+    @BeforeAll
+    static void init() throws Exception {
         wipeTables()
         InputStream st = GroovyScriptService.class.getClassLoader().getResourceAsStream("ish/oncourse/server/scripting/groovyScriptServiceTestDataSet.xml")
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
@@ -39,7 +40,7 @@ class GroovyScriptServiceTest extends CayenneIshTestCase {
 
         executeDatabaseOperation(rDataSet)
 
-        this.cayenneService = injector.getInstance(ICayenneService.class)
+        cayenneService = injector.getInstance(ICayenneService.class)
     }
     
     @Test

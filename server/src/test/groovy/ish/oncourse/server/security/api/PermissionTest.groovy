@@ -3,9 +3,11 @@ package ish.oncourse.server.security.api
 import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
 import io.bootique.test.junit.BQTestFactory
+import ish.BootiqueTestFactory
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.RegisterExtension
 
 import javax.ws.rs.HttpMethod
 
@@ -14,13 +16,14 @@ class PermissionTest {
 
     private static final String CONFIG_PATH = "--config=classpath:permissionTest.yml"
 
-    private IPermissionService permissionService
+    private static IPermissionService permissionService
 
-    public static BQTestFactory testFactory = new BQTestFactory()
+    @RegisterExtension
+    public static BootiqueTestFactory testFactory = new BootiqueTestFactory()
 
 
-    @BeforeEach
-    void before() {
+    @BeforeAll
+    static void before() {
         BQRuntime runtime = testFactory.app(CONFIG_PATH)
                 .module(PermissionModule.class)
                 .module(MockModule.class)

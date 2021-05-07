@@ -1,7 +1,5 @@
 package ish.oncourse.server.scripting
 
-import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
@@ -16,25 +14,31 @@ import org.apache.cayenne.query.SQLTemplate
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.quartz.JobDetail
 import org.quartz.JobKey
 import org.quartz.SchedulerException
 
-@CompileStatic
 class ScriptTriggeringListenerTest extends CayenneIshTestCase {
-    private ICayenneService cayenneService
-    private GroovyScriptService scriptService
-    private TestSchedulerService schedulerService
+    private static ICayenneService cayenneService
+    private static GroovyScriptService scriptService
+    private static TestSchedulerService schedulerService
     private static final Logger logger = LogManager.getLogger()
 
-    @CompileDynamic
+    @BeforeAll
+    static void init() {
+        cayenneService = injector.getInstance(ICayenneService.class)
+        scriptService = injector.getInstance(GroovyScriptService.class)
+        schedulerService = (TestSchedulerService) injector.getInstance(ISchedulerService.class)
+    }
+
+    @BeforeEach
     void setup() throws SchedulerException {
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-        this.scriptService = injector.getInstance(GroovyScriptService.class)
-        this.schedulerService = (TestSchedulerService) injector.getInstance(ISchedulerService.class)
         cayenneService.getNewContext().performNonSelectingQuery(new SQLTemplate(Script.class, "DELETE FROM Script"))
         scriptService.initTriggers()
-        new ArrayList<>(schedulerService.getJobs()).each { j ->
+        new ArrayList<>(schedulerService.getJobs()).each { JobDetail j ->
             try {
                 schedulerService.removeJob(j.getKey())
             } catch (SchedulerException e) {
