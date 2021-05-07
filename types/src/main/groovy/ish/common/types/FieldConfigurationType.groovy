@@ -59,7 +59,28 @@ enum FieldConfigurationType implements DisplayableExtendedEnumeration<Integer> {
 	 * Field Configuration will be used for parents or guardians
 	 */
 	@API
-	PARENT(6, "Parent")
+	PARENT(6, "Parent"),
+
+	/**
+	 * Database value: 7
+	 * Field Configuration will be used for articles
+	 */
+	@API
+	PRODUCT(7, "Parent"),
+
+	/**
+	 * Database value: 8
+	 * Field Configuration will be used for memberships
+	 */
+	@API
+	MEMBERSHIP(8, "Membership"),
+
+	/**
+	 * Database value: 9
+	 * Field Configuration will be used for vouchers
+	 */
+	@API
+	VOUCHER(9, "Voucher")
 
 	private String displayName
 	private int value
