@@ -18,10 +18,6 @@ import { ErrorBoundary} from "../../constants/Bugsnag";
 import bugsnagClient from "@bugsnag/js";
 import {initGAEvent} from "../../services/GoogleAnalyticsService";
 
-localforage.ready().catch(e => {
-  console.error(e);
-});
-
 export class Bootstrap {
   private components: { [key: string]: HTMLMarker } = {};
   private store: Store<IshState>;
