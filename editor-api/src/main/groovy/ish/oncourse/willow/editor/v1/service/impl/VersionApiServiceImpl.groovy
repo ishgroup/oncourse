@@ -90,8 +90,8 @@ class VersionApiServiceImpl implements VersionApi {
         versions
     }
 
-    void updateVersion(String id, Version diff) {
-
+    void updateVersion(String id, Version diff, String description) {
+        logger.warn("update version: $description")
         Request request = requestService.request
         ObjectContext context = cayenneService.newContext()
         
@@ -116,7 +116,7 @@ class VersionApiServiceImpl implements VersionApi {
         switch (status) {
             case VersionStatus.PUBLISHED:
                 if (draft.id == version.id) {
-                    publish()
+                    publish(description)
                 } else {
                     throw createClientException('You can not publish non draft version')
                 }
@@ -131,7 +131,7 @@ class VersionApiServiceImpl implements VersionApi {
         }
     }
 
-    private void publish() {
+    private void publish(String message) {
         
         Request request = requestService.request
         WebSite webSite = WebSiteFunctions.getCurrentWebSite(request, cayenneService.newContext())
@@ -146,7 +146,7 @@ class VersionApiServiceImpl implements VersionApi {
                 logger.warn("Start to publish: $serverName, draft version id: ${draftVersion.id}, started by: $userName")
                 Long time = System.currentTimeMillis()
 
-                WebSitePublisher.valueOf(deployScriptPath, draftVersion, user, userEmail, cayenneService.newContext()).publish()
+                WebSitePublisher.valueOf(deployScriptPath, draftVersion, user, userEmail, cayenneService.newContext(), message).publish()
 
                 //refresh draft version after publishing
                 WebSiteVersion freshDraft = WebSiteVersionFunctions.getCurrentVersion(webSite, cayenneService.newContext())

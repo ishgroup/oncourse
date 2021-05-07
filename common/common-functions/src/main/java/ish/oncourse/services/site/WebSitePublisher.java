@@ -23,6 +23,7 @@ public class WebSitePublisher {
     private SystemUser systemUser;
     private String userEmail;
     private String scriptPath;
+    private String message;
 
     public void publish() {
         WebSiteVersionCopy.valueOf(context, draftVersion, newVersion).copyContent();
@@ -54,8 +55,7 @@ public class WebSitePublisher {
         List<String> scriptCommand = new ArrayList<>();
 
         scriptCommand.add(scriptPath);
-        scriptCommand.add("-s");
-        scriptCommand.add(String.valueOf(siteVersion.getId()));
+
         scriptCommand.add("-c");
         scriptCommand.add(siteVersion.getWebSite().getSiteKey());
 
@@ -64,12 +64,21 @@ public class WebSitePublisher {
             scriptCommand.add(userEmail);
         }
         
+        if (systemUser != null && systemUser.getFirstName() != null  && systemUser.getSurname() != null) {
+            scriptCommand.add("-u");
+            scriptCommand.add(systemUser.getFirstName() + " " + systemUser.getSurname());
+        }
+        if (message != null) {
+            scriptCommand.add("-m");
+            scriptCommand.add(message);
+        }
         new ScriptExecutor(scriptCommand).execute();
     }
 
 
-    public static WebSitePublisher valueOf(String scriptPath, WebSiteVersion draftVersion, SystemUser systemUser, String userEmail, ObjectContext objectContext) {
+    public static WebSitePublisher valueOf(String scriptPath, WebSiteVersion draftVersion, SystemUser systemUser, String userEmail, ObjectContext objectContext, String message) {
         WebSitePublisher publisher = valueOf(draftVersion, systemUser, userEmail, scriptPath, objectContext);
+        publisher.message = message;
         return publisher;
     }
     

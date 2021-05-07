@@ -1177,7 +1177,7 @@ definitions:
       addThisId:
         type: string
         example: agd5465274
-      moveGTM:
+      googleTM:
         type: string
       rootTagFilter:
         type: string
