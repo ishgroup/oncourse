@@ -21,10 +21,12 @@ import ish.oncourse.server.api.dao.CorporatePassDao
 import ish.oncourse.server.api.dao.CorporatePassProductDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.EntityRelationDao
+import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.api.dao.VoucherProductCourseDao
 import ish.oncourse.server.api.dao.VoucherProductDao
+import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
@@ -60,6 +62,9 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
 
     @Inject
     private CourseDao courseDao
+
+    @Inject
+    private FieldConfigurationSchemeDao fieldConfigurationSchemeDao
 
     @Inject
     private VoucherProductCourseDao voucherProductCourseDao
@@ -108,6 +113,7 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                     EntityRelationDao.getRelatedTo(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestToEntityRelation(it) })
             voucherProductDTO.createdOn = voucherProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             voucherProductDTO.modifiedOn = voucherProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
+            voucherProductDTO.dataCollectionRuleId = voucherProduct.fieldConfigurationScheme?.id
             voucherProductDTO
         }
     }
@@ -124,6 +130,9 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
         voucherProduct.description = trimToNull(voucherProductDTO.description)
         voucherProduct.isOnSale = voucherProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE || voucherProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE
         voucherProduct.isWebVisible = voucherProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE
+        voucherProduct.fieldConfigurationScheme = voucherProductDTO.dataCollectionRuleId ?
+                fieldConfigurationSchemeDao.getById(voucherProduct.context, voucherProductDTO.dataCollectionRuleId) :
+                null as FieldConfigurationScheme
         updateCorporatePassesByIds(voucherProduct, voucherProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
         updateCourses(voucherProduct, voucherProductDTO.courses)
         if (voucherProduct.newRecord) {
