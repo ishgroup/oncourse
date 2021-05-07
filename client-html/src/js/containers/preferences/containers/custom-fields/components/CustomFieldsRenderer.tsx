@@ -77,7 +77,13 @@ const onDragEnd = (result, items, dispatch) => {
 
 const validateListMap = (value, dataType) => {
   let error;
-  const fields = JSON.parse(value);
+  let fields = [];
+
+  try {
+    fields = JSON.parse(value);
+  } catch (e) {
+    console.error(e);
+  }
 
   if (Array.isArray(fields)) {
     fields.forEach(f => {
