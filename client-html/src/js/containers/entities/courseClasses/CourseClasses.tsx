@@ -66,7 +66,7 @@ import {
   DEFAULT_DELIVERY_MODE_KEY,
   DEFAULT_FUNDING_SOURCE_KEY,
   DEFAULT_MAXIMUM_PLACES_KEY,
-  DEFAULT_MINIMUM_PLACES_KEY
+  DEFAULT_MINIMUM_PLACES_KEY, PLAIN_LIST_MAX_PAGE_SIZE
 } from "../../../constants/Config";
 import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../common/utils/dates/format";
@@ -781,7 +781,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
         DEFAULT_MINIMUM_PLACES_KEY
       ])
     );
-    dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone",  true, "name"));
+    dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
   getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
