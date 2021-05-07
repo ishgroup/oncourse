@@ -26,16 +26,20 @@ interface Props {
 }
 
 const getDefaultFields = value => {
+  let result = [];
+
   if (value) {
-    let result = JSON.parse(value);
+    try {
+      result = JSON.parse(value);
 
-    if (Array.isArray(result)) {
-      result = result.filter(v => !v.value.includes("*"));
+      if (Array.isArray(result)) {
+        result = result.filter(v => !v.value.includes("*"));
+      }
+    } catch (e) {
+      console.error(e);
     }
-
-    return result;
   }
-  return [];
+  return result;
 };
 
 const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
