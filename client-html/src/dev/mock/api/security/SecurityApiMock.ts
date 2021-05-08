@@ -5,9 +5,8 @@ export function SecurityApiMock() {
   this.api.onGet("v1/role").reply(config =>
     promiseResolve(config, this.db.getSecurityRoles()));
 
-  this.api.onPost("v1/role").reply(config => {
-    return promiseResolve(config, this.db.getSecurityRoles());
-  });
+  this.api.onPost("v1/role").reply(config =>
+    promiseResolve(config, this.db.getSecurityRoles()));
 
   this.api.onDelete(new RegExp(`v1/role/\\d+`)).reply(config => {
     const id = getParamsId(config);
@@ -26,5 +25,4 @@ export function SecurityApiMock() {
 
   this.api.onPut(new RegExp(`v1/user/disableTFA/\\d+`)).reply(config =>
     promiseResolve(config, this.db.getSecurityUsers()));
-
 }
