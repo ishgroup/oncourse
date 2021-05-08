@@ -1,6 +1,4 @@
 import * as React from "react";
-import { mockedAPI } from "../TestEntry";
-import * as PreferencesModel from "../../js/model/preferences";
 import { defaultComponents } from "../common/Default.Components";
 import Settings from "../../js/containers/security/containers/settings/Settings";
 
