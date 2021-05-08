@@ -1,6 +1,11 @@
 
 export function mockSecurityRoles() {
   this.getSecurityRoles = () => this.securityRoles;
+
+  this.removeSecurityUserRole = id => {
+    this.securityRoles = this.securityRoles.filter(role => Number(role.id) !== Number(id));
+  };
+
   return [
     {
       "id": 200,
