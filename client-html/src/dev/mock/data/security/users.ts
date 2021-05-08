@@ -235,7 +235,7 @@ export function mockSecurityUsers() {
       "admin": true,
       "role": null,
       "accessEditor": false,
-      "tfaEnabled": false,
+      "tfaEnabled": true,
       "password": null,
       "passwordLastChanged": null,
       "passwordUpdateRequired": false,
