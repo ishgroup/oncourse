@@ -19,5 +19,5 @@ export function SecurityApiMock() {
     promiseResolve(config, this.db.getSecurityUsers()));
 
   this.api.onPut(new RegExp(`v1/user/resetPassword/\\d+`)).reply(config =>
-    promiseResolve(config, {}));
+    promiseResolve(config, this.db.getSecurityUsers()));
 }
