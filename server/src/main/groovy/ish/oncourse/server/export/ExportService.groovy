@@ -141,13 +141,12 @@ class ExportService {
 	/**
 	 * Script API method allowing calling export execution from groovy code.
 	 */
-	DocumentParam export(@DelegatesTo(ExportSpec) Closure cl) {
+	def export(@DelegatesTo(ExportSpec) Closure cl) {
 		ExportSpec exportSpec = new ExportSpec()
-        Closure build = cl.rehydrate(exportSpec, cl, this)
-        build.setResolveStrategy(Closure.DELEGATE_FIRST)
-        build.call()
+		Closure build = cl.rehydrate(exportSpec, cl, this)
+		build.setResolveStrategy(Closure.DELEGATE_FIRST)
+		build.call()
 
-		String result = performExport(exportSpec.templateKeyCode, exportSpec.entityRecords).toString()
-        return DocumentParam.valueOf(exportSpec.getFileName(), result)
+		return performExport(exportSpec.templateKeyCode, exportSpec.entityRecords).toString()
 	}
 }
