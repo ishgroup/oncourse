@@ -494,7 +494,8 @@ class TCSIIntegration implements PluginTrait {
             subject("TCSI export failed for: $enrolment.student.contact.fullName  $enrolment.courseClass.uniqueCode")
             content(message)
             from (preferenceController.emailFromAddress)
-            to ('artyom@ish.com.au')
+            to (preferenceController.emailAdminAddress)
+            cc ('artyom@ish.com.au')
         }
         throw new TCSIException(message)
     }
