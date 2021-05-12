@@ -401,7 +401,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         validateSessionUpdate(values.id, updated, dispatch, form);
       },
         confirmMessage: "Session will be deleted permanently",
-        cancelButtonText: "Delete"
+        confirmButtonText: "Delete"
       });
     },
     [form, values.sessions]
@@ -514,7 +514,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         validateSessionUpdate(values.id, updated, dispatch, form);
       },
       confirmMessage: `${sessionSelection.length} Session${sessionSelection.length > 1 ? "s" : ""} will be deleted permanently`,
-      cancelButtonText: "Delete"
+      confirmButtonText: "Delete"
     });
   }, [form, values.sessions, sessionSelection]);
 

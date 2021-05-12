@@ -81,7 +81,7 @@ const OwnApiNotes = React.memo<Props>(
               dispatch(change(form, "notes", updatedNotes));
             },
             confirmMessage: "This note will be deleted permanently.",
-            cancelButtonText: "DELETE"
+            confirmButtonText: "DELETE"
           }
         );
       },
