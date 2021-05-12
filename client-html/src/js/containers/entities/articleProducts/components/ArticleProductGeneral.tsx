@@ -17,6 +17,8 @@ import { State } from "../../../../reducers/state";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { PreferencesState } from "../../../preferences/reducers/state";
+import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeString } from "../../../../common/utils/strings";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
@@ -129,7 +131,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item xs={twoColumn ? 4 : 6}>
+        <Grid item xs={twoColumn ? 4 : 12}>
           <FormField
             type="select"
             name="status"
@@ -138,7 +140,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
             selectLabelMark="value"
           />
         </Grid>
-        <Grid item xs={twoColumn ? 4 : 6}>
+        <Grid item xs={twoColumn ? 4 : 12}>
           <FormField
             type="select"
             name="dataCollectionRuleId"
@@ -146,7 +148,9 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
             selectValueMark="id"
             selectLabelMark="name"
             items={dataCollectionRules || []}
-            allowEmpty
+            format={normalizeString}
+            fullWidth
+            required
             sort
           />
         </Grid>
