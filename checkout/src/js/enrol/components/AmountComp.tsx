@@ -22,12 +22,12 @@ class AmountComp extends React.Component<Props> {
 
     const payNowVal = parseFloat(value);
 
-    if (!isNaN(payNowVal) && payNowVal > 0) {
+    if (!isNaN(payNowVal) && payNowVal >= 0) {
       onUpdatePayNow(payNowVal.toFixed(2), true);
     }
 
     return Promise.resolve();
-  },600);
+  },500);
 
   handleBlur = () => {
     this.forceUpdate();
@@ -66,7 +66,7 @@ class AmountComp extends React.Component<Props> {
           (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
           <PayNow
             payNow={amount.payNow}
-            onChange={this.handleChange}
+            onChange={amount.isEditable ? this.handleChange : null}
             onBlur={this.handleBlur}
           />
           }
@@ -147,7 +147,7 @@ const PayNow = props => {
         onBlur={e => props.onBlur(e)}
         style={{ margin: 0 }}
         prefix={'$ '}
-        decimalScale={0}
+        decimalScale={2}
         allowNegative={false}
       />
     </span>
