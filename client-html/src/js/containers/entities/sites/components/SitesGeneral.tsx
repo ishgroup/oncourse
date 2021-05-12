@@ -110,7 +110,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
     showConfirm({
       onConfirm: id ? () => validateDeleteRoom(id, callback) : callback,
       confirmMessage: "Room entity will be deleted. This action can not be undone",
-      cancelButtonText: "Delete"
+      confirmButtonText: "Delete"
     });
   };
 

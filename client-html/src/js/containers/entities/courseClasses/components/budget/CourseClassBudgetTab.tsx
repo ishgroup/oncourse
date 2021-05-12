@@ -579,7 +579,7 @@ const CourseClassBudgetTab = React.memo<Props>(
             }
           },
           confirmMessage: "Budget item will be deleted permanently",
-          cancelButtonText: "DELETE"
+          confirmButtonText: "DELETE"
         });
       },
       [values.budget, form]
