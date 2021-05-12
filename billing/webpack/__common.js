@@ -20,8 +20,6 @@ const KEYS = {
 };
 
 const _common = (dirname, options) => {
-  const mode = (options.NODE_ENV && options.NODE_ENV !== 'mock') ? options.NODE_ENV : 'development';
-
   let _main = {
     entry: [options[KEYS.ENTRY]],
     output: {
@@ -29,7 +27,7 @@ const _common = (dirname, options) => {
       publicPath: "/",
       filename: "billing.js"
     },
-    mode: mode,
+    mode: 'development',
     resolve: {
       modules: [
         "node_modules",
@@ -58,12 +56,17 @@ const _common = (dirname, options) => {
     plugins: [
       new MiniCssExtractPlugin({filename: "billing.css"}),
       _DefinePlugin('development', options.BUILD_NUMBER),
+      new webpack.SourceMapDevToolPlugin({
+        filename: "[file].map",
+        test: /billing/
+      }),
     ],
     devServer: {
       inline: true,
-      port: 8081
+      hot: true,
+      port: 8100
     },
-    devtool: 'source-map',
+    devtool: false,
   };
   _main.module.rules = [..._main.module.rules, ..._styleModule()];
   return _main;

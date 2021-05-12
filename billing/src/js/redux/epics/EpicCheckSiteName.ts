@@ -6,7 +6,7 @@ import {
   SET_SEND_TOKEN_AGAIN_VALUE,
   SET_LOADING_VALUE,
   SHOW_MESSAGE
-} from "../actions/index";
+} from "../actions";
 import InstantFetchErrorHandler from "../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import BillingService from "../../api/services/BillingApi";
 
