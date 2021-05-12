@@ -4,13 +4,12 @@
  */
 package ish.oncourse.server.cayenne
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.glue._Account
 import ish.oncourse.server.cayenne.glue._AccountTransaction
@@ -25,32 +24,18 @@ import org.apache.cayenne.query.SelectQuery
 import org.apache.cayenne.query.SortOrder
 import org.apache.cayenne.validation.ValidationException
 import org.apache.commons.lang3.time.DateUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.text.SimpleDateFormat
 
 @CompileStatic
+@DatabaseSetup(value ="ish/oncourse/server/cayenne/invoiceLineTest.xml")
 class InvoiceLineTest extends CayenneIshTestCase {
-    private static final Logger logger = LogManager.getLogger()
-    private ICayenneService cayenneService
 
-    
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = InvoiceLineTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/invoiceLineTest.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+    @Override
+    void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
         Date start1 = DateUtils.addDays(new Date(), -4)
         Date start2 = DateUtils.addDays(new Date(), -2)
         Date start3 = DateUtils.addDays(new Date(), 2)
@@ -64,12 +49,8 @@ class InvoiceLineTest extends CayenneIshTestCase {
         rDataSet.addReplacementObject("[end_date3]", DateUtils.addHours(start3, 2))
         rDataSet.addReplacementObject("[end_date4]", DateUtils.addHours(start4, 2))
         rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-        super.setup()
     }
 
-    
     @Test
     void testInvoiceLineSetup() {
 
@@ -106,7 +87,7 @@ class InvoiceLineTest extends CayenneIshTestCase {
         try {
             invoiceLine.setPriceEachExTax(amount)
             invoiceLine.setTaxEach(amount.multiply(tax.getRate()))
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
             Assertions.fail("Exception thrown when setting the invoice line price")
         }
 

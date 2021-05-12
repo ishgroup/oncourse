@@ -54,6 +54,15 @@ abstract class CayenneIshTestCase extends IshTestCase {
         resetAutoIncrement()
     }
 
+    /**
+     * Replace values in the dbUnit data source. But default we handle null, but override this method to provide additional values
+     * @param rDataSet
+     */
+    protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
+        rDataSet.addReplacementObject("[null]", null)
+        rDataSet.addReplacementObject("[NULL]", null)
+    }
+
     @BeforeEach
     void setup() throws Exception {
         def a = this.class.getAnnotation(DatabaseSetup)
@@ -69,9 +78,7 @@ abstract class CayenneIshTestCase extends IshTestCase {
                 FlatXmlDataSet dataSet = builder.build(st)
 
                 ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-                rDataSet.addReplacementObject("[null]", null)
-                rDataSet.addReplacementObject("[NULL]", null)
-
+                dataSourceReplaceValues(rDataSet)
                 executeDatabaseOperation(dataSet)
             }
         }
