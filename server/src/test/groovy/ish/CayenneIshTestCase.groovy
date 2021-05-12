@@ -83,7 +83,7 @@ abstract class CayenneIshTestCase extends IshTestCase {
             }
         }
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        if (a.readOnly()) {
+        if (a && a.readOnly()) {
             cayenneContext = cayenneService.getNewReadonlyContext()
         } else {
             cayenneContext = cayenneService.getNewContext()
