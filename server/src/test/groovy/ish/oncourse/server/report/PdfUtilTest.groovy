@@ -18,21 +18,15 @@ class PdfUtilTest extends IshTestCase {
     private static File overlay2page = getResourceAsFile("resources/schema/referenceData/reports/overlay2page.pdf")
     private static File overlay1page = getResourceAsFile("resources/schema/referenceData/reports/overlay1page.pdf")
 
-    
     @Test
     void testOverlayFail2() {
-        try {
+        Assertions.assertThrows(Exception) { ->
             PdfUtil.overlayPDFs(null, overlay1page)
-        } catch (Exception e) {
-            return
         }
-        Assertions.fail("an exception should be thrown!")
     }
 
-    
     @Test
     void testOverlayMultipage() throws Exception {
-
         File testingCopy = new File(original.getParentFile().getAbsoluteFile(), "testingCopy1.pdf")
         FileUtils.copyFile(original, testingCopy)
 
@@ -44,7 +38,6 @@ class PdfUtilTest extends IshTestCase {
         testingCopy.delete()
     }
 
-    
     @Test
     void testOverlayOnepage() throws Exception {
         File testingCopy = new File(original.getParentFile().getAbsoluteFile(), "testingCopy2.pdf")
@@ -54,11 +47,9 @@ class PdfUtilTest extends IshTestCase {
 
         //so far there is no better way of testing the overlay
         Assertions.assertTrue(testingCopy.length() > original.length(), "new file should be larger than original")
-
         testingCopy.delete()
     }
 
-    
     @Test
     void testOverlayEmpty() throws Exception {
         File testingCopy = new File(original.getParentFile().getAbsoluteFile(), "testingCopy3.pdf")

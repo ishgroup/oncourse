@@ -34,7 +34,7 @@ class DelayedIncomeTransactionsBuilderTest {
         secondaryAccount = mock(Account)
         when(secondaryAccount.id).thenReturn(61L)
 
-        Long invLineId = 45L
+        invLineId = 45L
         invoiceLine = mock(InvoiceLine)
         when(invoiceLine.account).thenReturn(primaryAccount)
         when(invoiceLine.prepaidFeesAccount).thenReturn(secondaryAccount)

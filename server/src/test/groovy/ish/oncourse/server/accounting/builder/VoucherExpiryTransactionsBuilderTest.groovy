@@ -38,7 +38,7 @@ class VoucherExpiryTransactionsBuilderTest {
         voucherLiabilityAccount = mock(Account)
         when(voucherLiabilityAccount.id).thenReturn(61L)
 
-        Long invLineId = 43L
+        invLineId = 43L
         InvoiceLine invoiceLine = mock(InvoiceLine)
         when(invoiceLine.finalPriceToPayExTax).thenReturn(new Money(300.0))
         when(invoiceLine.id).thenReturn(invLineId)
