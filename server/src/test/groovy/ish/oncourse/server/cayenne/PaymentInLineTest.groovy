@@ -3,42 +3,26 @@
  */
 package ish.oncourse.server.cayenne
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.common.types.PaymentStatus
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/paymentInLineTest.xml")
 class PaymentInLineTest extends CayenneIshTestCase {
 
-    private ICayenneService cayenneService
-
-    
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = PaymentInLineTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/paymentInLineTest.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-
-        FlatXmlDataSet dataSet = builder.build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+    @Override
+    protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
         Date start1 = DateUtils.addDays(new Date(), -4)
         Date start2 = DateUtils.addDays(new Date(), -2)
         Date start3 = DateUtils.addDays(new Date(), 2)
@@ -52,11 +36,7 @@ class PaymentInLineTest extends CayenneIshTestCase {
         rDataSet.addReplacementObject("[end_date3]", DateUtils.addHours(start3, 2))
         rDataSet.addReplacementObject("[end_date4]", DateUtils.addHours(start4, 2))
         rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-        super.setup()
     }
-
     
     @Test
     void testCreateMoneyVoucherTransactions() {

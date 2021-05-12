@@ -5,51 +5,19 @@ package ish.oncourse.server.cayenne.glue
 
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRelation
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.SelectQuery
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/glue/TaggableAPITestDataSet.xml")
 class TaggableAPITest extends CayenneIshTestCase {
-
-    private ICayenneService cayenneService
-
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-
-        cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = TaggableAPITest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/glue/TaggableAPITestDataSet.xml")
-
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-        super.setup()
-
-    }
-
-    //cleanup was added to avoid MySQLIntegrityConstraintViolationException during the deleting from table 'Node'
-    @AfterEach
-    void tearDown() {
-        wipeTables()
-    }
 
     @Test
     void testHasTag() {
@@ -130,7 +98,6 @@ class TaggableAPITest extends CayenneIshTestCase {
 
         Expression expression = TagRelation.ENTITY_IDENTIFIER.eq(TaggableClasses.COURSE.getDatabaseValue()).andExp(TagRelation.ENTITY_ANGEL_ID.eq(course.getId()))
         Assertions.assertEquals(0, course.getContext().performQuery(new SelectQuery<>(TagRelation.class, expression)).size())
-
     }
 
 }

@@ -1,19 +1,14 @@
 package ish.oncourse.server.querying
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
-import ish.oncourse.server.ICayenneService
+import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
 import ish.scripting.ScriptResult
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -30,30 +25,14 @@ import static java.time.LocalTime.MAX
 import static java.time.LocalTime.MIN
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/querying/QuerySpecWithRelativeDatesTestDataSet.xml")
 class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase {
-    private static ObjectContext context
     private List<Student> students
 
-
     @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-        context = injector.getInstance(ICayenneService).newContext
-
-        InputStream st = QuerySpecTest.getClassLoader().getResourceAsStream("ish/oncourse/server/querying/QuerySpecWithRelativeDatesTestDataSet.xml")
-
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-
-        students = ObjectSelect.query(Student).orderBy(Student.ID.asc()).select(context)
+    void students() throws Exception {
+        students = ObjectSelect.query(Student).orderBy(Student.ID.asc()).select(cayenneContext)
     }
-
 
     @Test
     void todayYesterdayTomorrowOperatorTest() {
@@ -79,7 +58,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase {
         students.get(7).visaExpiryDate = Timestamp.valueOf(tomorrowStart)
         students.get(8).visaExpiryDate = Timestamp.valueOf(tomorrowEnd)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
 
         executeQuery("visaExpiryDate today", "[1, 2, 3]")
@@ -123,7 +102,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase {
         students.get(7).visaExpiryDate = Timestamp.valueOf(nextWeekStart)
         students.get(8).visaExpiryDate = Timestamp.valueOf(nextWeekEnd)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
 
         executeQuery("visaExpiryDate last week", "[1, 2, 3]")
@@ -156,7 +135,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase {
         students.get(7).visaExpiryDate = Timestamp.valueOf(nextMonthStart)
         students.get(8).visaExpiryDate = Timestamp.valueOf(nextMonthEnd)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         executeQuery("visaExpiryDate last month", "[1, 2, 3]")
         executeQuery("visaExpiryDate this month", "[4, 5, 6]")
@@ -188,7 +167,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase {
         students.get(7).visaExpiryDate = Timestamp.valueOf(nextYearStart)
         students.get(8).visaExpiryDate = Timestamp.valueOf(nextYearEnd)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         executeQuery("visaExpiryDate last year", "[1, 2, 3]")
         executeQuery("visaExpiryDate this year", "[4, 5, 6]")
@@ -219,7 +198,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase {
         students.get(5).visaExpiryDate = Timestamp.valueOf(minus8DaysEnd)
         students.get(6).visaExpiryDate = Timestamp.valueOf(definiteDate.atStartOfDay())
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         executeQuery("visaExpiryDate = today + 1 month", "[1, 2, 3]")
         executeQuery("visaExpiryDate = today + 1 months", "[1, 2, 3]")
@@ -238,10 +217,10 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase {
 
 
     
-    static void executeQuery(String query, String expectedResult) throws Exception {
+    void executeQuery(String query, String expectedResult) throws Exception {
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService)
 
-        Script script = context.newObject(Script.class)
+        Script script = cayenneContext.newObject(Script.class)
         script.setEnabled(true)
 
         script.setScript("def result = query {\n" +
@@ -252,7 +231,7 @@ class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase {
                 "\n" +
                 "result*.id.sort()")
 
-        ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), context)
+        ScriptResult result = scriptService.runScript(script, ScriptParameters.empty(), cayenneContext)
 
         if (result.getType() == ScriptResult.ResultType.SUCCESS)
             Assertions.assertEquals(expectedResult, result.getResultValue().toString())
