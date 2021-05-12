@@ -3,7 +3,6 @@ package ish.oncourse.server.api
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.DatabaseSetup
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.UnavailableRuleDao
 import ish.oncourse.server.api.v1.model.HolidayDTO
 import ish.oncourse.server.api.v1.model.RepeatEndEnumDTO
@@ -23,7 +22,6 @@ class HolidayApiTest extends CayenneIshTestCase {
 
     @Test
     void testHoliday() {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService)
         UnavailableRuleDao dao = injector.getInstance(UnavailableRuleDao)
 
         HolidayApi api = new HolidayApiImpl()

@@ -34,7 +34,6 @@ import java.time.LocalDate
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/print/printTransformationTest.xml")
-
 class PrintTransformationTest extends CayenneIshTestCase {
 
     static Date before = DateUtils.addDays(new Date(), -5)

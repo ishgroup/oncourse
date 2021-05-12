@@ -35,9 +35,6 @@ import static org.junit.jupiter.api.Assertions.fail
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/services/delayedEnrolmentIncomePostingJobTestDataSet.xml")
 class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
-    private static final Logger logger = LogManager.getLogger()
-    private ICayenneService cayenneService
-
     // creating date, the object cannot be exactly the same as system time to allow safe comparison of time by delayed Income posting job
     Date date = DateUtils.addHours(DateUtils.truncate(new Date(), Calendar.DATE), 12)
     Date start1 = DateUtils.addDays(date, -4)
@@ -183,9 +180,6 @@ class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
 
         Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
         List<AccountTransaction> att = cayenneContext.select(SelectQuery.query(AccountTransaction.class))
-        for (AccountTransaction atr : att) {
-            logger.warn("{} {} {} {} {}", atr.getId(), atr.getTableName(), atr.getForeignRecordId(), atr.getAmount(), atr.getAccount().getAccountCode())
-        }
     }
 
 	

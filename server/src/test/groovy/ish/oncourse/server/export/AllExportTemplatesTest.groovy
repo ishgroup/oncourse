@@ -11,12 +11,10 @@ import ish.export.ExportResult
 import ish.oncourse.common.ResourceProperty
 import ish.oncourse.common.ResourceType
 import ish.oncourse.common.ResourcesUtil
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ExportTemplate
 import ish.oncourse.server.cayenne.ExportTemplateAutomationBinding
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.upgrades.DataPopulation
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
@@ -72,15 +70,12 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
     }
 
     void fillBindingsManually() {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        ObjectContext context = cayenneService.newContext
-
         ExportTemplateAutomationBinding agedDebtorsBinding = ObjectSelect
                 .query(ExportTemplateAutomationBinding.class).where(ExportTemplateAutomationBinding.RELATED_OBJECT.dot(ExportTemplate.KEY_CODE).eq("ish.oncourse.agedDebtorCsvExport.csv"))
-                .selectFirst(context)
+                .selectFirst(cayenneContext)
         agedDebtorsBinding.value = '2019-06-30'
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
     }
 
     @AfterEach

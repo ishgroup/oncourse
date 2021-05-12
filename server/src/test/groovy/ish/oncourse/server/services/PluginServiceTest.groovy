@@ -61,7 +61,6 @@ class PluginServiceTest extends CayenneIshTestCase {
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
         executeDatabaseOperation(rDataSet)
 
-        cayenneService = injector.getInstance(ICayenneService.class)
         integrationApi = new IntegrationApiImpl()
         integrationApi.cayenneService = cayenneService
 

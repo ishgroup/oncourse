@@ -4,11 +4,8 @@
  */
 package ish.oncourse.server.cayenne
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
-import ish.oncourse.server.ICayenneService
-import org.apache.cayenne.access.DataContext
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -17,9 +14,7 @@ class ContactTest extends CayenneIshTestCase {
 
     @Test
     void testUpdateUniqueCode() {
-        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-
-        Contact contact = newContext.newObject(Contact.class)
+        Contact contact = cayenneContext.newObject(Contact.class)
         contact.setFirstName("firstName")
         contact.setLastName("lastName")
 
@@ -28,23 +23,21 @@ class ContactTest extends CayenneIshTestCase {
 
     @Test
     void testUpdateStudentTutorFlags() {
-        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-
-        Contact contact = newContext.newObject(Contact.class)
+        Contact contact = cayenneContext.newObject(Contact.class)
         contact.setFirstName("firstName1")
         contact.setLastName("lastName1")
 
         Assertions.assertFalse(contact.getIsStudent())
         Assertions.assertFalse(contact.getIsTutor())
 
-        Tutor tutor = newContext.newObject(Tutor.class)
+        Tutor tutor = cayenneContext.newObject(Tutor.class)
         contact.setTutor(tutor)
 
         Assertions.assertNotNull(tutor.getContact())
         Assertions.assertFalse(contact.getIsStudent())
         Assertions.assertTrue(contact.getIsTutor())
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertNotNull(contact.getTutor())
         Assertions.assertFalse(contact.getIsStudent())
@@ -56,29 +49,29 @@ class ContactTest extends CayenneIshTestCase {
         Assertions.assertTrue(contact.getIsStudent())
         Assertions.assertFalse(contact.getIsTutor())
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertFalse(contact.getIsStudent())
         Assertions.assertTrue(contact.getIsTutor())
 
-        newContext.deleteObjects(tutor)
-        newContext.commitChanges()
+        cayenneContext.deleteObjects(tutor)
+        cayenneContext.commitChanges()
 
         Assertions.assertFalse(contact.getIsStudent())
         Assertions.assertFalse(contact.getIsTutor())
 
-        Contact contact2 = newContext.newObject(Contact.class)
+        Contact contact2 = cayenneContext.newObject(Contact.class)
         contact2.setFirstName("firstName2")
         contact2.setLastName("lastName1")
 
-        Student student = newContext.newObject(Student.class)
+        Student student = cayenneContext.newObject(Student.class)
         contact2.setStudent(student)
 
         Assertions.assertNotNull(student.getContact())
         Assertions.assertTrue(contact2.getIsStudent())
         Assertions.assertFalse(contact2.getIsTutor())
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertNotNull(contact2.getStudent())
         Assertions.assertTrue(contact2.getIsStudent())
@@ -90,13 +83,13 @@ class ContactTest extends CayenneIshTestCase {
         Assertions.assertFalse(contact2.getIsStudent())
         Assertions.assertTrue(contact2.getIsTutor())
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertTrue(contact2.getIsStudent())
         Assertions.assertFalse(contact2.getIsTutor())
 
-        newContext.deleteObjects(student)
-        newContext.commitChanges()
+        cayenneContext.deleteObjects(student)
+        cayenneContext.commitChanges()
 
         Assertions.assertFalse(contact2.getIsStudent())
         Assertions.assertFalse(contact2.getIsTutor())
