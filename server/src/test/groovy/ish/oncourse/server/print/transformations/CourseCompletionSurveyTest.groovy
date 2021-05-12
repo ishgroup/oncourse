@@ -29,7 +29,6 @@ class CourseCompletionSurveyTest {
     private Report report
     Report subreport
     private PrintWorker printWorker
-    ICayenneService cayenneService
 
     @CompileDynamic
     @BeforeEach

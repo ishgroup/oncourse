@@ -23,7 +23,9 @@ import groovy.transform.CompileStatic;
 import io.bootique.BQRuntime;
 import io.bootique.command.CommandOutcome;
 import io.bootique.test.junit.BQTestRuntimeBuilder;
-import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.util.ArrayList;
 import java.util.Collection;

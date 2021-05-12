@@ -4,7 +4,6 @@
  */
 package ish.oncourse.server.db
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService
@@ -14,41 +13,33 @@ import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.tx.TransactionalOperation
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 import java.util.concurrent.*
+
 import static org.junit.jupiter.api.Assertions.fail
 
 @CompileStatic
 class CayenneServiceTest extends CayenneIshTestCase {
-
-    private static final Logger logger = LogManager.getLogger()
 
     /**
      * check if the network interface of the db comes up.
      *
      * @throws URISyntaxException
      */
-    
     @Test
     void testInitCayenneStack() throws URISyntaxException {
 
         try {
-            ICayenneService cayService = injector.getInstance(ICayenneService.class)
-
-            DataContext dc = cayService.getNewContext()
             //Assertions.assertEquals("Checking cayenne context", ISHDataContext.class, dc.getClass());
-            Assertions.assertEquals(true, dc.getUserProperty("replicating"), "Checking cayenne context")
+            Assertions.assertEquals(true, cayenneContext.getUserProperty("replicating"), "Checking cayenne context")
 
-            dc = cayService.getNewNonReplicatingContext()
+            cayenneContext = cayenneService.getNewNonReplicatingContext()
             //Assertions.assertEquals("Checking cayenne context", ISHDataContext.class, dc.getClass());
-            Assertions.assertEquals(false, dc.getUserProperty("replicating"), "Checking cayenne context")
+            Assertions.assertEquals(false, cayenneContext.getUserProperty("replicating"), "Checking cayenne context")
 
         } catch (Exception e) {
-            logger.warn("the test database startup failed", e)
             fail("the test database startup failed")
         }
     }
@@ -84,17 +75,15 @@ class CayenneServiceTest extends CayenneIshTestCase {
     //@Test
     
     void testTansactions() {
-        final ICayenneService cayService = injector.getInstance(ICayenneService.class)
-        ServerRuntime runtime = cayService.getServerRuntime()
-
+        ServerRuntime runtime = cayenneService.getServerRuntime()
         ExecutorService asyncThreadExecutor = Executors.newFixedThreadPool(3)
 
-        final DataContext context1 = cayService.getNewContext()
+        final DataContext context1 = cayenneService.getNewContext()
         Contact contact1 = context1.newObject(Contact.class)
         contact1.setFirstName("John")
         contact1.setLastName("Smith")
 
-        final DataContext context2 = cayService.getNewContext()
+        final DataContext context2 = cayenneService.getNewContext()
         Contact contact2 = context2.newObject(Contact.class)
         contact2.setFirstName("John")
         contact2.setLastName("Lie")
@@ -104,16 +93,12 @@ class CayenneServiceTest extends CayenneIshTestCase {
             Object perform() {
                 try {
 
-                    List<Contact> contacts = ObjectSelect.query(Contact.class).select(cayService.getSharedContext())
+                    List<Contact> contacts = ObjectSelect.query(Contact.class).select(cayenneService.getSharedContext())
                     Assertions.assertTrue(contacts.isEmpty())
-                    logger.warn("Make the first commit in transaction")
                     context1.commitChanges()
 
-                    Thread.sleep(10000)
-
-                    contacts = ObjectSelect.query(Contact.class).select(cayService.getSharedContext())
+                    contacts = ObjectSelect.query(Contact.class).select(cayenneService.getSharedContext())
                     Assertions.assertEquals(1, contacts.size())
-
 
                 } catch (InterruptedException e) {
                     fail()
@@ -126,10 +111,8 @@ class CayenneServiceTest extends CayenneIshTestCase {
             @Override
             Boolean call() throws InterruptedException {
                 Thread.sleep(10000)
-                logger.warn("Try to commit transaction, wait finishing of first transaction")
                 context2.commitChanges()
-                logger.warn("Second transaction complit")
-                List<Contact> contacts = ObjectSelect.query(Contact.class).select(cayService.getSharedContext())
+                List<Contact> contacts = ObjectSelect.query(Contact.class).select(cayenneService.getSharedContext())
                 Assertions.assertEquals(2, contacts.size())
                 return true
             }
@@ -148,8 +131,6 @@ class CayenneServiceTest extends CayenneIshTestCase {
         }
     }
 
-
-    
     @Test
     void testRollback() {
         final ICayenneService cayService = injector.getInstance(ICayenneService.class)

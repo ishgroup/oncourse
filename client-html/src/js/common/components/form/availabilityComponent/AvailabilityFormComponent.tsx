@@ -32,12 +32,12 @@ const addRule = (dispatch: any, form: string) => {
   }
 };
 
-const deleteRule = (dispatch: any, showConfirm: any, form: string, field: any, index: number) => {
-  showConfirm(
-    () => dispatch(arrayRemove(form, "rules", index)),
-    "This item will be removed from Availability Rules list",
-    "DELETE"
-  );
+const deleteRule = (dispatch: any, showConfirm: ShowConfirmCaller, form: string, field: any, index: number) => {
+  showConfirm({
+    onConfirm: () => dispatch(arrayRemove(form, "rules", index)),
+    confirmMessage: "This item will be removed from Availability Rules list",
+    confirmButtonText: "DELETE"
+  });
 };
 
 interface Props {
@@ -53,7 +53,7 @@ interface Props {
 
 const AvailabilityFormComponent = React.memo<Props>(
   ({
- values, dispatch, showConfirm, twoColumn, form, className, name = "rules", timezone 
+ values, dispatch, showConfirm, twoColumn, form, className, name = "rules", timezone
 }) => (
   <div className={className}>
     <div className="centeredFlex pl-3">

@@ -6,11 +6,11 @@ package ish.oncourse.server.print
 
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.common.ResourceType
 import ish.oncourse.common.ResourcesUtil
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentOut
@@ -28,9 +28,6 @@ import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.io.FileUtils
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -42,23 +39,12 @@ import java.time.LocalDate
  */
 @CompileStatic
 @Disabled
+@DatabaseSetup(value = "ish/oncourse/server/sampleData.xml")
 class ConcurrentReportPrintingTest extends CayenneIshTestCase {
     List<String> keyCodeList = new ArrayList<>()
     
     @BeforeEach
     void setup() throws Exception {
-        wipeTables()
-
-        InputStream st = ConcurrentReportPrintingTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/sampleData.xml")
-
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 
         try {
@@ -68,9 +54,6 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
             Assertions.fail("could not import one of the resources " + e)
         }
         new JRRuntimeConfig().config()
-
-
-        this.cayenneService = injector.getInstance(ICayenneService.class)
 
         def reportsList = PluginService.getPluggableResources(ResourceType.REPORT.getResourcePath(), ResourceType.REPORT.getFilePattern())
 

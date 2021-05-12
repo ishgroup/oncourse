@@ -8,7 +8,6 @@ import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.DatabaseSetup
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRelation
@@ -16,8 +15,8 @@ import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.SelectQuery
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+
 /**
  * Test cases to check the correctness of expressions, mostly the complicated ones, related to multiple tags. <br/>
  * <br/>

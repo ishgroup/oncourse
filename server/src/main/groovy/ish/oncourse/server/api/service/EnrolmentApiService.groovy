@@ -84,6 +84,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
     @Override
     EnrolmentDTO toRestModel(Enrolment enrolment) {
         new EnrolmentDTO().with { enrolmentDTO ->
+            enrolmentDTO.feeHelpClass = enrolment.courseClass.course.feeHelpClass
             enrolmentDTO.id = enrolment.id
             enrolmentDTO.tags = enrolment.tags.collect { toRestTagMinimized(it) }
             enrolment.student.contact.with { contact ->

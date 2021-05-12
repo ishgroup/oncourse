@@ -6,7 +6,6 @@ import { Dispatch } from "redux";
 import { ExportTemplate } from "@api/model";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../reducers/state";
-import { showConfirm } from "../../../../common/actions";
 import ImportTemplatesForm from "./containers/ImportTemplatesForm";
 import {
   createImportTemplate,
@@ -65,7 +64,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (template: ExportTemplate) => dispatch(updateImportTemplate(template)),
   onUpdateInternal: (template: ExportTemplate) => dispatch(updateInternalImportTemplate(template)),
   onDelete: (id: number) => dispatch(removeImportTemplate(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
   getImportTemplate: (id: number) => dispatch(getImportTemplate(id))
 });
 

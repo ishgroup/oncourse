@@ -33,7 +33,6 @@ interface Props extends InjectedFormProps {
   onCreate: (fileName: string, overlay: File) => void;
   onUpdate: (fileName: string, id: number, overlay: File) => void;
   onDelete: (id: number) => void;
-  openConfirm: (onConfirm: any, confirmMessage?: string) => void;
   history: any;
   nextLocation: string;
   setNextLocation: (nextLocation: string) => void;

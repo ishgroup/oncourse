@@ -16,7 +16,7 @@ import {
   getContactsTaxTypes,
   getContactTags
 } from "../entities/contacts/actions";
-import { checkPermissions, showConfirm } from "../../common/actions";
+import { checkPermissions } from "../../common/actions";
 import { getCustomFieldTypes } from "../entities/customFieldTypes/actions";
 import { getDefaultInvoiceTerms } from "../entities/invoices/actions";
 import { changeStep, checkoutClearState } from "./actions";
@@ -108,8 +108,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getCustomFieldTypes: () => dispatch(getCustomFieldTypes(CONTACT_ENTITY_NAME)),
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) =>
-    dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText)),
   changeStep: (step: number) => dispatch(changeStep(step)),
   clearState: () => {
     dispatch(checkoutClearState());
@@ -122,6 +120,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Outcome", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Certificate", method: "GET" }));
   },
-  });
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Checkout);

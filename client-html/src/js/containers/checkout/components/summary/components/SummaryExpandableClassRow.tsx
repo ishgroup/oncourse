@@ -102,14 +102,12 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
 
   const onPriceLockClick = () => {
     if (priceLocked && !item.discount) {
-      dispatch(showConfirm(
-        null,
-        "Please select discount before editing price",
-        null,
-        null,
-        null,
-        "OK"
-      ));
+      dispatch(showConfirm({
+        title: null,
+        onConfirm: null,
+        confirmMessage: "Please select discount before editing price",
+        cancelButtonText: "OK"
+      }));
       return;
     }
 

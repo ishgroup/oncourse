@@ -4,13 +4,11 @@
  */
 package ish.oncourse.server.messaging
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.upgrades.DataPopulation
@@ -18,8 +16,6 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
@@ -30,15 +26,9 @@ import org.junit.jupiter.api.Test
 @CompileStatic
 class EmailQueuingListenerTest extends CayenneIshTestCase {
 
-    private ICayenneService cayenneService
-    private static final Logger logger = LogManager.getLogger()
-
-    
     @BeforeEach
     void setup() throws Exception {
         wipeTables()
-
-        this.cayenneService = injector.getInstance(ICayenneService.class)
 
         InputStream st = EmailQueuingListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/voucherTest.xml")
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
@@ -70,8 +60,7 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
 
         try {
             dataPopulation.run()
-        } catch (UnsupportedEncodingException e) {
-            logger.catching(e)
+        } catch (UnsupportedEncodingException ignored) {
         }
     }
 
@@ -126,12 +115,10 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
     
     @Test
     void testVoucherPersistedActivePurchaseConfirmation() throws Exception {
-        ObjectContext context = cayenneService.getNewNonReplicatingContext()
+        Product vp = SelectById.query(Product.class, 1L).selectOne(cayenneContext)
+        InvoiceLine il = SelectById.query(InvoiceLine.class, 1).selectOne(cayenneContext)
 
-        Product vp = SelectById.query(Product.class, 1L).selectOne(context)
-        InvoiceLine il = SelectById.query(InvoiceLine.class, 1).selectOne(context)
-
-        Voucher voucher = context.newObject(Voucher.class)
+        Voucher voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setProduct(vp)
         voucher.setCode("test")
@@ -142,23 +129,23 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
         voucher.setSource(PaymentSource.SOURCE_ONCOURSE)
         voucher.setStatus(ProductStatus.ACTIVE)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         // give the script running in separate thread some time to queue emails
         Thread.sleep(3000)
 
-        Assertions.assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
-        Assertions.assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
+        Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(MessagePerson.class)).size())
+        Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(Message.class)).size())
 
         voucher.setRedeemedCourseCount(1)
         voucher.setStatus(ProductStatus.ACTIVE)
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         // give the script running in separate thread some time to queue emails
         Thread.sleep(3000)
 
-        Assertions.assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
-        Assertions.assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
+        Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(MessagePerson.class)).size())
+        Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(Message.class)).size())
 
     }
 

@@ -37,6 +37,7 @@ import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps"
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { setNextLocation } from "../../../../../common/actions";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const styles = theme =>
   createStyles({
@@ -62,7 +63,7 @@ interface Props {
   getFormState: any;
   handleSubmit: any;
   history: any;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
   nextLocation?: string,
   setNextLocation?: (nextLocation: string) => void,
 }
@@ -193,7 +194,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from holidays list", "DELETE");
+    openConfirm({ onConfirm, confirmMessage: "This item will be removed from holidays list", confirmButtonText: "DELETE" });
   };
 
   render() {

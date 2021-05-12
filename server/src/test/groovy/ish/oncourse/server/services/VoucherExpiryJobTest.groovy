@@ -3,49 +3,29 @@
  */
 package ish.oncourse.server.services
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.AccountTransactionType
 import ish.common.types.ProductStatus
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.accounting.AccountTransactionService
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.Voucher
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 class VoucherExpiryJobTest extends CayenneIshTestCase {
-
-    private ICayenneService cayenneService
     private AccountTransactionService accountTransactionService
 
-    
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-        this.accountTransactionService = injector.getInstance(AccountTransactionService.class)
-
-        InputStream st = VoucherExpiryJobTest.class.getClassLoader().getResourceAsStream(
-                "ish/oncourse/server/services/voucherExpiryJobTestDataSet.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-
-        FlatXmlDataSet dataSet = builder.build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+    @Override
+    protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
         Date start1 = DateUtils.addDays(new Date(), -4)
         Date start2 = DateUtils.addDays(new Date(), -2)
         Date start3 = DateUtils.addDays(new Date(), 2)
@@ -59,19 +39,18 @@ class VoucherExpiryJobTest extends CayenneIshTestCase {
         rDataSet.addReplacementObject("[end_date3]", DateUtils.addHours(start3, 2))
         rDataSet.addReplacementObject("[end_date4]", DateUtils.addHours(start4, 2))
         rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-        super.setup()
     }
 
+    @BeforeEach
+    void services() throws Exception {
+        this.accountTransactionService = injector.getInstance(AccountTransactionService.class)
+    }
     
     @Test
     void testVoucherExpiry() {
-        ObjectContext context = cayenneService.getNewContext()
-
-        Voucher expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
-        Voucher expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
-        Voucher unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
+        Voucher expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(cayenneContext)
+        Voucher expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(cayenneContext)
+        Voucher unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(cayenneContext)
 
         Assertions.assertEquals(ProductStatus.ACTIVE, expiredMoneyVoucher.getStatus())
         Assertions.assertEquals(ProductStatus.ACTIVE, expiredCourseVoucher.getStatus())
@@ -82,14 +61,14 @@ class VoucherExpiryJobTest extends CayenneIshTestCase {
         voucherExpiryJob.executeWithDate(new Date())
 
         //create new context to avoid data cache
-        context = cayenneService.getNewContext()
+        cayenneContext = cayenneService.getNewContext()
 
-        Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(context)
-        Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(context)
+        Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(cayenneContext)
+        Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(cayenneContext)
 
-        expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
-        expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
-        unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
+        expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(cayenneContext)
+        expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(cayenneContext)
+        unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(cayenneContext)
 
         Assertions.assertEquals(ProductStatus.EXPIRED, expiredMoneyVoucher.getStatus())
         Assertions.assertEquals(ProductStatus.EXPIRED, expiredCourseVoucher.getStatus())
@@ -102,7 +81,7 @@ class VoucherExpiryJobTest extends CayenneIshTestCase {
         transactionQuery.addOrdering(AccountTransaction.ACCOUNT.dot(Account.ID).asc())
         transactionQuery.addOrdering(AccountTransaction.AMOUNT.asc())
 
-        List<AccountTransaction> transactions = context.select(transactionQuery)
+        List<AccountTransaction> transactions = cayenneContext.select(transactionQuery)
 
         Assertions.assertEquals(4, transactions.size())
 
@@ -128,11 +107,9 @@ class VoucherExpiryJobTest extends CayenneIshTestCase {
     
     @Test
     void testVoucherProductPriceChange() {
-        ObjectContext context = cayenneService.getNewContext()
-
-        Voucher expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
-        Voucher expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
-        Voucher unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
+        Voucher expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(cayenneContext)
+        Voucher expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(cayenneContext)
+        Voucher unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(cayenneContext)
 
         Assertions.assertEquals(ProductStatus.ACTIVE, expiredMoneyVoucher.getStatus())
         Assertions.assertEquals(ProductStatus.ACTIVE, expiredCourseVoucher.getStatus())
@@ -142,21 +119,21 @@ class VoucherExpiryJobTest extends CayenneIshTestCase {
         expiredMoneyVoucher.getVoucherProduct().setPriceExTax(new Money("1.00"))
         expiredCourseVoucher.getVoucherProduct().setPriceExTax(new Money("1.00"))
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, accountTransactionService)
 
         voucherExpiryJob.executeWithDate(new Date())
 
         //create new context to avoid data cache
-        context = cayenneService.getNewContext()
+        cayenneContext = cayenneService.getNewContext()
 
-        Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(context)
-        Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(context)
+        Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(cayenneContext)
+        Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(cayenneContext)
 
-        expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(context)
-        expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(context)
-        unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(context)
+        expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(cayenneContext)
+        expiredCourseVoucher = SelectById.query(Voucher.class, 1).selectOne(cayenneContext)
+        unexpiredVoucher = SelectById.query(Voucher.class, 5).selectOne(cayenneContext)
 
         Assertions.assertEquals(ProductStatus.EXPIRED, expiredMoneyVoucher.getStatus())
         Assertions.assertEquals(ProductStatus.EXPIRED, expiredCourseVoucher.getStatus())
@@ -169,7 +146,7 @@ class VoucherExpiryJobTest extends CayenneIshTestCase {
         transactionQuery.addOrdering(AccountTransaction.ACCOUNT.dot(Account.ID).asc())
         transactionQuery.addOrdering(AccountTransaction.AMOUNT.asc())
 
-        List<AccountTransaction> transactions = context.select(transactionQuery)
+        List<AccountTransaction> transactions = cayenneContext.select(transactionQuery)
 
         Assertions.assertEquals(4, transactions.size())
 

@@ -175,7 +175,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           </div>
         </CustomAppBar>
       )}
-      <Grid container className="p-3">
+      <Grid container className="pt-3 pl-3 pr-3">
         <Grid item xs={12}>
           <FormField
             type="tags"

@@ -3,17 +3,21 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { reconcileBanking } from "../actions";
+import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
 
-class BankingCogwheelOptions extends React.PureComponent<any, any> {
+class BankingCogwheelOptions extends React.PureComponent<CogwhelAdornmentProps & { reconcileBanking: any }, any> {
   reconcileBanking = () => {
-    const { reconcileBanking, selection, closeMenu, showConfirm } = this.props;
-    showConfirm(
-      () => {
-        reconcileBanking(selection);
-      },
-      "You are about to reconcile selected records",
-      "Continue"
-    );
+    const {
+     reconcileBanking, selection, closeMenu, showConfirm
+    } = this.props;
+
+    showConfirm({
+     onConfirm: () => {
+       reconcileBanking(selection);
+     },
+      confirmMessage: "You are about to reconcile selected records",
+      confirmButtonText: "Continue"
+    });
     closeMenu();
   };
 
@@ -26,7 +30,12 @@ class BankingCogwheelOptions extends React.PureComponent<any, any> {
 
     return (
       <MenuItem disabled={!hasSelected} className={menuItemClass} role="Completed" onClick={this.reconcileBanking}>
-        Reconcile {selection.length} banking deposit{suffix}
+        Reconcile
+        {' '}
+        {selection.length}
+        {' '}
+        banking deposit
+        {suffix}
       </MenuItem>
     );
   }

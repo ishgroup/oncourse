@@ -1,6 +1,6 @@
 package ish.oncourse.server.quality
 
-import groovy.transform.CompileStatic
+
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Module
@@ -9,7 +9,6 @@ import ish.oncourse.types.Severity
 import ish.quality.QualityResult
 import ish.util.LocalDateUtils
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 

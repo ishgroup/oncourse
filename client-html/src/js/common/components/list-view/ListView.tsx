@@ -74,7 +74,7 @@ import {
 import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
 import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
 import { ENTITY_AQL_STORAGE_NAME, LISTVIEW_MAIN_CONTENT_WIDTH } from "../../../constants/Config";
-import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { ConfirmProps, ShowConfirmCaller } from "../../../model/common/Confirm";
 import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
 import ReactTableList, { ListProps } from "./components/list/ReactTableList";
@@ -128,7 +128,6 @@ interface Props extends Partial<ListState> {
   aqlEntity?: string;
   selection?: string[];
   editRecord?: any;
-  records?: any;
   onSave?: any;
   onBeforeSave?: any;
   onDelete?: any;
@@ -579,13 +578,17 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
     if ((isDirty || (creatingNew && selection[0] === "new")) && !this.ignoreCheckDirtyOnSelection) {
       this.setState({ newSelection });
-      this.showConfirm(() => {
-        this.ignoreCheckDirtyOnSelection = true;
-        this.onSelection(newSelection);
-        if (isDirty) {
-          resetEditView();
-        }
-      });
+      this.showConfirm(
+        {
+          onConfirm: () => {
+            this.ignoreCheckDirtyOnSelection = true;
+            this.onSelection(newSelection);
+            if (isDirty) {
+              resetEditView();
+            }
+          }
+        },
+        );
       return;
     }
 
@@ -682,10 +685,15 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     const { openConfirm, onDelete, deleteWithoutConfirmation } = this.props;
 
     if (!deleteWithoutConfirmation) {
-      openConfirm(() => {
+      openConfirm(
+        {
+          onConfirm: () => {
             onDelete(id);
-          }, "Record will be permanently deleted. This action can not be undone",
-          "DELETE");
+          },
+          confirmMessage: "Record will be permanently deleted. This action can not be undone",
+          confirmButtonText: "DELETE"
+        }
+      );
     } else {
       onDelete(id);
     }
@@ -748,24 +756,24 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
   checkDirty = (handler, args, reset?: boolean) => {
     const { isDirty, selection, creatingNew } = this.props;
-
     if (isDirty || (creatingNew && selection[0] === "new")) {
-      this.showConfirm(() => {
-        handler(...args);
-        if (reset && this.props.isDirty) {
-          this.props.resetEditView();
+      this.showConfirm({
+        onConfirm: () => {
+          handler(...args);
+          if (reset && this.props.isDirty) {
+            this.props.resetEditView();
+          }
         }
       });
       return;
     }
-
     handler(...args);
   };
 
-  showConfirm = (handler, confirmMessage?: string, confirmText?: string, ...rest) => {
+  showConfirm = (props: ConfirmProps) => {
     const {
- closeConfirm, openConfirm, isInvalid, fullScreenEditView, submitForm
-} = this.props;
+     closeConfirm, openConfirm, isInvalid, fullScreenEditView, submitForm
+    } = this.props;
 
     const afterSubmitButtonHandler = () => {
       fullScreenEditView ? this.toggleFullWidthView() : this.onSelection(this.state.newSelection);
@@ -792,24 +800,16 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       </Button>
     );
 
-    if (!confirmMessage && !confirmText) {
+    if (!props.confirmMessage && !props.cancelButtonText) {
       openConfirm(
-        undefined,
-        "You have unsaved changes. Do you want to discard them and proceed?",
-        "SAVE",
-        undefined,
-        null,
-        "DISCARD CHANGES",
-        handler,
-        confirmButton
+        {
+          cancelButtonText: "DISCARD CHANGES",
+          confirmCustomComponent: confirmButton,
+          onCancel: props.onConfirm
+        },
       );
     } else {
-      openConfirm(
-        handler,
-        confirmMessage,
-        confirmText,
-        ...rest
-      );
+      openConfirm(props);
     }
   };
 
@@ -950,13 +950,17 @@ class ListView extends React.PureComponent<Props, ComponentState> {
   onDeleteFilterWithDirtyCheck = (...args) => {
     const { openConfirm } = this.props;
 
-    const message = args.length >= 4 && args[3]
+    const confirmMessage = args.length >= 4 && args[3]
       ? "The filter will be permanently deleted. This action cannot be undone"
       : "This filter is currently being shared with other users. The filter will be permanently deleted. This action cannot be undone";
 
-    openConfirm(() => {
-      this.checkDirty(this.onDeleteFilter, args, true);
-    }, message, 'DELETE');
+    openConfirm(
+      {
+        onConfirm: () => this.checkDirty(this.onDeleteFilter, args, true),
+        confirmMessage,
+        cancelButtonText: 'DELETE'
+      }
+);
   };
 
   onChangeFiltersWithDirtyCheck = (...args) => this.checkDirty(this.onChangeFilters, args, true);
@@ -1127,7 +1131,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             toggleExportDrawer={this.toggleExportDrawer}
             showBulkEditDrawer={showBulkEditDrawer}
             toggleBulkEditDrawer={this.toggleBulkEditDrawer}
-            count={records.count}
             filteredCount={records.filteredCount}
             rootEntity={rootEntity}
             aqlEntity={aqlEntity}
@@ -1214,9 +1217,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch)),
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
   openNestedEditView: (entity: string, id: number, threeColumn: boolean) => dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
-  openConfirm: (onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText, onCancelCustom, confirmCustomComponent) => dispatch(
-    showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText, onCancelCustom, confirmCustomComponent)
-),
+  openConfirm: props => dispatch(showConfirm(props)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),

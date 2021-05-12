@@ -3,14 +3,13 @@
  */
 package ish.oncourse.server.export.avetmiss8
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.common.types.OutcomeStatus
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.entity.services.CertificateService
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.export.avetmiss.AvetmissExport
@@ -18,9 +17,6 @@ import ish.oncourse.server.export.avetmiss.AvetmissExportResult
 import ish.util.RuntimeUtil
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -29,33 +25,18 @@ import java.time.LocalDate
 import java.time.Month
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/export/avetmiss8/exportTest.xml")
 class Avetmiss8ExportTest extends CayenneIshTestCase {
 
     private static LocalDate startYear = LocalDate.of(2013, Month.JANUARY, 1)
     private static LocalDate midYear = LocalDate.of(2013, Month.MARCH, 30)
     private static LocalDate endYear = LocalDate.of(2013, Month.DECEMBER, 31)
 
-    private ICayenneService cayenneService
     private CertificateService certificateService
 
     @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-        cayenneService = injector.getInstance(ICayenneService.class)
+    void services() {
         certificateService = injector.getInstance(CertificateService.class)
-
-
-        InputStream st = Avetmiss8ExportTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/avetmiss8/exportTest.xml")
-
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-        super.setup()
     }
 
     @Test
@@ -206,7 +187,7 @@ class Avetmiss8ExportTest extends CayenneIshTestCase {
 
 
     
-    private void verifyOutput(AvetmissExportResult result, String testName) throws Exception {
+    private static void verifyOutput(AvetmissExportResult result, String testName) throws Exception {
 
         String now_plus_7_days = AvetmissLine.localDateFormatter.format(LocalDate.now().plusDays(7))
         File outputFolder = new File("build/test-data/avetmissExportTest/" + testName)

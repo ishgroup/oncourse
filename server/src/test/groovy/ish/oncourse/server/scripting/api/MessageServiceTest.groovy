@@ -1,10 +1,8 @@
 package ish.oncourse.server.scripting.api
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
-import ish.oncourse.server.CayenneService
-import ish.oncourse.server.ICayenneService
+import ish.DatabaseSetup
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Message
@@ -13,15 +11,10 @@ import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.messaging.MailDeliveryParam
 import ish.oncourse.server.messaging.MailDeliveryService
 import ish.oncourse.server.messaging.MessageService
-import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.services.AuditService
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
 
@@ -32,29 +25,15 @@ import static org.mockito.Mockito.doNothing
 import static org.mockito.Mockito.mock
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/scripting/api/messageServiceTestDataSet.xml")
 class MessageServiceTest extends CayenneIshTestCase {
 
-    
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-        InputStream st = GroovyScriptService.class.getClassLoader().getResourceAsStream("ish/oncourse/server/scripting/api/messageServiceTestDataSet.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        resetAutoIncrement()
-        executeDatabaseOperation(dataSet)
-    }
-
-    
     @Test
     void sendMessageFromEmailTemplateTest() {
-        ObjectContext context = injector.getInstance(ICayenneService).newContext
         MessageService messageService = injector.getInstance(MessageService)
 
-        List<Enrolment> enrolments = ObjectSelect.query(Enrolment).where(Enrolment.ID.in([1l, 2l, 3l])).select(context)
-        SystemUser systemUser = SelectById.query(SystemUser, 1l).selectOne(context)
+        List<Enrolment> enrolments = ObjectSelect.query(Enrolment).where(Enrolment.ID.in([1l, 2l, 3l])).select(cayenneContext)
+        SystemUser systemUser = SelectById.query(SystemUser, 1l).selectOne(cayenneContext)
 
         MessageSpec messageSpec = new MessageSpec()
 
@@ -66,8 +45,8 @@ class MessageServiceTest extends CayenneIshTestCase {
 
         messageService.sendMessage(messageSpec)
 
-        List<Message> messages = ObjectSelect.query(Message).prefetch(Message.MESSAGE_PERSONS.joint()).select(context)
-        List<MessagePerson> messagePeople = ObjectSelect.query(MessagePerson).select(context)
+        List<Message> messages = ObjectSelect.query(Message).prefetch(Message.MESSAGE_PERSONS.joint()).select(cayenneContext)
+        List<MessagePerson> messagePeople = ObjectSelect.query(MessagePerson).select(cayenneContext)
 
 
         Assertions.assertEquals(3, messages.size())
@@ -84,15 +63,12 @@ class MessageServiceTest extends CayenneIshTestCase {
         Assertions.assertNull(messageToFirstStudent.smsText)
     }
 
-
-    
     @Test
     void sendMessageFromSMSTemplateTest() {
-        ObjectContext context = injector.getInstance(ICayenneService).newContext
         MessageService messageService = injector.getInstance(MessageService)
 
-        List<Enrolment> enrolments = ObjectSelect.query(Enrolment).where(Enrolment.ID.in([1l, 2l, 3l])).select(context)
-        SystemUser systemUser = SelectById.query(SystemUser, 1l).selectOne(context)
+        List<Enrolment> enrolments = ObjectSelect.query(Enrolment).where(Enrolment.ID.in([1l, 2l, 3l])).select(cayenneContext)
+        SystemUser systemUser = SelectById.query(SystemUser, 1l).selectOne(cayenneContext)
 
         MessageSpec messageSpec = new MessageSpec()
 
@@ -103,8 +79,8 @@ class MessageServiceTest extends CayenneIshTestCase {
 
         messageService.sendMessage(messageSpec)
 
-        List<Message> messages = ObjectSelect.query(Message).prefetch(Message.MESSAGE_PERSONS.joint()).select(context)
-        List<MessagePerson> messagePeople = ObjectSelect.query(MessagePerson).select(context)
+        List<Message> messages = ObjectSelect.query(Message).prefetch(Message.MESSAGE_PERSONS.joint()).select(cayenneContext)
+        List<MessagePerson> messagePeople = ObjectSelect.query(MessagePerson).select(cayenneContext)
 
 
         Assertions.assertEquals(3, messages.size())
@@ -121,10 +97,8 @@ class MessageServiceTest extends CayenneIshTestCase {
         Assertions.assertNull(messageToSecondStudent.creatorKey)
     }
 
-    
     @Test
     void sendSMTPMessageTest() {
-        ICayenneService cayenneService = injector.getInstance(CayenneService)
         PreferenceController preferenceController = injector.getInstance(PreferenceController)
         TemplateService templateService = injector.getInstance(TemplateService)
         AuditService auditService = injector.getInstance(AuditService)

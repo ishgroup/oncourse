@@ -19,33 +19,25 @@ import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.*
 import org.apache.cxf.common.util.StringUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class CourseClassTest extends CayenneIshTestCase {
-
-    private static final Logger logger = LogManager.getLogger()
-
     private CourseClassService courseClassService = injector.getInstance(CourseClassService.class)
 
     @Test
     void testNextAvailableCode() throws Exception {
+        FieldConfigurationScheme scheme = DataGenerator.valueOf(cayenneContext).getFieldConfigurationScheme()
 
-        DataContext c0 = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        createSytemUser(cayenneContext)
 
-        FieldConfigurationScheme scheme = DataGenerator.valueOf(c0).getFieldConfigurationScheme()
-
-        createSytemUser(c0)
-
-        Course course1 = c0.newObject(Course.class)
+        Course course1 = cayenneContext.newObject(Course.class)
         course1.setCode("AAAA")
         course1.setName("name1")
         course1.setFieldConfigurationSchema(scheme)
         course1.setFeeHelpClass(Boolean.FALSE)
 
-        Course course2 = c0.newObject(Course.class)
+        Course course2 = cayenneContext.newObject(Course.class)
         course2.setCode("BBBB")
         course2.setName("name2")
         course2.setFieldConfigurationSchema(scheme)
@@ -73,40 +65,40 @@ class CourseClassTest extends CayenneIshTestCase {
                 String code1 = String.format(format, i)
                 String code2 = String.format(format, i + 2)
 
-                CourseClass cclass1 = c0.newObject(CourseClass.class)
+                CourseClass cclass1 = cayenneContext.newObject(CourseClass.class)
                 cclass1.setMaximumPlaces(30)
                 cclass1.setMinimumPlaces(5)
                 cclass1.setCourse(course1)
                 cclass1.setCode(code1)
                 cclass1.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-                cclass1.setTax(Tax.getTaxWithCode("GST", c0))
-                cclass1.setIncomeAccount(AccountUtil.getDefaultBankAccount(c0, Account.class))
+                cclass1.setTax(Tax.getTaxWithCode("GST", cayenneContext))
+                cclass1.setIncomeAccount(AccountUtil.getDefaultBankAccount(cayenneContext, Account.class))
 
                 classes.add(cclass1)
                 codes.add(cclass1.getUniqueCode())
 
-                CourseClass cclass2 = c0.newObject(CourseClass.class)
+                CourseClass cclass2 = cayenneContext.newObject(CourseClass.class)
                 cclass2.setMaximumPlaces(30)
                 cclass2.setMinimumPlaces(5)
                 cclass2.setCourse(course2)
                 cclass2.setCode(code2)
                 cclass2.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-                cclass2.setTax(Tax.getTaxWithCode("GST", c0))
-                cclass2.setIncomeAccount(AccountUtil.getDefaultBankAccount(c0, Account.class))
+                cclass2.setTax(Tax.getTaxWithCode("GST", cayenneContext))
+                cclass2.setIncomeAccount(AccountUtil.getDefaultBankAccount(cayenneContext, Account.class))
 
                 classes.add(cclass2)
                 codes.add(cclass2.getUniqueCode())
             }
         }
 
-        c0.commitChanges()
+        cayenneContext.commitChanges()
 
         SelectQuery<CourseClass> q = SelectQuery.query(CourseClass.class)
         q.andQualifier(CourseClass.COURSE.dot(Course.CODE).in("AAAA", "BBBB"))
 
         //duplicate all classes 4 times
         for (int j = 0; j < 4; j++) {
-            DataContext c1 = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+            DataContext c1 = cayenneService.getNewNonReplicatingContext()
             List<CourseClass> newClasses = new ArrayList<>()
 
             for (CourseClass aClass : classes) {
@@ -152,7 +144,7 @@ class CourseClassTest extends CayenneIshTestCase {
 
             Assertions.assertEquals(course1.getCourseClasses().size() + course2.getCourseClasses().size(), codes.size(), "there should be as many codes as classes")
             Assertions.assertEquals(classes.size(), codes.size(), "there should be as many codes as classes")
-            DataContext c3 = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+            DataContext c3 = cayenneService.getNewNonReplicatingContext()
             Assertions.assertEquals(c3.select(q).size(), codes.size(), "there should be as many codes as classes")
         }
 
@@ -161,9 +153,8 @@ class CourseClassTest extends CayenneIshTestCase {
 
     @Test
     void testRollover() throws Exception {
-        DataContext cc = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-        createSytemUser(cc)
-        CourseClass cclass = cc.newObject(CourseClass.class)
+        createSytemUser(cayenneContext)
+        CourseClass cclass = cayenneContext.newObject(CourseClass.class)
 
         int code = 0
         SelectQuery<CourseClass> sq = SelectQuery.query(CourseClass.class)
@@ -171,14 +162,14 @@ class CourseClassTest extends CayenneIshTestCase {
 
         sq.addOrdering(new Ordering(CourseClass.CODE.getName(), SortOrder.DESCENDING))
 
-        List<CourseClass> list = cc.select(sq)
+        List<CourseClass> list = cayenneContext.select(sq)
         if (list.size() > 0)
             code = Math.max(code, Integer.parseInt(list.get(0).getCode())) + 1
 
-        Course course = cc.newObject(Course.class)
+        Course course = cayenneContext.newObject(Course.class)
         course.setCode("CODE")
         course.setName("Course")
-        course.setFieldConfigurationSchema(DataGenerator.valueOf(cc).getFieldConfigurationScheme())
+        course.setFieldConfigurationSchema(DataGenerator.valueOf(cayenneContext).getFieldConfigurationScheme())
         course.setFeeHelpClass(Boolean.FALSE)
 
         cclass.setCourse(course)
@@ -186,23 +177,23 @@ class CourseClassTest extends CayenneIshTestCase {
         cclass.setMaximumPlaces(30)
         cclass.setMinimumPlaces(5)
         cclass.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-        cclass.setTax(Tax.getTaxWithCode("GST", cc))
-        cclass.setIncomeAccount(AccountUtil.getDefaultBankAccount(cc, Account.class))
+        cclass.setTax(Tax.getTaxWithCode("GST", cayenneContext))
+        cclass.setIncomeAccount(AccountUtil.getDefaultBankAccount(cayenneContext, Account.class))
 
-        Tutor tutor = cc.newObject(Tutor.class)
-        Contact contact = cc.newObject(Contact.class)
+        Tutor tutor = cayenneContext.newObject(Tutor.class)
+        Contact contact = cayenneContext.newObject(Contact.class)
         contact.setFirstName("Test_CourseClass")
         contact.setLastName("Test_CourseClass")
         tutor.setContact(contact)
 
-        CourseClassTutor newRole = cc.newObject(CourseClassTutor.class)
-        DefinedTutorRole definedTutorRole = cc.newObject(DefinedTutorRole.class)
+        CourseClassTutor newRole = cayenneContext.newObject(CourseClassTutor.class)
+        DefinedTutorRole definedTutorRole = cayenneContext.newObject(DefinedTutorRole.class)
         definedTutorRole.setName("definedTutorRole")
         newRole.setDefinedTutorRole(definedTutorRole)
         newRole.setTutor(tutor)
         newRole.setCourseClass(cclass)
 
-        Discount discount = cc.newObject(Discount.class)
+        Discount discount = cayenneContext.newObject(Discount.class)
         discount.setName("name")
         discount.setAddByDefault(false)
         discount.setDiscountType(DiscountType.DOLLAR)
@@ -213,11 +204,11 @@ class CourseClassTest extends CayenneIshTestCase {
         discount.setPredictedStudentsPercentage(new BigDecimal(0.1))
         discount.setMinEnrolments(1)
         discount.setMinValue(Money.ZERO)
-        DiscountCourseClass dc = cc.newObject(DiscountCourseClass.class)
+        DiscountCourseClass dc = cayenneContext.newObject(DiscountCourseClass.class)
         dc.setCourseClass(cclass)
         dc.setDiscount(discount)
 
-        Discount discount2 = cc.newObject(Discount.class)
+        Discount discount2 = cayenneContext.newObject(Discount.class)
         discount2.setName("name2")
         discount2.setAddByDefault(false)
         discount2.setDiscountType(DiscountType.PERCENT)
@@ -228,11 +219,11 @@ class CourseClassTest extends CayenneIshTestCase {
         discount2.setPredictedStudentsPercentage(new BigDecimal(0.1))
         discount2.setMinEnrolments(1)
         discount2.setMinValue(Money.ZERO)
-        DiscountCourseClass dc2 = cc.newObject(DiscountCourseClass.class)
+        DiscountCourseClass dc2 = cayenneContext.newObject(DiscountCourseClass.class)
         dc2.setCourseClass(cclass)
         dc2.setDiscount(discount2)
 
-        Discount discount3 = cc.newObject(Discount.class)
+        Discount discount3 = cayenneContext.newObject(Discount.class)
         discount3.setName("assignByDefault_1")
         discount3.setAddByDefault(true)
         discount3.setDiscountType(DiscountType.PERCENT)
@@ -244,7 +235,7 @@ class CourseClassTest extends CayenneIshTestCase {
         discount3.setMinEnrolments(1)
         discount3.setMinValue(Money.ZERO)
 
-        Discount discount4 = cc.newObject(Discount.class)
+        Discount discount4 = cayenneContext.newObject(Discount.class)
         discount4.setName("assignByDefault_2")
         discount4.setAddByDefault(true)
         discount4.setDiscountType(DiscountType.PERCENT)
@@ -256,9 +247,9 @@ class CourseClassTest extends CayenneIshTestCase {
         discount4.setMinEnrolments(1)
         discount4.setMinValue(Money.ZERO)
 
-        ClassCost cost = cc.newObject(ClassCost.class)
-        ClassCost cost2 = cc.newObject(ClassCost.class)
-        ClassCost cost3 = cc.newObject(ClassCost.class)
+        ClassCost cost = cayenneContext.newObject(ClassCost.class)
+        ClassCost cost2 = cayenneContext.newObject(ClassCost.class)
+        ClassCost cost3 = cayenneContext.newObject(ClassCost.class)
 
         cclass.addToCosts(cost)
         cclass.addToCosts(cost2)
@@ -270,7 +261,7 @@ class CourseClassTest extends CayenneIshTestCase {
         Assertions.assertTrue(cclass.getDiscounts().contains(discount))
         Assertions.assertTrue(cclass.getDiscounts().contains(discount2))
         Assertions.assertTrue(cclass.getCosts().contains(cost))
-        cc.commitChanges()
+        cayenneContext.commitChanges()
         int daysTo = 5
 
         ClassDuplicationRequest request = new ClassDuplicationRequest()
@@ -286,7 +277,7 @@ class CourseClassTest extends CayenneIshTestCase {
         DuplicateClassService service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)
 
-        CourseClass newClass = ObjectSelect.query(CourseClass.class).orderBy(CourseClass.ID.getName(), SortOrder.DESCENDING).selectFirst(cc)
+        CourseClass newClass = ObjectSelect.query(CourseClass.class).orderBy(CourseClass.ID.getName(), SortOrder.DESCENDING).selectFirst(cayenneContext)
 
         Assertions.assertNotNull(newClass)
         Assertions.assertNull(newClass.getStartDateTime())
@@ -320,7 +311,7 @@ class CourseClassTest extends CayenneIshTestCase {
         cclass.setStartDateTime(gc.getTime())
         gc.add(GregorianCalendar.DATE, 28)
         cclass.setEndDateTime(gc.getTime())
-        cc.commitChanges()
+        cayenneContext.commitChanges()
 
         request = new ClassDuplicationRequest()
         request.setClasses(Arrays.asList(cclass))
@@ -335,7 +326,7 @@ class CourseClassTest extends CayenneIshTestCase {
         service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)
 
-        CourseClass newClassWithStartDateTime = ObjectSelect.query(CourseClass.class).orderBy(CourseClass.ID.getName(), SortOrder.DESCENDING).selectFirst(cc)
+        CourseClass newClassWithStartDateTime = ObjectSelect.query(CourseClass.class).orderBy(CourseClass.ID.getName(), SortOrder.DESCENDING).selectFirst(cayenneContext)
 
 
         GregorianCalendar gcStart = new GregorianCalendar()
@@ -354,23 +345,23 @@ class CourseClassTest extends CayenneIshTestCase {
         Assertions.assertEquals(0, newClassWithStartDateTime.getSessions().size())
         Assertions.assertNull(newClassWithStartDateTime.getRoom())
 
-        Site site = cc.newObject(Site.class)
+        Site site = cayenneContext.newObject(Site.class)
         site.setName("Site")
         site.setIsVirtual(false)
 
-        Room room = cc.newObject(Room.class)
+        Room room = cayenneContext.newObject(Room.class)
         room.setName("Room")
         room.setSeatedCapacity(20)
         room.setSite(site)
         cclass.setRoom(room)
 
-        Tag tag = cc.newObject(Tag.class)
+        Tag tag = cayenneContext.newObject(Tag.class)
         tag.setName("Tag")
         tag.setIsVocabulary(true)
         tag.addToTagRequirements(tag.createTagRequirement(CourseClass.class))
         tag.setNodeType(NodeType.TAG)
 
-        Tag childTag = cc.newObject(Tag.class)
+        Tag childTag = cayenneContext.newObject(Tag.class)
         childTag.setName("Tag")
         childTag.setParentTag(tag)
         childTag.setNodeType(NodeType.TAG)
@@ -379,7 +370,7 @@ class CourseClassTest extends CayenneIshTestCase {
         cclass.setReportableHours(new BigDecimal(2))
 
         // add session
-        Session session = cc.newObject(Session.class)
+        Session session = cayenneContext.newObject(Session.class)
 
         session.setStartDatetime(cclass.getStartDateTime())
         session.setEndDatetime(cclass.getEndDateTime())
@@ -387,7 +378,7 @@ class CourseClassTest extends CayenneIshTestCase {
 
         for (CourseClassTutor cct : session.getCourseClass().getTutorRoles()) {
             if (cct.getTutor().equals(tutor)) {
-                TutorAttendance tutorAttendance = cc.newObject(TutorAttendance.class)
+                TutorAttendance tutorAttendance = cayenneContext.newObject(TutorAttendance.class)
                 tutorAttendance.setSession(session)
                 tutorAttendance.setCourseClassTutor(cct)
                 tutorAttendance.setAttendanceType(AttendanceType.UNMARKED)
@@ -397,7 +388,7 @@ class CourseClassTest extends CayenneIshTestCase {
         session.setRoom(room)
         Integer payAdjustmentForSessions = 20
         session.setPayAdjustment(payAdjustmentForSessions)
-        cc.commitChanges()
+        cayenneContext.commitChanges()
 
         request = new ClassDuplicationRequest()
         request.setClasses(Arrays.asList(cclass))
@@ -412,7 +403,7 @@ class CourseClassTest extends CayenneIshTestCase {
         service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)
 
-        CourseClass newClassWithAll = ObjectSelect.query(CourseClass.class).orderBy(CourseClass.ID.getName(), SortOrder.DESCENDING).selectFirst(cc)
+        CourseClass newClassWithAll = ObjectSelect.query(CourseClass.class).orderBy(CourseClass.ID.getName(), SortOrder.DESCENDING).selectFirst(cayenneContext)
 
         Calendar originalStart = Calendar.getInstance(cclass.getTimeZone())
         originalStart.setTime(cclass.getStartDateTime())
@@ -451,7 +442,7 @@ class CourseClassTest extends CayenneIshTestCase {
         request.setCopyNotes(false)
         service = injector.getInstance(DuplicateClassService.class)
         service.duplicateClasses(request)
-        CourseClass newClassWithPayableTimeForSessions = ObjectSelect.query(CourseClass.class).orderBy(CourseClass.ID.getName(), SortOrder.DESCENDING).selectFirst(cc)
+        CourseClass newClassWithPayableTimeForSessions = ObjectSelect.query(CourseClass.class).orderBy(CourseClass.ID.getName(), SortOrder.DESCENDING).selectFirst(cayenneContext)
 
         Assertions.assertEquals(new Integer(0), newClassWithPayableTimeForSessions.getSessions().get(0).getPayAdjustment())
     }
@@ -462,9 +453,8 @@ class CourseClassTest extends CayenneIshTestCase {
         String courseCode = "CourseCode"
         String code = "Code"
 
-        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-        CourseClass cc = newContext.newObject(CourseClass.class)
-        Course course = newContext.newObject(Course.class)
+        CourseClass cc = cayenneContext.newObject(CourseClass.class)
+        Course course = cayenneContext.newObject(Course.class)
         course.setCode(courseCode)
         cc.setCourse(course)
         Assertions.assertEquals(courseCode + "-", cc.getUniqueCode(), "Checking uniqueCode ")
@@ -478,35 +468,30 @@ class CourseClassTest extends CayenneIshTestCase {
 
     @Test
     void testDirtyness() {
-
-        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-
         new Money("55")
-        Course course = newContext.newObject(Course.class)
+        Course course = cayenneContext.newObject(Course.class)
         course.setCode("ADV")
         course.setName("courseNamwe1")
-        course.setFieldConfigurationSchema(DataGenerator.valueOf(newContext).getFieldConfigurationScheme())
+        course.setFieldConfigurationSchema(DataGenerator.valueOf(cayenneContext).getFieldConfigurationScheme())
         course.setFeeHelpClass(Boolean.FALSE)
 
-        Account account = newContext.newObject(Account.class)
+        Account account = cayenneContext.newObject(Account.class)
         account.setAccountCode("accountwCode1")
         account.setDescription("descriwption1")
         account.setType(AccountType.ASSET)
         account.setIsEnabled(true)
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
         //commit accounts first than link to taxes (avoid exception with circular dependency on tables)
 
-        Tax tax = newContext.newObject(Tax.class)
+        Tax tax = cayenneContext.newObject(Tax.class)
         tax.setIsGSTTaxType(Boolean.FALSE)
         tax.setTaxCode("taxCodwe1")
         tax.setReceivableFromAccount(account)
         tax.setPayableToAccount(account)
 
-        logger.warn("1 {}", PersistenceState.persistenceStateName(account.getPersistenceState()))
-        newContext.commitChanges()
-        logger.warn("2 {}", PersistenceState.persistenceStateName(account.getPersistenceState()))
+        cayenneContext.commitChanges()
 
-        CourseClass cc = newContext.newObject(CourseClass.class)
+        CourseClass cc = cayenneContext.newObject(CourseClass.class)
         cc.setSessionsCount(0)
         cc.setMinimumPlaces(4)
         cc.setMaximumPlaces(5)
@@ -522,40 +507,34 @@ class CourseClassTest extends CayenneIshTestCase {
         cc.setSuppressAvetmissExport(false)
         cc.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
 
-        logger.warn("3 {}", PersistenceState.persistenceStateName(cc.getIncomeAccount().getPersistenceState()))
-        newContext.commitChanges()
-        logger.warn("4 {}", PersistenceState.persistenceStateName(cc.getIncomeAccount().getPersistenceState()))
+        cayenneContext.commitChanges()
 
-        logger.warn("5 {}", PersistenceState.persistenceStateName(cc.getIncomeAccount().getPersistenceState()))
         cc.setPersistenceState(PersistenceState.HOLLOW)
-        logger.warn("6 {}", PersistenceState.persistenceStateName(cc.getIncomeAccount().getPersistenceState()))
     }
 
     @Test
     void testStart_EndDateAndSessionCount() throws Exception {
-        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-
-        Course course = newContext.newObject(Course.class)
+        Course course = cayenneContext.newObject(Course.class)
         course.setCode("courseCode")
         course.setName("courseName")
-        course.setFieldConfigurationSchema(DataGenerator.valueOf(newContext).getFieldConfigurationScheme())
+        course.setFieldConfigurationSchema(DataGenerator.valueOf(cayenneContext).getFieldConfigurationScheme())
         course.setFeeHelpClass(Boolean.FALSE)
 
-        Account account = newContext.newObject(Account.class)
+        Account account = cayenneContext.newObject(Account.class)
         account.setAccountCode("accountCode")
         account.setDescription("description")
         account.setType(AccountType.INCOME)
         account.setIsEnabled(true)
         //commit accounts first than link to taxes (avoid exception with circular dependency on tables)
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
-        Tax tax = newContext.newObject(Tax.class)
+        Tax tax = cayenneContext.newObject(Tax.class)
         tax.setIsGSTTaxType(Boolean.FALSE)
         tax.setTaxCode("taxCode")
         tax.setReceivableFromAccount(account)
         tax.setPayableToAccount(account)
 
-        CourseClass cc = newContext.newObject(CourseClass.class)
+        CourseClass cc = cayenneContext.newObject(CourseClass.class)
         cc.setSessionsCount(0)
         cc.setMinimumPlaces(4)
         cc.setMaximumPlaces(5)
@@ -587,7 +566,7 @@ class CourseClassTest extends CayenneIshTestCase {
         Date classDate = gc1.getTime()
         cc.setStartDateTime(classDate)
 
-        Session session = newContext.newObject(Session.class)
+        Session session = cayenneContext.newObject(Session.class)
         session.setStartDatetime(startTimeForFirstSession)
         session.setEndDatetime(endTimeForFirstSession)
 
@@ -598,7 +577,7 @@ class CourseClassTest extends CayenneIshTestCase {
         Assertions.assertNull(cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
         Assertions.assertEquals(new Integer(0), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
         Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
@@ -607,7 +586,7 @@ class CourseClassTest extends CayenneIshTestCase {
         // reload committed class from db since different dbs handle dates differently and actually stored
         // value may differ from what we tried to store (e.g. MySQL timestamp doesn't store milliseconds
         // and therefore returns date truncated to seconds)
-        cc = (CourseClass) Cayenne.objectForQuery(newContext, new ObjectIdQuery(cc.getObjectId()))
+        cc = (CourseClass) Cayenne.objectForQuery(cayenneContext, new ObjectIdQuery(cc.getObjectId()))
 
         Date createOn = cc.getCreatedOn()
         Date modifiedOn = cc.getModifiedOn()
@@ -623,7 +602,7 @@ class CourseClassTest extends CayenneIshTestCase {
         Date newDateTime = gc2.getTime()
         cc.setStartDateTime(newDateTime)
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertTrue(newDateTime.after(startTimeForFirstSession))
 
@@ -641,7 +620,7 @@ class CourseClassTest extends CayenneIshTestCase {
 
         Thread.sleep(1000L)
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertTrue(newDateTime2.before(startTimeForFirstSession))
         Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
@@ -660,7 +639,7 @@ class CourseClassTest extends CayenneIshTestCase {
         Date startTimeForSecondSession = gc4.getTime()
         Assertions.assertTrue(startTimeForSecondSession.after(cc.getStartDateTime()))
 
-        Session secondSession = newContext.newObject(Session.class)
+        Session secondSession = cayenneContext.newObject(Session.class)
         secondSession.setStartDatetime(startTimeForSecondSession)
         secondSession.setEndDatetime(endTimeForFirstSession)
 
@@ -669,7 +648,7 @@ class CourseClassTest extends CayenneIshTestCase {
 
         Assertions.assertEquals(new Integer(1), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertTrue(startTimeForSecondSession.after(startTimeForFirstSession))
         Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
@@ -681,14 +660,14 @@ class CourseClassTest extends CayenneIshTestCase {
         Date startTimeForNextSession = gc.getTime()
         Assertions.assertTrue(startTimeForNextSession.before(cc.getStartDateTime()))
 
-        Session nextSession = newContext.newObject(Session.class)
+        Session nextSession = cayenneContext.newObject(Session.class)
         nextSession.setStartDatetime(startTimeForNextSession)
         nextSession.setEndDatetime(endTimeForFirstSession)
 
         nextSession.setCourseClass(cc)
         nextSession.setPayAdjustment(4)
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertTrue(startTimeForNextSession.before(startTimeForFirstSession))
         Assertions.assertEquals(nextSession.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
@@ -696,19 +675,19 @@ class CourseClassTest extends CayenneIshTestCase {
         Assertions.assertEquals(new Integer(3), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
         // remove 3th session
-        newContext.deleteObjects(nextSession)
-        newContext.commitChanges()
+        cayenneContext.deleteObjects(nextSession)
+        cayenneContext.commitChanges()
 
         Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
         Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
         Assertions.assertEquals(new Integer(2), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
         // remove second and first session
-        newContext.deleteObjects(secondSession)
-        newContext.commitChanges()
+        cayenneContext.deleteObjects(secondSession)
+        cayenneContext.commitChanges()
 
-        newContext.deleteObjects(session)
-        newContext.commitChanges()
+        cayenneContext.deleteObjects(session)
+        cayenneContext.commitChanges()
 
         Assertions.assertEquals(session.getStartDatetime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
         Assertions.assertEquals(session.getEndDatetime(), cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
@@ -718,35 +697,33 @@ class CourseClassTest extends CayenneIshTestCase {
 
     @Test
     void testFee() {
-        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-
         Money money = new Money("55")
         Money feeExGst
         Money feeGST
         Money feeIncGst
         Money deposit
 
-        Course course = newContext.newObject(Course.class)
+        Course course = cayenneContext.newObject(Course.class)
         course.setCode("ABSEDV")
         course.setName("courseName1")
-        course.setFieldConfigurationSchema(DataGenerator.valueOf(newContext).getFieldConfigurationScheme())
+        course.setFieldConfigurationSchema(DataGenerator.valueOf(cayenneContext).getFieldConfigurationScheme())
         course.setFeeHelpClass(Boolean.FALSE)
 
-        Account account = newContext.newObject(Account.class)
+        Account account = cayenneContext.newObject(Account.class)
         account.setAccountCode("accountCode1")
         account.setDescription("description1")
         account.setType(AccountType.ASSET)
         account.setIsEnabled(true)
         //commit accounts first than link to taxes (avoid exception with circular dependency on tables)
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
-        Tax tax = newContext.newObject(Tax.class)
+        Tax tax = cayenneContext.newObject(Tax.class)
         tax.setIsGSTTaxType(Boolean.FALSE)
         tax.setTaxCode("taxCode1")
         tax.setReceivableFromAccount(account)
         tax.setPayableToAccount(account)
 
-        CourseClass cc = newContext.newObject(CourseClass.class)
+        CourseClass cc = cayenneContext.newObject(CourseClass.class)
         cc.setSessionsCount(0)
         cc.setMinimumPlaces(4)
         cc.setMaximumPlaces(5)
@@ -762,7 +739,7 @@ class CourseClassTest extends CayenneIshTestCase {
         cc.setSuppressAvetmissExport(false)
         cc.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
 
-        ClassCost classCost = newContext.newObject(ClassCost.class)
+        ClassCost classCost = cayenneContext.newObject(ClassCost.class)
         classCost.setFlowType(ClassCostFlowType.INCOME)
         classCost.setInvoiceToStudent(true)
         classCost.setPayableOnEnrolment(false)
@@ -779,7 +756,7 @@ class CourseClassTest extends CayenneIshTestCase {
         feeIncGst = feeExGst
         deposit = Money.ZERO
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertEquals(feeExGst, cc.getFeeExGst(), "Checking FeeExGst ")
         Assertions.assertEquals(feeGST, cc.getFeeGST(), "Checking FeeGST ")
@@ -788,7 +765,7 @@ class CourseClassTest extends CayenneIshTestCase {
 
         Money money2 = new Money("40")
 
-        ClassCost classCost2 = newContext.newObject(ClassCost.class)
+        ClassCost classCost2 = cayenneContext.newObject(ClassCost.class)
         classCost2.setFlowType(ClassCostFlowType.INCOME)
         classCost2.setInvoiceToStudent(true)
         classCost2.setPayableOnEnrolment(true)
@@ -801,7 +778,7 @@ class CourseClassTest extends CayenneIshTestCase {
         feeIncGst = feeExGst
         deposit = money2
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertEquals(deposit, cc.getDeposit(), "Checking deposit ")
         Assertions.assertEquals(feeExGst, cc.getFeeExGst(), "Checking FeeExGst ")
@@ -811,7 +788,7 @@ class CourseClassTest extends CayenneIshTestCase {
         BigDecimal rate = new BigDecimal(0.20)
         cc.getTax().setRate(rate)
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
         feeGST = feeExGst.multiply(rate)
         feeIncGst = feeExGst.multiply(rate.add(BigDecimal.ONE))

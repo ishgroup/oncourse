@@ -34,6 +34,7 @@ import {
 } from "../../../actions";
 import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import { getByType } from "../utils";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const styles = theme => createStyles({
     root: {
@@ -56,7 +57,7 @@ interface Props {
   onUpdate: (id: string, item: Integration) => void;
   onCreate: (item: Integration) => void;
   onDelete: (id: string) => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
   classes: any;
   dispatch: any;
   formName: any;
@@ -150,7 +151,11 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
         });
     };
 
-    openConfirm(onConfirm, item && `${item.name} will be removed from integrations list`, "DELETE");
+    openConfirm({
+      onConfirm,
+      confirmMessage: item && `${item.name} will be removed from integrations list`,
+      confirmButtonText: "DELETE"
+    });
   };
 
   validateNameField = value => {
@@ -344,7 +349,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     onUpdate: (id: string, item: Integration) => dispatch(updateIntegration(id, item)),
     onCreate: (item: Integration) => dispatch(createIntegration(item)),
     onDelete: (id: string) => dispatch(deleteIntegrationItem(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText)),
+    openConfirm: props => dispatch(showConfirm(props)),
     setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
   });
 

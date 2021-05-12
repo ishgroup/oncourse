@@ -5,7 +5,6 @@ import ish.CayenneIshTestCase
 import ish.DatabaseSetup
 import ish.common.types.DataType
 import ish.common.types.DeliverySchedule
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.function.DataCollectionFunctions
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.impl.DataCollectionApiImpl
@@ -65,17 +64,12 @@ class DataCollectionApiTest extends CayenneIshTestCase {
         Assertions.assertEquals(32, fieldTypes.size())
         Assertions.assertNotNull(fieldTypes.find { it.uniqueKey == 'customField.contact.passportNumber' })
         Assertions.assertNotNull(fieldTypes.find { it.uniqueKey == 'customField.application.applicationNumber' })
-
     }
-
 
     @Test
     void testForm() {
-
-        ICayenneService cayenneService = injector.getInstance(ICayenneService)
-        ObjectContext context = cayenneService.newContext
-        createRule(context)
-        context.commitChanges()
+        createRule(cayenneContext)
+        cayenneContext.commitChanges()
 
         DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
         integrationApi.cayenneService = cayenneService
@@ -117,8 +111,6 @@ class DataCollectionApiTest extends CayenneIshTestCase {
             it.fields = [createField('street'), createField('postcode')]
             it
         }
-
-        ICayenneService cayenneService = injector.getInstance(ICayenneService)
 
         DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
         integrationApi.cayenneService = cayenneService

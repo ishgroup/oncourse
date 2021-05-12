@@ -94,6 +94,8 @@ import { mockTutorRoles } from "./data/preference/tutorRoles";
 import { mockFundingContracts } from "./data/preference/fundingContracts";
 import { mockCheckout } from "./data/checkout";
 import { mockGradingTypes } from "./data/preference/grading";
+import { mockSecurityRoles } from "./data/security/roles";
+import { mockSecurityUsers } from "./data/security/users";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -240,6 +242,10 @@ export class MockDB {
 
   gradingTypes: GradingType[];
 
+  securityRoles: any;
+
+  securityUsers: any;
+
   constructor() {
     this.init();
   }
@@ -344,6 +350,10 @@ export class MockDB {
 
     // Checkout
     this.checkout = mockCheckout.call(this);
+
+    // Secutiry
+    this.securityRoles = mockSecurityRoles.call(this);
+    this.securityUsers = mockSecurityUsers.call(this);
   }
 
   getList(entity: string) {
