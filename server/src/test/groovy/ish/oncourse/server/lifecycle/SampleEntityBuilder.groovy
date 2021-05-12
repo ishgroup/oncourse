@@ -1,6 +1,6 @@
 package ish.oncourse.server.lifecycle
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.common.types.*
 import ish.math.Money

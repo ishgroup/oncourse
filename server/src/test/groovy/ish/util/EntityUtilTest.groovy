@@ -7,7 +7,6 @@ package ish.util
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.DatabaseSetup
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.query.SelectQuery
 import org.junit.jupiter.api.Assertions
@@ -31,16 +30,13 @@ class EntityUtilTest extends CayenneIshTestCase {
 
     @Test
     void testGetObjectsByIds() throws Exception {
-
         List<Long> siteIds = Arrays.asList(1L, 4L)
         List<Long> roomIds = Arrays.asList(1L, 2L, 3L, 4L)
 
-        ICayenneService cServ = (ICayenneService) injector.getInstance(ICayenneService.class)
-
-        List<Site> sites = EntityUtil.getObjectsByIds(cServ.getNewContext(), Site.class, siteIds)
+        List<Site> sites = EntityUtil.getObjectsByIds(cayenneContext, Site.class, siteIds)
         Assertions.assertEquals(2, sites.size())
 
-        List<Room> rooms = EntityUtil.getObjectsByIds(cServ.getNewContext(), Room.class, roomIds)
+        List<Room> rooms = EntityUtil.getObjectsByIds(cayenneContext, Room.class, roomIds)
         Assertions.assertEquals(4, rooms.size())
     }
 

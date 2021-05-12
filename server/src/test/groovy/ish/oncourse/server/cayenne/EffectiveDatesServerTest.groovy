@@ -3,26 +3,19 @@
  */
 package ish.oncourse.server.cayenne
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.common.types.CreditCardType
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
 import ish.math.Money
 import ish.oncourse.entity.services.SetPaymentMethod
-import ish.oncourse.server.ICayenneService
 import ish.util.PaymentMethodUtil
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.validation.ValidationException
 import org.apache.commons.lang.exception.ExceptionUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.text.ParseException
@@ -30,30 +23,8 @@ import java.time.LocalDate
 import java.time.Month
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/EffectiveDatesServerTestDataSet.xml")
 class EffectiveDatesServerTest extends CayenneIshTestCase {
-
-    private static final Logger logger = LogManager.getLogger()
-    private DataContext context
-
-    
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-        injector.getInstance(ICayenneService.class)
-
-        InputStream st = EffectiveDatesServerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/EffectiveDatesServerTestDataSet.xml")
-
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        executeDatabaseOperation(dataSet)
-        super.setup()
-
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        context = cayenneService.getNewContext()
-    }
-
     
     @Test
     void testInvoice() throws ParseException {
@@ -61,17 +32,16 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
         fillInvoiceWitDate(LocalDate.of(2015, Month.DECEMBER, 30))
 
         try {
-            context.commitChanges()
+            cayenneContext.commitChanges()
             Assertions.fail()
         } catch (Exception ex) {
             checkError(ex)
         }
 
-        context.rollbackChanges()
+        cayenneContext.rollbackChanges()
         fillInvoiceWitDate(LocalDate.now())
-        context.commitChanges()
+        cayenneContext.commitChanges()
         checkTransactions()
-
     }
 
 
@@ -80,7 +50,7 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
 
         fillPaymentIn()
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
         checkTransactions()
 
     }
@@ -90,25 +60,25 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
 
         fillPaymentOut()
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
         checkTransactions()
     }
 
     
     private void fillInvoiceWitDate(LocalDate effectiveDate) {
-        Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(context)
+        Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(cayenneContext)
 
-        Invoice invoice = context.newObject(Invoice.class)
+        Invoice invoice = cayenneContext.newObject(Invoice.class)
         invoice.setContact(contact)
         invoice.setDescription("Description")
         invoice.setInvoiceDate(effectiveDate)
         invoice.setDateDue(effectiveDate)
 
-        InvoiceLine line = context.newObject(InvoiceLine.class)
+        InvoiceLine line = cayenneContext.newObject(InvoiceLine.class)
         line.setInvoice(invoice)
         line.setDiscountEachExTax(Money.ZERO)
         line.setPriceEachExTax(Money.ONE)
-        Tax tax = ObjectSelect.query(Tax.class).where(Tax.ID.eq(1L)).selectOne(context)
+        Tax tax = ObjectSelect.query(Tax.class).where(Tax.ID.eq(1L)).selectOne(cayenneContext)
         Account account = tax.getPayableToAccount()
         line.setTax(tax)
         line.setAccount(account)
@@ -119,15 +89,15 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
 
     
     private void fillPaymentIn() {
-        Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(context)
+        Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(cayenneContext)
 
-        Invoice invoice = ObjectSelect.query(Invoice.class).where(Invoice.ID.eq(1L)).selectOne(context)
+        Invoice invoice = ObjectSelect.query(Invoice.class).where(Invoice.ID.eq(1L)).selectOne(cayenneContext)
 
-        PaymentIn paymentIn = context.newObject(PaymentIn.class)
+        PaymentIn paymentIn = cayenneContext.newObject(PaymentIn.class)
 
         paymentIn.setStatus(PaymentStatus.SUCCESS)
         paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE)
-        SetPaymentMethod.valueOf(PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(context, PaymentMethod.class), paymentIn).set()
+        SetPaymentMethod.valueOf(PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(cayenneContext, PaymentMethod.class), paymentIn).set()
         paymentIn.setCreditCardName("test name")
         paymentIn.setCreditCardNumber("test number")
         paymentIn.setCreditCardExpiry("01/01")
@@ -136,7 +106,7 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
         paymentIn.setPayer(contact)
         paymentIn.setPaymentDate(LocalDate.now())
 
-        PaymentInLine paymentInLine = context.newObject(PaymentInLine.class)
+        PaymentInLine paymentInLine = cayenneContext.newObject(PaymentInLine.class)
         paymentInLine.setAmount(invoice.getTotalIncTax())
         paymentInLine.setAccount(invoice.getDebtorsAccount())
         paymentInLine.setPayment(paymentIn)
@@ -145,12 +115,12 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
 
     
     private void fillPaymentOut() {
-        Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(context)
+        Contact contact = ObjectSelect.query(Contact.class).where(Contact.ID.eq(1L)).selectOne(cayenneContext)
 
-        Invoice invoice = ObjectSelect.query(Invoice.class).where(Invoice.ID.eq(2L)).selectOne(context)
+        Invoice invoice = ObjectSelect.query(Invoice.class).where(Invoice.ID.eq(2L)).selectOne(cayenneContext)
 
-        PaymentOut paymentOut = context.newObject(PaymentOut.class)
-        PaymentOutLine outLine = context.newObject(PaymentOutLine.class)
+        PaymentOut paymentOut = cayenneContext.newObject(PaymentOut.class)
+        PaymentOutLine outLine = cayenneContext.newObject(PaymentOutLine.class)
         outLine.setPaymentOut(paymentOut)
         outLine.setAccount(invoice.getDebtorsAccount())
         outLine.setInvoice(invoice)
@@ -160,7 +130,7 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
         paymentOut.setPayee(contact)
         paymentOut.setAmount(invoice.getAmountOwing().negate())
         paymentOut.setPaymentDate(LocalDate.now())
-        SetPaymentMethod.valueOf(PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(context, PaymentMethod.class), paymentOut).set()
+        SetPaymentMethod.valueOf(PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(cayenneContext, PaymentMethod.class), paymentOut).set()
 
     }
 
@@ -168,7 +138,7 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
     
     private void checkTransactions() {
 
-        List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
+        List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(cayenneContext)
 
         Assertions.assertTrue(transactions.size() > 0)
         transactions.each { t ->
@@ -178,7 +148,6 @@ class EffectiveDatesServerTest extends CayenneIshTestCase {
 
     
     private void checkError(Exception ex) {
-        logger.catching(ex)
         Throwable th = ExceptionUtils.getThrowables(ex)[0]
         Assertions.assertTrue(th instanceof ValidationException)
         Assertions.assertTrue(((ValidationException) th).getValidationResult().hasFailures())

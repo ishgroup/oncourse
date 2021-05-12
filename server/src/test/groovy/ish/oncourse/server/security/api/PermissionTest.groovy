@@ -2,7 +2,6 @@ package ish.oncourse.server.security.api
 
 import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
-import io.bootique.test.junit.BQTestFactory
 import ish.BootiqueTestFactory
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll

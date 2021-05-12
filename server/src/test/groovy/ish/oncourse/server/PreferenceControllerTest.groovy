@@ -1,6 +1,6 @@
 package ish.oncourse.server
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.license.LicenseService

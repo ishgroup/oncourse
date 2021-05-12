@@ -4,7 +4,7 @@
  */
 package ish.oncourse.server
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.common.types.PaymentType
 import ish.math.Money

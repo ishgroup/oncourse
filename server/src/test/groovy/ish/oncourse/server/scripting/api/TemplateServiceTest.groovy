@@ -3,7 +3,7 @@
  */
 package ish.oncourse.server.scripting.api
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.server.ICayenneService

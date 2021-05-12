@@ -6,7 +6,6 @@ package ish.oncourse.server.cayenne
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.DatabaseSetup
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.PrefetchTreeNode
 import org.apache.cayenne.query.SelectQuery

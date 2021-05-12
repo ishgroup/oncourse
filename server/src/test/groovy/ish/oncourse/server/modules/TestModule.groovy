@@ -7,7 +7,6 @@ package ish.oncourse.server.modules
 import com.google.inject.Binder
 import com.google.inject.Module
 import com.google.inject.Scopes
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.oncourse.GoogleGuiceInjector
 import ish.oncourse.aql.AqlService

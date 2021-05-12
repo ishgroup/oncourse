@@ -4,13 +4,13 @@
  */
 package ish.oncourse.server.messaging
 
-
 import groovy.transform.CompileStatic
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 import javax.mail.internet.AddressException
 import javax.mail.internet.InternetAddress
+
 import static org.junit.jupiter.api.Assertions.fail
 
 /**
