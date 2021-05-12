@@ -8,7 +8,6 @@ import ish.CayenneIshTestCase
 import ish.common.types.AccountTransactionType
 import ish.common.types.ProductStatus
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.accounting.AccountTransactionService
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
@@ -23,8 +22,6 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 class VoucherExpiryJobTest extends CayenneIshTestCase {
-
-    private ICayenneService cayenneService
     private AccountTransactionService accountTransactionService
 
     @Override

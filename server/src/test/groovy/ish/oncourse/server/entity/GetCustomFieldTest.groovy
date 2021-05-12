@@ -5,7 +5,6 @@ import ish.CayenneIshTestCase
 import ish.DatabaseSetup
 import ish.common.types.AccountType
 import ish.common.types.CourseClassAttendanceType
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.junit.jupiter.api.AfterEach
@@ -33,30 +32,28 @@ class GetCustomFieldTest extends CayenneIshTestCase {
 
     @Test
     void testCustomField() {
-        ObjectContext context = injector.getInstance(ICayenneService).newNonReplicatingContext
+        Account account = createAccount(cayenneContext)
+        cayenneContext.commitChanges()
+        Tax tax = createTax(cayenneContext, account)
+        cayenneContext.commitChanges()
 
-        Account account = createAccount(context)
-        context.commitChanges()
-        Tax tax = createTax(context, account)
-        context.commitChanges()
+        Contact contact = createContact(cayenneContext)
+        CustomFieldType contactFieldType = createCustomFieldType(CONTACT_FIELD_NAME, CONTACT_FIELD_KEY, Contact.simpleName, cayenneContext)
+        createCustomField(CONTACT_FIELD_VALUE, contactFieldType, ContactCustomField, contact, cayenneContext)
 
-        Contact contact = createContact(context)
-        CustomFieldType contactFieldType = createCustomFieldType(CONTACT_FIELD_NAME, CONTACT_FIELD_KEY, Contact.simpleName, context)
-        createCustomField(CONTACT_FIELD_VALUE, contactFieldType, ContactCustomField, contact, context)
+        Course course = createCourse(cayenneContext)
+        CustomFieldType courseFieldType = createCustomFieldType(COURSE_FIELD_NAME, COURSE_FIELD_KEY, Course.simpleName, cayenneContext)
+        createCustomField(COURSE_FIELD_VALUE, courseFieldType, CourseCustomField, course, cayenneContext)
 
-        Course course = createCourse(context)
-        CustomFieldType courseFieldType = createCustomFieldType(COURSE_FIELD_NAME, COURSE_FIELD_KEY, Course.simpleName, context)
-        createCustomField(COURSE_FIELD_VALUE, courseFieldType, CourseCustomField, course, context)
-
-        CourseClass courseClass = createCourseClass(context, account, tax)
+        CourseClass courseClass = createCourseClass(cayenneContext, account, tax)
         courseClass.course = course
-        CustomFieldType courseClassFieldType = createCustomFieldType(COURSE_CLASS_FIELD_NAME, COURSE_CLASS_FIELD_KEY, CourseClass.simpleName, context)
-        createCustomField(COURSE_CLASS_FIELD_VALUE, courseClassFieldType, CourseClassCustomField, courseClass, context)
+        CustomFieldType courseClassFieldType = createCustomFieldType(COURSE_CLASS_FIELD_NAME, COURSE_CLASS_FIELD_KEY, CourseClass.simpleName, cayenneContext)
+        createCustomField(COURSE_CLASS_FIELD_VALUE, courseClassFieldType, CourseClassCustomField, courseClass, cayenneContext)
 
-        createCustomFieldType(DEFAULT_FIELD_NAME, DEFAULT_FIELD_KEY, Contact.simpleName, DEFAULT_FIELD_VALUE, context)
-        createCustomFieldType(NULL_FIELD_NAME, NULL_FIELD_KEY, Contact.simpleName, context)
+        createCustomFieldType(DEFAULT_FIELD_NAME, DEFAULT_FIELD_KEY, Contact.simpleName, DEFAULT_FIELD_VALUE, cayenneContext)
+        createCustomFieldType(NULL_FIELD_NAME, NULL_FIELD_KEY, Contact.simpleName, cayenneContext)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertNull( course.customField(CONTACT_FIELD_NAME), "contact use, customField with expected name exists")
         Assertions.assertEquals(COURSE_FIELD_VALUE, course.customField(COURSE_FIELD_NAME), "course use, customField with expected name exists", )

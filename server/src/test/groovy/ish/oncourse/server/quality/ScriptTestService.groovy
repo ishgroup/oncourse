@@ -10,9 +10,6 @@ import org.apache.commons.io.IOUtils
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
-/**
- * Created by akoiro on 17/03/2016.
- */
 @CompileStatic
 class ScriptTestService {
     DataContext context

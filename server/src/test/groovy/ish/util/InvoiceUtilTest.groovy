@@ -86,8 +86,6 @@ class InvoiceUtilTest extends CayenneIshTestCase {
 
     @Test
     void testExistingPaymentLineForInvoiceAndPayment() {
-        DataContext cayenneContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-
         Account account = cayenneContext.newObject(Account.class)
         account.setType(AccountType.ASSET)
         account.setAccountCode("11100")
@@ -119,9 +117,6 @@ class InvoiceUtilTest extends CayenneIshTestCase {
 
     @Test
     void testSuccessfullPaymentLines() {
-
-        DataContext cayenneContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-
         // commented out parts are for future evaluation, in case the behaviour after commit will change
         // Account aAsset = cayenneContext.newObject(Account.class);
         // aAsset.setType(AccountType.ASSET);

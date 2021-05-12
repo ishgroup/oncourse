@@ -2,7 +2,6 @@ package ish.oncourse.server.api
 
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
@@ -23,8 +22,6 @@ class IntegrationApiTest extends CayenneIshTestCase {
 
     @Test
     void test() {
-
-        ICayenneService cayenneService = injector.getInstance(ICayenneService)
         IntegrationApiImpl integrationApi = new IntegrationApiImpl()
         integrationApi.cayenneService = cayenneService
 

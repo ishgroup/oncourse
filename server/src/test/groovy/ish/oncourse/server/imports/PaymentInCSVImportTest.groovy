@@ -1,18 +1,15 @@
 package ish.oncourse.server.imports
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Banking
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
 import ish.oncourse.server.cayenne.SessionTest
 import ish.oncourse.server.db.SanityCheckService
 import ish.oncourse.server.upgrades.DataPopulation
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
 import org.dbunit.dataset.ReplacementDataSet
@@ -46,12 +43,9 @@ class PaymentInCSVImportTest extends CayenneIshTestCase {
 
     @Test
     void test() throws IOException {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext context = cayenneService.getNewContext()
-
-        Assertions.assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
-        Assertions.assertEquals(0, ObjectSelect.query(PaymentInLine.class).select(context).size())
-        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(PaymentIn.class).select(cayenneContext).size())
+        Assertions.assertEquals(0, ObjectSelect.query(PaymentInLine.class).select(cayenneContext).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(cayenneContext).size())
 
 
         ImportService importService = injector.getInstance(ImportService.class)
@@ -67,9 +61,9 @@ class PaymentInCSVImportTest extends CayenneIshTestCase {
         importService.performImport(parameter)
 
 
-        Assertions.assertEquals(185, ObjectSelect.query(PaymentIn.class).select(context).size())
-        Assertions.assertEquals(187, ObjectSelect.query(PaymentInLine.class).select(context).size())
-        Assertions.assertEquals(16, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(185, ObjectSelect.query(PaymentIn.class).select(cayenneContext).size())
+        Assertions.assertEquals(187, ObjectSelect.query(PaymentInLine.class).select(cayenneContext).size())
+        Assertions.assertEquals(16, ObjectSelect.query(Banking.class).select(cayenneContext).size())
     }
 
     private static final String[] EXPECTED_HEADERS = [
