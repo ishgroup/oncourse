@@ -23,6 +23,7 @@ import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormali
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { PreferencesState } from "../../../preferences/reducers/state";
+import { normalizeString } from "../../../../common/utils/strings";
 
 interface MembershipProductGeneralProps {
   twoColumn?: boolean;
@@ -172,71 +173,76 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
         />
       </div>
-      <div className="mr-2">
-        <Grid container>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="money"
-              name="feeExTax"
-              validate={[validateSingleMandatoryField, validateNonNegative]}
-              onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
-              props={{
-                label: "Fee ex tax"
-              }}
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="money"
-              name="totalFee"
-              validate={validateNonNegative}
-              onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
-              props={{
-                label: "Total fee"
-              }}
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="select"
-              name="taxId"
-              onChange={handleChangeTax(values, taxes, dispatch, form)}
-              required
-              props={{
-                label: "Tax",
-                items: taxes,
-                selectValueMark: "id",
-                selectLabelCondition: tax => tax.code
-              }}
-            />
-          </Grid>
+      <Grid container className="mr-2 mb-2">
+        <Grid item xs={twoColumn ? 2 : 4}>
+          <FormField
+            type="money"
+            name="feeExTax"
+            validate={[validateSingleMandatoryField, validateNonNegative]}
+            onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
+            props={{
+              label: "Fee ex tax"
+            }}
+          />
         </Grid>
-      </div>
-      <FormField
-        type="select"
-        name="status"
-        label="Status"
-        items={productStatusItems}
-        selectLabelMark="value"
-      />
-      <FormField
-        type="select"
-        name="dataCollectionRuleId"
-        label="Data collection rule"
-        selectValueMark="id"
-        selectLabelMark="name"
-        items={dataCollectionRules || []}
-        allowEmpty
-        sort
-      />
-      <div className="mb-2">
-        <CustomSelector
-          caption="Expires"
-          options={expiryOptions}
-          onSelect={onSelectExpiry(props)}
-          initialIndex={initialIndexExpiry}
-        />
-      </div>
+        <Grid item xs={twoColumn ? 2 : 4}>
+          <FormField
+            type="money"
+            name="totalFee"
+            validate={validateNonNegative}
+            onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
+            props={{
+              label: "Total fee"
+            }}
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 2 : 4}>
+          <FormField
+            type="select"
+            name="taxId"
+            onChange={handleChangeTax(values, taxes, dispatch, form)}
+            required
+            props={{
+              label: "Tax",
+              items: taxes,
+              selectValueMark: "id",
+              selectLabelCondition: tax => tax.code
+            }}
+          />
+        </Grid>
+
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <FormField
+            type="select"
+            name="status"
+            label="Status"
+            items={productStatusItems}
+            selectLabelMark="value"
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <FormField
+            type="select"
+            name="dataCollectionRuleId"
+            label="Data collection rule"
+            selectValueMark="id"
+            selectLabelMark="name"
+            items={dataCollectionRules || []}
+            format={normalizeString}
+            fullWidth
+            required
+            sort
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <CustomSelector
+            caption="Expires"
+            options={expiryOptions}
+            onSelect={onSelectExpiry(props)}
+            initialIndex={initialIndexExpiry}
+          />
+        </Grid>
+      </Grid>
     </div>
   );
 };

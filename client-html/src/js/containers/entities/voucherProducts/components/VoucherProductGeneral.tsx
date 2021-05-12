@@ -37,6 +37,7 @@ import {
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { PreferencesState } from "../../../preferences/reducers/state";
+import { normalizeString } from "../../../../common/utils/strings";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -314,16 +315,22 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         items={productStatusItems}
         selectLabelMark="value"
       />
-      <FormField
-        type="select"
-        name="dataCollectionRuleId"
-        label="Data collection rule"
-        selectValueMark="id"
-        selectLabelMark="name"
-        items={dataCollectionRules || []}
-        allowEmpty
-        sort
-      />
+      <Grid container>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <FormField
+            type="select"
+            name="dataCollectionRuleId"
+            label="Data collection rule"
+            selectValueMark="id"
+            selectLabelMark="name"
+            items={dataCollectionRules || []}
+            format={normalizeString}
+            fullWidth
+            required
+            sort
+          />
+        </Grid>
+      </Grid>
       <FormEditorField
         name="description"
         label="Web description"
