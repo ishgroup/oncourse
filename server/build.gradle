@@ -177,6 +177,10 @@ task expandConfig(type: Copy) {
 }
 
 test {
+	description = "Run unit tests which don't require a database."
+	useJUnitPlatform {
+		excludeTags "integration"
+	}
 	testLogging {
 		exceptionFormat = 'full'
 	}
@@ -186,10 +190,21 @@ test {
 		println 'user.language:' + System.getProperty('user.language')
 		println 'Locale.getDefault():' + Locale.getDefault()
 	}
+	dependsOn "expandConfig"
+	maxParallelForks = 8
+}
 
+task integration(type: Test) {
+	description = "Run integration tests requiring a database."
+	useJUnitPlatform {
+		includeTags "integration"
+	}
+	testLogging {
+		exceptionFormat = 'full'
+	}
+	dependsOn "expandConfig"
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
-	dependsOn "expandConfig"
 	boolean local = project.hasProperty('local') ? project.getProperty('local') : true
 	systemProperty 'yamlTestConfig', local ? 'application-test-local-mariadb.yml' : 'application-test-mariadb.yml'
 }
