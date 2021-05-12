@@ -1,8 +1,11 @@
 package ish.oncourse.server.cayenne.changeFilterTests;
 
+import ish.CayenneIshTestCase;
+import ish.DatabaseSetup;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.oncourse.entity.services.SetPaymentMethod;
+import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.lifecycle.BankingChangeHandler;
 import ish.oncourse.server.lifecycle.ChangeFilter;
@@ -18,9 +21,13 @@ import java.time.LocalDate;
 /**
  * This class needs to be Java as of October 2019 since groovy doesn't handle the @PreUpdate annotation properly
  */
-public class UnbankTest extends ChangeFilterTest {
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/ChangeFilterTestDataSet.xml")
+public class UnbankTest extends CayenneIshTestCase {
+
     @Test
     public void testUnbank() {
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class);
+
         cayenneService.addListener(new Object() {
             @PreUpdate(value = PaymentOut.class)
             public void preUpdate(PaymentOut paymentOut) {

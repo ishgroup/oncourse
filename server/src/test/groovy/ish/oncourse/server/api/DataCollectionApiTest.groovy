@@ -1,8 +1,8 @@
 package ish.oncourse.server.api
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.common.types.DataType
 import ish.common.types.DeliverySchedule
 import ish.oncourse.server.ICayenneService
@@ -13,27 +13,18 @@ import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.testng.annotations.BeforeTest
 
 import javax.ws.rs.ClientErrorException
 
 @CompileStatic
+@DatabaseSetup()
 class DataCollectionApiTest extends CayenneIshTestCase {
 
-    @BeforeTest
-    void before() {
-        wipeTables()
-    }
-
-    
+   
     @Test
     void testFieldType() {
 
-        ICayenneService cayenneService = injector.getInstance(ICayenneService)
-
-        ObjectContext context = cayenneService.newContext
-
-        CustomFieldType contactField = context.newObject(CustomFieldType)
+        CustomFieldType contactField = cayenneContext.newObject(CustomFieldType)
         contactField.entityIdentifier = Contact.class.simpleName
         contactField.name = 'Passport number'
         contactField.key = 'passportNumber'
@@ -42,7 +33,7 @@ class DataCollectionApiTest extends CayenneIshTestCase {
         contactField.dataType = DataType.TEXT
 
 
-        CustomFieldType enrolmentField = context.newObject(CustomFieldType)
+        CustomFieldType enrolmentField = cayenneContext.newObject(CustomFieldType)
         enrolmentField.entityIdentifier = Enrolment.class.simpleName
         enrolmentField.name = 'Enrolment number'
         enrolmentField.key = 'enrolmentNumber'
@@ -51,7 +42,7 @@ class DataCollectionApiTest extends CayenneIshTestCase {
         enrolmentField.dataType = DataType.TEXT
 
 
-        CustomFieldType applicationField = context.newObject(CustomFieldType)
+        CustomFieldType applicationField = cayenneContext.newObject(CustomFieldType)
         applicationField.entityIdentifier = Application.class.simpleName
         applicationField.name = 'Application number'
         applicationField.key = 'applicationNumber'
@@ -59,10 +50,9 @@ class DataCollectionApiTest extends CayenneIshTestCase {
         applicationField.sortOrder = 2
         applicationField.dataType = DataType.TEXT
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
-        integrationApi.cayenneService = cayenneService
 
         List<FieldTypeDTO> fieldTypes = integrationApi.getFieldTypes(DataCollectionTypeDTO.ENROLMENT.toString())
 
@@ -167,7 +157,7 @@ class DataCollectionApiTest extends CayenneIshTestCase {
         }
 
         integrationApi.createForm(form)
-        FieldConfiguration fieldConfiguration = DataCollectionFunctions.getFormByName(cayenneService.newContext, 'form_1')
+        FieldConfiguration fieldConfiguration = DataCollectionFunctions.getFormByName(cayenneContext, 'form_1')
         Assertions.assertEquals(5, fieldConfiguration.fields.size())
         Assertions.assertEquals(2, fieldConfiguration.fieldHeadings.size())
         Assertions.assertEquals('[netPromoterScore, courseScore, venueScore, tutorScore, comment]', fieldConfiguration.fields.sort().collect { it.name }.toString())
@@ -188,34 +178,34 @@ class DataCollectionApiTest extends CayenneIshTestCase {
         rule.name = 'Def rule'
         context.newObject(FieldConfigurationLink).with { link ->
             link.fieldConfigurationScheme = rule
-            link.fieldConfiguration = cretaeForm(context, 'Enrol form', EnrolmentFieldConfiguration)
+            link.fieldConfiguration = cretaeForm(cayenneContext, 'Enrol form', EnrolmentFieldConfiguration)
         }
         context.newObject(FieldConfigurationLink).with { link ->
             link.fieldConfigurationScheme = rule
-            link.fieldConfiguration = cretaeForm(context, 'Application form', ApplicationFieldConfiguration)
+            link.fieldConfiguration = cretaeForm(cayenneContext, 'Application form', ApplicationFieldConfiguration)
         }
         context.newObject(FieldConfigurationLink).with { link ->
             link.fieldConfigurationScheme = rule
-            link.fieldConfiguration = cretaeForm(context, 'WaitingList form', WaitingListFieldConfiguration)
+            link.fieldConfiguration = cretaeForm(cayenneContext, 'WaitingList form', WaitingListFieldConfiguration)
         }
         context.newObject(FieldConfigurationLink).with { link ->
             link.fieldConfigurationScheme = rule
-            link.fieldConfiguration = cretaeSurveyForm(context, 'Survey form MIDWAY', DeliverySchedule.MIDWAY)
+            link.fieldConfiguration = cretaeSurveyForm(cayenneContext, 'Survey form MIDWAY', DeliverySchedule.MIDWAY)
         }
         context.newObject(FieldConfigurationLink).with { link ->
             link.fieldConfigurationScheme = rule
-            link.fieldConfiguration = cretaeSurveyForm(context, 'Survey form ON_ENROL', DeliverySchedule.ON_ENROL)
+            link.fieldConfiguration = cretaeSurveyForm(cayenneContext, 'Survey form ON_ENROL', DeliverySchedule.ON_ENROL)
         }
     }
 
     private static SurveyFieldConfiguration cretaeSurveyForm(ObjectContext context, String name, DeliverySchedule deliverySchedule) {
         return context.newObject(SurveyFieldConfiguration).with { form ->
             form.name = name
-            form.addToFieldHeadings context.newObject(FieldHeading).with { heading ->
+            form.addToFieldHeadings cayenneContext.newObject(FieldHeading).with { heading ->
                 heading.name = 'Enrol heading 1'
                 heading.description = 'Enrol heading 1'
                 heading.fieldOrder = 1
-                heading.addToFields context.newObject(Field).with { field ->
+                heading.addToFields cayenneContext.newObject(Field).with { field ->
                     field.name = 'Course score'
                     field.property = 'courseScore'
                     field.mandatory = true
@@ -224,7 +214,7 @@ class DataCollectionApiTest extends CayenneIshTestCase {
                     field.fieldConfiguration = form
                     field
                 } as Field
-                heading.addToFields context.newObject(Field).with { field ->
+                heading.addToFields cayenneContext.newObject(Field).with { field ->
                     field.name = 'Net promoter score'
                     field.property = 'netPromoterScore'
                     field.mandatory = true
@@ -233,7 +223,7 @@ class DataCollectionApiTest extends CayenneIshTestCase {
                     field.fieldConfiguration = form
                     field
                 }
-                heading.addToFields context.newObject(Field).with { field ->
+                heading.addToFields cayenneContext.newObject(Field).with { field ->
                     field.name = 'Venue score'
                     field.property = 'venueScore'
                     field.mandatory = true
@@ -253,11 +243,11 @@ class DataCollectionApiTest extends CayenneIshTestCase {
     private static FieldConfiguration cretaeForm(ObjectContext context, String name, Class<? extends FieldConfiguration> clazz) {
         return context.newObject(clazz).with { form ->
             form.name = name
-            form.addToFieldHeadings context.newObject(FieldHeading).with { heading ->
+            form.addToFieldHeadings cayenneContext.newObject(FieldHeading).with { heading ->
                 heading.name = 'Enrol heading 1'
                 heading.description = 'Enrol heading 1'
                 heading.fieldOrder = 1
-                heading.addToFields context.newObject(Field).with { field ->
+                heading.addToFields cayenneContext.newObject(Field).with { field ->
                     field.name = 'Postcode'
                     field.property = 'postcode'
                     field.mandatory = true
@@ -266,7 +256,7 @@ class DataCollectionApiTest extends CayenneIshTestCase {
                     field.fieldConfiguration = form
                     field
                 }
-                heading.addToFields context.newObject(Field).with { field ->
+                heading.addToFields cayenneContext.newObject(Field).with { field ->
                     field.name = 'State'
                     field.property = 'state'
                     field.mandatory = true
@@ -277,11 +267,11 @@ class DataCollectionApiTest extends CayenneIshTestCase {
                 }
                 heading
             }
-            form.addToFieldHeadings context.newObject(FieldHeading).with { heading ->
+            form.addToFieldHeadings cayenneContext.newObject(FieldHeading).with { heading ->
                 heading.name = 'Enrol heading 2'
                 heading.description = 'Enrol heading 2'
                 heading.fieldOrder = 4
-                heading.addToFields context.newObject(Field).with { field ->
+                heading.addToFields cayenneContext.newObject(Field).with { field ->
                     field.name = 'Country'
                     field.property = 'country'
                     field.mandatory = true
@@ -290,7 +280,7 @@ class DataCollectionApiTest extends CayenneIshTestCase {
                     field.fieldConfiguration = form
                     field
                 }
-                heading.addToFields context.newObject(Field).with { field ->
+                heading.addToFields cayenneContext.newObject(Field).with { field ->
                     field.name = 'Suburb'
                     field.property = 'suburb'
                     field.mandatory = true
@@ -301,7 +291,7 @@ class DataCollectionApiTest extends CayenneIshTestCase {
                 }
                 heading
             }
-            form.addToFields context.newObject(Field).with { field ->
+            form.addToFields cayenneContext.newObject(Field).with { field ->
                 field.name = 'Street'
                 field.property = 'street'
                 field.mandatory = true
@@ -310,7 +300,7 @@ class DataCollectionApiTest extends CayenneIshTestCase {
                 field.fieldConfiguration = form
                 field
             }
-            form.addToFields context.newObject(Field).with { field ->
+            form.addToFields cayenneContext.newObject(Field).with { field ->
                 field.name = 'Citizenship'
                 field.property = 'citizenship'
                 field.mandatory = true

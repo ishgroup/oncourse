@@ -5,12 +5,10 @@ import ish.CayenneIshTestCase
 import ish.common.types.AccountTransactionType
 import ish.common.types.AccountType
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
@@ -19,22 +17,14 @@ import java.time.Month
 @CompileStatic
 class CreateAccountTransactionsTest extends CayenneIshTestCase {
 
-    private ICayenneService cayenneService
-
-    @BeforeEach
-    void setup() {
-        cayenneService = injector.getInstance(ICayenneService)
-        super.setup()
-    }
-
     @Test
     void test() {
         List<AccountTransaction> before = ObjectSelect.query(AccountTransaction)
-                .select(cayenneService.newContext)
+                .select(cayenneContext)
         Assertions.assertTrue(before.empty)
 
         List<Account> accounts = ObjectSelect.query(Account)
-                .select(cayenneService.newContext)
+                .select(cayenneContext)
 
         List<Account> allAssets = accounts.findAll { it.type == AccountType.ASSET }
         Assertions.assertTrue(allAssets.size() > 2)
@@ -51,10 +41,10 @@ class CreateAccountTransactionsTest extends CayenneIshTestCase {
 
         AccountTransactionDetail detail = AccountTransactionDetail.valueOf(primaryAccount, secondaryAccount, amount, AccountTransactionType.JOURNAL, 0L, transactionDate)
 
-        CreateAccountTransactions.valueOf(cayenneService.newContext, detail).create()
+        CreateAccountTransactions.valueOf(cayenneContext, detail).create()
 
         List<AccountTransaction> after = ObjectSelect.query(AccountTransaction)
-                .select(cayenneService.newContext)
+                .select(cayenneContext)
         Assertions.assertEquals(2, after.size())
 
         AccountTransaction accountTransaction = after.find { it.account.id == primaryAccount.id }
@@ -72,10 +62,10 @@ class CreateAccountTransactionsTest extends CayenneIshTestCase {
 
         Money amount2 = new Money(50 as BigDecimal)
         detail = AccountTransactionDetail.valueOf(primaryAccount, liabilityAccount, amount2, AccountTransactionType.INVOICE_LINE, 11L, transactionDate)
-        CreateAccountTransactions.valueOf(cayenneService.newContext, detail).create()
+        CreateAccountTransactions.valueOf(cayenneContext, detail).create()
 
         after = ObjectSelect.query(AccountTransaction)
-                .select(cayenneService.newContext)
+                .select(cayenneContext)
         Assertions.assertEquals(4, after.size())
 
         accountTransaction = after.findAll { it.foreignRecordId == 11L }.find { it.account.id == primaryAccount.id }

@@ -1,38 +1,26 @@
 package ish.oncourse.server.deduplication
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.common.types.Gender
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.MergeLineDTO
 import ish.oncourse.server.cayenne.*
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/deduplication/dedupeContactDataSet.xml")
 class ContactMergeServiceTest extends CayenneIshTestCase {
 
     private ContactMergeService contactMergeService
-    private ICayenneService cayenneService
 
-    
     @BeforeEach
     void setup() {
-        wipeTables()
         contactMergeService = injector.getInstance(ContactMergeService)
-        cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = ContactMergeServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/deduplication/dedupeContactDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-
-        executeDatabaseOperation(dataSet)
         injector.getInstance(PreferenceController.class).setReplicationEnabled(true)
         super.setup()
     }
@@ -40,9 +28,8 @@ class ContactMergeServiceTest extends CayenneIshTestCase {
     
     @Test
     void testGetDiffData() {
-        ObjectContext context = cayenneService.newContext
-        Contact contactA = ObjectSelect.query(Contact).where(Contact.ID.eq(1L)).selectFirst(context)
-        Contact contactB = ObjectSelect.query(Contact).where(Contact.ID.eq(2L)).selectFirst(context)
+        Contact contactA = ObjectSelect.query(Contact).where(Contact.ID.eq(1L)).selectFirst(cayenneContext)
+        Contact contactB = ObjectSelect.query(Contact).where(Contact.ID.eq(2L)).selectFirst(cayenneContext)
         List<MergeLineDTO> mergeLines = contactMergeService.getDifferenceAttributes(contactA, contactB)
         Assertions.assertEquals("[class MergeLineDTO {\n" +
                 "    key: Contact.birthDate\n" +
@@ -205,9 +192,8 @@ class ContactMergeServiceTest extends CayenneIshTestCase {
     
     @Test
     void testMerge() throws Exception {
-        ObjectContext context = cayenneService.newContext
-        Contact a = ObjectSelect.query(Contact).where(Contact.ID.eq(1L)).selectFirst(context)
-        Contact b = ObjectSelect.query(Contact).where(Contact.ID.eq(2L)).selectFirst(context)
+        Contact a = ObjectSelect.query(Contact).where(Contact.ID.eq(1L)).selectFirst(cayenneContext)
+        Contact b = ObjectSelect.query(Contact).where(Contact.ID.eq(2L)).selectFirst(cayenneContext)
 
         Map<String, String> diffMap = ['Contact.birthDate'         : 'A',
                                        'Contact.email'             : 'B',
@@ -247,32 +233,32 @@ class ContactMergeServiceTest extends CayenneIshTestCase {
 
         contactMergeService.merge(a, b, diffMap)
 
-        Assertions.assertEquals(3, ObjectSelect.query(Contact).selectCount(context))
-        Assertions.assertEquals(1, ObjectSelect.query(Student).selectCount(context))
-        Assertions.assertEquals(1, ObjectSelect.query(Tutor).selectCount(context))
+        Assertions.assertEquals(3, ObjectSelect.query(Contact).selectCount(cayenneContext))
+        Assertions.assertEquals(1, ObjectSelect.query(Student).selectCount(cayenneContext))
+        Assertions.assertEquals(1, ObjectSelect.query(Tutor).selectCount(cayenneContext))
 
-        Assertions.assertEquals(2, ObjectSelect.query(ContactCustomField).where(ContactCustomField.RELATED_OBJECT.eq(a)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(Tag).where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER).eq(8).andExp(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(1L))).selectCount(context))
-        Assertions.assertEquals(1, ObjectSelect.query(ContactRelation).where(ContactRelation.TO_CONTACT.eq(a)).selectCount(context))
-        Assertions.assertEquals(1, ObjectSelect.query(ContactRelation).where(ContactRelation.FROM_CONTACT.eq(a)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(ClassCost).where(ClassCost.CONTACT.eq(a)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(CorporatePass).where(CorporatePass.CONTACT.eq(a)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(Invoice).where(Invoice.CONTACT.eq(a)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(Message).where(Message.MESSAGE_PERSONS.dot(MessagePerson.CONTACT).eq(a)).selectCount(context))
-        Assertions.assertEquals(3, ObjectSelect.query(ContactNoteRelation).where(ContactNoteRelation.NOTED_CONTACT.eq(a)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(PaymentIn).where(PaymentIn.PAYER.eq(a)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(PaymentOut).where(PaymentOut.PAYEE.eq(a)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(Payslip).where(Payslip.CONTACT.eq(a)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(ProductItem).where(ProductItem.CONTACT.eq(a)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(ContactUnavailableRuleRelation).where(ContactUnavailableRuleRelation.CONTACT.eq(a)).selectCount(context))
-        Assertions.assertEquals(3, ObjectSelect.query(ContactDuplicate).where(ContactDuplicate.CONTACT_TO_UPDATE.eq(a)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(ContactCustomField).where(ContactCustomField.RELATED_OBJECT.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(Tag).where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER).eq(8).andExp(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(1L))).selectCount(cayenneContext))
+        Assertions.assertEquals(1, ObjectSelect.query(ContactRelation).where(ContactRelation.TO_CONTACT.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(1, ObjectSelect.query(ContactRelation).where(ContactRelation.FROM_CONTACT.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(ClassCost).where(ClassCost.CONTACT.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(CorporatePass).where(CorporatePass.CONTACT.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(Invoice).where(Invoice.CONTACT.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(Message).where(Message.MESSAGE_PERSONS.dot(MessagePerson.CONTACT).eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(3, ObjectSelect.query(ContactNoteRelation).where(ContactNoteRelation.NOTED_CONTACT.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(PaymentIn).where(PaymentIn.PAYER.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(PaymentOut).where(PaymentOut.PAYEE.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(Payslip).where(Payslip.CONTACT.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(ProductItem).where(ProductItem.CONTACT.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(ContactUnavailableRuleRelation).where(ContactUnavailableRuleRelation.CONTACT.eq(a)).selectCount(cayenneContext))
+        Assertions.assertEquals(3, ObjectSelect.query(ContactDuplicate).where(ContactDuplicate.CONTACT_TO_UPDATE.eq(a)).selectCount(cayenneContext))
 
-        Assertions.assertEquals(2, ObjectSelect.query(Attendance).where(Attendance.STUDENT.eq(a.student)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(Certificate).where(Certificate.STUDENT.eq(a.student)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(PriorLearning).where(PriorLearning.STUDENT.eq(a.student)).selectCount(context))
-        Assertions.assertEquals(2, ObjectSelect.query(ConcessionType).where(ConcessionType.STUDENT_CONCESSIONS.dot(StudentConcession.STUDENT).eq(a.student)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(Attendance).where(Attendance.STUDENT.eq(a.student)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(Certificate).where(Certificate.STUDENT.eq(a.student)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(PriorLearning).where(PriorLearning.STUDENT.eq(a.student)).selectCount(cayenneContext))
+        Assertions.assertEquals(2, ObjectSelect.query(ConcessionType).where(ConcessionType.STUDENT_CONCESSIONS.dot(StudentConcession.STUDENT).eq(a.student)).selectCount(cayenneContext))
 
-        Assertions.assertEquals(2, ObjectSelect.query(CourseClassTutor).where(CourseClassTutor.TUTOR.eq(a.tutor)).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(CourseClassTutor).where(CourseClassTutor.TUTOR.eq(a.tutor)).selectCount(cayenneContext))
 
         Assertions.assertEquals('1991-01-01', a.birthDate.toString())
         Assertions.assertEquals('test2@test.te', a.email)

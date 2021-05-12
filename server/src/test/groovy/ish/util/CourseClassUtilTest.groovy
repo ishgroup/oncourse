@@ -4,14 +4,12 @@
  */
 package ish.util
 
-
 import ish.CayenneIshTestCase
 import ish.common.types.*
 import ish.math.Money
 import ish.messaging.ISessionModule
 import ish.oncourse.cayenne.CourseClassUtil
 import ish.oncourse.generator.DataGenerator
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.junit.jupiter.api.Assertions
@@ -28,20 +26,18 @@ class CourseClassUtilTest extends CayenneIshTestCase {
 
     @Test
     void testSuccessAndQueuedEnrolments() {
-        ObjectContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        Student student = createStudent(cayenneContext)
 
-        Student student = createStudent(context)
+        createEnrolment(cayenneContext, EnrolmentStatus.SUCCESS, student)
+        createEnrolment(cayenneContext, EnrolmentStatus.SUCCESS, student)
+        createEnrolment(cayenneContext, EnrolmentStatus.FAILED, student)
+        createEnrolment(cayenneContext, EnrolmentStatus.REFUNDED, student)
+        createEnrolment(cayenneContext, EnrolmentStatus.CANCELLED, student)
+        createEnrolment(cayenneContext, EnrolmentStatus.IN_TRANSACTION, student)
+        createEnrolment(cayenneContext, EnrolmentStatus.NEW, student)
+        createEnrolment(cayenneContext, EnrolmentStatus.QUEUED, student)
 
-        createEnrolment(context, EnrolmentStatus.SUCCESS, student)
-        createEnrolment(context, EnrolmentStatus.SUCCESS, student)
-        createEnrolment(context, EnrolmentStatus.FAILED, student)
-        createEnrolment(context, EnrolmentStatus.REFUNDED, student)
-        createEnrolment(context, EnrolmentStatus.CANCELLED, student)
-        createEnrolment(context, EnrolmentStatus.IN_TRANSACTION, student)
-        createEnrolment(context, EnrolmentStatus.NEW, student)
-        createEnrolment(context, EnrolmentStatus.QUEUED, student)
-
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertEquals(8, student.getEnrolments().size())
         Assertions.assertEquals(5, CourseClassUtil.getSuccessAndQueuedEnrolments(student.getEnrolments()).size())

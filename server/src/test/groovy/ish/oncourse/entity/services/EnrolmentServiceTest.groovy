@@ -1,7 +1,6 @@
 package ish.oncourse.entity.services
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
 import ish.common.types.AttendanceType
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.server.cayenne.*
@@ -12,7 +11,7 @@ import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
 @CompileStatic
-class EnrolmentServiceTest extends CayenneIshTestCase {
+class EnrolmentServiceTest {
 
     void testGetAttendancePercent() {
         Enrolment enrolment = mock(Enrolment.class)

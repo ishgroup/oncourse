@@ -5,6 +5,7 @@ import ish.common.types.PaymentType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.PaymentMethod
+import ish.oncourse.server.cayenne.SessionTest
 import ish.oncourse.server.db.SanityCheckService
 import ish.util.AccountUtil
 import org.apache.cayenne.ObjectContext
@@ -23,6 +24,8 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.dbunit.database.IDatabaseConnection
 import org.dbunit.dataset.IDataSet
+import org.dbunit.dataset.xml.FlatXmlDataSet
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.dbunit.operation.DatabaseOperation
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
@@ -36,6 +39,7 @@ import java.sql.Statement
 @CompileStatic
 abstract class CayenneIshTestCase extends IshTestCase {
     private static final Logger logger = LogManager.getLogger()
+    protected DataContext cayenneContext
 
     private static final String RESET_AUTO_INCREMENT_TEMPLATE_MYSQL = "ALTER TABLE %s AUTO_INCREMENT = %d"
     private static final int NEXT_ID = 10000
@@ -50,6 +54,25 @@ abstract class CayenneIshTestCase extends IshTestCase {
 
     @BeforeEach
     void setup() throws Exception {
+        def a = this.class.getAnnotation(DatabaseSetup)
+        if (a) {
+            if (a.type() == ish.DatabaseOperation.DELETE_ALL) {
+                wipeTables()
+            }
+            for (dataSource in a?.value()) {
+                InputStream st = SessionTest.class.getClassLoader().getResourceAsStream(dataSource)
+                FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
+                builder.setColumnSensing(true)
+                FlatXmlDataSet dataSet = builder.build(st)
+                executeDatabaseOperation(dataSet)
+            }
+        }
+        if (a.readOnly()) {
+            cayenneContext = injector.getInstance(ICayenneService.class).getNewReadonlyContext()
+        } else {
+            cayenneContext = injector.getInstance(ICayenneService.class).getNewContext()
+        }
+
         validateAccountAndTaxDefaults()
         checkPaymentMethods()
     }

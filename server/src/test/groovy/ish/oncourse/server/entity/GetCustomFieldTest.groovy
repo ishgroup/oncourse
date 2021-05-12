@@ -1,8 +1,8 @@
 package ish.oncourse.server.entity
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.common.types.AccountType
 import ish.common.types.CourseClassAttendanceType
 import ish.oncourse.server.ICayenneService
@@ -10,10 +10,10 @@ import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+@DatabaseSetup
 class GetCustomFieldTest extends CayenneIshTestCase {
     private static final String SOME_STRING = "someString"
     private static final String CONTACT_FIELD_NAME = "Contact field"
@@ -31,12 +31,6 @@ class GetCustomFieldTest extends CayenneIshTestCase {
     private static final String NULL_FIELD_NAME = "Null field"
     private static final String NULL_FIELD_KEY = "nullField"
 
-    @BeforeEach
-    void before() {
-        wipeTables()
-    }
-
-    
     @Test
     void testCustomField() {
         ObjectContext context = injector.getInstance(ICayenneService).newNonReplicatingContext

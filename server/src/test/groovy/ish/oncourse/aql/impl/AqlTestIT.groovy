@@ -7,32 +7,23 @@ package ish.oncourse.aql.impl
 
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.SessionTest
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+@DatabaseSetup(readOnly = true, value = "ish/oncourse/aql/SyntheticPathTestDataSet.xml")
 class AqlTestIT extends CayenneIshTestCase {
 
-    private DataContext cayenneContext
     private AqlService aqlService
 
-    @BeforeEach
+    @BeforeAll
     void setup() throws Exception {
-        wipeTables()
-        InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/aql/SyntheticPathTestDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        executeDatabaseOperation(dataSet)
-        cayenneContext = injector.getInstance(ICayenneService.class).getNewReadonlyContext()
         aqlService = new AntlrAqlService()
     }
 

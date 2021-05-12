@@ -1,8 +1,11 @@
 package ish.oncourse.server.cayenne.changeFilterTests;
 
+import ish.CayenneIshTestCase;
+import ish.DatabaseSetup;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.oncourse.entity.services.SetPaymentMethod;
+import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.lifecycle.BankingChangeHandler;
 import ish.oncourse.server.lifecycle.ChangeFilter;
@@ -16,9 +19,12 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-public class ChangeBankingTest extends ChangeFilterTest {
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/ChangeFilterTestDataSet.xml")
+public class ChangeBankingTest extends CayenneIshTestCase {
     @Test
     public void testChangeBanking() {
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class);
+
         cayenneService.addListener(new Object() {
             @PrePersist(value = PaymentOut.class)
             public void prePersist(PaymentOut paymentOut) {

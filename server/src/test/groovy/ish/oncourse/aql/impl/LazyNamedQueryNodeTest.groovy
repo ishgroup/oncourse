@@ -2,18 +2,16 @@ package ish.oncourse.aql.impl
 
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 import org.dbunit.DatabaseUnitException
 import org.dbunit.database.QueryDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.dbunit.ext.mysql.MySqlConnection
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -23,18 +21,13 @@ import java.sql.Connection
 import java.sql.SQLException
 
 @CompileStatic
+@DatabaseSetup(readOnly = true, value = "ish/oncourse/aql/NamedQueryTestDataSet.xml")
 class LazyNamedQueryNodeTest extends CayenneIshTestCase {
 
-    private DataContext cayenneContext
     private AqlService aqlService
 
     @BeforeEach
     void setup() throws Exception {
-        wipeTables()
-        InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/aql/NamedQueryTestDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        executeDatabaseOperation(dataSet)
-        cayenneContext = injector.getInstance(ICayenneService.class).getNewReadonlyContext()
         aqlService = new AntlrAqlService()
     }
 

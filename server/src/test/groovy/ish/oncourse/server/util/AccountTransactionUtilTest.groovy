@@ -4,7 +4,6 @@
  */
 package ish.oncourse.server.util
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource
@@ -30,12 +29,10 @@ import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-/**
- */
 @CompileStatic
 class AccountTransactionUtilTest extends CayenneIshTestCase {
 
-    
+    // TODO convert the following to the annotation approach of using dbunit
     @BeforeEach
     void setupTest() throws Exception {
         wipeTables()
@@ -121,7 +118,6 @@ class AccountTransactionUtilTest extends CayenneIshTestCase {
             Assertions.assertNotNull(AccountTransaction.getInvoiceLineForTransaction(context, transaction))
         }
     }
-
     
     @Test
     void testPaymentTransactions() {

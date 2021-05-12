@@ -1,8 +1,8 @@
 package ish.oncourse.server.api
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.UnavailableRuleDao
 import ish.oncourse.server.api.v1.model.HolidayDTO
@@ -14,20 +14,13 @@ import ish.oncourse.server.cayenne.UnavailableRule
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.testng.annotations.BeforeTest
 
 import static ish.util.LocalDateUtils.stringToValue
 
 @CompileStatic
+@DatabaseSetup
 class HolidayApiTest extends CayenneIshTestCase {
 
-
-    @BeforeTest
-    void before() {
-        wipeTables()
-    }
-
-    
     @Test
     void testHoliday() {
         ICayenneService cayenneService = injector.getInstance(ICayenneService)

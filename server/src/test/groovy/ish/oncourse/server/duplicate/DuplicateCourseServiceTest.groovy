@@ -1,13 +1,11 @@
 package ish.oncourse.server.duplicate
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.*
 import ish.duplicate.CourseDuplicationRequest
 import ish.math.Money
 import ish.oncourse.generator.DataGenerator
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
@@ -20,17 +18,15 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
 
     @Test
     void testDuplicateCourseCode() throws Exception {
-        DataContext context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
+        FieldConfigurationScheme scheme = DataGenerator.valueOf(cayenneContext).getFieldConfigurationScheme()
 
-        FieldConfigurationScheme scheme = DataGenerator.valueOf(context).getFieldConfigurationScheme()
-
-        Course relatedCourse = context.newObject(Course.class)
+        Course relatedCourse = cayenneContext.newObject(Course.class)
         relatedCourse.setCode("Nothing")
         relatedCourse.setName("Name")
         relatedCourse.setFieldConfigurationSchema(scheme)
         relatedCourse.setFeeHelpClass(Boolean.FALSE)
 
-        Course course = context.newObject(Course.class)
+        Course course = cayenneContext.newObject(Course.class)
         course.setCode("Code")
         course.setName("TestCourse")
         course.setWebDescription("Test web description")
@@ -45,48 +41,48 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
         course.setFieldConfigurationSchema(scheme)
         course.setFeeHelpClass(Boolean.FALSE)
 
-        Product product = createProduct(context)
+        Product product = createProduct(cayenneContext)
 
-        Module module = context.newObject(Module.class)
+        Module module = cayenneContext.newObject(Module.class)
         module.setType(ModuleType.MODULE)
         module.setNationalCode("test")
         course.addToModules(module)
 
-        Qualification qualification = context.newObject(Qualification.class)
+        Qualification qualification = cayenneContext.newObject(Qualification.class)
         qualification.setTitle("Test qualification")
         qualification.setIsOffered(true)
         qualification.setType(QualificationType.HIGHER_TYPE)
         course.setQualification(qualification)
 
-        Document document = context.newObject(Document.class)
+        Document document = cayenneContext.newObject(Document.class)
         document.setName("TestDocument")
         document.setWebVisibility(AttachmentInfoVisibility.PUBLIC)
         document.setAdded(new Date())
 
-        CourseAttachmentRelation courseAttachmentRelation = context.newObject(CourseAttachmentRelation.class)
+        CourseAttachmentRelation courseAttachmentRelation = cayenneContext.newObject(CourseAttachmentRelation.class)
         courseAttachmentRelation.setAttachedCourse(course)
         courseAttachmentRelation.setDocument(document)
         courseAttachmentRelation.setDocumentVersion(null)
         courseAttachmentRelation.setSpecialType(null)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
-        EntityRelation courseCourseRelation = context.newObject(EntityRelation.class)
-        courseCourseRelation.setRelationType(getRelationType(context))
+        EntityRelation courseCourseRelation = cayenneContext.newObject(EntityRelation.class)
+        courseCourseRelation.setRelationType(getRelationType(cayenneContext))
         courseCourseRelation.setFromEntityIdentifier(Course.simpleName)
         courseCourseRelation.setFromEntityAngelId(course.id)
         courseCourseRelation.setToEntityIdentifier(Course.simpleName)
         courseCourseRelation.setToEntityAngelId(relatedCourse.id)
 
 
-        EntityRelation productRelation = context.newObject(EntityRelation.class)
-        productRelation.setRelationType(getRelationType(context))
+        EntityRelation productRelation = cayenneContext.newObject(EntityRelation.class)
+        productRelation.setRelationType(getRelationType(cayenneContext))
         productRelation.setFromEntityIdentifier(Course.simpleName)
         productRelation.setFromEntityAngelId(course.id)
         productRelation.setToEntityIdentifier(Product.simpleName)
         productRelation.setToEntityAngelId(product.id)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         DuplicateCourseService instance = injector.getInstance(DuplicateCourseService.class)
         List<Course> courses = Arrays.asList(course)
@@ -94,7 +90,7 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
         List<Course> duplicatedCourses = ObjectSelect.query(Course.class)
                 .where(Course.ID.ne(course.getId()))
                 .and(Course.ID.ne(relatedCourse.getId()))
-                .select(context)
+                .select(cayenneContext)
 
         Assertions.assertEquals(1, duplicatedCourses.size())
         Course duplicatedCourse = duplicatedCourses.get(0)
@@ -112,7 +108,7 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
 
         List<CourseModule> courseModules = ObjectSelect.query(CourseModule.class)
                 .where(CourseModule.COURSE.dot(Course.ID).eq(duplicatedCourse.getId()))
-                .select(context)
+                .select(cayenneContext)
         Assertions.assertEquals(1, courseModules.size())
         CourseModule courseModule = courseModules.get(0)
         Assertions.assertNotNull(courseModule.getCreatedOn())
@@ -128,7 +124,7 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
                 .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
                 .and(EntityRelation.TO_ENTITY_ANGEL_ID.eq(relatedCourse.id))
                 .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Course.simpleName))
-                .select(context)
+                .select(cayenneContext)
         Assertions.assertEquals(1, courseCourseRelations.size())
         Assertions.assertNotNull(courseCourseRelations.get(0).getCreatedOn())
         Assertions.assertNotNull(courseCourseRelations.get(0).getModifiedOn())
@@ -141,7 +137,7 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
                 .and(EntityRelation.FROM_ENTITY_IDENTIFIER.eq(Course.simpleName))
                 .and(EntityRelation.TO_ENTITY_ANGEL_ID.eq(product.id))
                 .and(EntityRelation.TO_ENTITY_IDENTIFIER.eq(Product.simpleName))
-                .select(context)
+                .select(cayenneContext)
         Assertions.assertEquals(1, courseProductRelations.size())
         Assertions.assertNotNull(courseProductRelations.get(0).getCreatedOn())
         Assertions.assertNotNull(courseProductRelations.get(0).getModifiedOn())
@@ -151,7 +147,7 @@ class DuplicateCourseServiceTest extends CayenneIshTestCase {
 
         List<CourseAttachmentRelation> courseAttachmentRelations = ObjectSelect.query(CourseAttachmentRelation.class)
                 .where(CourseAttachmentRelation.ENTITY_RECORD_ID.eq(duplicatedCourse.getId()))
-                .select(context)
+                .select(cayenneContext)
 
         Assertions.assertEquals(1, courseAttachmentRelations.size())
         Assertions.assertNotNull(courseAttachmentRelations.get(0).getCreatedOn())

@@ -6,32 +6,17 @@ package ish.util
 
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.SelectQuery
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-
 @CompileStatic
+@DatabaseSetup(readOnly = true, value = "ish/util/entityUtilTest.xml")
+
 class EntityUtilTest extends CayenneIshTestCase {
-
-    @BeforeEach
-    void setupTest() throws Exception {
-        wipeTables()
-
-        InputStream st = EntityUtilTest.class.getClassLoader().getResourceAsStream("ish/util/entityUtilTest.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet)
-        replacementDataSet.addReplacementObject("[NULL]", null)
-        executeDatabaseOperation(replacementDataSet)
-    }
-
 
     @Test
     void testEntityClassForName() throws Exception {
@@ -61,9 +46,7 @@ class EntityUtilTest extends CayenneIshTestCase {
 
     @Test
     void testApplyPathTranform1() {
-        ICayenneService cServ = (ICayenneService) injector.getInstance(ICayenneService.class)
-        DataContext context = cServ.getNewContext()
-        List<Site> sites = context.select(SelectQuery.query(Site.class))
+        List<Site> sites = cayenneContext.select(SelectQuery.query(Site.class))
 
         Assertions.assertNotNull(sites)
         Assertions.assertTrue(sites.size() > 0)
@@ -72,14 +55,11 @@ class EntityUtilTest extends CayenneIshTestCase {
 
         Assertions.assertNotNull(rooms)
         Assertions.assertEquals(Room.class, rooms.get(0).getClass())
-
     }
 
     @Test
     void testApplyPathTranform2() {
-        ICayenneService cServ = (ICayenneService) injector.getInstance(ICayenneService.class)
-        DataContext context = cServ.getNewContext()
-        List<Room> rooms = context.select(SelectQuery.query(Room.class))
+        List<Room> rooms = cayenneContext.select(SelectQuery.query(Room.class))
 
         Assertions.assertNotNull(rooms)
         Assertions.assertTrue(rooms.size() > 0)
@@ -92,9 +72,7 @@ class EntityUtilTest extends CayenneIshTestCase {
 
     @Test
     void testApplyPathTranform3() {
-        ICayenneService cServ = (ICayenneService) injector.getInstance(ICayenneService.class)
-        DataContext context = cServ.getNewContext()
-        List<Country> countries = context.select(SelectQuery.query(Country.class))
+        List<Country> countries = cayenneContext.select(SelectQuery.query(Country.class))
 
         Assertions.assertNotNull(countries)
         Assertions.assertTrue(countries.size() > 0)
@@ -107,9 +85,7 @@ class EntityUtilTest extends CayenneIshTestCase {
 
     @Test
     void testApplyPathTranform4() {
-        ICayenneService cServ = (ICayenneService) injector.getInstance(ICayenneService.class)
-        DataContext context = cServ.getNewContext()
-        List<Room> rooms = context.select(SelectQuery.query(Room.class))
+        List<Room> rooms = cayenneContext.select(SelectQuery.query(Room.class))
 
         Assertions.assertNotNull(rooms)
         Assertions.assertTrue(rooms.size() > 0)

@@ -6,23 +6,18 @@ package ish.oncourse.queries
 
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.oncourse.cayenne.TagUtil
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Tag
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.SelectQuery
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-
 /**
  * Test cases to check the correctness of expressions, mostly the complicated ones, related to multiple tags. <br/>
  * <br/>
@@ -85,18 +80,11 @@ import org.junit.jupiter.api.Test
  *
  */
 @CompileStatic
+@DatabaseSetup(value = "ish/queries/expressions-test.xml")
 class ExpressionsTest2 extends CayenneIshTestCase {
 
-    @BeforeEach
+    @BeforeAll
     void setupTest() throws Exception {
-        wipeTables()
-
-        InputStream st = ExpressionsTest2.class.getClassLoader().getResourceAsStream("ish/queries/expressions-test.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
         PreferenceController pref = injector.getInstance(PreferenceController.class)
         pref.setReplicationEnabled(true)
     }
@@ -106,11 +94,9 @@ class ExpressionsTest2 extends CayenneIshTestCase {
      */
     @Test
     void testSingleTag() {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
-        Tag tag = getRecordWithId(newContext, Tag.class, 102L)
+        Tag tag = getRecordWithId(cayenneContext, Tag.class, 102L)
         List<Tag> list = new ArrayList<>()
         list.add(tag)
 
@@ -119,7 +105,7 @@ class ExpressionsTest2 extends CayenneIshTestCase {
         String alias = "alias" + tag.getRoot().hashCode()
         query.aliasPathSplits(Course.TAGGING_RELATIONS_PROPERTY, alias)
 
-        List<Course> result = newContext.select(query)
+        List<Course> result = cayenneContext.select(query)
 
         Assertions.assertEquals(1, result.size(), "testSingleTag")
         Assertions.assertEquals(tag.getName(), result.get(0).getNotes(), "testSingleTag")
@@ -130,11 +116,9 @@ class ExpressionsTest2 extends CayenneIshTestCase {
      */
     @Test
     void testSingleTagWithExtraExpression() {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
-        Tag tag = getRecordWithId(newContext, Tag.class, 103L)
+        Tag tag = getRecordWithId(cayenneContext, Tag.class, 103L)
         List<Tag> list = new ArrayList<>()
         list.add(tag)
 
@@ -144,7 +128,7 @@ class ExpressionsTest2 extends CayenneIshTestCase {
         String alias = "alias" + tag.getRoot().hashCode()
         query.aliasPathSplits(Course.TAGGING_RELATIONS_PROPERTY, alias)
 
-        List<Course> result = newContext.select(query)
+        List<Course> result = cayenneContext.select(query)
 
         Assertions.assertEquals(1, result.size(), "testSingleTag")
         Assertions.assertEquals(tag.getName(), result.get(0).getNotes(), "testSingleTag")
@@ -158,11 +142,8 @@ class ExpressionsTest2 extends CayenneIshTestCase {
     void testTwoTagsDifferentTagTrees() {
         Assertions.assertThrows(IllegalArgumentException.class, { ->
 
-            ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-            DataContext newContext = cayenneService.getNewContext()
-
-            Tag tag1 = getRecordWithId(newContext, Tag.class, 27L)
-            Tag tag2 = getRecordWithId(newContext, Tag.class, 103L)
+            Tag tag1 = getRecordWithId(cayenneContext, Tag.class, 27L)
+            Tag tag2 = getRecordWithId(cayenneContext, Tag.class, 103L)
             List<Tag> list = new ArrayList<>()
             list.add(tag1)
             list.add(tag2)
@@ -178,12 +159,10 @@ class ExpressionsTest2 extends CayenneIshTestCase {
      */
     @Test
     void testAndQueryForOneRecordWithTwoTagsCorrect() {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
-        Tag tag1 = getRecordWithId(newContext, Tag.class, 27L)
-        Tag tag2 = getRecordWithId(newContext, Tag.class, 103L)
+        Tag tag1 = getRecordWithId(cayenneContext, Tag.class, 27L)
+        Tag tag2 = getRecordWithId(cayenneContext, Tag.class, 103L)
         List<Tag> list1 = new ArrayList<>()
         list1.add(tag1)
         List<Tag> list2 = new ArrayList<>()
@@ -197,7 +176,7 @@ class ExpressionsTest2 extends CayenneIshTestCase {
         String alias2 = "alias" + tag2.getRoot().hashCode()
         query.aliasPathSplits(Course.TAGGING_RELATIONS_PROPERTY, alias1, alias2)
 
-        List<Course> result = newContext.select(query)
+        List<Course> result = cayenneContext.select(query)
 
         Assertions.assertEquals(3, result.size(), "testSingleTag")
     }
@@ -207,12 +186,10 @@ class ExpressionsTest2 extends CayenneIshTestCase {
      */
     @Test
     void testAndQueryForOneRecordWithTwoTagsCorrect2() {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
-        Tag tag1 = getRecordWithId(newContext, Tag.class, 21L)
-        Tag tag2 = getRecordWithId(newContext, Tag.class, 107L)
+        Tag tag1 = getRecordWithId(cayenneContext, Tag.class, 21L)
+        Tag tag2 = getRecordWithId(cayenneContext, Tag.class, 107L)
 
         List<Tag> list1 = new ArrayList<>()
         list1.add(tag1)
@@ -227,7 +204,7 @@ class ExpressionsTest2 extends CayenneIshTestCase {
         String alias2 = "alias" + tag2.getRoot().hashCode()
         query.aliasPathSplits(Course.TAGGING_RELATIONS_PROPERTY, alias1, alias2)
 
-        List<Course> result = newContext.select(query)
+        List<Course> result = cayenneContext.select(query)
 
         Assertions.assertEquals(0, result.size(), "should return one result")
     }
@@ -237,13 +214,11 @@ class ExpressionsTest2 extends CayenneIshTestCase {
      */
     @Test
     void testAndQueryForOneRecordWithTwoTagsCorrect3() {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
-        Tag tag0 = getRecordWithId(newContext, Tag.class, 20L)
-        Tag tag1 = getRecordWithId(newContext, Tag.class, 21L)
-        Tag tag2 = getRecordWithId(newContext, Tag.class, 107L)
+        Tag tag0 = getRecordWithId(cayenneContext, Tag.class, 20L)
+        Tag tag1 = getRecordWithId(cayenneContext, Tag.class, 21L)
+        Tag tag2 = getRecordWithId(cayenneContext, Tag.class, 107L)
 
         List<Tag> list1 = new ArrayList<>()
         list1.add(tag0)
@@ -259,7 +234,7 @@ class ExpressionsTest2 extends CayenneIshTestCase {
         String alias2 = "alias" + tag2.getRoot().hashCode()
         query.aliasPathSplits(Course.TAGGING_RELATIONS_PROPERTY, alias1, alias2)
 
-        List<Course> result = newContext.select(query)
+        List<Course> result = cayenneContext.select(query)
 
         Assertions.assertEquals(1, result.size(), "should return one result")
     }
@@ -269,23 +244,21 @@ class ExpressionsTest2 extends CayenneIshTestCase {
      */
     @Test
     void testTagTree() {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext newContext = cayenneService.getNewContext()
         SelectQuery<Course> query = SelectQuery.query(Course.class)
 
         List<Tag> list1 = new ArrayList<>()
-        list1.add(getRecordWithId(newContext, Tag.class, 16L))
-        list1.add(getRecordWithId(newContext, Tag.class, 17L))
-        list1.add(getRecordWithId(newContext, Tag.class, 18L))
-        list1.add(getRecordWithId(newContext, Tag.class, 19L))
-        list1.add(getRecordWithId(newContext, Tag.class, 20L))
-        list1.add(getRecordWithId(newContext, Tag.class, 21L))
-        list1.add(getRecordWithId(newContext, Tag.class, 22L))
+        list1.add(getRecordWithId(cayenneContext, Tag.class, 16L))
+        list1.add(getRecordWithId(cayenneContext, Tag.class, 17L))
+        list1.add(getRecordWithId(cayenneContext, Tag.class, 18L))
+        list1.add(getRecordWithId(cayenneContext, Tag.class, 19L))
+        list1.add(getRecordWithId(cayenneContext, Tag.class, 20L))
+        list1.add(getRecordWithId(cayenneContext, Tag.class, 21L))
+        list1.add(getRecordWithId(cayenneContext, Tag.class, 22L))
         Expression expression1 = TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(list1.get(0)).getName(), list1, TaggableClasses.COURSE)
         query.setQualifier(expression1)
         String alias1 = "alias" + list1.get(0).getRoot().getName()
         query.aliasPathSplits(Course.TAGGING_RELATIONS_PROPERTY, alias1)
-        List<Course> result = newContext.select(query)
+        List<Course> result = cayenneContext.select(query)
 
         Assertions.assertEquals(3, result.size(), "should return one result")
     }

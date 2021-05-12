@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.AccountTransactionType
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.accounting.builder.TransactionsBuilder
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
@@ -20,11 +19,9 @@ import java.time.LocalDate
 class AccountTransactionServiceTest extends CayenneIshTestCase {
 
     private AccountTransactionService accountTransactionService
-    private ICayenneService cayenneService
 
     @BeforeEach
     void setup() {
-        cayenneService = injector.getInstance(ICayenneService)
         accountTransactionService = injector.getInstance(AccountTransactionService)
         super.setup()
     }
@@ -32,18 +29,18 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
     @Test
     void test() {
         List<AccountTransaction> before = ObjectSelect.query(AccountTransaction)
-                .select(cayenneService.newContext)
+                .select(cayenneContext)
         Assertions.assertTrue(before.empty)
 
         List<Account> accounts = ObjectSelect.query(Account)
-                .select(cayenneService.newContext)
+                .select(cayenneContext)
         Assertions.assertTrue(accounts.size() > 2)
 
         AccountTransactionRequest request = AccountTransactionRequest.valueOf(new Money(70,0), accounts[0].id, accounts[1].id, LocalDate.now())
         accountTransactionService.createManualTransactions(request)
 
         List<AccountTransaction> after = ObjectSelect.query(AccountTransaction)
-                .select(cayenneService.newContext)
+                .select(cayenneContext)
         Assertions.assertEquals(2, after.size())
 
 
@@ -59,7 +56,7 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
         accountTransactionService.createTransactions(builder)
 
         after = ObjectSelect.query(AccountTransaction)
-                .select(cayenneService.newContext)
+                .select(cayenneContext)
         Assertions.assertEquals(6, after.size())
 
         builder = new TransactionsBuilder() {
@@ -74,7 +71,7 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
         accountTransactionService.createTransactions(builder)
 
         after = ObjectSelect.query(AccountTransaction)
-                .select(cayenneService.newContext)
+                .select(cayenneContext)
         Assertions.assertEquals(6, after.size())
 
 
@@ -88,7 +85,7 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
         accountTransactionService.createTransactions(builder)
 
         after = ObjectSelect.query(AccountTransaction)
-                .select(cayenneService.newContext)
+                .select(cayenneContext)
         Assertions.assertEquals(8, after.size())
 
 
@@ -103,7 +100,7 @@ class AccountTransactionServiceTest extends CayenneIshTestCase {
         accountTransactionService.createTransactions(builder)
 
         after = ObjectSelect.query(AccountTransaction)
-                .select(cayenneService.newContext)
+                .select(cayenneContext)
         Assertions.assertEquals(10, after.size())
     }
 

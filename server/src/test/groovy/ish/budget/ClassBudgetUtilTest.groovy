@@ -6,47 +6,23 @@ package ish.budget
 
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.CourseClass
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+@DatabaseSetup("ish/budget/classBudgetTest.xml")
 class ClassBudgetUtilTest extends CayenneIshTestCase {
-
-    private ICayenneService cayenneService
-
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-        PreferenceController pref = injector.getInstance(PreferenceController.class)
-
-        InputStream st = ClassBudgetUtilTest.class.getClassLoader().getResourceAsStream("ish/budget/classBudgetTest.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        executeDatabaseOperation(dataSet)
-    }
 
     @Test
     void testGetClassCostExTax() {
 
         // class has one tutor with wage $50 per timetable hour,
         // class has 3 sessions 1 hour each
-
-        ObjectContext context = cayenneService.getNewContext()
-
-        CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(context)
+        CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(cayenneContext)
 
         Money actualCost = ClassBudgetUtil.getClassCostsExTax(cc, ClassBudgetUtil.ACTUAL)
         Assertions.assertEquals(new Money("150.00"), actualCost)
@@ -69,9 +45,7 @@ class ClassBudgetUtilTest extends CayenneIshTestCase {
         // class has 3 active enrolments using each discount listed
         // class enrolments: minimum 0, maximum 10, projected 5
 
-        ObjectContext context = cayenneService.getNewContext()
-
-        CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(context)
+        CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(cayenneContext)
 
         Money actualIncome = ClassBudgetUtil.getClassIncomeExTax(cc, ClassBudgetUtil.ACTUAL)
         Assertions.assertEquals(new Money("720.00"), actualIncome)
@@ -89,9 +63,7 @@ class ClassBudgetUtilTest extends CayenneIshTestCase {
         // class has one tutor with wage $50 per timetable hour,
         // class has 3 sessions 1 hour each
 
-        ObjectContext context = cayenneService.getNewContext()
-
-        CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(context)
+        CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(cayenneContext)
 
         Money actualRunningCost = ClassBudgetUtil.getClassRunningCostsExTax(cc, ClassBudgetUtil.ACTUAL)
         Assertions.assertEquals(new Money("150.00"), actualRunningCost)
@@ -114,9 +86,7 @@ class ClassBudgetUtilTest extends CayenneIshTestCase {
         // class has 3 active enrolments using each discount listed
         // class enrolments: minimum 0, maximum 10, projected 5
 
-        ObjectContext context = injector.getInstance(ICayenneService.class).getNewContext()
-
-        CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(context)
+        CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(cayenneContext)
 
         Money actualProfit = ClassBudgetUtil.getClassProfitExTax(cc, ClassBudgetUtil.ACTUAL)
         Assertions.assertEquals(new Money("570.00"), actualProfit)

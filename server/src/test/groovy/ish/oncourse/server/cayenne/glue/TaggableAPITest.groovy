@@ -3,7 +3,6 @@
  */
 package ish.oncourse.server.cayenne.glue
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.TaggableClasses
@@ -26,7 +25,6 @@ class TaggableAPITest extends CayenneIshTestCase {
 
     private ICayenneService cayenneService
 
-    
     @BeforeEach
     void setup() throws Exception {
         wipeTables()
