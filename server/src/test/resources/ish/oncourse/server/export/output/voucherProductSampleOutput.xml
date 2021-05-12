@@ -6,7 +6,7 @@
     <sku>234</sku>
     <name>test membership product</name>
     <priceExTax>10.00</priceExTax>
-    <value/>
+    <value />
     <maxCoursesRedemption>3</maxCoursesRedemption>
     <expiryDays>365</expiryDays>
   </voucherProduct>
@@ -16,8 +16,8 @@
     <sku>1234</sku>
     <name>test membership product qwerty</name>
     <priceExTax>10.00</priceExTax>
-    <value/>
-    <maxCoursesRedemption/>
+    <value />
+    <maxCoursesRedemption />
     <expiryDays>365</expiryDays>
   </voucherProduct>
   <voucherProduct id='3'>
@@ -26,8 +26,8 @@
     <sku>456</sku>
     <name>test membership product part 2</name>
     <priceExTax>11.00</priceExTax>
-    <value/>
-    <maxCoursesRedemption/>
+    <value />
+    <maxCoursesRedemption />
     <expiryDays>365</expiryDays>
   </voucherProduct>
   <voucherProduct id='4'>
@@ -36,8 +36,8 @@
     <sku>123</sku>
     <name>my test membership product tae</name>
     <priceExTax>10.00</priceExTax>
-    <value/>
-    <maxCoursesRedemption/>
+    <value />
+    <maxCoursesRedemption />
     <expiryDays>365</expiryDays>
   </voucherProduct>
   <voucherProduct id='5'>
@@ -46,7 +46,7 @@
     <sku>aaaa</sku>
     <name>test voucher product</name>
     <priceExTax>10.00</priceExTax>
-    <value/>
+    <value />
     <maxCoursesRedemption>1</maxCoursesRedemption>
     <expiryDays>365</expiryDays>
   </voucherProduct>

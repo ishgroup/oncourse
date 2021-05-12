@@ -7,7 +7,7 @@
     <expiryDate>2113-07-01</expiryDate>
     <redemptionValue>100.00</redemptionValue>
     <redeemedCourseCount>0</redeemedCourseCount>
-    <voucherProduct id='1'/>
+    <voucherProduct id='1' />
   </voucher>
   <voucher id='2'>
     <modifiedOn>2012-05-14T14:35:01Z</modifiedOn>
@@ -16,7 +16,7 @@
     <expiryDate>2113-07-01</expiryDate>
     <redemptionValue>110.00</redemptionValue>
     <redeemedCourseCount>0</redeemedCourseCount>
-    <voucherProduct id='3'/>
+    <voucherProduct id='3' />
   </voucher>
   <voucher id='3'>
     <modifiedOn>2012-05-14T14:35:01Z</modifiedOn>
@@ -25,7 +25,7 @@
     <expiryDate>2113-07-01</expiryDate>
     <redemptionValue>50.00</redemptionValue>
     <redeemedCourseCount>0</redeemedCourseCount>
-    <voucherProduct id='1'/>
+    <voucherProduct id='1' />
   </voucher>
   <voucher id='4'>
     <modifiedOn>2012-05-14T14:35:01Z</modifiedOn>
@@ -34,7 +34,7 @@
     <expiryDate>2113-07-01</expiryDate>
     <redemptionValue>50.00</redemptionValue>
     <redeemedCourseCount>0</redeemedCourseCount>
-    <voucherProduct id='3'/>
+    <voucherProduct id='3' />
   </voucher>
   <voucher id='5'>
     <modifiedOn>2012-05-14T14:35:01Z</modifiedOn>
@@ -43,7 +43,7 @@
     <expiryDate>2113-07-01</expiryDate>
     <redemptionValue>50.00</redemptionValue>
     <redeemedCourseCount>0</redeemedCourseCount>
-    <voucherProduct id='3'/>
+    <voucherProduct id='3' />
   </voucher>
   <voucher id='6'>
     <modifiedOn>2012-05-14T14:35:01Z</modifiedOn>
@@ -52,7 +52,7 @@
     <expiryDate>2113-07-01</expiryDate>
     <redemptionValue>120.00</redemptionValue>
     <redeemedCourseCount>0</redeemedCourseCount>
-    <voucherProduct id='3'/>
+    <voucherProduct id='3' />
   </voucher>
   <voucher id='7'>
     <modifiedOn>2012-05-14T14:35:01Z</modifiedOn>
@@ -61,7 +61,7 @@
     <expiryDate>2113-07-01</expiryDate>
     <redemptionValue>50.00</redemptionValue>
     <redeemedCourseCount>0</redeemedCourseCount>
-    <voucherProduct id='5'/>
+    <voucherProduct id='5' />
   </voucher>
   <voucherProduct id='1'>
     <modifiedOn>2012-05-15T16:29:23Z</modifiedOn>
@@ -69,7 +69,7 @@
     <sku>234</sku>
     <name>test membership product</name>
     <priceExTax>10.00</priceExTax>
-    <value/>
+    <value />
     <maxCoursesRedemption>3</maxCoursesRedemption>
     <expiryDays>365</expiryDays>
   </voucherProduct>
@@ -79,8 +79,8 @@
     <sku>456</sku>
     <name>test membership product part 2</name>
     <priceExTax>11.00</priceExTax>
-    <value/>
-    <maxCoursesRedemption/>
+    <value />
+    <maxCoursesRedemption />
     <expiryDays>365</expiryDays>
   </voucherProduct>
   <voucherProduct id='5'>
@@ -89,7 +89,7 @@
     <sku>aaaa</sku>
     <name>test voucher product</name>
     <priceExTax>10.00</priceExTax>
-    <value/>
+    <value />
     <maxCoursesRedemption>1</maxCoursesRedemption>
     <expiryDays>365</expiryDays>
   </voucherProduct>

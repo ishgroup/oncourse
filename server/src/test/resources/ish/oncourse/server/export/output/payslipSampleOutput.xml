@@ -11,23 +11,23 @@
     <deliveryStatusPost>0</deliveryStatusPost>
     <deliveryStatusSms>0</deliveryStatusSms>
     <email>test@test.test</email>
-    <fax/>
+    <fax />
     <firstName>Test</firstName>
     <homePhone>331110000</homePhone>
     <company>false</company>
     <male>true</male>
     <lastName>Student</lastName>
-    <message/>
+    <message />
     <mobilePhone>331110000</mobilePhone>
-    <notes/>
+    <notes />
     <postcode>1001</postcode>
     <state>NSW</state>
     <street>Main</street>
     <suburb>Sydney</suburb>
-    <tfn/>
+    <tfn />
     <uniqueCode>ST1UNIQUE</uniqueCode>
     <workPhone>331110000</workPhone>
-    <title/>
+    <title />
     <tutorPay id='100'>
       <modifiedOn>2012-05-20T00:00:00Z</modifiedOn>
       <createdOn>2012-05-20T00:00:00Z</createdOn>
