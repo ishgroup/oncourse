@@ -9,14 +9,12 @@ import ish.CayenneIshTestCase
 import ish.DatabaseSetup
 import ish.oncourse.cayenne.TagUtil
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Tag
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.SelectQuery
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 /**
  * Test cases to check the correctness of expressions, mostly the complicated ones, related to multiple tags. <br/>
@@ -82,12 +80,6 @@ import org.junit.jupiter.api.Test
 @CompileStatic
 @DatabaseSetup(value = "ish/queries/expressions-test.xml")
 class ExpressionsTest2 extends CayenneIshTestCase {
-
-    @BeforeAll
-    void setupTest() throws Exception {
-        PreferenceController pref = injector.getInstance(PreferenceController.class)
-        pref.setReplicationEnabled(true)
-    }
 
     /**
      * tests a simple query. queries for Course records tagged with Regions_1 (there is one course meeting the criteria)

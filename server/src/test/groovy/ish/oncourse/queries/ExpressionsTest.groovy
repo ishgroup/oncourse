@@ -83,12 +83,6 @@ import org.junit.jupiter.api.Test
 @DatabaseSetup(readOnly = true, value = "ish/queries/expressions-test.xml")
 class ExpressionsTest extends CayenneIshTestCase {
 
-    @BeforeAll
-    void setupTest() throws Exception {
-        PreferenceController pref = injector.getInstance(PreferenceController.class)
-        pref.setReplicationEnabled(true)
-    }
-
     /**
      * tests a simple query. queries for Course records tagged with Regions_1 (there is one course meeting the criteria)
      */

@@ -4,28 +4,18 @@ import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.DatabaseSetup
 import ish.common.types.Gender
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.MergeLineDTO
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/deduplication/dedupeContactDataSet.xml")
 class ContactMergeServiceTest extends CayenneIshTestCase {
 
-    private ContactMergeService contactMergeService
+    private ContactMergeService contactMergeService = injector.getInstance(ContactMergeService)
 
-    @BeforeEach
-    void setup() {
-        contactMergeService = injector.getInstance(ContactMergeService)
-        injector.getInstance(PreferenceController.class).setReplicationEnabled(true)
-        super.setup()
-    }
-
-    
     @Test
     void testGetDiffData() {
         Contact contactA = ObjectSelect.query(Contact).where(Contact.ID.eq(1L)).selectFirst(cayenneContext)

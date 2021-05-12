@@ -2012,17 +2012,9 @@ public abstract class CommonPreferenceController {
 	/**
 	 * Shows if replication should be performed for college.
 	 */
+	@Deprecated
 	public boolean getReplicationEnabled() {
 		return Boolean.parseBoolean(getValue(REPLICATION_ENABLED, false));
-	}
-
-	/**
-	 * Enabled or disable replication. Should be used only in unit tests.
-	 *
-	 * @param value
-	 */
-	public void setReplicationEnabled(boolean value) {
-		setValue(REPLICATION_ENABLED, false, Boolean.toString(value));
 	}
 
 	public boolean getFeatureConcessionsInEnrolment() {

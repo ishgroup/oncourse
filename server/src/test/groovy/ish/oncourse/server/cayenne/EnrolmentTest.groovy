@@ -30,7 +30,6 @@ class EnrolmentTest extends CayenneIshTestCase {
 
     private ICayenneService cayenneService
 
-    
     @BeforeEach
     void setup() throws Exception {
         wipeTables()
@@ -47,7 +46,6 @@ class EnrolmentTest extends CayenneIshTestCase {
         rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
 
         executeDatabaseOperation(rDataSet)
-        injector.getInstance(PreferenceController.class).setReplicationEnabled(true)
     }
 
     // disabling this test until we implement a proper enrolment status safety
