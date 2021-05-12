@@ -49,6 +49,6 @@ class AvetmissStudentUpdateImportTest extends CayenneIshTestCase {
 
         Contact contact1 = ObjectSelect.query(Contact.class)
                 .where(Contact.FIRST_NAME.eq("MOHAMODA").andExp(Contact.LAST_NAME.eq("AALAX"))).selectOne(context)
-        Assert.assertNotNull(contact1)
+        Assertions.assertNotNull(contact1)
     }
 }
