@@ -4,7 +4,6 @@
 
 package ish.oncourse.server.print
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.PaymentInterface
@@ -29,8 +28,6 @@ import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.io.FileUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
@@ -39,25 +36,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-
 /**
  * executes multiple print jobs at the same time simulating multiple users
  */
 @CompileStatic
 @Disabled
 class ConcurrentReportPrintingTest extends CayenneIshTestCase {
-    private static final Logger logger = LogManager.getLogger()
-
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd")
-
-    private ICayenneService cayenneService
-
     List<String> keyCodeList = new ArrayList<>()
-
-
     
     @BeforeEach
     void setup() throws Exception {
@@ -79,7 +65,6 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
             // can only really test export templates, the other imports require window server...
             dataPopulation.run()
         } catch (Exception e) {
-            logger.warn("fail", e)
             Assertions.fail("could not import one of the resources " + e)
         }
         new JRRuntimeConfig().config()
@@ -97,7 +82,7 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
 
                 if (Boolean.parseBoolean(isVisible)) {
                     String keycode = DataPopulation.getPropertyFromXml(buffer, Report.KEY_CODE_PROPERTY)
-                    if (keycode.equals("ish.onCourse.banking2")) {
+                    if (keycode == "ish.onCourse.banking2") {
                         continue
                     }
                     keyCodeList.add(keycode)
@@ -151,7 +136,7 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
                 list.addAll(cayenneService.getNewContext().select(SelectQuery.query(entityClass)))
             }
             if (list.size() == 0) {
-                logger.warn("Printing of {} failed, there is no records to print.", report.getKeyCode())
+                Assertions.fail("Printing of ${report.getKeyCode()} failed, there is no records to print.")
                 return
             }
 
@@ -181,7 +166,7 @@ class ConcurrentReportPrintingTest extends CayenneIshTestCase {
             int workersRunning = 0
             Thread.sleep(200)
             for (PrintWorker w : reportsToRun.values()) {
-                if (PrintResult.ResultType.IN_PROGRESS.equals(w.getResult().getResultType())) {
+                if (PrintResult.ResultType.IN_PROGRESS == w.getResult().getResultType()) {
                     workersRunning = workersRunning + 1
                 }
             }

@@ -4,11 +4,10 @@
 
 package ish.oncourse.server.print
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.oncourse.cayenne.PersistentObjectI
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.document.DocumentService
@@ -16,35 +15,16 @@ import ish.print.PrintRequest
 import ish.print.PrintTransformationsFactory
 import ish.print.transformations.PrintTransformation
 import ish.print.transformations.PrintTransformationField
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+@DatabaseSetup(value = "ish/util/entityUtilTest.xml")
 class PrintWorkerTest extends CayenneIshTestCase {
 
-    private DocumentService documentService
-
-    
-    @BeforeEach
-    void setupTest() throws Exception {
-        wipeTables()
-        InputStream st = PrintWorkerTest.class.getClassLoader().getResourceAsStream("ish/util/entityUtilTest.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-
-        ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet)
-        replacementDataSet.addReplacementObject("[NULL]", null)
-        executeDatabaseOperation(replacementDataSet)
-    }
-
-    
     @Test
     void testGetRecords() throws Exception {
-        ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
-        documentService = injector.getInstance(DocumentService.class)
+        def documentService = injector.getInstance(DocumentService.class)
 
         List<Long> siteIds = Arrays.asList(1L, 2L, 3L, 4L)
 
@@ -69,7 +49,7 @@ class PrintWorkerTest extends CayenneIshTestCase {
     
     @Test
     void testGetRecordsWithTraverse() throws Exception {
-        ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
+        def documentService = injector.getInstance(DocumentService.class)
 
         List<Long> siteIds = Arrays.asList(1L, 2L, 3L, 4L)
 
@@ -98,7 +78,7 @@ class PrintWorkerTest extends CayenneIshTestCase {
     
     @Test
     void testGetRecordsWithFilter() throws Exception {
-        ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
+        def documentService = injector.getInstance(DocumentService.class)
 
         List<Long> siteIds = Arrays.asList(1L, 2L, 3L, 4L)
 
@@ -135,7 +115,7 @@ class PrintWorkerTest extends CayenneIshTestCase {
     
     @Test
     void testGetRecordsWithTraverseAndFilter() throws Exception {
-        ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
+        def documentService = injector.getInstance(DocumentService.class)
 
         List<Long> siteIds = Arrays.asList(1L, 2L, 3L, 4L)
 

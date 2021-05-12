@@ -41,8 +41,6 @@ class QuerySpecTest extends CayenneIshTestCase {
     }
 
     static Collection<Arguments> values() {
-        List<Arguments> result = new ArrayList<>()
-
         def data = [
                 
         //Query rules:

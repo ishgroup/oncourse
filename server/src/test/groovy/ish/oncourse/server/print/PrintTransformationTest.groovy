@@ -4,7 +4,7 @@
 
 package ish.oncourse.server.print
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.PaymentSource

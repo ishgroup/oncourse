@@ -1,35 +1,21 @@
 package ish.oncourse.server.messaging
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
-import ish.oncourse.server.ICayenneService
+import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.EmailTemplate
 import ish.oncourse.server.cayenne.Payslip
-import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.api.TemplateService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 import javax.mail.MessagingException
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/messaging/tutorNotificationVisualTestDataSet.xml")
 class TutorNotificationVisualTest extends CayenneIshTestCase {
-    
-    @BeforeEach
-    void setup() throws Exception {
-        InputStream st = GroovyScriptService.class.getClassLoader().getResourceAsStream("ish/oncourse/server/messaging/tutorNotificationVisualTestDataSet.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        executeDatabaseOperation(dataSet)
-    }
 
     /**
      * Creates email template, fills it with data from dataset and sends email.
@@ -37,19 +23,16 @@ class TutorNotificationVisualTest extends CayenneIshTestCase {
      *
      * @throws FileNotFoundException if there are no html or plain bodies for header, footer and Tutor-Payrun-Notification
      */
-    
     @Disabled
     @Test
     void sendTutorNotification() throws MessagingException, FileNotFoundException {
-        ObjectContext context = injector.getInstance(ICayenneService.class).getNewContext()
+        fillHeaderTemplateWithActualData(cayenneContext)
+        fillFooterTemplateWithActualData(cayenneContext)
 
-        fillHeaderTemplateWithActualData(context)
-        fillFooterTemplateWithActualData(context)
-
-        EmailTemplate template = fillBodyTemplateWithActualData(context)
+        EmailTemplate template = fillBodyTemplateWithActualData(cayenneContext)
 
         Map<String, Object> map = new HashMap<>()
-        map.put("payslip", SelectById.query(Payslip.class, 1).selectOne(context))
+        map.put("payslip", SelectById.query(Payslip.class, 1).selectOne(cayenneContext))
 
         MailDeliveryParam param = prepareDeliveryParam(map, template)
 
@@ -63,8 +46,7 @@ class TutorNotificationVisualTest extends CayenneIshTestCase {
      * @param context
      * @throws FileNotFoundException
      */
-    
-    private void fillHeaderTemplateWithActualData(ObjectContext context) throws FileNotFoundException {
+    private static void fillHeaderTemplateWithActualData(ObjectContext context) throws FileNotFoundException {
         EmailTemplate header = SelectById.query(EmailTemplate.class, 2).selectOne(context)
 
         String headerBodyPlain = new Scanner(new File("../private-resources/cce/email/CCE-Header.plain")).useDelimiter("\\Z").next()
@@ -100,7 +82,7 @@ class TutorNotificationVisualTest extends CayenneIshTestCase {
      * @throws FileNotFoundException
      */
     
-    private EmailTemplate fillBodyTemplateWithActualData(ObjectContext context) throws FileNotFoundException {
+    private static EmailTemplate fillBodyTemplateWithActualData(ObjectContext context) throws FileNotFoundException {
         EmailTemplate template = SelectById.query(EmailTemplate.class, 1).selectOne(context)
 
         String bodyPlain = new Scanner(new File("../private-resources/cce/email/Tutor-Payrun-Notification.plain")).useDelimiter("\\Z").next()
@@ -115,7 +97,7 @@ class TutorNotificationVisualTest extends CayenneIshTestCase {
     }
 
     
-    private MailDeliveryParam prepareDeliveryParam(Map map, EmailTemplate template) {
+    private static MailDeliveryParam prepareDeliveryParam(Map map, EmailTemplate template) {
         TemplateService templateService = injector.getInstance(TemplateService.class)
 
         GetFrom getFrom = GetFrom.valueOf("test@from")

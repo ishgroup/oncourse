@@ -4,49 +4,20 @@
  */
 package ish.oncourse.server.cayenne
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.SelectQuery
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+@DatabaseSetup(readOnly = true, value = "ish/oncourse/server/testDataset.xml")
 class DiscountTest extends CayenneIshTestCase {
-    private static final Logger logger = LogManager.getLogger()
 
-    private ICayenneService cayenneService
-
-    
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-        PreferenceController pref = injector.getInstance(PreferenceController.class)
-
-        InputStream st = DiscountTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/testDataset.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-
-        ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet)
-        replacementDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(replacementDataSet)
-
-    }
-
-    
     @Test
     void testIsStudentEligible() throws Exception {
 

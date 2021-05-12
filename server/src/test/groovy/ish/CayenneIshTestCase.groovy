@@ -24,6 +24,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.dbunit.database.IDatabaseConnection
 import org.dbunit.dataset.IDataSet
+import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.dbunit.operation.DatabaseOperation
@@ -40,6 +41,7 @@ import java.sql.Statement
 abstract class CayenneIshTestCase extends IshTestCase {
     private static final Logger logger = LogManager.getLogger()
     protected DataContext cayenneContext
+    protected ICayenneService cayenneService
 
     private static final String RESET_AUTO_INCREMENT_TEMPLATE_MYSQL = "ALTER TABLE %s AUTO_INCREMENT = %d"
     private static final int NEXT_ID = 10000
@@ -59,18 +61,25 @@ abstract class CayenneIshTestCase extends IshTestCase {
             if (a.type() == ish.DatabaseOperation.DELETE_ALL) {
                 wipeTables()
             }
+
             for (dataSource in a?.value()) {
                 InputStream st = SessionTest.class.getClassLoader().getResourceAsStream(dataSource)
                 FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
                 builder.setColumnSensing(true)
                 FlatXmlDataSet dataSet = builder.build(st)
+
+                ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+                rDataSet.addReplacementObject("[null]", null)
+                rDataSet.addReplacementObject("[NULL]", null)
+
                 executeDatabaseOperation(dataSet)
             }
         }
+        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
         if (a.readOnly()) {
-            cayenneContext = injector.getInstance(ICayenneService.class).getNewReadonlyContext()
+            cayenneContext = cayenneService.getNewReadonlyContext()
         } else {
-            cayenneContext = injector.getInstance(ICayenneService.class).getNewContext()
+            cayenneContext = cayenneService.getNewContext()
         }
 
         validateAccountAndTaxDefaults()

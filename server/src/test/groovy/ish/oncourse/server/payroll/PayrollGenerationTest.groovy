@@ -1,48 +1,30 @@
 package ish.oncourse.server.payroll
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.common.types.PayslipPayType
 import ish.oncourse.entity.services.SessionService
-import ish.oncourse.server.CayenneService
 import ish.oncourse.server.cayenne.Payslip
-import ish.oncourse.server.cayenne.SessionTest
 import ish.payroll.PayrollGenerationRequest
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/payroll/payslipGenerationTest.xml")
 class PayrollGenerationTest extends CayenneIshTestCase {
 
     private PayrollService payrollService
-    private CayenneService cayenneService
     private SessionService sessionService
 
-    private ObjectContext context
-
-    
     @BeforeEach
     void setup() {
-        wipeTables()
-        InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/payroll/payslipGenerationTest.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        executeDatabaseOperation(rDataSet)
-
-        cayenneService = injector.getInstance(CayenneService.class)
         sessionService = injector.getInstance(SessionService.class)
         payrollService = new PayrollService(cayenneService, sessionService)
-        context = cayenneService.newContext
     }
 
-    
     @Test
     void generatePayslipWithPayType() {
         List<Long> contactIds = [1l]
@@ -56,7 +38,7 @@ class PayrollGenerationTest extends CayenneIshTestCase {
 
         payrollService.generatePayslips(request)
 
-        List<Payslip> payslips = ObjectSelect.query(Payslip).select(context)
+        List<Payslip> payslips = ObjectSelect.query(Payslip).select(cayenneContext)
         Assertions.assertEquals(payslips.size(), 1)
 
         Payslip payslip = payslips[0]
@@ -77,7 +59,7 @@ class PayrollGenerationTest extends CayenneIshTestCase {
 
         payrollService.generatePayslips(request)
 
-        List<Payslip> payslips = ObjectSelect.query(Payslip).select(context)
+        List<Payslip> payslips = ObjectSelect.query(Payslip).select(cayenneContext)
         Assertions.assertEquals(payslips.size(), 0, "There are no payslips should be created for tutor without pay type")
     }
 }
