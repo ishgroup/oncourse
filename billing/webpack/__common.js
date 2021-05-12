@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const path = require("path");
 
@@ -32,25 +32,25 @@ const _common = (dirname, options) => {
     mode: mode,
     resolve: {
       modules: [
-        path.resolve(dirname, 'node_modules'),
-        path.resolve(dirname, 'build/generated-sources'),
-        path.resolve(dirname, 'src/js'),
-        path.resolve(dirname, 'src/dev'),
-        path.resolve(dirname, 'src/scss'),
-        path.resolve(dirname, 'src/images'),
-        path.resolve(dirname, 'src/test'),
+        "node_modules",
+        path.resolve(dirname, "build/generated-sources"),
+        path.resolve(dirname, "src/images"),
       ],
-      extensions: [".ts", ".tsx", ".js", ".css", ".png"]
+      extensions: [".ts", ".tsx", ".js"],
+      plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(dirname, './tsconfig.json') })],
     },
     module: {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: 'awesome-typescript-loader',
+          loader: 'ts-loader',
           include: [
             path.resolve(dirname, 'build/generated-sources'),
             path.resolve(dirname, "src/js"),
             path.resolve(dirname, "src/dev"),
+          ],
+          exclude: [
+            path.resolve(dirname, "node_modules"),
           ],
         },
       ]
@@ -65,11 +65,11 @@ const _common = (dirname, options) => {
     },
     devtool: 'source-map',
   };
-  _main.module.rules = [..._main.module.rules, ..._styleModule(dirname)];
+  _main.module.rules = [..._main.module.rules, ..._styleModule()];
   return _main;
 };
 
-const _styleModule = (dirname) => {
+const _styleModule = () => {
   return [
     {
       test: /\.(jpg|jpeg|gif|png)$/,
@@ -86,30 +86,7 @@ const _styleModule = (dirname) => {
       options: {
         name: "fonts/[name].[ext]",
         publicPath: "./"
-      },
-      exclude: [
-        /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-      ]
-    },
-    {
-      test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-      use: [ 'raw-loader' ]
-    },
-    {
-      test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-      use: [
-        MiniCssExtractPlugin.loader,
-        'css-loader',
-        {
-          loader: 'postcss-loader',
-          options: styles.getPostCssConfig( {
-            themeImporter: {
-              themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
-            },
-            minify: true
-          } )
-        }
-      ]
+      }
     },
     {
       test: /\.s?css$/,

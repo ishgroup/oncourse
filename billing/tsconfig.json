@@ -4,8 +4,13 @@
       "src/js",
       "src/dev",
       "src/images",
-      "src/test"
+      "src/test",
+      "build/generated-sources/swagger-js"
     ],
+    "baseUrl": ".",
+    "paths": {
+      "@api/model": ["build/generated-sources/api.ts"],
+    },
     "outDir": "build/ts",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",

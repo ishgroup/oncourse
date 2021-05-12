@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 const ZipPlugin = require('zip-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || 'development';
@@ -36,19 +37,20 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
     },
     resolve: {
       modules: [
-        path.resolve(__dirname, 'node_modules'),
-        path.resolve(__dirname, 'build/generated-sources'),
-        path.resolve(__dirname, 'src/js'),
-        path.resolve(__dirname, 'src/scss'),
+        "node_modules",
+        path.resolve(__dirname, "src/js"),
       ],
-      extensions: [".ts", ".tsx", ".js", ".css"]
+      extensions: [".ts", ".tsx", ".js"],
+      plugins: [
+        new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, './tsconfig.json') }),
+      ],
     },
     mode: mode,
     module: {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: 'awesome-typescript-loader',
+          loader: 'ts-loader',
           exclude: /node_modules/,
         }
       ]

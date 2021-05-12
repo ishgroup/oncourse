@@ -1,6 +1,6 @@
 import { DefaultHttpService } from "./HttpService";
-import { BillingApi } from "../../../../build/generated-sources";
-import { CollegeDTO } from "../../../../build/generated-sources";
+import { BillingApi, CollegeDTO } from "@api/model";
+
 
 class BillingService {
   readonly defaultHttpService = new DefaultHttpService();

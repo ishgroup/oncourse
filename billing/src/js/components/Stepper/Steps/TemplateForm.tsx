@@ -146,6 +146,7 @@ const TemplateForm = (props: any) => {
                     alt={tile.title}
                     className={clsx(classes.image, tile.value === webSiteTemplate ? classes.selectedImage : null)}
                     onClick={() => handleClick(tile.value)}
+                    loading="lazy"
                   />
                   <a href={tile.link} target="_blank" className={classes.link}>
                     live preview...
