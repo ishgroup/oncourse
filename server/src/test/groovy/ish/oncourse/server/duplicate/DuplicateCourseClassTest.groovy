@@ -1,51 +1,31 @@
 package ish.oncourse.server.duplicate
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.duplicate.ClassDuplicationRequest
 import ish.oncourse.entity.services.CourseClassService
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.CourseClassDao
 import ish.oncourse.server.cayenne.*
 import ish.util.DateTimeUtil
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/duplicate/duplicateCourseClassTestDataSet.xml")
 class DuplicateCourseClassTest extends CayenneIshTestCase {
 
     private CourseClassService courseClassService
     private CourseClassDao courseClassDao
-
-    private DataContext context
     private int daysTo = 13
-
-
-    
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-        InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/duplicate/duplicateCourseClassTestDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        executeDatabaseOperation(rDataSet)
-    }
-
     
     @Test
     void testClassDuplicationGeneral() {
-        context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
         courseClassService = injector.getInstance(CourseClassService.class)
         courseClassDao = injector.getInstance(CourseClassDao.class)
 
-        CourseClass courseClass = SelectById.query(CourseClass.class, 1).selectOne(context)
+        CourseClass courseClass = SelectById.query(CourseClass.class, 1).selectOne(cayenneContext)
 
         ClassDuplicationRequest request = new ClassDuplicationRequest()
         request.setDaysTo(daysTo)
@@ -59,7 +39,7 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
         request.setCopyVetData(false)
         request.setCopyAssessments(false)
 
-        CourseClass newClass = DuplicateCourseClass.valueOf(courseClass, request, courseClassService, context, courseClassDao, null).duplicate()
+        CourseClass newClass = DuplicateCourseClass.valueOf(courseClass, request, courseClassService, cayenneContext, courseClassDao, null).duplicate()
 
         //at first new class always should be not cancelled and not shown on web
         Assertions.assertFalse(newClass.getIsCancelled())
@@ -89,11 +69,10 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
     
     @Test
     void testClassDuplicationTutors() {
-        context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
         courseClassService = injector.getInstance(CourseClassService.class)
         courseClassDao = injector.getInstance(CourseClassDao.class)
 
-        CourseClass courseClass = SelectById.query(CourseClass.class, 1).selectOne(context)
+        CourseClass courseClass = SelectById.query(CourseClass.class, 1).selectOne(cayenneContext)
 
         ClassDuplicationRequest request = new ClassDuplicationRequest()
         request.setDaysTo(daysTo)
@@ -107,7 +86,7 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
         request.setCopyVetData(false)
         request.setCopyAssessments(false)
 
-        CourseClass newClass = DuplicateCourseClass.valueOf(courseClass, request, courseClassService, context, courseClassDao, null).duplicate()
+        CourseClass newClass = DuplicateCourseClass.valueOf(courseClass, request, courseClassService, cayenneContext, courseClassDao, null).duplicate()
 
         //1 tutor role
         Assertions.assertEquals(courseClass.getTutorRoles().size(), newClass.getTutorRoles().size())
@@ -128,7 +107,7 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
         allFalseRequest.setCopyVetData(false)
         allFalseRequest.setCopyAssessments(false)
 
-        CourseClass newClass2 = DuplicateCourseClass.valueOf(courseClass, allFalseRequest, courseClassService, context, courseClassDao, null).duplicate()
+        CourseClass newClass2 = DuplicateCourseClass.valueOf(courseClass, allFalseRequest, courseClassService, cayenneContext, courseClassDao, null).duplicate()
 
         Assertions.assertEquals(0, newClass2.getTutorRoles().size())
     }
@@ -137,11 +116,10 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
     
     @Test
     void testClassDuplicationTrainingPlans() {
-        context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
         courseClassService = injector.getInstance(CourseClassService.class)
         courseClassDao = injector.getInstance(CourseClassDao.class)
 
-        CourseClass courseClass = SelectById.query(CourseClass.class, 1).selectOne(context)
+        CourseClass courseClass = SelectById.query(CourseClass.class, 1).selectOne(cayenneContext)
 
         ClassDuplicationRequest request = new ClassDuplicationRequest()
         request.setDaysTo(daysTo)
@@ -155,7 +133,7 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
         request.setCopyVetData(false)
         request.setCopyAssessments(false)
 
-        CourseClass newClass = DuplicateCourseClass.valueOf(courseClass, request, courseClassService, context, courseClassDao, null).duplicate()
+        CourseClass newClass = DuplicateCourseClass.valueOf(courseClass, request, courseClassService, cayenneContext, courseClassDao, null).duplicate()
 
         List<Session> oldSessions = courseClass.getSessions()
         List<Session> newSessions = newClass.getSessions()
@@ -183,7 +161,7 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
         allFalseRequest.setCopyVetData(false)
         allFalseRequest.setCopyAssessments(false)
 
-        CourseClass newClass2 = DuplicateCourseClass.valueOf(courseClass, allFalseRequest, courseClassService, context, courseClassDao, null).duplicate()
+        CourseClass newClass2 = DuplicateCourseClass.valueOf(courseClass, allFalseRequest, courseClassService, cayenneContext, courseClassDao, null).duplicate()
 
         List<Session> newSessions2 = newClass2.getSessions()
 
@@ -201,15 +179,14 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
     
     @Test
     void testClassDuplicationDiscounts() {
-        context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
         courseClassService = injector.getInstance(CourseClassService.class)
         courseClassDao = injector.getInstance(CourseClassDao.class)
 
-        CourseClass courseClass = SelectById.query(CourseClass.class, 1).selectOne(context)
-        ClassCost cost = context.newObject(ClassCost.class)
+        CourseClass courseClass = SelectById.query(CourseClass.class, 1).selectOne(cayenneContext)
+        ClassCost cost = cayenneContext.newObject(ClassCost.class)
         cost.setCourseClass(courseClass)
         courseClass.getDiscountCourseClasses().each { dcc -> dcc.setClassCost(cost) }
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         ClassDuplicationRequest request = new ClassDuplicationRequest()
         request.setDaysTo(daysTo)
@@ -223,7 +200,7 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
         request.setCopyVetData(false)
         request.setCopyAssessments(false)
 
-        CourseClass newClass = DuplicateCourseClass.valueOf(courseClass, request, courseClassService, context, courseClassDao, null).duplicate()
+        CourseClass newClass = DuplicateCourseClass.valueOf(courseClass, request, courseClassService, cayenneContext, courseClassDao, null).duplicate()
 
         //2 discounts
         Assertions.assertEquals(courseClass.getDiscountCourseClasses().size(), newClass.getDiscountCourseClasses().size())
@@ -255,7 +232,7 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
         allFalseRequest.setCopyVetData(false)
         allFalseRequest.setCopyAssessments(false)
 
-        CourseClass newClass2 = DuplicateCourseClass.valueOf(courseClass, allFalseRequest, courseClassService, context, courseClassDao, null).duplicate()
+        CourseClass newClass2 = DuplicateCourseClass.valueOf(courseClass, allFalseRequest, courseClassService, cayenneContext, courseClassDao, null).duplicate()
 
         Assertions.assertEquals(0, newClass2.getDiscountCourseClasses().size())
     }
@@ -263,11 +240,10 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
     
     @Test
     void testClassDuplicationAssessments() {
-        context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
         courseClassService = injector.getInstance(CourseClassService.class)
         courseClassDao = injector.getInstance(CourseClassDao.class)
 
-        CourseClass courseClass = SelectById.query(CourseClass.class, 1).selectOne(context)
+        CourseClass courseClass = SelectById.query(CourseClass.class, 1).selectOne(cayenneContext)
 
         ClassDuplicationRequest request = new ClassDuplicationRequest()
         request.setDaysTo(daysTo)
@@ -281,7 +257,7 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
         request.setCopyVetData(false)
         request.setCopyAssessments(true)
 
-        CourseClass newClass = DuplicateCourseClass.valueOf(courseClass, request, courseClassService, context, courseClassDao, null).duplicate()
+        CourseClass newClass = DuplicateCourseClass.valueOf(courseClass, request, courseClassService, cayenneContext, courseClassDao, null).duplicate()
 
         //2 assessmentClasses
         Assertions.assertEquals(courseClass.getAssessmentClasses().size(), newClass.getAssessmentClasses().size())
@@ -317,7 +293,7 @@ class DuplicateCourseClassTest extends CayenneIshTestCase {
         allFalseRequest.setCopyVetData(false)
         allFalseRequest.setCopyAssessments(false)
 
-        CourseClass newClass2 = DuplicateCourseClass.valueOf(courseClass, allFalseRequest, courseClassService, context, courseClassDao, null).duplicate()
+        CourseClass newClass2 = DuplicateCourseClass.valueOf(courseClass, allFalseRequest, courseClassService, cayenneContext, courseClassDao, null).duplicate()
 
         Assertions.assertEquals(0, newClass2.getAssessmentClasses().size())
     }

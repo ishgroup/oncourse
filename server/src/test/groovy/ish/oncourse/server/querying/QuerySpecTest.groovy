@@ -2,43 +2,20 @@ package ish.oncourse.server.querying
 
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
-import ish.oncourse.server.ICayenneService
+import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
 import ish.scripting.ScriptResult
 import org.apache.cayenne.ObjectContext
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/querying/DataSet.xml")
 class QuerySpecTest extends CayenneIshTestCase {
-
-    private static ICayenneService cayenneService
-
-   
-    @BeforeAll
-    static void setup() throws Exception {
-        wipeTables()
-        cayenneService = injector.getInstance(ICayenneService)
-
-        InputStream st = QuerySpecTest.getClassLoader().getResourceAsStream("ish/oncourse/server/querying/DataSet.xml")
-
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-    }
 
     static Collection<Arguments> values() {
         def data = [

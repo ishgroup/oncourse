@@ -3,9 +3,9 @@
  */
 package ish.oncourse.server.scripting
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.services.ISchedulerService
@@ -14,34 +14,13 @@ import ish.scripting.ScriptResult
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.map.LifecycleEvent
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.quartz.JobDetail
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/scripting/groovyScriptServiceTestDataSet.xml")
 class GroovyScriptServiceTest extends CayenneIshTestCase {
-
-    private static ICayenneService cayenneService
-
-    @BeforeAll
-    static void init() throws Exception {
-        wipeTables()
-        InputStream st = GroovyScriptService.class.getClassLoader().getResourceAsStream("ish/oncourse/server/scripting/groovyScriptServiceTestDataSet.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-
-        cayenneService = injector.getInstance(ICayenneService.class)
-    }
     
     @Test
     void IntegrationTest() {

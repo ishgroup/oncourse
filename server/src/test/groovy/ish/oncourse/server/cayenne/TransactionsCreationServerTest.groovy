@@ -3,59 +3,36 @@
  */
 package ish.oncourse.server.cayenne
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.common.BankingType
 import ish.oncourse.entity.services.SetPaymentMethod
-import ish.oncourse.server.ICayenneService
 import ish.util.AccountUtil
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/TransactionsCreationServertTestDataSet.xml")
 class TransactionsCreationServerTest extends CayenneIshTestCase {
-
-    private ICayenneService cayenneService
-
-    
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = DoublePrefetchTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/TransactionsCreationServertTestDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-
-        executeDatabaseOperation(rDataSet)
-
-        super.setup()
-    }
-
     
     @Test
     void testAutoBank() {
-        ObjectContext context = cayenneService.getNewContext()
+        Invoice invoice = SelectById.query(Invoice.class, 1L).selectOne(cayenneContext)
 
-        Invoice invoice = SelectById.query(Invoice.class, 1L).selectOne(context)
-
-        PaymentIn paymentIn = context.newObject(PaymentIn.class)
+        PaymentIn paymentIn = cayenneContext.newObject(PaymentIn.class)
         paymentIn.setStatus(PaymentStatus.IN_TRANSACTION)
         paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE)
-        SetPaymentMethod.valueOf(PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(context, PaymentMethod.class), paymentIn).set()
+        SetPaymentMethod.valueOf(PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(cayenneContext, PaymentMethod.class), paymentIn).set()
         paymentIn.setCreditCardName("test name")
         paymentIn.setCreditCardNumber("test number")
         paymentIn.setCreditCardExpiry("01/01")
@@ -64,35 +41,35 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         paymentIn.setPayer(invoice.getContact())
         paymentIn.setPaymentDate(LocalDate.now())
 
-        PaymentInLine line = context.newObject(PaymentInLine.class)
+        PaymentInLine line = cayenneContext.newObject(PaymentInLine.class)
         line.setAmount(invoice.getAmountOwing())
         line.setPayment(paymentIn)
         line.setInvoice(invoice)
         line.setAccountOut(invoice.getDebtorsAccount())
 
-        context.commitChanges()
-        context.invalidateObjects(line)
+        cayenneContext.commitChanges()
+        cayenneContext.invalidateObjects(line)
 
 
         List<AccountTransaction> select = ObjectSelect.query(AccountTransaction.class)
                 .where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
                 .and(AccountTransaction.FOREIGN_RECORD_ID.eq(line.getId()))
-                .select(context)
+                .select(cayenneContext)
         Assertions.assertTrue(select.isEmpty())
         Assertions.assertNull(paymentIn.getBanking())
 
         paymentIn.setStatus(PaymentStatus.SUCCESS)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertNotNull(paymentIn.getBanking())
 
-        List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
+        List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(cayenneContext)
         Assertions.assertEquals(2, transactions.size())
 
         AccountTransaction deposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getAccountIn()))
                 .and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-                .selectOne(context)
+                .selectOne(cayenneContext)
 
         Assertions.assertNotNull(deposit)
         Assertions.assertEquals(new Money("100.00"), deposit.getAmount())
@@ -100,13 +77,13 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
 
         AccountTransaction undeposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getUndepositedFundsAccount()))
                 .and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-                .selectOne(context)
+                .selectOne(cayenneContext)
 
         Assertions.assertNull(undeposit)
 
         AccountTransaction debtor = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(line.getInvoice().getDebtorsAccount()))
                 .and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-                .selectOne(context)
+                .selectOne(cayenneContext)
 
         Assertions.assertNotNull(debtor)
         Assertions.assertEquals(new Money("-100.00"), debtor.getAmount())

@@ -6,6 +6,7 @@ package ish.oncourse.server.print
 
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
+import ish.DatabaseSetup
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.common.ResourcesUtil
@@ -24,15 +25,11 @@ import ish.print.PrintResult.ResultType
 import ish.print.PrintTransformationsFactory
 import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -48,6 +45,7 @@ import java.time.LocalDate
  */
 @Disabled
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/sampleData.xml")
 class ReportPrintingTest extends CayenneIshTestCase {
     private static final Logger logger = LogManager.getLogger()
 
@@ -77,19 +75,6 @@ class ReportPrintingTest extends CayenneIshTestCase {
 
     @BeforeEach
     void init() throws Exception {
-        wipeTables()
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = ReportPrintingTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/sampleData.xml")
-
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 
         try {
@@ -101,15 +86,14 @@ class ReportPrintingTest extends CayenneIshTestCase {
         }
 
         //add backgrounds
-        DataContext cc = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-        ReportOverlay overlayPortrait = cc.newObject(ReportOverlay.class)
+        ReportOverlay overlayPortrait = cayenneContext.newObject(ReportOverlay.class)
         overlayPortrait.setOverlay(FileUtils.readFileToByteArray(overlay2pagePortrait))
         overlayPortrait.setName("Test overlay portrait")
 
-        ReportOverlay overlayLandscape = cc.newObject(ReportOverlay.class)
+        ReportOverlay overlayLandscape = cayenneContext.newObject(ReportOverlay.class)
         overlayLandscape.setOverlay(FileUtils.readFileToByteArray(overlay2pageLandscape))
         overlayLandscape.setName("Test overlay landscape")
-        cc.commitChanges()
+        cayenneContext.commitChanges()
     }
 
     static Collection<Arguments> values() throws Exception {
