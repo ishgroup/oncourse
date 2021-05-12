@@ -13,12 +13,11 @@ const path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 
-const _info = (NODE_ENV, SOURCE_MAP, BUILD_NUMBER) => {
+const _info = (NODE_ENV, BUILD_NUMBER) => {
   console.log(`
 Build started with following configuration:
 ===========================================
 → NODE_ENV: ${NODE_ENV}
-→ SOURCE_MAP: ${SOURCE_MAP}
 → BUILD_NUMBER: ${BUILD_NUMBER}
 `);
 };

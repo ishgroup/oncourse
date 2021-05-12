@@ -112,12 +112,15 @@ public class PrintService {
 		return result;
 	}
 
-	public DocumentParam report(@DelegatesTo(ReportSpec.class) Closure cl) throws IOException {
+	public Object report(@DelegatesTo(ReportSpec.class) Closure cl) throws IOException {
 		ReportSpec reportSpec = new ReportSpec();
 		var build = cl.rehydrate(reportSpec, cl, this);
 		build.setResolveStrategy(Closure.DELEGATE_FIRST);
 		build.call();
 
+		if (reportSpec.getFileName() == null) {
+			return report(reportSpec);
+		}
 		return DocumentParam.valueOf(reportSpec.getFileName(), report(reportSpec));
 	}
 

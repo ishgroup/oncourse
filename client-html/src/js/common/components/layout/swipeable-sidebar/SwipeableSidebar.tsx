@@ -23,6 +23,7 @@ import SidebarLatestActivity from "./components/SidebarLatestActivity";
 import Favorites from "./components/favorites/Favorites";
 import { getResultId } from "./utils";
 import HamburgerMenu from "./components/HamburgerMenu";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
@@ -65,12 +66,33 @@ const styles = (theme: AppTheme) =>
     }
   });
 
-const SwipeableSidebar: React.FC<any> = props => {
+interface Props {
+  form: string;
+  isFormDirty: boolean;
+  resetEditView: any;
+  showConfirm: ShowConfirmCaller;
+  classes: any;
+  opened: boolean;
+  toggleSwipeableDrawer: any;
+  getCategories: any;
+  getScripts: any;
+  getFavoriteScripts: any;
+  getSearchResults: any;
+  userSearch: any;
+  searchResults: any;
+  variant: any;
+  categories: any;
+  getScriptsPermissions: any;
+  scripts: any;
+  hasScriptsPermissions: any;
+}
+
+const SwipeableSidebar: React.FC<Props> = props => {
   const {
     form,
     isFormDirty,
     resetEditView,
-    openConfirm,
+    showConfirm,
     classes,
     opened,
     toggleSwipeableDrawer,
@@ -270,15 +292,13 @@ const SwipeableSidebar: React.FC<any> = props => {
     [controlResults, resultIndex]
   );
 
-  const showConfirm = React.useCallback(onConfirm => {
+  const showConfirmHandler = React.useCallback(onConfirm => {
     if (isFormDirty && resetEditView) {
-      openConfirm(
-        () => {
-          onConfirm();
-          resetEditView();
-        },
-        "You have unsaved changes. Do you want to discard them and proceed?",
-        "DISCARD CHANGES"
+      showConfirm(
+        {
+          onConfirm,
+          cancelButtonText: "DISCARD CHANGES"
+        }
       );
     } else {
       onConfirm();
@@ -310,7 +330,7 @@ const SwipeableSidebar: React.FC<any> = props => {
                 classes={{ root: classes.searchResultsRoot }}
                 userSearch={userSearch}
                 checkSelectedResult={checkSelectedResult}
-                showConfirm={showConfirm}
+                showConfirm={showConfirmHandler}
                 setExecMenuOpened={setExecMenuOpened}
                 setScriptIdSelected={setScriptIdSelected}
               />
@@ -318,7 +338,7 @@ const SwipeableSidebar: React.FC<any> = props => {
             <div className={showUserSearch ? "d-none" : ""}>
               <Favorites
                 classes={{ topBar: classes.favoritesTopBar }}
-                showConfirm={showConfirm}
+                showConfirm={showConfirmHandler}
                 isFormDirty={isFormDirty}
                 scriptIdSelected={scriptIdSelected}
                 setScriptIdSelected={setScriptIdSelected}
@@ -326,7 +346,7 @@ const SwipeableSidebar: React.FC<any> = props => {
                 setExecMenuOpened={setExecMenuOpened}
               />
               <Divider variant="middle" />
-              <SidebarLatestActivity showConfirm={showConfirm} checkSelectedResult={checkSelectedResult} />
+              <SidebarLatestActivity showConfirm={showConfirmHandler} checkSelectedResult={checkSelectedResult} />
             </div>
           </div>
         </div>
@@ -354,9 +374,7 @@ const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
   getScripts: () => dispatch(getOnDemandScripts()),
   getFavoriteScripts: () => dispatch(getFavoriteScripts()),
   getScriptsPermissions: () => dispatch(checkPermissions({ keyCode: "ADMIN" })),
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(
-    showConfirm(onConfirm, confirmMessage, confirmButtonText)
-  )
+  showConfirm: props => dispatch(showConfirm(props))
 });
 
 export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles)(SwipeableSidebar));

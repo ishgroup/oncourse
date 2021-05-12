@@ -9,9 +9,9 @@ import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SettingsIcon from "@material-ui/icons/Settings";
-import { Dispatch } from "redux";
-import { showConfirm } from "../../actions";
 import { connect } from "react-redux";
+import { showConfirm } from "../../actions";
+import { ShowConfirmCaller } from "../../../model/common/Confirm";
 
 const styles = theme =>
   ({
@@ -42,19 +42,23 @@ interface FormSettingsAction {
 interface Props {
   actions: FormSettingsAction[];
   classes?: any;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  showConfirm?: ShowConfirmCaller;
 }
 
-const AppBarActions = React.memo<Props>(({ actions, classes, openConfirm }) => {
+const AppBarActions = React.memo<Props>(({ actions, classes, showConfirm }) => {
   const [opened, setOpened] = useState<boolean>(false);
 
-  const onClickAction = useCallback((action, confirmText, confirmButtonText) => {
-    if (confirmText) {
-      openConfirm(action, confirmText, confirmButtonText);
+  const onClickAction = useCallback((onConfirm, confirmMessage, confirmButtonText) => {
+    if (confirmMessage) {
+      showConfirm({
+        onConfirm,
+        confirmMessage,
+        confirmButtonText,
+      });
       setOpened(false);
       return;
     }
-    action();
+    onConfirm();
     setOpened(false);
   }, []);
 
@@ -106,10 +110,8 @@ const AppBarActions = React.memo<Props>(({ actions, classes, openConfirm }) => {
   );
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
-    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  showConfirm: props => dispatch(showConfirm(props))
+});
 
 export default connect<any, any, any>(null, mapDispatchToProps)(withStyles(styles)(AppBarActions));

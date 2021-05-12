@@ -1,14 +1,28 @@
-import React, { useMemo, memo, useCallback, useEffect, useState } from "react";
+import React, {
+ useMemo, memo, useCallback, useEffect, useState
+} from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
+import { change, isDirty, reset } from "redux-form";
 import { State } from "../../../../../reducers/state";
 import { getSaleDetails, setSaleDelivered, setSaleDetails } from "../../actions";
 import CancelSaleDialog from "./CancelSaleDialog";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../common/components/list-view/constants";
-import { change, isDirty, reset } from "redux-form";
+import { CogwhelAdornmentProps } from "../../../../../model/common/ListView";
 
-const SalesCogwheel = memo<any>(props => {
+interface Props extends CogwhelAdornmentProps {
+  rollBackFormChanges: any;
+  isFormDirty: boolean;
+  setDialogId: any;
+  saleStatus: any;
+  saleType: any;
+  getSaleDetails: any;
+  setSaleDelivered: any;
+  clearSaleDetails: any;
+}
+
+const SalesCogwheel = memo<Props>(props => {
   const {
     selection,
     menuItemClass,
@@ -61,11 +75,11 @@ const SalesCogwheel = memo<any>(props => {
 
       switch (status) {
         case "cancelSale": {
-          isFormDirty ? showConfirm(cancelSaleCallback) : cancelSaleCallback();
+          isFormDirty ? showConfirm({ onConfirm: cancelSaleCallback }) : cancelSaleCallback();
           break;
         }
         case "setToDelivered": {
-          isFormDirty ? showConfirm(setToDeliveredCallback) : setToDeliveredCallback();
+          isFormDirty ? showConfirm({ onConfirm: setToDeliveredCallback }) : setToDeliveredCallback();
           break;
         }
       }

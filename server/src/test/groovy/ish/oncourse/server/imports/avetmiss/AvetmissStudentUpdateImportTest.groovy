@@ -36,9 +36,9 @@ class AvetmissStudentUpdateImportTest extends CayenneIshTestCase {
 
         Map<String, byte[]> data = new HashMap<>()
         data.put("avetmiss80", IOUtils.toByteArray(
-                ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/export/avetmiss8/import/NAT00080.txt")))
+                ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/imports/avetmiss8/NAT00080.txt")))
         data.put("avetmiss85", IOUtils.toByteArray(
-                ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/export/avetmiss8/import/NAT00085.txt")))
+                ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/imports/avetmiss8/NAT00085.txt")))
 
         parameter.setData(data)
 
@@ -49,11 +49,6 @@ class AvetmissStudentUpdateImportTest extends CayenneIshTestCase {
 
         Contact contact1 = ObjectSelect.query(Contact.class)
                 .where(Contact.FIRST_NAME.eq("MOHAMODA").andExp(Contact.LAST_NAME.eq("AALAX"))).selectOne(context)
-        Assertions.assertNotNull(contact1)
-
-        importService.performImport(parameter)
-        contact1 = ObjectSelect.query(Contact.class)
-                .where(Contact.FIRST_NAME.eq("MOHAMODA").andExp(Contact.LAST_NAME.eq("AALAX"))).selectOne(context)
-        Assertions.assertNotNull(contact1)
+        Assert.assertNotNull(contact1)
     }
 }

@@ -20,6 +20,7 @@ import { formCommonStyles } from "../../../styles/formCommonStyles";
 import TaxTypesRenderer from "./TaxTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const manualUrl = getManualLink("generalPrefs_taxTypes");
 
@@ -38,7 +39,7 @@ interface Props {
   dirty: boolean;
   form: string;
   invalid: boolean;
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm: ShowConfirmCaller;
   history: any;
   nextLocation: string;
   setNextLocation: (nextLocation: string) => void;
@@ -71,7 +72,9 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
   }
 
   componentDidUpdate() {
-    const { dirty, nextLocation, setNextLocation, history } = this.props;
+    const {
+ dirty, nextLocation, setNextLocation, history
+} = this.props;
 
     if (nextLocation && !dirty) {
       history.push(nextLocation);
@@ -164,7 +167,7 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from types list", "DELETE");
+    openConfirm({ onConfirm, confirmMessage: "This item will be removed from types list", confirmButtonText: "DELETE" });
   };
 
   render() {

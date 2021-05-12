@@ -17,11 +17,10 @@ const __common = require("./webpack/__common");
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || "development";
-  const SOURCE_MAP = options.SOURCE_MAP || "none";
   const BUILD_NUMBER = options.BUILD_NUMBER || "latest";
-  __common.info(NODE_ENV, SOURCE_MAP, BUILD_NUMBER);
+  __common.info(NODE_ENV, BUILD_NUMBER);
 
-  const main = _main(NODE_ENV, SOURCE_MAP, BUILD_NUMBER);
+  const main = _main(NODE_ENV, BUILD_NUMBER);
   main.module.rules = [
     ...main.module.rules,
     ...__common.styleModule(__dirname),
@@ -29,7 +28,7 @@ module.exports = function (options = {}) {
   return main;
 };
 
-const _main = (NODE_ENV, SOURCE_MAP, BUILD_NUMBER) => {
+const _main = (NODE_ENV, BUILD_NUMBER) => {
   const appEntry = NODE_ENV === "mock"
       ? path.resolve(__dirname, "src", "dev", "app.tsx")
       : path.resolve(__dirname, "src", "js", "app.tsx");
@@ -38,7 +37,7 @@ const _main = (NODE_ENV, SOURCE_MAP, BUILD_NUMBER) => {
     entry: {
       client: [appEntry],
     },
-    mode: "production",
+    mode: NODE_ENV,
     output: {
       path: path.resolve(__dirname, "build", "assets"),
       filename: `[name].${BUILD_NUMBER}.js`,
@@ -138,17 +137,16 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           favicon: "src/images/favicon.ico",
           chunksSortMode: 'none',
         }),
-
         new ForkTsCheckerWebpackPlugin({
           async: false,
         }),
-        new webpack.SourceMapDevToolPlugin({
-          filename: `[file].map`,
-          test: /^[a-zA-Z-]*.js/,
-          exclude: [/vendor/]
-        }),
         new webpack.EnvironmentPlugin({
           RELEASE_VERSION: BUILD_NUMBER,
+        }),
+        new webpack.SourceMapDevToolPlugin({
+          filename: `[file].map`,
+
+          exclude: [/vendor/]
         }),
         new CompressionPlugin({
           filename: `[file].gz`,
@@ -158,7 +156,6 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           minRatio: 0.8,
         }),
       );
-
       if (BUILD_NUMBER !== "99-SNAPSHOT") {
         plugins.push(
           new BugsnagBuildReporterPlugin({
