@@ -2,7 +2,6 @@ package ish.oncourse.server.security.api
 
 import com.google.inject.Binder
 import com.google.inject.Module
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.oncourse.server.services.ISystemUserService
 

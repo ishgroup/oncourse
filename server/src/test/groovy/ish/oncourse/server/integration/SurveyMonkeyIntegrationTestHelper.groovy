@@ -1,7 +1,6 @@
 package ish.oncourse.server.integration
 
 import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
 import ish.oncourse.server.integration.surveymonkey.SurveyMonkeyIntegration
 
 @CompileDynamic

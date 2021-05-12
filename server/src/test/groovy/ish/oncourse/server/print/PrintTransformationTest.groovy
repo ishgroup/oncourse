@@ -4,7 +4,6 @@
 
 package ish.oncourse.server.print
 
-
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.DatabaseSetup
@@ -13,21 +12,16 @@ import ish.common.types.PaymentStatus
 import ish.math.Money
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.entity.services.SetPaymentMethod
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import ish.print.AdditionalParameters
 import ish.print.PrintTransformationsFactory
 import ish.print.transformations.PrintTransformation
 import ish.util.PaymentMethodUtil
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate

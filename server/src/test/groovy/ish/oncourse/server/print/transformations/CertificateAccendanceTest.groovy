@@ -1,6 +1,6 @@
 package ish.oncourse.server.print.transformations
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass

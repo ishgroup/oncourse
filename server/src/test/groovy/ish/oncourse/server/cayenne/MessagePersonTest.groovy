@@ -4,7 +4,7 @@
  */
 package ish.oncourse.server.cayenne
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.common.types.MessageStatus

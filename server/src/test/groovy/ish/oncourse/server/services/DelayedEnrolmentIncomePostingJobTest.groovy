@@ -10,7 +10,6 @@ import ish.DatabaseSetup
 import ish.common.types.AccountTransactionType
 import ish.common.types.PaymentSource
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.accounting.AccountTransactionService
 import ish.oncourse.server.cayenne.*
@@ -23,8 +22,6 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

@@ -1,22 +1,18 @@
 package ish.oncourse.server.imports.avetmiss
 
 import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
 import ish.common.types.AvetmissStudentDisabilityType
-import ish.common.types.UsiStatus
-
-import static ish.common.types.AvetmissStudentEnglishProficiency.VERY_WELL
-import static ish.common.types.AvetmissStudentIndigenousStatus.NEITHER
-import static ish.common.types.AvetmissStudentLabourStatus.PART_TIME
 import ish.common.types.AvetmissStudentPriorEducation
 import ish.common.types.Gender
-import ish.oncourse.server.cayenne.Country
-import ish.oncourse.server.cayenne.Language
+import ish.common.types.UsiStatus
 import org.apache.cayenne.ObjectContext
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
+
+import static ish.common.types.AvetmissStudentIndigenousStatus.NEITHER
+import static ish.common.types.AvetmissStudentLabourStatus.PART_TIME
 
 class Avetmiss80ParserTest {
     private language

@@ -1,6 +1,6 @@
 package ish.oncourse.server.deduplication
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Contact
 import org.junit.jupiter.api.Test

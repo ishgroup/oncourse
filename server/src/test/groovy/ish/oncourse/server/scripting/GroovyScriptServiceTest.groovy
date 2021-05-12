@@ -6,12 +6,10 @@ package ish.oncourse.server.scripting
 import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.DatabaseSetup
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.services.TestSchedulerService
 import ish.scripting.ScriptResult
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.map.LifecycleEvent
 import org.apache.cayenne.query.SelectById
 import org.junit.jupiter.api.Assertions
@@ -37,10 +35,9 @@ class GroovyScriptServiceTest extends CayenneIshTestCase {
     
     @Test
     void testLoggerFieldTest() {
-        ObjectContext context = cayenneService.newContext
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
-        Script script = context.newObject(Script.class)
+        Script script = cayenneContext.newObject(Script.class)
         script.setEnabled(true)
         script.setScript("logger.error('script test') \n test()\n " +
                 "void test() {logger.error('script method test')}")
@@ -48,14 +45,12 @@ class GroovyScriptServiceTest extends CayenneIshTestCase {
 
         Assertions.assertEquals(ScriptResult.ResultType.SUCCESS, result.getType())
     }
-
     
     @Test
     void testRunScript() throws Exception {
-        ObjectContext context = cayenneService.newContext
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
-        Script script = context.newObject(Script.class)
+        Script script = cayenneContext.newObject(Script.class)
         script.setEnabled(true)
         script.setScript("return args.context != null")
 
@@ -68,10 +63,9 @@ class GroovyScriptServiceTest extends CayenneIshTestCase {
     
     @Test
     void testCompilationFailure() throws Exception {
-        ObjectContext context = cayenneService.newContext
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
-        Script script = context.newObject(Script.class)
+        Script script = cayenneContext.newObject(Script.class)
         script.setEnabled(true)
         script.setScript("def run(args) { return context != null")
 
@@ -85,10 +79,9 @@ class GroovyScriptServiceTest extends CayenneIshTestCase {
     
     @Test
     void testScriptArguments() throws Exception {
-        ObjectContext context = cayenneService.newContext
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
-        Script script = context.newObject(Script.class)
+        Script script = cayenneContext.newObject(Script.class)
         script.setEnabled(true)
         script.setScript("return args.test")
 
@@ -101,15 +94,10 @@ class GroovyScriptServiceTest extends CayenneIshTestCase {
         Assertions.assertEquals("testValue", result.getResultValue())
     }
 
-    
     @Test
     void testInitTriggers() throws Exception {
-
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        ObjectContext context = cayenneService.getNewContext()
-
-        Script script1 = SelectById.query(Script.class, 3).selectOne(context)
-        Script script2 = SelectById.query(Script.class, 4).selectOne(context)
+        Script script1 = SelectById.query(Script.class, 3).selectOne(cayenneContext)
+        Script script2 = SelectById.query(Script.class, 4).selectOne(cayenneContext)
 
         GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
 
