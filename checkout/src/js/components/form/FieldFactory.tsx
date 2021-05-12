@@ -29,6 +29,7 @@ class FieldFactory extends React.Component<any, any> {
 
     switch (field.dataType) {
       case DataType.STRING:
+        return <Form.Field {...props} component={TextField} type="text"/>;
       case DataType.PHONE:
         return <Form.Field {...props} component={TextField} type="text" autocomplete="tel"/>;
       case DataType.POSTCODE:
@@ -226,7 +227,6 @@ const SuburbFieldBase = (props): any => {
       allowEditSelected={true}
       returnType="object"
       onChange={val => updateRelativeFields(val)}
-      autocomplete="street-address"
     /> :
     <Form.Field {...props} component={TextField} type="text"/> ;
 };
@@ -245,7 +245,6 @@ const CountryField = (props): any => {
     {...props}
     component={SelectField}
     loadOptions={countries}
-    autocomplete="country-name"
   />;
 };
 
