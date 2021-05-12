@@ -21,7 +21,6 @@ class DoublePrefetchTest extends CayenneIshTestCase {
     @Test
     void testNoPrefetch() {
         SelectQuery<CourseClass> query = SelectQuery.query(CourseClass.class)
-        DataContext  = cayenneService.getNewNonReplicatingContext()
         List<CourseClass> list = cayenneContext.select(query)
 
         for (CourseClass cc : list) {
