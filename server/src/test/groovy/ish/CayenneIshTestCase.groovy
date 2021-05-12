@@ -31,6 +31,7 @@ import org.dbunit.operation.DatabaseOperation
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Tag
 
 import java.sql.Connection
 import java.sql.ResultSet
@@ -38,6 +39,7 @@ import java.sql.SQLException
 import java.sql.Statement
 
 @CompileStatic
+@Tag("integration")
 abstract class CayenneIshTestCase extends IshTestCase {
     private static final Logger logger = LogManager.getLogger()
     protected DataContext cayenneContext
