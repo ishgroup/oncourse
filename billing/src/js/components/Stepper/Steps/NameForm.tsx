@@ -15,6 +15,7 @@ import Navigation from "../Navigations";
 import { checkSiteName, setLoadingValue, setSitenameValue } from "../../../redux/actions";
 import { usePrevious } from "../../Hooks/usePrevious";
 import { SITE_KEY } from "../../../constant/common";
+import {State} from "../../../redux/reducers";
 
 const useStyles = makeStyles((theme:any) => ({
   textFieldWrapper: {
@@ -103,7 +104,7 @@ const NameForm = (props: any) => {
     if ((collegeKey === collegeKeyFromState || !collegeKey && collegeKeyFromState) && isValidName) return handleNext();
 
     if (sendTokenAgain) {
-      window.grecaptcha.execute(SITE_KEY, { action: 'submit' }).then(token => {
+      (window as any).grecaptcha.execute(SITE_KEY, { action: 'submit' }).then(token => {
         // setCaptchaToken(token);
         createCollege(token);
       });
@@ -160,11 +161,11 @@ const NameForm = (props: any) => {
   )
 }
 
-const mapStateToProps = (state: any) => ({
-  collegeKeyFromState: state.creatingCollege.collegeKey,
-  isValidName: state.creatingCollege.isValidName,
-  loading: state.creatingCollege.loading,
-  sendTokenAgain: state.creatingCollege.sendTokenAgain,
+const mapStateToProps = (state: State) => ({
+  collegeKeyFromState: state.collegeKey,
+  isValidName: state.isValidName,
+  loading: state.loading,
+  sendTokenAgain: state.sendTokenAgain,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

@@ -10,7 +10,6 @@ import React, { useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { connect, Dispatch } from "react-redux";
-import { items } from "./Steps";
 import LeftMenu from "../common/LeftMenu";
 import NameForm from "./Steps/NameForm";
 import TemplateForm from "./Steps/TemplateForm";
@@ -20,10 +19,8 @@ import FinishPage from "./Steps/FinishPage";
 import { setCaptchaToken } from "../../redux/actions";
 import ErrorPage from "../ErrorPage";
 import { SITE_KEY } from "../../constant/common";
-
-declare global {
-  interface Window { grecaptcha: any; }
-}
+import {SitesPage} from "./Steps/SitesPage";
+import {State} from "../../redux/reducers";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,16 +60,48 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const getSteps = () => {
-  return ["Site name", "Templates", "Contact", "Organisation", "All done!"];
+const NewCustomerSteps = ["Site name", "Templates", "Contact", "Organisation", "All done!"] as const;
+const ExistingCustomerSteps = ["Sites"] as const;
+
+type NewCustomerStep = typeof NewCustomerSteps[number];
+type ExistingCustomerStep = typeof ExistingCustomerSteps[number];
+type Step = NewCustomerStep | ExistingCustomerStep;
+
+const getComponent = (type: Step, props: any) => {
+  switch (type) {
+    default:
+    case "Site name":
+      return <NameForm {...props}/>
+    case "Templates":
+      return <TemplateForm {...props}/>
+    case "Contact":
+      return  <ContactForm {...props}/>
+    case "Organisation":
+      return  <OrganisationForm {...props}/>
+    case "All done!":
+      return <FinishPage {...props}/>
+    case "Sites":
+      return <SitesPage {...props}/>
+  }
 }
 
-const CustomizedSteppers = (props: any) => {
+interface Props {
+  serverError?: any;
+  setCaptchaToken?: any;
+}
+
+const CustomizedSteppers: React.FC<Props> = (
+  {
+    serverError,
+    setCaptchaToken
+  }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const { serverError, setCaptchaToken } = props;
+  const [steps, setSteps] = React.useState<Step[]>([]);
 
-  const steps = getSteps();
+  useEffect(() => {
+    setSteps([...NewCustomerSteps]);
+  }, []);
 
   useEffect(() => {
     const loadScriptByURL = (id, url) => {
@@ -101,26 +130,19 @@ const CustomizedSteppers = (props: any) => {
 
   const childrenProps = { activeStep, steps, handleBack, handleNext };
 
-  const stepsComponents = [
-    <NameForm {...childrenProps}/>,
-    <TemplateForm {...childrenProps}/>,
-    <ContactForm {...childrenProps}/>,
-    <OrganisationForm {...childrenProps}/>,
-    <FinishPage {...childrenProps}/>
-  ];
+  const activePage = React.useMemo(() => getComponent(steps[activeStep], childrenProps), [activeStep]);
 
   return (
     <div className={clsx(classes.root, activeStep === 1 ? classes.minWidth1200 : classes.minWidth800)}>
       <LeftMenu
-        items={items}
+        items={steps}
         activeStep={activeStep}
-        setActiveStep={setActiveStep}
       />
 
       <div className={classes.formWrapper}>
         {serverError ? <ErrorPage/> : (
           <div className={activeStep === 1 ? classes.imageStepWrapper : classes.stepWrapper}>
-            {stepsComponents[activeStep]}
+            {activePage}
           </div>
         )}
       </div>
@@ -128,12 +150,12 @@ const CustomizedSteppers = (props: any) => {
   );
 }
 
-const mapStateToProps = (state: any) => ({
-  serverError: state.creatingCollege.serverError
+const mapStateToProps = (state: State) => ({
+  serverError: state.serverError
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setCaptchaToken: (token) => dispatch(setCaptchaToken(token)),
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CustomizedSteppers as any);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomizedSteppers);

@@ -21,7 +21,9 @@ const KEYS = {
 
 const _common = (dirname, options) => {
   let _main = {
-    entry: [options[KEYS.ENTRY]],
+    entry: [
+      options[KEYS.ENTRY],
+    ],
     output: {
       path: path.resolve(dirname, "build"),
       publicPath: "/",
@@ -63,10 +65,10 @@ const _common = (dirname, options) => {
     ],
     devServer: {
       inline: true,
-      hot: true,
       port: 8100
     },
     devtool: false,
+    target: "web"
   };
   _main.module.rules = [..._main.module.rules, ..._styleModule()];
   return _main;

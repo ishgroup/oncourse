@@ -7,6 +7,7 @@ import "../scss/billing.scss";
 
 const store = CreateStore();
 
+
 export const initApp = () => {
   ReactDOM.render(
     <Provider store={store}>

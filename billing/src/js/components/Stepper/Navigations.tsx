@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import clsx from "clsx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import CustomButton from "../common/Button";
+import {State} from "../../redux/reducers";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,9 +65,10 @@ const Navigation = (props) => {
   )
 }
 
-const mapStateToProps = (state: any) => ({
-  loading: state.creatingCollege.loading,
-  serverError: state.creatingCollege.serverError
+
+const mapStateToProps = (state: State) => ({
+  loading: state.loading,
+  serverError: state.serverError
 });
 
 export default connect(mapStateToProps, null)(Navigation);

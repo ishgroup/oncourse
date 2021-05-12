@@ -52,31 +52,26 @@ const styles = theme => createStyles({
   selected: {}
 });
 
-export interface TabsListItem {
-  label: string;
-  component: (props: any) => React.ReactNode;
-  labelAdornment?: React.ReactNode;
-  expandable?: boolean;
-}
 
 interface Props {
-  items: TabsListItem[];
+  items: string[];
   activeStep: number;
-  setActiveStep: (step: any) => void;
   classes?: any;
-  itemProps?: any;
-  customLabels?: any;
-  customAppBar?: boolean;
 }
 
-const TabsList = React.memo<Props>(({ classes, items, customLabels, customAppBar,
-                                      itemProps = {}, activeStep }) => {
+const TabsList = React.memo<Props>((
+  {
+    classes,
+    items,
+    activeStep
+  }) => {
   return (
     <Grid container className={classes.root}>
       <div className={clsx("relative",
         classes.listContainer,
         localStorage.getItem("theme") === "christmas" && "christmasHeader")}
       >
+
         <div className={classes.listContainerInner}>
           {items.map((i, index) => (
             <ListItem
@@ -88,12 +83,7 @@ const TabsList = React.memo<Props>(({ classes, items, customLabels, customAppBar
               key={index}
             >
               <Typography variant="body2" component="div" color="inherit">
-                <div className={classes.listItemText}>{customLabels && customLabels[index] ? customLabels[index] : i.label}</div>
-                {i.labelAdornment && (
-                  <Typography variant="caption" component="div" className={classes.listItemText}>
-                    {i.labelAdornment}
-                  </Typography>
-                )}
+                <div className={classes.listItemText}>{i}</div>
               </Typography>
             </ListItem>
           ))}

@@ -17,6 +17,7 @@ import { createCollege, setOrganisationFormValues } from "../../../redux/actions
 import Navigation from "../Navigations";
 import { countries, countriesTimeZone } from "../../../utils";
 import { addEventListenerWithDeps } from "../../Hooks/addEventListnerWithDeps";
+import {State} from "../../../redux/reducers";
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
@@ -227,12 +228,12 @@ const OrganisationForm = (props: any) => {
   )
 }
 
-const mapStateToProps = (state: any) => ({
-  collegeWasCreated: state.creatingCollege.collegeWasCreated,
-  collegeKey: state.creatingCollege.collegeKey,
-  webSiteTemplate: state.creatingCollege.webSiteTemplate,
-  contactForm: state.creatingCollege.contactForm,
-  organisationForm: state.creatingCollege.organisationForm,
+const mapStateToProps = (state: State) => ({
+  collegeWasCreated: state.collegeWasCreated,
+  collegeKey: state.collegeKey,
+  webSiteTemplate: state.webSiteTemplate,
+  contactForm: state.contactForm,
+  organisationForm: state.organisationForm,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

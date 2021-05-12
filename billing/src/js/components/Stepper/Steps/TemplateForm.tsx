@@ -20,6 +20,7 @@ import c from "../../../../images/c.png";
 import d from "../../../../images/d.png";
 import e from "../../../../images/e.png";
 import f from "../../../../images/f.png";
+import {State} from "../../../redux/reducers";
 
 const imgData = [
   {
@@ -169,8 +170,8 @@ const TemplateForm = (props: any) => {
   )
 }
 
-const mapStateToProps = (state: any) => ({
-  templateStore: state.creatingCollege.webSiteTemplate,
+const mapStateToProps = (state: State) => ({
+  templateStore: state.webSiteTemplate,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

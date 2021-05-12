@@ -16,6 +16,7 @@ import { setContactFormValues } from "../../../redux/actions";
 import Navigation from "../Navigations";
 import { phoneRegExp } from "../../../constant/common";
 import { addEventListenerWithDeps } from "../../Hooks/addEventListnerWithDeps";
+import {State} from "../../../redux/reducers";
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
@@ -136,8 +137,8 @@ const ContactForm = (props: any) => {
   )
 };
 
-const mapStateToProps = (state: any) => ({
-  contactForm: state.creatingCollege.contactForm,
+const mapStateToProps = (state: State) => ({
+  contactForm: state.contactForm,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import Message from "./Message";
 import { clearMessage } from "../../../redux/actions";
+import {State} from "../../../redux/reducers";
 
 const MessageProvider = props => {
   const {
@@ -25,8 +26,8 @@ const MessageProvider = props => {
   );
 };
 
-const mapStateToProps = (state: any) => ({
-  message: state.creatingCollege.message,
+const mapStateToProps = (state: State) => ({
+  message: state.message,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

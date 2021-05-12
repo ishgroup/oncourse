@@ -17,7 +17,39 @@ import {
 } from "../actions";
 import { contactFormInitialValue, organisationFormInitialValue } from "../initialValues";
 
-const initState = {
+export interface State {
+  collegeKey: string;
+  isValidName: boolean;
+  webSiteTemplate: string;
+  token: string;
+  collegeWasCreated: boolean;
+  sendTokenAgain: boolean;
+  serverError: boolean;
+  loading: boolean;
+  message: {
+    message: string;
+    error: boolean;
+  },
+  contactForm: {
+    userFirstName: string;
+    userLastName: string;
+    userPhone: string;
+    userEmail: string;
+  },
+  organisationForm: {
+    organisationName: string;
+    abn: string;
+    tradingName: string;
+    address: string;
+    suburb: string;
+    state: string;
+    postcode: string;
+    country: string;
+    timeZone: string;
+  }
+}
+
+const initState: State = {
   collegeKey: "",
   isValidName: false,
   webSiteTemplate: "",
@@ -28,13 +60,13 @@ const initState = {
   loading: false,
   message: {
     message: "",
-    error: ""
+    error: false
   },
   contactForm: contactFormInitialValue,
   organisationForm: organisationFormInitialValue,
 }
 
-export const createCollegeReducer = (state = initState, action) => {
+export const createCollegeReducer = (state: State = initState, action): State => {
   switch (action.type) {
     case SET_CAPTCHA_TOKEN:
       return {
