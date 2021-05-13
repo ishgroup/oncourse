@@ -28,11 +28,7 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.dbunit.operation.DatabaseOperation
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.*
 
 import java.sql.Connection
 import java.sql.ResultSet
@@ -56,7 +52,8 @@ abstract class TestWithDatabase extends TestWithBootique {
     private static final String CUSTOM_FIELD = "CustomField"
 
     @BeforeAll
-    static void setUpOnce() throws Exception {
+    void setUpOnce() throws Exception {
+        dropTablesMariaDB()
         generateTables()
         resetAutoIncrement()
     }
@@ -98,6 +95,42 @@ abstract class TestWithDatabase extends TestWithBootique {
 
         validateAccountAndTaxDefaults()
         checkPaymentMethods()
+    }
+
+    @AfterEach
+    void cleanUp() {
+        // need to stop stop CayenneService in order to dispose connection pool created for it
+        cayenneService.getServerRuntime().shutdown()
+        injector.shutdown()
+    }
+
+    private static void dropTablesMariaDB() {
+        try {
+            def connection = dataSource.getConnection()
+            connection.setAutoCommit(true)
+            def databaseName = connection.getCatalog()
+            Statement stmt = connection.createStatement()
+
+            ResultSet rs = stmt.executeQuery("SELECT TABLE_NAME FROM information_schema.TABLES\n" +
+                    "WHERE  table_schema = '$databaseName'")
+
+            List<String> tables = []
+            while (rs.next()) {
+                tables.add(rs.getString("TABLE_NAME"))
+            }
+            rs.close()
+
+            stmt.execute("SET foreign_key_checks = 0")
+            tables.each { t ->
+                stmt.execute("DROP TABLE $t")
+            }
+            stmt.execute("SET foreign_key_checks = 1")
+            stmt.close()
+
+            connection.setCatalog(databaseName)
+        } catch (Exception e) {
+            Assertions.fail("cleaning mysql database failed")
+        }
     }
 
     void validateAccountAndTaxDefaults() throws Exception {
@@ -302,24 +335,23 @@ abstract class TestWithDatabase extends TestWithBootique {
      * Remove all records from db tables.
      */
     protected static void wipeTables() {
-        if (testEnvMariadb()) {
+        if (databaseType == MARIADB) {
             wipeTablesMariadb()
         } else {
             Assertions.fail("Not recognised database: " + databaseType)
         }
     }
 
-    protected static void resetAutoIncrement() {
+    protected void resetAutoIncrement() {
 
         String template
-        if (testEnvMariadb()) {
+        if (databaseType == MARIADB) {
             template = RESET_AUTO_INCREMENT_TEMPLATE_MYSQL
         } else {
             return
         }
 
         try {
-            ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
             DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
             DataMap dataMap = domain.getDataMap("AngelMap")
 
@@ -458,9 +490,6 @@ where schemaname='APP'"""
             }
 
             executeStatement(connection, "EXEC sp_msforeachtable @command1=\"print '?'\", @command2=\"ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all\"")
-
-            shutdownCayenne()
-            createInjectors()
         } catch (Exception e) {
             throw new RuntimeException("Failed to wipe tables.", e)
         } finally {
@@ -469,6 +498,33 @@ where schemaname='APP'"""
                     connection.close()
                 } catch (SQLException e) {
                     logger.warn("Filed to close connection.", e)
+                }
+            }
+        }
+    }
+
+    /**
+     * used to execute statements which can fail, used by mssql cleanup, where we are not sure which tables might have been created/dropped
+     *
+     * @param statement
+     */
+    private static void tryStatement(String statement) {
+        Connection connection = null
+        try {
+            connection = dataSource.getConnection()
+            connection.setAutoCommit(true)
+            Statement stmt = connection.createStatement()
+            stmt.execute(statement)
+            stmt.close()
+
+        } catch (Exception e) {
+            // nothing
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close()
+                } catch (SQLException e) {
+                    logger.catching(e)
                 }
             }
         }
