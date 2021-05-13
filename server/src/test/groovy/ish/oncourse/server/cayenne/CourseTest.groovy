@@ -5,7 +5,7 @@
 package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.EntityRelationCartAction
 import ish.oncourse.generator.DataGenerator
 import ish.util.AccountUtil
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class CourseTest extends CayenneIshTestCase {
+class CourseTest extends TestWithDatabase {
 
     /**
      * test create course-course relationship, assigning relationships from inside the relation object

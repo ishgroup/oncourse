@@ -6,7 +6,7 @@ package ish.oncourse.server.services
 
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.server.AngelServerFactory
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.servlet.HealthCheckServlet
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class ServletsTest extends CayenneIshTestCase {
+class ServletsTest extends TestWithDatabase {
 
     private static final Logger logger = LogManager.getLogger()
 

@@ -5,7 +5,7 @@
 package ish.oncourse.server.lifecycle
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/lifecycle/invoiceLifecycleTest.xml")
-class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
+class InvoiceLifecycleListenerTest extends TestWithDatabase {
 
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {

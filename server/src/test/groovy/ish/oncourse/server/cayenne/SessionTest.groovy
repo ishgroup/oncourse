@@ -5,7 +5,7 @@
 package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.AttendanceType
 import ish.common.types.EnrolmentStatus
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/cayenne/sessionTest.xml")
-class SessionTest extends CayenneIshTestCase {
+class SessionTest extends TestWithDatabase {
 
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {

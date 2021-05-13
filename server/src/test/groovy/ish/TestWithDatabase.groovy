@@ -32,15 +32,20 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.TestInstance
 
 import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 
+/**
+ * Subclass this when you want to set up a database for your test.
+ */
 @CompileStatic
 @Tag("integration")
-abstract class CayenneIshTestCase extends IshTestCase {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+abstract class TestWithDatabase extends TestWithBootique {
     private static final Logger logger = LogManager.getLogger()
     protected DataContext cayenneContext
     protected ICayenneService cayenneService

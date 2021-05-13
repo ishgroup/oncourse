@@ -5,7 +5,7 @@
 package ish.oncourse.server.print
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
@@ -40,7 +40,7 @@ import java.time.LocalDate
 @CompileStatic
 @Disabled
 @DatabaseSetup(value = "ish/oncourse/server/sampleData.xml")
-class ConcurrentReportPrintingTest extends CayenneIshTestCase {
+class ConcurrentReportPrintingTest extends TestWithDatabase {
     List<String> keyCodeList = new ArrayList<>()
     
     @BeforeEach

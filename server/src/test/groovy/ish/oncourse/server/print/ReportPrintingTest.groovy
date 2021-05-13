@@ -5,7 +5,7 @@
 package ish.oncourse.server.print
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
@@ -42,7 +42,7 @@ import java.time.LocalDate
 @Disabled
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/sampleData.xml")
-class ReportPrintingTest extends CayenneIshTestCase {
+class ReportPrintingTest extends TestWithDatabase {
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd")
     protected static final Integer TEST_BUNCH_SIZE = 70
 

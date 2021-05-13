@@ -1,7 +1,7 @@
 package ish.util
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.MessageStatus
 import ish.common.types.MessageType
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup()
-class MessageUtilTest extends CayenneIshTestCase {
+class MessageUtilTest extends TestWithDatabase {
 
     @AfterEach
     void teardown() {

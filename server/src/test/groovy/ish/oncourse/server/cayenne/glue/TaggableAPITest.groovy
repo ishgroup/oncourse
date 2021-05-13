@@ -4,7 +4,7 @@
 package ish.oncourse.server.cayenne.glue
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.cayenne.Course
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/cayenne/glue/TaggableAPITestDataSet.xml")
-class TaggableAPITest extends CayenneIshTestCase {
+class TaggableAPITest extends TestWithDatabase {
 
     @Test
     void testHasTag() {

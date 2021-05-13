@@ -5,7 +5,7 @@
 package ish.oncourse.server.db
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
 import org.apache.cayenne.CayenneRuntimeException
@@ -21,7 +21,7 @@ import java.util.concurrent.*
 import static org.junit.jupiter.api.Assertions.fail
 
 @CompileStatic
-class CayenneServiceTest extends CayenneIshTestCase {
+class CayenneServiceTest extends TestWithDatabase {
 
     /**
      * check if the network interface of the db comes up.

@@ -6,7 +6,7 @@ package ish.oncourse.server.services
 
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.common.ResourceType
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.upgrades.DataPopulation
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class DataPopulationTest extends CayenneIshTestCase {
+class DataPopulationTest extends TestWithDatabase {
 
     private static final Logger logger = LogManager.getLogger()
 

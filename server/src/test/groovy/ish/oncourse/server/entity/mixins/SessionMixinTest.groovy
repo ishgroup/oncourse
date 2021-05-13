@@ -1,7 +1,7 @@
 package ish.oncourse.server.entity.mixins
 
 
-import ish.IshTestCase
+import ish.TestWithBootique
 import ish.oncourse.server.cayenne.Session
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -9,7 +9,7 @@ import org.mockito.Mockito
 
 import java.time.format.DateTimeFormatter
 
-class SessionMixinTest extends IshTestCase {
+class SessionMixinTest extends TestWithBootique {
 
     private static final String PATTERN = 'h:mm a EEEE d MMMM yyyy'
     private static final String SYDNEY_TIME = '6:55 AM Friday 12 June 2015'

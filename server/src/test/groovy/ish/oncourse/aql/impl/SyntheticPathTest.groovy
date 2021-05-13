@@ -1,7 +1,7 @@
 package ish.oncourse.aql.impl
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(readOnly = true, value = "ish/oncourse/aql/SyntheticPathTestDataSet.xml")
-class SyntheticPathTest extends CayenneIshTestCase {
+class SyntheticPathTest extends TestWithDatabase {
 
     private AqlService aqlService
 

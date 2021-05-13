@@ -1,7 +1,7 @@
 package ish.oncourse.server.imports
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.cayenne.Banking
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class PaymentInCSVImportTest extends CayenneIshTestCase {
+class PaymentInCSVImportTest extends TestWithDatabase {
 
 
     @BeforeEach

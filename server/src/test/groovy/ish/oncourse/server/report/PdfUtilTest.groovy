@@ -6,13 +6,13 @@ package ish.oncourse.server.report
 
 
 import groovy.transform.CompileStatic
-import ish.IshTestCase
+import ish.TestWithBootique
 import org.apache.commons.io.FileUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class PdfUtilTest extends IshTestCase {
+class PdfUtilTest extends TestWithBootique {
 
     private static File original = getResourceAsFile("resources/schema/referenceData/reports/LoremIpsumPdf.pdf")
     private static File overlay2page = getResourceAsFile("resources/schema/referenceData/reports/overlay2page.pdf")

@@ -5,7 +5,7 @@ package ish.oncourse.server.scripting.api
 
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.MessageType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test
 import javax.mail.MessagingException
 
 @CompileStatic
-class EmailServiceTest extends CayenneIshTestCase {
+class EmailServiceTest extends TestWithDatabase {
 
     
     @BeforeEach

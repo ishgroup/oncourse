@@ -1,7 +1,7 @@
 package ish.oncourse.server.api
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.api.v1.model.SearchRequestDTO
@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/api/TimetableApiTest.xml")
 
-class TimetableApiTest extends CayenneIshTestCase {
+class TimetableApiTest extends TestWithDatabase {
 
     TimetableApiImpl api
 

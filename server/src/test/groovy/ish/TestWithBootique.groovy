@@ -29,6 +29,7 @@ import org.dbunit.database.IDatabaseConnection
 import org.dbunit.ext.mysql.MySqlDataTypeFactory
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.RegisterExtension
 import org.reflections.Reflections
 
@@ -38,8 +39,12 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 
+/**
+ * Subclass this when you need injectors to get services for your test
+ */
 @CompileStatic
-abstract class IshTestCase {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+abstract class TestWithBootique {
 
     private static final String ANGEL_NODE = "AngelNode"
     private static final String MARIADB = "mariadb"

@@ -1,7 +1,7 @@
 package ish.oncourse.server.payroll
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.PayslipPayType
 import ish.oncourse.entity.services.SessionService
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/payroll/payslipGenerationTest.xml")
-class PayrollGenerationTest extends CayenneIshTestCase {
+class PayrollGenerationTest extends TestWithDatabase {
 
     private PayrollService payrollService
     private SessionService sessionService

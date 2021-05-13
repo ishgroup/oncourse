@@ -1,7 +1,7 @@
 package ish.oncourse.server.api
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.DataType
 import ish.common.types.DeliverySchedule
@@ -17,7 +17,7 @@ import javax.ws.rs.ClientErrorException
 
 @CompileStatic
 @DatabaseSetup()
-class DataCollectionApiTest extends CayenneIshTestCase {
+class DataCollectionApiTest extends TestWithDatabase {
 
    
     @Test

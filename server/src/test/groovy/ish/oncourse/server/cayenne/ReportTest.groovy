@@ -5,7 +5,7 @@
 package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
-import ish.IshTestCase
+import ish.TestWithBootique
 import ish.oncourse.common.ResourceType
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.integration.PluginService
@@ -23,7 +23,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.nio.charset.Charset
 
 @CompileStatic
-class ReportTest extends IshTestCase {
+class ReportTest extends TestWithBootique {
 
 
     private static final int A4_WIDTH = 595

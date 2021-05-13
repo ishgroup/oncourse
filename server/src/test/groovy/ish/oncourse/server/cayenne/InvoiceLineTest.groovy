@@ -5,7 +5,7 @@
 package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
@@ -32,7 +32,7 @@ import java.text.SimpleDateFormat
 
 @CompileStatic
 @DatabaseSetup(value ="ish/oncourse/server/cayenne/invoiceLineTest.xml")
-class InvoiceLineTest extends CayenneIshTestCase {
+class InvoiceLineTest extends TestWithDatabase {
 
     @Override
     void dataSourceReplaceValues(ReplacementDataSet rDataSet) {

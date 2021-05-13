@@ -1,7 +1,7 @@
 package ish.oncourse.server.duplicate
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.duplicate.ClassDuplicationRequest
 import ish.oncourse.entity.services.CourseClassService
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/duplicate/duplicateCourseClassTestDataSet.xml")
-class DuplicateCourseClassTest extends CayenneIshTestCase {
+class DuplicateCourseClassTest extends TestWithDatabase {
 
     private CourseClassService courseClassService
     private CourseClassDao courseClassDao

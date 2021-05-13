@@ -4,7 +4,7 @@
 package ish.oncourse.server.services
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.AccountTransactionType
 import ish.common.types.ProductStatus
 import ish.math.Money
@@ -21,7 +21,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class VoucherExpiryJobTest extends CayenneIshTestCase {
+class VoucherExpiryJobTest extends TestWithDatabase {
     private AccountTransactionService accountTransactionService
 
     @Override

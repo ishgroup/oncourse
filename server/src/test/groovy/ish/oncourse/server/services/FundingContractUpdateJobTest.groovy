@@ -1,7 +1,7 @@
 package ish.oncourse.server.services
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.FundingUpload
 import ish.oncourse.server.cayenne.FundingUploadOutcome
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/services/fundingContractUpdateJobTestDataSet.xml")
-class FundingContractUpdateJobTest extends CayenneIshTestCase {
+class FundingContractUpdateJobTest extends TestWithDatabase {
 
     private FundingContractUpdateJob fundingContractUpdateJob
 

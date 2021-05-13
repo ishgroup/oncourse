@@ -5,7 +5,7 @@
 package ish.oncourse.server.upgrades
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.server.cayenne.Attendance
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/upgrades/atttendanceUpgradeDataSet.xml")
-class FixMissingOutcomesDataUpgradeTest extends CayenneIshTestCase {
+class FixMissingOutcomesDataUpgradeTest extends TestWithDatabase {
 
         @Test
     void testDataUpgrade() throws Exception {

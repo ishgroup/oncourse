@@ -6,7 +6,7 @@ package ish.oncourse.server.cayenne
 
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
 import ish.math.Money
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class VoucherTest extends CayenneIshTestCase {
+class VoucherTest extends TestWithDatabase {
 
     private ICayenneService cayenneService
 

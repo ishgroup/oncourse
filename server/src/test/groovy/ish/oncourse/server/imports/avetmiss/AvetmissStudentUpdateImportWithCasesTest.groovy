@@ -2,7 +2,7 @@ package ish.oncourse.server.imports.avetmiss
 
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.ICayenneService
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
-class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
+class AvetmissStudentUpdateImportWithCasesTest extends TestWithDatabase {
     public static final String ANGIE_CONTACT_FIRST_NAME = "ANGIE"
     ImportService importService
     ICayenneService cayenneService

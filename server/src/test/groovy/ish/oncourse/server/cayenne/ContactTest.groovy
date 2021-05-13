@@ -5,12 +5,12 @@
 package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class ContactTest extends CayenneIshTestCase {
+class ContactTest extends TestWithDatabase {
 
     @Test
     void testUpdateUniqueCode() {

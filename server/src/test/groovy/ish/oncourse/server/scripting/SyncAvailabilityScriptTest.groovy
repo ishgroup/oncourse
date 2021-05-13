@@ -4,7 +4,7 @@
 package ish.oncourse.server.scripting
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.TriggerType
 import ish.oncourse.server.cayenne.CourseClass
@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/scripting/syncAvailabilityScriptTest.xml")
-class SyncAvailabilityScriptTest extends CayenneIshTestCase {
+class SyncAvailabilityScriptTest extends TestWithDatabase {
 
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {

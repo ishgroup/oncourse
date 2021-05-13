@@ -1,7 +1,7 @@
 package ish.oncourse.server.api
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class IntegrationApiTest extends CayenneIshTestCase {
+class IntegrationApiTest extends TestWithDatabase {
 
     @BeforeEach
     void before() {

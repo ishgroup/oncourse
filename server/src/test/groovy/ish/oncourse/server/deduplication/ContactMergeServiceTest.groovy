@@ -1,7 +1,7 @@
 package ish.oncourse.server.deduplication
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.Gender
 import ish.oncourse.server.api.v1.model.MergeLineDTO
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/deduplication/dedupeContactDataSet.xml")
-class ContactMergeServiceTest extends CayenneIshTestCase {
+class ContactMergeServiceTest extends TestWithDatabase {
 
     private ContactMergeService contactMergeService = injector.getInstance(ContactMergeService)
 

@@ -4,7 +4,7 @@
 package ish.oncourse.entity.services
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.Certificate
 import org.apache.cayenne.query.SelectById
@@ -17,7 +17,7 @@ import java.time.Month
 
 @CompileStatic
 @DatabaseSetup(readOnly = true, value = "ish/oncourse/entity/services/certificateServiceTestDataSet.xml")
-class CertificateServiceTest extends CayenneIshTestCase {
+class CertificateServiceTest extends TestWithDatabase {
 
     private CertificateService certificateService
 

@@ -4,7 +4,7 @@
 package ish.oncourse.server.export.avetmiss8
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.OutcomeStatus
 import ish.oncourse.common.ExportJurisdiction
@@ -26,7 +26,7 @@ import java.time.Month
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/export/avetmiss8/exportTest.xml")
-class Avetmiss8ExportTest extends CayenneIshTestCase {
+class Avetmiss8ExportTest extends TestWithDatabase {
 
     private static LocalDate startYear = LocalDate.of(2013, Month.JANUARY, 1)
     private static LocalDate midYear = LocalDate.of(2013, Month.MARCH, 30)
