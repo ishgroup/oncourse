@@ -1,18 +1,31 @@
 package ish
 
+import com.google.inject.Binder
+import com.google.inject.Inject
+import com.google.inject.Module
 import groovy.transform.CompileStatic
+import io.bootique.cayenne.CayenneModule
+import io.bootique.jdbc.DataSourceListener
+import io.bootique.jdbc.JdbcModule
+import io.bootique.jdbc.managed.ManagedDataSourceStarter
+import io.bootique.jdbc.tomcat.JdbcTomcatModule
 import ish.common.types.PaymentType
+import ish.oncourse.server.AngelModule
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.PaymentMethod
 import ish.oncourse.server.cayenne.SessionTest
 import ish.oncourse.server.db.SanityCheckService
+import ish.oncourse.server.integration.PluginService
+import ish.oncourse.server.modules.ApiCayenneLayerModule
 import ish.util.AccountUtil
 import org.apache.cayenne.Persistent
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.access.DataDomain
 import org.apache.cayenne.access.DataNode
 import org.apache.cayenne.access.DbGenerator
+import org.apache.cayenne.configuration.Constants
+import org.apache.cayenne.configuration.server.ServerModule
 import org.apache.cayenne.dba.DbAdapter
 import org.apache.cayenne.log.JdbcEventLogger
 import org.apache.cayenne.map.*
@@ -31,7 +44,9 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.dbunit.ext.mysql.MySqlDataTypeFactory
 import org.dbunit.operation.DatabaseOperation
 import org.junit.jupiter.api.*
+import org.reflections.Reflections
 
+import javax.sql.DataSource
 import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -45,7 +60,6 @@ import java.sql.Statement
 abstract class TestWithDatabase extends TestWithBootique {
     private static final Logger logger = LogManager.getLogger()
     protected DataContext cayenneContext
-    protected ICayenneService cayenneService
 
     private static final String RESET_AUTO_INCREMENT_TEMPLATE_MYSQL = "ALTER TABLE %s AUTO_INCREMENT = %d"
     private static final int NEXT_ID = 10000
@@ -57,6 +71,7 @@ abstract class TestWithDatabase extends TestWithBootique {
         dropTablesMariaDB()
         generateTables()
         resetAutoIncrement()
+        //        LiquibaseJavaContext.fill(injector);
     }
 
     /**
@@ -103,6 +118,83 @@ abstract class TestWithDatabase extends TestWithBootique {
         // need to stop stop CayenneService in order to dispose connection pool created for it
         cayenneService.getServerRuntime().shutdown()
         injector.shutdown()
+    }
+
+    protected void createInjectors() throws Exception {
+        BootiqueTestFactory.Builder builder = testFactory
+                .app(String.format("--config=classpath:%s", "application-test.yml"))
+                .module(AngelModule.class)
+                .module(JdbcModule.class)
+                .module(new Module() {
+                    @Override
+                    void configure(Binder binder) {
+                        JdbcModule.extend(binder).addDataSourceListener(new DataSourceListener() {
+
+                            @Inject
+                            Map<String, ManagedDataSourceStarter> starters
+
+                            @Override
+                            void beforeStartup(String name, String jdbcUrl) {
+                                ManagedDataSourceStarter dataSourceStarter = starters.get("angel-test-creation")
+                                if (dataSourceStarter != null) {
+                                    createMariaDbSchema(dataSourceStarter)
+                                }
+                            }
+                        })
+                    }
+                })
+                .module(JdbcTomcatModule.class)
+                .module(CayenneModule.class)
+                .module(new Module() {
+                    @Override
+                    void configure(Binder binder) {
+                        CayenneModule.extend(binder).addModule(new org.apache.cayenne.di.Module() {
+                            @Override
+                            void configure(org.apache.cayenne.di.Binder binderCayenne) {
+                                ServerModule.contributeProperties(binderCayenne)
+                                        .put(Constants.SERVER_CONTEXTS_SYNC_PROPERTY, String.valueOf(true))
+                            }
+                        })
+                    }
+                })
+                .module(ish.oncourse.server.modules.TestModule.class)
+                .module(ApiCayenneLayerModule.class)
+
+        def testModules = new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(ish.TestModule) as Set<Class>
+        testModules.each {
+            builder.module(it)
+        }
+
+        injector = builder.createRuntime()
+        cayenneService = injector.getInstance(ICayenneService.class)
+        DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
+        dataSource = domain.getDataNode(ANGEL_NODE).getDataSource()
+    }
+
+    private static void createMariaDbSchema(ManagedDataSourceStarter dataSourceStarter) {
+        Connection connection = null
+        final String createSchema =
+                "CREATE DATABASE IF NOT EXISTS angelTest_trunk DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
+        DataSource currDataSource = dataSourceStarter.start().getDataSource()
+        try {
+            connection = currDataSource.getConnection()
+            connection.setAutoCommit(true)
+
+            final Statement stmt = connection.createStatement()
+            final ResultSet rs = stmt.executeQuery(createSchema)
+            rs.close()
+            stmt.close()
+        } catch (Exception e) {
+            throw new RuntimeException("Can't create mariadb/mysql schema.")
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close()
+                } catch (SQLException e) {
+                    logger.catching(e)
+                }
+            }
+        }
     }
 
     private static void dropTablesMariaDB() {
