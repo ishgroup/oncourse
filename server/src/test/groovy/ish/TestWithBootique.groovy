@@ -74,15 +74,4 @@ abstract class TestWithBootique {
         injector = builder.createRuntime()
     }
 
-    protected static File getResourceAsFile(final String relativePath) {
-        logger.entry(relativePath)
-
-        URL resourceURL = ClassLoader.getSystemClassLoader().getResource(relativePath)
-        try {
-            return new File(resourceURL.toURI())
-        } catch (URISyntaxException e) {
-            logger.warn("resource not found, searched in paths:\n {}", ResourcesUtil.getClasspathString())
-        }
-        return null
-    }
 }
