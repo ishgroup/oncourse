@@ -8,7 +8,6 @@ import ish.oncourse.server.cayenne.PaymentMethod
 import ish.oncourse.server.cayenne.SessionTest
 import ish.oncourse.server.db.SanityCheckService
 import ish.util.AccountUtil
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.access.DataDomain
@@ -34,7 +33,6 @@ import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
-
 /**
  * Subclass this when you want to set up a database for your test.
  */
@@ -534,10 +532,6 @@ where schemaname='APP'"""
         Statement stmt = connection.createStatement()
         stmt.execute(statement)
         stmt.close()
-    }
-
-    protected Account getAccountWithId(ObjectContext context, Long id) {
-        return AccountUtil.getAccountWithId(id, context, Account.class)
     }
 
     static void executeDatabaseOperation(IDataSet dataSet) throws Exception {

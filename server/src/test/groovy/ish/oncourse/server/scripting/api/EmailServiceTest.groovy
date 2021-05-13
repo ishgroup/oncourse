@@ -3,44 +3,28 @@
  */
 package ish.oncourse.server.scripting.api
 
-
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.MessageType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import javax.mail.MessagingException
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/scripting/api/emailServiceTestDataSet.xml")
 class EmailServiceTest extends TestWithDatabase {
 
-    
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-        InputStream st = GroovyScriptService.class.getClassLoader().getResourceAsStream("ish/oncourse/server/scripting/api/emailServiceTestDataSet.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-        executeDatabaseOperation(dataSet)
-    }
-
-
-    
     @Test
     void testQueueEmail() throws Exception {
         ObjectContext context = injector.getInstance(ICayenneService.class).getNewContext()

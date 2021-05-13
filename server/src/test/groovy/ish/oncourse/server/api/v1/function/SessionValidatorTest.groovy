@@ -6,34 +6,21 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.oncourse.server.api.v1.model.ClashTypeDTO
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDateTime
 
 @CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/api/v1/function/SessionValidatorTest.xml")
 class SessionValidatorTest extends TestWithDatabase {
 
-    private SessionValidator validator
-
-
-    @BeforeEach
-    void before() {
-        wipeTables()
-        InputStream st = SessionValidatorTest.classLoader.getResourceAsStream('ish/oncourse/server/api/v1/function/SessionValidatorTest.xml')
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        executeDatabaseOperation(dataSet)
-
-        validator = injector.getInstance(SessionValidator)
-
-    }
+    private SessionValidator validator = injector.getInstance(SessionValidator)
 
     @Test
     void testTutor() {
