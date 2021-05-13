@@ -66,8 +66,8 @@ export function mockTags(): Tag[] {
     childrenCount: childTags.length,
     created: l.created,
     modified: l.modified,
-    requirements: requirements,
-    childTags: childTags
+    requirements,
+    childTags
   }));
 
   return tags;
