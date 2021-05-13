@@ -6,17 +6,18 @@ package ish.oncourse.server.report
 
 
 import groovy.transform.CompileStatic
+import ish.TestUtil
 import ish.TestWithBootique
 import org.apache.commons.io.FileUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class PdfUtilTest extends TestWithBootique {
+class PdfUtilTest {
 
-    private static File original = getResourceAsFile("resources/schema/referenceData/reports/LoremIpsumPdf.pdf")
-    private static File overlay2page = getResourceAsFile("resources/schema/referenceData/reports/overlay2page.pdf")
-    private static File overlay1page = getResourceAsFile("resources/schema/referenceData/reports/overlay1page.pdf")
+    private static File original = TestUtil.getResourceAsFile("resources/schema/referenceData/reports/LoremIpsumPdf.pdf")
+    private static File overlay2page = TestUtil.getResourceAsFile("resources/schema/referenceData/reports/overlay2page.pdf")
+    private static File overlay1page = TestUtil.getResourceAsFile("resources/schema/referenceData/reports/overlay1page.pdf")
 
     @Test
     void testOverlayFail2() {
