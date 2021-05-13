@@ -17,7 +17,7 @@ class IntegrationApiTest extends TestWithDatabase {
 
     @BeforeEach
     void before() {
-        wipeTables()
+        super.setup()
     }
 
     @Test

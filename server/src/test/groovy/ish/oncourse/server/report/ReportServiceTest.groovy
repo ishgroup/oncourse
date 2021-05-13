@@ -6,6 +6,7 @@ package ish.oncourse.server.report
 
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.common.ResourceType
@@ -37,31 +38,19 @@ import static ish.report.ImportReportResult.ReportValidationError.ReportBuilding
 
 
 @CompileStatic
+@DatabaseSetup
 class ReportServiceTest extends TestWithDatabase {
     private static final Logger logger = LogManager.getLogger()
 
     private DocumentService documentService
     private DataContext context
-
-    @BeforeAll
-    static void setuuup() {
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
-        String[] fontNames = ge.getAvailableFontFamilyNames()
-        for (String w : fontNames) {
-            logger.info("available font : {}", w)
-        }
-        new JRRuntimeConfig().config()
-    }
+    
 
     @BeforeEach
     void setup() throws Exception {
+        super.setup()
         documentService = injector.getInstance(DocumentService.class)
         context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-    }
-
-    @AfterEach
-    void tearDown() {
-        wipeTables()
     }
 
     @Test

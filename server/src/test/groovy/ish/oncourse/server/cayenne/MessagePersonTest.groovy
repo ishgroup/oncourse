@@ -22,6 +22,7 @@ class MessagePersonTest extends TestWithDatabase {
     
     @BeforeEach
     void setup() {
+        super.setup()
         this.cayenneService = injector.getInstance(ICayenneService.class)
     }
 

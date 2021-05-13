@@ -28,6 +28,7 @@ class LazyNamedQueryNodeTest extends TestWithDatabase {
 
     @BeforeEach
     void setup() throws Exception {
+        super.setup()
         aqlService = new AntlrAqlService()
     }
 

@@ -20,9 +20,8 @@ class AvetmissStudentUpdateImportTest extends TestWithDatabase {
 
     @BeforeEach
     void setup() throws Exception {
-        wipeTables()
+        super.setup()
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
-
         dataPopulation.run()
     }
 

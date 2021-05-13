@@ -23,6 +23,7 @@ class CertificateServiceTest extends TestWithDatabase {
 
     @BeforeEach
     void setup() throws Exception {
+        super.setup()
         this.certificateService = injector.getInstance(CertificateService.class)
     }
 

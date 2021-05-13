@@ -45,6 +45,7 @@ class ConcurrentReportPrintingTest extends TestWithDatabase {
     
     @BeforeEach
     void setup() throws Exception {
+        super.setup()
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 
         try {

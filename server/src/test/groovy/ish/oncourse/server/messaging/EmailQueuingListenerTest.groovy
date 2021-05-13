@@ -45,6 +45,7 @@ class EmailQueuingListenerTest extends TestWithDatabase {
 
     @BeforeEach
     void injectors() throws Exception {
+        super.setup()
         injector.getInstance(GroovyScriptService.class).initTriggers()
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 

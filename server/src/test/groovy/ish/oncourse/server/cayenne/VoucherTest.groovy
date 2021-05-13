@@ -27,8 +27,8 @@ class VoucherTest extends TestWithDatabase {
     
     @BeforeEach
     void setup() throws Exception {
-        this.cayenneService = injector.getInstance(ICayenneService.class)
         super.setup()
+        this.cayenneService = injector.getInstance(ICayenneService.class)
     }
 
     
@@ -135,30 +135,6 @@ class VoucherTest extends TestWithDatabase {
 
         Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
-    }
-
-    // TODO: disable status change rules for now (perhaps need to remove it at all?)
-    // it is required to change voucher status from REDEEMED to ACTIVE when changes to it are reverted
-    // due to change in enrolment selection or not successful money payment
-    
-    @Disabled
-    @Test
-    void testStatusChangeRules() {
-        ObjectContext context = cayenneService.getNewNonReplicatingContext()
-
-        Voucher voucher = context.newObject(Voucher.class)
-
-        voucher.setStatus(ProductStatus.ACTIVE)
-        voucher.setPersistenceState(PersistenceState.COMMITTED)
-
-        voucher.setStatus(ProductStatus.REDEEMED)
-
-        try {
-            voucher.setStatus(ProductStatus.ACTIVE)
-            Assertions.fail()
-        } catch (IllegalStateException e) {
-            // that is expected
-        }
     }
 
 }
