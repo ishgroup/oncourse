@@ -21,11 +21,14 @@ import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.ValidationFailure
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.dbunit.database.DatabaseConfig
+import org.dbunit.database.DatabaseConnection
 import org.dbunit.database.IDatabaseConnection
 import org.dbunit.dataset.IDataSet
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
+import org.dbunit.ext.mysql.MySqlDataTypeFactory
 import org.dbunit.operation.DatabaseOperation
 import org.junit.jupiter.api.*
 
@@ -340,31 +343,30 @@ abstract class TestWithDatabase extends TestWithBootique {
         }
     }
 
-    protected void resetAutoIncrement() {
+    private static IDatabaseConnection getTestDatabaseConnection() throws Exception {
+        DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection(), null)
 
-        String template
-        if (databaseType == MARIADB) {
-            template = RESET_AUTO_INCREMENT_TEMPLATE_MYSQL
-        } else {
-            return
-        }
+        DatabaseConfig config = dbConnection.getConfig()
+        config.setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true)
+        config.setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false)
+        config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory())
 
-        try {
-            DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
-            DataMap dataMap = domain.getDataMap("AngelMap")
+        return dbConnection
+    }
 
-            Connection connection = getTestDatabaseConnection().getConnection()
+    private void resetAutoIncrement() {
+        DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
+        DataMap dataMap = domain.getDataMap("AngelMap")
 
-            for (DbEntity entity : dataMap.getDbEntities()) {
-                if ("ACLRoleSystemUser".equals(entity.getName()) || "StudentNumber".equals(entity.getName())) {
-                    continue
-                }
-                Statement stmt = connection.createStatement()
-                stmt.execute(String.format(template, entity.getName(), NEXT_ID))
-                stmt.close()
+        Connection connection = getTestDatabaseConnection().getConnection()
+
+        for (DbEntity entity : dataMap.getDbEntities()) {
+            if ("ACLRoleSystemUser".equals(entity.getName()) || "StudentNumber".equals(entity.getName())) {
+                continue
             }
-        } catch (Exception e) {
-            logger.catching(e)
+            Statement stmt = connection.createStatement()
+            stmt.execute(String.format(RESET_AUTO_INCREMENT_TEMPLATE_MYSQL, entity.getName(), NEXT_ID))
+            stmt.close()
         }
     }
 
