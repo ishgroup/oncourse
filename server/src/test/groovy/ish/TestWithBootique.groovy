@@ -27,7 +27,6 @@ import org.dbunit.database.DatabaseConfig
 import org.dbunit.database.DatabaseConnection
 import org.dbunit.database.IDatabaseConnection
 import org.dbunit.ext.mysql.MySqlDataTypeFactory
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -38,7 +37,6 @@ import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
-
 /**
  * Subclass this when you need injectors to get services for your test
  */
@@ -46,10 +44,10 @@ import java.sql.Statement
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class TestWithBootique {
 
-    private static final String ANGEL_NODE = "AngelNode"
-    private static final String MARIADB = "mariadb"
-    private static final String MYSQL = "mysql"
-    private static final String MSSQL = "mssql"
+    protected static final String ANGEL_NODE = "AngelNode"
+    protected static final String MARIADB = "mariadb"
+    protected static final String MYSQL = "mysql"
+    protected static final String MSSQL = "mssql"
 
     private static boolean loggingInitialised = false
 
@@ -58,7 +56,7 @@ abstract class TestWithBootique {
     public static BQRuntime injector
 
     protected static DataSource dataSource
-    protected static String databaseType
+    protected static String databaseType = MARIADB
 
     private static final Logger logger = LogManager.getLogger()
 
@@ -81,24 +79,11 @@ abstract class TestWithBootique {
         }
 
         createInjectors()
-        cleanUpMySql()
 //        LiquibaseJavaContext.fill(injector);
     }
 
-    static void shutdownCayenne() {
-        ICayenneService cayenneService = (ICayenneService) injector.getInstance(ICayenneService.class)
-        cayenneService.getServerRuntime().shutdown()
-        injector.shutdown()
-    }
-
-
     static void createInjectors() throws Exception {
-
         final String yamlTestConfig = System.getProperty("yamlTestConfig")
-
-        databaseType = MARIADB
-
-//        url: jdbc:mariadb://localhost/angelTest_trunk?autocommit=true&useUnicode=true&characterEncoding=utf8
 
         BootiqueTestFactory.Builder builder = testFactory
                 .app(String.format("--config=classpath:%s", yamlTestConfig))
@@ -156,10 +141,6 @@ abstract class TestWithBootique {
         new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(ish.TestModule) as Set<Class>
     }
 
-    static boolean testEnvMariadb() {
-        return databaseType.equalsIgnoreCase(MARIADB)
-    }
-
     protected static IDatabaseConnection getTestDatabaseConnection() throws Exception {
 
         DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection(), null)
@@ -170,16 +151,6 @@ abstract class TestWithBootique {
         config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory())
 
         return dbConnection
-    }
-
-    /**
-     * cleans up after the test, dropping the database. we might change it in the future, so it only drops once per whole run cycyle
-     */
-    @AfterAll
-    static void cleanUp() {
-
-        // need to stop stop CayenneService in order to dispose connection pool created for it
-        shutdownCayenne()
     }
 
     private static void createMariaDbSchema(ManagedDataSourceStarter dataSourceStarter) {
@@ -200,77 +171,6 @@ abstract class TestWithBootique {
             stmt.close()
         } catch (Exception e) {
             throw new RuntimeException("Can't create mariadb/mysql schema.")
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close()
-                } catch (SQLException e) {
-                    logger.catching(e)
-                }
-            }
-        }
-    }
-
-    protected static void cleanUpMySql() {
-        Connection connection = null
-        try {
-            connection = dataSource.getConnection()
-            connection.setAutoCommit(true)
-            final String databaseName = connection.getCatalog()
-
-            Statement stmt = connection.createStatement()
-
-            ResultSet rs = stmt.executeQuery("SELECT\n" +
-                    "    TABLE_NAME\n" +
-                    "FROM\n" +
-                    "    information_schema.TABLES\n" +
-                    "WHERE\n" +
-                    "    table_schema = '$databaseName'")
-
-            List<String> tables = []
-            while (rs.next()) {
-                tables.add(rs.getString("TABLE_NAME"))
-            }
-            rs.close()
-
-            stmt.execute("SET foreign_key_checks = 0")
-            tables.each { t ->
-                stmt.execute("DROP TABLE $t")
-            }
-            stmt.execute("SET foreign_key_checks = 1")
-
-            stmt.close()
-
-            connection.setCatalog(databaseName)
-        } catch (Exception e) {
-            throw new RuntimeException("cleaning mysql database failed", e)
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close()
-                } catch (SQLException e) {
-                    logger.catching(e)
-                }
-            }
-        }
-    }
-
-    /**
-     * used to execute statements which can fail, used by mssql cleanup, where we are not sure which tables might have been created/dropped
-     *
-     * @param statement
-     */
-    protected static void tryStatement(String statement) {
-        Connection connection = null
-        try {
-            connection = dataSource.getConnection()
-            connection.setAutoCommit(true)
-            Statement stmt = connection.createStatement()
-            stmt.execute(statement)
-            stmt.close()
-
-        } catch (Exception e) {
-            // nothing
         } finally {
             if (connection != null) {
                 try {
