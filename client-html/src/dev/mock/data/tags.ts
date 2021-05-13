@@ -11,6 +11,10 @@ export function mockTags(): Tag[] {
     return this.tags;
   };
 
+  this.removeTag = id => {
+    this.tags = this.tags.filter(tag => Number(tag.id) !== Number(id));
+  };
+
   const ofRecord = [
     { name: "id", type: "number" },
     { name: "name", type: "string" },

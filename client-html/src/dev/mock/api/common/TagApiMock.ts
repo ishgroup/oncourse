@@ -1,5 +1,6 @@
 import { Tag } from "@api/model";
 import { promiseResolve } from "../../MockAdapter";
+import { getParamsId } from "../../mockUtils";
 
 export function TagApiMock(mock) {
   /**
@@ -16,4 +17,10 @@ export function TagApiMock(mock) {
 
   this.api.onPut(new RegExp(`v1/tag/\\d+`)).reply(config =>
     promiseResolve(config, {}));
+
+  this.api.onDelete(new RegExp(`v1/tag/\\d+`)).reply(config => {
+    const id = getParamsId(config);
+    this.db.removeTag(id);
+    return promiseResolve(config, {});
+  });
 }
