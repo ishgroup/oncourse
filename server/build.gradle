@@ -205,8 +205,6 @@ task integration(type: Test) {
 	dependsOn "expandConfig"
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
-	boolean local = project.hasProperty('local') ? project.getProperty('local') : true
-	systemProperty 'yamlTestConfig', local ? 'application-test-local-mariadb.yml' : 'application-test-mariadb.yml'
 }
 
 task startDaemon(dependsOn: [classes], type: JavaExecFork) {
