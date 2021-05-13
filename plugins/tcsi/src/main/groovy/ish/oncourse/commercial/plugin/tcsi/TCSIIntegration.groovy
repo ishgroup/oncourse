@@ -301,7 +301,14 @@ class TCSIIntegration implements PluginTrait {
             interraptExport("Enrolment is not a high education or unit of study")
         }
         
-        String studentUid = enrolment.student.contact.getCustomFieldValue(TCSI_STUDENT_UID)?.toString() ?: createStudent()
+        String studentUid = enrolment.student.contact.getCustomFieldValue(TCSI_STUDENT_UID)?.toString()
+        if (!studentUid) {
+            studentUid = getStudentUid()
+        }
+        if (!studentUid) {
+            studentUid = createStudent()
+        }
+        
         String courseUid = highEducation.getCustomFieldValue(TCSI_COURSE_UID)?.toString() ?: createCourseGroup()
         String admissionUid = courseAdmission.getCustomFieldValue(TCSI_COURSE_ADMISSION_UID) ?: createCourseAdmission(studentUid,courseUid)
         String campuseUid = null
@@ -425,11 +432,12 @@ class TCSIIntegration implements PluginTrait {
     
     
     String createStudent() {
+        String message = "Create student"
         getClient().request(POST, JSON) {
             uri.path = STUDENTS_PATH
             body = TCSIUtils.getStudentData(enrolment.student)
             response.success = { resp, result ->
-                def student = handleResponce(result as List, "Create student")
+                def student = handleResponce(result as List, message)
                 def uid = student['students_uid'].toString()
                 ContactCustomField customField = objectContext.newObject(ContactCustomField)
                 customField.relatedObject = enrolment.student.contact
@@ -439,7 +447,30 @@ class TCSIIntegration implements PluginTrait {
                 return uid
             }
             response.failure =  { resp, body ->
-                interraptExport("Something unexpected happend, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
+
+    Object getStudentUid() {
+        String message = 'Get student by student number'
+        getClient().request(GET, JSON) {
+            uri.path = STUDENTS_PATH + "/students-uid/${enrolment.student.studentNumber}"
+            response.success = { resp, result ->
+                def studentData = handleResponce(result, message)
+                def uid = studentData['student']['students_uid'].toString()
+                ContactCustomField customField = objectContext.newObject(ContactCustomField)
+                customField.relatedObject = enrolment.student.contact
+                customField.customFieldType = studentUidField
+                customField.value = uid
+                objectContext.commitChanges()
+                return uid
+            }
+            response.failure =  { resp, body ->
+                if (resp.status == 404) {
+                    return null
+                }
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
             }
         }
     }
@@ -485,6 +516,7 @@ class TCSIIntegration implements PluginTrait {
         }
 
         this.interraptExport(errorInfo)
+        return null
     }
     
    void interraptExport(String message) {
