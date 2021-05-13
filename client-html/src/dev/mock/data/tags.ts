@@ -3,7 +3,7 @@ import { generateArraysOfRecords } from "../mockUtils";
 
 export function mockTags(): Tag[] {
   this.getTag = id => {
-    const tags = this.tags.find(tag => tag.id == id);
+    const tags = this.tags.find(tag => Number(tag.id) === Number(id));
     return tags;
   };
 
