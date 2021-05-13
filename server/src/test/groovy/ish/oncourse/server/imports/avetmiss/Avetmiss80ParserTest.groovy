@@ -1,32 +1,29 @@
 package ish.oncourse.server.imports.avetmiss
 
-import groovy.transform.CompileDynamic
-import ish.common.types.AvetmissStudentDisabilityType
-import ish.common.types.AvetmissStudentPriorEducation
-import ish.common.types.Gender
-import ish.common.types.UsiStatus
+import groovy.transform.CompileStatic
+import ish.common.types.*
+import ish.oncourse.server.cayenne.Country
+import ish.oncourse.server.cayenne.Language
 import org.apache.cayenne.ObjectContext
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-import static ish.common.types.AvetmissStudentIndigenousStatus.NEITHER
-import static ish.common.types.AvetmissStudentLabourStatus.PART_TIME
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
 
+@CompileStatic
 class Avetmiss80ParserTest {
-    private language
-    private country
+    Language language
+    Country country
 
-
-    @CompileDynamic
     private Avetmiss80Parser getParser(String text) {
-
         ObjectContext contextMock = mock(ObjectContext)
         AvetmissImportService parsersMock = mock(AvetmissImportService)
         when(parsersMock.parseNames("Castejon, Ed Karlvincent", 0))
                 .thenReturn([firstName: "Ed", lastName: "Castejon", middleName: "Karlvincent"])
-        when(parsersMock.parseHighestSchoolLevel(10)).thenReturn(COMPLETED_YEAR_10)
+        when(parsersMock.parseHighestSchoolLevel(10)).thenReturn(AvetmissStudentSchoolLevel.COMPLETED_YEAR_10)
         when(parsersMock.getCountryBy(5204)).thenReturn(country)
         when(parsersMock.getLanguageBy(6511)).thenReturn(language)
 
@@ -36,10 +33,8 @@ class Avetmiss80ParserTest {
         return parser
     }
 
-
     @Test
     void test() {
-
         def text = "0000000205Castejon, Ed Karlvincent                                    10M20111999625846511025204NNYManjimup                                          4YLJ9VMZU705                                                                                31             Crowea Street                                                                             "
 
         def parser = getParser(text)
@@ -55,9 +50,9 @@ class Avetmiss80ParserTest {
                 postcode           : "6258",
                 suburb             : "Manjimup",
                 language           : language,
-                highestSchoolLevel : COMPLETED_YEAR_10,
-                indigenousStatus   : NEITHER,
-                labourForceStatus  : PART_TIME,
+                highestSchoolLevel : AvetmissStudentSchoolLevel.COMPLETED_YEAR_10,
+                indigenousStatus   : AvetmissStudentIndigenousStatus.NEITHER,
+                labourForceStatus  : AvetmissStudentLabourStatus.PART_TIME,
                 countryOfBirth     : country,
                 disabilityType     : AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION,
                 priorEducationCode : AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION,
