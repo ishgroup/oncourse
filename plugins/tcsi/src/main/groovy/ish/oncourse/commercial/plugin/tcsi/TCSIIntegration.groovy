@@ -310,6 +310,13 @@ class TCSIIntegration implements PluginTrait {
         }
         
         String courseUid = highEducation.getCustomFieldValue(TCSI_COURSE_UID)?.toString() ?: createCourseGroup()
+
+        if (!courseUid) {
+            courseUid = getCourseGroup()
+        }
+        if (!courseUid) {
+            courseUid = createCourseGroup()
+        }
         String admissionUid = courseAdmission.getCustomFieldValue(TCSI_COURSE_ADMISSION_UID) ?: createCourseAdmission(studentUid,courseUid)
         String campuseUid = null
         if (enrolment.courseClass.room) {
@@ -408,7 +415,32 @@ class TCSIIntegration implements PluginTrait {
             }
         } 
     }
-    
+
+    String getCourseGroup() {
+        getClient().request(GET, JSON) {
+            uri.path = COURSES_PATH
+            headers.'tcsi-pagination-page'='1'
+            headers.'tcsi-pagination-pagesize'='1000'
+            response.success = { resp, result ->
+                def courses = handleResponce(result, "Get course")
+                def course = courses*.course?.find {it.course_code == highEducation.code}  
+                if (course) {
+                    def uid = course['courses_uid'].toString()
+                    CourseCustomField customField = objectContext.newObject(CourseCustomField)
+                    customField.relatedObject = highEducation
+                    customField.customFieldType = courseUidField
+                    customField.value = uid
+                    objectContext.commitChanges()
+                    return uid
+                }
+                return null
+                
+            }
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while getting a courses, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
 
     String createCourseGroup() {
         getClient().request(POST, JSON) {
