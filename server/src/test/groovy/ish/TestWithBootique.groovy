@@ -51,8 +51,6 @@ abstract class TestWithBootique {
 
     private static boolean loggingInitialised = false
 
-    protected static String workingDirectory
-
     public static BQRuntime injector
 
     protected static DataSource dataSource
@@ -65,13 +63,9 @@ abstract class TestWithBootique {
 
     @BeforeAll
     static void setupOnceRoot() throws Exception {
-
         System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
         //set JRGroovy compiler as default for tests
         new JRRuntimeConfig().config()
-
-        workingDirectory = new File(".").getAbsolutePath()
-        workingDirectory = workingDirectory.substring(0, workingDirectory.lastIndexOf("."))
 
         if (!loggingInitialised) {
             ResourcesUtil.initialiseLogging(false)
