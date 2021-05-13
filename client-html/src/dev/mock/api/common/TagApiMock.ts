@@ -13,4 +13,7 @@ export function TagApiMock(mock) {
 
   this.api.onPost("/v1/tag").reply(config =>
     promiseResolve(config, {}));
+
+  this.api.onPut(new RegExp(`v1/tag/\\d+`)).reply(config =>
+    promiseResolve(config, {}));
 }
