@@ -113,7 +113,7 @@ abstract class TestWithDatabase extends TestWithBootique {
         checkPaymentMethods()
     }
 
-    @AfterEach
+    @AfterAll
     void cleanUp() {
         // need to stop stop CayenneService in order to dispose connection pool created for it
         cayenneService.getServerRuntime().shutdown()
@@ -197,7 +197,7 @@ abstract class TestWithDatabase extends TestWithBootique {
         }
     }
 
-    private static void dropTablesMariaDB() {
+    private void dropTablesMariaDB() {
         try {
             def connection = dataSource.getConnection()
             connection.setAutoCommit(true)
@@ -264,7 +264,7 @@ abstract class TestWithDatabase extends TestWithBootique {
 
     }
 
-    static void generateTables() throws Exception {
+    void generateTables() throws Exception {
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
 
         DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
@@ -427,7 +427,7 @@ abstract class TestWithDatabase extends TestWithBootique {
     /**
      * Remove all records from db tables.
      */
-    protected static void wipeTables() {
+    protected void wipeTables() {
         if (databaseType == MARIADB) {
             wipeTablesMariadb()
         } else {
@@ -435,7 +435,7 @@ abstract class TestWithDatabase extends TestWithBootique {
         }
     }
 
-    private static IDatabaseConnection getTestDatabaseConnection() throws Exception {
+    private IDatabaseConnection getTestDatabaseConnection() throws Exception {
         DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection(), null)
 
         DatabaseConfig config = dbConnection.getConfig()
@@ -462,7 +462,7 @@ abstract class TestWithDatabase extends TestWithBootique {
         }
     }
 
-    private static void wipeTablesMariadb() {
+    private void wipeTablesMariadb() {
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
 
         DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
@@ -496,139 +496,13 @@ abstract class TestWithDatabase extends TestWithBootique {
         }
     }
 
-    private static void wipeTablesDerby() {
-        Connection connection = null
-        try {
-            final String clean = """SELECT
-'ALTER TABLE '||S.SCHEMANAME||'.'||T.TABLENAME||' DROP CONSTRAINT '||C.CONSTRAINTNAME 
-FROM
-    SYS.SYSCONSTRAINTS C,
-    SYS.SYSSCHEMAS S,
-    SYS.SYSTABLES T
-WHERE
-    C.SCHEMAID = S.SCHEMAID
-AND
-    C.TABLEID = T.TABLEID
-AND
-S.SCHEMANAME = 'APP'
-UNION
-SELECT 'TRUNCATE TABLE ' || schemaname ||'.' || tablename 
-FROM SYS.SYSTABLES
-INNER JOIN SYS.SYSSCHEMAS ON SYS.SYSTABLES.SCHEMAID = SYS.SYSSCHEMAS.SCHEMAID
-where schemaname='APP'"""
-
-
-            connection = dataSource.getConnection()
-            connection.setAutoCommit(true)
-
-            final List<String> qrList = new ArrayList<>()
-            final Statement stmt = connection.createStatement()
-            final ResultSet rs = stmt.executeQuery(clean)
-
-            while (rs.next()) {
-                qrList.add(rs.getString(1))
-            }
-            rs.close()
-            stmt.close()
-
-            if (qrList.isEmpty()) {
-                return
-            }
-
-            for (final String sql : qrList) {
-                tryStatement(sql)
-            }
-
-            // for some reason those 5 tables do not drop by themselves in 10% cases:
-            tryStatement(qrList.find { it.contains("SYSTEMUSER") })
-            tryStatement(qrList.find { it.contains("ACLROLE") })
-            tryStatement(qrList.find { it.contains("SITE") })
-            tryStatement(qrList.find { it.contains("COUNTRY") })
-            tryStatement(qrList.find { it.contains("TAX") })
-            tryStatement(qrList.find { it.contains("ACCOUNT") })
-            tryStatement(qrList.find { it.contains("ACCOUNTTRANSACTION") })
-            //
-//			tryStatement("DROP FUNCTION IFNULL");
-
-        } catch (Exception e) {
-            throw new RuntimeException("cleaning database failed", e)
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close()
-                } catch (SQLException e) {
-                    logger.catching(e)
-                }
-            }
-        }
-    }
-
-    private static void wipeTablesMsSQL() {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-
-        DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
-        DataMap dataMap = domain.getDataMap("AngelMap")
-
-        Connection connection = null
-        try {
-
-            connection = dataSource.getConnection()
-            connection.setAutoCommit(true)
-
-            executeStatement(connection, "EXEC sp_msforeachtable \"ALTER TABLE ? NOCHECK CONSTRAINT all\"")
-
-            for (DbEntity entity : dataMap.getDbEntities()) {
-                executeStatement(connection, String.format("DELETE FROM %s;", entity.getName()))
-            }
-
-            executeStatement(connection, "EXEC sp_msforeachtable @command1=\"print '?'\", @command2=\"ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all\"")
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to wipe tables.", e)
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close()
-                } catch (SQLException e) {
-                    logger.warn("Filed to close connection.", e)
-                }
-            }
-        }
-    }
-
-    /**
-     * used to execute statements which can fail, used by mssql cleanup, where we are not sure which tables might have been created/dropped
-     *
-     * @param statement
-     */
-    private static void tryStatement(String statement) {
-        Connection connection = null
-        try {
-            connection = dataSource.getConnection()
-            connection.setAutoCommit(true)
-            Statement stmt = connection.createStatement()
-            stmt.execute(statement)
-            stmt.close()
-
-        } catch (Exception e) {
-            // nothing
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close()
-                } catch (SQLException e) {
-                    logger.catching(e)
-                }
-            }
-        }
-    }
-
     private static void executeStatement(Connection connection, String statement) throws SQLException {
         Statement stmt = connection.createStatement()
         stmt.execute(statement)
         stmt.close()
     }
 
-    static void executeDatabaseOperation(IDataSet dataSet) throws Exception {
+    void executeDatabaseOperation(IDataSet dataSet) throws Exception {
         IDatabaseConnection testDatabaseConnection = getTestDatabaseConnection()
         DatabaseOperation.CLEAN_INSERT.execute(testDatabaseConnection, dataSet)
     }

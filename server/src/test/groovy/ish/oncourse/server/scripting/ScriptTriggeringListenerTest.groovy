@@ -28,7 +28,7 @@ class ScriptTriggeringListenerTest extends TestWithDatabase {
     private static final Logger logger = LogManager.getLogger()
 
     @BeforeAll
-    static void init() {
+    void init() {
         cayenneService = injector.getInstance(ICayenneService.class)
         scriptService = injector.getInstance(GroovyScriptService.class)
         schedulerService = (TestSchedulerService) injector.getInstance(ISchedulerService.class)
