@@ -1,26 +1,14 @@
 package ish
 
-import com.google.inject.Binder
-import com.google.inject.Inject
-import com.google.inject.Module
 import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
-import io.bootique.cayenne.CayenneModule
-import io.bootique.jdbc.DataSourceListener
-import io.bootique.jdbc.JdbcModule
-import io.bootique.jdbc.managed.ManagedDataSourceStarter
-import io.bootique.jdbc.tomcat.JdbcTomcatModule
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.integration.PluginService
-import ish.oncourse.server.modules.ApiCayenneLayerModule
 import ish.oncourse.server.modules.TestModule
 import ish.oncourse.server.report.JRRuntimeConfig
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
-import org.apache.cayenne.access.DataDomain
-import org.apache.cayenne.configuration.Constants
-import org.apache.cayenne.configuration.server.ServerModule
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.junit.jupiter.api.BeforeAll
@@ -29,10 +17,6 @@ import org.junit.jupiter.api.extension.RegisterExtension
 import org.reflections.Reflections
 
 import javax.sql.DataSource
-import java.sql.Connection
-import java.sql.ResultSet
-import java.sql.SQLException
-import java.sql.Statement
 /**
  * Subclass this when you need injectors to get services for your test
  */
@@ -48,6 +32,7 @@ abstract class TestWithBootique {
     private static boolean loggingInitialised = false
 
     public static BQRuntime injector
+    protected ICayenneService cayenneService
 
     protected static DataSource dataSource
     protected static String databaseType = MARIADB
@@ -58,7 +43,7 @@ abstract class TestWithBootique {
     public static BootiqueTestFactory testFactory = new BootiqueTestFactory()
 
     @BeforeAll
-    static void setupOnceRoot() throws Exception {
+    void setupOnceRoot() throws Exception {
         System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
         //set JRGroovy compiler as default for tests
         new JRRuntimeConfig().config()
@@ -69,50 +54,17 @@ abstract class TestWithBootique {
         }
 
         createInjectors()
-//        LiquibaseJavaContext.fill(injector);
     }
 
-    static void createInjectors() throws Exception {
-        final String yamlTestConfig = System.getProperty("yamlTestConfig")
-
+    /**
+     * Override this class in the TestWithDatabase subclass
+     * @throws Exception
+     */
+    protected void createInjectors() throws Exception {
         BootiqueTestFactory.Builder builder = testFactory
                 .app(String.format("--config=classpath:%s", "application-test.yml"))
                 .module(AngelModule.class)
-                .module(JdbcModule.class)
-                .module(new Module() {
-                    @Override
-                    void configure(Binder binder) {
-                        JdbcModule.extend(binder).addDataSourceListener(new DataSourceListener() {
-
-                            @Inject
-                            Map<String, ManagedDataSourceStarter> starters
-
-                            @Override
-                            void beforeStartup(String name, String jdbcUrl) {
-                                ManagedDataSourceStarter dataSourceStarter = starters.get("angel-test-creation")
-                                if (dataSourceStarter != null) {
-                                    createMariaDbSchema(dataSourceStarter)
-                                }
-                            }
-                        })
-                    }
-                })
-                .module(JdbcTomcatModule.class)
-                .module(CayenneModule.class)
-                .module(new Module() {
-                    @Override
-                    void configure(Binder binder) {
-                        CayenneModule.extend(binder).addModule(new org.apache.cayenne.di.Module() {
-                            @Override
-                            void configure(org.apache.cayenne.di.Binder binderCayenne) {
-                                ServerModule.contributeProperties(binderCayenne)
-                                        .put(Constants.SERVER_CONTEXTS_SYNC_PROPERTY, String.valueOf(true))
-                            }
-                        })
-                    }
-                })
                 .module(TestModule.class)
-                .module(ApiCayenneLayerModule.class)
 
         def testModules = new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(ish.TestModule) as Set<Class>
         testModules.each {
@@ -120,40 +72,6 @@ abstract class TestWithBootique {
         }
 
         injector = builder.createRuntime()
-
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-
-        DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
-
-        dataSource = domain.getDataNode(ANGEL_NODE).getDataSource()
-    }
-
-    private static void createMariaDbSchema(ManagedDataSourceStarter dataSourceStarter) {
-        Connection connection = null
-        final String createSchema =
-                "CREATE DATABASE IF NOT EXISTS angelTest_trunk DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
-
-
-        DataSource currDataSource = dataSourceStarter.start().getDataSource()
-        try {
-            connection = currDataSource.getConnection()
-            connection.setAutoCommit(true)
-
-            final Statement stmt = connection.createStatement()
-            final ResultSet rs = stmt.executeQuery(createSchema)
-            rs.close()
-            stmt.close()
-        } catch (Exception e) {
-            throw new RuntimeException("Can't create mariadb/mysql schema.")
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close()
-                } catch (SQLException e) {
-                    logger.catching(e)
-                }
-            }
-        }
     }
 
     protected static File getResourceAsFile(final String relativePath) {
