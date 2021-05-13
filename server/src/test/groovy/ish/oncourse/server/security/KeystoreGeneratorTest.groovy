@@ -18,7 +18,7 @@ import java.security.KeyStore
 import java.security.cert.X509Certificate
 
 @CompileStatic
-class KeystoreGeneratorTest extends TestWithBootique {
+class KeystoreGeneratorTest  {
     private static final Logger logger = LogManager.getLogger()
 
     private static final Long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000L

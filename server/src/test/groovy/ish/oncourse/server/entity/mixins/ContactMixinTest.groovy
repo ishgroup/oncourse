@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
 @CompileStatic
-class ContactMixinTest extends TestWithBootique {
+class ContactMixinTest {
 
     @CompileDynamic
     @Test
