@@ -6,7 +6,7 @@ package ish.oncourse.server.report
 
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.common.ResourceType
 import ish.oncourse.common.ResourcesUtil
@@ -37,7 +37,7 @@ import static ish.report.ImportReportResult.ReportValidationError.ReportBuilding
 
 
 @CompileStatic
-class ReportServiceTest extends CayenneIshTestCase {
+class ReportServiceTest extends TestWithDatabase {
     private static final Logger logger = LogManager.getLogger()
 
     private DocumentService documentService

@@ -1,6 +1,6 @@
 package ish.oncourse.server.scripting
 
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
@@ -21,7 +21,7 @@ import org.quartz.JobDetail
 import org.quartz.JobKey
 import org.quartz.SchedulerException
 
-class ScriptTriggeringListenerTest extends CayenneIshTestCase {
+class ScriptTriggeringListenerTest extends TestWithDatabase {
     private static ICayenneService cayenneService
     private static GroovyScriptService scriptService
     private static TestSchedulerService schedulerService

@@ -1,7 +1,7 @@
 package ish.oncourse.server.querying
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.scripting.GroovyScriptService
@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/querying/DataSet.xml")
-class QuerySpecTest extends CayenneIshTestCase {
+class QuerySpecTest extends TestWithDatabase {
 
     static Collection<Arguments> values() {
         def data = [

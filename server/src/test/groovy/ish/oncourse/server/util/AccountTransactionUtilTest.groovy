@@ -5,7 +5,7 @@
 package ish.oncourse.server.util
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
@@ -27,7 +27,7 @@ import java.time.LocalDate
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/cayenne/ishDataContextTestDataSet.xml")
-class AccountTransactionUtilTest extends CayenneIshTestCase {
+class AccountTransactionUtilTest extends TestWithDatabase {
 
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {

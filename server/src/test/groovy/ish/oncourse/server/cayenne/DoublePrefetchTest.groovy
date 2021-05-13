@@ -4,7 +4,7 @@
 package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.PrefetchTreeNode
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/cayenne/doublePrefetchTest.xml")
-class DoublePrefetchTest extends CayenneIshTestCase {
+class DoublePrefetchTest extends TestWithDatabase {
 
     @Test
     void testNoPrefetch() {

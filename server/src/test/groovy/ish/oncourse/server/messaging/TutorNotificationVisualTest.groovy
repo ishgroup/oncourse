@@ -1,7 +1,7 @@
 package ish.oncourse.server.messaging
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.EmailTemplate
 import ish.oncourse.server.cayenne.Payslip
@@ -15,7 +15,7 @@ import javax.mail.MessagingException
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/messaging/tutorNotificationVisualTestDataSet.xml")
-class TutorNotificationVisualTest extends CayenneIshTestCase {
+class TutorNotificationVisualTest extends TestWithDatabase {
 
     /**
      * Creates email template, fills it with data from dataset and sends email.

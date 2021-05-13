@@ -5,7 +5,7 @@
 package ish.oncourse.server.messaging
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
 import ish.math.Money
@@ -24,7 +24,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class EmailQueuingListenerTest extends CayenneIshTestCase {
+class EmailQueuingListenerTest extends TestWithDatabase {
 
     @BeforeEach
     void setup() throws Exception {

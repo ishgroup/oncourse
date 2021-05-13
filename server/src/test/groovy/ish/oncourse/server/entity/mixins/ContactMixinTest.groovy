@@ -2,14 +2,14 @@ package ish.oncourse.server.entity.mixins
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import ish.IshTestCase
+import ish.TestWithBootique
 import ish.oncourse.server.cayenne.Contact
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
 @CompileStatic
-class ContactMixinTest extends IshTestCase {
+class ContactMixinTest extends TestWithBootique {
 
     @CompileDynamic
     @Test

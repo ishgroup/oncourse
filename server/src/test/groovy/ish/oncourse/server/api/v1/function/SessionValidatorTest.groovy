@@ -6,7 +6,7 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.server.api.v1.model.ClashTypeDTO
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
 @CompileStatic
-class SessionValidatorTest extends CayenneIshTestCase {
+class SessionValidatorTest extends TestWithDatabase {
 
     private SessionValidator validator
 

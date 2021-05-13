@@ -5,7 +5,7 @@
 package ish.oncourse.queries
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.cayenne.Course
@@ -80,7 +80,7 @@ import org.junit.jupiter.api.Test
  */
 @CompileStatic
 @DatabaseSetup(readOnly = true, value = "ish/queries/expressions-test.xml")
-class ExpressionsTest extends CayenneIshTestCase {
+class ExpressionsTest extends TestWithDatabase {
 
     /**
      * tests a simple query. queries for Course records tagged with Regions_1 (there is one course meeting the criteria)

@@ -2,7 +2,7 @@ package ish.oncourse.server.print.transformations
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.print.PrintWorker
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
 @CompileStatic
-class CourseCompletionSurveyTest extends CayenneIshTestCase {
+class CourseCompletionSurveyTest extends TestWithDatabase {
 
     private Report report
     Report subreport

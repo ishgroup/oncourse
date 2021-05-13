@@ -4,7 +4,7 @@
 package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.CreditCardType
 import ish.common.types.PaymentSource
@@ -24,7 +24,7 @@ import java.time.Month
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/cayenne/EffectiveDatesServerTestDataSet.xml")
-class EffectiveDatesServerTest extends CayenneIshTestCase {
+class EffectiveDatesServerTest extends TestWithDatabase {
     
     @Test
     void testInvoice() throws ParseException {

@@ -6,7 +6,7 @@ package ish.oncourse.server.cayenne
 
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
 import ish.common.types.PaymentType
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
-class InvoiceTest extends CayenneIshTestCase {
+class InvoiceTest extends TestWithDatabase {
 
     @Test
     void testAmountOwing() throws Exception {

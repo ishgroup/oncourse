@@ -1,7 +1,7 @@
 package ish.oncourse.server.services
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.server.cayenne.CustomField
 import ish.oncourse.server.cayenne.CustomFieldType
 import org.apache.cayenne.query.ObjectSelect
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class CustomFieldTypeServiceTest extends CayenneIshTestCase {
+class CustomFieldTypeServiceTest extends TestWithDatabase {
 
     
     @BeforeEach

@@ -6,7 +6,7 @@ package ish.oncourse.server.security
 
 
 import groovy.transform.CompileStatic
-import ish.IshTestCase
+import ish.TestWithBootique
 import org.apache.commons.lang3.time.DateUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -18,7 +18,7 @@ import java.security.KeyStore
 import java.security.cert.X509Certificate
 
 @CompileStatic
-class KeystoreGeneratorTest extends IshTestCase {
+class KeystoreGeneratorTest extends TestWithBootique {
     private static final Logger logger = LogManager.getLogger()
 
     private static final Long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000L

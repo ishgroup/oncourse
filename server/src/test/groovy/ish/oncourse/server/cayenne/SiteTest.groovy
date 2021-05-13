@@ -6,14 +6,14 @@ package ish.oncourse.server.cayenne
 
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.access.DataContext
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class SiteTest extends CayenneIshTestCase {
+class SiteTest extends TestWithDatabase {
 
     @Test
     void testLifecycleCallbacks() {

@@ -2,7 +2,7 @@ package ish.oncourse.server.quality
 
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.quality.QualityResult
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class QualityServiceTest extends CayenneIshTestCase {
+class QualityServiceTest extends TestWithDatabase {
 
     
     @BeforeEach

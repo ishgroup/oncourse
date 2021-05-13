@@ -4,7 +4,7 @@
 package ish.oncourse.server.imports.avetmiss
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.AvetmissStudentPriorEducation
 import ish.common.types.Gender
 import ish.common.types.UsiStatus
@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
-class AvetmissStudentImportTest extends CayenneIshTestCase {
+class AvetmissStudentImportTest extends TestWithDatabase {
 
     @BeforeEach
     void setup() throws Exception {

@@ -5,7 +5,7 @@
 package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
 import ish.oncourse.server.ICayenneService
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class SurveyTest extends CayenneIshTestCase {
+class SurveyTest extends TestWithDatabase {
 
     private ICayenneService cayenneService
 

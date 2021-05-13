@@ -5,7 +5,7 @@
 package ish.oncourse.server.export
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.export.ExportParameter
 import ish.export.ExportResult
 import ish.oncourse.common.ResourceProperty
@@ -33,7 +33,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.time.LocalDate
 
 @CompileStatic
-class AllExportTemplatesTest extends CayenneIshTestCase {
+class AllExportTemplatesTest extends TestWithDatabase {
     private static final Logger logger = LogManager.getLogger()
     private static final String UTC_TIMEZONE_ID = "UTC"
 

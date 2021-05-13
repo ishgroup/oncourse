@@ -4,7 +4,7 @@
 package ish.oncourse.server.scripting
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.services.ISchedulerService
@@ -18,7 +18,7 @@ import org.quartz.JobDetail
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/scripting/groovyScriptServiceTestDataSet.xml")
-class GroovyScriptServiceTest extends CayenneIshTestCase {
+class GroovyScriptServiceTest extends TestWithDatabase {
     
     @Test
     void IntegrationTest() {

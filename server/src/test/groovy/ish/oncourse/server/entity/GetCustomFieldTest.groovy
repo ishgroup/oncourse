@@ -1,7 +1,7 @@
 package ish.oncourse.server.entity
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.AccountType
 import ish.common.types.CourseClassAttendanceType
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup
-class GetCustomFieldTest extends CayenneIshTestCase {
+class GetCustomFieldTest extends TestWithDatabase {
     private static final String SOME_STRING = "someString"
     private static final String CONTACT_FIELD_NAME = "Contact field"
     private static final String CONTACT_FIELD_KEY = "ContactField"

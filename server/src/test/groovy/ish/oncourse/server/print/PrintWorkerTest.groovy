@@ -5,7 +5,7 @@
 package ish.oncourse.server.print
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.cayenne.Room
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/util/entityUtilTest.xml")
-class PrintWorkerTest extends CayenneIshTestCase {
+class PrintWorkerTest extends TestWithDatabase {
 
     @Test
     void testGetRecords() throws Exception {

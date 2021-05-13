@@ -4,14 +4,13 @@
  */
 package ish.oncourse.server.cayenne
 
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.*
 import ish.duplicate.ClassDuplicationRequest
 import ish.math.Money
 import ish.math.MoneyRounding
 import ish.oncourse.entity.services.CourseClassService
 import ish.oncourse.generator.DataGenerator
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.duplicate.DuplicateClassService
 import ish.util.AccountUtil
 import org.apache.cayenne.Cayenne
@@ -22,7 +21,7 @@ import org.apache.cxf.common.util.StringUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-class CourseClassTest extends CayenneIshTestCase {
+class CourseClassTest extends TestWithDatabase {
     private CourseClassService courseClassService = injector.getInstance(CourseClassService.class)
 
     @Test

@@ -5,7 +5,7 @@
 package ish.budget
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.ClassCostFlowType
 import ish.common.types.ClassCostRepetitionType
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup("ish/budget/classBudgetTest.xml")
-class ClassCostUtilTest extends CayenneIshTestCase {
+class ClassCostUtilTest extends TestWithDatabase {
 
     @Test
     void testApplyOnCostRateAndMinMaxCost() {
