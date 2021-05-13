@@ -23,10 +23,6 @@ import org.apache.cayenne.configuration.Constants
 import org.apache.cayenne.configuration.server.ServerModule
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.dbunit.database.DatabaseConfig
-import org.dbunit.database.DatabaseConnection
-import org.dbunit.database.IDatabaseConnection
-import org.dbunit.ext.mysql.MySqlDataTypeFactory
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -118,6 +114,7 @@ abstract class TestWithBootique {
                 .module(TestModule.class)
                 .module(ApiCayenneLayerModule.class)
 
+        def testModules = new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(ish.TestModule) as Set<Class>
         testModules.each {
             builder.module(it)
         }
@@ -131,24 +128,7 @@ abstract class TestWithBootique {
         dataSource = domain.getDataNode(ANGEL_NODE).getDataSource()
     }
 
-    static Set<Class> getTestModules() {
-        new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(ish.TestModule) as Set<Class>
-    }
-
-    protected static IDatabaseConnection getTestDatabaseConnection() throws Exception {
-
-        DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection(), null)
-
-        DatabaseConfig config = dbConnection.getConfig()
-        config.setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true)
-        config.setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false)
-        config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory())
-
-        return dbConnection
-    }
-
     private static void createMariaDbSchema(ManagedDataSourceStarter dataSourceStarter) {
-
         Connection connection = null
         final String createSchema =
                 "CREATE DATABASE IF NOT EXISTS angelTest_trunk DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
