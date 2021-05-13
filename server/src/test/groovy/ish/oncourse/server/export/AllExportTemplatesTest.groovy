@@ -19,8 +19,6 @@ import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
@@ -34,7 +32,6 @@ import java.time.LocalDate
 
 @CompileStatic
 class AllExportTemplatesTest extends TestWithDatabase {
-    private static final Logger logger = LogManager.getLogger()
     private static final String UTC_TIMEZONE_ID = "UTC"
 
     private static final String PAYSLIP_MICROPAY_KEYCODE = "ish.onCourse.payslipMicropay.csv"
@@ -96,9 +93,9 @@ class AllExportTemplatesTest extends TestWithDatabase {
 
             String keyCode = (String) props.get(ResourceProperty.KEY_CODE.getDisplayName())
             String entityName = ((String) props.get(ResourceProperty.ENTITY_CLASS.getDisplayName()))
-            String outputExtention = keyCode.split("\\.")[3]
-            String dataSet = keyCode.split("\\.")[2].concat("DataSet.xml")
-            String output = keyCode.split("\\.")[2].concat("SampleOutput.").concat(outputExtention)
+            String outputExtention = keyCode.split("\\.").last()
+            String dataSet = keyCode.split("\\.")[2] + "DataSet.xml"
+            String output = keyCode.split("\\.")[2] + "SampleOutput." + outputExtention
 
             result.add(Arguments.of(keyCode, entityName, dataSet, output))
 
