@@ -41,6 +41,7 @@ class FundingContractUpdateJobTest extends TestWithDatabase {
 
     @BeforeEach
     void fundingContract() throws Exception {
+        super.setup()
         fundingContractUpdateJob = new FundingContractUpdateJob(cayenneService)
     }
 

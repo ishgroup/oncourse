@@ -19,13 +19,6 @@ import java.time.LocalDate
 
 @CompileStatic
 class PaymentHelperTest extends TestWithDatabase {
-
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-        super.setup()
-    }
-
     
     @Test
     void testAssignAutoBankingForAutomaticallyPayments() {

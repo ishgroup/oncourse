@@ -68,6 +68,7 @@ class ReportPrintingTest extends TestWithDatabase {
 
     @BeforeEach
     void init() throws Exception {
+        super.setup()
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 
         try {

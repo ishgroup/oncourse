@@ -22,6 +22,7 @@ class PaymentInCSVImportTest extends TestWithDatabase {
 
     @BeforeEach
     void population() throws Exception {
+        super.setup()
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
         dataPopulation.run()
 

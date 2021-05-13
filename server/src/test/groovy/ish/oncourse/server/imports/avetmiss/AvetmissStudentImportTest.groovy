@@ -23,19 +23,19 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
+
 class AvetmissStudentImportTest extends TestWithDatabase {
 
     @BeforeEach
     void setup() throws Exception {
-        wipeTables()
+        super.setup()
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
-
         dataPopulation.run()
     }
 
     @Test
     void testImport() throws Exception {
-ImportService importService = injector.getInstance(ImportService.class)
+        ImportService importService = injector.getInstance(ImportService.class)
 
         ImportParameter parameter = new ImportParameter()
         parameter.setKeyCode("ish.onCourse.import.avetmiss.student")

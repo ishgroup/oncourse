@@ -31,6 +31,7 @@ class QuerySpecWithRelativeDatesTest extends TestWithDatabase {
 
     @BeforeEach
     void students() throws Exception {
+        super.setup()
         students = ObjectSelect.query(Student).orderBy(Student.ID.asc()).select(cayenneContext)
     }
 

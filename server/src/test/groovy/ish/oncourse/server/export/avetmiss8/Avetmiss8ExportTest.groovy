@@ -36,6 +36,7 @@ class Avetmiss8ExportTest extends TestWithDatabase {
 
     @BeforeEach
     void services() {
+        super.setup()
         certificateService = injector.getInstance(CertificateService.class)
     }
 

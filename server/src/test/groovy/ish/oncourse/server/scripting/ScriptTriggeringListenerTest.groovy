@@ -1,43 +1,37 @@
 package ish.oncourse.server.scripting
 
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.services.TestSchedulerService
 import org.apache.cayenne.map.LifecycleEvent
-import org.apache.cayenne.query.SQLTemplate
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.quartz.JobDetail
 import org.quartz.JobKey
 import org.quartz.SchedulerException
 
+@DatabaseSetup
 class ScriptTriggeringListenerTest extends TestWithDatabase {
-    private static ICayenneService cayenneService
-    private static GroovyScriptService scriptService
-    private static TestSchedulerService schedulerService
+    private GroovyScriptService scriptService
+    private TestSchedulerService schedulerService
     private static final Logger logger = LogManager.getLogger()
-
-    @BeforeAll
-    void init() {
-        cayenneService = injector.getInstance(ICayenneService.class)
-        scriptService = injector.getInstance(GroovyScriptService.class)
-        schedulerService = (TestSchedulerService) injector.getInstance(ISchedulerService.class)
-    }
-
+    
     @BeforeEach
     void setup() throws SchedulerException {
-        cayenneService.getNewContext().performNonSelectingQuery(new SQLTemplate(Script.class, "DELETE FROM Script"))
+        super.setup()
+        scriptService = injector.getInstance(GroovyScriptService.class)
         scriptService.initTriggers()
+        schedulerService = (TestSchedulerService) injector.getInstance(ISchedulerService.class)
+
         new ArrayList<>(schedulerService.getJobs()).each { JobDetail j ->
             try {
                 schedulerService.removeJob(j.getKey())
@@ -49,7 +43,7 @@ class ScriptTriggeringListenerTest extends TestWithDatabase {
 
     
     private Script createScript(TriggerType triggerType) {
-        Script script = cayenneService.getNewContext().newObject(Script.class)
+        Script script = cayenneContext.newObject(Script.class)
         script.setName("Script")
         script.setEnabled(true)
         script.setScript("def run(args) { logger.error 'Hello World' }")

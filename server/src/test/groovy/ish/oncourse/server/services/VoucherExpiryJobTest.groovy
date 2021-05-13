@@ -43,6 +43,7 @@ class VoucherExpiryJobTest extends TestWithDatabase {
 
     @BeforeEach
     void services() throws Exception {
+        super.setup()
         this.accountTransactionService = injector.getInstance(AccountTransactionService.class)
     }
     

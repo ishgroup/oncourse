@@ -45,6 +45,7 @@ class PluginServiceTest extends TestWithDatabase {
     
     @BeforeEach
     void integrations() {
+        super.setup()
         integrationApi = new IntegrationApiImpl()
         integrationApi.cayenneService = cayenneService
 

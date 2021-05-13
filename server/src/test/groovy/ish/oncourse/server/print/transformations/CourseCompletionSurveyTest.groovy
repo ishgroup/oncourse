@@ -25,12 +25,13 @@ import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
 @CompileStatic
-class CourseCompletionSurveyTest extends TestWithDatabase {
+class CourseCompletionSurveyTest {
 
     private Report report
     Report subreport
     private PrintWorker printWorker
-
+    private ICayenneService cayenneService
+    
     @CompileDynamic
     @BeforeEach
     void before() throws IOException {

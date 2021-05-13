@@ -22,8 +22,8 @@ class AccountTransactionServiceTest extends TestWithDatabase {
 
     @BeforeEach
     void setup() {
-        accountTransactionService = injector.getInstance(AccountTransactionService)
         super.setup()
+        accountTransactionService = injector.getInstance(AccountTransactionService)
     }
     
     @Test

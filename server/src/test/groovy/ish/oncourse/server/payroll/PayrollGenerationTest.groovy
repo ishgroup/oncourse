@@ -21,6 +21,7 @@ class PayrollGenerationTest extends TestWithDatabase {
 
     @BeforeEach
     void setup() {
+        super.setup()
         sessionService = injector.getInstance(SessionService.class)
         payrollService = new PayrollService(cayenneService, sessionService)
     }
