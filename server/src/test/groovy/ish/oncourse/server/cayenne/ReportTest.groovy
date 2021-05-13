@@ -23,7 +23,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.nio.charset.Charset
 
 @CompileStatic
-class ReportTest extends TestWithBootique {
+class ReportTest {
 
 
     private static final int A4_WIDTH = 595
