@@ -28,7 +28,7 @@ class ServletsTest extends TestWithDatabase {
 
     
     @BeforeAll
-    static void setupOnce() throws Exception {
+    void setupOnce() throws Exception {
         // simulate the servlet setup code as it is in the HttpServer
         tester = new AngelServletTester(
                 null,

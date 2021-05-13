@@ -26,15 +26,14 @@ abstract class TestWithBootique {
 
     protected static final String ANGEL_NODE = "AngelNode"
     protected static final String MARIADB = "mariadb"
-    protected static final String MYSQL = "mysql"
-    protected static final String MSSQL = "mssql"
+
 
     private static boolean loggingInitialised = false
 
-    public static BQRuntime injector
+    public  BQRuntime injector
     protected ICayenneService cayenneService
 
-    protected static DataSource dataSource
+    protected  DataSource dataSource
     protected static String databaseType = MARIADB
 
     private static final Logger logger = LogManager.getLogger()

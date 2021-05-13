@@ -97,7 +97,7 @@ class TutorNotificationVisualTest extends TestWithDatabase {
     }
 
     
-    private static MailDeliveryParam prepareDeliveryParam(Map map, EmailTemplate template) {
+    private MailDeliveryParam prepareDeliveryParam(Map map, EmailTemplate template) {
         TemplateService templateService = injector.getInstance(TemplateService.class)
 
         GetFrom getFrom = GetFrom.valueOf("test@from")
