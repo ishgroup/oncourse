@@ -80,7 +80,7 @@ abstract class TestWithBootique {
         final String yamlTestConfig = System.getProperty("yamlTestConfig")
 
         BootiqueTestFactory.Builder builder = testFactory
-                .app(String.format("--config=classpath:%s", yamlTestConfig))
+                .app(String.format("--config=classpath:%s", "application-test.yml"))
                 .module(AngelModule.class)
                 .module(JdbcModule.class)
                 .module(new Module() {
