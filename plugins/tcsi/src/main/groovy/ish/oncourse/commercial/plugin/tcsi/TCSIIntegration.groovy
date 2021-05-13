@@ -77,7 +77,7 @@ class TCSIIntegration implements PluginTrait {
 
     static final String TCSI_BASE_URL = test ? TCSI_BASE_URL_TEST :'https://api.humanservices.gov.au/centrelink/ext-vend/tcsi/b2g/v1'
 
-    static final String BASE_API_PATH = '/centrelink/ext-vend/tcsi/b2g/v1'
+    static final String BASE_API_PATH =  test ? '/centrelink/ext-vend/tcsi/b2g/v1': '/centrelink/ext/tcsi/b2g/v1'
     static final String STUDENTS_PATH = BASE_API_PATH + '/students'
     static final String COURSES_PATH = BASE_API_PATH + '/courses'
     static final String ADMISSIONS_PATH = BASE_API_PATH + '/course-admissions'
