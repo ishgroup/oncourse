@@ -70,17 +70,16 @@ jar {
 }
 
 node {
-    version = '12.9.1'
+    version = '14.16.0'
     yarnVersion = '1.22.4'
-    download = false
+    download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
 }
 
 yarn_install.args = ['--verbose']
 
-
 task webpack(type: NodeTask, dependsOn: 'yarn_install') {
     script = file('node_modules/.bin/webpack')
-    args = ['--progress', '--env', 'NODE_ENV=production', '--env', 'BUILD_NUMBER=', version ?: '99-SNAPSHOT']
+    args = ['--progress', '--env', 'NODE_ENV=production', '--env', "BUILD_NUMBER=${version ?: '99-SNAPSHOT'}"]
 }
 
 processResources.dependsOn(webpack)
