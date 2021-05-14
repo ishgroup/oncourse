@@ -54,7 +54,7 @@ const MenuItem = (props: Props) => {
 
   return (
     <div key={item.id}>
-      <Draggable key={item.id} draggableId={typeof item.id === "string" ? item.id : item.id.toString()} index={item.dragId}>
+      <Draggable key={item.id} draggableId={typeof item.id === "string" ? item.id : item.id && item.id.toString()} index={item.dragId}>
         {(provided, snapshot) => {
           const isDragging = snapshot.isDragging;
 

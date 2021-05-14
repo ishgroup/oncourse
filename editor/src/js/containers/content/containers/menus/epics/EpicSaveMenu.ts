@@ -3,7 +3,7 @@ import "rxjs";
 import {success} from 'react-notification-system-redux';
 import {notificationParams} from "../../../../../common/utils/NotificationSettings";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
-import {SAVE_MENU_TREE_FULFILLED, SAVE_MENU_TREE_REQUEST} from "../actions";
+import {GET_MENU_ITEMS_REQUEST, SAVE_MENU_TREE_FULFILLED, SAVE_MENU_TREE_REQUEST} from "../actions";
 import {MenuItem} from "../../../../../model";
 import MenuService from "../../../../../services/MenuService";
 
@@ -17,6 +17,9 @@ const request: EpicUtils.Request<any, any> = {
         type: SAVE_MENU_TREE_FULFILLED,
         payload: items,
       },
+      {
+        type: GET_MENU_ITEMS_REQUEST
+      },
     ];
   },
   processError: response => {
@@ -25,6 +28,9 @@ const request: EpicUtils.Request<any, any> = {
         {
           type: SAVE_MENU_TREE_FULFILLED,
           payload: response.data,
+        },
+        {
+          type: GET_MENU_ITEMS_REQUEST
         },
         EpicUtils.errorMessage(response),
       ];

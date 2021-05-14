@@ -50,13 +50,14 @@ class Menus extends React.Component<Props, any> {
 
   clearItemsBeforeSave = (menuItems: any[]) => {
     let result = [];
+
     if (menuItems && menuItems.length) {
       result = menuItems.map((elem) => {
         if (typeof elem.id === "string" && elem.id.includes('new')) {
-          elem.id = null;
+          delete elem.id;
         }
 
-        if (elem.dragIndex) delete elem.dragIndex;
+        if (elem.dragId || elem.dragId === 0) delete elem.dragId;
 
         if (elem.children && elem.children.length) {
           this.clearItemsBeforeSave(elem.children);
@@ -116,7 +117,7 @@ class Menus extends React.Component<Props, any> {
     const removed = {removed: null};
 
     const remove = () => {
-      this.removeItemFromList(menuItemsWithIds, item.id.toString(), removed);
+      this.removeItemFromList(menuItemsWithIds, item.id && item.id.toString(), removed);
 
       const dragId = {dragIndex: 0};
       const newListWithDragIds = this.setDragId(menuItemsWithIds, dragId);
@@ -156,7 +157,7 @@ class Menus extends React.Component<Props, any> {
 
     try {
       items.forEach((item, index) => {
-        if (item.id.toString() === parentId) {
+        if (item.id && item.id.toString() === parentId) {
           parentItem = index;
           item.children.push(droppableItem);
           throw BreakException;
@@ -202,7 +203,7 @@ class Menus extends React.Component<Props, any> {
 
     try {
       items.forEach((item, index) => {
-        if (item && item.id.toString() === itemDraggableId) {
+        if (item.id && item.id.toString() === itemDraggableId) {
           removed.removed = items.splice(index, 1)[0];
           throw BreakException;
         } else if (item.children && item.children.length) {
@@ -243,7 +244,7 @@ class Menus extends React.Component<Props, any> {
 
     try {
       items.forEach((item) => {
-        if (item.id.toString() === currentDraggableId) {
+        if (item.id && item.id.toString() === currentDraggableId) {
           element = item;
         } else if (item.children && item.children.length) {
           this.canDrop(item.children, parentDraggableId, currentDraggableId);
