@@ -8,7 +8,7 @@ import {withStyles} from "@material-ui/core/styles";
 
 const styles = theme => ({
   themeSource: {
-    height: "200px",
+    height: "100%",
     // border: "1px solid gray",
     // border: "1px solid rgba(0, 0, 0, 0.12)",
     background: "transparent",
@@ -35,7 +35,7 @@ const styles = theme => ({
     },
   },
   blocks: {
-    height: "632px",
+    height: "100%",
   },
   activeBlock: {
     background: theme.palette.primary.main,
@@ -120,7 +120,7 @@ class Source extends Component<any, any> {
     const isActive = canDrop && isOver;
 
     return connectDropTarget(
-      <div className="relative">
+      <div className="relative h-100">
         <div className={classes.placeholder}>
           {placeholder}
         </div>

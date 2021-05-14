@@ -3,7 +3,7 @@ import {Grid} from "@material-ui/core";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from 'react-dnd';
 import {Theme as ThemeModel, Block} from "../../../../../model";
-import {ThemeLayout} from "./ThemeLayout";
+import ThemeLayout from "./ThemeLayout";
 import Source from "../containers/Source";
 
 const getFreeBlocks = (theme, blocks) => {
@@ -24,8 +24,8 @@ class Theme extends React.Component<Props, any> {
     const {theme, blocks, onUpdateLayout} = this.props;
 
     return (
-      <div>
-        <Grid container>
+      <>
+        <Grid container className={"h-100"}>
           <Grid item xs={7}>
             <ThemeLayout
               theme={theme}
@@ -45,7 +45,7 @@ class Theme extends React.Component<Props, any> {
             />
           </Grid>
         </Grid>
-      </div>
+      </>
     );
   }
 }

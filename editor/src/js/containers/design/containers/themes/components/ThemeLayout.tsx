@@ -1,17 +1,27 @@
 import React from 'react';
 import {Grid} from "@material-ui/core";
+import {withStyles} from "@material-ui/core/styles";
 import {Theme as ThemeModel} from "../../../../../model";
 import Source from "../containers/Source";
 
+const styles = () => ({
+  layoutWrapper: {
+    display: "grid",
+    height: "100%",
+    gridGap: "16px",
+  }
+})
+
 interface Props {
+  classes: any;
   theme: ThemeModel;
   blocks: any;
   onUpdate: (blockId, items) => any;
 }
 
-export class ThemeLayout extends React.Component<Props, any> {
+class ThemeLayout extends React.Component<Props, any> {
   render() {
-    const {theme, blocks, onUpdate} = this.props;
+    const {blocks, classes, theme, onUpdate} = this.props;
 
     const getThemeBlocks = key => {
       if (!theme.blocks) return [];
@@ -20,8 +30,8 @@ export class ThemeLayout extends React.Component<Props, any> {
     };
 
     return (
-      <div>
-        <Grid container className="mb-2 pr-3">
+      <div className={classes.layoutWrapper}>
+        <Grid container className="pr-3">
           <Grid item xs={12}>
             <Source
               placeholder="Header"
@@ -32,7 +42,7 @@ export class ThemeLayout extends React.Component<Props, any> {
           </Grid>
         </Grid>
 
-        <Grid container className="mb-2 pr-3">
+        <Grid container className="pr-3">
           <Grid item xs={4} className="pr-1-5">
             <Source
               placeholder="Left"
@@ -61,7 +71,7 @@ export class ThemeLayout extends React.Component<Props, any> {
           </Grid>
         </Grid>
 
-        <Grid container className="mb-2 pr-3">
+        <Grid container className="pr-3">
           <Grid item xs={12}>
             <Source
               placeholder="Footer"
@@ -75,3 +85,5 @@ export class ThemeLayout extends React.Component<Props, any> {
     );
   }
 }
+
+export default (withStyles(styles)(ThemeLayout));

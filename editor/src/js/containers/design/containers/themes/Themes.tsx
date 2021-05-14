@@ -30,9 +30,9 @@ export class Themes extends React.Component<Props, any> {
     const theme = match.params.id && themes.find(theme => theme.id == match.params.id);
 
     return (
-      <div>
+      <>
         {theme &&
-        <Grid item xs={12} className={clsx((fetching && "fetching"))}>
+        <Grid item xs={12} className={clsx((fetching && "fetching"), "h-100")}>
           <Theme
             theme={theme}
             onUpdateLayout={(blockId, items) => onUpdateLayout(theme, blockId, items)}
@@ -41,7 +41,7 @@ export class Themes extends React.Component<Props, any> {
           />
         </Grid>
         }
-      </div>
+      </>
     );
   }
 }
