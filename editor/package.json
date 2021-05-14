@@ -89,7 +89,6 @@
     "react-router-dom": "5.2.0",
     "react-router-redux": "4.0.8",
     "react-select": "4.3.0",
-    "react-sortable-tree": "^2.8.0",
     "react-text-mask": "5.4.3",
     "react-timeago": "5.2.0",
     "react-transition-group": "^4.4.1",
