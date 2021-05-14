@@ -26,8 +26,7 @@ class ScriptTriggeringListenerTest extends TestWithDatabase {
     private static final Logger logger = LogManager.getLogger()
     
     @BeforeEach
-    void setup() throws SchedulerException {
-        super.setup()
+    void services() throws SchedulerException {
         scriptService = injector.getInstance(GroovyScriptService.class)
         scriptService.initTriggers()
         schedulerService = (TestSchedulerService) injector.getInstance(ISchedulerService.class)

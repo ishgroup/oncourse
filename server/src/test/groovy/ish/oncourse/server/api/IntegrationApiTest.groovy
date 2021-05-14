@@ -9,16 +9,10 @@ import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.integration.myob.MyobIntegration
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 class IntegrationApiTest extends TestWithDatabase {
-
-    @BeforeEach
-    void before() {
-        super.setup()
-    }
 
     @Test
     void test() {

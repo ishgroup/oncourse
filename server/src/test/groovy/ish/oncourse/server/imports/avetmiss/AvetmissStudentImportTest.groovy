@@ -27,8 +27,7 @@ import java.time.LocalDate
 class AvetmissStudentImportTest extends TestWithDatabase {
 
     @BeforeEach
-    void setup() throws Exception {
-        super.setup()
+    void populateData() throws Exception {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
         dataPopulation.run()
     }

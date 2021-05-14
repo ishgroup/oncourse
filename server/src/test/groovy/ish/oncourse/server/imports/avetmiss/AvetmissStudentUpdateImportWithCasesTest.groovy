@@ -1,11 +1,9 @@
 package ish.oncourse.server.imports.avetmiss
 
-
 import groovy.transform.CompileStatic
 import ish.TestWithDatabase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.imports.ImportService
@@ -26,8 +24,7 @@ class AvetmissStudentUpdateImportWithCasesTest extends TestWithDatabase {
     ImportParameter parameter
 
     @BeforeEach
-    void setup() throws Exception {
-        super.setup()
+    void populateData() throws Exception {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation)
         dataPopulation.run()
 
