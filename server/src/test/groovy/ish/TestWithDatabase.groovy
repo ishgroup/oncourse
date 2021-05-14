@@ -51,6 +51,7 @@ import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
+
 /**
  * Subclass this when you want to set up a database for your test.
  */
@@ -67,7 +68,8 @@ abstract class TestWithDatabase extends TestWithBootique {
     private static final String CUSTOM_FIELD = "CustomField"
 
     @BeforeAll
-    void setUpOnce() throws Exception {
+    @Order(2)
+    private void setUpOnce() throws Exception {
         dropTablesMariaDB()
         generateTables()
         resetAutoIncrement()
@@ -84,7 +86,8 @@ abstract class TestWithDatabase extends TestWithBootique {
     }
 
     @BeforeEach
-    void setup() throws Exception {
+    @Order(2)
+    private void setup() throws Exception {
         def a = this.class.getAnnotation(DatabaseSetup)
         if (a) {
             if (a.type() == ish.DatabaseOperation.DELETE_ALL) {
@@ -114,10 +117,10 @@ abstract class TestWithDatabase extends TestWithBootique {
     }
 
     @AfterAll
-    void cleanUp() {
-        // need to stop stop CayenneService in order to dispose connection pool created for it
+    @Order(1)
+    private void cleanUpDB() {
+        // need to stop CayenneService in order to dispose connection pool created for it
         cayenneService.getServerRuntime().shutdown()
-        injector.shutdown()
     }
 
     protected void createInjectors() throws Exception {

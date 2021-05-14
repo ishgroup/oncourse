@@ -4,7 +4,6 @@
  */
 package ish.oncourse.server.report
 
-
 import groovy.transform.CompileStatic
 import ish.DatabaseSetup
 import ish.TestWithDatabase
@@ -22,36 +21,25 @@ import ish.print.PrintResult
 import ish.report.ImportReportResult
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
 import net.sf.jasperreports.engine.JRPropertiesUtil
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
 
-import java.awt.*
 import java.nio.charset.Charset
-import java.util.List
 
 import static ish.report.ImportReportResult.ReportValidationError.ReportBuildingError
-
 
 @CompileStatic
 @DatabaseSetup
 class ReportServiceTest extends TestWithDatabase {
     private static final Logger logger = LogManager.getLogger()
 
-    private DocumentService documentService
-    private DataContext context
-    
-
-    @BeforeEach
-    void setup() throws Exception {
-        super.setup()
-        documentService = injector.getInstance(DocumentService.class)
-        context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-    }
+    private DocumentService documentService = injector.getInstance(DocumentService.class)
 
     @Test
     void testImportAndCompileAllReportsBasedOnManifest() throws IOException {
@@ -66,7 +54,7 @@ class ReportServiceTest extends TestWithDatabase {
                     ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
                     report = ObjectSelect.query(Report.class)
                             .where(Report.ID.eq(importReportResult.getReportId()))
-                            .selectOne(context)
+                            .selectOne(cayenneContext)
                 } catch (Exception e) {
                     logger.catching(e)
                     Assertions.fail("could not import the report " + reportFile)
@@ -106,7 +94,7 @@ class ReportServiceTest extends TestWithDatabase {
                 ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(is))
                 report = ObjectSelect.query(Report.class)
                         .where(Report.ID.eq(importReportResult.getReportId()))
-                        .selectOne(context)
+                        .selectOne(cayenneContext)
             } catch (Exception e) {
                 Assertions.fail("could not import the report " + reportFile.getAbsolutePath())
             }
@@ -135,7 +123,7 @@ class ReportServiceTest extends TestWithDatabase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(oldReportFile), Charset.defaultCharset()))
             Report report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
             Assertions.assertEquals("CourseClass", report.getEntity(), "Report entity should be 'CourseClass'")
         } catch (Exception e) {
             Assertions.fail("could not import the report " + oldReportFile)
@@ -146,7 +134,7 @@ class ReportServiceTest extends TestWithDatabase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(newReportFile), Charset.defaultCharset()))
             Report report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
             Assertions.assertEquals("Enrolment", report.getEntity(), "Report entity should be 'Enrolment'")
         } catch (Exception e) {
             Assertions.fail("could not import the report " + newReportFile)
@@ -183,7 +171,7 @@ class ReportServiceTest extends TestWithDatabase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
             report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
 
         } catch (Exception e) {
             Assertions.fail("could not import the report " + reportFile)
@@ -241,7 +229,7 @@ class ReportServiceTest extends TestWithDatabase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
             report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
 
         } catch (Exception e) {
             Assertions.fail("could not import the report " + reportFile)
@@ -306,7 +294,7 @@ class ReportServiceTest extends TestWithDatabase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
             report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
 
         } catch (Exception e) {
             Assertions.fail("could not import the report " + reportFile)
@@ -340,7 +328,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         Assertions.assertEquals(PrintResult.ResultType.FAILED, worker.getResult().getResultType(), String.format("Printing failed for %s", report.getName()))
         Assertions.assertNotNull(worker.getResult().getError(), String.format("Empty error for %s", report.getName()))
-        context.deleteObject(report)
+        cayenneContext.deleteObject(report)
     }
 
     
@@ -357,7 +345,7 @@ class ReportServiceTest extends TestWithDatabase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
             report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
 
         } catch (Exception e) {
             Assertions.fail("could not import the report " + reportFile)

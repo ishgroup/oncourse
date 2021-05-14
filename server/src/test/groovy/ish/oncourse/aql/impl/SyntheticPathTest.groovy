@@ -1,27 +1,20 @@
 package ish.oncourse.aql.impl
 
 import groovy.transform.CompileStatic
-import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(readOnly = true, value = "ish/oncourse/aql/SyntheticPathTestDataSet.xml")
 class SyntheticPathTest extends TestWithDatabase {
 
-    private AqlService aqlService
-
-    @BeforeEach
-    void setup() throws Exception {
-        super.setup()
-        aqlService = new AntlrAqlService()
-    }
+    private AqlService aqlService = new AntlrAqlService()
 
     @Test
     void testClassEnrolmentCountPath() {

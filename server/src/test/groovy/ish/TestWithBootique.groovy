@@ -11,7 +11,9 @@ import ish.oncourse.server.report.JRRuntimeConfig
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.RegisterExtension
 import org.reflections.Reflections
@@ -42,6 +44,7 @@ abstract class TestWithBootique {
     public static BootiqueTestFactory testFactory = new BootiqueTestFactory()
 
     @BeforeAll
+    @Order(1)
     void setupOnceRoot() throws Exception {
         System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
         //set JRGroovy compiler as default for tests
@@ -54,6 +57,14 @@ abstract class TestWithBootique {
 
         createInjectors()
     }
+
+
+    @AfterAll
+    @Order(2)
+    private void cleanUpDB() {
+        injector.shutdown()
+    }
+
 
     /**
      * Override this class in the TestWithDatabase subclass

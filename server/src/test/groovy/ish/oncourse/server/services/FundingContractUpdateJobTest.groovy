@@ -1,8 +1,8 @@
 package ish.oncourse.server.services
 
 import groovy.transform.CompileStatic
-import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.server.cayenne.FundingUpload
 import ish.oncourse.server.cayenne.FundingUploadOutcome
 import ish.oncourse.types.FundingStatus
@@ -10,14 +10,13 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/services/fundingContractUpdateJobTestDataSet.xml")
 class FundingContractUpdateJobTest extends TestWithDatabase {
 
-    private FundingContractUpdateJob fundingContractUpdateJob
+    private FundingContractUpdateJob fundingContractUpdateJob = new FundingContractUpdateJob(cayenneService)
 
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
@@ -37,12 +36,6 @@ class FundingContractUpdateJobTest extends TestWithDatabase {
         rDataSet.addReplacementObject("[end_date3]", DateUtils.addHours(start3, 2))
         rDataSet.addReplacementObject("[end_date4]", DateUtils.addHours(start4, 2))
         rDataSet.addReplacementObject("[null]", null)
-    }
-
-    @BeforeEach
-    void fundingContract() throws Exception {
-        super.setup()
-        fundingContractUpdateJob = new FundingContractUpdateJob(cayenneService)
     }
 
     @Test

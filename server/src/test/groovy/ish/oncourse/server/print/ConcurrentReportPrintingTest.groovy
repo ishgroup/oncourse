@@ -44,8 +44,7 @@ class ConcurrentReportPrintingTest extends TestWithDatabase {
     List<String> keyCodeList = new ArrayList<>()
     
     @BeforeEach
-    void setup() throws Exception {
-        super.setup()
+    void dataPopulation() throws Exception {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 
         try {

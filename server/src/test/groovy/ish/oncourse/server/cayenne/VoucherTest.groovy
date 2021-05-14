@@ -4,46 +4,29 @@
  */
 package ish.oncourse.server.cayenne
 
-
 import groovy.transform.CompileStatic
 import ish.TestWithDatabase
 import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
-import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.validation.ValidationResult
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 class VoucherTest extends TestWithDatabase {
 
-    private ICayenneService cayenneService
-
-    
-    @BeforeEach
-    void setup() throws Exception {
-        super.setup()
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-    }
-
-    
     @Test
     void testValidationRules() {
-        ObjectContext context = cayenneService.getNewNonReplicatingContext()
         ValidationResult result = new ValidationResult()
 
-        VoucherProduct vProduct = context.newObject(VoucherProduct.class)
+        VoucherProduct vProduct = cayenneContext.newObject(VoucherProduct.class)
         vProduct.setPriceExTax(new Money("100.0"))
         vProduct.setValue(new Money("100.0"))
 
-        InvoiceLine il = context.newObject(InvoiceLine.class)
+        InvoiceLine il = cayenneContext.newObject(InvoiceLine.class)
 
-        Voucher voucher = context.newObject(Voucher.class)
+        Voucher voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setExpiryDate(new Date())
@@ -58,7 +41,7 @@ class VoucherTest extends TestWithDatabase {
         Assertions.assertFalse(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setExpiryDate(new Date())
         voucher.setStatus(ProductStatus.ACTIVE)
@@ -71,7 +54,7 @@ class VoucherTest extends TestWithDatabase {
         Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setStatus(ProductStatus.ACTIVE)
@@ -84,7 +67,7 @@ class VoucherTest extends TestWithDatabase {
         Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setExpiryDate(new Date())
@@ -97,7 +80,7 @@ class VoucherTest extends TestWithDatabase {
         Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setExpiryDate(new Date())
@@ -110,7 +93,7 @@ class VoucherTest extends TestWithDatabase {
         Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setExpiryDate(new Date())
@@ -123,7 +106,7 @@ class VoucherTest extends TestWithDatabase {
         Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setExpiryDate(new Date())

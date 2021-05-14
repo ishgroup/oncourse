@@ -32,13 +32,7 @@ class Avetmiss8ExportTest extends TestWithDatabase {
     private static LocalDate midYear = LocalDate.of(2013, Month.MARCH, 30)
     private static LocalDate endYear = LocalDate.of(2013, Month.DECEMBER, 31)
 
-    private CertificateService certificateService
-
-    @BeforeEach
-    void services() {
-        super.setup()
-        certificateService = injector.getInstance(CertificateService.class)
-    }
+    private CertificateService certificateService = injector.getInstance(CertificateService.class)
 
     @Test
     void test1() throws Exception {

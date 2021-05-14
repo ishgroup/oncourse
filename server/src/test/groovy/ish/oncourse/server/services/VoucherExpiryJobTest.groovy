@@ -17,12 +17,11 @@ import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 class VoucherExpiryJobTest extends TestWithDatabase {
-    private AccountTransactionService accountTransactionService
+    private AccountTransactionService accountTransactionService = injector.getInstance(AccountTransactionService.class)
 
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
@@ -41,12 +40,6 @@ class VoucherExpiryJobTest extends TestWithDatabase {
         rDataSet.addReplacementObject("[null]", null)
     }
 
-    @BeforeEach
-    void services() throws Exception {
-        super.setup()
-        this.accountTransactionService = injector.getInstance(AccountTransactionService.class)
-    }
-    
     @Test
     void testVoucherExpiry() {
         Voucher expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(cayenneContext)
@@ -61,8 +54,6 @@ class VoucherExpiryJobTest extends TestWithDatabase {
 
         voucherExpiryJob.executeWithDate(new Date())
 
-        //create new context to avoid data cache
-        cayenneContext = cayenneService.getNewContext()
 
         Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(cayenneContext)
         Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(cayenneContext)
@@ -125,9 +116,6 @@ class VoucherExpiryJobTest extends TestWithDatabase {
         VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, accountTransactionService)
 
         voucherExpiryJob.executeWithDate(new Date())
-
-        //create new context to avoid data cache
-        cayenneContext = cayenneService.getNewContext()
 
         Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(cayenneContext)
         Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(cayenneContext)

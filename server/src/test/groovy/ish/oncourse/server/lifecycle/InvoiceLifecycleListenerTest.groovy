@@ -38,7 +38,6 @@ class InvoiceLifecycleListenerTest extends TestWithDatabase {
     
     @BeforeEach
     void initTriggers() throws Exception {
-        super.setup()
         injector.getInstance(GroovyScriptService.class).initTriggers()
     }
     
