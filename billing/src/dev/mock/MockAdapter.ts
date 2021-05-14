@@ -10,7 +10,7 @@ import {BillingApiMock} from "./api/BillingApiMock";
 export const initMockDB = () => new MockAdapter();
 
 export class MockAdapter {
-  public api = new axiosMockAdapter(defaultAxios);
+  public api = new axiosMockAdapter(defaultAxios, { delayResponse: 1000 });
 
   constructor() {
     BillingApiMock.apply(this);
@@ -27,9 +27,9 @@ export class MockAdapter {
 }
 
 // Resolve function with logger
-export const promiseResolve = (config, data = {}, headers = {}) => {
+export function promiseResolve<D = any>(config, data: D = {} as any, headers = {}) {
   console.log("%c ----------------", "color: black");
-  console.log(`%c Api request to: /${config.url}`, "color: #bada55");
+  console.log(`%c Api request to: ${config.url}`, "color: #bada55");
   console.log(`%c Api request method: ${config.method}`, "color: #bada55");
   console.log(`%c request params:`, "color: #bada55");
   if (config.method === "get") {

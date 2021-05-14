@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, CircularProgress } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -54,10 +54,9 @@ const Navigation = (props) => {
               onClick={handleNext}
               className={classes.button}
               disabled={disabled || loading}
+              loading={loading}
             >
-              {loading ?
-                <CircularProgress className={classes.loading}/> :
-                activeStep === steps.length - 2 ? "Finish" : "Next"}
+              {activeStep === steps.length - 2 ? "Finish" : "Next"}
             </CustomButton>
         </div>
       )}

@@ -17,12 +17,15 @@ body {
 }
 
 .input {
+  border-top: none;
+  border-left: none;
+  border-right: none;
   border-bottom: 1px solid #ccc;
   font-family: inherit;
   font-size: inherit;
   padding: 1px 6px;
-  min-width: 70px;
   outline: none;
+  min-width: 2ch;
   &:focus {
     border-bottom: 2px solid #f7941d;
   }

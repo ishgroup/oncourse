@@ -7,9 +7,7 @@
  */
 
 import React, { useEffect } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import { connect, Dispatch } from "react-redux";
+import { connect } from "react-redux";
 import LeftMenu from "../common/LeftMenu";
 import NameForm from "./Steps/NameForm";
 import TemplateForm from "./Steps/TemplateForm";
@@ -21,34 +19,22 @@ import ErrorPage from "../ErrorPage";
 import { SITE_KEY } from "../../constant/common";
 import {SitesPage} from "./Steps/SitesPage";
 import {State} from "../../redux/reducers";
+import {ExistingCustomerSteps, NewCustomerSteps, Step, UserType} from "../../models/User";
+import {Dispatch} from "redux";
+import {createStyles, makeStyles} from "@material-ui/core/styles";
+import {AppTheme} from "../../models/Theme";
 
-const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles((theme: AppTheme) =>
   createStyles({
     root: {
-      width: "100%",
-      marginTop: "64px",
-      height: "calc(100vh - 64px)",
-      display: "flex",
-      alignItems: "center",
-    },
-    minWidth1200: {
-      minWidth: "1200px",
-    },
-    minWidth800: {
-      minWidth: "800px",
+      width: "100%"
     },
     formWrapper: {
-      width: "100%",
       display: "flex",
       justifyContent: "center",
-      padding: "40px 20px 40px 190px",
-      maxHeight: "calc(100vh - 64px)",
-    },
-    stepWrapper: {
-      width: "400px",
-    },
-    imageStepWrapper: {
-      width: "1000px",
+      alignItems: "center",
+      padding: "0px 20px 0px 190px",
+      height: "100%",
     },
     instructions: {
       marginTop: theme.spacing(1),
@@ -57,15 +43,12 @@ const useStyles = makeStyles((theme: Theme) =>
     actionsContainer: {
       marginBottom: theme.spacing(2),
     },
+    coloredHeaderText: {
+      color: theme.statistics.coloredHeaderText.color,
+    },
   }),
 );
 
-const NewCustomerSteps = ["Site name", "Templates", "Contact", "Organisation", "All done!"] as const;
-const ExistingCustomerSteps = ["Sites"] as const;
-
-type NewCustomerStep = typeof NewCustomerSteps[number];
-type ExistingCustomerStep = typeof ExistingCustomerSteps[number];
-type Step = NewCustomerStep | ExistingCustomerStep;
 
 const getComponent = (type: Step, props: any) => {
   switch (type) {
@@ -88,20 +71,26 @@ const getComponent = (type: Step, props: any) => {
 interface Props {
   serverError?: any;
   setCaptchaToken?: any;
+  userType?: UserType;
 }
 
-const CustomizedSteppers: React.FC<Props> = (
+const Stepper: React.FC<Props> = (
   {
     serverError,
-    setCaptchaToken
+    userType
   }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [steps, setSteps] = React.useState<Step[]>([]);
 
   useEffect(() => {
-    setSteps([...NewCustomerSteps]);
-  }, []);
+    if (userType === "New") {
+      setSteps([...NewCustomerSteps]);
+    }
+    if (userType === "Existing") {
+      setSteps([...ExistingCustomerSteps]);
+    }
+  }, [userType]);
 
   useEffect(() => {
     const loadScriptByURL = (id, url) => {
@@ -130,10 +119,10 @@ const CustomizedSteppers: React.FC<Props> = (
 
   const childrenProps = { activeStep, steps, handleBack, handleNext };
 
-  const activePage = React.useMemo(() => getComponent(steps[activeStep], childrenProps), [activeStep]);
+  const activePage = React.useMemo(() => getComponent(steps[activeStep], childrenProps), [activeStep,steps]);
 
   return (
-    <div className={clsx(classes.root, activeStep === 1 ? classes.minWidth1200 : classes.minWidth800)}>
+    <div className={classes.root}>
       <LeftMenu
         items={steps}
         activeStep={activeStep}
@@ -141,7 +130,7 @@ const CustomizedSteppers: React.FC<Props> = (
 
       <div className={classes.formWrapper}>
         {serverError ? <ErrorPage/> : (
-          <div className={activeStep === 1 ? classes.imageStepWrapper : classes.stepWrapper}>
+          <div>
             {activePage}
           </div>
         )}
@@ -154,8 +143,8 @@ const mapStateToProps = (state: State) => ({
   serverError: state.serverError
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCaptchaToken: (token) => dispatch(setCaptchaToken(token)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomizedSteppers);
+export default connect(mapStateToProps, mapDispatchToProps)(Stepper);

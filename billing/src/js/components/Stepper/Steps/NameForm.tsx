@@ -10,14 +10,19 @@ import React, { useEffect, useState, useRef } from 'react';
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
-import { connect, Dispatch } from "react-redux";
+import { connect } from "react-redux";
 import Navigation from "../Navigations";
 import { checkSiteName, setLoadingValue, setSitenameValue } from "../../../redux/actions";
 import { usePrevious } from "../../Hooks/usePrevious";
 import { SITE_KEY } from "../../../constant/common";
 import {State} from "../../../redux/reducers";
+import {Dispatch} from "redux";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme:any) => ({
+  root: {
+    minWidth: "400px"
+  },
   textFieldWrapper: {
     minHeight: "61px"
   },
@@ -35,6 +40,9 @@ const useStyles = makeStyles((theme:any) => ({
   errorMessage: {
     fontSize: "12px",
     color: "#f44336"
+  },
+  input: {
+    minWidth: "70px"
   }
 }));
 
@@ -132,7 +140,7 @@ const NameForm = (props: any) => {
   }
 
   return (
-    <form>
+    <form className={classes.root}>
       <h2 className={classes.coloredHeaderText}>Give your site a name</h2>
       <Typography>Choose a name for your team or company</Typography>
 
@@ -140,7 +148,7 @@ const NameForm = (props: any) => {
         <div className={classes.textFieldWrapper2}>
           <Typography>https://</Typography>
           <span
-            className="input"
+            className={clsx(classes.input, "input")}
             onInput={(e) => setNewCollegeName(e)} ref={inputRef} contentEditable
             onKeyPress={(e) => keyPress(e)}
           />
@@ -168,10 +176,10 @@ const mapStateToProps = (state: State) => ({
   sendTokenAgain: state.sendTokenAgain,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   setSitenameValue: (name: string) => dispatch(setSitenameValue(name)),
   setLoadingValue: (value) => dispatch(setLoadingValue(value)),
   checkSiteName: ({ name, token }) => dispatch(checkSiteName({ name, token })),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NameForm as any);
+export default connect(mapStateToProps, mapDispatchToProps)(NameForm);

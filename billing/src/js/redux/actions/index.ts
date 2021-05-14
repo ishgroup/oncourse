@@ -1,4 +1,4 @@
-import { _toRequestType, FULFILLED, REJECTED } from "./ActionUtils";
+import { FULFILLED, REJECTED } from "./ActionUtils";
 
 export const FETCH_START = "common/fetch/start";
 export const FETCH_SUCCESS = FULFILLED("common/fetch");
@@ -20,6 +20,14 @@ export const SET_SEND_TOKEN_AGAIN_VALUE = "SET_SEND_TOKEN_AGAIN_VALUE";
 export const SET_SERVER_ERROR_VALUE = "SET_SERVER_ERROR_VALUE";
 export const RESET_STORE = "RESET_STORE";
 export const SET_LOADING_VALUE = "SET_LOADING_VALUE";
+
+export const GET_SITES = "GET_SITES";
+export const GET_SITES_FULFILLED = FULFILLED(GET_SITES);
+
+export const getSites = (userId: string) => ({
+  type: GET_SITES,
+  payload: userId
+});
 
 export const setCaptchaToken = (token: string) => ({
   type: SET_CAPTCHA_TOKEN,

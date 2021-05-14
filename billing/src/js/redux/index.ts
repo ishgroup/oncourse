@@ -1,5 +1,4 @@
-import { applyMiddleware, compose, createStore, StoreEnhancer } from 'redux';
-import { Store } from "react-redux";
+import {applyMiddleware, compose, createStore, Store, StoreEnhancer} from 'redux';
 import { createLogger } from "redux-logger";
 import { createEpicMiddleware } from "redux-observable";
 import { createCollegeReducer } from "./reducers";

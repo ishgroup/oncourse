@@ -13,9 +13,11 @@ import {
   SET_SITENAME_VALUE,
   SET_SERVER_ERROR_VALUE,
   RESET_STORE,
-  SET_LOADING_VALUE,
+  SET_LOADING_VALUE, GET_SITES, GET_SITES_FULFILLED,
 } from "../actions";
 import { contactFormInitialValue, organisationFormInitialValue } from "../initialValues";
+import {Site} from "../../models/Site";
+
 
 export interface State {
   collegeKey: string;
@@ -26,6 +28,7 @@ export interface State {
   sendTokenAgain: boolean;
   serverError: boolean;
   loading: boolean;
+  sites: Site[];
   message: {
     message: string;
     error: boolean;
@@ -58,6 +61,7 @@ const initState: State = {
   sendTokenAgain: true,
   serverError: false,
   loading: false,
+  sites: [],
   message: {
     message: "",
     error: false
@@ -115,6 +119,7 @@ export const createCollegeReducer = (state: State = initState, action): State =>
         sendTokenAgain: action.payload
       };
 
+    case GET_SITES:
     case CREATE_COLLEGE:
       return {
         ...state,
@@ -154,6 +159,13 @@ export const createCollegeReducer = (state: State = initState, action): State =>
       return {
         ...state,
         loading: action.payload
+      }
+
+    case GET_SITES_FULFILLED:
+      return {
+        ...state,
+        sites: action.payload,
+        loading: false
       }
 
     default:

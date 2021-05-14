@@ -1,8 +1,9 @@
 import React from "react";
-import { connect, Dispatch } from "react-redux";
+import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { resetStore, setServerErrorValue } from "../redux/actions";
 import {State} from "../redux/reducers";
+import {Dispatch} from "redux";
 
 const useStyles = makeStyles((theme: any) => ({
   link: {
@@ -35,7 +36,7 @@ const mapStateToProps = (state: State) => ({
   serverError: state.serverError
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   setServerErrorValue: (value: boolean) => dispatch(setServerErrorValue(value)),
   resetStore: () => dispatch(resetStore())
 });

@@ -9,7 +9,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useFormik } from "formik";
-import { connect, Dispatch } from "react-redux";
+import { connect } from "react-redux";
 import * as yup from "yup";
 import CustomTextField from "../../common/TextField";
 import { setContactFormValues } from "../../../redux/actions";
@@ -17,6 +17,7 @@ import Navigation from "../Navigations";
 import { phoneRegExp } from "../../../constant/common";
 import { addEventListenerWithDeps } from "../../Hooks/addEventListnerWithDeps";
 import {State} from "../../../redux/reducers";
+import {Dispatch} from "redux";
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
@@ -141,8 +142,8 @@ const mapStateToProps = (state: State) => ({
   contactForm: state.contactForm,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   setContactFormValues: (contactFormData) => dispatch(setContactFormValues(contactFormData)),
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ContactForm as any);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

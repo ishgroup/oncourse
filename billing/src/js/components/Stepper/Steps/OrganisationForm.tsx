@@ -11,13 +11,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Autocomplete } from "@material-ui/lab";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { connect, Dispatch } from "react-redux";
+import { connect } from "react-redux";
 import CustomTextField from "../../common/TextField";
 import { createCollege, setOrganisationFormValues } from "../../../redux/actions";
 import Navigation from "../Navigations";
 import { countries, countriesTimeZone } from "../../../utils";
 import { addEventListenerWithDeps } from "../../Hooks/addEventListnerWithDeps";
 import {State} from "../../../redux/reducers";
+import {Dispatch} from "redux";
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
@@ -236,9 +237,9 @@ const mapStateToProps = (state: State) => ({
   organisationForm: state.organisationForm,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   createCollege: (data) => dispatch(createCollege(data)),
   setOrganisationFormValues: (organisationFormData) => dispatch(setOrganisationFormValues(organisationFormData)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrganisationForm as any);
+export default connect(mapStateToProps, mapDispatchToProps)(OrganisationForm);

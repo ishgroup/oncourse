@@ -9,7 +9,7 @@
 import React, { useCallback, useState } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import { connect, Dispatch } from "react-redux";
+import { connect } from "react-redux";
 import { GridList, GridListTile, Typography, FormControl } from "@material-ui/core";
 import Navigation from "../Navigations";
 import { setTemplateValue } from "../../../redux/actions";
@@ -21,6 +21,7 @@ import d from "../../../../images/d.png";
 import e from "../../../../images/e.png";
 import f from "../../../../images/f.png";
 import {State} from "../../../redux/reducers";
+import {Dispatch} from "redux";
 
 const imgData = [
   {
@@ -174,8 +175,8 @@ const mapStateToProps = (state: State) => ({
   templateStore: state.webSiteTemplate,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   setTemplateValue: (template: string) => dispatch(setTemplateValue(template)),
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(TemplateForm as any);
+export default connect(mapStateToProps, mapDispatchToProps)(TemplateForm);

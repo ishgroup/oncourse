@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
-import CustomizedSteppers from '../components/Stepper'
-import Header from "../components/common/Header";
+import {createStyles, makeStyles, ThemeProvider} from '@material-ui/core/styles';
+import Stepper from './Stepper/Stepper'
+import Header from "./common/Header";
 import {
   DarkThemeKey,
   DefaultThemeKey,
@@ -12,13 +12,52 @@ import {
 import { darkTheme, defaultTheme, monochromeTheme, highcontrastTheme, christmasTheme } from "../themes/ishTheme";
 import { ThemeContext} from "../themes/ThemeContext";
 import MessageProvider from "./common/message/MessageProvider";
+import LoadingIndicator from "./common/Loading";
+import BillingService from "../api/services/BillingApi";
+import {UserType} from "../models/User";
+import {useDispatch} from "react-redux";
+import {getSites} from "../redux/actions";
 
+
+export const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      width: "100%",
+      marginTop: "64px",
+      height: "calc(100vh - 64px)",
+      display: "flex"
+    },
+  }),
+);
 
 const Billing = () => {
+  const [userType, setUserType] = React.useState<UserType>(null);
+  const dispatch = useDispatch();
+
+  const classes = useStyles();
+
+  React.useEffect(() => {
+    const search = new URLSearchParams(window.location.search);
+    const user = search.get("user");
+
+    if (user) {
+      BillingService.checkUser(user).then(exist => {
+        if(exist) {
+          setUserType("Existing")
+          dispatch(getSites(user));
+        } else {
+          setUserType("New")
+        }
+        window.history.replaceState({}, document.title, location.protocol + '//' + location.host + location.pathname);
+      })
+    } else {
+      setUserType("New")
+    }
+  },[]);
+
   const themeHandler = (name: any) => {
     setThemeName(name);
     setTheme(currentTheme(name));
-
     localStorage.setItem("theme", name);
   };
 
@@ -73,7 +112,9 @@ const Billing = () => {
     >
       <ThemeProvider theme={theme}>
         <Header/>
-        <CustomizedSteppers />
+        <div className={classes.root}>
+          {userType ? <Stepper userType={userType} /> : <LoadingIndicator />}
+        </div>
         <MessageProvider />
       </ThemeProvider>
     </ThemeContext.Provider>
