@@ -309,7 +309,7 @@ class TCSIIntegration implements PluginTrait {
             studentUid = createStudent()
         }
         
-        String courseUid = highEducation.getCustomFieldValue(TCSI_COURSE_UID)?.toString() ?: createCourseGroup()
+        String courseUid = highEducation.getCustomFieldValue(TCSI_COURSE_UID)?.toString()
 
         if (!courseUid) {
             courseUid = getCourseGroup()

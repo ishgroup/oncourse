@@ -33,47 +33,15 @@ import ish.oncourse.server.cayenne.Student
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
+import org.apache.commons.lang3.StringUtils
+
+import java.math.RoundingMode
 import java.time.Duration
 import java.time.LocalDate
 
 
 class TCSIUtils {
     static final String DATE_FORMAT='yyyy-MM-dd'
-    
-    @CompileDynamic
-    static String testStudent() {
-        Map<String, Object> student = [:]
-        student["student_identification_code"] = '123' // E313
-            student["date_of_birth"] = '1991-07-20'  // E314
-        
-
-        student["student_family_name"] = 'artyom' // E402
-        student["student_given_name_first"] ='kravchenko'   // E403
-
-
-        student["gender_code"] = "M"
-        student["atsi_code"] = "9"
-        student["country_of_birth_code"] = "1101"
-        student["language_spoken_at_home_code"] = "9999"
-        student["year_left_school"] = '9999'
-        student["level_left_school"] = '10'
-        student["term_address_country_code"] = "1101"
-
-
-        student["term_address_postcode"] = '2000' // E319
-        student["residential_address_postcode"] = '2000' // E320
-        student["residential_address_street"] = 'Consulrisk 12'   // E410
-        student["residential_address_suburb"] = 'Sydney'   //E469
-        student["residential_address_state"] = 'NSW'  // E470
-
-        
-        def studentData  = [
-                'correlation_id' : "studentData_${System.currentTimeMillis()}",
-                'student' : student
-        ]
-
-        return JsonOutput.toJson([studentData])
-    }
     
     @CompileDynamic
     static String getStudentData(Student s) {
@@ -280,34 +248,33 @@ class TCSIUtils {
 
         course["course_code"] = c.code
         course["course_name"] = c.name
-        
-        if (c.fullTimeLoad) {
-            try {
-                course["course_of_study_load"]  = new BigDecimal(c.fullTimeLoad) 
-            } catch(Exception ignored) {
-                course["course_of_study_load"] =  0
-            }
+
+        List<Course> units = getUnitCourses(c, highEducationType)
+        BigDecimal studyLoad = BigDecimal.ZERO
+        units*.fullTimeLoad.findAll { StringUtils.trimToNull(it) && it.number}.each {
+            studyLoad += new BigDecimal(it)
         }
         
+        if (StringUtils.trimToNull(c.fullTimeLoad) && c.fullTimeLoad.number) {
+            studyLoad += new BigDecimal(c.fullTimeLoad)
+        }
+        course["course_of_study_load"] = studyLoad.setScale(2, RoundingMode.UP)
         
-        List<Course> units = getUnitCourses(c, highEducationType)
-        units << c
-
         List<CourseClass> classes = (units*.courseClasses.flatten() as List<CourseClass>).sort { CourseClass clazz -> clazz.startDateTime}
         
         course["course_effective_from_date"] = (classes.first().startDateTime?:new Date()).format(DATE_FORMAT)
         course["course_effective_to_date"] = (classes.last().endDateTime?:new Date()).format(DATE_FORMAT)
 
         
-        Duration duration = Duration.ZERO
+        Long durationDays = 0
         classes.groupBy {it.course}.each { k, v ->
             CourseClass clazz = v.find { it.startDateTime && it.endDateTime }
             if (clazz) {
-                duration += Duration.between(clazz.startDateTime.toInstant(), clazz.endDateTime.toInstant())
+                durationDays += Duration.between(clazz.startDateTime.toInstant(), clazz.endDateTime.toInstant()).toDays()
             }
         }
         
-        course["standard_course_duration"] =  new BigDecimal(duration.toDays()).divide(new BigDecimal(365)) 
+        course["standard_course_duration"] =  new BigDecimal(durationDays/365).setScale(2, RoundingMode.UP) 
         
         def courseData  = [
                 'correlation_id' : "courseData_${System.currentTimeMillis()}",
