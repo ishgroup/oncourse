@@ -10,7 +10,6 @@ import {Route, routes} from '../../routes';
 import {Page, Theme, User} from "../../model";
 import {getHistoryInstance} from "../../history";
 import CustomButton from "../../common/components/CustomButton";
-// import ModalPublish from "../../common/components/ModalPublish";
 import {BlockState} from "../../containers/content/containers/blocks/reducers/State";
 import PageService from "../../services/PageService";
 import ModalPublish from "../../common/components/ModalPublish";
@@ -319,6 +318,9 @@ class Sidebar extends React.Component<Props, any> {
     const {anchorEl, showModal} = this.state;
 
     const userName = `${user.firstName || ''} ${user.lastName || ''}`;
+    const userNameForAvatar = user.firstName && user.lastName
+      ? user.firstName[0] + user.lastName[0]
+      : userName.substring(0, 2);
 
     const getSubRoutes = url => (
       routes.filter(route => !route.isPublic && route.parent === url).map((route: Route, index) => (
@@ -366,7 +368,7 @@ class Sidebar extends React.Component<Props, any> {
     );
 
     const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+    const id = open ? 'simple-popover' : null;
 
     return (
       <Grid item xs={2} className={clsx(classes.sidebarWrapper, slim && classes.sidebarWrapperSlim)}>
@@ -391,7 +393,7 @@ class Sidebar extends React.Component<Props, any> {
                 className={clsx(classes.avatar, slim && "mt-1")}
                 onClick={(e) => this.handleClick(e)}
               >
-                {userName.substring(0, 2)}
+                {userNameForAvatar}
               </Avatar>
               <Popover
                 id={id}
