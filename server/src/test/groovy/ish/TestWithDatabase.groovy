@@ -32,8 +32,6 @@ import org.apache.cayenne.map.*
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.ValidationFailure
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.dbunit.database.DatabaseConfig
 import org.dbunit.database.DatabaseConnection
 import org.dbunit.database.IDatabaseConnection
@@ -51,7 +49,6 @@ import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
-
 /**
  * Subclass this when you want to set up a database for your test.
  */
@@ -59,8 +56,9 @@ import java.sql.Statement
 @Tag("integration")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class TestWithDatabase extends TestWithBootique {
-    private static final Logger logger = LogManager.getLogger()
+
     protected DataContext cayenneContext
+    protected ICayenneService cayenneService
 
     private static final String RESET_AUTO_INCREMENT_TEMPLATE_MYSQL = "ALTER TABLE %s AUTO_INCREMENT = %d"
     private static final int NEXT_ID = 10000
