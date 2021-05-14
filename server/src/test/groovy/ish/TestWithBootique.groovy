@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.AngelModule
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.modules.TestModule
 import ish.oncourse.server.report.JRRuntimeConfig
@@ -32,13 +31,12 @@ abstract class TestWithBootique {
 
     private static boolean loggingInitialised = false
 
-    public  BQRuntime injector
-    protected ICayenneService cayenneService
+    public BQRuntime injector
 
     protected  DataSource dataSource
     protected static String databaseType = MARIADB
 
-    private static final Logger logger = LogManager.getLogger()
+    protected static final Logger logger = LogManager.getLogger()
 
     @RegisterExtension
     public static BootiqueTestFactory testFactory = new BootiqueTestFactory()
@@ -58,13 +56,11 @@ abstract class TestWithBootique {
         createInjectors()
     }
 
-
     @AfterAll
     @Order(2)
     private void cleanUpDB() {
         injector.shutdown()
     }
-
 
     /**
      * Override this class in the TestWithDatabase subclass

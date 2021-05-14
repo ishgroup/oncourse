@@ -1,17 +1,16 @@
 package ish.oncourse.server.entity.mixins
 
 import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
 import ish.TestWithBootique
 import ish.oncourse.server.cayenne.Contact
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
-@CompileStatic
-class ContactMixinTest {
+// Note that bootique is needed here to add mixins to the model
+@CompileDynamic
+class ContactMixinTest extends TestWithBootique {
 
-    @CompileDynamic
     @Test
     void testPortalLoginURL() {
         Contact contactWitoutEmail = Mockito.mock(Contact)
