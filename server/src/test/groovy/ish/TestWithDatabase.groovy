@@ -100,7 +100,7 @@ abstract class TestWithDatabase extends TestWithBootique {
 
                 ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
                 dataSourceReplaceValues(rDataSet)
-                executeDatabaseOperation(dataSet)
+                executeDatabaseOperation(rDataSet)
             }
         }
         ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
