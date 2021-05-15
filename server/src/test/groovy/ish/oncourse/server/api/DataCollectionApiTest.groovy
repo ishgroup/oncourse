@@ -52,7 +52,7 @@ class DataCollectionApiTest extends TestWithDatabase {
         cayenneContext.commitChanges()
 
         DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
-
+        integrationApi.setCayenneService(cayenneService)
         List<FieldTypeDTO> fieldTypes = integrationApi.getFieldTypes(DataCollectionTypeDTO.ENROLMENT.toString())
 
         Assertions.assertEquals(32, fieldTypes.size())
