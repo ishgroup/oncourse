@@ -90,9 +90,6 @@ class TCSIIntegration implements PluginTrait {
     String organisationId
     String jwkCertificate
     ObjectContext objectContext
-
-    static final String TCSI_COURSE_ADMISSION_UID  = 'tsciCourseAdmissionUid'
-    CustomFieldType courseAdmissionUidField
     
     static final String TCSI_ENROLMENT_UNIT_UID  = 'tsciEnrolmentUnitUid'
     CustomFieldType enrolmentUnitUidField
@@ -125,17 +122,6 @@ class TCSIIntegration implements PluginTrait {
 
     private loadCustomField() {
         
-        courseAdmissionUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_COURSE_ADMISSION_UID)).selectOne(objectContext)
-        if (!courseAdmissionUidField) {
-            courseAdmissionUidField = objectContext.newObject(CustomFieldType)
-            courseAdmissionUidField.dataType = DataType.TEXT
-            courseAdmissionUidField.entityIdentifier = Enrolment.simpleName
-            courseAdmissionUidField.key = TCSI_COURSE_ADMISSION_UID
-            courseAdmissionUidField.name = 'TCSI course admission identifier'
-            courseAdmissionUidField.isMandatory = false
-            courseAdmissionUidField.sortOrder = 1002l
-            objectContext.commitChanges()
-        }
         
         enrolmentUnitUidField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(TCSI_ENROLMENT_UNIT_UID)).selectOne(objectContext)
         if (!enrolmentUnitUidField) {
@@ -281,7 +267,7 @@ class TCSIIntegration implements PluginTrait {
             interraptExport("Highe education course not found in TCSI")
         }
         
-        String admissionUid = courseAdmission.getCustomFieldValue(TCSI_COURSE_ADMISSION_UID) ?: createCourseAdmission(studentUid,courseUid)
+        String admissionUid = getAdmission(studentUid, courseUid) ?: createCourseAdmission(studentUid,courseUid)
         String campuseUid = null
         if (enrolment.courseClass.room) {
             campuseUid = getCampus()
@@ -359,23 +345,18 @@ class TCSIIntegration implements PluginTrait {
     }
     
     String createCourseAdmission(String studentUID, String courseUid) {
-
+        String message = "Create admission"
         getClient().request(POST, JSON) {
             uri.path = ADMISSIONS_PATH
             body = TCSIUtils.getAdmissionData(enrolment.student, highEducation, highEducationType, courseAdmission, studentUID, courseUid)
 
             response.success = { resp, result -> 
-                def admission =  handleResponce(result as List, "Create admission")
-                def uid = admission['course_admissions_uid'].toString()
-                EnrolmentCustomField customField = objectContext.newObject(EnrolmentCustomField)
-                customField.relatedObject = courseAdmission
-                customField.customFieldType = courseAdmissionUidField
-                customField.value = uid
-                objectContext.commitChanges()
-                return uid
+                def admission =  handleResponce(result as List, message)
+                return admission['course_admissions_uid'].toString()
             }
+            
             response.failure =  { resp, body ->
-                interraptExport("Something unexpected happend, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
             }
         } 
     }
@@ -431,7 +412,27 @@ class TCSIIntegration implements PluginTrait {
             }
         }
     }
+    
+    String getAdmission(String studentUid, String courseUid) {
+        String message = 'looking for admission'
+        getClient().request(GET, JSON) {
+            uri.path = STUDENTS_PATH + "/$studentUid/course-admissions"
+            response.success = { resp, result ->
 
+                def admissions = handleResponce(result, message)
+                def admission =  admissions['course_admission'].find { courseUid == it['courses_uid']?.toString() }
+                
+                if (admission && admission['course_admissions_uid']) {
+                    return admission['course_admissions_uid'].toString()
+                }
+                return null
+            }
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
+    
     private RESTClient getClient() {
         if  (!authToken) {
             authenticatDevice()

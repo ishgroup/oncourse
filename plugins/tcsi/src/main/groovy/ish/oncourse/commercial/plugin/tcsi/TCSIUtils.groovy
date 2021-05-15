@@ -430,13 +430,6 @@ class TCSIUtils {
                     admission["course_outcome_date"] =  endDate.format(DATE_FORMAT) //E592  
                 }
             }
-            
-            
-            admission["course_outcome_code"] = '1'
-            LocalDate endDate = courseAdmission.outcomes.findAll {it.endDate != null}*.endDate.sort().reverse().first()
-            if (endDate) {
-                admission["course_outcome_date"] =  endDate.format(DATE_FORMAT)
-            }
         }
 
         String basisForAdmissionCode =  courseAdmission.getCustomFieldValue('basisForAdmissionCode').toString()
