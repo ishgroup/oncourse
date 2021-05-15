@@ -15,11 +15,11 @@ class OutcomeUtils {
 	}
 	
 	def static Date getOutcomeStartDate(Outcome outcome) {
-		outcome.startDate?: new CalculateStartDate(outcome).calculate();
+		outcome.startDate?: new CalculateStartDate(outcome, true).calculate();
 	}
 
 	def static Date getOutcomeEndDate(Outcome outcome) {
-		outcome.endDate?: new CalculateEndDate(outcome).calculate();
+		outcome.endDate?: new CalculateEndDate(outcome, true).calculate();
 	}
 	
 }
