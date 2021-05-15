@@ -57,6 +57,22 @@
         @include transform(translateY(0));
       }
     }
+    @if $isTransparentHomePageMenu == false {
+      &#Main {
+        padding-top: 60px;
+        #header {
+          .header-container {
+            .top-bar {
+              .nav-header {
+                &::after {
+                  @include transform(translateY(0));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
   #header {
     .header-container {
@@ -428,6 +444,11 @@
                 display: none;
               }
             }
+            > ul.list-horizontal {
+              &:last-child {
+                display: none;
+              }
+            }
           }
         }
       }
@@ -440,6 +461,9 @@
       width: 100%;
       border-bottom: 1px solid #e4e4e4;
       border-bottom: 1px solid rgba(255,255,255,.1);
+      @include responsive($media-tablet) {
+        padding-left: $navbarHeaderPaddingLeftMediaTablet;
+      }
       .internal-page & {
         border-bottom: 0 none;
         @extend .page-shadow;
@@ -472,21 +496,28 @@
           .nav-static-menu {
             float: left;
             font-size: 0;
+            width: $navbarStaticMenuWidth;
+            height: $navbarStaticMenuHeight;
             > li {
-              display: inline-block;
-              border-right: 1px solid rgba(255,255,255,.1);
+              display: $navbarStaticMenuItemDisplay;
+              border-right: $navbarStaticMenuItemBorderRight;
+              text-align: $navbarStaticMenuItemTextAlign;
+              width: $navbarStaticMenuItemWidth;
               &:last-child {
                 border-right: 0 none;
               }
               > a {
-                padding: 23px 50px;
+                padding: $navbarStaticMenuItemLinkPadding;
                 display: block;
-                color: $white;
-                font-family: $fontFamilyOne;
-                font-weight: bold;
+                color: $navbarStaticMenuItemLinkColor;
+                font-family: $navbarStaticMenuItemLinkFontFamily;
+                font-weight: $navbarStaticMenuItemLinkFontWeight;
                 position: relative;
-                text-transform: uppercase;
-                letter-spacing: 1px;
+                text-transform: $navbarStaticMenuItemLinkTextTransform;
+                letter-spacing: $navbarStaticMenuItemLinkLetterSpacing;
+                white-space: $navbarStaticMenuItemLinkWhiteSpace;
+                text-overflow: $navbarStaticMenuItemLinkTextOverflow;
+                overflow: $navbarStaticMenuItemLinkOverflow;
                 @extend .flyout;
                 &:hover, &.is-hover {
                   color: $anchorColor;
@@ -496,7 +527,17 @@
                 }
               }
               a {
-                font-size: 14px;
+                font-size: $navbarStaticMenuItemLinkFontSize;
+              }
+              ul {
+                display: none;
+              }
+              &.hasChild {
+                >a {
+                  i.fa {
+                    display: none;
+                  }
+                }
               }
             }
           }
@@ -574,6 +615,7 @@
     cursor: pointer;
     @include responsive($media-tablet) {
       padding: 24px 50px;
+      display: $navHamburgerToggleDisplayMediaTablet;
     }
     &::after {
       display: none;

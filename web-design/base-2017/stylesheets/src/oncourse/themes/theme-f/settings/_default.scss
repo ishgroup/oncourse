@@ -113,9 +113,12 @@ $contentParagraphMarginBottom: 0 !default;
 
 $pageDefaultPadding: 30px !default;
 
+$headerGroupMaxWidth: 250px !default;
+
 @import "courses";
 @import "elements";
 @import "checkout";
 @import "layouts";
 @import "cms";
 @import "menu";
+@import "tutors";

@@ -11,14 +11,14 @@
 $header-theme: "d";
 
 $contentContainerBackground: none !default;
-$contentContainerPaddingSidebarLeftTablet: 75px 75px 35px 15px !default;
-$contentContainerPaddingSidebarRightTablet: 75px 75px 35px 75px !default;
+$contentContainerPaddingSidebarLeftTablet: 75px 15px 35px 15px !default;
+$contentContainerPaddingSidebarRightTablet: 75px 15px 35px 15px !default;
 
 
 $headerContainerPosition: relative !default;
 $headerContainerMarginBottom: 0px !default;
 $headerGroupPadding: 18px 15px 32px !default;
-$headerGroupPosition: absolute !default;
+$headerGroupSiteLogoPosition: absolute !default;
 $headerGroupPositionTop: 50% !default;
 $headerGroupMargin: -12px !default;
 $headerGroupDisplay: table !default;

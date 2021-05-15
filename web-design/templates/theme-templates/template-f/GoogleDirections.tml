@@ -1,14 +1,14 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <t:if t:test="hasLocation">
-        <div id="directions" class="directions-wrapper">
-            <t:if t:test="hideDirections" negate="true">
-                <form id="getdir" method="post" onsubmit="return false;">
-                    <label>Directions from:</label>
-                    <input type="text" size="25" id="from" name="from" value="${directionsFrom}" />
-                    <input name="submit" type="button" value="Get Directions!" class="getDirections" />
-                </form>
-                <div id="dirtxt" class="" />
-            </t:if>
-        </div>
-    </t:if>
+  <t:if t:test="hasLocation">
+    <div id="directions" class="directions-wrapper">
+      <t:if t:test="hideDirections" negate="true">
+        <form id="getdir" method="post" onsubmit="return false;" class="clearfix">
+          <label>Directions from:</label>
+          <input type="text" size="25" id="from" name="from" value="${directionsFrom}" />
+          <input name="submit" type="button" value="Get Directions!" class="getDirections" />
+        </form>
+        <div id="dirtxt" class="" />
+      </t:if>
+    </div>
+  </t:if>
 </t:container>

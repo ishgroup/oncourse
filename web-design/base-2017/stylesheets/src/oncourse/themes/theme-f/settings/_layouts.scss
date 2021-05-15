@@ -141,6 +141,7 @@ $socialIconBackgroundPositionFacebook: -29px 1px !default;
 $socialIconBackgroundPositionTwitter: -58px 1px !default;
 $socialIconBackgroundPositionGPlus: -87px 1px !default;
 
+$sliderWrapperMargin: 0 auto !default;
 $sliderPagerWidth: 20px !default;
 $sliderNavigationBackground: url($imagePath + 'icons/bx-controls.png') 0 0 no-repeat !default;
 $sliderNavigationPrevBackgroundPosition: 0 0 !default;
@@ -149,3 +150,5 @@ $sliderNavigationPrevBackgroundPositionHover: 0 0 !default;
 $sliderNavigationNextBackgroundPosition: -23px 0 !default;
 $sliderNavigationNextPositionRight: -75px !default;
 $sliderNavigationNextBackgroundPositionHover: -23px 0 !default;
+
+$sliderPagerPositionBottom: 16px !default;

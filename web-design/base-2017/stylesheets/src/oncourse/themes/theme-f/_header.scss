@@ -84,6 +84,7 @@
         text-align: $headerGroupTextAlign;
         @include responsive($media-tablet) {
           padding: $headerGroupPaddingMediaTablet;
+          right: $headerGroupPositionRightMediaTablet;
         }
         #siteLogo {
           position: $headerGroupSiteLogoPosition;

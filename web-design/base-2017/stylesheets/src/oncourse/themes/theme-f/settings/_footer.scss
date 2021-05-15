@@ -199,7 +199,7 @@ $footerMainTitleTextColor: $white !default;
 $footerMainTitleTextColorHover: $secondaryColor !default;
 
 $footerMainPadding: 73px 0 0px !default;
-$footerMainContainerPaddingBottom: 55px !default;
+$footerMainContainerPaddingBottom: 25px !default;
 $footerMainLogoMarginBottom: 30px !default;
 $footerMainLogoDisplay: block !default;
 
@@ -208,15 +208,37 @@ $footerMainPhoneTextFontSize: 20px !default;
 $footerMainPhoneTextFontWeight: bold !default;
 $footerMainPhoneTextDisplay: block !default;
 
-$footerMainSocialLinksMarginTop: 20px !default;
+$footerMainSocialLinksMarginTop: 30px !default;
 $footerMainSocialLinksMarginBottom: 20px !default;
-$footerMainSocialLinksListWidth: 34px !default;
-$footerMainSocialLinksListPadding: 0 0 0px 10px !default;
+$footerMainSocialLinksDisplay: flex !default;
+$footerMainSocialLinksAlignItems: center !default;
+$footerMainSocialLinksJustifyContent: center !default;
+
+$footerMainSocialLinksListWidth: 62px !default;
+$footerMainSocialLinksListPadding: 0 2.5px 0px 2.5px !default;
 $footerMainSocialLinksListDisplay: inline-block !default;
-$footerMainSocialLinksListAnchorDisplay: inline-block !default;
 $footerMainSocialLinksListAnchorColor: #fff !default;
-$footerMainSocialLinksListAnchorOpacityHover: 0.8 !default;
-$footerMainSocialLinksListAnchorColorHover: #fff !default;
+
+$footerMainSocialLinksListAnchorBorder: 2px solid !default;
+$footerMainSocialLinksListAnchorBorderColor: $theme-color !default;
+$footerMainSocialLinksListAnchorBorderRadius: 100% !default;
+$footerMainSocialLinksListAnchorPadding: 2px !default;
+$footerMainSocialLinksListAnchorWidth: 52px !default;
+$footerMainSocialLinksListAnchorHeight: 52px !default;
+$footerMainSocialLinksListAnchorDisplay: flex !default;
+$footerMainSocialLinksListAnchorAlignItems: center !default;
+$footerMainSocialLinksListAnchorJustifyContent: center !default;
+$footerMainSocialLinksListAnchorTextAlign: center !default;
+$footerMainSocialLinksListAnchorFontSize: 26px !default;
+$footerMainSocialLinksListAnchorPosition: relative !default;
+
+$footerMainSocialLinksListAnchorInstagram: #0073b2 !default;
+$footerMainSocialLinksListAnchorFacebook: #4867aa !default;
+$footerMainSocialLinksListAnchorTwitter: #55acee !default;
+$footerMainSocialLinksListAnchorGooglePlus: #dd5144 !default;
+$footerMainSocialLinksListAnchorYoutube: #f00 !default;
+
+$footerMainSocialLinksListAnchorColorHover: $theme-color !default;
 
 $footerMainTitleFontWeight: bold !default;
 $footerMainTitleFontSize: 20px !default;

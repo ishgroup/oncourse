@@ -18,7 +18,7 @@
           </h3>
           <div class="sites-loc-wrapper">
             <div class="sites-map-link">
-              <a href="#" onclick="zoomMapForSite(${site.angelId})" title="click to show on the map above" class="class_location">Show on map</a>
+              <a title="click to show on the map above" class="class_location" data-coordinates='${site.latitude.doubleValue()}, ${site.longitude.doubleValue()}, "${site.name}", "${site.suburb}", ${site.angelId}, "/site/${site.angelId}"'>Show on map</a>
               <br />
               <a href="/site/${site.angelId}">Details and directions</a>
               <br />

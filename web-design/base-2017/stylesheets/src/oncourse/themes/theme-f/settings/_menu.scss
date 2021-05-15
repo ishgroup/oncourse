@@ -8,6 +8,8 @@
 // It is licensed to you under the Apache License, version 2.0
 //
 
+$isTransparentHomePageMenu: false !default;
+
 $headerToolbarMarginTop: 10px !default;
 $headerToolbarPosition: relative !default;
 
@@ -240,3 +242,26 @@ $searchMoreOptionsLinkPosition: absolute !default;
 $searchMoreOptionsLinkPositionTop: 0 !default;
 
 $searchBoxQuickSearchFontSize: 13px !default;
+
+$navbarHeaderPaddingLeftMediaTablet: $headerGroupMaxWidth !default;
+
+$navHamburgerToggleDisplayMediaTablet: none !default;
+
+$navbarStaticMenuWidth: 87% !default;
+$navbarStaticMenuHeight: 60px !default;
+
+$navbarStaticMenuItemDisplay: inline-block !default;
+$navbarStaticMenuItemBorderRight: 1px solid rgba(255,255,255,.1) !default;
+$navbarStaticMenuItemTextAlign: center !default;
+$navbarStaticMenuItemWidth: 18% !default;
+
+$navbarStaticMenuItemLinkFontSize: 14px !default;
+$navbarStaticMenuItemLinkPadding: 23px 20px !default;
+$navbarStaticMenuItemLinkColor: $white !default;
+$navbarStaticMenuItemLinkFontFamily: $fontFamilyOne !default;
+$navbarStaticMenuItemLinkFontWeight: bold !default;
+$navbarStaticMenuItemLinkTextTransform: uppercase !default;
+$navbarStaticMenuItemLinkLetterSpacing: 1px !default;
+$navbarStaticMenuItemLinkWhiteSpace: nowrap !default;
+$navbarStaticMenuItemLinkTextOverflow: ellipsis !default;
+$navbarStaticMenuItemLinkOverflow: hidden !default;

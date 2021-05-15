@@ -47,7 +47,6 @@
 */
 
 //= require vendor/jquery-migrate-3.3.0.js
-//= require vendor/jquery-ui-1.12.1.min.js
 
 //= require vendor/jquery.validate.min.js
 //= require vendor/additional-methods.min.js

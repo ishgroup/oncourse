@@ -18,7 +18,8 @@
 				</ul>
 			</t:if>
 			<a class="nyromodalreload actionLink" target="_blank" href="/addDiscount">Add a discount code</a>
-			<a class="actionLink" target="_blank" href="https://skillsoncourse.com.au/login">My Account</a>
+			<a class="actionLink login-link" target="_blank" href="https://skillsoncourse.com.au/login">My Account</a>
+			<a class="actionLink login-link-icon" target="_blank" href="https://skillsoncourse.com.au/login"></a>
 		</div>
 	</t:if>
 </t:container>

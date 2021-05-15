@@ -1,7 +1,33 @@
+/**
+ * bxSlider v4.2.15
+ */
+
 /** VARIABLES
 ===================================*/
 /** RESET AND LAYOUT
 ===================================*/
+
+@mixin bx-next-prev(
+  $posLeft, $prevBGPosition, $prevBGPositionHover,
+  $posRight, $nextBGPosition, $nextBGPositionHover
+) {
+  .bx-prev {
+    left: $posLeft;
+    background-position: $prevBGPosition;
+    &:hover, &:focus {
+      background-position: $prevBGPositionHover;
+    }
+  }
+
+  .bx-next {
+    right: $posRight;
+    background-position: $nextBGPosition;
+    &:hover, &:focus {
+      background-position: $nextBGPositionHover;
+    }
+  }
+}
+
 .bx-wrapper {
   position: relative;
   margin: $sliderWrapperMargin;
@@ -64,6 +90,7 @@
   .bx-pager-item,
   .bx-controls-auto .bx-controls-auto-item {
     display: inline-block;
+    vertical-align: bottom;
     *zoom: 1;
     *display: inline;
   }
@@ -80,20 +107,16 @@
     }
   }
 
-  .bx-prev {
-    left: $sliderPagerControlPrevLeftPosition;
-    background-position: $sliderPagerControlPrevBGPosition;
-    &:hover, &:focus {
-      background-position: $sliderPagerControlPrevBGPositionHover;
-    }
-  }
+  @include bx-next-prev(
+    $sliderPagerControlPrevLeftPosition, $sliderPagerControlPrevBGPosition, $sliderPagerControlPrevBGPositionHover,
+    $sliderPagerControlNextRightPosition, $sliderPagerControlNextBGPosition, $sliderPagerControlNextBGPositionHover
+  );
 
-  .bx-next {
-    right: $sliderPagerControlNextRightPosition;
-    background-position: $sliderPagerControlNextBGPosition;
-    &:hover, &:focus {
-      background-position: $sliderPagerControlNextBGPositionHover;
-    }
+  &.bx-inverse {
+    @include bx-next-prev(
+      $sliderPagerControlPrevLeftPositionInverse, $sliderPagerControlPrevBGPositionInverse, $sliderPagerControlPrevBGPositionHoverInverse,
+      $sliderPagerControlNextRightPositionInverse, $sliderPagerControlNextBGPositionInverse, $sliderPagerControlNextBGPositionHoverInverse
+    );
   }
 
   .bx-controls-direction {
@@ -180,6 +203,8 @@
 .bxslider {
   margin: 0;
   padding: 0;
+  /*fix flickering when used background-image instead of <img> (on Chrome)*/
+  -webkit-perspective: 1000;
 }
 ul.bxslider {
   list-style: none;

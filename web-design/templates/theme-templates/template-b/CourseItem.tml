@@ -1,63 +1,44 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-  <div class="clearfix courseItem${tagClasses}" itemscope="itemscope" itemtype="http://schema.org/Product">
+  <div itemtype="http://schema.org/Product" itemscope="itemscope" class="vevent courseItem${tagClasses}">
+  <div t:type="ui/image" name="${courseItemModel.course.code}_1" width="120" height="71"></div>
     <t:if t:test="isList" negate="true">
+      <h1 class="summary page-title">${courseItemModel.course.name}</h1>
+      <t:if t:test="courseItemModel.nrt">
+        <img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
+      </t:if>
       <t:if t:test="addThisEnabled">
-        <div class="clearfix">
-          <div class="addthis">
-            <span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
-          </div>
+        <div class="addthis">
+          <span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
         </div>
       </t:if>
-      <h1 itemprop="name" class="summary page-title">
-        <t:if t:test="courseItemModel.nrt">
-          <img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
-        </t:if>
-        ${courseItemModel.course.name}
-      </h1>
-      <div class="course-item-image align-left">
-        <div t:type="ui/image" name="${courseItemModel.course.code}_1" class="course-img" width="200" height="183" alt="${courseItemModel.course.name}"></div>
-      </div>
+      <div class="clearboth"></div>
     <p:else>
-      <div class="course-image course-code-list-image">
-        <div t:type="ui/image" name="${courseItemModel.course.code}_1" class="course-img" width="200" height="183" alt="${courseItemModel.course.name}"></div>
-      </div>
       <h2 itemprop="name">
-        <meta content="https://${request.serverName}/course/${courseItemModel.course.code}" itemprop="url" />
         <a href="/course/${courseItemModel.course.code}" class="url">${courseItemModel.course.name}</a>
         <t:if t:test="courseItemModel.nrt">
           <img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
         </t:if>
       </h2>
       <div class="description courseShortDescription">
-        <span itemprop="description">
-          <t:outputraw value="${courseDetail}"/>
-        </span>
+        <t:outputraw value="${courseDetail}"/>
         <strong class="more">[<a href="/course/${courseItemModel.course.code}">More</a>]</strong>
       </div>
+       <div class="hero-image-banner">
+            <div t:type="ui/image" name="${courseItemModel.course.code}_hero" class="course-img" width="275" height="183"></div>
+          </div>
     </p:else>
     </t:if>
-
-    <t:if t:test="isList" negate="true">
-      <div class="courseDescription">
-        <span itemprop="description">
-          <t:outputraw value="${courseDetail}" />
-        </span>
-      </div>
-    </t:if>
-
-    <div class="clearfix"></div>
-
     <t:if t:test="${courseItemModel.showModules}">
-      <div t:type="ui/CourseModules" modules="courseItemModel.course.modules" qualification="courseItemModel.course.qualification" course="courseItemModel.course"></div>
-      <div class="clearfix"></div>
+      <div t:type="ui/CourseModules" modules="courseItemModel.course.modules"
+         qualification="courseItemModel.course.qualification"
+         course="courseItemModel.course"></div>
     </t:if>
-
     <t:loop source="courseItemModel.availableClasses" value="courseClass">
       <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
     </t:loop>
     <t:if test="courseItemModel.otherClasses.empty" negate="true">
       <p class="other-classes-control clearfix">
-        <a href="javascript:return false;" >Show other classes</a>
+        <a href="javascript:;">Show other classes</a>
       </p>
       <div class="other-classes" style="display:none;">
         <t:loop source="courseItemModel.otherClasses" value="courseClass">
@@ -67,7 +48,7 @@
     </t:if>
     <t:if test="courseItemModel.fullClasses.empty" negate="true">
       <p class="full-classes-control clearfix">
-        <a href="javascript:return false;" >Show full classes</a>
+        <a href="javascript:;">Show full classes</a>
       </p>
       <div class="full-classes" style="display:none;">
         <t:loop source="courseItemModel.fullClasses" value="courseClass">
@@ -78,25 +59,32 @@
     <t:if t:test="courseItemModel.course.allowWaitingList">
       <p class="waiting-list-title" data-cid="join-button" data-prop-id="${courseItemModel.course.id}">
         <t:if t:test="courseItemModel.enrollableClasses.empty" negate="true">
-          <t:if t:test="hasMoreAvailablePlaces"> If there isn't a class to suit you, please
-            <p:else> Classes are full. Please </p:else>
+          <t:if t:test="hasMoreAvailablePlaces"> If there isn't a class to suit you, please <p:else> Classes are full. Please </p:else>
           </t:if>
           <p:else> This course has no current classes. Please </p:else>
         </t:if>
-        <button class="join-btn" type="button">Join</button> the waiting list.
+        <img src="/s/img/button_join.png" alt="join" /> the waiting list.
       </p>
-      <div class="clearfix"></div>
-    </t:if>
-    <t:if t:test="courseItemModel.haveRelatedCourses">
-      <h3>Related Courses</h3>
-      <div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
-    </t:if>
-    <t:if t:test="courseItemModel.hasRelatedProducts()">
-      <h3>Related Products</h3>
-      <div t:type="ui/relatedporducts" model="courseItemModel"></div>
     </t:if>
     <t:if t:test="isList" negate="true">
-      <span t:type="ui/coursetestimonials" course="courseItemModel.course"/>
+      <div class="courseDescription">
+        <t:outputraw value="${courseDetail}" />
+      </div>
+    </t:if>
+    <t:if t:test="courseItemModel.haveRelatedCourses">
+      <div class="related-courses clearfix">
+        <h3>Related Courses</h3>
+        <div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
+      </div>
+    </t:if>
+    <t:if t:test="courseItemModel.hasRelatedProducts()">
+      <div class="related-products clearfix">
+        <h3>Related Products</h3>
+        <div t:type="ui/relatedporducts" model="courseItemModel"></div>
+      </div>
+    </t:if>
+    <t:if t:test="isList" negate="true">
+      <span t:type="ui/coursetestimonials" course="courseItemModel.course" count ="literal:4"/>
     </t:if>
   </div>
 </t:container>

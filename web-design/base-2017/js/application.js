@@ -105,29 +105,29 @@ function initAddConcessionButtons() {
 
 // Inits autocomplete in advanced search for suburb field
 function initSuburbAutoComplete() {
-	if ($j(".suburb-autocomplete")) {
-		$j(".suburb-autocomplete").autocomplete({
-			source: '/ish/internal/autocomplete.sub',
-			minLength: 3,
-			select: function(event, ui) {
-				setPostcodeAndStateFromSuburb(this.form, ui.item.value);
-			}
-		});
+	// if ($j(".suburb-autocomplete")) {
+	// 	$j(".suburb-autocomplete").autocomplete({
+	// 		source: '/ish/internal/autocomplete.sub',
+	// 		minLength: 3,
+	// 		select: function(event, ui) {
+	// 			setPostcodeAndStateFromSuburb(this.form, ui.item.value);
+	// 		}
+	// 	});
 
-		$j(".suburb-autocomplete").autocomplete({
-			close: function(event, ui) {
-				setSuburbAfterAutoComplete(this.form);
-			}
-		});
-	}
+	// 	$j(".suburb-autocomplete").autocomplete({
+	// 		close: function(event, ui) {
+	// 			setSuburbAfterAutoComplete(this.form);
+	// 		}
+	// 	});
+	// }
 
-	// Prevents form submission on pressing of enter in suburb autocomplete field
-	$j(document.body).on('keydown', '.suburb-autocomplete', function(key) {
-		if (key.which == 13) {
-			key.preventDefault();
-			return false;
-		}
-	});
+	// // Prevents form submission on pressing of enter in suburb autocomplete field
+	// $j(document.body).on('keydown', '.suburb-autocomplete', function(key) {
+	// 	if (key.which == 13) {
+	// 		key.preventDefault();
+	// 		return false;
+	// 	}
+	// });
 }
 
 /*
@@ -323,14 +323,14 @@ function deleteCookie( name, path, domain ) {
 		 * then its title attribute will be displayed over the cursor on hover
 		 * [Requires jquery.tooltip plugin]
 		 */
-		$j('.tooltip').tooltip({
-			top: 0,
-			track: true,
-			delay: 0,
-			showURL: false,
-			showBody: " - ",
-			fade: 250
-		});
+		// $j('.tooltip').tooltip({
+		// 	top: 0,
+		// 	track: true,
+		// 	delay: 0,
+		// 	showURL: false,
+		// 	showBody: " - ",
+		// 	fade: 250
+		// });
 
 		// Show link content in modal using iframe
 		$j(document.body).on('click', '.nyromodalreload', function(e) {

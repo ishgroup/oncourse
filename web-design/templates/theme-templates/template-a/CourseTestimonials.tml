@@ -1,11 +1,23 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
   <t:if test="hasItems">
     <div class="courseTestimonials">
       <h3>Course testimonials:</h3>
       <ul>
         <t:loop source="surveys" value="survey">
           <t:if test="survey.testimonial">
-            <li>${survey.testimonial}</li>
+            <li>
+              <div class="testimonial-rating" rating="${survey.courseScore}">
+                <span class="icon-rating"></span>
+                <span class="icon-rating"></span>
+                <span class="icon-rating"></span>
+                <span class="icon-rating"></span>
+                <span class="icon-rating"></span>
+              </div>
+              <p>
+                <strong>${survey.enrolment.student.contact.fullName}</strong>
+                ${survey.testimonial}
+              </p>
+            </li>
           </t:if>
         </t:loop>
       </ul>

@@ -13,7 +13,10 @@
                 <span class="icon-rating"></span>
                 <span class="icon-rating"></span>
               </div>
-              <p>${survey.testimonial}</p>
+              <p>
+                <strong>${survey.enrolment.student.contact.fullName}</strong>
+                ${survey.testimonial}
+              </p>
             </li>
           </t:if>
         </t:loop>

@@ -19,11 +19,11 @@ $coursesMenuMargin: 0 0 0 25px !default;
 // Courses menu tree background
 $coursesMenuBackground: transparent !default;
 // Courses menu tree spaces
-$coursesMenuPadding: 15px 25px 15px 8px !default;
+$coursesMenuPadding: 15px 25px 15px 0px !default;
 // Courses menu tree list item text color
 $coursesMenuItemColor: $black !default;
 // Courses menu tree list item spaces
-$coursesMenuItemPadding: 0 0 0 14px !default;
+$coursesMenuItemPadding: 0 !default;
 // Courses menu tree top item border
 $coursesMenuItemBorderBottom: 1px dotted transparent !default;
 

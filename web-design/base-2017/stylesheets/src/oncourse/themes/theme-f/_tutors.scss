@@ -9,7 +9,7 @@
 //
 
 @include theme('f') {
-  body#page8 {
+  #{$defaultTutorsPageId} {
     &.internal-page #content {
       @extend .flat-page;
       .addthis {

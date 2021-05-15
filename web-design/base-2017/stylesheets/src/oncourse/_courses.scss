@@ -386,6 +386,80 @@
       }
     }
   }
+
+  .tutors-wrapper {
+    @if $customTutorList == false {
+      .tutors-list {
+        margin: 25px -15px;
+        font-size: 0;
+        .tutor-item {
+          display: inline-block;
+          width: 100%;
+          padding: 0 15px;
+          vertical-align: top;
+          margin-bottom: 35px;
+          font-size: $coursesContentFontSize;
+          @include responsive($media-tablet) {
+            width: 50%;
+            margin-bottom: 25px;
+          }
+          .tutor-content {
+            .tutor-image {
+              >a {
+                &.tutor-profile-link {
+                  max-width: 82px;
+                  display: block;
+                  font-size: 0;
+                }
+                > img {
+                  border-radius: 100%;
+                  border: 1px solid #ddd;
+                }
+              }
+            }
+            .tutor-details {
+              margin-top: 15px;
+              .tutor-link {
+                margin-top: 10px;
+              }
+            }
+          }
+        }
+      }
+      &.layout-2 {
+        .tutors-list {
+          .tutor-item {
+            .tutor-content {
+              @include responsive($media-small) {
+                @include display(flex);
+                margin: 0 -10px;
+              }
+              .tutor-image {
+                text-align: center;
+                padding-top: 0;
+                @include responsive($media-small) {
+                  padding: 0 10px;
+                }
+                >a {
+                  display: block;
+                  width: 105px;
+                  margin: 0 auto;
+                }
+              }
+              .tutor-details {
+                text-align: center;
+                @include responsive($media-small) {
+                  margin-top: 0;
+                  text-align: left;
+                  padding: 0 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 //
@@ -1259,33 +1333,33 @@
           }
         }
       }
-    } @elseif $courseTestimonialsFlexSliderEnable == true {
-      .flex-direction-nav {
-        a {
-          overflow: hidden;
-          text-indent: 100%;
-          white-space: nowrap;
-          background: $courseTestimonialsSliderArrowBackground;
-          background-size: $courseTestimonialsSliderArrowBackgroundSize;
-          display: block;
-          margin-top: -15px;
-          position: absolute;
-          top: 50%;
-          width: $courseTestimonialsSliderArrowWidth;
-          height: $courseTestimonialsSliderArrowHeight;
-          border: 0 none !important;
-          padding: 0 !important;
-        }
+      } @elseif $courseTestimonialsFlexSliderEnable == true {
+        .flex-direction-nav {
+          a {
+            overflow: hidden;
+            text-indent: 100%;
+            white-space: nowrap;
+            background: $courseTestimonialsSliderArrowBackground;
+            background-size: $courseTestimonialsSliderArrowBackgroundSize;
+            display: block;
+            margin-top: -15px;
+            position: absolute;
+            top: 50%;
+            width: $courseTestimonialsSliderArrowWidth;
+            height: $courseTestimonialsSliderArrowHeight;
+            border: 0 none !important;
+            padding: 0 !important;
+          }
 
-        .flex-prev {
-          left: $courseTestimonialsSliderArrowPosition;
-        }
+          .flex-prev {
+            left: $courseTestimonialsSliderArrowPosition;
+          }
 
-        .flex-next {
-          background-position: $courseTestimonialsSliderArrowRightBackgroundPosition;
-          right: $courseTestimonialsSliderArrowPosition;
+          .flex-next {
+            background-position: $courseTestimonialsSliderArrowRightBackgroundPosition;
+            right: $courseTestimonialsSliderArrowPosition;
+          }
         }
       }
     }
   }
-}

@@ -57,7 +57,7 @@
     </t:loop>
     <t:if test="courseItemModel.otherClasses.empty" negate="true">
       <p class="other-classes-control clearfix">
-        <a href="javascript:return false;" >Show other classes</a>
+        <a href="javascript:;">Show other classes</a>
       </p>
       <div class="other-classes" style="display:none;">
         <t:loop source="courseItemModel.otherClasses" value="courseClass">
@@ -67,7 +67,7 @@
     </t:if>
     <t:if test="courseItemModel.fullClasses.empty" negate="true">
       <p class="full-classes-control clearfix">
-        <a href="javascript:return false;" >Show full classes</a>
+        <a href="javascript:;">Show full classes</a>
       </p>
       <div class="full-classes" style="display:none;">
         <t:loop source="courseItemModel.fullClasses" value="courseClass">

@@ -188,6 +188,16 @@
         }
       }
     }
+    .tutors-wrapper {
+      .bx-wrapper {
+        .bx-prev {
+          left: -10px;
+        }
+        .bx-next {
+          right: -10px;
+        }
+      }
+    }
   }
 
   @if $enableDefaultBubbleInfo == false {
@@ -297,29 +307,32 @@
     }
   }
 
-  .filters-container .side-box {
-    .taggroup-location {
-      color: $fstLocationColor;
-    }
-    .filter-option {
-      @extend ._checkbox;
-      label.checkbox {
-        &::before {
-          border-color: $fstOptionLabelBeforeBorderColor;
-        }
+  .filters-container {
+    margin-left: $fstContainerMarginLeft;
+    .side-box {
+      .taggroup-location {
+        color: $fstLocationColor;
       }
-      label.filter-option-label {
-        padding-left: 26px;
-        &.hasOptionChild {
-          &::before, &::after {
-            background: $fstOptionLabelHasOptionChildBeforeBackground;
-            border: $fstOptionLabelHasOptionChildBeforeBorder;
+      .filter-option {
+        @extend ._checkbox;
+        label.checkbox {
+          &::before {
+            border-color: $fstOptionLabelBeforeBorderColor;
           }
         }
-      }
-      input[type="checkbox"]:checked+label.checkbox::after {
-        background-color: $fstOptionLabelAfterCheckedBackgroundColor;
-        border-color: $fstOptionLabelAfterCheckedBorderColor;
+        label.filter-option-label {
+          padding-left: 26px;
+          &.hasOptionChild {
+            &::before, &::after {
+              background: $fstOptionLabelHasOptionChildBeforeBackground;
+              border: $fstOptionLabelHasOptionChildBeforeBorder;
+            }
+          }
+        }
+        input[type="checkbox"]:checked+label.checkbox::after {
+          background-color: $fstOptionLabelAfterCheckedBackgroundColor;
+          border-color: $fstOptionLabelAfterCheckedBorderColor;
+        }
       }
     }
   }

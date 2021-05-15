@@ -143,6 +143,8 @@ $coursesJoinButtonTextAlign: center !default;
 // Waiting list join button curved
 $coursesJoinButtonBorderRadius: 5px !default;
 
+$customTutorList: false !default;
+
 //
 //
 // Following settings are handles courses content font style
@@ -474,9 +476,7 @@ $courseTestimonialsSliderWrapperMarginBottom: 30px !default;
 $courseTestimonialsSliderPagerDisplay: none !default;
 
 $courseTestimonialsSliderArrowBackgroundColor: $primaryColor !default;
-$courseTestimonialsSliderArrowBackground: transparent url('data:image/svg+xml;utf8,<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 22 15" enable-background="new 0 0 22 15" xml:space="preserve">\
-<g><path fill="'+ $courseTestimonialsSliderArrowBackgroundColor +'" d="M7.6,0.1c0.4,0,0.8,0.1,1.1,0.4c0.6,0.6,0.6,1.5,0,2.1L3.8,7.5l4.9,4.9c0.6,0.6,0.6,1.5,0,2.1 s-1.5,0.6-2.1,0l-6-6C0,7.9,0,7,0.6,6.4l6-6C6.8,0.2,7.2,0.1,7.6,0.1L7.6,0.1z"/></g>\
-<g><path fill="'+ $courseTestimonialsSliderArrowBackgroundColor +'" d="M14.5,14.9c-0.4,0-0.8-0.1-1.1-0.4c-0.6-0.6-0.6-1.5,0-2.1l4.9-4.9l-4.9-4.9c-0.6-0.6-0.6-1.5,0-2.1 s1.5-0.6,2.1,0l6,6c0.6,0.6,0.6,1.5,0,2.1l-6,6C15.3,14.8,14.9,14.9,14.5,14.9L14.5,14.9z"/></g></svg>') no-repeat !default;
+$courseTestimonialsSliderArrowBackground: transparent url('data:image/svg+xml;utf8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%20%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%2022%2015%22%20enable-background%3D%22new%200%200%2022%2015%22%20xml%3Aspace%3D%22preserve%22%3E%3Cg%3E%20%3Cpath%20fill%3D%22'+ encode-color($courseTestimonialsSliderArrowBackgroundColor) +'%22%20d%3D%22M7.6%2C0.1c0.4%2C0%2C0.8%2C0.1%2C1.1%2C0.4c0.6%2C0.6%2C0.6%2C1.5%2C0%2C2.1L3.8%2C7.5l4.9%2C4.9c0.6%2C0.6%2C0.6%2C1.5%2C0%2C2.1%20s-1.5%2C0.6-2.1%2C0l-6-6C0%2C7.9%2C0%2C7%2C0.6%2C6.4l6-6C6.8%2C0.2%2C7.2%2C0.1%2C7.6%2C0.1L7.6%2C0.1z%22/%3E%20%3C/g%3E%20%3Cg%3E%20%3Cpath%20fill%3D%22'+ encode-color($courseTestimonialsSliderArrowBackgroundColor) +'%22%20d%3D%22M14.5%2C14.9c-0.4%2C0-0.8-0.1-1.1-0.4c-0.6-0.6-0.6-1.5%2C0-2.1l4.9-4.9l-4.9-4.9c-0.6-0.6-0.6-1.5%2C0-2.1%20s1.5-0.6%2C2.1%2C0l6%2C6c0.6%2C0.6%2C0.6%2C1.5%2C0%2C2.1l-6%2C6C15.3%2C14.8%2C14.9%2C14.9%2C14.5%2C14.9L14.5%2C14.9z%22/%3E%20%3C/g%3E%20%3C/svg%3E') no-repeat !default;
 
 $courseTestimonialsSliderArrowBackgroundSize: 24px !default;
 $courseTestimonialsSliderArrowWidth: 11px !default;

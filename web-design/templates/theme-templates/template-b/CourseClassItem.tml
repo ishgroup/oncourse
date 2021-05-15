@@ -6,6 +6,7 @@
       </div>
     </span>
   </t:if>
+
   <div itemtype="http://schema.org/EducationEvent" itemscope="itemscope" class="clearfix classItem ${classCommenced}" data-classid="${courseClass.id}" data-sku="${courseClass.uniqueIdentifier}">
     <div class="row">
       <!--hcalendar implementation-->
@@ -63,8 +64,7 @@
                   </abbr>
                   <t:if t:test="hasManySessions"> (first session)</t:if>
                 </a>
-                <br/>
-                <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline session-item" rel="session">${classSessions}</a>
+                
               </div>
 
               <p:else>

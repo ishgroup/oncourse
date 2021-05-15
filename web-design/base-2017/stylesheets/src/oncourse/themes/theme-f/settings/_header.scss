@@ -19,14 +19,14 @@ $headerContainerPosition: fixed !default;
 $headerContainerMarginBottom: 0px !default;
 
 $headerGroupPadding: 14.5px 15px 14.5px 80px !default;
-$headerGroupMaxWidth: 250px !default;
 $headerGroupPosition: absolute !default;
 $headerGroupPositionLeft: 0 !default;
 $headerGroupPositionRight: 0 !default;
 $headerGroupZIndex: 1 !default;
 $headerGroupTextAlign: center !default;
 
-$headerGroupPaddingMediaTablet: 14.5px 15px !default;
+$headerGroupPaddingMediaTablet: 14.5px 15px 14.5px 0px !default;
+$headerGroupPositionRightMediaTablet: auto !default;
 
 $headerGroupLinkDisplay: table-cell !default;
 $headerGroupLinkVerticalAlign: middle !default;

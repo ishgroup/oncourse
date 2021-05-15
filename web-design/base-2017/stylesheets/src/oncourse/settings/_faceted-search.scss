@@ -23,7 +23,7 @@ $fstMainFontWeight: bold !default;
 
 $fstTitleBackground: transparent !default;
 $fstTitleColor: $primaryColor !default;
-$fstTitlePadding: 9px 0px 13px 8px !default;
+$fstTitlePadding: 9px 0px 13px 0px !default;
 $fstTitleFontSize: 14px !default;
 $fstTitleBorderBottom: 1px dotted #dedee0 !default;
 
@@ -112,7 +112,7 @@ $fstOptionLabelDisabledTextColor: #c5c5c5 !default;
 $fstOptionLabelDisabledBeforeBorderColor: #e5e5e5 !default;
 $fstOptionCounterDisabledTextColor: $fstOptionLabelDisabledTextColor !default;
 
-$fstLocationListPaddingLeft: 20px !default;
+$fstLocationListPaddingLeft: 0px !default;
 
 $fstLocationListSectionDisplay: block !default;
 

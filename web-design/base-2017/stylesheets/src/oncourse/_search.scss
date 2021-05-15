@@ -15,6 +15,7 @@
 #headerToolbar {
   float: $headerToolbarFloat;
   margin: $headerToolbarMargin;
+  z-index: 1;
 
   // Quicksearch and all search's input text
   .quicksearch, input[type="text"] {
@@ -60,6 +61,8 @@
     width: $searchButtonWidth;
     color: $searchButtonColor;
     padding: $searchButtonPadding;
+    position: relative;
+    outline: 0 none;
     &:hover {
       background: darken($searchButtonBG, 5%);
     }

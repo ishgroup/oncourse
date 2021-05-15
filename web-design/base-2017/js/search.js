@@ -401,9 +401,3 @@ jQuery.fn.hideQuickSearch = function(url, settings) {
 		this.hide();
 	})
 };
-
-(function($j) {
-	$j(document).ready(function() {
-		initSuburbAutoComplete();
-	});
-})(jQuery);

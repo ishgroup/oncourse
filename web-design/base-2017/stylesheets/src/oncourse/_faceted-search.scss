@@ -12,8 +12,13 @@
 @if $fs-enable == true {
   .filters-container {
     position: $fstContainerPosition;
-    margin-left: $fstContainerMarginLeft;
-    padding-right: $fstContainerPaddingLeft;
+    @if $sidebarRight == "on" and $sidebarLeft == "" {
+      margin-left: $fstContainerMarginLeft;
+      padding-right: 0;
+    } @else {
+      padding-right: $fstContainerPaddingLeft;
+      margin-left: 0;
+    }
     br {
       display: none;
     }

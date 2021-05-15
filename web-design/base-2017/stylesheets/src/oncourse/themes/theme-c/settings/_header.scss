@@ -13,14 +13,14 @@ $header-theme: "c";
 $headerFixedPaddingTop: 74px !default;
 
 $contentContainerBackground: none !default;
-$contentContainerPaddingSidebarLeftTablet: 75px 75px 35px 15px !default;
-$contentContainerPaddingSidebarRightTablet: 75px 75px 35px 75px !default;
+$contentContainerPaddingSidebarLeftTablet: 75px 15px 35px 15px !default;
+$contentContainerPaddingSidebarRightTablet: 75px 15px 35px 15px !default;
 
 
 $headerContainerPosition: relative !default;
 $headerContainerMarginBottom: 0px !default;
 
-$headerGroupPosition: relative !default;
+$headerGroupSiteLogoPosition: relative !default;
 $headerGroupSiteLogoZIndex: 0 !default;
 $headerGroupPadding: 3px 15px !default;
 

@@ -28,7 +28,7 @@
             <t:if t:test="courseClass.firstSession">
               <div class="col-xs-24 date">
                 <a timezone="10" rel="session" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time session-date">
-                  <span itemprop="startDate" class="dtstart hide" content="${formatDate(firstSessionStartDate,'yyyy-MM-dd')}">
+                  <span itemprop="startDate" class="dtstart hide" content="${formatDate(firstSessionStartDate,'yyyy-MM-dd')}" data-utc="${getIsoDateTimeString(firstSessionStartdate)}">
                     ${formatDate(firstSessionStartDate,'yyyy-MM-dd')}
                   </span>
 

@@ -35,7 +35,11 @@ function isCoursesPath(pathname) {
 * @return {string} in lowercase decoded tags url
 */
 function filterItem(item) {
-  return decodeURIComponent(item);
+  return escape(decodeURIComponent(item)).toLowerCase();
+}
+
+function weekDays() {
+  return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 }
 
 /**
@@ -124,7 +128,7 @@ CoursesUrlFormat.prototype = {
       before,
       km, s, site;
     // Let the browser do the work
-    parser.href = url;
+    parser.href = url.toLowerCase();
     var pathname = adjustPathName(parser.pathname);
     if (isCoursesPath(pathname)) {
       queries = parser.search.replace(/^\?/, '').split('&');
@@ -269,6 +273,30 @@ CoursesFilter.prototype = {
       if (index > -1) {
         this.request.tags.splice(index, 1);
       }
+      var s = this.request.s !== undefined && this.request.s.includes(path);
+      if (s === true) {
+        this.request.s = undefined;
+      }
+      var km = this.request.km !== undefined && this.request.km.includes(path);
+      if (km === true) {
+        this.request.km = undefined;
+      }
+      var day = this.request.day !== undefined && weekDays().includes(path);
+      if (day === true) {
+        this.request.day = undefined;
+      }
+      var time = this.request.time !== undefined && this.request.time.includes(path);
+      if (time === true) {
+        this.request.time = undefined;
+      }
+      var before = this.request.before !== undefined && this.request.before.includes(path);
+      if (before === true) {
+        this.request.before = undefined;
+      }
+      var site = this.request.site !== undefined && this.request.site.includes(path);
+      if (site === true) {
+        this.request.site = undefined;
+      }
       this.loadCourses();
     }
   },
@@ -333,9 +361,9 @@ CoursesFilter.prototype = {
     });
 
     $j.each(this.request.locations, function (index, path) {
-      var control =  self.getControlBy(filterItem(path).replaceAll('%20' ,' '));
+      var control =  self.getControlBy(filterItem(path).replace(/%20/g ,' '));
       control.prop('checked', true);
-      var tabid = self.getControlBy(filterItem(path).replaceAll('%20' ,' ')).parents("section [id^='loc']").data('tabid');
+      var tabid = self.getControlBy(filterItem(path).replace(/%20/g ,' ')).parents("section [id^='loc']").data('tabid');
 
       $j('#' + tabid).attr('checked', true);
       $j('label[for="' + tabid + '"]').addClass('location-active');
@@ -374,7 +402,7 @@ CoursesFilter.prototype = {
   // Remove checked tag
   removeTag: function (tag) {
     var tagText = unescape(decodeURIComponent(tag));
-    tagText = tagText.replaceAll('&', '%26');
+    tagText = tagText.replace(/&/g, '%26');
 
     var index = this.request.tags.indexOf(tagText);
 
@@ -393,7 +421,7 @@ CoursesFilter.prototype = {
       return "location"
     } else  if (id.indexOf("site_") == 0) {
       return "site"
-    }  else  if (id.indexOf("duration_") == 0) {
+    } else  if (id.indexOf("duration_") == 0) {
       return "duration"
     }
   },
@@ -409,6 +437,7 @@ CoursesFilter.prototype = {
         break;
       case "site":
         this.removeSiteCondition(control);
+        break;
       case "duration":
         this.removeDurationCondition(control);
         break;
@@ -426,6 +455,7 @@ CoursesFilter.prototype = {
         break;
       case "site":
         this.addSiteCondition(control);
+        break;
       case "duration":
         this.addDurationCondition(control);
         break;
@@ -435,7 +465,6 @@ CoursesFilter.prototype = {
   // Uncheck searched location
   removeLocationCondition: function (control) {
     var path = filterItem($j(control).data('path'));
-
     var index = this.request.locations.indexOf(path);
 
     if (index > -1) {
@@ -454,7 +483,7 @@ CoursesFilter.prototype = {
 
   // Remove tags from search request
   removeTagCondition: function(control) {
-    var tag = $j(control).data('path').replaceAll(' ', '%20');
+    var tag = $j(control).data('path').replace(/\s/g, '%20');
 
     if (filterItem(this.request.browseTag) == tag) {
       this.request.browseTag = null;
@@ -471,7 +500,7 @@ CoursesFilter.prototype = {
   addTagCondition: function(control) {
     var self = this;
     var tag = decodeURIComponent($j(control).data('path'));
-    tag = tag.replaceAll('&', '%26');
+    tag = tag.replace(/&/g, '%26');
 
     if (this.request.browseTag) {
       if (this.isParentTag(this.request.browseTag, tag)) {
@@ -498,7 +527,6 @@ CoursesFilter.prototype = {
   addSiteCondition: function (control) {
     this.request.site = $j(control).data('path');
   },
-
 
   addDurationCondition: function (control) {
     this.request.durations.push(filterItem($j(control).data('path')));

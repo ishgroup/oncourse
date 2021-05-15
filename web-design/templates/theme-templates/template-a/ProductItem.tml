@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-  <div itemtype="http://schema.org/Product" itemscope="itemscope" class="vevent courseItem producItem">
+  <div itemtype="http://schema.org/Product" itemscope="itemscope" class="vevent courseItem productItem">
     <t:if t:test="isList"  >
       <t:delegate to="block:list"/>
     </t:if>

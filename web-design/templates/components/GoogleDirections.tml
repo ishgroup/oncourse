@@ -1,66 +1,14 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<t:if t:test="hasLocation">
-
-		<script type="text/javascript">
-
-			function initialize() {
-				vLat = "${mapPositionLatitude}";
-				vLong = "${mapPositionLongitude}";
-
-				gMapOptions = {
-					zoom: 14,
-					<t:if test="needCenter()">
-						center: new google.maps.LatLng(vLat, vLong),
-					</t:if>
-					mapTypeId: google.maps.MapTypeId.ROADMAP
-				};
-
-				near = "${searchingNear}";
-				vSiteAddress = "<t:output value="address" format="jsonFormat" filter="true"/>";
-				vFrom = "<t:output value="directionsFrom" format="jsonFormat" filter="true"/>";
-				showNearMarker = "${hasGlobalPosition}";
-				showMapItems = "${showMapItems}";
-				zoom = null;
-				siteMarkers = new Array();
-				gMapSites = ${sitesArray};
-				mapLoaded=false;
-
-				mapLoad('gmapCanvas', gMapSites, gMapOptions);
-			}
-
-			/**
-			 * the function makes async call to load google map
-			 */
-			function loadMap() {
-				var script = document.createElement('script');
-				script.type = 'text/javascript';
-				//we use this hard code to convert &amp; to real amp.
-				script.src = _keyMap.url('https://maps.googleapis.com/maps/api/js', {key: _keys.googleMaps, v: '3.exp', callback: 'initialize'});
-				document.body.appendChild(script);
-			}
-
-			jQuery(document).ready(function() {
-				if (jQuery('#gmapCanvas').length) {
-					if (typeof google === 'object') {
-						if (typeof google.maps === 'object') {
-							initialize();
-						}
-					} else {
-						loadMap();
-					}
-				}
-			});
-		</script>
-
-		<div id="directions" class="directions-wrapper">
-			<t:if t:test="hideDirections" negate="true">
-				<form id="getdir" method="post" onsubmit="return false;" class="clearfix">
-					<label>Directions from:</label>
-					<input type="text" size="25" id="from" name="from" value="${directionsFrom}" />
-					<input name="submit" type="button" value="Get Directions!" class="getDirections" onclick="dirLoadForId('gmapCanvas');" />
-				</form>
-				<div id="dirtxt" class="" />
-			</t:if>
-		</div>
-	</t:if>
+  <t:if t:test="hasLocation">
+    <div id="directions" class="directions-wrapper">
+      <t:if t:test="hideDirections" negate="true">
+        <form id="getdir" method="post" onsubmit="return false;" class="clearfix">
+          <label>Directions from:</label>
+          <input type="text" size="25" id="from" name="from" value="${directionsFrom}" />
+          <input name="submit" type="button" value="Get Directions!" class="getDirections" />
+        </form>
+        <div id="dirtxt" class="" />
+      </t:if>
+    </div>
+  </t:if>
 </t:container>

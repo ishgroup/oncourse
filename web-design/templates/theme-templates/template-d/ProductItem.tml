@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-  <div itemtype="http://schema.org/Product" itemscope="itemscope" class="vevent courseItem producItem">
+  <div itemtype="http://schema.org/Product" itemscope="itemscope" class="vevent courseItem productItem">
     <t:if t:test="isList"  >
       <t:delegate to="block:list"/>
     </t:if>
@@ -40,55 +40,57 @@
     <div itemtype="http://schema.org/EducationEvent" itemscope="itemscope" class="clearfix classItem vevent" data-classid="${product.id}">
       <div class="row">
         <div itemprop="name" class="col-xs-24 summary">${product.name}</div>
-        <div class="col-xs-24 col-sm-19 col-md-17 class-item-info">
-          <div class="class-item-info-l">
-            <div class="info">
-              <div class="label">Price</div>
-              <t:if t:test="voucherProductWithoutPrice">
-                <div itemprop="price">This voucher has no specified price</div>
-              </t:if>
-              <t:unless test="voucherProductWithoutPrice" >
-                <div class="fee"><t:output value="price" format="moneyFormat(price)" />
-                  <t:if test="hasTax()">
-                    <span class="gst">
-                       inc <acronym title="Goods and Services Tax">GST</acronym>
-                    </span>
-                  </t:if>
-                </div>
-              </t:unless>
-
-              <t:if t:test="courseVoucherProduct">
-                <div class="label">Valid for</div>
-                <div>
-                  ${courseVoucherDescription}
-                  <ul class="class-listing">
-                    <t:loop source="redemptionCourses" value="course">
-                      <li>${course.name}</li>
-                    </t:loop>
-                  </ul>
-                </div>
-              </t:if>
-              <div class="clearboth"></div>
-              <t:unless test="courseVoucherProduct" >
-                <t:if t:test="voucherProductWithValue">
-                  <div class="label">Value</div>
-                  <div><t:output value="value" format="moneyFormat(value)" /></div>
+        <div class="class-item-wrapper">
+          <div class="col-xs-24 col-sm-19 col-md-17 class-item-info classItem-left">
+            <div class="class-item-info-l">
+              <div class="info">
+                <div class="label">Price</div>
+                <t:if t:test="voucherProductWithoutPrice">
+                  <div itemprop="price">This voucher has no specified price</div>
                 </t:if>
-              </t:unless>
-            </div>
-            <t:remove>We need the code only to show product name in confirmation order dialog.
-              We use the implmentation in the template because we have the same for courseClass item.  </t:remove>
-          </div>
-        </div>
+                <t:unless test="voucherProductWithoutPrice" >
+                  <div class="fee"><t:output value="price" format="moneyFormat(price)" />
+                    <t:if test="hasTax()">
+                      <span class="gst">
+                         inc <acronym title="Goods and Services Tax">GST</acronym>
+                      </span>
+                    </t:if>
+                  </div>
+                </t:unless>
 
-        <div class="col-xs-24 col-sm-5 col-md-7">
-          <div class="reactjs-component"
-            data-cid="buy-button"
-            data-prop-can-buy="${canBuy()}"
-            data-prop-payment-gateway-enabled="${paymentGatewayEnabled}"
-            data-prop-id="${product.id}"
-            data-prop-name="${product.name}"
-            data-prop-unique-identifier="${product.sku}"></div>
+                <t:if t:test="courseVoucherProduct">
+                  <div class="label">Valid for</div>
+                  <div>
+                    ${courseVoucherDescription}
+                    <ul class="class-listing">
+                      <t:loop source="redemptionCourses" value="course">
+                        <li>${course.name}</li>
+                      </t:loop>
+                    </ul>
+                  </div>
+                </t:if>
+                <div class="clearboth"></div>
+                <t:unless test="courseVoucherProduct" >
+                  <t:if t:test="voucherProductWithValue">
+                    <div class="label">Value</div>
+                    <div><t:output value="value" format="moneyFormat(value)" /></div>
+                  </t:if>
+                </t:unless>
+              </div>
+              <t:remove>We need the code only to show product name in confirmation order dialog.
+                We use the implmentation in the template because we have the same for courseClass item.  </t:remove>
+            </div>
+          </div>
+
+          <div class="col-xs-24 col-sm-5 col-md-7 classItem-right">
+            <div class="reactjs-component"
+              data-cid="buy-button"
+              data-prop-can-buy="${canBuy()}"
+              data-prop-payment-gateway-enabled="${paymentGatewayEnabled}"
+              data-prop-id="${product.id}"
+              data-prop-name="${product.name}"
+              data-prop-unique-identifier="${product.sku}"></div>
+          </div>
         </div>
       </div>
     </div>

@@ -57,7 +57,7 @@
     </t:loop>
     <t:if test="courseItemModel.otherClasses.empty" negate="true">
       <p class="other-classes-control clearfix">
-        <a href="javascript:return false;" >Show other classes</a>
+        <a href="javascript:;">Show other classes</a>
       </p>
       <div class="other-classes" style="display:none;">
         <t:loop source="courseItemModel.otherClasses" value="courseClass">
@@ -67,7 +67,7 @@
     </t:if>
     <t:if test="courseItemModel.fullClasses.empty" negate="true">
       <p class="full-classes-control clearfix">
-        <a href="javascript:return false;" >Show full classes</a>
+        <a href="javascript:;">Show full classes</a>
       </p>
       <div class="full-classes" style="display:none;">
         <t:loop source="courseItemModel.fullClasses" value="courseClass">
@@ -88,12 +88,16 @@
       <div class="clearfix"></div>
     </t:if>
     <t:if t:test="courseItemModel.haveRelatedCourses">
-      <h3>Related Courses</h3>
-      <div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
+      <div class="related-courses clearfix">
+        <h3>Related Courses</h3>
+        <div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
+      </div>
     </t:if>
     <t:if t:test="courseItemModel.hasRelatedProducts()">
-      <h3>Related Products</h3>
-      <div t:type="ui/relatedporducts" model="courseItemModel"></div>
+      <div class="related-products clearfix">
+        <h3>Related Products</h3>
+        <div t:type="ui/relatedporducts" model="courseItemModel"></div>
+      </div>
     </t:if>
     <t:if t:test="isList" negate="true">
       <span t:type="ui/coursetestimonials" course="courseItemModel.course"/>
