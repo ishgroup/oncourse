@@ -6,6 +6,7 @@ import {Grid} from "@material-ui/core";
 const styles = theme => ({
   contentWrapper: {
     padding: "15px 25px",
+    maxHeight: "100vh",
   },
   fullHeight: {
     minHeight: "100vh",

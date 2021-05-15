@@ -42,6 +42,9 @@ const styles = theme => ({
   },
   notActiveBlock: {
     background: "#fff",
+  },
+  sourceWrapper: {
+    overflowY: "auto",
   }
 });
 
