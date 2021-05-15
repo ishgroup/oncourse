@@ -24,17 +24,17 @@ public class DateTimeUtilTest {
 
 		Calendar cal = createTestCalendar();
 		cal.add(Calendar.DATE, daysToAdd - 1);
-		Assertions.Assertions.assertTrue(cal.getTime().compareTo(DateTimeUtil.addDaysDaylightSafe(createTestCalendar().getTime(), daysToAdd - 1)) == 0);
+		Assertions.assertTrue(cal.getTime().compareTo(DateTimeUtil.addDaysDaylightSafe(createTestCalendar().getTime(), daysToAdd - 1)) == 0);
 
 		cal = createTestCalendar();
 		cal.add(Calendar.DATE, daysToAdd);
 		cal.add(Calendar.HOUR_OF_DAY, 1);
-		Assertions.Assertions.assertTrue(cal.getTime().compareTo(DateTimeUtil.addDaysDaylightSafe(createTestCalendar().getTime(), daysToAdd)) == 0);
+		Assertions.assertTrue(cal.getTime().compareTo(DateTimeUtil.addDaysDaylightSafe(createTestCalendar().getTime(), daysToAdd)) == 0);
 
 		cal = createTestCalendar();
 		cal.add(Calendar.DATE, daysToAdd + 1);
 		cal.add(Calendar.HOUR_OF_DAY, 1);
-		Assertions.Assertions.assertTrue(cal.getTime().compareTo(DateTimeUtil.addDaysDaylightSafe(createTestCalendar().getTime(), daysToAdd + 1)) == 0);
+		Assertions.assertTrue(cal.getTime().compareTo(DateTimeUtil.addDaysDaylightSafe(createTestCalendar().getTime(), daysToAdd + 1)) == 0);
 
 	}
 
