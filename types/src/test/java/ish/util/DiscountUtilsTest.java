@@ -9,17 +9,13 @@ import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.cayenne.DiscountInterface;
-import org.junit.Ignore;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class DiscountUtilsTest {
 
@@ -129,11 +125,10 @@ public class DiscountUtilsTest {
 	 * for different combination of feeIncTax and discountIncTax we found situation when we lose one cent
 	 */
 	@Test
-	@Ignore
 	public void testOneCentProblem() {
 		BigDecimal taxRate = new BigDecimal(0.1);
 		BigDecimal rate = new BigDecimal(1.1);
-		for (int feeIncTaxDollars = 1; feeIncTaxDollars < 10_000 ; feeIncTaxDollars++){
+		for (int feeIncTaxDollars = 1; feeIncTaxDollars < 100 ; feeIncTaxDollars++){
 			Money feeIncTax = new Money(feeIncTaxDollars,0);
 			for (int discountIncTaxDollars = 1 ; discountIncTaxDollars < 0.1 * feeIncTaxDollars ; discountIncTaxDollars++) {
 				Money discountIncTax = new Money(discountIncTaxDollars, 0);
@@ -163,12 +158,7 @@ public class DiscountUtilsTest {
 				Money invoiceLineDiscountEachExTax = invoiceLine.getDiscountEachExTax();
 				Money actualPrice = feeExtTax.subtract(invoiceLineDiscountEachExTax).add(invoiceLineTaxEach);
 
-				if (!expectedPrice.equals(actualPrice)){
-					System.out.println(String.format("class Fee Inc Tax : %s . fee Ext Tax : %s . discount amount Inc Tax : %s . discount Ext Tax : %s TaxAdjustment :  %s " ,
-							feeIncTax,feeExtTax,discountIncTax,discountExtTax,taxAdjustment));
-					System.out.println("expectedPrice: " +  expectedPrice + "  .actualPrice: " + actualPrice + "  .subtract: " + expectedPrice.subtract(actualPrice));
-				}
-
+				Assertions.assertEquals(expectedPrice, actualPrice);
 			}
 		}
 	}
