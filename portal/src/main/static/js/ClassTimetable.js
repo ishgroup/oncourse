@@ -1,5 +1,5 @@
 import jQuery, * as $ from "./jquery-1.11.2";
-import "./moment.min";
+import * as moment from "./moment.min";
 import "./timepicki";
 import "./StudentTimetable";
 
