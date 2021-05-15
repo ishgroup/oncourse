@@ -11,6 +11,8 @@ import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.cayenne.DiscountInterface;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 
@@ -121,49 +123,7 @@ public class DiscountUtilsTest {
 		Assertions.assertEquals(new Money("136.00"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()));
 	}
 
-	/**
-	 * for different combination of feeIncTax and discountIncTax we found situation when we lose one cent
-	 */
-	@Test
-	public void testOneCentProblem() {
-		BigDecimal taxRate = new BigDecimal(0.1);
-		BigDecimal rate = new BigDecimal(1.1);
-		for (int feeIncTaxDollars = 1; feeIncTaxDollars < 100 ; feeIncTaxDollars++){
-			Money feeIncTax = new Money(feeIncTaxDollars,0);
-			for (int discountIncTaxDollars = 1 ; discountIncTaxDollars < 0.1 * feeIncTaxDollars ; discountIncTaxDollars++) {
-				Money discountIncTax = new Money(discountIncTaxDollars, 0);
-				Money expectedPrice = feeIncTax.subtract(discountIncTax);
 
-				Money discountExtTax = discountIncTax.divide(rate).round(MoneyRounding.ROUNDING_NONE);
-				Money feeExtTax = feeIncTax.divide(rate).round(MoneyRounding.ROUNDING_NONE);
-				Money taxAdjustment = MoneyUtil.calculateTaxAdjustment(feeIncTax, feeExtTax, taxRate);
-
-				IInvoiceLineInterface invoiceLine = mock(InvoiceLine.class);
-				when(invoiceLine.getPriceEachExTax()).thenReturn(feeExtTax);
-				when(invoiceLine.getDiscountEachExTax()).thenCallRealMethod();
-				when(invoiceLine.getTaxEach()).thenCallRealMethod();
-				doCallRealMethod().when(invoiceLine).setDiscountEachExTax(any(Money.class));
-				doCallRealMethod().when(invoiceLine).setTaxEach(any(Money.class));
-
-				DiscountInterface discount = mock(DiscountInterface.class);
-				when(discount.getRounding()).thenReturn(MoneyRounding.ROUNDING_NONE);
-
-				DiscountCourseClassInterface classDiscount = mock(DiscountCourseClassInterface.class);
-				when(classDiscount.getDiscount()).thenReturn(discount);
-				when(classDiscount.getDiscountDollar()).thenReturn(discountExtTax);
-
-				DiscountUtils.applyDiscounts(classDiscount,invoiceLine,taxRate,taxAdjustment);
-
-				Money invoiceLineTaxEach = invoiceLine.getTaxEach();
-				Money invoiceLineDiscountEachExTax = invoiceLine.getDiscountEachExTax();
-				Money actualPrice = feeExtTax.subtract(invoiceLineDiscountEachExTax).add(invoiceLineTaxEach);
-
-				Assertions.assertEquals(expectedPrice, actualPrice);
-			}
-		}
-	}
-	
-	
 	abstract class InvoiceLine implements IInvoiceLineInterface {
 		private Money discountEachExTax;
 		private Money taxEach;
