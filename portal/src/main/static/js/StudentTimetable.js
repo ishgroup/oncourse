@@ -7,8 +7,6 @@ $j(document).ready(function () {
 });
 
 function init() {
-
-
     updatePercenColours();
     $j('.show-roll a').on('click', function() {
 
@@ -28,7 +26,7 @@ function init() {
 
 }
 
-function updatePercenColours() {
+export function updatePercenColours() {
     $j('.percents-of-attendance span, .current-attendance span').each( function(){
         parent = $j(this).parent();
         var percent = $j(this).text();

@@ -1,7 +1,8 @@
 import jQuery, * as $ from "./jquery-1.11.2";
 import * as moment from "./moment.min";
 import "./timepicki";
-import "./StudentTimetable";
+import "./StudentTimetable.js";
+import { updatePercenColours } from "./StudentTimetable.js";
 
 /**
  * Created by Artem on 28/06/2016.
