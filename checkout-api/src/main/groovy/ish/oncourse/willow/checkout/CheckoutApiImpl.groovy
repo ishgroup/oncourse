@@ -165,7 +165,7 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
                 Money owing = financialService.getOwing(payer)
                 Money payNow = paymentRequest.ccAmount.toMoney()
                 if (payNow.isGreaterThan(owing)) {
-                    throw new BadRequestException(Response.status(400).entity(new ValidationError(formErrors: ['Payment amount is great then payer owing amount'])).build())
+                    throw new BadRequestException(Response.status(400).entity(new ValidationError(formErrors: ['Payment amount is greater than payer owing amount'])).build())
                 }
             }
 
