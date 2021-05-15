@@ -32,5 +32,5 @@ import java.lang.annotation.Target
      * Provides the locations of the datasets that will be used to reset the database.
      * @return The dataset locations
      */
-    String[] value() default [""]
+    String[] value() default []
 }
