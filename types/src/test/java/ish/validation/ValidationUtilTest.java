@@ -40,11 +40,11 @@ public class ValidationUtilTest {
 	@Test
 	public void testEmail() {
 		for (String validEmail : validEmails) {
-			Assertions.Assertions.assertTrue(ValidationUtil.isValidEmailAddress(validEmail), String.format("This email should be valid %s", validEmail));
+			Assertions.assertTrue(ValidationUtil.isValidEmailAddress(validEmail), String.format("This email should be valid %s", validEmail));
 		}
 
 		for (String invalidEmail : invalidEmails) {
-			Assertions.Assertions.assertFalse(ValidationUtil.isValidEmailAddress(invalidEmail), String.format("This email should be invalid %s", invalidEmail));
+			Assertions.assertFalse(ValidationUtil.isValidEmailAddress(invalidEmail), String.format("This email should be invalid %s", invalidEmail));
 		}
 	}
 }

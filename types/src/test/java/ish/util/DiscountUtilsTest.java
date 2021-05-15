@@ -23,7 +23,6 @@ import static org.mockito.Mockito.when;
 
 public class DiscountUtilsTest {
 
-
 	@Test
 	public void testPersentDiscountValue() {
 		BigDecimal taxRate = new BigDecimal(0.1);
