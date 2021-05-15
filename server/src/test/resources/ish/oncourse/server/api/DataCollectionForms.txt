@@ -128,7 +128,15 @@
     
     name: Survey form MIDWAY
     type: Survey
-    fields: []
+    fields: [class FieldDTO {
+        type: class FieldTypeDTO {
+            uniqueKey: venueScore
+            label: Venue score
+        }
+        label: Venue score
+        helpText: Venue score
+        mandatory: true
+    }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
         description: Enrol heading 1
@@ -147,14 +155,6 @@
             }
             label: Net promoter score
             helpText: Net promoter score
-            mandatory: true
-        }, class FieldDTO {
-            type: class FieldTypeDTO {
-                uniqueKey: venueScore
-                label: Venue score
-            }
-            label: Venue score
-            helpText: Venue score
             mandatory: true
         }]
     }]
@@ -163,7 +163,15 @@
     
     name: Survey form ON_ENROL
     type: Survey
-    fields: []
+    fields: [class FieldDTO {
+        type: class FieldTypeDTO {
+            uniqueKey: venueScore
+            label: Venue score
+        }
+        label: Venue score
+        helpText: Venue score
+        mandatory: true
+    }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
         description: Enrol heading 1
@@ -182,14 +190,6 @@
             }
             label: Net promoter score
             helpText: Net promoter score
-            mandatory: true
-        }, class FieldDTO {
-            type: class FieldTypeDTO {
-                uniqueKey: venueScore
-                label: Venue score
-            }
-            label: Venue score
-            helpText: Venue score
             mandatory: true
         }]
     }]
