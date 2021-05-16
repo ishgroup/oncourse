@@ -45,7 +45,10 @@ jobs:
           ~/.sonar/cache
         key: ${{ matrix.java }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
-    - name: Unit tests
+    - name: Types unit tests
+      run: ./gradlew types:test --stacktrace -Duser.language=en -Duser.country=AU
+
+    - name: Server unit tests
       run: ./gradlew server:test --stacktrace -Duser.language=en -Duser.country=AU
 
     - name: Integration tests
