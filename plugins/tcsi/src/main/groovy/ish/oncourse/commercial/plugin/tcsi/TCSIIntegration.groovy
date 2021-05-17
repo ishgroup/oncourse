@@ -51,7 +51,7 @@ import static groovyx.net.http.Method.PUT
 @Plugin(type = 11, oneOnly = true)
 class TCSIIntegration implements PluginTrait {
     
-    static boolean test = false
+    static boolean test = true
 
     TCSIIntegration() {
     }
@@ -392,7 +392,7 @@ class TCSIIntegration implements PluginTrait {
         }
     }
     
-    private RESTClient getClient() {
+    RESTClient getClient() {
         if  (!authToken) {
             authenticatDevice()
         }

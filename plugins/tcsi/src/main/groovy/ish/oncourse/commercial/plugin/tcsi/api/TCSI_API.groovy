@@ -5,6 +5,7 @@
 
 package ish.oncourse.commercial.plugin.tcsi.api
 
+import groovy.transform.CompileDynamic
 import groovyx.net.http.RESTClient
 import ish.oncourse.commercial.plugin.tcsi.TCSIException
 import ish.oncourse.server.PreferenceController
@@ -13,6 +14,7 @@ import ish.oncourse.server.scripting.api.EmailService
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+@CompileDynamic
 class TCSI_API {
     static final String DATE_FORMAT='yyyy-MM-dd'
 

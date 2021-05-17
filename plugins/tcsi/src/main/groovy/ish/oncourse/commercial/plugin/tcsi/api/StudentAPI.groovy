@@ -24,6 +24,7 @@ import static groovyx.net.http.Method.GET
 import static groovyx.net.http.Method.POST
 import static groovyx.net.http.Method.PUT
 
+@CompileDynamic
 class StudentAPI extends TCSI_API{
     static final String STUDENTS_PATH = TCSIIntegration.BASE_API_PATH + '/students'
 
@@ -66,14 +67,74 @@ class StudentAPI extends TCSI_API{
         }
     }
 
-    updateStudent(String uid) {
+    void updateStudent(String studentUid) {
         String message = "Update student"
         client.request(PUT, JSON) {
-            uri.path = STUDENTS_PATH + "/$uid"
+            uri.path = STUDENTS_PATH + "/$studentUid"
             body = getStudentPacket()
             response.success = { resp, result ->
-                def student = handleResponce(result as List, message)
-                return student['students_uid'].toString()
+                handleResponce(result, message)
+            }
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+        
+        def citizenshipUid = getCitizenship(studentUid)
+        
+        if (citizenshipUid) {
+            updateCitizenship(studentUid, citizenshipUid)
+        } else {
+            createCitizenship(studentUid)
+        }
+        
+        
+        
+        
+        
+        
+    }
+
+    String getCitizenship(String studenUid) {
+        String  message = "get student's citizenships"
+        client.request(GET, JSON) {
+            uri.path = STUDENTS_PATH + "/$studenUid/citizenships"
+            response.success = { resp, result ->
+                def citizenships = handleResponce(result, message)
+                if (citizenships && !citizenships.empty) {
+                    return citizenships[0].citizenship['citizenships_uid'].toString()
+                } else {
+                    return null
+                }
+
+            }
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
+
+    String updateCitizenship(String studentUid,String citizenshipUid) {
+        String  message = "update student's citizenships"
+        client.request(PUT, JSON) {
+            uri.path = STUDENTS_PATH + "/$studentUid/citizenships/$citizenshipUid"
+            body = getCitizenshipPacket()
+            response.success = { resp, result ->
+                 handleResponce(result, message)
+            }
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
+
+    String createCitizenship(String studentUid) {
+        String  message = "create student's citizenships"
+        client.request(PUT, JSON) {
+            uri.path = STUDENTS_PATH + "/$studentUid/citizenships"
+            body = getCitizenshipPacket()
+            response.success = { resp, result ->
+                handleResponce(result, message)
             }
             response.failure =  { resp, body ->
                 interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
@@ -204,6 +265,14 @@ class StudentAPI extends TCSI_API{
         }
 
         return studentData
+    }
+    
+    private String getCitizenshipPacket() {
+        def studentPacket  = [
+                'correlation_id' : "citizenship_packet_${System.currentTimeMillis()}",
+                'citizenship' : getCitizenshipData()
+        ]
+        return JsonOutput.toJson(studentPacket)
     }
 
     @CompileDynamic
