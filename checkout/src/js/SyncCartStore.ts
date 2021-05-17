@@ -1,29 +1,25 @@
 import 'rxjs';
-import localforage from "localforage";
 import {extendPrototype} from "localforage-observable";
 import {Observable} from "rxjs/Observable";
 import {persistStore} from "redux-persist";
+import {localForage} from './constants/LocalForage';
 
-localforage.config({
-  driver: [localforage.INDEXEDDB, localforage.WEBSQL, localforage.LOCALSTORAGE],
-});
-
-const localForage = extendPrototype(localforage);
+const localForageEx = extendPrototype(localForage);
 
 export function syncCartStore(store) {
-  typeof localForage.ready === 'function' && localForage.ready().then(() => {
+  typeof localForageEx.ready === 'function' && localForageEx.ready().then(() => {
 
-    localForage.configObservables({
+    localForageEx.configObservables({
       crossTabNotification: true,
       changeDetection: false,
     });
 
     // TypeScript will find `newObservable()` after the casting that `extendPrototype()` does
-    localForage.newObservable.factory = function (subscribeFn) {
+    localForageEx.newObservable.factory = function (subscribeFn) {
       return Observable.create(subscribeFn);
     };
 
-    const observable = localForage.newObservable({
+    const observable = localForageEx.newObservable({
       key: "reduxPersist:cart",
       crossTabNotification: true,
     });
@@ -32,7 +28,7 @@ export function syncCartStore(store) {
       next(args) {
         // Sync cart state between all tabs
         persistStore(store, {
-          storage: localForage,
+          storage: localForageEx,
           blacklist: ["form", "popup", "checkout", "inactiveCourses", "products", "phase", "page", "contactAddProcess", "config"],
         });
 

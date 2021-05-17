@@ -1,17 +1,14 @@
 import * as React from "react";
 import * as L from "lodash";
 import {Actions} from "../../js/web/actions/Actions";
-import localforage from "localforage";
 import {MockConfig} from "../mocks/mocks/MockConfig";
-
 import * as ReactInspector from "react-inspector";
-
 import {Values} from "redux-form-website-template";
 import {NAME} from "../../js/enrol/containers/payment/components/PaymentForm";
 import {NAME as ContactEditFormName} from "../../js/enrol/containers/contact-edit/ContactEditForm";
 import {NAME as ConcessionAddForm} from "../../js/enrol/containers/concession/Concession";
 import {GABuilder} from "../../js/services/GoogleAnalyticsService";
-
+import {localForage} from "../../js/constants/LocalForage";
 
 interface Props {
   config: MockConfig;
@@ -20,7 +17,7 @@ interface Props {
 export class MockControl extends React.Component<Props, any> {
 
   private resetLocalForage = () => {
-    localforage.clear();
+    localForage.clear();
   }
 
   private loadBatchCourseClasses = (numbers: number[]) => {

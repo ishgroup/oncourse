@@ -11,10 +11,10 @@ import {getPreferences} from "./common/actions/Actions";
 import {getCookie, setCookie} from "./common/utils/Cookie";
 import {v4 as uuid} from "uuid";
 import moment from "moment-timezone";
-import localforage from "localforage";
 import BrowserDetector from "./common/utils/Browser";
 import "../scss/index.scss";
 import {LegacyModal} from "./web/components/modal/LegacyModal";
+import {configLocalStorage} from "./constants/LocalForage";
 
 
 // Intersection Observer polyfill
@@ -78,13 +78,7 @@ const appStart = () => {
     );
   }
 
-  localforage.config({
-    driver: [localforage.LOCALSTORAGE, localforage.INDEXEDDB, localforage.WEBSQL]
-  });
-
-  localforage.ready().catch(e => {
-    console.error(e);
-  });
+  configLocalStorage();
 
   const store = CreateStore();
 

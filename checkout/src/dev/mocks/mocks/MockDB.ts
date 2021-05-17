@@ -1,7 +1,6 @@
 import * as L from "lodash";
 import faker from "faker";
 import { v4 as uuid } from "uuid";
-import localForage from "localforage";
 
 import {
   CourseClass, Enrolment, Contact, Field, DataType, FieldHeading, Item,
@@ -14,10 +13,10 @@ import {
 import {normalize} from "normalizr";
 import {
   ClassesListSchema, ContactsSchema, ContactsState, ProductsListSchema, WaitingCoursesListSchema,
-  WaitingCoursesSchema,
 } from "../../../js/NormalizeSchema";
 import {WaitingList} from "../../../js/model/checkout/WaitingList";
 import {Course} from "../../../js/model/web/Course";
+import { localForage } from "../../constants/LocalForage";
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();

@@ -3,7 +3,6 @@ import {AxiosResponse} from "axios";
 import faker from "faker";
 import uuid from "uuid";
 import {CreateMockDB, MockDB} from "./MockDB";
-import localForage from "localforage";
 import {Injector} from "../../../js/injector";
 import {Store} from "redux";
 import {IshState} from "../../../js/services/IshState";
@@ -19,6 +18,9 @@ import {SearchApiMock} from "../SearchApiMock";
 import {PreferenceApiMock} from "../PreferenceApiMock";
 import {CreateStore, RestoreState} from "../../../js/CreateStore";
 import {ValidationError} from "../../../js/model";
+import {configLocalStorage,localForage} from "../../../js/constants/LocalForage";
+
+configLocalStorage();
 
 export interface Props {
   commonError: boolean;
