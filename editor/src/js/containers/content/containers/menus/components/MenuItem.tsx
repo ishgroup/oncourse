@@ -10,13 +10,15 @@ import MenuItemChildrenRenderer from "./MenuItemChildrenRenderer";
 
 const styles = theme => createStyles({
   dragIcon: {
-    margin: theme.spacing(0, 2)
+    margin: theme.spacing(0, 2),
+    fill: "#e0e0e0!important",
   },
   actionButton: {
     marginRight: "10px"
   },
   actionIcon: {
-    fontSize: "20px"
+    fontSize: "20px",
+    fill: "#e0e0e0!important",
   },
   card: {
     borderRadius: `${theme.shape.borderRadius}px`,
@@ -78,10 +80,7 @@ const MenuItem = (props: Props) => {
                   />
                 </div>
 
-                <div className="pr-2">
-                  <div className={classes.tagColorDot} />
-                {/*  /!*<div className={classes.tagColorDot} style={{ background: "#" + item.color }} />*!/*/}
-                </div>
+                <div className="pr-2"/>
 
                 <div>
                   <EditInPlaceField
