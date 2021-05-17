@@ -22,7 +22,7 @@ class AmountComp extends React.Component<Props> {
 
     const payNowVal = parseFloat(value);
 
-    if (!isNaN(payNowVal) && payNowVal >= 0) {
+    if (onUpdatePayNow && !isNaN(payNowVal) && payNowVal >= 0) {
       onUpdatePayNow(payNowVal.toFixed(2), true);
     }
 
