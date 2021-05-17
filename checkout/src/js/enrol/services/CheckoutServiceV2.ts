@@ -28,6 +28,7 @@ class CheckoutServiceV2 {
       .then(data => {
         return Promise.resolve(ContactNodeService.getPurchaseItem(data, item));
       })
+      .catch(e => Promise.reject(e))
     } else {
       return Promise.resolve(item);
     }

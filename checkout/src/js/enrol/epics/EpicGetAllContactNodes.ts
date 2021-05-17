@@ -8,6 +8,7 @@ import {MiddlewareAPI} from "redux";
 import CheckoutServiceV2 from "../services/CheckoutServiceV2";
 import {ContactNodeService} from "../services/ContactNodeService";
 import {IshState} from "../../services/IshState";
+import {ProcessError} from "../../common/epics/EpicUtils";
 
 export const GetAllContactNodes: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any>): Observable<any> => {
   return action$.ofType(Actions.GET_ALL_CONTACT_NODES_FROM_BACKEND)
@@ -25,6 +26,7 @@ export const GetAllContactNodes: Epic<any, any> = (action$: ActionsObservable<an
           getCheckoutModelFromBackend(),
           ...relationsUpdateActions
         ];
-      });
+      })
+      .catch(e => ProcessError(e))
     });
 };

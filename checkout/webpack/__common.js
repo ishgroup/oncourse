@@ -73,7 +73,7 @@ const _common = (dirname, options) => {
       ]
     },
     plugins: [
-      _DefinePlugin('development', 'http://localhost:10080', options.BUILD_NUMBER),
+      _DefinePlugin('development', options.BUILD_NUMBER),
       new MiniCssExtractPlugin({ filename: "[name].css" }),
       new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.SourceMapDevToolPlugin({}),
