@@ -22,7 +22,7 @@ export class ContactInfo extends React.Component<Props, any> {
   }
 
   public render() {
-    const {contact, controls, concessions, memberships, onRemoveContact, onChangeParent} = this.props;
+    const {contact = { parent: {} }, controls, concessions, memberships, onRemoveContact, onChangeParent} = this.props;
 
     return (
       <div className="col-xs-24 student-name">
