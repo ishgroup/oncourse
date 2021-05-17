@@ -245,7 +245,7 @@ class StudentAPI extends TCSI_API{
     
     private String getCitizenshipPacket() {
         Map<String, Object> citizenship = getCitizenshipData()
-        citizenship['citizenship_effective_from_date'] = enrolment.createdOn.format(DATE_FORMAT)
+        citizenship['citizenship']['citizenship_effective_from_date'] =enrolment.createdOn.format(DATE_FORMAT)
         return JsonOutput.toJson(citizenship)
     }
 
@@ -282,7 +282,7 @@ class StudentAPI extends TCSI_API{
 
             }
         } else {
-            residentCode = "1"   //E358
+            residentCode = "5"   //E358
         }
         return residentCode
     }
