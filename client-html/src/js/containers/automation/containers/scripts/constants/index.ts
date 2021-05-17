@@ -37,7 +37,7 @@ export const closureBodyRegexp = /{((?:[^{}]|{[^}]*})*)}/;
 
 const getBodyEntries = body => {
   const bodyMatch = body.match(closureBodyRegexp);
-  const entries = Array.isArray(bodyMatch) ? bodyMatch[0].match(/(\w+\s?["']?.+["']?\n)+/g) : [];
+  const entries = Array.isArray(bodyMatch) ? bodyMatch[0].match(/(\w+\s?["']?[^'"]*["']?\n)+/g) : [];
   return Array.isArray(entries) ? entries : [];
 };
 
