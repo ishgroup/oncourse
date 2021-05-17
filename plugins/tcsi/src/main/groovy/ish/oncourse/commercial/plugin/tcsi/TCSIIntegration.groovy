@@ -16,7 +16,11 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
 import ish.common.types.DataType
+import ish.oncourse.commercial.plugin.tcsi.api.AdmissionAPI
+import ish.oncourse.commercial.plugin.tcsi.api.CampusAPI
+import ish.oncourse.commercial.plugin.tcsi.api.CourseAPI
 import ish.oncourse.commercial.plugin.tcsi.api.StudentAPI
+import ish.oncourse.commercial.plugin.tcsi.api.UnitAPI
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.ContactCustomField
@@ -47,11 +51,11 @@ import static groovyx.net.http.Method.POST
 import static groovyx.net.http.Method.PUT
 
 
-@CompileDynamic
+
 @Plugin(type = 11, oneOnly = true)
 class TCSIIntegration implements PluginTrait {
     
-    static boolean test = false
+    static boolean test = true
 
     TCSIIntegration() {
     }
@@ -79,10 +83,6 @@ class TCSIIntegration implements PluginTrait {
     static final String TCSI_BASE_URL = test ? TCSI_BASE_URL_TEST :'https://api.humanservices.gov.au/centrelink/ext-vend/tcsi/b2g/v1'
 
     static final String BASE_API_PATH =  test ? '/centrelink/ext-vend/tcsi/b2g/v1': '/centrelink/ext/tcsi/b2g/v1'
-    static final String COURSES_PATH = BASE_API_PATH + '/courses'
-    static final String ADMISSIONS_PATH = BASE_API_PATH + '/course-admissions'
-    static final String UNITS_PATH = BASE_API_PATH + '/unit-enrolments'
-    static final String CAMPUSES_PATH =  BASE_API_PATH + '/campuses'
     
     static final String HIGH_EDUCATION_TYPE  = 'Higher education'
 
@@ -90,9 +90,6 @@ class TCSIIntegration implements PluginTrait {
     String organisationId
     String jwkCertificate
     ObjectContext objectContext
-    
-    static final String TCSI_ENROLMENT_UNIT_UID  = 'tsciEnrolmentUnitUid'
-    CustomFieldType enrolmentUnitUidField
     
     EntityRelationType highEducationType
     Course highEducation
@@ -250,148 +247,32 @@ class TCSIIntegration implements PluginTrait {
         } else {
             studentAPI.createStudent()
         }
-        
-     
-        String courseUid = getCourseGroup()
+
+        String courseUid = new CourseAPI(getClient(), enrolment, emailService, preferenceController).getCourseGroup(highEducation.qualification.nationalCode)
         if (!courseUid) {
             interraptExport("Highe education course not found in TCSI")
         }
-        
-        String admissionUid = getAdmission(studentUid, courseUid) ?: createCourseAdmission(studentUid,courseUid)
-        String campuseUid = null
-        if (enrolment.courseClass.room) {
-            campuseUid = getCampus()
-            if (!campuseUid) {
-                campuseUid = createCampus()
-            }
-        }
+
+        AdmissionAPI admissionAPI = new AdmissionAPI(highEducation, highEducationType, courseAdmission, getClient(), enrolment, emailService, preferenceController)
+        String admissionUid = admissionAPI.getAdmission(studentUid, courseUid) ?: admissionAPI.createCourseAdmission(studentUid,courseUid)
+
+
+        String campuseUid = new CampusAPI(getClient(), enrolment, emailService, preferenceController).campusUid()
+       
         
         if (!enrolment.courseClass.course.equalsIgnoreContext(highEducation)) {
+            
+            UnitAPI unitAPI = new UnitAPI(getClient(), enrolment, emailService, preferenceController)
             // export unit
-            def unitUid  = enrolment.getCustomFieldValue(TCSI_ENROLMENT_UNIT_UID)
+            String unitUid = unitAPI.getUnit(admissionUid)
             if (unitUid) {
-                interraptExport("Enrolment unit already exported")
+                unitAPI.updateUnit(unitUid,admissionUid, campuseUid)
             } else {
-                createUnit(admissionUid, campuseUid)
-            }
-            
-        }
-    }
-    
-    String getCampus() {
-        getClient().request(GET, JSON) {
-            uri.path = CAMPUSES_PATH
-            headers.'tcsi-pagination-page'='1'
-            headers.'tcsi-pagination-pagesize'='1000'
-
-            response.success = { resp, result ->
-                def campuses =  handleResponce(result, "get campuses ")
-
-                def campus = campuses.find { it['campus']['delivery_location_code'] == enrolment.courseClass.room.site.id.toString()}
-                if (campus) {
-                    return campus['campus']['campuses_uid']
-                }
-                return null
-            }
-            response.failure =  { resp, body ->
-                interraptExport("Something unexpected happend, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+                unitAPI.createUnit(admissionUid, campuseUid)
             }
         }
     }
-
-    String createCampus() {
-        getClient().request(POST, JSON) {
-            uri.path = CAMPUSES_PATH
-            body = TCSIUtils.getCampusData(enrolment.courseClass.room.site)
-            response.success = { resp, result ->
-                def campus =  handleResponce(result, "Create campus")
-                return campus['campuses_uid'].toString()
-            }
-            response.failure =  { resp, body ->
-                interraptExport("Something unexpected happend, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
-            }
-        }
-    }
-
-    String createUnit(String admissionUid, String campuseUid) {
-        getClient().request(POST, JSON) {
-            uri.path = UNITS_PATH
-            body = TCSIUtils.getUnitData(enrolment, admissionUid, campuseUid)
-
-            response.success = { resp, result ->
-                def unit =  handleResponce(result as List, "Create enrolment unit")
-                def uid = unit['unit_enrolments_uid'].toString()
-                EnrolmentCustomField customField = objectContext.newObject(EnrolmentCustomField)
-                customField.relatedObject = enrolment
-                customField.customFieldType = enrolmentUnitUidField
-                customField.value = uid
-                objectContext.commitChanges()
-                return uid
-            }
-            response.failure =  { resp, body ->
-                interraptExport("Something unexpected happend, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
-            }
-        }
-    }
-    
-    String createCourseAdmission(String studentUID, String courseUid) {
-        String message = "Create admission"
-        getClient().request(POST, JSON) {
-            uri.path = ADMISSIONS_PATH
-            body = TCSIUtils.getAdmissionData(enrolment.student, highEducation, highEducationType, courseAdmission, studentUID, courseUid)
-
-            response.success = { resp, result -> 
-                def admission =  handleResponce(result as List, message)
-                return admission['course_admissions_uid'].toString()
-            }
-            
-            response.failure =  { resp, body ->
-                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
-            }
-        } 
-    }
-
-    String getCourseGroup() {
-        getClient().request(GET, JSON) {
-            uri.path = COURSES_PATH
-            headers.'tcsi-pagination-page'='1'
-            headers.'tcsi-pagination-pagesize'='1000'
-            response.success = { resp, result ->
-                def courses = handleResponce(result, "Get course")
-                def course = courses*.course?.find {it.course_code == highEducation.qualification.nationalCode}  
-                if (course) {
-                    return course['courses_uid'].toString()
-                }
-                return null
-                
-            }
-            response.failure =  { resp, body ->
-                interraptExport("Something unexpected happend while getting a courses, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
-            }
-        }
-    }
-    
-  
-    String getAdmission(String studentUid, String courseUid) {
-        String message = 'looking for admission'
-        getClient().request(GET, JSON) {
-            uri.path = STUDENTS_PATH + "/$studentUid/course-admissions"
-            response.success = { resp, result ->
-
-                def admissions = handleResponce(result, message)
-                def admission =  admissions['course_admission'].find { courseUid == it['courses_uid']?.toString() }
-                
-                if (admission && admission['course_admissions_uid']) {
-                    return admission['course_admissions_uid'].toString()
-                }
-                return null
-            }
-            response.failure =  { resp, body ->
-                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
-            }
-        }
-    }
-    
+     
     RESTClient getClient() {
         if  (!authToken) {
             authenticatDevice()

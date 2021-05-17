@@ -26,6 +26,7 @@ import static groovyx.net.http.Method.PUT
 
 @CompileDynamic
 class StudentAPI extends TCSI_API{
+    
     static final String STUDENTS_PATH = TCSIIntegration.BASE_API_PATH + '/students'
 
     Student student
