@@ -18,17 +18,16 @@ import ish.oncourse.commercial.plugin.tcsi.TCSIIntegration
 import ish.oncourse.commercial.plugin.tcsi.TCSIUtils
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.scripting.api.EmailService
+import liquibase.pro.packaged.O
 
 import java.time.LocalDate
 
 import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.Method.GET
-import static groovyx.net.http.Method.POST
+import static groovyx.net.http.Method.*
 
 class AdmissionAPI extends TCSI_API {
 
@@ -45,11 +44,29 @@ class AdmissionAPI extends TCSI_API {
         this.highEducationType = highEducationType
     }
 
+    void updateAdmission (String admissionUid, String studentUID, String courseUid) {
+        String message = "Update admission"
+        client.request(PUT, JSON) {
+            uri.path = ADMISSIONS_PATH + "/$admissionUid"
+            //single JSON object
+            body = admissionPacket(studentUID, courseUid)
+
+            response.success = { resp, result ->
+               handleResponce(result, message)
+            }
+
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
+    
     String createCourseAdmission(String studentUID, String courseUid) {
         String message = "Create admission"
         client.request(POST, JSON) {
             uri.path = ADMISSIONS_PATH
-            body = getAdmissionData(studentUID, courseUid)
+            //POST admission group - list of admissiions incliding nested 'basiss for admission' packet
+            body = admissionGroup(studentUID, courseUid)
 
             response.success = { resp, result ->
                 def admission =  handleResponce(result, message)
@@ -84,7 +101,7 @@ class AdmissionAPI extends TCSI_API {
     }
 
     @CompileDynamic
-    String getAdmissionData(String studentsUid, String courseUid) {
+    Map<String, Object> getAdmissionData(String studentsUid, String courseUid) {
 
         Map<String, Object> admission = [:]
 
@@ -229,22 +246,36 @@ class AdmissionAPI extends TCSI_API {
                 }
             }
         }
+        
+        return admission
+    }
+    
+    String admissionPacket(String studentsUid, String courseUid) {
+        def admissionPacket = [
+                'correlation_id' : "admissionGroup_${System.currentTimeMillis()}",
+                'course_admission' : getAdmissionData(studentsUid, courseUid)
+        ]
 
+        return JsonOutput.toJson(admissionPacket)
+    }
+
+    String admissionGroup(String studentsUid, String courseUid) {
+        Map<String, Object> admissionData = getAdmissionData(studentsUid, courseUid)
+        
         String basisForAdmissionCode =  courseAdmission.getCustomFieldValue('basisForAdmissionCode').toString()
         if (basisForAdmissionCode) {
-            admission['bases_for_admission'] = []
+            admissionData['bases_for_admission'] = []
             def basesForAdmission = [:]
             basesForAdmission['correlation_id'] = "bases_for_admission_${System.currentTimeMillis()}"
             basesForAdmission['basis_for_admission'] = ['basis_for_admission_code' : basisForAdmissionCode]
-            admission['bases_for_admission'] << basesForAdmission
+            admissionData['bases_for_admission'] << basesForAdmission
         }
 
-        def courseData  = [
-                'correlation_id' : "admissionData_${System.currentTimeMillis()}",
-                'course_admission' : admission
+        def admissionGroup  = [
+                'correlation_id' : "admissionGroup_${System.currentTimeMillis()}",
+                'course_admission' : admissionData
         ]
 
-        return JsonOutput.toJson([courseData])
+        return JsonOutput.toJson([admissionGroup])
     }
-
 }

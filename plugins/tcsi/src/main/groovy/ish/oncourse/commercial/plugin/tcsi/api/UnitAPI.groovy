@@ -75,7 +75,7 @@ class UnitAPI extends TCSI_API {
         }
     }
     
-    String updateUnit(String unitUid, String admissionUid, String campuseUid) {
+    void updateUnit(String unitUid, String admissionUid, String campuseUid) {
         String message = "creating enrolment unit"
         client.request(PUT, JSON) {
             uri.path = UNITS_PATH +"/$unitUid"

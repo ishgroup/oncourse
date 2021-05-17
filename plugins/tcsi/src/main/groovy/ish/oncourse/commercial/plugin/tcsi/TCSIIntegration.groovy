@@ -246,7 +246,12 @@ class TCSIIntegration implements PluginTrait {
         }
 
         AdmissionAPI admissionAPI = new AdmissionAPI(highEducation, highEducationType, courseAdmission, getClient(), enrolment, emailService, preferenceController)
-        String admissionUid = admissionAPI.getAdmission(studentUid, courseUid) ?: admissionAPI.createCourseAdmission(studentUid,courseUid)
+        String admissionUid = admissionAPI.getAdmission(studentUid, courseUid)
+        if (admissionUid) {
+            admissionAPI.updateAdmission(admissionUid,studentUid,courseUid)
+        } else {
+            admissionUid = admissionAPI.createCourseAdmission(studentUid,courseUid)
+        }
 
 
         String campuseUid = new CampusAPI(getClient(), enrolment, emailService, preferenceController).campusUid()
