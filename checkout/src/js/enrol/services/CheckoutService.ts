@@ -429,7 +429,7 @@ export class BuildGetCorporatePassRequest {
     const products = ['memberships', 'vouchers', 'articles'];
     const productIds = [];
 
-    const classIds = Array.from(new Set(Object.keys(entities.enrolments)
+    const classIds = Array.from(new Set(Object.keys(entities.enrolments || {})
       .filter(key => entities.enrolments[key].selected)
       .map(key => entities.enrolments[key].classId)));
 
