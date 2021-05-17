@@ -37,7 +37,8 @@ export const EpicStoreCartState = (function () {
             })
         } else if (contactNodes) {
           Object.keys(contactNodes).forEach(key => {
-            if(checkout?.contacts?.entities?.contact[key]) {
+            const contacts = checkout?.contacts?.entities?.contact;
+            if(contacts && contacts[key]) {
               storedCartData[key] = BuildContactNodeRequest.fromContact(checkout.contacts.entities.contact[key], checkout.summary, cart, checkout.payerId);
             }
           })
