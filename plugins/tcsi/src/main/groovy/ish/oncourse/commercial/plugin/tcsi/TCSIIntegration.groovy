@@ -12,23 +12,16 @@
 package ish.oncourse.commercial.plugin.tcsi
 
 import com.nimbusds.jose.jwk.RSAKey
-import groovy.transform.CompileDynamic
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
-import ish.common.types.DataType
 import ish.oncourse.commercial.plugin.tcsi.api.AdmissionAPI
 import ish.oncourse.commercial.plugin.tcsi.api.CampusAPI
 import ish.oncourse.commercial.plugin.tcsi.api.CourseAPI
 import ish.oncourse.commercial.plugin.tcsi.api.StudentAPI
 import ish.oncourse.commercial.plugin.tcsi.api.UnitAPI
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.ContactCustomField
 import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseCustomField
-import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.EnrolmentCustomField
 import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.integration.OnSave
@@ -46,7 +39,6 @@ import javax.ws.rs.core.Response
 
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.URLENC
-import static groovyx.net.http.Method.GET
 import static groovyx.net.http.Method.POST
 import static groovyx.net.http.Method.PUT
 
@@ -55,7 +47,7 @@ import static groovyx.net.http.Method.PUT
 @Plugin(type = 11, oneOnly = true)
 class TCSIIntegration implements PluginTrait {
     
-    static boolean test = true
+    static boolean test = false
 
     TCSIIntegration() {
     }

@@ -5,48 +5,17 @@
 
 package ish.oncourse.commercial.plugin.tcsi
 
-import groovy.json.JsonOutput
-import groovy.transform.CompileDynamic
-import ish.common.types.AvetmissStudentDisabilityType
-import ish.common.types.AvetmissStudentIndigenousStatus
-import ish.common.types.AvetmissStudentLabourStatus
-import ish.common.types.AvetmissStudentPriorEducation
-import ish.common.types.AvetmissStudentSchoolLevel
-import ish.common.types.CourseClassAttendanceType
-import ish.common.types.DeliveryMode
-import ish.common.types.EnrolmentStatus
-import ish.common.types.Gender
-import ish.common.types.OutcomeStatus
-import ish.common.types.RecognitionOfPriorLearningIndicator
-import ish.common.types.StudentCitizenship
-import ish.common.types.StudentStatusForUnitOfStudy
-import ish.common.types.StudyReason
-import ish.math.Money
+
 import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
-import ish.oncourse.server.cayenne.Outcome
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.Student
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.apache.commons.lang3.StringUtils
-
-import java.math.RoundingMode
-import java.time.Duration
-import java.time.LocalDate
-
 
 class TCSIUtils {
     
-    static final String DATE_FORMAT='yyyy-MM-dd'
-    
-    
-
-
     static List<Course> getUnitCourses(Course hihgEducation, EntityRelationType highEducationType) {
         ObjectContext context =  hihgEducation.context
         List<EntityRelation> unitRelations = ObjectSelect.query(EntityRelation)
