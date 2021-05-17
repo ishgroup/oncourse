@@ -39,7 +39,6 @@ class AllExportTemplatesTest extends TestWithDatabase {
     private static final String LINE_SEPARATOR = StringUtils.LF
 
     void setup(String testDataFile) {
-        wipeTables()
 
         // set default timezone to UTC to receive same export output regardless of
         // default timezone of building machine

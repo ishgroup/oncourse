@@ -51,7 +51,7 @@ abstract class TestWithBootique {
 
     public BQRuntime injector
 
-    protected  DataSource dataSource
+    protected DataSource dataSource
     protected static String databaseType = MARIADB
 
     protected static final Logger logger = LogManager.getLogger()

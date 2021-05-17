@@ -1,8 +1,8 @@
 package ish.util
 
 import groovy.transform.CompileStatic
-import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.MessageStatus
 import ish.common.types.MessageType
 import ish.oncourse.server.cayenne.Contact
@@ -10,18 +10,12 @@ import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.MessagePerson
 import ish.oncourse.server.scripting.api.MessageReceived
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup()
 class MessageUtilTest extends TestWithDatabase {
-
-    @AfterEach
-    void teardown() {
-        wipeTables()
-    }
 
     @Test
     void testGenerateCreatorKey() {

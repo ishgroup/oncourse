@@ -1,13 +1,12 @@
 package ish.oncourse.server.entity
 
 import groovy.transform.CompileStatic
-import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.AccountType
 import ish.common.types.CourseClassAttendanceType
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -143,8 +142,4 @@ class GetCustomFieldTest extends TestWithDatabase {
         customField
     }
 
-    @AfterEach
-    void after(){
-        wipeTables()
-    }
 }

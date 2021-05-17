@@ -14,10 +14,6 @@ import org.apache.cayenne.Persistent
 @CompileStatic
 class MockPaymentIn extends PaymentIn {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L
     private int id
 
     MockPaymentIn(int id, ObjectContext objectContext) {
