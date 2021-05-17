@@ -13,14 +13,12 @@ import org.junit.jupiter.api.Test
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/deduplication/dedupeContactDataSet.xml")
 class ContactMergeServiceTest extends TestWithDatabase {
-
-    private ContactMergeService contactMergeService = injector.getInstance(ContactMergeService)
-
+    
     @Test
     void testGetDiffData() {
         Contact contactA = ObjectSelect.query(Contact).where(Contact.ID.eq(1L)).selectFirst(cayenneContext)
         Contact contactB = ObjectSelect.query(Contact).where(Contact.ID.eq(2L)).selectFirst(cayenneContext)
-        List<MergeLineDTO> mergeLines = contactMergeService.getDifferenceAttributes(contactA, contactB)
+        List<MergeLineDTO> mergeLines = injector.getInstance(ContactMergeService).getDifferenceAttributes(contactA, contactB)
         Assertions.assertEquals("[class MergeLineDTO {\n" +
                 "    key: Contact.birthDate\n" +
                 "    label: Birth date\n" +
@@ -221,7 +219,7 @@ class ContactMergeServiceTest extends TestWithDatabase {
                                        'tags'                      : 'A'
         ]
 
-        contactMergeService.merge(a, b, diffMap)
+        injector.getInstance(ContactMergeService).merge(a, b, diffMap)
 
         Assertions.assertEquals(3, ObjectSelect.query(Contact).selectCount(cayenneContext))
         Assertions.assertEquals(1, ObjectSelect.query(Student).selectCount(cayenneContext))
