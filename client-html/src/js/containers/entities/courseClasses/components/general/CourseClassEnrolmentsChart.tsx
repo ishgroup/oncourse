@@ -267,7 +267,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
 
       setData(weeks);
 
-      weeks = [...Array(enrolmentsWeeks + 1 || 1).keys()].map((v, week) => ({
+      weeks = [...Array(Math.abs(enrolmentsWeeks + 1) || 1).keys()].map((v, week) => ({
         week,
         enrolments: 0,
         value: 0
