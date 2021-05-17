@@ -19,7 +19,7 @@ import ErrorPage from "../ErrorPage";
 import { SITE_KEY } from "../../constant/common";
 import {SitesPage} from "./Steps/SitesPage";
 import {State} from "../../redux/reducers";
-import {ExistingCustomerSteps, NewCustomerSteps, Step, UserType} from "../../models/User";
+import {ExistingCustomerSteps, NewCustomerSteps, Step} from "../../models/User";
 import {Dispatch} from "redux";
 import {createStyles, makeStyles} from "@material-ui/core/styles";
 import {AppTheme} from "../../models/Theme";
@@ -71,26 +71,25 @@ const getComponent = (type: Step, props: any) => {
 interface Props {
   serverError?: any;
   setCaptchaToken?: any;
-  userType?: UserType;
+  userKey?: string;
 }
 
 const Stepper: React.FC<Props> = (
   {
     serverError,
-    userType
+    userKey
   }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [steps, setSteps] = React.useState<Step[]>([]);
 
   useEffect(() => {
-    if (userType === "New") {
+    if (userKey) {
+      setSteps([...ExistingCustomerSteps]);
+    } else {
       setSteps([...NewCustomerSteps]);
     }
-    if (userType === "Existing") {
-      setSteps([...ExistingCustomerSteps]);
-    }
-  }, [userType]);
+  }, [userKey]);
 
   useEffect(() => {
     const loadScriptByURL = (id, url) => {
@@ -140,7 +139,8 @@ const Stepper: React.FC<Props> = (
 }
 
 const mapStateToProps = (state: State) => ({
-  serverError: state.serverError
+  serverError: state.serverError,
+  userKey: state.user.userKey
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

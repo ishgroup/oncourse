@@ -1,4 +1,3 @@
-export type UserType = "New" | "Existing";
 
 export const NewCustomerSteps = ["Site name", "Templates", "Contact", "Organisation", "All done!"] as const;
 export const ExistingCustomerSteps = ["Sites"] as const;

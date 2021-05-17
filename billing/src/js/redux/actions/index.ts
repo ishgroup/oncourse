@@ -1,4 +1,5 @@
 import { FULFILLED, REJECTED } from "./ActionUtils";
+import {SiteDTO} from "@api/model";
 
 export const FETCH_START = "common/fetch/start";
 export const FETCH_SUCCESS = FULFILLED("common/fetch");
@@ -21,8 +22,30 @@ export const SET_SERVER_ERROR_VALUE = "SET_SERVER_ERROR_VALUE";
 export const RESET_STORE = "RESET_STORE";
 export const SET_LOADING_VALUE = "SET_LOADING_VALUE";
 
+export const SET_USER_CHECKED = "SET_USER_CHECKED";
+
 export const GET_SITES = "GET_SITES";
 export const GET_SITES_FULFILLED = FULFILLED(GET_SITES);
+
+export const GET_USER = "GET_USER";
+export const GET_USER_FULFILLED = FULFILLED(GET_USER);
+
+export const UPDATE_COLLEGE_SITES = "UPDATE_COLLEGE_SITES";
+
+export const updateCollegeSites = (sites: SiteDTO[]) => ({
+  type: UPDATE_COLLEGE_SITES,
+  payload: sites
+});
+
+export const setUserChecked = (checked: boolean) => ({
+  type: SET_USER_CHECKED,
+  payload: checked
+});
+
+export const getUser = (userId: string) => ({
+  type: GET_USER,
+  payload: userId
+});
 
 export const getSites = (userId: string) => ({
   type: GET_SITES,

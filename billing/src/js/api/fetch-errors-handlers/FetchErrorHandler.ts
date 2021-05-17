@@ -7,11 +7,15 @@ import { FETCH_FAIL } from "../../redux/actions";
 import { IAction } from "../../redux/actions/IshAction";
 
 const FetchErrorHandler = (response: any, customMessage?: string): IAction<any>[] => {
+  if (!customMessage) {
+    customMessage = "Something went wrong";
+  }
+
   if (!response) {
     return [
       {
         type: FETCH_FAIL,
-        payload: { message: customMessage || "Something went wrong" }
+        payload: { message: customMessage }
       }
     ];
   }

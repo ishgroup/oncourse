@@ -1,6 +1,5 @@
 import { DefaultHttpService } from "./HttpService";
-import { BillingApi, CollegeDTO } from "@api/model";
-import {Site} from "../../models/Site";
+import {BillingApi, CollegeDTO, SiteDTO} from "@api/model";
 
 
 class BillingService {
@@ -12,12 +11,16 @@ class BillingService {
     return this.defaultHttpService.GET(`/v1/college/${name}`, { headers: { xGRecaptcha,  } });
   }
 
-  public checkUser(user: string): Promise<boolean> {
-    return this.defaultHttpService.GET(`/v1/user/${user}`);
+  public getUser(userId: string): Promise<string> {
+    return this.billingApi.getCollegeKey(userId);
   }
 
-  public getSites(userId: string): Promise<Site[]> {
-    return this.defaultHttpService.GET(`/v1/sites/${userId}`);
+  public getSites(userId: string): Promise<SiteDTO[]> {
+    return this.billingApi.getCollegeSites(userId);
+  }
+
+  public updateSites(sites: SiteDTO[]): Promise<any> {
+    return this.billingApi.updateCollegeSites(sites);
   }
 
   public createCollege(data: CollegeDTO): Promise<any> {

@@ -13,10 +13,10 @@ import { darkTheme, defaultTheme, monochromeTheme, highcontrastTheme, christmasT
 import { ThemeContext} from "../themes/ThemeContext";
 import MessageProvider from "./common/message/MessageProvider";
 import LoadingIndicator from "./common/Loading";
-import BillingService from "../api/services/BillingApi";
-import {UserType} from "../models/User";
-import {useDispatch} from "react-redux";
-import {getSites} from "../redux/actions";
+import {useDispatch, useSelector} from "react-redux";
+import {getSites, getUser, setUserChecked} from "../redux/actions";
+import {State} from "../redux/reducers";
+import {getCookie, setCookie} from "../utils";
 
 
 export const useStyles = makeStyles(() =>
@@ -31,27 +31,22 @@ export const useStyles = makeStyles(() =>
 );
 
 const Billing = () => {
-  const [userType, setUserType] = React.useState<UserType>(null);
+  const checked = useSelector<State, any>(state => state.user.checked);
   const dispatch = useDispatch();
 
   const classes = useStyles();
 
   React.useEffect(() => {
     const search = new URLSearchParams(window.location.search);
-    const user = search.get("user");
+    const user = search.get("user") || getCookie("JSESSIONID");
 
     if (user) {
-      BillingService.checkUser(user).then(exist => {
-        if(exist) {
-          setUserType("Existing")
-          dispatch(getSites(user));
-        } else {
-          setUserType("New")
-        }
-        window.history.replaceState({}, document.title, location.protocol + '//' + location.host + location.pathname);
-      })
+      dispatch(getUser(user));
+      dispatch(getSites(user));
+      setCookie("JSESSIONID", user);
+      window.history.replaceState({}, document.title, location.protocol + '//' + location.host + location.pathname);
     } else {
-      setUserType("New")
+      dispatch(setUserChecked(true));
     }
   },[]);
 
@@ -113,7 +108,7 @@ const Billing = () => {
       <ThemeProvider theme={theme}>
         <Header/>
         <div className={classes.root}>
-          {userType ? <Stepper userType={userType} /> : <LoadingIndicator />}
+          {checked ? <Stepper /> : <LoadingIndicator />}
         </div>
         <MessageProvider />
       </ThemeProvider>

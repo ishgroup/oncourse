@@ -7,9 +7,13 @@ import { combineEpics } from "redux-observable";
 import { EpicCheckSiteName } from "./EpicCheckSiteName";
 import { EpicCreateCollege } from "./EpicCreateCollege";
 import { EpicGetSites } from "./EpicGetSites";
+import { EpicGetUser } from "./EpicGetUser";
+import { EpicUpdateCollegeSites } from "./EpicUpdateCollegeSites";
 
 export const EpicRoot = combineEpics(
+  EpicUpdateCollegeSites,
   EpicCheckSiteName,
   EpicCreateCollege,
-  EpicGetSites
+  EpicGetSites,
+  EpicGetUser
 );

@@ -15,8 +15,9 @@ import { FETCH_FINISH, FETCH_START } from "../actions";
 import FetchErrorHandler from "../../api/fetch-errors-handlers/FetchErrorHandler";
 import { REJECTED } from "../actions/ActionUtils";
 import { EnvironmentConstants } from "../../constant/EnvironmentConstants";
+import {State} from "../reducers";
 
-export interface Request<V = any, S = any, P = any> {
+export interface Request<V = any, S = State, P = any> {
   type: string;
   hideLoadIndicator?: boolean;
   getData: (payload: P, state: S) => Promise<V>;

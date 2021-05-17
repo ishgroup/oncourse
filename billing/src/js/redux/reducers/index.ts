@@ -13,11 +13,17 @@ import {
   SET_SITENAME_VALUE,
   SET_SERVER_ERROR_VALUE,
   RESET_STORE,
-  SET_LOADING_VALUE, GET_SITES, GET_SITES_FULFILLED,
+  SET_LOADING_VALUE,
+  GET_SITES,
+  GET_SITES_FULFILLED,
+  GET_USER,
+  GET_USER_FULFILLED,
+  SET_USER_CHECKED,
+  FETCH_FAIL,
+  UPDATE_COLLEGE_SITES,
 } from "../actions";
 import { contactFormInitialValue, organisationFormInitialValue } from "../initialValues";
-import {Site} from "../../models/Site";
-
+import {SiteDTO} from "@api/model";
 
 export interface State {
   collegeKey: string;
@@ -28,7 +34,11 @@ export interface State {
   sendTokenAgain: boolean;
   serverError: boolean;
   loading: boolean;
-  sites: Site[];
+  user: {
+    checked: boolean,
+    userKey: string,
+    sites: SiteDTO[];
+  },
   message: {
     message: string;
     error: boolean;
@@ -61,7 +71,11 @@ const initState: State = {
   sendTokenAgain: true,
   serverError: false,
   loading: false,
-  sites: [],
+  user: {
+    checked: false,
+    userKey: null,
+    sites: null
+  },
   message: {
     message: "",
     error: false
@@ -119,8 +133,10 @@ export const createCollegeReducer = (state: State = initState, action): State =>
         sendTokenAgain: action.payload
       };
 
+    case GET_USER:
     case GET_SITES:
     case CREATE_COLLEGE:
+    case UPDATE_COLLEGE_SITES:
       return {
         ...state,
         loading: true
@@ -132,6 +148,7 @@ export const createCollegeReducer = (state: State = initState, action): State =>
         collegeWasCreated: action.payload
       }
 
+    case FETCH_FAIL:
     case SHOW_MESSAGE:
       return {
         ...state,
@@ -161,10 +178,33 @@ export const createCollegeReducer = (state: State = initState, action): State =>
         loading: action.payload
       }
 
+    case SET_USER_CHECKED:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          checked: action.payload
+        }
+      }
+
+    case GET_USER_FULFILLED:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          checked: true,
+          userKey: action.payload
+        },
+        loading: false
+      }
+
     case GET_SITES_FULFILLED:
       return {
         ...state,
-        sites: action.payload,
+        user: {
+          ...state.user,
+          sites: action.payload
+        },
         loading: false
       }
 

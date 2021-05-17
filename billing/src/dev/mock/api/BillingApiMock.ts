@@ -1,28 +1,29 @@
 import {MockAdapter, promiseResolve} from "../MockAdapter";
-import {Site} from "../../../js/models/Site";
+import {SiteDTO} from "@api/model";
 
 export function BillingApiMock(this: MockAdapter) {
-  this.api.onGet(new RegExp(`v1/college/.+`))
+  this.api.onGet(new RegExp(`/v1/college/[^/]+$`))
     .reply(config => promiseResolve(config, true))
 
-  this.api.onGet(new RegExp(`v1/user/.+`))
-    .reply(config => promiseResolve(config, true))
+  this.api.onGet(new RegExp(`/v1/collegeKey/[^/]+$`))
+    .reply(config => promiseResolve(config, "nida"))
 
-  this.api.onGet(new RegExp(`v1/sites/.+`))
-    .reply(config => promiseResolve<Site[]>(config, [
+  this.api.onGet(new RegExp(`/v1/college/sites/[^/]+$`))
+    .reply(config => promiseResolve<SiteDTO[]>(config, [
       {
         id: 1,
         name: "Site 2",
         key: "nida-2",
-        prefix: "nida",
         domains: ["www.corporate.nida.edu.au", "www.open.nida.edu.au"]
       },
       {
         id: 2,
         name: "Site 3",
         key: "nida-3",
-        prefix: "nida",
         domains: ["www.corporate.nida.edu.au", "www.open.nida.edu.au"]
       }
     ]))
+
+  this.api.onPost("/v1/college/sites")
+    .reply(config => promiseResolve(config))
 }
