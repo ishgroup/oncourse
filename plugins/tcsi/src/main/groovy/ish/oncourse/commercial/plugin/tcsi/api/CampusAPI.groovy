@@ -9,7 +9,6 @@ import groovy.json.JsonOutput
 import groovy.transform.CompileDynamic
 import groovyx.net.http.RESTClient
 import ish.oncourse.commercial.plugin.tcsi.TCSIIntegration
-import ish.oncourse.commercial.plugin.tcsi.TCSIUtils
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Site
@@ -19,6 +18,7 @@ import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.Method.GET
 import static groovyx.net.http.Method.POST
 
+@CompileDynamic
 class CampusAPI extends TCSI_API {
     static final String CAMPUSES_PATH =  TCSIIntegration.BASE_API_PATH + '/campuses'
 

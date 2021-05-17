@@ -12,6 +12,7 @@
 package ish.oncourse.commercial.plugin.tcsi
 
 import com.nimbusds.jose.jwk.RSAKey
+import groovy.transform.CompileDynamic
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
 import ish.oncourse.commercial.plugin.tcsi.api.AdmissionAPI
@@ -45,6 +46,7 @@ import static groovyx.net.http.Method.PUT
 
 
 @Plugin(type = 11, oneOnly = true)
+@CompileDynamic
 class TCSIIntegration implements PluginTrait {
     
     static boolean test = false

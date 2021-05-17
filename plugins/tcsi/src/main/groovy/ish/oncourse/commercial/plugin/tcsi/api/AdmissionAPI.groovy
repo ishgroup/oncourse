@@ -28,7 +28,7 @@ import java.time.LocalDate
 
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.Method.*
-
+@CompileDynamic
 class AdmissionAPI extends TCSI_API {
 
     static final String ADMISSIONS_PATH = TCSIIntegration.BASE_API_PATH + '/course-admissions'

@@ -26,6 +26,7 @@ import java.time.LocalDate
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.Method.*
 
+@CompileDynamic
 class UnitAPI extends TCSI_API {
 
     static final String UNITS_PATH = TCSIIntegration.BASE_API_PATH + '/unit-enrolments'

@@ -24,6 +24,7 @@ import java.time.Duration
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.Method.GET
 
+@CompileDynamic
 class CourseAPI extends TCSI_API {
 
     static final String COURSES_PATH = TCSIIntegration.BASE_API_PATH + '/courses'
