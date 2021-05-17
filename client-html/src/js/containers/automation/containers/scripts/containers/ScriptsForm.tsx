@@ -280,12 +280,12 @@ const ScriptsForm = React.memo<Props>(props => {
     (valuesToSave: Script) => {
       setDisableRouteConfirm(true);
 
+      valuesToSave.entity = valuesToSave?.trigger?.entityName;
+
       if (isNew) {
         onCreate(valuesToSave, viewMode);
         return;
       }
-
-      valuesToSave.entity = valuesToSave?.trigger?.entityName;
 
       if (isInternal) {
         onSave(valuesToSave.id, valuesToSave, "PATCH", viewMode);
