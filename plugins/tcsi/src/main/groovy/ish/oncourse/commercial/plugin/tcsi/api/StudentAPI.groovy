@@ -83,6 +83,15 @@ class StudentAPI extends TCSI_API{
         if (!hasCitizenship(studentUid)) {
             createCitizenship(studentUid)
         }
+        
+        //always maintain one disability record (oncourse can has only one)
+        String disabilityUid = getDisability(studentUid)
+        if (disabilityUid) {
+            updateDisability(studentUid, disabilityUid)
+        } else {
+            createDisability(studentUid)
+        }
+        
     }
 
     String hasCitizenship(String studenUid) {
@@ -117,8 +126,54 @@ class StudentAPI extends TCSI_API{
             }
         }
     }
+    
+    String getDisability(String studentUid) {
+        String  message = "get student's Disability"
+        client.request(GET, JSON) {
+            uri.path = STUDENTS_PATH + "/$studentUid/disabilities"
+            response.success = { resp, result ->
+                def disabilities = handleResponce(result, message)
+                if (disabilities && !disabilities.empty) {
+                    return disabilities[0].disability['disabilities_uid'].toString()
+                } else {
+                    return null
+                }
 
-    @CompileDynamic
+            }
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
+    
+    String createDisability(String studentUid) {
+        String  message = "create student's disability"
+        client.request(POST, JSON) {
+            uri.path = STUDENTS_PATH + "/$studentUid/disabilities"
+            body = getDisabilityPacket()
+            response.success = { resp, result ->
+                handleResponce(result, message)
+            }
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
+
+    String updateDisability(String studentUid,String disabilityUid) {
+        String  message = "update student's disability"
+        client.request(PUT, JSON) {
+            uri.path = STUDENTS_PATH + "/$studentUid/disabilities/$disabilityUid"
+            body = getDisabilityPacket()
+            response.success = { resp, result ->
+                handleResponce(result, message)
+            }
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
+        @CompileDynamic
     private getStudentPacket() {
         def studentPacket  = [
                 'correlation_id' : "student_packet_${System.currentTimeMillis()}",
@@ -287,6 +342,10 @@ class StudentAPI extends TCSI_API{
         return residentCode
     }
 
+    private String getDisabilityPacket() {
+        return JsonOutput.toJson(getDisabilitiData())
+    }
+    
     @CompileDynamic
     private Map<String, Object> getDisabilitiData(){
         Map<String, Object> disability = [:]
