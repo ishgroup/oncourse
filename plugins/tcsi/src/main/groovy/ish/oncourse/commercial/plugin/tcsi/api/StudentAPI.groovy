@@ -32,7 +32,7 @@ class StudentAPI extends TCSI_API{
 
     StudentAPI(RESTClient client, Enrolment enrolment, EmailService emailService, PreferenceController preferenceController) {
         super(client, enrolment, emailService, preferenceController)
-        this.student = enrolment.student
+        this.student = enrolment?.student
     }
     
     String createStudent() {
@@ -79,32 +79,22 @@ class StudentAPI extends TCSI_API{
                 interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
             }
         }
-        
-        def citizenshipUid = getCitizenship(studentUid)
-        
-        if (citizenshipUid) {
-            updateCitizenship(studentUid, citizenshipUid)
-        } else {
+            
+        if (!hasCitizenship(studentUid)) {
             createCitizenship(studentUid)
         }
-        
-        
-        
-        
-        
-        
     }
 
-    String getCitizenship(String studenUid) {
+    String hasCitizenship(String studenUid) {
         String  message = "get student's citizenships"
         client.request(GET, JSON) {
             uri.path = STUDENTS_PATH + "/$studenUid/citizenships"
             response.success = { resp, result ->
                 def citizenships = handleResponce(result, message)
                 if (citizenships && !citizenships.empty) {
-                    return citizenships[0].citizenship['citizenships_uid'].toString()
+                    return citizenships.any {it.citizenship['citizen_resident_code'] == getResidantialCode()}
                 } else {
-                    return null
+                    return false
                 }
 
             }
@@ -114,23 +104,9 @@ class StudentAPI extends TCSI_API{
         }
     }
 
-    String updateCitizenship(String studentUid,String citizenshipUid) {
-        String  message = "update student's citizenships"
-        client.request(PUT, JSON) {
-            uri.path = STUDENTS_PATH + "/$studentUid/citizenships/$citizenshipUid"
-            body = getCitizenshipPacket()
-            response.success = { resp, result ->
-                 handleResponce(result, message)
-            }
-            response.failure =  { resp, body ->
-                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
-            }
-        }
-    }
-
     String createCitizenship(String studentUid) {
         String  message = "create student's citizenships"
-        client.request(PUT, JSON) {
+        client.request(POST, JSON) {
             uri.path = STUDENTS_PATH + "/$studentUid/citizenships"
             body = getCitizenshipPacket()
             response.success = { resp, result ->
@@ -268,19 +244,23 @@ class StudentAPI extends TCSI_API{
     }
     
     private String getCitizenshipPacket() {
-        def studentPacket  = [
-                'correlation_id' : "citizenship_packet_${System.currentTimeMillis()}",
-                'citizenship' : getCitizenshipData()
-        ]
-        return JsonOutput.toJson(studentPacket)
+        Map<String, Object> citizenship = getCitizenshipData()
+        citizenship['citizenship_effective_from_date'] = enrolment.createdOn.format(DATE_FORMAT)
+        return JsonOutput.toJson(citizenship)
     }
 
     @CompileDynamic
     private Map<String, Object> getCitizenshipData() {
         Map<String, Object> citizenship = [:]
         citizenship['correlation_id'] = "citizenship_${System.currentTimeMillis()}"
+        String residentCode = getResidantialCode()
+        citizenship['citizenship'] = ['citizen_resident_code': residentCode]
+        return citizenship
+    }
+    
+    private String getResidantialCode() {
         String residentCode
-        if (student.citizenship) {
+        if (student?.citizenship) {
             switch (student.citizenship) {
                 case StudentCitizenship.AUSTRALIAN_CITIZEN:
                     residentCode = "1"   //E358
@@ -302,11 +282,9 @@ class StudentAPI extends TCSI_API{
 
             }
         } else {
-            residentCode = "5"   //E358
+            residentCode = "1"   //E358
         }
-
-        citizenship['citizenship'] = ['citizen_resident_code': residentCode]
-        return citizenship
+        return residentCode
     }
 
     @CompileDynamic
