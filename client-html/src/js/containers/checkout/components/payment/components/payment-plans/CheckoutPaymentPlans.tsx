@@ -48,6 +48,14 @@ interface Props {
   selectedPaymentType?: PaymentMethod;
 }
 
+const validateDueDate = (date, allValues) => {
+  let error;
+  if (date && (allValues?.paymentPlans[0]?.payDate ? new Date(allValues.paymentPlans[0].payDate) : new Date()) > new Date(date)) {
+    error = "Due date should be after invoice date";
+  }
+  return error;
+};
+
 const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
   ...paymentPlanStyles(theme),
   ...styles()
@@ -135,6 +143,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                   name={`${f}.date`}
                   formatting="inline"
                   disabled={!field.dateEditable || disabledStep}
+                  validate={(!field.dateEditable || disabledStep) ? undefined : validateDueDate}
                   onChange={onDueDateChange}
                 />
               </Typography>
