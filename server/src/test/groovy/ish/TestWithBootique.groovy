@@ -86,7 +86,7 @@ abstract class TestWithBootique {
      */
     protected void createInjectors() throws Exception {
         BootiqueTestFactory.Builder builder = testFactory
-                .app(String.format("--config=classpath:%s", "application-test.yml"))
+                .app("--config=classpath:application-test.yml")
                 .module(AngelModule.class)
                 .module(TestModule.class)
                 .module(new Module() {
