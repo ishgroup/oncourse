@@ -15,9 +15,6 @@ import org.junit.jupiter.api.Test
 @DatabaseSetup(value = "ish/oncourse/server/payroll/payslipGenerationTest.xml")
 class PayrollGenerationTest extends TestWithDatabase {
 
-    private SessionService sessionService = injector.getInstance(SessionService.class)
-    private PayrollService payrollService = new PayrollService(cayenneService, sessionService)
-
     @Test
     void generatePayslipWithPayType() {
         List<Long> contactIds = [1l]
@@ -29,7 +26,7 @@ class PayrollGenerationTest extends TestWithDatabase {
             request
         }
 
-        payrollService.generatePayslips(request)
+        new PayrollService(cayenneService, injector.getInstance(SessionService.class)).generatePayslips(request)
 
         List<Payslip> payslips = ObjectSelect.query(Payslip).select(cayenneContext)
         Assertions.assertEquals(payslips.size(), 1)
@@ -49,7 +46,7 @@ class PayrollGenerationTest extends TestWithDatabase {
             request
         }
 
-        payrollService.generatePayslips(request)
+        new PayrollService(cayenneService, injector.getInstance(SessionService.class)).generatePayslips(request)
 
         List<Payslip> payslips = ObjectSelect.query(Payslip).select(cayenneContext)
         Assertions.assertEquals(payslips.size(), 0, "There are no payslips should be created for tutor without pay type")
