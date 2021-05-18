@@ -215,7 +215,7 @@ class Sidebar extends React.Component<Props, any> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<any>, snapshot?: any) {
-    if (this.props.navigation.activeUrl === '/' && this.props.location.pathname !== prevProps.location.pathname) {
+    if ((this.props.navigation.activeUrl === '/' || !this.props.navigation.activeUrl) && this.props.location.pathname !== prevProps.location.pathname) {
       const match = matchPath(this.props.location.pathname, {
         path: "/page/:id?",
         exact: false,
@@ -223,7 +223,6 @@ class Sidebar extends React.Component<Props, any> {
       });
 
       if (match) this.props.setActiveUrl("/content");
-      // if (match) this.setState({activeUrl: "/content"});
     }
   }
 
@@ -231,7 +230,6 @@ class Sidebar extends React.Component<Props, any> {
     const history = getHistoryInstance();
     if (history.location.state && history.location.state.updateActiveUrl) {
       this.props.setActiveUrl(history.location.pathname)
-      // this.setState({activeUrl: history.location.pathname});
     }
   }
 

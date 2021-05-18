@@ -1,6 +1,5 @@
 import React from 'react';
 import {withStyles} from "@material-ui/core/styles";
-import IconBack from "../../../../../common/components/IconBack";
 import {BlockState} from "../reducers/State";
 import {addContentMarker} from "../../../utils";
 import CustomButton from "../../../../../common/components/CustomButton";
@@ -9,7 +8,6 @@ import EditInPlaceField from "../../../../../common/components/form/form-fields/
 import clsx from "clsx";
 import MenuIcon from "@material-ui/icons/Menu";
 import {IconButton} from "@material-ui/core";
-import {showNavigation} from "../../../../../common/containers/Navigation/actions";
 
 const styles: any = theme => ({
   linkBack: {
@@ -54,10 +52,12 @@ class BlockSettings extends React.Component<Props, any> {
     };
   }
 
-  clickBack(e) {
-    const {onBack} = this.props;
-    e.preventDefault();
-    onBack();
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<any>, snapshot?: any) {
+    if (this.props.block.id !== prevProps.block.id) {
+      const {block} = this.props;
+
+      this.setState({title: block.title});
+    }
   }
 
   onChange(event, key) {
@@ -86,7 +86,7 @@ class BlockSettings extends React.Component<Props, any> {
   }
 
   render () {
-    const {block, classes, showNavigation} = this.props;
+    const {classes, showNavigation} = this.props;
     const {title} = this.state;
 
     return (
@@ -96,10 +96,6 @@ class BlockSettings extends React.Component<Props, any> {
             <IconButton onClick={showNavigation}>
               <MenuIcon/>
             </IconButton>
-
-            {/*<a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>*/}
-            {/*  <IconBack text="Blocks"/>*/}
-            {/*</a>*/}
           </li>
         </ul>
 

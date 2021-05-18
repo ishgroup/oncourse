@@ -37,7 +37,7 @@ const Block: React.FC<Props> = ({block, classes, onSave, setContentMode}) => {
     if (block.contentMode === "md") {
       setDraftContent(marked(block.content || ""));
     }
-  }, []);
+  }, [block]);
 
   const onClickArea = e => {
     e.preventDefault();
@@ -50,20 +50,20 @@ const Block: React.FC<Props> = ({block, classes, onSave, setContentMode}) => {
   };
 
   const handleSave = () => {
-    setEditMode(false);
+    // setEditMode(false);
     onSave(block.id, addContentMarker(draftContent, block.contentMode));
   };
 
   const handleCancel = () => {
-    setEditMode(false);
+    // setEditMode(false);
     setDraftContent(block.content || "");
   };
 
-  useEffect(() => {
-    if (!editMode && block.content) {
-      document.dispatchEvent(pluginInitEvent);
-    }
-  }, [editMode, block, block && block.content]);
+  // useEffect(() => {
+  //   if (!editMode && block.content) {
+  //     document.dispatchEvent(pluginInitEvent);
+  //   }
+  // }, [editMode, block, block && block.content]);
 
   const onContentModeChange = e => {
     setContentMode(block.id,e.target.value);
@@ -124,13 +124,13 @@ const Block: React.FC<Props> = ({block, classes, onSave, setContentMode}) => {
         </div>
       </>}
 
-      {!editMode &&
-        <div onClick={onClickArea}>
-          <div className={clsx("editor-area", !block.content && 'editor-area--empty')}>
-            {block.content}
-          </div>
-        </div>
-      }
+      {/*{!editMode &&*/}
+      {/*  <div onClick={onClickArea}>*/}
+      {/*    <div className={clsx("editor-area", !block.content && 'editor-area--empty')}>*/}
+      {/*      {block.content}*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*}*/}
     </div>
   );
 };

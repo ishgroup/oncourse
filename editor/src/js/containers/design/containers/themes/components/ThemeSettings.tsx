@@ -5,7 +5,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {IconButton} from "@material-ui/core";
 import clsx from "clsx";
 import {Theme, Layout} from "../../../../../model";
-import IconBack from "../../../../../common/components/IconBack";
 import CustomButton from "../../../../../common/components/CustomButton";
 import {stubFunction} from "../../../../../common/utils/Components";
 import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
@@ -119,6 +118,18 @@ class ThemeSettings extends React.Component<Props, any> {
     if (theme.paths) this.setState({urls: theme.paths});
   }
 
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<any>, snapshot?: any) {
+    if (this.props.theme.id !== prevProps.theme.id) {
+      const {theme} = this.props;
+
+      this.setState({
+        urls: theme.paths,
+        title: theme.title,
+        layoutId: theme.layoutId,
+      });
+    }
+  }
+
   clickBack = (e) => {
     const {onBack} = this.props;
     e.preventDefault();
@@ -202,7 +213,7 @@ class ThemeSettings extends React.Component<Props, any> {
   }
 
   render () {
-    const {classes, theme, layouts, showNavigation} = this.props;
+    const {classes, layouts, showNavigation} = this.props;
     const {layoutId, newLink, title, urls} = this.state;
 
     return (
@@ -212,10 +223,6 @@ class ThemeSettings extends React.Component<Props, any> {
             <IconButton onClick={showNavigation}>
               <MenuIcon/>
             </IconButton>
-
-            {/*<a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>*/}
-            {/*  <IconBack text="Themes"/>*/}
-            {/*</a>*/}
           </li>
         </ul>
 

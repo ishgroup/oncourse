@@ -12,6 +12,7 @@ import {RouteWrapper} from "../../../components/Layout/Sidebar";
 import PageService from "../../../services/PageService";
 import {State} from "../../../reducers/state";
 import {setActiveUrl} from "./actions";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 const styles = (theme) => ({
   sidebarWrapper: {
@@ -20,6 +21,7 @@ const styles = (theme) => ({
     color: "rgba(0, 0, 0, 0.87)",
     boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px",
     height: "100vh",
+    fontFamily: "inter, sans-serif",
     position: "relative",
     // position: "fixed",
     width: "230px",
@@ -62,11 +64,17 @@ const styles = (theme) => ({
         display: "flex",
         position: "absolute",
         left: "100%",
-      }
+      },
+      "& $arrowIcon": {
+        display: "block",
+      },
     }
   },
   subLink: {
     padding: "10px 20px 10px 50px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   listItem: {
     borderBottom: "1px solid #bbb",
@@ -95,6 +103,10 @@ const styles = (theme) => ({
     overflowY: "auto",
     maxHeight: "calc(100vh - 265px)",
     width: "100%",
+  },
+  arrowIcon: {
+    fontSize: "15px",
+    display: "none",
   },
 });
 
@@ -174,6 +186,7 @@ const SwipeableNavigation = (props: Props) => {
           activeClassName={classes.activeLink}
         >
           <span>{route.title}</span>
+          {includedSubMenus.includes(route.title) && <ArrowForwardIosIcon className={classes.arrowIcon}/>}
         </NavLink>
       </li>
     ))

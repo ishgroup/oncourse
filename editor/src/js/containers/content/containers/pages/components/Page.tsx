@@ -72,7 +72,7 @@ export const Page: React.FC<PageProps> = ({
         pageNode.removeEventListener('click', onClickArea);
       }
     };
-  },        []);
+  }, [page]);
 
   const replacePageHtml = html => {
     const pageNode = DOM.findPage(page.title);
@@ -96,13 +96,13 @@ export const Page: React.FC<PageProps> = ({
       replacePageHtml(page.renderHtml);
       clearRenderHtml(page.id);
     }
-  },        [page.renderHtml]);
+  }, [page.renderHtml]);
 
   useEffect(() => {
     if (!editMode && page.content) {
       document.dispatchEvent(pluginInitEvent);
     }
-  },        [editMode, page && page.content]);
+  }, [editMode, page && page.content]);
 
   const onChangeArea = val => {
     setDraftContent(val);

@@ -4,11 +4,8 @@ import clsx from "clsx";
 import {withStyles} from "@material-ui/core/styles";
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Avatar from '@material-ui/core/Avatar';
 import MenuIcon from '@material-ui/icons/Menu';
 import PageService from "../../../../../services/PageService";
-import IconBack from "../../../../../common/components/IconBack";
 import {addContentMarker} from "../../../utils";
 import {PageState} from "../reducers/State";
 import CustomButton from "../../../../../common/components/CustomButton";
@@ -251,10 +248,6 @@ class PageSettings extends React.PureComponent<Props, any> {
             <IconButton onClick={showNavigation}>
               <MenuIcon/>
             </IconButton>
-
-            {/*<a href="#" className={classes.linkBack} onClick={e => this.clickBack(e)}>*/}
-            {/*  <IconBack text="Pages"/>*/}
-            {/*</a>*/}
           </li>
         </ul>
 
