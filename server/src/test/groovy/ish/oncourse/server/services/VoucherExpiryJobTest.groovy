@@ -17,12 +17,18 @@ import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 class VoucherExpiryJobTest extends TestWithDatabase {
-    private AccountTransactionService accountTransactionService = injector.getInstance(AccountTransactionService.class)
-
+    private AccountTransactionService accountTransactionService 
+    
+    @BeforeEach
+    void setup() throws Exception {
+        accountTransactionService = injector.getInstance(AccountTransactionService.class)
+    }
+    
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
         Date start1 = DateUtils.addDays(new Date(), -4)

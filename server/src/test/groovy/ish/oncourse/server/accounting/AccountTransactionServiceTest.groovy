@@ -10,15 +10,21 @@ import ish.oncourse.server.cayenne.AccountTransaction
 import ish.request.AccountTransactionRequest
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
 @CompileStatic
 class AccountTransactionServiceTest extends TestWithDatabase {
+    
+    private AccountTransactionService accountTransactionService
 
-    private AccountTransactionService accountTransactionService = injector.getInstance(AccountTransactionService)
-
+    @BeforeEach
+    void setup() throws Exception {
+        accountTransactionService = injector.getInstance(AccountTransactionService.class)
+    }
+    
     @Test
     void test() {
         List<AccountTransaction> before = ObjectSelect.query(AccountTransaction)

@@ -57,19 +57,7 @@ class InvoiceLineTest extends TestWithDatabase {
         DataContext newContext = cayenneService.getNewNonReplicatingContext()
 
         InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
-        try {
-            invoiceLine.setPriceEachExTax(new Money("100"))
-        } catch (IllegalStateException e) {
-            Assertions.assertEquals("You must set the tax rate before setting the price.", e.getMessage(), "Checking if the invoice price can be set before tax")
-            return
-        }
-        if (PreferenceController.getController().getTaxPK() != null) {
-            // in this case the default tax will be applied and exception wont be thrown
-            return
-        }
-        Assertions.fail("No exception thrown")
-        // this actually might not be an issue, just added a test because there are parts of code which rely on the order of setting those fields.
-
+        Assertions.assertNotNull(invoiceLine.getTax(), "tax installed on entity createion, see InvoiceLineLifecycleListener.postAdd()")
     }
 
     

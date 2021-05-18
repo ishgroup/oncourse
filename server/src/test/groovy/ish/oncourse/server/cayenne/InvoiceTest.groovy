@@ -6,6 +6,7 @@ package ish.oncourse.server.cayenne
 
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
+@DatabaseSetup
 class InvoiceTest extends TestWithDatabase {
 
     @Test
@@ -199,16 +201,7 @@ class InvoiceTest extends TestWithDatabase {
 
         cayenneContext.commitChanges()
 
-        // check onPostUpdate
-        Assertions.assertEquals(invoiceMoney, invoice.getAmountOwing())
-
-        paymentin.setStatus(PaymentStatus.SUCCESS)
-
-        Assertions.assertEquals(invoiceMoney, invoice.getAmountOwing())
-
-        cayenneContext.commitChanges()
-
-        // check onPostUpdate
+        // see PaymentInLifecycleListener.postPersist(): NEW -> SUCCESS became automatically for cache payments
         Assertions.assertEquals(invoiceMoney.subtract(paymentMoney), invoice.getAmountOwing())
 
     }
@@ -259,10 +252,11 @@ class InvoiceTest extends TestWithDatabase {
 
         Assertions.assertEquals(Money.ZERO, invoice.getAmountOwing())
 
+        // see PaymentInLifecycleListener.postPersist(): NEW -> SUCCESS became automatically for cache payments
         cayenneContext.commitChanges()
 
         // check onPostUpdate
-        Assertions.assertEquals(invoiceMoney, invoice.getAmountOwing())
+        Assertions.assertEquals(invoiceMoney.subtract(paymentMoney), invoice.getAmountOwing())
 
         DataContext newContext2 = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 

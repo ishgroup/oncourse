@@ -2,6 +2,7 @@ package ish.oncourse.server.cayenne
 
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.DataType
 import ish.oncourse.server.CayenneService
@@ -19,6 +20,7 @@ import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCus
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 
 @CompileStatic
+@DatabaseSetup
 class CustomFieldFunctionsTest extends TestWithDatabase {
     
 

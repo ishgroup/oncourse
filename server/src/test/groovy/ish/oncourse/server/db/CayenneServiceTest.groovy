@@ -5,6 +5,7 @@
 package ish.oncourse.server.db
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
@@ -21,6 +22,7 @@ import java.util.concurrent.*
 import static org.junit.jupiter.api.Assertions.fail
 
 @CompileStatic
+@DatabaseSetup
 class CayenneServiceTest extends TestWithDatabase {
 
     /**
