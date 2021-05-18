@@ -1,6 +1,7 @@
 package ish.oncourse.server.lifecycle
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.AccountType
 import ish.common.types.PaymentSource
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
+@DatabaseSetup
 class PaymentHelperTest extends TestWithDatabase {
     
     @Test
