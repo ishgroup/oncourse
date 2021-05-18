@@ -165,9 +165,7 @@ jar {
 }
 
 task expandConfig(type: Copy) {
-	def dbUrl = project.hasProperty('dbUrl') ?
-			project.getProperty('dbUrl') :
-			'jdbc:mariadb://127.0.0.1:3306/angelTest_trunk'
+	def dbUrl = project.getProperty('dbUrl') 
 
 	from("$rootDir/server/src/test/resources/") {
 		include 'application-test.txt'
