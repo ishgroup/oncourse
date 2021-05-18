@@ -265,7 +265,7 @@ class InvoiceTest extends TestWithDatabase {
 
         paymentInOtherContext.setStatus(PaymentStatus.SUCCESS)
 
-        Assertions.assertEquals(invoiceMoney, invoiceInOtherContext.getAmountOwing())
+        Assertions.assertEquals(invoiceMoney.subtract(paymentMoney), invoiceInOtherContext.getAmountOwing())
 
         newContext2.commitChanges()
 
