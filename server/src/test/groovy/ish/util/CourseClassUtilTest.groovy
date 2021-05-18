@@ -4,6 +4,7 @@
  */
 package ish.util
 
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.*
 import ish.math.Money
@@ -20,6 +21,7 @@ import static org.mockito.Matchers.any
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.when
 
+@DatabaseSetup
 class CourseClassUtilTest extends TestWithDatabase {
 
     private static int codeSequence = 0
