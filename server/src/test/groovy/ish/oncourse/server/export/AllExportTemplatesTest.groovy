@@ -32,7 +32,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.time.LocalDate
 
 @CompileStatic
-@Disabled
+
 class AllExportTemplatesTest extends TestWithDatabase {
     private static final String UTC_TIMEZONE_ID = "UTC"
 
