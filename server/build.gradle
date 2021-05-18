@@ -165,7 +165,7 @@ jar {
 }
 
 task expandConfig(type: Copy) {
-	def dbUrl = project.getProperty('dbUrl') 
+	def dbUrl = project.findProperty('dbUrl') ?: ''
 
 	from("$rootDir/server/src/test/resources/") {
 		include 'application-test.txt'
