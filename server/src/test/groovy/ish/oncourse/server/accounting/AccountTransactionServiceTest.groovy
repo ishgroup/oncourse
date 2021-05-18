@@ -1,6 +1,7 @@
 package ish.oncourse.server.accounting
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.AccountTransactionType
 import ish.math.Money
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
+@DatabaseSetup
 class AccountTransactionServiceTest extends TestWithDatabase {
     
     private AccountTransactionService accountTransactionService
