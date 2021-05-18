@@ -29,6 +29,7 @@ import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.dbunit.ext.mysql.MySqlDataTypeFactory
+import org.dbunit.operation.CompositeOperation
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.extension.*
 import org.junit.platform.commons.support.AnnotationSupport
@@ -84,10 +85,7 @@ class TestWithDatabaseExtension implements
     void beforeEach(ExtensionContext context) throws Exception {
         def store = context.root.getStore(GLOBAL)
         def previousDataSource = store.get("dataSource")
-
-        if (!AnnotationSupport.isAnnotated(context.getTestClass(), DatabaseSetup)) {
-            throw new Exception("@DatabaseSetup annotation missing")
-        }
+        
 
         // do this once for the whole dbunit run
         if (!store.get("db_setup")) {
@@ -114,6 +112,8 @@ class TestWithDatabaseExtension implements
                 ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
                 databaseTest.dataSourceReplaceValues(rDataSet)
                 IDatabaseConnection testDatabaseConnection = getTestDatabaseConnection()
+                //                new CompositeOperation(org.dbunit.operation.DatabaseOperation.TRUNCATE_TABLE, org.dbunit.operation.DatabaseOperation.INSERT).execute(testDatabaseConnection, dataSet)
+
                 org.dbunit.operation.DatabaseOperation.CLEAN_INSERT.execute(testDatabaseConnection, rDataSet)
             }
         }

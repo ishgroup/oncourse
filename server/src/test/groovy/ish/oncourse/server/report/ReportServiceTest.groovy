@@ -38,9 +38,7 @@ import static ish.report.ImportReportResult.ReportValidationError.ReportBuilding
 @DatabaseSetup
 class ReportServiceTest extends TestWithDatabase {
     private static final Logger logger = LogManager.getLogger()
-
-    private DocumentService documentService = injector.getInstance(DocumentService.class)
-
+    
     @Test
     void testImportAndCompileAllReportsBasedOnManifest() throws IOException {
         logger.warn("performing testImportAndCompileAllReportsBasedOnManifest")
@@ -191,7 +189,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, documentService) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class)) {
 
             @CompileStatic
             @Override
@@ -249,7 +247,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, documentService) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class)) {
 
             @Override
             protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
@@ -311,7 +309,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, documentService) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class)) {
 
             @Override
             protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
@@ -365,7 +363,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, documentService)
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class))
 
         worker.run()
 
