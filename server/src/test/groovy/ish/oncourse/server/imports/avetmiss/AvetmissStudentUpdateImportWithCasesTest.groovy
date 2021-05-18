@@ -1,6 +1,7 @@
 package ish.oncourse.server.imports.avetmiss
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
@@ -13,17 +14,20 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
 @CompileStatic
+@DatabaseSetup
 class AvetmissStudentUpdateImportWithCasesTest extends TestWithDatabase {
     public static final String ANGIE_CONTACT_FIRST_NAME = "ANGIE"
     ImportService importService
     ImportParameter parameter
 
     @BeforeEach
+    @Order(3)
     void populateData() throws Exception {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation)
         dataPopulation.run()
