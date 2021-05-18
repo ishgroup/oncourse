@@ -16,10 +16,11 @@ import org.junit.jupiter.api.Test
 @DatabaseSetup(value = "ish/oncourse/server/services/fundingContractUpdateJobTestDataSet.xml")
 class FundingContractUpdateJobTest extends TestWithDatabase {
 
-    private FundingContractUpdateJob fundingContractUpdateJob = new FundingContractUpdateJob(cayenneService)
+    private FundingContractUpdateJob fundingContractUpdateJob
 
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
+        fundingContractUpdateJob = new FundingContractUpdateJob(cayenneService)
         // creating date, the object cannot be exactly the same as system time to allow safe comparison of time by delayed Income posting job
         Date date = DateUtils.addHours(DateUtils.truncate(new Date(), Calendar.DATE), 12)
         Date start1 = DateUtils.addDays(date, -30)
@@ -40,6 +41,7 @@ class FundingContractUpdateJobTest extends TestWithDatabase {
 
     @Test
     void testFundingContractJob() {
+        fundingContractUpdateJob = new FundingContractUpdateJob(cayenneService)
         Assertions.assertEquals(23, ObjectSelect.query(FundingUpload.class).select(cayenneContext).size())
         Assertions.assertEquals(23, ObjectSelect.query(FundingUploadOutcome.class).select(cayenneContext).size())
         Assertions.assertEquals(9, ObjectSelect.query(FundingUpload.class).where(FundingUpload.STATUS.eq(FundingStatus.EXPORTED)).select(cayenneContext).size())

@@ -22,13 +22,11 @@ class AccountTransactionServiceTest extends TestWithDatabase {
     
     private AccountTransactionService accountTransactionService
 
-    @BeforeEach
-    void setup() throws Exception {
-        accountTransactionService = injector.getInstance(AccountTransactionService.class)
-    }
-    
+
     @Test
     void test() {
+        accountTransactionService = injector.getInstance(AccountTransactionService.class)
+
         List<AccountTransaction> before = ObjectSelect.query(AccountTransaction)
                 .select(cayenneContext)
         Assertions.assertTrue(before.empty)

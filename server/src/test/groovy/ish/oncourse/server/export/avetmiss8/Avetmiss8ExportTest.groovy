@@ -31,8 +31,7 @@ class Avetmiss8ExportTest extends TestWithDatabase {
     private static LocalDate startYear = LocalDate.of(2013, Month.JANUARY, 1)
     private static LocalDate midYear = LocalDate.of(2013, Month.MARCH, 30)
     private static LocalDate endYear = LocalDate.of(2013, Month.DECEMBER, 31)
-
-    private CertificateService certificateService = injector.getInstance(CertificateService.class)
+    
 
     @Test
     void test1() throws Exception {
@@ -142,7 +141,7 @@ class Avetmiss8ExportTest extends TestWithDatabase {
                 cayenneService.newContext)
 
         return Avetmiss8ExportRunner.export(cayenneService.getNewContext(),
-                certificateService,
+                injector.getInstance(CertificateService.class),
                 injector.getInstance(PreferenceController.class),
                 jurisdiction,
                 defaultOutcome,
