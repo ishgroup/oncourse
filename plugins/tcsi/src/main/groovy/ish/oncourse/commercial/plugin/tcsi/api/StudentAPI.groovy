@@ -30,10 +30,12 @@ class StudentAPI extends TCSI_API{
     static final String STUDENTS_PATH = TCSIIntegration.BASE_API_PATH + '/students'
 
     Student student
+    Enrolment courseAdmission
 
-    StudentAPI(RESTClient client, Enrolment enrolment, EmailService emailService, PreferenceController preferenceController) {
+    StudentAPI(Enrolment courseAdmission, RESTClient client, Enrolment enrolment, EmailService emailService, PreferenceController preferenceController) {
         super(client, enrolment, emailService, preferenceController)
         this.student = enrolment?.student
+        this.courseAdmission = courseAdmission
     }
     
     String createStudent() {
@@ -151,7 +153,7 @@ class StudentAPI extends TCSI_API{
         String  message = "create student's disability"
         client.request(POST, JSON) {
             uri.path = STUDENTS_PATH + "/$studentUid/disabilities"
-            body = getDisabilityPacket()
+            body = JsonOutput.toJson([getDisabilitiData()])
             response.success = { resp, result ->
                 handleResponce(result, message)
             }
@@ -165,7 +167,7 @@ class StudentAPI extends TCSI_API{
         String  message = "update student's disability"
         client.request(PUT, JSON) {
             uri.path = STUDENTS_PATH + "/$studentUid/disabilities/$disabilityUid"
-            body = getDisabilityPacket()
+            body = JsonOutput.toJson(getDisabilitiData())
             response.success = { resp, result ->
                 handleResponce(result, message)
             }
@@ -301,7 +303,7 @@ class StudentAPI extends TCSI_API{
     
     private String getCitizenshipPacket() {
         Map<String, Object> citizenship = getCitizenshipData()
-        citizenship['citizenship']['citizenship_effective_from_date'] =enrolment.createdOn.format(DATE_FORMAT)
+        citizenship['citizenship']['citizenship_effective_from_date'] = courseAdmission.createdOn.format(DATE_FORMAT)
         return JsonOutput.toJson(citizenship)
     }
 
@@ -342,18 +344,14 @@ class StudentAPI extends TCSI_API{
         }
         return residentCode
     }
-
-    private String getDisabilityPacket() {
-        return JsonOutput.toJson(getDisabilitiData())
-    }
     
     @CompileDynamic
     private Map<String, Object> getDisabilitiData(){
-        Map<String, Object> disability = [:]
-        disability['correlation_id'] = "disability_${System.currentTimeMillis()}"
+        Map<String, Object> disabilities = [:]
+        disabilities['correlation_id'] = "disability_${System.currentTimeMillis()}"
         String disabilityCode
-        if (student.disabilityType) {
-            switch (student.disabilityType) {
+        if (student?.disabilityType) {
+            switch (student?.disabilityType) {
                 case AvetmissStudentDisabilityType.HEARING:
                     disabilityCode = "11"
                     break
@@ -387,8 +385,11 @@ class StudentAPI extends TCSI_API{
         } else {
             disabilityCode = "99" // E615
         }
-        disability['disability'] = ['disability_code' : disabilityCode]
-        return disability
+        disabilities['disability'] = [:]
+        disabilities['disability']['disability_code']= disabilityCode
+        disabilities['disability']['disability_effective_from_date'] =  courseAdmission.createdOn.format(DATE_FORMAT)
+
+        return disabilities
     }
 
     @CompileDynamic

@@ -233,7 +233,7 @@ class TCSIIntegration implements PluginTrait {
             interraptExport("Highe education course has no qualification")
         }
 
-        StudentAPI studentAPI = new StudentAPI(getClient(), enrolment, emailService, preferenceController)
+        StudentAPI studentAPI = new StudentAPI(courseAdmission, getClient(), enrolment, emailService, preferenceController)
         
         String studentUid = studentAPI.getStudentUid()
         if (studentUid) {
