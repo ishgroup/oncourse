@@ -49,7 +49,7 @@ jobs:
       run: ./gradlew types:test --stacktrace -Duser.language=en -Duser.country=AU
 
     - name: Server unit tests
-      run: ./gradlew server:test --stacktrace -Duser.language=en -Duser.country=AU
+      run: ./gradlew server:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angelTest_trunk --stacktrace -Duser.language=en -Duser.country=AU
 
     - name: Integration tests
       run: ./gradlew server:integration -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angelTest_trunk --stacktrace -Duser.language=en -Duser.country=AU
