@@ -93,7 +93,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
         {fields.map((f, i) => {
           const field = fields.get(i);
           const first = i === 0;
-          const last = fields.length > 1 && i === (fields.length - 1);
+          const last = fields.length > 1 && i === (fields.length - 1) && !field.date;
 
           if (!first && field.amount === 0) {
             return null;

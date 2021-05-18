@@ -177,21 +177,19 @@ export const getCheckoutModel = (
 
   const absCredit = Math.abs(summary.previousCredit.invoiceTotal);
 
-  let payForThisInvoice = decimalMinus(
-    summary.payNowTotal || 0, summary.previousCredit.invoiceTotal,
-    -vouchersTotal,
-    summary.previousOwing.invoiceTotal
-  );
+  const paymentPlansTotal = paymentPlans.reduce((p, c) => decimalPlus(p, c.amount), 0);
 
-  if (payForThisInvoice < 0) {
-    payForThisInvoice = 0;
-  }
+  let payForThisInvoice = decimalMinus(
+    summary.payNowTotal || 0,
+    summary.previousCredit.invoiceTotal,
+    -vouchersTotal
+  );
 
   if (payForThisInvoice > summary.finalTotal) {
     payForThisInvoice = summary.finalTotal;
   }
 
-  if (pricesOnly) {
+  if (pricesOnly || payForThisInvoice < 0 || paymentPlansTotal >= summary.finalTotal) {
     payForThisInvoice = 0;
   }
 
@@ -211,7 +209,11 @@ export const getCheckoutModel = (
       const amount = parseFloat(c.amountOwing);
       const absAmount = Math.abs(amount);
 
-      p[c.id] = amount > 0 ? (invoicesCover > amount ? amount : invoicesCover) : (appliedCredit > absAmount ? amount : -appliedCredit);
+      const pAmount = amount > 0 ? (invoicesCover > amount ? amount : invoicesCover) : (appliedCredit > absAmount ? amount : -appliedCredit);
+
+      if (pAmount !== 0) {
+        p[c.id] = pAmount;
+      }
 
       if (amount > 0) {
         if (invoicesCover > amount) {
