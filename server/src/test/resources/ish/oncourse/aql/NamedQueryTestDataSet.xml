@@ -65,23 +65,23 @@
 
   <Node id="1" isVocabulary="1" isWebVisible="1" nodeType="1" name="Subjects" specialType="1"/>
   <NodeRequirement id="1" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="1"/>
-  <Node id="2" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art1" parentId="1" weight="1" content="content1"
-        shortNmae="Arts1"/>
-  <Node id="3" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art2" parentId="1" weight="2" content="content2"
-        shortNmae="Arts2"/>
-  <Node id="4" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art3" parentId="1" weight="3" content="content3"
-        shortNmae="Arts3"/>
+  <Node id="2" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art1" parentId="1" weight="1" contents="content1"
+        shortName="Arts1"/>
+  <Node id="3" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art2" parentId="1" weight="2" contents="content2"
+        shortName="Arts2"/>
+  <Node id="4" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art3" parentId="1" weight="3" contents="content3"
+        shortName="Arts3"/>
   <NodeRelation id="1" entityIdentifier="1" entityRecordId="1" nodeId="2"/>
 
 
   <Node id="11" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects" specialType="0"/>
   <NodeRequirement id="11" entityIdentifier="2" isRequired="0" manyTermsAllowed="1" nodeId="1"/>
-  <Node id="12" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art11" parentId="11" weight="1" content="content11"
-        shortNmae="Arts11"/>
-  <Node id="13" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art12" parentId="11" weight="2" content="content12"
-        shortNmae="Arts12"/>
-  <Node id="14" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art13" parentId="11" weight="3" content="content13"
-        shortNmae="Arts13"/>
+  <Node id="12" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art11" parentId="11" weight="1" contents="content11"
+        shortName="Arts11"/>
+  <Node id="13" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art12" parentId="11" weight="2" contents="content12"
+        shortName="Arts12"/>
+  <Node id="14" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art13" parentId="11" weight="3" contents="content13"
+        shortName="Arts13"/>
   <NodeRelation id="11" entityIdentifier="2" entityRecordId="1" nodeId="12"/>
 
   <NodeRelation id="12" entityIdentifier="2" entityRecordId="2" nodeId="14"/>
