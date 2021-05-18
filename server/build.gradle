@@ -191,7 +191,6 @@ test {
 		println 'user.language:' + System.getProperty('user.language')
 		println 'Locale.getDefault():' + Locale.getDefault()
 	}
-	dependsOn "expandConfig"
 	maxParallelForks = 8
 }
 
