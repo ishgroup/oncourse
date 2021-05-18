@@ -20,6 +20,7 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 @CompileStatic
@@ -44,6 +45,7 @@ class EmailQueuingListenerTest extends TestWithDatabase {
     }
 
     @BeforeEach
+    @Order(3)
     void injectors() throws Exception {
         injector.getInstance(GroovyScriptService.class).initTriggers()
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)

@@ -4,6 +4,7 @@
 package ish.oncourse.server.imports.avetmiss
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.AvetmissStudentPriorEducation
 import ish.common.types.Gender
@@ -23,17 +24,12 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
-
+@DatabaseSetup
 class AvetmissStudentImportTest extends TestWithDatabase {
-
-    @BeforeEach
-    void populateData() throws Exception {
-        DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
-        dataPopulation.run()
-    }
 
     @Test
     void testImport() throws Exception {
+        injector.getInstance(DataPopulation.class).run()
         ImportService importService = injector.getInstance(ImportService.class)
 
         ImportParameter parameter = new ImportParameter()
