@@ -18,13 +18,16 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+
 class VoucherExpiryJobTest extends TestWithDatabase {
     private AccountTransactionService accountTransactionService 
     
     @BeforeEach
+    @Order(0)
     void setup() throws Exception {
         accountTransactionService = injector.getInstance(AccountTransactionService.class)
     }
