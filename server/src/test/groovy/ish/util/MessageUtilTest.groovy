@@ -37,7 +37,7 @@ class MessageUtilTest extends TestWithDatabase {
 
         //check creatorKey generate with 1 entity
         cayenneContext.commitChanges()
-        Assertions.assertEquals('numb123!@#$%^&*()+=-0_ dbontact_' + contact.getId(), MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact))
+        Assertions.assertEquals('numb123!@#$%^&*()+=-0_Contact_' + contact.getId(), MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact))
 
         //check creatorKey generate with several instances of entity
         Assertions.assertEquals(String.format('numb1230_Contact_%s_Contact_%s', contact.getId(), contact1.getId()), MessageUtils.generateCreatorKey("numb1230", contact, contact1))

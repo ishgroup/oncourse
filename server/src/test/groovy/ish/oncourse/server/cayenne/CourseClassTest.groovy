@@ -9,6 +9,7 @@ import ish.common.types.*
 import ish.duplicate.ClassDuplicationRequest
 import ish.math.Money
 import ish.math.MoneyRounding
+import ish.oncourse.entity.services.CertificateService
 import ish.oncourse.entity.services.CourseClassService
 import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.duplicate.DuplicateClassService
@@ -19,10 +20,17 @@ import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.*
 import org.apache.cxf.common.util.StringUtils
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class CourseClassTest extends TestWithDatabase {
-    private CourseClassService courseClassService = injector.getInstance(CourseClassService.class)
+    private CourseClassService courseClassService
+
+
+    @BeforeEach
+    void before() {
+        courseClassService = injector.getInstance(CourseClassService.class)
+    }
 
     @Test
     void testNextAvailableCode() throws Exception {

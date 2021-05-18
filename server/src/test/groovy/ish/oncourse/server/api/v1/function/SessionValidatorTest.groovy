@@ -12,6 +12,7 @@ import ish.oncourse.server.api.v1.model.ClashTypeDTO
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDateTime
@@ -20,8 +21,13 @@ import java.time.LocalDateTime
 @DatabaseSetup(value = "ish/oncourse/server/api/v1/function/SessionValidatorTest.xml")
 class SessionValidatorTest extends TestWithDatabase {
 
-    private SessionValidator validator = injector.getInstance(SessionValidator)
+    private SessionValidator validator
 
+    @BeforeEach
+    void students() {
+        validator = injector.getInstance(SessionValidator)
+    }
+    
     @Test
     void testTutor() {
         SessionDTO dto = new SessionDTO().with { it ->
