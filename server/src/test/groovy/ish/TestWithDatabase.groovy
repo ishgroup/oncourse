@@ -89,7 +89,7 @@ abstract class TestWithDatabase extends TestWithBootique {
 
     protected void createInjectors() throws Exception {
         BootiqueTestFactory.Builder builder = testFactory
-                .app(String.format("--config=classpath:%s", "application-test.yml"))
+                .app("--config=classpath:application-test.yml")
                 .module(AngelModule.class)
                 .module(JdbcModule.class)
                 .module(new Module() {

@@ -170,9 +170,12 @@ task expandConfig(type: Copy) {
 			'jdbc:mariadb://127.0.0.1:3306/angelTest_trunk'
 
 	from("$rootDir/server/src/test/resources/") {
-		include 'application-test.yml'
+		include 'application-test.txt'
 	}
-	into "$rootDir/server/build/resources/main"
+	rename { String fileName ->
+		fileName.replace("txt", "yml")
+	}
+	into "$rootDir/server/build/resources/test"
 	expand(dbUrl: dbUrl)
 }
 
