@@ -7,6 +7,7 @@ jetty:
 jdbc:
   angel-test:
     url: ${dbUrl}
+    username: root
     driverClassName: org.mariadb.jdbc.Driver
     testWhileIdle: true
     validationQuery: SELECT 1
@@ -22,6 +23,7 @@ jdbc:
 
   angel-test-creation:
     url: ${dbUrl}
+    username: root
     driverClassName: org.mariadb.jdbc.Driver
     testWhileIdle: true
     validationQuery: SELECT 1
