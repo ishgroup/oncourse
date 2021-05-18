@@ -170,7 +170,7 @@ task expandConfig(type: Copy) {
 			'jdbc:mariadb://127.0.0.1:3306/angelTest_trunk'
 
 	from("$rootDir/server/src/main/resources/") {
-		include 'application-test-local-mariadb.yml'
+		include 'application-test.yml'
 	}
 	into "$rootDir/server/build/resources/main"
 	expand(dbUrl: dbUrl)
