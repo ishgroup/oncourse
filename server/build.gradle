@@ -169,7 +169,7 @@ task expandConfig(type: Copy) {
 			project.getProperty('dbUrl') :
 			'jdbc:mariadb://127.0.0.1:3306/angelTest_trunk'
 
-	from("$rootDir/server/src/main/resources/") {
+	from("$rootDir/server/src/test/resources/") {
 		include 'application-test.yml'
 	}
 	into "$rootDir/server/build/resources/main"
