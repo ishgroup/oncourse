@@ -19,6 +19,9 @@ import org.apache.cayenne.dba.DbAdapter
 import org.apache.cayenne.log.JdbcEventLogger
 import org.apache.cayenne.map.*
 import org.apache.cayenne.validation.ValidationFailure
+import org.apache.groovy.internal.util.Function
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.dbunit.database.DatabaseConfig
 import org.dbunit.database.DatabaseConnection
 import org.dbunit.database.IDatabaseConnection
@@ -35,6 +38,7 @@ import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
+import java.util.function.Supplier
 
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL
 
@@ -42,18 +46,23 @@ import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL
 class TestWithDatabaseExtension implements
         BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
 
-    static ICayenneService cayenneService
-    static DataContext cayenneContext
-    static DataSource dataSource
+
+    
+    private static final Logger logger = LogManager.getLogger()
 
     private static final String RESET_AUTO_INCREMENT_TEMPLATE_MYSQL = "ALTER TABLE %s AUTO_INCREMENT = %d"
     private static final int NEXT_ID = 10000
     private static final String CUSTOM_FIELD = "CustomField"
+    
+    private Closure<ICayenneService> cayenneServiceSupplier
+    private Closure<DataContext> dataContextSupplier
+    private Closure<DataSource> dataSourceSupplier
 
-    TestWithDatabaseExtension(ICayenneService cayenneService, DataContext cayenneContext, DataSource dataSource) {
-        this.cayenneService = cayenneService
-        this.cayenneContext = cayenneContext
-        this.dataSource = dataSource
+    TestWithDatabaseExtension(Closure<ICayenneService> cayenneServiceSupplier, Closure<DataContext> dataContextSupplier,  Closure<DataSource> dataSourceSupplier) {
+
+        this.dataSourceSupplier = dataSourceSupplier
+        this.dataContextSupplier = dataContextSupplier
+        this.cayenneServiceSupplier = cayenneServiceSupplier
     }
 
     @Override
@@ -88,13 +97,13 @@ class TestWithDatabaseExtension implements
             //        LiquibaseJavaContext.fill(injector);
             store.put("db_setup", true)
         }
+        TestWithDatabase databaseTest = (context.getTestInstance().get() as TestWithDatabase)
 
-        DatabaseSetup a = AnnotationSupport.findAnnotation(context.getTestClass(), DatabaseSetup) as DatabaseSetup
+        DatabaseSetup a = AnnotationSupport.findAnnotation(context.getTestClass(), DatabaseSetup).orElse(null) as DatabaseSetup
         if (a) {
             if (a.type() == ish.DatabaseOperation.DELETE_ALL) {
                 wipeTablesMariadb()
             }
-
             for (dataSource in a?.value()) {
                 store.put("dataSource", dataSource)
                 InputStream st = SessionTest.class.getClassLoader().getResourceAsStream(dataSource)
@@ -103,27 +112,26 @@ class TestWithDatabaseExtension implements
                 FlatXmlDataSet dataSet = builder.build(st)
 
                 ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-                (context.getTestInstance() as TestWithDatabase).dataSourceReplaceValues(rDataSet)
+                databaseTest.dataSourceReplaceValues(rDataSet)
                 IDatabaseConnection testDatabaseConnection = getTestDatabaseConnection()
                 org.dbunit.operation.DatabaseOperation.CLEAN_INSERT.execute(testDatabaseConnection, rDataSet)
             }
         }
         if (a && a.readOnly()) {
-            cayenneContext = cayenneService.getNewReadonlyContext()
+            databaseTest.cayenneContext = cayenneServiceSupplier.call().getNewReadonlyContext()
         } else {
-            cayenneContext = cayenneService.getNewContext()
+            databaseTest.cayenneContext = cayenneServiceSupplier.call().getNewContext()
         }
 
     }
 
     private void wipeTablesMariadb() {
-        DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
+        DataDomain domain = cayenneServiceSupplier.call().getSharedContext().getParentDataDomain()
         DataMap dataMap = domain.getDataMap("AngelMap")
 
         Connection connection = null
         try {
-
-            connection = dataSource.getConnection()
+            connection = dataSourceSupplier.call().getConnection()
             connection.setAutoCommit(true)
 
             executeStatement(connection, "SET foreign_key_checks = 0;")
@@ -147,7 +155,7 @@ class TestWithDatabaseExtension implements
 
     private void dropTablesMariaDB() {
         try {
-            def connection = dataSource.getConnection()
+            def connection = dataSourceSupplier.call().getConnection()
             connection.setAutoCommit(true)
             def databaseName = connection.getCatalog()
             Statement stmt = connection.createStatement()
@@ -170,13 +178,14 @@ class TestWithDatabaseExtension implements
 
             connection.setCatalog(databaseName)
         } catch (Exception e) {
+            logger.catching(e)
             Assertions.fail("cleaning mysql database failed")
         }
     }
 
 
     private void resetAutoIncrement() {
-        DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
+        DataDomain domain = cayenneServiceSupplier.call().getSharedContext().getParentDataDomain()
         DataMap dataMap = domain.getDataMap("AngelMap")
 
         Connection connection = getTestDatabaseConnection().getConnection()
@@ -192,7 +201,7 @@ class TestWithDatabaseExtension implements
     }
 
     private IDatabaseConnection getTestDatabaseConnection() throws Exception {
-        DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection(), null)
+        DatabaseConnection dbConnection = new DatabaseConnection(dataSourceSupplier.call().getConnection(), null)
 
         DatabaseConfig config = dbConnection.getConfig()
         config.setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true)
@@ -203,7 +212,7 @@ class TestWithDatabaseExtension implements
     }
 
     void generateTables() throws Exception {
-        DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
+        DataDomain domain = cayenneServiceSupplier.call().getSharedContext().getParentDataDomain()
 
         DataNode angelNode = domain.getDataNode("AngelNode")
         DbAdapter jdbcAdapter = angelNode.getAdapter()
@@ -316,7 +325,7 @@ class TestWithDatabaseExtension implements
         generator.setShouldCreateTables(true)
         generator.setShouldCreateFKConstraints(true)
         generator.setShouldCreatePKSupport(false)
-        generator.runGenerator(dataSource)
+        generator.runGenerator(dataSourceSupplier.call())
         if (generator.getFailures() != null) {
             Assertions.fail("generation of test database schema out of cayenne model failed:")
             for (ValidationFailure result : generator.getFailures().getFailures()) {

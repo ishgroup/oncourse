@@ -62,7 +62,7 @@ abstract class TestWithDatabase extends TestWithBootique {
 
 
     @RegisterExtension
-    protected dbExtension = new TestWithDatabaseExtension(cayenneService, cayenneContext, dataSource)
+    protected dbExtension = new TestWithDatabaseExtension({getCayenneService()}, {cayenneContext}, {dataSource})
 
     /**
      * Replace values in the dbUnit data source. But default we handle null, but override this method to provide additional values
@@ -133,7 +133,7 @@ abstract class TestWithDatabase extends TestWithBootique {
         }
 
         injector = builder.createRuntime()
-        DataDomain domain = cayenneService.getSharedContext().getParentDataDomain()
+        DataDomain domain = getCayenneService().getSharedContext().getParentDataDomain()
         dataSource = domain.getDataNode(ANGEL_NODE).getDataSource()
     }
 
