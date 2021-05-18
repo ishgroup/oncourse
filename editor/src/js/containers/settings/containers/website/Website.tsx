@@ -12,8 +12,9 @@ import CustomButton from "../../../../common/components/CustomButton";
 import {withStyles} from "@material-ui/core/styles";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 import {stubFunction} from "../../../../common/utils/Components";
+import {classNames} from "react-mde/lib/definitions/util/ClassNames";
 
-const styles = () => ({
+const styles = (theme) => ({
   select: {
     width: "230px",
   },
@@ -24,6 +25,20 @@ const styles = () => ({
     maxHeight: "calc(100vh - 30px)",
     overflowY: "auto",
     boxSizing: "border-box",
+  },
+  customLabel: {
+    color: theme.palette.text.secondary,
+    fontSize: "12px",
+    fontWeight: 300,
+  },
+  link: {
+    color: theme.palette.text.primary,
+    fontSize: "12px",
+    marginRight: "4px",
+    fontWeight: 400,
+    "&:hover": {
+      color: theme.palette.primary.main,
+    }
   }
 });
 
@@ -198,13 +213,16 @@ export class Website extends React.Component<Props, any> {
                 value: addThisId,
               }}
             />
-            <p><a target="_blank" href="http://www.addthis.com/">Click here</a> to to create one.</p>
+            <p className={classes.customLabel}>
+              <a target="_blank" href="http://www.addthis.com/" className={classes.link}>Click here</a>
+              to create one.
+            </p>
           </Grid>
         </Grid>
 
         <div className="mt-2">
           <h4 className="heading">VISIBILITY RULES</h4>
-          <Typography variant="caption" component="h6">Enable for these pages</Typography>
+          <Typography variant="caption" component="h6" className={classes.customLabel}>Enable for these pages</Typography>
           <FormControlLabel
             control={
               <Checkbox
@@ -232,8 +250,8 @@ export class Website extends React.Component<Props, any> {
           />
         </div>
 
-        <div className="mt-3">
-          <Typography variant="caption" component="h6">Hide class on website</Typography>
+        <div className="mt-2">
+          <Typography variant="caption" component="h6" className={classes.customLabel}>Hide class on website</Typography>
           <Typography>
             <EditInPlaceField
               type="number"
@@ -252,7 +270,7 @@ export class Website extends React.Component<Props, any> {
               hideArrows
             />
 
-            <label className="ml-1 mr-2">days</label>
+            <span className={clsx(classes.customLabel, "ml-1 mr-2")}>days</span>
 
             <EditInPlaceField
               select
@@ -273,7 +291,7 @@ export class Website extends React.Component<Props, any> {
         </div>
 
         <div className="mt-2">
-          <Typography variant="caption" component="h6">Stop web enrolments</Typography>
+          <Typography variant="caption" component="h6" className={classes.customLabel}>Stop web enrolments</Typography>
           <Typography>
             <EditInPlaceField
               type="number"
@@ -291,7 +309,7 @@ export class Website extends React.Component<Props, any> {
               hideArrows
             />
 
-            <label className="ml-1 mr-2">days</label>
+            <span className={clsx(classes.customLabel, "ml-1 mr-2")}>days</span>
 
             <EditInPlaceField
               select
@@ -310,7 +328,7 @@ export class Website extends React.Component<Props, any> {
           </Typography>
         </div>
 
-        <div className="mt-3 mb-2">
+        <div className="mt-2 mb-2">
           <EditInPlaceField
             select
             label="Show suburbs from"
@@ -326,7 +344,7 @@ export class Website extends React.Component<Props, any> {
           />
         </div>
 
-        <Grid container className="mt-1">
+        <Grid container>
           <Grid item xs={3} className={"mr-2"}>
             <EditInPlaceField
               label="Google TagManager"

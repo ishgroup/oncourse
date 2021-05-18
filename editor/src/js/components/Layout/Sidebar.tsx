@@ -5,6 +5,7 @@ import {matchPath, withRouter} from "react-router";
 import Avatar from '@material-ui/core/Avatar';
 import {withStyles} from "@material-ui/core/styles";
 import Popover from '@material-ui/core/Popover';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import {Grid, Typography} from "@material-ui/core";
 import {Route, routes} from '../../routes';
 import {Page, Theme, User} from "../../model";
@@ -98,11 +99,17 @@ const styles: any = theme => ({
         display: "flex",
         position: "absolute",
         left: "100%",
-      }
+      },
+      "& $arrowIcon": {
+        display: "block",
+      },
     }
   },
   subLink: {
     padding: "10px 20px 10px 50px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   slimPublishButton: {
     fontSize: "10px",
@@ -136,17 +143,10 @@ const styles: any = theme => ({
   logout: {
     color: "rgba(0, 0, 0, 0.87)",
     opacity: .5,
-    fontSize: "1rem",
-    boxSizing: "border-box",
-    minHeight: "36px",
-    fontFamily: "Inter, sans-serif",
-    lineHeight: "1.5",
+    fontSize: "16px",
     padding: "6px 16px",
-    display: "flex",
-    alignItems: "center",
-    fontWeight: 300,
     "&:hover": {
-      backgroundColor: "rgba(0, 0, 0, 0.04)",
+      backgroundColor: "rgba(0, 0, 0, 0.09)",
       cursor: "pointer",
     },
   },
@@ -175,6 +175,10 @@ const styles: any = theme => ({
     overflowY: "auto",
     maxHeight: "calc(100vh - 265px)",
     width: "100%",
+  },
+  arrowIcon: {
+    fontSize: "15px",
+    display: "none",
   },
 });
 
@@ -339,6 +343,7 @@ class Sidebar extends React.Component<Props, any> {
             activeClassName={classes.activeLink}
           >
             <span>{route.title}</span>
+            {includedSubMenus.includes(route.title) && <ArrowForwardIosIcon className={classes.arrowIcon}/>}
           </NavLink>
         </li>
       ))

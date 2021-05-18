@@ -1,5 +1,4 @@
 import {combineReducers} from "redux";
-import {reducer as notifications} from 'react-notification-system-redux';
 import {reducer as reduxFormReducer} from 'redux-form';
 
 import {menuReducer} from "../containers/content/containers/menus/reducers";
@@ -10,6 +9,7 @@ import {themesReducer} from "../containers/design/containers/themes/reducers";
 import {historyReducer} from "../containers/history/reducers";
 import {modalReducer} from "../common/containers/modal/reducers";
 import {navigationReducer} from "../common/containers/Navigation/reducers";
+import {messageReducer} from "../common/components/message/reducer";
 
 import {websiteSettingsReducer} from "../containers/settings/containers/website/reducers";
 import {redirectSettingsReducer} from "../containers/settings/containers/redirect/reducers";
@@ -20,7 +20,6 @@ import {configReducer, fetchReducer} from "../common/reducers";
 import {specialPagesReducer} from "../containers/settings/containers/specialPages/reducers";
 
 export const combinedReducers = combineReducers({
-  notifications,
   auth: authReducer,
   menu: menuReducer,
   config: configReducer,
@@ -30,6 +29,7 @@ export const combinedReducers = combineReducers({
   history: historyReducer,
   modal: modalReducer,
   navigation: navigationReducer,
+  message: messageReducer,
   settings: combineReducers({
     websiteSettings: websiteSettingsReducer,
     redirectSettings: redirectSettingsReducer,

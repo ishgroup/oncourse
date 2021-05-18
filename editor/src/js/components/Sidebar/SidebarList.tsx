@@ -1,12 +1,12 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {withStyles} from "@material-ui/core/styles";
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import {IconButton, TextField} from "@material-ui/core";
+import {IconButton, TextField, Typography} from "@material-ui/core";
+import {AddCircle} from "@material-ui/icons";
+import clsx from "clsx";
 import MenuIcon from "@material-ui/icons/Menu";
 import {Page, Block, Theme} from "../../model";
-import IconBack from "../../common/components/IconBack";
-import CustomButton from "../../common/components/CustomButton";
+
 
 type Item = (Page | Block | Theme);
 
@@ -26,12 +26,15 @@ const styles: any = theme => ({
     color: theme.palette.text.secondary,
     fontSize: "15px",
     display: "block",
-    padding: "15px 20px",
+    padding: "10px 20px",
     transition: "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
     "&:hover": {
       backgroundColor: "rgba(0, 0, 0, 0.1)",
       color: theme.palette.text.primary,
     },
+  },
+  addNewButton: {
+    padding: "10px 20px 0",
   },
   sidebarSettings: {
     padding: "10px 20px",
@@ -123,14 +126,11 @@ class SidebarList extends React.Component<Props, any> {
 
         {onAdd &&
         <li>
-          <div className={classes.sidebarSettings}>
-            <CustomButton
-              onClick={onAdd}
-              styleType="submit"
-              startIcon={<AddCircleIcon />}
-            >
-              Add new
-            </CustomButton>
+          <div className={clsx(classes.addNewButton, "centeredFlex")}>
+            <Typography className="heading">Add new</Typography>
+            <IconButton onClick={onAdd}>
+                <AddCircle className="addButtonColor" width={20} />
+            </IconButton>
           </div>
         </li>
         }

@@ -1,16 +1,27 @@
 import React, {useState} from 'react';
-import {MenuItem, Select} from "@material-ui/core";
+import {ButtonBase, Menu, MenuItem, Tooltip} from "@material-ui/core";
+import {withStyles} from "@material-ui/core/styles";
+import clsx from "clsx";
 import {CONTENT_MODES} from "../../containers/content/constants";
 import {ContentMode} from "../../model";
-import {withStyles} from "@material-ui/core/styles";
+import {getEditorModeLabel} from "../../containers/content/utils";
 
 const styles: any = theme => ({
   contentModeWrapper: {
     position: "absolute",
-    right: "10px",
-    top: "5px",
+    right: "16px",
+    top: "16px",
     zIndex: 1000,
   },
+  contentMode: {
+  maxWidth: "85px",
+  border: 0,
+  boxShadow: "none",
+  backgroundColor: "black",
+  color: "white",
+  padding: "2px",
+  fontSize: "9px"
+}
 })
 
 interface Props {
@@ -22,46 +33,51 @@ interface Props {
 
 const ContentModeSwitch = (props: Props) => {
   const {classes, contentModeId, moduleId, setContentMode} = props;
+  const [modeMenu, setModeMenu] = useState(null);
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const toggleDropdown = () => setDropdownOpen(prevState => !prevState);
+  const modeMenuOpen = e => {
+    setModeMenu(e.currentTarget);
+  };
+
+  const modeMenuClose = () => {
+    setModeMenu(null);
+  };
+
+  const onClickMenuItem = (moduleId, modeId) => {
+    setContentMode(moduleId, modeId);
+    modeMenuClose()
+
+  };
 
   return (
-    <div className={classes.contentModeWrapper}>
-      <Select
-        defaultValue={contentModeId || null}
+    <div className={clsx(classes.contentModeWrapper)}>
+      <Tooltip title="Change content mode" disableFocusListener>
+        <ButtonBase
+          onClick={modeMenuOpen}
+          aria-owns={modeMenu ? "mode-menu" : null}
+          className={classes.contentMode}
+        >
+          {getEditorModeLabel(contentModeId)}
+        </ButtonBase>
+      </Tooltip>
+      <Menu
+        id="theme-menu"
+        anchorEl={modeMenu}
+        open={Boolean(modeMenu)}
+        onClose={modeMenuClose}
       >
         {CONTENT_MODES.map(mode => (
           <MenuItem
             key={mode.id}
             value={mode.id}
             onClick={() => {
-              setContentMode(moduleId, mode.id);
+              onClickMenuItem(moduleId, mode.id);
             }}
           >
             {mode.title}
           </MenuItem>
         ))}
-      </Select>
-
-      {/*<Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>*/}
-      {/*  <DropdownToggle className="content-toggle">*/}
-      {/*    {getEditorModeLabel(contentModeId)}*/}
-      {/*  </DropdownToggle>*/}
-      {/*  <DropdownMenu>*/}
-      {/*    {CONTENT_MODES.map(mode => (*/}
-      {/*      <DropdownItem*/}
-      {/*        key={mode.id}*/}
-      {/*        id={mode.id}*/}
-      {/*        onClick={() => {*/}
-      {/*          setContentMode(moduleId, mode.id);*/}
-      {/*        }}*/}
-      {/*      >*/}
-      {/*        {mode.title}*/}
-      {/*      </DropdownItem>*/}
-      {/*    ))}*/}
-      {/*  </DropdownMenu>*/}
-      {/*</Dropdown>*/}
+      </Menu>
     </div>
   );
 };

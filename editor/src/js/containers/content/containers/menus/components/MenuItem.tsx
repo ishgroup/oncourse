@@ -12,9 +12,15 @@ const styles = theme => createStyles({
   dragIcon: {
     margin: theme.spacing(0, 2),
     fill: "#e0e0e0!important",
+    "&:hover": {
+      fill: "#b1b1b1!important",
+    }
   },
   actionButton: {
-    marginRight: "10px"
+    marginRight: "10px",
+    "&:hover $actionIcon": {
+      fill: "#b1b1b1!important",
+    }
   },
   actionIcon: {
     fontSize: "20px",

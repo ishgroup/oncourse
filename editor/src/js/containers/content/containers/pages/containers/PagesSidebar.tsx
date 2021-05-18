@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import clsx from "clsx";
-import {error} from 'react-notification-system-redux';
 import {Page, Theme} from "../../../../../model";
 import PageSettings from "../components/PageSettings";
 import {URL} from "../../../../../routes";
@@ -10,9 +9,9 @@ import {addPage, deletePage, savePage} from "../actions";
 import SidebarList from "../../../../../components/Sidebar/SidebarList";
 import {showModal} from "../../../../../common/containers/modal/actions";
 import {State} from "../../../../../reducers/state";
-import {notificationParams} from "../../../../../common/utils/NotificationSettings";
 import PageService from "../../../../../services/PageService";
 import {hideNavigation, showNavigation} from "../../../../../common/containers/Navigation/actions";
+import {SHOW_MESSAGE} from "../../../../../common/components/message/actions";
 
 interface Props {
   pages: Page[];
@@ -95,7 +94,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onEditSettings: (id, settings) => dispatch(savePage(id, settings)),
     onDeletePage: pageId => dispatch(deletePage(pageId)),
-    showError: title => dispatch(error({...notificationParams, title})),
+    showError: title => dispatch(
+      {
+        type: SHOW_MESSAGE,
+        payload: {message: title, success: false},
+      }
+    ),
     onAddPage: () => dispatch(addPage()),
     showModal: props => dispatch(showModal(props)),
     showNavigation: () => dispatch(showNavigation()),

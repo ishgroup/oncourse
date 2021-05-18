@@ -12,6 +12,7 @@ import {CheckoutSettingsState} from "../containers/settings/containers/checkout/
 import {SpecialPageSettingsState} from "../containers/settings/containers/specialPages/reducers/State";
 import {CmsConfig} from "../configLoader";
 import {NavigationState} from "../common/containers/Navigation/reducers/State";
+import {MessageState} from "../common/components/message/reducer/State";
 
 interface SettingsState {
   redirectSettings: RedirectSettingsState;
@@ -34,6 +35,7 @@ export interface State {
   settings: SettingsState;
   modal: any;
   navigation: NavigationState;
+  message: MessageState;
   fetching: boolean;
 }
 

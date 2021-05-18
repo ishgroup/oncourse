@@ -1,14 +1,12 @@
 import {Epic} from "redux-observable";
 import "rxjs";
-import {success} from 'react-notification-system-redux';
-
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import {ADD_THEME_REQUEST, ADD_THEME_FULFILLED} from "../actions";
 import {Theme} from "../../../../../model";
 import ThemeService from "../../../../../services/ThemeService";
-import {notificationParams} from "../../../../../common/utils/NotificationSettings";
 import {URL} from "../../../../../routes";
 import {getHistoryInstance} from "../../../../../history";
+import {SHOW_MESSAGE} from "../../../../../common/components/message/actions";
 
 const request: EpicUtils.Request<any, any> = {
   type: ADD_THEME_REQUEST,
@@ -18,7 +16,10 @@ const request: EpicUtils.Request<any, any> = {
     getHistoryInstance().push(`${URL.THEMES}/${theme.id}`);
 
     return [
-      success({...notificationParams, title: 'New Theme added'}),
+      {
+        type: SHOW_MESSAGE,
+        payload: {message: "Save success", success: true},
+      },
       {
         payload: theme,
         type: ADD_THEME_FULFILLED,

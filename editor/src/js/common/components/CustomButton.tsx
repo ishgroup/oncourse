@@ -5,6 +5,12 @@ import {darken, fade} from "@material-ui/core/styles/colorManipulator";
 import clsx from "clsx";
 
 const buttonsStyles: any = theme => ({
+  baseClass: {
+    fontSize: "10px",
+    padding: "3px 3px",
+    minWidth: "59px",
+    height: "27px",
+  },
   submitButton: {
     color: theme.palette.primary.contrastText,
     backgroundColor: theme.palette.primary.main,
@@ -42,7 +48,8 @@ const CustomButton = (props: any) => {
 
   return (
     <Button
-      className={clsx(getClass(), styles)}
+      className={clsx(getClass(), styles, classes.baseClass)}
+      size="small"
       {...others}
     >
       {children}

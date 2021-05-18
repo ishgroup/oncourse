@@ -27,7 +27,7 @@ interface Props {
 const pluginInitEvent = new Event("plugins:init");
 
 const Block: React.FC<Props> = ({block, classes, onSave, setContentMode}) => {
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(true);
   const [draftContent, setDraftContent] = useState("");
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const Block: React.FC<Props> = ({block, classes, onSave, setContentMode}) => {
     if (!editMode && block.content) {
       document.dispatchEvent(pluginInitEvent);
     }
-  },        [editMode, block, block && block.content]);
+  }, [editMode, block, block && block.content]);
 
   const onContentModeChange = e => {
     setContentMode(block.id,e.target.value);

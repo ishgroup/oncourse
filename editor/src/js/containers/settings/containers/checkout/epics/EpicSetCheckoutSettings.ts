@@ -1,18 +1,20 @@
 import {Epic} from "redux-observable";
 import "rxjs";
-import {success} from 'react-notification-system-redux';
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import {SET_CHECKOUT_SETTINGS_REQUEST, SET_CHECKOUT_SETTINGS_FULFILLED} from "../actions";
 import SettingsService from "../../../../../services/SettingsService";
-import {notificationParams} from "../../../../../common/utils/NotificationSettings";
 import {CheckoutSettings} from "../../../../../model";
+import {SHOW_MESSAGE} from "../../../../../common/components/message/actions";
 
 const request: EpicUtils.Request<any, any> = {
   type: SET_CHECKOUT_SETTINGS_REQUEST,
   getData: (payload, state) => SettingsService.setCheckoutSettings(payload),
   processData: (checkoutSettings: CheckoutSettings, state: any) => {
     return [
-      success(notificationParams),
+      {
+        type: SHOW_MESSAGE,
+        payload: {message: "Save success", success: true},
+      },
       {
         type: SET_CHECKOUT_SETTINGS_FULFILLED,
         payload: checkoutSettings,

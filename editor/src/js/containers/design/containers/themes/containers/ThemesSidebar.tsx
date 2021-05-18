@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {error} from 'react-notification-system-redux';
 import clsx from "clsx";
 import {URL} from "../../../../../routes";
 import {Theme, Layout} from "../../../../../model";
@@ -10,8 +9,8 @@ import {addTheme, deleteTheme, saveTheme} from "../actions";
 import SidebarList from "../../../../../components/Sidebar/SidebarList";
 import {State} from "../../../../../reducers/state";
 import {showModal} from "../../../../../common/containers/modal/actions";
-import {notificationParams} from "../../../../../common/utils/NotificationSettings";
 import {showNavigation} from "../../../../../common/containers/Navigation/actions";
+import {SHOW_MESSAGE} from "../../../../../common/components/message/actions";
 
 interface Props {
   themes: Theme[];
@@ -85,7 +84,12 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onEditSettings: (theme, settings) => dispatch(saveTheme(theme.id, {...theme, ...settings})),
-    showError: title => dispatch(error({...notificationParams, title})),
+    showError: title => dispatch(
+      {
+        type: SHOW_MESSAGE,
+        payload: {message: title, success: false},
+      }
+    ),
     onDeleteTheme: title => dispatch(deleteTheme(title)),
     onAddTheme: () => dispatch(addTheme()),
     showModal: props => dispatch(showModal(props)),

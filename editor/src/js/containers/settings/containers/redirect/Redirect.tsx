@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {withStyles} from "@material-ui/core/styles";
-import {Grid, Paper, TextField} from "@material-ui/core";
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import {IconButton, Paper, TextField, Typography} from "@material-ui/core";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import clsx from "clsx";
+import {AddCircle} from "@material-ui/icons";
 import {getRedirectSettings, setRedirectSettings} from "./actions";
 import RedirectComp from "./components/RedirectItem";
 import {FixedSizeList as List} from "react-window";
@@ -46,7 +46,7 @@ const Redirect: React.FC<Props> = (
 
   useEffect(() => {
     onInit();
-  },        []);
+  }, []);
 
 
   useEffect(() => {
@@ -110,42 +110,40 @@ const Redirect: React.FC<Props> = (
       }
 
       <div className="mt-2 mb-3">
-        <CustomButton
-          styleType="submit"
-          onClick={onAddNew}
-          startIcon={<AddCircleIcon />}
-        >
-          Add new
-        </CustomButton>
-        <CustomButton
-          styleType="submit"
-          onClick={onSaveHandler}
-          styles={classes.saveButton}
-        >
-          Save
-        </CustomButton>
+        <div className={"centeredFlex"}>
+          <Typography className="heading">Add new</Typography>
+          <IconButton onClick={onAddNew}>
+            <AddCircle className="addButtonColor" width={20} />
+          </IconButton>
+
+          <CustomButton
+            styleType="submit"
+            onClick={onSaveHandler}
+            styles={classes.saveButton}
+          >
+            Save
+          </CustomButton>
+        </div>
       </div>
 
-      <Grid container className={clsx("mt-3", classes.redirectItemWrapper)}>
-        <Grid item xs={12} md={10}>
-          <div style={{height: (window.innerHeight - 230) < (filteredRules.length * 47) ? window.innerHeight - 230 : filteredRules.length * 47}}>
-            <AutoSizer>
-              {({height, width}) => (
-                <List
-                  className="List"
-                  height={height}
-                  itemCount={filteredRules.length}
-                  itemData={{onChange, onRemove, items: filteredRules}}
-                  itemSize={47}
-                  width={width}
-                >
-                  {RedirectComp}
-                </List>
-              )}
-            </AutoSizer>
-          </div>
-        </Grid>
-      </Grid>
+      <div className={"mt-3"}>
+        <div style={{height: (window.innerHeight - 230) < (filteredRules.length * 47) ? window.innerHeight - 230 : filteredRules.length * 47}}>
+          <AutoSizer>
+            {({height, width}) => (
+              <List
+                className="List"
+                height={height}
+                itemCount={filteredRules.length}
+                itemData={{onChange, onRemove, items: filteredRules}}
+                itemSize={47}
+                width={width}
+              >
+                {RedirectComp}
+              </List>
+            )}
+          </AutoSizer>
+        </div>
+      </div>
     </Paper>
   );
 };

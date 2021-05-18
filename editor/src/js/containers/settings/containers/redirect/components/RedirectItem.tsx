@@ -1,7 +1,8 @@
 import React from 'react';
-import {Grid} from "@material-ui/core";
+import {Grid, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
+import clsx from "clsx";
 import {RedirectItem as RedirectItemModel} from "../../../../../model";
-import CustomButton from "../../../../../common/components/CustomButton";
 import {stubFunction} from "../../../../../common/utils/Components";
 import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
 
@@ -87,14 +88,16 @@ const RedirectItem = React.memo<Props>((
             noWrap
           />
         </Grid>
-        <Grid item>
-          <CustomButton
-            styleType="delete"
+        <Grid item xs={2}>
+          <IconButton
+            className={clsx("ml-2", {
+              "invisible": !parent,
+              "dndActionIconButton": true
+            })}
             onClick={() => onRemove(index)}
-            styles="ml-1"
           >
-            Remove
-          </CustomButton>
+            <Delete className={clsx("dndActionIcon")} />
+          </IconButton>
         </Grid>
       </Grid>
     </div>

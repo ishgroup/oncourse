@@ -1,6 +1,5 @@
 import {Epic} from "redux-observable";
 import "rxjs";
-import {success, error} from 'react-notification-system-redux';
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import {GET_PAGE_BY_URL_FULFILLED, GET_PAGE_BY_URL_REQUEST, setCurrentPage} from "../actions";
 import {Page} from "../../../../../model";
@@ -12,7 +11,6 @@ const request: EpicUtils.Request<any, any> = {
   type: GET_PAGE_BY_URL_REQUEST,
   getData: (payload, state) => PageService.getPages(payload),
   processData: (response: Page[], state: any, payload) => {
-
     const page = response[0];
 
     if (page && page.id && payload) {

@@ -1,14 +1,12 @@
 import {Epic} from "redux-observable";
 import "rxjs";
-import {success} from 'react-notification-system-redux';
-
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import {ADD_PAGE_REQUEST, ADD_PAGE_FULFILLED} from "../actions";
 import {Page} from "../../../../../model";
 import PageService from "../../../../../services/PageService";
-import {notificationParams} from "../../../../../common/utils/NotificationSettings";
 import {getHistoryInstance} from "../../../../../history";
 import {URL} from "../../../../../routes";
+import {SHOW_MESSAGE} from "../../../../../common/components/message/actions";
 
 const request: EpicUtils.Request<any, any> = {
   type: ADD_PAGE_REQUEST,
@@ -18,7 +16,10 @@ const request: EpicUtils.Request<any, any> = {
     getHistoryInstance().push(`${URL.PAGES}/${page.id}`);
 
     return [
-      success({...notificationParams, title: 'New page added'}),
+      {
+        type: SHOW_MESSAGE,
+        payload: {message: "New page added", success: true},
+      },
       {
         payload: page,
         type: ADD_PAGE_FULFILLED,

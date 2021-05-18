@@ -3,7 +3,6 @@
 .cms-scope {
   // base
   @import 'base/theme';
-  //@import 'base/base';
   @import 'base/mixins';
   
   // layout
@@ -14,7 +13,7 @@
   @import 'patterns/loader';
 
   // components
-  @import 'components/menu-editor';
+  //@import 'components/menu-editor';
   @import 'components/editor-area';
   @import 'components/notifications';
 }

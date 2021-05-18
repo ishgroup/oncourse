@@ -1,12 +1,11 @@
 import {Epic} from "redux-observable";
 import "rxjs";
-import {success} from 'react-notification-system-redux';
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import {getPageRender, SAVE_PAGE_FULFILLED, SAVE_PAGE_REQUEST} from "../actions";
 import {Page} from "../../../../../model";
 import PageService from "../../../../../services/PageService";
-import {notificationParams} from "../../../../../common/utils/NotificationSettings";
 import {getContentModeId, removeContentMarker} from "../../../utils";
+import {SHOW_MESSAGE} from "../../../../../common/components/message/actions";
 
 const request: EpicUtils.Request<any, any> = {
   type: SAVE_PAGE_REQUEST,
@@ -16,7 +15,12 @@ const request: EpicUtils.Request<any, any> = {
     const cleanContent = removeContentMarker(page.content);
     const result = [];
 
-    result.push(success(notificationParams));
+    result.push(
+      {
+        type: SHOW_MESSAGE,
+        payload: {message: "Save success", success: true},
+      },
+    );
     result.push(
       {
         payload:  {

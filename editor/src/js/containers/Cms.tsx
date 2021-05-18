@@ -4,7 +4,6 @@ import clsx from "clsx";
 import {Dispatch} from "redux";
 import {withRouter} from 'react-router-dom';
 import {ThemeProvider, withStyles} from "@material-ui/core/styles";
-import Notifications from 'react-notification-system-redux';
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
 import Layout from '../components/Layout/Layout';
 import Sidebar from '../components/Layout/Sidebar';
@@ -29,6 +28,7 @@ import GlobalStylesProvider from "../styles/GlobalStylesProvider";
 import {BlockState} from "./content/containers/blocks/reducers/State";
 import {hideNavigation, setActiveUrl} from "../common/containers/Navigation/actions";
 import SwipeableNavigation from "../common/containers/Navigation/SwipeableNavigation";
+import MessageProvider from "../common/components/message/MessageProvider";
 
 const styles: any = theme => ({
   cms: {
@@ -157,7 +157,6 @@ class Cms extends React.Component<Props, any> {
             <div className={clsx(classes.cmsContainer, viewMode && classes.cmsContainerViewMode)}>
               {globalSiteStyle}
               {hasBrowserWarning && <BrowserWarning />}
-              <Notifications notifications={notifications} />
               <Modal {...modal} onHide={hideModal}/>
               <SwipeableNavigation open={navigation.showNavigation} hideNavigation={hideNavigation}/>
 
@@ -183,6 +182,7 @@ class Cms extends React.Component<Props, any> {
               />
             </div>
           </div>
+          <MessageProvider/>
         </ThemeProvider>
       </ThemeContext.Provider>
     );

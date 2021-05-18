@@ -1,6 +1,4 @@
-import {MiddlewareAPI} from "redux";
 import {ActionsObservable, Epic, StateObservable} from "redux-observable";
-import {error} from 'react-notification-system-redux';
 import "rxjs";
 import {AxiosResponse} from "axios";
 import {IAction} from "../actions/IshAction";
@@ -8,7 +6,7 @@ import {SERVER_ERROR} from "../common/actions";
 import {LOG_OUT_REQUEST} from "../containers/auth/actions/index";
 import {catchError, flatMap, mergeMap, retry} from "rxjs/operators";
 import {defer, from, Observable} from "rxjs";
-
+import {SHOW_MESSAGE} from "../common/components/message/actions";
 
 export interface Request<V, S> {
   type: string;
@@ -18,12 +16,13 @@ export interface Request<V, S> {
 }
 
 export const errorMessage = data => (
-  error({
-    title: 'Request Failed',
-    message: (data && data.data && data.data.message) || 'Something went wrong',
-    position: 'tr',
-    autoDismiss: 3,
-  })
+  {
+    type: SHOW_MESSAGE,
+    payload: {
+      message: (data && data.data && data.data.message) || 'Something went wrong',
+      success: false
+    },
+  }
 );
 
 export const ProcessError = (data: AxiosResponse): { type: string, payload?: any }[] => {
