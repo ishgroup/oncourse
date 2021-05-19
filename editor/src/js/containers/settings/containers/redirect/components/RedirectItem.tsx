@@ -1,10 +1,24 @@
 import React from 'react';
-import {Grid, IconButton} from "@material-ui/core";
+import {createStyles, Grid, IconButton, makeStyles} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import clsx from "clsx";
 import {RedirectItem as RedirectItemModel} from "../../../../../model";
 import {stubFunction} from "../../../../../common/utils/Components";
 import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+
+const useStyles = makeStyles(theme =>
+  createStyles({
+    deleteButton: {
+      "&:hover $deleteIcon": {
+        fill: "#b1b1b1!important",
+      }
+    },
+    deleteIcon: {
+      fontSize: "20px",
+      fill: "#e0e0e0!important",
+    },
+  }),
+);
 
 interface RedirectItemState extends RedirectItemModel {
   submitted?: boolean;
@@ -46,6 +60,8 @@ const RedirectItem = React.memo<Props>((
   const {items, onChange, onRemove} = data;
 
   const item = items[index];
+
+  const classes = useStyles();
 
   return (
     <div style={style}>
@@ -90,13 +106,13 @@ const RedirectItem = React.memo<Props>((
         </Grid>
         <Grid item xs={2}>
           <IconButton
-            className={clsx("ml-2", {
+            className={clsx("ml-2", classes.deleteButton, {
               "invisible": !parent,
               "dndActionIconButton": true
             })}
             onClick={() => onRemove(index)}
           >
-            <Delete className={clsx("dndActionIcon")} />
+            <Delete className={classes.deleteIcon} />
           </IconButton>
         </Grid>
       </Grid>
