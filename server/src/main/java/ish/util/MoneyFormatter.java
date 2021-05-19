@@ -73,12 +73,8 @@ public class MoneyFormatter extends DefaultFormatter {
 
 	protected MoneyFormatter(Boolean useBracketsForNegative,  boolean useThousandsDelimeter, boolean nullIfBlank) {
 		super();
-		try {
-			if (CommonPreferenceController.getController() != null) {
-				this.serverLocation = CommonPreferenceController.getController().getCountry();
-			}
-		} catch (Exception e) {
-			//ignore
+		if (CommonPreferenceController.getController() != null) {
+			this.serverLocation = CommonPreferenceController.getController().getCountry();
 		}
 		
 
