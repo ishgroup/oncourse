@@ -4,6 +4,7 @@
 package ish.oncourse.server.services
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.AccountTransactionType
 import ish.common.types.ProductStatus
@@ -22,15 +23,8 @@ import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-
+@DatabaseSetup(value = "ish/oncourse/server/services/voucherExpiryJobTestDataSet.xml")
 class VoucherExpiryJobTest extends TestWithDatabase {
-    private AccountTransactionService accountTransactionService 
-    
-    @BeforeEach
-    @Order(3)
-    void setup() throws Exception {
-        accountTransactionService = injector.getInstance(AccountTransactionService.class)
-    }
     
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
@@ -59,7 +53,7 @@ class VoucherExpiryJobTest extends TestWithDatabase {
         Assertions.assertEquals(ProductStatus.ACTIVE, expiredCourseVoucher.getStatus())
         Assertions.assertEquals(ProductStatus.ACTIVE, unexpiredVoucher.getStatus())
 
-        VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, accountTransactionService)
+        VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, injector.getInstance(AccountTransactionService.class))
 
         voucherExpiryJob.executeWithDate(new Date())
 
@@ -122,7 +116,7 @@ class VoucherExpiryJobTest extends TestWithDatabase {
 
         cayenneContext.commitChanges()
 
-        VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, accountTransactionService)
+        VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, injector.getInstance(AccountTransactionService.class))
 
         voucherExpiryJob.executeWithDate(new Date())
 
