@@ -243,6 +243,8 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
 
   const modalGradeItems = modalGradeType?.gradingItems;
 
+  const hasGrades = Boolean(values.assessments.some(a => gradingTypes.some(g => g.id === a.gradingTypeId)));
+
   return values.assessments && values.assessments.length ? (
     <Grid item={true} xs={12} id={name} container>
       <GradeModal
@@ -277,7 +279,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
 
       <Grid container item={true} xs={twoColumn ? 8 : 12} className={classes.tableHeader}>
         <Grid item xs={3} />
-        <Grid item xs={3} className={classes.center}>
+        <Grid item xs={hasGrades ? 3 : 6} className={classes.center}>
           <span className="relative">
             Submitted
             <IconButton
@@ -291,23 +293,30 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
             </IconButton>
           </span>
         </Grid>
-        <Grid xs={3} className={classes.center}>
-          <span className="relative">
-            Marked
-            <IconButton
-              size="small"
-              className={classes.hiddenTitleIcon}
-              onClick={() => {
+
+        {hasGrades
+          && (
+          <>
+            <Grid xs={3} className={classes.center}>
+              <span className="relative">
+                Marked
+                <IconButton
+                  size="small"
+                  className={classes.hiddenTitleIcon}
+                  onClick={() => {
                 setModalOpenedBy(`Marked-0-all`);
               }}
-            >
-              <DateRange color="disabled" fontSize="small" />
-            </IconButton>
-          </span>
-        </Grid>
-        <Grid xs={3} className={classes.center}>
-          Grade
-        </Grid>
+                >
+                  <DateRange color="disabled" fontSize="small" />
+                </IconButton>
+              </span>
+            </Grid>
+            <Grid xs={3} className={classes.center}>
+              Grade
+            </Grid>
+          </>
+      )}
+
       </Grid>
       <Grid container item={true} xs={twoColumn ? 8 : 12} className={classes.items}>
         {values.assessments.map((elem, index) => {
