@@ -76,7 +76,7 @@ abstract class TestWithBootique {
 
     @AfterAll
     @Order(2)
-    private void cleanUpDB() {
+    final void cleanUpDB() {
         injector.shutdown()
     }
 
