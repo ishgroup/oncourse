@@ -6,6 +6,7 @@ package ish.oncourse.server.services
 
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.oncourse.common.ResourceType
 import ish.oncourse.server.integration.PluginService
