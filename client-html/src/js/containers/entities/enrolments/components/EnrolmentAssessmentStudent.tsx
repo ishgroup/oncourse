@@ -133,6 +133,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                 placeholder="No assessor"
                 formatting="inline"
                 items={elem.tutors}
+                allowEmpty
                 select
               />
             </div>

@@ -246,6 +246,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
 
   const onChangeGrade = (value: number, elem: StudentForRender) => {
     const grade = normalizeNumber(value);
+    let updatedSubmissions;
     if (elem.submissionIndex === -1) {
       const newSubmission: AssessmentSubmission = {
         id: null,
@@ -258,19 +259,20 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         assessmentId: row.assessmentId,
         grade
       };
-      submissionUpdater.current([newSubmission, ...row.submissions]);
+      updatedSubmissions = [newSubmission, ...row.submissions];
     } else {
-      const updatedSubmissions = row.submissions.map((s, index) => {
+       updatedSubmissions = row.submissions.map((s, index) => {
         if (elem.submissionIndex === index) {
-          return { ...s, grade };
+          return { ...s, grade, ...grade === "" ? { markedById: null, markedOn: null } : { markedOn: s.markedOn || today } };
         }
         return s;
       });
-      submissionUpdater.current(updatedSubmissions);
     }
+    submissionUpdater.current(updatedSubmissions);
   };
 
-  const onToggleGrade = (elem: StudentForRender, grade: GradingItem) => {
+  const onToggleGrade = (elem: StudentForRender, prevGrade: GradingItem) => {
+    let updatedSubmissions;
     if (elem.submissionIndex === -1) {
       const newSubmission: AssessmentSubmission = {
         id: null,
@@ -283,17 +285,18 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         assessmentId: row.assessmentId,
         grade: gradeItems ? gradeItems[0]?.lowerBound : null
       };
-      submissionUpdater.current([newSubmission, ...row.submissions]);
+      updatedSubmissions = [newSubmission, ...row.submissions];
     } else {
-      const updatedSubmissions = row.submissions.map((s, index) => {
+      updatedSubmissions = row.submissions.map((s, index) => {
         if (elem.submissionIndex === index) {
-          const gradeIndex = grade ? gradeItems?.findIndex(g => g.lowerBound === grade.lowerBound) : -1;
-          return { ...s, grade: gradeItems[gradeIndex + 1]?.lowerBound };
+          const gradeIndex = prevGrade ? gradeItems?.findIndex(g => g.lowerBound === prevGrade.lowerBound) : -1;
+          const grade = gradeItems[gradeIndex + 1]?.lowerBound;
+          return { ...s, grade, ...typeof grade === "number" ? { markedOn: s.markedOn || today } : { markedById: null, markedOn: null } };
         }
         return s;
       });
-      submissionUpdater.current(updatedSubmissions);
     }
+    submissionUpdater.current(updatedSubmissions);
   };
 
   const onAssessmentChange = assessment => {
