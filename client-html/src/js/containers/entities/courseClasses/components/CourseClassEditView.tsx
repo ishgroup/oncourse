@@ -417,7 +417,16 @@ const CourseClassEditView: React.FC<Props> = ({
     state => state && state.access["/a/v1/list/entity/courseClass/budget/"] && state.access["/a/v1/list/entity/courseClass/budget/"]["GET"]
   );
 
-  const usedItems = useMemo(() => (hasBudgetPermissions ? items : items.filter(i => i.label !== "BUDGET")), [
+  const usedItems = useMemo(() => {
+    let result = items;
+    if (!hasBudgetPermissions) {
+      result = items.filter(i => i.label !== "BUDGET");
+    }
+    if (values.isDistantLearningCourse) {
+      result = items.filter(i => i.label !== "ATTENDANCE");
+    }
+    return result;
+  }, [
     hasBudgetPermissions
   ]);
 
