@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 
 @CompileStatic
-@DatabaseSetup(readOnly =  true, value = "ish/oncourse/server/querying/DataSet.xml", type = DatabaseOperation.INSERT )
+@DatabaseSetup(readOnly =  true, value = "ish/oncourse/server/querying/DataSet.xml")
 class QuerySpecTest extends TestWithDatabase {
 
     static Collection<Arguments> values() {
