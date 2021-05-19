@@ -21,6 +21,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DateTimeLiteralConverter implements Converter<AqlParser.DateTimeLiteralContext> {
 
@@ -29,7 +33,13 @@ public class DateTimeLiteralConverter implements Converter<AqlParser.DateTimeLit
     // 2014-11-30
     private static final DateTimeFormatter ISO_DATE_FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd");
     // 10:03 am
-    private static final DateTimeFormatter TIME12_FORMATTER = DateTimeFormatter.ofPattern("hh:mm a");
+    private static final Map<Long, String> ampm = new HashMap<>(); 
+    static {
+        ampm.put(0L, "am");
+        ampm.put(1L, "pm");  
+    }
+
+    private static final DateTimeFormatter TIME12_FORMATTER = new DateTimeFormatterBuilder().appendPattern("hh:mm ").appendText(ChronoField.AMPM_OF_DAY,ampm).toFormatter();
     // 23:40
     private static final DateTimeFormatter TIME24_FORMATTER = DateTimeFormatter.ofPattern("kk:mm");
 
