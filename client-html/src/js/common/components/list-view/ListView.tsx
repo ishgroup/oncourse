@@ -602,7 +602,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
     if (
       threeColumn
-      && newSelection.length
+      && newSelection && newSelection.length
       && (!editRecord || !editRecord.id || editRecord.id.toString() !== newSelection[0])
     ) {
       this.updateHistory(params.id ? url.replace(`/${params.id}`, `/${newSelection[0]}`) : url + `/${newSelection[0]}`, search);
@@ -612,7 +612,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       this.ignoreCheckDirtyOnSelection = false;
     }
 
-    updateSelection(newSelection);
+    if (newSelection) updateSelection(newSelection);
   };
 
   onChangeFilters = (filters: FilterGroup[] | MenuTag[], type: string) => {
