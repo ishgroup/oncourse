@@ -441,6 +441,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           gradingTypes={gradingTypes}
           dispatch={dispatch}
           validate={validateAssesments}
+          twoColumn={twoColumn}
         />
       </Grid>
     </>

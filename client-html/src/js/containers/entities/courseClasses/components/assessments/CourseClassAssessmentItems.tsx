@@ -57,7 +57,7 @@ type TickType = "Submitted" | "Marked";
 
 const today = format(new Date(), YYYY_MM_DD_MINUSED);
 
-const CourseClassAssessmentItem: React.FC<Props> = props => {
+const CourseClassAssessmentItems: React.FC<Props> = props => {
   const {
     form,
     row,
@@ -129,7 +129,7 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
         updatedSubmissions.splice(index, 1);
       }
       const submission = row.submissions[index];
-      if (!submission && newValue && modalProps[2] !== "all") {
+      if (!submission && newValue && modalProps.length && modalProps[2] !== "all") {
         const elem = studentsForRender[modalProps[3]];
         updatedSubmissions.unshift({
           id: null,
@@ -183,11 +183,8 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
     studentsForRender.forEach((elem => {
       if (student.studentId === elem.studentId) {
         const submissionIndex = row.submissions ? row.submissions.findIndex(s => s.enrolmentId === elem.enrolmentId) : -1;
-        let pathIndex = submissionIndex;
-
         if (elem.submittedValue !== "Submitted") {
           if (submissionIndex === -1) {
-            pathIndex = 0;
             const newSubmission: AssessmentSubmission = {
               id: null,
               submittedOn: today,
@@ -225,10 +222,6 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
           });
           submissionUpdater.current(updatedSubmissions);
           dispatch(change(form, `${item}.submissions[${submissionIndex}].markedOn`, today));
-        }
-        if ((type === "Marked" && elem.markedValue !== "Submitted")
-          || (type === "Submitted" && elem.submittedValue !== "Submitted") ) {
-          setModalOpenedBy(`${type}-${pathIndex}-${elem.studentName}`);
         }
       }
     }));
@@ -527,16 +520,16 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
             {studentsForRender.map((elem, index) => (
               <CourseClassAssessmentStudent
                 elem={elem}
+                index={index}
                 onChangeStatus={onChangeStatus}
-                classes={classes}
-                setModalOpenedBy={setModalOpenedBy}
-                gradeType={gradeType}
-                gradeItems={gradeItems}
                 onToggleGrade={onToggleGrade}
                 onChangeGrade={onChangeGrade}
                 handleGradeMenuOpen={handleGradeMenuOpen}
-                index={index}
-                tutors={tutors}
+                triggerAsyncChange={triggerAsyncChange}
+                classes={classes}
+                gradeType={gradeType}
+                gradeItems={gradeItems}
+                tutors={tutors.filter(t => row.contactIds.includes(t.contactId))}
               />
             ))}
           </Grid>
@@ -553,4 +546,4 @@ const CourseClassAssessmentItem: React.FC<Props> = props => {
   );
 };
 
-export default withStyles(styles)(CourseClassAssessmentItem);
+export default withStyles(styles)(CourseClassAssessmentItems);
