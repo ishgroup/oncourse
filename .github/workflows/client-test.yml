@@ -7,25 +7,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '11'
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Cache
-      uses: actions/cache@v2.1.5
-      with:
-        path: |
-          **/node_modules
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ matrix.java }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+        key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
-    - name: Run tests
-      run: ./gradlew client-html:test
+      - name: Run tests
+        run: ./gradlew client-html:test

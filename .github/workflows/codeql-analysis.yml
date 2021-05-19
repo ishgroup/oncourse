@@ -8,9 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
       matrix:
-        language: [ 'java', 'javascript' ]
+        java: [11]
 
     steps:
       - name: Checkout repository
@@ -29,7 +28,6 @@ jobs:
             **/node_modules
             ~/.gradle/caches
             ~/.gradle/wrapper
-            ~/.sonar/cache
         key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
       - name: Initialize CodeQL
