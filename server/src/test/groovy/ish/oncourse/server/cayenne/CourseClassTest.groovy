@@ -4,6 +4,7 @@
  */
 package ish.oncourse.server.cayenne
 
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.*
 import ish.duplicate.ClassDuplicationRequest
@@ -21,16 +22,11 @@ import org.apache.cayenne.query.*
 import org.apache.cxf.common.util.StringUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
+@DatabaseSetup
 class CourseClassTest extends TestWithDatabase {
-    private CourseClassService courseClassService
-
-
-    @BeforeEach
-    void before() {
-        courseClassService = injector.getInstance(CourseClassService.class)
-    }
 
     @Test
     void testNextAvailableCode() throws Exception {
@@ -264,7 +260,7 @@ class CourseClassTest extends TestWithDatabase {
         dc.setClassCost(cost2)
         dc2.setClassCost(cost3)
 
-        Assertions.assertTrue(courseClassService.getTutors(cclass).contains(tutor))
+        Assertions.assertTrue(injector.getInstance(CourseClassService.class).getTutors(cclass).contains(tutor))
         Assertions.assertTrue(cclass.getDiscounts().contains(discount))
         Assertions.assertTrue(cclass.getDiscounts().contains(discount2))
         Assertions.assertTrue(cclass.getCosts().contains(cost))
@@ -289,7 +285,7 @@ class CourseClassTest extends TestWithDatabase {
         Assertions.assertNotNull(newClass)
         Assertions.assertNull(newClass.getStartDateTime())
         Assertions.assertNull(newClass.getEndDateTime())
-        Assertions.assertEquals(0, courseClassService.getTutors(newClass).size())
+        Assertions.assertEquals(0, injector.getInstance(CourseClassService.class).getTutors(newClass).size())
         //two discounts and corresponded costs assigned by default
         Assertions.assertEquals(2, newClass.getDiscounts().size())
         Assertions.assertTrue(newClass.getDiscounts().contains(discount3))
@@ -346,7 +342,7 @@ class CourseClassTest extends TestWithDatabase {
 
         Assertions.assertEquals(gcStart.getTime(), newClassWithStartDateTime.getStartDateTime())
         Assertions.assertEquals(gcEnd.getTime(), newClassWithStartDateTime.getEndDateTime())
-        Assertions.assertEquals(0, courseClassService.getTutors(newClassWithStartDateTime).size())
+        Assertions.assertEquals(0, injector.getInstance(CourseClassService.class).getTutors(newClassWithStartDateTime).size())
         Assertions.assertEquals(2, newClassWithStartDateTime.getDiscounts().size())
         Assertions.assertEquals(3, newClassWithStartDateTime.getCosts().size())
         Assertions.assertEquals(0, newClassWithStartDateTime.getSessions().size())
@@ -425,10 +421,10 @@ class CourseClassTest extends TestWithDatabase {
         Assertions.assertTrue(newClassWithAll.getTags().contains(childTag))
         Assertions.assertEquals(originalStart.getTime(), newClassWithAll.getStartDateTime())
         Assertions.assertEquals(originalEnd.getTime(), newClassWithAll.getEndDateTime())
-        Assertions.assertEquals(1, courseClassService.getTutors(newClassWithAll).size())
+        Assertions.assertEquals(1, injector.getInstance(CourseClassService.class).getTutors(newClassWithAll).size())
         Assertions.assertEquals(4, newClassWithAll.getDiscounts().size())
         Assertions.assertEquals(cclass.getReportableHours(), newClassWithAll.getReportableHours())
-        Assertions.assertTrue(courseClassService.getTutors(newClassWithAll).contains(tutor))
+        Assertions.assertTrue(injector.getInstance(CourseClassService.class).getTutors(newClassWithAll).contains(tutor))
         Assertions.assertTrue(newClassWithAll.getDiscounts().contains(discount))
         Assertions.assertTrue(newClassWithAll.getDiscounts().contains(discount2))
         Assertions.assertTrue(newClassWithAll.getDiscounts().contains(discount3))
