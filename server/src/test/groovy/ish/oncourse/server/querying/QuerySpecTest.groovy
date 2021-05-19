@@ -1,6 +1,7 @@
 package ish.oncourse.server.querying
 
 import groovy.transform.CompileStatic
+import ish.DatabaseOperation
 import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.Script
@@ -14,7 +15,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 
 @CompileStatic
-@DatabaseSetup(value = "ish/oncourse/server/querying/DataSet.xml")
+@DatabaseSetup(readOnly =  true, value = "ish/oncourse/server/querying/DataSet.xml", type = DatabaseOperation.INSERT )
 class QuerySpecTest extends TestWithDatabase {
 
     static Collection<Arguments> values() {

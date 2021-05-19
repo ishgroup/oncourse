@@ -78,6 +78,8 @@ class TestWithDatabaseExtension implements
 
     @Override
     void beforeAll(ExtensionContext context) throws Exception {
+        def store = context.root.getStore(GLOBAL)
+        store.put("db_data_loaded", false)
 
     }
 
@@ -99,23 +101,29 @@ class TestWithDatabaseExtension implements
 
         DatabaseSetup a = AnnotationSupport.findAnnotation(context.getTestClass(), DatabaseSetup).orElse(null) as DatabaseSetup
         if (a) {
-            if (a.type() == ish.DatabaseOperation.DELETE_ALL) {
-                wipeTablesMariadb()
-            }
-            for (dataSource in a?.value()) {
-                store.put("dataSource", dataSource)
-                InputStream st = SessionTest.class.getClassLoader().getResourceAsStream(dataSource)
-                FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-                builder.setColumnSensing(true)
-                FlatXmlDataSet dataSet = builder.build(st)
+            if (a.readOnly() && store.get("db_data_loaded")) {
+                //do nothing, data not changed from tests to test 
+            } else {
+                if (a.type() == ish.DatabaseOperation.DELETE_ALL) {
+                    wipeTablesMariadb()
+                }
+                for (dataSource in a?.value()) {
+                    store.put("dataSource", dataSource)
+                    InputStream st = SessionTest.class.getClassLoader().getResourceAsStream(dataSource)
+                    FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
+                    builder.setColumnSensing(true)
+                    FlatXmlDataSet dataSet = builder.build(st)
 
-                ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-                databaseTest.dataSourceReplaceValues(rDataSet)
-                IDatabaseConnection testDatabaseConnection = getTestDatabaseConnection()
-                //                new CompositeOperation(org.dbunit.operation.DatabaseOperation.TRUNCATE_TABLE, org.dbunit.operation.DatabaseOperation.INSERT).execute(testDatabaseConnection, dataSet)
+                    ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+                    databaseTest.dataSourceReplaceValues(rDataSet)
+                    IDatabaseConnection testDatabaseConnection = getTestDatabaseConnection()
+                    //                new CompositeOperation(org.dbunit.operation.DatabaseOperation.TRUNCATE_TABLE, org.dbunit.operation.DatabaseOperation.INSERT).execute(testDatabaseConnection, dataSet)
 
-                org.dbunit.operation.DatabaseOperation.CLEAN_INSERT.execute(testDatabaseConnection, rDataSet)
+                    org.dbunit.operation.DatabaseOperation.CLEAN_INSERT.execute(testDatabaseConnection, rDataSet)
+                }
+                store.put("db_data_loaded", true)
             }
+         
         }
         if (a && a.readOnly()) {
             databaseTest.cayenneContext = cayenneServiceSupplier.call().getNewReadonlyContext()
