@@ -283,7 +283,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
   const onConfirm = () => {
     const outcomeFieldsToUpdate = changedFields.filter(f => f.update);
 
-    if (outcomeFieldsToUpdate.length) {
+    if (outcomeFieldsToUpdate.length && values) {
       EntityService.getPlainRecords("Outcome", "id", `enrolment.id is ${values.id}`)
         .then(res => {
           const ids = res.rows.map(r => Number(r.id));
