@@ -2,6 +2,7 @@ package ish.oncourse.server.imports.avetmiss
 
 
 import groovy.transform.CompileStatic
+import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
+@DatabaseSetup
 class AvetmissStudentUpdateImportTest extends TestWithDatabase {
 
     @BeforeEach
