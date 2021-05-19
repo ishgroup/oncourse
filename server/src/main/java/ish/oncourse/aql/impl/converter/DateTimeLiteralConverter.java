@@ -130,14 +130,14 @@ public class DateTimeLiteralConverter implements Converter<AqlParser.DateTimeLit
         if(timeString.charAt(1) == ':') {
             timeString = '0' + timeString;
         }
-        // 2. 03:00a.m. -> 03:00A.M.
-        timeString = timeString.toUpperCase();
-        // 3. 03:00A.M. -> 03:00AM
+        // 2. 03:00A.M. -> 03:00a.m.
+        timeString = timeString.toLowerCase();
+        // 3. 03:00a.m. -> 03:00am
         timeString = timeString.replaceAll("\\.", "");
-        // 4. 03:00AM   -> 03:00 AM
+        // 4. 03:00am   -> 03:00 am
         if(!timeString.contains(" ")) {
-            timeString = timeString.replace("AM", " AM");
-            timeString = timeString.replace("PM", " PM");
+            timeString = timeString.replace("am", " am");
+            timeString = timeString.replace("pm", " pm");
         }
         return timeString;
     }
