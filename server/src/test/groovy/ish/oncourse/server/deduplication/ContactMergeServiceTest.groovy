@@ -152,13 +152,13 @@ class ContactMergeServiceTest extends TestWithDatabase {
                 "}, class MergeLineDTO {\n" +
                 "    key: Tutor.dateFinished\n" +
                 "    label: Date finished\n" +
-                "    a: Tue 1 Jan 2013\n" +
-                "    b: Wed 1 Jan 2014\n" +
+                "    a: Tue. 1 Jan. 2013\n" +
+                "    b: Wed. 1 Jan. 2014\n" +
                 "}, class MergeLineDTO {\n" +
                 "    key: Tutor.dateStarted\n" +
                 "    label: Date started\n" +
-                "    a: Sun 1 Jan 2012\n" +
-                "    b: Tue 1 Jan 2013\n" +
+                "    a: Sun. 1 Jan. 2012\n" +
+                "    b: Tue. 1 Jan. 2013\n" +
                 "}, class MergeLineDTO {\n" +
                 "    key: Tutor.payrollRef\n" +
                 "    label: Payroll ref\n" +
