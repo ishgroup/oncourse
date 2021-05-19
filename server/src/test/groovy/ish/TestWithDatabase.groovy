@@ -84,7 +84,7 @@ abstract class TestWithDatabase extends TestWithBootique {
     @Order(1)
     private void cleanUpDB() {
         // need to stop CayenneService in order to dispose connection pool created for it
-        // cayenneService.getServerRuntime().shutdown()
+         cayenneService.getServerRuntime().shutdown()
     }
 
     protected void createInjectors() throws Exception {
