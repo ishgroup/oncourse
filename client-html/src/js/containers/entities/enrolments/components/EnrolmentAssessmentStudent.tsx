@@ -1,30 +1,28 @@
 import React, { useEffect, useMemo, useState } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import DateRange from "@material-ui/icons/DateRange";
 import Grid from "@material-ui/core/Grid";
 import clsx from "clsx";
-import { Tooltip } from "@material-ui/core";
-import { format } from "date-fns";
 import { GradingItem, GradingType } from "@api/model";
 import AssessmentSubmissionIconButton from "../../courseClasses/components/assessments/AssessmentSubmissionIconButton";
-import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
-import { StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { useGradeErrors } from "../../courseClasses/components/assessments/utils/hooks";
 import GradeContent from "../../courseClasses/components/assessments/GradeContent";
+import { stubFunction } from "../../../../common/utils/common";
+import EditInPlaceDateTimeField from "../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
+import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 
 interface Props {
   elem: EnrolmentAssessmentExtended;
   values: EnrolmentExtended;
   onChangeStatus: any;
   classes: any;
-  setModalOpenedBy: StringArgFunction;
   index: number;
   onToggleGrade: (elem: EnrolmentAssessmentExtended, grade: GradingItem) => void;
   onChangeGrade: (value: number, elem: EnrolmentAssessmentExtended) => void;
   handleGradeMenuOpen: any;
   gradeType: GradingType;
   gradeItems: GradingItem[];
+  triggerAsyncChange: (newValue: any, field: string, index: number) => void;
 }
 
 const EnrolmentAssessmentStudent: React.FC<Props> = (
@@ -33,13 +31,13 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
     values,
     onChangeStatus,
     classes,
-    setModalOpenedBy,
     index,
     onToggleGrade,
     onChangeGrade,
     handleGradeMenuOpen,
     gradeType,
-    gradeItems
+    gradeItems,
+    triggerAsyncChange
   }
 ) => {
   const [gradeVal, setGradeVal] = useState<number>(null);
@@ -57,17 +55,8 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
     <div className="d-flex relative">
       <AssessmentSubmissionIconButton
         status={submitStatus}
-        onClick={() => onChangeStatus("Submitted", submissionIndex, submitStatus, elem, index)}
+        onClick={() => onChangeStatus("Submitted", submissionIndex, submitStatus, elem)}
       />
-      {submitStatus === "Submitted" && (
-        <IconButton
-          size="small"
-          className={classes.hiddenIcon}
-          onClick={() => setModalOpenedBy(`Submitted-${submissionIndex}-${elem.name}-${index}`)}
-        >
-          <DateRange color="disabled" fontSize="small" />
-        </IconButton>
-      )}
     </div>
   );
 
@@ -75,17 +64,8 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
     <div className="d-flex relative">
       <AssessmentSubmissionIconButton
         status={markedStatus}
-        onClick={() => onChangeStatus("Marked", submissionIndex, markedStatus, elem, index)}
+        onClick={() => onChangeStatus("Marked", submissionIndex, markedStatus, elem)}
       />
-      {markedStatus === "Submitted" && (
-        <IconButton
-          size="small"
-          className={classes.hiddenIcon}
-          onClick={() => setModalOpenedBy(`Marked-${submissionIndex}-${elem.name}-${index}`)}
-        >
-          <DateRange color="disabled" fontSize="small" />
-        </IconButton>
-      )}
     </div>
   );
 
@@ -99,56 +79,67 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
 
   return (
     <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
-      <Grid item xs={4} className="d-inline-flex-center pl-1">
+      <Grid item xs={3} className="d-inline-flex-center pl-1">
         {elem.name}
       </Grid>
-      <Grid item xs={2} className={classes.center}>
+      <Grid item xs={3} className={classes.center}>
         {submitStatus === "Submitted"
           ? (
-            <Tooltip
-              title={(
-                <span>
-                  Submitted date:
-                  {" "}
-                  {submission && format(new Date(submission.submittedOn), III_DD_MMM_YYYY)}
-                </span>
-              )}
-              placement="top"
-              disableFocusListener
-              disableTouchListener
-            >
-              {submittedContent}
-            </Tooltip>
+            <EditInPlaceDateTimeField
+              meta={{}}
+              input={{
+                onChange: value => triggerAsyncChange(value, "submittedOn", submissionIndex),
+                onFocus: stubFunction,
+                onBlur: stubFunction,
+                value: submission.submittedOn
+              }}
+              type="date"
+              formatting="inline"
+              formatDate={D_MMM_YYYY}
+              inlineMargin
+            />
           )
           : submittedContent}
       </Grid>
-      <Grid item xs={2} className={classes.center}>
+      <Grid item xs={3} className={classes.center}>
         {markedStatus === "Submitted" ? (
-          <Tooltip
-            title={(
-              <span>
-                Marked date:
-                {" "}
-                {submission && format(new Date(submission.markedOn), III_DD_MMM_YYYY)}
-                <br />
-                {submission?.markedById && Boolean(elem.tutors?.length) && (
-                  <span>
-                    Assessor:
-                    {" "}
-                    {elem.tutors.find(t => t.contactId === submission.markedById)?.tutorName}
-                  </span>
-                )}
-              </span>
-            )}
-            placement="top"
-            disableFocusListener
-            disableTouchListener
-          >
-            {markedContent}
-          </Tooltip>
+          <div>
+            <div>
+              <EditInPlaceDateTimeField
+                meta={{}}
+                input={{
+                  onChange: value => triggerAsyncChange(value, "markedOn", submissionIndex),
+                  onFocus: stubFunction,
+                  onBlur: stubFunction,
+                  value: submission.markedOn
+                }}
+                type="date"
+                formatting="inline"
+                formatDate={D_MMM_YYYY}
+                inlineMargin
+              />
+            </div>
+            <div>
+              <EditInPlaceField
+                meta={{}}
+                selectValueMark="contactId"
+                selectLabelMark="tutorName"
+                input={{
+                  onChange: value => triggerAsyncChange(value, "markedById", submissionIndex),
+                  onFocus: stubFunction,
+                  onBlur: stubFunction,
+                  value: submission.markedById
+                }}
+                placeholder="No assessor"
+                formatting="inline"
+                items={elem.tutors}
+                select
+              />
+            </div>
+          </div>
         ) : markedContent}
       </Grid>
-      <Grid item xs={2} className={classes.center}>
+      <Grid item xs={3} className={classes.center}>
         <GradeContent
           handleGradeMenuOpen={handleGradeMenuOpen}
           onToggleGrade={onToggleGrade}
