@@ -73,9 +73,14 @@ public class MoneyFormatter extends DefaultFormatter {
 
 	protected MoneyFormatter(Boolean useBracketsForNegative,  boolean useThousandsDelimeter, boolean nullIfBlank) {
 		super();
-		if (CommonPreferenceController.getController() != null) {
-			this.serverLocation = CommonPreferenceController.getController().getCountry();
+		try {
+			if (CommonPreferenceController.getController() != null) {
+				this.serverLocation = CommonPreferenceController.getController().getCountry();
+			}
+		} catch (Exception e) {
+			//ignore
 		}
+		
 
 		// if preference not set default to australia
 		if (this.serverLocation == null) {
