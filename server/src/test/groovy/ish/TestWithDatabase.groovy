@@ -80,13 +80,6 @@ abstract class TestWithDatabase extends TestWithBootique {
         checkPaymentMethods()
     }
 
-    @AfterAll
-    @Order(1)
-    private void cleanUpDB() {
-        // need to stop CayenneService in order to dispose connection pool created for it
-         cayenneService.getServerRuntime().shutdown()
-    }
-
     protected void createInjectors() throws Exception {
         BootiqueTestFactory.Builder builder = testFactory
                 .app("--config=classpath:application-test.yml")
