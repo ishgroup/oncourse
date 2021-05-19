@@ -19,7 +19,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Cache
-      uses: actions/cache@v2.1.4
+      uses: actions/cache@v2.1.5
       with:
         path: |
           **/node_modules
