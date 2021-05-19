@@ -49,6 +49,25 @@ public class MoneyFormatter extends DefaultFormatter {
 	}
 
 	/**
+	 * @return shared instance of money formatter with negative values rendered with minus sign
+	 */
+	public static MoneyFormatter defaultInstance() {
+		return new MoneyFormatter(false,true, false, Country.AUSTRALIA);
+	}
+
+	protected MoneyFormatter(Boolean useBracketsForNegative,  boolean useThousandsDelimeter, boolean nullIfBlank, Country serverLocation) {
+		super();
+
+		this.serverLocation = serverLocation;
+		
+
+		this.useBracketsForNegative = useBracketsForNegative;
+		this.useThousandsDelimiter = useThousandsDelimeter;
+		this.nullIfBlank = nullIfBlank;
+		setValueClass(Money.class);
+	}
+
+	/**
 	 * @param useBracketsForNegative whether returned formatter should use minus sign or brackets for negative values
 	 * @return shared instance of money formatter
 	 */

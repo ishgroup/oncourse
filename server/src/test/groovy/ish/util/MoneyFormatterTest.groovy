@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource
 @CompileStatic
 class MoneyFormatterTest {
 
-    MoneyFormatter formatter = MoneyFormatter.getInstance()
+    MoneyFormatter formatter = MoneyFormatter.defaultInstance()
 
     static Collection<Arguments> values() {
         def data = [
