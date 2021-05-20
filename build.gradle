@@ -35,7 +35,7 @@ plugins {
 	id 'com.github.psxpaul.execfork' version '0.1.13' apply false
 	id 'com.dorongold.task-tree' version '1.5' // adds the task 'taskTree [some task]'
 	id 'application'
-	id "org.sonarqube" version "3.1.1"
+	id 'jacoco'
 }
 
 taskTree{
@@ -43,14 +43,6 @@ taskTree{
 }
 
 apply plugin: 'idea'
-
-sonarqube {
-	properties {
-		property "sonar.projectKey", "ishgroup_oncourse"
-		property "sonar.organization", "ishgroup"
-		property "sonar.host.url", "https://sonarcloud.io"
-	}
-}
 
 subprojects {
 	repositories {
@@ -64,6 +56,7 @@ subprojects {
 	apply plugin: 'java-library'
 	apply plugin: 'java'
 	apply plugin: 'maven-publish'
+	apply plugin: 'jacoco'
 
 	sourceCompatibility = 11
 	// get the version from the command line properties
