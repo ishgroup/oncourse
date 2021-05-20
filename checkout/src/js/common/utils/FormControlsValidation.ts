@@ -14,9 +14,9 @@ export const validateEmail = value => {
     return undefined;
   }
 
-  const errorMessage = "The email address does not appear to be valid";
+  const errorMessage = "Please enter valid email address";
 
-  if (!value.includes("@")) {
+  if (!value.includes("@") || value.match(/\.@|@\./g)) {
     return errorMessage;
   }
   const splitted = value.split("@");
