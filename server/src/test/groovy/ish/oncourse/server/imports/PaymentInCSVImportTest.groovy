@@ -1,38 +1,27 @@
 package ish.oncourse.server.imports
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.cayenne.Banking
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.SessionTest
 import ish.oncourse.server.db.SanityCheckService
 import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class PaymentInCSVImportTest extends CayenneIshTestCase {
-
+@DatabaseSetup(value = "ish/oncourse/server/imports/paymentInCSVImportTestDataSet.xml")
+class PaymentInCSVImportTest extends TestWithDatabase {
 
     @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-
-        InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/imports/paymentInCSVImportTestDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        executeDatabaseOperation(rDataSet)
-
-
+    void population() throws Exception {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
         dataPopulation.run()
 

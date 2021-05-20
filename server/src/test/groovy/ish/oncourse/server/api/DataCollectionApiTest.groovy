@@ -1,7 +1,7 @@
 package ish.oncourse.server.api
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.DataType
 import ish.common.types.DeliverySchedule
@@ -17,7 +17,7 @@ import javax.ws.rs.ClientErrorException
 
 @CompileStatic
 @DatabaseSetup()
-class DataCollectionApiTest extends CayenneIshTestCase {
+class DataCollectionApiTest extends TestWithDatabase {
 
    
     @Test
@@ -52,7 +52,7 @@ class DataCollectionApiTest extends CayenneIshTestCase {
         cayenneContext.commitChanges()
 
         DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
-
+        integrationApi.setCayenneService(cayenneService)
         List<FieldTypeDTO> fieldTypes = integrationApi.getFieldTypes(DataCollectionTypeDTO.ENROLMENT.toString())
 
         Assertions.assertEquals(32, fieldTypes.size())
@@ -68,7 +68,7 @@ class DataCollectionApiTest extends CayenneIshTestCase {
 
     @Test
     void testForm() {
-        createRule(cayenneContext)
+        createRule()
         cayenneContext.commitChanges()
 
         DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
@@ -165,143 +165,152 @@ class DataCollectionApiTest extends CayenneIshTestCase {
         field
     }
 
-    private static void createRule(ObjectContext context) {
-        FieldConfigurationScheme rule = context.newObject(FieldConfigurationScheme)
+    private void createRule() {
+        FieldConfigurationScheme rule = cayenneContext.newObject(FieldConfigurationScheme)
         rule.name = 'Def rule'
-        context.newObject(FieldConfigurationLink).with { link ->
-            link.fieldConfigurationScheme = rule
-            link.fieldConfiguration = cretaeForm(cayenneContext, 'Enrol form', EnrolmentFieldConfiguration)
-        }
-        context.newObject(FieldConfigurationLink).with { link ->
-            link.fieldConfigurationScheme = rule
-            link.fieldConfiguration = cretaeForm(cayenneContext, 'Application form', ApplicationFieldConfiguration)
-        }
-        context.newObject(FieldConfigurationLink).with { link ->
-            link.fieldConfigurationScheme = rule
-            link.fieldConfiguration = cretaeForm(cayenneContext, 'WaitingList form', WaitingListFieldConfiguration)
-        }
-        context.newObject(FieldConfigurationLink).with { link ->
-            link.fieldConfigurationScheme = rule
-            link.fieldConfiguration = cretaeSurveyForm(cayenneContext, 'Survey form MIDWAY', DeliverySchedule.MIDWAY)
-        }
-        context.newObject(FieldConfigurationLink).with { link ->
-            link.fieldConfigurationScheme = rule
-            link.fieldConfiguration = cretaeSurveyForm(cayenneContext, 'Survey form ON_ENROL', DeliverySchedule.ON_ENROL)
-        }
+        
+        FieldConfigurationLink link = cayenneContext.newObject(FieldConfigurationLink)
+        link.fieldConfigurationScheme = rule
+        link.fieldConfiguration = cretaeForm('Enrol form', EnrolmentFieldConfiguration)
+
+        link = cayenneContext.newObject(FieldConfigurationLink)
+        link.fieldConfigurationScheme = rule
+        link.fieldConfiguration = cretaeForm('Application form', ApplicationFieldConfiguration)
+
+        link = cayenneContext.newObject(FieldConfigurationLink)
+        link.fieldConfigurationScheme = rule
+        link.fieldConfiguration = cretaeForm('WaitingList form', WaitingListFieldConfiguration)
+    
+        link = cayenneContext.newObject(FieldConfigurationLink)
+        link.fieldConfigurationScheme = rule
+        link.fieldConfiguration = cretaeSurveyForm('Survey form MIDWAY', DeliverySchedule.MIDWAY)
+    
+        link = cayenneContext.newObject(FieldConfigurationLink)
+        link.fieldConfigurationScheme = rule
+        link.fieldConfiguration = cretaeSurveyForm('Survey form ON_ENROL', DeliverySchedule.ON_ENROL)
+    
     }
 
-    private static SurveyFieldConfiguration cretaeSurveyForm(ObjectContext context, String name, DeliverySchedule deliverySchedule) {
-        return context.newObject(SurveyFieldConfiguration).with { form ->
-            form.name = name
-            form.addToFieldHeadings cayenneContext.newObject(FieldHeading).with { heading ->
-                heading.name = 'Enrol heading 1'
-                heading.description = 'Enrol heading 1'
-                heading.fieldOrder = 1
-                heading.addToFields cayenneContext.newObject(Field).with { field ->
-                    field.name = 'Course score'
-                    field.property = 'courseScore'
-                    field.mandatory = true
-                    field.description = 'Course score'
-                    field.order = 2
-                    field.fieldConfiguration = form
-                    field
-                } as Field
-                heading.addToFields cayenneContext.newObject(Field).with { field ->
-                    field.name = 'Net promoter score'
-                    field.property = 'netPromoterScore'
-                    field.mandatory = true
-                    field.description = 'Net promoter score'
-                    field.order = 3
-                    field.fieldConfiguration = form
-                    field
-                }
-                heading.addToFields cayenneContext.newObject(Field).with { field ->
-                    field.name = 'Venue score'
-                    field.property = 'venueScore'
-                    field.mandatory = true
-                    field.description = 'Venue score'
-                    field.order = 4
-                    field.fieldConfiguration = form
-                    field
-                }
-                heading
-            }
-            form.deliverySchedule = deliverySchedule
+    private  SurveyFieldConfiguration cretaeSurveyForm( String name, DeliverySchedule deliverySchedule) {
+        SurveyFieldConfiguration form = cayenneContext.newObject(SurveyFieldConfiguration)
+        form.name = name
+        
+        FieldHeading heading = cayenneContext.newObject(FieldHeading)
+        heading.name = 'Enrol heading 1'
+        heading.description = 'Enrol heading 1'
+        heading.fieldOrder = 1
+        
+        Field field = cayenneContext.newObject(Field)
+        field.name = 'Course score'
+        field.property = 'courseScore'
+        field.mandatory = true
+        field.description = 'Course score'
+        field.order = 2
+        field.fieldConfiguration = form
+        
+        heading.addToFields(field)
 
-            form
-        }
+
+        field = cayenneContext.newObject(Field)
+        field.name = 'Net promoter score'
+        field.property = 'netPromoterScore'
+        field.mandatory = true
+        field.description = 'Net promoter score'
+        field.order = 3
+        field.fieldConfiguration = form
+                 
+        heading.addToFields(field)
+
+        field = cayenneContext.newObject(Field)
+        field.name = 'Venue score'
+        field.property = 'venueScore'
+        field.mandatory = true
+        field.description = 'Venue score'
+        field.order = 4
+        field.fieldConfiguration = form
+                    
+        form.deliverySchedule = deliverySchedule
+        form.addToFieldHeadings(heading)
+        
+        return form
     }
 
-    private static FieldConfiguration cretaeForm(ObjectContext context, String name, Class<? extends FieldConfiguration> clazz) {
-        return context.newObject(clazz).with { form ->
-            form.name = name
-            form.addToFieldHeadings cayenneContext.newObject(FieldHeading).with { heading ->
-                heading.name = 'Enrol heading 1'
-                heading.description = 'Enrol heading 1'
-                heading.fieldOrder = 1
-                heading.addToFields cayenneContext.newObject(Field).with { field ->
-                    field.name = 'Postcode'
-                    field.property = 'postcode'
-                    field.mandatory = true
-                    field.description = 'Postcode'
-                    field.order = 2
-                    field.fieldConfiguration = form
-                    field
-                }
-                heading.addToFields cayenneContext.newObject(Field).with { field ->
-                    field.name = 'State'
-                    field.property = 'state'
-                    field.mandatory = true
-                    field.description = 'State'
-                    field.order = 3
-                    field.fieldConfiguration = form
-                    field
-                }
-                heading
-            }
-            form.addToFieldHeadings cayenneContext.newObject(FieldHeading).with { heading ->
-                heading.name = 'Enrol heading 2'
-                heading.description = 'Enrol heading 2'
-                heading.fieldOrder = 4
-                heading.addToFields cayenneContext.newObject(Field).with { field ->
-                    field.name = 'Country'
-                    field.property = 'country'
-                    field.mandatory = true
-                    field.description = 'Country'
-                    field.order = 5
-                    field.fieldConfiguration = form
-                    field
-                }
-                heading.addToFields cayenneContext.newObject(Field).with { field ->
-                    field.name = 'Suburb'
-                    field.property = 'suburb'
-                    field.mandatory = true
-                    field.description = 'suburb'
-                    field.order = 6
-                    field.fieldConfiguration = form
-                    field
-                }
-                heading
-            }
-            form.addToFields cayenneContext.newObject(Field).with { field ->
-                field.name = 'Street'
-                field.property = 'street'
-                field.mandatory = true
-                field.description = 'Street'
-                field.order = 7
-                field.fieldConfiguration = form
-                field
-            }
-            form.addToFields cayenneContext.newObject(Field).with { field ->
-                field.name = 'Citizenship'
-                field.property = 'citizenship'
-                field.mandatory = true
-                field.description = 'Citizenship'
-                field.order = 8
-                field.fieldConfiguration = form
-                field
-            }
-            form
-        }
+    private FieldConfiguration cretaeForm(String name, Class<? extends FieldConfiguration> clazz) {
+        
+        FieldConfiguration form = cayenneContext.newObject(clazz)
+        form.name = name
+        
+        FieldHeading  heading =  cayenneContext.newObject(FieldHeading)
+        heading.name = 'Enrol heading 1'
+        heading.description = 'Enrol heading 1'
+        heading.fieldOrder = 1
+        
+        Field field = cayenneContext.newObject(Field)
+        field.name = 'Postcode'
+        field.property = 'postcode'
+        field.mandatory = true
+        field.description = 'Postcode'
+        field.order = 2
+        field.fieldConfiguration = form
+
+        heading.addToFields(field)
+
+        field = cayenneContext.newObject(Field)
+        field.name = 'State'
+        field.property = 'state'
+        field.mandatory = true
+        field.description = 'State'
+        field.order = 3
+        field.fieldConfiguration = form
+                    
+        heading.addToFields(field)
+        
+        form.addToFieldHeadings(heading)
+
+        heading = cayenneContext.newObject(FieldHeading)
+        heading.name = 'Enrol heading 2'
+        heading.description = 'Enrol heading 2'
+        heading.fieldOrder = 4
+        
+        field = cayenneContext.newObject(Field)
+        field.name = 'Country'
+        field.property = 'country'
+        field.mandatory = true
+        field.description = 'Country'
+        field.order = 5
+        field.fieldConfiguration = form
+        
+        heading.addToFields(field)
+
+        field = cayenneContext.newObject(Field)
+        field.name = 'Suburb'
+        field.property = 'suburb'
+        field.mandatory = true
+        field.description = 'suburb'
+        field.order = 6
+        field.fieldConfiguration = form
+        heading.addToFields(field)
+        form.addToFieldHeadings(heading)
+
+
+        field = cayenneContext.newObject(Field)
+        field.name = 'Street'
+        field.property = 'street'
+        field.mandatory = true
+        field.description = 'Street'
+        field.order = 7
+        field.fieldConfiguration = form
+        form.addToFields(field)
+
+        field = cayenneContext.newObject(Field)
+        field.name = 'Citizenship'
+        field.property = 'citizenship'
+        field.mandatory = true
+        field.description = 'Citizenship'
+        field.order = 8
+        field.fieldConfiguration = form
+        form.addToFields(field)
+        
+        return form
     }
 }

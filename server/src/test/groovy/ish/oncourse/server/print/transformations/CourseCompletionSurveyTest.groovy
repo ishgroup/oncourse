@@ -2,6 +2,7 @@ package ish.oncourse.server.print.transformations
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import ish.TestWithDatabase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.print.PrintWorker
@@ -29,7 +30,8 @@ class CourseCompletionSurveyTest {
     private Report report
     Report subreport
     private PrintWorker printWorker
-
+    private ICayenneService cayenneService
+    
     @CompileDynamic
     @BeforeEach
     void before() throws IOException {

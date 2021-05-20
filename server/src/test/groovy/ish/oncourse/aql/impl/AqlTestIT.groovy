@@ -6,26 +6,20 @@
 package ish.oncourse.aql.impl
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.server.cayenne.Contact
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(readOnly = true, value = "ish/oncourse/aql/SyntheticPathTestDataSet.xml")
-class AqlTestIT extends CayenneIshTestCase {
+class AqlTestIT extends TestWithDatabase {
 
-    private AqlService aqlService
-
-    @BeforeAll
-    void setup() throws Exception {
-        aqlService = new AntlrAqlService()
-    }
+    private AqlService aqlService = new AntlrAqlService()
 
     @Test
     void testContactRootTags() {

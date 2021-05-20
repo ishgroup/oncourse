@@ -1,7 +1,7 @@
 package ish.oncourse.server.scripting.api
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Enrolment
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.mock
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/scripting/api/messageServiceTestDataSet.xml")
-class MessageServiceTest extends CayenneIshTestCase {
+class MessageServiceTest extends TestWithDatabase {
 
     @Test
     void sendMessageFromEmailTemplateTest() {

@@ -1,7 +1,7 @@
 package ish.oncourse.server.lifecycle
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.PaymentIn
@@ -19,7 +19,7 @@ import static ish.common.types.PaymentStatus.SUCCESS
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/lifecycle/transactionsLifecycleListenerTestDataSet.xml")
-class TransactionsLifecycleListenerTest extends CayenneIshTestCase {
+class TransactionsLifecycleListenerTest extends TestWithDatabase {
     
     @Test
     void testCayenneTransaction() {

@@ -4,10 +4,8 @@
  */
 package ish.oncourse.server.services
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.jfree.data.time.Day
 import org.jfree.data.time.TimeSeries
 import org.jfree.data.time.TimeSeriesCollection
@@ -16,13 +14,10 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 class StatsServiceTest {
-    private static final Logger logger = LogManager.getLogger()
 
     /**
-     * plot is saved as a png file in the current working directory, allowing to test plotting itself.<br/>
-     * cannot be used on headless machines, as the plot requires graphic env.
+     * plot is saved as a png file in the current working directory, allowing to test plotting itself.
      */
-    @CompileDynamic
     @Test
     void testSparkLine() {
 
@@ -31,7 +26,7 @@ class StatsServiceTest {
 
         TimeSeriesCollection dataset = new TimeSeriesCollection()
         Day d = new Day()
-        TimeSeries data = new TimeSeries("enrolments", d.getClass())
+        TimeSeries data = new TimeSeries("enrolments" as Comparable, d.getClass())
 
         for (int i = 0; i < 28; i++) {
             calendar.add(Calendar.DATE, -1)
@@ -52,17 +47,18 @@ class StatsServiceTest {
 
         try {
             OutputStream out = new FileOutputStream("sparklineTest.png")
-
             out.write(result)
             out.close()
-        } catch (IOException e) {
-            logger.catching(e)
+        } catch (IOException ignored) {
+            Assertions.fail("Could not write file.")
         }
 
         File f2 = new File("sparklineTest.png")
         Assertions.assertTrue(f2.exists())
         Assertions.assertTrue(f2.length() > 0)
 
+        //clean up
+        f2.delete()
     }
 
 }

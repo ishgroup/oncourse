@@ -4,7 +4,8 @@
 package ish.oncourse.server.imports.avetmiss
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.AvetmissStudentPriorEducation
 import ish.common.types.Gender
 import ish.common.types.UsiStatus
@@ -23,19 +24,13 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
-class AvetmissStudentImportTest extends CayenneIshTestCase {
-
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-        DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
-
-        dataPopulation.run()
-    }
+@DatabaseSetup
+class AvetmissStudentImportTest extends TestWithDatabase {
 
     @Test
     void testImport() throws Exception {
-ImportService importService = injector.getInstance(ImportService.class)
+        injector.getInstance(DataPopulation.class).run()
+        ImportService importService = injector.getInstance(ImportService.class)
 
         ImportParameter parameter = new ImportParameter()
         parameter.setKeyCode("ish.onCourse.import.avetmiss.student")

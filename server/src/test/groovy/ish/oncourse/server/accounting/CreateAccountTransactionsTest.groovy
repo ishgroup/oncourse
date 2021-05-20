@@ -1,7 +1,7 @@
 package ish.oncourse.server.accounting
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.AccountTransactionType
 import ish.common.types.AccountType
 import ish.math.Money
@@ -15,7 +15,7 @@ import java.time.LocalDate
 import java.time.Month
 
 @CompileStatic
-class CreateAccountTransactionsTest extends CayenneIshTestCase {
+class CreateAccountTransactionsTest extends TestWithDatabase {
 
     @Test
     void test() {

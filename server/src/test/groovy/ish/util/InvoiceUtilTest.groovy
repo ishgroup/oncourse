@@ -5,7 +5,7 @@
 package ish.util
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.payable.PayableLineInterface
 import ish.common.types.*
 import ish.math.Money
@@ -27,7 +27,7 @@ import java.time.LocalDate
 import static org.junit.jupiter.api.Assertions.assertEquals
 
 @CompileStatic
-class InvoiceUtilTest extends CayenneIshTestCase {
+class InvoiceUtilTest extends TestWithDatabase {
 
     private static final Logger logger = LogManager.getLogger()
     private static int codeSequence = 0

@@ -1,11 +1,10 @@
 package ish.oncourse.server.imports.avetmiss
 
-
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.imports.ImportService
@@ -15,27 +14,25 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
 @CompileStatic
-class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
+@DatabaseSetup
+class AvetmissStudentUpdateImportWithCasesTest extends TestWithDatabase {
     public static final String ANGIE_CONTACT_FIRST_NAME = "ANGIE"
     ImportService importService
-    ICayenneService cayenneService
-    ObjectContext context
     ImportParameter parameter
 
     @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
+    @Order(3)
+    void populateData() throws Exception {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation)
         dataPopulation.run()
 
         importService = injector.getInstance(ImportService)
-        cayenneService = importService.cayenneService
-        context = cayenneService.newContext
         parameter = new ImportParameter()
         parameter.setKeyCode("ish.onCourse.import.update.avetmiss.student")
     }
@@ -43,10 +40,10 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
 
     @Test
     void updateNotStudent() {
-        Contact notStudent = createAngieContact(context)
+        Contact notStudent = createAngieContact(cayenneContext)
         notStudent.isStudent = false
         notStudent.student = null
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         Assertions.assertFalse(notStudent.getIsStudent())
         Assertions.assertNull(notStudent.getStudent())
@@ -61,7 +58,7 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
 
     @Test
     void createStudentFromNat80Nat85ByImportUpdateScript() {
-        Assertions.assertTrue(ObjectSelect.query(Contact).select(context).isEmpty(), "There are no contacts in DB before Import")
+        Assertions.assertTrue(ObjectSelect.query(Contact).select(cayenneContext).isEmpty(), "There are no contacts in DB before Import")
 
         processImport("createStudentNAT00080.txt", "createStudentNAT00085.txt")
 
@@ -74,16 +71,16 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
 
     @Test
     void updateStudentWithoutBirthdate() {
-        Contact withoutBirthdate = createAngieContact(context)
+        Contact withoutBirthdate = createAngieContact(cayenneContext)
         withoutBirthdate.birthDate = null
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
-        Assertions.assertEquals(1, ObjectSelect.query(Contact).select(context).size(), "There are 1 contact in DB before Import")
+        Assertions.assertEquals(1, ObjectSelect.query(Contact).select(cayenneContext).size(), "There are 1 contact in DB before Import")
 
         processImport("studentNAT00080.txt", "studentNAT00085.txt")
 
         Assertions.assertEquals(2, ObjectSelect.query(Contact).select(cayenneService.newContext).size())
-        Assertions.assertEquals(2, ObjectSelect.query(Contact).where(Contact.FIRST_NAME.eq(ANGIE_CONTACT_FIRST_NAME)).select(context).size(), "NAT80 is self-contained and is searching for name, surname AND BIRTHDAY to define existing contact. If contact in DB have no BIRTHDAY, studentUpdateImport will create duplicate contact with BIRTHDAY")
+        Assertions.assertEquals(2, ObjectSelect.query(Contact).where(Contact.FIRST_NAME.eq(ANGIE_CONTACT_FIRST_NAME)).select(cayenneContext).size(), "NAT80 is self-contained and is searching for name, surname AND BIRTHDAY to define existing contact. If contact in DB have no BIRTHDAY, studentUpdateImport will create duplicate contact with BIRTHDAY")
     }
 
     /**
@@ -92,14 +89,14 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
 
     @Test
     void updateStudentWithoutEmail() {
-        Contact withoutEmail = createAngieContact(context)
+        Contact withoutEmail = createAngieContact(cayenneContext)
         withoutEmail.email = null
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         processImport("studentNAT00080.txt", "studentNAT00085.txt")
 
         Assertions.assertEquals(2, ObjectSelect.query(Contact).select(cayenneService.newContext).size())
-        Assertions.assertEquals(2, ObjectSelect.query(Contact).where(Contact.FIRST_NAME.eq(ANGIE_CONTACT_FIRST_NAME)).select(context).size(), "NAT85 is self-contained and is searching for name, surname AND EMAIL to define existing contact. If contact in DB have no EMAIL, studentUpdateImport will create duplicate contact with EMAIL")
+        Assertions.assertEquals(2, ObjectSelect.query(Contact).where(Contact.FIRST_NAME.eq(ANGIE_CONTACT_FIRST_NAME)).select(cayenneContext).size(), "NAT85 is self-contained and is searching for name, surname AND EMAIL to define existing contact. If contact in DB have no EMAIL, studentUpdateImport will create duplicate contact with EMAIL")
     }
 
     /**
@@ -109,10 +106,10 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
 
     @Test
     void changeNameViaImportForNewContact() {
-        Assertions.assertTrue(ObjectSelect.query(Contact).select(context).isEmpty())
+        Assertions.assertTrue(ObjectSelect.query(Contact).select(cayenneContext).isEmpty())
         processImport("changeNameNAT00080.txt", "changeNameNAT00085.txt")
 
-        List<Contact> contacts = ObjectSelect.query(Contact).select(context)
+        List<Contact> contacts = ObjectSelect.query(Contact).select(cayenneContext)
         Assertions.assertEquals(1, contacts.size())
         Assertions.assertNotEquals(ANGIE_CONTACT_FIRST_NAME, contacts.get(0).firstName)
         Assertions.assertEquals("Karol".toUpperCase(), contacts.get(0).firstName)
@@ -125,8 +122,8 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
 
     @Test
     void changeNameViaImportForExistingContact() {
-        createAngieContact(context)
-        context.commitChanges()
+        createAngieContact(cayenneContext)
+        cayenneContext.commitChanges()
 
         processImport("changeNameNAT00080.txt", "changeNameNAT00085.txt")
 
@@ -143,10 +140,10 @@ class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
 
     @Test
     void oneCustomFieldTypeCreated() {
-        createAngieContact(context)
-        context.commitChanges()
+        createAngieContact(cayenneContext)
+        cayenneContext.commitChanges()
 
-        Assertions.assertEquals(0, ObjectSelect.query(CustomFieldType).where(CustomFieldType.NAME.eq("clientId")).selectCount(context))
+        Assertions.assertEquals(0, ObjectSelect.query(CustomFieldType).where(CustomFieldType.NAME.eq("clientId")).selectCount(cayenneContext))
 
         processImport("twoNewContactsNAT00080.txt", "twoNewContactsNAT00085.txt")
 

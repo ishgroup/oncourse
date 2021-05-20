@@ -19,437 +19,464 @@ del, dfn, em, font, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-spacing: 0;
-  outline: 0;
-  font-weight: inherit;
-  font-style: inherit;
-  font-family: inherit;
-  font-size: inherit;
-  vertical-align: baseline;
-  border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-spacing: 0;
+    outline: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    vertical-align: baseline;
+    border-collapse: collapse;
 }
 
 *, *::after, *::before {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 label {
-  font-size: 0.8em;
-  color: grey;
+    font-size: 0.8em;
+    color: grey;
 }
 
 /* remember to define focus styles! */
 :focus {
-  outline: 0;
+    outline: 0;
 }
 
 body {
-  color: #555;
-  background-color: #fff;
-  font-size: 16px;
-  font-family: 'Merriweather', serif;
-  line-height: 1.9em;
-  font-weight: 300;
-  padding: 0 20px;
-  border-top: 13px solid #75a994;
+    color: #555;
+    background-color: #fff;
+    font-size: 16px;
+    font-family: 'Merriweather', serif;
+    line-height: 1.9em;
+    font-weight: 300;
+    padding: 0 20px;
+    border-top: 13px solid #75a994;
 }
 
 h1, h2, h3, h4, h5 {
-  font-family: 'Port Lligat Slab', serif;
+    font-family: 'Port Lligat Slab', serif;
 }
 
 h1 {
-  font-size: 3em;
-  padding: 0.8em 0 0.4em;
-  color: #DB7430;
+    font-size: 3em;
+    padding: 0.8em 0 0.4em;
+    color: #DB7430;
 }
+
 h2 {
-  font-size: 28px;
-  color: #8A1C16;
-  margin-top: 40px;
+    font-size: 28px;
+    color: #8A1C16;
+    margin-top: 40px;
 }
+
 h3 {
-  font-size: 20px;
-  margin-top: 25px;
-  line-height: 1.9em;
+    font-size: 20px;
+    margin-top: 25px;
+    line-height: 1.9em;
 }
+
 hr {
-  height: 1px;
-  border: 0;
-  color: #ddd;
-  background-color: #ddd;
-  margin-bottom: 15px;
+    height: 1px;
+    border: 0;
+    color: #ddd;
+    background-color: #ddd;
+    margin-bottom: 15px;
 }
 
 a {
-  color: #F69455;
+    color: #F69455;
 }
 
 a:hover {
-  color: #CC716C;
+    color: #CC716C;
 }
 
 caption, th {
-  font-weight: 400;
+    font-weight: 400;
 }
 
 blockquote:before, blockquote:after, q:before, q:after {
-  content: "";
+    content: "";
 }
+
 blockquote, q {
-  quotes: "" "";
+    quotes: "" "";
 }
 
 a {
-  text-decoration: none !important;
-  color: #8A1C16;
-  cursor: pointer;
+    text-decoration: none !important;
+    color: #8A1C16;
+    cursor: pointer;
 }
+
 a:hover {
-  color: #FF8A00;
+    color: #FF8A00;
 }
 
 .param-name {
-  width: 100%;
-  color: blue;
+    width: 100%;
+    color: blue;
 }
+
 .param-desc {
-  font-size: 0.9em;
+    font-size: 0.9em;
 }
 
 .license-info {
-  margin-left: 20px;
+    margin-left: 20px;
 }
 
 .license-url {
-  margin-left: 20px;
+    margin-left: 20px;
 }
 
-.method-notes  {
-  margin: 10px 0 20px 0;
-  font-size: 90%;
-  color: #555;
+.method-notes {
+    margin: 10px 0 20px 0;
+    font-size: 90%;
+    color: #555;
 }
 
 .modal-open {
-  overflow: hidden;
-  padding-right: 17px;
+    overflow: hidden;
+    padding-right: 17px;
 }
+
 .modal-open .modal {
-  overflow-x: hidden;
-  overflow-y: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
+
 .modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1050;
-  display: none;
-  overflow: hidden;
-  outline: 0;
-  margin-left: 0;
-  width: 100%;
-  background: #00000057;
-  box-shadow: none;
-  border: 0 none;
-  border-radius: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    display: none;
+    overflow: hidden;
+    outline: 0;
+    margin-left: 0;
+    width: 100%;
+    background: #00000057;
+    box-shadow: none;
+    border: 0 none;
+    border-radius: 0;
 }
+
 .modal.fade {
-  top: 0;
-  opacity: 0;
-  transition: opacity .15s linear;
+    top: 0;
+    opacity: 0;
+    transition: opacity .15s linear;
 }
+
 .fade.show {
-  opacity: 1;
+    opacity: 1;
 }
+
 .modal-dialog {
-  position: relative;
-  width: auto;
-  margin: .5rem;
-  pointer-events: none;
+    position: relative;
+    width: auto;
+    margin: .5rem;
+    pointer-events: none;
 }
+
 @media (min-width: 576px) {
-  .modal-dialog {
-    max-width: 500px;
-    margin: 1.75rem auto;
-  }
+    .modal-dialog {
+        max-width: 500px;
+        margin: 1.75rem auto;
+    }
 }
+
 .modal-content {
-  position: relative;
-  width: 100%;
-  pointer-events: auto;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0,0,0,.2);
-  border-radius: .3rem;
-  outline: 0;
+    position: relative;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: .3rem;
+    outline: 0;
 }
+
 .modal-body {
-  position: relative;
-  max-height: none;
-  padding: 15px;
-  overflow-y: visible;
+    position: relative;
+    max-height: none;
+    padding: 15px;
+    overflow-y: visible;
 }
 
 .model-detail-popup .code {
-  background-color: #E4F5FF;
-  white-space: pre;
-  margin: 10px;
-  overflow: auto;
+    background-color: #E4F5FF;
+    white-space: pre;
+    margin: 10px;
+    overflow: auto;
 }
 
 .model-detail-popup h2 {
-  margin-top: 0;
-  padding-top: 0;
+    margin-top: 0;
+    padding-top: 0;
 }
 
 .model-detail-popup li {
-  padding-bottom: 20px;
+    padding-bottom: 20px;
 }
 
 .model-detail-popup ul {
-  margin-left: 0;
+    margin-left: 0;
 }
 
 .model-detail-popup .param-type {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .model-detail-popup .param-required-true {
-  font-weight: bold;
-  clear: left;
-  display: block;
-  float: left;
-  width: 100%;
+    font-weight: bold;
+    clear: left;
+    display: block;
+    float: left;
+    width: 100%;
 }
 
 .model-detail-popup .param-required-false {
-  clear: left;
-  display: block;
-  float: left;
-  width: 100%;
+    clear: left;
+    display: block;
+    float: left;
+    width: 100%;
 }
 
 .model-container .model-detail-popup ul.parameter {
-  list-style: none;
-  margin-left: 15px;
+    list-style: none;
+    margin-left: 15px;
 }
 
 pre {
-  white-space: pre-wrap;        /* css-3 */
-  white-space: -moz-pre-wrap !important;   /* Mozilla, since 1999 */
-  white-space: -pre-wrap;     /* Opera 4-6 */
-  white-space: -o-pre-wrap;   /* Opera 7 */
-  word-wrap: break-word;        /* Internet Explorer 5.5+ */
-  margin-bottom: 0.6em;
-  padding: 10px;
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    margin-bottom: 0.6em;
+    padding: 10px;
 
-  font-family: monospace;
-  font-weight: 300;
-  font-size: 0.9em;
+    font-family: monospace;
+    font-weight: 300;
+    font-size: 0.9em;
 }
 
 .http-method {
-  text-transform: uppercase;
+    text-transform: uppercase;
 }
 
 .btn {
-  background-image: none;
-  color: white;
-  margin-right: 20px;
+    background-image: none;
+    color: white;
+    margin-right: 20px;
 }
 
 .btn:hover, .btn.active, .btn:active {
-  color: #ccc;
+    color: #ccc;
 }
 
 .btn.method-GET {
-  background-color: #0f6ab4 !important;
+    background-color: #0f6ab4 !important;
 }
 
 .btn.method-POST {
-  background-color: #10a54a !important;
+    background-color: #10a54a !important;
 }
 
 .btn.method-PUT {
-  background-color: #c5862b !important;
+    background-color: #c5862b !important;
 }
 
 .btn.method-PATCH {
-  background-color: #c5862b !important;
+    background-color: #c5862b !important;
 }
 
 .btn.method-DELETE {
-  background-color: #a41e22 !important;
+    background-color: #a41e22 !important;
 }
 
 pre.example {
-  background-color: #f3f3f3;
-  border: 1px solid #ddd;
+    background-color: #f3f3f3;
+    border: 1px solid #ddd;
 }
 
 code {
-  font-family: monospace;
-  font-weight: 400;
-  white-space: pre;
-  display: block;
-  width: 100%;
-  overflow-x: scroll;
-  padding: 5px 10px;
+    font-family: monospace;
+    font-weight: 400;
+    white-space: pre;
+    display: block;
+    width: 100%;
+    overflow-x: scroll;
+    padding: 5px 10px;
 }
 
 .nickname {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .responses .code {
-  font-weight: bold;
+    font-weight: bold;
 }
+
 .responses .message {
-  margin-left: 30px;
+    margin-left: 30px;
 }
+
 .responses .dataType {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .method-path {
-  font-size: 1.5em;
-  background-color: #0f6ab4;
+    font-size: 1.5em;
+    background-color: #0f6ab4;
 }
 
 .method-path .up {
-  margin: 10px;
-  font-size: 17px;
+    margin: 10px;
+    font-size: 17px;
 }
+
 .up {
-  float:right;
+    float: right;
 }
 
 .parameter {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .param {
-  max-width: 500px;
-  padding: 10px 0 0 20px;
-  font-weight: bold;
+    max-width: 500px;
+    padding: 10px 0 0 20px;
+    font-weight: bold;
 }
+
 .param + ul {
-  list-style: none;
-  margin-left: 35px;
+    list-style: none;
+    margin-left: 35px;
 }
+
 .param-desc {
-  max-width: 700px;
-  padding: 0 0 0 20px;
-  color: #777;
+    max-width: 700px;
+    padding: 0 0 0 20px;
+    color: #777;
 }
+
 .param-type {
-  font-style: italic;
-  color: green;
+    font-style: italic;
+    color: green;
 }
+
 .param-enum-header {
-  max-width: 700px;
-  padding: 0 0 0 60px;
-  color: #777;
-  font-weight: bold;
+    max-width: 700px;
+    padding: 0 0 0 60px;
+    color: #777;
+    font-weight: bold;
 }
+
 .param-enum {
-  max-width: 700px;
-  padding: 0 0 0 80px;
-  color: #777;
-  font-style: italic;
+    max-width: 700px;
+    padding: 0 0 0 80px;
+    color: #777;
+    font-style: italic;
 }
 
 .field-label {
-  padding: 0;
-  margin: 0;
-  clear: both;
+    padding: 0;
+    margin: 0;
+    clear: both;
 }
 
-.field-items   {
-  padding: 0 0 15px 0;
-  margin-bottom: 15px;
+.field-items {
+    padding: 0 0 15px 0;
+    margin-bottom: 15px;
 }
 
 .return-type {
-  clear: both;
-  padding-bottom: 10px;
+    clear: both;
+    padding-bottom: 10px;
 }
 
 .method {
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 .method-tags {
-  text-align: right;
+    text-align: right;
 }
 
 .method-tag {
-  background: none repeat scroll 0% 0% #24A600;
-  border-radius: 3px;
-  padding: 2px 10px;
-  margin: 2px;
-  color: #FFF;
-  display: inline-block;
-  text-decoration: none;
+    background: none repeat scroll 0% 0% #24A600;
+    border-radius: 3px;
+    padding: 2px 10px;
+    margin: 2px;
+    color: #FFF;
+    display: inline-block;
+    text-decoration: none;
 }
 
 button.btn {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .content, .header {
-  width: 100%;
-  max-width: 1460px;
-  margin: 0 auto;
-  position: relative;
+    width: 100%;
+    max-width: 1460px;
+    margin: 0 auto;
+    position: relative;
 }
 
 .content .sidebar {
-  float: left;
-  width: 19%;
-  padding: 0 15px;
-  height: auto !important;
-  font-size: 0.9em;
+    float: left;
+    width: 19%;
+    padding: 0 15px;
+    height: auto !important;
+    font-size: 0.9em;
 }
+
 .content .sidebar .section-box .section-header {
-  line-height: 1.7;
-  font-weight: normal;
+    line-height: 1.7;
+    font-weight: normal;
 }
+
 .content .sidebar .section-box > ul {
-  list-style: none;
-  margin-left: 12px;
-  font-weight: lighter;
+    list-style: none;
+    margin-left: 12px;
+    font-weight: lighter;
 }
+
 .content .sidebar .section-box > ul li {
-  margin-bottom: 6px;
+    margin-bottom: 6px;
 }
+
 .content .sidebar .section-box .section-header,
 .content .sidebar .section-box > ul li {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  width: 100%;
-  display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    display: block;
 }
 
 .content .non-sidebar {
-  float: left;
-  width: 81%;
-  padding: 0 15px;
+    float: left;
+    width: 81%;
+    padding: 0 15px;
 }
+
 .content .non-sidebar::before {
-  content: "";
-  border-left: 1px solid #DB7430;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  height: 100%;
-  left: 19%;
+    content: "";
+    border-left: 1px solid #DB7430;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    left: 19%;
 }
 

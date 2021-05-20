@@ -5,7 +5,7 @@ package ish.oncourse.server.scripting.api
 
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.EmailTemplate
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class TemplateServiceTest extends CayenneIshTestCase {
+class TemplateServiceTest extends TestWithDatabase {
 
     
     @Test

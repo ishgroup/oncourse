@@ -13,7 +13,7 @@ package ish.oncourse.server.services
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
@@ -35,7 +35,7 @@ import static ish.oncourse.server.api.v1.function.IntegrationFunctions.hasIntegr
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/services/pluginServiceTestDataSet.xml")
-class PluginServiceTest extends CayenneIshTestCase {
+class PluginServiceTest extends TestWithDatabase {
 
     private final static int TEST_TYPE_VALUE = 1000
     private final static String TEST_NAME_VALUE = "PluginServiceTest"

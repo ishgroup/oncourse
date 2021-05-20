@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { AssessmentClass, GradingType } from "@api/model";
 import { connect } from "react-redux";
 import MinifiedEntitiesList from "../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import CourseClassAssessmentItems from "./CourseClassAssessmentItem";
+import CourseClassAssessmentItems from "./CourseClassAssessmentItems";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { AssessmentClassExtended, CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";

@@ -5,7 +5,7 @@
 package ish.oncourse.server.services
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.AccountTransactionType
 import ish.common.types.PaymentSource
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.fail
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/services/delayedEnrolmentIncomePostingJobTestDataSet.xml")
-class DelayedEnrolmentIncomePostingJobTest extends CayenneIshTestCase {
+class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
     // creating date, the object cannot be exactly the same as system time to allow safe comparison of time by delayed Income posting job
     Date date = DateUtils.addHours(DateUtils.truncate(new Date(), Calendar.DATE), 12)
     Date start1 = DateUtils.addDays(date, -4)

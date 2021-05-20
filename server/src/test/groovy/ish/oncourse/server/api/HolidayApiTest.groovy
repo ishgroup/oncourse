@@ -1,7 +1,7 @@
 package ish.oncourse.server.api
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.api.dao.UnavailableRuleDao
 import ish.oncourse.server.api.v1.model.HolidayDTO
@@ -18,7 +18,7 @@ import static ish.util.LocalDateUtils.stringToValue
 
 @CompileStatic
 @DatabaseSetup
-class HolidayApiTest extends CayenneIshTestCase {
+class HolidayApiTest extends TestWithDatabase {
 
     @Test
     void testHoliday() {

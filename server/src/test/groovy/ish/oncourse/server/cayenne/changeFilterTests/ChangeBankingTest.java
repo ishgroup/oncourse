@@ -1,6 +1,6 @@
 package ish.oncourse.server.cayenne.changeFilterTests;
 
-import ish.CayenneIshTestCase;
+import ish.TestWithDatabase;
 import ish.DatabaseSetup;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 @DatabaseSetup(value = "ish/oncourse/server/cayenne/ChangeFilterTestDataSet.xml")
-public class ChangeBankingTest extends CayenneIshTestCase {
+public class ChangeBankingTest extends TestWithDatabase {
     @Test
     public void testChangeBanking() {
         cayenneService.addListener(new Object() {

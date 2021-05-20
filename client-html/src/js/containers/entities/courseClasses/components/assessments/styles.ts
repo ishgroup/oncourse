@@ -29,6 +29,7 @@ export default (theme: AppTheme) =>
       marginRight: -8,
     },
     center: {
+      textAlign: "center",
       display: "flex",
       justifyContent: "center",
       "&:hover $hiddenIcon, &:hover $hiddenTitleIcon": {

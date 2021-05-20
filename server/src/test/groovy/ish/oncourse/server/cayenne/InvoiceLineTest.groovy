@@ -5,7 +5,7 @@
 package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
@@ -32,7 +32,7 @@ import java.text.SimpleDateFormat
 
 @CompileStatic
 @DatabaseSetup(value ="ish/oncourse/server/cayenne/invoiceLineTest.xml")
-class InvoiceLineTest extends CayenneIshTestCase {
+class InvoiceLineTest extends TestWithDatabase {
 
     @Override
     void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
@@ -57,19 +57,7 @@ class InvoiceLineTest extends CayenneIshTestCase {
         DataContext newContext = cayenneService.getNewNonReplicatingContext()
 
         InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
-        try {
-            invoiceLine.setPriceEachExTax(new Money("100"))
-        } catch (IllegalStateException e) {
-            Assertions.assertEquals("You must set the tax rate before setting the price.", e.getMessage(), "Checking if the invoice price can be set before tax")
-            return
-        }
-        if (PreferenceController.getController().getTaxPK() != null) {
-            // in this case the default tax will be applied and exception wont be thrown
-            return
-        }
-        Assertions.fail("No exception thrown")
-        // this actually might not be an issue, just added a test because there are parts of code which rely on the order of setting those fields.
-
+        Assertions.assertNotNull(invoiceLine.getTax(), "tax installed on entity createion, see InvoiceLineLifecycleListener.postAdd()")
     }
 
     

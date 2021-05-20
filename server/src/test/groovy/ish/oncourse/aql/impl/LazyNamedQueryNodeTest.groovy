@@ -1,8 +1,8 @@
 package ish.oncourse.aql.impl
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.server.cayenne.*
@@ -14,7 +14,6 @@ import org.dbunit.database.QueryDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.ext.mysql.MySqlConnection
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.sql.Connection
@@ -22,14 +21,9 @@ import java.sql.SQLException
 
 @CompileStatic
 @DatabaseSetup(readOnly = true, value = "ish/oncourse/aql/NamedQueryTestDataSet.xml")
-class LazyNamedQueryNodeTest extends CayenneIshTestCase {
+class LazyNamedQueryNodeTest extends TestWithDatabase {
 
-    private AqlService aqlService
-
-    @BeforeEach
-    void setup() throws Exception {
-        aqlService = new AntlrAqlService()
-    }
+    private AqlService aqlService = new AntlrAqlService()
 
     private static Expression exp(CompilationResult res) {
         return res.getCayenneExpression().orElseThrow { new RuntimeException(res.getErrors().toString()) }

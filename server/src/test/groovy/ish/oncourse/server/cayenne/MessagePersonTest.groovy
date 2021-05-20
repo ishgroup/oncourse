@@ -4,28 +4,16 @@
  */
 package ish.oncourse.server.cayenne
 
-
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.common.types.MessageStatus
-import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.ObjectContext
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class MessagePersonTest extends CayenneIshTestCase {
+class MessagePersonTest extends TestWithDatabase {
 
-    private ICayenneService cayenneService
-
-    
-    @BeforeEach
-    void setup() {
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-    }
-
-    
     @Test
     void testStatusConstraints() {
 

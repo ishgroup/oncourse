@@ -89,6 +89,11 @@ const styles = theme => createStyles({
   input: {
     width: "100%"
   },
+  inlinePickerButton: {
+    padding: "0.2em",
+    marginBottom: "0.2em",
+    fontSize: "1.3em"
+  },
   pickerButton: {
     width: theme.spacing(4),
     height: theme.spacing(4),
@@ -109,16 +114,19 @@ const styles = theme => createStyles({
       maxWidth: "calc(100% * 1.4)"
     }
   },
+  inlineMargin: {
+    marginLeft: "0.3em"
+  },
   inlineContainer: {
     display: "inline-flex",
-    verticalAlign: "top",
     "&$hiddenContainer": {
       display: "none"
     }
   },
-  inlineIcon: {
-    position: "absolute",
-    right: theme.spacing(-3)
+  inlineInput: {
+    padding: "0 0 1px 0",
+    minWidth: "2.2em",
+    fontSize: "inherit"
   },
   inline: {},
   labelShrink: {},
@@ -137,7 +145,8 @@ Date.prototype.dstOffset = function () {
   return this.getTimezoneOffset() - this.stdTimezoneOffset();
 };
 
-const EditInPlaceDateTimeField: React.FC<any> = ({
+const EditInPlaceDateTimeField: React.FC<any> = (
+  {
    type,
    formatDate,
    formatTime,
@@ -161,8 +170,10 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
    className,
    onKeyPress,
    placeholder,
+   inlineMargin,
    ...custom
-  }) => {
+  }
+) => {
   const [isEditing, setIsEditing] = useState(false);
   const [textValue, setTextValue] = useState("");
   const [pickerOpened, setPickerOpened] = useState(false);
@@ -170,6 +181,8 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
   const isAdornmentHovered = useRef<any>(false);
   const isIconOvered = useRef<any>(false);
   const inputNode = useRef<any>(null);
+
+  const isInline = formatting === "inline";
 
   const dateValue = useMemo(() => {
     let dateObj = input.value ? new Date(input.value) : null;
@@ -329,7 +342,7 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
   );
 
   const editIcon = !disabled && (
-    <IconButton className={clsx(classes.editButton, formatting === "inline" && classes.inlineIcon)}>
+    <IconButton className={classes.editButton}>
       {type === "time"
         ? <QueryBuilder className={clsx("hoverIcon", classes.editIcon, fieldClasses.placeholder)} />
         : <DateRange className={clsx("hoverIcon", classes.editIcon, fieldClasses.placeholder)} />}
@@ -340,7 +353,8 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
     <div
       id={input.name}
       className={clsx(className, "outline-none", {
-        [classes.inlineContainer]: formatting === "inline"
+        [classes.inlineContainer]: isInline,
+        [classes.inlineMargin]: inlineMargin
       })}
     >
       <div className={classes.hiddenContainer}>
@@ -370,7 +384,7 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
           className={clsx("pr-2", {
             [classes.topMargin]: !listSpacing,
             [classes.bottomMargin]: listSpacing && formatting !== "inline",
-            [classes.inlineTextField]: formatting === "inline"
+            [classes.inlineTextField]: isInline
           })}
         >
           {Boolean(label) && (
@@ -392,16 +406,16 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
             onKeyDown={onEnterPress}
             inputRef={inputNode}
             inputProps={{
-              size: formatting === "inline" && input.value ? String(input.value.length + 1) : undefined,
+              size: isInline && input.value ? String(input.value.length + 1) : undefined,
               className: clsx({
-                [classes.inlineInput]: formatting === "inline",
+                [classes.inlineInput]: isInline,
                 [classes.readonly]: disabled
               }),
               placeholder
             }}
             value={!isEditing && invalid ? formatDateInner(dateValue) : textValue}
             classes={{
-              root: clsx(classes.input, fieldClasses.text),
+              root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput),
               underline: fieldClasses.underline,
               input: clsx(classes.input, fieldClasses.text)
             }}
@@ -413,10 +427,10 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
                   onMouseOver={onButtonOver}
                   onMouseLeave={onButtonLeave}
                   classes={{
-                    root: clsx(classes.pickerButton, fieldClasses.text)
+                    root: clsx(fieldClasses.text, isInline ? classes.inlinePickerButton : classes.pickerButton)
                   }}
                 >
-                  {type === "time" ? <QueryBuilder color="inherit" /> : <DateRange color="inherit" />}
+                  {type === "time" ? <QueryBuilder fontSize="inherit" color="inherit" /> : <DateRange color="inherit" fontSize="inherit" />}
                 </IconButton>
               </InputAdornment>
             )}
@@ -433,8 +447,7 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
       <div
         className={clsx({
           [classes.hiddenContainer]: isEditing || invalid,
-          [classes.textField]: listSpacing && formatting !== "inline",
-          [classes.inlineContainer]: !isEditing && formatting === "inline"
+          [classes.textField]: listSpacing && formatting !== "inline"
         })}
       >
         {!hideLabel && label && (
@@ -505,7 +518,7 @@ const EditInPlaceDateTimeField: React.FC<any> = ({
           </ButtonBase>
         )}
 
-        {formatting === "inline" && (
+        {isInline && (
           <ButtonBase
             disabled={disabled}
             classes={{

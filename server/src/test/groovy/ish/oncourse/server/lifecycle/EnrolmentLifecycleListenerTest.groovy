@@ -5,7 +5,7 @@
 package ish.oncourse.server.lifecycle
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.*
 import ish.oncourse.server.cayenne.*
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/lifecycle/enrolmentLifecycleTest.xml")
-class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
+class EnrolmentLifecycleListenerTest extends TestWithDatabase {
 
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {

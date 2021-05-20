@@ -1,7 +1,8 @@
 package ish.oncourse.server.accounting
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.AccountTransactionType
 import ish.math.Money
 import ish.oncourse.server.accounting.builder.TransactionsBuilder
@@ -16,18 +17,16 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
-class AccountTransactionServiceTest extends CayenneIshTestCase {
-
+@DatabaseSetup
+class AccountTransactionServiceTest extends TestWithDatabase {
+    
     private AccountTransactionService accountTransactionService
 
-    @BeforeEach
-    void setup() {
-        accountTransactionService = injector.getInstance(AccountTransactionService)
-        super.setup()
-    }
-    
+
     @Test
     void test() {
+        accountTransactionService = injector.getInstance(AccountTransactionService.class)
+
         List<AccountTransaction> before = ObjectSelect.query(AccountTransaction)
                 .select(cayenneContext)
         Assertions.assertTrue(before.empty)

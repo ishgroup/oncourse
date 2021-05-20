@@ -4,8 +4,11 @@
 package ish.oncourse.entity.services
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
+import ish.oncourse.aql.AqlService
+import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.api.v1.service.impl.TimetableApiImpl
 import ish.oncourse.server.cayenne.Certificate
 import org.apache.cayenne.query.SelectById
 import org.junit.jupiter.api.Assertions
@@ -17,15 +20,15 @@ import java.time.Month
 
 @CompileStatic
 @DatabaseSetup(readOnly = true, value = "ish/oncourse/entity/services/certificateServiceTestDataSet.xml")
-class CertificateServiceTest extends CayenneIshTestCase {
+class CertificateServiceTest extends TestWithDatabase {
 
     private CertificateService certificateService
 
     @BeforeEach
-    void setup() throws Exception {
-        this.certificateService = injector.getInstance(CertificateService.class)
-    }
-
+    void before() {
+        certificateService = injector.getInstance(CertificateService.class)
+    }    
+    
     @Test
     void testGetCommencedOn() throws Exception {
         Certificate certificate1 = SelectById.query(Certificate.class, 1).selectOne(cayenneContext)

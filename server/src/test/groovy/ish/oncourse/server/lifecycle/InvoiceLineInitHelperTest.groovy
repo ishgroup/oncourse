@@ -4,7 +4,7 @@
 package ish.oncourse.server.lifecycle
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.*
 import ish.math.Money
@@ -23,7 +23,7 @@ import java.time.LocalDate
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/lifecycle/invoiceLineInitHelperTest.xml")
-class InvoiceLineInitHelperTest extends CayenneIshTestCase {
+class InvoiceLineInitHelperTest extends TestWithDatabase {
     
     @Test
     void testInitByReversePayment() {

@@ -1,7 +1,7 @@
 package ish.oncourse.server.deduplication
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.Gender
 import ish.oncourse.server.api.v1.model.MergeLineDTO
@@ -12,15 +12,13 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/deduplication/dedupeContactDataSet.xml")
-class ContactMergeServiceTest extends CayenneIshTestCase {
-
-    private ContactMergeService contactMergeService = injector.getInstance(ContactMergeService)
-
+class ContactMergeServiceTest extends TestWithDatabase {
+    
     @Test
     void testGetDiffData() {
         Contact contactA = ObjectSelect.query(Contact).where(Contact.ID.eq(1L)).selectFirst(cayenneContext)
         Contact contactB = ObjectSelect.query(Contact).where(Contact.ID.eq(2L)).selectFirst(cayenneContext)
-        List<MergeLineDTO> mergeLines = contactMergeService.getDifferenceAttributes(contactA, contactB)
+        List<MergeLineDTO> mergeLines = injector.getInstance(ContactMergeService).getDifferenceAttributes(contactA, contactB)
         Assertions.assertEquals("[class MergeLineDTO {\n" +
                 "    key: Contact.birthDate\n" +
                 "    label: Birth date\n" +
@@ -154,13 +152,13 @@ class ContactMergeServiceTest extends CayenneIshTestCase {
                 "}, class MergeLineDTO {\n" +
                 "    key: Tutor.dateFinished\n" +
                 "    label: Date finished\n" +
-                "    a: Tue 1 Jan 2013\n" +
-                "    b: Wed 1 Jan 2014\n" +
+                "    a: Tue. 1 Jan. 2013\n" +
+                "    b: Wed. 1 Jan. 2014\n" +
                 "}, class MergeLineDTO {\n" +
                 "    key: Tutor.dateStarted\n" +
                 "    label: Date started\n" +
-                "    a: Sun 1 Jan 2012\n" +
-                "    b: Tue 1 Jan 2013\n" +
+                "    a: Sun. 1 Jan. 2012\n" +
+                "    b: Tue. 1 Jan. 2013\n" +
                 "}, class MergeLineDTO {\n" +
                 "    key: Tutor.payrollRef\n" +
                 "    label: Payroll ref\n" +
@@ -221,7 +219,7 @@ class ContactMergeServiceTest extends CayenneIshTestCase {
                                        'tags'                      : 'A'
         ]
 
-        contactMergeService.merge(a, b, diffMap)
+        injector.getInstance(ContactMergeService).merge(a, b, diffMap)
 
         Assertions.assertEquals(3, ObjectSelect.query(Contact).selectCount(cayenneContext))
         Assertions.assertEquals(1, ObjectSelect.query(Student).selectCount(cayenneContext))

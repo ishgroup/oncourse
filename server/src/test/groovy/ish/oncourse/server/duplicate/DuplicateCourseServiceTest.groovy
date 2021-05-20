@@ -1,7 +1,8 @@
 package ish.oncourse.server.duplicate
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.*
 import ish.duplicate.CourseDuplicationRequest
 import ish.math.Money
@@ -14,7 +15,8 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class DuplicateCourseServiceTest extends CayenneIshTestCase {
+@DatabaseSetup
+class DuplicateCourseServiceTest extends TestWithDatabase {
 
     @Test
     void testDuplicateCourseCode() throws Exception {

@@ -1,7 +1,7 @@
 package ish.oncourse.server.querying
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.Student
@@ -26,7 +26,7 @@ import static java.time.LocalTime.MIN
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/querying/QuerySpecWithRelativeDatesTestDataSet.xml")
-class QuerySpecWithRelativeDatesTest extends CayenneIshTestCase {
+class QuerySpecWithRelativeDatesTest extends TestWithDatabase {
     private List<Student> students
 
     @BeforeEach
