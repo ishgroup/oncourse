@@ -614,7 +614,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
     }
 
     setChangedFields([]);
-    onUpdate(values.id, preformatBeforeSubmit(values));
+    if (values) onUpdate(values.id, preformatBeforeSubmit(values));
   };
 
   return (

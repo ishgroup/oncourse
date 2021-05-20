@@ -97,7 +97,7 @@ class PluginService {
     /**
      * Looking for 'onStart' plugin handler and invoke them
      */
-    def onStart() {
+    List<Method> onStart() {
         getMethods(OnStart)?.each { it.invoke(it.declaringClass.newInstance(injector: injector))}
     }
     

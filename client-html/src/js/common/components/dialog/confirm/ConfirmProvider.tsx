@@ -64,7 +64,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    closeConfirm: () => dispatch(closeConfirm())
-  });
+  closeConfirm: () => dispatch(closeConfirm())
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ConfirmProvider);

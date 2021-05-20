@@ -1,77 +1,217 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-<!--	<Account id="7" accountCode="ASSET1" description="Test asset account1" isEnabled="1" type="1"/>-->
-	<Account id="8" accountCode="ASSET1" description="Test asset account1" isEnabled="1" type="1"/>
-	<Account id="9" accountCode="ASSET1" description="Test asset account1" isEnabled="1" type="1"/>
-	<FieldConfigurationScheme id="102" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<Tax id="1" isGSTTaxType="1" payableToSupplierAccountid="7" receivableFromStudentAccountid="8" taxCode="GST" taxrate="0.1"/>
-	<Course code="C1" createdOn="2019-03-01 18:26:44.0" id="1" isShownOnWeb="1" isVET="0" modifiedOn="2019-03-02 00:07:51.0" allowWaitingLists="1" isSufficientForQualification="0" currentlyOffered="1" isTraineeship="0" name="Course1" enrolmentType="1" fieldConfigurationSchemaId="102" feeHelpClass="0"/>
+  <!--	<Account id="7" accountCode="ASSET1" description="Test asset account1" isEnabled="1" type="1"/>-->
+  <Account id="8" accountCode="ASSET1" description="Test asset account1" isEnabled="1" type="1"/>
+  <Account id="9" accountCode="ASSET1" description="Test asset account1" isEnabled="1" type="1"/>
+  <FieldConfigurationScheme id="102" name="fkname" createdOn="2017-06-20 12:00:00.0"
+                            modifiedOn="2017-06-20 12:00:00.0"/>
+  <Tax id="1" isGSTTaxType="1" payableToSupplierAccountid="7" receivableFromStudentAccountid="8" taxCode="GST"
+       taxrate="0.1"/>
+  <Course code="C1" createdOn="2019-03-01 18:26:44.0" id="1" isShownOnWeb="1" isVET="0"
+          modifiedOn="2019-03-02 00:07:51.0" allowWaitingLists="1" isSufficientForQualification="0" currentlyOffered="1"
+          isTraineeship="0" name="Course1" enrolmentType="1" fieldConfigurationSchemaId="102" feeHelpClass="0"/>
 
-	<CourseClass code="1" courseId="1" createdOn="2019-03-01 18:44:31.0" feeExGst="1.82" id="1" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="1" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-01 19:08:53.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" sessionrepeatInterval="1" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="2" courseId="1" createdOn="2019-03-01 20:59:19.0" feeExGst="1.82" id="2" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-01 20:59:19.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="3" courseId="1" createdOn="2019-03-01 21:33:53.0" feeExGst="1.82" id="3" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-01 21:33:53.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="4" courseId="1" createdOn="2019-03-01 21:40:42.0" feeExGst="1.82" id="4" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-01 21:40:42.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="5" courseId="1" createdOn="2019-03-01 21:59:52.0" feeExGst="1.82" id="5" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-01 21:59:52.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="6" courseId="1" createdOn="2019-03-01 23:03:23.0" feeExGst="1.82" id="6" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-01 23:03:23.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="7" courseId="1" createdOn="2019-03-01 23:04:50.0" feeExGst="1.82" id="7" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-01 23:04:50.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="8" courseId="1" createdOn="2019-03-01 23:06:53.0" feeExGst="1.82" id="8" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-01 23:06:53.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="9" courseId="1" createdOn="2019-03-01 23:08:01.0" feeExGst="1.82" id="9" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-01 23:08:01.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="10" courseId="1" createdOn="2019-03-01 23:08:15.0" feeExGst="1.82" id="10" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-01 23:08:15.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="11" courseId="1" createdOn="2019-03-01 23:43:33.0" feeExGst="1.82" id="11" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-01 23:43:33.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="12" courseId="1" createdOn="2019-03-02 00:07:04.0" feeExGst="1.82" id="12" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-02 00:07:04.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
-	<CourseClass code="13" courseId="1" createdOn="2019-03-02 00:07:51.0" feeExGst="1.82" id="13" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1" modifiedOn="2019-03-02 00:07:51.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3" budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="1" courseId="1" createdOn="2019-03-01 18:44:31.0" feeExGst="1.82" id="1" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="1" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-01 19:08:53.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" sessionrepeatInterval="1" isClassFeeApplicationOnly="0" taxAdjustment="0.00"
+               deposit="1.82" isActive="1" suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="2" courseId="1" createdOn="2019-03-01 20:59:19.0" feeExGst="1.82" id="2" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-01 20:59:19.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="3" courseId="1" createdOn="2019-03-01 21:33:53.0" feeExGst="1.82" id="3" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-01 21:33:53.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="4" courseId="1" createdOn="2019-03-01 21:40:42.0" feeExGst="1.82" id="4" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-01 21:40:42.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="5" courseId="1" createdOn="2019-03-01 21:59:52.0" feeExGst="1.82" id="5" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-01 21:59:52.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="6" courseId="1" createdOn="2019-03-01 23:03:23.0" feeExGst="1.82" id="6" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-01 23:03:23.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="7" courseId="1" createdOn="2019-03-01 23:04:50.0" feeExGst="1.82" id="7" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-01 23:04:50.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="8" courseId="1" createdOn="2019-03-01 23:06:53.0" feeExGst="1.82" id="8" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-01 23:06:53.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="9" courseId="1" createdOn="2019-03-01 23:08:01.0" feeExGst="1.82" id="9" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-01 23:08:01.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="10" courseId="1" createdOn="2019-03-01 23:08:15.0" feeExGst="1.82" id="10" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-01 23:08:15.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="11" courseId="1" createdOn="2019-03-01 23:43:33.0" feeExGst="1.82" id="11" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-01 23:43:33.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="12" courseId="1" createdOn="2019-03-02 00:07:04.0" feeExGst="1.82" id="12" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-02 00:07:04.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" deposit="1.82" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
+  <CourseClass code="13" courseId="1" createdOn="2019-03-02 00:07:51.0" feeExGst="1.82" id="13" incomeAccountId="7"
+               isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999" minimumPlaces="1"
+               modifiedOn="2019-03-02 00:07:51.0" sessionCount="0" taxId="1" deliveryMode="1" fundingSource="3"
+               budgetedPlaces="0" isClassFeeApplicationOnly="0" taxAdjustment="0.00" isActive="1"
+               suppressAvetmissExport="0" attendanceType="9"/>
 
-	<Discount createdOn="2019-03-01 18:48:47.0" discountPercent="0.010" id="1" modifiedOn="2019-03-01 23:43:42.0" name="Discount1" rounding="0" discountType="1" predictedStudentsPercentage="0.10" hideOnWeb="0" isAvailableOnWeb="1" addByDefault="0" minEnrolments="1" minValue="0.00" cosAccountId="9" limitPreviousEnrolment="0"/>
-	<Discount createdOn="2019-03-01 19:08:53.0" discountPercent="0.020" id="2" modifiedOn="2019-03-01 23:43:42.0" name="Discount2" rounding="0" discountType="1" predictedStudentsPercentage="0.10" hideOnWeb="0" isAvailableOnWeb="1" addByDefault="0" minEnrolments="1" minValue="0.00" cosAccountId="9"  limitPreviousEnrolment="0"/>
+  <Discount createdOn="2019-03-01 18:48:47.0" discountPercent="0.010" id="1" modifiedOn="2019-03-01 23:43:42.0"
+            name="Discount1" rounding="0" discountType="1" predictedStudentsPercentage="0.10" hideOnWeb="0"
+            isAvailableOnWeb="1" addByDefault="0" minEnrolments="1" minValue="0.00" cosAccountId="9"
+            limitPreviousEnrolment="0"/>
+  <Discount createdOn="2019-03-01 19:08:53.0" discountPercent="0.020" id="2" modifiedOn="2019-03-01 23:43:42.0"
+            name="Discount2" rounding="0" discountType="1" predictedStudentsPercentage="0.10" hideOnWeb="0"
+            isAvailableOnWeb="1" addByDefault="0" minEnrolments="1" minValue="0.00" cosAccountId="9"
+            limitPreviousEnrolment="0"/>
 
-	<Discount_CourseClass courseClassId="1" createdOn="2019-03-01 18:48:47.0" modifiedOn="2019-03-01 18:48:47.0" discountId="1" id="1"/>
-	<Discount_CourseClass courseClassId="1" createdOn="2019-03-01 19:08:53.0" modifiedOn="2019-03-01 19:08:53.0" discountId="2" id="2"/>
-	<Discount_CourseClass courseClassId="2" createdOn="2019-03-01 20:59:19.0" modifiedOn="2019-03-01 20:59:19.0" discountId="1" id="3"/>
-	<Discount_CourseClass courseClassId="2" createdOn="2019-03-01 20:59:19.0" modifiedOn="2019-03-01 20:59:19.0" discountId="2" id="4"/>
-	<Discount_CourseClass courseClassId="3" createdOn="2019-03-01 21:33:53.0" modifiedOn="2019-03-01 21:33:53.0" discountId="1" id="5"/>
-	<Discount_CourseClass courseClassId="3" createdOn="2019-03-01 21:33:53.0" modifiedOn="2019-03-01 21:33:53.0" discountId="2" id="6"/>
-	<Discount_CourseClass courseClassId="4" createdOn="2019-03-01 21:40:55.0" modifiedOn="2019-03-01 21:40:55.0" discountId="1" id="7"/>
-	<Discount_CourseClass courseClassId="4" createdOn="2019-03-01 21:41:17.0" modifiedOn="2019-03-01 21:41:17.0" discountId="2" id="8"/>
-	<Discount_CourseClass courseClassId="5" createdOn="2019-03-01 22:00:04.0" modifiedOn="2019-03-01 22:00:04.0" discountId="1" id="9"/>
-	<Discount_CourseClass courseClassId="5" createdOn="2019-03-01 22:00:07.0" modifiedOn="2019-03-01 22:00:07.0" discountId="2" id="10"/>
-	<Discount_CourseClass courseClassId="8" createdOn="2019-03-01 23:06:56.0" modifiedOn="2019-03-01 23:06:56.0" discountId="2" id="11"/>
-	<Discount_CourseClass courseClassId="8" createdOn="2019-03-01 23:06:56.0" modifiedOn="2019-03-01 23:06:56.0" discountId="1" id="12"/>
-	<Discount_CourseClass courseClassId="9" createdOn="2019-03-01 23:08:04.0" modifiedOn="2019-03-01 23:08:04.0" discountId="2" id="13"/>
-	<Discount_CourseClass courseClassId="9" createdOn="2019-03-01 23:08:05.0" modifiedOn="2019-03-01 23:08:05.0" discountId="1" id="14"/>
-	<Discount_CourseClass courseClassId="10" createdOn="2019-03-01 23:08:18.0" modifiedOn="2019-03-01 23:08:18.0" discountId="2" id="15"/>
-	<Discount_CourseClass courseClassId="10" createdOn="2019-03-01 23:08:19.0" modifiedOn="2019-03-01 23:08:19.0" discountId="1" id="16"/>
-	<Discount_CourseClass courseClassId="11" createdOn="2019-03-01 23:43:38.0" modifiedOn="2019-03-01 23:43:38.0" discountId="1" id="17"/>
-	<Discount_CourseClass courseClassId="11" createdOn="2019-03-01 23:43:41.0" modifiedOn="2019-03-01 23:43:41.0" discountId="2" id="18"/>
+  <Discount_CourseClass courseClassId="1" createdOn="2019-03-01 18:48:47.0" modifiedOn="2019-03-01 18:48:47.0"
+                        discountId="1" id="1"/>
+  <Discount_CourseClass courseClassId="1" createdOn="2019-03-01 19:08:53.0" modifiedOn="2019-03-01 19:08:53.0"
+                        discountId="2" id="2"/>
+  <Discount_CourseClass courseClassId="2" createdOn="2019-03-01 20:59:19.0" modifiedOn="2019-03-01 20:59:19.0"
+                        discountId="1" id="3"/>
+  <Discount_CourseClass courseClassId="2" createdOn="2019-03-01 20:59:19.0" modifiedOn="2019-03-01 20:59:19.0"
+                        discountId="2" id="4"/>
+  <Discount_CourseClass courseClassId="3" createdOn="2019-03-01 21:33:53.0" modifiedOn="2019-03-01 21:33:53.0"
+                        discountId="1" id="5"/>
+  <Discount_CourseClass courseClassId="3" createdOn="2019-03-01 21:33:53.0" modifiedOn="2019-03-01 21:33:53.0"
+                        discountId="2" id="6"/>
+  <Discount_CourseClass courseClassId="4" createdOn="2019-03-01 21:40:55.0" modifiedOn="2019-03-01 21:40:55.0"
+                        discountId="1" id="7"/>
+  <Discount_CourseClass courseClassId="4" createdOn="2019-03-01 21:41:17.0" modifiedOn="2019-03-01 21:41:17.0"
+                        discountId="2" id="8"/>
+  <Discount_CourseClass courseClassId="5" createdOn="2019-03-01 22:00:04.0" modifiedOn="2019-03-01 22:00:04.0"
+                        discountId="1" id="9"/>
+  <Discount_CourseClass courseClassId="5" createdOn="2019-03-01 22:00:07.0" modifiedOn="2019-03-01 22:00:07.0"
+                        discountId="2" id="10"/>
+  <Discount_CourseClass courseClassId="8" createdOn="2019-03-01 23:06:56.0" modifiedOn="2019-03-01 23:06:56.0"
+                        discountId="2" id="11"/>
+  <Discount_CourseClass courseClassId="8" createdOn="2019-03-01 23:06:56.0" modifiedOn="2019-03-01 23:06:56.0"
+                        discountId="1" id="12"/>
+  <Discount_CourseClass courseClassId="9" createdOn="2019-03-01 23:08:04.0" modifiedOn="2019-03-01 23:08:04.0"
+                        discountId="2" id="13"/>
+  <Discount_CourseClass courseClassId="9" createdOn="2019-03-01 23:08:05.0" modifiedOn="2019-03-01 23:08:05.0"
+                        discountId="1" id="14"/>
+  <Discount_CourseClass courseClassId="10" createdOn="2019-03-01 23:08:18.0" modifiedOn="2019-03-01 23:08:18.0"
+                        discountId="2" id="15"/>
+  <Discount_CourseClass courseClassId="10" createdOn="2019-03-01 23:08:19.0" modifiedOn="2019-03-01 23:08:19.0"
+                        discountId="1" id="16"/>
+  <Discount_CourseClass courseClassId="11" createdOn="2019-03-01 23:43:38.0" modifiedOn="2019-03-01 23:43:38.0"
+                        discountId="1" id="17"/>
+  <Discount_CourseClass courseClassId="11" createdOn="2019-03-01 23:43:41.0" modifiedOn="2019-03-01 23:43:41.0"
+                        discountId="2" id="18"/>
 
-	<ClassCost createdOn="2019-03-01 20:59:19.0" courseClassId="2" description="Discount1" id="1005" isFunding="3" maximumCost="2.00" modifiedOn="2019-03-01 20:59:19.0" perUnitAmountExTax="0.02" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="3"/>
-	<ClassCost createdOn="2019-03-01 20:59:19.0" courseClassId="2" description="Discount2" id="1007" isFunding="3" maximumCost="4.00" modifiedOn="2019-03-01 20:59:19.0" perUnitAmountExTax="0.04" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="4"/>
-	<ClassCost createdOn="2019-03-01 23:43:41.0" courseClassId="11" description="Discount2" id="1025" isFunding="3" maximumCost="4.00" modifiedOn="2019-03-01 23:43:41.0" perUnitAmountExTax="0.04" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="18"/>
-	<ClassCost createdOn="2019-03-01 23:43:41.0" courseClassId="11" description="Discount1" id="1026" isFunding="3" maximumCost="2.00" modifiedOn="2019-03-01 23:43:41.0" perUnitAmountExTax="0.02" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="17"/>
-	<ClassCost createdOn="2019-03-01 18:44:31.0" courseClassId="1" description="Desc1" id="1001" isFunding="0" minimumCost="50.00" modifiedOn="2019-03-01 18:44:31.0" perUnitAmountExTax="100.00" type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 18:44:31.0" courseClassId="1" description="Student fee" id="1002" isFunding="1" modifiedOn="2019-03-01 18:44:31.0" perUnitAmountExTax="1.82" taxId="1" type="3" taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 18:48:47.0" courseClassId="1" description="Discount1" id="1003" isFunding="3" modifiedOn="2019-03-01 18:48:47.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="1"/>
-	<ClassCost createdOn="2019-03-01 19:08:53.0" courseClassId="1" description="Discount2" id="1004" isFunding="3" modifiedOn="2019-03-01 19:08:53.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="2"/>
-	<ClassCost createdOn="2019-03-01 20:59:19.0" courseClassId="2" description="Student fee" id="1006" isFunding="1" maximumCost="1818.18" modifiedOn="2019-03-01 20:59:19.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 20:59:19.0" courseClassId="2" description="Desc1" id="1008" isFunding="0" maximumCost="50.00" minimumCost="50.00" modifiedOn="2019-03-01 20:59:19.0" perUnitAmountExTax="100.00" type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 21:33:53.0" courseClassId="3" description="Desc1" id="1009" isFunding="0" minimumCost="50.00" modifiedOn="2019-03-01 21:33:53.0" perUnitAmountExTax="100.00" type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 21:33:53.0" courseClassId="3" description="Discount2" id="1011" isFunding="3" modifiedOn="2019-03-01 21:33:53.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="6"/>
-	<ClassCost createdOn="2019-03-01 21:33:53.0" courseClassId="3" description="Discount1" id="1012" isFunding="3" modifiedOn="2019-03-01 21:33:53.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="5"/>
-	<ClassCost createdOn="2019-03-01 21:41:59.0" courseClassId="4" description="Discount1" id="1014" isFunding="3" modifiedOn="2019-03-01 21:41:59.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="7"/>
-	<ClassCost createdOn="2019-03-01 21:41:59.0" courseClassId="4" description="Discount2" id="1016" isFunding="3" modifiedOn="2019-03-01 21:41:59.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="8"/>
-	<ClassCost createdOn="2019-03-01 22:44:47.0" courseClassId="5" description="Discount1" id="1017" isFunding="3" modifiedOn="2019-03-01 22:44:47.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="9"/>
-	<ClassCost createdOn="2019-03-01 22:51:38.0" courseClassId="5" description="Discount2" id="1020" isFunding="3" modifiedOn="2019-03-01 22:51:38.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="10"/>
-	<ClassCost createdOn="2019-03-01 21:33:53.0" courseClassId="3" description="Student fee" id="1010" isFunding="1" modifiedOn="2019-03-01 21:33:53.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 21:41:59.0" courseClassId="4" description="Student fee" id="1013" isFunding="1" modifiedOn="2019-03-01 21:41:59.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 21:41:55.0" courseClassId="4" description="Desc1" id="1015" isFunding="0" minimumCost="50.00" modifiedOn="2019-03-01 21:41:55.0" perUnitAmountExTax="100.00" type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 22:44:41.0" courseClassId="5" description="Student fee" id="1018" isFunding="1" modifiedOn="2019-03-01 22:44:41.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 22:27:25.0" courseClassId="5" description="Desc1" id="1019" isFunding="0" minimumCost="50.00" modifiedOn="2019-03-01 22:27:25.0" perUnitAmountExTax="100.00" type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 23:03:37.0" courseClassId="6" description="Desc1" id="1021" isFunding="0" minimumCost="50.00" modifiedOn="2019-03-01 23:03:37.0" perUnitAmountExTax="100.00" type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 23:03:37.0" courseClassId="6" description="Student fee" id="1022" isFunding="1" modifiedOn="2019-03-01 23:03:37.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 23:04:56.0" courseClassId="7" description="Desc1" id="1023" isFunding="0" minimumCost="50.00" modifiedOn="2019-03-01 23:04:56.0" perUnitAmountExTax="100.00" type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 23:04:56.0" courseClassId="7" description="Student fee" id="1024" isFunding="1" modifiedOn="2019-03-01 23:04:56.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 23:43:41.0" courseClassId="11" description="Student fee" id="1027" isFunding="1" maximumCost="1818.18" modifiedOn="2019-03-01 23:43:41.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-01 23:43:41.0" courseClassId="11" description="Desc1" id="1028" isFunding="0" maximumCost="50.00" minimumCost="50.00" modifiedOn="2019-03-01 23:43:41.0" perUnitAmountExTax="100.00" type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-02 00:07:04.0" courseClassId="12" description="Student fee" id="1029" isFunding="1" maximumCost="1818.18" modifiedOn="2019-03-02 00:07:04.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
-	<ClassCost createdOn="2019-03-02 00:07:04.0" courseClassId="12" description="Desc1" id="1030" isFunding="0" maximumCost="50.00" minimumCost="50.00" modifiedOn="2019-03-02 00:07:04.0" perUnitAmountExTax="100.00" type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 20:59:19.0" courseClassId="2" description="Discount1" id="1005" isFunding="3"
+             maximumCost="2.00" modifiedOn="2019-03-01 20:59:19.0" perUnitAmountExTax="0.02" type="5" unitCount="1.0000"
+             taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="3"/>
+  <ClassCost createdOn="2019-03-01 20:59:19.0" courseClassId="2" description="Discount2" id="1007" isFunding="3"
+             maximumCost="4.00" modifiedOn="2019-03-01 20:59:19.0" perUnitAmountExTax="0.04" type="5" unitCount="1.0000"
+             taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="4"/>
+  <ClassCost createdOn="2019-03-01 23:43:41.0" courseClassId="11" description="Discount2" id="1025" isFunding="3"
+             maximumCost="4.00" modifiedOn="2019-03-01 23:43:41.0" perUnitAmountExTax="0.04" type="5" unitCount="1.0000"
+             taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="18"/>
+  <ClassCost createdOn="2019-03-01 23:43:41.0" courseClassId="11" description="Discount1" id="1026" isFunding="3"
+             maximumCost="2.00" modifiedOn="2019-03-01 23:43:41.0" perUnitAmountExTax="0.02" type="5" unitCount="1.0000"
+             taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0" discountCourseClassId="17"/>
+  <ClassCost createdOn="2019-03-01 18:44:31.0" courseClassId="1" description="Desc1" id="1001" isFunding="0"
+             minimumCost="50.00" modifiedOn="2019-03-01 18:44:31.0" perUnitAmountExTax="100.00" type="6"
+             taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 18:44:31.0" courseClassId="1" description="Student fee" id="1002" isFunding="1"
+             modifiedOn="2019-03-01 18:44:31.0" perUnitAmountExTax="1.82" taxId="1" type="3" taxAdjustment="0.00"
+             invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 18:48:47.0" courseClassId="1" description="Discount1" id="1003" isFunding="3"
+             modifiedOn="2019-03-01 18:48:47.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0"
+             payableOnEnrolment="1" isSunk="0" discountCourseClassId="1"/>
+  <ClassCost createdOn="2019-03-01 19:08:53.0" courseClassId="1" description="Discount2" id="1004" isFunding="3"
+             modifiedOn="2019-03-01 19:08:53.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0"
+             payableOnEnrolment="1" isSunk="0" discountCourseClassId="2"/>
+  <ClassCost createdOn="2019-03-01 20:59:19.0" courseClassId="2" description="Student fee" id="1006" isFunding="1"
+             maximumCost="1818.18" modifiedOn="2019-03-01 20:59:19.0" perUnitAmountExTax="1.82" type="3"
+             taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 20:59:19.0" courseClassId="2" description="Desc1" id="1008" isFunding="0"
+             maximumCost="50.00" minimumCost="50.00" modifiedOn="2019-03-01 20:59:19.0" perUnitAmountExTax="100.00"
+             type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 21:33:53.0" courseClassId="3" description="Desc1" id="1009" isFunding="0"
+             minimumCost="50.00" modifiedOn="2019-03-01 21:33:53.0" perUnitAmountExTax="100.00" type="6"
+             taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 21:33:53.0" courseClassId="3" description="Discount2" id="1011" isFunding="3"
+             modifiedOn="2019-03-01 21:33:53.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0"
+             payableOnEnrolment="1" isSunk="0" discountCourseClassId="6"/>
+  <ClassCost createdOn="2019-03-01 21:33:53.0" courseClassId="3" description="Discount1" id="1012" isFunding="3"
+             modifiedOn="2019-03-01 21:33:53.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0"
+             payableOnEnrolment="1" isSunk="0" discountCourseClassId="5"/>
+  <ClassCost createdOn="2019-03-01 21:41:59.0" courseClassId="4" description="Discount1" id="1014" isFunding="3"
+             modifiedOn="2019-03-01 21:41:59.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0"
+             payableOnEnrolment="1" isSunk="0" discountCourseClassId="7"/>
+  <ClassCost createdOn="2019-03-01 21:41:59.0" courseClassId="4" description="Discount2" id="1016" isFunding="3"
+             modifiedOn="2019-03-01 21:41:59.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0"
+             payableOnEnrolment="1" isSunk="0" discountCourseClassId="8"/>
+  <ClassCost createdOn="2019-03-01 22:44:47.0" courseClassId="5" description="Discount1" id="1017" isFunding="3"
+             modifiedOn="2019-03-01 22:44:47.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0"
+             payableOnEnrolment="1" isSunk="0" discountCourseClassId="9"/>
+  <ClassCost createdOn="2019-03-01 22:51:38.0" courseClassId="5" description="Discount2" id="1020" isFunding="3"
+             modifiedOn="2019-03-01 22:51:38.0" type="5" unitCount="1.0000" taxAdjustment="0.00" invoiceToStudent="0"
+             payableOnEnrolment="1" isSunk="0" discountCourseClassId="10"/>
+  <ClassCost createdOn="2019-03-01 21:33:53.0" courseClassId="3" description="Student fee" id="1010" isFunding="1"
+             modifiedOn="2019-03-01 21:33:53.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00"
+             invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 21:41:59.0" courseClassId="4" description="Student fee" id="1013" isFunding="1"
+             modifiedOn="2019-03-01 21:41:59.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00"
+             invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 21:41:55.0" courseClassId="4" description="Desc1" id="1015" isFunding="0"
+             minimumCost="50.00" modifiedOn="2019-03-01 21:41:55.0" perUnitAmountExTax="100.00" type="6"
+             taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 22:44:41.0" courseClassId="5" description="Student fee" id="1018" isFunding="1"
+             modifiedOn="2019-03-01 22:44:41.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00"
+             invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 22:27:25.0" courseClassId="5" description="Desc1" id="1019" isFunding="0"
+             minimumCost="50.00" modifiedOn="2019-03-01 22:27:25.0" perUnitAmountExTax="100.00" type="6"
+             taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 23:03:37.0" courseClassId="6" description="Desc1" id="1021" isFunding="0"
+             minimumCost="50.00" modifiedOn="2019-03-01 23:03:37.0" perUnitAmountExTax="100.00" type="6"
+             taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 23:03:37.0" courseClassId="6" description="Student fee" id="1022" isFunding="1"
+             modifiedOn="2019-03-01 23:03:37.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00"
+             invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 23:04:56.0" courseClassId="7" description="Desc1" id="1023" isFunding="0"
+             minimumCost="50.00" modifiedOn="2019-03-01 23:04:56.0" perUnitAmountExTax="100.00" type="6"
+             taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 23:04:56.0" courseClassId="7" description="Student fee" id="1024" isFunding="1"
+             modifiedOn="2019-03-01 23:04:56.0" perUnitAmountExTax="1.82" type="3" taxAdjustment="0.00"
+             invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 23:43:41.0" courseClassId="11" description="Student fee" id="1027" isFunding="1"
+             maximumCost="1818.18" modifiedOn="2019-03-01 23:43:41.0" perUnitAmountExTax="1.82" type="3"
+             taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-01 23:43:41.0" courseClassId="11" description="Desc1" id="1028" isFunding="0"
+             maximumCost="50.00" minimumCost="50.00" modifiedOn="2019-03-01 23:43:41.0" perUnitAmountExTax="100.00"
+             type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-02 00:07:04.0" courseClassId="12" description="Student fee" id="1029" isFunding="1"
+             maximumCost="1818.18" modifiedOn="2019-03-02 00:07:04.0" perUnitAmountExTax="1.82" type="3"
+             taxAdjustment="0.00" invoiceToStudent="1" payableOnEnrolment="1" isSunk="0"/>
+  <ClassCost createdOn="2019-03-02 00:07:04.0" courseClassId="12" description="Desc1" id="1030" isFunding="0"
+             maximumCost="50.00" minimumCost="50.00" modifiedOn="2019-03-02 00:07:04.0" perUnitAmountExTax="100.00"
+             type="6" taxAdjustment="0.00" invoiceToStudent="0" payableOnEnrolment="1" isSunk="0"/>
 
 </dataset>

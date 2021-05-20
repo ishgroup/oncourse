@@ -11,17 +11,7 @@ import groovy.transform.CompileStatic
 import ish.oncourse.GoogleGuiceInjector
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.impl.AntlrAqlService
-import ish.oncourse.entity.services.CertificateService
-import ish.oncourse.entity.services.CertificateServiceTest
-import ish.oncourse.entity.services.ContactService
-import ish.oncourse.entity.services.CourseClassService
-import ish.oncourse.entity.services.CourseService
-import ish.oncourse.entity.services.InvoiceLineService
-import ish.oncourse.entity.services.OutcomeService
-import ish.oncourse.entity.services.SessionService
-import ish.oncourse.entity.services.StudentConcessionService
-import ish.oncourse.entity.services.StudentService
-import ish.oncourse.entity.services.TagService
+import ish.oncourse.entity.services.*
 import ish.oncourse.server.AuditListener
 import ish.oncourse.server.CayenneListenersService
 import ish.oncourse.server.accounting.AccountTransactionService
@@ -37,29 +27,21 @@ import ish.oncourse.server.lifecycle.InvoiceLineInitHelper
 import ish.oncourse.server.messaging.MessageService
 import ish.oncourse.server.quality.QualityService
 import ish.oncourse.server.querying.QueryService
-import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.report.IReportService
 import ish.oncourse.server.report.ReportService
 import ish.oncourse.server.scripting.GroovyScriptService
-import ish.oncourse.server.services.AuditService
-import ish.oncourse.server.services.CustomFieldTypeService
-import ish.oncourse.server.services.IAutoIncrementService
-import ish.oncourse.server.services.ISystemUserService
-import ish.oncourse.server.services.TestAutoIncrementService
-import ish.oncourse.server.services.TestSchedulerService
-import ish.oncourse.server.services.TestSystemUserService
+import ish.oncourse.server.services.*
 import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.mockito.Mockito
-/**
- */
-// this module use for tests
+
 @CompileStatic
 class TestModule implements Module {
 
-	private static final Logger logger = LogManager.getLogger()
+    private static final Logger logger = LogManager.getLogger()
 
+    
     @Override
     void configure(Binder binder) {
 
@@ -79,12 +61,12 @@ class TestModule implements Module {
         binder.bind(MessageService.class).in(Scopes.SINGLETON)
 
         // dummy scheduler service for tests
-		binder.bind(ISchedulerService.class).toInstance(new TestSchedulerService())
+        binder.bind(ISchedulerService.class).toInstance(new TestSchedulerService())
 
         binder.bind(GoogleGuiceInjector.class).asEagerSingleton()
 
         // entity service classes
-		binder.bind(ContactService.class).in(Scopes.SINGLETON)
+        binder.bind(ContactService.class).in(Scopes.SINGLETON)
         binder.bind(CourseClassService.class).in(Scopes.SINGLETON)
         binder.bind(StudentConcessionService.class).in(Scopes.SINGLETON)
         binder.bind(TagService.class).in(Scopes.SINGLETON)

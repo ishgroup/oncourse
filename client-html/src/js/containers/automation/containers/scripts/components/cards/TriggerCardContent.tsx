@@ -12,6 +12,8 @@ import FormField from "../../../../../../common/components/form/form-fields/Form
 import { AQL_ENTITY_ITEMS } from "../../../../constants";
 import { mapSelectItems } from "../../../../../../common/utils/common";
 
+const entities = [...AQL_ENTITY_ITEMS, { label: "ContactTagRelation", value: "ContactTagRelation" }];
+
 const TriggerCardContent = props => {
   const {
     TriggerTypeItems, ScheduleTypeItems, enableEntityNameField, values, isInternal, dispatch, form
@@ -54,8 +56,9 @@ const TriggerCardContent = props => {
           required={values?.trigger?.type !== "On demand"}
           className="pl-2"
           disabled={isInternal}
-          items={AQL_ENTITY_ITEMS}
+          items={entities}
           allowEmpty={!(values?.trigger?.type !== "On demand")}
+          sort
         />
       )}
 

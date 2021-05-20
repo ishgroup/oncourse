@@ -3,7 +3,21 @@ name: API test
 on: push
 
 jobs:
+  should_run:
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@master
+        with:
+          cancel_others: 'true'
+          skip_after_successful_duplicate: 'true'
+          paths_ignore: '["client-html/**", "api-doc/**"]'
+
   api-tests:
+    needs: should_run
+    if: ${{ needs.should_run.outputs.should_skip != 'true' }}
     runs-on: ubuntu-latest
 
     services:
@@ -17,29 +31,29 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - name: Setup timezone
-      uses: zcong1993/setup-timezone@v1.1.1
-      with:
-        timezone: "Australia/Sydney"
-    - uses: actions/checkout@v2
+      - name: Setup timezone
+        uses: zcong1993/setup-timezone@v1.1.1
+        with:
+          timezone: "Australia/Sydney"
+      - uses: actions/checkout@v2
 
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '11'
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Cache
-      uses: actions/cache@v2.1.4
-      with:
-        path: |
-          **/node_modules
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ matrix.java }}-node-${{ hashFiles('**/node_modules') }}-gradle-${{ hashFiles('**/*.gradle*') }}
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
-    - name: Run tests
-      run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angel_api_test?user=root
+      - name: Run tests
+        run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angel_api_test?user=root

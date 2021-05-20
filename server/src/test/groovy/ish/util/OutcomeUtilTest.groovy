@@ -1,19 +1,18 @@
 package ish.util
 
+import groovy.transform.CompileStatic
 import ish.messaging.ICertificate
 import ish.messaging.ICertificateOutcome
 import ish.messaging.IOutcome
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertTrue
-import org.junit.Test
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-/**
- * Created by anarut on 11/14/16.
- */
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
+
+@CompileStatic
 class OutcomeUtilTest {
 
     @Test
@@ -34,7 +33,7 @@ class OutcomeUtilTest {
         when(certificate2.getPrintedOn()).thenReturn(null)
         when(certificate2.getRevokedOn()).thenReturn(null)
 
-        assertTrue(OutcomeUtil.isEditableStatus(editableOutcome))
+        Assertions.assertTrue(OutcomeUtil.isEditableStatus(editableOutcome))
 
 
         IOutcome notEditableOutcome = mock(IOutcome.class)
@@ -53,6 +52,6 @@ class OutcomeUtilTest {
         when(certificate4.getPrintedOn()).thenReturn(null)
         when(certificate4.getRevokedOn()).thenReturn(null)
 
-        assertFalse(OutcomeUtil.isEditableStatus(notEditableOutcome))
+        Assertions.assertFalse(OutcomeUtil.isEditableStatus(notEditableOutcome))
     }
 }

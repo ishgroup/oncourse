@@ -6,20 +6,20 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { getFormValues } from "redux-form";
+import { Discount, EntityRelationType } from "@api/model";
 import {
     updateEntityRelationTypes,
     deleteEntityRelationType,
     getEntityRelationTypes
 } from "../../actions";
-import { getFormValues } from "redux-form";
 import { State } from "../../../../reducers/state";
-import { Discount, EntityRelationType} from "@api/model";
 import { Fetch } from "../../../../model/common/Fetch";
 import EntityRelationTypesForm from "./components/EntityRelationTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { showConfirm } from "../../../../common/actions";
 import { getDiscounts } from "../../../entities/discounts/actions";
-import { sortDefaultSelectItems } from "../../../../common/utils/common";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 
 interface Props {
     getTypes: () => void;
@@ -31,7 +31,7 @@ interface Props {
     discounts: Discount[];
     timestamps: Date[];
     fetch: Fetch;
-    openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+    openConfirm?: ShowConfirmCaller;
 }
 
 class EntityRelationTypes extends React.Component<Props, any> {
@@ -86,15 +86,13 @@ const mapStateToProps = (state: State) => ({
     fetch: state.fetch
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-    return {
-        getTypes: () => dispatch(getEntityRelationTypes()),
-        getDiscounts: () => dispatch(getDiscounts("")),
-        updateEntityRelationTypes: (entityRelationTypes: EntityRelationType[]) =>
-            dispatch(updateEntityRelationTypes(entityRelationTypes)),
-        deleteEntityRelationType: (id: string) => dispatch(deleteEntityRelationType(id)),
-        openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
-    };
-};
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+    getTypes: () => dispatch(getEntityRelationTypes()),
+    getDiscounts: () => dispatch(getDiscounts("")),
+    updateEntityRelationTypes: (entityRelationTypes: EntityRelationType[]) =>
+      dispatch(updateEntityRelationTypes(entityRelationTypes)),
+    deleteEntityRelationType: (id: string) => dispatch(deleteEntityRelationType(id)),
+    openConfirm: props => dispatch(showConfirm(props))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EntityRelationTypes);

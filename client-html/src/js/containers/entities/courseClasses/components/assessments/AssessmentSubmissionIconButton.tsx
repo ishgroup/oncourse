@@ -46,8 +46,6 @@ const AssessmentSubmissionIcon: React.FC<AssessmentSubmissionIconProps> = ({ typ
   switch (type) {
     case "Submitted":
       return <FontAwesomeIcon fixedWidth icon="check" className={classes.iconSuccess} />;
-    case "Failed submission":
-      return <FontAwesomeIcon fixedWidth icon="times" className={classes.iconRemove} />;
     case "Not submitted":
       return <FontAwesomeIcon fixedWidth icon="circle" className={classes.iconGrey} />;
     default:

@@ -17,7 +17,7 @@ export const getScriptComponent = (content): ScriptComponent => ({
 });
 
 export const queryClosureRegexp = new RegExp(
-  "\\n?(def\\s+)?\\w+\\s+=\\s+query\\s+{(\\n+)?(\\s+)?entity\\s+[\"']?\\w+[\"']?(\\s+)?(query\\s+[\"'].+[\"'](\\s+))?(\\n+)?}(\\s+)?\\n{0,2}",
+  "\\n?(def\\s+)?\\w+\\s+=\\s+query\\s+{(\\n+)?(\\s+)?entity\\s+[\"']?\\w+[\"']?(\\s+)?(query\\s+[\"'].*[\"'](\\s+))?(\\n+)?}(\\s+)?\\n{0,2}",
   "g",
 );
 
@@ -37,7 +37,7 @@ export const closureBodyRegexp = /{((?:[^{}]|{[^}]*})*)}/;
 
 const getBodyEntries = body => {
   const bodyMatch = body.match(closureBodyRegexp);
-  const entries = Array.isArray(bodyMatch) ? bodyMatch[0].match(/(\w+\s?["']?.+["']?\n)+/g) : [];
+  const entries = Array.isArray(bodyMatch) ? bodyMatch[0].match(/(\w+\s?["']?[^'"]*["']?\n)+/g) : [];
   return Array.isArray(entries) ? entries : [];
 };
 

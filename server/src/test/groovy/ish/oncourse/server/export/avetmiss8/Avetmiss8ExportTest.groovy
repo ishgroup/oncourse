@@ -4,157 +4,127 @@
 package ish.oncourse.server.export.avetmiss8
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
+import ish.DatabaseSetup
 import ish.common.types.OutcomeStatus
-
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.entity.services.CertificateService
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.export.avetmiss.AvetmissExport
 import ish.oncourse.server.export.avetmiss.AvetmissExportResult
 import ish.util.RuntimeUtil
-import static junit.framework.TestCase.fail
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.hamcrest.CoreMatchers.equalTo
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.junit.rules.ErrorCollector
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
 
 @CompileStatic
-class Avetmiss8ExportTest extends CayenneIshTestCase {
+@DatabaseSetup(value = "ish/oncourse/server/export/avetmiss8/exportTest.xml")
+class Avetmiss8ExportTest extends TestWithDatabase {
 
-	private static LocalDate startYear = LocalDate.of(2013, Month.JANUARY, 1)
+    private static LocalDate startYear = LocalDate.of(2013, Month.JANUARY, 1)
     private static LocalDate midYear = LocalDate.of(2013, Month.MARCH, 30)
     private static LocalDate endYear = LocalDate.of(2013, Month.DECEMBER, 31)
+    
 
-    private ICayenneService cayenneService
-    private CertificateService certificateService
-
-    @Rule
-	public ErrorCollector errorCollector= new ErrorCollector()
-
-    @Before
-    void setup() throws Exception {
-		wipeTables()
-        cayenneService = injector.getInstance(ICayenneService.class)
-        certificateService = injector.getInstance(CertificateService.class)
-
-
-        InputStream st = Avetmiss8ExportTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/avetmiss8/exportTest.xml")
-
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-        super.setup()
-    }
-
-	@Test
+    @Test
     void test1() throws Exception {
         AvetmissExportResult runner = createTestRunner(ExportJurisdiction.PLAIN)
         verifyOutput(runner, "test1")
     }
 
-	@Test
+    @Test
     void test2() throws Exception {
         def runner = createTestRunner(ExportJurisdiction.PLAIN, true, OutcomeStatus.STATUS_NO_RESULT_QLD)
         verifyOutput(runner, "test2")
     }
 
-	@Test
+    @Test
     void partialSubmission() throws Exception {
-		def runner = createTestRunner(ExportJurisdiction.PLAIN, startYear, midYear, true, OutcomeStatus.STATUS_NO_RESULT_QLD)
+        def runner = createTestRunner(ExportJurisdiction.PLAIN, startYear, midYear, true, OutcomeStatus.STATUS_NO_RESULT_QLD)
         verifyOutput(runner, "partialSubmission")
     }
 
-	@Test
+    @Test
     void testNSW() throws Exception {
-		def runner = createTestRunner(ExportJurisdiction.NSW)
+        def runner = createTestRunner(ExportJurisdiction.NSW)
         verifyOutput(runner, "NSW")
     }
 
-	@Test
+    @Test
     void testQLD() throws Exception {
-		def runner = createTestRunner(ExportJurisdiction.QLD)
+        def runner = createTestRunner(ExportJurisdiction.QLD)
         verifyOutput(runner, "QLD")
     }
 
-	@Test
+    @Test
     void testSA() throws Exception {
-		def runner = createTestRunner(ExportJurisdiction.SA)
+        def runner = createTestRunner(ExportJurisdiction.SA)
         verifyOutput(runner, "SA")
     }
 
-	@Test
+    @Test
     void testTAS() throws Exception {
-		def runner = createTestRunner(ExportJurisdiction.TAS)
+        def runner = createTestRunner(ExportJurisdiction.TAS)
         verifyOutput(runner, "TAS")
     }
 
-	@Test
+    @Test
     void testVIC() throws Exception {
-		def runner = createTestRunner(ExportJurisdiction.VIC)
+        def runner = createTestRunner(ExportJurisdiction.VIC)
         verifyOutput(runner, "VIC")
     }
 
-	@Test
+    @Test
     void testWA() throws Exception {
-		def runner = createTestRunner(ExportJurisdiction.WA)
+        def runner = createTestRunner(ExportJurisdiction.WA)
         verifyOutput(runner, "WA")
     }
 
-	@Test
+    @Test
     void testSmartAndSkilled() throws Exception {
-		def runner = createTestRunner(ExportJurisdiction.SMART)
+        def runner = createTestRunner(ExportJurisdiction.SMART)
         verifyOutput(runner, "smart")
     }
 
-	@Test
+    @Test
     void testOliv() throws Exception {
-		def runner = createTestRunner(ExportJurisdiction.OLIV)
+        def runner = createTestRunner(ExportJurisdiction.OLIV)
         verifyOutput(runner, "oliv")
     }
 
-	@Test
+    @Test
     void testNTVETPP() throws Exception {
-		def runner = createTestRunner(ExportJurisdiction.NTVETPP)
+        def runner = createTestRunner(ExportJurisdiction.NTVETPP)
         verifyOutput(runner, "test1")
     }
 
-	@Test
+    @Test
     void testAVETARS() throws Exception {
-		def runner = createTestRunner(ExportJurisdiction.AVETARS)
+        def runner = createTestRunner(ExportJurisdiction.AVETARS)
         verifyOutput(runner, "test1")
     }
 
-	private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction) {
-		return createTestRunner(jurisdiction, startYear, endYear, false,null)
+    private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction) {
+        return createTestRunner(jurisdiction, startYear, endYear, false, null)
     }
 
-	private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction, Boolean isVET) {
-		return createTestRunner(jurisdiction, startYear, endYear, isVET, null)
+    private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction, Boolean isVET) {
+        return createTestRunner(jurisdiction, startYear, endYear, isVET, null)
     }
 
-	private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction, Boolean isVET, OutcomeStatus defaultOutcome) {
-		return createTestRunner(jurisdiction, startYear, endYear, isVET,defaultOutcome)
+    private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction, Boolean isVET, OutcomeStatus defaultOutcome) {
+        return createTestRunner(jurisdiction, startYear, endYear, isVET, defaultOutcome)
     }
 
-	private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction, LocalDate localStartDate, LocalDate localEndDate, Boolean isVET, OutcomeStatus defaultOutcome) {
+    
+    private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction, LocalDate localStartDate, LocalDate localEndDate, Boolean isVET, OutcomeStatus defaultOutcome) {
 
         List<AvetmissExport> fees = AvetmissExport.values()
                 .findAll { avetmissExport -> !isVET || AvetmissExport.AVETMISS_NON_VET != avetmissExport } as List
@@ -171,7 +141,7 @@ class Avetmiss8ExportTest extends CayenneIshTestCase {
                 cayenneService.newContext)
 
         return Avetmiss8ExportRunner.export(cayenneService.getNewContext(),
-                certificateService,
+                injector.getInstance(CertificateService.class),
                 injector.getInstance(PreferenceController.class),
                 jurisdiction,
                 defaultOutcome,
@@ -180,43 +150,46 @@ class Avetmiss8ExportTest extends CayenneIshTestCase {
                 outcomes*.id)
     }
 
-	/**
-	 * tests if any of the ExportJurisdiction/isVetExport combinations throws exception, but does not verify any files.
-	 */
-	@Test
+    /**
+     * tests if any of the ExportJurisdiction/isVetExport combinations throws exception, but does not verify any files.
+     */
+    
+    @Test
     void testNoExceptions() {
-		StringBuilder errorMsg = new StringBuilder()
+        StringBuilder errorMsg = new StringBuilder()
         for (ExportJurisdiction ej : ExportJurisdiction.values()) {
-			for (final boolean vetExport : [false, true] ) {
-				try {
+            for (final boolean vetExport : [false, true]) {
+                try {
                     createTestRunner(ej, vetExport)
                 } catch (Exception e) {
-					errorMsg.append("Avetmiss export for ")
+                    errorMsg.append("Avetmiss export for ")
                     errorMsg.append(ej.getDisplayName())
                     if (vetExport) {
-						errorMsg.append(" (VET)")
+                        errorMsg.append(" (VET)")
                     }
-					errorMsg.append(" has failed throwing exception: ")
+                    errorMsg.append(" has failed throwing exception: ")
                     errorMsg.append(e.getMessage())
                     errorMsg.append(RuntimeUtil.LINE_SEPARATOR)
                 }
-			}
-		}
-		String error = errorMsg.toString()
-        if (!error.isEmpty()) {
-			fail(error)
+            }
         }
-	}
+        String error = errorMsg.toString()
+        if (!error.isEmpty()) {
+            Assertions.fail(error)
+        }
+    }
 
 
-	private void verifyOutput(AvetmissExportResult result, String testName) throws Exception {
+    
+    private static void verifyOutput(AvetmissExportResult result, String testName) throws Exception {
 
         String now_plus_7_days = AvetmissLine.localDateFormatter.format(LocalDate.now().plusDays(7))
-		File outputFolder = new File("build/test-data/avetmissExportTest/" + testName)
+        File outputFolder = new File("build/test-data/avetmissExportTest/" + testName)
         try {
-			FileUtils.deleteDirectory(outputFolder)
-        } catch (IOException ignored) {	}
-		outputFolder.mkdirs()
+            FileUtils.deleteDirectory(outputFolder)
+        } catch (IOException ignored) {
+        }
+        outputFolder.mkdirs()
 
         result.getFiles().each { filename, data ->
             InputStream inputStream = ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/export/avetmiss8/" +
@@ -234,16 +207,16 @@ class Avetmiss8ExportTest extends CayenneIshTestCase {
             f.close()
             LocalDate.now().plusDays(7)
             try {
-                errorCollector.checkThat(filename + " row count wrong", actual.size(), equalTo(expected.size()))
-                for (int i=0; i<expected.size(); i++) {
+                Assertions.assertEquals(actual.size(), expected.size(), filename + " row count wrong")
+                for (int i = 0; i < expected.size(); i++) {
                     String expectedLine = expected.get(i)
                     expectedLine = expectedLine.replaceAll("now_plus_7_days", now_plus_7_days)
-                    errorCollector.checkThat(filename, actual.get(i), equalTo(expectedLine))
+                    Assertions.assertEquals(actual.get(i), expectedLine, filename)
                 }
-            }  catch(Exception e) {
-                errorCollector.addError(e)
+            } catch (Exception e) {
+                Assertions.fail(e)
             }
         }
-	}
+    }
 
 }

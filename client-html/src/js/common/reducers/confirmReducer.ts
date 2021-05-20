@@ -12,7 +12,7 @@ const Initial: ConfirmState = {
   onCancel: null,
   onConfirm: null,
   title: "Are you sure?",
-  confirmMessage: null,
+  confirmMessage: "You have unsaved changes. Do you want to discard them and proceed?",
   cancelButtonText: "Cancel",
   confirmButtonText: "Agree",
   onCancelCustom: null,
@@ -21,12 +21,6 @@ const Initial: ConfirmState = {
 export const confirmReducer = (state: ConfirmState = { ...Initial }, action: IAction<any>): ConfirmState => {
   switch (action.type) {
     case OPEN_CONFIRM: {
-      for (const k in action.payload) {
-        if (action.payload[k] === undefined) {
-          delete action.payload[k];
-        }
-      }
-
       return {
         ...Initial,
         ...action.payload,

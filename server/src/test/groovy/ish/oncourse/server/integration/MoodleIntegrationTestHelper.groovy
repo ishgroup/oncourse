@@ -1,7 +1,9 @@
 package ish.oncourse.server.integration
 
+import groovy.transform.CompileDynamic
 import ish.oncourse.server.integration.moodle.MoodleIntegration
 
+@CompileDynamic
 class MoodleIntegrationTestHelper {
 
     final static String BASE_URI = "http://localhost:8888/moodle29/"
@@ -25,6 +27,7 @@ class MoodleIntegrationTestHelper {
      * 4. getUserByEmail (return id of created user)
      * 5. enrolUsers (enrol user by fetched user id and course id)
      */
+    
     void test() {
         MoodleIntegration module = new MoodleIntegration(USER_NAME, PASSWORD, BASE_URI, SERVICE_NAME)
 

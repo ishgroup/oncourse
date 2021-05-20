@@ -4,71 +4,50 @@
 
 package ish.oncourse.server.export
 
-import ish.CayenneIshTestCase
+import groovy.transform.CompileStatic
+import ish.TestWithDatabase
 import ish.export.ExportParameter
 import ish.export.ExportResult
 import ish.oncourse.common.ResourceProperty
 import ish.oncourse.common.ResourceType
 import ish.oncourse.common.ResourcesUtil
-   import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ExportTemplate
 import ish.oncourse.server.cayenne.ExportTemplateAutomationBinding
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.upgrades.DataPopulation
-
-import java.time.LocalDate
-
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.fail
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 
-/**
- */
-@RunWith(Parameterized.class)
-class AllExportTemplatesTest extends CayenneIshTestCase {
-	private static final Logger logger = LogManager.getLogger()
+import java.time.LocalDate
+
+@CompileStatic
+@Disabled
+class AllExportTemplatesTest extends TestWithDatabase {
     private static final String UTC_TIMEZONE_ID = "UTC"
 
     private static final String PAYSLIP_MICROPAY_KEYCODE = "ish.onCourse.payslipMicropay.csv"
     private static final String SS_BULK_UPLOAD_KEYCODE = "ish.onCourse.ssBulkUpload.csv"
     private static final String LINE_SEPARATOR = StringUtils.LF
 
-    private String exportCode
-    private String entityName
-    private String testDataFile
-    private String sampleOutputFile
-
-    AllExportTemplatesTest(String exportCode, String entityName, String testDataFile, String sampleOutputFile) {
-		this.exportCode = exportCode
-        this.entityName = entityName
-        this.testDataFile = testDataFile
-        this.sampleOutputFile = sampleOutputFile
-    }
-
-	@Before
-    void setup() {
-		wipeTables()
+    void setup(String testDataFile) {
 
         // set default timezone to UTC to receive same export output regardless of
-		// default timezone of building machine
-		TimeZone.setDefault(TimeZone.getTimeZone(UTC_TIMEZONE_ID))
+        // default timezone of building machine
+        TimeZone.setDefault(TimeZone.getTimeZone(UTC_TIMEZONE_ID))
 
         try {
-			InputStream st = AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/"+testDataFile)
+            InputStream st = AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/" + testDataFile)
             FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
             builder.setColumnSensing(true)
             FlatXmlDataSet dataSet = builder.build(st)
@@ -84,66 +63,64 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
 
             fillBindingsManually()
         } catch (Exception e) {
-            fail(e.getMessage())
+            Assertions.fail(e.getMessage())
         }
-	}
+    }
 
     void fillBindingsManually() {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        ObjectContext context = cayenneService.newContext
-
         ExportTemplateAutomationBinding agedDebtorsBinding = ObjectSelect
                 .query(ExportTemplateAutomationBinding.class).where(ExportTemplateAutomationBinding.RELATED_OBJECT.dot(ExportTemplate.KEY_CODE).eq("ish.oncourse.agedDebtorCsvExport.csv"))
-                .selectFirst(context)
+                .selectFirst(cayenneContext)
         agedDebtorsBinding.value = '2019-06-30'
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
     }
 
-	@After
+    @AfterEach
     void tearDown() {
-		// reset timezone back to JMV's original
-		TimeZone.setDefault(null)
+        // reset timezone back to JMV's original
+        TimeZone.setDefault(null)
     }
 
-	@Parameterized.Parameters(name = "{1}-{0}")
-    static Collection<String[]> reportCodes() throws Exception {
+    static Collection<Arguments> values() throws Exception {
 
-		List<String[]> result = new ArrayList<>()
+        List<Arguments> result = new ArrayList<>()
         def resourcesList = PluginService.getPluggableResources(ResourceType.EXPORT.getResourcePath(), ResourceType.EXPORT.getFilePattern())
 
         for (String propFile : resourcesList) {
-			InputStream resourceAsStream = ResourcesUtil.getResourceAsInputStream(propFile)
+            InputStream resourceAsStream = ResourcesUtil.getResourceAsInputStream(propFile)
             Properties props = new Properties()
             props.load(resourceAsStream)
 
-            String keyCode = (String)props.get(ResourceProperty.KEY_CODE.getDisplayName())
-            String entityName = ((String)props.get(ResourceProperty.ENTITY_CLASS.getDisplayName()))
-            String outputExtention = keyCode.split("\\.")[3]
-            String dataSet = keyCode.split("\\.")[2].concat("DataSet.xml")
-            String outPut = keyCode.split("\\.")[2].concat("SampleOutput.").concat(outputExtention)
+            String keyCode = (String) props.get(ResourceProperty.KEY_CODE.getDisplayName())
+            String entityName = ((String) props.get(ResourceProperty.ENTITY_CLASS.getDisplayName()))
+            String outputExtention = keyCode.split("\\.").last()
+            String dataSet = keyCode.split("\\.")[2] + "DataSet.xml"
+            String output = keyCode.split("\\.")[2] + "SampleOutput." + outputExtention
 
-            result.add([keyCode, entityName, dataSet, outPut] as String[])
+            result.add(Arguments.of(keyCode, entityName, dataSet, output))
 
         }
-		return result
+        return result
     }
 
-	@Test
-    void testExport() throws Exception {
-		// exclude exports for Script entity - IshTestCase updates scripts from resources after table wipe
-		if (!entityName.equals("Script")) {
-			ExportParameter param = new ExportParameter()
+    @ParameterizedTest(name = "{1}-{0}")
+    @MethodSource("values")
+    void testExport(String keyCode, String entityName, String dataSet, output) throws Exception {
+        setup(dataSet)
+        // exclude exports for Script entity - IshTestCase updates scripts from resources after table wipe
+        if (entityName != "Script") {
+            ExportParameter param = new ExportParameter()
 
             param.setEntity(entityName)
-            param.setXslKeyCode(exportCode)
+            param.setXslKeyCode(keyCode)
             param.setExpression(ExpressionFactory.expTrue())
 
             ExportService export = injector.getInstance(ExportService.class)
 
             ExportResult result = export.export(param)
 
-            byte[] sampleExport = IOUtils.toByteArray(AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/output/" + sampleOutputFile))
+            byte[] sampleExport = IOUtils.toByteArray(AllExportTemplatesTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/export/output/" + output))
 
             String sampleExportString = StringUtils.replace(new String(sampleExport), StringUtils.CR, StringUtils.EMPTY)
             String resultExportString = StringUtils.replace(new String(result.getResult()), StringUtils.CR, StringUtils.EMPTY)
@@ -152,18 +129,18 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
             String[] resultExportSplit = resultExportString.split(LINE_SEPARATOR)
 
 
-            assertEquals(sampleExportSplit.length, resultExportSplit.length)
+            Assertions.assertEquals(sampleExportSplit.length, resultExportSplit.length)
 
             for (int i = 0; i < sampleExportSplit.length; i++) {
-				//skipped comparison the first line for payslip Micropay export from the unit test
-				//because it contains the current data
-                if (SS_BULK_UPLOAD_KEYCODE.equals(exportCode)) {
+                //skipped comparison the first line for payslip Micropay export from the unit test
+                //because it contains the current data
+                if (SS_BULK_UPLOAD_KEYCODE.equals(keyCode)) {
                     sampleExportSplit[i] = sampleExportSplit[i].replace("diff", (LocalDate.now().getYear() - 2014).toString())
                 }
-				if (!(PAYSLIP_MICROPAY_KEYCODE.equals(exportCode) && i == 0)) {
-					assertEquals(sampleExportSplit[i].trim(), resultExportSplit[i].trim())
+                if (!(PAYSLIP_MICROPAY_KEYCODE.equals(keyCode) && i == 0)) {
+                    Assertions.assertEquals(sampleExportSplit[i].trim(), resultExportSplit[i].trim())
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 }

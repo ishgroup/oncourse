@@ -5,6 +5,7 @@ import { Dispatch } from "redux";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../reducers/state";
 import { getCustomValues, reverse } from "../actions";
+import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
 
 interface PaymentInCustomValues {
   id: number;
@@ -27,7 +28,14 @@ const isDisabledForReverse = (customValues: PaymentInCustomValues) => (
     || (customValues.paymentMethodType.toLowerCase() !== "credit card" && customValues.bankingId !== null)
   );
 
-const PaymentInCogwheel: React.FunctionComponent<any> = memo<any>(props => {
+interface Props extends CogwhelAdornmentProps {
+  reverse: any;
+  customValues: any;
+  getCustomValues: any;
+  currencySymbol: string;
+}
+
+const PaymentInCogwheel = memo<Props>(props => {
   const {
     selection,
     menuItemClass,
@@ -53,23 +61,22 @@ const PaymentInCogwheel: React.FunctionComponent<any> = memo<any>(props => {
   const onClick = () => {
     if (isCreditCard && customValues.reconciled) {
       showConfirm(
-        null,
-        "Can not reverse reconciled payment",
-        null,
-        null,
-        null,
-        "OK"
+        {
+          confirmMessage: "Can not reverse reconciled payment",
+          cancelButtonText: "OK",
+          title: null
+        }
       );
       return;
     }
 
     if (isCreditCard) {
-      showConfirm(
-        () => {
+      showConfirm({
+        onConfirm: () => {
           reverse(selection[0]);
           closeMenu();
         },
-        <span>
+        confirmMessage: <span>
           You are about to make a payment of
           {' '}
           <span className="money">{formatCurrency(customValues.amount, currencySymbol)}</span>
@@ -80,19 +87,19 @@ const PaymentInCogwheel: React.FunctionComponent<any> = memo<any>(props => {
           {' '}
           as a refund against their credit card.
         </span>,
-        "Continue"
-      );
+        cancelButtonText: "Continue"
+      });
       return;
     }
 
-    showConfirm(
-      () => {
+    showConfirm({
+      onConfirm: () => {
         reverse(selection[0]);
         closeMenu();
       },
-      "You are about to reverse payment",
-      "Continue"
-    );
+      confirmMessage: "You are about to reverse payment",
+      cancelButtonText: "Continue"
+  });
   };
 
   const hasNoSelection = !(selection && selection.length === 1 && selection[0] !== "NEW");

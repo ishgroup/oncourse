@@ -23,18 +23,19 @@ interface Props {
 
 export const manualAvetmisConfirm = (onConfirm: AnyArgFunction, showConfirm: ShowConfirmCaller) => {
   showConfirm(
-    onConfirm,
-    <span>
-      Exporting AVETMISS in this way is not recommended and may no longer be supported with the new AVETMISS reporting standards due in 2022.
-      <br />
-      <br />
-      If you have a specific use-case for this export, please ensure you log a ticket with ish.
-    </span>,
-    "Continue",
-    null,
-    null,
-    "Use regular export",
-    () => openInternalLink("/avetmiss-export")
+    {
+      title: null,
+      onConfirm,
+      confirmMessage: <span>
+        Exporting AVETMISS in this way is not recommended and may no longer be supported with the new AVETMISS reporting standards due in 2022.
+        <br />
+        <br />
+        If you have a specific use-case for this export, please ensure you log a ticket with ish.
+      </span>,
+      confirmButtonText: "Continue",
+      onCancel: () => openInternalLink("/avetmiss-export"),
+      cancelButtonText: "Use regular export"
+    }
   );
 };
 

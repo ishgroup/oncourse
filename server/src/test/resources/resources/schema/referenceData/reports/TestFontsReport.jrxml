@@ -1,156 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TestFontsReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c96ccbe8-8f2d-4b11-8da0-9c0783455266">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="4"/>
-	<property name="ireport.y" value="32"/>
-	<property name="name" value="Test Fonts Report"/>
-	<property name="entity" value="Site"/>
-	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-	<property name="versionNumber" value="1"/>
-	<property name="keyCode" value="ish.onCourse.test.font"/>
-	<title>
-		<band height="802" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="eb5e45a2-bd0e-428e-b2d5-6b63a883230c" x="33" y="32" width="205" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="14" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[Testing default font.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="04c0e0b1-98bd-4f21-a69c-36d15ce37b53" x="33" y="74" width="205" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Lucida Sans" size="14" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[Pdf font: Lucida Sans]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="db53c4a8-b13b-48e1-be99-1d091b68dc4e" x="33" y="53" width="205" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="14" isBold="false" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[Pdf font: arial ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="dd3f5c23-0c2f-41f1-b3c1-01d27d3336ca" x="238" y="32" width="40" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="14" isBold="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[bold]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="9a361ac9-6afd-426f-a416-05c6cc0bf468" x="278" y="32" width="60" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="14" isItalic="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[italics]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="eebe2381-f559-4578-9b73-69d7cafe8202" x="398" y="32" width="80" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="14" isItalic="false" isUnderline="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[underline]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="ab3416e1-4379-441f-8473-0fe0bb055874" x="338" y="32" width="60" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="14" isItalic="false" isStrikeThrough="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[strike]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="1340c650-8393-4313-a0c8-d02f823af9f7" x="398" y="53" width="80" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="14" isItalic="false" isUnderline="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[underline]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="d250781c-0fc9-4204-89ea-b6fadcf1ea50" x="278" y="53" width="60" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="14" isItalic="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[italics]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="28615c79-1822-4d43-afe8-c56cd8b21775" x="338" y="53" width="60" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="14" isItalic="false" isStrikeThrough="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[strike]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="3d0998d6-eb79-4c42-aa53-90bde1ebc979" x="238" y="53" width="40" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="14" isBold="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[bold]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="7793a999-dea8-40e6-ba66-70e367f3c49c" x="338" y="74" width="60" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Lucida Sans" size="14" isItalic="false" isStrikeThrough="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[strike]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="3b95ce29-a6f8-48b8-8dc8-59bc488297d9" x="398" y="74" width="80" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Lucida Sans" size="14" isItalic="false" isUnderline="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[underline]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="0c4a7205-217f-41bf-b450-a0d8d65caffa" x="238" y="74" width="40" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Lucida Sans" size="14" isBold="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[bold]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="1424bbc1-0de5-4c27-91eb-2909ac8160ca" x="278" y="74" width="60" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Lucida Sans" size="14" isItalic="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[italics]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="bd4575af-67d1-42a1-ae2c-5cc5db81fce2" x="338" y="95" width="60" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="14" isItalic="false" isStrikeThrough="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[strike]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="0e92bb67-ef2f-4812-9a00-21f221baf081" x="398" y="95" width="80" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="14" isItalic="false" isUnderline="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[underline]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="e92e49ac-c909-402c-907d-07b38217d7ea" x="33" y="95" width="205" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="14" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[Pdf font: Times New Roman]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="b13521d9-6424-42b5-ab44-b07bc5ee4bd4" x="278" y="95" width="60" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="14" isItalic="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[italics]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="af87d217-0721-4947-bfee-0e46fddb96d9" x="238" y="95" width="40" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="14" isBold="true" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[bold]]></text>
-			</staticText>
-		</band>
-	</title>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="TestFontsReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20" uuid="c96ccbe8-8f2d-4b11-8da0-9c0783455266">
+  <property name="ireport.zoom" value="1.5"/>
+  <property name="ireport.x" value="4"/>
+  <property name="ireport.y" value="32"/>
+  <property name="name" value="Test Fonts Report"/>
+  <property name="entity" value="Site"/>
+  <property name="isSubreport" value="false"/>
+  <property name="isVisible" value="true"/>
+  <property name="versionNumber" value="1"/>
+  <property name="keyCode" value="ish.onCourse.test.font"/>
+  <title>
+    <band height="802" splitType="Stretch">
+      <staticText>
+        <reportElement uuid="eb5e45a2-bd0e-428e-b2d5-6b63a883230c" x="33" y="32" width="205" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font size="14" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[Testing default font.]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="04c0e0b1-98bd-4f21-a69c-36d15ce37b53" x="33" y="74" width="205" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Lucida Sans" size="14" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[Pdf font: Lucida Sans]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="db53c4a8-b13b-48e1-be99-1d091b68dc4e" x="33" y="53" width="205" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Arial" size="14" isBold="false" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[Pdf font: arial ]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="dd3f5c23-0c2f-41f1-b3c1-01d27d3336ca" x="238" y="32" width="40" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font size="14" isBold="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[bold]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="9a361ac9-6afd-426f-a416-05c6cc0bf468" x="278" y="32" width="60" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font size="14" isItalic="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[italics]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="eebe2381-f559-4578-9b73-69d7cafe8202" x="398" y="32" width="80" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font size="14" isItalic="false" isUnderline="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[underline]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="ab3416e1-4379-441f-8473-0fe0bb055874" x="338" y="32" width="60" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font size="14" isItalic="false" isStrikeThrough="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[strike]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="1340c650-8393-4313-a0c8-d02f823af9f7" x="398" y="53" width="80" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Arial" size="14" isItalic="false" isUnderline="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[underline]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="d250781c-0fc9-4204-89ea-b6fadcf1ea50" x="278" y="53" width="60" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Arial" size="14" isItalic="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[italics]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="28615c79-1822-4d43-afe8-c56cd8b21775" x="338" y="53" width="60" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Arial" size="14" isItalic="false" isStrikeThrough="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[strike]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="3d0998d6-eb79-4c42-aa53-90bde1ebc979" x="238" y="53" width="40" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Arial" size="14" isBold="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[bold]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="7793a999-dea8-40e6-ba66-70e367f3c49c" x="338" y="74" width="60" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Lucida Sans" size="14" isItalic="false" isStrikeThrough="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[strike]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="3b95ce29-a6f8-48b8-8dc8-59bc488297d9" x="398" y="74" width="80" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Lucida Sans" size="14" isItalic="false" isUnderline="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[underline]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="0c4a7205-217f-41bf-b450-a0d8d65caffa" x="238" y="74" width="40" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Lucida Sans" size="14" isBold="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[bold]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="1424bbc1-0de5-4c27-91eb-2909ac8160ca" x="278" y="74" width="60" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Lucida Sans" size="14" isItalic="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[italics]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="bd4575af-67d1-42a1-ae2c-5cc5db81fce2" x="338" y="95" width="60" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Times New Roman" size="14" isItalic="false" isStrikeThrough="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[strike]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="0e92bb67-ef2f-4812-9a00-21f221baf081" x="398" y="95" width="80" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Times New Roman" size="14" isItalic="false" isUnderline="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[underline]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="e92e49ac-c909-402c-907d-07b38217d7ea" x="33" y="95" width="205" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Times New Roman" size="14" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[Pdf font: Times New Roman]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="b13521d9-6424-42b5-ab44-b07bc5ee4bd4" x="278" y="95" width="60" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Times New Roman" size="14" isItalic="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[italics]]></text>
+      </staticText>
+      <staticText>
+        <reportElement uuid="af87d217-0721-4947-bfee-0e46fddb96d9" x="238" y="95" width="40" height="20"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="Times New Roman" size="14" isBold="true" isPdfEmbedded="true"/>
+        </textElement>
+        <text><![CDATA[bold]]></text>
+      </staticText>
+    </band>
+  </title>
 </jasperReport>

@@ -5,52 +5,30 @@
 package ish.oncourse.server.messaging
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.Voucher
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
 
-/**
- */
 @CompileStatic
-class EmailQueuingListenerTest extends CayenneIshTestCase {
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/voucherTest.xml")
+class EmailQueuingListenerTest extends TestWithDatabase {
 
-	private ICayenneService cayenneService
-    private static final Logger logger = LogManager.getLogger()
-
-    @Before
-    void setup() throws Exception {
-		wipeTables()
-
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = EmailQueuingListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/voucherTest.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+    @Override
+    void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
         Date start1 = DateUtils.addDays(new Date(), -4)
         Date start2 = DateUtils.addDays(new Date(), -2)
         Date start3 = DateUtils.addDays(new Date(), 2)
@@ -64,26 +42,24 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
         rDataSet.addReplacementObject("[end_date3]", DateUtils.addHours(start3, 2))
         rDataSet.addReplacementObject("[end_date4]", DateUtils.addHours(start4, 2))
         rDataSet.addReplacementObject("[null]", null)
+    }
 
-        executeDatabaseOperation(rDataSet)
-
+    @BeforeEach
+    @Order(3)
+    void injectors() throws Exception {
         injector.getInstance(GroovyScriptService.class).initTriggers()
-
-        super.setup()
-
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 
         try {
-			dataPopulation.run()
-        } catch (UnsupportedEncodingException e) {
-            logger.catching(e)
+            dataPopulation.run()
+        } catch (UnsupportedEncodingException ignored) {
         }
-	}
-
-	@Test
+    }
+    
+    @Test
     void testVoucherPurchaseConfirmation() throws Exception {
 
-		ObjectContext context = cayenneService.getNewNonReplicatingContext()
+        ObjectContext context = cayenneService.getNewNonReplicatingContext()
 
         Product vp = SelectById.query(Product.class, 1L).selectOne(context)
         InvoiceLine il = SelectById.query(InvoiceLine.class, 1).selectOne(context)
@@ -101,40 +77,39 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         // give the script running in separate thread some time to queue emails
-		Thread.sleep(3000)
+        Thread.sleep(3000)
 
-        assertTrue(context.select(SelectQuery.query(MessagePerson.class)).isEmpty())
-        assertTrue(context.select(SelectQuery.query(Message.class)).isEmpty())
+        Assertions.assertTrue(context.select(SelectQuery.query(MessagePerson.class)).isEmpty())
+        Assertions.assertTrue(context.select(SelectQuery.query(Message.class)).isEmpty())
 
         voucher.setStatus(ProductStatus.ACTIVE)
         context.commitChanges()
 
         // give the script running in separate thread some time to queue emails
-		Thread.sleep(3000)
+        Thread.sleep(3000)
 
-        assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
-        assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
 
         voucher.setRedeemedCourseCount(1)
         voucher.setStatus(ProductStatus.ACTIVE)
         context.commitChanges()
 
         // give the script running in separate thread some time to queue emails
-		Thread.sleep(3000)
+        Thread.sleep(3000)
 
-        assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
-        assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
+        Assertions.assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
 
     }
 
-	@Test
+    
+    @Test
     void testVoucherPersistedActivePurchaseConfirmation() throws Exception {
-		ObjectContext context = cayenneService.getNewNonReplicatingContext()
+        Product vp = SelectById.query(Product.class, 1L).selectOne(cayenneContext)
+        InvoiceLine il = SelectById.query(InvoiceLine.class, 1).selectOne(cayenneContext)
 
-        Product vp = SelectById.query(Product.class, 1L).selectOne(context)
-        InvoiceLine il = SelectById.query(InvoiceLine.class, 1).selectOne(context)
-
-        Voucher voucher = context.newObject(Voucher.class)
+        Voucher voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setProduct(vp)
         voucher.setCode("test")
@@ -145,23 +120,23 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
         voucher.setSource(PaymentSource.SOURCE_ONCOURSE)
         voucher.setStatus(ProductStatus.ACTIVE)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         // give the script running in separate thread some time to queue emails
-		Thread.sleep(3000)
+        Thread.sleep(3000)
 
-        assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
-        assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
+        Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(MessagePerson.class)).size())
+        Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(Message.class)).size())
 
         voucher.setRedeemedCourseCount(1)
         voucher.setStatus(ProductStatus.ACTIVE)
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
         // give the script running in separate thread some time to queue emails
-		Thread.sleep(3000)
+        Thread.sleep(3000)
 
-        assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
-        assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
+        Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(MessagePerson.class)).size())
+        Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(Message.class)).size())
 
     }
 

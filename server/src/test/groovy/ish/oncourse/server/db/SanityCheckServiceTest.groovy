@@ -4,19 +4,18 @@
 
 package ish.oncourse.server.db
 
-import ish.CayenneIshTestCase
-import ish.oncourse.server.ICayenneService
+import groovy.transform.CompileStatic
+import ish.TestWithDatabase
 import ish.oncourse.server.cayenne.Account
 import ish.util.AccountUtil
-import static junit.framework.TestCase.assertNotNull
-import org.apache.cayenne.access.DataContext
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-class SanityCheckServiceTest extends CayenneIshTestCase {
-
-	@Test
+@CompileStatic
+class SanityCheckServiceTest extends TestWithDatabase {
+    
+    @Test
     void testAccountDefaults() {
-		DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-        assertNotNull(AccountUtil.getDefaultGSTAccount(newContext, Account.class))
+        Assertions.assertNotNull(AccountUtil.getDefaultGSTAccount(cayenneContext, Account.class))
     }
 }

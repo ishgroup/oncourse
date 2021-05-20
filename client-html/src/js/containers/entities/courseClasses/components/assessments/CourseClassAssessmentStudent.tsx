@@ -9,25 +9,24 @@
 import React, {
   useEffect, useMemo, useState
 } from "react";
-import { Grid, IconButton, Tooltip } from "@material-ui/core";
-import { DateRange } from "@material-ui/icons";
+import { Grid, } from "@material-ui/core";
 import clsx from "clsx";
-import { format } from "date-fns";
 import {
  CourseClassTutor, GradingItem, GradingType
 } from "@api/model";
 import AssessmentSubmissionIconButton from "./AssessmentSubmissionIconButton";
-import { III_DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
-import { StudentForRender } from "./CourseClassAssessmentItem";
-import { StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { D_MMM_YYYY } from "../../../../../common/utils/dates/format";
+import { StudentForRender } from "./CourseClassAssessmentItems";
 import { useGradeErrors } from "./utils/hooks";
 import GradeContent from "./GradeContent";
+import EditInPlaceDateTimeField from "../../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
+import { stubFunction } from "../../../../../common/utils/common";
+import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
 
 interface Props {
   elem: StudentForRender;
   onChangeStatus: any;
   classes: any;
-  setModalOpenedBy: StringArgFunction;
   gradeType: GradingType;
   gradeItems: GradingItem[];
   onToggleGrade: (elem: StudentForRender, grade: GradingItem) => void;
@@ -35,6 +34,7 @@ interface Props {
   handleGradeMenuOpen: any;
   index: number;
   tutors: CourseClassTutor[];
+  triggerAsyncChange: (newValue: any, field: string, index: number) => void;
 }
 
 const CourseClassAssessmentStudent: React.FC<Props> = (
@@ -42,14 +42,14 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
     elem,
     onChangeStatus,
     classes,
-    setModalOpenedBy,
     gradeType,
     gradeItems,
     onToggleGrade,
     onChangeGrade,
     handleGradeMenuOpen,
     index,
-    tutors
+    tutors,
+    triggerAsyncChange
   }
 ) => {
   const [gradeVal, setGradeVal] = useState<number>(null);
@@ -64,15 +64,6 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
         status={elem.submittedValue}
         onClick={() => onChangeStatus("Submitted", elem)}
       />
-      {elem.submittedValue === "Submitted" && (
-        <IconButton
-          size="small"
-          className={classes.hiddenIcon}
-          onClick={() => setModalOpenedBy(`Submitted-${elem.submissionIndex}-${elem.studentName}-${index}`)}
-        >
-          <DateRange color="disabled" fontSize="small" />
-        </IconButton>
-      )}
     </div>
   );
 
@@ -82,20 +73,11 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
         status={elem.markedValue}
         onClick={() => onChangeStatus("Marked", elem)}
       />
-      {elem.markedValue === "Submitted" && (
-        <IconButton
-          size="small"
-          className={classes.hiddenIcon}
-          onClick={() => setModalOpenedBy(`Marked-${elem.submissionIndex}-${elem.studentName}-${index}`)}
-        >
-          <DateRange color="disabled" fontSize="small" />
-        </IconButton>
-      )}
     </div>
   );
 
   const currentGrade = useMemo(() => (typeof elem?.submission?.grade === "number"
-    ? gradeType.entryType === "choice list"
+    ? gradeType?.entryType === "choice list"
       ? gradeItems?.find(g => g.lowerBound === elem.submission.grade)
       : gradeItems?.find(g => g.lowerBound < elem.submission.grade || (elem.submission.grade === 0 && g.lowerBound === 0))
     : null), [elem?.submission?.grade, gradeItems]);
@@ -107,67 +89,85 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
       <Grid item xs={4} className="d-inline-flex-center pl-1">
         {elem.studentName}
       </Grid>
-      <Grid item xs={2} className={classes.center}>
+      <Grid item xs={Boolean(gradeType) ? 2 : 4} className={classes.center}>
         {elem.submittedValue === "Submitted"
           ? (
-            <Tooltip
-              title={(
-                <span>
-                  Submitted date:
-                  {" "}
-                  {elem.submission && format(new Date(elem.submission.submittedOn), III_DD_MMM_YYYY)}
-                </span>
-              )}
-              placement="top"
-              disableFocusListener
-              disableTouchListener
-            >
-              {submittedContent}
-            </Tooltip>
+            <EditInPlaceDateTimeField
+              meta={{}}
+              input={{
+                onChange: value => triggerAsyncChange(value, "submittedOn", elem.submissionIndex),
+                onFocus: stubFunction,
+                onBlur: stubFunction,
+                value: elem.submission.submittedOn
+              }}
+              type="date"
+              formatting="inline"
+              formatDate={D_MMM_YYYY}
+              inlineMargin
+            />
           )
           : submittedContent}
       </Grid>
-      <Grid item xs={2} className={classes.center}>
-        {elem.markedValue === "Submitted" ? (
-          <Tooltip
-            title={(
-              <span>
-                Marked date:
-                {" "}
-                {elem.submission && format(new Date(elem.submission.markedOn), III_DD_MMM_YYYY)}
-                <br />
-                {elem?.submission?.markedById && tutors && (
-                  <span>
-                    Assessor:
-                    {" "}
-                    {tutors.find(t => t.contactId === elem.submission.markedById)?.tutorName}
-                  </span>
-                )}
-              </span>
-            )}
-            placement="top"
-            disableFocusListener
-            disableTouchListener
-          >
-            {markedContent}
-          </Tooltip>
-        ) : markedContent}
-      </Grid>
-      <Grid item xs={2} className={classes.center}>
-        <GradeContent
-          handleGradeMenuOpen={handleGradeMenuOpen}
-          onToggleGrade={onToggleGrade}
-          onChangeGrade={onChangeGrade}
-          currentGrade={currentGrade}
-          gradeErrors={gradeErrors}
-          setGradeVal={setGradeVal}
-          gradeType={gradeType}
-          gradeVal={gradeVal}
-          classes={classes}
-          index={index}
-          elem={elem}
-        />
-      </Grid>
+
+      {Boolean(gradeType) && (
+      <>
+        <Grid item xs={2} className={classes.center}>
+          {elem.markedValue === "Submitted" ? (
+            <div>
+              <div>
+                <EditInPlaceDateTimeField
+                  meta={{}}
+                  input={{
+                    onChange: value => triggerAsyncChange(value, "markedOn", elem.submissionIndex),
+                    onFocus: stubFunction,
+                    onBlur: stubFunction,
+                    value: elem.submission.markedOn
+                  }}
+                  type="date"
+                  formatting="inline"
+                  formatDate={D_MMM_YYYY}
+                  inlineMargin
+                />
+              </div>
+              <div>
+                <EditInPlaceField
+                  meta={{}}
+                  selectValueMark="contactId"
+                  selectLabelMark="tutorName"
+                  input={{
+                    onChange: value => triggerAsyncChange(value, "markedById", elem.submissionIndex),
+                    onFocus: stubFunction,
+                    onBlur: stubFunction,
+                    value: elem.submission.markedById
+                  }}
+                  placeholder="No assessor"
+                  formatting="inline"
+                  items={tutors}
+                  allowEmpty
+                  select
+                />
+              </div>
+            </div>
+          ) : markedContent}
+        </Grid>
+        <Grid item xs={2} className={classes.center}>
+          <GradeContent
+            handleGradeMenuOpen={handleGradeMenuOpen}
+            onToggleGrade={onToggleGrade}
+            onChangeGrade={onChangeGrade}
+            currentGrade={currentGrade}
+            gradeErrors={gradeErrors}
+            setGradeVal={setGradeVal}
+            gradeType={gradeType}
+            gradeVal={gradeVal}
+            classes={classes}
+            index={index}
+            elem={elem}
+          />
+        </Grid>
+      </>
+    )}
+
     </Grid>
   );
 };

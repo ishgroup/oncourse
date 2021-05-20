@@ -1,27 +1,27 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
-    <audit id='1'>
-        <systemUser>onCourse Administrator</systemUser>
-        <created>20/01/2015</created>
-        <entityName>Course</entityName>
-        <entityId>12</entityId>
-        <action>CREATE</action>
-        <message>sample message1</message>
-    </audit>
-    <audit id='2'>
-        <systemUser>onCourse Administrator</systemUser>
-        <created>20/02/2016</created>
-        <entityName>CourseClass</entityName>
-        <entityId>13</entityId>
-        <action>UPDATE</action>
-        <message>sample message2</message>
-    </audit>
-    <audit id='3'>
-        <systemUser>onCourse Administrator</systemUser>
-        <created>20/03/2014</created>
-        <entityName>Enrolment</entityName>
-        <entityId>14</entityId>
-        <action>CREATE</action>
-        <message>sample message3</message>
-    </audit>
+  <audit id='1'>
+    <systemUser>onCourse Administrator</systemUser>
+    <created>20/01/2015</created>
+    <entityName>Course</entityName>
+    <entityId>12</entityId>
+    <action>CREATE</action>
+    <message>sample message1</message>
+  </audit>
+  <audit id='2'>
+    <systemUser>onCourse Administrator</systemUser>
+    <created>20/02/2016</created>
+    <entityName>CourseClass</entityName>
+    <entityId>13</entityId>
+    <action>UPDATE</action>
+    <message>sample message2</message>
+  </audit>
+  <audit id='3'>
+    <systemUser>onCourse Administrator</systemUser>
+    <created>20/03/2014</created>
+    <entityName>Enrolment</entityName>
+    <entityId>14</entityId>
+    <action>CREATE</action>
+    <message>sample message3</message>
+  </audit>
 </data>
