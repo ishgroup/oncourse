@@ -54,7 +54,7 @@ describe("Update script epic tests", () => {
       modifiedOn: "2019-10-10T10:00:15.000Z",
       variables: [],
       options: []
-    }, "PATCH"),
+    }, "PATCH", "Code"),
     epic: EpicSaveScriptItem,
     processData: () => [
       {

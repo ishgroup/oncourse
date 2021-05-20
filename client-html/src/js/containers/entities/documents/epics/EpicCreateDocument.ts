@@ -3,14 +3,18 @@ import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
-import { clearListNestedEditRecord, GET_RECORDS_REQUEST, setListSelection } from "../../../../common/components/list-view/actions";
+import {
+  clearListNestedEditRecord,
+  GET_RECORDS_REQUEST,
+  setListSelection
+} from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { CREATE_DOCUMENT_ITEM, CREATE_DOCUMENT_ITEM_FULFILLED } from "../actions";
 
 let savedItem;
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CREATE_DOCUMENT_ITEM,
   getData: payload => {
     savedItem = payload.document;

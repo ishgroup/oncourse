@@ -1,5 +1,5 @@
 const {
-  resolve
+  resolve,
 } = require('path');
 
 module.exports = {
@@ -7,12 +7,11 @@ module.exports = {
   testEnvironment: 'jsdom',
   globals: {
     'ts-jest': {
-      tsconfig: "tsconfig.test.json"
-    }
+      tsconfig: "tsconfig.test.json",
+    },
   },
-  setupFiles: ["core-js", "jest-canvas-mock"],
   transform: {
-    ".+\\.(css|styl|less|sass|scss|png|jpg|gif|ttf|woff|woff2)$": "jest-transform-stub"
+    ".+\\.(css|styl|less|sass|scss|png|jpg|gif|svg|ttf|woff|woff2)$": "jest-transform-stub",
   },
   reporters: ["default"],
   moduleDirectories: ["node_modules", "src"],
@@ -22,6 +21,6 @@ module.exports = {
     '@aql/AqlParser': resolve(__dirname, './build/generated-sources/aql-parser/AqlParser.ts'),
     '@aql/queryLanguageModel': resolve(__dirname, './build/generated-sources/aql-model/queryLanguageModel.ts'),
     "ace-builds": "<rootDir>/node_modules/ace-builds",
-    "\\.css$|@ckeditor": "<rootDir>/src/dev/mock/importMock.ts"
+    "\\.css$|@ckeditor": "<rootDir>/src/dev/mock/importMock.ts",
   },
 };

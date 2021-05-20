@@ -19,6 +19,7 @@ import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.dao.UserDao;
 import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.db.SchemaUpdateService;
+import ish.oncourse.server.http.HttpFactory;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
@@ -34,10 +35,12 @@ import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -58,7 +61,8 @@ import static ish.validation.ValidationUtil.isValidEmailAddress;
 
 @BQConfig
 public class AngelServerFactory {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AngelServerFactory.class);
+
+    private static final Logger LOGGER =  LogManager.getLogger();
 
     public final static String TXT_SYSTEM_USERS_FILE = "createAdminUsers.txt";
     public final static String CSV_SYSTEM_USERS_FILE = "createAdminUsers.csv";
@@ -110,7 +114,8 @@ public class AngelServerFactory {
                       LicenseService licenseService,
                       CayenneService cayenneService,
                       PluginService pluginService,
-                      MailDeliveryService mailDeliveryService) {
+                      MailDeliveryService mailDeliveryService,
+                      HttpFactory httpFactory) {
         try {
 
             // Create DB schema
@@ -119,13 +124,15 @@ public class AngelServerFactory {
 
             LOGGER.warn("Upgrade data");
             schemaUpdateService.upgradeData();
-
-            createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(), prefController, mailDeliveryService);
+            createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(), httpFactory.getIp(), httpFactory.getPort(), prefController, mailDeliveryService);
 
         } catch (Throwable e) {
+            LOGGER.catching(e);
+            LOGGER.error("Server start failed on basic level, aborting startup of other services");
             // total failure, some of the essential services cannot be
             // started
             throw new RuntimeException("Server start failed on basic level, aborting startup of other services", e);
+            
         }
 
         // only if no fail until now start the background cron-like tasks
@@ -138,13 +145,6 @@ public class AngelServerFactory {
             // email hander (every minute)
             schedulerService.scheduleCronJob(EmailDequeueJob.class, EMAIL_DEQUEUEING_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
                     EMAIL_DEQUEUEING_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
-
-            // scheduling backup job only for derby
-            if (Preferences.DATABASE_USED_DERBY.equals(prefController.getDatabaseUsed())) {
-                // backup service (every hour)
-                schedulerService.scheduleCronJob(BackupJob.class, BACKUP_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
-                        BACKUP_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
-            }
 
             // job responsible for GL transfers for delayed income feature
             schedulerService.scheduleCronJob(DelayedEnrolmentIncomePostingJob.class,
@@ -166,6 +166,12 @@ public class AngelServerFactory {
                     INVOICE_OVERDUE_UPDATE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
                     randomSchedule, prefController.getOncourseServerDefaultTimezone(),
                     true, false);
+
+            //between 2:00am and 2:59am
+            randomSchedule = String.format(AUDIT_PURGE_JOB_CRON_SCHEDULE_TEMPLATE, random.nextInt(59));
+            schedulerService.scheduleCronJob(AuditPurgeJob.class, AUDIT_PURGE_JOB, BACKGROUND_JOBS_GROUP_ID,
+                    randomSchedule, prefController.getOncourseServerDefaultTimezone(),
+                    false, false);
 
             schedulerService.scheduleCronJob(FundingContractUpdateJob.class,
                     FUNDING_CONTRACT_JOB_ID,
@@ -235,7 +241,7 @@ public class AngelServerFactory {
         LOGGER.warn("Server ready");
     }
 
-    private void createSystemUsers(DataContext context, String collegeKey, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
+    private void createSystemUsers(DataContext context, String collegeKey, String host, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
         Path systemUsersFile = Paths.get(CSV_SYSTEM_USERS_FILE);
         if (!systemUsersFile.toFile().exists()) {
             systemUsersFile = Paths.get(TXT_SYSTEM_USERS_FILE);
@@ -246,10 +252,6 @@ public class AngelServerFactory {
         } catch (NoSuchFileException ignored) {
             LOGGER.warn("File with system users not found.");
             return;
-        }
-        if (collegeKey == null) {
-            LOGGER.warn("College key is not set! Specify your college key in onCourse.yml, please.");
-            crashServer();
         }
         lines.forEach(line -> {
             String[] lineData = line.split("(, )+|([ ,\t])+");
@@ -265,17 +267,19 @@ public class AngelServerFactory {
             }
             SystemUser user = UserDao.getByEmail(context, email);
             if (user != null) {
-                LOGGER.warn("System user {} already added.", line);
-                return;
+                user.setPassword(null);
+                user.setPasswordLastChanged(null);
+                user.setLoginAttemptNumber(0);
+            } else {
+                user = UserDao.createSystemUser(context, Boolean.TRUE);
+                user.setEmail(email);
             }
 
-            user = UserDao.createSystemUser(context, Boolean.TRUE);
             user.setFirstName(lineData[0]);
             user.setLastName(lineData[1]);
-            user.setEmail(email);
 
             try {
-                String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey);
+                String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey, host, port);
                 user.setInvitationToken(invitationToken);
                 user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
             } catch (MessagingException ex) {
@@ -285,11 +289,11 @@ public class AngelServerFactory {
 
             context.commitChanges();
 
-            LOGGER.warn("System user {} have been added successfully.", line);
+            LOGGER.warn("System user {} has been added successfully.", line);
         });
 
         if (systemUsersFile.toFile().delete()) {
-            LOGGER.warn("File with system users have deleted successfully!");
+            LOGGER.warn("The file with system users has been deleted successfully!");
         }
     }
 

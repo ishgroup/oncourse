@@ -56,13 +56,18 @@ class Licences extends React.Component<any, any> {
   render() {
     const { licences } = this.props;
 
+    const inactive = licences
+      && Object.keys(licences)
+        .filter(item => licences[item] === "false")
+        .map(item => this.listItem(item, false));
+
     return (
       <div>
         <AppBar title="Licences" />
 
         <List
           subheader={(
-            <ListSubheader disableSticky className="heading">
+            <ListSubheader disableSticky className="heading mb-2">
               Enabled Features
             </ListSubheader>
           )}
@@ -73,28 +78,27 @@ class Licences extends React.Component<any, any> {
               .map(item => this.listItem(item, true))}
         </List>
 
-        <List
-          className="mt-1"
-          subheader={(
-            <ListSubheader disableSticky className="heading">
-              Inactive Features
-              <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link">
-                <Button
-                  color="primary"
-                  text="Upgrade now"
-                  size="small"
-                  className="m-1"
-                  rootClasses="licencesUpgradeButton"
-                />
-              </a>
-            </ListSubheader>
-          )}
-        >
-          {licences
-            && Object.keys(licences)
-              .filter(item => licences[item] === "false")
-              .map(item => this.listItem(item, false))}
-        </List>
+        {inactive && Boolean(inactive.length) && (
+          <List
+            className="mt-1"
+            subheader={(
+              <ListSubheader disableSticky className="heading">
+                Inactive Features
+                <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link">
+                  <Button
+                    color="primary"
+                    text="Upgrade now"
+                    size="small"
+                    className="m-1"
+                    rootClasses="licencesUpgradeButton"
+                  />
+                </a>
+              </ListSubheader>
+            )}
+          >
+            {inactive}
+          </List>
+        )}
       </div>
     );
   }

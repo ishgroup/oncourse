@@ -9,11 +9,11 @@
 import { Epic } from "redux-observable";
 import { ApiToken } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { UPDATE_API_TOKENS_REQUEST, getApiTokens } from "../../../actions";
+import { getApiTokens, UPDATE_API_TOKENS_REQUEST } from "../../../actions";
 import ApiTokensService from "../services/ApiTokensService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 
-const request: EpicUtils.Request<any, any, ApiToken[]> = {
+const request: EpicUtils.Request<any, ApiToken[]> = {
   type: UPDATE_API_TOKENS_REQUEST,
   getData: tokens => ApiTokensService.createTokens(tokens),
   processData: (v, s, tokens) => [

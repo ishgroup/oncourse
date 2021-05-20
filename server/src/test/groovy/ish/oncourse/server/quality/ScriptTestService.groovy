@@ -1,16 +1,16 @@
 package ish.oncourse.server.quality
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.QualityRule
 import org.apache.cayenne.access.DataContext
 import org.apache.commons.io.IOUtils
+
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
-/**
- * Created by akoiro on 17/03/2016.
- */
+@CompileStatic
 class ScriptTestService {
     DataContext context
     ICayenneService cayenneService
@@ -21,7 +21,7 @@ class ScriptTestService {
         init()
     }
 
-    private init() {
+    private void init() {
         context = mock(DataContext)
         preferenceController = mock(PreferenceController)
         cayenneService = mock(ICayenneService)

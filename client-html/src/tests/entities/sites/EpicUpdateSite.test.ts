@@ -2,7 +2,7 @@ import { DefaultEpic } from "../../common/Default.Epic";
 import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicUpdateSite } from "../../../js/containers/entities/sites/epics/EpicUpdateSite";
-import { GET_SITE_ITEM, UPDATE_SITE_ITEM_FULFILLED, updateSite } from "../../../js/containers/entities/sites/actions";
+import { UPDATE_SITE_ITEM_FULFILLED, updateSite } from "../../../js/containers/entities/sites/actions";
 
 describe("Update site epic tests", () => {
   it("EpicUpdateSite should returns correct values", () => DefaultEpic({
@@ -19,10 +19,6 @@ describe("Update site epic tests", () => {
       {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Site", listUpdate: true, savedID: "1" }
-      },
-      {
-        type: GET_SITE_ITEM,
-        payload: "1"
       }
     ]
   }));

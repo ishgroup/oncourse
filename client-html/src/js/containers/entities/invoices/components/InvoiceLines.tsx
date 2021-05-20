@@ -27,7 +27,7 @@ import { accountLabelCondition } from "../../accounts/utils";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getDiscountAmountExTax } from "../../discounts/utils";
 
 const calculateInvoiceLineTotal = (
@@ -257,9 +257,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
   const onDiscountEachExTaxChange = useCallback(
     value => {
-      dispatch(
-        change(form, `${item}.total`, calculateInvoiceLineTotal(row.priceEachExTax, value, row.taxEach, row.quantity))
-      );
+      dispatch(change(form, `${item}.taxEach`, calculateInvoiceLineTaxEach(row.priceEachExTax, value, taxRate)));
     },
     [form, item, taxRate, row.priceEachExTax, row.quantity, row.taxEach]
   );
@@ -329,7 +327,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           discountValue: parseFloat(discountDollar)
         },
         taxes.find(t => t.id === row.taxId),
-        row.total || 0
+        (row && row.total) || 1
       )
     ));
   };

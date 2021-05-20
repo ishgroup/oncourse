@@ -9,7 +9,7 @@ import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { GET_COMPLEX_PASS_FILLED, GET_COMPLEX_PASS_REQUEST } from "../actions";
 import UsersService from "../../security/containers/users/services/UsersService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_COMPLEX_PASS_REQUEST,
   getData: () => UsersService.requireComplexPass(),
   processData: (complexPass: boolean) => {

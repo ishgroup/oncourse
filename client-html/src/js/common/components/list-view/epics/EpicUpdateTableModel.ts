@@ -7,13 +7,11 @@ import { Epic } from "redux-observable";
 import { TableModel } from "@api/model";
 import * as EpicUtils from "../../../epics/EpicUtils";
 import EntityService from "../../../services/EntityService";
-import { State } from "../../../../reducers/state";
 import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST, UPDATE_TABLE_MODEL_REQUEST } from "../actions";
 
 const request: EpicUtils.Request<
   any,
-  State,
   { entity: string; model: TableModel; listUpdate?: boolean; resetScroll?: boolean }
 > = {
   type: UPDATE_TABLE_MODEL_REQUEST,

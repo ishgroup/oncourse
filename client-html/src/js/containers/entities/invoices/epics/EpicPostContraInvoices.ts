@@ -12,7 +12,7 @@ import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/act
 import InvoiceService from "../services/InvoiceService";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 
-const request: EpicUtils.Request<any, any, { id: number; invoicesToPay: number[] }> = {
+const request: EpicUtils.Request<any, { id: number; invoicesToPay: number[] }> = {
   type: POST_CONTRA_INVOICES,
   getData: ({ id, invoicesToPay }) => InvoiceService.postContraInvoices(id, invoicesToPay),
   processData: () => {

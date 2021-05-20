@@ -22,6 +22,7 @@ import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.Application
 import ish.oncourse.server.cayenne.ArticleProduct
 import ish.oncourse.server.cayenne.Assessment
+import ish.oncourse.server.cayenne.AssessmentClass
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Banking
@@ -611,8 +612,8 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'UOC name', attribute: Outcome.MODULE.dot(Module.TITLE).name, sortable: true, width: W200, visible: true,
                         sortFields: [Outcome.MODULE.outer().dot(Module.TITLE).name] ),
                 new ColumnDTO(title: 'Status', attribute: Outcome.STATUS.name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Training plan start date', attribute: Outcome.TRAINING_PLAN_START_DATE_PROPERTY, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
-                new ColumnDTO(title: 'Training plan end date', attribute: Outcome.TRAINING_PLAN_END_DATE_PROPERTY, sortable: true, width: W200, visible: true,  type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Training plan start date', attribute: Outcome.TRAINING_PLAN_START_DATE_PROPERTY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Training plan end date', attribute: Outcome.TRAINING_PLAN_END_DATE_PROPERTY, sortable: false, width: W200, visible: true,  type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Start date', attribute: Outcome.START_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'End date', attribute: Outcome.END_DATE.name, sortable: true, width: W200, visible: true,  type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Delivery mode', attribute: Outcome.DELIVERY_MODE.name, sortable: true, width: W200, visible: true)
@@ -641,11 +642,28 @@ class DefaultUserPreference {
 
     private static final ASSESSMENT_SUBMISSION_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Student Name', attribute: AssessmentSubmission.STUDENT_NAME_PROPERTY, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Course Class Name', attribute: AssessmentSubmission.CLASS_NAME_PROPERTY, sortable: true, width: W300, visible: true),
-                new ColumnDTO(title: 'Assessment Name', attribute: AssessmentSubmission.ASSESSMENT_NAME_PROPERTY, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Submitted On Date', attribute: AssessmentSubmission.SUBMITTED_ON.name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Marked On Date', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Student name',
+                        attribute: AssessmentSubmission.STUDENT_NAME_PROPERTY, sortable: true, width: W200, visible: true,
+                        sortFields: [
+                                AssessmentSubmission.ENROLMENT.dot(Enrolment.STUDENT).dot(Student.CONTACT).dot(Contact.LAST_NAME).name,
+                                AssessmentSubmission.ENROLMENT.dot(Enrolment.STUDENT).dot(Student.CONTACT).dot(Contact.FIRST_NAME).name,
+                                AssessmentSubmission.ENROLMENT.dot(Enrolment.STUDENT).dot(Student.CONTACT).dot(Contact.MIDDLE_NAME).name
+                        ]),
+                new ColumnDTO(title: 'Class name',
+                        attribute: AssessmentSubmission.CLASS_NAME_PROPERTY, sortable: true, width: W300, visible: true,
+                        sortFields: [
+                                AssessmentSubmission.ASSESSMENT_CLASS.dot(AssessmentClass.COURSE_CLASS).dot(CourseClass.COURSE).dot(Course.CODE).name,
+                                AssessmentSubmission.ASSESSMENT_CLASS.dot(AssessmentClass.COURSE_CLASS).dot(CourseClass.CODE).name
+                        ]
+                ),
+                new ColumnDTO(title: 'Assessment name',
+                        attribute: AssessmentSubmission.ASSESSMENT_NAME_PROPERTY, sortable: true, width: W200, visible: true,
+                        sortFields: [
+                                AssessmentSubmission.ASSESSMENT_CLASS.dot(AssessmentClass.ASSESSMENT).dot(Assessment.CODE).name
+                        ]
+                ),
+                new ColumnDTO(title: 'Submitted on', attribute: AssessmentSubmission.SUBMITTED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Marked on', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
         ]
         it.sortings = [
                 new SortingDTO(attribute: AssessmentSubmission.ENROLMENT.dot(Enrolment.ID).name, ascending: true)

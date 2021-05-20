@@ -19,7 +19,7 @@ import {
 } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, Discount> = {
+const request: EpicUtils.Request<any, Discount> = {
   type: CREATE_DISCOUNT_ITEM,
   getData: discount => {
     return DiscountService.createDiscount(discount);

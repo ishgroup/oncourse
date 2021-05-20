@@ -15,6 +15,7 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.AssessmentSubmissionInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._AssessmentSubmission
+import ish.util.LocalDateUtils
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
@@ -64,6 +65,9 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 		return super.getModifiedOn()
 	}
 
+	/**
+	 * @return the assessment class: connection between a courseClass and the assessment submission
+	 */
 	@Nonnull
 	@API
 	@Override
@@ -71,6 +75,9 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 		return super.getAssessmentClass()
 	}
 
+	/**
+	 * @return the enrolment which is related to the assessment submission
+	 */
 	@Nonnull
 	@API
 	@Override
@@ -78,11 +85,14 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 		return super.getEnrolment()
 	}
 
-	@Nonnull
+	/**
+	 * @return the id of the assessor who marked the assessment submission
+	 */
+	@Nullable
 	@API
 	@Override
-	Contact getSubmittedBy() {
-		return super.getSubmittedBy()
+	Contact getMarkedBy() {
+		return super.getMarkedBy()
 	}
 
 	/**
@@ -108,6 +118,11 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 	@API
 	String getAssessmentName() {
 		return getAssessmentClass().getAssessment().getName()
+	}
+
+	@Override
+	Date getSubmittedDate() {
+		return LocalDateUtils.valueToDate(submittedOn)
 	}
 }
 

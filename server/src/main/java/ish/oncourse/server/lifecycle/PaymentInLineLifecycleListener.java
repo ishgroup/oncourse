@@ -22,11 +22,8 @@ import org.apache.cayenne.annotation.PostAdd;
  */
 public class PaymentInLineLifecycleListener {
 
-	private final PreferenceController prefController;
-
 	@Inject
-	public PaymentInLineLifecycleListener(PreferenceController prefController) {
-		this.prefController = prefController;
+	public PaymentInLineLifecycleListener() {
 	}
 
 	@PostAdd(value = PaymentInLine.class)

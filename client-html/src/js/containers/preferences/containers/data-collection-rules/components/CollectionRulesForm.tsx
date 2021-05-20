@@ -6,8 +6,9 @@
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
 import {
-  reduxForm, initialize, SubmissionError
+  reduxForm, initialize
 } from "redux-form";
 import {
   DataCollectionForm,
@@ -48,20 +49,17 @@ interface Props {
   history: any;
   dirty: boolean;
   valid: boolean;
-  form: DataCollectionRule;
+  form: string;
   collectionForms: DataCollectionForm[];
   collectionRules: DataCollectionRule[];
+  onSubmit: (value) => void;
 }
 
 class CollectionRulesBaseForm extends React.Component<Props, any> {
   private resolvePromise;
-
   private rejectPromise;
-
   private unlisten;
-
   private promisePending: boolean = false;
-
   private skipValidation: boolean;
 
   constructor(props) {
@@ -148,44 +146,6 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
     return matching.length > 0 ? "Form name must be unique" : undefined;
   };
 
-  onSave = (value: DataCollectionRule) => {
-    const {
- onUpdate, onAddNew, match, history
-} = this.props;
-    const isNew = match.params.action === "new";
-
-    this.promisePending = true;
-
-    return new Promise((resolve, reject) => {
-      this.resolvePromise = resolve;
-      this.rejectPromise = reject;
-
-      if (isNew) {
-        onAddNew(value);
-      } else {
-        onUpdate(value.id, value);
-      }
-    })
-      .then(() => {
-        this.skipValidation = true;
-        const updated = this.props.collectionRules.find(item => item.name === value.name);
-
-        this.props.dispatch(initialize("CollectionRulesForm", updated));
-        history.push(`/preferences/collectionRules/edit/${encodeURIComponent(updated.id)}`);
-        this.skipValidation = false;
-      })
-      .catch(error => {
-        this.promisePending = false;
-
-        const errorObj: any = {};
-
-        if (error) {
-          errorObj[error.propertyName] = error.errorMessage;
-        }
-        throw new SubmissionError(errorObj);
-      });
-  };
-
   redirectOnDelete = id => {
     const { history, collectionRules, dispatch } = this.props;
 
@@ -234,8 +194,8 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
- classes, handleSubmit, match, value, dirty, valid
-} = this.props;
+     classes, handleSubmit, match, value, dirty, valid, form, onSubmit
+    } = this.props;
     const { disableConfirm } = this.state;
     const isNew = match.params.action === "new";
 
@@ -243,8 +203,8 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
     const modified = value && value.modified;
 
     return (
-      <form className="container" autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-        {!disableConfirm && dirty && <RouteChangeConfirm when={dirty} />}
+      <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+        {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>
           <Grid
             container
@@ -388,6 +348,6 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
 
 const CollectionRulesForm = reduxForm({
   form: "CollectionRulesForm"
-})(withStyles(styles)(CollectionRulesBaseForm) as any);
+})(withStyles(styles)(withRouter(CollectionRulesBaseForm)) as any);
 
 export default CollectionRulesForm;

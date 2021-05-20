@@ -1,26 +1,25 @@
 import ish.math.Money
 import ish.oncourse.cayenne.PaymentLineInterface
-import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.PaymentOutLine
 import ish.oncourse.server.export.CsvBuilder
 import static java.time.temporal.ChronoUnit.DAYS
 import java.time.LocalDate
 
-List<Contact> contacts = query {
+List<ContactRow> rows = []
+def contacts = query {
     entity "Contact"
     query "invoices.invoiceDate <= ${atDate}"
 }
-
-List<ContactRow> rows = []
 contacts.parallelStream().forEach({ contact ->
     ContactRow row = new ContactRow()
     row.firstName = contact.firstName
     row.lastName = contact.lastName
 
-    query {
+    records = query {
         entity "Invoice"
         query "contact.id = ${contact.id} and invoiceDate <= ${atDate}"
-    }.each { i ->
+    }
+    records.each { i ->
         List<PaymentLineInterface> paymentLines = i.paymentLines.findAll { pl -> pl.payment.paymentDate <= atDate && pl.payment.status == PaymentStatus.SUCCESS }
         if (i.invoiceDueDates.size() > 0) {
             Money invoiceTotal = i.invoiceDueDates.sum { it.amount } as Money

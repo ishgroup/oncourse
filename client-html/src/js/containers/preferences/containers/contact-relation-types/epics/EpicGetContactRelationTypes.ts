@@ -7,10 +7,10 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../services/PreferencesService";
-import { GET_CONTACT_RELATION_TYPES_REQUEST, GET_CONTACT_RELATION_TYPES_FULFILLED } from "../../../actions";
+import { GET_CONTACT_RELATION_TYPES_FULFILLED, GET_CONTACT_RELATION_TYPES_REQUEST } from "../../../actions";
 import { ContactRelationType } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_CONTACT_RELATION_TYPES_REQUEST,
   getData: () => PreferencesService.getContactRelationTypes(),
   processData: (items: ContactRelationType[]) => {

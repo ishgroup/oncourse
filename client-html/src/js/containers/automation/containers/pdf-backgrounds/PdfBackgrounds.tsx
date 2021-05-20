@@ -7,10 +7,11 @@ import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { getFormValues, initialize, reduxForm } from "redux-form";
 import { Dispatch } from "redux";
+import { withRouter } from "react-router";
 import { ExportTemplate } from "@api/model";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../reducers/state";
-import { showConfirm } from "../../../../common/actions";
+import { setNextLocation } from "../../../../common/actions";
 import PdfReportsForm from "./containers/PdfBackgroundsForm";
 import { usePrevious } from "../../../../common/utils/hooks";
 import {
@@ -50,7 +51,8 @@ const PdfBackgrounds = React.memo<any>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues(PDF_BACKGROUND_FORM_NAME)(state)
+  values: getFormValues(PDF_BACKGROUND_FORM_NAME)(state),
+  nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -58,11 +60,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (fileName: string, id: number, overlay: File) =>
     dispatch(updateAutomationPdfBackground(fileName, id, overlay)),
   onDelete: (id: number) => dispatch(removeAutomationPdfBackground(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
-  getPdfBackground: (id: number) => dispatch(getAutomationPdfBackground(id))
+  getPdfBackground: (id: number) => dispatch(getAutomationPdfBackground(id)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 export default reduxForm({
   form: PDF_BACKGROUND_FORM_NAME,
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PdfBackgrounds));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(PdfBackgrounds)));

@@ -10,19 +10,11 @@ package ish.oncourse.cayenne;
 
 import ish.common.payable.EnrolmentInterface;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public interface AssessmentSubmissionInterface {
 
-    LocalDate getSubmittedOn();
-
-    LocalDate getMarkedOn();
-
-    String getStudentName();
-
-    String getCourseClassName();
-
-    String getAssessmentName();
-
+    Date getSubmittedDate();
+    
     EnrolmentInterface getEnrolment();
 }

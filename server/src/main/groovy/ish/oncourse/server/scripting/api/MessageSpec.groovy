@@ -17,7 +17,7 @@ import groovy.transform.TypeCheckingMode
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.messaging.AttachmentParam
+import ish.oncourse.server.messaging.DocumentParam
 import ish.util.MessageUtils
 import org.apache.cayenne.PersistentObject
 
@@ -58,6 +58,45 @@ import org.apache.cayenne.PersistentObject
  *
  * Usage example:
  * ```
+ *   erolments = query {  
+ *     entity "Enrolment"
+ *     query "status is SUCCESS "
+ *   }
+ *
+ *   def enrolments_pdf = report {
+ *     keycode "ish.onCourse.enrolmentConfirmation"
+ *     records erolments
+ *   }
+ *
+ *   def enrolments_csv = export {
+ *       template "ish.onCourse.enrolment.csv"
+ *       records erolments   
+ *   }
+ *
+ *   def enrolments_xml = export {
+ *       template "ish.onCourse.enrolment.xml"
+ *       records erolments
+ *   }
+ *
+ *   def enrolments_file = new File("enrolments.txt")
+ *
+ *   erolments.each { e->
+ *     enrolments_file.append(e.student.fullName +'_'+ e.courseClass.uniqueCode +'\n')
+ *   }
+ *
+ *   message {
+ *     to "support@example.com"
+ *     cc "ccrecipient@example.com"
+ *     bcc "bccrecipient@example.com"
+ *     from "support@@example.com", "onCourse Support"
+ *     subject "Attachment example"
+ *     content "Look at attached files"
+ *     attachment "enrolments.pdf", "application/pdf", enrolments_pdf
+ *     attachment "enrolments.csv", "text/csv", enrolments_csv
+ *     attachment "enrolments.xml", "text/xml", enrolments_xml
+ *     attachment "text/plain", enrolments_file
+ *   }
+ *   
  *  message {
  *      from "admin@example.com"
  *      to "torecipient@example.com"
@@ -99,7 +138,7 @@ class MessageSpec {
     List<String> toList = []
     List<String> ccList = []
     List<String> bccList = []
-    List<AttachmentParam> attachments = []
+    List<DocumentParam> attachments = []
 
     String fromName
     String content
@@ -293,17 +332,30 @@ class MessageSpec {
         this.bccList = recipients.toList()
     }
 
+    /**
+     * Add a documentParam as attachment to the email.
+     * Using this method means that the message is not stored inside onCourse.
+     *
+     * @param documentParam as DocumentParam
+     */
+    @API
+    void attachment(DocumentParam documentParam) {
+        if (documentParam) {
+            this.attachments << documentParam
+        }
+    }
+
 
     /**
      * Add a file as attachment to the email.
      * Using this method means that the message is not stored inside onCourse.
      *
-     * @param file a file
+     * @param file as File
      */
     @API
     void attachment(File file) {
         if (file) {
-            this.attachments << AttachmentParam.valueOf(file.getName() , null, file )
+            this.attachments << DocumentParam.valueOf(file.getName(), file )
         }
     }
 
@@ -317,7 +369,7 @@ class MessageSpec {
      */
     @API
     void attachment(String contentType, Object content) {
-        this.attachments << AttachmentParam.valueOf(null ,contentType, content)
+        this.attachments << DocumentParam.valueOf(null ,contentType, content)
     }
 
 
@@ -331,7 +383,11 @@ class MessageSpec {
      */
     @API
     void attachment(String fileName, String contentType, Object content) {
-        this.attachments << AttachmentParam.valueOf(fileName, contentType, content)
+        if (content instanceof DocumentParam) {
+            this.attachments << DocumentParam.valueOf(fileName, contentType, (content as DocumentParam).content)
+        } else {
+            this.attachments << DocumentParam.valueOf(fileName, contentType, content)
+        }
     }
 
 
@@ -344,7 +400,7 @@ class MessageSpec {
     @API
     void attachment(Map<String, Object> attachment) {
         if (attachment) {
-            this.attachments << AttachmentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
+            this.attachments << DocumentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
         }
     }
 

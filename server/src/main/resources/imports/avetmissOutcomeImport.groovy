@@ -1,11 +1,14 @@
-import ish.common.types.AvetmissStudentEnglishProficiency
 import ish.common.types.AvetmissStudentIndigenousStatus
 import ish.common.types.AvetmissStudentLabourStatus
 import ish.common.types.AvetmissStudentSchoolLevel
+import ish.common.types.UsiStatus
+import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Language
 import ish.oncourse.server.cayenne.PriorLearning
+import ish.oncourse.server.cayenne.Student
 import ish.validation.ValidationUtil
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.exp.Expression
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 
@@ -25,26 +28,23 @@ def import120(String nat120, String nat60, String nat80, String nat85, ObjectCon
 		def line = new InputLine(rawLine)
 
 		line.readString(10)
+		line.readString(10)
 
-		def studentNumber = line.readString(10)
-		def moduleId = line.readString(12)
-		def courseId = line.readString(10)
+		String studentNumber = line.readString(10)
+		String moduleId = line.readString(12)
+		String courseId = line.readString(10)
 		LocalDate start = line.readLocalDate(8)
 		LocalDate end = line.readLocalDate(8)
-		def deliveryMode = line.readInteger(2)
-		def result = line.readInteger(2)
-		def scheduledHours = line.readString(4)
-		def fundingSource = line.readString(2)
+		String deliveryMode = line.readString(3)
+		int result = line.readInteger(2)
+		String scheduledHours = line.readString(4)
+		String fundingSource = line.readString(2)
 
 		line.readString(34)
 
-		def outcomeId = line.readString(3)
+		String outcomeId = line.readString(3)
 
 		def student = newStudents[studentNumber]
-
-		if (student == null) {
-			student = ObjectSelect.query(Student).where(Student.STUDENT_NUMBER.eq(Long.valueOf(studentNumber))).selectOne(context)
-		}
 
 		if (student == null) {
 			student = importStudent(studentNumber, nat80, nat85, context)
@@ -121,7 +121,7 @@ def importModule(String moduleId, String nat60, PriorLearning priorLearning) {
 }
 
 def importStudent(String studentNumber, String nat80, String nat85, ObjectContext context) {
-	def nat80Line = nat80.readLines().collect { line -> new InputLine(line) }.find { line -> line.readString(10) == studentNumber }?.text
+	String nat80Line = nat80.readLines().collect { line -> new InputLine(line) }.find { line -> line.readString(10) == studentNumber }?.text
 
 	if (nat80Line) {
 		Contact contact = context.newObject(Contact)
@@ -148,8 +148,7 @@ def import80(String rawLine, Contact contact, Student student, ObjectContext con
 
 	// ------------------
 	// client identifier p9
-	// Unique per college.
-	student.studentNumber = line.readInteger(10)
+	line.readInteger(10)
 
 	// ------------------
 	// name for encryption p59
@@ -178,7 +177,6 @@ def import80(String rawLine, Contact contact, Student student, ObjectContext con
 	} else {
 		return null
 	}
-
 	// ------------------
 	// highest school level completed p43
 	Integer highestSchoolLevel = line.readInteger(2)
@@ -213,22 +211,14 @@ def import80(String rawLine, Contact contact, Student student, ObjectContext con
 		}
 		student.highestSchoolLevel = schoolLevel
 	}
-
-	// ------------------
-	// year highest school level completed p126
-	// valid 4 digit year, not in the future
-	student.yearSchoolCompleted = line.readInteger(4)
-
 	// ------------------
 	// sex p94
 	// "F", "M" or "@"
 	String gender = line.readString(1)
-
-	student.contact.isMale = "M".equals(gender) ? Boolean.TRUE : "F".equals(gender) ? Boolean.FALSE : null
+	student.contact.gender = "M".equals(gender) ? Gender.MALE : "F".equals(gender) ? Gender.FEMALE : "X".equals(gender) ? Gender.OTHER_GENDER : null
 	// ------------------
 	// date of birth p26
 	student.contact.birthDate = line.readLocalDate(8)
-
 	// ------------------
 	// postcode p71
 	// may be 0000 (unknown)
@@ -236,7 +226,6 @@ def import80(String rawLine, Contact contact, Student student, ObjectContext con
 	// OSPC (overseas)
 	// @@@@ (not stated)
 	student.contact.postcode = line.readString(4)
-
 	// ------------------
 	// indigenous status identifier p46
 	// 1 (aboriginal)
@@ -245,7 +234,7 @@ def import80(String rawLine, Contact contact, Student student, ObjectContext con
 	// 4 (neither)
 	// @ (not stated)
 	Integer indStatus = line.readInteger(1)
-	if (indStatus != null) {
+	if (indStatus != null && indStatus <= 4 && indStatus >= 0) {
 		student.indigenousStatus =
 				(AvetmissStudentIndigenousStatus) EnumUtil.enumForDatabaseValue(AvetmissStudentIndigenousStatus, indStatus)
 	} else {
@@ -267,7 +256,6 @@ def import80(String rawLine, Contact contact, Student student, ObjectContext con
 	if (languageList.size() > 0) {
 		student.setLanguage(languageList.get(0))
 	}
-
 	// ------------------
 	// labour force status identifer p48
 	// 01 (full time)
@@ -286,7 +274,6 @@ def import80(String rawLine, Contact contact, Student student, ObjectContext con
 	} else {
 		student.labourForceStatus = AvetmissStudentLabourStatus.DEFAULT_POPUP_OPTION
 	}
-
 	// ------------------
 	// country identifier p19
 	// 0000-9999 Aust Bureau of Stats 1269.0
@@ -298,7 +285,6 @@ def import80(String rawLine, Contact contact, Student student, ObjectContext con
 		logger.debug("country not found saccCode: {}", saccCode, e)
 	}
 	student.countryOfBirth = aCountry
-
 	// ------------------
 	// disability flag p30
 	// Y/N/@
@@ -306,7 +292,6 @@ def import80(String rawLine, Contact contact, Student student, ObjectContext con
 
 	student.disabilityType = "Y".equals(disabilityType) ? AvetmissStudentDisabilityType.OTHER
 			: AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION
-
 	// ------------------
 	// prior educational achievement flag p75
 	// Y/N/@
@@ -315,34 +300,49 @@ def import80(String rawLine, Contact contact, Student student, ObjectContext con
 
 	student.priorEducationCode = "Y".equals(priorEducationCode) ? AvetmissStudentPriorEducation.MISC
 			: AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION
-
 	// ------------------
 	// at school p7
 	// still at secondary school
 	String stillAtSchool = line.readString(1)
 
 	student.isStillAtSchool = "Y".equals(stillAtSchool) ? Boolean.TRUE : "N".equals(stillAtSchool) ? Boolean.FALSE : null
-
-	// ------------------
-	// proficiency in spoken English identifier p79
-	// 1 (very well)
-	// 2 (well)
-	// 3 (not well)
-	// 4 (not at all)
-	// blank (if language spoken at home is 1201 - English)
-	// @ (not stated)
-	Integer engProficiency = line.readInteger(1)
-	if (engProficiency != null) {
-		student.englishProficiency = (AvetmissStudentEnglishProficiency) EnumUtil.enumForDatabaseValue(
-				AvetmissStudentEnglishProficiency, engProficiency)
-	} else {
-		student.englishProficiency = AvetmissStudentEnglishProficiency.DEFAULT_POPUP_OPTION
-	}
-
 	// ------------------
 	// address suburb or town or locality p4
 	String suburb = line.readString(50)
 	student.contact.suburb = "NOT PROVIDED".equalsIgnoreCase(suburb) ? null : suburb
+	// ------------------
+	// Unique student identifier
+	String usi = line.readString(10)
+	switch (usi) {
+		case "INTOFF":
+			student.usiStatus = UsiStatus.INTERNATIONAL
+			break
+		case "INDIV":
+			student.usiStatus = UsiStatus.EXEMPTION
+			break
+		default:
+			student.usiStatus = UsiStatus.DEFAULT_NOT_SUPPLIED
+			student.usi = usi
+			break
+	}
+	// ------------------
+	// State identifier
+	line.readString(2)
+	// ------------------
+	// Street
+	String buildingName = line.readString(50)
+	String unit = line.readString(30)
+	String streetNumber = line.readString(15)
+	if ("NOT SPECIFIED".equalsIgnoreCase(streetNumber)) {
+		streetNumber = null
+	}
+	String streetName = line.readString(70)
+	if ("NOT SPECIFIED".equalsIgnoreCase(streetName)) {
+		streetName = null
+	}
+
+	student.contact.street = [buildingName, unit, streetNumber, streetName]
+			.findAll { s -> StringUtils.trimToNull(s) != null }.join(", ")
 
 	return student
 }
@@ -352,8 +352,7 @@ def import85(String rawLine, Student student) {
 
 	// ------------------
 	// client identifier p9
-	// Unique per college.
-	student.studentNumber = line.readInteger(10)
+	line.readInteger(10)
 
 	// ------------------
 	// client title p14

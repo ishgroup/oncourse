@@ -4,20 +4,14 @@
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
 
 package ish.oncourse.server;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.Provides;
-import com.google.inject.Scopes;
-import com.google.inject.Singleton;
-import com.google.inject.TypeLiteral;
+import com.google.inject.*;
 import com.google.inject.name.Names;
 import io.bootique.BQCoreModule;
 import io.bootique.ConfigModule;
@@ -40,19 +34,22 @@ import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.lifecycle.ClassPublishListener;
 import ish.oncourse.server.lifecycle.PayslipApprovedListener;
 import ish.oncourse.server.lifecycle.PayslipPaidListener;
+import ish.oncourse.server.lifecycle.ScriptTriggeringCommitListener;
 import ish.oncourse.server.modules.AngelJobFactory;
 import ish.oncourse.server.preference.UserPreferenceService;
+import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.scripting.api.EmailService;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
 import ish.oncourse.server.security.api.IPermissionService;
 import ish.oncourse.server.services.AuditService;
 import ish.oncourse.server.servlet.HealthCheckServlet;
-import ish.oncourse.server.users.SystemUserService;
 import ish.util.Maps;
 import org.apache.cayenne.commitlog.CommitLogListener;
 import org.apache.cayenne.commitlog.CommitLogModule;
 import org.apache.cayenne.commitlog.CommitLogModuleExtender;
 import org.apache.cayenne.di.Module;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
@@ -74,6 +71,7 @@ import java.util.jar.JarFile;
 public class AngelModule extends ConfigModule {
 
     private static final String ROOT_URL_PATTERN = "/*";
+    private static final Logger logger = LogManager.getLogger();
 
     private String angelVersion;
 
@@ -93,24 +91,31 @@ public class AngelModule extends ConfigModule {
 
     public static final String ANGEL_VERSION = "angelVersion";
 
+
+    @Singleton
+    @Provides
+    ScriptTriggeringCommitListener provideScriptTriggeringCommitListener(Provider<GroovyScriptService> scriptServiceProvider) {
+        return new ScriptTriggeringCommitListener(scriptServiceProvider.get());
+    }
+
     @Singleton
     @Provides
     ClassPublishListener provideClassPublishListener(EventService eventService) {
         return new ClassPublishListener(eventService);
     }
-    
+
     @Singleton
     @Provides
     PayslipApprovedListener providePayslipApprovedListener(EventService eventService) {
         return new PayslipApprovedListener(eventService);
     }
-    
+
     @Singleton
     @Provides
     PayslipPaidListener providePayslipPaidListener(EventService eventService) {
         return new PayslipPaidListener(eventService);
     }
-    
+
     @Singleton
     @Provides
     EventService provideEventService() {
@@ -119,8 +124,11 @@ public class AngelModule extends ConfigModule {
 
     @Singleton
     @Provides
-    CommitLogModuleExt provideCommitLogModuleExt(ClassPublishListener classPublishListener, PayslipApprovedListener payslipApprovedListener, PayslipPaidListener paidListener) {
-        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener);
+    CommitLogModuleExt provideCommitLogModuleExt(ClassPublishListener classPublishListener,
+                                                 PayslipApprovedListener payslipApprovedListener,
+                                                 PayslipPaidListener paidListener,
+                                                 ScriptTriggeringCommitListener scriptTriggeringCommitListener) {
+        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener, scriptTriggeringCommitListener);
     }
 
     @Override
@@ -150,7 +158,7 @@ public class AngelModule extends ConfigModule {
         binder.bind(ISessionManager.class).to(SessionManager.class).in(Scopes.SINGLETON);
         binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);
         binder.bind(ICayenneService.class).to(CayenneService.class).in(Scopes.SINGLETON);
-        binder.bind(PreferenceController.class).in(Scopes.SINGLETON);
+        binder.bind(IPreferenceController.class).to(PreferenceController.class).in(Scopes.SINGLETON);
         binder.bind(UserPreferenceService.class).in(Scopes.SINGLETON);
         binder.bind(String.class).annotatedWith(Names.named(ANGEL_VERSION)).toInstance(getVersion());
         binder.bind(EmailService.class).in(Scopes.SINGLETON);
@@ -170,7 +178,7 @@ public class AngelModule extends ConfigModule {
                         injector.getInstance(ICayenneService.class),
                         injector.getInstance(IPermissionService.class)
                 ),
-                        
+
                 paths,
                 ApiFilter.class.getSimpleName(),
                 0);
@@ -198,7 +206,7 @@ public class AngelModule extends ConfigModule {
                     injector.getInstance(Key.get(String.class, Names.named(ANGEL_VERSION))),
                     injector.getInstance(PreferenceController.class));
         } catch (MalformedObjectNameException | NotCompliantMBeanException e) {
-            e.printStackTrace();
+            logger.catching(e);
         }
 
         return null;
@@ -227,7 +235,7 @@ public class AngelModule extends ConfigModule {
             //the code initializes last replication time value to avoid Exception on getting
             scheduler.setJobFactory(new AngelJobFactory(injector));
         } catch (SchedulerException e) {
-            e.printStackTrace();
+            logger.catching(e);
         }
 
         return scheduler;
@@ -253,7 +261,7 @@ public class AngelModule extends ConfigModule {
 
 
         private CommitLogListener[] listeners;
-                
+
         CommitLogModuleExt(CommitLogListener... listeners) {
             this.listeners = listeners;
         }
@@ -267,7 +275,7 @@ public class AngelModule extends ConfigModule {
             Arrays.asList(listeners).forEach(listener ->
                     ref.extender = ref.extender.addListener(listener)
             );
-          
+
             ref.extender.module().configure(binder);
         }
     }

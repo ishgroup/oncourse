@@ -5,13 +5,13 @@
 
 import { Epic } from "redux-observable";
 
+import { Report } from "@api/model";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import PdfService from "../../../../../../containers/automation/containers/pdf-reports/services/PdfService";
 import { GET_OVERLAY_ITEMS, GET_PDF_REPORTS, GET_PDF_REPORTS_FULFILLED } from "../actions";
-import { Report } from "@api/model";
 import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_PDF_REPORTS,
   getData: payload => PdfService.getAllPrints(payload),
   processData: (pdfReports: Report[]) => {

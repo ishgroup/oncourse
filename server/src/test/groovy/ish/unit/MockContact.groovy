@@ -4,6 +4,7 @@
  */
 package ish.unit
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Student
 import org.apache.cayenne.DataObject
@@ -13,55 +14,50 @@ import org.apache.cayenne.Persistent
 
 import javax.annotation.Nonnull
 
-/**
- *
- */
+@CompileStatic
 class MockContact extends Contact {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L
+    private static final long serialVersionUID = 1L
     private int id
     private Student student
 
     MockContact(int id, ObjectContext objectContext) {
-		this.id = id
+        this.id = id
         setObjectContext(objectContext)
     }
 
-	@Override
+    @Override
     void setStudent(Student student) {
-		this.student = student
+        this.student = student
         if (student.getContact() == null || !student.getContact().equals(this)) {
-			student.setContact(this)
+            student.setContact(this)
         }
 
-		setIsStudent(student != null)
+        setIsStudent(student != null)
     }
 
-	@Nonnull
-	@Override
+    @Nonnull
+    @Override
     Student getStudent() {
-		return this.student
+        return this.student
     }
 
-	/**
-	 * @see org.apache.cayenne.CayenneDataObject#getObjectId()
-	 */
-	@Override
+    /**
+     * @see org.apache.cayenne.CayenneDataObject#getObjectId()
+     */
+    @Override
     ObjectId getObjectId() {
-		return new ObjectId("Contact", "id", this.id)
+        return new ObjectId("Contact", "id", this.id)
     }
 
-	@Override
-	protected void setReverseRelationship(String relName, DataObject val) {
-		// do nothing
-	}
+    @Override
+    protected void setReverseRelationship(String relName, DataObject val) {
+        // do nothing
+    }
 
-	@Override
-	protected void willConnect(String relationshipName, Persistent object) {
-		// do nothing
-	}
+    @Override
+    protected void willConnect(String relationshipName, Persistent object) {
+        // do nothing
+    }
 
 }

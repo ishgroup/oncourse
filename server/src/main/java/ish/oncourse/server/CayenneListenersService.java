@@ -15,7 +15,6 @@ import ish.oncourse.entity.services.OutcomeService;
 import ish.oncourse.server.accounting.AccountTransactionService;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.lifecycle.*;
-import ish.oncourse.server.quality.QualityService;
 import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.scripting.ScriptTriggeringListener;
 import ish.oncourse.server.services.TransactionLockedService;
@@ -26,13 +25,13 @@ import org.apache.cayenne.access.ValidationFilter;
 public class CayenneListenersService {
 
     @Inject
-    public CayenneListenersService(ICayenneService cayenneService, PreferenceController pref,
+    public CayenneListenersService(ICayenneService cayenneService, IPreferenceController pref,
                                    InvoiceLineInitHelper invoiceLineInitHelper,
                                    GroovyScriptService scriptService, OutcomeService outcomeService, EventService eventService,
                                    TransactionLockedService transactionLockedService, AuditListener auditListener, AccountTransactionService accountTransactionService) {
         // add listeners
         cayenneService.addListener(new PaymentInLifecycleListener(pref));
-        cayenneService.addListener(new PaymentInLineLifecycleListener(pref));
+        cayenneService.addListener(new PaymentInLineLifecycleListener());
         cayenneService.addListener(new InvoiceLifecycleListener());
         cayenneService.addListener(new InvoiceLineLifecycleListener(invoiceLineInitHelper, accountTransactionService));
         cayenneService.addListener(new PaymentOutLifecycleListener());

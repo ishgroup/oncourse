@@ -10,29 +10,29 @@ describe("College Form component", () => {
     const wrapper = mount(
       <TestEntry>
         <College />
-      </TestEntry>
+      </TestEntry>,
     );
 
     // Returning Promise with timeout to wait for API calls to end and rendered component ti update
     // @ts-ignore
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       setTimeout(() => {
         // Testing rendered HTML inputs value to match one stored in mock DB
         // Using real HTML selectors to find rendered elements
         expect(wrapper.find("#web-url input").getDOMNode().value).toEqual(
-          mockedAPI.db.preference[PreferencesModel.CollegeWebsite.uniqueKey]
+          mockedAPI.db.preference[PreferencesModel.CollegeWebsite.uniqueKey],
         );
 
         expect(wrapper.find("#college-name input").getDOMNode().value).toEqual(
-          mockedAPI.db.preference[PreferencesModel.CollegeName.uniqueKey]
+          mockedAPI.db.preference[PreferencesModel.CollegeName.uniqueKey],
         );
 
         expect(wrapper.find("#oncourse-server-timezone-default div[role='button']").text()).toEqual(
-          mockedAPI.db.preference[PreferencesModel.CollegeTimezone.uniqueKey]
+          mockedAPI.db.preference[PreferencesModel.CollegeTimezone.uniqueKey],
         );
 
         expect(wrapper.find("#college-abn input").getDOMNode().value).toEqual(
-          mockedAPI.db.preference[PreferencesModel.CollegeABN.uniqueKey]
+          mockedAPI.db.preference[PreferencesModel.CollegeABN.uniqueKey],
         );
 
         resolve();

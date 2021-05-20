@@ -10,7 +10,7 @@ import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { SET_DASHBOARD_FAVORITES, SET_DASHBOARD_FAVORITES_FULFILLED } from "../actions";
 import UserPreferenceService from "../../../common/services/UserPreferenceService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: SET_DASHBOARD_FAVORITES,
   getData: (categories: Category[]) => UserPreferenceService.setFavoriteCategories(categories),
   processData: () => [

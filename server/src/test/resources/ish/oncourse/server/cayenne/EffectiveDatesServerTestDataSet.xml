@@ -1,40 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Account accountCode="11100" createdOn="2012-06-20 10:22:44.0" description="Cheque account" id="300" isEnabled="1" modifiedOn="2014-10-17 22:47:53.0" type="1"/>
-	<Account id="500" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
-	<Account id="600" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="1"/>
-	<Account id="700" accountCode="ASSET7" description="Test asset account" isEnabled="1" type="1"/>
-	<Account id="800" accountCode="INC8" description="Test income account" isEnabled="1" type="4" taxId="1"/>
+  <Account accountCode="11100" createdOn="2012-06-20 10:22:44.0" description="Cheque account" id="300" isEnabled="1"
+           modifiedOn="2014-10-17 22:47:53.0" type="1"/>
+  <Account id="500" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
+  <Account id="600" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="1"/>
+  <Account id="700" accountCode="ASSET7" description="Test asset account" isEnabled="1" type="1"/>
+  <Account id="800" accountCode="INC8" description="Test income account" isEnabled="1" type="4" taxId="1"/>
 
-	<PaymentMethod id="1" name="Cash" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-	<PaymentMethod id="2" name="Cheque" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="1"/>
-	<PaymentMethod id="3" name="Credit card" accountId="300" active="1" bankedAutomatically="1" reconcilable="1"  type="2"/>
-	<PaymentMethod id="4" name="EFT" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
-	<PaymentMethod id="5" name="B-Pay" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-	<PaymentMethod id="6" name="Zero" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="5"/>
-	<PaymentMethod id="7" name="Other" accountId="300" active="0" bankedAutomatically="0" reconcilable="1" type="6"/>
-	<PaymentMethod id="8" name="Contra" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="7"/>
-	<PaymentMethod id="9" name="Voucher" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="8"/>
-	<PaymentMethod id="10" name="PayPal" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-	<PaymentMethod id="11" name="Reverse" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="10"/>
-	<PaymentMethod id="12" name="EFTPOS" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
+  <PaymentMethod id="1" name="Cash" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="2" name="Cheque" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="1"/>
+  <PaymentMethod id="3" name="Credit card" accountId="300" active="1" bankedAutomatically="1" reconcilable="1"
+                 type="2"/>
+  <PaymentMethod id="4" name="EFT" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
+  <PaymentMethod id="5" name="B-Pay" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="6" name="Zero" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="5"/>
+  <PaymentMethod id="7" name="Other" accountId="300" active="0" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="8" name="Contra" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="7"/>
+  <PaymentMethod id="9" name="Voucher" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="8"/>
+  <PaymentMethod id="10" name="PayPal" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="11" name="Reverse" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="10"/>
+  <PaymentMethod id="12" name="EFTPOS" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
 
-	<Site CREATEDON="2007-03-08 09:25:26.248" ID="200" MODIFIEDON="2012-05-08 16:02:01.252" NAME="Newtown Arts Centre" SUBURB="Newtown" STATE="NSW" POSTCODENEW="2042" LONGITUDE="151.18114500" LATITUDE="-33.89645900" PUBLICTRANSPORTDIRECTIONS="Take the train to Newtown Station, turn right as you leave the station and walk for 1 minute until you reach Wilson St. Turn right and the Arts Centre is the first building you pass." STREET="10 Wilson St" ISADMINISTRATIONCENTRE="1" ISSHOWNONWEB="1" LOCALTIMEZONE="Australia/Sydney" ISVIRTUAL="0"/>
-	<SystemUser email="admin@mail.com" CREATEDON="2007-03-01 14:35:11.023" FIRSTNAME="onCourse" ID="200" LASTLOGINON="2013-01-11 11:43:08.356" LOGIN="admin" MODIFIEDON="2013-01-11 11:43:08.363" PASSWORD="d033e22ae348aeb566fc214aec3585c4da997" SURNAME="Administrator" ISACTIVE="1" ISADMIN="1" DEFAULTADMINISTRATIONCENTREID="200" CANEDITTARA="0" CANEDITCMS="0" PASSWORDUPDATEREQUIRED="0"/>
+  <Site CREATEDON="2007-03-08 09:25:26.248" ID="200" MODIFIEDON="2012-05-08 16:02:01.252" NAME="Newtown Arts Centre"
+        SUBURB="Newtown" STATE="NSW" POSTCODENEW="2042" LONGITUDE="151.18114500" LATITUDE="-33.89645900"
+        PUBLICTRANSPORTDIRECTIONS="Take the train to Newtown Station, turn right as you leave the station and walk for 1 minute until you reach Wilson St. Turn right and the Arts Centre is the first building you pass."
+        STREET="10 Wilson St" ISADMINISTRATIONCENTRE="1" ISSHOWNONWEB="1" LOCALTIMEZONE="Australia/Sydney"
+        ISVIRTUAL="0"/>
+  <SystemUser email="admin@mail.com" CREATEDON="2007-03-01 14:35:11.023" FIRSTNAME="onCourse" ID="200"
+              LASTLOGINON="2013-01-11 11:43:08.356" LOGIN="admin" MODIFIEDON="2013-01-11 11:43:08.363"
+              PASSWORD="d033e22ae348aeb566fc214aec3585c4da997" SURNAME="Administrator" ISACTIVE="1" ISADMIN="1"
+              DEFAULTADMINISTRATIONCENTREID="200" CANEDITTARA="0" CANEDITCMS="0" PASSWORDUPDATEREQUIRED="0"/>
 
 
-	<Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="700" receivableFromStudentAccountId="800" taxCode="GST" taxrate="0.1"/>
-	<Tax id="1" isGSTTaxType="0" payableToSupplierAccountId="700" receivableFromStudentAccountId="800" taxCode="N" taxrate="0"/>
+  <Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="700" receivableFromStudentAccountId="800" taxCode="GST"
+       taxrate="0.1"/>
+  <Tax id="1" isGSTTaxType="0" payableToSupplierAccountId="700" receivableFromStudentAccountId="800" taxCode="N"
+       taxrate="0"/>
 
-	<Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name" lastName="name" email="test@test.te"/>
-	<Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name" lastName="name" email="test@test.te"/>
-	<Contact id="3" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AC" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="test" lastName="test" email="test@test.te"/>
+  <Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name"
+           lastName="name" email="test@test.te"/>
+  <Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name"
+           lastName="name" email="test@test.te"/>
+  <Contact id="3" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AC" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="test"
+           lastName="test" email="test@test.te"/>
 
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="1" invoiceNumber="1" amoutOwing="100" contactId="1" dateDue="2115-04-29 00:08:47"  debtorsAccountId="500" invoiceDate="2015-04-29 00:08:47" source="O" confirmationStatus="2"/>
-	<InvoiceLine id="1" invoiceId="1" accountId="500"  prepaidFeesAccountId="500" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100" quantity="1" taxEach="0.00" taxId="1" title="test invoiceline"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" invoiceNumber="1" amoutOwing="100" contactId="1"
+           dateDue="2115-04-29 00:08:47" debtorsAccountId="500" invoiceDate="2015-04-29 00:08:47" source="O"
+           confirmationStatus="2"/>
+  <InvoiceLine id="1" invoiceId="1" accountId="500" prepaidFeesAccountId="500" prepaidFeesRemaining="0.00"
+               discountEachExTax="0.00" priceEachExTax="100" quantity="1" taxEach="0.00" taxId="1"
+               title="test invoiceline"/>
 
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="2" invoiceNumber="2" amoutOwing="100" contactId="1" dateDue="2115-04-29 00:08:47"  debtorsAccountId="500" invoiceDate="2015-04-29 00:08:47" source="O" confirmationStatus="2"/>
-	<InvoiceLine id="2" invoiceId="2" accountId="500"  prepaidFeesAccountId="500" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="-100" quantity="1" taxEach="0.00" taxId="1" title="test invoiceline"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="2" invoiceNumber="2" amoutOwing="100" contactId="1"
+           dateDue="2115-04-29 00:08:47" debtorsAccountId="500" invoiceDate="2015-04-29 00:08:47" source="O"
+           confirmationStatus="2"/>
+  <InvoiceLine id="2" invoiceId="2" accountId="500" prepaidFeesAccountId="500" prepaidFeesRemaining="0.00"
+               discountEachExTax="0.00" priceEachExTax="-100" quantity="1" taxEach="0.00" taxId="1"
+               title="test invoiceline"/>
 
 
 </dataset>

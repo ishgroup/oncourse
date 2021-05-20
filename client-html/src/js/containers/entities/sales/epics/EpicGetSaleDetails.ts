@@ -4,7 +4,7 @@ import { DataResponse, ProductItem, ProductType } from "@api/model";
 import { Epic } from "redux-observable";
 import EntityService from "../../../../common/services/EntityService";
 
-const request: EpicUtils.Request<any, any, { id: string }> = {
+const request: EpicUtils.Request<any, { id: string }> = {
   type: GET_SALE_DETAILS,
   getData: ({ id }) => {
     return EntityService.getPlainRecords("ProductItem", "status,type", `id == ${id}`);

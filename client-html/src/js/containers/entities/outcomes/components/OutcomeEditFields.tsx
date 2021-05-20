@@ -1,27 +1,24 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import {
- Typography, Card, Grid, Chip 
+  Card, Chip, Grid, Tooltip, Typography
 } from "@material-ui/core";
 import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
-
 import { change } from "redux-form";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
-  ClassFundingSource,
-  DeliveryMode,
-  FundingUpload,
-  Module,
-  Outcome,
-  OutcomeStatus
+ ClassFundingSource, DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus
 } from "@api/model";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -57,6 +54,7 @@ interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
   getModules?: any;
   className?: string;
   isPriorLearningBinded?: boolean;
+  priorLearningEditView?: boolean;
   getFieldName: (name: keyof Outcome) => string;
   clearModules?: any;
   access?: AccessState;
@@ -121,13 +119,16 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     height: "60px",
   },
   deleteIcon: {
-    marginTop: "10px",
-    fontSize: "18px"
+    padding: theme.spacing(0.5),
+    marginTop: theme.spacing(1)
   },
   chip: {
     minWidth: "8em",
     height: "26px",
   },
+  tooltip: {
+    marginTop: theme.spacing(-2)
+  }
 }));
 
 const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
@@ -140,7 +141,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
     className,
     isPriorLearningBinded,
     isNew,
-    access
+    access,
+    priorLearningEditView
   } = props;
 
   const classes = useStyles();
@@ -209,6 +211,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
       mapSelectItems
     )), [values]);
 
+  const today = new Date();
+
   return (
     <Grid container className={className}>
       {!twoColumn && (
@@ -269,89 +273,141 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         </Grid>
       </Grid>
 
-      <Card className={classes.card}>
-        <Grid container>
-          <Grid xs={twoColumn ? 3 : 12}>
-            <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</Grid>
-            <FormField
-              type="date"
-              name={getFieldName("trainingPlanStartDate")}
-              placeHolder="Leave empty to calculate date from class"
-              label="Start date"
-              disabled
-            />
-            <FormField
-              type="date"
-              name={getFieldName("trainingPlanEndDate")}
-              placeHolder="Leave empty to calculate date from class"
-              label="End date"
-              disabled
-            />
+      {priorLearningEditView ? (
+        <Grid container item={true} xs={12}>
+          <Grid item xs={twoColumn ? 4 : 12} className="textField">
+            <div>
+              <FormField
+                type="date"
+                name={getFieldName("startDate")}
+                label="Start date"
+                validate={validateStartDate}
+                listSpacing={false}
+                placeHolder="Leave empty to calculate date from class"
+              />
+            </div>
           </Grid>
-          <Grid xs={twoColumn ? 3 : 12}>
-            <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</Grid>
-            <FormField
-              type="date"
-              name={getFieldName("actualStartDate")}
-              placeHolder="Leave empty to calculate date from class"
-              label="Start date"
-              disabled
-            />
-            <FormField
-              type="date"
-              name={getFieldName("actualEndDate")}
-              placeHolder="Leave empty to calculate date from class"
-              label="End date"
-              disabled
-            />
-          </Grid>
-          <Grid xs={twoColumn ? 3 : 12}>
-            <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</Grid>
-            <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
-              {values.startDateOverridden ? (
-                <>
-                  <FormField
-                    type="date"
-                    name={getFieldName("startDate")}
-                    validate={validateStartDate}
-                    disabled={!isPriorLearningBinded && !values.startDateOverridden}
-                    placeHolder="Leave empty to calculate date from class"
-                    label="Start date"
-                  />
-                  <IconButton className="inputAdornmentButton" onClick={onLockStartDate}>
-                    <DeleteIcon className={classes.deleteIcon} />
-                  </IconButton>
-                </>
-              ) : (
-                <Grid item className={classes.buttonWrapper}>
-                  <Chip label="Override" onClick={onLockStartDate} className={classes.chip} />
-                </Grid>
-              )}
-            </Grid>
-            <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
-              {values.endDateOverridden ? (
-                <>
-                  <FormField
-                    type="date"
-                    name={getFieldName("endDate")}
-                    validate={validateEndtDate}
-                    disabled={!isPriorLearningBinded && !values.endDateOverridden}
-                    placeHolder="Leave empty to calculate date from class"
-                    label="End date"
-                  />
-                  <IconButton className="inputAdornmentButton" onClick={onLockEndDate}>
-                    <DeleteIcon className={classes.deleteIcon} />
-                  </IconButton>
-                </>
-              ) : (
-                <Grid item className={classes.buttonWrapper}>
-                  <Chip label="Override" onClick={onLockEndDate} className={classes.chip} />
-                </Grid>
-              )}
-            </Grid>
+          <Grid item xs={twoColumn ? 4 : 12} className="textField">
+            <div>
+              <FormField
+                type="date"
+                name={getFieldName("endDate")}
+                label="End date"
+                validate={validateEndtDate}
+                listSpacing={false}
+                placeholder="Leave empty to calculate date from class"
+              />
+            </div>
           </Grid>
         </Grid>
-      </Card>
+      ) : (
+        <Card className={classes.card}>
+          <Grid container>
+            <Grid xs={twoColumn ? 3 : 12}>
+              <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</Grid>
+              <Tooltip
+                placement="top-start"
+                title="First session related to this outcome"
+              >
+                <div>
+                  <FormField
+                    type="date"
+                    name={getFieldName("trainingPlanStartDate")}
+                    label="Start date"
+                    disabled
+                  />
+                </div>
+              </Tooltip>
+              <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
+                <div>
+                  <FormField
+                    type="date"
+                    name={getFieldName("trainingPlanEndDate")}
+                    label="End date"
+                    disabled
+                  />
+                </div>
+              </Tooltip>
+            </Grid>
+            <Grid xs={twoColumn ? 3 : 12}>
+              <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</Grid>
+              <Tooltip placement="top-start" title="First session related to this outcome where student was not marked as absent">
+                <div>
+                  {values.actualStartDate && new Date(values.actualStartDate) > today
+                    ? <Uneditable label="Start date" value="Not yet started" />
+                    : (
+                      <FormField
+                        type="date"
+                        name={getFieldName("actualStartDate")}
+                        label="Start date"
+                        disabled
+                      />
+                    )}
+                </div>
+              </Tooltip>
+              <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
+                <div>
+                  {values.actualEndDate && new Date(values.actualEndDate) > today
+                    ? <Uneditable label="End date" value="Not yet finished" />
+                    : (
+                      <FormField
+                        type="date"
+                        name={getFieldName("actualEndDate")}
+                        label="End date"
+                        disabled
+                      />
+                    )}
+                </div>
+              </Tooltip>
+            </Grid>
+            <Grid xs={twoColumn ? 3 : 12}>
+              <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</Grid>
+              <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
+                {values.startDateOverridden ? (
+                  <>
+                    <FormField
+                      type="date"
+                      name={getFieldName("startDate")}
+                      validate={validateStartDate}
+                      disabled={!isPriorLearningBinded && !values.startDateOverridden}
+                      placeholder={(!isPriorLearningBinded && !values.startDateOverridden) ? null : "Leave empty to calculate date from class"}
+                      label="Start date"
+                    />
+                    <IconButton className={classes.deleteIcon} size="small" onClick={onLockStartDate}>
+                      <DeleteIcon fontSize="inherit" color="disabled" />
+                    </IconButton>
+                  </>
+                ) : (
+                  <Grid item className={classes.buttonWrapper}>
+                    <Chip label="Override start date" onClick={onLockStartDate} className={classes.chip} />
+                  </Grid>
+                )}
+              </Grid>
+              <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
+                {values.endDateOverridden ? (
+                  <>
+                    <FormField
+                      type="date"
+                      name={getFieldName("endDate")}
+                      validate={validateEndtDate}
+                      disabled={!isPriorLearningBinded && !values.endDateOverridden}
+                      placeholder={(!isPriorLearningBinded && !values.endDateOverridden) ? null : "Leave empty to calculate date from class"}
+                      label="End date"
+                    />
+                    <IconButton className={classes.deleteIcon} size="small" onClick={onLockEndDate}>
+                      <DeleteIcon fontSize="inherit" color="disabled" />
+                    </IconButton>
+                  </>
+                ) : (
+                  <Grid item className={classes.buttonWrapper}>
+                    <Chip label="Override end date" onClick={onLockEndDate} className={classes.chip} />
+                  </Grid>
+                )}
+              </Grid>
+            </Grid>
+          </Grid>
+        </Card>
+      )}
 
       <Grid item xs={12}>
         <Grid container>

@@ -11,10 +11,9 @@ import { GET_TRANSACTION_ITEM } from "../actions";
 import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getEntityItemById } from "../../common/entityItemsService";
-import { State } from "../../../../reducers/state";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, State, any> = {
+const request: EpicUtils.Request<any,  any> = {
   type: GET_TRANSACTION_ITEM,
   getData: (id: number) => getEntityItemById("AccountTransaction", id),
   processData: (transaction: Transaction, state) => {

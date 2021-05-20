@@ -70,7 +70,7 @@ export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep,
 
   const enrolmentsCount = enrolments.filter(en => en.courseClass).length;
 
-  const courseIds = enrolments.map(en => en.courseClass.courseId).toString();
+  const courseIds = enrolments.map(en => en.courseClass && en.courseClass.courseId).filter(en => en).toString();
 
   await enrolments.map(en => () => (en.courseClass
     ? CheckoutService.getContactDiscounts(
@@ -106,8 +106,8 @@ export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep,
 export const processCheckoutContactId = (contactId, onSelectHandler, dispatch) => {
   EntityService.getPlainRecords("Contact", CHECKOUT_CONTACT_COLUMNS, `id is ${contactId}`)
     .then(res => {
-      const contact = res.rows.map(getCustomColumnsMap(CHECKOUT_CONTACT_COLUMNS))[0];
-      onSelectHandler(contact, "contact");
+      const contact = res.rows.map(getCustomColumnsMap(CHECKOUT_CONTACT_COLUMNS));
+      if (contact && contact.length > 0) onSelectHandler(contact[0], "contact");
     })
     .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to get related contact"));
 };

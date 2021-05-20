@@ -15,7 +15,7 @@ import { getEntityItemById } from "../../common/entityItemsService";
 import { corporatePassNameCondition } from "../CorporatePasses";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_CORPORATE_PASS_ITEM,
   getData: (id: number) => getEntityItemById("CorporatePass", id),
   processData: (corporatePass: CorporatePass) => {

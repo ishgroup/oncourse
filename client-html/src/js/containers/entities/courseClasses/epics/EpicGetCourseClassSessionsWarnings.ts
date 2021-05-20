@@ -10,7 +10,7 @@ import { GET_COURSE_CLASS_SESSIONS_WARNINGS, setCourseClassSessionsWarnings } fr
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import CourseClassTimetableService from "../components/timetable/services/CourseClassTimetableService";
 
-const request: EpicUtils.Request<SessionWarning[], any, {classId: number, sessions: Session[]}> = {
+const request: EpicUtils.Request<SessionWarning[], {classId: number, sessions: Session[]}> = {
   type: GET_COURSE_CLASS_SESSIONS_WARNINGS,
   hideLoadIndicator: true,
   getData: ({ classId, sessions }) => CourseClassTimetableService.validateUpdate(classId, sessions),

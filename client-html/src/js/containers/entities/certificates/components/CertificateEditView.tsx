@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CertificateOutcome, Contact, Qualification } from "@api/model";
+import { CertificateOutcome, Contact } from "@api/model";
 import { FormControlLabel, Theme } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid/Grid";
 import Link from "@material-ui/core/Link";
@@ -12,9 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import clsx from "clsx";
 import { format } from "date-fns";
 import QRCode from "qrcode.react";
-import React, {
- useCallback, useEffect, useMemo, useRef
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { arrayRemove, change } from "redux-form";
@@ -152,18 +150,18 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
   );
 
   const onQualificationCodeChange = useCallback(
-    (q: Qualification) => {
+    q => {
       dispatch(change(form, "qualificationId", q ? q.id : null));
-      dispatch(change(form, "level", q ? q.qualLevel : null));
+      dispatch(change(form, "level", q ? q.level : null));
       dispatch(change(form, "title", q ? q.title : null));
     },
     [form]
   );
 
   const onQualificationTitleChange = useCallback(
-    (q: Qualification) => {
+    q => {
       dispatch(change(form, "qualificationId", q ? q.id : null));
-      dispatch(change(form, "level", q ? q.qualLevel : null));
+      dispatch(change(form, "level", q ? q.level : null));
       dispatch(change(form, "nationalCode", q ? q.nationalCode : null));
     },
     [form]

@@ -9,7 +9,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_DOCUMENT_EDIT, UPDATE_DOCUMENT_ITEM, UPDATE_DOCUMENT_ITEM_FULFILLED } from "../actions";
 
-const request: EpicUtils.Request<any, any, { id: number; document: Document & { notes: any } }> = {
+const request: EpicUtils.Request<any, { id: number; document: Document & { notes: any } }> = {
   type: UPDATE_DOCUMENT_ITEM,
   getData: ({ id, document }) => DocumentsService.updateDocumentItem(id, document),
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
@@ -25,10 +25,10 @@ const request: EpicUtils.Request<any, any, { id: number; document: Document & { 
       type: GET_RECORDS_REQUEST,
       payload: { entity: "Document", listUpdate: true, savedID: id }
     },
-    {
+    ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
       type: GET_DOCUMENT_EDIT,
       payload: id
-    }
+    }] : []
   ],
   processError: (response, { document }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, document)]
 };

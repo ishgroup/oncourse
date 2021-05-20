@@ -2,13 +2,11 @@ package ish.oncourse.server.quality
 
 import ish.oncourse.server.cayenne.QualityRule
 import org.apache.cayenne.query.Select
-import org.junit.Test
+import org.junit.jupiter.api.Test
+
 import static org.mockito.Matchers.any
 import static org.mockito.Mockito.when
 
-/**
- * Created by akoiro on 17/03/2016.
- */
 class EnrolmentCertificateTest {
     @Test
     void test() {

@@ -96,6 +96,8 @@ export const EXECUTE_ACTIONS_QUEUE = "execute/actionsQueue";
 
 export const CLEAR_ACTIONS_QUEUE = "clear/actionsQueue";
 
+export const NEXT_LOCATION = 'nextLocation';
+
 export const addActionToQueue = (
   actionBody: IAction,
   method: ApiMethods,
@@ -127,23 +129,7 @@ export const clearActionsQueue = () => ({
   type: CLEAR_ACTIONS_QUEUE
 });
 
-export const showConfirm: ShowConfirmCaller = (
-  onConfirm,
-  confirmMessage,
-  confirmButtonText,
-  onCancel,
-  title,
-  cancelButtonText
-) => {
-  const payload = {
-    title,
-    onCancel,
-    onConfirm,
-    confirmMessage,
-    confirmButtonText,
-    cancelButtonText
-  };
-
+export const showConfirm: ShowConfirmCaller = (payload) => {
   return {
     type: OPEN_CONFIRM,
     payload
@@ -271,3 +257,8 @@ export const showMessage = (message: AppMessage) => ({
 export const clearMessage = () => ({
   type: CLEAR_MESSAGE
 });
+
+export const setNextLocation = (nextLocation: string) => ({
+  type: NEXT_LOCATION,
+  payload: nextLocation
+})

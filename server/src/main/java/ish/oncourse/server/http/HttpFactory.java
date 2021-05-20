@@ -40,6 +40,12 @@ public class HttpFactory {
         this.path = path;
     }
 
+    public Integer getPort() {
+        return port;
+    }
+    public String getIp() {
+        return ip;
+    }
 
     public HttpFactory serverProvider(Provider<Server> serverProvider) {
         this.serverProvider = serverProvider;

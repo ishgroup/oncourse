@@ -9,10 +9,11 @@ import { InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
 import { decimalMinus, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 
 export const preformatInvoice = (value: InvoiceWithTotalLine): Invoice => {
-  value.invoiceLines.forEach(l => {
-    delete l.total;
-  });
-
+  if (value && value.invoiceLines) {
+    value.invoiceLines.forEach(l => {
+      delete l.total;
+    });
+  }
   return value;
 };
 

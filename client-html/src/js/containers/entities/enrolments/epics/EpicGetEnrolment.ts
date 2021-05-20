@@ -6,19 +6,37 @@
 import { Epic } from "redux-observable";
 import { Enrolment } from "@api/model";
 import { initialize } from "redux-form";
-import {clearActionsQueue} from "../../../../common/actions";
+import { clearActionsQueue } from "../../../../common/actions";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
-
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_ENROLMENT_ITEM, GET_ENROLMENT_ITEM_FULFILLED } from "../actions";
 import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EnrolmentService from "../services/EnrolmentService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import EntityService from "../../../../common/services/EntityService";
+import { getContactName } from "../../contacts/utils";
+import { EnrolmentExtended } from "../../../../model/entities/Enrolment";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ENROLMENT_ITEM,
-  getData: (id: number) => EnrolmentService.getEnrolment(id),
+  getData: (id: number) => EnrolmentService.getEnrolment(id).then(async (en: EnrolmentExtended) => {
+    for (const a of en.assessments) {
+      await EntityService.getPlainRecords(
+        "Contact",
+        "firstName,lastName",
+        `tutor.assessmentClassTutors.assessmentClass.courseClass.id is ${en.courseClassId} and tutor.assessmentClassTutors.assessmentClass.assessment.id is ${a.id}`
+      )
+      .then(res => {
+        a.tutors = res.rows.map(r => ({
+          contactId: Number(r.id),
+          tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
+        }));
+      });
+    }
+
+    return en;
+  }),
   processData: (enrolment: Enrolment, s, id) => {
     if (enrolment.relatedFundingSourceId === null) {
       enrolment.relatedFundingSourceId = -1;

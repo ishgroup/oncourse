@@ -11,7 +11,7 @@ import { GET_ENTITY_TAGS_REQUEST, GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../a
 import { Tag } from "@api/model";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, { entityName: string }> = {
+const request: EpicUtils.Request<any, { entityName: string }> = {
   type: GET_ENTITY_TAGS_REQUEST,
   getData: payload => TagsService.getTags(payload.entityName),
   processData: (tags: Tag[], s, { entityName }) => {

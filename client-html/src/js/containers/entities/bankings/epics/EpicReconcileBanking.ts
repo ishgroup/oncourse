@@ -12,13 +12,10 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import BankingService from "../services/BankingService";
 
-const request: EpicUtils.Request<any, any, { ids: number[] }> = {
+const request: EpicUtils.Request<any, { ids: number[] }> = {
   type: POST_RECONCILE_BANKING,
-  getData: ({ ids }) => {
-    return BankingService.reconcileBankings(ids);
-  },
-  processData: (v, s, { ids }) => {
-    return [
+  getData: ({ ids }) => BankingService.reconcileBankings(ids),
+  processData: (v, s, { ids }) => [
       {
         type: POST_RECONCILE_BANKING_FULFILLED
       },
@@ -34,8 +31,7 @@ const request: EpicUtils.Request<any, any, { ids: number[] }> = {
         type: GET_BANKING_ITEM,
         payload: ids[0]
       }
-    ];
-  },
+    ],
   processError: response => FetchErrorHandler(response)
 };
 

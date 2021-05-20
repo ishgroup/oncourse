@@ -15,10 +15,10 @@ import com.google.inject.Inject
 import com.google.inject.Provider
 import groovy.transform.CompileStatic
 import io.bootique.jetty.servlet.DefaultServletEnvironment
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ApiToken
 
 import static ish.oncourse.cayenne.SystemUserInterface.DEFAULT_ISH_USER
-import ish.oncourse.server.CayenneService
 
 import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
 import static ish.oncourse.server.api.servlet.AngelSessionDataStore.IS_LOGIN
@@ -40,7 +40,7 @@ class SessionManager implements ISessionManager {
     private Provider<Server> serverProvider
 
     @Inject
-    private CayenneService cayenneService
+    private ICayenneService cayenneService
 
     @Inject
     DefaultServletEnvironment defaultServletEnvironment

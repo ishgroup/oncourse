@@ -85,6 +85,23 @@ export function mockPreferences() {
         }
       ];
     }
+
+    if (enumName === "TwoFactorAuthStatus") {
+      return [
+        {
+          "value": "disabled",
+          "label": "Optional for all users"
+        },
+        {
+          "value": "enabled.admin",
+          "label": "Required for admin users"
+        },
+        {
+          "value": "enabled.all",
+          "label": "Required for all users"
+        }
+      ];
+    }
     return [];
   };
 
@@ -168,15 +185,15 @@ export function mockPreferences() {
     [Model.Fax.uniqueKey]: "test",
     [Model.FeeHelpProviderCode.uniqueKey]: "test",
     [Model.Id.uniqueKey]: "test",
-    [Model.Jurisdiction.uniqueKey]: 3,
+    [Model.Jurisdiction.uniqueKey]: "3",
     [Model.Phone.uniqueKey]: "test",
     [Model.Postcode.uniqueKey]: "test",
     [Model.QldIdentifier.uniqueKey]: "test",
     [Model.ShowGUI.uniqueKey]: true,
-    [Model.State.uniqueKey]: 1,
+    [Model.State.uniqueKey]: "1",
     [Model.StateName.uniqueKey]: "test",
     [Model.Suburb.uniqueKey]: "test",
-    [Model.Type.uniqueKey]: 4,
+    [Model.Type.uniqueKey]: "4",
     [Model.showOfferedQM.uniqueKey]: true,
 
     // Financial preferences
@@ -185,12 +202,20 @@ export function mockPreferences() {
     [Model.AccountTax.uniqueKey]: "3",
     [Model.AccountStudentEnrolments.uniqueKey]: "5",
     [Model.AccountPrepaidFees.uniqueKey]: "4",
-    [Model.AccountPrepaidFeesPostAt.uniqueKey]: "7",
+    [Model.AccountPrepaidFeesPostAt.uniqueKey]: "everySession",
     [Model.AccountVoucherLiability.uniqueKey]: "3",
     [Model.AccountVoucherUnderpayment.uniqueKey]: "9",
-    [Model.AccountDefaultCurrency.uniqueKey]: "2",
-    [Model.AccountInvoiceTerms.uniqueKey]: "1",
+    [Model.AccountDefaultCurrency.uniqueKey]: "AUD",
+    [Model.AccountInvoiceTerms.uniqueKey]: "7",
     [Model.PaymentInfo.uniqueKey]: "Some payment info",
-    [Model.QePaymentDefaultZero.uniqueKey]: false
+    [Model.QePaymentDefaultZero.uniqueKey]: false,
+
+    // Security
+    [Model.SecurityAutoDisableInactiveAccount.uniqueKey]: true,
+    [Model.SecurityPasswordComplexity.uniqueKey]: true,
+    [Model.SecurityPasswordExpiryPeriod.uniqueKey]: 180,
+    [Model.SecurityTFAExpiryPeriod.uniqueKey]: 180,
+    [Model.SecurityNumberIncorrectLoginAttempts.uniqueKey]: 5,
+    [Model.SecurityTFAStatus.uniqueKey]: "disabled",
   };
 }

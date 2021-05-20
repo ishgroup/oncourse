@@ -1,14 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-    <Site id="100" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0" localTimezone="Australia/Sydney"/>
+  <Site id="100" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0"
+        localTimezone="Australia/Sydney"/>
 
-    <SystemUser email="admin@mail.com" createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1" lastLoginOn="2014-10-20 12:33:13.0" login="admin" modifiedOn="2014-10-20 12:33:13.0" password="PBKDF2WithHmacSHA1:1000:5b5814a658527cd9fd6f61224eb05fec699fb20900b4193d:0fd68ff3c15901a1b835cdd571a536f678104c6592f05322" surname="Administrator" isActive="1" isAdmin="1" defaultAdministrationCentreId="100" canEditTara="0" canEditCMS="0" willowid="21" PASSWORDUPDATEREQUIRED="0"/>
+  <SystemUser email="admin@mail.com" createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1"
+              lastLoginOn="2014-10-20 12:33:13.0" login="admin" modifiedOn="2014-10-20 12:33:13.0"
+              password="PBKDF2WithHmacSHA1:1000:5b5814a658527cd9fd6f61224eb05fec699fb20900b4193d:0fd68ff3c15901a1b835cdd571a536f678104c6592f05322"
+              surname="Administrator" isActive="1" isAdmin="1" defaultAdministrationCentreId="100" canEditTara="0"
+              canEditCMS="0" willowid="21" PASSWORDUPDATEREQUIRED="0"/>
 
-    <Document id="1" createdOn="2020-06-15 23:09:02" modifiedOn="2020-06-15 23:09:02" name="test1" description="testDescription1" fileUUID="68a12519-afb1-44b2-99e8-8fc7b31a9d6f" isShared="0" webVisibility="0" isRemoved="0" added="2020-06-15 23:08:57"/>
-    <Document id="2" createdOn="2020-05-22 23:01:44" modifiedOn="2020-05-22 23:01:44" name="test2" description="testDescription2" fileUUID="00cc4893-9010-4582-a5ee-156381ed6e1f" isShared="1" webVisibility="1" isRemoved="0" added="2020-05-22 23:01:44"/>
-    <Document id="3" createdOn="2020-04-24 20:58:03" modifiedOn="2020-04-24 20:58:03" name="test3" description="testDescription3" fileUUID="385e1153-5ee7-4d7b-bef0-53f06d84b1eb" isShared="0" webVisibility="0" isRemoved="1" added="2020-04-24 20:57:58"/>
+  <Document id="1" createdOn="2020-06-15 23:09:02" modifiedOn="2020-06-15 23:09:02" name="test1"
+            description="testDescription1" fileUUID="68a12519-afb1-44b2-99e8-8fc7b31a9d6f" isShared="0"
+            webVisibility="0" isRemoved="0" added="2020-06-15 23:08:57"/>
+  <Document id="2" createdOn="2020-05-22 23:01:44" modifiedOn="2020-05-22 23:01:44" name="test2"
+            description="testDescription2" fileUUID="00cc4893-9010-4582-a5ee-156381ed6e1f" isShared="1"
+            webVisibility="1" isRemoved="0" added="2020-05-22 23:01:44"/>
+  <Document id="3" createdOn="2020-04-24 20:58:03" modifiedOn="2020-04-24 20:58:03" name="test3"
+            description="testDescription3" fileUUID="385e1153-5ee7-4d7b-bef0-53f06d84b1eb" isShared="0"
+            webVisibility="0" isRemoved="1" added="2020-04-24 20:57:58"/>
 
-    <DocumentVersion id="1" documentId="1" fileName="Screen" mimeType="image/png" timestamp="2020-06-15 23:09:02" createdOn="2020-06-15 23:09:02" modifiedOn="2020-06-15 23:09:02" createdByUserId="1"/>
-    <DocumentVersion id="2" documentId="2" fileName="Text" mimeType="text/csv" timestamp="2020-05-22 23:01:44" createdOn="2020-05-22 23:01:44" modifiedOn="2020-05-22 23:01:44" createdByUserId="1"/>
-    <DocumentVersion id="3" documentId="3" fileName="Photo" mimeType="image/png" timestamp="2020-04-24 20:58:03" createdOn="2020-04-24 20:58:03" modifiedOn="2020-04-24 20:58:03" createdByUserId="1"/>
+  <DocumentVersion id="1" documentId="1" fileName="Screen" mimeType="image/png" timestamp="2020-06-15 23:09:02"
+                   createdOn="2020-06-15 23:09:02" modifiedOn="2020-06-15 23:09:02" createdByUserId="1"/>
+  <DocumentVersion id="2" documentId="2" fileName="Text" mimeType="text/csv" timestamp="2020-05-22 23:01:44"
+                   createdOn="2020-05-22 23:01:44" modifiedOn="2020-05-22 23:01:44" createdByUserId="1"/>
+  <DocumentVersion id="3" documentId="3" fileName="Photo" mimeType="image/png" timestamp="2020-04-24 20:58:03"
+                   createdOn="2020-04-24 20:58:03" modifiedOn="2020-04-24 20:58:03" createdByUserId="1"/>
 </dataset>

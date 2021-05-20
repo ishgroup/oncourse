@@ -6,10 +6,11 @@
 import React, { ComponentClass } from "react";
 import { withStyles, Typography, Grid } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
+import { withRouter } from "react-router";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
-  Field, initialize, change, arrayRemove, reduxForm, getFormValues
+  Form, Field, initialize, change, arrayRemove, reduxForm, getFormValues
 } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -18,7 +19,6 @@ import { AddCircle } from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "../../../common/components/buttons/Button";
 import FormField from "../../../common/components/form/form-fields/FormField";
-import HeaderTextField from "../../../common/components/form/form-fields/HeaderTextField";
 import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
 import AppBarHelpMenu from "../../../common/components/form/AppBarHelpMenu";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
@@ -34,8 +34,9 @@ import AppBarActions from "../../../common/components/form/AppBarActions";
 import TagRequirementItem from "../components/TagRequirementItem";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import TagItemEditView from "../components/TagItemEditView";
-import { showConfirm } from "../../../common/actions";
+import { setNextLocation, showConfirm } from "../../../common/actions";
 import { getAllTags } from "../utils";
+import { ShowConfirmCaller } from "../../../model/common/Confirm";
 
 const styles = () => ({
   noTransform: {
@@ -55,7 +56,7 @@ interface Props {
   tags?: FormTag[];
   isNew?: boolean;
   redirectOnDelete?: () => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
 }
 
 interface FormProps extends Props {
@@ -63,6 +64,7 @@ interface FormProps extends Props {
   classes: any;
   dispatch: any;
   className: string;
+  form: string;
   handleSubmit: any;
   dirty: boolean;
   asyncValidating: boolean;
@@ -75,6 +77,9 @@ interface FormProps extends Props {
   onDelete: (id: number) => void;
   openTagEditView: (item: Tag) => void;
   closeTagEditView: () => void;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
   theme?: any;
 }
 
@@ -161,7 +166,9 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
   }
 
   componentDidUpdate(prevProps) {
-    const { rootTag, submitSucceeded, fetch } = this.props;
+    const {
+ rootTag, submitSucceeded, fetch, nextLocation, setNextLocation, dirty, history
+} = this.props;
 
     if (rootTag && (!prevProps.rootTag || prevProps.rootTag.id !== rootTag.id || submitSucceeded)) {
       setDragIndex(getAllTags([rootTag]));
@@ -176,6 +183,11 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
     if (this.isPending && fetch && fetch.success) {
       this.isPending = false;
       this.resolvePromise();
+    }
+
+    if (nextLocation && !dirty && !this.isPending) {
+      history.push(nextLocation);
+      setNextLocation('');
     }
   }
 
@@ -262,14 +274,26 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       );
 
       const insertValue = getDeepValue(clone, draggableId);
+      let destinationPathIndex = -1;
 
-      const insertIndex = !combine && Number(destinationPath.match(/\[[0-9]+]$/)[0].replace(/[\[\]]/g, ""));
+      if (!combine) {
+        const destinationPathMatch = destinationPath.match(/\[[0-9]+]$/);
+        if (destinationPathMatch && destinationPathMatch.length > 0) {
+          destinationPathIndex = Number(destinationPathMatch[0].replace(/[\[\]]/g, ""));
+        }
+      }
+
+      const insertIndex = !combine && destinationPathIndex;
 
       const removePath = getDeepValue(clone, draggableId.replace(/\[[0-9]+]$/, ""));
 
-      const removeIndex = Number(draggableId.match(/\[[0-9]+]$/)[0].replace(/[\[\]]/g, ""));
+      const draggableIdMatch = draggableId.match(/\[[0-9]+]$/);
 
-      removePath.splice(removeIndex, 1);
+      if (draggableIdMatch && draggableIdMatch.length > 0) {
+        const removeIndex = Number(draggableIdMatch[0].replace(/[\[\]]/g, ""));
+        removePath.splice(removeIndex, 1);
+      }
+
       combine ? insertPath.push(insertValue) : insertPath.splice(insertIndex, 0, insertValue);
 
       setDragIndex(getAllTags([clone]));
@@ -312,7 +336,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
   removeChildTag = (parent, index, item) => {
     const { dispatch, values, openConfirm } = this.props;
 
-    const message = item.childrenCount
+    const confirmMessage = item.childrenCount
       ? `Deleting this tag will automatically delete ${item.childrenCount} 
     children tag${item.childrenCount === 1 ? "" : "s"}. ${
           item.taggedRecordsCount ? item.taggedRecordsCount + " records will be untagged. " : ""
@@ -331,7 +355,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       dispatch(change("TagsForm", "childTags", clone.childTags));
     };
 
-    openConfirm(onConfirm, message, "DELETE");
+    openConfirm({ onConfirm, confirmMessage, confirmButtonText: "DELETE" });
   };
 
   removeRequirement = index => {
@@ -411,13 +435,14 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       closeTagEditView,
       isNew,
       openConfirm,
-      dispatch
+      dispatch,
+      form
     } = this.props;
 
     return (
       <>
-        <form onSubmit={handleSubmit(this.onSave)} className={className}>
-          {!this.disableConfirm && dirty && <RouteChangeConfirm when={dirty} />}
+        <Form onSubmit={handleSubmit(this.onSave)} className={className}>
+          {!this.disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
           <CustomAppBar>
             <Grid container>
@@ -536,7 +561,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
               </DragDropContext>
             </Grid>
           </Grid>
-        </form>
+        </Form>
 
         <TagItemEditView
           validateName={this.validateTagName}
@@ -551,7 +576,8 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("TagsForm")(state),
-  fetch: state.fetch
+  fetch: state.fetch,
+  nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -560,12 +586,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onDelete: (id: number) => dispatch(deleteTag(id)),
   openTagEditView: (item: Tag, parent: string) => dispatch(updateTagEditViewState(item, true, parent)),
   closeTagEditView: () => dispatch(updateTagEditViewState({}, false, null)),
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: any, onCancel?: any, title?: string) =>
-    dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel, title))
+  openConfirm: props => dispatch(showConfirm(props)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 const TagsForm = reduxForm({
   form: "TagsForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(TagsFormBase)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(withRouter(TagsFormBase))));
 
 export default TagsForm as ComponentClass<Props>;

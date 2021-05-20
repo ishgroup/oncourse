@@ -1,118 +1,275 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Preference CREATEDON="2007-11-19 13:30:29.497" ID="903" MODIFIEDON="2013-05-06 00:33:41.913" VALUESTRING="31-Dec-2015" NAME="finance.transaction_locked" UNIQUEKEY="finance.transaction_locked"/>
+  <Preference CREATEDON="2007-11-19 13:30:29.497" ID="903" MODIFIEDON="2013-05-06 00:33:41.913"
+              VALUESTRING="31-Dec-2015" NAME="finance.transaction_locked" UNIQUEKEY="finance.transaction_locked"/>
 
-	<Account accountCode="10000" CREATEDON="2007-03-01 14:35:11.047" description="Assets" id="1000" isEnabled="0" MODIFIEDON="2007-11-16 18:24:33.217" type="1"/>
-	<Account accountCode="2345 - uf" CREATEDON="2007-03-01 14:35:11.047" description="Undeposited funds" id="210" isEnabled="1" MODIFIEDON="2007-11-16 18:24:33.217" type="1"/>
-	<Account accountCode="11000" CREATEDON="2007-03-01 14:35:11.071" description="Current assets" id="2000" isEnabled="0" MODIFIEDON="2007-11-16 18:24:33.218" type="1"/>
-	<Account accountCode="11100" CREATEDON="2007-03-01 14:35:11.086" description="Cheque account" id="3000" isEnabled="1" MODIFIEDON="2012-05-08 16:02:04.217" type="1"/>
-	<Account accountCode="11200" CREATEDON="2007-03-01 14:35:11.108" description="Petty cash" id="4000" isEnabled="1" MODIFIEDON="2007-11-16 18:24:33.219" type="1"/>
-	<Account accountCode="11500" CREATEDON="2007-03-01 14:35:11.118" description="Trade debtors" id="5000" isEnabled="1" MODIFIEDON="2013-01-08 15:22:12.014" type="1"/>
-	<Account id="8000" accountCode="vLability" description="Test voucher liability acc" isEnabled="1" type="2"/>
+  <Account accountCode="10000" CREATEDON="2007-03-01 14:35:11.047" description="Assets" id="1000" isEnabled="0"
+           MODIFIEDON="2007-11-16 18:24:33.217" type="1"/>
+  <Account accountCode="2345 - uf" CREATEDON="2007-03-01 14:35:11.047" description="Undeposited funds" id="210"
+           isEnabled="1" MODIFIEDON="2007-11-16 18:24:33.217" type="1"/>
+  <Account accountCode="11000" CREATEDON="2007-03-01 14:35:11.071" description="Current assets" id="2000" isEnabled="0"
+           MODIFIEDON="2007-11-16 18:24:33.218" type="1"/>
+  <Account accountCode="11100" CREATEDON="2007-03-01 14:35:11.086" description="Cheque account" id="3000" isEnabled="1"
+           MODIFIEDON="2012-05-08 16:02:04.217" type="1"/>
+  <Account accountCode="11200" CREATEDON="2007-03-01 14:35:11.108" description="Petty cash" id="4000" isEnabled="1"
+           MODIFIEDON="2007-11-16 18:24:33.219" type="1"/>
+  <Account accountCode="11500" CREATEDON="2007-03-01 14:35:11.118" description="Trade debtors" id="5000" isEnabled="1"
+           MODIFIEDON="2013-01-08 15:22:12.014" type="1"/>
+  <Account id="8000" accountCode="vLability" description="Test voucher liability acc" isEnabled="1" type="2"/>
 
-	<Banking id="100" type="1" settlementDate="2016-5-14"/>
-	<Banking id="200" type="1" settlementDate="2016-5-14"/>
-
-
-	<Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="3000" receivableFromStudentAccountId="4000" taxCode="GST" taxrate="0.1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-	
-	<PaymentMethod id="100" name="Cash" accountId="3000" active="1" bankedAutomatically="0" reconcilable="1" type="6" undepositedFundsAccountId="210"/>
-    <PaymentMethod id="200" name="Cheque" accountId="3000" active="1" bankedAutomatically="0" reconcilable="1" type="1" undepositedFundsAccountId="210"/>
-    <PaymentMethod id="300" name="Credit card" accountId="3000" active="1" bankedAutomatically="1" reconcilable="1"  type="2" undepositedFundsAccountId="210"/>
-    <PaymentMethod id="400" name="EFT" accountId="3000" active="1" bankedAutomatically="1" reconcilable="1" type="6" undepositedFundsAccountId="210"/>
-    <PaymentMethod id="500" name="B-Pay" accountId="3000" active="1" bankedAutomatically="0" reconcilable="1" type="6" undepositedFundsAccountId="210"/>
-    <PaymentMethod id="600" name="Zero" accountId="3000" active="1" bankedAutomatically="1" reconcilable="0" type="5"/>
-    <PaymentMethod id="700" name="Other" accountId="3000" active="0" bankedAutomatically="0" reconcilable="1" type="6" undepositedFundsAccountId="210"/>
-    <PaymentMethod id="800" name="Contra" accountId="3000" active="1" bankedAutomatically="1" reconcilable="0" type="7"/>
-    <PaymentMethod id="900" name="Voucher" accountId="3000" active="1" bankedAutomatically="1" reconcilable="0" type="8"/>
-    <PaymentMethod id="1000" name="PayPal" accountId="3000" active="1" bankedAutomatically="0" reconcilable="1" type="6" undepositedFundsAccountId="210"/>
-    <PaymentMethod id="1100" name="Reverse" accountId="3000" active="1" bankedAutomatically="1" reconcilable="0" type="10"/>
-    <PaymentMethod id="1200" name="EFTPOS" accountId="3000" active="1" bankedAutomatically="1" reconcilable="1" type="6" undepositedFundsAccountId="210"/>
+  <Banking id="100" type="1" settlementDate="2016-5-14"/>
+  <Banking id="200" type="1" settlementDate="2016-5-14"/>
 
 
-	<Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00" deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000" workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW" uniqueCode="ST1UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
+  <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="3000" receivableFromStudentAccountId="4000" taxCode="GST"
+       taxrate="0.1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" invoiceNumber="1" debtorsAccountId="1000" contactId="1" amoutOwing="100.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
-	<InvoiceLine id="1" invoiceId="1" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-
-
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="2" invoiceNumber="2" debtorsAccountId="1000" contactId="1" amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..."  createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
-	<InvoiceLine id="2" invoiceId="2" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="-10.00" quantity="1" taxEach="0.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="3" invoiceNumber="1" debtorsAccountId="1000" contactId="1" amoutOwing="100.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
-	<InvoiceLine id="3" invoiceId="3" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-
-	<Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="1abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1" lastName="name" email="test@test.te"/>
-
-	<Student id="1" contactId="2" disabilityType="0" employmentCategoryId="0" englishProficiency="0" highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0" studentNumber="1" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-
-	<FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-
-	<FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-
-	<FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	
-	<Course id="1"  code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-
-	<Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney" isVirtual="0"/>
-
-	<Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
-
-	<CourseClass id="1" code="123" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1" incomeAccountId="1000" deliveryMode="1" courseId="1" feeExGst="100.00" suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
-	<CourseClass id="2" code="123-1" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1" incomeAccountId="1000" deliveryMode="1" courseId="1" feeExGst="100.00" suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
-
-	<CourseSession id="1" courseClass_Id="1" startDatetime="2042-05-15 18:30:00.00" endDatetime="2042-05-15 19:30:00.00" payAdjustment="0.00"/>
-	<CourseSession id="2" courseClass_Id="1" startDatetime="2042-05-16 18:30:00.00" endDatetime="2042-05-16 19:30:00.00" payAdjustment="0.00"/>
-	<CourseSession id="3" courseClass_Id="1" startDatetime="2042-05-17 18:30:00.00" endDatetime="2042-05-17 19:30:00.00" payAdjustment="0.00"/>
-
-	<CourseSession id="4" courseClass_Id="2" startDatetime="2042-04-15 18:30:00.00" endDatetime="2042-04-15 19:30:00.00" payAdjustment="0.00"/>
-	<CourseSession id="5" courseClass_Id="2" startDatetime="2042-04-16 18:30:00.00" endDatetime="2042-04-16 19:30:00.00" payAdjustment="0.00"/>
-	<CourseSession id="6" courseClass_Id="2" startDatetime="2042-04-17 18:30:00.00" endDatetime="2042-04-17 19:30:00.00" payAdjustment="0.00"/>
-
-	<Product SKU="ENROLMENT" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="1" ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="10.00" TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" maxCoursesRedemption="3" expiryDays="365" liabilityAccountId="8000"/>
-	<Product SKU="VALUE" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="2" ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="10.00" TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" expiryDays="365" liabilityAccountId="8000" value="150.00"/>
-	<Product SKU="PURCHASE" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="3" ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" expiryDays="365" liabilityAccountId="8000"/>
-    <Product SKU="ENROLMENT2" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="4" ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="120.00" TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" maxCoursesRedemption="3" expiryDays="365" liabilityAccountId="8000"/>
-    <Product SKU="VALUE2" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="5" ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="10.00" TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" expiryDays="365" liabilityAccountId="8000" value="120.00"/>
-    <Product SKU="ENROLMENT3" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="6" ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="120.00" TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" maxCoursesRedemption="1" expiryDays="365" liabilityAccountId="8000"/>
-    <Product SKU="VALUE3" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="7" ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="180.00" TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" expiryDays="365" liabilityAccountId="8000" value="100.00"/>
+  <PaymentMethod id="100" name="Cash" accountId="3000" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 undepositedFundsAccountId="210"/>
+  <PaymentMethod id="200" name="Cheque" accountId="3000" active="1" bankedAutomatically="0" reconcilable="1" type="1"
+                 undepositedFundsAccountId="210"/>
+  <PaymentMethod id="300" name="Credit card" accountId="3000" active="1" bankedAutomatically="1" reconcilable="1"
+                 type="2" undepositedFundsAccountId="210"/>
+  <PaymentMethod id="400" name="EFT" accountId="3000" active="1" bankedAutomatically="1" reconcilable="1" type="6"
+                 undepositedFundsAccountId="210"/>
+  <PaymentMethod id="500" name="B-Pay" accountId="3000" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 undepositedFundsAccountId="210"/>
+  <PaymentMethod id="600" name="Zero" accountId="3000" active="1" bankedAutomatically="1" reconcilable="0" type="5"/>
+  <PaymentMethod id="700" name="Other" accountId="3000" active="0" bankedAutomatically="0" reconcilable="1" type="6"
+                 undepositedFundsAccountId="210"/>
+  <PaymentMethod id="800" name="Contra" accountId="3000" active="1" bankedAutomatically="1" reconcilable="0" type="7"/>
+  <PaymentMethod id="900" name="Voucher" accountId="3000" active="1" bankedAutomatically="1" reconcilable="0" type="8"/>
+  <PaymentMethod id="1000" name="PayPal" accountId="3000" active="1" bankedAutomatically="0" reconcilable="1" type="6"
+                 undepositedFundsAccountId="210"/>
+  <PaymentMethod id="1100" name="Reverse" accountId="3000" active="1" bankedAutomatically="1" reconcilable="0"
+                 type="10"/>
+  <PaymentMethod id="1200" name="EFTPOS" accountId="3000" active="1" bankedAutomatically="1" reconcilable="1" type="6"
+                 undepositedFundsAccountId="210"/>
 
 
-    <VoucherProduct_Course id="1" voucherProductId="1" courseId="1"/>
-    <VoucherProduct_Course id="2" voucherProductId="4" courseId="1"/>
+  <Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
+           modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000"
+           workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW"
+           uniqueCode="ST1UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
 
-	<Enrolment id="1" courseClass_id="1" studentId="1" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" invoiceNumber="1" debtorsAccountId="1000" contactId="1"
+           amoutOwing="100.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+           confirmationStatus="2"/>
+  <InvoiceLine id="1" invoiceId="1" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00"
+               taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="4" invoiceNumber="4" debtorsAccountId="1000" contactId="2" amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..."  createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="5" invoiceNumber="5" debtorsAccountId="1000" contactId="2" amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..."  createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="6" invoiceNumber="6" debtorsAccountId="1000" contactId="2" amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..."  createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="7" invoiceNumber="7" debtorsAccountId="1000" contactId="2" amoutOwing="100.00" dateDue="2013-03-01 00:00:00" invoiceDate="2013-03-01 00:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="8" invoiceNumber="8" debtorsAccountId="1000" contactId="2" amoutOwing="30.00" dateDue="2013-03-01 00:00:00" invoiceDate="2013-03-01 00:00:00" source="O" confirmationStatus="2"/>
-    <Invoice allowAutoPay="1" type="1" overdue="0.00" id="9" invoiceNumber="6" debtorsAccountId="1000" contactId="2" amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..."  createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
-    <Invoice allowAutoPay="1" type="1" overdue="0.00" id="10" invoiceNumber="6" debtorsAccountId="1000" contactId="2" amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..."  createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
-    <Invoice allowAutoPay="1" type="1" overdue="0.00" id="11" invoiceNumber="6" debtorsAccountId="1000" contactId="2" amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..."  createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
-    <Invoice allowAutoPay="1" type="1" overdue="0.00" id="12" invoiceNumber="6" debtorsAccountId="1000" contactId="2" amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..."  createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
 
-	<InvoiceLine id="4" invoiceId="4" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="10.00" quantity="1" taxEach="0.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-	<InvoiceLine id="5" invoiceId="5" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="30.00" quantity="1" taxEach="0.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-	<InvoiceLine id="6" invoiceId="6" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="200.00" quantity="1" taxEach="0.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-	<InvoiceLine id="7" invoiceId="7" accountId="2000" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="8" invoiceId="8" accountId="2000" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
-    <InvoiceLine id="9" invoiceId="9" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="120.00" quantity="1" taxEach="0.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <InvoiceLine id="10" invoiceId="10" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="120.00" quantity="1" taxEach="0.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <InvoiceLine id="11" invoiceId="11" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="120.00" quantity="1" taxEach="0.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <InvoiceLine id="12" invoiceId="12" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="180.00" quantity="1" taxEach="0.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="2" invoiceNumber="2" debtorsAccountId="1000" contactId="1"
+           amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+           confirmationStatus="2"/>
+  <InvoiceLine id="2" invoiceId="2" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="-10.00" quantity="1" taxEach="0.00"
+               taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
-    <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="1" MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="1" TYPE="3" code="qwerty1" value="10.00" redeemedCoursesCount="3" source="O" status="0" INVOICELINEID="4" confirmationStatus="2" valueOnPurchase="10.00"/>
-	<ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="2" MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="2" TYPE="3" code="qwerty2" value="150.00" redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="5" confirmationStatus="2" valueOnPurchase="150.00"/>
-	<ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="3" MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="3" TYPE="3" code="qwerty3" value="200.00" redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="6" confirmationStatus="2" valueOnPurchase="200.00"/>
-    <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="4" MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="4" TYPE="3" code="qwerty4" value="120.00" redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="9" confirmationStatus="2" valueOnPurchase="120.00"/>
-    <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="5" MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="5" TYPE="3" code="qwerty4" value="120.00" redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="10" confirmationStatus="2" valueOnPurchase="120.00"/>
-    <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="6" MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="6" TYPE="3" code="qwerty4" value="120.00" redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="11" confirmationStatus="2" valueOnPurchase="120.00"/>
-    <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="7" MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="7" TYPE="3" code="qwerty4" value="100.00" redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="12" confirmationStatus="2" valueOnPurchase="100.00"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="3" invoiceNumber="1" debtorsAccountId="1000" contactId="1"
+           amoutOwing="100.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+           confirmationStatus="2"/>
+  <InvoiceLine id="3" invoiceId="3" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00"
+               taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+
+  <Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="1abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1" lastName="name"
+           email="test@test.te"/>
+
+  <Student id="1" contactId="2" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0" studentNumber="1"
+           usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+
+  <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+
+  <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+
+  <Course id="1" code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+
+  <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney"
+        isVirtual="0"/>
+
+  <Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
+
+  <CourseClass id="1" code="123" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+               isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               incomeAccountId="1000" deliveryMode="1" courseId="1" feeExGst="100.00" suppressAvetmissExport="0"
+               roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
+  <CourseClass id="2" code="123-1" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+               isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               incomeAccountId="1000" deliveryMode="1" courseId="1" feeExGst="100.00" suppressAvetmissExport="0"
+               roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
+
+  <CourseSession id="1" courseClass_Id="1" startDatetime="2042-05-15 18:30:00.00" endDatetime="2042-05-15 19:30:00.00"
+                 payAdjustment="0.00"/>
+  <CourseSession id="2" courseClass_Id="1" startDatetime="2042-05-16 18:30:00.00" endDatetime="2042-05-16 19:30:00.00"
+                 payAdjustment="0.00"/>
+  <CourseSession id="3" courseClass_Id="1" startDatetime="2042-05-17 18:30:00.00" endDatetime="2042-05-17 19:30:00.00"
+                 payAdjustment="0.00"/>
+
+  <CourseSession id="4" courseClass_Id="2" startDatetime="2042-04-15 18:30:00.00" endDatetime="2042-04-15 19:30:00.00"
+                 payAdjustment="0.00"/>
+  <CourseSession id="5" courseClass_Id="2" startDatetime="2042-04-16 18:30:00.00" endDatetime="2042-04-16 19:30:00.00"
+                 payAdjustment="0.00"/>
+  <CourseSession id="6" courseClass_Id="2" startDatetime="2042-04-17 18:30:00.00" endDatetime="2042-04-17 19:30:00.00"
+                 payAdjustment="0.00"/>
+
+  <Product SKU="ENROLMENT" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="1"
+           ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product"
+           PRICEEXTAX="10.00" TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" maxCoursesRedemption="3"
+           expiryDays="365" liabilityAccountId="8000"/>
+  <Product SKU="VALUE" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="2" ISONSALE="1"
+           ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="10.00"
+           TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" expiryDays="365" liabilityAccountId="8000"
+           value="150.00"/>
+  <Product SKU="PURCHASE" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="3"
+           ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" TYPE="3"
+           TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" expiryDays="365" liabilityAccountId="8000"/>
+  <Product SKU="ENROLMENT2" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="4"
+           ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product"
+           PRICEEXTAX="120.00" TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" maxCoursesRedemption="3"
+           expiryDays="365" liabilityAccountId="8000"/>
+  <Product SKU="VALUE2" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="5" ISONSALE="1"
+           ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="10.00"
+           TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" expiryDays="365" liabilityAccountId="8000"
+           value="120.00"/>
+  <Product SKU="ENROLMENT3" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="6"
+           ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product"
+           PRICEEXTAX="120.00" TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" maxCoursesRedemption="1"
+           expiryDays="365" liabilityAccountId="8000"/>
+  <Product SKU="VALUE3" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="7" ISONSALE="1"
+           ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product" PRICEEXTAX="180.00"
+           TYPE="3" TAXADJUSTMENT="0.00" incomeAccountId="2000" taxId="1" expiryDays="365" liabilityAccountId="8000"
+           value="100.00"/>
+
+
+  <VoucherProduct_Course id="1" voucherProductId="1" courseId="1"/>
+  <VoucherProduct_Course id="2" voucherProductId="4" courseId="1"/>
+
+  <Enrolment id="1" courseClass_id="1" studentId="1" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="4" invoiceNumber="4" debtorsAccountId="1000" contactId="2"
+           amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="5" invoiceNumber="5" debtorsAccountId="1000" contactId="2"
+           amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="6" invoiceNumber="6" debtorsAccountId="1000" contactId="2"
+           amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="7" invoiceNumber="7" debtorsAccountId="1000" contactId="2"
+           amoutOwing="100.00" dateDue="2013-03-01 00:00:00" invoiceDate="2013-03-01 00:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="8" invoiceNumber="8" debtorsAccountId="1000" contactId="2"
+           amoutOwing="30.00" dateDue="2013-03-01 00:00:00" invoiceDate="2013-03-01 00:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="9" invoiceNumber="6" debtorsAccountId="1000" contactId="2"
+           amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="10" invoiceNumber="6" debtorsAccountId="1000" contactId="2"
+           amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="11" invoiceNumber="6" debtorsAccountId="1000" contactId="2"
+           amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="12" invoiceNumber="6" debtorsAccountId="1000" contactId="2"
+           amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+           confirmationStatus="2"/>
+
+  <InvoiceLine id="4" invoiceId="4" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="10.00" quantity="1" taxEach="0.00"
+               taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <InvoiceLine id="5" invoiceId="5" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="30.00" quantity="1" taxEach="0.00"
+               taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <InvoiceLine id="6" invoiceId="6" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="200.00" quantity="1" taxEach="0.00"
+               taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <InvoiceLine id="7" invoiceId="7" accountId="2000" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00"
+               discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
+               title="test invoiceline"/>
+  <InvoiceLine id="8" invoiceId="8" accountId="2000" prepaidFeesAccountId="5000" prepaidFeesRemaining="0.00"
+               discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
+               title="test invoiceline"/>
+  <InvoiceLine id="9" invoiceId="9" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="120.00" quantity="1" taxEach="0.00"
+               taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <InvoiceLine id="10" invoiceId="10" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="120.00" quantity="1" taxEach="0.00"
+               taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <InvoiceLine id="11" invoiceId="11" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="120.00" quantity="1" taxEach="0.00"
+               taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <InvoiceLine id="12" invoiceId="12" accountId="1000" sortOrder="0" prepaidFeesAccountId="5000"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="180.00" quantity="1" taxEach="0.00"
+               taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+
+  <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="1"
+               MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="1" TYPE="3" code="qwerty1" value="10.00"
+               redeemedCoursesCount="3" source="O" status="0" INVOICELINEID="4" confirmationStatus="2"
+               valueOnPurchase="10.00"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="2"
+               MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="2" TYPE="3" code="qwerty2" value="150.00"
+               redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="5" confirmationStatus="2"
+               valueOnPurchase="150.00"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="3"
+               MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="3" TYPE="3" code="qwerty3" value="200.00"
+               redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="6" confirmationStatus="2"
+               valueOnPurchase="200.00"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="4"
+               MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="4" TYPE="3" code="qwerty4" value="120.00"
+               redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="9" confirmationStatus="2"
+               valueOnPurchase="120.00"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="5"
+               MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="5" TYPE="3" code="qwerty4" value="120.00"
+               redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="10" confirmationStatus="2"
+               valueOnPurchase="120.00"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="6"
+               MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="6" TYPE="3" code="qwerty4" value="120.00"
+               redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="11" confirmationStatus="2"
+               valueOnPurchase="120.00"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001" ID="7"
+               MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="7" TYPE="3" code="qwerty4" value="100.00"
+               redeemedCoursesCount="0" source="O" status="0" INVOICELINEID="12" confirmationStatus="2"
+               valueOnPurchase="100.00"/>
 
 </dataset>

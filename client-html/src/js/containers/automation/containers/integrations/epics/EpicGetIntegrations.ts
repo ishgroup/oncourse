@@ -10,7 +10,7 @@ import IntegrationService from "../services";
 import { parseIntegrations } from "../utils/index";
 import { GET_INTEGRATIONS_FULFILLED, GET_INTEGRATIONS_REQUEST } from "../../../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_INTEGRATIONS_REQUEST,
   getData: () => IntegrationService.getIntegrations(),
   processData: response => {

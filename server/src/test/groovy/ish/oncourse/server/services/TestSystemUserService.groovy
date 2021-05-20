@@ -1,6 +1,7 @@
 package ish.oncourse.server.services
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.oncourse.API
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ACLRole
@@ -9,9 +10,7 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-/**
- * Created by anarut on 7/10/17.
- */
+@CompileStatic
 class TestSystemUserService implements ISystemUserService {
 
     static final Logger logger = LogManager.getLogger()

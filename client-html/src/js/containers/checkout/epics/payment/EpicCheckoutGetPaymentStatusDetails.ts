@@ -8,11 +8,12 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {
   CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
-  CHECKOUT_SET_PAYMENT_STATUS_DETAILS, checkoutSetPaymentDetailsFetching
+  CHECKOUT_SET_PAYMENT_STATUS_DETAILS,
+  checkoutSetPaymentDetailsFetching
 } from "../../actions/checkoutPayment";
 import CheckoutService from "../../services/CheckoutService";
 
-const request: EpicUtils.Request<any, any, { status: any; sessionId: string }> = {
+const request: EpicUtils.Request<any, { status: any; sessionId: string }> = {
   type: CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
   getData: ({ sessionId }) => CheckoutService.getSessionStatus(sessionId),
   processData: data => [

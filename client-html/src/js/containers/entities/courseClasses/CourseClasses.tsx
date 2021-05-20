@@ -43,7 +43,7 @@ import {
  AnyArgFunction, BooleanArgFunction, NoArgFunction, NumberArgFunction
 } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getTutorRoles } from "../../preferences/actions";
+import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
@@ -66,12 +66,13 @@ import {
   DEFAULT_DELIVERY_MODE_KEY,
   DEFAULT_FUNDING_SOURCE_KEY,
   DEFAULT_MAXIMUM_PLACES_KEY,
-  DEFAULT_MINIMUM_PLACES_KEY
+  DEFAULT_MINIMUM_PLACES_KEY, PLAIN_LIST_MAX_PAGE_SIZE
 } from "../../../constants/Config";
 import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../common/utils/dates/format";
 import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
 import uniqid from "../../../common/utils/uniqid";
+import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
 
 const manualLink = getManualLink("classes");
 
@@ -255,6 +256,7 @@ const findRelatedGroup: any[] = [
   { title: "Outcomes", list: "outcome", expression: "enrolment.courseClass.id" },
   { title: "Payslips", list: "payslip", expression: "paylines.classCost.courseClass.id" },
   { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.id" },
+  { title: "Submissions", list: "assessmentSubmission", expression: "assessmentClass.courseClass.id" },
   { title: "Tutors", list: "contact", expression: "tutor.courseClassRoles.courseClass.id" },
   {
     title: "Withdrawn students",
@@ -612,7 +614,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
     }
 
     setChangedFields([]);
-    onUpdate(values.id, preformatBeforeSubmit(values));
+    if (values) onUpdate(values.id, preformatBeforeSubmit(values));
   };
 
   return (
@@ -637,9 +639,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
             "assessments[].assessmentName",
             "assessments[].dueDate",
             "assessments[].releaseDate",
-            "assessments[].submissions[].markedOn",
-            "assessments[].submissions[].submittedOn",
-            "assessments[].submissions[].submittedById",
             "notes[].message"
           ],
           asyncChangeFields: [
@@ -768,6 +767,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getVirtualSites());
     dispatch(getPlainAccounts());
     dispatch(getPlainTaxes());
+    dispatch(getGradingTypes());
     dispatch(getActiveFundingContracts(true));
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: courseClassBudgetPath, method: "GET" }));
@@ -781,6 +781,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
         DEFAULT_MINIMUM_PLACES_KEY
       ])
     );
+    dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
   getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),

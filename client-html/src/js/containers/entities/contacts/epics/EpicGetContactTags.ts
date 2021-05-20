@@ -13,7 +13,7 @@ import { SET_LIST_MENU_TAGS } from "../../../../common/components/list-view/acti
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_CONTACT_TAGS } from "../actions";
 
-const request: EpicUtils.Request<any, any, never> = {
+const request: EpicUtils.Request<any, never> = {
   type: GET_CONTACT_TAGS,
   getData: () => TagsService.getTags("Contact")
     .then(contactTags => TagsService.getTags("Course")

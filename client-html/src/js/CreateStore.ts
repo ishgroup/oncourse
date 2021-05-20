@@ -34,7 +34,7 @@ export const CreateStore = (): Store<State, IAction<any>> => {
   /**
    * Split middlewares which we using in development and in production.
    */
-  if (process.env.NODE_ENV === EnvironmentConstants.development) {
+  if (inDevelopment) {
     store = createStore(combinedReducers, composeEnhancers(applyMiddleware(epicMiddleware, logger)));
   } else {
     store = createStore(combinedReducers, composeEnhancers(applyMiddleware(epicMiddleware)));

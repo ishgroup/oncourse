@@ -10,7 +10,7 @@ import EntityService from "../../../../common/services/EntityService";
 import { GET_DISCOUNT_COS_ACCOUNTS, GET_DISCOUNT_COS_ACCOUNTS_FULFILLED } from "../actions";
 import { DataResponse } from "@api/model";
 
-const request: EpicUtils.Request<any, any, string> = {
+const request: EpicUtils.Request<any, string> = {
   type: GET_DISCOUNT_COS_ACCOUNTS,
   getData: () => {
     return EntityService.getPlainRecords("Account", "description,accountCode", "isEnabled==true AND type=5");

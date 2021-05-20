@@ -714,6 +714,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                       isTOTP: true,
                                       isNewTOTP: true
                                     });
+                                    dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
                                   }
                                 : undefined
                             }

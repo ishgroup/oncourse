@@ -11,7 +11,7 @@ import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/F
 import { SAVE_FUNDING_CONTACTS_FULFILLED, SAVE_FUNDING_CONTACTS_REQUEST } from "../actions";
 import FundingContractService from "../services/FundingContractService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: SAVE_FUNDING_CONTACTS_REQUEST,
   getData: ({ items, method }) =>
     method === "PATCH"

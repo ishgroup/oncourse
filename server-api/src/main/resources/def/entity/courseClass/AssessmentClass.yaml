@@ -13,6 +13,9 @@ properties:
     type: string
   assessmentName:
     type: string
+  gradingTypeId:
+    type: integer
+    format: int64
   contactIds:
     type: array
     required: false

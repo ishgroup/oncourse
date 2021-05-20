@@ -4,57 +4,60 @@
  */
 package ish.util
 
-import ish.CayenneIshTestCase
-import org.junit.Test
+import groovy.transform.CompileStatic
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 
-import static junit.framework.TestCase.assertEquals
+@CompileStatic
+class MoneyFormatterTest {
 
-class MoneyFormatterTest extends CayenneIshTestCase {
+    MoneyFormatter formatter = MoneyFormatter.defaultInstance()
 
-	private static HashMap<String, String> list = new HashMap<>()
-
-    static  {
-        list.put('15', '$15.00')
-        list.put('15.', '$15.00')
-        list.put('15.5', '$15.50')
-        list.put('15.05', '$15.05')
-        list.put('15.50', '$15.50')
-        list.put('.5', '$0.50')
-        list.put('0.5', '$0.50')
-        list.put('$15', '$15.00')
-        list.put('$15.', '$15.00')
-        list.put('$15.5', '$15.50')
-        list.put('$15.05', '$15.05')
-        list.put('$15.50', '$15.50')
-        list.put('$.5', '$0.50')
-        list.put('$0.5', '$0.50')
-        list.put('-15', '-$15.00')
-        list.put('-15.', '-$15.00')
-        list.put('-15.5', '-$15.50')
-        list.put('-15.05', '-$15.05')
-        list.put('-15.50', '-$15.50')
-        list.put('-.5', '-$0.50')
-        list.put('-0.5', '-$0.50')
-        list.put('-$15', '-$15.00')
-        list.put('-$15.', '-$15.00')
-        list.put('-$15.5', '-$15.50')
-        list.put('-$15.05', '-$15.05')
-        list.put('-$15.50', '-$15.50')
-        list.put('-$.5', '-$0.50')
-        list.put('-$0.5', '-$0.50')
+    static Collection<Arguments> values() {
+        def data = [
+                ['15', '$15.00'],
+                ['15.', '$15.00'],
+                ['15.5', '$15.50'],
+                ['15.05', '$15.05'],
+                ['15.50', '$15.50'],
+                ['.5', '$0.50'],
+                ['0.5', '$0.50'],
+                ['$15', '$15.00'],
+                ['$15.', '$15.00'],
+                ['$15.5', '$15.50'],
+                ['$15.05', '$15.05'],
+                ['$15.50', '$15.50'],
+                ['$.5', '$0.50'],
+                ['$0.5', '$0.50'],
+                ['-15', '-$15.00'],
+                ['-15.', '-$15.00'],
+                ['-15.5', '-$15.50'],
+                ['-15.05', '-$15.05'],
+                ['-15.50', '-$15.50'],
+                ['-.5', '-$0.50'],
+                ['-0.5', '-$0.50'],
+                ['-$15', '-$15.00'],
+                ['-$15.', '-$15.00'],
+                ['-$15.5', '-$15.50'],
+                ['-$15.05', '-$15.05'],
+                ['-$15.50', '-$15.50'],
+                ['-$.5', '-$0.50'],
+                ['-$0.5', '-$0.50']
+        ]
+        Collection<Arguments> dataList = new ArrayList<>()
+        for (List test : data) {
+            dataList.add(Arguments.of(test[0], test[1]))
+        }
+        return dataList
     }
 
-	@Test
-    void testBoth() throws Exception {
-        MoneyFormatter formatter = MoneyFormatter.getInstance()
 
-        list.each { entry ->
-            String correctResult = entry.getValue()
-            String stringInput = entry.getKey()
-            // System.out.println("testBoth input: " + stringInput);
-            String result = formatter.valueToString(formatter.stringToValue(stringInput))
-            // System.out.println("testBoth output: " + result);
-            assertEquals(correctResult, correctResult, result)
-        }
-	}
+    @ParameterizedTest
+    @MethodSource("values")
+    void testBoth(String stringInput, String correctResult) throws Exception {
+        String result = formatter.valueToString(formatter.stringToValue(stringInput))
+        Assertions.assertEquals(correctResult, result)
+    }
 }

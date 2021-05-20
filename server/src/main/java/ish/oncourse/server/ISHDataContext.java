@@ -36,6 +36,9 @@ public class ISHDataContext extends DataContext {
 	private static final String TRANSACTION_KEY_PROP = "transaction_key";
 	private static final String READ_ONLY_PROP = "read_only";
 
+	// The stack was necessary when we used Cayenne parent-child contexts. But we don't use them any more.
+	// The transaction keys should be moved to our replication plugin
+	@Deprecated
 	private Deque<String> transactionKeyStack = new ArrayDeque<>();
 
 	/**

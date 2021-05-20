@@ -9,7 +9,7 @@ import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { GET_BLOG_POSTS, GET_BLOG_POSTS_FULFILLED } from "../actions";
 import DashboardService from "../services/DashboardService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_BLOG_POSTS,
   getData: () => DashboardService.getBlogPosts(),
   processData: blogPosts => {

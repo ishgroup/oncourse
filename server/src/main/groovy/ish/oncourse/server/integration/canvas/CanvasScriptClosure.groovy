@@ -77,7 +77,11 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
             List course = integration.getCourse(course_code) as List
 
             if (course.size() == 0) {
-                throw new IllegalArgumentException("There are no courses with specified code ${course_code}")
+                throw new IllegalArgumentException("Illegal state: There are no courses with specified code ${course_code}")
+            }
+            if (course.size() > 1) {
+                throw new IllegalArgumentException("Illegal state: There are find more that one course for specified course code: ${course_code}. " +
+                        "Please, specify more unique course code.")
             }
 
             def student
@@ -94,7 +98,7 @@ class CanvasScriptClosure implements ScriptClosureTrait<CanvasIntegration> {
                 student = userJson.first()
             }
 
-            def section = integration.getSection(section_code, course["id"])
+            def section = integration.getSection(section_code, course["id"][0])
 
             if (!section) {
                 if (!create_section) {

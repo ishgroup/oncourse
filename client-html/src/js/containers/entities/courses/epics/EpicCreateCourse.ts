@@ -16,7 +16,7 @@ import CourseService from "../services/CourseService";
 import { CREATE_COURSE } from "../actions";
 import { ENTITY_NAME as CoursesEntity } from "../Courses";
 
-const request: EpicUtils.Request<any, any, { course: Course }> = {
+const request: EpicUtils.Request<any, { course: Course }> = {
   type: CREATE_COURSE,
   getData: ({ course }) => {
     processCustomFields(course);

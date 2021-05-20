@@ -3,7 +3,6 @@ import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicUpdateSurveyItem } from "../../../js/containers/entities/survey/epics/EpicUpdateSurveyItem";
 import {
-  GET_STUDENT_SURVEY_ITEM,
   UPDATE_SURVEY_ITEM_FULFILLED,
   updateSurveyItem
 } from "../../../js/containers/entities/survey/actions";
@@ -23,10 +22,6 @@ describe("Update survey epic tests", () => {
       {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Survey", listUpdate: true, savedID: "1" }
-      },
-      {
-        type: GET_STUDENT_SURVEY_ITEM,
-        payload: "1"
       }
     ]
   }));

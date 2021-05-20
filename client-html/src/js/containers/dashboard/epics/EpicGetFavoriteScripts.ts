@@ -4,7 +4,7 @@ import UserPreferenceService from "../../../common/services/UserPreferenceServic
 import { FAVORITE_SCRIPTS_KEY } from "../../../constants/Config";
 import { GET_FAVORITE_SCRIPTS, GET_FAVORITE_SCRIPTS_FULFILLED } from "../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_FAVORITE_SCRIPTS,
   getData: () => UserPreferenceService.getUserPreferencesByKeys(
     [FAVORITE_SCRIPTS_KEY]

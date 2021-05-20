@@ -12,7 +12,7 @@ properties:
   submittedOn:
     type: string
     format: date
-  submittedById:
+  markedById:
     type: integer
     format: int64
   tutorName:
@@ -38,6 +38,8 @@ properties:
     format: int64
   assessment:
     type: string
+  grade:
+    type: number
   documents:
     type: array
     items:

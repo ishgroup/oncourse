@@ -91,7 +91,6 @@ export const LISTVIEW_MAIN_CONTENT_WIDTH: PreferenceEnum = "listview.main.conten
 export const ADMIN_EMAIL_KEY = 'email.admin';
 
 // extending String with capitalize method
-
 const stringProto = String.prototype as any;
 
 stringProto.capitalize = function () {

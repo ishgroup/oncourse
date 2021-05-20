@@ -7,36 +7,40 @@ import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import {
+  GET_SCRIPT_ENTITY_REQUEST,
+  GET_SCRIPTS_LIST,
   UPDATE_SCRIPT_ENTITY_REQUEST,
   UPDATE_SCRIPT_ENTITY_REQUEST_FULFILLED,
-  GET_SCRIPT_ENTITY_REQUEST,
-  GET_SCRIPTS_LIST
 } from "../actions";
-import { updateEntityItemById, updateEntityItemByIdErrorHandler } from "../../../../entities/common/entityItemsService";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../common/components/list-view/constants";
-import { State } from "../../../../../reducers/state";
+import ScriptsService from "../services/ScriptsService";
+import { appendComponents } from "../utils";
 
-const request: EpicUtils.Request<any, State, any> = {
+const request: EpicUtils.Request = {
   type: UPDATE_SCRIPT_ENTITY_REQUEST,
-  getData: ({ id, script, method }) => updateEntityItemById("Script", id, script, method),
+  getData: ({
+   id, script, method, viewMode
+  }) => {
+    if (method === "PATCH") {
+      return ScriptsService.patchScriptItem(id, appendComponents(script, viewMode));
+    }
+    return ScriptsService.saveScriptItem(id, appendComponents(script, viewMode));
+  },
   processData: (v, s, { id }) => [
     {
-      type: UPDATE_SCRIPT_ENTITY_REQUEST_FULFILLED
+      type: UPDATE_SCRIPT_ENTITY_REQUEST_FULFILLED,
     },
     {
-      type: GET_SCRIPTS_LIST
+      type: GET_SCRIPTS_LIST,
     },
     {
       type: FETCH_SUCCESS,
-      payload: { message: "Script was updated" }
+      payload: { message: "Script was updated" },
     },
     {
       type: GET_SCRIPT_ENTITY_REQUEST,
-      payload: id
-    }
+      payload: id,
+    },
   ],
-  processError: (response, { script }) =>
-    updateEntityItemByIdErrorHandler(response, "Script", LIST_EDIT_VIEW_FORM_NAME, script)
 };
 
 export const EpicSaveScriptItem: Epic<any, any> = EpicUtils.Create(request);

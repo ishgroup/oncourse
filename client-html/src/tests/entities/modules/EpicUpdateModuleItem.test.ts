@@ -3,7 +3,6 @@ import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicUpdateModuleItem } from "../../../js/containers/entities/modules/epics/EpicUpdateModuleItem";
 import {
-  GET_MODULE_ITEM,
   UPDATE_MODULE_ITEM_FULFILLED,
   updateModule
 } from "../../../js/containers/entities/modules/actions";
@@ -23,10 +22,6 @@ describe("Update module epic tests", () => {
       {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Module", listUpdate: true, savedID: "1" }
-      },
-      {
-        type: GET_MODULE_ITEM,
-        payload: "1"
       }
     ]
   }));

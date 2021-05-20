@@ -153,6 +153,33 @@ databaseChangeLog:
                   name: markedOn
                   type: DATE
             tableName: AssessmentSubmission
+            
+  - changeSet:
+      id: 71-8
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - and:
+            - tableExists:
+                tableName: AssessmentSubmission
+            - columnExists:
+                tableName: AssessmentSubmission
+                columnName: submittedById
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName:  AssessmentSubmission
+            constraintName:  fk_AssessmentClass_contact
+        - renameColumn:
+            columnDataType: BIGINT
+            newColumnName:  markedById
+            oldColumnName:  submittedById
+            tableName:  AssessmentSubmission
+        - addForeignKeyConstraint:
+            baseColumnNames: markedById
+            baseTableName: AssessmentSubmission
+            constraintName: fk_AssessmentClass_contact
+            referencedColumnNames: id
+            referencedTableName: Contact
 
 
 

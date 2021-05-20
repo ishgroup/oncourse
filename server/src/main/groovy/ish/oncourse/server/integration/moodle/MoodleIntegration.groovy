@@ -134,8 +134,7 @@ class MoodleIntegration implements PluginTrait {
 	}
 
 
-
-	def getCourses() {
+    Object getCourses() {
 		def httpClient = new RESTClient(baseUrl)
 
 		httpClient.request(Method.GET, ContentType.JSON) {
@@ -168,7 +167,7 @@ class MoodleIntegration implements PluginTrait {
 		}
 	}
 
-	def getToken() {
+    Object getToken() {
 		def httpClient = new RESTClient(baseUrl)
 
 		httpClient.request(Method.GET, ContentType.JSON) {

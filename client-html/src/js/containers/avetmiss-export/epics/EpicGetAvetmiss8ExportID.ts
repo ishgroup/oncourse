@@ -11,7 +11,7 @@ import { CLEAR_AVETMISS8_EXPORT_ID, GET_AVETMISS8_EXPORT_ID, GET_AVETMISS8_EXPOR
 import { CLEAR_PROCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_AVETMISS8_EXPORT_ID,
   getData: payload => AvetmissExportService.exportAvetmiss8(payload),
   processData: (exportID: string) => {

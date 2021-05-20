@@ -17,10 +17,13 @@ import ish.common.types.EnrolmentStatus
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.MessageDao
+import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Payslip
 import ish.oncourse.server.messaging.SMTPService
 import ish.oncourse.server.api.model.RecipientGroupModel
 import ish.oncourse.server.api.model.RecipientsModel
+import org.apache.cayenne.validation.ValidationException
+
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getEntityTransformationProperty
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getFindContactProperty
 import ish.oncourse.server.api.v1.model.RecipientTypeDTO
@@ -432,7 +435,11 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                     }
                 }
             }
-            batchContext.commitChanges()
+            try {
+                batchContext.commitChanges()
+            } catch(ValidationException e) {
+                validator.throwClientErrorException(new ValidationErrorDTO().errorMessage(e.validationResult.failures*.error.join('\n')))
+            }
         }
 
         iterator.close()

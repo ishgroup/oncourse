@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.deduplication
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Contact
 
 import java.nio.ByteBuffer
@@ -20,11 +21,12 @@ import java.util.zip.Adler32
  * This class creates 32bit int simhashes for a contact record. Simhashes which are near (as hamming distance)
  * to each other are more likely to be duplicate contact records.
  */
+@CompileStatic
 class DuplicateFinder {
 
     int[] bits = new int[32]
 
-    def build(Contact c) {
+    Collection<? extends Object> build(Contact c) {
         addToken(c.birthDate, 2)
 
         addToken(c.email,3)
@@ -61,7 +63,7 @@ class DuplicateFinder {
      * @param token
      * @param weight
      */
-    def addToken(Object token, int weight=1) {
+    void addToken(Object token, int weight=1) {
         if (token == null) {
             return
         }

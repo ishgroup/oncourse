@@ -32,19 +32,19 @@ public final class SecurityUtil {
 	public static final int INVITATION_CODE_LENGTH = 32;
 	public static final String CERTIFICATE_NAME_SPACE = "c";
 
-	private static SecureRandom random = new SecureRandom();
+	private static final SecureRandom random = new SecureRandom();
 
 	/*
 	 * A list of human readable characters without ambiguous '1/l/I' and 'O/0'
 	 */
-	private static String humanReadableChars = "23456789qwertyuiopkjhgfdsazxcvbnmQWERTYUPLKJHGFDSAZXCVBNM";
+	private static final String humanReadableChars = "23456789qwertyuiopkjhgfdsazxcvbnmQWERTYUPLKJHGFDSAZXCVBNM";
 
 	/*
 	 * A list of legal for voucher code human readable characters without ambiguous '1/l/L/i/I' and 'O/0'
 	 */
-	private static String voucherCodeLegalChars = "23456789qwertyupkjhgfdsazxcvbnmQWERTYUPKJHGFDSAZXCVBNM";
+	private static final String voucherCodeLegalChars = "23456789qwertyupkjhgfdsazxcvbnmQWERTYUPKJHGFDSAZXCVBNM";
 
-	private static int[] numericChars = {1,2,3,4,5,6,7,8,9,0};
+	private static final int[] numericChars = {1,2,3,4,5,6,7,8,9,0};
 
 	private SecurityUtil() {}
 

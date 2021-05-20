@@ -1,168 +1,168 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 
-<jasperReport xmlns = "http://jasperreports.sourceforge.net/jasperreports"
-              xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation = "http://jasperreports.sourceforge.net/jasperreports
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
    http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-              name = "jasper_report_template" language = "groovy" pageWidth = "595"
-              pageHeight = "842" columnWidth = "555" leftMargin = "20" rightMargin = "20"
-              topMargin = "20" bottomMargin = "20">
+              name="jasper_report_template" language="groovy" pageWidth="595"
+              pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20">
 
-    <parameter name = "GreekText" class = "java.lang.String" isForPrompting = "false">
-        <defaultValueExpression><![CDATA["\u0394\u03B5\u03BD "+
+  <parameter name="GreekText" class="java.lang.String" isForPrompting="false">
+    <defaultValueExpression><![CDATA["\u0394\u03B5\u03BD "+
          "\u03BA\u03B1\u03C4\u03B1\u03BB\u03B1\u03B2\u03B1\u03AF"+
          "\u03BD\u03C9 \u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC"]]>
-        </defaultValueExpression>
-    </parameter>
+    </defaultValueExpression>
+  </parameter>
 
-    <parameter name = "CyrillicText" class = "java.lang.String" isForPrompting = "false">
-        <defaultValueExpression><![CDATA["\u042F \u043D\u0435 "+
+  <parameter name="CyrillicText" class="java.lang.String" isForPrompting="false">
+    <defaultValueExpression><![CDATA["\u042F \u043D\u0435 "+
          "\u043C\u043E\u0433\u0443 \u043F\u043E\u043D\u044F\u0442\u044C "+
          "\u0433\u0440\u0435\u0447\u0435\u0441\u043A\u0438\u0439"]]>
-        </defaultValueExpression>
-    </parameter>
+    </defaultValueExpression>
+  </parameter>
 
-    <parameter name = "ArabicText" class = "java.lang.String" isForPrompting = "false">
-        <defaultValueExpression><![CDATA["\u0627\u0646\u0646\u0649 \u0644\u0627 "+
+  <parameter name="ArabicText" class="java.lang.String" isForPrompting="false">
+    <defaultValueExpression><![CDATA["\u0627\u0646\u0646\u0649 \u0644\u0627 "+
          "\u0627\u0641\u0647\u0645 \u0627\u0644\u0644\u063A\u0629 "+
          "\u0627\u0644\u0639\u0631\u0628\u064A\u0629"]]>
-        </defaultValueExpression>
-    </parameter>
+    </defaultValueExpression>
+  </parameter>
 
-    <parameter name = "HebrewText" class = "java.lang.String" isForPrompting = "false">
-        <defaultValueExpression><![CDATA["\u05D0\u05E0\u05D9 \u05DC\u05D0 "+
+  <parameter name="HebrewText" class="java.lang.String" isForPrompting="false">
+    <defaultValueExpression><![CDATA["\u05D0\u05E0\u05D9 \u05DC\u05D0 "+
          "\u05DE\u05D1\u05D9\u05DF \u05E2\u05D1\u05E8\u05D9\u05EA"]]>
-        </defaultValueExpression>
-    </parameter>
+    </defaultValueExpression>
+  </parameter>
 
-    <parameter name = "SimpleText" class = "java.lang.String" isForPrompting = "false">
-        <defaultValueExpression><![CDATA["Simple text without unicode"]]>
-        </defaultValueExpression>
-    </parameter>
+  <parameter name="SimpleText" class="java.lang.String" isForPrompting="false">
+    <defaultValueExpression><![CDATA["Simple text without unicode"]]>
+    </defaultValueExpression>
+  </parameter>
 
-    <title>
-        <band height = "782">
+  <title>
+    <band height="782">
 
-            <textField>
-                <reportElement x = "0" y = "50" width = "200" height = "60"/>
+      <textField>
+        <reportElement x="0" y="50" width="200" height="60"/>
 
-                <textElement>
-                    <font fontName = "Open Sans" size = "14"/>
-                </textElement>
+        <textElement>
+          <font fontName="Open Sans" size="14"/>
+        </textElement>
 
-                <textFieldExpression class = "java.lang.String">
-                    <![CDATA[$P{GreekText} + "\n" + $P{CyrillicText}]]>
-                </textFieldExpression>
-            </textField>
+        <textFieldExpression class="java.lang.String">
+          <![CDATA[$P{GreekText} + "\n" + $P{CyrillicText}]]>
+        </textFieldExpression>
+      </textField>
 
-            <staticText>
-                <reportElement x = "210" y = "50" width = "340" height = "60"/>
-                <textElement/>
+      <staticText>
+        <reportElement x="210" y="50" width="340" height="60"/>
+        <textElement/>
 
-                <text>
-                    <![CDATA["GreekText and CyrillicText"]]>
-                </text>
-            </staticText>
+        <text>
+          <![CDATA["GreekText and CyrillicText"]]>
+        </text>
+      </staticText>
 
-            <textField>
-                <reportElement x = "0" y = "120" width = "200" height = "60"/>
+      <textField>
+        <reportElement x="0" y="120" width="200" height="60"/>
 
-                <textElement>
-                    <font fontName = "Open Sans Light" size = "14" isBold = "true"/>
-                </textElement>
+        <textElement>
+          <font fontName="Open Sans Light" size="14" isBold="true"/>
+        </textElement>
 
-                <textFieldExpression class = "java.lang.String">
-                    <![CDATA[$P{GreekText} + "\n" + $P{CyrillicText}]]>
-                </textFieldExpression>
+        <textFieldExpression class="java.lang.String">
+          <![CDATA[$P{GreekText} + "\n" + $P{CyrillicText}]]>
+        </textFieldExpression>
 
-            </textField>
+      </textField>
 
-            <staticText>
-                <reportElement x = "210" y = "120" width = "340" height = "60"/>
-                <textElement/>
-                <text><![CDATA["GreekText and CyrillicText"]]></text>
-            </staticText>
+      <staticText>
+        <reportElement x="210" y="120" width="340" height="60"/>
+        <textElement/>
+        <text><![CDATA["GreekText and CyrillicText"]]></text>
+      </staticText>
 
-            <textField>
-                <reportElement x = "0" y = "190" width = "200" height = "60"/>
+      <textField>
+        <reportElement x="0" y="190" width="200" height="60"/>
 
-                <textElement>
-                    <font fontName = "Open Sans Bold" size = "14" isItalic = "true"
-                          isUnderline = "true"/>
-                </textElement>
+        <textElement>
+          <font fontName="Open Sans Bold" size="14" isItalic="true"
+                isUnderline="true"/>
+        </textElement>
 
-                <textFieldExpression class = "java.lang.String">
-                    <![CDATA[$P{GreekText} + "\n" + $P{CyrillicText}]]>
-                </textFieldExpression>
+        <textFieldExpression class="java.lang.String">
+          <![CDATA[$P{GreekText} + "\n" + $P{CyrillicText}]]>
+        </textFieldExpression>
 
-            </textField>
+      </textField>
 
-            <staticText>
-                <reportElement x = "210" y = "190" width = "340" height = "60"/>
-                <textElement/>
-                <text><![CDATA["GreekText and CyrillicText"]]></text>
-            </staticText>
+      <staticText>
+        <reportElement x="210" y="190" width="340" height="60"/>
+        <textElement/>
+        <text><![CDATA["GreekText and CyrillicText"]]></text>
+      </staticText>
 
-            <textField>
-                <reportElement x = "0" y = "260" width = "200" height = "60"/>
+      <textField>
+        <reportElement x="0" y="260" width="200" height="60"/>
 
-                <textElement>
-                    <font fontName = "Open Sans" size = "14" isBold = "true"
-                          isItalic = "true" isUnderline = "true"/>
-                </textElement>
+        <textElement>
+          <font fontName="Open Sans" size="14" isBold="true"
+                isItalic="true" isUnderline="true"/>
+        </textElement>
 
-                <textFieldExpression class = "java.lang.String">
-                    <![CDATA[$P{GreekText} + "\n" + $P{CyrillicText}]]>
-                </textFieldExpression>
+        <textFieldExpression class="java.lang.String">
+          <![CDATA[$P{GreekText} + "\n" + $P{CyrillicText}]]>
+        </textFieldExpression>
 
-            </textField>
+      </textField>
 
-            <staticText>
-                <reportElement x = "210" y = "260" width = "340" height = "60"/>
-                <textElement/>
-                <text><![CDATA["GreekText and CyrillicText"]]></text>
-            </staticText>
+      <staticText>
+        <reportElement x="210" y="260" width="340" height="60"/>
+        <textElement/>
+        <text><![CDATA["GreekText and CyrillicText"]]></text>
+      </staticText>
 
-            <textField>
-                <reportElement x = "0" y = "330" width = "200" height = "60"/>
+      <textField>
+        <reportElement x="0" y="330" width="200" height="60"/>
 
-                <textElement textAlignment = "Right">
-                    <font fontName="Open Sans" size = "22"/>
-                </textElement>
+        <textElement textAlignment="Right">
+          <font fontName="Open Sans" size="22"/>
+        </textElement>
 
-                <textFieldExpression class = "java.lang.String">
-                    <![CDATA[$P{ArabicText}]]>
-                </textFieldExpression>
+        <textFieldExpression class="java.lang.String">
+          <![CDATA[$P{ArabicText}]]>
+        </textFieldExpression>
 
-            </textField>
+      </textField>
 
-            <textField>
-                <reportElement x = "210" y = "330" width = "340" height = "60"/>
+      <textField>
+        <reportElement x="210" y="330" width="340" height="60"/>
 
-                <textElement textAlignment = "Right">
-                    <font fontName = "Open Sans" size = "22"/>
-                </textElement>
+        <textElement textAlignment="Right">
+          <font fontName="Open Sans" size="22"/>
+        </textElement>
 
-                <textFieldExpression class = "java.lang.String">
-                    <![CDATA[$P{HebrewText}]]>
-                </textFieldExpression>
+        <textFieldExpression class="java.lang.String">
+          <![CDATA[$P{HebrewText}]]>
+        </textFieldExpression>
 
-            </textField>
+      </textField>
 
-            <textField>
-                <reportElement x = "0" y = "400" width = "200" height = "60"/>
+      <textField>
+        <reportElement x="0" y="400" width="200" height="60"/>
 
-                <textElement textAlignment = "Right">
-                    <font fontName = "Open Sans" size = "14"/>
-                </textElement>
+        <textElement textAlignment="Right">
+          <font fontName="Open Sans" size="14"/>
+        </textElement>
 
-                <textFieldExpression class = "java.lang.String">
-                    <![CDATA[$P{SimpleText}]]>
-                </textFieldExpression>
+        <textFieldExpression class="java.lang.String">
+          <![CDATA[$P{SimpleText}]]>
+        </textFieldExpression>
 
-            </textField>
+      </textField>
 
-        </band>
-    </title>
+    </band>
+  </title>
 
 </jasperReport>

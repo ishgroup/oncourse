@@ -1,8 +1,12 @@
+import { Diff, WaitingList, WaitingListApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
-import { WaitingList, WaitingListApi } from "@api/model";
 
 class WaitingListService {
   readonly waitingListApi = new WaitingListApi(new DefaultHttpService());
+
+  public bulkChange(diff: Diff): Promise<any> {
+    return this.waitingListApi.bulkChange(diff);
+  }
 
   public createWaitingList(waitingList: WaitingList): Promise<any> {
     return this.waitingListApi.create(waitingList);

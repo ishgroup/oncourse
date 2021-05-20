@@ -5,15 +5,15 @@
 
 import { Epic } from "redux-observable";
 
+import { Document } from "@api/model";
+import { change } from "redux-form";
 import * as EpicUtils from "../../../../epics/EpicUtils";
 import DocumentsService from "../services/DocumentsService";
 import { CREATE_AVATAR_DOCUMENT } from "../actions";
-import { Document } from "@api/model";
 import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
-import { change } from "redux-form";
 import { DocumentExtended } from "../../../../../model/common/Documents";
 
-const request: EpicUtils.Request<any, any, { document: DocumentExtended; form: string; documentPath: string }> = {
+const request: EpicUtils.Request<any, { document: DocumentExtended; form: string; documentPath: string }> = {
   type: CREATE_AVATAR_DOCUMENT,
   getData: ({ document }) =>
     DocumentsService.createDocument(
@@ -25,9 +25,7 @@ const request: EpicUtils.Request<any, any, { document: DocumentExtended; form: s
       "",
       document.content.name
     ),
-  processData: (newDocument: Document, state: any, { form, documentPath }) => {
-    return [change(form, documentPath, newDocument)];
-  },
+  processData: (newDocument: Document, state: any, { form, documentPath }) => [change(form, documentPath, newDocument)],
   processError: (error, { form, documentPath }) => [change(form, documentPath, null), ...FetchErrorHandler(error)]
 };
 

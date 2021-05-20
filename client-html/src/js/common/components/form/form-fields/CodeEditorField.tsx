@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent } from "react";
 import clsx from "clsx";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-groovy";
@@ -61,27 +61,15 @@ const CodeEditorField = props => {
     onFocus
   } = props;
 
-  const [editorValue, setEditorValue] = useState(input.value);
-
-  useEffect(() => {
-    input.onChange(editorValue && editorValue.trim() ? editorValue : "");
-  }, [editorValue]);
-
-  useEffect(() => {
-    setEditorValue(input.value || " ");
-  }, [input.value]);
-
   return (
     <>
       {error && <div className={classes.errorMessage}>{errorMessage || error}</div>}
       <AceEditor
         mode="groovy"
         theme="textmate"
-        value={editorValue}
+        value={input.value || " "}
         onFocus={onFocus}
-        onChange={v => {
-          setEditorValue(v);
-        }}
+        onChange={input.onChange}
         fontSize={14}
         showPrintMargin={false}
         showGutter

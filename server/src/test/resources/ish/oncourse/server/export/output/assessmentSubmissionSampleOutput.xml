@@ -1,21 +1,23 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
-    <assessmentSubmission id='1'>
-        <createdOn>3-1-2012 10:00:00</createdOn>
-        <modifiedOn>3-1-2012 11:00:00</modifiedOn>
-        <studentName>First Student</studentName>
-        <courseClassName>Test Course TEST-123</courseClassName>
-        <assessmentName>Test Assessment Task</assessmentName>
-        <submittedOn>3-1-2021</submittedOn>
-        <markedOn>5-1-2021</markedOn>
-    </assessmentSubmission>
-    <assessmentSubmission id='2'>
-        <createdOn>3-1-2012 10:00:00</createdOn>
-        <modifiedOn>3-1-2012 11:00:00</modifiedOn>
-        <studentName>Second Student</studentName>
-        <courseClassName>Test Course TEST-123</courseClassName>
-        <assessmentName>testAssessment</assessmentName>
-        <submittedOn>4-1-2021</submittedOn>
-        <markedOn />
-    </assessmentSubmission>
+  <assessmentSubmission id='1'>
+    <createdOn>3-1-2012 10:00:00</createdOn>
+    <modifiedOn>3-1-2012 11:00:00</modifiedOn>
+    <studentName>First Student</studentName>
+    <courseClassName>Test Course TEST-123</courseClassName>
+    <assessmentName>Test Assessment Task</assessmentName>
+    <submittedOn>3-1-2021</submittedOn>
+    <markedOn>5-1-2021</markedOn>
+    <grade>85.43</grade>
+  </assessmentSubmission>
+  <assessmentSubmission id='2'>
+    <createdOn>3-1-2012 10:00:00</createdOn>
+    <modifiedOn>3-1-2012 11:00:00</modifiedOn>
+    <studentName>Second Student</studentName>
+    <courseClassName>Test Course TEST-123</courseClassName>
+    <assessmentName>testAssessment</assessmentName>
+    <submittedOn>4-1-2021</submittedOn>
+    <markedOn />
+    <grade />
+  </assessmentSubmission>
 </data>

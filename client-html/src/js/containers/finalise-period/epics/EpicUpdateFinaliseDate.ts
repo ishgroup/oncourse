@@ -11,7 +11,7 @@ import FinaliseService from "../services";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { FETCH_SUCCESS } from "../../../common/actions";
 
-const request: Request<any, any, any> = {
+const request: Request = {
   type: UPDATE_FINALISE_DATE,
   getData: (lockDate: string) => FinaliseService.updateLockDate(lockDate),
   processData: () => {

@@ -14,7 +14,7 @@ import { getCourseClassSessionsWarnings } from "../../../actions";
 import { GET_COURSE_CLASS_SESSIONS } from "../actions";
 import CourseClassTimetableService from "../services/CourseClassTimetableService";
 
-const request: EpicUtils.Request<any, any, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: GET_COURSE_CLASS_SESSIONS,
   hideLoadIndicator: true,
   getData: id => CourseClassTimetableService.findTimetableSessionsForCourseClasses(id),

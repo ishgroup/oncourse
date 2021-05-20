@@ -5,19 +5,18 @@
 
 import { Epic } from "redux-observable";
 
+import { ProductItem } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_SALE, UPDATE_SALE, UPDATE_SALE_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { ProductItem } from "@api/model";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 
-const request: EpicUtils.Request<any, any, { id: string; productItem: ProductItem }> = {
+const request: EpicUtils.Request<any, { id: string; productItem: ProductItem }> = {
   type: UPDATE_SALE,
   getData: ({ id, productItem }) => updateEntityItemById("Sale", Number(id), productItem),
-  processData: (v, s, { id }) => {
-    return [
+  processData: (v, s, { id }) => [
       {
         type: UPDATE_SALE_FULFILLED
       },
@@ -29,12 +28,11 @@ const request: EpicUtils.Request<any, any, { id: string; productItem: ProductIte
         type: GET_RECORDS_REQUEST,
         payload: { entity: "ProductItem", listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_SALE,
         payload: { id }
-      }
-    ];
-  },
+      }] : []
+    ],
   processError: response => FetchErrorHandler(response, "Sale Record was not updated")
 };
 

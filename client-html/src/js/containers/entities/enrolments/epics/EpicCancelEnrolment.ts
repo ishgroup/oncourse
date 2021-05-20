@@ -8,7 +8,7 @@ import { CANCEL_ENROLMENT, CANCEL_ENROLMENT_FULFILLED, setEnrolmentTransfered } 
 import { initialize } from "redux-form";
 import EnrolmentService from "../services/EnrolmentService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CANCEL_ENROLMENT,
   getData: ({ values }) => EnrolmentService.cancelEnrolment(values),
   processData: (v, s, { type }) => {

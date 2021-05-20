@@ -1,12 +1,15 @@
 import * as React from "react";
 import ClassNames from "clsx";
+import { withRouter } from "react-router";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
 import {
-  FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
+  Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
 import { ContactRelationType } from "@api/model";
 import isEqual from "lodash.isequal";
@@ -15,10 +18,13 @@ import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import { concessionTypesStyles } from "../../concession-types/components/styles";
 import ContactRelationTypesRenderer from "./ContactRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { State } from "../../../../../reducers/state";
+import { setNextLocation } from "../../../../../common/actions";
+import { cardsFormStyles } from "../../../styles/formCommonStyles";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const manualLink = getManualLink("generalPrefs_contactRelationTypes");
 
@@ -32,9 +38,13 @@ interface Props {
   handleSubmit: any;
   dirty: boolean;
   invalid: boolean;
+  form: string;
   onDelete: (id: string) => void;
   onUpdate: (contactRelationTypes: ContactRelationType[]) => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
+  history?: any,
+  nextLocation?: string,
+  setNextLocation?: (nextLocation: string) => void,
 }
 
 class ContactRelationTypesBaseForm extends React.Component<Props, any> {
@@ -86,7 +96,12 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
+        const { nextLocation, history, setNextLocation } = this.props;
+
         this.props.dispatch(initialize("ContactRelationTypesForm", { types: this.props.contactRelationTypes }));
+
+        nextLocation && history.push(nextLocation);
+        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -143,17 +158,17 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from types list", "DELETE");
+    openConfirm({ onConfirm, confirmMessage: "This item will be removed from types list", confirmButtonText: "DELETE" });
   };
 
   render() {
     const {
-      classes, handleSubmit, data, dirty, created, modified, invalid
+      classes, handleSubmit, data, dirty, created, modified, invalid, form
     } = this.props;
 
     return (
-      <form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-        <RouteChangeConfirm when={dirty} />
+      <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>
@@ -206,14 +221,22 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
             </Grid>
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
 
+const mapStateToProps = (state: State) => ({
+  nextLocation: state.nextLocation
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+});
+
 const ContactRelationTypesForm = reduxForm({
   onSubmitFail,
   form: "ContactRelationTypesForm"
-})(withStyles(concessionTypesStyles)(ContactRelationTypesBaseForm) as any);
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(cardsFormStyles)(withRouter(ContactRelationTypesBaseForm)) as any));
 
 export default ContactRelationTypesForm;

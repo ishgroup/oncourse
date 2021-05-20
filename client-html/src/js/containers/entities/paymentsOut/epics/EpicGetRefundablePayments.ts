@@ -5,7 +5,7 @@ import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import { GET_REFUNDABLE_PAYMENTS, GET_REFUNDABLE_PAYMENTS_FULFILLED } from "../actions";
 import EntityService from "../../../../common/services/EntityService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_REFUNDABLE_PAYMENTS,
   hideLoadIndicator: true,
   getData: contactId => {

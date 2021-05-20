@@ -63,6 +63,10 @@ import { EntityRelationTypesApiMock } from "./api/preference/EntityRelationTypes
 import { DocumentApiMock } from "./api/entities/DocumentApiMock";
 import { PriorLearningApiMock } from "./api/entities/PriorLearningApiMock";
 import { TutorRoleApiMock } from "./api/preference/TutorRoleApiMock";
+import { FundingContractsApiMock } from "./api/preference/FundingContractsApiMock";
+import { CheckoutApiMock } from "./api/checkout/CheckoutApiMock";
+import { GradingTypesApiMock } from "./api/preference/GradingTypesApiMock";
+import { SecurityApiMock } from "./api/security/SecurityApiMock";
 
 export const initMockDB = () => new MockAdapter();
 
@@ -87,6 +91,8 @@ export class MockAdapter {
     EntityRelationTypesApiMock.apply(this);
     CustomFieldApiMock.apply(this);
     TutorRoleApiMock.apply(this);
+    FundingContractsApiMock.apply(this);
+    GradingTypesApiMock.apply(this);
 
     // User Preferences
     UserPreferenceApiMock.apply(this);
@@ -148,6 +154,12 @@ export class MockAdapter {
 
     // Timetable
     TimetableApiMock.apply(this);
+
+    // Checkout
+    CheckoutApiMock.apply(this);
+
+    // Security
+    SecurityApiMock.apply(this);
 
     // Handle get login request
     this.api.onGet("/").reply(config => promiseResolve(config));

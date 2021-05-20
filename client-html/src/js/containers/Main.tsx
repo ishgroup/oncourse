@@ -26,7 +26,7 @@ import store from "../constants/Store";
 import { loginRoute, routes } from "../routes";
 import MessageProvider from "../common/components/dialog/message/MessageProvider";
 import {
- darkTheme, defaultTheme, monochromeTheme, highcontrastTheme, christmasTheme
+  darkTheme, defaultTheme, monochromeTheme, highcontrastTheme, christmasTheme
 } from "../common/themes/ishTheme";
 import { ThemeContext } from "./ThemeContext";
 import {
@@ -186,7 +186,8 @@ export class MainBase extends React.PureComponent<Props, any> {
         routes.forEach(route => {
           if (route.url && route.url !== "/") {
             const path = route.url.replace("/", "");
-            const url = new RegExp(`\\B${path}|${path}\\B`);
+            // const url = new RegExp(`\\B${path}|${path}\\B`);
+            const url = new RegExp(`\\B${path}\\b`);
             if (url.test(history.location.pathname)) {
               history.push(route.url);
               pathMatched = true;

@@ -1,24 +1,14 @@
 package ish.oncourse.server.print.transformations
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
+import ish.TestWithDatabase
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Report
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.Survey
-import ish.oncourse.server.cayenne.Tutor
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.print.PrintWorker
 import ish.oncourse.server.print.ReportDataSource
 import ish.print.PrintRequest
-import net.sf.jasperreports.engine.JRException
-import net.sf.jasperreports.engine.JasperCompileManager
-import net.sf.jasperreports.engine.JasperFillManager
-import net.sf.jasperreports.engine.JasperPrint
-import net.sf.jasperreports.engine.JasperReport
+import net.sf.jasperreports.engine.*
 import net.sf.jasperreports.engine.export.JRPdfExporter
 import net.sf.jasperreports.export.ExporterInput
 import net.sf.jasperreports.export.OutputStreamExporterOutput
@@ -27,21 +17,24 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput
 import org.apache.cayenne.access.DataContext
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.RandomStringUtils
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 import static org.mockito.Matchers.any
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
+@CompileStatic
 class CourseCompletionSurveyTest {
 
     private Report report
     Report subreport
     private PrintWorker printWorker
-    ICayenneService cayenneService
-
-    @Before
-    void before () throws IOException {
+    private ICayenneService cayenneService
+    
+    @CompileDynamic
+    @BeforeEach
+    void before() throws IOException {
         InputStream is = CourseCompletionSurveyTest.class.getClassLoader().getResourceAsStream("reports/CourseClass/CourseCompletionSurvey.jrxml")
         report = mock(Report.class)
         when(report.getData()).thenReturn(IOUtils.toByteArray(is))
@@ -76,7 +69,7 @@ class CourseCompletionSurveyTest {
         exporter.exportReport()
     }
 
-    private List<CourseClass> getItems(){
+    private List<CourseClass> getItems() {
         List<CourseClass> classes = new ArrayList<>()
 
         for (int i = 0; i < 4; i++) {
@@ -86,6 +79,7 @@ class CourseCompletionSurveyTest {
         return classes
     }
 
+    
     CourseClass getItem(int i) {
         CourseClass courseClass = mock(CourseClass.class)
         Room room = mock(Room.class)

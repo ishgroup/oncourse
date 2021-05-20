@@ -21,4 +21,9 @@ export function InvoiceApiMock() {
   });
 
   this.api.onPost(new RegExp(`v1/list/entity/invoice/contra/\\d+`)).reply(config => promiseResolve(config, {}));
+
+  this.api.onGet("v1/list/entity/invoice/search").reply(config => {
+    const amountOwing = /amountOwing > 0/.test(config.params.search);
+    return promiseResolve(config, this.db.getAmountOwing(amountOwing));
+  });
 }

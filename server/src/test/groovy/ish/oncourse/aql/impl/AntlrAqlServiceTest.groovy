@@ -1,48 +1,39 @@
 package ish.oncourse.aql.impl
 
+import groovy.transform.CompileStatic
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
-import static ish.oncourse.aql.impl.AntlrAqlServiceTest.MockEnum.ACTIVE
-import static ish.oncourse.aql.impl.AntlrAqlServiceTest.MockEnum.EXPIRED
-import static ish.oncourse.aql.impl.AntlrAqlServiceTest.MockEnum.SUCCESS
-import static java.util.Arrays.asList
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.exp.Expression
-import static org.apache.cayenne.exp.ExpressionFactory.exp
 import org.apache.cayenne.exp.TraversalHandler
 import org.apache.cayenne.exp.parser.ASTAnd
 import org.apache.cayenne.exp.parser.SimpleNode
-import org.apache.cayenne.map.DbAttribute
-import org.apache.cayenne.map.DbEntity
-import org.apache.cayenne.map.EntityResolver
-import org.apache.cayenne.map.ObjAttribute
-import org.apache.cayenne.map.ObjEntity
-import org.apache.cayenne.map.ObjRelationship
+import org.apache.cayenne.map.*
 import org.apache.cayenne.query.Select
-import static org.hamcrest.CoreMatchers.instanceOf
-import static org.hamcrest.CoreMatchers.not
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertThat
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
-import static org.mockito.ArgumentMatchers.any
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
+import static ish.oncourse.aql.impl.AntlrAqlServiceTest.MockEnum.*
+import static java.util.Arrays.asList
+import static org.apache.cayenne.exp.ExpressionFactory.exp
+import static org.mockito.ArgumentMatchers.any
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
+
+@CompileStatic
 class AntlrAqlServiceTest {
 
     private AqlService service
 
-    @Before
+    @BeforeEach
     void setUp() {
         service = new AntlrAqlService()
     }
@@ -125,7 +116,7 @@ class AntlrAqlServiceTest {
     @Test
     void testTag() {
         CompilationResult result = service.compile("#arts"
-            , null, getMockContext("course"))
+                , null, getMockContext("course"))
 
         assertValid("(arts.entityIdentifier = 1) and (arts.tag+.name = \"arts\")", result)
     }
@@ -133,7 +124,7 @@ class AntlrAqlServiceTest {
     @Test
     void testChildTag() {
         CompilationResult result = service.compile("contact #arts"
-            , null, getMockContext(Contact.class, "contact", "course"))
+                , null, getMockContext(Contact.class, "contact", "course"))
 
         assertValid("(contact.arts.entityIdentifier = 8) and (contact.arts.tag+.name = \"arts\")", result)
     }
@@ -141,7 +132,7 @@ class AntlrAqlServiceTest {
     @Test
     void testLongTag() {
         CompilationResult result = service.compile("#'health_and_care'"
-            , null, getMockContext("course"))
+                , null, getMockContext("course"))
 
         assertValid("(health_and_care.entityIdentifier = 1) and (health_and_care.tag+.name = \"health_and_care\")", result)
     }
@@ -149,7 +140,7 @@ class AntlrAqlServiceTest {
     @Test
     void testEqualExp() {
         CompilationResult result = service.compile("path = 10"
-            , null, getMockContext())
+                , null, getMockContext())
 
         assertValid("path = 10", result)
     }
@@ -157,7 +148,7 @@ class AntlrAqlServiceTest {
     @Test
     void testUnaryToday() {
         CompilationResult result = service.compile("created today"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN)
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX)
@@ -167,7 +158,7 @@ class AntlrAqlServiceTest {
     @Test
     void testDateFormat() {
         CompilationResult result = service.compile("created in 2/01/1999 3:00 am - 2 days .. 2001-02-20 20:00 + 2 weeks"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime start = LocalDateTime
                 .of(LocalDate.of(1998, 12, 31), LocalTime.of(3, 0))
@@ -179,7 +170,7 @@ class AntlrAqlServiceTest {
     @Test
     void testDateIdentifiers() {
         CompilationResult result = service.compile("created after today - 2 days"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.now().minusDays(2), LocalTime.MAX)
         assertValid(exp('created > $a', dateTime), result)
@@ -188,7 +179,7 @@ class AntlrAqlServiceTest {
     @Test
     void testDateIdentifiersMathEquals() {
         CompilationResult result = service.compile("created = today - 2 days"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime todayStart = LocalDateTime.of(LocalDate.now().minusDays(2), LocalTime.MIN)
         LocalDateTime todayEnd = LocalDateTime.of(LocalDate.now().minusDays(2), LocalTime.MAX)
@@ -198,7 +189,7 @@ class AntlrAqlServiceTest {
     @Test
     void testDateIdentifiersEquals() {
         CompilationResult result = service.compile("created = yesterday"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime todayStart = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.MIN)
         LocalDateTime todayEnd = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.MAX)
@@ -208,7 +199,7 @@ class AntlrAqlServiceTest {
     @Test
     void testWrongDateIdentifiersEquals() {
         CompilationResult result = service.compile("created last week"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDate weekStart = LocalDate.now().minusWeeks(1).with(DayOfWeek.MONDAY)
         LocalDateTime start = LocalDateTime.of(weekStart, LocalTime.MIN)
@@ -219,7 +210,7 @@ class AntlrAqlServiceTest {
     @Test
     void testUnaryThisYear() {
         CompilationResult result = service.compile("created this year"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime start = LocalDateTime.of(LocalDate.ofYearDay(LocalDate.now().getYear(), 1),
                 LocalTime.MIN)
@@ -231,7 +222,7 @@ class AntlrAqlServiceTest {
     @Test
     void testUnaryMe() {
         CompilationResult result = service.compile("createdBy me"
-            , null, getMockContext())
+                , null, getMockContext())
 
         assertValid('createdBy = $me', result)
     }
@@ -239,7 +230,7 @@ class AntlrAqlServiceTest {
     @Test
     void testDateEquals() {
         CompilationResult result = service.compile("created = 2018-01-01"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime start = LocalDateTime.of(LocalDate.of(2018, 1, 1), LocalTime.MIN)
         LocalDateTime end = LocalDateTime.of(LocalDate.of(2018, 1, 1), LocalTime.MAX)
@@ -249,7 +240,7 @@ class AntlrAqlServiceTest {
     @Test
     void testDateAfter() {
         CompilationResult result = service.compile("created after 2018-01-01"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime date = LocalDateTime.of(LocalDate.of(2018, 1, 1), LocalTime.MAX)
         assertValid(exp('created > $d', date), result)
@@ -258,7 +249,7 @@ class AntlrAqlServiceTest {
     @Test
     void testDateBefore() {
         CompilationResult result = service.compile("created before 2018-01-01"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime date = LocalDateTime.of(LocalDate.of(2018, 1, 1), LocalTime.MIN)
         assertValid(exp('created < $d', date), result)
@@ -267,7 +258,7 @@ class AntlrAqlServiceTest {
     @Test
     void testDateInRange() {
         CompilationResult result = service.compile("created in 2018-01-01 .. 2018-01-02"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime start = LocalDateTime.of(LocalDate.of(2018, 1, 1), LocalTime.MIN)
         LocalDateTime end = LocalDateTime.of(LocalDate.of(2018, 1, 2), LocalTime.MAX)
@@ -277,7 +268,7 @@ class AntlrAqlServiceTest {
     @Test
     void testDateInRangeOpenLeft() {
         CompilationResult result = service.compile("created in * .. 2018-01-02"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime date = LocalDateTime.of(LocalDate.of(2018, 1, 2), LocalTime.MAX)
         assertValid(exp('created <= $d', date), result)
@@ -286,7 +277,7 @@ class AntlrAqlServiceTest {
     @Test
     void testDateInRangeOpenRight() {
         CompilationResult result = service.compile("created in 2018-01-01 .. *"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime date = LocalDateTime.of(LocalDate.of(2018, 1, 1), LocalTime.MIN)
         assertValid(exp('created >= $d', date), result)
@@ -295,7 +286,7 @@ class AntlrAqlServiceTest {
     @Test
     void testDateExpEvaluation() {
         CompilationResult result = service.compile("created after (tomorrow - 2 days) - 1 week"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.now().minusDays(1).minusWeeks(1), LocalTime.MAX)
         assertValid(exp('created > $d', dateTime), result)
@@ -304,7 +295,7 @@ class AntlrAqlServiceTest {
     @Test
     void testWrongUnit() {
         CompilationResult result = service.compile("created after today - 1 ear"
-            , null, getMockContext())
+                , null, getMockContext())
 
         assertInvalid(result)
     }
@@ -312,7 +303,7 @@ class AntlrAqlServiceTest {
     @Test
     void testEnumIn() {
         CompilationResult result = service.compile("status in SUCCESS, ACTIVE, EXPIRED"
-            , null, getMockContext())
+                , null, getMockContext())
 
         assertValid(exp('status in $l', asList(SUCCESS, ACTIVE, EXPIRED)), result)
     }
@@ -320,7 +311,7 @@ class AntlrAqlServiceTest {
     @Test
     void testAndWithDateEvaluation() {
         CompilationResult result = service.compile("status in SUCCESS, ACTIVE, EXPIRED and created after today - 7 days"
-            , null, getMockContext())
+                , null, getMockContext())
 
         LocalDateTime date = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.MAX)
         Expression exp = exp('status in $l and created > $d', asList(SUCCESS, ACTIVE, EXPIRED), date)
@@ -330,12 +321,12 @@ class AntlrAqlServiceTest {
     @Test
     void testComplexExp() {
         String aqlQuery = "status in SUCCESS, ACTIVE, EXPIRED \n" +
-            "and not deleted \n" +
-            "and (created after today - 7 days or created last year) \n" +
-            "and (name contains John or name starts with 'a') \n" +
-            "and (expires before 31/12/2018 11:59pm or expires in 2017-01-01 00:00 .. today - 1 month) \n" +
-            "and (#art or #'health care') \n" +
-            "and (field1 = 'abc' or field2 = 123)"
+                "and not deleted \n" +
+                "and (created after today - 7 days or created last year) \n" +
+                "and (name contains John or name starts with 'a') \n" +
+                "and (expires before 31/12/2018 11:59pm or expires in 2017-01-01 00:00 .. today - 1 month) \n" +
+                "and (#art or #'health care') \n" +
+                "and (field1 = 'abc' or field2 = 123)"
 
         CompilationResult result = service.compile(aqlQuery, null, getMockContext("Contact"))
 
@@ -347,8 +338,8 @@ class AntlrAqlServiceTest {
     @Test
     void testCustomField() {
         CompilationResult result = service
-            .compile("field1 = 'abc' and field2 = 123"
-                , null, getMockContext("Contact"))
+                .compile("field1 = 'abc' and field2 = 123"
+                        , null, getMockContext("Contact"))
 
         // create AND manually as exp() will flatten it and assertion will fail
         ASTAnd and = new ASTAnd()
@@ -360,8 +351,8 @@ class AntlrAqlServiceTest {
     @Test
     void testCustomField2() {
         CompilationResult result = service
-            .compile("someField1 value10"
-                , null, getMockContext("Contact"))
+                .compile("someField1 value10"
+                        , null, getMockContext("Contact"))
 
         assertInvalid(result)
     }
@@ -369,8 +360,8 @@ class AntlrAqlServiceTest {
     @Test
     void testStringOps() {
         CompilationResult result = service
-            .compile("(name like 'abcd' or name not contains 'ab') and (name starts with 'a' or name not ends with 'd')"
-                , null, getMockContext("Contact"))
+                .compile("(name like 'abcd' or name not contains 'ab') and (name starts with 'a' or name not ends with 'd')"
+                        , null, getMockContext("Contact"))
 
         assertValid("(name likeIgnoreCase '%abcd%' or name not likeIgnoreCase '%ab%') " +
                 "and (name likeIgnoreCase 'a%' or name not likeIgnoreCase '%d')", result)
@@ -379,8 +370,8 @@ class AntlrAqlServiceTest {
     @Test
     void testStringOps_NonStringType() {
         CompilationResult result = service
-            .compile("created not contains 'ab' or created starts with 'a'"
-                , null, getMockContext("Contact"))
+                .compile("created not contains 'ab' or created starts with 'a'"
+                        , null, getMockContext("Contact"))
 
         assertInvalid(result)
     }
@@ -524,7 +515,7 @@ class AntlrAqlServiceTest {
     @Test
     void testContact() {
         CompilationResult result = service
-            .compile("~ 'Lei Ste'", null, getMockContext("Contact"))
+                .compile("~ 'Lei Ste'", null, getMockContext("Contact"))
         assertValid("(lastName likeIgnoreCase 'Lei Ste%') or (firstName likeIgnoreCase 'Lei%' and lastName likeIgnoreCase 'Ste%')", result)
     }
 
@@ -538,8 +529,8 @@ class AntlrAqlServiceTest {
     @Test
     void testContactOps() {
         CompilationResult result = service
-            .compile("contact = 'John Smith' or contact ~ 'Jo' or contact !~ 'Sm,'"
-                , null, getMockContext(Contact.class, "contact", "contact"))
+                .compile("contact = 'John Smith' or contact ~ 'Jo' or contact !~ 'Sm,'"
+                        , null, getMockContext(Contact.class, "contact", "contact"))
 
         assertValid(result)
     }
@@ -547,8 +538,8 @@ class AntlrAqlServiceTest {
     @Test
     void testSingleContactOp() {
         CompilationResult result = service
-            .compile("contact = 'John Smith'"
-                , null, getMockContext(Contact.class, "contact", "contact"))
+                .compile("contact = 'John Smith'"
+                        , null, getMockContext(Contact.class, "contact", "contact"))
 
         assertValid("(contact.lastName = 'John Smith') or (contact.firstName = 'John' and contact.lastName = 'Smith')", result)
     }
@@ -556,8 +547,8 @@ class AntlrAqlServiceTest {
     @Test
     void testContact_InvalidOps() {
         CompilationResult result = service
-            .compile("contact after 'John Smith' or contact >= 'Jo Sm'"
-                , null, getMockContext(Contact.class, "contact", "contact"))
+                .compile("contact after 'John Smith' or contact >= 'Jo Sm'"
+                        , null, getMockContext(Contact.class, "contact", "contact"))
 
         assertInvalid(result)
     }
@@ -565,8 +556,8 @@ class AntlrAqlServiceTest {
     @Test
     void testNull() {
         CompilationResult result = service
-            .compile("path is null"
-                , null, getMockContext())
+                .compile("path is null"
+                        , null, getMockContext())
 
         assertValid("path = null", result)
     }
@@ -722,18 +713,18 @@ class AntlrAqlServiceTest {
         assertInvalid(result)
     }
 
-    private void assertValid(String cayenneExpExpected, CompilationResult result) {
+    private static void assertValid(String cayenneExpExpected, CompilationResult result) {
         assertValid(exp(cayenneExpExpected), result)
     }
 
-    private void assertValid(Expression cayenneExpExpected, CompilationResult result) {
+    private static void assertValid(Expression cayenneExpExpected, CompilationResult result) {
         assertValid(result)
-        assertEquals(cayenneExpExpected, result.getCayenneExpression().get())
+        Assertions.assertEquals(cayenneExpExpected, result.getCayenneExpression().get())
     }
 
-    private void assertValid(CompilationResult result) {
-        assertTrue(result.getCayenneExpression().isPresent())
-        assertTrue(result.getErrors().isEmpty())
+    private static void assertValid(CompilationResult result) {
+        Assertions.assertTrue(result.getCayenneExpression().isPresent())
+        Assertions.assertTrue(result.getErrors().isEmpty())
 
         Expression exp = result.getCayenneExpression().get()
         // Validate expression:
@@ -742,12 +733,11 @@ class AntlrAqlServiceTest {
         exp.traverse(new TraversalHandler() {
             @Override
             void startNode(Expression node, Expression parentNode) {
-                assertThat(node, instanceOf(SimpleNode.class))
-                assertThat("Expression has unresolved lazy node", node, not(instanceOf(LazyExpressionNode.class)))
+                Assertions.assertTrue(node instanceof SimpleNode)
+                Assertions.assertFalse(node instanceof LazyExpressionNode, "Expression has unresolved lazy node")
 
-                SimpleNode simpleNode = (SimpleNode)node
-                assertEquals("Wrong parent for node: " + simpleNode.getClass().getSimpleName() + '"' + simpleNode.toString() + '"',
-                        simpleNode.jjtGetParent(), parentNode)
+                SimpleNode simpleNode = (SimpleNode) node
+                Assertions.assertEquals(simpleNode.jjtGetParent(), parentNode, "Wrong parent for node: " + simpleNode.getClass().getSimpleName() + '"' + simpleNode.toString() + '"')
             }
 
             @Override
@@ -764,12 +754,12 @@ class AntlrAqlServiceTest {
         })
     }
 
-    private void assertInvalid(CompilationResult result) {
-        assertFalse(result.getCayenneExpression().isPresent())
-        assertFalse(result.getErrors().isEmpty())
+    private static void assertInvalid(CompilationResult result) {
+        Assertions.assertFalse(result.getCayenneExpression().isPresent())
+        Assertions.assertFalse(result.getErrors().isEmpty())
     }
 
-    private ObjectContext getMockContext() {
+    private static ObjectContext getMockContext() {
         return getMockContext(Contact.class, "contact", "test")
     }
 
@@ -778,7 +768,7 @@ class AntlrAqlServiceTest {
     }
 
     @SuppressWarnings("unchecked")
-    private ObjectContext getMockContext(Class relatedClass, String relationshipName, String rootEntityName) {
+    private static ObjectContext getMockContext(Class relatedClass, String relationshipName, String rootEntityName) {
         DbEntity entity = new DbEntity("test")
         entity.addAttribute(new DbAttribute("path"))
         ObjEntity objEntity = new ObjEntity(rootEntityName)
@@ -819,7 +809,7 @@ class AntlrAqlServiceTest {
         attribute.setType("boolean")
         objEntity.addAttribute(attribute)
 
-        ObjEntity contact = new ObjEntity().with{ contact ->
+        ObjEntity contact = new ObjEntity().with { contact ->
             contact.setName("contact")
             contact.setClassName(relatedClass.getName())
 
@@ -844,7 +834,7 @@ class AntlrAqlServiceTest {
             attribute.setType(LocalDate.class.getName())
             contact.addAttribute(attribute)
 
-            ObjEntity address = new ObjEntity().with{ address ->
+            ObjEntity address = new ObjEntity().with { address ->
                 address.setName("address")
                 address.setClassName(Address.class.getName())
 
@@ -898,7 +888,7 @@ class AntlrAqlServiceTest {
         objEntity.addRelationship(relationship)
 
         EntityResolver resolver = mock(EntityResolver.class)
-        when(resolver.getObjEntity((Class<?>)any())).thenReturn(objEntity)
+        when(resolver.getObjEntity((Class<?>) any())).thenReturn(objEntity)
 
         ObjectContext context = mock(ObjectContext.class)
         when(context.getEntityResolver()).thenReturn(resolver)

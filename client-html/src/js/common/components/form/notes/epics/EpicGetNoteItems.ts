@@ -7,12 +7,11 @@ import { Epic } from "redux-observable";
 import { Note } from "@api/model";
 import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../epics/EpicUtils";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_NOTE_ITEMS } from "../actions";
 import NotesService from "../services/NotesService";
 
-const request: EpicUtils.Request<Note[], State, { entityName: string; entityId: number; form: string }> = {
+const request: EpicUtils.Request<Note[], { entityName: string; entityId: number; form: string }> = {
   type: GET_NOTE_ITEMS,
   hideLoadIndicator: true,
   getData: ({ entityName, entityId }) => NotesService.get(entityName, entityId),

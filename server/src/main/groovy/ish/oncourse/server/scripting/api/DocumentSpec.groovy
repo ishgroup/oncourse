@@ -15,6 +15,7 @@ import ish.common.types.AttachmentInfoVisibility
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.AttachableTrait
 import ish.oncourse.server.cayenne.Document
+import ish.oncourse.server.messaging.DocumentParam
 
 
 /**
@@ -117,6 +118,14 @@ class DocumentSpec {
 	@API
 	void content(byte[] content) {
 		this.content = content
+	}
+
+	/**
+	 * @param content as DocumentParam
+	 */
+	@API
+	void content(DocumentParam documentParam) {
+		this.content = documentParam.contentInBytes
 	}
 
 	/**

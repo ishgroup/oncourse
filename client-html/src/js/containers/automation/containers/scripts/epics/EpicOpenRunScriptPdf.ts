@@ -6,7 +6,7 @@ import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/F
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { OPEN_RUN_SCRIPT_PDF, OPEN_RUN_SCRIPT_PDF_FULFILLED } from "../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: OPEN_RUN_SCRIPT_PDF,
   hideLoadIndicator: true,
   getData: ({ processId }) => {

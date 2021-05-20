@@ -16,9 +16,8 @@ import {
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ExportTemplatesService from "../services/ExportTemplatesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
-import { State } from "../../../../../reducers/state";
 
-const request: EpicUtils.Request<State, any, { exportTemplate: ExportTemplate }> = {
+const request: EpicUtils.Request<{ exportTemplate: ExportTemplate }, { exportTemplate: ExportTemplate }> = {
   type: UPDATE_INTERNAL_EXPORT_TEMPLATE,
   getData: ({ exportTemplate }) => ExportTemplatesService.updateInternal(exportTemplate),
   processData: (v, s, { exportTemplate: { id } }) => [

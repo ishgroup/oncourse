@@ -14,7 +14,7 @@ import { GET_RECORDS_REQUEST, setListSelection } from "../../../../common/compon
 import ApplicationService from "../service/ApplicationService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_APPLICATION_ITEM,
   getData: (id: number) => ApplicationService.removeApplication(id),
   processData: () => {

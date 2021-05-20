@@ -3,67 +3,74 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {useEffect, useMemo, useState} from "react";
+import React, { useMemo } from "react";
 import Grid from "@material-ui/core/Grid";
+import { change } from "redux-form";
+import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
-import {change} from "redux-form";
-import {SCRIPT_EDIT_VIEW_FORM_NAME} from "../../constants";
 import PdfService from "../../../pdf-reports/services/PdfService";
+import { ScriptComponent } from "../../../../../../model/scripts";
+import { State } from "../../../../../../reducers/state";
+import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { renderAutomationItems } from "../../../../utils";
 
-const ReportCardContent = props => {
+interface Props {
+  name: string;
+  field: ScriptComponent;
+  dispatch: Dispatch;
+  form: string;
+  renderVariables: any;
+  disabled: boolean;
+}
+
+const ReportCardContent: React.FC<Props> = props => {
   const {
-    dispatch, field, name, pdfReports, pdfBackgrounds, renderVariables
+    dispatch, field, name, renderVariables, form, disabled
   } = props;
 
-  const [pdfReportsVariables, setPdfReportsVariables] = useState([]);
+  const pdfReports = useSelector<State, any>(state => state.automation.pdfReport.pdfReports);
+  const pdfBackgrounds = useSelector<State, any>(state => state.automation.pdfBackground.pdfBackgrounds);
 
   const pdfReportsItems = useMemo(
     () => (pdfReports
-      ? pdfReports.filter(t => t.keyCode).map(t => ({ value: t.keyCode, label: t.name, id: t.id }))
-      : []), [pdfReports]);
+      ? pdfReports.filter(t => t.keyCode).map(t => ({
+         value: t.keyCode, hasIcon: t.hasIcon, label: t.name, id: t.id
+        }))
+      : []), [pdfReports]
+  );
 
   const pdfBackgroundsItems = useMemo(
     () => (pdfBackgrounds
       ? pdfBackgrounds.filter(t => t.name).map(t => ({ value: t.name, label: t.name }))
-      : []), [pdfBackgrounds]);
+      : []), [pdfBackgrounds]
+  );
 
-  const getPdfReport = async (id: number) => {
-    let pdfReport;
+  const getPdfReport = async (id: number) => PdfService
+    .getReport(id)
+    .catch(e => instantFetchErrorHandler(dispatch, e));
 
-    try {
-      pdfReport = await PdfService.getReport(id);
-      pdfReport && setPdfReportsVariables(pdfReport.variables);
-    } catch (e) {
-      console.warn(e)
+  const changePdfReport = async item => {
+    const pdfReport = await getPdfReport(item.id);
+
+    if (pdfReport) {
+      pdfReport.variables.forEach(e => {
+        if (e.type === "Checkbox") {
+          dispatch(change(form, `${name}.${e.name}`, false));
+        }
+      });
+      dispatch(change(form, `${name}.reportEntity`, pdfReport));
     }
-
-    return pdfReport;
-  }
-
-  const changePdfReport = async (item) => {
-    const pdfReport = await getPdfReport(item.id)
-
-    pdfReport && pdfReport.variables && pdfReport.variables.forEach(e => {
-      if (e.type === "Checkbox") {
-        dispatch(change(SCRIPT_EDIT_VIEW_FORM_NAME, `${name}.${e.name}`, false));
-      }
-    })
-  }
-
-  useEffect(() => {
-    if (field && field.report) {
-      const currentPdfReport = pdfReports.filter(t => t.keyCode === field.report);
-      currentPdfReport.length && getPdfReport(currentPdfReport[0].id);
-    }
-  }, [field]);
+  };
 
   return (
-    <Grid container>
+    <Grid container className="mt-2">
       <Grid item xs={12}>
         <FormField
           type="text"
           name={`${name}.fileName`}
           label="File Name"
+          disabled={disabled}
           required
         />
 
@@ -74,10 +81,12 @@ const ReportCardContent = props => {
           items={pdfReportsItems}
           className="d-flex mt-2"
           onInnerValueChange={changePdfReport}
+          selectLabelCondition={renderAutomationItems}
+          disabled={disabled}
           required
         />
 
-        {renderVariables(pdfReportsVariables, name)}
+        {field.reportEntity && renderVariables(field.reportEntity.variables, name)}
 
         <FormField
           type="select"
@@ -85,6 +94,7 @@ const ReportCardContent = props => {
           label="Background"
           items={pdfBackgroundsItems}
           className="d-flex mt-2"
+          disabled={disabled}
           allowEmpty
         />
 

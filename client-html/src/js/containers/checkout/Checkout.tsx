@@ -6,11 +6,8 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
 import { NoArgFunction } from "../../model/common/CommonFunctions";
 import { State } from "../../reducers/state";
-import { AppTheme } from "../../model/common/Theme";
 import { getActiveFundingContracts } from "../avetmiss-export/actions";
 import { getCountries, getLanguages } from "../preferences/actions";
 import {
@@ -19,13 +16,12 @@ import {
   getContactsTaxTypes,
   getContactTags
 } from "../entities/contacts/actions";
-import { checkPermissions, showConfirm } from "../../common/actions";
+import { checkPermissions } from "../../common/actions";
 import { getCustomFieldTypes } from "../entities/customFieldTypes/actions";
 import { getDefaultInvoiceTerms } from "../entities/invoices/actions";
 import { changeStep, checkoutClearState } from "./actions";
 import CheckoutSelection from "./components/CheckoutSelection";
 import { getCheckoutCurrentStep } from "./utils";
-import { clearPlainPreviousCreditRecords } from "./actions/checkoutSummary";
 
 export const FORM: string = "QUICK_ENROL_FORM";
 export const CONTACT_ENTITY_NAME: string = "Contact";
@@ -112,12 +108,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getCustomFieldTypes: () => dispatch(getCustomFieldTypes(CONTACT_ENTITY_NAME)),
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) =>
-    dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText)),
   changeStep: (step: number) => dispatch(changeStep(step)),
   clearState: () => {
     dispatch(checkoutClearState());
-    dispatch(clearPlainPreviousCreditRecords());
   },
   getActiveFundingContracts: () => dispatch(getActiveFundingContracts(true)),
   getQePermissions: () => {
@@ -127,6 +120,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Outcome", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Certificate", method: "GET" }));
   },
-  });
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Checkout);

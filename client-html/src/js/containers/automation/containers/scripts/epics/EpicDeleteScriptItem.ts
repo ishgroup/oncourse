@@ -8,15 +8,13 @@ import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import ScriptsService from "../services/ScriptsService";
 import { FETCH_SUCCESS } from "../../../../../common/actions/index";
-import { DELETE_SCRIPT_ENTITY_REQUEST, DELETE_SCRIPT_ENTITY_FULFILLED, GET_SCRIPTS_LIST } from "../actions/index";
+import { DELETE_SCRIPT_ENTITY_FULFILLED, DELETE_SCRIPT_ENTITY_REQUEST, GET_SCRIPTS_LIST } from "../actions/index";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { State } from "../../../../../reducers/state";
 
-const request: EpicUtils.Request<any, State, any> = {
+const request: EpicUtils.Request<any, any> = {
   type: DELETE_SCRIPT_ENTITY_REQUEST,
   getData: payload => ScriptsService.deleteScriptItem(payload.id),
-  processData: () => {
-    return [
+  processData: () => [
       {
         type: GET_SCRIPTS_LIST,
         payload: { selectFirst: true }
@@ -28,8 +26,7 @@ const request: EpicUtils.Request<any, State, any> = {
         type: FETCH_SUCCESS,
         payload: { message: "Script was deleted" }
       }
-    ];
-  },
+    ],
   processError: response => FetchErrorHandler(response, "Script was not deleted")
 };
 

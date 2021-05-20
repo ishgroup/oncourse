@@ -15,7 +15,7 @@ import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/act
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { id: number; survey: SurveyItem }> = {
+const request: EpicUtils.Request<any, { id: number; survey: SurveyItem }> = {
   type: UPDATE_SURVEY_ITEM,
   getData: ({ id, survey }) => {
     processCustomFields(survey);
@@ -33,10 +33,10 @@ const request: EpicUtils.Request<any, any, { id: number; survey: SurveyItem }> =
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Survey", listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_STUDENT_SURVEY_ITEM,
         payload: id
-      }
+      }] : []
     ],
   processError: (response, { survey }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, survey)]
 };

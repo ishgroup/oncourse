@@ -15,7 +15,7 @@ import { GET_EXPORT_RESULT } from "../actions";
 import { State } from "../../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, { entityName: string; processId: string; outputType: OutputType, isClipboard?: boolean }> = {
+const request: EpicUtils.Request<any, { entityName: string; processId: string; outputType: OutputType, isClipboard?: boolean }> = {
   type: GET_EXPORT_RESULT,
   hideLoadIndicator: true,
   getData: ({ entityName, processId }) => ExportService.getExportResult(entityName, processId),

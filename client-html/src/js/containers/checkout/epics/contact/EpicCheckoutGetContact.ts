@@ -17,12 +17,17 @@ import {
   getContactCertificates,
   getContactEnrolments,
   getContactOutcomes,
-  getContactPriorLearnings, getContactsStoredCc
+  getContactPriorLearnings,
+  getContactsStoredCc
 } from "../../../entities/contacts/actions";
-import { CHECKOUT_GET_CONTACT, CHECKOUT_GET_CONTACT_FULFILLED, CHECKOUT_UPDATE_CONTACT_RELATIONS } from "../../actions/checkoutContact";
+import {
+  CHECKOUT_GET_CONTACT,
+  CHECKOUT_GET_CONTACT_FULFILLED,
+  CHECKOUT_UPDATE_CONTACT_RELATIONS
+} from "../../actions/checkoutContact";
 import { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from "../../components/contact/CheckoutContactEditView";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CHECKOUT_GET_CONTACT,
   getData: (id: number) => getEntityItemById("Contact", id),
   processData: (contact: Contact, s, id) => {

@@ -7,10 +7,10 @@ import React, { useCallback, useMemo } from "react";
 import Grid from "@material-ui/core/Grid/Grid";
 import { arrayInsert, arrayRemove } from "redux-form";
 import Typography from "@material-ui/core/Typography";
-import { AssessmentClass } from "@api/model";
-
+import { AssessmentClass, GradingType } from "@api/model";
+import { connect } from "react-redux";
 import MinifiedEntitiesList from "../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import CourseClassAssessmentItems from "./CourseClassAssessmentItem";
+import CourseClassAssessmentItems from "./CourseClassAssessmentItems";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { AssessmentClassExtended, CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
@@ -18,20 +18,7 @@ import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-han
 import CourseClassAssessmentService from "./services/CourseClassAssessmentService";
 import { deleteCourseClassAssessment } from "./actions";
 import uniqid from "../../../../../common/utils/uniqid";
-
-const validateAssesments = (value: AssessmentClass[]) => {
-  let error;
-
-  if (Array.isArray(value) && value.length) {
-    value.forEach(a => {
-      if (!a.assessmentId || !a.assessmentCode || !a.assessmentName || !a.dueDate) {
-        error = "Some assessments are missing required fields";
-      }
-    });
-  }
-
-  return error;
-};
+import { State } from "../../../../../reducers/state";
 
 const assessmentInitial: AssessmentClass = {
   id: null,
@@ -40,29 +27,61 @@ const assessmentInitial: AssessmentClass = {
   assessmentName: null,
   contactIds: [],
   moduleIds: [],
+  submissions: [],
   releaseDate: null,
   dueDate: null
 };
 
-const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExtended>>> = ({
-  values,
-  form,
-  dispatch,
-  isNew,
-  twoColumn,
-  syncErrors,
-  showConfirm
-}) => {
+interface Props {
+  courseClassEnrolments?: any[];
+  gradingTypes?: GradingType[];
+}
+
+const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExtended> & Props>> = (
+  {
+    values,
+    form,
+    dispatch,
+    isNew,
+    twoColumn,
+    syncErrors,
+    showConfirm,
+    courseClassEnrolments,
+    gradingTypes
+}
+) => {
+  const validateAssesments = useCallback((value: AssessmentClass[]) => {
+    let error;
+
+    if (Array.isArray(value) && value.length) {
+      value.forEach(a => {
+        if (!a.assessmentId || !a.assessmentCode || !a.assessmentName || !a.dueDate) {
+          error = "Some assessments are missing required fields";
+        }
+        const gradeType: GradingType = gradingTypes?.find(g => g.id === a.gradingTypeId);
+
+        if (gradeType && a.submissions.some(s => typeof s.grade === "number"
+          && (s.grade > gradeType.maxValue || s.grade < gradeType.minValue))) {
+          error = "Some assessments grades are invalid";
+        }
+      });
+    }
+
+    return error;
+  }, [gradingTypes]);
+
   const AssessmentItemsComponent = useCallback(
-    props => (
+    ({ classes, ...rest }) => (
       <CourseClassAssessmentItems
-        {...props}
+        {...rest}
         dispatch={dispatch}
         form={form}
+        courseClassEnrolments={courseClassEnrolments}
+        gradingTypes={gradingTypes}
         tutors={values.tutors.filter(t => t.id)}
       />
       ),
-    [values.tutors, form]
+    [values.tutors, form, gradingTypes, courseClassEnrolments]
   );
 
   const AssessmentHeader = useCallback(
@@ -91,36 +110,37 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
 
   const deleteAssessmentItem = useCallback(
     (index: number) => {
-      showConfirm(
-        () => {
-          const onDeleteConfirm = () => {
-            dispatch(arrayRemove(form, "assessments", index));
-          };
+      showConfirm({
+          onConfirm: () => {
+            const onDeleteConfirm = () => {
+              dispatch(arrayRemove(form, "assessments", index));
+            };
 
-          const assessment = values.assessments[index];
+            const assessment = values.assessments[index];
 
-          if (assessment.id) {
-            CourseClassAssessmentService.validateDelete(assessment.id)
-              .then(() => {
-                onDeleteConfirm();
-                dispatch(
-                  addActionToQueue(
-                    deleteCourseClassAssessment(assessment.id),
-                    "DELETE",
-                    "AssessmentClass",
-                    assessment.id
-                  )
-                );
-              })
-              .catch(response => instantFetchErrorHandler(dispatch, response));
-            return;
-          }
-          dispatch(removeActionsFromQueue([{ entity: "AssessmentClass", id: assessment.temporaryId }]));
+            if (assessment.id) {
+              CourseClassAssessmentService.validateDelete(assessment.id)
+                .then(() => {
+                  onDeleteConfirm();
+                  dispatch(
+                    addActionToQueue(
+                      deleteCourseClassAssessment(assessment.id),
+                      "DELETE",
+                      "AssessmentClass",
+                      assessment.id
+                    )
+                  );
+                })
+                .catch(response => instantFetchErrorHandler(dispatch, response));
+              return;
+            }
+            dispatch(removeActionsFromQueue([{ entity: "AssessmentClass", id: assessment.temporaryId }]));
 
-          onDeleteConfirm();
-        },
-        "Assessment will be deleted permanently",
-        "Delete"
+            onDeleteConfirm();
+          },
+          confirmButtonText: "Delete",
+          confirmMessage: "Assessment will be deleted permanently"
+        }
       );
     },
     [values.assessments && values.assessments.length]
@@ -157,4 +177,9 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
   );
 };
 
-export default CourseClassAssessmentsTab;
+const mapStateToProps = (state: State) => ({
+  courseClassEnrolments: state.courseClass.enrolments,
+  gradingTypes: state.preferences.gradingTypes
+});
+
+export default connect(mapStateToProps)(CourseClassAssessmentsTab);

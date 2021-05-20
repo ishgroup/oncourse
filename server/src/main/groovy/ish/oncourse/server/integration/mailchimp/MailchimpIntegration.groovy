@@ -15,7 +15,6 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
-import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.util.LocalDateUtils
@@ -62,17 +61,13 @@ class MailchimpIntegration implements PluginTrait {
 
 	}
 
-	def subscribeToList(Contact contact, boolean optIn) {
-		subscribeToList(contact.email, [ 'FNAME': contact.firstName, 'LNAME': contact.lastName ], optIn)
-	}
-
-	protected subscribeToList(String email, Map mergeFields,  boolean optIn) {
+	protected addToList(String email, Map mergeFields,  String status) {
 		RESTClient httpClient = new RESTClient(membersUrl)
 
 		httpClient.request(Method.POST, ContentType.JSON) {
 			headers.'Authorization' = authHeader
 			body = [
-					status: optIn? 'pending' : 'subscribed',
+					status: status,
 					email_address: email,
 					merge_fields: mergeFields.size() > 0 ? mergeFields : null,
 			]
@@ -88,13 +83,13 @@ class MailchimpIntegration implements PluginTrait {
 	}
 
 
-	protected updateClient(String email, Map mergeFields = [:]) {
+	protected updateClient(String email, Map mergeFields = [:], String status) {
 		RESTClient httpClient = new RESTClient(membersUrl + DigestUtils.md5Hex(email))
 
 		httpClient.request(Method.PATCH, ContentType.JSON) {
 			headers.'Authorization' = authHeader
 			body = [
-					status: 'subscribed',
+					status: status,
 					email_address: email,
 					merge_fields: mergeFields.size() > 0 ? mergeFields : null,
 			]
@@ -109,7 +104,7 @@ class MailchimpIntegration implements PluginTrait {
 
 	}
 
-	def unsubscribeFromList(String email) {
+	def deletePermanently(String email) {
 		def httpClient = new RESTClient(membersUrl + DigestUtils.md5Hex(email) + "/actions/delete-permanent")
 
 		httpClient.request(Method.POST, ContentType.JSON) {
@@ -119,13 +114,9 @@ class MailchimpIntegration implements PluginTrait {
 				return result
 			}
 			response.failure = { resp, result ->
-				logger.error("Mailchimp unsubscribe from list failed: ${result.status} - ${result.title}: ${result.detail}. More information at: ${result.type}.")
+				logger.error("Mailchimp deleting subscriber from list failed: ${result.status} - ${result.title}: ${result.detail}. More information at: ${result.type}.")
 			}
 		}
-	}
-
-	def unsubscribeFromList(Contact contact) {
-		unsubscribeFromList(contact.email)
 	}
 
 	String tag(String tagName, String email) {

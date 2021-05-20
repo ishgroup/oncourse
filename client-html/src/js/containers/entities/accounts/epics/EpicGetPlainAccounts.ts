@@ -5,13 +5,13 @@
 
 import { Epic } from "redux-observable";
 
-import { DataResponse, Account, AccountType } from "@api/model";
+import { Account, AccountType, DataResponse } from "@api/model";
 import { GET_PLAIN_ACCOUNTS, GET_PLAIN_ACCOUNTS_FULFILLED } from "../actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { AccountExtended } from "../../../../model/entities/Account";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_PLAIN_ACCOUNTS,
   getData: () => EntityService.getPlainRecords("Account", "id,description,accountCode,type,tax.id", "isEnabled==true"),
   processData: (records: DataResponse) => {

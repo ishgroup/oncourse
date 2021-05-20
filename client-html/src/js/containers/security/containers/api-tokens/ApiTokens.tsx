@@ -69,17 +69,18 @@ const ApiTokensBase:React.FC<Props> = (
       dispatch(arrayRemove(form, "tokens", index));
     } else {
       dispatch(
-        showConfirm(
-          () => dispatch(deleteApiToken(item.id)),
-          "API token will be deleted permanently"
-        )
+        showConfirm({
+          onConfirm: () => dispatch(deleteApiToken(item.id)),
+          confirmMessage: "API token will be deleted permanently",
+          confirmButtonText: "Delete"
+        })
       );
     }
   };
 
   return (
     <form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
-      <RouteChangeConfirm when={dirty} />
+      <RouteChangeConfirm form={form} when={dirty} />
       <CustomAppBar>
         <Grid container>
           <Grid item xs={12} className="centeredFlex relative">

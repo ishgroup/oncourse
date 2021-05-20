@@ -3,9 +3,9 @@ type: email
 keyCode: ish.email.notificationWithDocumentsList
 txtTemplate: ish.email.notificationWithDocumentsList.txt
 htmlTemplate: ish.email.notificationWithDocumentsList.html
-subject: A list of be deleted documents on Sunday
+subject: A list documents to be deleted next Sunday
 entityClass: DocumentVersion
-description: An email with a notification with to be deleted documents list on this Sunday
+description: An email to the system admin with a list of documents to be deleted in the next weekly purge of deleted documents. Documents which have been in the bin for more than 30 days will be deleted.
 options:
   - name: headerKeycode
     dataType: TEXT

@@ -16,7 +16,7 @@ import {
   SET_LIST_SAVING_FILTER
 } from "../actions/index";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: POST_FILTER_REQUEST,
   getData: payload => CustomFiltersService.saveCustomFilter(payload.filter, payload.entity),
   processData: (data, state, payload) => {

@@ -1,11 +1,12 @@
 import { Sale } from "@api/model";
 import { change } from "redux-form";
-import React from "react";
+import React, { useMemo } from "react";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 import { stubFunction } from "../../../../common/utils/common";
 
 export default (
   {
+    relationTypesFilter,
     relationTypes,
     item,
     dispatch,
@@ -13,6 +14,13 @@ export default (
     index
   }
 ) => {
+  const filteredTypes = useMemo(() => {
+    if (relationTypesFilter && relationTypesFilter.entities.includes(item.entityName)) {
+      return relationTypes.filter(relationTypesFilter.filter);
+    }
+    return relationTypes;
+  }, [relationTypesFilter, relationTypes, item.entityName]);
+
   const onRelationChange = rel => {
     const entityId = item.entityFromId || item.entityToId;
     const changed: Sale & { tempId: any } = {
@@ -41,12 +49,17 @@ export default (
     )));
   };
 
+  const hasError = !filteredTypes.length;
+
   return (
     <div className="ml-2">
       {relationTypes.length && (
         <EditInPlaceField
-          meta={{}}
-          items={relationTypes}
+          meta={{
+            error: hasError && "No available relation types",
+            invalid: hasError
+          }}
+          items={filteredTypes}
           input={{
             onChange: onRelationChange,
             onFocus: stubFunction,

@@ -100,9 +100,11 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     } = this.props;
 
     if (dirty || creatingNew) {
-      showConfirm(() => {
-        reset();
-        toogleFullScreenEditView();
+      showConfirm({
+        onConfirm: () => {
+          reset();
+          toogleFullScreenEditView();
+        }
       });
     } else {
       toogleFullScreenEditView();

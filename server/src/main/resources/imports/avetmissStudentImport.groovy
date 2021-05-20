@@ -1,7 +1,7 @@
-import ish.common.types.AvetmissStudentEnglishProficiency
 import ish.common.types.AvetmissStudentIndigenousStatus
 import ish.common.types.AvetmissStudentLabourStatus
 import ish.common.types.AvetmissStudentSchoolLevel
+import ish.common.types.UsiStatus
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Language
@@ -13,6 +13,8 @@ import org.apache.commons.lang3.StringUtils
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
+import static ish.oncourse.server.api.v1.function.ContactFunctions.isValidEmailAddress
 
 logger = LogManager.getLogger(getClass())
 
@@ -114,20 +116,13 @@ def import80(String data, Map<String, Student> importedStudents, ObjectContext c
 		}
 
 		// ------------------
-		// year highest school level completed p126
-		// valid 4 digit year, not in the future
-		aStudent.yearSchoolCompleted = line.readInteger(4)
-
-		// ------------------
 		// sex p94
 		// "F", "M" or "@"
 		String gender = line.readString(1)
-
 		aStudent.contact.gender = "M".equals(gender) ? Gender.MALE : "F".equals(gender) ? Gender.FEMALE : "X".equals(gender) ? Gender.OTHER_GENDER : null
 		// ------------------
 		// date of birth p26
 		aStudent.contact.birthDate = line.readLocalDate(8)
-
 		// ------------------
 		// postcode p71
 		// may be 0000 (unknown)
@@ -135,7 +130,6 @@ def import80(String data, Map<String, Student> importedStudents, ObjectContext c
 		// OSPC (overseas)
 		// @@@@ (not stated)
 		aStudent.contact.postcode = line.readString(4)
-
 		// ------------------
 		// indigenous status identifier p46
 		// 1 (aboriginal)
@@ -144,7 +138,7 @@ def import80(String data, Map<String, Student> importedStudents, ObjectContext c
 		// 4 (neither)
 		// @ (not stated)
 		Integer indStatus = line.readInteger(1)
-		if (indStatus != null) {
+		if (indStatus != null && indStatus <= 4 && indStatus >= 0) {
 			aStudent.indigenousStatus =
 					(AvetmissStudentIndigenousStatus) EnumUtil.enumForDatabaseValue(AvetmissStudentIndigenousStatus, indStatus)
 		} else {
@@ -166,7 +160,6 @@ def import80(String data, Map<String, Student> importedStudents, ObjectContext c
 		if (languageList.size() > 0) {
 			aStudent.setLanguage(languageList.get(0))
 		}
-
 		// ------------------
 		// labour force status identifer p48
 		// 01 (full time)
@@ -185,7 +178,6 @@ def import80(String data, Map<String, Student> importedStudents, ObjectContext c
 		} else {
 			aStudent.labourForceStatus = AvetmissStudentLabourStatus.DEFAULT_POPUP_OPTION
 		}
-
 		// ------------------
 		// country identifier p19
 		// 0000-9999 Aust Bureau of Stats 1269.0
@@ -197,7 +189,6 @@ def import80(String data, Map<String, Student> importedStudents, ObjectContext c
 			logger.debug("country not found saccCode: {}", saccCode, e)
 		}
 		aStudent.countryOfBirth = aCountry
-
 		// ------------------
 		// disability flag p30
 		// Y/N/@
@@ -205,7 +196,6 @@ def import80(String data, Map<String, Student> importedStudents, ObjectContext c
 
 		aStudent.disabilityType = "Y".equals(disabilityType) ? AvetmissStudentDisabilityType.OTHER
 				: AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION
-
 		// ------------------
 		// prior educational achievement flag p75
 		// Y/N/@
@@ -214,34 +204,49 @@ def import80(String data, Map<String, Student> importedStudents, ObjectContext c
 
 		aStudent.priorEducationCode = "Y".equals(priorEducationCode) ? AvetmissStudentPriorEducation.MISC
 				: AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION
-
 		// ------------------
 		// at school p7
 		// still at secondary school
 		String stillAtSchool = line.readString(1)
 
 		aStudent.isStillAtSchool = "Y".equals(stillAtSchool) ? Boolean.TRUE : "N".equals(stillAtSchool) ? Boolean.FALSE : null
-
-		// ------------------
-		// proficiency in spoken English identifier p79
-		// 1 (very well)
-		// 2 (well)
-		// 3 (not well)
-		// 4 (not at all)
-		// blank (if language spoken at home is 1201 - English)
-		// @ (not stated)
-		Integer engProficiency = line.readInteger(1)
-		if (engProficiency != null) {
-			aStudent.englishProficiency = (AvetmissStudentEnglishProficiency) EnumUtil.enumForDatabaseValue(
-					AvetmissStudentEnglishProficiency, engProficiency)
-		} else {
-			aStudent.englishProficiency = AvetmissStudentEnglishProficiency.DEFAULT_POPUP_OPTION
-		}
-
 		// ------------------
 		// address suburb or town or locality p4
 		String suburb = line.readString(50)
 		aStudent.contact.suburb = "NOT PROVIDED".equalsIgnoreCase(suburb) ? null : suburb
+		// ------------------
+		// Unique student identifier
+		String usi = line.readString(10)
+		switch (usi) {
+			case "INTOFF":
+				aStudent.usiStatus = UsiStatus.INTERNATIONAL
+				break
+			case "INDIV":
+				aStudent.usiStatus = UsiStatus.EXEMPTION
+				break
+			default:
+				aStudent.usiStatus = UsiStatus.DEFAULT_NOT_SUPPLIED
+				aStudent.usi = usi
+				break
+		}
+		// ------------------
+		// State identifier
+		line.readString(2)
+		// ------------------
+		// Street
+		String buildingName = line.readString(50)
+		String unit = line.readString(30)
+		String streetNumber = line.readString(15)
+		if ("NOT SPECIFIED".equalsIgnoreCase(streetNumber)) {
+			streetNumber = null
+		}
+		String streetName = line.readString(70)
+		if ("NOT SPECIFIED".equalsIgnoreCase(streetName)) {
+			streetName = null
+		}
+
+		aStudent.contact.street = [buildingName, unit, streetNumber, streetName]
+				.findAll { s -> StringUtils.trimToNull(s) != null }.join(", ")
 
 		// ------------------
 		// end of line
@@ -330,7 +335,8 @@ def import85(String data, Map<String, Student> importedStudents, ObjectContext c
 		aStudent.contact.homePhone = line.readString(20)
 		aStudent.contact.workPhone = line.readString(20)
 		aStudent.contact.mobilePhone = line.readString(20)
-		aStudent.contact.email = line.readString(80)
+		String email = line.readString(80)
+		aStudent.contact.email = !isValidEmailAddress(email) ? email : null
 
 		// ------------------
 		// end of line

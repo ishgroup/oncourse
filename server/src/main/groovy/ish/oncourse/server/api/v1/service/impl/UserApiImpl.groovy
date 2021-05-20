@@ -12,13 +12,17 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import com.google.inject.Provider
 import com.nulabinc.zxcvbn.Strength
 import com.nulabinc.zxcvbn.Zxcvbn
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.UserDao
+import ish.oncourse.server.http.HttpFactory
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.MailDeliveryService
+import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.server.ServerConnector
 
 import javax.mail.MessagingException
 
@@ -54,7 +58,9 @@ class UserApiImpl implements UserApi {
     private MailDeliveryService mailDeliveryService
     @Inject
     private PreferenceController preferenceController
-
+    @Inject
+    private Provider<HttpFactory> httpFactoryProvider
+    
     @Override
     List<UserDTO> get() {
         UserDao.getList(cayenneService.newContext)
@@ -184,13 +190,9 @@ class UserApiImpl implements UserApi {
     private void sendInvitationToUser(SystemUser whoBeChanged) {
         SystemUser whoChange = systemUserService.currentUser
         String collegeKey = licenseService.getCollege_key()
-        if (!collegeKey) {
-            ValidationErrorDTO error = new ValidationErrorDTO()
-            error.setErrorMessage('College key is not set')
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
-        }
+        HttpFactory httpFactory = httpFactoryProvider.get() 
         try {
-            whoBeChanged.invitationToken = sendInvitationEmailToNewSystemUser(whoChange, whoBeChanged, preferenceController, mailDeliveryService, collegeKey)
+            whoBeChanged.invitationToken = sendInvitationEmailToNewSystemUser(whoChange, whoBeChanged, preferenceController, mailDeliveryService, collegeKey, httpFactory.ip, httpFactory.port)
         } catch (MessagingException | IllegalArgumentException ex) {
             ValidationErrorDTO error = new ValidationErrorDTO()
             error.setErrorMessage(ex.message)

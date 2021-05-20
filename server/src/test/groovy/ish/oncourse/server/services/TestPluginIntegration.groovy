@@ -11,15 +11,13 @@
 
 package ish.oncourse.server.services
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.IntegrationProperty
-import ish.oncourse.server.integration.GetProps
-import ish.oncourse.server.integration.OnSave
-import ish.oncourse.server.integration.OnStart
-import ish.oncourse.server.integration.Plugin
-import ish.oncourse.server.integration.PluginTrait
+import ish.oncourse.server.integration.*
 import org.apache.cayenne.ObjectContext
 
+@CompileStatic
 @Plugin(type = 1000, oneOnly = true)
 class TestPluginIntegration implements PluginTrait {
 
@@ -34,7 +32,7 @@ class TestPluginIntegration implements PluginTrait {
     @OnStart
     void onStart() {
         def user = systemUserService.currentUser
-        ObjectContext context =  user.context
+        ObjectContext context = user.context
         user.firstName = 'John'
         context.commitChanges()
     }

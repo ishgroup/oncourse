@@ -11,7 +11,7 @@ import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/F
 import { DELETE_FUNDING_CONTACT_FULFILLED, DELETE_FUNDING_CONTACT_REQUEST } from "../actions";
 import FundingContractService from "../services/FundingContractService";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_FUNDING_CONTACT_REQUEST,
   getData: payload => FundingContractService.deleteFundingContract(payload.id),
   retrieveData: () => FundingContractService.getFundingContracts(),

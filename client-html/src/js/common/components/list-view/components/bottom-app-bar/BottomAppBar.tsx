@@ -278,6 +278,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
     const settingsItems = [
       (selection.length === 0 || existingRecordSelected) && scripts?.length && (
         <ScriptsMenu
+          key="ScriptsMenu"
           scripts={scripts}
           classes={classes}
           entity={rootEntity}
@@ -285,9 +286,11 @@ class BottomAppBar extends React.PureComponent<any, any> {
           openScriptModal={this.openScriptModal}
         />
       ),
-      isSendMessageAvailable && <SendMessageMenu selection={selection} entity={rootEntity} closeAll={this.handleClose} />,
+      isSendMessageAvailable
+      && <SendMessageMenu key="SendMessageMenu" selection={selection} entity={rootEntity} closeAll={this.handleClose} />,
       CogwheelAdornment && (
         <CogwheelAdornment
+          key="CogwheelAdornment"
           closeMenu={this.handleClose}
           menuItemClass="listItemPadding"
           searchQuery={searchQuery}
@@ -303,6 +306,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
       deleteEnabled
       && (
         <MenuItem
+          key="DeleteRecord"
           disabled={selection.length !== 1 || !existingRecordSelected}
           onClick={this.handleDeleteClick}
           classes={{

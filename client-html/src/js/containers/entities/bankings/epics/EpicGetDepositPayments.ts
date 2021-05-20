@@ -14,7 +14,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import { FETCH_FAIL } from "../../../../common/actions";
 import { IAction } from "../../../../common/actions/IshAction";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_DEPOSIT_PAYMENTS,
   getData: ({ accountId, siteId }) => BankingService.getDepositPayments(accountId, siteId),
   processData: (response: any) => {

@@ -12,7 +12,7 @@ import { UPDATE_TAG_REQUEST, UPDATE_TAG_REQUEST_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: UPDATE_TAG_REQUEST,
   getData: payload => TagsService.updateTag(payload.id, payload.tag),
   retrieveData: () => TagsService.getTags(),

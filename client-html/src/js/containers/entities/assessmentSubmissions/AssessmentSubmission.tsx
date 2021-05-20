@@ -7,10 +7,15 @@
  */
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
+import { AssessmentSubmission as AssessmentSubmissionModel } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
 import { getListTags } from "../../tags/actions";
-import {FilterGroup} from "../../../model/common/ListView";
+import { FilterGroup } from "../../../model/common/ListView";
+import AssessmentSubmissionEditView from "./components/AssessmentSubmissionsEditView";
+import { getAssessmentSubmissionsItem, removeAssessmentSubmissionsItem, updateAssessmentSubmissionsItem } from "./actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -37,8 +42,12 @@ const findRelatedGroup: any = [
   },
 ];
 
+const nameCondition = (val: AssessmentSubmissionModel) => val.studentName;
+
 const AssessmentSubmission = (props: any) => {
-  const { clearListState, getFilters, getTags } = props;
+  const {
+    clearListState, getAssessmentSubmissionsItem, getFilters, getTags, onDelete, onSave
+  } = props;
   useEffect(() => {
     getFilters();
     getTags();
@@ -50,22 +59,34 @@ const AssessmentSubmission = (props: any) => {
   return (
     <ListView
       listProps={{
-        primaryColumn: "createdOn",
-        secondaryColumn: "studentName",
+        primaryColumn: "studentName",
+        secondaryColumn: "assessmentName",
       }}
-      EditViewContent={<div />}
-      getEditRecord={() => []}
+      editViewProps={{
+        nameCondition,
+        asyncValidate: notesAsyncValidate,
+        asyncBlurFields: ["notes[].message"]
+      }}
+      EditViewContent={AssessmentSubmissionEditView}
+      getEditRecord={getAssessmentSubmissionsItem}
       rootEntity="AssessmentSubmission"
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
+      onSave={onSave}
+      onDelete={onDelete}
+      CogwheelAdornment={BulkEditCogwheelOption}
     />
   );
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  getAssessmentSubmissionsItem: (id: number) => dispatch(getAssessmentSubmissionsItem(id)),
   clearListState: () => dispatch(clearListState()),
   getFilters: () => dispatch(getFilters("AssessmentSubmission")),
   getTags: () => dispatch(getListTags("AssessmentSubmission")),
+  onSave: (id: number, assessmentSubmission: AssessmentSubmissionModel) => (
+    dispatch(updateAssessmentSubmissionsItem(id, assessmentSubmission))),
+  onDelete: (id: number) => dispatch(removeAssessmentSubmissionsItem(id))
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(AssessmentSubmission);

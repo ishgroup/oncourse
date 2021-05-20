@@ -48,6 +48,7 @@ const EditInPlaceMoneyField: React.FunctionComponent<any> = props => {
         inputComponent
       }}
       className={clsx("money", className)}
+      type="money"
     />
   );
 };

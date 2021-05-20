@@ -15,8 +15,7 @@ task webpack(type: YarnTask, dependsOn: 'queryGrammar') {
     inputs.dir("src")
     outputs.dir("$buildDir/assets")
     inputs.property('version', version)
-
-    args = ['build:prod', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
+    args = ['build:prod', '--env', 'NODE_ENV=production', '--env', "BUILD_NUMBER=${version ?: '99-SNAPSHOT'}"]
 }
 
 clean {
@@ -43,16 +42,6 @@ task jest(type: YarnTask, dependsOn: 'queryGrammar') {
 }
 test.dependsOn(jest)
 
-task apiDoc(type: YarnTask, dependsOn: ':server-api:apiDocs_mergeSwagger') {
-    args = ['build:api-docs',
-            '--schema',
-            tasks.getByPath(':server-api:apiDocs_mergeSwagger').outputs.files.first().toString()]
-}
-task packageApiDoc (type: Zip, dependsOn: apiDoc) {
-    from file("${buildDir}/api-docs")
-    archiveClassifier = 'documentation'
-}
-
 sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources/swagger-js', 'build/generated-sources/aql-model', 'build/generated-sources/aql-parser'
 }
@@ -68,13 +57,3 @@ generateQueryLanguageModel {
 }
 
 processResources.dependsOn(':server-api:swagger', "generateQueryLanguageModel")
-
-publishing {
-    publications {
-        docs(MavenPublication) {
-            artifact(packageApiDoc) {
-                artifactId "apiDoc"
-            }
-        }
-    }
-}

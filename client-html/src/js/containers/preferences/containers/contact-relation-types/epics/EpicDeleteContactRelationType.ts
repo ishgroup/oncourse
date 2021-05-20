@@ -12,7 +12,7 @@ import { DELETE_CONTACT_RELATION_TYPE_FULFILLED, DELETE_CONTACT_RELATION_TYPE_RE
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { ContactRelationType } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_CONTACT_RELATION_TYPE_REQUEST,
   getData: payload => PreferencesService.deleteContactRelationType(payload.id),
   retrieveData: () => PreferencesService.getContactRelationTypes(),

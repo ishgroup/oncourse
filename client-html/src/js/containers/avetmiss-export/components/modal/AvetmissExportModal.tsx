@@ -8,6 +8,9 @@ import Dialog from "@material-ui/core/Dialog";
 import { AvetmissExportSettings } from "@api/model";
 import AvetmissExportForm from "../../containers/AvetmissExportForm";
 import Content from "../../../../common/components/layout/Content";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { openInternalLink } from "../../../../common/utils/links";
 
 interface Props {
   opened: boolean;
@@ -17,6 +20,24 @@ interface Props {
   selection: any;
   entity: "CourseClass" | "Enrolment";
 }
+
+export const manualAvetmisConfirm = (onConfirm: AnyArgFunction, showConfirm: ShowConfirmCaller) => {
+  showConfirm(
+    {
+      title: null,
+      onConfirm,
+      confirmMessage: <span>
+        Exporting AVETMISS in this way is not recommended and may no longer be supported with the new AVETMISS reporting standards due in 2022.
+        <br />
+        <br />
+        If you have a specific use-case for this export, please ensure you log a ticket with ish.
+      </span>,
+      confirmButtonText: "Continue",
+      onCancel: () => openInternalLink("/avetmiss-export"),
+      cancelButtonText: "Use regular export"
+    }
+  );
+};
 
 const AvetmissExportModalForm: React.FC<Props> = props => {
   const {

@@ -12,7 +12,7 @@ import { DELETE_DATA_COLLECTION_RULE_FULFILLED, DELETE_DATA_COLLECTION_RULE_REQU
 import { DataCollectionRule } from "@api/model";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_DATA_COLLECTION_RULE_REQUEST,
   getData: payload => PreferencesService.removeDataCollectionRule(payload.id),
   retrieveData: () => PreferencesService.getDataCollectionRules(),

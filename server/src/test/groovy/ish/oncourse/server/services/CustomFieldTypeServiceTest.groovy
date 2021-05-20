@@ -1,52 +1,29 @@
 package ish.oncourse.server.services
 
-import ish.CayenneIshTestCase
-import ish.oncourse.server.ICayenneService
+import groovy.transform.CompileStatic
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.server.cayenne.CustomField
 import ish.oncourse.server.cayenne.CustomFieldType
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-/**
- * Created by anarut on 6/30/16.
- */
-class CustomFieldTypeServiceTest extends CayenneIshTestCase {
-
-    @Before
-    void setup() throws Exception {
-        wipeTables()
-
-        InputStream st = CustomFieldTypeServiceTest.class.getClassLoader().getResourceAsStream(
-                "ish/oncourse/server/services/customFieldTypeServiceTestDataSet.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        executeDatabaseOperation(dataSet)
-        super.setup()
-    }
+@CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/services/customFieldTypeServiceTestDataSet.xml")
+class CustomFieldTypeServiceTest extends TestWithDatabase {
 
     @Test
     void testDeleteRecords() {
         CustomFieldTypeService cftService = injector.getInstance(CustomFieldTypeService.class)
 
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext context = cayenneService.getNewContext()
-
-
         List<CustomFieldType> customFieldTypes = ObjectSelect.query(CustomFieldType.class)
-                .select(context)
+                .select(cayenneContext)
         List<CustomField> customFields = ObjectSelect.query(CustomField.class)
-                .select(context)
+                .select(cayenneContext)
 
-        assertEquals(3, customFieldTypes.size())
-        assertEquals(30, customFields.size())
+        Assertions.assertEquals(3, customFieldTypes.size())
+        Assertions.assertEquals(30, customFields.size())
 
 
         List<Long> ids = Arrays.asList(customFieldTypes.get(0).getId(), customFieldTypes.get(2).getId())
@@ -54,29 +31,26 @@ class CustomFieldTypeServiceTest extends CayenneIshTestCase {
         cftService.deleteCustomFieldTypes(ids)
 
         List<CustomFieldType> customFieldTypesAfter = ObjectSelect.query(CustomFieldType.class)
-                .select(context)
+                .select(cayenneContext)
         List<CustomField> customFieldsAfter = ObjectSelect.query(CustomField.class)
-                .select(context)
+                .select(cayenneContext)
 
-        assertEquals(1, customFieldTypesAfter.size())
-        assertEquals(10, customFieldsAfter.size())
+        Assertions.assertEquals(1, customFieldTypesAfter.size())
+        Assertions.assertEquals(10, customFieldsAfter.size())
     }
 
+    
     @Test
     void testDeleteTwiceTheSameRecord() {
         CustomFieldTypeService cftService = injector.getInstance(CustomFieldTypeService.class)
 
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext context = cayenneService.getNewContext()
-
-
         List<CustomFieldType> customFieldTypes = ObjectSelect.query(CustomFieldType.class)
-                .select(context)
+                .select(cayenneContext)
         List<CustomField> customFields = ObjectSelect.query(CustomField.class)
-                .select(context)
+                .select(cayenneContext)
 
-        assertEquals(3, customFieldTypes.size())
-        assertEquals(30, customFields.size())
+        Assertions.assertEquals(3, customFieldTypes.size())
+        Assertions.assertEquals(30, customFields.size())
 
 
         List<Long> ids = Collections.singletonList(customFieldTypes.get(0).getId())
@@ -84,22 +58,22 @@ class CustomFieldTypeServiceTest extends CayenneIshTestCase {
         cftService.deleteCustomFieldTypes(ids)
 
         List<CustomFieldType> customFieldTypesAfter = ObjectSelect.query(CustomFieldType.class)
-                .select(context)
+                .select(cayenneContext)
         List<CustomField> customFieldsAfter = ObjectSelect.query(CustomField.class)
-                .select(context)
+                .select(cayenneContext)
 
-        assertEquals(2, customFieldTypesAfter.size())
-        assertEquals(20, customFieldsAfter.size())
+        Assertions.assertEquals(2, customFieldTypesAfter.size())
+        Assertions.assertEquals(20, customFieldsAfter.size())
 
         cftService.deleteCustomFieldTypes(ids)
 
         List<CustomFieldType> customFieldTypesAfter2 = ObjectSelect.query(CustomFieldType.class)
-                .select(context)
+                .select(cayenneContext)
         List<CustomField> customFieldsAfter2 = ObjectSelect.query(CustomField.class)
-                .select(context)
+                .select(cayenneContext)
 
-        assertEquals(2, customFieldTypesAfter2.size())
-        assertEquals(20, customFieldsAfter2.size())
+        Assertions.assertEquals(2, customFieldTypesAfter2.size())
+        Assertions.assertEquals(20, customFieldsAfter2.size())
 
     }
 

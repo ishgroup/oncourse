@@ -1,0 +1,40 @@
+apply plugin: 'com.github.node-gradle.node'
+
+node {
+    version = '12.19.0'
+    yarnVersion = '1.22.10'
+    download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
+    workDir = file("${project.buildDir}/nodejs")
+}
+
+yarn.outputs.cacheIf { true }
+
+clean {
+    delete "${projectDir}/node_modules"
+}
+
+task apiDoc(type: YarnTask, dependsOn: [':server-api:apiDocs_mergeSwagger', 'yarn']) {
+    group = "documentation"
+    args = ['build',
+            '--env',
+            'schema',
+            tasks.getByPath(':server-api:apiDocs_mergeSwagger').outputs.files.first().toString()]
+}
+
+build.dependsOn(apiDoc)
+
+task packageApiDoc (type: Zip, dependsOn: apiDoc) {
+    group = "documentation"
+    from file("${buildDir}/api-docs")
+    archiveClassifier = 'documentation'
+}
+
+publishing {
+    publications {
+        docs(MavenPublication) {
+            artifact(packageApiDoc) {
+                artifactId "apiDoc"
+            }
+        }
+    }
+}

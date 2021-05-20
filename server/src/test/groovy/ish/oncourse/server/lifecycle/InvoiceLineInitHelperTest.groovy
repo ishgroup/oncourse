@@ -3,127 +3,82 @@
  */
 package ish.oncourse.server.lifecycle
 
-import ish.CayenneIshTestCase
-import ish.common.types.EnrolmentStatus
-import ish.common.types.PaymentSource
-import ish.common.types.PaymentStatus
-import ish.common.types.ProductStatus
-import ish.common.types.StudyReason
+import groovy.transform.CompileStatic
+import ish.TestWithDatabase
+import ish.DatabaseSetup
+import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.entity.services.SetPaymentMethod
-import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.MembershipProduct
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.cayenne.VoucherProduct
+import ish.oncourse.server.cayenne.*
 import ish.util.AccountUtil
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.Ordering
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNull
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
-class InvoiceLineInitHelperTest extends CayenneIshTestCase {
-
-	private ICayenneService cayenneService
-
-    @Before
-    void setup() throws Exception {
-
-		wipeTables()
-
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = InvoiceLineInitHelper.class.getClassLoader()
-				.getResourceAsStream("ish/oncourse/server/lifecycle/invoiceLineInitHelperTest.xml")
-
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        rDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(rDataSet)
-    }
-
-	@Test
+@CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/lifecycle/invoiceLineInitHelperTest.xml")
+class InvoiceLineInitHelperTest extends TestWithDatabase {
+    
+    @Test
     void testInitByReversePayment() {
+        Invoice originalInvoice = SelectById.query(Invoice.class, 100).selectOne(cayenneContext)
 
-		ObjectContext context = cayenneService.getNewContext()
-
-        Invoice originalInvoice = SelectById.query(Invoice.class, 100).selectOne(context)
-
-        PaymentIn reversePayment = context.newObject(PaymentIn.class)
+        PaymentIn reversePayment = cayenneContext.newObject(PaymentIn.class)
         reversePayment.setPaymentDate(LocalDate.now())
         reversePayment.setSource(PaymentSource.SOURCE_WEB)
-        SetPaymentMethod.valueOf(PaymentMethodUtil.getREVERSPaymentMethods(context, PaymentMethod.class), reversePayment).set()
-        reversePayment.setAccountIn(AccountUtil.getDefaultBankAccount(context, Account.class))
+        SetPaymentMethod.valueOf(PaymentMethodUtil.getREVERSPaymentMethods(cayenneContext, PaymentMethod.class), reversePayment).set()
+        reversePayment.setAccountIn(AccountUtil.getDefaultBankAccount(cayenneContext, Account.class))
         reversePayment.setAmount(Money.ZERO)
         reversePayment.setStatus(PaymentStatus.SUCCESS)
 
         reversePayment.setPayer(originalInvoice.getContact())
 
-        PaymentInLine reversePaymentLine1 = context.newObject(PaymentInLine.class)
+        PaymentInLine reversePaymentLine1 = cayenneContext.newObject(PaymentInLine.class)
         reversePaymentLine1.setPayment(reversePayment)
         reversePaymentLine1.setInvoice(originalInvoice)
         reversePaymentLine1.setAmount(originalInvoice.getTotalIncTax())
 
-        PaymentInLine reversePaymentLine2 = context.newObject(PaymentInLine.class)
+        PaymentInLine reversePaymentLine2 = cayenneContext.newObject(PaymentInLine.class)
         reversePaymentLine2.setPayment(reversePayment)
 
-        Invoice reverseInvoice = createRefundInvoice(context, originalInvoice)
+        Invoice reverseInvoice = createRefundInvoice(cayenneContext, originalInvoice)
 
         reversePaymentLine2.setInvoice(reverseInvoice)
         reversePaymentLine2.setAmount(reverseInvoice.getTotalIncTax())
 
         for (InvoiceLine reverseLine : reverseInvoice.getInvoiceLines()) {
-			assertNull(reverseLine.getAccount())
+            Assertions.assertNull(reverseLine.getAccount())
         }
 
-		context.commitChanges()
+        cayenneContext.commitChanges()
 
         List<InvoiceLine> originalLines = originalInvoice.getInvoiceLines()
         List<InvoiceLine> reverseLines = reverseInvoice.getInvoiceLines()
 
-        assertEquals(originalLines.size(), reverseLines.size())
+        Assertions.assertEquals(originalLines.size(), reverseLines.size())
 
         Ordering.orderList(originalLines, Arrays.asList(InvoiceLine.SORT_ORDER.asc()))
         Ordering.orderList(reverseLines, Arrays.asList(InvoiceLine.SORT_ORDER.asc()))
 
         for (int i = 0; i < originalLines.size(); i++) {
-			assertEquals(originalLines.get(i).getAccount(), reverseLines.get(i).getAccount())
+            Assertions.assertEquals(originalLines.get(i).getAccount(), reverseLines.get(i).getAccount())
         }
-	}
+    }
 
-	@Test
+    
+    @Test
     void testInitByEnrolment() {
+        Student student1 = SelectById.query(Student.class, 1).selectOne(cayenneContext)
 
-		ObjectContext context = cayenneService.getNewContext()
+        CourseClass courseClass1 = SelectById.query(CourseClass.class, 1).selectOne(cayenneContext)
 
-        Student student1 = SelectById.query(Student.class, 1).selectOne(context)
-
-        CourseClass courseClass1 = SelectById.query(CourseClass.class, 1).selectOne(context)
-
-        Enrolment enrol1 = context.newObject(Enrolment.class)
+        Enrolment enrol1 = cayenneContext.newObject(Enrolment.class)
         enrol1.setStudent(student1)
         enrol1.setCourseClass(courseClass1)
         enrol1.setEligibilityExemptionIndicator(false)
@@ -133,13 +88,13 @@ class InvoiceLineInitHelperTest extends CayenneIshTestCase {
         enrol1.setVetIsFullTime(false)
         enrol1.setStatus(EnrolmentStatus.SUCCESS)
 
-        Invoice invoice = context.newObject(Invoice.class)
+        Invoice invoice = cayenneContext.newObject(Invoice.class)
 
         invoice.setContact(student1.getContact())
         invoice.setInvoiceDate(LocalDate.now())
         invoice.setDateDue(LocalDate.now())
 
-        InvoiceLine invoiceLine = context.newObject(InvoiceLine.class)
+        InvoiceLine invoiceLine = cayenneContext.newObject(InvoiceLine.class)
         invoiceLine.setInvoice(invoice)
         invoiceLine.setEnrolment(enrol1)
         invoiceLine.setSortOrder(0)
@@ -149,36 +104,35 @@ class InvoiceLineInitHelperTest extends CayenneIshTestCase {
         invoiceLine.setTaxEach(courseClass1.getFeeGST())
         invoiceLine.setDiscountEachExTax(Money.ZERO)
 
-        assertNull(invoiceLine.getAccount())
+        Assertions.assertNull(invoiceLine.getAccount())
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
-        assertEquals(courseClass1.getIncomeAccount(), invoiceLine.getAccount())
-        assertEquals(courseClass1.getTax(), invoiceLine.getTax())
+        Assertions.assertEquals(courseClass1.getIncomeAccount(), invoiceLine.getAccount())
+        Assertions.assertEquals(courseClass1.getTax(), invoiceLine.getTax())
     }
 
-	@Test
+    
+    @Test
     void testInitByProduct() {
-		ObjectContext context = cayenneService.getNewContext()
+        Student student1 = SelectById.query(Student.class, 1).selectOne(cayenneContext)
 
-        Student student1 = SelectById.query(Student.class, 1).selectOne(context)
+        MembershipProduct product = SelectById.query(MembershipProduct.class, 200).selectOne(cayenneContext)
 
-        MembershipProduct product = SelectById.query(MembershipProduct.class, 200).selectOne(context)
-
-        Membership membership = context.newObject(Membership.class)
+        Membership membership = cayenneContext.newObject(Membership.class)
 
         membership.setProduct(product)
         membership.setContact(student1.getContact())
         membership.setExpiryDate(new SimpleDateFormat("yyyy/MM/dd").parse("2113/01/01"))
         membership.setStatus(ProductStatus.ACTIVE)
 
-        Invoice invoice = context.newObject(Invoice.class)
+        Invoice invoice = cayenneContext.newObject(Invoice.class)
 
         invoice.setContact(student1.getContact())
         invoice.setInvoiceDate(LocalDate.now())
         invoice.setDateDue(LocalDate.now())
 
-        InvoiceLine invoiceLine = context.newObject(InvoiceLine.class)
+        InvoiceLine invoiceLine = cayenneContext.newObject(InvoiceLine.class)
         invoiceLine.setInvoice(invoice)
         invoiceLine.setSortOrder(0)
         invoiceLine.setTitle("enrolment line")
@@ -189,23 +143,22 @@ class InvoiceLineInitHelperTest extends CayenneIshTestCase {
 
         membership.setInvoiceLine(invoiceLine)
 
-        assertNull(invoiceLine.getAccount())
+        Assertions.assertNull(invoiceLine.getAccount())
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
-        assertEquals(product.getIncomeAccount(), invoiceLine.getAccount())
-        assertEquals(product.getTax(), invoiceLine.getTax())
+        Assertions.assertEquals(product.getIncomeAccount(), invoiceLine.getAccount())
+        Assertions.assertEquals(product.getTax(), invoiceLine.getTax())
     }
 
-	@Test
+    
+    @Test
     void testInitByVoucherProduct() {
-		ObjectContext context = cayenneService.getNewContext()
+        Student student1 = SelectById.query(Student.class, 1).selectOne(cayenneContext)
 
-        Student student1 = SelectById.query(Student.class, 1).selectOne(context)
+        VoucherProduct product = SelectById.query(VoucherProduct.class, 201).selectOne(cayenneContext)
 
-        VoucherProduct product = SelectById.query(VoucherProduct.class, 201).selectOne(context)
-
-        Voucher voucher = context.newObject(Voucher.class)
+        Voucher voucher = cayenneContext.newObject(Voucher.class)
         voucher.setCode("akjsfhashf")
         voucher.setStatus(ProductStatus.ACTIVE)
         voucher.setSource(PaymentSource.SOURCE_WEB)
@@ -213,13 +166,13 @@ class InvoiceLineInitHelperTest extends CayenneIshTestCase {
         voucher.setContact(student1.getContact())
         voucher.setExpiryDate(new Date())
 
-        Invoice invoice = context.newObject(Invoice.class)
+        Invoice invoice = cayenneContext.newObject(Invoice.class)
 
         invoice.setContact(student1.getContact())
         invoice.setInvoiceDate(LocalDate.now())
         invoice.setDateDue(LocalDate.now())
 
-        InvoiceLine invoiceLine = context.newObject(InvoiceLine.class)
+        InvoiceLine invoiceLine = cayenneContext.newObject(InvoiceLine.class)
         invoiceLine.setInvoice(invoice)
         invoiceLine.setSortOrder(0)
         invoiceLine.setTitle("voucher line")
@@ -230,16 +183,17 @@ class InvoiceLineInitHelperTest extends CayenneIshTestCase {
 
         voucher.setInvoiceLine(invoiceLine)
 
-        assertNull(invoiceLine.getAccount())
+        Assertions.assertNull(invoiceLine.getAccount())
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
-        assertEquals(product.getLiabilityAccount(), invoiceLine.getAccount())
-        assertEquals(product.getTax(), invoiceLine.getTax())
+        Assertions.assertEquals(product.getLiabilityAccount(), invoiceLine.getAccount())
+        Assertions.assertEquals(product.getTax(), invoiceLine.getTax())
     }
 
+    
     Invoice createRefundInvoice(ObjectContext cc, Invoice invoiceToRefund) {
-		Invoice refundInvoice = cc.newObject(Invoice.class)
+        Invoice refundInvoice = cc.newObject(Invoice.class)
 
         refundInvoice.setBillToAddress(invoiceToRefund.getBillToAddress())
         refundInvoice.setInvoiceDate(LocalDate.now())
@@ -247,7 +201,7 @@ class InvoiceLineInitHelperTest extends CayenneIshTestCase {
         refundInvoice.setContact(invoiceToRefund.getContact())
 
         for (InvoiceLine originalLine : invoiceToRefund.getInvoiceLines()) {
-			final InvoiceLine refundInvoiceLine = cc.newObject(InvoiceLine.class)
+            final InvoiceLine refundInvoiceLine = cc.newObject(InvoiceLine.class)
 
             refundInvoiceLine.setInvoice(refundInvoice)
             refundInvoiceLine.setSortOrder(originalLine.getSortOrder())
@@ -259,6 +213,6 @@ class InvoiceLineInitHelperTest extends CayenneIshTestCase {
             refundInvoiceLine.setTaxEach(Money.ZERO.subtract(originalLine.getTaxEach()))
         }
 
-		return refundInvoice
+        return refundInvoice
     }
 }

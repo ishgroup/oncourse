@@ -89,27 +89,33 @@ public class EmailDequeueJob implements Job {
 		} catch (final SendFailedException e) {
 			if (e.getCause() instanceof SMTPAddressFailedException && ((SMTPAddressFailedException)e.getCause()).getReturnCode() == 551) {
 				returnStatus = MessageStatus.FAILED;
-				logger.debug("Message failed", e);
+				logger.error("SMTPAddressFailedException(551) occured");
+				logger.catching(e);
 				theResponse.append(e.getMessage() + String.format(". Email address: %s", aReceiver.getEmail()));
 			} else {
 				//requeued message if any configuration exception occurs - authentication is required for SMTP SERVER
-				//if recipient's mail box just not exist - email will be sent (no SendFailedException occurs) but then will be bounced
-				returnStatus = MessageStatus.QUEUED;
-				logger.debug("Message requeued", e);
+				//if recipient's mail box just not exist - SendFailedException occurs (depends on smtp relay configuratio)
+				returnStatus = MessageStatus.FAILED;
+				logger.error("SendFailedException occured");
+				logger.catching(e);
+				theResponse.append("Send failed exception occured. ");
 				theResponse.append(e.getMessage());
 			}
 		} catch (final AddressException e) {
 			// should we allow this to be sent when and if the
 			// recipient address is fixed?
 			returnStatus = MessageStatus.FAILED;
-			logger.debug("Message failed", e);
+			logger.error("AddressException occured");
+			logger.catching(e);
 			theResponse.append("Invalid email address or email setup.");
 		} catch (final MessagingException e) {
 			// connection is either dead or
 			// the underlying message cannot be properly constructed
 			// we could try again later.
 			returnStatus = MessageStatus.QUEUED;
-			logger.debug("Message requeued", e);
+			logger.error("Messaging exception occured");
+			logger.catching(e);
+			theResponse.append("Messaging exception occured. ");
 			theResponse.append(e.getMessage());
 		} catch (final Exception e) {
 			// java.lang.IllegalStateException,
@@ -117,6 +123,8 @@ public class EmailDequeueJob implements Job {
 			returnStatus = MessageStatus.QUEUED;
 			logger.error("Email delivery failed, target email :{} using mail server :{}",
 					aReceiver, smtpService.getHost(), e);
+			logger.catching(e);
+			theResponse.append("Exception occured. ");
 			theResponse.append(e.getMessage());
 		}
 		return returnStatus;

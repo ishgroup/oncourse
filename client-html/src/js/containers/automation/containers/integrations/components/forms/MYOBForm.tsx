@@ -6,7 +6,6 @@
 import * as React from "react";
 import { reduxForm, initialize } from "redux-form";
 import Typography from "@material-ui/core/Typography";
-import { connect } from "react-redux";
 import Button from "../../../../../../common/components/buttons/Button";
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
 import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
@@ -30,8 +29,8 @@ class MYOBBaseForm extends React.Component<any, any> {
 
   render() {
     const {
- handleSubmit, onSubmit, appBarContent, dirty, item
-} = this.props;
+     handleSubmit, onSubmit, appBarContent, dirty, item, form
+    } = this.props;
     const configured = item && item.id;
 
     const configuredLabel = "MYOB access has been set up. Press ‘Configure’ to restart the configuration process.";
@@ -39,7 +38,7 @@ class MYOBBaseForm extends React.Component<any, any> {
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm when={dirty} />}
+        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>{appBarContent}</CustomAppBar>
         <FormField name="fields.baseUrl" label="Base URL" type="text" fullWidth />
         <FormField name="fields.user" label="User" type="text" fullWidth />
@@ -60,4 +59,4 @@ class MYOBBaseForm extends React.Component<any, any> {
 export const MYOBForm = reduxForm({
   form: "MYOBForm",
   onSubmitFail
-})(connect<any, any, any>(null, null)(MYOBBaseForm));
+})(MYOBBaseForm);

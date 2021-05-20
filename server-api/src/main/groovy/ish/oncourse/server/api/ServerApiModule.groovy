@@ -59,6 +59,8 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(FundingContractApi)
         CXFModule.contributeResources(binder).addBinding().to(FundingUploadApi)
 
+        CXFModule.contributeResources(binder).addBinding().to(GradingApi)
+
         CXFModule.contributeResources(binder).addBinding().to(HolidayApi)
 
         CXFModule.contributeResources(binder).addBinding().to(IntegrationApi)

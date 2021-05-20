@@ -28,7 +28,7 @@ const CheckoutSearchList = React.memo<Props>(props => {
     items.length > 0 && (
       <>
         {Title}
-        <List disablePadding className="user-select-none" component="nav">
+        <List disablePadding component="nav">
           {items.map((item, i) => (
             <React.Fragment key={i}>
               <ListItem

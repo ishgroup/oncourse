@@ -18,8 +18,127 @@ import ContactRelationTypes from "./containers/contact-relation-types/ContactRel
 import CustomFields from "./containers/custom-fields/CustomFields";
 import TutorRoleForm from "./containers/tutor-roles/TutorRoleFormContainer";
 import EntityRelationTypes from "./containers/entity-relation-types/EntityRelationTypes";
+import GradingForm from "./containers/grading/GradingForm";
 
 const preferencesRoutes = [
+  {
+    title: "AVETMISS",
+    path: "/preferences/avetmiss",
+    url: "/preferences/avetmiss",
+    customAppBar: true,
+    main: Avetmiss
+  },
+  {
+    title: "Class defaults",
+    path: "/preferences/class",
+    url: "/preferences/class",
+    customAppBar: true,
+    main: Class
+  },
+  {
+    title: "College",
+    path: "/preferences/college",
+    url: "/preferences/college",
+    customAppBar: true,
+    main: College
+  },
+  {
+    title: "Concession types",
+    path: "/preferences/concessionTypes",
+    url: "/preferences/concessionTypes",
+    customAppBar: true,
+    main: ConcessionTypes
+  },
+  {
+    title: "Contact relation types",
+    path: "/preferences/contactRelationTypes",
+    url: "/preferences/contactRelationTypes",
+    customAppBar: true,
+    main: ContactRelationTypes
+  },
+  {
+    title: "Custom fields",
+    path: "/preferences/customFields",
+    url: "/preferences/customFields",
+    customAppBar: true,
+    main: CustomFields
+  },
+  {
+    title: "Financial",
+    path: "/preferences/financial",
+    url: "/preferences/financial",
+    customAppBar: true,
+    main: Financial
+  },
+  {
+    title: "Funding contracts",
+    path: "/preferences/fundingContracts",
+    url: "/preferences/fundingContracts",
+    customAppBar: true,
+    main: FundingContracts
+  },
+  {
+    title: "Grading types",
+    path: "/preferences/gradingTypes",
+    url: "/preferences/gradingTypes",
+    customAppBar: true,
+    main: GradingForm
+  },
+  {
+    title: "Holidays",
+    path: "/preferences/holidays",
+    url: "/preferences/holidays",
+    customAppBar: true,
+    main: Holidays
+  },
+  {
+    title: "LDAP",
+    path: "/preferences/ldap",
+    url: "/preferences/ldap",
+    customAppBar: true,
+    main: LDAP
+  },
+  {
+    title: "Licences",
+    path: "/preferences/licences",
+    url: "/preferences/licences",
+    main: Licences
+  },
+  {
+    title: "Maintenance",
+    path: "/preferences/maintenance",
+    url: "/preferences/maintenance",
+    customAppBar: true,
+    main: Maintenance
+  },
+  {
+    title: "Messaging",
+    path: "/preferences/messaging",
+    url: "/preferences/messaging",
+    customAppBar: true,
+    main: Messaging
+  },
+  {
+    title: "Payment types",
+    path: "/preferences/paymentTypes",
+    url: "/preferences/paymentTypes",
+    customAppBar: true,
+    main: PaymentTypes
+  },
+  {
+    title: "Sellable items relation types",
+    path: "/preferences/sellableItemsRelationTypes",
+    url: "/preferences/sellableItemsRelationTypes",
+    customAppBar: true,
+    main: EntityRelationTypes
+  },
+  {
+    title: "Tax types",
+    path: "/preferences/taxTypes",
+    url: "/preferences/taxTypes",
+    customAppBar: true,
+    main: TaxTypes
+  },
   {
     path: "/preferences/collectionRules/:action/:id?",
     url: "/preferences/collectionRules",
@@ -40,117 +159,6 @@ const preferencesRoutes = [
     noMenuLink: true,
     customAppBar: true,
     main: TutorRoleForm
-  },
-  {
-    title: "College",
-    path: "/preferences/college",
-    url: "/preferences/college",
-    customAppBar: true,
-    main: College
-  },
-  {
-    title: "Licences",
-    path: "/preferences/licences",
-    url: "/preferences/licences",
-    main: Licences
-  },
-  {
-    title: "Messaging",
-    path: "/preferences/messaging",
-    url: "/preferences/messaging",
-    customAppBar: true,
-    main: Messaging
-  },
-  {
-    title: "Class defaults",
-    path: "/preferences/class",
-    url: "/preferences/class",
-    customAppBar: true,
-    main: Class
-  },
-  {
-    title: "LDAP",
-    path: "/preferences/ldap",
-    url: "/preferences/ldap",
-    customAppBar: true,
-    main: LDAP
-  },
-  {
-    title: "Maintenance",
-    path: "/preferences/maintenance",
-    url: "/preferences/maintenance",
-    customAppBar: true,
-    main: Maintenance
-  },
-  {
-    title: "AVETMISS",
-    path: "/preferences/avetmiss",
-    url: "/preferences/avetmiss",
-    customAppBar: true,
-    main: Avetmiss
-  },
-  {
-    title: "Funding contracts",
-    path: "/preferences/fundingContracts",
-    url: "/preferences/fundingContracts",
-    customAppBar: true,
-    main: FundingContracts
-  },
-  {
-    title: "Financial",
-    path: "/preferences/financial",
-    url: "/preferences/financial",
-    customAppBar: true,
-    main: Financial
-  },
-  {
-    title: "Holidays",
-    path: "/preferences/holidays",
-    url: "/preferences/holidays",
-    customAppBar: true,
-    main: Holidays
-  },
-  {
-    title: "Payment types",
-    path: "/preferences/paymentTypes",
-    url: "/preferences/paymentTypes",
-    customAppBar: true,
-    main: PaymentTypes
-  },
-  {
-    title: "Tax types",
-    path: "/preferences/taxTypes",
-    url: "/preferences/taxTypes",
-    customAppBar: true,
-    main: TaxTypes
-  },
-  {
-    title: "Concession types",
-    path: "/preferences/concessionTypes",
-    url: "/preferences/concessionTypes",
-    customAppBar: true,
-    main: ConcessionTypes
-  },
-  {
-    title: "Contact relation types",
-    path: "/preferences/contactRelationTypes",
-    url: "/preferences/contactRelationTypes",
-    customAppBar: true,
-    main: ContactRelationTypes
-  },
-  {
-    title: "Sellable items relation types",
-    path: "/preferences/sellableItemsRelationTypes",
-    url: "/preferences/sellableItemsRelationTypes",
-    customAppBar: true,
-    main: EntityRelationTypes
-  },
-  {
-    title: "Custom fields",
-    path: "/preferences/customFields",
-    url: "/preferences/customFields",
-    customAppBar: true,
-    main: CustomFields
   }
 ];
 

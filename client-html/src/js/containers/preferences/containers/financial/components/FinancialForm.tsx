@@ -10,7 +10,7 @@ import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import {
-  reduxForm, initialize, getFormValues
+  Form, reduxForm, initialize, getFormValues
 } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
@@ -67,12 +67,12 @@ class FinancialBaseForm extends React.Component<any, any> {
 
   public render() {
     const {
- handleSubmit, onSave, accounts = [], dirty, data, values
-} = this.props;
+     handleSubmit, onSave, accounts = [], dirty, data, values, form
+    } = this.props;
 
     return (
-      <form className="container" onSubmit={handleSubmit(onSave)}>
-        <RouteChangeConfirm when={dirty} />
+      <Form className="container" onSubmit={handleSubmit(onSave)}>
+        <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
           <Grid container>
@@ -274,7 +274,7 @@ class FinancialBaseForm extends React.Component<any, any> {
             />
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }

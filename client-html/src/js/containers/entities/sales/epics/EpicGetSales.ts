@@ -30,7 +30,7 @@ const withType = (type: string) => {
 
 const comparator = (a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
 
-const request: EpicUtils.Request<any, any, { search: string; entities: SaleType[] }> = {
+const request: EpicUtils.Request<any, { search: string; entities: SaleType[] }> = {
   type: GET_SALES,
   hideLoadIndicator: true,
   getData: payload => {

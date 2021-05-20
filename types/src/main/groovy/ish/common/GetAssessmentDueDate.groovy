@@ -22,7 +22,7 @@ class GetAssessmentDueDate {
 
         if (attendanceTakenIntoAccount) {
             List<Date> submissionDates = (assessmentClassModules*.assessmentClass*.assessmentSubmissions.flatten() as List<AssessmentSubmissionInterface>)
-                    .findAll { outcome.enrolment == it.enrolment }*.submittedOn
+                    .findAll { outcome.enrolment == it.enrolment }*.submittedDate
             if (!submissionDates.isEmpty()) {
                 return submissionDates
             }

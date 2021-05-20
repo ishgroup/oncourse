@@ -12,7 +12,7 @@ import { DELETE_TAX_TYPE_FULFILLED, DELETE_TAX_TYPE_REQUEST } from "../../../act
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { Tax } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DELETE_TAX_TYPE_REQUEST,
   getData: payload => PreferencesService.deleteTaxType(payload.id),
   retrieveData: () => PreferencesService.getTaxTypes(),

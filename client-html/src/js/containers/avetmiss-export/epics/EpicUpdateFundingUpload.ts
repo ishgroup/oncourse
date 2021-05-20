@@ -5,16 +5,14 @@
 
 import { Epic } from "redux-observable";
 
+import { FundingStatus } from "@api/model";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { UPDATE_FUNDING_UPLOAD_FULFILLED, UPDATE_FUNDING_UPLOAD_REQUEST } from "../actions";
-import { FundingStatus } from "@api/model";
 import FundingUploadService from "../services/FundingUploadService";
 
-const request: EpicUtils.Request<any, any, { id: number; status: FundingStatus }> = {
+const request: EpicUtils.Request<any, { id: number; status: FundingStatus }> = {
   type: UPDATE_FUNDING_UPLOAD_REQUEST,
-  getData: ({ id, status }) => {
-    return FundingUploadService.update(id, status);
-  },
+  getData: ({ id, status }) => FundingUploadService.update(id, status),
   processData: (value, state, payload) => {
     const id = payload.id;
     const status = payload.status;
