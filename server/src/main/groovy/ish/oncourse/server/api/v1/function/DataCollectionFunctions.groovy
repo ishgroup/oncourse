@@ -17,6 +17,9 @@ import ish.oncourse.server.cayenne.MembershipFieldConfiguration
 import ish.oncourse.server.cayenne.VoucherFieldConfiguration
 import ish.oncourse.server.cayenne.WaitingList
 
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
+
 import static ish.common.types.DataType.LIST
 import static ish.common.types.DataType.MAP
 import static ish.common.types.DataType.TEXT
@@ -204,94 +207,57 @@ class DataCollectionFunctions {
 
     }
 
-    static ValidationErrorDTO validateRule(ObjectContext context, DataCollectionRuleDTO rule, FieldConfigurationScheme persistRule = null) {
+    static void validateRule(ObjectContext context, DataCollectionRuleDTO rule, FieldConfigurationScheme persistRule = null) {
 
         if (!rule.name || rule.name.empty) {
-            return new ValidationErrorDTO(null, 'name', "Rule name can not be empty")
+            throwError(new ValidationErrorDTO(null, 'name', "Rule name can not be empty"))
         }
 
         FieldConfigurationScheme duplicate = getRuleByName(context, rule.name)
 
         if (duplicate && (!persistRule || duplicate.id != persistRule.id)) {
-            return new ValidationErrorDTO(null, 'name', "Rule name should be unique")
+            throwError(new ValidationErrorDTO(null, 'name', "Rule name should be unique"))
         }
 
-        if (rule.enrolmentFormName == null || rule.enrolmentFormName.empty) {
-            return new ValidationErrorDTO(null, 'enrolmentFormName', "Enrolment form name can not be empty")
-        }
-
-        FieldConfiguration enrolForm = getFormByName(context, rule.enrolmentFormName)
-
-        if (!enrolForm) {
-            return new ValidationErrorDTO(null, 'enrolmentFormName', "Enrolment form $rule.enrolmentFormName is not exist")
-        }
-
-        if (!enrolForm instanceof EnrolmentFieldConfiguration) {
-            return new ValidationErrorDTO(null, 'enrolmentFormName', "Form $rule.enrolmentFormName is not enrolment type")
-        }
-
-        if (rule.applicationFormName == null || rule.applicationFormName.empty) {
-            return new ValidationErrorDTO(null, 'applicationFormName', "Application form name can not be empty")
-        }
-
-        FieldConfiguration applicationForm = getFormByName(context, rule.applicationFormName)
-
-        if (!applicationForm) {
-            return new ValidationErrorDTO(null, 'applicationFormName', "Application form $rule.applicationFormName is not exist")
-        }
-        if (!applicationForm instanceof ApplicationFieldConfiguration) {
-            return new ValidationErrorDTO(null, 'applicationFormName', "Form $rule.applicationFormName is not application type")
-        }
-
-        if (rule.waitingListFormName == null || rule.waitingListFormName.empty) {
-            return new ValidationErrorDTO(null, 'waitingListFormName', "Waiting list form name can not be empty")
-        }
-
-        FieldConfiguration  waitingListForm = getFormByName(context, rule.waitingListFormName)
-        if (!waitingListForm) {
-            return new ValidationErrorDTO(null, 'waitingListFormName', "Waiting list form $rule.waitingListFormName is not exist")
-        }
-
-        if (!waitingListForm instanceof WaitingListFieldConfiguration) {
-            return new ValidationErrorDTO(null, 'waitingListFormName', "Form $rule.waitingListFormName is not waitingList type")
-        }
+        validateConfiguration(context, rule.enrolmentFormName, 'enrolmentFormName', EnrolmentFieldConfiguration, true)
+        validateConfiguration(context, rule.applicationFormName, 'applicationFormName', ApplicationFieldConfiguration, true)
+        validateConfiguration(context, rule.waitingListFormName, 'waitingListFormName', WaitingListFieldConfiguration, true)
+        validateConfiguration(context, rule.productFormName, 'productFormName', ArticleFieldConfiguration, true)
+        validateConfiguration(context, rule.membershipFormName, 'membershipFormName', MembershipFieldConfiguration, true)
+        validateConfiguration(context, rule.voucherFormName, 'voucherFormName', VoucherFieldConfiguration, true)
 
         if (rule.payerFormName) {
-            FieldConfiguration  payerForm = getFormByName(context, rule.payerFormName)
-            if (!payerForm) {
-                return new ValidationErrorDTO(null, 'payerFormName', "Payer form $rule.payerFormName is not exist")
-            }
-
-            if (!payerForm instanceof PayerFieldConfiguration) {
-                return new ValidationErrorDTO(null, 'payerFormName', "Form $rule.payerFormName is not payer type")
-            }
+            validateConfiguration(context, rule.payerFormName, 'payerFormName', PayerFieldConfiguration, false)
         }
 
         if (rule.parentFormName) {
-            FieldConfiguration  parentForm = getFormByName(context, rule.parentFormName)
-            if (!parentForm) {
-                return new ValidationErrorDTO(null, 'parentFormName', "Parent form $rule.parentFormName is not exist")
-            }
-
-            if (!parentForm instanceof ParentFieldConfiguration) {
-                return new ValidationErrorDTO(null, 'parentFormName', "Form $rule.parentFormName is not parent type")
-            }
+            validateConfiguration(context, rule.parentFormName, 'parentFormName', ParentFieldConfiguration, false)
         }
-
 
         for (String surveyFormName : rule.surveyForms) {
-            FieldConfiguration  surveyForm = getFormByName(context, surveyFormName)
-            if (!surveyForm) {
-                return new ValidationErrorDTO(null, 'surveyForms', "Survey form $surveyFormName is not exist")
-            }
+            validateConfiguration(context, surveyFormName, 'surveyForms', SurveyFieldConfiguration, false)
+        }
+    }
 
-            if (!surveyForm instanceof SurveyFieldConfiguration) {
-                return new ValidationErrorDTO(null, 'surveyForms', "Form $surveyFormName is not survey type")
-            }
+    static void validateConfiguration(ObjectContext context, String configurationName, String propertyName,
+                                                    Class<? extends FieldConfiguration> clzz, boolean isAllowEmpty) {
+        if (!isAllowEmpty && (configurationName == null || configurationName.empty)) {
+            throwError(new ValidationErrorDTO(null, propertyName, "Form name can not be empty"))
         }
 
-        return null
+        FieldConfiguration form = getFormByName(context, configurationName)
 
+        if (!form) {
+            throwError(new ValidationErrorDTO(null, propertyName, "Form $configurationName is not exist"))
+        }
+
+        if (!(form.class == clzz)) {
+            throwError(new ValidationErrorDTO(null, propertyName, "Form $configurationName has another type: $form.type.displayName"))
+        }
+    }
+
+    static void throwError(ValidationErrorDTO error) {
+        throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
     }
 
 
@@ -406,6 +372,9 @@ class DataCollectionFunctions {
             rule.payerFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.PAYER}?.fieldConfiguration?.name
             rule.parentFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.PARENT}?.fieldConfiguration?.name
             rule.surveyForms = dbRule.fieldConfigurationLinks.findAll {it.fieldConfiguration.type == FieldConfigurationType.SURVEY}.collect {it.fieldConfiguration.name}
+            rule.productFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.PRODUCT}.fieldConfiguration.name
+            rule.membershipFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.MEMBERSHIP}.fieldConfiguration.name
+            rule.voucherFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.VOUCHER}.fieldConfiguration.name
             rule
         }
     }
