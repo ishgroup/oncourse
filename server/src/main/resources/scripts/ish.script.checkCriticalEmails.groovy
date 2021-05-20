@@ -15,7 +15,7 @@ records = query {
 records.each { invoice ->
     invoice.modifiedOn = new Date()
 }
-records[0]?.context.commitChanges
+records[0]?.context?.commitChanges()
 
 records = query {
     entity "PaymentIn"
@@ -25,7 +25,7 @@ records = query {
 records.each { paymentIn ->
     paymentIn.modifiedOn = new Date()
 }
-records[0]?.context.commitChanges
+records[0]?.context?.commitChanges()
 
 records = query {
     entity "PaymentOut"
@@ -35,4 +35,4 @@ records = query {
 records.each { paymentOut ->
     paymentOut.modifiedOn = new Date()
 }
-records[0]?.context.commitChanges
+records[0]?.context?.commitChanges()
