@@ -4,9 +4,9 @@
  */
 package ish.oncourse.server.report
 
-
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.common.ResourceType
 import ish.oncourse.common.ResourcesUtil
@@ -21,49 +21,24 @@ import ish.print.PrintResult
 import ish.report.ImportReportResult
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
 import net.sf.jasperreports.engine.JRPropertiesUtil
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
 
-import java.awt.*
 import java.nio.charset.Charset
-import java.util.List
 
 import static ish.report.ImportReportResult.ReportValidationError.ReportBuildingError
 
-
 @CompileStatic
-class ReportServiceTest extends CayenneIshTestCase {
+@DatabaseSetup
+class ReportServiceTest extends TestWithDatabase {
     private static final Logger logger = LogManager.getLogger()
-
-    private DocumentService documentService
-    private DataContext context
-
-    @BeforeAll
-    static void setuuup() {
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
-        String[] fontNames = ge.getAvailableFontFamilyNames()
-        for (String w : fontNames) {
-            logger.info("available font : {}", w)
-        }
-        new JRRuntimeConfig().config()
-    }
-
-    @BeforeEach
-    void setup() throws Exception {
-        documentService = injector.getInstance(DocumentService.class)
-        context = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-    }
-
-    @AfterEach
-    void tearDown() {
-        wipeTables()
-    }
-
+    
     @Test
     void testImportAndCompileAllReportsBasedOnManifest() throws IOException {
         logger.warn("performing testImportAndCompileAllReportsBasedOnManifest")
@@ -77,7 +52,7 @@ class ReportServiceTest extends CayenneIshTestCase {
                     ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
                     report = ObjectSelect.query(Report.class)
                             .where(Report.ID.eq(importReportResult.getReportId()))
-                            .selectOne(context)
+                            .selectOne(cayenneContext)
                 } catch (Exception e) {
                     logger.catching(e)
                     Assertions.fail("could not import the report " + reportFile)
@@ -117,7 +92,7 @@ class ReportServiceTest extends CayenneIshTestCase {
                 ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(is))
                 report = ObjectSelect.query(Report.class)
                         .where(Report.ID.eq(importReportResult.getReportId()))
-                        .selectOne(context)
+                        .selectOne(cayenneContext)
             } catch (Exception e) {
                 Assertions.fail("could not import the report " + reportFile.getAbsolutePath())
             }
@@ -146,7 +121,7 @@ class ReportServiceTest extends CayenneIshTestCase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(oldReportFile), Charset.defaultCharset()))
             Report report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
             Assertions.assertEquals("CourseClass", report.getEntity(), "Report entity should be 'CourseClass'")
         } catch (Exception e) {
             Assertions.fail("could not import the report " + oldReportFile)
@@ -157,7 +132,7 @@ class ReportServiceTest extends CayenneIshTestCase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(newReportFile), Charset.defaultCharset()))
             Report report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
             Assertions.assertEquals("Enrolment", report.getEntity(), "Report entity should be 'Enrolment'")
         } catch (Exception e) {
             Assertions.fail("could not import the report " + newReportFile)
@@ -194,7 +169,7 @@ class ReportServiceTest extends CayenneIshTestCase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
             report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
 
         } catch (Exception e) {
             Assertions.fail("could not import the report " + reportFile)
@@ -214,7 +189,7 @@ class ReportServiceTest extends CayenneIshTestCase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, documentService) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class)) {
 
             @CompileStatic
             @Override
@@ -252,7 +227,7 @@ class ReportServiceTest extends CayenneIshTestCase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
             report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
 
         } catch (Exception e) {
             Assertions.fail("could not import the report " + reportFile)
@@ -272,7 +247,7 @@ class ReportServiceTest extends CayenneIshTestCase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, documentService) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class)) {
 
             @Override
             protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
@@ -317,7 +292,7 @@ class ReportServiceTest extends CayenneIshTestCase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
             report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
 
         } catch (Exception e) {
             Assertions.fail("could not import the report " + reportFile)
@@ -334,7 +309,7 @@ class ReportServiceTest extends CayenneIshTestCase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, documentService) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class)) {
 
             @Override
             protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
@@ -351,7 +326,7 @@ class ReportServiceTest extends CayenneIshTestCase {
 
         Assertions.assertEquals(PrintResult.ResultType.FAILED, worker.getResult().getResultType(), String.format("Printing failed for %s", report.getName()))
         Assertions.assertNotNull(worker.getResult().getError(), String.format("Empty error for %s", report.getName()))
-        context.deleteObject(report)
+        cayenneContext.deleteObject(report)
     }
 
     
@@ -368,7 +343,7 @@ class ReportServiceTest extends CayenneIshTestCase {
             ImportReportResult importReportResult = reportService.importReport(IOUtils.toString(ResourcesUtil.getResourceAsInputStream(reportFile), Charset.defaultCharset()))
             report = ObjectSelect.query(Report.class)
                     .where(Report.ID.eq(importReportResult.getReportId()))
-                    .selectOne(context)
+                    .selectOne(cayenneContext)
 
         } catch (Exception e) {
             Assertions.fail("could not import the report " + reportFile)
@@ -388,7 +363,7 @@ class ReportServiceTest extends CayenneIshTestCase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, documentService)
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class))
 
         worker.run()
 

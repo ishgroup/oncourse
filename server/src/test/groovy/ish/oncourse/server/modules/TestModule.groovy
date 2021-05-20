@@ -36,9 +36,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.mockito.Mockito
 
-/**
- */
-// this module use for tests
 @CompileStatic
 class TestModule implements Module {
 

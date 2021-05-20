@@ -5,7 +5,7 @@
 package ish.util
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.query.SelectQuery
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 @CompileStatic
 @DatabaseSetup(readOnly = true, value = "ish/util/entityUtilTest.xml")
 
-class EntityUtilTest extends CayenneIshTestCase {
+class EntityUtilTest extends TestWithDatabase {
 
     @Test
     void testEntityClassForName() throws Exception {

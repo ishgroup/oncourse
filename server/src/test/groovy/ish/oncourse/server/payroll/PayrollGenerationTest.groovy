@@ -1,29 +1,19 @@
 package ish.oncourse.server.payroll
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.PayslipPayType
 import ish.oncourse.entity.services.SessionService
 import ish.oncourse.server.cayenne.Payslip
 import ish.payroll.PayrollGenerationRequest
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/payroll/payslipGenerationTest.xml")
-class PayrollGenerationTest extends CayenneIshTestCase {
-
-    private PayrollService payrollService
-    private SessionService sessionService
-
-    @BeforeEach
-    void setup() {
-        sessionService = injector.getInstance(SessionService.class)
-        payrollService = new PayrollService(cayenneService, sessionService)
-    }
+class PayrollGenerationTest extends TestWithDatabase {
 
     @Test
     void generatePayslipWithPayType() {
@@ -36,7 +26,7 @@ class PayrollGenerationTest extends CayenneIshTestCase {
             request
         }
 
-        payrollService.generatePayslips(request)
+        new PayrollService(cayenneService, injector.getInstance(SessionService.class)).generatePayslips(request)
 
         List<Payslip> payslips = ObjectSelect.query(Payslip).select(cayenneContext)
         Assertions.assertEquals(payslips.size(), 1)
@@ -45,7 +35,6 @@ class PayrollGenerationTest extends CayenneIshTestCase {
         Assertions.assertEquals(payslip.payType, PayslipPayType.CONTRACTOR, "Pay type should be equal to tutor pay type")
     }
 
-    
     @Test
     void generatePayslipWithoutPayType() {
         List<Long> contactIds = [2l]
@@ -57,7 +46,7 @@ class PayrollGenerationTest extends CayenneIshTestCase {
             request
         }
 
-        payrollService.generatePayslips(request)
+        new PayrollService(cayenneService, injector.getInstance(SessionService.class)).generatePayslips(request)
 
         List<Payslip> payslips = ObjectSelect.query(Payslip).select(cayenneContext)
         Assertions.assertEquals(payslips.size(), 0, "There are no payslips should be created for tutor without pay type")

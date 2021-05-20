@@ -5,14 +5,14 @@
 package ish.oncourse.server.db
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.server.cayenne.Account
 import ish.util.AccountUtil
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class SanityCheckServiceTest extends CayenneIshTestCase {
+class SanityCheckServiceTest extends TestWithDatabase {
     
     @Test
     void testAccountDefaults() {

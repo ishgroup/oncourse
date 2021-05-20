@@ -1,8 +1,8 @@
 package ish.util
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.MessageStatus
 import ish.common.types.MessageType
 import ish.oncourse.server.cayenne.Contact
@@ -10,18 +10,12 @@ import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.MessagePerson
 import ish.oncourse.server.scripting.api.MessageReceived
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup()
-class MessageUtilTest extends CayenneIshTestCase {
-
-    @AfterEach
-    void teardown() {
-        wipeTables()
-    }
+class MessageUtilTest extends TestWithDatabase {
 
     @Test
     void testGenerateCreatorKey() {
@@ -43,7 +37,7 @@ class MessageUtilTest extends CayenneIshTestCase {
 
         //check creatorKey generate with 1 entity
         cayenneContext.commitChanges()
-        Assertions.assertEquals('numb123!@#$%^&*()+=-0_ dbontact_' + contact.getId(), MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact))
+        Assertions.assertEquals('numb123!@#$%^&*()+=-0_Contact_' + contact.getId(), MessageUtils.generateCreatorKey('numb123!@#$%^&*()+=-0', contact))
 
         //check creatorKey generate with several instances of entity
         Assertions.assertEquals(String.format('numb1230_Contact_%s_Contact_%s', contact.getId(), contact1.getId()), MessageUtils.generateCreatorKey("numb1230", contact, contact1))

@@ -5,7 +5,7 @@ package ish.oncourse.server.cayenne
 
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.*
 import ish.math.Money
@@ -23,7 +23,7 @@ import java.time.LocalDate
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/cayenne/TransactionsCreationServertTestDataSet.xml")
-class TransactionsCreationServerTest extends CayenneIshTestCase {
+class TransactionsCreationServerTest extends TestWithDatabase {
     
     @Test
     void testAutoBank() {

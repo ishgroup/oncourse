@@ -246,6 +246,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
 
   const onChangeGrade = (value: number, elem: StudentForRender) => {
     const grade = normalizeNumber(value);
+    let updatedSubmissions;
     if (elem.submissionIndex === -1) {
       const newSubmission: AssessmentSubmission = {
         id: null,
@@ -258,19 +259,20 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         assessmentId: row.assessmentId,
         grade
       };
-      submissionUpdater.current([newSubmission, ...row.submissions]);
+      updatedSubmissions = [newSubmission, ...row.submissions];
     } else {
-      const updatedSubmissions = row.submissions.map((s, index) => {
+       updatedSubmissions = row.submissions.map((s, index) => {
         if (elem.submissionIndex === index) {
-          return { ...s, grade };
+          return { ...s, grade, ...grade === "" ? { markedById: null, markedOn: null } : { markedOn: s.markedOn || today } };
         }
         return s;
       });
-      submissionUpdater.current(updatedSubmissions);
     }
+    submissionUpdater.current(updatedSubmissions);
   };
 
-  const onToggleGrade = (elem: StudentForRender, grade: GradingItem) => {
+  const onToggleGrade = (elem: StudentForRender, prevGrade: GradingItem) => {
+    let updatedSubmissions;
     if (elem.submissionIndex === -1) {
       const newSubmission: AssessmentSubmission = {
         id: null,
@@ -283,17 +285,18 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         assessmentId: row.assessmentId,
         grade: gradeItems ? gradeItems[0]?.lowerBound : null
       };
-      submissionUpdater.current([newSubmission, ...row.submissions]);
+      updatedSubmissions = [newSubmission, ...row.submissions];
     } else {
-      const updatedSubmissions = row.submissions.map((s, index) => {
+      updatedSubmissions = row.submissions.map((s, index) => {
         if (elem.submissionIndex === index) {
-          const gradeIndex = grade ? gradeItems?.findIndex(g => g.lowerBound === grade.lowerBound) : -1;
-          return { ...s, grade: gradeItems[gradeIndex + 1]?.lowerBound };
+          const gradeIndex = prevGrade ? gradeItems?.findIndex(g => g.lowerBound === prevGrade.lowerBound) : -1;
+          const grade = gradeItems[gradeIndex + 1]?.lowerBound;
+          return { ...s, grade, ...typeof grade === "number" ? { markedOn: s.markedOn || today } : { markedById: null, markedOn: null } };
         }
         return s;
       });
-      submissionUpdater.current(updatedSubmissions);
     }
+    submissionUpdater.current(updatedSubmissions);
   };
 
   const onAssessmentChange = assessment => {
@@ -471,7 +474,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
           <div className="heading">Assessment Submission</div>
           <Grid container xs={12} className={classes.tableHeader}>
             <Grid item xs={4} />
-            <Grid item xs={2} className={classes.center}>
+            <Grid item xs={Boolean(gradeType) ? 2 : 4} className={classes.center}>
               <span className="relative">
                 Submitted
                 <IconButton
@@ -485,36 +488,42 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
                 </IconButton>
               </span>
             </Grid>
-            <Grid xs={2} className={classes.center}>
-              <span className="relative">
-                Marked
-                <IconButton
-                  size="small"
-                  className={classes.hiddenTitleIcon}
-                  onClick={() => {
+
+            {Boolean(gradeType) && (
+            <>
+              <Grid xs={2} className={classes.center}>
+                <span className="relative">
+                  Marked
+                  <IconButton
+                    size="small"
+                    className={classes.hiddenTitleIcon}
+                    onClick={() => {
                     setModalOpenedBy(`Marked-0-all`);
                   }}
-                >
-                  <DateRange color="disabled" fontSize="small" />
-                </IconButton>
-              </span>
-            </Grid>
-            <Grid xs={2} className={classes.center}>
-              <span className="relative">
-                Grade
-                <IconButton
-                  size="small"
-                  className={classes.hiddenTitleIcon}
-                  onClick={handleGradeMenuOpen}
-                  id="allGrades"
-                  style={gradeType?.entryType === "number" ? { bottom: "unset" } : undefined}
-                >
-                  {gradeType?.entryType === "choice list"
-                      ? <ExpandMore color="disabled" fontSize="small" />
-                      : <Edit color="disabled" className="editInPlaceIcon" />}
-                </IconButton>
-              </span>
-            </Grid>
+                  >
+                    <DateRange color="disabled" fontSize="small" />
+                  </IconButton>
+                </span>
+              </Grid>
+              <Grid xs={2} className={classes.center}>
+                <span className="relative">
+                  Grade
+                  <IconButton
+                    size="small"
+                    className={classes.hiddenTitleIcon}
+                    onClick={handleGradeMenuOpen}
+                    id="allGrades"
+                    style={gradeType?.entryType === "number" ? { bottom: "unset" } : undefined}
+                  >
+                    {gradeType?.entryType === "choice list"
+                    ? <ExpandMore color="disabled" fontSize="small" />
+                    : <Edit color="disabled" className="editInPlaceIcon" />}
+                  </IconButton>
+                </span>
+              </Grid>
+            </>
+          )}
+
           </Grid>
           <Grid container xs={12} className={classes.items}>
             {studentsForRender.map((elem, index) => (

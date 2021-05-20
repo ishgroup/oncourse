@@ -1,14 +1,16 @@
 package ish.oncourse.server.api
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.aql.AqlService
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.SearchRequestDTO
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.service.impl.TimetableApiImpl
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import java.time.LocalDateTime
@@ -16,15 +18,16 @@ import java.time.LocalDateTime
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/api/TimetableApiTest.xml")
 
-class TimetableApiTest extends CayenneIshTestCase {
+class TimetableApiTest extends TestWithDatabase {
 
     TimetableApiImpl api
-
-    @BeforeAll
+    
+    @BeforeEach
     void before() {
+        api = new TimetableApiImpl()
+        api.cayenneService = injector.getInstance(ICayenneService)
         api.aql = injector.getInstance(AqlService)
     }
-
     @Test
     void timetableTest() {
 

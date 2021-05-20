@@ -4,7 +4,8 @@
  */
 package ish.util
 
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.*
 import ish.math.Money
 import ish.messaging.ISessionModule
@@ -20,7 +21,8 @@ import static org.mockito.Matchers.any
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.when
 
-class CourseClassUtilTest extends CayenneIshTestCase {
+@DatabaseSetup
+class CourseClassUtilTest extends TestWithDatabase {
 
     private static int codeSequence = 0
 

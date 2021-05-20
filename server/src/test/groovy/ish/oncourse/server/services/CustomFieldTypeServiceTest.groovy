@@ -1,36 +1,18 @@
 package ish.oncourse.server.services
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.server.cayenne.CustomField
 import ish.oncourse.server.cayenne.CustomFieldType
 import org.apache.cayenne.query.ObjectSelect
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class CustomFieldTypeServiceTest extends CayenneIshTestCase {
+@DatabaseSetup(value = "ish/oncourse/server/services/customFieldTypeServiceTestDataSet.xml")
+class CustomFieldTypeServiceTest extends TestWithDatabase {
 
-    
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-
-        InputStream st = CustomFieldTypeServiceTest.class.getClassLoader().getResourceAsStream(
-                "ish/oncourse/server/services/customFieldTypeServiceTestDataSet.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        executeDatabaseOperation(dataSet)
-        super.setup()
-    }
-
-    
     @Test
     void testDeleteRecords() {
         CustomFieldTypeService cftService = injector.getInstance(CustomFieldTypeService.class)

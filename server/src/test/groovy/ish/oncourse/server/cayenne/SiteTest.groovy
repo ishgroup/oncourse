@@ -4,32 +4,27 @@
  */
 package ish.oncourse.server.cayenne
 
-
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
-import ish.oncourse.server.ICayenneService
-import org.apache.cayenne.access.DataContext
+import ish.TestWithDatabase
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class SiteTest extends CayenneIshTestCase {
+class SiteTest extends TestWithDatabase {
 
     @Test
     void testLifecycleCallbacks() {
 
-        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-
-        Site site = newContext.newObject(Site.class)
+        Site site = cayenneContext.newObject(Site.class)
         site.setName("name")
         site.setIsShownOnWeb(false)
         site.setIsAdministrationCentre(true)
         site.setLocalTimezone("Australia/Sydney")
         site.setIsVirtual(false)
 
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
-        SystemUser su = newContext.newObject(SystemUser.class)
+        SystemUser su = cayenneContext.newObject(SystemUser.class)
         su.setLogin("login")
         su.setPassword("password")
         su.setFirstName("firstName")
@@ -41,9 +36,9 @@ class SiteTest extends CayenneIshTestCase {
         Assertions.assertEquals(1, site.getUsers().size(), "Check users size: ")
 
         // check prePersist in SystemUser
-        newContext.commitChanges()
+        cayenneContext.commitChanges()
 
-        SystemUser localSu = newContext.localObject(su)
+        SystemUser localSu = cayenneContext.localObject(su)
         Assertions.assertNotNull(localSu.getDefaultAdministrationCentre(), "Check defaultAdministrationCentre")
 
         Assertions.assertNotNull(su.getDefaultAdministrationCentre(), "Check defaultAdministrationCentre")

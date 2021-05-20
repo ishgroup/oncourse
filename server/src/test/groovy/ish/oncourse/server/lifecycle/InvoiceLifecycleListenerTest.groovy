@@ -5,14 +5,15 @@
 package ish.oncourse.server.lifecycle
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
 import ish.common.types.StudyReason
 import ish.math.Money
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.scripting.GroovyScriptService
+import ish.util.AccountUtil
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
@@ -23,7 +24,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/lifecycle/invoiceLifecycleTest.xml")
-class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
+class InvoiceLifecycleListenerTest extends TestWithDatabase {
 
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
@@ -42,7 +43,8 @@ class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
     
     @Test
     void testConfirmationEmailsQueued() throws Exception {
-        Account account = getAccountWithId(cayenneContext, 50L)
+        Account account = AccountUtil.getAccountWithId(50L, cayenneContext, Account.class)
+
         Tax tax = SelectById.query(Tax.class, 3).selectOne(cayenneContext)
 
         Student student1 = SelectById.query(Student.class, 1).selectOne(cayenneContext)
@@ -134,7 +136,7 @@ class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
     
     @Test
     void testInstantlySuccesfulEnrolmentConfirmationQueued() throws Exception {
-        Account account = getAccountWithId(cayenneContext, 50L)
+        Account account = AccountUtil.getAccountWithId(50L, cayenneContext, Account.class)
         Tax tax = SelectById.query(Tax.class, 3).selectOne(cayenneContext)
 
         Student student1 = SelectById.query(Student.class, 1).selectOne(cayenneContext)

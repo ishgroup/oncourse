@@ -5,7 +5,8 @@
 package ish.oncourse.server.print
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestUtil
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
@@ -42,12 +43,12 @@ import java.time.LocalDate
 @Disabled
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/sampleData.xml")
-class ReportPrintingTest extends CayenneIshTestCase {
+class ReportPrintingTest extends TestWithDatabase {
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd")
     protected static final Integer TEST_BUNCH_SIZE = 70
 
-    private static File overlay2pagePortrait = getResourceAsFile("resources/schema/referenceData/reports/transparencyTestPortrait.pdf")
-    private static File overlay2pageLandscape = getResourceAsFile("resources/schema/referenceData/reports/transparencyTestLandscape.pdf")
+    private static File overlay2pagePortrait = TestUtil.getResourceAsFile("resources/schema/referenceData/reports/transparencyTestPortrait.pdf")
+    private static File overlay2pageLandscape = TestUtil.getResourceAsFile("resources/schema/referenceData/reports/transparencyTestLandscape.pdf")
 
     private static Map<String, List<String>> AVAILABLE_TRANSFORMATIONS
     static {

@@ -5,7 +5,8 @@
 package ish.oncourse.server.messaging
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
 import ish.math.Money
@@ -17,25 +18,17 @@ import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class EmailQueuingListenerTest extends CayenneIshTestCase {
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/voucherTest.xml")
+class EmailQueuingListenerTest extends TestWithDatabase {
 
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-
-        InputStream st = EmailQueuingListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/voucherTest.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+    @Override
+    void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
         Date start1 = DateUtils.addDays(new Date(), -4)
         Date start2 = DateUtils.addDays(new Date(), -2)
         Date start3 = DateUtils.addDays(new Date(), 2)
@@ -49,13 +42,12 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
         rDataSet.addReplacementObject("[end_date3]", DateUtils.addHours(start3, 2))
         rDataSet.addReplacementObject("[end_date4]", DateUtils.addHours(start4, 2))
         rDataSet.addReplacementObject("[null]", null)
+    }
 
-        executeDatabaseOperation(rDataSet)
-
+    @BeforeEach
+    @Order(3)
+    void injectors() throws Exception {
         injector.getInstance(GroovyScriptService.class).initTriggers()
-
-        super.setup()
-
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 
         try {
@@ -63,7 +55,6 @@ class EmailQueuingListenerTest extends CayenneIshTestCase {
         } catch (UnsupportedEncodingException ignored) {
         }
     }
-
     
     @Test
     void testVoucherPurchaseConfirmation() throws Exception {

@@ -4,7 +4,8 @@
 package ish.oncourse.server.services
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.AccountTransactionType
 import ish.common.types.ProductStatus
 import ish.math.Money
@@ -18,12 +19,13 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class VoucherExpiryJobTest extends CayenneIshTestCase {
-    private AccountTransactionService accountTransactionService
-
+@DatabaseSetup(value = "ish/oncourse/server/services/voucherExpiryJobTestDataSet.xml")
+class VoucherExpiryJobTest extends TestWithDatabase {
+    
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
         Date start1 = DateUtils.addDays(new Date(), -4)
@@ -41,11 +43,6 @@ class VoucherExpiryJobTest extends CayenneIshTestCase {
         rDataSet.addReplacementObject("[null]", null)
     }
 
-    @BeforeEach
-    void services() throws Exception {
-        this.accountTransactionService = injector.getInstance(AccountTransactionService.class)
-    }
-    
     @Test
     void testVoucherExpiry() {
         Voucher expiredMoneyVoucher = SelectById.query(Voucher.class, 4).selectOne(cayenneContext)
@@ -56,12 +53,10 @@ class VoucherExpiryJobTest extends CayenneIshTestCase {
         Assertions.assertEquals(ProductStatus.ACTIVE, expiredCourseVoucher.getStatus())
         Assertions.assertEquals(ProductStatus.ACTIVE, unexpiredVoucher.getStatus())
 
-        VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, accountTransactionService)
+        VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, injector.getInstance(AccountTransactionService.class))
 
         voucherExpiryJob.executeWithDate(new Date())
 
-        //create new context to avoid data cache
-        cayenneContext = cayenneService.getNewContext()
 
         Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(cayenneContext)
         Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(cayenneContext)
@@ -121,12 +116,9 @@ class VoucherExpiryJobTest extends CayenneIshTestCase {
 
         cayenneContext.commitChanges()
 
-        VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, accountTransactionService)
+        VoucherExpiryJob voucherExpiryJob = new VoucherExpiryJob(cayenneService, injector.getInstance(AccountTransactionService.class))
 
         voucherExpiryJob.executeWithDate(new Date())
-
-        //create new context to avoid data cache
-        cayenneContext = cayenneService.getNewContext()
 
         Account voucherLiabilityAccount = SelectById.query(Account.class, 8).selectOne(cayenneContext)
         Account vouchersExpiredAccount = SelectById.query(Account.class, 10).selectOne(cayenneContext)

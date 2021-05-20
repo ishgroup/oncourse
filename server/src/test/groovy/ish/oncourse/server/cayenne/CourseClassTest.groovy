@@ -4,14 +4,15 @@
  */
 package ish.oncourse.server.cayenne
 
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.*
 import ish.duplicate.ClassDuplicationRequest
 import ish.math.Money
 import ish.math.MoneyRounding
+import ish.oncourse.entity.services.CertificateService
 import ish.oncourse.entity.services.CourseClassService
 import ish.oncourse.generator.DataGenerator
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.duplicate.DuplicateClassService
 import ish.util.AccountUtil
 import org.apache.cayenne.Cayenne
@@ -20,10 +21,12 @@ import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.*
 import org.apache.cxf.common.util.StringUtils
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-class CourseClassTest extends CayenneIshTestCase {
-    private CourseClassService courseClassService = injector.getInstance(CourseClassService.class)
+@DatabaseSetup
+class CourseClassTest extends TestWithDatabase {
 
     @Test
     void testNextAvailableCode() throws Exception {
@@ -257,7 +260,7 @@ class CourseClassTest extends CayenneIshTestCase {
         dc.setClassCost(cost2)
         dc2.setClassCost(cost3)
 
-        Assertions.assertTrue(courseClassService.getTutors(cclass).contains(tutor))
+        Assertions.assertTrue(injector.getInstance(CourseClassService.class).getTutors(cclass).contains(tutor))
         Assertions.assertTrue(cclass.getDiscounts().contains(discount))
         Assertions.assertTrue(cclass.getDiscounts().contains(discount2))
         Assertions.assertTrue(cclass.getCosts().contains(cost))
@@ -282,7 +285,7 @@ class CourseClassTest extends CayenneIshTestCase {
         Assertions.assertNotNull(newClass)
         Assertions.assertNull(newClass.getStartDateTime())
         Assertions.assertNull(newClass.getEndDateTime())
-        Assertions.assertEquals(0, courseClassService.getTutors(newClass).size())
+        Assertions.assertEquals(0, injector.getInstance(CourseClassService.class).getTutors(newClass).size())
         //two discounts and corresponded costs assigned by default
         Assertions.assertEquals(2, newClass.getDiscounts().size())
         Assertions.assertTrue(newClass.getDiscounts().contains(discount3))
@@ -339,7 +342,7 @@ class CourseClassTest extends CayenneIshTestCase {
 
         Assertions.assertEquals(gcStart.getTime(), newClassWithStartDateTime.getStartDateTime())
         Assertions.assertEquals(gcEnd.getTime(), newClassWithStartDateTime.getEndDateTime())
-        Assertions.assertEquals(0, courseClassService.getTutors(newClassWithStartDateTime).size())
+        Assertions.assertEquals(0, injector.getInstance(CourseClassService.class).getTutors(newClassWithStartDateTime).size())
         Assertions.assertEquals(2, newClassWithStartDateTime.getDiscounts().size())
         Assertions.assertEquals(3, newClassWithStartDateTime.getCosts().size())
         Assertions.assertEquals(0, newClassWithStartDateTime.getSessions().size())
@@ -418,10 +421,10 @@ class CourseClassTest extends CayenneIshTestCase {
         Assertions.assertTrue(newClassWithAll.getTags().contains(childTag))
         Assertions.assertEquals(originalStart.getTime(), newClassWithAll.getStartDateTime())
         Assertions.assertEquals(originalEnd.getTime(), newClassWithAll.getEndDateTime())
-        Assertions.assertEquals(1, courseClassService.getTutors(newClassWithAll).size())
+        Assertions.assertEquals(1, injector.getInstance(CourseClassService.class).getTutors(newClassWithAll).size())
         Assertions.assertEquals(4, newClassWithAll.getDiscounts().size())
         Assertions.assertEquals(cclass.getReportableHours(), newClassWithAll.getReportableHours())
-        Assertions.assertTrue(courseClassService.getTutors(newClassWithAll).contains(tutor))
+        Assertions.assertTrue(injector.getInstance(CourseClassService.class).getTutors(newClassWithAll).contains(tutor))
         Assertions.assertTrue(newClassWithAll.getDiscounts().contains(discount))
         Assertions.assertTrue(newClassWithAll.getDiscounts().contains(discount2))
         Assertions.assertTrue(newClassWithAll.getDiscounts().contains(discount3))

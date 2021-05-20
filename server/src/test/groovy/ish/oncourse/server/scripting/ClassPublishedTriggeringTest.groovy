@@ -2,7 +2,7 @@ package ish.oncourse.server.scripting
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.SystemEventType
 import ish.oncourse.server.cayenne.Course
@@ -15,7 +15,7 @@ import org.mockito.Mockito
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/scripting/classPublishedTriggeringTestDataSet.xml")
-class ClassPublishedTriggeringTest extends CayenneIshTestCase {
+class ClassPublishedTriggeringTest extends TestWithDatabase {
 
     @CompileDynamic
     @Test

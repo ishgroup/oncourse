@@ -1,7 +1,8 @@
 package ish.oncourse.server.lifecycle
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.AccountType
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
@@ -18,14 +19,8 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 @CompileStatic
-class PaymentHelperTest extends CayenneIshTestCase {
-
-    @BeforeEach
-    void setup() throws Exception {
-        wipeTables()
-        super.setup()
-    }
-
+@DatabaseSetup
+class PaymentHelperTest extends TestWithDatabase {
     
     @Test
     void testAssignAutoBankingForAutomaticallyPayments() {

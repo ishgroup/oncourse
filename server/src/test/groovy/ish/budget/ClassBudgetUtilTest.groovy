@@ -5,7 +5,7 @@
 package ish.budget
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.math.Money
 import ish.oncourse.server.cayenne.CourseClass
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup("ish/budget/classBudgetTest.xml")
-class ClassBudgetUtilTest extends CayenneIshTestCase {
+class ClassBudgetUtilTest extends TestWithDatabase {
 
     @Test
     void testGetClassCostExTax() {

@@ -5,7 +5,7 @@
 package ish.oncourse.server.print
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
@@ -28,7 +28,7 @@ import java.time.LocalDate
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/print/printTransformationTest.xml")
-class PrintTransformationTest extends CayenneIshTestCase {
+class PrintTransformationTest extends TestWithDatabase {
 
     static Date before = DateUtils.addDays(new Date(), -5)
     static Date start = DateUtils.addDays(new Date(), -4)

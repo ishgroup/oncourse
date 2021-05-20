@@ -5,7 +5,7 @@
 package ish.oncourse.server.export
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.export.ExportParameter
 import ish.export.ExportResult
 import ish.oncourse.common.ResourceProperty
@@ -19,13 +19,12 @@ import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.dbunit.dataset.ReplacementDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -33,8 +32,8 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.time.LocalDate
 
 @CompileStatic
-class AllExportTemplatesTest extends CayenneIshTestCase {
-    private static final Logger logger = LogManager.getLogger()
+@Disabled
+class AllExportTemplatesTest extends TestWithDatabase {
     private static final String UTC_TIMEZONE_ID = "UTC"
 
     private static final String PAYSLIP_MICROPAY_KEYCODE = "ish.onCourse.payslipMicropay.csv"
@@ -42,7 +41,6 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
     private static final String LINE_SEPARATOR = StringUtils.LF
 
     void setup(String testDataFile) {
-        wipeTables()
 
         // set default timezone to UTC to receive same export output regardless of
         // default timezone of building machine
@@ -96,9 +94,9 @@ class AllExportTemplatesTest extends CayenneIshTestCase {
 
             String keyCode = (String) props.get(ResourceProperty.KEY_CODE.getDisplayName())
             String entityName = ((String) props.get(ResourceProperty.ENTITY_CLASS.getDisplayName()))
-            String outputExtention = keyCode.split("\\.")[3]
-            String dataSet = keyCode.split("\\.")[2].concat("DataSet.xml")
-            String output = keyCode.split("\\.")[2].concat("SampleOutput.").concat(outputExtention)
+            String outputExtention = keyCode.split("\\.").last()
+            String dataSet = keyCode.split("\\.")[2] + "DataSet.xml"
+            String output = keyCode.split("\\.")[2] + "SampleOutput." + outputExtention
 
             result.add(Arguments.of(keyCode, entityName, dataSet, output))
 

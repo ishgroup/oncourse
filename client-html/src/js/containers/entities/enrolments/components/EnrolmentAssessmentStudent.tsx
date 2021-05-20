@@ -70,7 +70,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
   );
 
   const currentGrade = useMemo(() => (typeof submission?.grade === "number"
-    ? gradeType.entryType === "choice list"
+    ? gradeType?.entryType === "choice list"
       ? gradeItems?.find(g => g.lowerBound === submission.grade)
       : gradeItems?.find(g => g.lowerBound < submission.grade || (submission.grade === 0 && g.lowerBound === 0))
     : null), [submission?.grade, gradeItems]);
@@ -82,7 +82,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
       <Grid item xs={3} className="d-inline-flex-center pl-1">
         {elem.name}
       </Grid>
-      <Grid item xs={3} className={classes.center}>
+      <Grid item xs={Boolean(gradeType) ? 3 : 6} className={classes.center}>
         {submitStatus === "Submitted"
           ? (
             <EditInPlaceDateTimeField
@@ -101,59 +101,66 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
           )
           : submittedContent}
       </Grid>
-      <Grid item xs={3} className={classes.center}>
-        {markedStatus === "Submitted" ? (
-          <div>
+
+      {Boolean(gradeType) && (
+      <>
+        <Grid item xs={3} className={classes.center}>
+          {markedStatus === "Submitted" ? (
             <div>
-              <EditInPlaceDateTimeField
-                meta={{}}
-                input={{
-                  onChange: value => triggerAsyncChange(value, "markedOn", submissionIndex),
-                  onFocus: stubFunction,
-                  onBlur: stubFunction,
-                  value: submission.markedOn
-                }}
-                type="date"
-                formatting="inline"
-                formatDate={D_MMM_YYYY}
-                inlineMargin
-              />
+              <div>
+                <EditInPlaceDateTimeField
+                  meta={{}}
+                  input={{
+                    onChange: value => triggerAsyncChange(value, "markedOn", submissionIndex),
+                    onFocus: stubFunction,
+                    onBlur: stubFunction,
+                    value: submission.markedOn
+                  }}
+                  type="date"
+                  formatting="inline"
+                  formatDate={D_MMM_YYYY}
+                  inlineMargin
+                />
+              </div>
+              <div>
+                <EditInPlaceField
+                  meta={{}}
+                  selectValueMark="contactId"
+                  selectLabelMark="tutorName"
+                  input={{
+                    onChange: value => triggerAsyncChange(value, "markedById", submissionIndex),
+                    onFocus: stubFunction,
+                    onBlur: stubFunction,
+                    value: submission.markedById
+                  }}
+                  placeholder="No assessor"
+                  formatting="inline"
+                  items={elem.tutors || []}
+                  allowEmpty
+                  select
+                />
+              </div>
             </div>
-            <div>
-              <EditInPlaceField
-                meta={{}}
-                selectValueMark="contactId"
-                selectLabelMark="tutorName"
-                input={{
-                  onChange: value => triggerAsyncChange(value, "markedById", submissionIndex),
-                  onFocus: stubFunction,
-                  onBlur: stubFunction,
-                  value: submission.markedById
-                }}
-                placeholder="No assessor"
-                formatting="inline"
-                items={elem.tutors}
-                select
-              />
-            </div>
-          </div>
-        ) : markedContent}
-      </Grid>
-      <Grid item xs={3} className={classes.center}>
-        <GradeContent
-          handleGradeMenuOpen={handleGradeMenuOpen}
-          onToggleGrade={onToggleGrade}
-          onChangeGrade={onChangeGrade}
-          currentGrade={currentGrade}
-          gradeErrors={gradeErrors}
-          setGradeVal={setGradeVal}
-          gradeType={gradeType}
-          gradeVal={gradeVal}
-          classes={classes}
-          index={index}
-          elem={elem}
-        />
-      </Grid>
+          ) : markedContent}
+        </Grid>
+        <Grid item xs={3} className={classes.center}>
+          <GradeContent
+            handleGradeMenuOpen={handleGradeMenuOpen}
+            onToggleGrade={onToggleGrade}
+            onChangeGrade={onChangeGrade}
+            currentGrade={currentGrade}
+            gradeErrors={gradeErrors}
+            setGradeVal={setGradeVal}
+            gradeType={gradeType}
+            gradeVal={gradeVal}
+            classes={classes}
+            index={index}
+            elem={elem}
+          />
+        </Grid>
+      </>
+    )}
+
     </Grid>
   );
 };

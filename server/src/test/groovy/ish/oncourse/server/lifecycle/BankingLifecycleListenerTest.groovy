@@ -1,7 +1,7 @@
 package ish.oncourse.server.lifecycle
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.Banking
@@ -16,7 +16,7 @@ import java.time.LocalDate
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/lifecycle/bankingLifecycleListenerTestDataSet.xml")
-class BankingLifecycleListenerTest extends CayenneIshTestCase {
+class BankingLifecycleListenerTest extends TestWithDatabase {
 
     @Override
     protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {

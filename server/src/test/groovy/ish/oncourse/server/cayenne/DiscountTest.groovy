@@ -5,7 +5,7 @@
 package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.math.Money
 import org.apache.cayenne.access.DataContext
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(readOnly = true, value = "ish/oncourse/server/testDataset.xml")
-class DiscountTest extends CayenneIshTestCase {
+class DiscountTest extends TestWithDatabase {
 
     @Test
     void testIsStudentEligible() throws Exception {
