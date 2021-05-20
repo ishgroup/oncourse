@@ -119,8 +119,8 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     height: "60px",
   },
   deleteIcon: {
-    marginTop: "10px",
-    fontSize: "18px"
+    padding: theme.spacing(0.5),
+    marginTop: theme.spacing(1)
   },
   chip: {
     minWidth: "8em",
@@ -373,13 +373,13 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                       placeholder={(!isPriorLearningBinded && !values.startDateOverridden) ? null : "Leave empty to calculate date from class"}
                       label="Start date"
                     />
-                    <IconButton className="inputAdornmentButton" onClick={onLockStartDate}>
-                      <DeleteIcon className={classes.deleteIcon} />
+                    <IconButton className={classes.deleteIcon} size="small" onClick={onLockStartDate}>
+                      <DeleteIcon fontSize="inherit" color="disabled" />
                     </IconButton>
                   </>
                 ) : (
                   <Grid item className={classes.buttonWrapper}>
-                    <Chip label="Override" onClick={onLockStartDate} className={classes.chip} />
+                    <Chip label="Override start date" onClick={onLockStartDate} className={classes.chip} />
                   </Grid>
                 )}
               </Grid>
@@ -394,13 +394,13 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                       placeholder={(!isPriorLearningBinded && !values.endDateOverridden) ? null : "Leave empty to calculate date from class"}
                       label="End date"
                     />
-                    <IconButton className="inputAdornmentButton" onClick={onLockEndDate}>
-                      <DeleteIcon className={classes.deleteIcon} />
+                    <IconButton className={classes.deleteIcon} size="small" onClick={onLockEndDate}>
+                      <DeleteIcon fontSize="inherit" color="disabled" />
                     </IconButton>
                   </>
                 ) : (
                   <Grid item className={classes.buttonWrapper}>
-                    <Chip label="Override" onClick={onLockEndDate} className={classes.chip} />
+                    <Chip label="Override end date" onClick={onLockEndDate} className={classes.chip} />
                   </Grid>
                 )}
               </Grid>
