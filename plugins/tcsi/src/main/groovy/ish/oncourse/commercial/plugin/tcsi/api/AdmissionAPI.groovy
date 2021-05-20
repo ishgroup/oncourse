@@ -109,10 +109,10 @@ class AdmissionAPI extends TCSI_API {
         admission["courses_uid"] = Long.valueOf(courseUid)
         admission["course_of_study_commencement_date"] = courseAdmission.courseClass.startDateTime?.format(DATE_FORMAT)
 
-        if (CourseClassAttendanceType.FULL_TIME_ATTENDANCE ==  courseAdmission.courseClass.attendanceType) {
-            admission["type_of_attendance_code"] = '1'
-        } else {
+        if (CourseClassAttendanceType.PART_TIME_ATTENDANCE ==  courseAdmission.courseClass.attendanceType) {
             admission["type_of_attendance_code"] = '2'
+        } else {
+            admission["type_of_attendance_code"] = '1'
         }
 
         if(courseAdmission.student.priorEducationCode) {
