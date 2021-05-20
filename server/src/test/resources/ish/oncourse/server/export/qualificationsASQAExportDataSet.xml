@@ -1,38 +1,71 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-    <Account id="100" accountCode="11500" description="Test debtors account" isEnabled="1" type="1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Account id="300" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Account id="400" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="100" accountCode="11500" description="Test debtors account" isEnabled="1" type="1"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="300" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="400" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
-    <Tax id="100" isGSTTaxType="1" payableToSupplierAccountid="300" receivableFromStudentAccountid="400" taxCode="GST" taxrate="0.1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Tax id="100" isGSTTaxType="1" payableToSupplierAccountid="300" receivableFromStudentAccountid="400" taxCode="GST"
+       taxrate="0.1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
-    <Site id="100" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0" localTimezone="Australia/Sydney"/>
+  <Site id="100" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0"
+        localTimezone="Australia/Sydney"/>
 
-    <SystemUser email="admin@mail.com" createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1" lastLoginOn="2014-10-20 12:33:13.0" login="admin" modifiedOn="2014-10-20 12:33:13.0" password="PBKDF2WithHmacSHA1:1000:5b5814a658527cd9fd6f61224eb05fec699fb20900b4193d:0fd68ff3c15901a1b835cdd571a536f678104c6592f05322" surname="Administrator" isActive="1" isAdmin="1" defaultAdministrationCentreId="100" canEditTara="0" canEditCMS="0" willowid="21" PASSWORDUPDATEREQUIRED="0"/>
+  <SystemUser email="admin@mail.com" createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1"
+              lastLoginOn="2014-10-20 12:33:13.0" login="admin" modifiedOn="2014-10-20 12:33:13.0"
+              password="PBKDF2WithHmacSHA1:1000:5b5814a658527cd9fd6f61224eb05fec699fb20900b4193d:0fd68ff3c15901a1b835cdd571a536f678104c6592f05322"
+              surname="Administrator" isActive="1" isAdmin="1" defaultAdministrationCentreId="100" canEditTara="0"
+              canEditCMS="0" willowid="21" PASSWORDUPDATEREQUIRED="0"/>
 
-    <FieldConfigurationScheme id="1" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10"  name="Accredited course" />
+  <FieldConfigurationScheme id="1" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10"
+                            name="Accredited course"/>
 
-    <Site id="1000" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10" name="CORE" suburb="Cabramatta" state="NSW" isAdministrationCentre="1" isShownOnWeb="1" isVirtual="0" localTimezone="Australia/Sydney" />
+  <Site id="1000" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10" name="CORE" suburb="Cabramatta"
+        state="NSW" isAdministrationCentre="1" isShownOnWeb="1" isVirtual="0" localTimezone="Australia/Sydney"/>
 
-    <Room id="1" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10"  name="Default" siteId="1000" seatedCapacity="20"  />
+  <Room id="1" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10" name="Default" siteId="1000"
+        seatedCapacity="20"/>
 
-    <Contact id="1" createdOn="2015-08-24 11:45:57" modifiedOn="2015-08-24 11:45:57" firstName="test" lastName="studentTest" email="test@gmail.com" mobilePhone="12345678" isMale="1" isCompany="0" isStudent="1" isTutor="0" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="0" allowSms="1" allowEmail="1" uniqueCode="zLf55FVrcuhRBsWH"/>
+  <Contact id="1" createdOn="2015-08-24 11:45:57" modifiedOn="2015-08-24 11:45:57" firstName="test"
+           lastName="studentTest" email="test@gmail.com" mobilePhone="12345678" isMale="1" isCompany="0" isStudent="1"
+           isTutor="0" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="0" allowSms="1"
+           allowEmail="1" uniqueCode="zLf55FVrcuhRBsWH"/>
 
-    <Student id="1" createdOn="2015-08-24 11:45:57" modifiedOn="2015-08-24 11:45:57" contactId="1" usiStatus="2" disabilityType="100" employmentCategoryId="8" englishProficiency="3" highestSchoolLevel="6" indigenousStatus="4" isOverseasClient="0" priorEducationCode="0"  studentNumber="234378" feeHelpEligible="0" citizenship="9" clientIndustryEmployment="0" clientOccupationIdentifier="0" />
+  <Student id="1" createdOn="2015-08-24 11:45:57" modifiedOn="2015-08-24 11:45:57" contactId="1" usiStatus="2"
+           disabilityType="100" employmentCategoryId="8" englishProficiency="3" highestSchoolLevel="6"
+           indigenousStatus="4" isOverseasClient="0" priorEducationCode="0" studentNumber="234378" feeHelpEligible="0"
+           citizenship="9" clientIndustryEmployment="0" clientOccupationIdentifier="0"/>
 
 
-    <Qualification id="1" createdOn="2011-03-26 04:31:30" modifiedOn="2016-07-20 11:25:17" title="Test" nationalCode="TEST01" isOffered="1" isAccreditedCourse="0" isCustom="0"/>
-    <Qualification id="2" createdOn="2011-03-26 04:31:30" modifiedOn="2016-07-20 11:25:17" title="Test" nationalCode="TEST02" isOffered="1" isAccreditedCourse="0" isCustom="0"/>
+  <Qualification id="1" createdOn="2011-03-26 04:31:30" modifiedOn="2016-07-20 11:25:17" title="Test"
+                 nationalCode="TEST01" isOffered="1" isAccreditedCourse="0" isCustom="0"/>
+  <Qualification id="2" createdOn="2011-03-26 04:31:30" modifiedOn="2016-07-20 11:25:17" title="Test"
+                 nationalCode="TEST02" isOffered="1" isAccreditedCourse="0" isCustom="0"/>
 
-    <Course id="1" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10" code="TESTCOURSE" name="testCourse" qualificationId="1" isShownOnWeb="0" isVET="1" allowWaitingLists="1" isSufficientForQualification="1" currentlyOffered="0" reportableHours="95" enrolmentType="2" fieldConfigurationSchemaId="1" />
+  <Course id="1" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10" code="TESTCOURSE" name="testCourse"
+          qualificationId="1" isShownOnWeb="0" isVET="1" allowWaitingLists="1" isSufficientForQualification="1"
+          currentlyOffered="0" reportableHours="95" enrolmentType="2" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
-    <CourseClass id="1" createdOn="2015-07-29 11:59:44" modifiedOn="2015-07-29 11:59:44" code="1" roomId="1" courseId="1" feeExGst="113" incomeAccountId="100" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="1" maximumPlaces="4" minimumPlaces="1" sessionCount="1" taxId="100" deliveryMode="1" fundingSource="0" budgetedPlaces="0" reportableHours="95" isClassFeeApplicationOnly="0" taxAdjustment="0" isActive="1" suppressAvetmissExport="0" expectedHours="0" attendanceType="9" feeHelpClass="0" />
+  <CourseClass id="1" createdOn="2015-07-29 11:59:44" modifiedOn="2015-07-29 11:59:44" code="1" roomId="1" courseId="1"
+               feeExGst="113" incomeAccountId="100" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="1"
+               maximumPlaces="4" minimumPlaces="1" sessionCount="1" taxId="100" deliveryMode="1" fundingSource="0"
+               budgetedPlaces="0" reportableHours="95" isClassFeeApplicationOnly="0" taxAdjustment="0" isActive="1"
+               suppressAvetmissExport="0" expectedHours="0" attendanceType="9"/>
 
-    <Enrolment id="1" createdOn="2015-08-26 11:45:49" modifiedOn="2015-08-26 11:45:49" courseClass_id="1" studentId="1" fundingSource="0" source="O" confirmationStatus="3" studyReason="-1" vetIsFullTime="0" eligibilityExemptionIndicator="0" vetFeeIndicator="0" feeHelpAmount="0" suppressAvetmissExport="0" attendanceType="9" />
+  <Enrolment id="1" createdOn="2015-08-26 11:45:49" modifiedOn="2015-08-26 11:45:49" courseClass_id="1" studentId="1"
+             fundingSource="0" source="O" confirmationStatus="3" studyReason="-1" vetIsFullTime="0"
+             eligibilityExemptionIndicator="0" vetFeeIndicator="0" feeHelpAmount="0" suppressAvetmissExport="0"
+             attendanceType="9"/>
 
-    <Outcome id="1" createdOn="2015-08-26 11:45:49" modifiedOn="2015-08-26 11:45:49" enrolmentId="1" status="20" reportableHours="20" startDateOverridden="0" endDateOverridden="0" />
+  <Outcome id="1" createdOn="2015-08-26 11:45:49" modifiedOn="2015-08-26 11:45:49" enrolmentId="1" status="20"
+           reportableHours="20" startDateOverridden="0" endDateOverridden="0"/>
 
-    <Certificate id="1" createdOn="2015-12-07 12:24:33" modifiedOn="2015-12-07 12:24:33" qualificationId="1" isQualification="1" certificateNumber="1123" studentId="1" awardedOn="2015-12-07 12:26:28" uniqueCode="chbRhyXvvAfj" />
+  <Certificate id="1" createdOn="2015-12-07 12:24:33" modifiedOn="2015-12-07 12:24:33" qualificationId="1"
+               isQualification="1" certificateNumber="1123" studentId="1" awardedOn="2015-12-07 12:26:28"
+               uniqueCode="chbRhyXvvAfj"/>
 
-    <Certificate_Outcome id="1" createdOn="2015-12-07 12:24:33" modifiedOn="2015-12-07 12:24:33" certificateId="1" outcomeId="1" />
+  <Certificate_Outcome id="1" createdOn="2015-12-07 12:24:33" modifiedOn="2015-12-07 12:24:33" certificateId="1"
+                       outcomeId="1"/>
 </dataset>

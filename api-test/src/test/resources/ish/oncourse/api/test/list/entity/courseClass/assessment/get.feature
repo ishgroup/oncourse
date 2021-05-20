@@ -16,7 +16,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass/as
         Given path ishPath + '/1'
         When method GET
         Then status 200
-        And match $ == [{"id":1000,"assessmentId":1000,"courseClassId":1,"assessmentCode":"code1","assessmentName":"assessment 1","contactIds":[1],"moduleIds":[],"releaseDate":"2019-10-01T13:30:56.000Z","dueDate":"2019-11-10T12:31:01.000Z"}]
+        And match $ == [{"id":1000,"assessmentId":1000,"courseClassId":1,"assessmentCode":"code1","gradingTypeId":1,"assessmentName":"assessment 1","contactIds":[1],"moduleIds":[],"releaseDate":"2019-10-01T13:30:56.000Z","dueDate":"2019-11-10T12:31:01.000Z","submissions":[]}]
 
 
 
@@ -37,7 +37,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass/as
         Given path ishPath + '/1'
         When method GET
         Then status 200
-        And match $ == [{"id":1000,"assessmentId":1000,"courseClassId":1,"assessmentCode":"code1","assessmentName":"assessment 1","contactIds":[1],"moduleIds":[],"releaseDate":"2019-10-01T13:30:56.000Z","dueDate":"2019-11-10T12:31:01.000Z"}]
+        And match $ == [{"id":1000,"assessmentId":1000,"courseClassId":1,"assessmentCode":"code1","assessmentName":"assessment 1","gradingTypeId":1,"contactIds":[1],"moduleIds":[],"releaseDate":"2019-10-01T13:30:56.000Z","dueDate":"2019-11-10T12:31:01.000Z","submissions":[]}]
 
 
 

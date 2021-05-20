@@ -7,13 +7,7 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "./EpicUtils";
 import ProcessService from "../services/ProcessService";
-import {
-  FETCH_FAIL,
-  START_PROCESS,
-  UPDATE_PROCESS,
-  CLEAR_PROCESS,
-  CLEAR_ACTION_ON_FAIL
-} from "../actions";
+import { CLEAR_ACTION_ON_FAIL, CLEAR_PROCESS, FETCH_FAIL, START_PROCESS, UPDATE_PROCESS } from "../actions";
 import { ProcessResult } from "@api/model";
 import { IAction } from "../actions/IshAction";
 
@@ -75,7 +69,7 @@ const switchByStatus = (
   }
 };
 
-const request: EpicUtils.DelayedRequest<any, any, any> = {
+const request: EpicUtils.DelayedRequest = {
   type: START_PROCESS,
   delay: 1000,
   hideLoadIndicator: true,

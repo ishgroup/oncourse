@@ -4,14 +4,13 @@
  */
 
 import { Epic } from "redux-observable";
+import { ClassCost } from "@api/model";
 import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
-import { State } from "../../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { POST_COURSE_CLASS_COST } from "../actions";
 import CourseClassCostService from "../services/ClassCostService";
-import { ClassCost } from "@api/model";
 
-const request: EpicUtils.Request<any, State, { cost: ClassCost }> = {
+const request: EpicUtils.Request<any, { cost: ClassCost }> = {
   type: POST_COURSE_CLASS_COST,
   getData: ({ cost }) => CourseClassCostService.postCourseClassCost(cost),
   processData: () => [],

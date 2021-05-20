@@ -53,7 +53,7 @@ class LearnDashScriptClosure implements ScriptClosureTrait<LearnDashIntegration>
 
 
     @Override
-    void execute(LearnDashIntegration integration) {
+    Object execute(LearnDashIntegration integration) {
         String courseId = integration.getCourseId(course)
         if (!courseId) {
             throw new IllegalStateException("Course ${course} is missed from ${integration.baseUrl}")
@@ -66,5 +66,6 @@ class LearnDashScriptClosure implements ScriptClosureTrait<LearnDashIntegration>
             studentId = integration.createUser(student.contact.email, student.contact.firstName, student.contact.lastName)
         }
         integration.enrol(courseId, studentId)
+        return null
     }
 }

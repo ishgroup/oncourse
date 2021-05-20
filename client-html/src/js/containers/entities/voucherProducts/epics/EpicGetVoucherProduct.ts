@@ -14,7 +14,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import voucherProductService from "../services/VoucherProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_VOUCHER_PRODUCT_ITEM,
   getData: (id: number) => voucherProductService.getVoucherProduct(id),
   processData: (voucherProduct: VoucherProduct) => {

@@ -16,21 +16,31 @@ import ish.oncourse.server.api.v1.model.TableModelDTO
 trait TableModelDTOTrait {
 
     boolean equalsByColumns(TableModelDTO otherModelDto) {
-        boolean isEqualTitles = false
-        boolean isEqualAttributes = false
+        boolean isEqualColumns = true
         if (((TableModelDTO) this).columns.size() == otherModelDto.columns.size()) {
-            if (((TableModelDTO) this).columns.collect { column -> column.title }
+
+            if (!((TableModelDTO) this).columns.collect { column -> column.title }
                     .containsAll(otherModelDto.columns.collect { otherColumn -> otherColumn.title })) {
-                isEqualTitles =  true
-            }
-            if (((TableModelDTO) this).columns.collect { column -> column.attribute }
-                    .containsAll(otherModelDto.columns.collect { otherColumn -> otherColumn.attribute })) {
-                isEqualAttributes = true
+                return false
             }
 
-            if (isEqualTitles && isEqualAttributes) {
-                return true
+            ((TableModelDTO) this).columns.each {  entry ->
+                def otherColumn = otherModelDto.columns.find { it.title == entry.title }
+                if (entry.attribute != otherColumn.attribute) {
+                    isEqualColumns = false
+                    return
+                }
+                if (entry.sortable != otherColumn.sortable) {
+                    isEqualColumns = false
+                    return
+                }
+                if ((entry.type == null && otherColumn.type != null) || (entry.type != otherColumn.type)) {
+                    isEqualColumns = false
+                    return
+                }
             }
+
+            return isEqualColumns
         }
 
         return false

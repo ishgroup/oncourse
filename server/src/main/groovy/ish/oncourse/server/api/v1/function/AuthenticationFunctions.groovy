@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.v1.function
 
-import com.nulabinc.zxcvbn.Zxcvbn
 import com.warrenstrange.googleauth.GoogleAuthenticator
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.function.SecurityFunctions
@@ -21,17 +20,12 @@ import ish.oncourse.server.cayenne.ACLRole
 import ish.oncourse.server.cayenne.SystemUser
 import ish.security.AuthenticationUtil
 import ish.security.LdapAuthConnection
-import ish.util.Constants
 import static ish.util.Constants.TOTP_COOKIE_NAME
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.ArrayUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.eclipse.jetty.http.HttpCookie
-import org.eclipse.jetty.server.Request
-import org.eclipse.jetty.server.Response
 
 import javax.naming.NamingException
 import javax.naming.ldap.LdapName
@@ -60,21 +54,10 @@ class AuthenticationFunctions {
         }
     }
 
-    static SystemUser getSystemUserByLogin(String login, ObjectContext context, boolean disableInactiveAccounts) {
-        ObjectSelect objectSelect = ObjectSelect.query(SystemUser)
-                .where(SystemUser.LOGIN.eq(login).orExp(SystemUser.EMAIL.eq(login)))
-
-        if (disableInactiveAccounts) {
-            objectSelect.and(SystemUser.IS_ACTIVE.isTrue())
-        }
-
-        objectSelect.selectOne(context)
-    }
-
     static String checkLdapAuth(SystemUser user, String password, PreferenceController prefController) {
         try {
             LdapAuthConnection ldapConnection = LdapAuthConnection.valueOf(prefController)
-            LdapName ldapUser = ldapConnection.findUser(user.login)
+            LdapName ldapUser = ldapConnection.findUser(user.email)
 
             if (!ldapUser) {
                 return 'LDAP user not found.'
@@ -115,7 +98,7 @@ class AuthenticationFunctions {
             LdapName group = ldapConnection.findGroup(role.name)
 
             if (prefController.ldapGroupPosixStyle) {
-                if (ldapConnection.authorisePosixUser(user.login, group)) {
+                if (ldapConnection.authorisePosixUser(user.email, group)) {
                     user.addToAclRoles(role)
                 }
             } else {
@@ -128,11 +111,13 @@ class AuthenticationFunctions {
 
     static String checkInternalAuth(SystemUser user, String password) {
 
-        if (AuthenticationUtil.checkPassword(password, user.password)) {
-            if (AuthenticationUtil.upgradeEncoding(user.password)) {
-                user.password = AuthenticationUtil.generatePasswordHash(password)
+        if (user.password) {
+            if (AuthenticationUtil.checkPassword(password, user.password)) {
+                if (AuthenticationUtil.upgradeEncoding(user.password)) {
+                    user.password = AuthenticationUtil.generatePasswordHash(password)
+                }
+                return null
             }
-            return null
         }
 
         return 'User or password incorrect.'
@@ -159,22 +144,6 @@ class AuthenticationFunctions {
         }
 
         'Invalid token'
-    }
-
-    static String validatePassword(String login, String newPassword) {
-        if (login == newPassword) {
-            return 'You must enter password which is different to login.'
-        }
-
-        if (newPassword?.length() < 5) {
-            return 'You must enter a password that is at least 5 characters long.'
-        }
-
-        null
-    }
-
-    static String validateComplexPassword(String password) {
-        new Zxcvbn().measure(password).score < 2 ? 'Password does not satisfy complexity restrictions.' : null
     }
 
     static boolean validateCookieToken(String cookieToken, String password, String secret) {

@@ -4,7 +4,9 @@
  */
 package ish.oncourse.server.services
 
-import ish.CayenneIshTestCase
+
+import groovy.transform.CompileStatic
+import ish.TestWithDatabase
 import ish.oncourse.server.AngelServerFactory
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.servlet.HealthCheckServlet
@@ -12,73 +14,78 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.eclipse.jetty.testing.AngelServletTester
 import org.eclipse.jetty.testing.HttpTester
-import org.junit.AfterClass
-import static org.junit.Assert.assertEquals
-import org.junit.BeforeClass
-import org.junit.Test
-/**
- */
-class ServletsTest extends CayenneIshTestCase {
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 
-	private static final Logger logger = LogManager.getLogger()
+@CompileStatic
+class ServletsTest extends TestWithDatabase {
 
-	private static AngelServletTester tester
+    private static final Logger logger = LogManager.getLogger()
 
-	@BeforeClass
-	static void setupOnce() throws Exception {
-		// simulate the servlet setup code as it is in the HttpServer
-		tester = new AngelServletTester(
-				null,
-				injector.getInstance(PreferenceController.class),
-				injector.getInstance(AngelServerFactory.class))
-		tester.setContextPath("/")
-		tester.addServlet(HealthCheckServlet.class, HealthCheckServlet.PATH)
-		tester.start()
-	}
+    private static AngelServletTester tester
 
-	@AfterClass
-	static void tearDown() throws Exception {
-		tester.stop()
-	}
+    
+    @BeforeAll
+    void setupOnce() throws Exception {
+        // simulate the servlet setup code as it is in the HttpServer
+        tester = new AngelServletTester(
+                null,
+                injector.getInstance(PreferenceController.class),
+                injector.getInstance(AngelServerFactory.class))
+        tester.setContextPath("/")
+        tester.addServlet(HealthCheckServlet.class, HealthCheckServlet.PATH)
+        tester.start()
+    }
 
-	@Test
-	void testHealthCheck() throws Exception {
-		HttpTester.Request request = HttpTester.newRequest()
+    @AfterAll
+    static void tearDown() throws Exception {
+        tester.stop()
+    }
 
-		request.setMethod("GET")
-		request.setURI(HealthCheckServlet.PATH)
-		request.setVersion("HTTP/1.0")
+    
+    @Test
+    void testHealthCheck() throws Exception {
+        HttpTester.Request request = HttpTester.newRequest()
 
-		HttpTester.Response response = HttpTester.parseResponse(tester.getResponses(request.generate()))
+        request.setMethod("GET")
+        request.setURI(HealthCheckServlet.PATH)
+        request.setVersion("HTTP/1.0")
 
-		assertEquals("Checking HTTP error code.", 200, response.getStatus())
-	}
+        HttpTester.Response response = HttpTester.parseResponse(tester.getResponses(request.generate()))
 
-	@Test
-	void testHealthCheckPost() throws Exception {
-		HttpTester.Request request = HttpTester.newRequest()
+        Assertions.assertEquals(200, response.getStatus(), "Checking HTTP error code.")
+    }
 
-		request.setMethod("POST")
-		request.setURI(HealthCheckServlet.PATH)
-		request.setVersion("HTTP/1.0")
+    
+    @Test
+    void testHealthCheckPost() throws Exception {
+        HttpTester.Request request = HttpTester.newRequest()
 
-		HttpTester.Response response = HttpTester.parseResponse(tester.getResponses(request.generate()))
+        request.setMethod("POST")
+        request.setURI(HealthCheckServlet.PATH)
+        request.setVersion("HTTP/1.0")
 
-		assertEquals(400, response.getStatus())
-		assertEquals("Bad Request", response.getReason())	}
+        HttpTester.Response response = HttpTester.parseResponse(tester.getResponses(request.generate()))
 
-	@Test
-	void testHealthCheckPut() throws Exception {
-		// test default fallback page:
-		HttpTester.Request request = HttpTester.newRequest()
+        Assertions.assertEquals(400, response.getStatus())
+        Assertions.assertEquals("Bad Request", response.getReason())
+    }
 
-		request.setMethod("PUT")
-		request.setURI(HealthCheckServlet.PATH)
-		request.setVersion("HTTP/1.0")
+    
+    @Test
+    void testHealthCheckPut() throws Exception {
+        // test default fallback page:
+        HttpTester.Request request = HttpTester.newRequest()
 
-		HttpTester.Response response = HttpTester.parseResponse(tester.getResponses(request.generate()))
+        request.setMethod("PUT")
+        request.setURI(HealthCheckServlet.PATH)
+        request.setVersion("HTTP/1.0")
 
-		assertEquals(400, response.getStatus())
-		assertEquals("Bad Request", response.getReason())
-	}
+        HttpTester.Response response = HttpTester.parseResponse(tester.getResponses(request.generate()))
+
+        Assertions.assertEquals(400, response.getStatus())
+        Assertions.assertEquals("Bad Request", response.getReason())
+    }
 }

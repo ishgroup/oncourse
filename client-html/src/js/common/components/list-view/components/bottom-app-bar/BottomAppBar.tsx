@@ -16,15 +16,48 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Tooltip from "@material-ui/core/Tooltip";
 import { fade, darken } from "@material-ui/core/styles/colorManipulator";
 import FindInPage from "@material-ui/icons/FindInPage";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import ExecuteScriptModal from "../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { openInternalLink } from "../../../../utils/links";
 import SearchInput from "./components/SearchInput";
 import ScriptsMenu from "./components/ScriptsMenu";
 import SendMessageMenu from "./components/SendMessageMenu";
 import ViewSwitcher from "./components/ViewSwitcher";
-import { APP_BAR_HEIGHT } from "../../../../../constants/Config";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, EMAIL_FROM_KEY } from "../../../../../constants/Config";
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
+import { State } from "../../../../../reducers/state";
+import { getEmailTemplatesWithKeyCode, getScripts, getUserPreferences } from "../../../../actions";
+import { LSGetItem } from "../../../../utils/storage";
+
+const SendMessageEntities = [
+  "Invoice",
+  "Application",
+  "Contact",
+  "Enrolment",
+  "CourseClass",
+  "PaymentIn",
+  "PaymentOut",
+  "Payslip",
+  "ProductItem",
+  "WaitingList"
+];
+
+const EntitiesToMessageTemplateEntitiesMap = {
+  Invoice: ["Contact", "Invoice"],
+  Application: ["Contact", "Application"],
+  Contact: ["Contact"],
+  Enrolment: ["Contact", "Enrolment"],
+  CourseClass: ["Contact", "CourseClass", "Enrolment", "CourseClassTutor"],
+  PaymentIn: ["Contact", "PaymentIn"],
+  PaymentOut: ["Contact", "PaymentOut"],
+  Payslip: ["Contact", "Payslip"],
+  ProductItem: ["Contact", "Voucher", "Membership", "Article", "ProductItem"],
+  WaitingList: ["Contact", "WaitingList"]
+};
+
+const getMessageTemplateEntities = entity => EntitiesToMessageTemplateEntitiesMap[entity] || [entity];
 
 const styles = theme => createStyles({
     root: {
@@ -101,6 +134,31 @@ class BottomAppBar extends React.PureComponent<any, any> {
       execScriptsMenuOpen: null,
       scriptIdSelected: null
     };
+  }
+
+  componentDidMount() {
+    const {
+     rootEntity, getMessageTemplates, getEmailFrom
+    } = this.props;
+
+    if (rootEntity) {
+      getMessageTemplates(getMessageTemplateEntities(rootEntity));
+      getEmailFrom();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+     rootEntity, getMessageTemplates, getEmailFrom, scripts, getScripts
+    } = this.props;
+
+    if (rootEntity && rootEntity !== prevProps.rootEntity) {
+      getMessageTemplates(getMessageTemplateEntities(rootEntity));
+      getEmailFrom();
+      if (!scripts) {
+        getScripts(rootEntity);
+      }
+    }
   }
 
   setExecScriptsMenuOpen = (value: boolean) => {
@@ -201,7 +259,9 @@ class BottomAppBar extends React.PureComponent<any, any> {
       searchMenuItemsRenderer,
       createButtonDisabled,
       searchQuery,
-      filteredCount
+      filteredCount,
+      messageTemplates,
+      scripts
     } = this.props;
 
     const {
@@ -213,6 +273,50 @@ class BottomAppBar extends React.PureComponent<any, any> {
 
     const existingRecordSelected = Boolean(selection.length) && selection[0] !== "NEW";
 
+    const isSendMessageAvailable = SendMessageEntities.includes(rootEntity) && Array.isArray(messageTemplates) && messageTemplates.length;
+
+    const settingsItems = [
+      (selection.length === 0 || existingRecordSelected) && scripts?.length && (
+        <ScriptsMenu
+          key="ScriptsMenu"
+          scripts={scripts}
+          classes={classes}
+          entity={rootEntity}
+          closeAll={this.handleClose}
+          openScriptModal={this.openScriptModal}
+        />
+      ),
+      isSendMessageAvailable
+      && <SendMessageMenu key="SendMessageMenu" selection={selection} entity={rootEntity} closeAll={this.handleClose} />,
+      CogwheelAdornment && (
+        <CogwheelAdornment
+          key="CogwheelAdornment"
+          closeMenu={this.handleClose}
+          menuItemClass="listItemPadding"
+          searchQuery={searchQuery}
+          selection={selection}
+          showConfirm={showConfirm}
+          onCreate={onCreate}
+          entity={rootEntity}
+          showBulkEditDrawer={showBulkEditDrawer}
+          toggleBulkEditDrawer={toggleBulkEditDrawer}
+          records={records}
+        />
+      ),
+      deleteEnabled
+      && (
+        <MenuItem
+          key="DeleteRecord"
+          disabled={selection.length !== 1 || !existingRecordSelected}
+          onClick={this.handleDeleteClick}
+          classes={{
+            root: clsx("listItemPadding", classes.cogWheelMenuDelete)
+          }}
+        >
+          Delete record
+        </MenuItem>
+      )].filter(i => i);
+
     return (
       <>
         <ExecuteScriptModal
@@ -223,7 +327,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
           filteredCount={filteredCount}
         />
 
-        <div className={clsx(classes.root, localStorage.getItem("theme") === "christmas" && "christmasHeader")}>
+        <div className={clsx(classes.root, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}>
           <SearchInput
             innerRef={searchComponentNode}
             onQuerySearch={onQuerySearch}
@@ -337,7 +441,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                       root: classes.actionsBarButton,
                       disabled: classes.buttonDisabledFade
                     }}
-                    disabled={fetch.pending}
+                    disabled={fetch.pending || !settingsItems.length}
                     color="inherit"
                     aria-owns={showSettingsMenu ? "settings" : undefined}
                     aria-haspopup="true"
@@ -357,40 +461,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                 }}
                 disableAutoFocusItem
               >
-                {(selection.length === 0 || existingRecordSelected) && (
-                  <ScriptsMenu
-                    classes={classes}
-                    entity={rootEntity}
-                    closeAll={this.handleClose}
-                    openScriptModal={this.openScriptModal}
-                  />
-                )}
-
-                <SendMessageMenu selection={selection} entity={rootEntity} closeAll={this.handleClose} />
-
-                {CogwheelAdornment ? (
-                  <CogwheelAdornment
-                    closeMenu={this.handleClose}
-                    menuItemClass="listItemPadding"
-                    searchQuery={searchQuery}
-                    selection={selection}
-                    showConfirm={showConfirm}
-                    onCreate={onCreate}
-                    entity={rootEntity}
-                    showBulkEditDrawer={showBulkEditDrawer}
-                    toggleBulkEditDrawer={toggleBulkEditDrawer}
-                  />
-                ) : null}
-
-                <MenuItem
-                  disabled={selection.length !== 1 || !existingRecordSelected || !deleteEnabled}
-                  onClick={this.handleDeleteClick}
-                  classes={{
-                    root: clsx("listItemPadding", classes.cogWheelMenuDelete)
-                  }}
-                >
-                  Delete record
-                </MenuItem>
+                {settingsItems}
               </Menu>
             </div>
           </div>
@@ -400,4 +471,15 @@ class BottomAppBar extends React.PureComponent<any, any> {
   }
 }
 
-export default withStyles(styles)(BottomAppBar);
+const mapStateToProps = (state: State) => ({
+  messageTemplates: state.list.emailTemplatesWithKeyCode,
+  scripts: state.list.scripts
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  getMessageTemplates: (entities: string[]) => dispatch(getEmailTemplatesWithKeyCode(entities)),
+  getEmailFrom: () => dispatch(getUserPreferences([EMAIL_FROM_KEY])),
+  getScripts: (entity: string) => dispatch(getScripts(entity))
+});
+
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(BottomAppBar));

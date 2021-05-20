@@ -19,7 +19,7 @@ import {
 } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { site: Site }> = {
+const request: EpicUtils.Request<any, { site: Site }> = {
   type: CREATE_SITE_ITEM,
   getData: ({ site }) => {
     return SiteService.createSite(site);

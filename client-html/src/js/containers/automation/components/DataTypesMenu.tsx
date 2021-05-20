@@ -15,7 +15,8 @@ import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {
- getFormValues, initialize, InjectedFormProps, reduxForm
+  Form,
+  getFormValues, initialize, InjectedFormProps, reduxForm
 } from "redux-form";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -53,7 +54,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DataTypes = Object.keys(DataType).filter(k => !["Record", "List", "Map", "Long text", "URL", "Email"].includes(k));
+const DataTypes = Object.keys(DataType).filter(k => !["Record", "Pattern text", "List", "Map", "Long text", "URL", "Email"].includes(k));
 
 interface BindingEditPopupProps extends InjectedFormProps {
   popupAnchorEl: any;
@@ -65,8 +66,8 @@ interface BindingEditPopupProps extends InjectedFormProps {
 
 const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
   ({
- popupAnchorEl, onCancel, onSave, handleSubmit, invalid, itemsType, values, reset
-}) => {
+     popupAnchorEl, onCancel, onSave, handleSubmit, invalid, itemsType, values, reset
+  }) => {
     const nameRef = useRef<any>();
     const popperRef = useRef<any>();
 
@@ -115,7 +116,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
         {({ TransitionProps }) => (
           <Grow {...TransitionProps} timeout={200}>
             <Paper className={classes.paper} elevation={8}>
-              <form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit(onSubmit)}>
                 <DialogContent className="overflow-hidden">
                   {labelType && (
                     <FormField
@@ -144,7 +145,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
                     Save
                   </Button>
                 </DialogActions>
-              </form>
+              </Form>
 
               <div className={classes.corner} />
             </Paper>
@@ -216,6 +217,10 @@ const DataTypesMenu = React.memo<DataTypesMenuProps>(({
           }
           // Show Message template option only in Script options
           if (t === "Message template" && (!isScriptsAutomation || !isOptionsBindingType)) {
+            return null;
+          }
+          // Show Object option only in variables
+          if (t === "Object" && !isVariablesBindingType) {
             return null;
           }
           return <MenuItem onClick={handleClick} key={t} role={t}>{t}</MenuItem>;

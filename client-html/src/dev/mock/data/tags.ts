@@ -3,12 +3,16 @@ import { generateArraysOfRecords } from "../mockUtils";
 
 export function mockTags(): Tag[] {
   this.getTag = id => {
-    const tags = this.tags.find(tag => tag.id == id);
+    const tags = this.tags.find(tag => Number(tag.id) === Number(id));
     return tags;
   };
 
   this.getTags = () => {
     return this.tags;
+  };
+
+  this.removeTag = id => {
+    this.tags = this.tags.filter(tag => Number(tag.id) !== Number(id));
   };
 
   const ofRecord = [
@@ -66,8 +70,8 @@ export function mockTags(): Tag[] {
     childrenCount: childTags.length,
     created: l.created,
     modified: l.modified,
-    requirements: requirements,
-    childTags: childTags
+    requirements,
+    childTags
   }));
 
   return tags;

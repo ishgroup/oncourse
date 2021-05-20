@@ -35,6 +35,11 @@ properties:
     type: object
     additionalProperties:
       type: number
+  paymentPlans:
+    type: array
+    required: true
+    items:
+      $ref: './CheckoutPaymentPlan.yaml'
   redeemedVouchers:
     description: redeemed vouchers ids and applied amount
     type: object

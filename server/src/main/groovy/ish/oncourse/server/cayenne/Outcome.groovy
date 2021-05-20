@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+import java.time.LocalDate
 
 /**
  * Outcomes are a relationship between a student and a Module/Unit of Competency and represents
@@ -45,6 +46,8 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 	public static final String STUDENT_NAME = "studentName"
 	public static final String STARTDATE = "startDate"
 	public static final String ENDDATE = "endDate"
+	public static final String TRAINING_PLAN_START_DATE_PROPERTY = "trainingPlanStartDate"
+	public static final String TRAINING_PLAN_END_DATE_PROPERTY = "trainingPlanEndDate"
 
 	@Override
 	void postAdd() {
@@ -106,11 +109,11 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 
 	private void updateOverriddenStartEndDates() {
 		if (startDate == null && !startDateOverridden) {
-			startDate = LocalDateUtils.dateToValue(new CalculateStartDate(OutcomeDelegator.valueOf(this)).calculate())
+			startDate = actualStartDate
 		}
 
 		if (endDate == null && !endDateOverridden) {
-			endDate = LocalDateUtils.dateToValue(new CalculateEndDate(OutcomeDelegator.valueOf(this)).calculate())
+			endDate = actualEndDate
 		}
 	}
 
@@ -365,5 +368,46 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 			return super.getSummaryDescription()
 		}
 		return contact.getName(false)
+	}
+
+
+	/**
+	 * @return start date of training plan
+	 */
+	@API
+	LocalDate getTrainingPlanStartDate() {
+		return LocalDateUtils.dateToValue(calculateStartDate(Boolean.FALSE))
+	}
+
+	/**
+	 * @return end date of training plan
+	 */
+	@API
+	LocalDate getTrainingPlanEndDate() {
+		return LocalDateUtils.dateToValue(calculateEndDate(Boolean.FALSE))
+	}
+
+	/**
+	 * @return actual start date of outcome: depends on attendances and assessment submissions
+	 */
+	@API
+	LocalDate getActualStartDate() {
+		return LocalDateUtils.dateToValue(calculateStartDate(Boolean.TRUE))
+	}
+
+	/**
+	 * @return actual end date of outcome: depends on attendances and assessment submissions
+	 */
+	@API
+	LocalDate getActualEndDate() {
+		return LocalDateUtils.dateToValue(calculateEndDate(Boolean.TRUE))
+	}
+
+	Date calculateStartDate(Boolean attendanceTakenIntoAccount) {
+		return new CalculateStartDate(OutcomeDelegator.valueOf(this), attendanceTakenIntoAccount).calculate()
+	}
+
+	Date calculateEndDate(Boolean attendanceTakenIntoAccount) {
+		return new CalculateEndDate(OutcomeDelegator.valueOf(this), attendanceTakenIntoAccount).calculate()
 	}
 }

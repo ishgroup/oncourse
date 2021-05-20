@@ -1,6 +1,7 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
-import { EntityName, MessageTemplateEntityName } from "../constants";
+import { MessageTemplateEntityName } from "../constants";
+import { EntityName } from "../../../model/entities/common";
 
 export const mapMessageAvailableFrom = (entity: MessageTemplateEntityName) => {
   switch (entity) {
@@ -14,6 +15,9 @@ export const mapMessageAvailableFrom = (entity: MessageTemplateEntityName) => {
       return ["Applications", "Contacts", "Classes", "Enrolments", "Invoices", "Payments In", "Payments Out", "Sales", "Waiting Lists"];
 
     case "CourseClass":
+      return ["Classes"];
+
+    case "CourseClassTutor":
       return ["Classes"];
 
     case "Enrolment":

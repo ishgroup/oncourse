@@ -6,6 +6,7 @@
 import React, { useCallback, useEffect } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
+import Delete from "@material-ui/icons/Delete";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
@@ -31,10 +32,9 @@ import { State } from "../../../reducers/state";
 import { getEntityTags } from "../../tags/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import {
-  createDocument, getDocument, removeDocument, updateDocument
-} from "./actions";
+import { createDocument, getDocument, updateDocument } from "./actions";
 import DocumentEditView from "./components/DocumentEditView";
+import BinCogwheel from "./components/BinCogwheel";
 
 const styles = () => createStyles({
   linkBtnWrapper: {
@@ -63,7 +63,6 @@ interface DocumentProps {
   getRecords?: () => void;
   getFilters?: () => void;
   clearListState?: () => void;
-  onDelete?: (id: string) => void;
   getTags?: () => void;
   onCreate: (document: Document) => void;
   classes?: any;
@@ -122,7 +121,14 @@ const filterGroups: FilterGroup[] = [
         active: true
       },
       {
-        name: "Deleted",
+        name: "Bin",
+        customLabel: () => (
+          <span className="centeredFlex">
+            Bin
+            {" "}
+            <Delete style={{ fontSize: "18px" }} color="disabled" />
+          </span>
+        ),
         expression: isRemoved("true"),
         active: false
       }
@@ -157,7 +163,7 @@ const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   window.open(url);
 };
 
-const setRowClasses = ({ isRemoved }) => (isRemoved === "Yes" ? "op05" : undefined);
+const setRowClasses = ({ active }) => (active === "No" ? "op05" : undefined);
 
 const handleFileSelect = (files, setCreateNew) => {
   const file = files[0];
@@ -179,32 +185,10 @@ const handleFileSelect = (files, setCreateNew) => {
   }
 };
 
-const deleteDisabledCondition = listProps => {
-  const { selection, records } = listProps;
-  const { rows, columns } = records;
-
-  if (!selection.length || !rows.length || !columns.length) return false;
-
-  const id = selection[0];
-  const row = rows.find(r => r.id === id);
-
-  if (!row || !row.values) return false;
-
-  const isRemovedIndex = columns.filter(c => c.visible === true || c.system === true).findIndex(c => c.attribute === "isRemoved");
-  let isRemoved = false;
-
-  if (isRemovedIndex !== -1) {
-    isRemoved = row.values[isRemovedIndex] === "true";
-  }
-
-  return isRemoved;
-};
-
 const Documents: React.FC<DocumentProps> = props => {
   const {
     getDocumentRecord,
     onInit,
-    onDelete,
     onSave,
     getFilters,
     clearListState,
@@ -351,17 +335,17 @@ const Documents: React.FC<DocumentProps> = props => {
           manualLink,
           hideFullScreenAppBar: true
         }}
+        CogwheelAdornment={BinCogwheel}
         EditViewContent={DocumentEditView}
         getEditRecord={getDocumentRecord}
         rootEntity="Document"
         onInit={onInit}
         customOnCreate={customOnCreate}
         onCreate={onDocumentCreate}
-        onDelete={onDelete}
         onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
-        deleteDisabledCondition={deleteDisabledCondition}
+        defaultDeleteDisabled
         noListTags
       />
       <FileUploaderDialog
@@ -392,7 +376,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getDocumentRecord: (id: number) => dispatch(getDocument(id)),
   onSave: (id: string, document) => dispatch(updateDocument(id, document)),
   onCreate: document => dispatch(createDocument(document)),
-  onDelete: (id: string) => dispatch(removeDocument(id)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),

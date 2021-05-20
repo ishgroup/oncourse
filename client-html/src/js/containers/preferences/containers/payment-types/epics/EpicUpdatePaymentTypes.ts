@@ -12,7 +12,7 @@ import { UPDATE_PAYMENT_TYPES_FULFILLED, UPDATE_PAYMENT_TYPES_REQUEST } from "..
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { PaymentType } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: UPDATE_PAYMENT_TYPES_REQUEST,
   getData: payload => PreferencesService.updatePaymentTypes(payload.paymentTypes),
   retrieveData: () => PreferencesService.getPaymentTypes(),

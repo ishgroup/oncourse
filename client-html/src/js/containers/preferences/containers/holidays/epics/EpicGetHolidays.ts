@@ -9,7 +9,7 @@ import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../services/PreferencesService";
 import { GET_HOLIDAYS_FULFILLED, GET_HOLIDAYS_REQUEST } from "../../../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_HOLIDAYS_REQUEST,
   getData: () => PreferencesService.getHolidays(),
   processData: (holidays: any) => {

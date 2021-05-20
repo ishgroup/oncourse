@@ -17,15 +17,15 @@ import ish.cancel.EnrolmentCancelationRequest
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.function.GetContactFullName
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.EnrolmentDao
 import ish.oncourse.server.api.dao.FundingSourceDao
-import ish.oncourse.server.api.function.CayenneFunctions
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import ish.oncourse.server.document.DocumentService
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.function.CustomFieldFunctions
 import ish.oncourse.server.api.v1.function.DocumentFunctions
 import ish.oncourse.server.api.v1.function.TagFunctions
+
+import static ish.oncourse.server.api.v1.function.AssessmentSubmissionFunctions.updateSubmissions
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.CREDIT_LEVEL_MAP
 import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.CREDIT_PROVIDER_TYPE_MAP
@@ -44,14 +44,11 @@ import ish.oncourse.server.api.v1.model.EnrolmentStudyReasonDTO
 import ish.oncourse.server.api.v1.model.PaymentSourceDTO
 import static ish.oncourse.server.api.validation.EntityValidator.validateLength
 import ish.oncourse.server.cancel.CancelEnrolmentService
-import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.EnrolmentAttachmentRelation
 import ish.oncourse.server.cayenne.EnrolmentCustomField
 import ish.oncourse.server.cayenne.EnrolmentTagRelation
-import ish.oncourse.server.cayenne.FundingSource
 import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
@@ -60,13 +57,19 @@ import static org.apache.commons.lang3.StringUtils.trimToNull
 class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, EnrolmentDao> {
 
     @Inject
-    private CancelEnrolmentService cancelEnrolmentService;
+    private CancelEnrolmentService cancelEnrolmentService
+
+    @Inject
+    private AssessmentApiService assessmentApiService
+
+    @Inject
+    private AssessmentSubmissionApiService submissionApiService
 
     @Inject
     private SystemUserService systemUserService
 
     @Inject
-    private PreferenceController preferenceController
+    private DocumentService documentService
 
     @Inject
     private FundingSourceDao fundingSourceDao
@@ -81,6 +84,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
     @Override
     EnrolmentDTO toRestModel(Enrolment enrolment) {
         new EnrolmentDTO().with { enrolmentDTO ->
+            enrolmentDTO.feeHelpClass = enrolment.courseClass.course.feeHelpClass
             enrolmentDTO.id = enrolment.id
             enrolmentDTO.tags = enrolment.tags.collect { toRestTagMinimized(it) }
             enrolment.student.contact.with { contact ->
@@ -137,11 +141,13 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.creditType = CREDIT_TYPE_MAP[enrolment.creditType]
             enrolmentDTO.creditLevel = CREDIT_LEVEL_MAP[enrolment.creditLevel]
             enrolmentDTO.customFields = enrolment.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
-            enrolmentDTO.documents = enrolment.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
+            enrolmentDTO.documents = enrolment.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             enrolmentDTO.invoicesCount = enrolment.invoiceLines.invoice.toSet().size()
             enrolmentDTO.outcomesCount = enrolment.outcomes.size()
             enrolmentDTO.createdOn = LocalDateUtils.dateToTimeValue(enrolment.createdOn)
             enrolmentDTO.modifiedOn = LocalDateUtils.dateToTimeValue(enrolment.modifiedOn)
+            enrolmentDTO.assessments = enrolment.courseClass.assessmentClasses*.assessment.collect { assessmentApiService.toRestModel(it) }
+            enrolmentDTO.submissions = enrolment.assessmentSubmissions.collect { submissionApiService.toRestMinimizedModel(it) }
             enrolmentDTO
         }
     }
@@ -183,6 +189,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.creditType = CREDIT_TYPE_MAP.getByValue(dto.creditType)
         enrolment.creditLevel = CREDIT_LEVEL_MAP.getByValue(dto.creditLevel)
 
+        updateSubmissions(submissionApiService, this, dto.submissions, enrolment.assessmentSubmissions, context)
         TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags*.id, EnrolmentTagRelation, context)
         DocumentFunctions.updateDocuments(enrolment, enrolment.attachmentRelations, dto.documents, EnrolmentAttachmentRelation, context)
         CustomFieldFunctions.updateCustomFields(context, enrolment, dto.customFields, EnrolmentCustomField)
@@ -195,7 +202,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             throw new IllegalAccessError('Forbidden operation - enrolment save')
         }
 
-        Enrolment dbEnrolment = CayenneFunctions.getRecordById(context, Enrolment, id)
+        Enrolment dbEnrolment = getRecordById(context, Enrolment, id)
 
         if ((dto.vetClientID != null && dto.vetClientID.length() > 0 && (dto.vetTrainingContractID == null || dto.vetTrainingContractID.length() == 0)) ||
                 (dto.vetTrainingContractID != null && dto.vetTrainingContractID.length() > 0 && (dto.vetClientID == null || dto.vetClientID.length() == 0))) {

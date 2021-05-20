@@ -12,7 +12,7 @@ import { CREATE_DATA_COLLECTION_RULE_FULFILLED, CREATE_DATA_COLLECTION_RULE_REQU
 import { DataCollectionRule } from "@api/model";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CREATE_DATA_COLLECTION_RULE_REQUEST,
   getData: payload => PreferencesService.createDataCollectionRule(payload.rule),
   retrieveData: () => PreferencesService.getDataCollectionRules(),

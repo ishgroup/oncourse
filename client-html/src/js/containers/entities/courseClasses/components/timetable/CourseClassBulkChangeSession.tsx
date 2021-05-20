@@ -106,7 +106,8 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
     getRooms,
     rooms,
     bulkValues,
-    sessions
+    sessions,
+    sites
   } = props;
 
   const classTimezone = useMemo(() => {
@@ -210,7 +211,7 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
 
   const onRoomIdChange = useCallback(
     room => {
-      dispatch(change(form, "room", room.label));
+      dispatch(change(form, "room", room.name));
     },
     []
   );
@@ -295,7 +296,7 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
                 <Grid container>
                   <Grid item xs={6}>
                     <FormField
-                      type="remoteDataSearchSelect"
+                      type="searchSelect"
                       name="siteId"
                       label="Site"
                       entity="Site"
@@ -306,11 +307,12 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
                       defaultDisplayValue={initial.site}
                       onInnerValueChange={onSiteIdChange}
                       rowHeight={36}
+                      items={sites}
                     />
                   </Grid>
                   <Grid item xs={6}>
                     <FormField
-                      type="select"
+                      type="searchSelect"
                       name="roomId"
                       label="Room"
                       selectValueMark="id"
@@ -460,13 +462,14 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getRooms: (search: string) => {
     dispatch(setCommonPlainSearch("Room", search));
-    dispatch(getCommonPlainRecords("Room", 0, "name"));
+    dispatch(getCommonPlainRecords("Room", 0, "name", true, "name"));
   }
 });
 
 const mapStateToProps = (state: State) => ({
   bulkValues: getFormValues(COURSE_CLASS_BULK_UPDATE_FORM)(state),
   rooms: state.plainSearchRecords["Room"].items,
+  sites: state.plainSearchRecords["Site"].items,
   tutors: state.courseClassesBulkSession.tutors,
   selection: state.courseClassesBulkSession.selection
 });

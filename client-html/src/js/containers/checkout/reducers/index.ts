@@ -45,7 +45,7 @@ import {
 import {
   CHECKOUT_CLEAR_CC_IFRAME_URL,
   CHECKOUT_GET_ACTIVE_PAYMENT_TYPES_FULFILLED,
-  CHECKOUT_PROCESS_CC_PAYMENT_FULFILLED,
+  CHECKOUT_PROCESS_PAYMENT_FULFILLED,
   CHECKOUT_SET_PAYMENT_SET_STATUS,
   CHECKOUT_SET_PAYMENT_PROCESSING,
   CHECKOUT_SET_PAYMENT_SUCCESS,
@@ -53,10 +53,10 @@ import {
   CHECKOUT_CLEAR_PAYMENT_STATUS,
   CHECKOUT_SET_PAYMENT_STATUS,
   CHECKOUT_SET_PAYMENT_DETAILS_FETCHING,
-  CHECKOUT_PROCESS_CC_PAYMENT,
+  CHECKOUT_PROCESS_PAYMENT,
   CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
   CHECKOUT_SET_PAYMENT_STATUS_DETAILS,
-  CHECKOUT_GET_SAVED_CARD_FULFILLED
+  CHECKOUT_GET_SAVED_CARD_FULFILLED, CHECKOUT_SET_PAYMENT_PLANS
 } from "../actions/checkoutPayment";
 import {
   CHECKOUT_SET_PROMO,
@@ -106,6 +106,7 @@ const initial: CheckoutState = {
   payment: {
     invoice: null,
     paymentId: null,
+    paymentPlans: [],
     availablePaymentTypes: [],
     selectedPaymentType: null,
     isProcessing: false,
@@ -540,6 +541,16 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       };
     }
 
+    case CHECKOUT_SET_PAYMENT_PLANS: {
+      return {
+        ...state,
+        payment: {
+          ...state.payment,
+          paymentPlans: action.payload
+        }
+      };
+    }
+
     case CHECKOUT_SET_PAYMENT_PROCESSING: {
       return {
         ...state,
@@ -825,7 +836,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       };
     }
 
-    case CHECKOUT_PROCESS_CC_PAYMENT: {
+    case CHECKOUT_PROCESS_PAYMENT: {
       return {
         ...state,
         payment: {
@@ -835,7 +846,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       };
     }
 
-    case CHECKOUT_PROCESS_CC_PAYMENT_FULFILLED: {
+    case CHECKOUT_PROCESS_PAYMENT_FULFILLED: {
       const {
         sessionId, ccFormUrl, merchantReference, invoice, paymentId
       } = action.payload;

@@ -1,0 +1,15 @@
+name: Notification of documents pending for deletion
+type: email
+keyCode: ish.email.notificationWithDocumentsList
+txtTemplate: ish.email.notificationWithDocumentsList.txt
+htmlTemplate: ish.email.notificationWithDocumentsList.html
+subject: A list documents to be deleted next Sunday
+entityClass: DocumentVersion
+description: An email to the system admin with a list of documents to be deleted in the next weekly purge of deleted documents. Documents which have been in the bin for more than 30 days will be deleted.
+options:
+  - name: headerKeycode
+    dataType: TEXT
+    value: ish.email.header
+  - name: footerKeycode
+    dataType: TEXT
+    value: ish.email.footer

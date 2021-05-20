@@ -28,21 +28,21 @@ class MailDeliveryService {
 
     private static final String EMAIL_HEADER = 'X-Mailer'
 
-    PreferenceController preferenceController
+    SMTPService smtpService
     MailSession mailSession
     String angelVersion
 
     @Inject
-    MailDeliveryService(PreferenceController preferenceController,
+    MailDeliveryService(SMTPService smtpService,
                         MailSession mailSession,
                         @Named(AngelModule.ANGEL_VERSION) String angelVersion) {
-        this.preferenceController = preferenceController
+        this.smtpService = smtpService
         this.mailSession = mailSession
         this.angelVersion = angelVersion
     }
 
     void sendEmail(MailDeliveryParam param) throws MessagingException {
-        if (StringUtils.isBlank(preferenceController.getEmailSMTPHost())) {
+        if (StringUtils.isBlank(smtpService.getHost())) {
             throw new IllegalStateException('smtp server has to be specified')
         }
 

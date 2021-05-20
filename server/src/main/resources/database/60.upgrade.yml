@@ -1,0 +1,95 @@
+databaseChangeLog:
+  - changeSet:
+      id: 60-1
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: SystemUser
+              columnName: loginAttemptNumber
+      changes:
+        - addColumn:
+            tableName: SystemUser
+            columns:
+              - column:
+                  name: loginAttemptNumber
+                  type: SMALLINT
+                  value: 0
+  - changeSet:
+      id: 60-2
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: SystemUser
+            columnName: login
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: VARCHAR(20)
+            columnName: login
+            tableName: SystemUser
+  - changeSet:
+      id: 60-3
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: SystemUser
+              columnName: invitationToken
+      changes:
+        - addColumn:
+            tableName: SystemUser
+            columns:
+              - column:
+                  name: invitationToken
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: true
+  - changeSet:
+      id: 60-4
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: SystemUser
+              columnName: invitationTokenExpiryDate
+      changes:
+        - addColumn:
+            tableName: SystemUser
+            columns:
+              - column:
+                  name: invitationTokenExpiryDate
+                  type: DATETIME
+                  constraints:
+                    nullable: true
+  - changeSet:
+      id: 60-5
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: SystemUser
+            columnName: password
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: VARCHAR(128)
+            columnName: password
+            tableName: SystemUser
+  - changeSet:
+      id: 60-6
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Document
+      changes:
+        - update:
+            tableName: Document
+            columns:
+              - column:
+                  name: modifiedOn
+                  value: now()
+            where: isRemoved="1"

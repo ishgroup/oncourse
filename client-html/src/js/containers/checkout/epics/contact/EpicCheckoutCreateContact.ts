@@ -16,7 +16,7 @@ import { CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS } from "../../actions/checkou
 import { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from "../../components/contact/CheckoutContactEditView";
 import { CHECKOUT_ADD_CONTACT } from "../../actions";
 
-const request: EpicUtils.Request<any, any, Contact> = {
+const request: EpicUtils.Request<any, Contact> = {
   type: CHECKOUT_CREATE_CONTACT,
   getData: contact => ContactsService.createContact(contact),
   processData: (res, s, p) => {

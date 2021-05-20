@@ -7,7 +7,7 @@ import { State } from "../../../../../reducers/state";
 import { CREATE_EMAIL_TEMPLATE, CREATE_EMAIL_TEMPLATE_FULFILLED, GET_EMAIL_TEMPLATES_LIST } from "../actions";
 import EmailTemplateService from "../services/EmailTemplateService";
 
-const request: EpicUtils.Request<State, any, { emailTemplate: EmailTemplate }> = {
+const request: EpicUtils.Request<State, { emailTemplate: EmailTemplate }> = {
   type: CREATE_EMAIL_TEMPLATE,
   getData: ({ emailTemplate }) => EmailTemplateService.create(emailTemplate),
   processData: (v, s, { emailTemplate }) => [

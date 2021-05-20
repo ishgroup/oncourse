@@ -157,6 +157,55 @@ Feature: Main feature for all PUT requests with path 'login'
 #       <----->
 
 
+    Scenario: (+) Disable user account after making over than allowed number of login attempts
+
+        #       <-----> Set allowed number of login attempts by admin:
+        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        Given path ishPath
+        And request loginBody
+        When method PUT
+        Then status 200
+        And match response.loginStatus == 'Login successful'
+
+        Given path ishPathPreference
+        And request [{ uniqueKey: 'security.number.login.attempts', valueString: '1' }]
+        When method POST
+        Then status 204
+
+        Given path '/logout'
+        And request {}
+        When method PUT
+
+        #       <-----> Try to login to user with wrong password
+        * def loginBody = {login: 'incorrectCred', password: 'abracadabra', kickOut: 'true', skipTfa: 'true'}
+        Given path ishPath
+        And request loginBody
+        When method PUT
+        Then status 401
+        And match response.errorMessage == 'User or password incorrect.'
+
+        #       <-----> Try to login to user again, user isn't active, login is impossible
+        * def loginBody = {login: 'incorrectCred', password: 'abracadabra', kickOut: 'true', skipTfa: 'true'}
+        Given path ishPath
+        And request loginBody
+        When method PUT
+        Then status 401
+        And match response.errorMessage == 'Login access was disabled after too many incorrect login attempts. Please contact onCourse Administrator.'
+
+        #       <-----> Return value to default
+        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        Given path ishPath
+        And request loginBody
+        When method PUT
+        Then status 200
+        And match response.loginStatus == 'Login successful'
+
+        Given path ishPathPreference
+        And request [{ uniqueKey: 'security.number.login.attempts', valueString: '5' }]
+        When method POST
+        Then status 204
+
+
 
     Scenario: (+) Log in as admin when "Require better password" is enabled
 
@@ -292,7 +341,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 400
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Login / password data must be specified'
+        And match response.errorMessage == 'Email / password data must be specified'
 
 
 
@@ -304,7 +353,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 400
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Login / password data must be specified'
+        And match response.errorMessage == 'Email / password data must be specified'
 
 
 
@@ -327,7 +376,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 400
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Login / password data must be specified'
+        And match response.errorMessage == 'Email / password data must be specified'
 
 
 
@@ -350,7 +399,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 400
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Login / password data must be specified'
+        And match response.errorMessage == 'Email / password data must be specified'
 
 
 
@@ -382,7 +431,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 401
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Invalid login / password'
+        And match response.errorMessage == 'Invalid email / password'
 
 
 
@@ -394,7 +443,7 @@ Feature: Main feature for all PUT requests with path 'login'
         When method PUT
         Then status 401
         And match response.loginStatus == 'Invalid credentials'
-        And match response.errorMessage == 'Invalid login / password'
+        And match response.errorMessage == 'User is disabled. Please contact onCourse Administrator.'
 
 
 #    Scenario: (-) Authorize as admin without 2fa when "2FA required for admin users" is enabled

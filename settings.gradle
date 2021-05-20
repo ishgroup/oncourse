@@ -3,6 +3,7 @@ include ':server',
         ':server-api',
         ':client-html',
         ':api-test',
+        ':api-doc',
         ':types'
 
 enableFeaturePreview('GROOVY_COMPILATION_AVOIDANCE')

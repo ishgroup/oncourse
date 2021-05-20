@@ -1,15 +1,13 @@
 import { promiseResolve } from "../../MockAdapter";
+import { getParamsId } from "../../mockUtils";
 
 export function EnrolmentApiMock(mock) {
   this.api.onGet(new RegExp(`v1/list/entity/enrolment/\\d+`)).reply(config => {
-    const params = config.url.split("/");
-    const id = params[params.length - 1];
+    const id = getParamsId(config);
     return promiseResolve(config, this.db.getEnrolment(id));
   });
 
-  this.api.onPut(new RegExp(`v1/list/entity/enrolment/\\d+`)).reply(config => {
-    return promiseResolve(config, JSON.parse(config.data));
-  });
+  this.api.onPut(new RegExp(`v1/list/entity/enrolment/\\d+`)).reply(config => promiseResolve(config, JSON.parse(config.data)));
 
   this.api.onPost("v1/list/entity/enrolment").reply(config => {
     this.db.createEnrolment(config.data);
@@ -17,9 +15,10 @@ export function EnrolmentApiMock(mock) {
   });
 
   this.api.onDelete(new RegExp(`v1/list/entity/enrolment/\\d+`)).reply(config => {
-    const params = config.url.split("/");
-    const id = params[params.length - 1];
+    const id = getParamsId(config);
     this.db.removeEnrolment(id);
-    return promiseResolve(config, this.db.getEnrolments());
+    return promiseResolve(config, {});
   });
+
+  this.api.onPost("v1/list/entity/enrolment/cancel").reply(config => promiseResolve(config, {}));
 }

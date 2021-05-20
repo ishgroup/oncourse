@@ -13,14 +13,12 @@ package ish.oncourse.server.scripting
 import com.google.inject.Inject
 import com.google.inject.Injector
 import groovy.transform.CompileStatic
+import io.bootique.BQRuntime
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
-import static ish.common.types.TriggerType.CRON
-import static ish.common.types.TriggerType.ENTITY_EVENT
-import static ish.common.types.TriggerType.ONCOURSE_EVENT
-import static ish.common.types.TriggerType.ON_DEMAND
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.IPreferenceController
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Script
@@ -30,22 +28,18 @@ import ish.oncourse.server.export.ExportService
 import ish.oncourse.server.imports.ImportService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.integration.GroovyScriptEventListener
-import static ish.oncourse.server.integration.PluginService.PLUGIN_PACKAGE
-import static ish.oncourse.server.lifecycle.ChangeFilter.getAtrAttributeChange
 import ish.oncourse.server.messaging.MessageService
 import ish.oncourse.server.print.PrintService
 import ish.oncourse.server.querying.QueryService
-import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.scripting.api.CollegePreferenceService
 import ish.oncourse.server.scripting.api.EmailService
 import ish.oncourse.server.scripting.api.TemplateService
 import ish.oncourse.server.services.AuditService
+import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.services.ISystemUserService
 import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.types.AuditAction
 import ish.scripting.ScriptResult
-import static ish.scripting.ScriptResult.ResultType.FAILURE
-import static ish.scripting.ScriptResult.ResultType.SUCCESS
 import ish.util.TimeZoneUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
@@ -54,23 +48,17 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.codehaus.groovy.runtime.MethodClosure
-import org.quartz.CronScheduleBuilder
-import org.quartz.JobBuilder
-import org.quartz.JobKey
-import org.quartz.SchedulerException
-import org.quartz.TriggerBuilder
+import org.quartz.*
 import org.reflections.Reflections
 
-import javax.script.Bindings
-import javax.script.ScriptContext
-import javax.script.ScriptEngineManager
-import javax.script.ScriptException
-import javax.script.SimpleBindings
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutionException
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
+import javax.script.*
+import java.util.concurrent.*
+
+import static ish.common.types.TriggerType.*
+import static ish.oncourse.server.integration.PluginService.PLUGIN_PACKAGE
+import static ish.oncourse.server.lifecycle.ChangeFilter.getAtrAttributeChange
+import static ish.scripting.ScriptResult.ResultType.FAILURE
+import static ish.scripting.ScriptResult.ResultType.SUCCESS
 
 @CompileStatic
 class GroovyScriptService {
@@ -90,6 +78,7 @@ class GroovyScriptService {
     private static final String PREFERENCE_SERVICE = "Preferences"
     private static final String EMAIL_SERVICE = "Email"
     private static final String QUERY_SERVICE = "Query"
+    private static final String EVENT_SERVICE = "eventService"
 
     private static final String RUN_QUERY = "query"
     private static final String SEND_EMAIL = "email"
@@ -136,7 +125,7 @@ class GroovyScriptService {
 
     private ICayenneService cayenneService
     private ISchedulerService schedulerService
-    private PreferenceController preferenceController
+    private IPreferenceController preferenceController
     private AuditService auditService
     private SystemUserService systemUserService
     private TemplateService templateService
@@ -153,7 +142,7 @@ class GroovyScriptService {
 
     @Inject
     GroovyScriptService(ICayenneService cayenneService, ISchedulerService schedulerService,
-                        PreferenceController preferenceController, Injector injector, SystemUserService systemUserService, TemplateService templateService) {
+                        IPreferenceController preferenceController, Injector injector, SystemUserService systemUserService, TemplateService templateService) {
         GroovySystem.getMetaClassRegistry().getMetaClassCreationHandler().setDisableCustomMetaClassLookup(true)
         this.injector = injector
         auditService = injector.getInstance(AuditService.class)
@@ -167,10 +156,15 @@ class GroovyScriptService {
 
         // create single thread executor with FIFO task queue
         this.executorService = Executors.newSingleThreadExecutor()
+    }
+
+    GroovyScriptService(ICayenneService iCayenneService, ISchedulerService iSchedulerService, PreferenceController preferenceController, BQRuntime bqRuntime) {}
+
+    void registerThreadInCayenneRuntime() {
         // since executor has just single thread in his pool - it is enough to register this thread to cayenne runtime
         // need to prevent java.lang.IllegalStateException: Transaction must have 'STATUS_ACTIVE' to add a connection. Current status: STATUS_COMMITTED
         // see http://cayenne.195.n3.nabble.com/Transaction-exception-in-concurrent-environment-td4029107.html
-        this.executorService.execute { ObjectSelect.query(SystemUser).selectFirst(cayenneService.newContext) }
+        executorService.execute { ObjectSelect.query(SystemUser).selectFirst(cayenneService.newContext) }
     }
 
     /**
@@ -203,6 +197,7 @@ class GroovyScriptService {
         bindings.put(PREFERENCE_SERVICE, preferenceService)
         bindings.put(EMAIL_SERVICE, emailService)
         bindings.put(QUERY_SERVICE, queryService)
+        bindings.put(EVENT_SERVICE, eventService)
         bindings.put(RECORDS_PARAM_NAME, [])
         bindings.put(FILE_PARAM_NAME, null)
 
@@ -228,6 +223,7 @@ class GroovyScriptService {
     }
 
     void initTriggers() {
+        registerThreadInCayenneRuntime()
         loadEntityTriggers()
         scheduleCronScripts()
 

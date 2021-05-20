@@ -5,18 +5,13 @@
 
 import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
-import { State } from "../../reducers/state";
 import EntityService from "../services/EntityService";
 import { getCustomColumnsMap } from "../utils/common";
-import {
-  GET_COMMON_PLAIN_RECORDS,
-  GET_COMMON_PLAIN_RECORDS_FULFILLED
-} from "../actions/CommonPlainRecordsActions";
+import { GET_COMMON_PLAIN_RECORDS, GET_COMMON_PLAIN_RECORDS_FULFILLED } from "../actions/CommonPlainRecordsActions";
 import * as EpicUtils from "./EpicUtils";
 
 const request: EpicUtils.Request<
   DataResponse,
-  State,
   { key?: string; offset?: number; columns?: string; ascending?: boolean; sort?: string, pageSize?: number }
 > = {
   type: GET_COMMON_PLAIN_RECORDS,

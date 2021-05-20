@@ -10,7 +10,7 @@ import {
   CHECKOUT_GET_ACTIVE_PAYMENT_TYPES_FULFILLED
 } from "../../actions/checkoutPayment";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CHECKOUT_GET_ACTIVE_PAYMENT_TYPES,
   getData: () => PreferencesService.getPaymentTypes(),
   processData: (paymentTypes: any) => {

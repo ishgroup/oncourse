@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { Dispatch } from "redux";
-import { InjectedFormProps } from "redux-form";
+import { InjectedFormProps, reduxForm } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import { DefinedTutorRole } from "@api/model";
@@ -14,10 +14,11 @@ import FormSubmitButton from "../../../../../common/components/form/FormSubmitBu
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { usePrevious } from "../../../../../common/utils/hooks";
 import PayRates from "./PayRates";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
@@ -26,7 +27,10 @@ interface Props extends InjectedFormProps {
   onCreate: (role: DefinedTutorRole) => void;
   onUpdate: (role: DefinedTutorRole) => void;
   onDelete: any;
-  showConfirm?: any;
+  handleDelete: any;
+  onSubmit: (val: any) => void;
+  disableRouteConfirm: boolean;
+  showConfirm?: ShowConfirmCaller;
   history?: any;
   tutorRoles?: any;
   fetch?: any;
@@ -43,102 +47,76 @@ const TutorRolesForm = React.memo<Props>(
     valid,
     value,
     dispatch,
-    onCreate,
-    onUpdate,
-    onDelete,
+    handleDelete,
+    onSubmit,
     showConfirm,
-    tutorRoles
-  }) => {
-    const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
-    const prevId = usePrevious(value.id);
+    disableRouteConfirm,
+  }) => (
+    <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      {!disableRouteConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
+      <CustomAppBar>
+        <FormField
+          type="headerText"
+          name="name"
+          placeholder="Name"
+          margin="none"
+          className="pl-1"
+          listSpacing={false}
+          required
+        />
 
-    const handleDelete = useCallback(() => {
-      setDisableRouteConfirm(true);
-      onDelete(value.id, tutorRoles);
-    }, [value.id]);
+        <div className="flex-fill" />
 
-    const handleSave = useCallback(
-      val => {
-        setDisableRouteConfirm(true);
-        if (isNew) {
-          onCreate(val);
-          return;
-        }
-        onUpdate(val);
-      },
-      [isNew]
-    );
-
-    useEffect(() => {
-      if (disableRouteConfirm && value.id !== prevId) {
-        setDisableRouteConfirm(false);
-      }
-    }, [value.id, prevId, disableRouteConfirm]);
-
-    return (
-      <form className="container" autoComplete="off" onSubmit={handleSubmit(handleSave)}>
-        {!disableRouteConfirm && dirty && <RouteChangeConfirm when={dirty} />}
-        <CustomAppBar>
-          <FormField
-            type="headerText"
-            name="name"
-            placeholder="Name"
-            margin="none"
-            className="pl-1"
-            listSpacing={false}
-            required
+        {!isNew && (
+          <AppBarActions
+            actions={[
+              {
+                action: handleDelete,
+                icon: <DeleteForever />,
+                confirm: true,
+                tooltip: "Delete tutor role",
+                confirmText: "Role will be deleted permanently",
+                confirmButtonText: "DELETE"
+              }
+            ]}
           />
+        )}
 
-          <div className="flex-fill" />
+        <AppBarHelpMenu
+          auditsUrl={`audit?search=~"DefinedTutorRole" and entityId == ${value.id}`}
+          manualUrl={manualLink}
+        />
 
-          {!isNew && (
-            <AppBarActions
-              actions={[
-                {
-                  action: handleDelete,
-                  icon: <DeleteForever />,
-                  confirm: true,
-                  tooltip: "Delete tutor role",
-                  confirmText: "Role will be deleted permanently",
-                  confirmButtonText: "DELETE"
-                }
-              ]}
-            />
-          )}
+        <FormSubmitButton
+          disabled={!dirty}
+          invalid={!valid}
+        />
+      </CustomAppBar>
 
-          <AppBarHelpMenu
-            auditsUrl={`audit?search=~"DefinedTutorRole" and entityId == ${value.id}`}
-            manualUrl={manualLink}
-          />
-
-          <FormSubmitButton
-            disabled={!dirty}
-            invalid={!valid}
-          />
-        </CustomAppBar>
-
-        <Grid container>
-          <Grid item xs={9}>
-            <Grid container>
-              <Grid item xs={9}>
-                <FormField
-                  type="text"
-                  name="description"
-                  label="Public label"
-                  required
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <FormField type="switch" name="active" label="Enabled" color="primary" fullWidth />
-              </Grid>
+      <Grid container>
+        <Grid item xs={9}>
+          <Grid container>
+            <Grid item xs={9}>
+              <FormField
+                type="text"
+                name="description"
+                label="Public label"
+                required
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <FormField type="switch" name="active" label="Enabled" color="primary" fullWidth />
             </Grid>
           </Grid>
         </Grid>
+      </Grid>
 
-        <PayRates value={value} form={form} dispatch={dispatch} showConfirm={showConfirm} />
-      </form>
-    );
-  }
+      <PayRates value={value} form={form} dispatch={dispatch} showConfirm={showConfirm} />
+    </form>
+  )
 );
 
-export default props => (props.value ? <TutorRolesForm {...props} /> : null);
+export default reduxForm({
+  form: "TutorRolesForm",
+  onSubmitFail
+})(props => (props.value ? <TutorRolesForm {...props} /> : null));

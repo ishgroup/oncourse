@@ -13,16 +13,11 @@ import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircle from "@material-ui/icons/AddCircle";
 import { Note } from "@api/model";
-import uniqid from "uniqid";
 import { connect } from "react-redux";
 import styles from "./styles";
-import { State } from "../../../../reducers/state";
-import { addActionToQueue, removeActionsFromQueue, showConfirm } from "../../../actions";
+import { showConfirm } from "../../../actions";
 import NotesRenderer from "./components/NotesRenderer";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import { deleteNoteItem, postNoteItem } from "./actions";
-import NotesService from "./services/NotesService";
-import instantFetchErrorHandler from "../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 interface Props {
   classes?: any;
@@ -65,11 +60,12 @@ const NestedNotes = React.memo<Props>(
         updatedNotes.splice(index, 1);
 
         showConfirm(
-          () => {
-            dispatch(change(form, "notes", updatedNotes));
-          },
-          "This item will be removed from Notes list",
-          "AGREE"
+          {
+            onConfirm: () => {
+              dispatch(change(form, "notes", updatedNotes));
+            },
+            confirmMessage: "This item will be removed from Notes list",
+          }
         );
       },
       [values.notes]
@@ -113,7 +109,7 @@ const NestedNotes = React.memo<Props>(
 );
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  showConfirm: (...args) => dispatch(showConfirm(...args as [any]))
+  showConfirm: props => dispatch(showConfirm(props))
 });
 
 export default connect(null, mapDispatchToProps)(withStyles(styles)(NestedNotes));

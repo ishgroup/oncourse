@@ -5,7 +5,7 @@
 
 import { Epic } from "redux-observable";
 
-import { ExportTemplate } from "@api/model";
+import { ExportTemplate, ImportModel } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import {
   GET_EXPORT_TEMPLATE,
@@ -16,9 +16,8 @@ import {
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ExportTemplatesService from "../services/ExportTemplatesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
-import { State } from "../../../../../reducers/state";
 
-const request: EpicUtils.Request<State, any, { exportTemplate: ExportTemplate }> = {
+const request: EpicUtils.Request<{ importTemplate: ImportModel }, { exportTemplate: ExportTemplate }> = {
   type: UPDATE_EXPORT_TEMPLATE,
   getData: ({ exportTemplate }) => ExportTemplatesService.update(exportTemplate.id, exportTemplate),
   processData: (v, s, { exportTemplate: { id } }) => [

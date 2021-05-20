@@ -1,26 +1,23 @@
 package ish.oncourse.server.accounting.builder
 
+import groovy.transform.CompileStatic
 import ish.common.types.AccountTransactionType
 import ish.common.types.PaymentType
 import ish.math.Money
 import ish.oncourse.server.accounting.AccountTransactionDetail
 import ish.oncourse.server.accounting.TransactionSettings
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Banking
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.PaymentMethod
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertTrue
-import org.junit.Before
-import org.junit.Test
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import ish.oncourse.server.cayenne.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
 
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
+
+@CompileStatic
 class PaymentInTransactionsBuilderTest {
 
     private PaymentInLine paymentInLine
@@ -36,7 +33,7 @@ class PaymentInTransactionsBuilderTest {
     private Long foreignRecordId
     private Money amountOf2Tr
 
-    @Before
+    @BeforeEach
     void prepareData() {
         foreignRecordId = 123456L
 
@@ -52,12 +49,12 @@ class PaymentInTransactionsBuilderTest {
 
         transactionDate = LocalDate.of(2016, Month.JUNE, 12)
 
-        
+
         paymentMethod = mock(PaymentMethod)
         when(paymentMethod.type).thenReturn(PaymentType.CASH)
         when(paymentMethod.bankedAutomatically).thenReturn(true)
 
-        amountPaid = new Money(300)
+        amountPaid = new Money(300 as BigDecimal)
         Banking banking = mock(Banking)
         paymentIn = mock(PaymentIn)
         when(paymentIn.paymentDate).thenReturn(transactionDate)
@@ -67,7 +64,7 @@ class PaymentInTransactionsBuilderTest {
         when(paymentIn.accountIn).thenReturn(primaryAccountDeposit)
         when(paymentIn.amount).thenReturn(amountPaid)
 
-        amount = new Money(99)
+        amount = new Money(99 as BigDecimal)
 
         Invoice invoice = mock(Invoice)
         when(invoice.debtorsAccount).thenReturn(secondaryAccount)
@@ -77,57 +74,57 @@ class PaymentInTransactionsBuilderTest {
         when(paymentInLine.amount).thenReturn(amount)
         when(paymentInLine.invoice).thenReturn(invoice)
         when(paymentInLine.id).thenReturn(foreignRecordId)
-        
-        amountOf2Tr = new Money(33)
+
+        amountOf2Tr = new Money(33 as BigDecimal)
     }
-    
-    
+
+
     @Test
     void test() {
         TransactionSettings settings = PaymentInTransactionsBuilder.valueOf(paymentInLine, voucherExpense).build()
-        assertTrue(settings.isInitialTransaction)
-        assertEquals(1, settings.details.size())
+        Assertions.assertTrue(settings.isInitialTransaction)
+        Assertions.assertEquals(1, settings.details.size())
         AccountTransactionDetail detail = settings.details[0]
-        assertEquals(primaryAccountDeposit.id, detail.primaryAccount.id)
-        assertEquals(secondaryAccount.id, detail.secondaryAccount.id)
-        assertEquals(amount, detail.amount)
-        assertEquals(foreignRecordId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
-        assertEquals(transactionDate, detail.transactionDate)
+        Assertions.assertEquals(primaryAccountDeposit.id, detail.primaryAccount.id)
+        Assertions.assertEquals(secondaryAccount.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amount, detail.amount)
+        Assertions.assertEquals(foreignRecordId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate, detail.transactionDate)
 
-        
+
         when(paymentIn.banking).thenReturn(null)
         settings = PaymentInTransactionsBuilder.valueOf(paymentInLine, voucherExpense).build()
-        assertTrue(settings.isInitialTransaction)
-        assertEquals(1, settings.details.size())
+        Assertions.assertTrue(settings.isInitialTransaction)
+        Assertions.assertEquals(1, settings.details.size())
         detail = settings.details[0]
-        assertEquals(primaryAccountUndeposit.id, detail.primaryAccount.id)
-        assertEquals(secondaryAccount.id, detail.secondaryAccount.id)
-        assertEquals(amount, detail.amount)
-        assertEquals(foreignRecordId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
-        assertEquals(transactionDate, detail.transactionDate)
+        Assertions.assertEquals(primaryAccountUndeposit.id, detail.primaryAccount.id)
+        Assertions.assertEquals(secondaryAccount.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amount, detail.amount)
+        Assertions.assertEquals(foreignRecordId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate, detail.transactionDate)
 
 
         when(paymentMethod.type).thenReturn(PaymentType.VOUCHER)
         settings = PaymentInTransactionsBuilder.valueOf(paymentInLine, voucherExpense, { amountOf2Tr }).build()
-        assertTrue(settings.isInitialTransaction)
-        assertEquals(2, settings.details.size())
+        Assertions.assertTrue(settings.isInitialTransaction)
+        Assertions.assertEquals(2, settings.details.size())
         detail = settings.details[0]
-        assertEquals(voucherExpense.id, detail.primaryAccount.id)
-        assertEquals(secondaryAccount.id, detail.secondaryAccount.id)
-        assertEquals(amount, detail.amount)
-        assertEquals(foreignRecordId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
-        assertEquals(transactionDate, detail.transactionDate)
+        Assertions.assertEquals(voucherExpense.id, detail.primaryAccount.id)
+        Assertions.assertEquals(secondaryAccount.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amount, detail.amount)
+        Assertions.assertEquals(foreignRecordId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate, detail.transactionDate)
 
         detail = settings.details[1]
-        assertEquals(voucherExpense.id, detail.primaryAccount.id)
-        assertEquals(primaryAccountDeposit.id, detail.secondaryAccount.id)
-        assertEquals(amountOf2Tr, detail.amount)
-        assertEquals(foreignRecordId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
-        assertEquals(transactionDate, detail.transactionDate)
+        Assertions.assertEquals(voucherExpense.id, detail.primaryAccount.id)
+        Assertions.assertEquals(primaryAccountDeposit.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amountOf2Tr, detail.amount)
+        Assertions.assertEquals(foreignRecordId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate, detail.transactionDate)
     }
-    
+
 }

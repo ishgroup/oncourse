@@ -8,14 +8,11 @@ import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../services/PreferencesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
-import {
-    DELETE_ENTITY_RELATION_TYPE_FULFILLED,
-    DELETE_ENTITY_RELATION_TYPE_REQUEST
-} from "../../../actions";
+import { DELETE_ENTITY_RELATION_TYPE_FULFILLED, DELETE_ENTITY_RELATION_TYPE_REQUEST } from "../../../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { EntityRelationType } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
     type: DELETE_ENTITY_RELATION_TYPE_REQUEST,
     getData: payload => PreferencesService.deleteEntityRelationType(payload.id),
     retrieveData: () => PreferencesService.getEntityRelationTypes(),

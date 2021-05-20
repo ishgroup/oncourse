@@ -18,7 +18,7 @@ import {
 } from "../../actions/checkoutContact";
 import { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from "../../components/contact/CheckoutContactEditView";
 
-const request: EpicUtils.Request<any, any, { id: number; contact: Contact & { notes: any }; message?: string }> = {
+const request: EpicUtils.Request<any, { id: number; contact: Contact & { notes: any }; message?: string }> = {
   type: CHECKOUT_UPDATE_CONTACT,
   getData: ({ id, contact }) => {
     delete contact.notes;

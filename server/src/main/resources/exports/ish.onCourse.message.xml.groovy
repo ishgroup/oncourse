@@ -5,7 +5,7 @@ xml.data() {
         message(id: msg.id) {
             contacts(msg.contacts*.fullName.flatten().unique().join(", "))
             createdOn(msg?.createdOn?.format("d-M-y HH:mm:ss"))
-            createdBy(msg?.createdBy?.login)
+            createdBy(msg?.createdBy?.email)
             emailFrom(msg?.emailFrom ?: "")
             emailSubject(msg?.emailSubject ?: "")
             emailHtmlBody(msg?.emailHtmlBody ?: "")

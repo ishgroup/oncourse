@@ -14,7 +14,7 @@ import { getEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { PaymentOutModel } from "../reducers/state";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_PAYMENT_OUT_ITEM,
   getData: (id: number) => getEntityItemById("PaymentOut", id),
   processData: (paymentOut: PaymentOutModel) => [

@@ -323,7 +323,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/application
         Given path ishPath + '/' + id
         When method DELETE
         Then status 400
-        And match $.errorMessage == "Cannot delete application with attached documents"
+        And match $.errorMessage == "Cannot delete application with attached documents. Check removed documents."
 
 #       <---->  Scenario have been finished. Now remove attached document and then delete created entity:
         * def applicationToUpdate =

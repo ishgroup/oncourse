@@ -12,7 +12,6 @@ import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircle from "@material-ui/icons/AddCircle";
 import { Note } from "@api/model";
-import uniqid from "uniqid";
 import { connect } from "react-redux";
 import styles from "./styles";
 import { State } from "../../../../reducers/state";
@@ -22,6 +21,7 @@ import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { deleteNoteItem, postNoteItem } from "./actions";
 import NotesService from "./services/NotesService";
 import instantFetchErrorHandler from "../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
+import uniqid from "../../../utils/uniqid";
 
 interface Props {
   classes?: any;
@@ -66,21 +66,23 @@ const OwnApiNotes = React.memo<Props>(
         updatedNotes.splice(index, 1);
 
         showConfirm(
-          () => {
-            if (deletedNote.id) {
-              NotesService.validateRemove(deletedNote.id)
-                .then(() => {
-                  dispatch(change(form, "notes", updatedNotes));
-                  dispatch(addActionToQueue(deleteNoteItem(deletedNote.id), "DELETE", "Note", deletedNote.id));
-                })
-                .catch(response => instantFetchErrorHandler(dispatch, response));
-              return;
-            }
-            dispatch(removeActionsFromQueue([{ entity: "Note", id: deletedNote.temporaryId }]));
-            dispatch(change(form, "notes", updatedNotes));
-          },
-          "This note will be deleted permanently.",
-          "DELETE"
+          {
+            onConfirm: () => {
+              if (deletedNote.id) {
+                NotesService.validateRemove(deletedNote.id)
+                  .then(() => {
+                    dispatch(change(form, "notes", updatedNotes));
+                    dispatch(addActionToQueue(deleteNoteItem(deletedNote.id), "DELETE", "Note", deletedNote.id));
+                  })
+                  .catch(response => instantFetchErrorHandler(dispatch, response));
+                return;
+              }
+              dispatch(removeActionsFromQueue([{ entity: "Note", id: deletedNote.temporaryId }]));
+              dispatch(change(form, "notes", updatedNotes));
+            },
+            confirmMessage: "This note will be deleted permanently.",
+            confirmButtonText: "DELETE"
+          }
         );
       },
       [values.notes]
@@ -88,7 +90,7 @@ const OwnApiNotes = React.memo<Props>(
 
     const addNote = useCallback(() => {
       if (isNew) {
-        showConfirm(null, `Please save record before adding notes`, null, null, null, "OK");
+        showConfirm({ confirmMessage: `Please save record before adding notes`, cancelButtonText: "OK" });
       } else {
         const temporaryId = uniqid();
         const newNote: Note = { message: "", entityName: rootEntity, entityId: values.id };

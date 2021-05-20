@@ -27,6 +27,7 @@ import { getUserPreferences } from "../../../common/actions";
 import { DEFAULT_TIMEZONE_KEY } from "../../../constants/Config";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -179,6 +180,7 @@ class Sites extends React.Component<any, any> {
             asyncValidate: notesAsyncValidate,
             asyncBlurFields: ["notes[].message"]
           }}
+          CogwheelAdornment={BulkEditCogwheelOption}
           EditViewContent={SiteEditView}
           getEditRecord={getSiteRecord}
           rootEntity="Site"

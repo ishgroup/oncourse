@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <Account id="50" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
+  <Account id="50" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
 
-    <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
 
-    <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-    <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
 
-    <Course id="1"  code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="0" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-    <Course id="2"  code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="0" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+  <Course id="1" code="ATT1" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1"
+          isShownOnWeb="0" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+  <Course id="2" code="ATT2" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1"
+          isShownOnWeb="0" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
 
-    <Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="50" receivableFromStudentAccountId="50" taxCode="GST" taxrate="0.1"/>
+  <Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="50" receivableFromStudentAccountId="50" taxCode="GST"
+       taxrate="0.1"/>
 
-    <CourseClass id="1" code="123" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
-                 isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
-                 incomeAccountId="50" deliveryMode="1" courseId="1" feeExGst="200.00"
-                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
-    <CourseClass id="2" code="124" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
-                 isShownOnWeb="0" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
-                 incomeAccountId="50" deliveryMode="1" courseId="2" feeExGst="400.00"
-                 suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+  <CourseClass id="1" code="123" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+               isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               incomeAccountId="50" deliveryMode="1" courseId="1" feeExGst="200.00"
+               suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
+  <CourseClass id="2" code="124" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+               isShownOnWeb="0" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               incomeAccountId="50" deliveryMode="1" courseId="2" feeExGst="400.00"
+               suppressAvetmissExport="0" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 </dataset>

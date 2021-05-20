@@ -3,7 +3,6 @@ import { FETCH_SUCCESS } from "../../../js/common/actions";
 import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
 import { EpicUpdateAssessmentItem } from "../../../js/containers/entities/assessments/epics/EpicUpdateAssessmentItem";
 import {
-  GET_ASSESSMENT_ITEM,
   UPDATE_ASSESSMENT_ITEM_FULFILLED,
   updateAssessment
 } from "../../../js/containers/entities/assessments/actions";
@@ -31,10 +30,6 @@ describe("Update assessment epic tests", () => {
       {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Assessment", listUpdate: true, savedID: "2" }
-      },
-      {
-        type: GET_ASSESSMENT_ITEM,
-        payload: "2"
       }
     ]
   }));

@@ -54,9 +54,15 @@ public enum AuditAction implements DisplayableExtendedEnumeration<String> {
      * Email Collision
      */
     @API
-    COLLISION("COLLISION", "Email Collision");
+    COLLISION("COLLISION", "Email Collision"),
 
-
+    /**
+     * Api token used
+     */
+    @API
+    API_TOKEN("API_TOKEN", "Api token used");
+    
+    
     private String displayValue;
     private String value;
 

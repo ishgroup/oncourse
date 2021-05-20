@@ -15,15 +15,16 @@ module.exports = {
     },
     "plugins": [
         "import",
-        "@typescript-eslint",
-        "@typescript-eslint/tslint"
+        "@typescript-eslint"
     ],
     "rules": {
+        "jsx-a11y/aria-role": "off",
         "import/no-unresolved": "off",
         "import/extensions": "off",
         "import/prefer-default-export": "off",
-        "@typescript-eslint/class-name-casing": "error",
+        "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/indent": "off",
+        "@typescript-eslint/comma-dangle": "off",
         "@typescript-eslint/member-delimiter-style": [
             "off",
             {
@@ -46,6 +47,8 @@ module.exports = {
         "@typescript-eslint/type-annotation-spacing": "off",
         "no-param-reassign": "off",
         "no-nested-ternary": "off",
+        "no-await-in-loop": "off",
+        "no-restricted-syntax": "off",
         "arrow-parens": [
             "error",
             "as-needed"
@@ -86,6 +89,8 @@ module.exports = {
         ],
         "new-parens": "off",
         "newline-per-chained-call": "off",
+        "no-restricted-syntax": "off",
+        "no-await-in-loop": "off",
         "no-prototype-builtins": "off",
         "no-duplicate-imports": "error",
         "no-eval": "error",
@@ -101,7 +106,7 @@ module.exports = {
         "no-plusplus": "off",
         "no-trailing-spaces": "off",
         "no-underscore-dangle": "error",
-        "no-unused-expressions": "error",
+        "no-unused-expressions": "off",
         "no-shadow": "off",
         "no-var": "error",
         "object-shorthand": "error",
@@ -121,6 +126,7 @@ module.exports = {
         "react/destructuring-assignment": "off",
         "react/no-did-update-set-state": "off",
         "react/jsx-props-no-spreading": "off",
+        "react/jsx-boolean-value": "off",
         "semi": "error",
         "space-before-function-paren": "off",
         "space-in-parens": [
@@ -129,38 +135,6 @@ module.exports = {
         ],
         "spaced-comment": "error",
         "func-names": "off",
-        //TODO remove the tslint legacy parts
-        "@typescript-eslint/tslint/config": [
-            "error",
-            {
-                "rules": {
-                    "exhaustive-deps": true,
-                    "function-name": [
-                        true,
-                        {
-                            "method-regex": "^[a-z][\\w\\d]+$",
-                            "private-method-regex": "^[a-z][\\w\\d]+$",
-                            "protected-method-regex": "^[a-z][\\w\\d]+$",
-                            "static-method-regex": "^[A-Z_\\d]+$",
-                            "function-regex": "^[a-zA-Z][\\w\\d]+$"
-                        }
-                    ],
-                    "no-boolean-literal-compare": true,
-                    "no-else-after-return": true,
-                    "no-function-constructor-with-string-args": true,
-                    "prefer-array-literal": true,
-                    "prettier": [
-                        true,
-                        {
-                            "printWidth": 120
-                        }
-                    ],
-                    "react-hooks-nesting": true,
-                    "rules-of-hooks": true,
-                    "ter-prefer-arrow-callback": true
-                }
-            }
-        ]
     },
     "settings": {
         "import/parsers": {

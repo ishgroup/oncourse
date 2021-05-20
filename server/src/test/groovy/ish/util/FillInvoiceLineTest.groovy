@@ -8,11 +8,12 @@
 
 package ish.util
 
+import groovy.transform.CompileStatic
 import ish.math.Money
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
-
+@CompileStatic
 class FillInvoiceLineTest {
 
 
@@ -27,7 +28,7 @@ class FillInvoiceLineTest {
             Money taxAdjustment = MoneyUtil.calculateTaxAdjustment(priceInc, priceEx, taxRate)
             Money taxEach = InvoiceUtil.calculateTaxEachForInvoiceLine(priceEx, Money.ZERO, taxRate, taxAdjustment)
             // assume that the price inc equals price summed from the invoice line
-            assertEquals(priceInc, priceEx.subtract(Money.ZERO).add(taxEach))
+            Assertions.assertEquals(priceInc, priceEx.subtract(Money.ZERO).add(taxEach))
         }
     }
 
@@ -47,8 +48,8 @@ class FillInvoiceLineTest {
                 Money discountIncTax = MoneyUtil.getPriceIncTax(discountExTax, taxRate, Money.ZERO)
                 Money taxEach = InvoiceUtil.calculateTaxEachForInvoiceLine(priceEx, discountExTax, taxRate, taxAdjustment)
                 // assume that the price inc - discount inc equals price summed from the invoice line
-                assertEquals("$priceInc = $priceEx - $discountExTax + $taxEach", priceInc.subtract(discountIncTax),
-                        priceEx.subtract(discountExTax).add(taxEach))
+                Assertions.assertEquals(priceInc.subtract(discountIncTax), priceEx.subtract(discountExTax).add(taxEach),
+                        "$priceInc = $priceEx - $discountExTax + $taxEach")
             }
 
         }

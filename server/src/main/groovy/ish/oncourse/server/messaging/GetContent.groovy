@@ -14,11 +14,13 @@ package ish.oncourse.server.messaging
 import groovy.transform.CompileDynamic
 import org.apache.commons.lang3.StringUtils
 
+import javax.activation.DataHandler
 import javax.mail.BodyPart
 import javax.mail.MessagingException
 import javax.mail.Multipart
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMultipart
+import javax.mail.util.ByteArrayDataSource
 
 @CompileDynamic
 class GetContent {
@@ -30,7 +32,7 @@ class GetContent {
 
     private GetEmailPlainBody getEmailPlainBody
     private GetEmailHtmlBody getEmailHtmlBody
-    private List<AttachmentParam> attachmentParams
+    private List<DocumentParam> documentParams
 
     //should be private after deleting all deprecated content
     GetContent() {
@@ -45,11 +47,11 @@ class GetContent {
         valueOf(getEmailPlainBody, getEmailHtmlBody, null)
     }
 
-    static GetContent valueOf(GetEmailPlainBody getEmailPlainBody, GetEmailHtmlBody getEmailHtmlBody, List<AttachmentParam> attachmentParams) {
+    static GetContent valueOf(GetEmailPlainBody getEmailPlainBody, GetEmailHtmlBody getEmailHtmlBody, List<DocumentParam> documentParams) {
         GetContent getContent = new GetContent()
         getContent.getEmailPlainBody = getEmailPlainBody
         getContent.getEmailHtmlBody = getEmailHtmlBody
-        getContent.attachmentParams = attachmentParams
+        getContent.documentParams = documentParams
         getContent
     }
 
@@ -77,7 +79,7 @@ class GetContent {
             multipart.addBodyPart(textPart)
         }
 
-        attachmentParams.each { param ->
+        documentParams.each { param ->
             BodyPart part = new MimeBodyPart()
 
             if (param.fileName)  {
@@ -86,6 +88,12 @@ class GetContent {
 
             if (param.content instanceof File) {
                 part.attachFile(param.content as File)
+            } else if (param.content instanceof byte[]) {
+                ByteArrayDataSource dataSrc = new ByteArrayDataSource(param.content as byte[], param.type)
+                part.setDataHandler(new DataHandler(dataSrc))
+            } else if (param.content instanceof String) {
+                ByteArrayDataSource dataSrc = new ByteArrayDataSource(param.content.toString().bytes, param.type)
+                part.setDataHandler(new DataHandler(dataSrc))
             } else {
                 part.setContent(param.content, param.type)
             }

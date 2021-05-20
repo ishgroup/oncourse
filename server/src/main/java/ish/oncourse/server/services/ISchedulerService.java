@@ -21,6 +21,7 @@ public interface ISchedulerService {
 
 	String TRIGGER_POSTFIX = "Trigger";
 
+	String AUDIT_PURGE_JOB = "auditPurgeJob";
 	String EMAIL_DEQUEUEING_JOB_ID = "emailDequeueingJob";
 	String BACKUP_JOB_ID = "backupJob";
 	String DELAYED_ENROLMENT_INCOME_POSTING_JOB_ID = "delayedEnrolmentIncomePostingJob";
@@ -29,21 +30,23 @@ public interface ISchedulerService {
 	String CERTIFICATE_UPDATE_WATCHER_ID = "certificateUpdateWatcher";
 	String CHRISTMAS_THEME_ENABLE_JOB_ID = "christmasThemeUpdateJob";
 	String CHRISTMAS_THEME_DISABLE_JOB_ID = "christmasThemeDisableJob";
+	String PERMANENTLY_DELETE_DOCUMENTS_ID = "permanentlyDeleteDocumentsJob";
 
 	String BACKGROUND_JOBS_GROUP_ID = "backgroundJobs";
 	String CUSTOM_SCRIPT_JOBS_GROUP_ID = "customScriptJobs";
 
 	String EMAIL_DEQUEUEING_JOB_INTERVAL = "45 * * * * ?";
-	String BACKUP_JOB_INTERVAL = "0 0 * * * ?";
 	String DELAYED_ENROLMENT_INCOME_POSTING_JOB_INTERVAL = "0 30 0am * * ?";
 	String VOUCHER_EXPIRY_JOB_CRON_SCHEDULE = "0 45 0am * * ?";
 	String INVOICE_OVERDUE_UPDATE_JOB_CRON_SCHEDULE_TEMPLATE = "0 %d 1am * * ?";
+	String AUDIT_PURGE_JOB_CRON_SCHEDULE_TEMPLATE = "0 %d 2am * * ?";
 
 	String FUNDING_CONTRACT_JOB_ID = "fundingContractJob";
 	String FUNDING_CONTRACT_JOB_INTERVAL = "1 15 0am * * ?";
 	String CERTIFICATE_UPDATE_WATCHER_INTERVAL = "0 0 0/1 ? * * *";
 	String CHRISTMAS_THEME_ENABLE_JOB_INTERVAL = "0 0 0 9 12 ? *";
 	String CHRISTMAS_THEME_DISABLE_JOB_INTERVAL = "0 0 0 12 1 ? *";
+	String PERMANENTLY_DELETE_DOCUMENTS_INTERVAL = "0 0 7 ? * SUN *";
 	/**
 	 * schedules a job with interval in seconds
 	 *

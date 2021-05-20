@@ -1,39 +1,36 @@
 package ish.oncourse.server.payroll
 
-import ish.oncourse.server.cayenne.Tutor
 
-import static ish.common.types.ClassCostFlowType.WAGES
+import groovy.transform.CompileStatic
 import ish.common.types.ClassCostRepetitionType
 import ish.math.Money
 import ish.oncourse.entity.services.SessionService
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.ClassCost
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.DefinedTutorRole
-import ish.oncourse.server.cayenne.PayRate
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.DataObject
 import org.apache.cayenne.exp.Expression
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
+import static ish.common.types.ClassCostFlowType.WAGES
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
+@CompileStatic
 class PayrollGenerationSelfPacedTest {
 
     protected ICayenneService cayenneService = null
     protected SessionService sessionService = null
 
-    @Before
+    
+    @BeforeEach
     void prepare() {
         cayenneService = mock(ICayenneService.class)
         sessionService = mock(SessionService.class)
     }
 
+    
     @Test
     void testSelfPlacedCourseClass() throws Exception {
 
@@ -47,7 +44,7 @@ class PayrollGenerationSelfPacedTest {
         Tutor tutor = mock(Tutor.class)
         when(classCost.getContact().getTutor()).thenReturn(tutor)
 
-        CourseClass courseClass =  mock(CourseClass.class)
+        CourseClass courseClass = mock(CourseClass.class)
         when(courseClass.getIsDistantLearningCourse()).thenReturn(true)
         when(classCost.getCourseClass()).thenReturn(courseClass)
 
@@ -55,15 +52,16 @@ class PayrollGenerationSelfPacedTest {
 
         // self-paced class: check non payable
         when(classCost.getRepetitionType()).thenReturn(ClassCostRepetitionType.PER_SESSION)
-        assertFalse(service.isEligibleToProcess(classCost, date))
+        Assertions.assertFalse(service.isEligibleToProcess(classCost, date))
 
         when(classCost.getRepetitionType()).thenReturn(ClassCostRepetitionType.PER_TIMETABLED_HOUR)
-        assertFalse(service.isEligibleToProcess(classCost, date))
+        Assertions.assertFalse(service.isEligibleToProcess(classCost, date))
 
         when(classCost.getRepetitionType()).thenReturn(ClassCostRepetitionType.PER_STUDENT_CONTACT_HOUR)
-        assertFalse(service.isEligibleToProcess(classCost, date))
+        Assertions.assertFalse(service.isEligibleToProcess(classCost, date))
     }
 
+    
     @Test
     void testIsEligibleRate() throws Exception {
 
@@ -83,9 +81,10 @@ class PayrollGenerationSelfPacedTest {
         when(tutorRole.getPayRates()).thenReturn(payRates)
 
         PayrollService service = new PayrollService(cayenneService, sessionService)
-        assertTrue(service.hasEligibleRateOnDate(classCost, new Date()))
+        Assertions.assertTrue(service.hasEligibleRateOnDate(classCost, new Date()))
     }
 
+    
     @Test
     void testLackingPaylinesValidation() throws Exception {
         Date until = null
@@ -99,13 +98,14 @@ class PayrollGenerationSelfPacedTest {
         when(classCost.getCourseClass()).thenReturn(courseClass)
 
         PayrollService service = new PayrollService(cayenneService, sessionService)
-        assertTrue(service.validateClassCost(classCost, until))
+        Assertions.assertTrue(service.validateClassCost(classCost, until))
     }
 
     /**
      * Test cayenne expression by filtering mock collection
      * @throws Exception
      */
+    
     @Test
     void testEligibleClassCostsExpression() throws Exception {
         List<DataObject> sourceList = createClassCostDataSetForFiltering()
@@ -115,9 +115,9 @@ class PayrollGenerationSelfPacedTest {
 
         List<DataObject> filteredList = expr.filterObjects(sourceList)
 
-        long[] expectedIds  = [1L, 2L, 4L]
-        assertEquals(expectedIds.length, filteredList.size())
-        filteredList.each{ o -> Arrays.asList(expectedIds).contains(o.readNestedProperty(ClassCost.ID.getName()))}
+        long[] expectedIds = [1L, 2L, 4L]
+        Assertions.assertEquals(expectedIds.length, filteredList.size())
+        filteredList.each { o -> Arrays.asList(expectedIds).contains(o.readNestedProperty(ClassCost.ID.getName())) }
     }
 
     private List<DataObject> createClassCostDataSetForFiltering() {
@@ -129,6 +129,7 @@ class PayrollGenerationSelfPacedTest {
         return classCosts
     }
 
+    
     private DataObject createClassCostMock(Long id, Date startDateTime, boolean isDistant) {
         DataObject o = mock(DataObject.class)
 

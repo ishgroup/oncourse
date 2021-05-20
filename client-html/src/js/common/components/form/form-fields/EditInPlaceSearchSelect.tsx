@@ -220,7 +220,13 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     if (selectLabelCondition && formattedDisplayValue && defaultDisplayValue !== prevDefaultDisplayValue) {
       setFormattedDisplayValue(null);
     }
-  }, [selectLabelCondition, formattedDisplayValue, defaultDisplayValue]);
+    if (selectLabelCondition && !defaultDisplayValue) {
+      const selected = sortedItems.find(i => getOptionSelected(i, input.value));
+      if (selected) {
+        setFormattedDisplayValue(selectLabelCondition(selected));
+      }
+    }
+  }, [selectLabelCondition, formattedDisplayValue, defaultDisplayValue, sortedItems, input.value]);
 
   const onBlur = () => {
     if (isAdornmentHovered.current) {
@@ -425,7 +431,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       response = input.value[selectLabelMark];
     } else {
       const selected = sortedItems.find(i => getOptionSelected(i, input.value));
-
       response = selected ? selected[selectLabelMark] : defaultDisplayValue || input.value;
     }
 
@@ -433,7 +438,11 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       response = defaultDisplayValue;
     }
 
-    return ![null, undefined, ''].includes(input.value) ? response : <span className={clsx("overflow-hidden placeholderContent", classes.editable)}>No value</span>;
+    return (
+      ![null, undefined, ''].includes(input.value)
+      ? response
+      : <span className={clsx("overflow-hidden placeholderContent", classes.editable)}>No value</span>
+    );
   }, [formattedDisplayValue, selectLabelCondition, alwaysDisplayDefault, returnType, defaultDisplayValue, selectLabelMark, input, classes]);
 
   const labelContent = useMemo(() => (labelAdornment ? (
@@ -558,17 +567,17 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
               <>
                 <ButtonBase
                   onFocus={onEditButtonFocus}
-                  className={clsx(classes.editable, "overflow-hidden hoverIconContainer", {
+                  className={clsx(classes.editable, "overflow-hidden d-flex hoverIconContainer", {
                     "pointer-events-none": disabled
                   })}
                   component="div"
                 >
-                  <span className={clsx("overflow-hidden", classes.editable, fieldClasses && fieldClasses.text)}>
+                  <span className={clsx("text-truncate", classes.editable, fieldClasses && fieldClasses.text)}>
                     {displayedValue}
-                    {!disabled && (
-                      <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses && fieldClasses.editIcon)} />
-                    )}
                   </span>
+                  {!disabled && (
+                    <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses && fieldClasses.editIcon)} />
+                  )}
                 </ButtonBase>
                 {endAdornment}
               </>

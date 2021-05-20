@@ -3,23 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grow from "@material-ui/core/Grow/Grow";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import FileCopy from "@material-ui/icons/FileCopy";
 import React, {
- useCallback, useEffect, useMemo, useState
+ useCallback, useEffect, useMemo, useState,
 } from "react";
 import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import {
-  arrayInsert, change, FieldArray, initialize
+  Form, arrayInsert, change, FieldArray, initialize,
 } from "redux-form";
 import Typography from "@material-ui/core/Typography";
-import { OutputType, TriggerType } from "@api/model";
+import { OutputType, Script, TriggerType } from "@api/model";
 import createStyles from "@material-ui/core/styles/createStyles";
 import DeleteForever from "@material-ui/icons/DeleteForever";
+import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
+import CodeIcon from '@material-ui/icons/Code';
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
@@ -36,13 +35,17 @@ import ImportCardContent from "../components/cards/ImportCardContent";
 import TriggerCardContent from "../components/cards/TriggerCardContent";
 import ScriptAddMenu from "../components/ScriptAddMenu";
 import { setScriptComponents } from "../actions";
-import { ScriptComponentType } from "../../../../../model/scripts";
+import { ScriptComponentType, ScriptViewMode } from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { getQueryComponent, getScriptComponent, getMessageComponent, getReportComponent } from "../constants";
+import {
+ getQueryComponent, getScriptComponent, getMessageComponent, getReportComponent,
+} from "../constants";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import { ApiMethods } from "../../../../../model/common/apiHandlers";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -50,53 +53,55 @@ const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${i
 const styles = theme =>
   createStyles({
     root: {
-      padding: theme.spacing(0, 9)
+      padding: theme.spacing(0, 9),
     },
     divider: {
-      margin: "20px 0"
+      margin: "20px 0",
     },
     checkbox: {
       height: "50px",
-      display: "flex"
+      display: "flex",
     },
     cardsBox: {
-      padding: theme.spacing(0, 3, 3, 0)
+      padding: theme.spacing(0, 3, 3, 0),
     },
     deleteButtonContainer: {
-      display: "flex"
+      display: "flex",
     },
     deleteButton: {
       right: "-8px",
-      top: "-8px"
+      top: "-8px",
     },
     cardContent: {
-      height: "120px"
+      height: "120px",
     },
     getBackIcon: {
       color: "#fff",
-      transform: "rotate(180deg)"
+      transform: "rotate(180deg)",
     },
     dragging: {
       borderRadius: "4px",
       width: "55px",
       paddingLeft: "4px",
       height: "25px",
-      background: "#fff"
+      background: "#fff",
     },
     dialogContent: {
       width: "450px",
-      padding: theme.spacing(0, 3)
+      padding: theme.spacing(0, 3),
     },
     infoContainer: {
       background: theme.palette.background.default,
       borderRadius: "4px",
       padding: theme.spacing(1, 0, 1, 2),
-      margin: theme.spacing(1, 0, 3, 0)
+      margin: theme.spacing(1, 0, 3, 0),
     },
-    queryField: {}
+    queryField: {},
   });
 
 const entityNameTypes = Object.keys(TriggerType).slice(0, 6).filter(t => t !== "Schedule");
+
+const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);
 
 type TriggerToRecordObjType = {
   [K in TriggerType]?: string
@@ -106,7 +111,7 @@ const TriggerToRecordTypeMap: TriggerToRecordObjType = {
   "Enrolment successful": "Enrolment",
   "Enrolment cancelled": "Enrolment",
   "Class cancelled": "CourseClass",
-  "Class published on web": "CourseClass"
+  "Class published on web": "CourseClass",
 };
 
 interface Props {
@@ -114,26 +119,25 @@ interface Props {
   values: any;
   initialValues;
   dispatch: any;
-  TriggerTypeItems: any;
   ScheduleTypeItems: any;
   hasUpdateAccess: boolean;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
   classes?: any;
   dirty?: boolean;
   created?: Date;
   modified?: Date;
   initialized?: boolean;
   invalid?: boolean;
-  history?: any;
   form?: string;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: ShowConfirmCaller;
   handleSubmit?: any;
-  onSave?: any;
-  onCreate?: any;
+  onSave?: (id: number, script: Script, method: ApiMethods, viewMode: ScriptViewMode) => void;
+  onCreate?: (script: Script, viewMode: ScriptViewMode) => void;
   onDelete?: any;
   formsState?: any;
   emailTemplates?: CommonListItem[];
-  pdfReports?: CommonListItem[];
-  pdfBackgrounds?: CommonListItem[];
 }
 
 const getInitComponentBody = (componentName: ScriptComponentType) => {
@@ -166,7 +170,6 @@ const ScriptsForm = React.memo<Props>(props => {
     values,
     initialValues,
     invalid,
-    TriggerTypeItems,
     ScheduleTypeItems,
     openConfirm,
     hasUpdateAccess,
@@ -177,17 +180,18 @@ const ScriptsForm = React.memo<Props>(props => {
     isNew,
     formsState,
     emailTemplates,
-    pdfReports,
-    pdfBackgrounds,
+    history,
+    nextLocation,
+    setNextLocation
   } = props;
 
-  const [isValidQuery, setIsValidQuery] = useState<boolean>(true);
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
+  const [viewMode, setViewMode] = useState<ScriptViewMode>("Cards");
 
   const isInternal = useMemo(() => values && values.keyCode && values.keyCode.startsWith("ish."), [values && values.keyCode]);
   const isOriginallyInternal = useMemo(
     () => initialValues && initialValues.keyCode && initialValues.keyCode.startsWith("ish."),
-    [initialValues && initialValues.keyCode]
+    [initialValues && initialValues.keyCode],
   );
   const prevId = usePrevious(values && values.id);
 
@@ -207,19 +211,15 @@ const ScriptsForm = React.memo<Props>(props => {
         ...values,
         id: null,
         keyCode,
-        name
-      });
+        name,
+      }, viewMode);
       onDialogClose();
     },
-    [values]
+    [values, viewMode],
   );
 
-  const onValidateQuery = isValidQuery => {
-    setIsValidQuery(isValidQuery);
-  };
-
-  const addComponent = (componentName: ScriptComponentType) => {
-    dispatch(arrayInsert(form, "components", 0, getInitComponentBody(componentName)));
+  const addComponent = async (componentName: ScriptComponentType) => {
+    dispatch(arrayInsert(form, "components", 0, await getInitComponentBody(componentName)));
   };
 
   const addImport = e => {
@@ -229,7 +229,10 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const removeImports = e => {
     e.stopPropagation();
-    openConfirm(() => dispatch(change(form, "imports", null)), "Script component will be deleted permanently");
+    openConfirm({
+      onConfirm: () => dispatch(change(form, "imports", null)),
+      confirmMessage: "Script component will be deleted permanently"
+    });
   };
 
   const handleDelete = () => {
@@ -248,63 +251,58 @@ const ScriptsForm = React.memo<Props>(props => {
   }, [values && values.id, prevId, disableRouteConfirm]);
 
   useEffect(() => {
-    if (!isValidQuery && values && values.id !== prevId) {
-      setIsValidQuery(true);
+    if (!dirty && nextLocation) {
+      history.push(nextLocation);
+      setNextLocation('');
     }
-  }, [values && values.id, prevId, isValidQuery]);
+  }, [nextLocation, dirty]);
 
   const isScheduleTrigger = useMemo(() => Boolean(
     values
     && values.trigger
-    && values.trigger.type === "Schedule"
+    && values.trigger.type === "Schedule",
   ), [
     values && values.trigger,
-    values && values.trigger && values.trigger.type
+    values && values.trigger && values.trigger.type,
   ]);
 
   const isSystemTrigger = useMemo(() => Boolean(
     values
     && values.trigger
-    && (isScheduleTrigger || TriggerToRecordTypeMap[values.trigger.type])
+    && (isScheduleTrigger || TriggerToRecordTypeMap[values.trigger.type]),
   ), [
     values && values.trigger,
     values && values.trigger && values.trigger.type,
-    isScheduleTrigger
+    isScheduleTrigger,
   ]);
 
   const handleSave = useCallback(
-    values => {
+    (valuesToSave: Script) => {
       setDisableRouteConfirm(true);
 
-      const requestValues = { ...values };
-
-      if (isSystemTrigger) requestValues.entity = null;
-
-      if (requestValues.trigger) {
-        if (requestValues.entity) {
-          requestValues.trigger.entityName = requestValues.entity;
-        } else {
-          requestValues.trigger.entityName = null;
-        }
-      }
+      valuesToSave.entity = valuesToSave?.trigger?.entityName;
 
       if (isNew) {
-        onCreate(values);
+        onCreate(valuesToSave, viewMode);
         return;
       }
 
-      // const formState = getDeepValue(formsState, SCRIPT_EDIT_VIEW_FORM_NAME);
-      // const scriptBodyNotChanged = JSON.stringify([formState.initial.components, formState.initial.imports])
-      //   === JSON.stringify([values.components, values.imports]);
-
       if (isInternal) {
-        onSave(requestValues.id, requestValues, "PATCH");
+        onSave(valuesToSave.id, valuesToSave, "PATCH", viewMode);
       } else {
-        onSave(requestValues.id, requestValues);
+        onSave(valuesToSave.id, valuesToSave, "PUT", viewMode);
       }
     },
-    [formsState, isNew, isSystemTrigger, values]
+    [formsState, isNew, isSystemTrigger, values, viewMode],
   );
+
+  const toogleViewMode = () => {
+    if (viewMode === "Cards") {
+      setViewMode("Code");
+    } else {
+      setViewMode("Cards");
+    }
+  };
 
   const defaultVariables = useMemo(
     () => [
@@ -318,9 +316,9 @@ const ScriptsForm = React.memo<Props>(props => {
         isSystemTrigger && !isScheduleTrigger
           ? [{ name: "record", type: TriggerToRecordTypeMap[values.trigger.type] }]
           : []
-      )
+      ),
     ],
-    [values, values && values.trigger, values && values.trigger && values.trigger.type, isSystemTrigger, isScheduleTrigger]
+    [values, values && values.trigger, values && values.trigger && values.trigger.type, isSystemTrigger, isScheduleTrigger],
   );
 
   const enableEntityNameField = entityNameTypes.indexOf(values && values.trigger && values.trigger.type) > -1;
@@ -329,12 +327,12 @@ const ScriptsForm = React.memo<Props>(props => {
     <>
       <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} hasNameField />
 
-      <form onSubmit={handleSubmit(handleSave)}>
-        {(dirty || isNew) && <RouteChangeConfirm when={!disableRouteConfirm && (dirty || isNew)} />}
+      <Form onSubmit={handleSubmit(handleSave)}>
+        {(dirty || isNew) && <RouteChangeConfirm form={form} when={!disableRouteConfirm && (dirty || isNew)} />}
         <CustomAppBar fullWidth noDrawer>
           <Grid container>
             <Grid item xs={12} className={clsx("centeredFlex", "relative")}>
-              {!isInternal && (
+              {!isInternal && viewMode !== "Code" && (
                 <ScriptAddMenu
                   addComponent={addComponent}
                   form={form}
@@ -356,28 +354,35 @@ const ScriptsForm = React.memo<Props>(props => {
 
               <div className="flex-fill" />
 
-              {!isNew && !isInternal && (
+              {!isNew && (
                 <AppBarActions
                   actions={[
-                    {
-                      action: handleDelete,
-                      icon: <DeleteForever />,
-                      tooltip: "Delete script",
-                      confirmText: "Script component will be deleted permanently",
-                      confirmButtonText: "DELETE"
-                    }
+                    isInternal
+                      ? {
+                          action: onInternalSaveClick,
+                          icon: <FileCopy />,
+                          tooltip: "Save as new script"
+                        }
+                      : {
+                          action: handleDelete,
+                          icon: <DeleteForever />,
+                          tooltip: "Delete script",
+                          confirmText: "Script component will be deleted permanently",
+                          confirmButtonText: "DELETE",
+                        },
+                    viewMode === "Cards"
+                      ? {
+                          action: toogleViewMode,
+                          icon: <CodeIcon />,
+                          tooltip: "Switch to code view"
+                        }
+                      : {
+                          action: toogleViewMode,
+                          icon: <ViewAgendaIcon />,
+                          tooltip: "Switch to cards view"
+                        }
                   ]}
                 />
-              )}
-
-              {isInternal && (
-                <Grow in={isInternal}>
-                  <Tooltip title="Save as new script">
-                    <IconButton onClick={onInternalSaveClick} color="inherit">
-                      <FileCopy color="inherit" />
-                    </IconButton>
-                  </Tooltip>
-                </Grow>
               )}
 
               <AppBarHelpMenu
@@ -388,7 +393,7 @@ const ScriptsForm = React.memo<Props>(props => {
               />
 
               <FormSubmitButton
-                disabled={!dirty || !isValidQuery}
+                disabled={!dirty || invalid}
                 invalid={invalid}
               />
             </Grid>
@@ -403,6 +408,7 @@ const ScriptsForm = React.memo<Props>(props => {
                   <ScriptCard className="mt-3" heading="Trigger" disableExpandedBottomMargin expanded>
                     <TriggerCardContent
                       classes={classes}
+                      dispatch={dispatch}
                       TriggerTypeItems={TriggerTypeItems}
                       ScheduleTypeItems={ScheduleTypeItems}
                       enableEntityNameField={enableEntityNameField}
@@ -412,38 +418,53 @@ const ScriptsForm = React.memo<Props>(props => {
                   </ScriptCard>
                 </div>
 
-                {values.imports && (
-                  <div>
-                    <ScriptCard
-                      heading="Import"
-                      className="mt-3"
-                      onDelete={hasUpdateAccess ? removeImports : null}
-                      onAddItem={hasUpdateAccess ? addImport : null}
-                      disableExpandedBottomMargin
-                      expanded
-                      onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                    >
-                      <ImportCardContent classes={classes} hasUpdateAccess={hasUpdateAccess} isInternal={isInternal} />
-                    </ScriptCard>
-                  </div>
-                )}
+                {viewMode === "Code" ? (
+                  <ScriptCard
+                    heading="Script"
+                    className="mb-3 mt-3"
+                    onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                    expanded
+                    noPadding
+                  >
+                    <FormField
+                      type="code"
+                      name="content"
+                      disabled={isInternal}
+                      required
+                    />
+                  </ScriptCard>
+                ) : (
+                  <>
+                    {values.imports && (
+                      <div>
+                        <ScriptCard
+                          heading="Import"
+                          className="mt-3"
+                          onDelete={hasUpdateAccess && !isInternal ? removeImports : null}
+                          onAddItem={hasUpdateAccess && !isInternal ? addImport : null}
+                          disableExpandedBottomMargin
+                          expanded
+                          onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                        >
+                          <ImportCardContent classes={classes} hasUpdateAccess={hasUpdateAccess} isInternal={isInternal} />
+                        </ScriptCard>
+                      </div>
+                    )}
 
-                <FieldArray
-                  name="components"
-                  component={CardsRenderer}
-                  hasUpdateAccess={hasUpdateAccess}
-                  dispatch={dispatch}
-                  onValidateQuery={onValidateQuery}
-                  showConfirm={openConfirm}
-                  classes={classes}
-                  rerenderOnEveryChange
-                  isInternal={isInternal}
-                  isValidQuery={isValidQuery}
-                  onInternalSaveClick={onInternalSaveClick}
-                  emailTemplates={emailTemplates}
-                  pdfReports={pdfReports}
-                  pdfBackgrounds={pdfBackgrounds}
-                />
+                    <FieldArray
+                      name="components"
+                      component={CardsRenderer}
+                      hasUpdateAccess={hasUpdateAccess}
+                      dispatch={dispatch}
+                      showConfirm={openConfirm}
+                      classes={classes}
+                      rerenderOnEveryChange
+                      isInternal={isInternal}
+                      onInternalSaveClick={onInternalSaveClick}
+                      emailTemplates={emailTemplates}
+                    />
+                  </>
+                )}
 
                 <FormField
                   type="text"
@@ -513,8 +534,8 @@ const ScriptsForm = React.memo<Props>(props => {
                       </Typography>
 
                       {values.lastRun && values.lastRun.length ? (
-                        values.lastRun.map(runDate => (
-                          <Typography variant="body1" key={runDate + "_key"}>
+                        values.lastRun.map((runDate, index) => (
+                          <Typography variant="body1" key={runDate + index}>
                             {formatRelativeDate(new Date(runDate), new Date(), DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL)}
                           </Typography>
                         ))
@@ -530,7 +551,7 @@ const ScriptsForm = React.memo<Props>(props => {
             </Grid>
           )}
         </div>
-      </form>
+      </Form>
     </>
   );
 });

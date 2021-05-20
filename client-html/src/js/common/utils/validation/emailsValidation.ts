@@ -1,7 +1,13 @@
-export const validateEmail = value =>
-  (value
-  && !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(
-    value
-  )
-    ? "Please enter valid email address"
-    : undefined);
+export const validateEmail = value => {
+  if (!value) {
+    return undefined;
+  }
+
+  const errorMessage = "Please enter valid email address";
+
+  if (!value.includes("@")) {
+    return errorMessage;
+  }
+  const splitted = value.split("@");
+  return /\../.test(splitted[splitted.length - 1]) ? undefined : errorMessage;
+};

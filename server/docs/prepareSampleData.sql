@@ -1,8 +1,3 @@
-/*! usage: from the directory containing the onCourse.iocdata file >ij path/to/this/script */
-/*! run when the database is not accessed by a runing onCourse server. */
-
-connect 'jdbc:derby:onCourse.iocdata/onCourse' user 'onCourse' password 'sjhdf8hJHG';
-
 UPDATE Attendance SET willowid=null;
 UPDATE BinaryData SET willowid=null;
 UPDATE BinaryInfo SET willowid=null;

@@ -1,0 +1,100 @@
+get:
+  description: Returns assessment submission record
+  operationId: get
+  tags:
+    - AssessmentSubmission
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of assessment record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/AssessmentSubmission.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ASSESSMENT
+    errorMessage: Sorry, you have no permissions to get assessment submission. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - AssessmentSubmission
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of assessment submission record to fetch
+    - name: assessmentSubmission
+      in: body
+      schema:
+        $ref: './def/entity/AssessmentSubmission.yaml'
+      required: true
+      description: assessment for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: ASSESSMENT
+    errorMessage: Sorry, you have no permissions to edit assessment submission. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - AssessmentSubmission
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of assessment submission record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: ASSESSMENT
+    errorMessage: Sorry, you have no permissions to delete assessment submission. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - AssessmentSubmission
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: Assessment submissions for update
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: ASSESSMENT
+    errorMessage: Sorry, you have no permissions to edit assessment submission. Please contact your administrator.

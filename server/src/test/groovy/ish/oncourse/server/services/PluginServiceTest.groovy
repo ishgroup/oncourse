@@ -12,56 +12,39 @@
 package ish.oncourse.server.services
 
 import groovy.transform.CompileDynamic
-import ish.CayenneIshTestCase
-import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.integration.PluginTrait
-
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.getIntegrationByName
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.hasIntegration
+import groovy.transform.CompileStatic
+import ish.TestWithDatabase
+import ish.DatabaseSetup
 import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.IntegrationProperty
+import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.integration.PluginService
 import org.apache.cayenne.query.ObjectSelect
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertNull
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import javax.ws.rs.ClientErrorException
 import java.lang.reflect.Method
 
-class PluginServiceTest extends CayenneIshTestCase {
+import static ish.oncourse.server.api.v1.function.IntegrationFunctions.getIntegrationByName
+import static ish.oncourse.server.api.v1.function.IntegrationFunctions.hasIntegration
+
+@CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/services/pluginServiceTestDataSet.xml")
+class PluginServiceTest extends TestWithDatabase {
 
     private final static int TEST_TYPE_VALUE = 1000
     private final static String TEST_NAME_VALUE = "PluginServiceTest"
 
-    private ICayenneService cayenneService
-
     private IntegrationApiImpl integrationApi
-
     private List<IntegrationPropDTO> defaultProperties
-
-    @Before
-    void setup() {
-        wipeTables()
-
-        InputStream st = PluginServiceTest.class.getClassLoader().getResourceAsStream(
-                "ish/oncourse/server/services/pluginServiceTestDataSet.xml")
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder()
-        builder.setColumnSensing(true)
-        FlatXmlDataSet dataSet = builder.build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        executeDatabaseOperation(rDataSet)
-
-        cayenneService = injector.getInstance(ICayenneService.class)
+    
+    @BeforeEach
+    void integrations() {
         integrationApi = new IntegrationApiImpl()
         integrationApi.cayenneService = cayenneService
 
@@ -72,7 +55,6 @@ class PluginServiceTest extends CayenneIshTestCase {
         ]
     }
 
-
     @Test
     void findIntegrationByTypeWithPluginService() {
         Integer type = ObjectSelect.query(IntegrationConfiguration)
@@ -80,56 +62,58 @@ class PluginServiceTest extends CayenneIshTestCase {
                 .column(IntegrationConfiguration.TYPE)
                 .selectOne(cayenneService.newContext)
 
-        assertNull(PluginService.getPluginClass(type))
+        Assertions.assertNull(PluginService.getPluginClass(type))
     }
 
 
+    
     @Test
     void callOnStartMethodOfClassWithPluginService() {
         injector.getInstance(PluginService).onStart()
 
         def users = ObjectSelect.query(SystemUser).orderBy(SystemUser.ID.asc()).select(cayenneService.newContext)
         def user = ObjectSelect.query(SystemUser).orderBy(SystemUser.ID.asc()).selectFirst(cayenneService.newContext)
-        assertEquals('John', user.firstName)
+        Assertions.assertEquals('John', user.firstName)
     }
 
 
+    
     @Test
     void createNewIntegrationAndWorkWithPropertiesByPluginService() {
 
         createIntegration(TEST_NAME_VALUE)
-        assertEquals(Boolean.TRUE, hasIntegration(cayenneService.newContext, TEST_TYPE_VALUE))
+        Assertions.assertEquals(Boolean.TRUE, hasIntegration(cayenneService.newContext, TEST_TYPE_VALUE))
 
         IntegrationConfiguration configuration = getIntegrationByName(cayenneService.newContext, TEST_NAME_VALUE)
-        assertNotNull(configuration)
+        Assertions.assertNotNull(configuration)
 
         Method methodForGetProps = PluginService.getProps(TEST_TYPE_VALUE)
-        assertNotNull(methodForGetProps)
+        Assertions.assertNotNull(methodForGetProps)
 
         List<IntegrationProperty> integrationProperties = methodForGetProps.invoke(null, configuration) as List<IntegrationProperty>
 
-        assertEquals(3, integrationProperties.size())
-        assertEquals(configuration.integrationProperties.size(), integrationProperties.size())
-        assertEquals(TestPluginIntegration.FIRST_PROPERTY, integrationProperties[0].keyCode)
-        assertEquals(TestPluginIntegration.SECOND_PROPERTY, integrationProperties[1].keyCode)
-        assertEquals(TestPluginIntegration.THIRD_PROPERTY, integrationProperties[2].keyCode)
+        Assertions.assertEquals(3, integrationProperties.size())
+        Assertions.assertEquals(configuration.integrationProperties.size(), integrationProperties.size())
+        Assertions.assertEquals(TestPluginIntegration.FIRST_PROPERTY, integrationProperties[0].keyCode)
+        Assertions.assertEquals(TestPluginIntegration.SECOND_PROPERTY, integrationProperties[1].keyCode)
+        Assertions.assertEquals(TestPluginIntegration.THIRD_PROPERTY, integrationProperties[2].keyCode)
 
         Map<String, String> newPropertiesValue = integrationProperties.collectEntries { property ->
             [property.keyCode, property.value.concat("New")]
         } as Map<String, String>
 
         Method methodForSave = PluginService.onSave(configuration.type)
-        assertNotNull(methodForSave)
+        Assertions.assertNotNull(methodForSave)
 
         methodForSave.invoke(null, configuration, newPropertiesValue)
         configuration.context.commitChanges()
 
         integrationProperties = methodForGetProps.invoke(null, configuration) as List<IntegrationProperty>
 
-        assertEquals(3, integrationProperties.size())
-        assertEquals("valueFirstPropertyNew", integrationProperties[0].value)
-        assertEquals("valueSecondPropertyNew", integrationProperties[1].value)
-        assertEquals("valueThirdPropertyNew", integrationProperties[2].value)
+        Assertions.assertEquals(3, integrationProperties.size())
+        Assertions.assertEquals("valueFirstPropertyNew", integrationProperties[0].value)
+        Assertions.assertEquals("valueSecondPropertyNew", integrationProperties[1].value)
+        Assertions.assertEquals("valueThirdPropertyNew", integrationProperties[2].value)
     }
 
 
@@ -139,17 +123,17 @@ class PluginServiceTest extends CayenneIshTestCase {
         if (!hasIntegration(cayenneService.newContext, TEST_TYPE_VALUE)) {
             createIntegration(TEST_NAME_VALUE)
         }
-        assertEquals(Boolean.TRUE, hasIntegration(cayenneService.newContext, TEST_TYPE_VALUE))
-        assertEquals(Boolean.TRUE, PluginService.onlyOne(TEST_TYPE_VALUE))
+        Assertions.assertEquals(Boolean.TRUE, hasIntegration(cayenneService.newContext, TEST_TYPE_VALUE))
+        Assertions.assertEquals(Boolean.TRUE, PluginService.onlyOne(TEST_TYPE_VALUE))
 
         try {
             createIntegration(TEST_NAME_VALUE.concat("_NEW"))
         } catch (ClientErrorException ex) {
-            assertEquals("Then only one integration of this type can be created", ex.response.entity.errorMessage)
+            Assertions.assertEquals("Then only one integration of this type can be created", ex.response.entity.errorMessage)
         }
     }
 
-
+    @CompileDynamic
     private void createIntegration(String name) {
         IntegrationDTO dto = new IntegrationDTO(type: TEST_TYPE_VALUE, name: name, props: defaultProperties)
         integrationApi.create(dto)

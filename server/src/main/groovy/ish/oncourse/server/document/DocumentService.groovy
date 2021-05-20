@@ -11,25 +11,27 @@
 
 package ish.oncourse.server.document
 
-import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import io.bootique.annotation.BQConfigProperty
 import ish.common.types.AttachmentInfoVisibility
 import ish.oncourse.API
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.AttachableTrait
 import ish.oncourse.server.cayenne.AttachmentData
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.scripting.api.DocumentSpec
+import ish.s3.AmazonS3Service
+import ish.s3.AmazonS3Service.UploadResult
+import ish.util.RuntimeUtil
+import org.apache.cayenne.ObjectContext
+
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateStoragePlace
 import static ish.oncourse.server.scripting.api.DocumentSpec.ATTACH_ACTION
 import static ish.oncourse.server.scripting.api.DocumentSpec.CREATE_ACTION
-import ish.s3.S3Service
-import ish.s3.S3Service.UploadResult
 import ish.util.ImageHelper
 import ish.util.SecurityUtil
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 
 /**
@@ -50,24 +52,91 @@ import org.apache.cayenne.query.ObjectSelect
 class DocumentService {
 
 	private ICayenneService cayenneService
-	private PreferenceController prefController
+
+	DocumentService createDocumentService(ICayenneService cayenneService) {
+		this.cayenneService = cayenneService
+		this
+	}
+
+	private String bucketName
+	private String accessKeyId = null
+	private String accessSecretKey
+	private String region
+	private Long storageLimit
+
+	@BQConfigProperty
+	void setBucket(String bucket) {
+		RuntimeUtil.println("S3 bucket name is " + bucket)
+		this.bucketName = bucket
+	}
+
+	@BQConfigProperty
+	void setAccessKeyId(String accessKeyId) {
+		RuntimeUtil.println("S3 access key Id is " + accessKeyId)
+		this.accessKeyId = accessKeyId
+	}
+
+	@BQConfigProperty
+	void setAccessSecretKey(String accessSecretKey) {
+		RuntimeUtil.println("S3 access secret key is " + accessSecretKey)
+		this.accessSecretKey = accessSecretKey
+	}
+
+	@BQConfigProperty
+	void setRegion(String region) {
+		this.region = region
+	}
+
+	@BQConfigProperty
+	void setLimit(String limit) {
+		RuntimeUtil.println("S3 bucket storage will limit to " + limit)
+		Long value = Long.valueOf(limit.substring(0, limit.length()-1))
+		String unit = limit.toLowerCase().substring(limit.length()-1)
+		if (unit == 'm') {
+			value =  value * 1024 * 1024
+		} else if (unit == 'g') {
+			value = value * 1024 * 1024 * 1024
+		} else if (value != 0) {
+			RuntimeUtil.println("Unsupported type of storage limit: " + limit)
+			value = null
+		}
+		this.storageLimit = value
+	}
+
+	boolean isUsingExternalStorage() {
+		this.accessKeyId != null
+	}
+
+	String getBucketName() {
+		return bucketName
+	}
+
+	String getAccessKeyId() {
+		return accessKeyId
+	}
+
+	String getAccessSecretKey() {
+		return accessSecretKey
+	}
+
+	String getRegion() {
+		return region
+	}
+
+	Long getStorageLimit() {
+		return storageLimit
+	}
+
 
 	@API
 	def imageClosure = { String name ->
 		Document doc = ObjectSelect.query(Document).where(Document.NAME.eq(name)).selectFirst(cayenneService.newContext)
 
-		if (doc && doc.fileUUID && prefController.usingExternalStorage) {
+		if (doc && doc.fileUUID && usingExternalStorage) {
 			def url = s3Service.getFileUrl(doc.fileUUID, doc.webVisibility)
 			return "<img src=\"$url\">"
 		}
 		return null
-	}
-
-
-	@Inject
-    DocumentService(ICayenneService cayenneService, PreferenceController prefController) {
-		this.cayenneService = cayenneService
-		this.prefController = prefController
 	}
 
     Document document(@DelegatesTo(DocumentSpec.class) Closure cl) {
@@ -96,7 +165,8 @@ class DocumentService {
 	}
 
 	Document createDocument(byte[] content, String name, String mimeType, AttachmentInfoVisibility permission, List<AttachableTrait> attach) {
-		DataContext context = cayenneService.newContext
+		ObjectContext context = cayenneService.newContext
+		validateStoragePlace(content, this, context)
 		Document doc = context.newObject(Document)
 		DocumentVersion version =  context.newObject(DocumentVersion)
 		version.setDocument(doc)
@@ -114,7 +184,7 @@ class DocumentService {
         Date now = new Date()
         version.setTimestamp(now)
         doc.setAdded(now)
-        if (prefController.usingExternalStorage) {
+        if (usingExternalStorage) {
 			UploadResult result = s3Service.putFile(content, name, permission)
 
 			doc.setFileUUID(result.getUuid())
@@ -130,10 +200,7 @@ class DocumentService {
 		return doc
 	}
 
-	private S3Service getS3Service() {
-		return new S3Service(
-				prefController.getStorageAccessId(),
-				prefController.getStorageAccessKey(),
-				prefController.getStorageBucketName())
+	private AmazonS3Service getS3Service() {
+		return new AmazonS3Service(this)
     }
 }

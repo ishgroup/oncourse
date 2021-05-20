@@ -17,6 +17,7 @@ import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.function.CalculateClassroomHours
 import ish.oncourse.function.CalculateCourseClassNominalHours
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.persistence.CommonExpressionFactory
 import ish.util.DateTimeUtil
 import org.apache.cayenne.ObjectContext
@@ -88,11 +89,23 @@ trait CourseClassTrait {
     }
 
 
-    List<DiscountCourseClass> getAvalibleDiscounts(Contact contact, List<Discount> promos, List<MembershipProduct> newMemberships, Integer enrolmentsCount, Money purchaseTotal ) {
+    List<DiscountCourseClass> getAvalibleDiscounts(Contact contact, List<Long> courseIds,
+                                                   List<Long> productIds, List<Long> promoIds,
+                                                   List<MembershipProduct> newMemberships, Integer enrolmentsCount, Money purchaseTotal ) {
+        List<EntityRelation> relations = EntityRelationDao.getRelatedFrom(objectContext, Course.simpleName, course.id)
+                .findAll {
+                    (Course.simpleName == it.fromEntityIdentifier && it.fromEntityAngelId in courseIds) ||
+                        (Product.simpleName == it.fromEntityIdentifier && it.fromEntityAngelId in productIds)
+                }
+        List<Discount> discountsViaRelations = relations*.relationType*.discount.findAll { it != null }
+
         (ObjectSelect.query(DiscountCourseClass).
                 where(DiscountCourseClass.COURSE_CLASS.dot(CourseClass.ID).eq(id)) & getDiscountDateFilter()).
                 select(objectContext).
-                findAll { it.discount.code == null || it.discount.id in promos*.id }.
+                findAll { dcc ->
+                    dcc.discount.entityRelationTypes.empty || dcc.discount in discountsViaRelations
+                }.
+                findAll { it.discount.code == null || it.discount.id in promoIds }.
                 findAll { it.discount.isStudentEligibile(contact, newMemberships, this, enrolmentsCount, purchaseTotal) }
     }
 }

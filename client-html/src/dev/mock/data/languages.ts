@@ -8651,12 +8651,6 @@ export function mockLanguages(): Language[] {
       "name": "Walbrai"
     },
     {
-      "id": 1641,
-      "absCode": null,
-      "isActive": false,
-      "name": "Ngaagi Kurunggurr"
-    },
-    {
       "id": 1642,
       "absCode": null,
       "isActive": false,

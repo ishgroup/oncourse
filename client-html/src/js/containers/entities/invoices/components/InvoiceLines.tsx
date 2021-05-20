@@ -9,15 +9,11 @@ import React, {
 } from "react";
 import Typography from "@material-ui/core/Typography/Typography";
 import Grid from "@material-ui/core/Grid/Grid";
-import { FormControlLabel } from "@material-ui/core";
 import { change } from "redux-form";
-import Collapse from "@material-ui/core/Collapse";
 import { Dispatch } from "redux";
 import { Decimal } from "decimal.js-light";
 import { connect } from "react-redux";
 import FormField from "../../../../common/components/form/form-fields/FormField";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
 import { formatCurrency, normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../reducers/state";
 import {
@@ -31,7 +27,8 @@ import { accountLabelCondition } from "../../accounts/utils";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { getDiscountAmountExTax } from "../../discounts/utils";
 
 const calculateInvoiceLineTotal = (
   priceEachExTax: number,
@@ -260,9 +257,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
   const onDiscountEachExTaxChange = useCallback(
     value => {
-      dispatch(
-        change(form, `${item}.total`, calculateInvoiceLineTotal(row.priceEachExTax, value, row.taxEach, row.quantity))
-      );
+      dispatch(change(form, `${item}.taxEach`, calculateInvoiceLineTaxEach(row.priceEachExTax, value, taxRate)));
     },
     [form, item, taxRate, row.priceEachExTax, row.quantity, row.taxEach]
   );
@@ -296,26 +291,45 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
     dispatch(change(form, `${item}.priceEachExTax`, priceAndTax[1]));
   }, [form, item, taxRate, row.total, row.discountEachExTax, row.quantity]);
 
-  const onPostDiscountsChange = useCallback(
-    (e, checked) => {
-      setPostDiscounts(checked);
-      dispatch(change(form, `${item}.cosAccountId`,
-        checked ? (incomeAndCosAccounts[1].length > 0 ? incomeAndCosAccounts[1][0].id : null) : null));
-    },
-    [form, item]
-  );
-
-  const PostDiscountsCheckbox = useMemo(
-    () => <StyledCheckbox color="primary" checked={postDiscounts} onChange={onPostDiscountsChange} />,
-    [onPostDiscountsChange, postDiscounts]
-  );
-
   const onIncomeAccountChange = v => {
     if (selectedContact && selectedContact["taxOverride.id"]) return;
     const selectedAccount = incomeAndCosAccounts[0].find(item => item.id === v);
     const selectedAccountTaxId = selectedAccount && selectedAccount.taxId;
 
     dispatch(change(form, `${item}.taxId`, Number(selectedAccountTaxId)));
+  };
+
+  const onDiscountIdChange = discount => {
+    if (!discount) {
+      dispatch(change(form, `${item}.discountName`, null));
+      dispatch(change(
+        form,
+        `${item}.discountEachExTax`,
+        null
+      ));
+      return;
+    }
+
+    const {
+     name, discountType, discountDollar, discountPercent, rounding
+    } = discount;
+
+    dispatch(change(form, `${item}.discountName`, name));
+    dispatch(change(
+      form,
+      `${item}.discountEachExTax`,
+      getDiscountAmountExTax(
+        {
+          name,
+          discountType,
+          rounding,
+          discountPercent,
+          discountValue: parseFloat(discountDollar)
+        },
+        taxes.find(t => t.id === row.taxId),
+        (row && row.total) || 1
+      )
+    ));
   };
 
   return (
@@ -359,40 +373,6 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           required
           onChange={onIncomeAccountChange}
         />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <div>
-          <FormControlLabel
-            classes={{
-              root: "checkbox"
-            }}
-            control={PostDiscountsCheckbox}
-            disabled={!isNew}
-            label="Post discounts to COS"
-          />
-        </div>
-
-        <div>
-          <Typography variant="caption" color="textSecondary">
-            Income value will be reduced
-          </Typography>
-        </div>
-      </Grid>
-
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <Collapse in={postDiscounts}>
-          <FormField
-            type="select"
-            name={`${item}.cosAccountId`}
-            label="COS account"
-            disabled={!isNew}
-            items={incomeAndCosAccounts[1] || []}
-            selectValueMark="id"
-            validate={postDiscounts ? validateSingleMandatoryField : undefined}
-            selectLabelCondition={accountLabelCondition}
-          />
-        </Collapse>
       </Grid>
 
       <Grid item xs={12} className="pt-2">
@@ -462,55 +442,70 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
         </Grid>
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12} className={twoColumn ? undefined : "pt-2"}>
-        <Grid container>
-          <Grid item xs={12}>
-            <div className="heading pb-1">Amount</div>
-          </Grid>
+      <Grid item container xs={twoColumn ? 6 : 12} className={twoColumn ? undefined : "pt-2"}>
+        <Grid item xs={12}>
+          <div className="heading pb-1">Amount</div>
+        </Grid>
 
-          <Grid item xs={6}>
-            <FormField
-              type="money"
-              name={`${item}.priceEachExTax`}
-              label="Price each ExTax"
-              onChange={onPriceEachExTaxChange}
-              disabled={!isNew}
-            />
-          </Grid>
+        <Grid item xs={12}>
+          <FormField
+            type="remoteDataSearchSelect"
+            entity="Discount"
+            aqlColumns="name,discountType,discountDollar,discountPercent,rounding"
+            aqlFilter="((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null))"
+            label="Discount"
+            selectValueMark="id"
+            selectLabelMark="name"
+            name={`${item}.discountId`}
+            defaultDisplayValue={row.discountName}
+            onInnerValueChange={onDiscountIdChange}
+            disabled={!isNew}
+            allowEmpty
+          />
+        </Grid>
 
-          <Grid item xs={6}>
-            <FormField
-              type="money"
-              name={`${item}.discountEachExTax`}
-              label="Discount each ExTax"
-              onChange={onDiscountEachExTaxChange}
-              disabled={!isNew}
-            />
-          </Grid>
+        <Grid item xs={6}>
+          <FormField
+            type="money"
+            name={`${item}.priceEachExTax`}
+            label="Price each ExTax"
+            onChange={onPriceEachExTaxChange}
+            disabled={!isNew}
+          />
+        </Grid>
 
-          <Grid item xs={6}>
-            <FormField
-              type="select"
-              name={`${item}.taxId`}
-              label="Tax type"
-              selectValueMark="id"
-              selectLabelMark="code"
-              onChange={onTaxIdChange}
-              disabled={!isNew}
-              items={taxes || []}
-              autoWidth={false}
-              required
-            />
-          </Grid>
+        <Grid item xs={6}>
+          <FormField
+            type="money"
+            name={`${item}.discountEachExTax`}
+            label="Discount each ExTax"
+            onChange={onDiscountEachExTaxChange}
+            disabled={!isNew}
+          />
+        </Grid>
 
-          <Grid item xs={6} className="textField">
-            <div>
-              <Typography variant="caption" color="textSecondary">
-                Tax amount
-              </Typography>
-              <Typography className="money">{taxDisplayedAmount}</Typography>
-            </div>
-          </Grid>
+        <Grid item xs={6}>
+          <FormField
+            type="select"
+            name={`${item}.taxId`}
+            label="Tax type"
+            selectValueMark="id"
+            selectLabelMark="code"
+            onChange={onTaxIdChange}
+            disabled={!isNew}
+            items={taxes || []}
+            autoWidth={false}
+            required
+          />
+        </Grid>
+
+        <Grid item xs={6} className="textField">
+          <div>
+            <Typography variant="caption" color="textSecondary">
+              Tax amount
+            </Typography>
+            <Typography className="money">{taxDisplayedAmount}</Typography>
+          </div>
         </Grid>
       </Grid>
 

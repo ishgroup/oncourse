@@ -9,23 +9,19 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import {
- getFormValues, startAsyncValidation, initialize, reduxForm, change
+  Form, getFormValues, startAsyncValidation, initialize, reduxForm, change
 } from "redux-form";
+import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { format as formatDate } from "date-fns";
 import IconPhoneLocked from "@material-ui/icons/ScreenLockPortrait";
-import FileCopy from "@material-ui/icons/FileCopy";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import debounce from "lodash.debounce";
 import { User, UserRole } from "@api/model";
 import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { State } from "../../../../../reducers/state";
@@ -37,8 +33,9 @@ import Message from "../../../../../common/components/dialog/message/Message";
 import { SelectItemDefault } from "../../../../../model/entities/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../../../../common/utils/dates/format";
-import { showConfirm } from "../../../../../common/actions";
+import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import Uneditable from "../../../../../common/components/form/Uneditable";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const manualUrl = getManualLink("users");
 
@@ -93,7 +90,8 @@ interface Props {
   validateUniqueNames?: any;
   passwordComplexityFlag?: string;
   isNew?: boolean;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  oldEmail?: string;
+  openConfirm?: ShowConfirmCaller;
 }
 
 interface FormProps extends Props {
@@ -101,7 +99,7 @@ interface FormProps extends Props {
   classes: any;
   dispatch: any;
   className: string;
-  newPassword: string;
+  form: string;
   updateUser: (user: User) => void;
   resetUserPassword: (id: number) => void;
   disableUser2FA: (id: number) => void;
@@ -112,11 +110,13 @@ interface FormProps extends Props {
   submitSucceeded: boolean;
   fetch: any;
   asyncErrors: any;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
 }
 
 class UsersFormBase extends React.PureComponent<FormProps, any> {
   state = {
-    validPassword: false,
     showMessage: false,
     messageText: ""
   };
@@ -136,10 +136,10 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const {
- user, submitSucceeded, isNew, fetch, asyncErrors, asyncValidating
-} = nextProps;
+     user, submitSucceeded, isNew, fetch
+    } = nextProps;
 
     if (user && (!this.props.user || this.props.user.id !== user.id || (submitSucceeded && !isNew))) {
       this.props.dispatch(initialize("UsersForm", user));
@@ -153,11 +153,16 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       this.isPending = false;
       this.resolvePromise();
     }
+  }
 
-    if (this.props.asyncValidating && !asyncValidating && !asyncErrors) {
-      this.setState({
-        validPassword: true
-      });
+  componentDidUpdate() {
+    const {
+     dirty, nextLocation, setNextLocation, history
+    } = this.props;
+
+    if (nextLocation && !dirty) {
+      history.push(nextLocation);
+      setNextLocation('');
     }
   }
 
@@ -182,7 +187,6 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
     if (password && passwordComplexityFlag === "true") {
       dispatch(startAsyncValidation("UsersForm"));
       dispatch(validateNewUserPassword(password));
-      this.setState({ validPassword: false });
     }
   }, 500);
 
@@ -220,9 +224,14 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       openConfirm
     } = this.props;
 
-    openConfirm(() => {
-      resetUserPassword(id);
-    }, "Current password will be changed to generated one");
+    openConfirm({
+      onConfirm: () => {
+        resetUserPassword(id);
+      },
+      confirmMessage: "Remove existing password and send the user an invite to reset their password.",
+      confirmButtonText: "Send invite",
+      title: null
+    });
   };
 
   onDisable2FA = () => {
@@ -232,9 +241,12 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       openConfirm
     } = this.props;
 
-    openConfirm(() => {
-      disableUser2FA(id);
-    }, "Current password will be changed to generated one");
+    openConfirm({
+      onConfirm: () => {
+        disableUser2FA(id);
+      },
+      confirmMessage: "Current password will be changed to generated one",
+    });
   };
 
   clearMessage = () => {
@@ -259,33 +271,24 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       dirty,
       validateUniqueNames,
       isNew,
-      passwordComplexityFlag,
-      asyncValidating,
       invalid,
-      newPassword
+      form,
     } = this.props;
 
-    const { validPassword, showMessage, messageText } = this.state;
+    const { showMessage, messageText } = this.state;
 
     return (
-      <form onSubmit={handleSubmit(this.onSave)} className={className}>
-        {!isNew && dirty && <RouteChangeConfirm when={dirty} />}
+      <Form onSubmit={handleSubmit(this.onSave)} className={className}>
+        {!isNew && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <Message opened={showMessage} isSuccess text={messageText} clearMessage={this.clearMessage} />
 
         <CustomAppBar>
           <Grid container>
             <Grid item xs={12} className="centeredFlex">
-              <FormField
-                type="headerText"
-                name="login"
-                placeholder="Login"
-                margin="none"
-                className={classes.HeaderTextField}
-                listSpacing={false}
-                validate={validateUniqueNames}
-                required
-              />
+              <Typography color="inherit" className="appHeaderFontSize pl-2" noWrap>
+                {values.email ? values.email : "No email"}
+              </Typography>
 
               <div className="flex-fill" />
 
@@ -297,12 +300,14 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               />
 
               <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid || (isNew && passwordComplexityFlag === "true" && !validPassword)}
+                disabled={!dirty && !isNew && !values.inviteAgain}
+                invalid={invalid}
+                text={isNew ? "Invite" : values.inviteAgain ? "Resend invite" : "Save"}
               />
             </Grid>
           </Grid>
         </CustomAppBar>
+
         <FormControlLabel
           control={<FormField type="switch" name="active" color="primary" />}
           label="Active"
@@ -328,37 +333,15 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               required
               fullWidth
             />
-            {isNew && (
-              <div className="centeredFlex mb-2">
-                <FormField
-                  type="text"
-                  name="password"
-                  label="Password"
-                  validate={this.validatePassword}
-                  onChange={() => {
-                    if (this.state.validPassword && passwordComplexityFlag === "true") {
-                      this.setState({
-                        validPassword: false
-                      });
-                    }
-                    this.onPasswordChange();
-                  }}
-                  disabled={asyncValidating}
-                  className="flex-fill"
-                  clearOnUnmount
-                  fullWidth
-                  required
-                />
-                {asyncValidating && (
-                  <CircularProgress
-                    size={24}
-                    classes={{
-                      root: classes.loader
-                    }}
-                  />
-                )}
-              </div>
-            )}
+
+            <FormField
+              type="text"
+              name="email"
+              label="Email"
+              validate={validateUniqueNames}
+              required
+              fullWidth
+            />
 
             <FormField
               type="select"
@@ -367,15 +350,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               fullWidth
               autoWidth={false}
               items={sites || []}
-              validate={validateSingleMandatoryField}
-            />
-
-            <FormField
-              type="text"
-              name="email"
-              label="Email"
               required
-              fullWidth
             />
 
             {!isNew && (
@@ -386,34 +361,24 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               />
             )}
 
-            <FormControlLabel
-              control={<FormField type="switch" name="passwordUpdateRequired" color="primary" />}
-              label="Require password update"
-              labelPlacement="start"
-              className={classes.passwordUpdateSection}
-              classes={{
-                root: "switchWrapper mb-0"
-              }}
-            />
+            {!isNew && !values.inviteAgain && (
+              <FormControlLabel
+                control={<FormField type="switch" name="passwordUpdateRequired" color="primary" />}
+                label="Require password update"
+                labelPlacement="start"
+                className={classes.passwordUpdateSection}
+                classes={{
+                  root: "switchWrapper mb-0"
+                }}
+              />
+            )}
 
             {!isNew && (
               <div className={classes.resetSection}>
-                <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onResetPassword}>
-                  Reset password
-                </Button>
-
-                {newPassword && (
-                  <Typography color="error" variant="caption">
-                    Password set to
-                    {' '}
-                    <strong>{newPassword}</strong>
-                    {" "}
-                    <Tooltip title="Copy to clipboard">
-                      <IconButton className={classes.passwordCopy} onClick={() => this.copyToClipBoard(newPassword)}>
-                        <FileCopy color="error" />
-                      </IconButton>
-                    </Tooltip>
-                  </Typography>
+                {!values.inviteAgain && (
+                  <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onResetPassword}>
+                    Reset password
+                  </Button>
                 )}
               </div>
             )}
@@ -454,10 +419,8 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                       color="primary"
                       className={classes.cardSwitch}
                       onChange={(e, v) => {
-                        if (v && values.role) {
+                        if (v) {
                           dispatch(change("UsersForm", "role", null));
-                        } else {
-                          dispatch(change("UsersForm", "role", userRoles[0].id));
                         }
                       }}
                     />
@@ -476,6 +439,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                     selectLabelMark="name"
                     items={userRoles || []}
                     fullWidth
+                    required={!values.admin}
                     sort
                   />
                 </Collapse>
@@ -495,27 +459,28 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
           </Grid>
           <Grid item sm={false} md={false} lg={1} xl={6} />
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("UsersForm")(state),
-  newPassword: state.security.newPassword,
-  fetch: state.fetch
+  fetch: state.fetch,
+  nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   updateUser: (user: User) => dispatch(updateUser(user)),
   resetUserPassword: (id: number) => dispatch(resetUserPassword(id)),
   disableUser2FA: (id: number) => dispatch(disableUser2FA(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+  openConfirm: props => dispatch(showConfirm(props)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
 const UsersForm = reduxForm({
   form: "UsersForm",
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UsersFormBase)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(UsersFormBase))));
 
 export default UsersForm as ComponentClass<Props>;

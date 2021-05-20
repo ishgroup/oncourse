@@ -20,7 +20,6 @@ import org.apache.cayenne.Cayenne
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-import javax.sql.DataSource
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.Timestamp
@@ -34,14 +33,14 @@ class AuditService {
     private static final Logger logger = LogManager.logger
 
     ISystemUserService systemUserService
+    ICayenneService cayenneService
     ExecutorService executorService
-    DataSource dataSource
     private static String INSERT_AUDIT_PATTERN = 'INSERT INTO Audit (created, systemUserId, entityId, entityName, action, message) VALUES (?, ?, ?, ?, ?, ?)'
 
     @Inject
     AuditService(ICayenneService cayenneService, ISystemUserService systemUserService) {
         this.systemUserService = systemUserService
-        dataSource = cayenneService.dataSource
+        this.cayenneService = cayenneService
         executorService = Executors.newSingleThreadExecutor()
     }
 
@@ -67,7 +66,7 @@ class AuditService {
         executorService.submit({
             Connection connection
             try {
-                connection = dataSource.connection
+                connection = cayenneService.dataSource.connection
                 PreparedStatement stmt = connection.prepareStatement(INSERT_AUDIT_PATTERN)
                 stmt.setTimestamp(1, created)
 
@@ -92,7 +91,7 @@ class AuditService {
 
     private String defaultMessage(AuditAction action, CayenneDataObject object) {
         return systemUserService.currentUser ?
-                action.displayName + " by " + systemUserService.currentUser.login + ": " + object.getSummaryDescription() :
+                action.displayName + " by " + systemUserService.currentUser.email + ": " + object.getSummaryDescription() :
                 action.displayName + ": " + object.getSummaryDescription()
     }
 

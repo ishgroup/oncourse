@@ -9,15 +9,15 @@ import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { bugsnagClient } from "../../../constants/Bugsnag";
 import LoginService from "../services/LoginService";
 import {
-  POST_AUTHENTICATION_REQUEST,
-  POST_AUTHENTICATION_FULFILLED,
+  CLEAR_LAST_LOCATION,
   FETCH_SUCCESS,
-  CLEAR_LAST_LOCATION
+  POST_AUTHENTICATION_FULFILLED,
+  POST_AUTHENTICATION_REQUEST
 } from "../../../common/actions";
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
 import history from "../../../constants/History";
 
-const request: EpicUtils.Request<any, any, {body: LoginRequest, host, port}> = {
+const request: EpicUtils.Request<any, {body: LoginRequest, host, port}> = {
   type: POST_AUTHENTICATION_REQUEST,
   getData: payload => LoginService.postLoginRequest(payload.body, payload.host, payload.port),
   processData: (data, state, { body }) => {

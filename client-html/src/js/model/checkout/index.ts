@@ -4,7 +4,7 @@
  */
 
 import {
-  ArticleProduct, CheckoutSaleRelation,
+  ArticleProduct, CheckoutPaymentPlan, CheckoutSaleRelation,
   Course,
   CourseClass,
   Discount,
@@ -40,6 +40,7 @@ export type CheckoutDiscount = Discount & VoucherProduct & {
   productId?: number;
   courseIds?: number[];
   redeemableById?: number;
+  statusValue?: string;
 }
 
 export interface CheckoutCourseClass extends CourseClass {
@@ -160,6 +161,7 @@ export interface CheckoutPaymentProcess {
 export interface CheckoutPayment {
   availablePaymentTypes?: PaymentMethod[];
   selectedPaymentType?: any;
+  paymentPlans?: CheckoutPaymentPlan[];
   isProcessing?: boolean;
   isFetchingDetails?: boolean;
   isSuccess?: boolean;

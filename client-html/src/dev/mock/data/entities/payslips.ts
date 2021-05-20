@@ -1,9 +1,7 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockPayslips() {
-  this.getPayslips = () => {
-    return this.payslips;
-  };
+  this.getPayslips = () => this.payslips;
 
   this.getPayslip = id => {
     const row = this.payslips.rows.find(row => row.id == id);
@@ -19,21 +17,24 @@ export function mockPayslips() {
           dateFor: "2013-04-29",
           description: "Reimbursement of Prep Printing Costs",
           quantity: 1,
-          value: 50
+          value: 50,
+          deferred: true
         },
         {
           id: 2,
           dateFor: "2013-04-29",
           description: "Reimbursement of Internet Costs",
           quantity: 1,
-          value: 50
+          value: 50,
+          deferred: true
         },
         {
           id: 3,
           dateFor: "2015-08-19",
           description: "Cert IV in Project Management",
           quantity: 1,
-          value: 30
+          value: 30,
+          deferred: true
         }
       ],
       privateNotes: null,
@@ -59,7 +60,7 @@ export function mockPayslips() {
   };
 
   this.removePayslip = id => {
-    this.payslips = this.payslips.rows.filter(a => a.id !== id);
+    this.payslips = removeItemByEntity(this.payslips, id);
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -73,56 +74,34 @@ export function mockPayslips() {
     values: [l.tutorFullName, l.refNumber, l.createdOn, l.status]
   }));
 
-  const columns = [
-    {
-      title: "Name",
-      attribute: "contact.fullName",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: ["contact.lastName", "contact.firstName", "contact.middleName"]
-    },
-    {
-      title: "Payroll reference number",
-      attribute: "contact.tutor.payrollRef",
-      sortable: false,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Created",
-      attribute: "createdOn",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Status",
-      attribute: "status",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
+  return getEntityResponse({
+    entity: "Payslip",
+    rows,
+    columns: [
+      {
+        title: "Name",
+        attribute: "contact.fullName",
+        sortable: true,
+        sortFields: ["contact.lastName", "contact.firstName", "contact.middleName"]
+      },
+      {
+        title: "Payroll reference number",
+        attribute: "contact.tutor.payrollRef"
+      },
+      {
+        title: "Created",
+        attribute: "createdOn",
+        sortable: true,
+        type: "Datetime"
+      },
+      {
+        title: "Status",
+        attribute: "status",
+        sortable: true
+      }
+    ],
+    res: {
+      sort: [{ attribute: "createdOn", ascending: true, complexAttribute: [] }]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Payslip";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = "";
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [{ attribute: "createdOn", ascending: true, complexAttribute: [] }];
-
-  return response;
+  });
 }

@@ -1,0 +1,26 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified
+  name:
+    type: string
+    description: Grading type name
+  minValue:
+    type: number
+  maxValue:
+    type: number
+  entryType:
+    $ref: '../enum/GradingEntryType.yaml'
+  gradingItems:
+    type: array
+    items:
+      $ref: './GradingItem.yaml'

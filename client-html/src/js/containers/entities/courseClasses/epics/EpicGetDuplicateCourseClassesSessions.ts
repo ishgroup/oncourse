@@ -1,14 +1,12 @@
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_DUPLICATE_COURSE_CLASSES_SESSIONS, setDuplicateCourseClassesSessions } from "../actions";
-import { State } from "../../../../reducers/state";
 import TimetableService from "../../../timetable/services/TimetableService";
 import { TimetableSession } from "../../../../model/timetable";
 import EntityService from "../../../../common/services/EntityService";
 
 const request: EpicUtils.Request<
   { sessions: TimetableSession[]; from: Date; hasZeroWages?: boolean },
-  State,
   string[]
 > = {
   type: GET_DUPLICATE_COURSE_CLASSES_SESSIONS,

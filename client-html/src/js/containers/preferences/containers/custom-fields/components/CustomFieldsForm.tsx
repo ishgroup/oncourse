@@ -1,16 +1,19 @@
 import * as React from "react";
 import ClassNames from "clsx";
+import { withRouter } from "react-router";
 import Grid from "@material-ui/core/Grid";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 import { withStyles, createStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import {
- FieldArray, reduxForm, initialize, SubmissionError, arrayRemove, change
+  Form, FieldArray, reduxForm, SubmissionError, arrayRemove, change, initialize
 } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import isEqual from "lodash.isequal";
 import Fab from "@material-ui/core/Fab";
-import uniqid from "uniqid";
+
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -21,6 +24,11 @@ import CustomFieldsDeleteDialog from "./CustomFieldsDeleteDialog";
 import CustomFieldsRenderer from "./CustomFieldsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { getCustomFields } from "../../../actions";
+import { Fetch } from "../../../../../model/common/Fetch";
+import uniqid from "../../../../../common/utils/uniqid";
+import { State } from "../../../../../reducers/state";
+import { setNextLocation } from "../../../../../common/actions";
 
 const manualLink = getManualLink("generalPrefs_customFields");
 
@@ -44,13 +52,17 @@ interface Props {
   customFields: CustomFieldType[];
   created: Date;
   modified: Date;
+  fetch: Fetch
   dispatch: any;
   handleSubmit: any;
   dirty: boolean;
   invalid: boolean;
+  form: string;
   onDelete: (id: string) => void;
   onUpdate: (customFields: CustomFieldType[]) => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  history?: any,
+  nextLocation?: string,
+  setNextLocation?: (nextLocation: string) => void,
 }
 
 class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
@@ -66,17 +78,17 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     super(props);
     this.state = { fieldToDelete: null };
 
-    props.dispatch(initialize("CustomFieldsForm", { types: JSON.parse(JSON.stringify(props.customFields)) }));
+    props.dispatch(initialize("CustomFieldsForm", { "types": props.customFields }));
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.isPending) {
-      return;
+  componentDidUpdate() {
+    const { fetch } = this.props;
+
+    if (this.isPending && fetch && fetch.success === false && this.rejectPromise) {
+      this.rejectPromise(fetch.formError);
     }
-    if (nextProps.fetch && nextProps.fetch.success === false) {
-      this.rejectPromise(nextProps.fetch.formError);
-    }
-    if (nextProps.fetch && nextProps.fetch.success) {
+
+    if (this.isPending && fetch && fetch.success && this.resolvePromise) {
       this.resolvePromise();
       this.isPending = false;
     }
@@ -107,9 +119,15 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
-        this.props.dispatch(
-          initialize("CustomFieldsForm", { types: JSON.parse(JSON.stringify(this.props.customFields)) })
-        );
+        const {
+          nextLocation, history, setNextLocation, data
+        } = this.props;
+
+        this.props.dispatch(initialize("CustomFieldsForm", data));
+        this.props.dispatch(getCustomFields());
+
+        nextLocation && history.push(nextLocation);
+        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -154,40 +172,25 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
 
   onClickDelete = (item, index) => {
     const onConfirm = () => {
-      this.isPending = true;
-
-      return new Promise((resolve, reject) => {
-        this.resolvePromise = resolve;
-        this.rejectPromise = reject;
-
-        if (item.id) {
-          this.props.onDelete(item.id);
-        } else {
-          this.props.dispatch(arrayRemove("CustomFieldsForm", "types", index));
-          this.resolvePromise(true);
-        }
-      })
-        .then(clientSideDelete => {
-          if (!clientSideDelete) {
-            this.props.dispatch(
-              initialize("CustomFieldsForm", { types: JSON.parse(JSON.stringify(this.props.customFields)) })
-            );
-          }
-        })
-        .catch(() => {
-          this.isPending = false;
-        });
+      if (item.id) {
+        this.props.onDelete(item.id);
+      } else {
+        this.props.dispatch(arrayRemove("CustomFieldsForm", "types", index));
+      }
     };
+
+    if (!item.id) {
+      onConfirm();
+      return;
+    }
 
     this.setFieldToDelete(item);
     this.onDeleteConfirm = onConfirm;
-
-    // this.props.openConfirm(onConfirm, "This item will be removed from fields list");
   };
 
   render() {
     const {
-      classes, handleSubmit, data, dirty, dispatch, created, modified, invalid
+      classes, handleSubmit, data, dirty, dispatch, created, modified, invalid, form
     } = this.props;
 
     const { fieldToDelete } = this.state;
@@ -195,8 +198,8 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     return (
       <>
         <CustomFieldsDeleteDialog setFieldToDelete={this.setFieldToDelete} item={fieldToDelete} onConfirm={this.onDeleteConfirm} />
-        <form className={classes.container} noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
-          <RouteChangeConfirm when={dirty} />
+        <Form className={classes.container} onSubmit={handleSubmit(this.onSave)} noValidate autoComplete="off">
+          <RouteChangeConfirm form={form} when={dirty} />
           <CustomAppBar>
             <Grid container>
               <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
@@ -205,8 +208,8 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
                   size="small"
                   color="primary"
                   classes={{
-                    sizeSmall: "appBarFab"
-                  }}
+                  sizeSmall: "appBarFab"
+                }}
                   onClick={() => this.onAddNew()}
                 >
                   <AddIcon />
@@ -218,13 +221,13 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
                 <div className="flex-fill" />
 
                 {data && (
-                  <AppBarHelpMenu
-                    created={created}
-                    modified={modified}
-                    auditsUrl={`audit?search=~"CustomFieldType" and entityId in (${idsToString(data.types)})`}
-                    manualUrl={manualLink}
-                  />
-                )}
+                <AppBarHelpMenu
+                  created={created}
+                  modified={modified}
+                  auditsUrl={`audit?search=~"CustomFieldType" and entityId in (${idsToString(data.types)})`}
+                  manualUrl={manualLink}
+                />
+              )}
 
                 <FormSubmitButton
                   disabled={!dirty}
@@ -237,25 +240,33 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
           <Grid container className={classes.marginTop}>
             <Grid item lg={10}>
               {data && data.types && (
-                <FieldArray
-                  name="types"
-                  component={CustomFieldsRenderer}
-                  dispatch={dispatch}
-                  onDelete={this.onClickDelete}
-                  classes={classes}
-                />
-              )}
+              <FieldArray
+                name="types"
+                component={CustomFieldsRenderer}
+                dispatch={dispatch}
+                onDelete={this.onClickDelete}
+                classes={classes}
+              />
+            )}
             </Grid>
           </Grid>
-        </form>
+        </Form>
       </>
-    );
+);
   }
 }
+
+const mapStateToProps = (state: State) => ({
+  nextLocation: state.nextLocation
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+});
 
 const CustomFieldsForm = reduxForm({
   onSubmitFail,
   form: "CustomFieldsForm"
-})(withStyles(theme => ({ ...formCommonStyles(theme), ...styles() }))(CustomFieldsBaseForm) as any);
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(theme => ({ ...formCommonStyles(theme), ...styles() }))(withRouter(CustomFieldsBaseForm) as any)));
 
 export default CustomFieldsForm;

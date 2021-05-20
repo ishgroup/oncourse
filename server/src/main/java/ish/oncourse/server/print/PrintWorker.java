@@ -17,6 +17,7 @@ import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Document;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.cayenne.ReportOverlay;
+import ish.oncourse.server.document.DocumentService;
 import ish.oncourse.server.report.PdfUtil;
 import ish.persistence.CommonPreferenceController;
 import ish.persistence.Preferences;
@@ -25,7 +26,7 @@ import ish.print.PrintRequest;
 import ish.print.PrintResult;
 import ish.print.PrintResult.ResultType;
 import ish.print.transformations.PrintTransformation;
-import ish.s3.S3Service;
+import ish.s3.AmazonS3Service;
 import ish.util.EntityUtil;
 import ish.util.MapsUtil;
 import net.sf.jasperreports.engine.*;
@@ -59,7 +60,7 @@ public class PrintWorker implements Runnable {
 
 	private UID uid;
 	private ICayenneService cayenneService;
-	private PreferenceController prefController;
+	private DocumentService documentService;
 	private PrintRequest printRequest;
 
 	private Map<String, JasperReport> compiledReports = new LinkedHashMap<>();
@@ -76,11 +77,11 @@ public class PrintWorker implements Runnable {
 
 	private String reportName;
 
-	public PrintWorker(PrintRequest printRequest, ICayenneService cayenneService, PreferenceController prefController) {
+	public PrintWorker(PrintRequest printRequest, ICayenneService cayenneService, DocumentService documentService) {
 		this.uid = printRequest.getUID();
 		this.printRequest = printRequest;
 		this.cayenneService = cayenneService;
-		this.prefController = prefController;
+		this.documentService = documentService;
 
 		progress = 0d;
 		result = ResultType.IN_PROGRESS;
@@ -533,10 +534,10 @@ public class PrintWorker implements Runnable {
 					} else {
 						imageData = document.getCurrentVersion().getAttachmentData().getContent();
 					}
-				} else if (prefController.isUsingExternalStorage()) {
-					var s3Service = new S3Service(prefController);
+				} else if (documentService.isUsingExternalStorage()) {
+					var s3Service = new AmazonS3Service(documentService);
 					try {
-						var stringUrl = s3Service.getFileUrl(document.getFileUUID(), document.getWebVisibility(), document.getCurrentVersion().getVersionId());
+						var stringUrl = s3Service.getFileUrl(document.getFileUUID(), document.getCurrentVersion().getVersionId(), document.getWebVisibility());
 						var url = new URL(stringUrl);
 						imageData = IOUtils.toByteArray(url.openStream());
 					} catch (IOException e) {

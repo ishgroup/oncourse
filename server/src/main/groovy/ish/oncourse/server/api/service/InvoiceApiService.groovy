@@ -13,6 +13,10 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import ish.common.types.ConfirmationStatus
+import ish.oncourse.server.api.dao.DiscountDao
+import ish.oncourse.server.cayenne.Discount
+import ish.oncourse.server.cayenne.InvoiceLineDiscount
+
 import static ish.common.types.PaymentSource.SOURCE_ONCOURSE
 import ish.common.types.PaymentStatus
 import ish.math.Money
@@ -82,6 +86,9 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
     private ContactDao contactDao
 
     @Inject
+    private DiscountDao discountDao
+
+    @Inject
     private InvoiceDueDateDao invoiceDueDateDao
 
     @Inject
@@ -133,7 +140,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
             invoiceDTO.paymentPlans.addAll(invoice.paymentOutLines.collect { toRestPaymentPlan(it) }.sort { it.date })
 
             invoiceDTO.source = invoice.source.displayName
-            invoiceDTO.createdByUser = invoice.createdByUser?.login
+            invoiceDTO.createdByUser = invoice.createdByUser?.email
             invoiceDTO.sendEmail = invoice.confirmationStatus == ConfirmationStatus.NOT_SENT
             invoiceDTO.createdOn = dateToTimeValue(invoice.createdOn)
             invoiceDTO.modifiedOn = dateToTimeValue(invoice.modifiedOn)
@@ -242,16 +249,16 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
                         validator.throwClientErrorException(id, "invoiceLines[$idx].taxId", "Tax with id=$iil.taxId not found.")
                     }
 
-                    if (iil.cosAccountId && !accountDao.getById(context, iil.cosAccountId)) {
-                        validator.throwClientErrorException(id, "invoiceLines[$idx].cosAccountId", "COS account with id=$iil.cosAccountId not found.")
+                    if (iil.discountId && !discountDao.getById(context, iil.discountId)) {
+                        validator.throwClientErrorException(id, "invoiceLines[$idx].discountId", "Discount with name=$iil.discountName not found.")
                     }
 
                     if (iil.courseClassId && !courseClassDao.getById(context, iil.courseClassId)) {
-                        validator.throwClientErrorException(id, "invoiceLines[$idx].courseClassId", "COS account with id=$iil.courseClassId not found.")
+                        validator.throwClientErrorException(id, "invoiceLines[$idx].courseClassId", "Class with id=$iil.courseClassId not found.")
                     }
 
                     if (iil.enrolmentId && !enrolmentDao.getById(context, iil.enrolmentId)) {
-                        validator.throwClientErrorException(id, "invoiceLines[$idx].enrolmentId", "COS account with id=$iil.enrolmentId not found.")
+                        validator.throwClientErrorException(id, "invoiceLines[$idx].enrolmentId", "Enrolment with id=$iil.enrolmentId not found.")
                     }
                 }
             }
@@ -308,8 +315,14 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
             iLine.quantity = il.quantity
             iLine.unit = trimToNull(il.unit)
             iLine.account = accountDao.getById(cayenneModel.context, il.incomeAccountId)
-            if (il.cosAccountId) {
-                iLine.cosAccount = accountDao.getById(cayenneModel.context, il.cosAccountId)
+            if (il.discountId) {
+                Discount discount = discountDao.getById(cayenneModel.context, il.discountId)
+                iLine.cosAccount = discount.cosAccount
+                cayenneModel.context.newObject(InvoiceLineDiscount).with { ild ->
+                    ild.discount = discount
+                    ild.invoiceLine = iLine
+                    ild
+                }
             }
             iLine.priceEachExTax = toMoneyValue(il.priceEachExTax)
             iLine.discountEachExTax = toMoneyValue(il.discountEachExTax)

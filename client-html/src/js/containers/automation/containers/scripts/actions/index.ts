@@ -5,11 +5,8 @@
 
 import { ExecuteScriptRequest, OutputType, Script } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
-import { ScriptComponent } from "../../../../../model/scripts";
+import { ScriptComponent, ScriptViewMode } from "../../../../../model/scripts";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
-
-export const UPDATE_SCRIPT_LIST = _toRequestType("update/scripts");
-export const UPDATE_SCRIPT_LIST_FULFILLED = FULFILLED(UPDATE_SCRIPT_LIST);
 
 export const GET_SCRIPTS_LIST = _toRequestType("get/scripts/list");
 export const GET_SCRIPTS_LIST_FULFILLED = FULFILLED(GET_SCRIPTS_LIST);
@@ -42,11 +39,6 @@ export const getScriptsList = (nameToSelect?: string, selectFirst?: boolean) => 
   payload: { nameToSelect, selectFirst }
 });
 
-export const updateScriptList = (entity, sort, columns) => ({
-  type: UPDATE_SCRIPT_LIST,
-  payload: { entity, sort, columns }
-});
-
 export const runScript = (executeScriptRequest: ExecuteScriptRequest, outputType: OutputType, name: string ) => ({
   type: POST_SCRIPT_RUN_REQUEST,
   payload: { executeScriptRequest, outputType, name }
@@ -67,14 +59,16 @@ export const getScriptItem = (id: number) => ({
   payload: id
 });
 
-export const saveScriptItem = (id: number, script: Script, method?: ApiMethods) => ({
+export const saveScriptItem = (id: number, script: Script, method: ApiMethods, viewMode: ScriptViewMode) => ({
   type: UPDATE_SCRIPT_ENTITY_REQUEST,
-  payload: { id, script, method }
+  payload: {
+   id, script, method, viewMode
+  }
 });
 
-export const createScriptItem = (script: Script) => ({
+export const createScriptItem = (script: Script, viewMode: ScriptViewMode) => ({
   type: POST_SCRIPT_ENTITY_REQUEST,
-  payload: { script }
+  payload: { script, viewMode }
 });
 
 export const deleteScriptItem = (id: number) => ({

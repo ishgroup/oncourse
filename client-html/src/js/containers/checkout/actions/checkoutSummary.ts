@@ -4,7 +4,11 @@
  */
 
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
-import { getCommonPlainRecords, setCommonPlainSearch } from "../../../common/actions/CommonPlainRecordsActions";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../common/actions/CommonPlainRecordsActions";
 import {
  CheckoutDiscount, CheckoutItem, CheckoutSummary, CheckoutSummaryListItem
 } from "../../../model/checkout";
@@ -17,9 +21,12 @@ export const CHECKOUT_UPDATE_PROMO = "checkout/update/promo";
 export const CHECKOUT_REMOVE_VOUCHER_PROMO = "checkout/remove/voucher/promocode";
 export const CHECKOUT_REMOVE_PROMOTIONAL_CODE = "checkout/remove/promotional/code";
 
+export const CHECKOUT_GET_PREVIOUS_CREDIT = _toRequestType("checkout/get/previous/credit");
 export const CHECKOUT_SET_PREVIOUS_CREDIT = "checkout/set/previous/credit";
+
 export const CHECKOUT_GET_PREVIOUS_OWING = _toRequestType("checkout/get/previous/owing");
 export const CHECKOUT_SET_PREVIOUS_OWING = "checkout/set/previous/owing";
+
 export const CHECKOUT_TOGGLE_PREVIOUS_INVOICES = "checkout/toggle/previous/invoices";
 export const CHECKOUT_UNCHECK_ALL_PREVIOUS_INVOICES = "checkout/uncheck/all/previous/invoices";
 
@@ -152,15 +159,13 @@ export const checkoutGetPreviousOwing = id => ({
   payload: id
 });
 
+export const checkoutGetPreviousCredit = id => ({
+  type: CHECKOUT_GET_PREVIOUS_CREDIT,
+  payload: id
+});
+
 export const checkoutUpdatePromo = ({ discountItem, vouchersItem }: { discountItem?: CheckoutDiscount, vouchersItem?: CheckoutDiscount }) => ({
   type: CHECKOUT_UPDATE_PROMO,
   payload: { discountItem, vouchersItem }
 });
 
-export const setPlainPreviousCreditSearch = id => setCommonPlainSearch(
-  "Invoice",
-  `contact.id is ${id} and amountOwing<0`
-);
-
-export const getPlainPreviousCreditRecords = () =>
-  getCommonPlainRecords("Invoice", 0, "invoiceNumber,amountOwing,invoiceDate,dateDue");

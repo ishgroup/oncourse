@@ -26,10 +26,12 @@ import { EpicFundingContracts } from "../containers/funding-contracts/epics";
 import { EpicTutorRoles } from "../containers/tutor-roles/epics";
 import { EpicGetLanguages } from "./EpicGetLanguages";
 import { EpicGetUSISortwareId } from "./EpicGetUSISortwareId";
+import { EpicGradings } from "../containers/grading/epics";
 
 export const EpicPreferences = combineEpics(
   EpicDataCollectionRules,
   EpicDataCollectionForms,
+  EpicGradings,
   EpicGetPreferences,
   EpicSavePreferences,
   EpicGetTimezones,

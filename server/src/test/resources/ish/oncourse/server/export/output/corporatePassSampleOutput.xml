@@ -1,27 +1,27 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
-    <CorporatePass id='1'>
-        <modifiedOn />
-        <createdOn />
-        <expiryDate />
-        <invoiceEmail />
-        <contactFirstName>Test</contactFirstName>
-        <contactLastName>Student</contactLastName>
-    </CorporatePass>
-    <CorporatePass id='2'>
-        <modifiedOn />
-        <createdOn />
-        <expiryDate />
-        <invoiceEmail />
-        <contactFirstName>Test</contactFirstName>
-        <contactLastName>Student</contactLastName>
-    </CorporatePass>
-    <CorporatePass id='3'>
-        <modifiedOn />
-        <createdOn />
-        <expiryDate />
-        <invoiceEmail />
-        <contactFirstName>Test</contactFirstName>
-        <contactLastName>Tutor</contactLastName>
-    </CorporatePass>
+  <CorporatePass id='1'>
+    <modifiedOn />
+    <createdOn />
+    <expiryDate />
+    <invoiceEmail />
+    <contactFirstName>Test</contactFirstName>
+    <contactLastName>Student</contactLastName>
+  </CorporatePass>
+  <CorporatePass id='2'>
+    <modifiedOn />
+    <createdOn />
+    <expiryDate />
+    <invoiceEmail />
+    <contactFirstName>Test</contactFirstName>
+    <contactLastName>Student</contactLastName>
+  </CorporatePass>
+  <CorporatePass id='3'>
+    <modifiedOn />
+    <createdOn />
+    <expiryDate />
+    <invoiceEmail />
+    <contactFirstName>Test</contactFirstName>
+    <contactLastName>Tutor</contactLastName>
+  </CorporatePass>
 </data>

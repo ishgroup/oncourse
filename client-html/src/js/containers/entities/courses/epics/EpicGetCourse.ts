@@ -15,9 +15,8 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import { getEntityItemById } from "../../common/entityItemsService";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import { removeActionsFromQueue } from "../../../../common/actions";
-import { State } from "../../../../reducers/state";
 
-const request: EpicUtils.Request<any, State, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: GET_COURSE,
   hideLoadIndicator: true,
   getData: id => getEntityItemById("Course", id),

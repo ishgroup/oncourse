@@ -1,5 +1,10 @@
 import { IAction } from "../../../common/actions/IshAction";
-import { CHECK_PASSWORD_FULFILLED, POST_UPDATE_PASSWORD_FULFILLED, SET_LOGIN_STATE } from "../../../common/actions";
+import {
+  CHECK_PASSWORD_FULFILLED,
+  GET_EMAIL_BY_TOKEN_FULFILLED,
+  POST_UPDATE_PASSWORD_FULFILLED,
+  SET_LOGIN_STATE
+} from "../../../common/actions";
 import { LoginState } from "./state";
 
 const clearState: LoginState = {
@@ -39,6 +44,13 @@ export const loginReducer = (state: LoginState = {}, action: IAction<any>): Logi
       }
 
       return state;
+    }
+
+    case GET_EMAIL_BY_TOKEN_FULFILLED: {
+      return {
+        ...state,
+        ...action.payload,
+      };
     }
 
     default:

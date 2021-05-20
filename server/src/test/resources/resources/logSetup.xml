@@ -1,94 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="INFO">
 
+  <!--
+  LOG4J Patterns:
+
+  %d{HH:mm:ss.SSS} - date
+  [%t] - thread
+  %-5p - log level
+  %c - class name
+  %L - line
+  %msg%n - log message
+  %x - nested diagnostic context
+  %X - mapped diagnostic context
+  %n line separator
+
+  %d{DATE} - absolute date
+  %C - fully qualified class name
+  %M - method name
+  %ex(%exception|%throwable) - this key needs to print stackTrace with default OS separator.
+  if this key loses, stackTrace will print with '\n' separator (log4j-core-2.0.2.jar)
+  -->
+
+  <!-- local variables -->
+  <Properties>
+
+    <!-- Log Level filter which user can change from Angel Server -->
+    <Property name="UserLogLevel">WARN</Property>
+
+    <!-- paths to logs file  -->
+    <Property name="FileName">logs/onCourseServer.log</Property>
+    <Property name="FilePackagePattern">logs/onCourseServer-%d{yyyy-MM-dd}-%i.log.gz</Property>
+
+    <!-- patterns to output logs-->
+    <Property name="ConsoleOutputPattern">%d{HH:mm:ss.SSS} [%t] %-5p %c:%L - %m %X%x%n%ex</Property>
+    <Property name="FileOutputPattern">%d{DATE} [%t] %-5p (%C:%M:%L) - %m %X%x%n%ex</Property>
+  </Properties>
+
+  <Appenders>
+
+    <Console name="STDOUT" target="SYSTEM_OUT">
+
+      <!-- pattern to output console -->
+      <PatternLayout pattern="${ConsoleOutputPattern}"/>
+    </Console>
+
+    <RollingFile name="FILE" fileName="${FileName}" filePattern="${FilePackagePattern}">
+      <PatternLayout>
+        <!-- pattern to output log file-->
+        <Pattern>${FileOutputPattern}</Pattern>
+      </PatternLayout>
+      <Policies>
+        <OnStartupTriggeringPolicy/>
+        <TimeBasedTriggeringPolicy/>
+        <SizeBasedTriggeringPolicy size="100MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="20"/>
+    </RollingFile>
+
+  </Appenders>
+
+  <Loggers>
+    <!-- This level should be less then levels inside this -->
+    <Root level="${UserLogLevel}">
+      <!--You can specify level for each appender-->
+      <AppenderRef ref="STDOUT"/>
+      <AppenderRef ref="FILE"/>
+    </Root>
+    <logger name="ish.oncourse.server.report.ReportService" level="ERROR"/>
     <!--
-    LOG4J Patterns:
+     Add a logger line below in order to get more detailed logs for one part of the system.
+     For example, to see detailed logs of the message processing engine add the line:
 
-    %d{HH:mm:ss.SSS} - date
-    [%t] - thread
-    %-5p - log level
-    %c - class name
-    %L - line
-    %msg%n - log message
-    %x - nested diagnostic context
-    %X - mapped diagnostic context
-    %n line separator
+     <Logger name="ish.oncourse.server.messaging" level="debug"/>
 
-    %d{DATE} - absolute date
-    %C - fully qualified class name
-    %M - method name
-    %ex(%exception|%throwable) - this key needs to print stackTrace with default OS separator.
-    if this key loses, stackTrace will print with '\n' separator (log4j-core-2.0.2.jar)
-    -->
+     Some other names you might want to use:
 
-    <!-- local variables -->
-    <Properties>
+     ish.oncourse.server.CreditCardAndEnrollmentProcessor  (services behind Quick Enrol)
+     ish.oncourse.server.services.DataPopulationService  (startup database upgrades)
+     ish.oncourse.server.CayenneServlet  (the connector between the client and server)
+     org.apache.cayenne  (the entire data model layer)
+     org.apache.derby  (the built-in database)
+     ish.oncourse.server.DatabaseConnector  (requests sent from the application to the database)
 
-        <!-- Log Level filter which user can change from Angel Server -->
-        <Property name="UserLogLevel">WARN</Property>
+     Possible log levels to try:
+     * warn (the default)
+     * info
+     * debug
+     * trace
 
-        <!-- paths to logs file  -->
-        <Property name="FileName">logs/onCourseServer.log</Property>
-        <Property name="FilePackagePattern">logs/onCourseServer-%d{yyyy-MM-dd}-%i.log.gz</Property>
-
-        <!-- patterns to output logs-->
-        <Property name="ConsoleOutputPattern">%d{HH:mm:ss.SSS} [%t] %-5p %c:%L - %m %X%x%n%ex</Property>
-        <Property name="FileOutputPattern">%d{DATE} [%t] %-5p (%C:%M:%L) - %m %X%x%n%ex</Property>
-    </Properties>
-
-    <Appenders>
-
-        <Console name="STDOUT" target="SYSTEM_OUT">
-
-            <!-- pattern to output console -->
-            <PatternLayout pattern="${ConsoleOutputPattern}"/>
-        </Console>
-
-        <RollingFile name="FILE" fileName="${FileName}" filePattern="${FilePackagePattern}">
-            <PatternLayout>
-                <!-- pattern to output log file-->
-                <Pattern>${FileOutputPattern}</Pattern>
-            </PatternLayout>
-            <Policies>
-                <OnStartupTriggeringPolicy />
-                <TimeBasedTriggeringPolicy />
-                <SizeBasedTriggeringPolicy size="100MB"/>
-            </Policies>
-            <DefaultRolloverStrategy max="20"/>
-        </RollingFile>
-
-    </Appenders>
-
-    <Loggers>
-        <!-- This level should be less then levels inside this -->
-        <Root level="${UserLogLevel}">
-            <!--You can specify level for each appender-->
-            <AppenderRef ref="STDOUT"/>
-            <AppenderRef ref="FILE"/>
-        </Root>
-        <logger name="ish.oncourse.server.report.ReportService" level="ERROR"/>
-        <!--
-         Add a logger line below in order to get more detailed logs for one part of the system.
-         For example, to see detailed logs of the message processing engine add the line:
-
-         <Logger name="ish.oncourse.server.messaging" level="debug"/>
-
-         Some other names you might want to use:
-
-         ish.oncourse.server.CreditCardAndEnrollmentProcessor  (services behind Quick Enrol)
-         ish.oncourse.server.services.DataPopulationService  (startup database upgrades)
-         ish.oncourse.server.CayenneServlet  (the connector between the client and server)
-         org.apache.cayenne  (the entire data model layer)
-         org.apache.derby  (the built-in database)
-         ish.oncourse.server.DatabaseConnector  (requests sent from the application to the database)
-
-         Possible log levels to try:
-         * warn (the default)
-         * info
-         * debug
-         * trace
-
-         -->
-    </Loggers>
+     -->
+  </Loggers>
 
 </Configuration>

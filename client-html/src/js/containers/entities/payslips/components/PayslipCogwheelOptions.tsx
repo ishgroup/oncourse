@@ -10,6 +10,7 @@ import { Dispatch } from "redux";
 import { PayslipStatus } from "@api/model";
 import { executePayslip } from "../actions";
 import PayslipGenerateCogwheelAction from "./PayslipGenerateCogwheelAction";
+import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 
 class PayslipCogwheelOptions extends React.PureComponent<any, any> {
   executePayslip = e => {
@@ -22,17 +23,28 @@ class PayslipCogwheelOptions extends React.PureComponent<any, any> {
   };
 
   render() {
-    const { selection, menuItemClass, closeMenu, showConfirm } = this.props;
+    const {
+ selection, menuItemClass, closeMenu, showConfirm 
+} = this.props;
 
     const hoSelectedOrNew = selection.length === 0 || selection[0] === "NEW";
 
     return (
       <>
+        <BulkEditCogwheelOption {...this.props} />
         <MenuItem disabled={hoSelectedOrNew} className={menuItemClass} role="Completed" onClick={this.executePayslip}>
-          Mark {selection.length} tutor pay as completed
+          Mark 
+          {' '}
+          {selection.length}
+          {' '}
+          tutor pay as completed
         </MenuItem>
         <MenuItem disabled={hoSelectedOrNew} className={menuItemClass} role="Approved" onClick={this.executePayslip}>
-          Mark {selection.length} tutor pay as approved
+          Mark 
+          {' '}
+          {selection.length}
+          {' '}
+          tutor pay as approved
         </MenuItem>
         <MenuItem
           disabled={hoSelectedOrNew}
@@ -40,7 +52,11 @@ class PayslipCogwheelOptions extends React.PureComponent<any, any> {
           role="Paid/Exported"
           onClick={this.executePayslip}
         >
-          Finalise {selection.length} tutor pay
+          Finalise 
+          {' '}
+          {selection.length}
+          {' '}
+          tutor pay
         </MenuItem>
 
         <PayslipGenerateCogwheelAction

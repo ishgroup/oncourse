@@ -32,7 +32,7 @@ const items = [
       <CorporatePassCommon
         path="corporatePassDiscounts"
         title="LIMIT WITH CORPORATE PASS"
-        titleCaption="Corporate Pass which can be used to purchase this membership"
+        titleCaption="This discount is only be available with the following Corporate Passes"
         {...props}
       />
     )

@@ -114,8 +114,8 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
         } else if (ClassCostFlowType.DISCOUNT == cayenneModel.flowType) {
             ccDto.courseClassDiscount = new CourseClassDiscountDTO()
             ccDto.courseClassDiscount.forecast = cayenneModel.discountCourseClass.predictedStudentsPercentage
-            ccDto.courseClassDiscount.setDiscountOverride(cayenneModel.discountCourseClass.discountDollar?.toBigDecimal())
-            ccDto.courseClassDiscount.setDiscount(DiscountFunctions.toRestDiscount(cayenneModel.discountCourseClass.discount, false))
+            ccDto.courseClassDiscount.discountOverride = cayenneModel.discountCourseClass.discountDollar?.toBigDecimal()
+            ccDto.courseClassDiscount.discount = DiscountFunctions.toRestDiscount(cayenneModel.discountCourseClass.discount, false)
         }
         ccDto
     }

@@ -15,8 +15,11 @@ import com.google.inject.Inject
 import com.google.inject.Provider
 import groovy.transform.CompileStatic
 import io.bootique.jetty.servlet.DefaultServletEnvironment
+import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.cayenne.ApiToken
+
 import static ish.oncourse.cayenne.SystemUserInterface.DEFAULT_ISH_USER
-import ish.oncourse.server.CayenneService
+
 import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
 import static ish.oncourse.server.api.servlet.AngelSessionDataStore.IS_LOGIN
 import ish.oncourse.server.cayenne.SystemUser
@@ -37,7 +40,7 @@ class SessionManager implements ISessionManager {
     private Provider<Server> serverProvider
 
     @Inject
-    private CayenneService cayenneService
+    private ICayenneService cayenneService
 
     @Inject
     DefaultServletEnvironment defaultServletEnvironment
@@ -48,6 +51,11 @@ class SessionManager implements ISessionManager {
 
     SystemUser getCurrentUser() {
         Request request = defaultServletEnvironment.request().orElse(null) as Request
+        Object token = request?.getAttribute(ApiFilter.AUTHORIZATION)
+        if (token) {
+            return (token as ApiToken).systemUser
+        }
+        
         Session session = request?.session as Session
         if (session) {
             return (SystemUser) session.getAttribute(USER_ATTRIBUTE)
@@ -85,7 +93,7 @@ class SessionManager implements ISessionManager {
         session.setAttribute(IS_LOGIN, true)
         session.setMaxInactiveInterval(timeoutSec)
 
-        logger.warn("User '$user.login' logged in from '$request.remoteAddr' via browser.")
+        logger.warn("User '${user.email?:user.login}' logged in from '$request.remoteAddr' via browser.")
     }
 
     void logout(HttpServletRequest request) {
@@ -113,7 +121,7 @@ class SessionManager implements ISessionManager {
             try {
                 SystemUser user = session.getAttribute(USER_ATTRIBUTE) as SystemUser
                 SESSION_ATTRIBUTES.remove(user.id)
-                logger.warn("User {} logged out.", user?.login)
+                logger.warn("User {} logged out.", user?.email?:user?.login)
 
             } catch (Exception e) {
                 logger.catching(e)
@@ -124,20 +132,6 @@ class SessionManager implements ISessionManager {
             session.invalidate()
             manager.invalidateAll(session.id)
         }
-    }
-
-
-    void setSessionAttribute(String key, Serializable value) {
-        SystemUser user = getCurrentUser()
-        SESSION_ATTRIBUTES[user.id] = [(key): value] as Map<String, Object>
-    }
-
-    Serializable getSessionAttribute(String key) {
-        SystemUser user = getCurrentUser()
-        if (SESSION_ATTRIBUTES[user.id]) {
-            return SESSION_ATTRIBUTES[user.id][key] as Serializable
-        }
-        return null
     }
 
 }

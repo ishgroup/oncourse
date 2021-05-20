@@ -12,7 +12,9 @@
 package ish.oncourse.server.api.dao
 
 import ish.oncourse.server.cayenne.Document
+import ish.oncourse.server.cayenne.DocumentVersion
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
 class DocumentDao implements CayenneLayer<Document> {
@@ -25,5 +27,19 @@ class DocumentDao implements CayenneLayer<Document> {
     Document getById(ObjectContext context, Long id) {
         SelectById.query(Document, id)
                 .selectOne(context)
+    }
+
+    static Document getByHash(ObjectContext context, String hash) {
+        ObjectSelect.query(Document)
+                .where(Document.VERSIONS.dot(DocumentVersion.HASH).eq(hash))
+                .selectFirst(context)
+    }
+
+    static Long getStoredDocumentsSize(ObjectContext context, Document document = null) {
+        ObjectSelect select = ObjectSelect.query(DocumentVersion)
+        if (document) {
+            select = select.where(DocumentVersion.DOCUMENT.eq(document))
+        }
+        return select.sum(DocumentVersion.BYTE_SIZE).selectOne(context)
     }
 }

@@ -82,7 +82,9 @@ const filterGroups: FilterGroup[] = [
 const findRelatedGroup: any = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Certificate and entityId" },
   { title: "Enrolments", list: "enrolment", expression: "outcomes.certificateOutcomes.certificate.id" },
-  { title: "Students", list: "contact", expression: "student.certificates.id" }
+  { title: "Students", list: "contact", expression: "student.certificates.id" },
+  { title: "Outcomes", list: "outcome", expression: "certificateOutcomes.certificate.id" }
+
 ];
 
 const manualLink = getManualLink("certification");

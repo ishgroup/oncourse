@@ -1,5 +1,6 @@
 import { ValidationError } from "@api/model";
 import { promiseReject, promiseResolve } from "../../MockAdapter";
+import { getParamsId } from "../../mockUtils";
 
 export function DataCollectionFormsApiMock() {
   this.returnError = false;
@@ -16,19 +17,7 @@ export function DataCollectionFormsApiMock() {
    * Update Data Collection Form with success or error
    * */
   this.api.onPut(new RegExp(`v1/datacollection/form/.+`)).reply(config => {
-    this.returnError = !this.returnError;
-
-    if (this.returnError) {
-      const errorObj: ValidationError = {
-        id: "test.form.1",
-        propertyName: "name",
-        errorMessage: "Name is invalid"
-      };
-
-      return promiseReject(config, errorObj);
-    }
-
-    const id = config.url.split("/")[3];
+    const id = getParamsId(config);
     const data = JSON.parse(config.data);
     this.db.updateCollectionForm(id, data);
     return promiseResolve(config, JSON.parse(JSON.stringify(this.db.dataCollectionForms)));
@@ -45,7 +34,7 @@ export function DataCollectionFormsApiMock() {
    * Delete Data Collection Form
    * */
   this.api.onDelete(new RegExp(`v1/datacollection/form/.+`)).reply(config => {
-    const id = config.url.split("/")[3];
+    const id = getParamsId(config);
     this.db.deleteCollectionForm(id);
     return promiseResolve(config, JSON.parse(JSON.stringify(this.db.dataCollectionForms)));
   });

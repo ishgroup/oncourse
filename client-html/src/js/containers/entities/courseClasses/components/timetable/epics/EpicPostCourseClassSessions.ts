@@ -4,13 +4,13 @@
  */
 
 import { Epic } from "redux-observable";
+import { Session } from "@api/model";
 import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { Session } from "@api/model";
 import { POST_COURSE_CLASS_SESSIONS } from "../actions";
 import CourseClassTimetableService from "../services/CourseClassTimetableService";
 
-const request: EpicUtils.Request<any, any, { classId: number; sessions: Session[] }> = {
+const request: EpicUtils.Request<any, { classId: number; sessions: Session[] }> = {
   type: POST_COURSE_CLASS_SESSIONS,
   hideLoadIndicator: true,
   getData: ({ classId, sessions }) =>

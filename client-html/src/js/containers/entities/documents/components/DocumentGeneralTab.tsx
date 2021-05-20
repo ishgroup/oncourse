@@ -9,8 +9,6 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import Avatar from "@material-ui/core/Avatar";
-import CardHeader from "@material-ui/core/CardHeader";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useCallback, useRef } from "react";
 import clsx from "clsx";
@@ -27,39 +25,34 @@ import {
   faCog
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
-import { arrayInsert, Field, } from "redux-form";
+import { arrayInsert, change, Field, } from "redux-form";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Collapse from "@material-ui/core/Collapse";
 import {
   ExpandMore,
-  OpenWith,
-  History
+  OpenWith
 } from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import { format } from "date-fns";
-import { Document, DocumentVisibility, DocumentVersion } from "@api/model";
+import { addDays, format } from "date-fns";
+import { Document, DocumentVersion } from "@api/model";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import FormField from "../../../../common/components/form/form-fields/FormField";
-import { FormSwitch } from "../../../../common/components/form/form-fields/Switch";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import SimpleTagList from "../../../../common/components/form/simpleTagListComponent/SimpleTagList";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
+import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
 import { getDocumentVersion, iconSwitcher } from "../../../../common/components/form/documents/components/utils";
-import { mapSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import DocumentShare from "../../../../common/components/form/documents/components/items/DocumentShare";
+import { showMessage } from "../../../../common/actions";
 
 library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile, faCog);
 
@@ -137,8 +130,6 @@ interface DocumentGeneralProps extends EditViewProps<Document> {
   hovered?: boolean;
 }
 
-const documentVisibility = () => Object.keys(DocumentVisibility).filter(val => isNaN(Number(val))).map(mapSelectItems);
-
 const validateTagList = (value, allValues, props) => {
   const { tags } = props;
   return validateTagsList(tags && tags.length > 0 ? tags : [], value, allValues, props);
@@ -176,6 +167,10 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     setMoreDetailcollapsed(!moreDetailcollapsed);
   };
 
+  const restoreDocument = () => {
+    dispatch(change(form, "removed", false));
+  };
+
   // const versionMenuOpen = e => {
   //   setVersionMenu(e.currentTarget);
   // };
@@ -202,7 +197,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
         setLoadingDocVersion(false);
       }).catch(error => {
         setLoadingDocVersion(false);
-        console.error(error);
+        dispatch(showMessage({ message: error.data.errorMessage, success: false }));
       });
     }
   }, [form]);
@@ -260,6 +255,10 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
 
           <Grid container className="p-3 relative">
             <Grid item xs={twoColumn ? 4 : 12}>
+              {Boolean(values.removed) && (
+              <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>PENDING DELETION</div>
+              )}
+
               <Paper className={clsx("relative cursor-pointer", classes.previewPaper)}>
                 {thumbnail ? (
                   <div
@@ -338,13 +337,20 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
               <Grid item xs={12}>
                 <Field name="description" label="Description" component={EditInPlaceField} multiline fullWidth />
               </Grid>
+              {Boolean(values.removed) && (
               <Grid item xs={12} className="pb-2">
-                <FormControlLabel
-                  className="switchWrapper"
-                  control={<Field name="removed" component={FormSwitch} color="primary" fullWidth />}
-                  label="Deleted"
-                />
+                <Typography variant="body2" className={clsx("d-flex align-items-baseline mb-2", classes.textInfo)}>
+                  <span>
+                    This document will be permanently deleted after
+                    { ' ' }
+                    { format(addDays(new Date(values.modifiedOn), 30), D_MMM_YYYY) }
+                  </span>
+                </Typography>
+                <Button variant="outlined" size="medium" color="secondary" onClick={restoreDocument}>
+                  RESTORE
+                </Button>
               </Grid>
+              )}
             </Grid>
 
             <Grid item xs={twoColumn ? 4 : 12} className="mb-3">
@@ -387,7 +393,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
               </Button>
             </Grid>
 
-            <Grid item xs={twoColumn ? 8 : 12} className="pt-2 pb-2">
+            <Grid item xs={twoColumn ? 8 : 12} className="pt-2 pb-2 saveButtonTableOffset">
               <DocumentShare
                 validUrl={validUrl}
                 dispatch={dispatch}

@@ -1,36 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Account id="100" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1" />
-	<Account id="200" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="100"/>
-	<Account id="300" accountCode="accEnrl" description="Test asset account" isEnabled="1" type="1" />
-	<Account id="400" accountCode="accDebt" description="Test income account" isEnabled="1" type="4" taxId="100"/>
-	<Account id="500" accountCode="accFees" description="Test fees account" isEnabled="1" type="2" />
-	<Account id="600" accountCode="accLiab" description="Test liability account" isEnabled="1" type="2"/>
-	
-	<PaymentMethod id="500" name="Zero" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="5"/>
-	
-	<Tax id="100" isGSTTaxType="1" payableToSupplierAccountId="200" receivableFromStudentAccountId="300" taxCode="GST" taxrate="0.1"/>	
-		
-	<AccountTransaction id="1000" accountId="100" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[before]" modifiedOn="[before]" transactionDate="[before]"/>
-	<AccountTransaction id="1100" accountId="200" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[before]" modifiedOn="[before]" transactionDate="[before]"/>
-	<AccountTransaction id="1200" accountId="300" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[before]" modifiedOn="[before]" transactionDate="[before]"/>
-	<AccountTransaction id="1300" accountId="400" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[before]" modifiedOn="[before]" transactionDate="[before]"/>
+  <Account id="100" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
+  <Account id="200" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="100"/>
+  <Account id="300" accountCode="accEnrl" description="Test asset account" isEnabled="1" type="1"/>
+  <Account id="400" accountCode="accDebt" description="Test income account" isEnabled="1" type="4" taxId="100"/>
+  <Account id="500" accountCode="accFees" description="Test fees account" isEnabled="1" type="2"/>
+  <Account id="600" accountCode="accLiab" description="Test liability account" isEnabled="1" type="2"/>
+
+  <PaymentMethod id="500" name="Zero" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="5"/>
+
+  <Tax id="100" isGSTTaxType="1" payableToSupplierAccountId="200" receivableFromStudentAccountId="300" taxCode="GST"
+       taxrate="0.1"/>
+
+  <AccountTransaction id="1000" accountId="100" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[before]"
+                      modifiedOn="[before]" transactionDate="[before]"/>
+  <AccountTransaction id="1100" accountId="200" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[before]"
+                      modifiedOn="[before]" transactionDate="[before]"/>
+  <AccountTransaction id="1200" accountId="300" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[before]"
+                      modifiedOn="[before]" transactionDate="[before]"/>
+  <AccountTransaction id="1300" accountId="400" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[before]"
+                      modifiedOn="[before]" transactionDate="[before]"/>
 
 
-	<AccountTransaction id="2000" accountId="100" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[within]" modifiedOn="[within]" transactionDate="[within]"/>
-	<AccountTransaction id="2100" accountId="200" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[within]" modifiedOn="[within]" transactionDate="[within]"/>
-	<AccountTransaction id="2200" accountId="300" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[within]" modifiedOn="[within]" transactionDate="[within]"/>
-	<AccountTransaction id="2300" accountId="400" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[within]" modifiedOn="[within]" transactionDate="[within]"/>
+  <AccountTransaction id="2000" accountId="100" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[within]"
+                      modifiedOn="[within]" transactionDate="[within]"/>
+  <AccountTransaction id="2100" accountId="200" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[within]"
+                      modifiedOn="[within]" transactionDate="[within]"/>
+  <AccountTransaction id="2200" accountId="300" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[within]"
+                      modifiedOn="[within]" transactionDate="[within]"/>
+  <AccountTransaction id="2300" accountId="400" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[within]"
+                      modifiedOn="[within]" transactionDate="[within]"/>
 
 
-	<AccountTransaction id="3000" accountId="100" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[after]" modifiedOn="[after]" transactionDate="[after]"/>
-	<AccountTransaction id="3100" accountId="200" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[after]" modifiedOn="[after]" transactionDate="[after]"/>
-	<AccountTransaction id="3200" accountId="300" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[after]" modifiedOn="[after]" transactionDate="[after]"/>
-	<AccountTransaction id="3300" accountId="400" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[after]" modifiedOn="[after]" transactionDate="[after]"/>
+  <AccountTransaction id="3000" accountId="100" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[after]"
+                      modifiedOn="[after]" transactionDate="[after]"/>
+  <AccountTransaction id="3100" accountId="200" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[after]"
+                      modifiedOn="[after]" transactionDate="[after]"/>
+  <AccountTransaction id="3200" accountId="300" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[after]"
+                      modifiedOn="[after]" transactionDate="[after]"/>
+  <AccountTransaction id="3300" accountId="400" amount="10.00" tableName="I" foreignRecordId="100" createdOn="[after]"
+                      modifiedOn="[after]" transactionDate="[after]"/>
 
-	<Site id="100" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0" localTimezone="Australia/Sydney"/>
+  <Site id="100" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0"
+        localTimezone="Australia/Sydney"/>
 
-    <SystemUser email="admin@mail.com" id="100" login="admin" firstName="admin" surname="admin" isActive="1" isAdmin="1" password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" defaultAdministrationCentreId="100" PASSWORDUPDATEREQUIRED="0"/>
-	
-    <Contact id="100" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00" deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000" workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW" uniqueCode="ST1UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
+  <SystemUser email="admin@mail.com" id="100" login="admin" firstName="admin" surname="admin" isActive="1" isAdmin="1"
+              password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00"
+              modifiedOn="2012-05-10 00:00:00" defaultAdministrationCentreId="100" PASSWORDUPDATEREQUIRED="0"/>
+
+  <Contact id="100" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
+           modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000"
+           workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW"
+           uniqueCode="ST1UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
 </dataset>

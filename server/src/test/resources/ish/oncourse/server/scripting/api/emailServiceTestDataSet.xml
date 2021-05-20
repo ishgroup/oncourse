@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1"
-			 deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="John"
-			 lastName="Test" email="test@test.te"/>
+  <Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="John"
+           lastName="Test" email="test@test.te"/>
 
-	<Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1"
-			 deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="John2"
-			 lastName="Test2" email="test@test.te"/>
+  <Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="John2"
+           lastName="Test2" email="test@test.te"/>
 
-	<EmailTemplate id="1" name="test" subject="Test Email" bodyPlain="Hello ${contact.firstName} ${contact.lastName}!"
-				   bodyHtml="Hello &lt;h3&gt;${contact.firstName} ${contact.lastName}!&lt;/h3&gt;" keyCode="test.htmlTemplate"/>
+  <EmailTemplate id="1" name="test" subject="Test Email" bodyPlain="Hello ${contact.firstName} ${contact.lastName}!"
+                 bodyHtml="Hello &lt;h3&gt;${contact.firstName} ${contact.lastName}!&lt;/h3&gt;"
+                 keyCode="test.htmlTemplate"/>
 </dataset>

@@ -1,15 +1,20 @@
 package ish.oncourse.server
 
+
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.services.ISystemUserService
 import org.apache.cayenne.access.DataContext
-import static org.junit.Assert.assertEquals
-import org.junit.Test
-import static org.mockito.Matchers.any
+import org.apache.cayenne.query.Select
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+
+import static org.mockito.Matchers.any
 import static org.mockito.Mockito.when
 
+@CompileStatic
 class PreferenceControllerTest {
 
     @Test
@@ -18,7 +23,7 @@ class PreferenceControllerTest {
         PreferenceController preferenceController = initPreferenceController(preference)
 
         preferenceController.setValue("testKey", false, "testValue")
-        assertEquals("testValue", preference.getValueString())
+        Assertions.assertEquals("testValue", preference.getValueString())
     }
 
     @Test
@@ -27,17 +32,18 @@ class PreferenceControllerTest {
         PreferenceController preferenceController = initPreferenceController(preference)
 
         preferenceController.setValue("testKey", false, "  testValue  ")
-        assertEquals("testValue", preference.getValueString())
+        Assertions.assertEquals("testValue", preference.getValueString())
     }
 
+    
     private PreferenceController initPreferenceController(Preference preference) {
         ICayenneService iCayenneService = Mockito.mock(ICayenneService.class)
 
         DataContext dataContext = Mockito.mock(DataContext.class)
         when(iCayenneService.getNewContext()).thenReturn(dataContext)
 
-        when(dataContext.selectFirst(any())).thenReturn(preference)
-        when(dataContext.localObject(any())).thenReturn(preference)
+        when(dataContext.selectFirst(any(Select))).thenReturn(preference)
+        when(dataContext.localObject(any(Preference))).thenReturn(preference)
 
         ISystemUserService systemUserService = Mockito.mock(ISystemUserService.class)
         LicenseService licenseService = Mockito.mock(LicenseService.class)

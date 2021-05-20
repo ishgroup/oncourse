@@ -10,11 +10,11 @@ import EntityService from "../../../../common/services/EntityService";
 import { transformDataType } from "../../common/utils";
 import { GET_CUSTOM_FIELD_TYPES, GET_CUSTOM_FIELD_TYPES_FULFILLED } from "../actions";
 
-const request: EpicUtils.Request<any, any, string> = {
+const request: EpicUtils.Request<any, string> = {
   type: GET_CUSTOM_FIELD_TYPES,
   getData: entity => EntityService.getPlainRecords(
       "CustomFieldType",
-      "key,name,defaultValue,isMandatory,dataType,sortOrder",
+      "key,name,defaultValue,isMandatory,dataType,sortOrder,pattern",
       `entityIdentifier=${entity}`
     ),
   processData: (response: DataResponse, state, entity: string) => {
@@ -27,7 +27,8 @@ const request: EpicUtils.Request<any, any, string> = {
           defaultValue: item.values[2],
           mandatory: item.values[3] === "true",
           dataType: item.values[4] === "URL" ? item.values[4] : transformDataType(item.values[4]),
-          sortOrder: Number(item.values[5])
+          sortOrder: Number(item.values[5]),
+          pattern: item.values[6]
         } as CustomFieldType)
     );
 

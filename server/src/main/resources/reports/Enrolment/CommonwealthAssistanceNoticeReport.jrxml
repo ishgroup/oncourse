@@ -68,7 +68,7 @@
     <sortField name="student.contact.lastName"/>
     <sortField name="student.contact.firstName"/>
     <variable name="eftsl" class="java.lang.Float" calculation="Sum" resetType="Group" resetGroup="student">
-        <variableExpression><![CDATA[$F{enrolment}.courseClass.fullTimeLoad ? $F{enrolment}.courseClass.fullTimeLoad.toFloat() : 0]]></variableExpression>
+        <variableExpression><![CDATA[$F{enrolment}.courseClass.course.fullTimeLoad ? $F{enrolment}.courseClass.course.fullTimeLoad.toFloat() : 0]]></variableExpression>
     </variable>
     <variable name="tuitionFee" class="java.lang.Float" calculation="Sum" resetType="Group" resetGroup="student">
         <variableExpression><![CDATA[$F{enrolment}.invoiceLines[0].priceTotalIncTax]]></variableExpression>
@@ -92,7 +92,7 @@
             $F{enrolment}.feeHelpAmount.multiply(1.2) :
             $F{enrolment}.feeHelpAmount).floatValue()]]></variableExpression>
     </variable>
-    <filterExpression><![CDATA[$F{enrolment}.courseClass.feeHelpClass]]></filterExpression>
+    <filterExpression><![CDATA[$F{enrolment}.courseClass.course.feeHelpClass]]></filterExpression>
 
     <group name="student" isStartNewPage="true">
         <groupExpression><![CDATA[$F{enrolment}.id]]></groupExpression>
@@ -299,7 +299,7 @@
             <textField isBlankWhenNull="true">
                 <reportElement style="header 3 (right)" x="420" y="0" width="60" height="40"/>
                 <textElement verticalAlignment="Top"/>
-                <textFieldExpression><![CDATA[$F{enrolment}.courseClass.fullTimeLoad ? $F{enrolment}.courseClass.fullTimeLoad.toFloat() : 0]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{enrolment}.courseClass.course.fullTimeLoad ? $F{enrolment}.courseClass.ccourse.fullTimeLoad.toFloat() : 0]]></textFieldExpression>
             </textField>
             <textField isBlankWhenNull="true">
                 <reportElement style="header 3 (right)" x="480" y="0" width="60" height="40"/>

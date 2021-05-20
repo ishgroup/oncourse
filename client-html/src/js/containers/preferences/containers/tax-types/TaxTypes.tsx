@@ -6,16 +6,17 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { getTaxTypes, updateTaxTypes, deleteTaxType } from "../../actions";
 import { getFormValues } from "redux-form";
-import { State } from "../../../../reducers/state";
 import { Tax, Account } from "@api/model";
+import { getTaxTypes, updateTaxTypes, deleteTaxType } from "../../actions";
+import { State } from "../../../../reducers/state";
 import { Fetch } from "../../../../model/common/Fetch";
 import TaxTypesForm from "./components/TaxTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { getPlainAccounts } from "../../../entities/accounts/actions";
-import { showConfirm } from "../../../../common/actions";
+import { setNextLocation, showConfirm } from "../../../../common/actions";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 
 interface Props {
   getTypes: () => void;
@@ -27,7 +28,10 @@ interface Props {
   accounts: Account[];
   timestamps: Date[];
   fetch: Fetch;
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm: ShowConfirmCaller;
+  history: any;
+  nextLocation: string;
+  setNextLocation: (nextLocation: string) => void;
 }
 
 class TaxTypes extends React.Component<Props, any> {
@@ -37,13 +41,15 @@ class TaxTypes extends React.Component<Props, any> {
   }
 
   render() {
-    const { taxTypes, data, accounts, updateTaxTypes, deleteTaxType, fetch, timestamps, openConfirm } = this.props;
+    const {
+ taxTypes, data, accounts, updateTaxTypes, deleteTaxType, fetch, timestamps, openConfirm,
+      nextLocation, setNextLocation
+} = this.props;
     const created = timestamps && timestamps[0];
     const modified = timestamps && timestamps[1];
 
-    const assetAccounts =
-      accounts &&
-      accounts
+    const assetAccounts = accounts
+      && accounts
         .filter(account => account.type === "asset")
         .map(item => ({
           value: Number(item.id),
@@ -52,9 +58,8 @@ class TaxTypes extends React.Component<Props, any> {
 
     assetAccounts.sort(sortDefaultSelectItems);
 
-    const liabilityAccounts =
-      accounts &&
-      accounts
+    const liabilityAccounts = accounts
+      && accounts
         .filter(account => account.type === "liability")
         .map(item => ({
           value: Number(item.id),
@@ -74,6 +79,8 @@ class TaxTypes extends React.Component<Props, any> {
       data,
       fetch,
       taxTypes,
+      nextLocation,
+      setNextLocation,
       onUpdate: updateTaxTypes,
       onDelete: deleteTaxType
     });
@@ -87,17 +94,17 @@ const mapStateToProps = (state: State) => ({
   data: getFormValues("TaxTypesForm")(state),
   taxTypes: state.preferences.taxTypes,
   accounts: state.accounts.items,
-  fetch: state.fetch
+  fetch: state.fetch,
+  nextLocation: state.nextLocation,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getTypes: () => dispatch(getTaxTypes()),
     getAccounts: () => dispatch(getPlainAccounts()),
     updateTaxTypes: (taxTypes: Tax[]) => dispatch(updateTaxTypes(taxTypes)),
     deleteTaxType: (id: string) => dispatch(deleteTaxType(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
-  };
-};
+    setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+    openConfirm: props => dispatch(showConfirm(props))
+  });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(TaxTypes);

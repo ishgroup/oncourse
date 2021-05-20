@@ -1,108 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
 
-    <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-    <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-    <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
 
-    <Account id="100" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
-    <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="100" receivableFromStudentAccountId="100" taxCode="GST"
-         taxrate="0.1" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
-    <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney"
-          isVirtual="0"/>
-    <Room CREATEDON="2007-02-27 09:57:00.702" ID="1" MODIFIEDON="2012-05-08 16:38:46.727" SEATEDCAPACITY="157"
-          SITEID="1" DIRECTIONS="On the first floor." NAME="Main hall"/>
+  <Account id="100" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
+  <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="100" receivableFromStudentAccountId="100" taxCode="GST"
+       taxrate="0.1" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
+  <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney"
+        isVirtual="0"/>
+  <Room CREATEDON="2007-02-27 09:57:00.702" ID="1" MODIFIEDON="2012-05-08 16:38:46.727" SEATEDCAPACITY="157"
+        SITEID="1" DIRECTIONS="On the first floor." NAME="Main hall"/>
 
 
-    <Course id="1" code="TEST" name="Test Course" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"
-            currentlyOffered="1" fieldOfEducation="field1" isVET="1" reportableHours="2.0" webDescription="some text"
-            allowWaitingLists="0" isShownOnWeb="1" isSufficientForQualification="1"
-            printedBrochureDescription="Printed Brochure text" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+  <Course id="1" code="TEST" name="Test Course" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"
+          currentlyOffered="1" fieldOfEducation="field1" isVET="1" reportableHours="2.0" webDescription="some text"
+          allowWaitingLists="0" isShownOnWeb="1" isSufficientForQualification="1"
+          printedBrochureDescription="Printed Brochure text" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
 
-    <Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
-             modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
-             deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000"
-             workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW"
-             uniqueCode="ST1UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
-    <Contact id="2" firstName="Test2" lastName="Student2" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
-             modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
-             deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000"
-             workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW"
-             uniqueCode="ST2UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
-    <Contact id="3" firstName="Test3" lastName="Student3" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
-             modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
-             deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000"
-             workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW"
-             uniqueCode="ST2UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
+  <Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
+           modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000"
+           workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW"
+           uniqueCode="ST1UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
+  <Contact id="2" firstName="Test2" lastName="Student2" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
+           modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000"
+           workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW"
+           uniqueCode="ST2UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
+  <Contact id="3" firstName="Test3" lastName="Student3" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
+           modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000"
+           workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW"
+           uniqueCode="ST2UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
 
-    <Student id="10" contactId="1" studentNumber="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"
-             indigenousStatus="1" isOverseasClient="0" isStillAtSchool="0" employmentCategoryId="1"
-             priorEducationCode="1" concessionNumber="1" concessionType="1" specialNeeds="some"
-             yearSchoolCompleted="2009" usiStatus="1" createdOn="2013-01-01 00:00:00"
-             modifiedOn="2013-02-01" citizenship="9" feeHelpEligible="0"/>
-    <Student id="11" contactId="2" studentNumber="2" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"
-             indigenousStatus="1" isOverseasClient="0" isStillAtSchool="0" employmentCategoryId="1"
-             priorEducationCode="1" concessionNumber="1" concessionType="1" specialNeeds="some"
-             yearSchoolCompleted="2009" usiStatus="1" createdOn="2013-01-01 00:00:00"
-             modifiedOn="2013-02-01" citizenship="9" feeHelpEligible="0"/>
-    <Student id="12" contactId="3" studentNumber="3" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"
-             indigenousStatus="1" isOverseasClient="0" isStillAtSchool="0" employmentCategoryId="1"
-             priorEducationCode="1" concessionNumber="1" concessionType="1" specialNeeds="some"
-             yearSchoolCompleted="2009" usiStatus="1" createdOn="2013-01-01 00:00:00"
-             modifiedOn="2013-02-01" citizenship="9" feeHelpEligible="0"/>
+  <Student id="10" contactId="1" studentNumber="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"
+           indigenousStatus="1" isOverseasClient="0" isStillAtSchool="0" employmentCategoryId="1"
+           priorEducationCode="1" concessionNumber="1" concessionType="1" specialNeeds="some"
+           yearSchoolCompleted="2009" usiStatus="1" createdOn="2013-01-01 00:00:00"
+           modifiedOn="2013-02-01" citizenship="9" feeHelpEligible="0"/>
+  <Student id="11" contactId="2" studentNumber="2" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"
+           indigenousStatus="1" isOverseasClient="0" isStillAtSchool="0" employmentCategoryId="1"
+           priorEducationCode="1" concessionNumber="1" concessionType="1" specialNeeds="some"
+           yearSchoolCompleted="2009" usiStatus="1" createdOn="2013-01-01 00:00:00"
+           modifiedOn="2013-02-01" citizenship="9" feeHelpEligible="0"/>
+  <Student id="12" contactId="3" studentNumber="3" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"
+           indigenousStatus="1" isOverseasClient="0" isStillAtSchool="0" employmentCategoryId="1"
+           priorEducationCode="1" concessionNumber="1" concessionType="1" specialNeeds="some"
+           yearSchoolCompleted="2009" usiStatus="1" createdOn="2013-01-01 00:00:00"
+           modifiedOn="2013-02-01" citizenship="9" feeHelpEligible="0"/>
 
-    <WaitingList id="1" studentId="10" courseId="1" studentCount="1" notes="Notes 1..."
-                 studentNotes="Student Notes 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
-    <WaitingList id="2" studentId="11" courseId="1" studentCount="1" notes="Notes 3..."
-                 studentNotes="Student Notes 3..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
-    <WaitingList id="3" studentId="12" courseId="1" studentCount="1" notes="Notes 3..."
-                 studentNotes="Student Notes 3..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
+  <WaitingList id="1" studentId="10" courseId="1" studentCount="1" notes="Notes 1..."
+               studentNotes="Student Notes 1..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
+  <WaitingList id="2" studentId="11" courseId="1" studentCount="1" notes="Notes 3..."
+               studentNotes="Student Notes 3..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
+  <WaitingList id="3" studentId="12" courseId="1" studentCount="1" notes="Notes 3..."
+               studentNotes="Student Notes 3..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
 
-    <CourseClass id="100" code="123" startDateTime="2013-01-01 00:00:00" endDateTime="[endDate]"
-                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-                 taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-                 isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
-                 incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
-    <CourseClass id="200" code="124" startDateTime="2013-01-01 00:00:00"
-                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-                 taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-                 isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
-                 incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
-    <CourseClass id="300" code="125" startDateTime="2013-01-01 00:00:00" endDateTime="2017-01-02 00:00:00"
-                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-                 taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-                 isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
-                 incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
-    <CourseClass id="400" code="126" startDateTime="2013-01-01 00:00:00" endDateTime="[endDate]"
-                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-                 taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-                 isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
-                 incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
-    <CourseClass id="500" code="127" startDateTime="2013-01-01 00:00:00" endDateTime="[endDate]"
-                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-                 taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="0"
-                 isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
-                 incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
-    <CourseClass id="600" code="128" startDateTime="2013-01-01 00:00:00" endDateTime="[endDate]"
-                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-                 taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-                 isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
-                 incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0" feeHelpClass="0"/>
+  <CourseClass id="100" code="123" startDateTime="2013-01-01 00:00:00" endDateTime="[endDate]"
+               createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
+               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
+               incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
+               attendanceType="0"/>
+  <CourseClass id="200" code="124" startDateTime="2013-01-01 00:00:00"
+               createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
+               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
+               incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
+               attendanceType="0"/>
+  <CourseClass id="300" code="125" startDateTime="2013-01-01 00:00:00" endDateTime="2017-01-02 00:00:00"
+               createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
+               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
+               incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
+               attendanceType="0"/>
+  <CourseClass id="400" code="126" startDateTime="2013-01-01 00:00:00" endDateTime="[endDate]"
+               createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
+               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
+               attendanceType="0"/>
+  <CourseClass id="500" code="127" startDateTime="2013-01-01 00:00:00" endDateTime="[endDate]"
+               createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
+               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="0"
+               isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
+               incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
+               attendanceType="0"/>
+  <CourseClass id="600" code="128" startDateTime="2013-01-01 00:00:00" endDateTime="[endDate]"
+               createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
+               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               isDistantLearningCourse="0" isClassFeeApplicationOnly="1" isCancelled="0" isActive="1"
+               incomeAccountId="100" deliveryMode="1" courseId="1" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
+               attendanceType="0"/>
 </dataset>

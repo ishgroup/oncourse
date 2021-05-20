@@ -7,16 +7,13 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { getAutomationPdfBackgroundsList, REMOVE_AUTOMATION_PDF_BACKGROUND } from "../actions/index";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ReportOverlayService from "../services/ReportOverlayService";
 
-const request: EpicUtils.Request<any, State, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: REMOVE_AUTOMATION_PDF_BACKGROUND,
   getData: id => ReportOverlayService.removeReportOverlay(id),
-  processData: () => {
-    return [getAutomationPdfBackgroundsList(true)];
-  },
+  processData: () => [getAutomationPdfBackgroundsList(true)],
   processError: response => FetchErrorHandler(response, "Failed to delete PDF background")
 };
 

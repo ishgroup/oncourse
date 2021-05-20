@@ -8,6 +8,7 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
+import { isInvalid } from "redux-form";
 import {
   CheckoutPayment,
   CheckoutPaymentProcess,
@@ -16,7 +17,7 @@ import {
 import { State } from "../../../../../../reducers/state";
 import {
   checkoutClearPaymentStatus, checkoutGetPaymentStatusDetails,
-  checkoutPaymentSetCustomStatus, checkoutProcessCcPayment,
+  checkoutPaymentSetCustomStatus, checkoutProcessPayment,
   checkoutSetPaymentSuccess,
   clearCcIframeUrl
 } from "../../../../actions/checkoutPayment";
@@ -24,12 +25,15 @@ import PaymentMessageRenderer from "../PaymentMessageRenderer";
 import { BooleanArgFunction, StringArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { formatCurrency } from "../../../../../../common/utils/numbers/numbersNormalizing";
 import styles from "./styles";
+import { FORM as CheckoutSelectionForm } from "../../../CheckoutSelection";
 
 interface CreditCardPaymentPageProps {
   classes?: any;
   summary?: CheckoutSummary;
   payment?: CheckoutPayment;
   isPaymentProcessing?: boolean;
+  disablePayment?: boolean;
+  hasSummarryErrors?: boolean;
   setPaymentSuccess?: BooleanArgFunction;
   currencySymbol?: any;
   iframeUrl?: string;
@@ -44,7 +48,6 @@ interface CreditCardPaymentPageProps {
   paymentInvoice?: any;
   paymentId?: number;
   payerName: string;
-  title: string;
 }
 
 const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
@@ -52,6 +55,7 @@ const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     classes,
     summary,
     isPaymentProcessing,
+    disablePayment,
     setPaymentSuccess,
     currencySymbol,
     iframeUrl,
@@ -64,8 +68,8 @@ const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     checkoutGetPaymentStatusDetails,
     checkoutPaymentSetCustomStatus,
     process,
-    title,
-    payerName
+    payerName,
+    hasSummarryErrors
   } = props;
 
   const [validatePayment, setValidatePayment] = React.useState(true);
@@ -106,7 +110,10 @@ const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   }, [summary.payNowTotal, summary.allowAutoPay]);
 
   return (
-    <div className={clsx("p-3 d-flex flex-fill justify-content-center", classes.content)}>
+    <div
+      style={disablePayment ? { pointerEvents: "none" } : null}
+      className={clsx("p-3 d-flex flex-fill justify-content-center", classes.content)}
+    >
       {iframeUrl && !process.status && (
       <div className="flex-column justify-content-center w-100">
         <div className={clsx("centeredFlex justify-content-center", classes.payerLastCardMargin)}>
@@ -134,7 +141,7 @@ const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
             </div>
           </div>
         </div>
-        <div className={clsx("w-100", classes.iframeWrapper)}>
+        <div className={clsx("w-100", classes.iframeWrapper, hasSummarryErrors && "disabled")}>
           <iframe src={iframeUrl} className={clsx("w-100 h-100", classes.iframe)} title="windcave-frame" />
         </div>
       </div>
@@ -159,13 +166,14 @@ const mapStateToProps = (state: State) => ({
   iframeUrl: state.checkout.payment.wcIframeUrl,
   xPaymentSessionId: state.checkout.payment.xPaymentSessionId,
   merchantReference: state.checkout.payment.merchantReference,
-  process: state.checkout.payment.process
+  process: state.checkout.payment.process,
+  hasSummarryErrors: isInvalid(CheckoutSelectionForm)(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setPaymentSuccess: (isSuccess: boolean) => dispatch(checkoutSetPaymentSuccess(isSuccess)),
   checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
-    dispatch(checkoutProcessCcPayment(xValidateOnly, xPaymentSessionId, xOrigin));
+    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
   },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),

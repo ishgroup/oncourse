@@ -21,6 +21,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DateTimeLiteralConverter implements Converter<AqlParser.DateTimeLiteralContext> {
 
@@ -29,7 +33,13 @@ public class DateTimeLiteralConverter implements Converter<AqlParser.DateTimeLit
     // 2014-11-30
     private static final DateTimeFormatter ISO_DATE_FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd");
     // 10:03 am
-    private static final DateTimeFormatter TIME12_FORMATTER = DateTimeFormatter.ofPattern("hh:mm a");
+    private static final Map<Long, String> ampm = new HashMap<>(); 
+    static {
+        ampm.put(0L, "am");
+        ampm.put(1L, "pm");  
+    }
+
+    private static final DateTimeFormatter TIME12_FORMATTER = new DateTimeFormatterBuilder().appendPattern("hh:mm ").appendText(ChronoField.AMPM_OF_DAY,ampm).toFormatter();
     // 23:40
     private static final DateTimeFormatter TIME24_FORMATTER = DateTimeFormatter.ofPattern("kk:mm");
 
@@ -130,14 +140,14 @@ public class DateTimeLiteralConverter implements Converter<AqlParser.DateTimeLit
         if(timeString.charAt(1) == ':') {
             timeString = '0' + timeString;
         }
-        // 2. 03:00a.m. -> 03:00A.M.
-        timeString = timeString.toUpperCase();
-        // 3. 03:00A.M. -> 03:00AM
+        // 2. 03:00A.M. -> 03:00a.m.
+        timeString = timeString.toLowerCase();
+        // 3. 03:00a.m. -> 03:00am
         timeString = timeString.replaceAll("\\.", "");
-        // 4. 03:00AM   -> 03:00 AM
+        // 4. 03:00am   -> 03:00 am
         if(!timeString.contains(" ")) {
-            timeString = timeString.replace("AM", " AM");
-            timeString = timeString.replace("PM", " PM");
+            timeString = timeString.replace("am", " am");
+            timeString = timeString.replace("pm", " pm");
         }
         return timeString;
     }

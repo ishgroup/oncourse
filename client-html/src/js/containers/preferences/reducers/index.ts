@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Currency } from "@api/model";
 import { IAction } from "../../../common/actions/IshAction";
 import { Categories } from "../../../model/preferences";
 
@@ -35,7 +36,6 @@ import {
   DELETE_CONTACT_RELATION_TYPE_FULFILLED,
   UPDATE_CONTACT_RELATION_TYPES_FULFILLED,
   GET_CUSTOM_FIELDS_FULFILLED,
-  DELETE_CUSTOM_FIELD_FULFILLED,
   UPDATE_CUSTOM_FIELDS_FULFILLED,
   GET_ENUM_FULFILLED,
   GET_COMPLEX_PASS_FILLED,
@@ -50,18 +50,19 @@ import {
   GET_USI_SORTWARE_ID_FULFILLED,
   GET_ENTITY_RELATION_TYPES_FULFILLED,
   DELETE_ENTITY_RELATION_TYPE_FULFILLED,
-  UPDATE_ENTITY_RELATION_TYPES_FULFILLED
+  UPDATE_ENTITY_RELATION_TYPES_FULFILLED,
+  GET_GRADING_TYPES_FULFILLED
 } from "../actions";
 import { GET_MESSAGE_QUEUED_FULFILLED, POST_AUTHENTICATION_FULFILLED } from "../../../common/actions";
 import getTimestamps from "../../../common/utils/timestamps/getTimestamps";
-import { Currency } from "@api/model";
 import {
   DELETE_FUNDING_CONTACT_FULFILLED,
   GET_FUNDING_CONTACTS_FULFILLED,
   SAVE_FUNDING_CONTACTS_FULFILLED
 } from "../containers/funding-contracts/actions";
+import { PreferencesState } from "./state";
 
-export const preferencesReducer = (state: any = {}, action: IAction<any>): any => {
+export const preferencesReducer = (state: PreferencesState = {}, action: IAction<any>): PreferencesState => {
   switch (action.type) {
     case GET_COMPLEX_PASS_FILLED: {
       const complexPass = action.payload;
@@ -198,7 +199,6 @@ export const preferencesReducer = (state: any = {}, action: IAction<any>): any =
     }
 
     case GET_CUSTOM_FIELDS_FULFILLED:
-    case DELETE_CUSTOM_FIELD_FULFILLED:
     case UPDATE_CUSTOM_FIELDS_FULFILLED: {
       const { customFields } = action.payload;
 
@@ -243,6 +243,13 @@ export const preferencesReducer = (state: any = {}, action: IAction<any>): any =
       return {
         ...state,
         tutorRoles
+      };
+    }
+
+    case GET_GRADING_TYPES_FULFILLED: {
+      return {
+        ...state,
+        gradingTypes: action.payload
       };
     }
 

@@ -1,7 +1,7 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockCourses() {
-  this.getPlainCourses = () => this.courses;
+  this.getCourses = () => this.courses;
 
   this.getCourse = id => {
     const row = this.courses.rows.find(row => row.id == id);
@@ -291,7 +291,7 @@ export function mockCourses() {
   });
 
   this.removeCourse = id => {
-    this.courses = this.courses.rows.filter(a => a.id !== id);
+    this.courses = removeItemByEntity(this.courses, id);
   };
 
   this.duplicateCourse = ids => {
@@ -323,71 +323,45 @@ export function mockCourses() {
     values: [l.name, l.code, null, null, 0]
   }));
 
-  const columns = [
-    {
-      title: "Name",
-      attribute: "name",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 400,
-      sortFields: []
-    },
-    {
-      title: "Code",
-      attribute: "code",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Field",
-      attribute: "fieldOfEducation",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Qualification",
-      attribute: "qualification.nationalCode",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
-    },
-    {
-      title: "Current classes",
-      attribute: "current_classes_count",
-      type: null,
-      sortable: true,
-      visible: true,
-      width: 200,
-      sortFields: []
+  return getEntityResponse({
+    entity: "Course",
+    rows,
+    columns: [
+      {
+        title: "Name",
+        attribute: "name",
+        sortable: true,
+        width: 400
+      },
+      {
+        title: "Code",
+        attribute: "code",
+        sortable: true
+      },
+      {
+        title: "Field",
+        attribute: "fieldOfEducation",
+        sortable: true
+      },
+      {
+        title: "Qualification",
+        attribute: "qualification.nationalCode",
+        sortable: true
+      },
+      {
+        title: "Current classes",
+        attribute: "current_classes_count",
+        sortable: true
+      }
+    ],
+    res: {
+      sort: [
+        {
+          attribute: "name",
+          ascending: true,
+          complexAttribute: []
+        }
+      ]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Course";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = null;
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [
-    {
-      attribute: "name",
-      ascending: true,
-      complexAttribute: []
-    }
-  ];
-
-  return response;
+  });
 }

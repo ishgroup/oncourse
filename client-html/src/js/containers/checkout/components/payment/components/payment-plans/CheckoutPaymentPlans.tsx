@@ -40,12 +40,21 @@ interface Props {
   onPayNowChange?: any;
   onPayDateChange?: any;
   onPayNowFocus?: any;
+  onPayNowBlur?: any;
   validateLockedDate?: any;
   onDueDateChange?: any;
   disabledStep?: boolean;
   canChangePaymentDate?: boolean;
   selectedPaymentType?: PaymentMethod;
 }
+
+const validateDueDate = (date, allValues) => {
+  let error;
+  if (date && (allValues?.paymentPlans[0]?.payDate ? new Date(allValues.paymentPlans[0].payDate) : new Date()) > new Date(date)) {
+    error = "Due date should be after invoice date";
+  }
+  return error;
+};
 
 const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
   ...paymentPlanStyles(theme),
@@ -63,7 +72,8 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
     onDueDateChange,
     selectedPaymentType,
     validateLockedDate,
-    canChangePaymentDate
+    canChangePaymentDate,
+    onPayNowBlur
   } = props;
 
   return (
@@ -83,7 +93,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
         {fields.map((f, i) => {
           const field = fields.get(i);
           const first = i === 0;
-          const last = fields.length > 1 && i === (fields.length - 1);
+          const last = fields.length > 1 && i === (fields.length - 1) && !field.date;
 
           if (!first && field.amount === 0) {
             return null;
@@ -103,6 +113,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                 formatting="custom"
                 normalize={normalizeNumberToPositive}
                 listSpacing={false}
+                onBlur={onPayNowBlur}
                 onChange={onPayNowChange}
                 disabled={!first || disabledStep}
                 validate={first ? validatePayNow : undefined}
@@ -132,6 +143,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                   name={`${f}.date`}
                   formatting="inline"
                   disabled={!field.dateEditable || disabledStep}
+                  validate={(!field.dateEditable || disabledStep) ? undefined : validateDueDate}
                   onChange={onDueDateChange}
                 />
               </Typography>
@@ -155,7 +167,6 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                   {stepContent}
                 </StepButton>
               ) : stepContent}
-
             </Step>
           );
         })}

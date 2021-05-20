@@ -7,11 +7,11 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import PreferencesService from "../services/PreferencesService";
-import { GET_ENUM_REQUEST, GET_ENUM_FULFILLED } from "../actions";
+import { GET_ENUM_FULFILLED, GET_ENUM_REQUEST } from "../actions";
 import { EnumItem } from "@api/model";
 import { sortDefaultSelectItems } from "../../../common/utils/common";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ENUM_REQUEST,
   getData: payload => PreferencesService.getEnum(payload.name),
   processData: (enums: EnumItem[], state: any, payload) => {

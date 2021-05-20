@@ -92,7 +92,7 @@ class XeroBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      appBarContent, dirty, handleSubmit, values, item
+      appBarContent, dirty, handleSubmit, values, item, form
     } = this.props;
     const { hideConfig, loading } = this.state;
 
@@ -100,7 +100,7 @@ class XeroBaseForm extends React.Component<any, any> {
 
     return (
       <form onSubmit={handleSubmit(this.beforeSubmit)}>
-        {dirty && <RouteChangeConfirm when={dirty} />}
+        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>{appBarContent}</CustomAppBar>
 
         {item.id ? (
@@ -118,12 +118,12 @@ class XeroBaseForm extends React.Component<any, any> {
             <Typography variant="caption" component="div">
               {hideConfig
                       ? 'Xero access has been set up. Press "Save" to complete configuration process.'
-                      : ' Press "Configure" to proceed with authorising onCourse to access your Xero account.'}
+                      : ' Press to proceed with authorising onCourse to access your Xero account.'}
             </Typography>
 
             {!hideConfig && (
               <Button
-                text="Configure"
+                text="Connect to Xero"
                 variant="contained"
                 className="mt-1"
                 disabled={!name}

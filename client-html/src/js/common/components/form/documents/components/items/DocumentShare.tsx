@@ -44,20 +44,6 @@ import {
 } from "../utils";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
-  codeArea: {
-    borderRadius: theme.shape.borderRadius,
-    background: theme.table.contrastRow.main,
-    padding: theme.spacing(1),
-    border: "none",
-    outline: "none",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    fontSize: "inherit",
-    fontFamily: "inherit",
-    color: "inherit",
-    width: "100%"
-  },
   linkButton: {
     fontSize: "1.2em",
     padding: theme.spacing(0.5)
@@ -85,6 +71,9 @@ interface Props {
   form?: string;
   dispatch?: Dispatch;
   documentSource?: Document;
+  readOnly?: boolean;
+  itemPath?: string;
+  noPaper?: boolean;
 }
 
 const onAttachmentCategoryClick = (entity, entityIds) =>
@@ -135,7 +124,10 @@ const DocumentShare:React.FC<Props> = ({
    validUrl,
    dispatch,
    documentSource,
-   form
+   form,
+   readOnly,
+   itemPath,
+   noPaper
  }) => {
   const attachmentRef = useRef(null);
   const summaryRef = useRef(null);
@@ -163,11 +155,11 @@ const DocumentShare:React.FC<Props> = ({
   }, [documentSource.id]);
 
   useEffect(() => {
-    summaryRef.current.addEventListener("mouseenter", onAttachmentsOver);
-    summaryRef.current.addEventListener("mouseleave", onAttachmentsOut);
+    summaryRef?.current?.addEventListener("mouseenter", onAttachmentsOver);
+    summaryRef?.current?.addEventListener("mouseleave", onAttachmentsOut);
     return () => {
-      summaryRef.current.removeEventListener("mouseenter", onAttachmentsOver);
-      summaryRef.current.removeEventListener("mouseleave", onAttachmentsOut);
+      summaryRef?.current?.removeEventListener("mouseenter", onAttachmentsOver);
+      summaryRef?.current?.removeEventListener("mouseleave", onAttachmentsOut);
     };
   }, []);
 
@@ -185,28 +177,31 @@ const DocumentShare:React.FC<Props> = ({
     }));
   };
 
+  const accesPath = itemPath ? `${itemPath}.access` : "access";
+  const sharedPath = itemPath ? `${itemPath}.shared` : "shared";
+
   const onPortalSharingChange = (e, val) => {
-    dispatch(change(form, "access", val ? "Tutors and enrolled students" : "Private"));
+    dispatch(change(form, accesPath, val ? "Tutors and enrolled students" : "Private"));
   };
 
   const onTutorsAndStudentsChange = (e, val) => {
-    dispatch(change(form, "access", val ? "Tutors and enrolled students" : "Tutors only"));
+    dispatch(change(form, accesPath, val ? "Tutors and enrolled students" : "Tutors only"));
   };
 
   const onTutorsChange = (e, val) => {
-    dispatch(change(form, "access", val ? "Tutors only" : "Private"));
+    dispatch(change(form, accesPath, val ? "Tutors only" : "Private"));
   };
 
   const onLinkChange = (e, val) => {
-    dispatch(change(form, "access", val ? "Link" : "Private"));
+    dispatch(change(form, accesPath, val ? "Link" : "Private"));
   };
 
   const onWebsiteChange = (e, val) => {
-    dispatch(change(form, "access", val ? "Public" : "Private"));
+    dispatch(change(form, accesPath, val ? "Public" : "Private"));
   };
 
   const onSharedChange = (e, val) => {
-    dispatch(change(form, "shared", !val));
+    dispatch(change(form, sharedPath, !val));
   };
 
   const AttachmentRelations = useMemo(() => {
@@ -236,7 +231,11 @@ const DocumentShare:React.FC<Props> = ({
               component="div"
             >
               {`${relationsCount} ${entity.capitalize()}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""} `}
-              <IconButton color="secondary" className={classes.linkButton} onClick={() => onAttachmentCategoryClick(entity, relationsMap)}>
+              <IconButton
+                color="secondary"
+                className={classes.linkButton}
+                onClick={() => onAttachmentCategoryClick(entity, relationsMap)}
+              >
                 <OpenInNew fontSize="inherit" />
               </IconButton>
               {portalEnabled
@@ -280,6 +279,7 @@ const DocumentShare:React.FC<Props> = ({
             }}
             control={(
               <StyledCheckbox
+                disabled={readOnly}
                 checked={!documentSource.shared}
                 onChange={onSharedChange}
               />
@@ -303,17 +303,28 @@ const DocumentShare:React.FC<Props> = ({
 
   const tutorsAndStudents = ["Tutors and enrolled students", "Tutors only"].includes(documentSource.access);
 
+  const cardsElevation = noPaper ? 0 : 1;
+
+  const cardHeaderClasses = noPaper
+    ? {
+        root: "p-0",
+        action: "mt-0",
+        title: "heading"
+      }
+    : {
+        action: classes.action,
+        title: "heading"
+      };
+
   return (
-    <div className="saveButtonTableOffset">
+    <div>
       <Alert severity="info" className="mb-2" ref={summaryRef}>
         <AlertTitle>Who can view this document</AlertTitle>
         {SummaryLabel}
       </Alert>
-      <Card className="mb-2">
+      <Card className="mb-2" elevation={cardsElevation}>
         <CardHeader
-          classes={{
-            title: "heading"
-          }}
+          classes={cardHeaderClasses}
           avatar={(
             <Avatar className="activeAvatar">
               <Attachment />
@@ -328,12 +339,9 @@ const DocumentShare:React.FC<Props> = ({
 
       {availableOptions["PortalSharing"]
         && (
-        <Card className="mb-2">
+        <Card className="mb-2" elevation={cardsElevation}>
           <CardHeader
-            classes={{
-            action: classes.action,
-            title: "heading"
-          }}
+            classes={cardHeaderClasses}
             action={(
               <FormControlLabel
                 classes={{
@@ -342,6 +350,7 @@ const DocumentShare:React.FC<Props> = ({
               }}
                 control={(
                   <Switch
+                    disabled={readOnly}
                     checked={tutorsAndStudents}
                     onChange={onPortalSharingChange}
                   />
@@ -382,6 +391,7 @@ const DocumentShare:React.FC<Props> = ({
                   }}
                     control={(
                       <StyledCheckbox
+                        disabled={readOnly}
                         checked={tutorsAndStudents}
                         onChange={onTutorsChange}
                       />
@@ -394,6 +404,7 @@ const DocumentShare:React.FC<Props> = ({
                   }}
                     control={(
                       <StyledCheckbox
+                        disabled={readOnly}
                         checked={documentSource.access === "Tutors and enrolled students"}
                         onChange={onTutorsAndStudentsChange}
                       />
@@ -408,12 +419,9 @@ const DocumentShare:React.FC<Props> = ({
         </Card>
       )}
 
-      <Card className="mb-2">
+      <Card className="mb-2" elevation={cardsElevation}>
         <CardHeader
-          classes={{
-            action: classes.action,
-            title: "heading"
-          }}
+          classes={cardHeaderClasses}
           action={(
             <FormControlLabel
               classes={{
@@ -422,6 +430,7 @@ const DocumentShare:React.FC<Props> = ({
               }}
               control={(
                 <Switch
+                  disabled={readOnly}
                   checked={linkOrPublic}
                   onChange={onLinkChange}
                 />
@@ -436,35 +445,34 @@ const DocumentShare:React.FC<Props> = ({
           )}
           title="Shareable link"
         />
-        <CardContent>
-          {validUrl
+        {validUrl
           && linkOrPublic && (
-            <div className="centeredFlex">
-              <Typography color="textSecondary" className="flex-fill">
-                <input ref={linkInput} readOnly className={classes.codeArea} type="text" value={validUrl} />
-              </Typography>
-              <Button color="primary" className="text-nowrap" onClick={onCopyLink}>
-                Copy Link
-              </Button>
-            </div>
+            <CardContent>
+              <div className="centeredFlex">
+                <Typography color="textSecondary" className="flex-fill">
+                  <input ref={linkInput} readOnly className="codeArea" type="text" value={validUrl} />
+                </Typography>
+                <Button color="primary" className="text-nowrap" onClick={onCopyLink}>
+                  Copy Link
+                </Button>
+              </div>
+            </CardContent>
           )}
-          {!linkOrPublic
+        {!linkOrPublic
           && (
-            <Alert severity="warning" icon={<LockOutlined />}>
-              Document can not be accessed by direct link
-            </Alert>
+            <CardContent>
+              <Alert severity="warning" icon={<LockOutlined />}>
+                Document can not be accessed by direct link
+              </Alert>
+            </CardContent>
           )}
-        </CardContent>
       </Card>
 
       {websiteAvailable
       && (
-        <Card className="mb-2">
+        <Card className="mb-2" elevation={cardsElevation}>
           <CardHeader
-            classes={{
-              action: classes.action,
-              title: "heading"
-            }}
+            classes={cardHeaderClasses}
             action={(
               <FormControlLabel
                 classes={{
@@ -473,6 +481,7 @@ const DocumentShare:React.FC<Props> = ({
                 }}
                 control={(
                   <Switch
+                    disabled={readOnly}
                     checked={
                       documentSource.access === "Public"
                     }

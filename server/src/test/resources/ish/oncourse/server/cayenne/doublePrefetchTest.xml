@@ -1,55 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Account id="1" accountCode="11500" description="Test debtors account" isEnabled="1" type="1"/>
-	<Account id="2" accountCode="41000" description="Test income account" isEnabled="1" type="4" taxId="1"/>
-	<Account id="3" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1"/>
-	<Account id="4" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2"/>
-	<Account id="5" accountCode="21010" description="Test prepaid fees account" isEnabled="1" type="2"/>
-	<Account id="6" accountCode="50050" description="Test discount account" isEnabled="1" type="5"/>
-	<Account id="7" accountCode="accBank" description="Test bank account" isEnabled="1" type="1"/>
-	<Account id="8" accountCode="vLability" description="Test voucher liability acc" isEnabled="1" type="2"/>
-	<Account id="9" accountCode="vUnderpay" description="Test voucher underpay acc" isEnabled="1" type="6"/>
+  <Account id="1" accountCode="11500" description="Test debtors account" isEnabled="1" type="1"/>
+  <Account id="2" accountCode="41000" description="Test income account" isEnabled="1" type="4" taxId="1"/>
+  <Account id="3" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1"/>
+  <Account id="4" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2"/>
+  <Account id="5" accountCode="21010" description="Test prepaid fees account" isEnabled="1" type="2"/>
+  <Account id="6" accountCode="50050" description="Test discount account" isEnabled="1" type="5"/>
+  <Account id="7" accountCode="accBank" description="Test bank account" isEnabled="1" type="1"/>
+  <Account id="8" accountCode="vLability" description="Test voucher liability acc" isEnabled="1" type="2"/>
+  <Account id="9" accountCode="vUnderpay" description="Test voucher underpay acc" isEnabled="1" type="6"/>
 
-	<FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	
-	<Course id="1"  code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
-		
-	<Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney" isVirtual="0"/>
-	
-	<Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
-	
-	<Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="3" receivableFromStudentAccountId="4" taxCode="GST" taxrate="0.1"/>
-	
-	<CourseClass id="1" code="123" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
-                 isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1"
-                 isActive="1" incomeAccountId="1" fundingSource="3" deliveryMode="1" courseId="1"
-				 feeExGst="100.00" suppressAvetmissExport="0" roomId="1"
-                 budgetedPlaces="10" attendanceType="0" feeHelpClass="0"/>
+  <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<CourseSession id="1" startDatetime="2012-01-01 15:00:00" endDatetime="2012-01-01 16:00:00" courseClass_Id="1" payAdjustment="0"  modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
-	
-	<Contact id="3" isCompany="0" isStudent="1" isTutor="0" uniqueCode="3abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name3" lastName="name" email="test3@test.te"/>
-	<Contact id="4" isCompany="0" isStudent="1" isTutor="0" uniqueCode="4abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name4" lastName="name" email="test4@test.te"/>
-	
-	<Student id="3" contactId="3" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="3" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="4" contactId="4" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="4" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	
-	<Enrolment id="1" courseClass_id="1" studentId="3" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="2" courseClass_id="1" studentId="4" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+  <Course id="1" code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
 
-	<Attendance id="1" sessionId="1" studentId="3" attendanceType="0" modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
-	<Attendance id="2" sessionId="1" studentId="4" attendanceType="0" modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
-				
+  <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney"
+        isVirtual="0"/>
+
+  <Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
+
+  <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="3" receivableFromStudentAccountId="4" taxCode="GST"
+       taxrate="0.1"/>
+
+  <CourseClass id="1" code="123" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+               isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1"
+               isActive="1" incomeAccountId="1" fundingSource="3" deliveryMode="1" courseId="1"
+               feeExGst="100.00" suppressAvetmissExport="0" roomId="1"
+               budgetedPlaces="10" attendanceType="0"/>
+
+  <CourseSession id="1" startDatetime="2012-01-01 15:00:00" endDatetime="2012-01-01 16:00:00" courseClass_Id="1"
+                 payAdjustment="0" modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
+
+  <Contact id="3" isCompany="0" isStudent="1" isTutor="0" uniqueCode="3abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name3" lastName="name"
+           email="test3@test.te"/>
+  <Contact id="4" isCompany="0" isStudent="1" isTutor="0" uniqueCode="4abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name4" lastName="name"
+           email="test4@test.te"/>
+
+  <Student id="3" contactId="3" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="3" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="4" contactId="4" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="4" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+
+  <Enrolment id="1" courseClass_id="1" studentId="3" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="2" courseClass_id="1" studentId="4" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+
+  <Attendance id="1" sessionId="1" studentId="3" attendanceType="0" modifiedOn="2012-01-03 11:00:00"
+              createdOn="2012-01-03 10:00:00"/>
+  <Attendance id="2" sessionId="1" studentId="4" attendanceType="0" modifiedOn="2012-01-03 11:00:00"
+              createdOn="2012-01-03 10:00:00"/>
+
 </dataset>

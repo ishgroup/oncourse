@@ -1,133 +1,127 @@
 package ish.oncourse.server.cayenne
 
-import ish.CayenneIshTestCase
+
+import groovy.transform.CompileStatic
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.DataType
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.validation.EntityValidator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import javax.ws.rs.ClientErrorException
 
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.fail
 
-
-class CustomFieldFunctionsTest extends CayenneIshTestCase {
-
-    @Before
-    void setup() throws Exception {
-        wipeTables()
-    }
+@CompileStatic
+@DatabaseSetup
+class CustomFieldFunctionsTest extends TestWithDatabase {
+    
 
     @Test
     void validateCreatingCustomFieldTypeTest() {
-        ICayenneService cayenneService = injector.getInstance(CayenneService)
-        ObjectContext context = cayenneService.newContext
 
-        createTestCustomFieldType(context, "TestCustomField", "Test", Boolean.TRUE)
+        createTestCustomFieldType(cayenneContext, "TestCustomField", "Test", Boolean.TRUE)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
     }
 
 
+    
     @Test
     void validateCreatingCustomFieldTest() {
-        ICayenneService cayenneService = injector.getInstance(CayenneService)
-        ObjectContext context = cayenneService.newContext
 
-        createTestCustomFieldType(context, "TestCustomField", "Test", Boolean.TRUE)
-        context.commitChanges()
+        createTestCustomFieldType(cayenneContext, "TestCustomField", "Test", Boolean.TRUE)
+        cayenneContext.commitChanges()
 
-        Contact contact = context.newObject(Contact)
+        Contact contact = cayenneContext.newObject(Contact)
         contact.firstName = "Name"
         contact.lastName = "Surname"
 
         try {
-            validateCustomFields(context, Contact.simpleName, [:], null, new EntityValidator())
-            fail("Contact entity has required custom fields. Validation doesn't work")
-        } catch (ClientErrorException ex) {}
+            validateCustomFields(cayenneContext, Contact.simpleName, [:], null, new EntityValidator())
+            Assertions.fail("Contact entity has required custom fields. Validation doesn't work")
+        } catch (ClientErrorException ex) {
+        }
     }
 
 
+    
     @Test
-    void updateCustomFieldsTest() {
-        ICayenneService cayenneService = injector.getInstance(CayenneService)
-        ObjectContext context = cayenneService.newContext
+    void updateCustomFieldsTest() { 
 
-        createTestCustomFieldType(context, "FirstCustomField", "Test", Boolean.TRUE)
-        createTestCustomFieldType(context, "SecondCustomField", "ForTest", Boolean.FALSE)
-        context.commitChanges()
+        createTestCustomFieldType(cayenneContext, "FirstCustomField", "Test", Boolean.TRUE)
+        createTestCustomFieldType(cayenneContext, "SecondCustomField", "ForTest", Boolean.FALSE)
+        cayenneContext.commitChanges()
 
-        Contact contact = context.newObject(Contact)
+        Contact contact = cayenneContext.newObject(Contact)
         contact.firstName = "Name"
         contact.lastName = "Surname"
-        updateCustomFields(context, contact, ["Test":"Text"], ContactCustomField)
+        updateCustomFields(cayenneContext, contact, ["Test": "Text"], ContactCustomField)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
-        List<CustomField> customFields = ObjectSelect.query(CustomField).select(context)
-        assertEquals("Just one of custom field should be added", 1, customFields.size())
-        assertEquals("Text", customFields[0].value)
+        List<CustomField> customFields = ObjectSelect.query(CustomField).select(cayenneContext)
+        Assertions.assertEquals(1, customFields.size(), "Just one of custom field should be added")
+        Assertions.assertEquals("Text", customFields[0].value)
 
-        updateCustomFields(context, contact, ["Test":"New Text"], ContactCustomField)
-        context.commitChanges()
-        customFields = ObjectSelect.query(CustomField).select(context)
-        assertEquals("Custom field should be updated, not added new one", 1, customFields.size())
-        assertEquals("New Text", customFields[0].value)
+        updateCustomFields(cayenneContext, contact, ["Test": "New Text"], ContactCustomField)
+        cayenneContext.commitChanges()
+        customFields = ObjectSelect.query(CustomField).select(cayenneContext)
+        Assertions.assertEquals(1, customFields.size(), "Custom field should be updated, not added new one")
+        Assertions.assertEquals("New Text", customFields[0].value)
 
-        updateCustomFields(context, contact, ["Test":"New Text", "ForTest":"ValueForSecondField"], ContactCustomField)
-        context.commitChanges()
-        assertEquals("New custom field should be added, not updated current.", 2, ObjectSelect.query(CustomField).select(context).size())
+        updateCustomFields(cayenneContext, contact, ["Test": "New Text", "ForTest": "ValueForSecondField"], ContactCustomField)
+        cayenneContext.commitChanges()
+        Assertions.assertEquals(2, ObjectSelect.query(CustomField).select(cayenneContext).size(), "New custom field should be added, not updated current.")
 
-        updateCustomFields(context, contact, ["Test":"New Text"], ContactCustomField)
-        context.commitChanges()
-        assertEquals("Second custom field should be deleted.",1, ObjectSelect.query(CustomField).select(context).size())
+        updateCustomFields(cayenneContext, contact, ["Test": "New Text"], ContactCustomField)
+        cayenneContext.commitChanges()
+        Assertions.assertEquals(1, ObjectSelect.query(CustomField).select(cayenneContext).size(), "Second custom field should be deleted.")
     }
 
 
+    
     @Test
     void updateCustomFieldsForSeveralEntityTest() {
-        ICayenneService cayenneService = injector.getInstance(CayenneService)
-        ObjectContext context = cayenneService.newContext
+       
+        createTestCustomFieldType(cayenneContext, "CustomField", "Test", Boolean.TRUE)
+        cayenneContext.commitChanges()
 
-        createTestCustomFieldType(context, "CustomField", "Test", Boolean.TRUE)
-        context.commitChanges()
-
-        Contact first = context.newObject(Contact)
+        Contact first = cayenneContext.newObject(Contact)
         first.firstName = "First Name"
         first.lastName = "First Surname"
-        updateCustomFields(context, first, ["Test":"First"], ContactCustomField)
+        updateCustomFields(cayenneContext, first, ["Test": "First"], ContactCustomField)
 
-        Contact second = context.newObject(Contact)
+        Contact second = cayenneContext.newObject(Contact)
         second.firstName = "First Name"
         second.lastName = "First Surname"
-        updateCustomFields(context, second, ["Test":"Second"], ContactCustomField)
+        updateCustomFields(cayenneContext, second, ["Test": "Second"], ContactCustomField)
 
-        Contact third = context.newObject(Contact)
+        Contact third = cayenneContext.newObject(Contact)
         third.firstName = "First Name"
         third.lastName = "First Surname"
-        updateCustomFields(context, third, ["Test":"Third"], ContactCustomField)
+        updateCustomFields(cayenneContext, third, ["Test": "Third"], ContactCustomField)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
-        List<CustomField> customFields = ObjectSelect.query(CustomField).orderBy(CustomField.ID.asc()).select(context)
-        assertEquals("Just three custom fields should be added", 3, customFields.size())
+        List<CustomField> customFields = ObjectSelect.query(CustomField).orderBy(CustomField.ID.asc()).select(cayenneContext)
+        Assertions.assertEquals(3, customFields.size(), "Just three custom fields should be added")
 
-        assertNotNull(customFields[0].relatedObject)
-        assertEquals("First", customFields.find { first.id == it.relatedObject.id }.value)
+        Assertions.assertNotNull(customFields[0].relatedObject)
+        Assertions.assertEquals("First", customFields.find { first.id == it.relatedObject.id }.value)
 
-        assertNotNull(customFields[1].relatedObject)
-        assertEquals("Second", customFields.find { second.id == it.relatedObject.id }.value)
+        Assertions.assertNotNull(customFields[1].relatedObject)
+        Assertions.assertEquals("Second", customFields.find { second.id == it.relatedObject.id }.value)
 
-        assertNotNull(customFields[2].relatedObject)
-        assertEquals("Third", customFields.find { third.id == it.relatedObject.id }.value)
+        Assertions.assertNotNull(customFields[2].relatedObject)
+        Assertions.assertEquals("Third", customFields.find { third.id == it.relatedObject.id }.value)
     }
 
 

@@ -15,7 +15,7 @@ import { EpicCheckoutGetProduct } from "./item/EpicCheckoutGetProduct";
 import { EpicCheckoutGetVoucher } from "./item/EpicCheckoutGetVoucher";
 import { EpicCheckoutGetActivePaymentTypes } from "./payment/EpicCheckoutGetActivePaymentTypes";
 import { EpicCheckoutGetPaymentStatusDetails } from "./payment/EpicCheckoutGetPaymentStatusDetails";
-import { EpicCheckoutProcessCcPayment } from "./payment/EpicCheckoutProcessCcPayment";
+import { EpicCheckoutProcessPayment } from "./payment/EpicCheckoutProcessPayment";
 import { EpicCheckoutGetSavedCard } from "./payment/EpicCheckoutGetSavedCard";
 import { EpicCheckoutGetPromoCode } from "./summary/EpicCheckoutGetPromoCode";
 import { EpicUpdateClassesDiscounts } from "./summary/EpicUpdateClassesDiscounts";
@@ -26,6 +26,7 @@ import { EpicCheckoutGetVoucherToRedeem } from "./summary/EpicCheckoutGetVoucher
 import { EpicGetVoucherRedeemer } from "./summary/EpicGetVoucherRedeemer";
 import { EpicCheckoutGetClassPaymentPlans } from "./item/EpicCheckoutGetClassPaymentPlans";
 import { EpicGetItemRelations } from "./item/EpicGetItemRelations";
+import { EpicGetPreviousCredit } from "./summary/EpicGetPreviousCredit";
 
 export const EpicCheckout = combineEpics(
   EpicGetItemRelations,
@@ -39,7 +40,7 @@ export const EpicCheckout = combineEpics(
   EpicCheckoutGetProduct,
   EpicCheckoutGetVoucher,
   EpicCheckoutGetActivePaymentTypes,
-  EpicCheckoutProcessCcPayment,
+  EpicCheckoutProcessPayment,
   EpicCheckoutGetPromoCode,
   EpicCheckoutGetRelatedContacts,
   EpicGetCourseClassList,
@@ -47,6 +48,7 @@ export const EpicCheckout = combineEpics(
   EpicCheckoutGetPaymentStatusDetails,
   EpicUpdateSummaryPrices,
   EpicGetPreviousOwing,
+  EpicGetPreviousCredit,
   EpicCheckoutGetVoucherToRedeem,
   EpicGetVoucherRedeemer,
   EpicTriggerFundingInvoiceCalculate

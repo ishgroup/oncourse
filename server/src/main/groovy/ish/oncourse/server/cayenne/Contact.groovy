@@ -28,6 +28,8 @@ import ish.util.SecurityUtil
 import ish.validation.AngelContactValidator
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
+import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.BeanValidationFailure
 import org.apache.cayenne.validation.ValidationResult
 import org.apache.commons.lang3.StringUtils
@@ -648,7 +650,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	 */
 	@Nonnull
 	@Override
-	// TODO: not sure what it is used for, but this definitely shouldn't be in the public API
 	List<ContactDuplicate> getContactDuplicate() {
 		return super.getContactDuplicate()
 	}
@@ -682,16 +683,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	@Override
 	List<ContactCustomField> getCustomFields() {
 		return super.getCustomFields()
-	}
-
-	/**
-	 * @return contact records which have relationship to this contact
-	 */
-	@Nonnull
-	@API
-	@Override
-	List<ContactRelation> getFromContacts() {
-		return super.getFromContacts()
 	}
 
 	/**
@@ -778,13 +769,27 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	}
 
 	/**
-	 * @return contact records which this are related from this contact
+	 * @return all contacts related to this one
 	 */
 	@Nonnull
 	@API
-	@Override
-	List<ContactRelation> getToContacts() {
-		return super.getToContacts()
+	List<Contact> getRelatedContacts() {
+		return super.getToContacts()*.getToContact() +
+				super.getFromContacts()*.getFromContact()
+	}
+
+	/**
+	 * Get all related contacts with a specific relationship type name
+	 * @param relationName (eg. 'parent')
+	 * @return
+	 */
+	@Nonnull
+	@API
+	List<Contact> getRelatedContacts(String relationName) {
+		def toContacts = super.getToContacts().findAll { it.relationType.fromContactName == relationName }
+		def fromContacts = super.getFromContacts().findAll { it.relationType.toContactName == relationName }
+
+		return toContacts*.getToContact() + fromContacts*.getFromContact()
 	}
 
 	/**

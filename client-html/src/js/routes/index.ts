@@ -48,6 +48,7 @@ import DiscountApp from "../containers/entities/discounts/index";
 import DocumentsApp from "../containers/entities/documents/index";
 import OutcomeApp from "../containers/entities/outcomes/index";
 import AssessmentApp from "../containers/entities/assessments/index";
+import AssessmentSubmissionApp from "../containers/entities/assessmentSubmissions/index";
 import EnrolmentApp from "../containers/entities/enrolments/index";
 import PriorLearningApp from "../containers/entities/priorLearnings/index";
 import MessageApp from "../containers/entities/messages/index";
@@ -94,13 +95,21 @@ export interface RouteGroup {
   routes: MainRoute[];
 }
 
-export const loginRoute: MainRoute = {
-  title: "Login",
-  path: "/login/:condition?/:subcondition?",
-  url: "/login",
-  main: LoginApp,
-  group: "Common"
-};
+export const loginRoute: MainRoute[] = [
+  {
+    title: "Login",
+    path: "/login/:condition?/:subcondition?",
+    url: "/login",
+    main: LoginApp,
+    group: "Common"
+  }, {
+    title: "Login",
+    path: "/invite/:token",
+    url: "/invite",
+    main: LoginApp,
+    group: "Common"
+  },
+];
 
 export const routes: MainRoute[] = [
   // Activity
@@ -137,6 +146,13 @@ export const routes: MainRoute[] = [
     path: "/assessment/:id?",
     url: "/assessment",
     main: AssessmentApp,
+    group: "Activity"
+  },
+  {
+    title: "Assessment submissions",
+    path: "/assessmentSubmission/:id?",
+    url: "/assessmentSubmission",
+    main: AssessmentSubmissionApp,
     group: "Activity"
   },
   {
@@ -564,7 +580,19 @@ export const routes: MainRoute[] = [
     main: NotFound,
     group: "Common"
   },
-  loginRoute
+  {
+    title: "Login",
+    path: "/login/:condition?/:subcondition?",
+    url: "/login",
+    main: LoginApp,
+    group: "Common"
+  }, {
+    title: "Login",
+    path: "/invite/:token",
+    url: "/invite",
+    main: LoginApp,
+    group: "Common"
+  },
 ];
 
 if (process.env.NODE_ENV === EnvironmentConstants.development) {

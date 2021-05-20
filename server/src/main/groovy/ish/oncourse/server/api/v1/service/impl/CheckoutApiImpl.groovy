@@ -17,14 +17,17 @@ import ish.common.types.EntityRelationCartAction
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.EntityRelationDao
+import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.v1.model.CheckoutSaleRelationDTO
 import ish.oncourse.server.api.v1.model.EntityRelationCartActionDTO
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.cayenne.Course
+import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
+import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.cayenne.Product
 import org.apache.commons.lang3.StringUtils
 
@@ -40,7 +43,6 @@ import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.checkout.CheckoutController
 import ish.oncourse.server.api.dao.FundingSourceDao
 import ish.oncourse.server.api.dao.PaymentInDao
-import ish.oncourse.server.api.function.CayenneFunctions
 import ish.oncourse.server.api.service.ArticleProductApiService
 import ish.oncourse.server.api.service.ContactApiService
 import ish.oncourse.server.api.service.CourseClassApiService
@@ -63,7 +65,6 @@ import ish.oncourse.server.api.v1.service.CheckoutApi
 import ish.oncourse.server.cayenne.Article
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Discount
 import ish.oncourse.server.cayenne.DiscountCourseClass
 import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.MembershipProduct
@@ -107,6 +108,9 @@ class CheckoutApiImpl implements CheckoutApi {
     
     @Inject
     ProductDao productDao
+
+    @Inject
+    ModuleDao moduleDao
     
     @Inject
     PreferenceController preferenceController
@@ -154,18 +158,23 @@ class CheckoutApiImpl implements CheckoutApi {
     PaymentInDao paymentInDao
 
     @Override
-    List<CourseClassDiscountDTO> getContactDiscounts(Long contactId, Long classId, String promoIds, String membershipIds, Integer enrolmentsCount, BigDecimal purchaseTotal) {
+    List<CourseClassDiscountDTO> getContactDiscounts(Long contactId, Long classId,
+                                                     String courseIds, String productIds, String promoIds, String membershipIds,
+                                                     Integer enrolmentsCount, BigDecimal purchaseTotal) {
         ObjectContext context = cayenneService.newContext
         CourseClass courseClass = courseClassService.getEntityAndValidateExistence(context, classId)
         Contact contact = contactApiService.getEntityAndValidateExistence(context, contactId)
         if (contact.isCompany) {
             return []
         }
-        List<Discount> promos = promoIds == null || promoIds.empty ? [] : promoIds.split(',').collect { CayenneFunctions.getRecordById(context, Discount, Long.valueOf(it))}
-        List<MembershipProduct> memberships = membershipIds == null || membershipIds.empty ? [] : membershipIds.split(',').collect { membershipApiService.getEntityAndValidateExistence(context,Long.valueOf(it)) }
+        List<Long> courses = courseIds == null || courseIds.empty ? [] : courseIds.split(',').collect { Long.valueOf(it) }
+        List<Long> products = productIds == null || productIds.empty ? [] : productIds.split(',').collect { Long.valueOf(it) }
+        List<Long> promos = promoIds == null || promoIds.empty ? [] : promoIds.split(',').collect { Long.valueOf(it)}
+        List<MembershipProduct> memberships = membershipIds == null || membershipIds.empty ? [] :
+                membershipIds.split(',').collect { membershipApiService.getEntityAndValidateExistence(context,Long.valueOf(it)) }
         Money total = new Money(purchaseTotal)
 
-        List<DiscountCourseClass> discountCourseClasses = courseClass.getAvalibleDiscounts(contact, promos, memberships, enrolmentsCount, total)
+        List<DiscountCourseClass> discountCourseClasses = courseClass.getAvalibleDiscounts(contact, courses, products, promos, memberships, enrolmentsCount, total)
 
         if (discountCourseClasses.empty) {
             return []
@@ -496,7 +505,7 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     private CheckoutController getCheckoutController() {
-        new CheckoutController(cayenneService, systemUserService, contactApiService, invoiceApiService, courseClassApiService,  membershipApiService,  voucherApiService,  articleApiService, fundingSourceDao)
+        new CheckoutController(cayenneService, systemUserService, contactApiService, invoiceApiService, courseClassApiService,  membershipApiService,  voucherApiService,  articleApiService, fundingSourceDao, moduleDao)
     }
 
 }

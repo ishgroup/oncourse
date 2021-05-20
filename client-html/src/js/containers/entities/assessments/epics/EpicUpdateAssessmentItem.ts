@@ -15,7 +15,7 @@ import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/act
 import AssessmentService from "../services/AssessmentService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { id: number; assessment: Assessment & { notes: any } }> = {
+const request: EpicUtils.Request<any, { id: number; assessment: Assessment & { notes: any } }> = {
   type: UPDATE_ASSESSMENT_ITEM,
   getData: ({ id, assessment }) => {
     delete assessment.notes;
@@ -34,10 +34,10 @@ const request: EpicUtils.Request<any, any, { id: number; assessment: Assessment 
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Assessment", listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_ASSESSMENT_ITEM,
         payload: id
-      }
+      }] : []
     ],
   processError: (response, { assessment }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, assessment)]
 };

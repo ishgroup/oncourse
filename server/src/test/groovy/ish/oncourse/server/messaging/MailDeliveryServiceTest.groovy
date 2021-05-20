@@ -1,18 +1,18 @@
 package ish.oncourse.server.messaging
 
-import ish.oncourse.server.PreferenceController
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.MessagePerson
-import org.junit.Before
-import org.junit.Ignore
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
 import javax.mail.MessagingException
-
 /**
  * Manual test of sending email through our implementation
  */
+@CompileStatic
 class MailDeliveryServiceTest {
 
     //need to set all these parameters(could be extended with additional parameters)
@@ -39,20 +39,18 @@ class MailDeliveryServiceTest {
     //------------------------------------------------------------------------------
 
 
-
     private MailDeliveryService service
     private MailDeliveryParam param
 
-    @Before
+    @BeforeEach
     void setup() throws Exception {
-        PreferenceController controller = Mockito.mock(PreferenceController)
-        Mockito.when(controller.emailSMTPHost).thenReturn(SMTP_HOST)
-        Mockito.when(controller.SMTPUsername).thenReturn(SMTP_USERNAME)
-        Mockito.when(controller.SMTPPassword).thenReturn(SMTP_PASSWORD)
-        Mockito.when(controller.SMTPStartTLS).thenReturn(SMTP_START_TLS)
-        Mockito.when(controller.SMTPPort).thenReturn(SMTP_PORT)
-        MailSession mailSession = new MailSession(controller)
-        service = new MailDeliveryService(controller, mailSession, ANGEL_VERSION)
+        SMTPService smtpService = Mockito.mock(SMTPService)
+        Mockito.when(smtpService.host).thenReturn(SMTP_HOST)
+        Mockito.when(smtpService.userName).thenReturn(SMTP_USERNAME)
+        Mockito.when(smtpService.password).thenReturn(SMTP_PASSWORD)
+        Mockito.when(smtpService.port).thenReturn(SMTP_PORT)
+        MailSession mailSession = new MailSession(smtpService)
+        service = new MailDeliveryService(smtpService, mailSession, ANGEL_VERSION)
         fillTestParameters()
     }
 
@@ -75,7 +73,7 @@ class MailDeliveryServiceTest {
         param = MailDeliveryParam.valueOf(getFrom, getEnvelopeFrom, getAddressesTO, getAddressesCC, getAddressesBCC, getSubject, getContent)
     }
 
-    @Ignore
+    @Disabled
     @Test
     void testSendEmail() throws MessagingException {
         service.sendEmail(param)

@@ -11,7 +11,7 @@ import { FETCH_SUCCESS } from "../../../../../common/actions";
 import { CREATE_DATA_COLLECTION_FORM_FULFILLED, CREATE_DATA_COLLECTION_FORM_REQUEST } from "../../../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: CREATE_DATA_COLLECTION_FORM_REQUEST,
   getData: payload => PreferencesService.createDataCollectionForm(payload.form),
   retrieveData: () => PreferencesService.getDataCollectionForms(),

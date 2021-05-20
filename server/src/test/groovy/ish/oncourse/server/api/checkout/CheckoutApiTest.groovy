@@ -5,6 +5,9 @@
 
 package ish.oncourse.server.api.checkout
 
+import groovy.transform.CompileStatic
+
+@CompileStatic
 class CheckoutApiTest {
 
 

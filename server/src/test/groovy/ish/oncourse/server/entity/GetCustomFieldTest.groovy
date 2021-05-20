@@ -1,31 +1,18 @@
 package ish.oncourse.server.entity
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.AccountType
 import ish.common.types.CourseClassAttendanceType
-import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.ContactCustomField
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassCustomField
-import ish.oncourse.server.cayenne.CourseCustomField
-import ish.oncourse.server.cayenne.CustomField
-import ish.oncourse.server.cayenne.CustomFieldType
-import ish.oncourse.server.cayenne.ExpandableTrait
-import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.Tax
-import static junit.framework.TestCase.assertNull
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
-import org.junit.After
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
 @CompileStatic
-class GetCustomFieldTest extends CayenneIshTestCase {
+@DatabaseSetup
+class GetCustomFieldTest extends TestWithDatabase {
     private static final String SOME_STRING = "someString"
     private static final String CONTACT_FIELD_NAME = "Contact field"
     private static final String CONTACT_FIELD_KEY = "ContactField"
@@ -41,53 +28,44 @@ class GetCustomFieldTest extends CayenneIshTestCase {
     private static final String DEFAULT_FIELD_VALUE = "default"
     private static final String NULL_FIELD_NAME = "Null field"
     private static final String NULL_FIELD_KEY = "nullField"
-    
-    @Before
-    void before(){
-        wipeTables()
-    }
-    
+
     @Test
-    void testCustomField(){
-        ObjectContext context = injector.getInstance(ICayenneService).newNonReplicatingContext
+    void testCustomField() {
+        Account account = createAccount(cayenneContext)
+        cayenneContext.commitChanges()
+        Tax tax = createTax(cayenneContext, account)
+        cayenneContext.commitChanges()
 
-        Account account = createAccount(context)
-        context.commitChanges()
-        Tax tax = createTax(context, account)
-        context.commitChanges()
+        Contact contact = createContact(cayenneContext)
+        CustomFieldType contactFieldType = createCustomFieldType(CONTACT_FIELD_NAME, CONTACT_FIELD_KEY, Contact.simpleName, cayenneContext)
+        createCustomField(CONTACT_FIELD_VALUE, contactFieldType, ContactCustomField, contact, cayenneContext)
 
-        Contact contact = createContact(context)
-        CustomFieldType contactFieldType = createCustomFieldType(CONTACT_FIELD_NAME, CONTACT_FIELD_KEY, Contact.simpleName, context)
-        createCustomField(CONTACT_FIELD_VALUE, contactFieldType, ContactCustomField, contact, context)
+        Course course = createCourse(cayenneContext)
+        CustomFieldType courseFieldType = createCustomFieldType(COURSE_FIELD_NAME, COURSE_FIELD_KEY, Course.simpleName, cayenneContext)
+        createCustomField(COURSE_FIELD_VALUE, courseFieldType, CourseCustomField, course, cayenneContext)
 
-        Course course = createCourse(context)
-        CustomFieldType courseFieldType = createCustomFieldType(COURSE_FIELD_NAME, COURSE_FIELD_KEY, Course.simpleName, context)
-        createCustomField(COURSE_FIELD_VALUE, courseFieldType, CourseCustomField, course, context)
-
-        CourseClass courseClass = createCourseClass(context, account, tax)
+        CourseClass courseClass = createCourseClass(cayenneContext, account, tax)
         courseClass.course = course
-        CustomFieldType courseClassFieldType = createCustomFieldType(COURSE_CLASS_FIELD_NAME, COURSE_CLASS_FIELD_KEY, CourseClass.simpleName, context)
-        createCustomField(COURSE_CLASS_FIELD_VALUE, courseClassFieldType, CourseClassCustomField, courseClass, context)
+        CustomFieldType courseClassFieldType = createCustomFieldType(COURSE_CLASS_FIELD_NAME, COURSE_CLASS_FIELD_KEY, CourseClass.simpleName, cayenneContext)
+        createCustomField(COURSE_CLASS_FIELD_VALUE, courseClassFieldType, CourseClassCustomField, courseClass, cayenneContext)
 
-        createCustomFieldType(DEFAULT_FIELD_NAME, DEFAULT_FIELD_KEY, Contact.simpleName, DEFAULT_FIELD_VALUE, context)
-        createCustomFieldType(NULL_FIELD_NAME, NULL_FIELD_KEY, Contact.simpleName, context)
-        
-        context.commitChanges()
+        createCustomFieldType(DEFAULT_FIELD_NAME, DEFAULT_FIELD_KEY, Contact.simpleName, DEFAULT_FIELD_VALUE, cayenneContext)
+        createCustomFieldType(NULL_FIELD_NAME, NULL_FIELD_KEY, Contact.simpleName, cayenneContext)
 
-        assertNull("contact use, customField with expected name exists", course.customField(CONTACT_FIELD_NAME))
-        assertEquals("course use, customField with expected name exists", COURSE_FIELD_VALUE, course.customField(COURSE_FIELD_NAME))
-        assertEquals("course class use, customField with expected name exists", COURSE_CLASS_FIELD_VALUE, courseClass.customField(COURSE_CLASS_FIELD_NAME))
-        assertEquals("Trying to find contact by KEY", CONTACT_FIELD_VALUE, contact.customField(CONTACT_FIELD_KEY))
-        assertEquals("Trying to find contact by KEY", COURSE_CLASS_FIELD_VALUE, courseClass.customField(COURSE_CLASS_FIELD_KEY))
-        assertNull("Trying to find CourseCustomField in CONTACT", contact.customField(COURSE_FIELD_NAME))
-        assertNull("Trying to find CourseClassCustomField in CONTACT", contact.customField(COURSE_CLASS_FIELD_NAME))
-        assertNull("Trying to find mandatory ContactCustomField in COURSE", course.customField(DEFAULT_FIELD_NAME))
-        assertNull("ContactCustomField doesn't relate with contact and is optional", contact.customField(NULL_FIELD_NAME))
-        assertNull("CourseClassCustomField doesn't relate with course and is optional", courseClass.customField(NULL_FIELD_NAME))
-        assertNull("ContactCustomField doesn't relate with contact BUT is mandatory",  contact.customField(DEFAULT_FIELD_NAME))
-        assertNull("ContactCustomField doesn't exist", contact.customField("Non existing field"))
-        
-        //assertEquals("if there are customField with searchValue key and customField with searchValue name", "test value", ContactMixin.customField(contact, "Test field"))
+        cayenneContext.commitChanges()
+
+        Assertions.assertNull( course.customField(CONTACT_FIELD_NAME), "contact use, customField with expected name exists")
+        Assertions.assertEquals(COURSE_FIELD_VALUE, course.customField(COURSE_FIELD_NAME), "course use, customField with expected name exists", )
+        Assertions.assertEquals(COURSE_CLASS_FIELD_VALUE, courseClass.customField(COURSE_CLASS_FIELD_NAME), "course class use, customField with expected name exists", )
+        Assertions.assertEquals(CONTACT_FIELD_VALUE, contact.customField(CONTACT_FIELD_KEY), "Trying to find contact by KEY")
+        Assertions.assertEquals(COURSE_CLASS_FIELD_VALUE, courseClass.customField(COURSE_CLASS_FIELD_KEY), "Trying to find contact by KEY")
+        Assertions.assertNull(contact.customField(COURSE_FIELD_NAME), "Trying to find CourseCustomField in CONTACT")
+        Assertions.assertNull(contact.customField(COURSE_CLASS_FIELD_NAME), "Trying to find CourseClassCustomField in CONTACT")
+        Assertions.assertNull(course.customField(DEFAULT_FIELD_NAME), "Trying to find mandatory ContactCustomField in COURSE")
+        Assertions.assertNull(contact.customField(NULL_FIELD_NAME), "ContactCustomField doesn't relate with contact and is optional")
+        Assertions.assertNull(courseClass.customField(NULL_FIELD_NAME), "CourseClassCustomField doesn't relate with course and is optional")
+        Assertions.assertNull(contact.customField(DEFAULT_FIELD_NAME), "ContactCustomField doesn't relate with contact BUT is mandatory")
+        Assertions.assertNull(contact.customField("Non existing field"), "ContactCustomField doesn't exist")
     }
     
     private static Contact createContact(ObjectContext context){
@@ -106,15 +84,16 @@ class GetCustomFieldTest extends CayenneIshTestCase {
         course.code = SOME_STRING
         course.name = SOME_STRING
         course.fieldConfigurationSchema = scheme
+        course.feeHelpClass = Boolean.FALSE
         
         course
     }
 
+    
     private static CourseClass createCourseClass(ObjectContext context, Account account, Tax tax) {
         CourseClass cc = context.newObject(CourseClass)
         cc.code = SOME_STRING
         cc.attendanceType = CourseClassAttendanceType.FULL_TIME_ATTENDANCE
-        cc.feeHelpClass = false
         cc.minimumPlaces = 2
         cc.maximumPlaces = 10
 
@@ -124,6 +103,7 @@ class GetCustomFieldTest extends CayenneIshTestCase {
         cc
     }
 
+    
     private static Account createAccount(ObjectContext context) {
         Account account = context.newObject(Account)
         account.accountCode = "ACC"
@@ -162,8 +142,4 @@ class GetCustomFieldTest extends CayenneIshTestCase {
         customField
     }
 
-    @After
-    void after(){
-        wipeTables()
-    }
 }

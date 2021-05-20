@@ -14,7 +14,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import SurveyService from "../services/SurveyService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_STUDENT_SURVEY_ITEM,
   getData: (id: number) => SurveyService.getSurveyItem(id),
   processData: (surveyItem: SurveyItem) => {

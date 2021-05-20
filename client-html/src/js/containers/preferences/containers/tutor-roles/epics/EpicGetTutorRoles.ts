@@ -5,14 +5,13 @@
 
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../../../common/services/EntityService";
 import { GET_TUTOR_ROLES_FULFILLED, GET_TUTOR_ROLES_REQUEST } from "../../../actions";
 import history from "../../../../../constants/History";
 import { getCustomColumnsMap } from "../../../../../common/utils/common";
 
-const request: EpicUtils.Request<any, State, { selectFirst: boolean; keyCodeToSelect: string; columns: string }> = {
+const request: EpicUtils.Request<any,  { selectFirst: boolean; keyCodeToSelect: string; columns: string }> = {
   type: GET_TUTOR_ROLES_REQUEST,
   getData: request =>
     EntityService.getPlainRecords(

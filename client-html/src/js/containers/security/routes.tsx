@@ -2,6 +2,7 @@ import Settings from "./containers/settings/Settings";
 import SecurityLevels from "./containers/security-levels/SecurityLevels";
 import UserRoles from "./containers/user-roles/UserRoles";
 import Users from "./containers/users/Users";
+import ApiTokens from "./containers/api-tokens/ApiTokens";
 
 const securityRoutes = [
   {
@@ -27,6 +28,12 @@ const securityRoutes = [
     url: "/security/users/:id?",
     noMenuLink: true,
     main: Users
+  },
+  {
+    path: "/security/api-tokens",
+    url: "/security/api-tokens",
+    noMenuLink: true,
+    main: ApiTokens
   }
 ];
 

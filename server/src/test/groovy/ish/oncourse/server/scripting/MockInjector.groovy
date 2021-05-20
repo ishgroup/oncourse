@@ -1,5 +1,7 @@
 package ish.oncourse.server.scripting
 
+
+import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
@@ -8,16 +10,15 @@ import ish.oncourse.server.export.ExportService
 import ish.oncourse.server.imports.ImportService
 import ish.oncourse.server.messaging.MessageService
 import ish.oncourse.server.print.PrintService
-import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.scripting.api.CollegePreferenceService
 import ish.oncourse.server.scripting.api.EmailService
 import ish.oncourse.server.scripting.api.TemplateService
+import ish.oncourse.server.services.ISchedulerService
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-/**
- * Created by akoiro on 7/04/2016.
- */
+
+@CompileStatic
 class MockInjector {
     @Mock
     BQRuntime injector
@@ -55,6 +56,7 @@ class MockInjector {
     @Mock
     TemplateService templateService
 
+    
     void init() {
         MockitoAnnotations.initMocks(this)
 
@@ -65,6 +67,5 @@ class MockInjector {
         Mockito.when(injector.getInstance(PrintService.class)).thenReturn(printService)
         Mockito.when(injector.getInstance(MessageService.class)).thenReturn(messageService)
         Mockito.when(injector.getInstance(DocumentService.class)).thenReturn(documentService)
-        Mockito.when()
     }
 }

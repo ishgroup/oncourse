@@ -79,6 +79,7 @@ interface Props {
   classes?: any;
   disableCollapse?: boolean;
   defaultCollapsed?: boolean;
+  ItemIconRenderer?: React.ReactNode;
 }
 
 const CollapseMenuListBase = React.memo<Props>(
@@ -96,7 +97,8 @@ const CollapseMenuListBase = React.memo<Props>(
       search, history, activeFiltersConditions, category
     },
     disableCollapse,
-    defaultCollapsed
+    defaultCollapsed,
+    ItemIconRenderer
   }) => {
     const [collapsed, setCollapsed] = useState<boolean>(defaultCollapsed || false);
     const [activeLink, setActiveLink] = useState<string>("");
@@ -222,6 +224,7 @@ const CollapseMenuListBase = React.memo<Props>(
                 handleOpenTooltip={handleOpenTooltip}
                 handleCloseTooltip={handleCloseTooltip}
                 openedTooltip={openedTooltip}
+                ItemIconRenderer={ItemIconRenderer}
                 ItemIcon={ItemIcon}
                 classes={classes}
               />

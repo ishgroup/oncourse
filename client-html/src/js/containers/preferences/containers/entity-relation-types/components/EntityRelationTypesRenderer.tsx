@@ -35,7 +35,7 @@ const renderEntityRelationTypes = props => {
         const field = fields.get(index);
 
         return (
-          <Card className="card" key={index}>
+          <Card id={`entity-relation-type-${index}`} className="card" key={index}>
             <Grid container spacing={2} className="relative">
               <Grid item xs={12}>
                 <Grid container spacing={2}>

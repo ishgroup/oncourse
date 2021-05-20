@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockOutcomes() {
   this.getOutcomes = () => this.outcomes;
@@ -17,20 +17,11 @@ export function mockOutcomes() {
       values: [l.nationalCode, l.course, "RCC granted (53)", "2018-04-17T12:18:05.000Z", "2018-04-17T12:18:05.000Z", "Online"]
     }));
 
-    const columns = [];
-
-    const response = { rows, columns } as any;
-
-    response.entity = "Outcome";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = rows.length;
-    response.search = null;
-    response.count = null;
-    response.sort = [];
-
-    return response;
+    return getEntityResponse({
+      entity: "Outcome",
+      rows,
+      plain: true
+    });
   };
 
   this.getOutcome = id => {
@@ -49,8 +40,12 @@ export function mockOutcomes() {
       hoursAttended: 1,
       purchasingContractIdentifier: "test purchasing contract identifier",
       fundingSourceState: "test funding source state",
-      specificProgramIdentifier: "test specific program identifier"
+      specificProgramIdentifier: "4561259787"
     };
+  };
+
+  this.removeOutcome = id => {
+    this.outcomes = removeItemByEntity(this.outcomes, id);
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -68,91 +63,60 @@ export function mockOutcomes() {
     values: [l.studentName, l.name, l.code, l.moduleCode, l.moduleName, l.status, l.startDate, l.endDate]
   }));
 
-  const columns = [
-    {
-      title: "Student Name",
-      attribute: "studentName",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Course",
-      attribute: "enrolment.courseClass.course.name",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Code",
-      attribute: "enrolment.courseClass.course.code",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "National Code",
-      attribute: "moduleCode",
-      sortable: true,
-      visible: true,
-      width: 120,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "UOC name",
-      attribute: "moduleName",
-      sortable: true,
-      visible: true,
-      width: 120,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Status",
-      attribute: "status",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Start Date",
-      attribute: "startDate",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "End Date",
-      attribute: "endDate",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: "Datetime",
-      sortFields: []
-    }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Outcome";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = null;
-  response.count = rows.length;
-  response.sort = [];
-
-  return response;
+  return getEntityResponse({
+    entity: "Outcome",
+    rows,
+    columns: [
+      {
+        title: "Student Name",
+        attribute: "studentName",
+        sortable: true,
+        width: 100
+      },
+      {
+        title: "Course",
+        attribute: "enrolment.courseClass.course.name",
+        sortable: true,
+        width: 100
+      },
+      {
+        title: "Code",
+        attribute: "enrolment.courseClass.course.code",
+        sortable: true,
+        width: 100
+      },
+      {
+        title: "National Code",
+        attribute: "moduleCode",
+        sortable: true,
+        width: 120
+      },
+      {
+        title: "UOC name",
+        attribute: "moduleName",
+        sortable: true,
+        width: 120
+      },
+      {
+        title: "Status",
+        attribute: "status",
+        sortable: true,
+        width: 100
+      },
+      {
+        title: "Start Date",
+        attribute: "startDate",
+        sortable: true,
+        width: 100,
+        type: "Datetime"
+      },
+      {
+        title: "End Date",
+        attribute: "endDate",
+        sortable: true,
+        width: 100,
+        type: "Datetime"
+      }
+    ]
+  });
 }

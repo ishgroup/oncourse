@@ -1,3 +1,4 @@
-id,createdOn,modifiedOn,Assessment code,Assessment name,Assessment description,Active
-1,24-7-2017 13:24:51,24-7-2017 13:26:58,test.assessment.101,Test Assessment Task,Description,true
-4,27-3-2020 17:59:03,3-4-2020 05:42:59,test.assessment.103,testAssessment,Description,false
+id,createdOn,modifiedOn,Assessment code,Assessment name,Assessment description,Active,Grading type
+1,24-7-2017 13:24:51,24-7-2017 13:26:58,test.assessment.101,Test Assessment Task,Description,true,Pass/Fail
+4,27-3-2020 17:59:03,3-4-2020 05:42:59,test.assessment.103,testAssessment,Description,false,Pass/Fail
+5,27-3-2020 17:59:03,3-4-2020 05:42:59,test.assessment.105,withoutGrading,Description,true,

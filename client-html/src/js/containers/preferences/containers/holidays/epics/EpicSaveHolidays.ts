@@ -11,7 +11,7 @@ import { FETCH_SUCCESS } from "../../../../../common/actions";
 import { SAVE_HOLIDAYS_FULFILLED, SAVE_HOLIDAYS_REQUEST } from "../../../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: SAVE_HOLIDAYS_REQUEST,
   getData: payload => PreferencesService.saveHolidays(payload.items),
   retrieveData: () => PreferencesService.getHolidays(),

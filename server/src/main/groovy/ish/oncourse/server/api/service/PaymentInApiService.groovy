@@ -81,7 +81,7 @@ class PaymentInApiService extends EntityApiService<PaymentInDTO, PaymentIn, Paym
             paymentInDTO.dateBanked = paymentIn.banking?.settlementDate
             paymentInDTO.ccSummary = getCCSummary(paymentIn).toList()
             paymentInDTO.chequeSummary = getChequeSummary(paymentIn)
-            paymentInDTO.createdBy = paymentIn.createdBy?.login
+            paymentInDTO.createdBy = paymentIn.createdBy?.email
             paymentInDTO.ccTransaction = paymentIn.getCreditCardClientReference()
             paymentInDTO.emailConfirmation = paymentIn.confirmationStatus == ConfirmationStatus.NOT_SENT || paymentIn.confirmationStatus == ConfirmationStatus.SENT
             paymentInDTO.invoices = paymentIn.paymentInLines.stream().map { PaymentInLine l ->

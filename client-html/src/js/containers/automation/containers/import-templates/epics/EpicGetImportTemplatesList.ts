@@ -5,16 +5,15 @@
 
 import { Epic } from "redux-observable";
 
+import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { GET_IMPORT_TEMPLATES_LIST, GET_IMPORT_TEMPLATES_LIST_FULFILLED } from "../actions/index";
-import { DataResponse } from "@api/model";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../../../common/services/EntityService";
 import history from "../../../../../constants/History";
 import { CommonListItem } from "../../../../../model/common/sidebar";
 
-const request: EpicUtils.Request<any, State, { selectFirst: boolean; keyCodeToSelect: string }> = {
+const request: EpicUtils.Request<any, { selectFirst: boolean; keyCodeToSelect: string }> = {
   type: GET_IMPORT_TEMPLATES_LIST,
   getData: () =>
     EntityService.getPlainRecords("Import", "name,keyCode,enabled", null, null, null, "name", true),

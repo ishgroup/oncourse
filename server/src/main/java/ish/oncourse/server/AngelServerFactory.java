@@ -16,47 +16,56 @@ import io.bootique.annotation.BQConfig;
 import ish.math.Country;
 import ish.math.CurrencyFormat;
 import ish.oncourse.common.ResourcesUtil;
-import ish.oncourse.server.cayenne.Site;
+import ish.oncourse.server.api.dao.UserDao;
 import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.db.SchemaUpdateService;
+import ish.oncourse.server.http.HttpFactory;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.EmailDequeueJob;
+import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.services.ISchedulerService;
+import ish.oncourse.server.services.*;
 import ish.oncourse.server.report.JRRuntimeConfig;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
-import ish.oncourse.server.services.BackupJob;
-import ish.oncourse.server.services.ChristmasThemeDisableJob;
-import ish.oncourse.server.services.ChristmasThemeEnableJob;
-import ish.oncourse.server.services.DelayedEnrolmentIncomePostingJob;
-import ish.oncourse.server.services.FundingContractUpdateJob;
-import ish.oncourse.server.services.InvoiceOverdueUpdateJob;
-import ish.oncourse.server.services.VoucherExpiryJob;
 import ish.persistence.Preferences;
-import ish.security.AuthenticationUtil;
 import ish.util.RuntimeUtil;
-import ish.util.SecurityUtil;
 import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.ObjectSelect;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.Random;
+import java.util.stream.Stream;
 
+import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToNewSystemUser;
 import static ish.oncourse.server.services.ISchedulerService.*;
 import static ish.persistence.Preferences.ACCOUNT_CURRENCY;
+import static ish.validation.ValidationUtil.isValidEmailAddress;
 
 
 @BQConfig
 public class AngelServerFactory {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AngelServerFactory.class);
 
+    private static final Logger LOGGER =  LogManager.getLogger();
+
+    public final static String TXT_SYSTEM_USERS_FILE = "createAdminUsers.txt";
+    public final static String CSV_SYSTEM_USERS_FILE = "createAdminUsers.csv";
     public static boolean QUIT_SIGNAL_CAUGHT = false;
                // specify if repliation in debug mode
 
@@ -104,7 +113,9 @@ public class AngelServerFactory {
                       Scheduler scheduler, RegisterMBean registerMBean,
                       LicenseService licenseService,
                       CayenneService cayenneService,
-                      PluginService pluginService) {
+                      PluginService pluginService,
+                      MailDeliveryService mailDeliveryService,
+                      HttpFactory httpFactory) {
         try {
 
             // Create DB schema
@@ -113,16 +124,15 @@ public class AngelServerFactory {
 
             LOGGER.warn("Upgrade data");
             schemaUpdateService.upgradeData();
+            createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(), httpFactory.getIp(), httpFactory.getPort(), prefController, mailDeliveryService);
 
-            if (licenseService.isAdmin_password_reset()) {
-                resetAdminPassword(cayenneService.getNewContext());
-            }
-
-            
         } catch (Throwable e) {
+            LOGGER.catching(e);
+            LOGGER.error("Server start failed on basic level, aborting startup of other services");
             // total failure, some of the essential services cannot be
             // started
             throw new RuntimeException("Server start failed on basic level, aborting startup of other services", e);
+            
         }
 
         // only if no fail until now start the background cron-like tasks
@@ -135,13 +145,6 @@ public class AngelServerFactory {
             // email hander (every minute)
             schedulerService.scheduleCronJob(EmailDequeueJob.class, EMAIL_DEQUEUEING_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
                     EMAIL_DEQUEUEING_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
-
-            // scheduling backup job only for derby
-            if (Preferences.DATABASE_USED_DERBY.equals(prefController.getDatabaseUsed())) {
-                // backup service (every hour)
-                schedulerService.scheduleCronJob(BackupJob.class, BACKUP_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
-                        BACKUP_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
-            }
 
             // job responsible for GL transfers for delayed income feature
             schedulerService.scheduleCronJob(DelayedEnrolmentIncomePostingJob.class,
@@ -163,6 +166,12 @@ public class AngelServerFactory {
                     INVOICE_OVERDUE_UPDATE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
                     randomSchedule, prefController.getOncourseServerDefaultTimezone(),
                     true, false);
+
+            //between 2:00am and 2:59am
+            randomSchedule = String.format(AUDIT_PURGE_JOB_CRON_SCHEDULE_TEMPLATE, random.nextInt(59));
+            schedulerService.scheduleCronJob(AuditPurgeJob.class, AUDIT_PURGE_JOB, BACKGROUND_JOBS_GROUP_ID,
+                    randomSchedule, prefController.getOncourseServerDefaultTimezone(),
+                    false, false);
 
             schedulerService.scheduleCronJob(FundingContractUpdateJob.class,
                     FUNDING_CONTRACT_JOB_ID,
@@ -189,6 +198,13 @@ public class AngelServerFactory {
             schedulerService.scheduleCronJob(ChristmasThemeDisableJob.class,
                     CHRISTMAS_THEME_DISABLE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
                     CHRISTMAS_THEME_DISABLE_JOB_INTERVAL,
+                    prefController.getOncourseServerDefaultTimezone(),
+                    false,
+                    false);
+
+            schedulerService.scheduleCronJob(PermanentlyDeleteDocumentsJob.class,
+                    PERMANENTLY_DELETE_DOCUMENTS_ID, BACKGROUND_JOBS_GROUP_ID,
+                    PERMANENTLY_DELETE_DOCUMENTS_INTERVAL,
                     prefController.getOncourseServerDefaultTimezone(),
                     false,
                     false);
@@ -225,38 +241,73 @@ public class AngelServerFactory {
         LOGGER.warn("Server ready");
     }
 
-    public void resetAdminPassword(DataContext context) {
-
-        var admin = ObjectSelect.query(SystemUser.class).
-                where(SystemUser.LOGIN.eq("admin")).
-                selectOne(context);
-
-        if (admin == null) {
-            admin = context.newObject(SystemUser.class);
-            admin.setCanEditCMS(true);
-            admin.setCanEditTara(true);
-            admin.setIsActive(true);
-            admin.setIsAdmin(true);
-            admin.setLogin("admin");
-            admin.setLastName("onCourse");
-            admin.setFirstName("Administrator");
-            admin.setDefaultAdministrationCentre(Site.getDefaultSite(context));
+    private void createSystemUsers(DataContext context, String collegeKey, String host, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
+        Path systemUsersFile = Paths.get(CSV_SYSTEM_USERS_FILE);
+        if (!systemUsersFile.toFile().exists()) {
+            systemUsersFile = Paths.get(TXT_SYSTEM_USERS_FILE);
         }
+        Stream<String> lines;
+        try {
+             lines = Files.lines(systemUsersFile);
+        } catch (NoSuchFileException ignored) {
+            LOGGER.warn("File with system users not found.");
+            return;
+        }
+        lines.forEach(line -> {
+            String[] lineData = line.split("(, )+|([ ,\t])+");
 
-        admin.setToken(null);
-        admin.setTokenScratchCodes(null);
+            if (lineData.length != 3) {
+                LOGGER.warn("Incorrect row format. User wasn't created.");
+                return;
+            }
+            String email = parseEmail(lineData[2]);
+            if (email == null) {
+                LOGGER.warn("Specified email for user {} is not valid.", line);
+                return;
+            }
+            SystemUser user = UserDao.getByEmail(context, email);
+            if (user != null) {
+                user.setPassword(null);
+                user.setPasswordLastChanged(null);
+                user.setLoginAttemptNumber(0);
+            } else {
+                user = UserDao.createSystemUser(context, Boolean.TRUE);
+                user.setEmail(email);
+            }
 
-        var password = SecurityUtil.generateRandomPassword(6);
-        admin.setPassword(AuthenticationUtil.generatePasswordHash(password));
-        context.commitChanges();
+            user.setFirstName(lineData[0]);
+            user.setLastName(lineData[1]);
 
-        LOGGER.warn("\n******************************************************************************************************************************\n" +
-                "Administrator password reset command found in onCourse.cfg \n" +
-                "********** Account with name \"admin\" now has password \"{}\" \n" +
-                "********** onCourse Server will now shut down. Remove the line starting \"admin_password_reset\" before restarting \n" +
-                "******************************************************************************************************************************\n", password);
+            try {
+                String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey, host, port);
+                user.setInvitationToken(invitationToken);
+                user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
+            } catch (MessagingException ex) {
+                LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", line);
+                return;
+            }
 
-        crashServer();
+            context.commitChanges();
+
+            LOGGER.warn("System user {} has been added successfully.", line);
+        });
+
+        if (systemUsersFile.toFile().delete()) {
+            LOGGER.warn("The file with system users has been deleted successfully!");
+        }
+    }
+
+    private String parseEmail(String specifiedEmail) {
+        if (specifiedEmail.startsWith("<")) {
+            specifiedEmail = specifiedEmail.substring(1);
+        }
+        if (specifiedEmail.endsWith(">")) {
+            specifiedEmail = specifiedEmail.substring(0, specifiedEmail.length()-1);
+        }
+        if (isValidEmailAddress(specifiedEmail)) {
+            return specifiedEmail;
+        }
+        return null;
     }
 
     private void initJRGroovyCompiler() {

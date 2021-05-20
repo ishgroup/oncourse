@@ -4,6 +4,8 @@
  */
 
 import { Epic } from "redux-observable";
+import { initialize, reset } from "redux-form";
+import { CourseClassDuplicate } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { FETCH_SUCCESS } from "../../../../common/actions/index";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
@@ -15,16 +17,13 @@ import {
   DUPLICATE_COURSE_CLASS_FULFILLED,
   setDuplicateCourseClassesSessions
 } from "../actions";
-import { initialize, reset } from "redux-form";
-import { CourseClassDuplicate } from "@api/model";
 import { DUPLICATE_COURSE_CLASS_FORM } from "../components/duplicate-courseClass/DuplicateCourseClassModal";
-import { State } from "../../../../reducers/state";
 
 let prevSessions;
 let prevEarliestSessionStart;
 let prevZeroWages;
 
-const request: EpicUtils.Request<any, State, { values: CourseClassDuplicate; onComplete?: any }> = {
+const request: EpicUtils.Request<any, { values: CourseClassDuplicate; onComplete?: any }> = {
   type: DUPLICATE_COURSE_CLASS,
   getData: (payload, s) => {
     prevSessions = s.courseClass.timetable.sessions;

@@ -146,16 +146,6 @@ public interface Preferences {
 	// **************************************
 	// Messaging
 	// **************************************
-
-	/**
-	 * Outgoing mail server address (SMTP)
-	 *
-	 * @param prefKey email.smtphost
-	 */
-	@API
-	String EMAIL_SMTPHOST = "email.smtphost";
-
-
 	/**
 	 * System administrator email address
 	 *
@@ -212,20 +202,6 @@ public interface Preferences {
 	@API
 	String SMS_FROM_ADDRESS = "sms.from";
 
-	/**
-	 * SMTP username
-	 *
-	 * @param prefKey smtp.username
-	 */
-	@API
-	String SMTP_USERNAME = "smtp.username";
-
-	String SMTP_PASSWORD = "smtp.password";
-
-	String SMTP_START_TLS = "mail.smtp.starttls.enable";
-
-	String SMTP_PORT = "mail.smtp.port";
-
 
 
 	// **************************************
@@ -275,7 +251,6 @@ public interface Preferences {
 	String LOGOUT_TIMEOUT = "logout.timeout";
 
 	String DATABASE_USED = "database.used";
-	String DATABASE_USED_DERBY = "database.derby";
 	String DATABASE_USED_MYSQL = "database.mysql";
 	String DATABASE_USED_MSSQL = "database.mssql";
 	String DATABASE_USED_POSTGRE = "database.postgre";
@@ -512,15 +487,6 @@ public interface Preferences {
 
 
 
-	// **************************************
-	// External storage preferences
-	// **************************************
-	String STORAGE_BUCKET_NAME = "storage.bucket";
-	String STORAGE_ACCESS_ID = "storage.access.id";
-	String STORAGE_ACCESS_KEY = "storage.access.key";
-
-
-
 
 	String AUSKEY_PASSWORD = "auskey.password";
 	String AUSKEY_CERTIFICATE = "auskey.certificate";
@@ -625,4 +591,12 @@ public interface Preferences {
 	 */
 	@API
 	String TFA_EXPIRY_PERIOD = "security.tfa.expiry.period";
+
+	/**
+	 * Automatically disable accounts after <x> incorrect login attempts. 5 by default
+	 *
+	 * @param prefKey security.number.login.attempts
+	 */
+	@API
+	String NUMBER_OF_LOGIN_ATTEMPTS = "security.number.login.attempts";
 }

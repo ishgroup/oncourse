@@ -7,13 +7,12 @@ import { ClassCost } from "@api/model";
 import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
-import { State } from "../../../../../../reducers/state";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../../common/components/list-view/constants";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import CourseClassCostService from "../services/ClassCostService";
 import { GET_COURSE_CLASS_COSTS } from "../actions";
 
-const request: EpicUtils.Request<ClassCost[], State, number> = {
+const request: EpicUtils.Request<ClassCost[], number> = {
   type: GET_COURSE_CLASS_COSTS,
   hideLoadIndicator: true,
   getData: id => CourseClassCostService.getCourseClassCosts(id),

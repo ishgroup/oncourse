@@ -11,10 +11,13 @@
 
 package ish.oncourse.server.cayenne
 
+import com.google.inject.Inject
 import ish.common.types.AttachmentInfoVisibility
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Document
+import ish.oncourse.server.document.DocumentService
+import ish.oncourse.server.license.LicenseService
 import org.apache.cayenne.query.Ordering
 
 import javax.annotation.Nonnull
@@ -32,6 +35,12 @@ class Document extends _Document implements DocumentTrait, Queueable {
 	public static final String LINK_PROPERTY = "link"
 	public static final String ACTIVE_PROPERTY = "active"
 	public static final String CURRENT_VERSION_PROPERTY = "currentVersion"
+
+	@Inject
+	private DocumentService documentService
+
+	@Inject
+	private LicenseService licenseService
 
 	@Override
 	protected void postAdd() {
@@ -172,6 +181,27 @@ class Document extends _Document implements DocumentTrait, Queueable {
 	@API
 	Boolean isActive() {
 		return !super.isRemoved
+	}
+
+	@API
+	/**
+	 * Generates URL to access file.
+	 *
+	 * for 'Public' documents it is static address taht can be acceassable in any time.
+	 * for non 'Public' documents generate signed link which can be used in next 10 minutes only
+	 */
+	String getLink() {
+		def s3Service = getS3ServiceInstance(documentService)
+		return s3Service != null ? s3Service.getFileUrl(getFileUUID(), getWebVisibility()) : ""
+	}
+
+	@API
+	/**
+	 * Generates local URL to document on onCourse if collegeKey is specified in onCourse.yml.
+	 */
+	String getLinkOnCourse() {
+		String collegeKey = licenseService.getCollege_key()
+		return collegeKey != null ? "https://${collegeKey}.cloud.oncourse.cc/document/${id}" : ""
 	}
 }
 

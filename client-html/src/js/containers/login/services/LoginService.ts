@@ -50,6 +50,14 @@ class LoginService {
   public updatePassword(value: string): Promise<LoginResponse> {
     return this.createCustomAPI("user").updatePassword(encodeURIComponent(value));
   }
+
+  public getEmailByToken(token: string): Promise<LoginResponse> {
+    return this.createCustomAPI("user").getUserEmailByInvitation(token);
+  }
+
+  public createPasswordByToken(token: string, password: string): Promise<LoginResponse> {
+    return this.createCustomAPI("user").createPassword(token, password);
+  }
 }
 
 export default new LoginService();

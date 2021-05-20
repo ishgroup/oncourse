@@ -14,7 +14,7 @@ import { Invoice } from "@api/model";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { formatToDateOnly } from "../../../../common/utils/dates/datesNormalizing";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DUPLICATE_AND_REVERSE_INVOICE_ITEM,
   getData: id => {
     return InvoiceService.getInvoice(id);

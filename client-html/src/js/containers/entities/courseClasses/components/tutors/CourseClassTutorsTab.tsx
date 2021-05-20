@@ -13,7 +13,7 @@ import {
 } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import { ClassCost, CourseClassTutor, DefinedTutorRole } from "@api/model";
-import uniqid from "uniqid";
+
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { ClassCostExtended, CourseClassExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { State } from "../../../../../reducers/state";
@@ -29,6 +29,7 @@ import { getTutorNameWarning, getTutorPayInitial, isTutorWageExist } from "./uti
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
 import { setCourseClassBudgetModalOpened } from "../../actions";
 import history from "../../../../../constants/History";
+import uniqid from "../../../../../common/utils/uniqid";
 
 export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {
   values?: CourseClassExtended;
@@ -96,8 +97,8 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
       (index: number, tutor: CourseClassTutorExtended, fields: WrappedFieldArrayProps["fields"]) => {
         const hasWages = isTutorWageExist(values.budget, tutor);
 
-        showConfirm(
-          () => {
+        showConfirm({
+          onConfirm: () => {
             const upadted = [...fields.getAll()];
             upadted.splice(index, 1);
 
@@ -114,9 +115,9 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
                     "budget",
                     values.budget.filter(
                       b => !(
-                          b.flowType === "Wages"
-                          && (tutor.id ? b.courseClassTutorId === tutor.id : b.temporaryTutorId === tutor.temporaryId)
-                        )
+                        b.flowType === "Wages"
+                        && (tutor.id ? b.courseClassTutorId === tutor.id : b.temporaryTutorId === tutor.temporaryId)
+                      )
                     )
                   )
                 );
@@ -136,11 +137,11 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
 
             onDeleteConfirm();
           },
-          hasWages
+          confirmMessage: hasWages
             ? `Wages for ${tutor.tutorName} will be removed too, do you really want to continue?`
             : "Tutor will be deleted permanently",
-          "Delete"
-        );
+          cancelButtonText: "Delete"
+        });
       },
       [expanded, values.budget && values.budget.length, values.sessions]
     );

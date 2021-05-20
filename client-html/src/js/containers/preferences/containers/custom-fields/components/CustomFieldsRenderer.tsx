@@ -4,13 +4,12 @@
  */
 
 import * as React from "react";
-import Card from "@material-ui/core/Card";
 import clsx from "clsx";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Button from "@material-ui/core/Button";
 import { change, Field } from "redux-form";
-import { FormControlLabel } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import {
+ FormControlLabel, Grid, Button, Collapse, Card
+} from "@material-ui/core";
 import DragIndicator from "@material-ui/icons/DragIndicator";
 import { CustomFieldType, DataType, EntityType } from "@api/model";
 import { CheckboxField, StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
@@ -19,7 +18,7 @@ import EditInPlaceField from "../../../../../common/components/form/form-fields/
 import EditInPlaceMoneyField from "../../../../../common/components/form/form-fields/EditInPlaceMoneyField";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import {
- validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray
+  validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray, validateRegex
 } from "../../../../../common/utils/validation";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import ListMapRenderer from "./ListMapRenderer";
@@ -78,14 +77,22 @@ const onDragEnd = (result, items, dispatch) => {
 
 const validateListMap = (value, dataType) => {
   let error;
-  const fields = JSON.parse(value);
+  let fields = [];
+
+  try {
+    fields = JSON.parse(value);
+  } catch (e) {
+    console.error(e);
+  }
 
   if (Array.isArray(fields)) {
     fields.forEach(f => {
       if (!f.value || (dataType === "Map" && !f.value.includes("*") && !f.label)) {
-        error = "Error";
+        error = "Options fields are invalid";
       }
     });
+  } else {
+    return "At least one option is required";
   }
 
   return error;
@@ -125,7 +132,6 @@ const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: str
       case "Money":
         return <EditInPlaceMoneyField {...props} />;
       case "URL":
-        return <EditInPlaceField {...props} />;
       case "Text":
       default:
         return <EditInPlaceField {...props} />;
@@ -180,8 +186,10 @@ const renderCustomFields = props => {
       <Droppable droppableId="droppableCustomFields">
         {provided => (
           <div ref={provided.innerRef} className={classes.container}>
-            {fields.map((item: CustomFieldType, index) => {
-              const field = fields.get(index);
+            {fields.map((item: string, index) => {
+              const field: CustomFieldType = fields.get(index);
+
+              const isListOrMap = ["List", "Map"].includes(field.dataType);
 
               const onDataTypeChange = () => {
                 dispatch(change(form, `${item}.defaultValue`, null));
@@ -190,7 +198,7 @@ const renderCustomFields = props => {
               return (
                 <Draggable key={index} draggableId={String(index + 1)} index={index}>
                   {provided => (
-                    <div key={index} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                    <div id={`custom-field-${index}`} key={index} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                       <Card className="card d-flex">
                         <div className="centeredFlex mr-2">
                           <DragIndicator className={clsx("dndActionIcon", classes.dragIcon)} />
@@ -277,23 +285,22 @@ const renderCustomFields = props => {
                                 />
 
                                 {field.dataType === "List" && (
-
-                                <FormControlLabel
-                                  className={classes.checkbox}
-                                  control={(
-                                    <StyledCheckbox
-                                      checked={field.defaultValue && field.defaultValue.includes("*")}
-                                      onChange={(e, checked) => onAddOther(index, checked)}
-                                      color="primary"
-                                    />
-                                  )}
-                                  label="Add 'other' option"
-                                />
+                                  <FormControlLabel
+                                    className={classes.checkbox}
+                                    control={(
+                                      <StyledCheckbox
+                                        checked={field.defaultValue && field.defaultValue.includes("*")}
+                                        onChange={(e, checked) => onAddOther(index, checked)}
+                                        color="primary"
+                                      />
+                                    )}
+                                    label="Add 'other' option"
+                                  />
                                 )}
                               </Grid>
 
                               <Grid item xs={5}>
-                                {["List", "Map"].includes(field.dataType) && (
+                                <Collapse in={isListOrMap} mountOnEnter unmountOnExit>
                                   <Field
                                     name={`${item}.defaultValue`}
                                     label="Default value"
@@ -303,7 +310,18 @@ const renderCustomFields = props => {
                                     classes={classes}
                                     validate={validateResolver}
                                   />
-                                )}
+                                </Collapse>
+                                <Collapse in={field.dataType === "Pattern text"} mountOnEnter unmountOnExit>
+                                  <FormField
+                                    type="text"
+                                    name={`${item}.pattern`}
+                                    label="Pattern"
+                                    disabled={field.id}
+                                    className={classes.field}
+                                    validate={validateRegex}
+                                    required
+                                  />
+                                </Collapse>
                               </Grid>
                             </Grid>
                           </Grid>
@@ -314,7 +332,6 @@ const renderCustomFields = props => {
                 </Draggable>
               );
             })}
-
             {provided.placeholder}
           </div>
         )}

@@ -174,6 +174,7 @@ const CourseClassGeneralTab = React.memo<Props>(
         name="courseId"
         selectValueMark="id"
         selectLabelMark="name"
+        aqlColumns="code,name,currentlyOffered,isShownOnWeb,reportableHours,nextAvailableCode"
         selectFilterCondition={courseFilterCondition}
         defaultDisplayValue={values && values.courseName}
         itemRenderer={CourseItemRenderer}

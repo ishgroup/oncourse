@@ -66,6 +66,8 @@ properties:
     type: number
   feeHelpAmount:
     type: number
+  feeHelpClass:
+    type: boolean
   invoicesCount:
     type: integer
   outcomesCount:
@@ -104,3 +106,11 @@ properties:
   modifiedOn:
     type: string
     format: date-time
+  assessments:
+    type: array
+    items:
+      $ref: "../Assessment.yaml"
+  submissions:
+    type: array
+    items:
+      $ref: "../AssessmentSubmission.yaml"

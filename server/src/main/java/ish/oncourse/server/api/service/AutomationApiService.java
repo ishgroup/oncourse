@@ -149,9 +149,6 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
 
         template.getVariables().forEach(var -> {
                 String value = variables.get(var.getName());
-                if (StringUtils.isBlank(value) && !validateOnly.get()) {
-                    EntityValidator.throwClientErrorException(null, String.format("%s variable value is mandatory", var.getLable()));
-                }
                 Object objValue = var.parseValue(value);
                 if (objValue != null || validateOnly.get()) {
 

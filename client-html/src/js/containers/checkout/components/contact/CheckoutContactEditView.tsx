@@ -19,6 +19,7 @@ import { formatRelationsBeforeSave, getDisabledSubmitCondition } from "../../../
 import { getContactName } from "../../../entities/contacts/utils";
 import { checkoutCreateContact, checkoutUpdateContact } from "../../actions/checkoutContact";
 import { AppBarTitle } from "../CheckoutSelection";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 
 export const CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME = "CheckoutContactEditForm";
 
@@ -27,7 +28,7 @@ interface Props extends Partial<InjectedFormProps> {
   values?: any;
   syncErrors?: any;
   dispatch?: Dispatch<any>;
-  showConfirm: any;
+  showConfirm: ShowConfirmCaller;
   openNestedEditView: any;
   onSave: (record, dispatch, formProps) => void;
   onContactSave?: (id: string, contact: Contact) => void;
@@ -144,9 +145,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    onContactSave: (id: string, contact: Contact) => dispatch(checkoutUpdateContact(id, contact)),
-    onContactCreate: (contact: Contact) => dispatch(checkoutCreateContact(contact))
-  });
+  onContactSave: (id: string, contact: Contact) => dispatch(checkoutUpdateContact(id, contact)),
+  onContactCreate: (contact: Contact) => dispatch(checkoutCreateContact(contact))
+});
 
 const CheckoutContactEditView = reduxForm({
   form: CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME,

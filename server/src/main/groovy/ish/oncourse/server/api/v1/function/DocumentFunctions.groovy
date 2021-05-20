@@ -13,13 +13,12 @@ package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.common.ResourcesUtil
+import ish.oncourse.server.api.dao.DocumentDao
 import ish.oncourse.server.api.v1.model.SearchItemDTO
-
-import static ish.oncourse.common.ResourcesUtil.hashFile
-import ish.oncourse.server.PreferenceController
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import ish.oncourse.server.document.DocumentService
+import ish.s3.AmazonS3Service
+import java.nio.file.Files
+import java.nio.file.Path
 import ish.oncourse.server.api.v1.model.DocumentAttachmentRelationDTO
 import ish.oncourse.server.api.v1.model.DocumentDTO
 import ish.oncourse.server.api.v1.model.DocumentVersionDTO
@@ -42,31 +41,34 @@ import ish.oncourse.server.cayenne.PriorLearning
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.SystemUser
-import ish.s3.S3Service
-import static ish.util.ImageHelper.generatePdfPreview
-import static ish.util.ImageHelper.generateThumbnail
-import static ish.util.ImageHelper.imageHeight
-import static ish.util.ImageHelper.imageWidth
-import static ish.util.ImageHelper.isImage
 import ish.util.LocalDateUtils
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToNull
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
+import static org.apache.commons.lang3.StringUtils.isBlank
+import static org.apache.commons.lang3.StringUtils.trimToNull
+import static ish.util.ImageHelper.generatePdfPreview
+import static ish.util.ImageHelper.generateThumbnail
+import static ish.util.ImageHelper.imageHeight
+import static ish.util.ImageHelper.imageWidth
+import static ish.util.ImageHelper.isImage
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static ish.util.Constants.BILLING_APP_LINK
+
 @CompileStatic
 class DocumentFunctions {
 
     private static final Logger logger = LogManager.getLogger(DocumentFunctions)
 
-    static DocumentDTO toRestDocument(Document dbDocument, Long versionId, PreferenceController preferenceController) {
+    static DocumentDTO toRestDocument(Document dbDocument, Long versionId, DocumentService documentService) {
         new DocumentDTO().with { document ->
             document.id = dbDocument.id
             document.name = dbDocument.name
@@ -76,9 +78,9 @@ class DocumentFunctions {
 
             DocumentVersion dbVersion = versionId ? dbDocument.versions.find { it.id == versionId } : dbDocument.versions.max{ v1, v2 -> v1.timestamp.compareTo(v2.timestamp)}
             document.thumbnail = dbVersion.thumbnail
-            S3Service s3Service
-            if (preferenceController.usingExternalStorage) {
-                s3Service = new S3Service(preferenceController)
+            AmazonS3Service s3Service
+            if (documentService.usingExternalStorage) {
+                s3Service = new AmazonS3Service(documentService)
             }
             document.versions = dbDocument.versions.collect { toRestDocumentVersion(it, s3Service) }.sort { it.added }.reverse()
 
@@ -93,7 +95,7 @@ class DocumentFunctions {
         }
     }
 
-    static DocumentDTO toRestDocumentMinimized(Document dbDocument, Long versionId, PreferenceController preferenceController) {
+    static DocumentDTO toRestDocumentMinimized(Document dbDocument, Long versionId, DocumentService documentService) {
         new DocumentDTO().with { document ->
             document.id = dbDocument.id
             document.name = dbDocument.name
@@ -102,16 +104,16 @@ class DocumentFunctions {
             document.access = DocumentVisibilityDTO.values()[0].fromDbType(dbDocument.webVisibility)
             document.shared = dbDocument.isShared
             document.removed = dbDocument.isRemoved
-            S3Service s3Service = null
-            if (preferenceController.usingExternalStorage) {
-                s3Service = new S3Service(preferenceController)
+            AmazonS3Service s3Service = null
+            if (documentService.usingExternalStorage) {
+                s3Service = new AmazonS3Service(documentService)
             }
             document.versions = dbDocument.versions.collect { toRestDocumentVersionMinimized(it, s3Service) }.sort {it.added}.reverse()
             document
         }
     }
 
-    static DocumentVersionDTO toRestDocumentVersion(DocumentVersion dbDocumentVersion, S3Service s3Service = null) {
+    static DocumentVersionDTO toRestDocumentVersion(DocumentVersion dbDocumentVersion, AmazonS3Service s3Service = null) {
         new DocumentVersionDTO().with { dv ->
             dv.id = dbDocumentVersion.id
             dv.added = LocalDateUtils.dateToTimeValue(dbDocumentVersion.timestamp)
@@ -121,20 +123,20 @@ class DocumentFunctions {
             dv.fileName = dbDocumentVersion.fileName
             dv.thumbnail = dbDocumentVersion.thumbnail
             if (s3Service) {
-                dv.url = s3Service.getFileUrl(dbDocumentVersion.document.fileUUID, dbDocumentVersion.document.webVisibility, dbDocumentVersion.versionId)
+                dv.url = s3Service.getFileUrl(dbDocumentVersion.document.fileUUID, dbDocumentVersion.versionId, dbDocumentVersion.document.webVisibility)
             }
             dv
         }
     }
 
-    static DocumentVersionDTO toRestDocumentVersionMinimized(DocumentVersion dbDocumentVersion, S3Service s3Service = null) {
+    static DocumentVersionDTO toRestDocumentVersionMinimized(DocumentVersion dbDocumentVersion, AmazonS3Service s3Service = null) {
         new DocumentVersionDTO().with { dv ->
             dv.id = dbDocumentVersion.id
             dv.added = LocalDateUtils.dateToTimeValue(dbDocumentVersion.timestamp)
             dv.size = getDisplayableSize(dbDocumentVersion.byteSize)
             dv.thumbnail = dbDocumentVersion.thumbnail
             if (s3Service) {
-                dv.url = s3Service.getFileUrl(dbDocumentVersion.document.fileUUID, dbDocumentVersion.document.webVisibility, dbDocumentVersion.versionId)
+                dv.url = s3Service.getFileUrl(dbDocumentVersion.document.fileUUID, dbDocumentVersion.versionId, dbDocumentVersion.document.webVisibility)
             }
             dv
         }
@@ -173,14 +175,14 @@ class DocumentFunctions {
         dbDocument
     }
 
-    static DocumentVersion createDocumentVersion(Document document, byte[] content, String filename, ObjectContext context, PreferenceController preferenceController, SystemUser user) {
+    static DocumentVersion createDocumentVersion(Document document, byte[] content, String filename, ObjectContext context, DocumentService documentService, SystemUser user) {
         Date timestamp = new Date()
         String hash  = SecurityUtil.hashByteArray(content)
         DocumentVersion version = context.newObject(DocumentVersion)
         version.document = document
         version.hash = hash
         version.byteSize = content.length as Long
-        version.mimeType = ResourcesUtil.getMimeType(filename)
+        version.mimeType = Files.probeContentType(Path.of(filename))
         version.timestamp = timestamp
         version.fileName = trimToNull(filename)
         version.createdByUser = context.localObject(user)
@@ -197,9 +199,9 @@ class DocumentFunctions {
             version.thumbnail = generatePdfPreview(content)
         }
 
-        if (preferenceController.usingExternalStorage) {
-            S3Service s3Service = new S3Service(preferenceController)
-            version.versionId  =  s3Service.putFile(document.fileUUID, version.fileName, content, document.webVisibility, null)
+        if (documentService.usingExternalStorage) {
+            AmazonS3Service s3Service = new AmazonS3Service(documentService)
+            version.versionId  =  s3Service.putFile(document.fileUUID, version.fileName, content, document.webVisibility)
         } else {
             AttachmentData attachmentData = context.newObject(AttachmentData)
             attachmentData.content = content
@@ -209,7 +211,38 @@ class DocumentFunctions {
         version
     }
 
-    static ValidationErrorDTO validateForSave(byte[] content, String filename, String name, DocumentVisibilityDTO access, List<Long> tags, Boolean shared, ObjectContext context) {
+
+    static ValidationErrorDTO validateStoragePlace(byte[] content, DocumentService documentService, ObjectContext context) {
+        Long currentStorageSize = DocumentDao.getStoredDocumentsSize(context)?:0
+        if (documentService.storageLimit != null && currentStorageSize + content.length > documentService.storageLimit) {
+            String otherwise = BILLING_APP_LINK ? "add additional storage <a href=\"${BILLING_APP_LINK}\">here.</a>" : "contact ish support, please."
+            String message
+            if (documentService.storageLimit == 0) {
+                message = "Your license doesn't allow to storage documents. Contact ish support, please!"
+            } else {
+                message = "You require additional document storage capacity to save this document. " +
+                        "Either make space by deleting some of your existing documents or ${otherwise}"
+            }
+            return new ValidationErrorDTO(null, 'content', message)
+        }
+    }
+
+    static ValidationErrorDTO validateVersionForSave(byte[] content, ObjectContext context) {
+        if (!content && content.length) {
+            return new ValidationErrorDTO(null, 'versions', 'Your upload has failed. A least one version of document required.')
+        }
+
+        Document document = getDocumentByHash(content, context)
+        if (document) {
+            return new ValidationErrorDTO(null, 'versions',
+                    "Your upload has failed. The file you are trying to upload already exists as a document called '${document.name}' or its history.")
+        }
+
+        return null
+    }
+
+
+    static ValidationErrorDTO validateForSave(String filename, String name, DocumentVisibilityDTO access, List<Long> tags, Boolean shared, ObjectContext context) {
         if (isBlank(name)) {
             return new ValidationErrorDTO(null, 'name', 'Name is required.')
         }
@@ -224,84 +257,14 @@ class DocumentFunctions {
             return new ValidationErrorDTO(null, 'shared', 'Attaching to multiple records is required.')
         }
 
-        if (!content && content.length) {
-            return new ValidationErrorDTO(null, 'versions', 'A least one version of document required.')
-        }
-
-        if (checkDocumentHash(content, context)) {
-            return new ValidationErrorDTO(null, 'versions', 'This version of document is already exist.')
-        }
-
         return TagFunctions.validateRelationsForSave(Document, context, tags, TaggableClasses.DOCUMENT)
     }
 
-    static ValidationErrorDTO validateForUpdate(DocumentDTO document, File content, ObjectContext context) {
-        if (isBlank(document.name)) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'name', 'Name is required.')
-        }
-
-        if (!document.access) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'access', 'Access is required.')
-        }
-
-        if (document.shared == null) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'shared', 'Attaching to multiple records is required.')
-        }
-
-        if (!document.versions && document.versions.empty) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'A least one version of document required.')
-        }
-
-        List<DocumentVersionDTO> newVersions = document.versions.findAll { !it.id }
-        if (newVersions.size() > 1) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'Cannot add more than 1 version at once.')
-        } else if (newVersions.size() == 1 && !content) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'File is required for new document version.')
-        } else if (newVersions.empty && content) {
-            return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'New version is required for new file.')
-        }
-
-        if (newVersions.size() == 1) {
-            if (isBlank(newVersions[0].mimeType)) {
-                return new ValidationErrorDTO(document?.id?.toString(), 'mimeType', 'Mime type is required.')
-            }
-            if (isBlank(newVersions[0].fileName)) {
-                return new ValidationErrorDTO(document?.id?.toString(), 'fileName', 'File name is required.')
-            }
-        }
-
-        if (document.id) {
-            try {
-                String hash = hashFile(content)
-
-                Long count = ObjectSelect.query(DocumentVersion)
-                        .where(DocumentVersion.DOCUMENT.dot(Document.ID).eq(document.id))
-                        .and(DocumentVersion.HASH.eq(hash))
-                        .selectCount(context)
-                if (count > 0) {
-                    return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'This version of document is already exist.')
-                }
-
-            } catch (IOException e) {
-                logger.error("Error reading uploaded file", e)
-                return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'Cannot calculate file hash.')
-            }
-        } else {
-            if (document.versions.size() > 1) {
-                return new ValidationErrorDTO(document?.id?.toString(), 'versions', 'New document cannot contain more than 1 version.')
-            }
-        }
-
-        null
-    }
-
-    static Document checkDocumentHash(byte[] content, ObjectContext context) {
+    static Document getDocumentByHash(byte[] content, ObjectContext context) {
         try {
             String hash = SecurityUtil.hashByteArray(content)
 
-            return ObjectSelect.query(Document)
-                    .where(Document.VERSIONS.dot(DocumentVersion.HASH).eq(hash))
-                    .selectFirst(context)
+            return DocumentDao.getByHash(context, hash)
         } catch (IOException e) {
             logger.error("Error reading uploaded file", e)
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, 'content', 'Cannot calculate file hash.')).build())

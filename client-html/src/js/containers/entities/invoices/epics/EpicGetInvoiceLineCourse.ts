@@ -13,7 +13,6 @@ import EntityService from "../../../../common/services/EntityService";
 
 const request: EpicUtils.Request<
   { selectedLineCourseClasses: CourseClass[]; selectedLineCourse: Course },
-  any,
   number
 > = {
   type: GET_INVOICE_LINE_COURSE,

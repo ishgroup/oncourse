@@ -1,9 +1,8 @@
 import React from "react";
-import UsersForm from "./components/UsersForm";
-import { State } from "../../../../reducers/state";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { clearUserPassword } from "../../actions";
+import UsersForm from "./components/UsersForm";
+import { State } from "../../../../reducers/state";
 import * as SecuritySettingsModel from "../../../../model/preferences/security/SecuritySettings";
 import history from "../../../../constants/History";
 import { getAdministrationSites } from "../../../entities/sites/actions";
@@ -11,7 +10,7 @@ import { getAdministrationSites } from "../../../entities/sites/actions";
 class Users extends React.Component<any, any> {
   private unlisten;
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.onInit();
 
     this.unlisten = this.props.history.listen(() => {
@@ -25,12 +24,12 @@ class Users extends React.Component<any, any> {
     },
     users,
     submitSucceeded,
-    formLogin
+    formEmail,
   }) {
     const currentName = this.props.match.params.id;
 
     if (currentName === "new" && submitSucceeded) {
-      const newUser = users.find(item => item.login === formLogin);
+      const newUser = users.find(item => item.email === formEmail);
 
       if (newUser && newUser.id) {
         setTimeout(() => {
@@ -55,9 +54,9 @@ class Users extends React.Component<any, any> {
   validateUniqueNames = (val, all, props) => {
     const { users } = this.props;
 
-    const matches = users.filter(i => i.login === val.trim() && props.user.id !== i.id);
+    const matches = users.filter(i => i.email === val.trim() && props.user.id !== i.id);
 
-    return matches.length > 0 ? "User login must be unique" : undefined;
+    return matches.length > 0 ? "User email must be unique" : undefined;
   };
 
   componentWillUnmount() {
@@ -79,13 +78,15 @@ class Users extends React.Component<any, any> {
 
     const currentUser = isNew
       ? {
-          administrationCentre: sites && sites.length && sites[0].id,
-          admin: true,
+          administrationCentre: null,
+          admin: false,
           active: true,
           accessEditor: false,
           passwordUpdateRequired: false
         }
       : users && users.find(item => item.id.toString() === id);
+
+    const oldEmail = isNew ? null : currentUser ? currentUser.email : null;
 
     return sites ? (
       <UsersForm
@@ -94,6 +95,7 @@ class Users extends React.Component<any, any> {
         sites={sites}
         isNew={isNew}
         passwordComplexityFlag={passwordComplexityFlag}
+        oldEmail={oldEmail}
         validateUniqueNames={this.validateUniqueNames}
       />
     ) : null;
@@ -105,23 +107,17 @@ const mapStateToProps = (state: State) => ({
   userRoles: state.security.userRoles,
   sites: state.sites.adminSites,
   passwordComplexityFlag:
-    state.preferences &&
-    state.preferences.security &&
-    state.preferences.security[SecuritySettingsModel.SecurityPasswordComplexity.uniqueKey],
+    state.preferences
+    && state.preferences.security
+    && state.preferences.security[SecuritySettingsModel.SecurityPasswordComplexity.uniqueKey],
   submitSucceeded: state.form.UsersForm && state.form.UsersForm.submitSucceeded,
-  formLogin: state.form.UsersForm && state.form.UsersForm.values && state.form.UsersForm.values.login,
-  newPassword: state.security.newPassword
+  formEmail: state.form.UsersForm && state.form.UsersForm.values && state.form.UsersForm.values.email
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     onInit: () => {
       dispatch(getAdministrationSites());
-    },
-    clearPassword: () => {
-      dispatch(clearUserPassword());
     }
-  };
-};
+  });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Users);

@@ -1,10 +1,8 @@
-import { generateArraysOfRecords } from "../../mockUtils";
 import { AccountType } from "@api/model";
+import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
 
 export function mockAccountTransactions() {
-  this.getAccountTransactions = () => {
-    return this.accountTransactions;
-  };
+  this.getAccountTransactions = () => this.accountTransactions;
 
   this.getAccountTransaction = id => {
     const row = this.accountTransactions.rows.find(row => row.id == id);
@@ -26,7 +24,7 @@ export function mockAccountTransactions() {
 
     accountTransactions.rows.push({
       id: data.id,
-      values: [data.transactionDate, data.fromAccount, data.amount, data.toAccount]
+      values: [data.transactionDate, data.fromAccount, "Deposited funds", AccountType.asset, data.amount, "Payment in line", new Date().toISOString()]
     });
 
     this.accountTransactions = accountTransactions;
@@ -40,80 +38,61 @@ export function mockAccountTransactions() {
     { name: "id", type: "number" },
     { name: "transactionDate", type: "Datetime" },
     { name: "fromAccount", type: "number" },
-    { name: "amount", type: "Money" }
+    { name: "amount", type: "number" },
+    { name: "createdOn", type: "Datetime" }
   ]).map(l => ({
     id: l.id,
-    values: [l.transactionDate, l.fromAccount, "Deposited funds", AccountType.asset, l.amount, "Payment in line"]
+    values: [l.transactionDate, l.fromAccount, "Deposited funds", AccountType.asset, 100 * l.amount, "Payment in line", l.createdOn]
   }));
 
-  const columns = [
-    {
-      title: "Date",
-      attribute: "transactionDate",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Account code",
-      attribute: "account.accountCode",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Account description",
-      attribute: "account.description",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Account type",
-      attribute: "account.type",
-      sortable: false,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Amount",
-      attribute: "amount",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Money",
-      sortFields: []
-    },
-    {
-      title: "Source",
-      attribute: "tableName",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
+  return getEntityResponse({
+    entity: "AccountTransaction",
+    rows,
+    columns: [
+      {
+        title: "Date",
+        attribute: "transactionDate",
+        sortable: true,
+        type: "Datetime"
+      },
+      {
+        title: "Account code",
+        attribute: "account.accountCode",
+        sortable: true,
+        width: 100
+      },
+      {
+        title: "Account description",
+        attribute: "account.description",
+        sortable: true
+      },
+      {
+        title: "Account type",
+        attribute: "account.type",
+        width: 100
+      },
+      {
+        title: "Amount",
+        attribute: "amount",
+        sortable: true,
+        type: "Money"
+      },
+      {
+        title: "Source",
+        attribute: "tableName",
+        sortable: true,
+        width: 100
+      },
+      {
+        title: "Created",
+        attribute: "createdOn",
+        type: "Datetime",
+        sortable: true
+      }
+    ],
+    res: {
+      search: "( (tableName == 'I') or (tableName == 'P' or tableName == 'O') )",
+      sort: [{ attribute: "transactionDate", ascending: true, complexAttribute: [] }]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "AccountTransaction";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = "( (tableName == 'I') or (tableName == 'P' or tableName == 'O') )";
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [{ attribute: "transactionDate", ascending: true, complexAttribute: [] }];
-
-  return response;
+  });
 }

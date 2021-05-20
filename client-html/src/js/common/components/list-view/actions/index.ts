@@ -3,11 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  Diff,
-  Filter, LayoutType, MessageType, SearchQuery, TableModel
-} from "@api/model";
-import { EntityName } from "../../../../containers/automation/constants";
+import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
 import { MessageData } from "../../../../model/common/Message";
 import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
 import { MenuTag } from "../../../../model/tags";
@@ -15,6 +11,7 @@ import { ApiMethods } from "../../../../model/common/apiHandlers";
 import { GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { IAction } from "../../../actions/IshAction";
+import { EntityName } from "../../../../model/entities/common";
 
 export const GET_LIST_NESTED_EDIT_RECORD = _toRequestType("get/listView/nestedEditRecord");
 

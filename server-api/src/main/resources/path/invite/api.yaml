@@ -1,0 +1,44 @@
+get:
+  operationId: getUserEmailByInvitation
+  description: Get a user email by invitation token which is not expired
+  tags:
+    - User
+  parameters:
+    - name: invitationToken
+      in: path
+      type: string
+      description: Invitation token
+      required: true
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+    '400':
+      description: Bad request error.
+      schema:
+        type: string
+    default:
+      description: Unexpected error
+
+post:
+  operationId: createPassword
+  description: create password for new user
+  tags:
+    - User
+  parameters:
+    - name: invitationToken
+      in: path
+      type: string
+      description: Invitation token
+      required: true
+    - name: password
+      in: query
+      description: user password for create
+      required: true
+      type: string
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error

@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Contact createdOn="2014-10-17 22:23:24.0" id="2" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0" isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1" allowEmail="1" willowId="5139314" uniqueCode="zHMi47fTnM4TdxmD" firstName="Tutor" lastName="One"/>
-	<Contact createdOn="2014-10-17 22:23:36.0" id="3" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0" isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1" allowEmail="1" willowId="5139316" uniqueCode="kCxk5G4iAS2nhDCe" firstName="Tutor" lastName="Two"/>
+  <Contact createdOn="2014-10-17 22:23:24.0" id="2" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0"
+           isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1"
+           allowEmail="1" willowId="5139314" uniqueCode="zHMi47fTnM4TdxmD" firstName="Tutor" lastName="One"/>
+  <Contact createdOn="2014-10-17 22:23:36.0" id="3" isCompany="0" modifiedOn="2014-10-20 12:38:10.0" isStudent="0"
+           isTutor="1" deliveryStatusEmail="0" deliveryStatusSms="0" deliveryStatusPost="0" allowPost="1" allowSms="1"
+           allowEmail="1" willowId="5139316" uniqueCode="kCxk5G4iAS2nhDCe" firstName="Tutor" lastName="Two"/>
 
-	<QualityRule id="1" groupName="testGroup" keyCode="testCode" name="testName" active="1" script="result { message 'test result'; records ObjectSelect.query(Contact).select(context); severity Severity.ERROR; }" createdOn="2015-01-01 00:00:00" modifiedOn="2015-01-01 00:00:00"/>
-	<QualityRule id="2" groupName="testGroup" keyCode="testCode1" name="testName1" active="1" script="result { message 'test result 1'; records ObjectSelect.query(Contact).where(Contact.LAST_NAME.eq('One')).select(context); severity Severity.ERROR; }" createdOn="2015-01-01 00:00:00" modifiedOn="2015-01-01 00:00:00"/>
+  <QualityRule id="1" groupName="testGroup" keyCode="testCode" name="testName" active="1"
+               script="result { message 'test result'; records ObjectSelect.query(Contact).select(context); severity Severity.ERROR; }"
+               createdOn="2015-01-01 00:00:00" modifiedOn="2015-01-01 00:00:00"/>
+  <QualityRule id="2" groupName="testGroup" keyCode="testCode1" name="testName1" active="1"
+               script="result { message 'test result 1'; records ObjectSelect.query(Contact).where(Contact.LAST_NAME.eq('One')).select(context); severity Severity.ERROR; }"
+               createdOn="2015-01-01 00:00:00" modifiedOn="2015-01-01 00:00:00"/>
 </dataset>

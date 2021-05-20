@@ -12,7 +12,7 @@ import { UPDATE_CONCESSION_TYPES_FULFILLED, UPDATE_CONCESSION_TYPES_REQUEST } fr
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { ConcessionType } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: UPDATE_CONCESSION_TYPES_REQUEST,
   getData: payload => PreferencesService.updateConcessionTypes(payload.concessionTypes),
   retrieveData: () => PreferencesService.getConcessionTypes(),

@@ -2,7 +2,7 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { PaymentMethod } from "@api/model";
+import { CheckoutPaymentPlan, PaymentMethod } from "@api/model";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -25,11 +25,16 @@ import FormField from "../../../../../common/components/form/form-fields/FormFie
 import { D_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { BooleanArgFunction, NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
 import { CheckoutItem, CheckoutPayment, CheckoutSummary } from "../../../../../model/checkout";
 import { getAccountTransactionLockedDate } from "../../../../preferences/actions";
-import { checkoutGetSavedCard, checkoutSetPaymentMethod, clearCcIframeUrl } from "../../../actions/checkoutPayment";
+import {
+  checkoutGetSavedCard,
+  checkoutSetPaymentMethod,
+  checkoutSetPaymentPlans,
+  clearCcIframeUrl
+} from "../../../actions/checkoutPayment";
 import {
   checkoutUncheckAllPreviousInvoice,
   checkoutGetVoucherPromo,
@@ -65,6 +70,7 @@ interface PaymentHeaderFieldProps {
   checkoutSummary?: CheckoutSummary;
   checkoutItems?: CheckoutItem[];
   setPaymentMethod?: (selectedType: string) => void;
+  setPaymentPlans?: (plans: CheckoutPaymentPlan[]) => void;
   currencySymbol?: any;
   clearCcIframeUrl?: () => void;
   form?: string;
@@ -75,6 +81,7 @@ interface PaymentHeaderFieldProps {
   formInvalid?: boolean;
   getVoucher?: StringArgFunction;
   removeVoucher?: NumberArgFunction;
+  setDisablePayment?: BooleanArgFunction;
   selectedDiscount?: CheckoutItem;
   setSelectedDiscount?: (item: CheckoutItem) => void;
   lockedDate?: any;
@@ -87,6 +94,8 @@ interface PaymentHeaderFieldProps {
 }
 
 const noPaymentItems = [{ value: "No payment", label: "No payment" }];
+
+const validateVoucher = val => (!val || val.length > 7 ? undefined : "Voucher code should be 8 or more characters long");
 
 const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props => {
   const {
@@ -116,7 +125,9 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     setSelectedDiscount,
     removeVoucher,
     checkoutGetSavedCard,
-    savedCreditCard
+    savedCreditCard,
+    setDisablePayment,
+    setPaymentPlans
   } = props;
 
   const payerContact = useMemo(() => checkoutSummary.list.find(l => l.payer).contact, [checkoutSummary.list]);
@@ -149,7 +160,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     [availablePaymentTypes, selectedPaymentType]);
 
   const paymentPlans = useMemo(() => {
-    const plansTotal = [];
+    const plansTotal: { date: Date, amount: number }[] = [];
 
     const mergeDuplicate = p => {
       const duplicateIndex = plansTotal.findIndex(pt => (!pt.date && !p.date) || isSameDay(pt.date, p.date));
@@ -170,7 +181,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
 
     checkoutSummary.previousOwing.invoices.forEach(inv => {
       if (inv.checked && inv.paymentPlans.length) {
-        inv.paymentPlans.forEach(mergeDuplicate);
+        inv.paymentPlans.map(({ date, ...rest }) => ({ ...rest })).forEach(mergeDuplicate);
       }
     });
 
@@ -253,8 +264,15 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
   }, 200), [isZeroPayment, paymentMethod]);
 
   const onPayNowFocus = () => {
+    setDisablePayment(true);
     setActiveField(CheckoutPage.default);
     clearSelectedDiscount();
+  };
+
+  const onPayNowBlur = () => {
+    setTimeout(() => {
+      setDisablePayment(false);
+    }, 1500);
   };
 
   const onDueDateChange = useCallback(value => {
@@ -310,7 +328,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     if (value && value.length > 7) {
       getVoucher(value);
     }
-  }, 800), []);
+  }, 600), []);
 
   const updateVouchersAppliedValue = totalExVouchers => {
     const priceVouchers = checkoutSummary.vouchers.filter(v => v.maxCoursesRedemption === null);
@@ -341,19 +359,26 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
       }
 
       if (paymentPlans.length) {
-        updated = paymentPlans.reduce((p, c, index) => (index !== 0 ? decimalMinus(p, c.amount) : p), updated);
+        updated -= paymentPlansTotal;
       }
 
       const payNow = updated > 0 ? updated : 0;
 
-      updateVouchersAppliedValue(decimalPlus(updated + vouchersTotal));
+      let vouchersApplied = decimalPlus(updated, paymentPlansTotal, vouchersTotal);
+
+      if (vouchersApplied > vouchersTotal) {
+        vouchersApplied = vouchersTotal;
+      }
+
+      updateVouchersAppliedValue(decimalPlus(payNow, vouchersApplied));
 
       dispatch(checkoutUpdateSummaryField("payNowTotal", payNow));
       onPayNowChange(payNow);
     },
-    [checkoutSummary.finalTotal,
+    [
       vouchersTotal,
       classVouchersTotal,
+      checkoutSummary.finalTotal,
       checkoutSummary.previousOwing.invoices,
       checkoutSummary.previousCredit.invoices]);
 
@@ -377,15 +402,10 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
 
       const invoiceTerms = payerContact.invoiceTerms || defaultTerms;
 
-      let amount = decimalMinus(totalIncOwing, payNowExCredit);
-
-      if (amount > checkoutSummary.finalTotal) {
-        amount = checkoutSummary.finalTotal;
-      }
+      const amount = decimalMinus(totalIncOwing, payNowExCredit);
 
       if (amount > 0) {
         const paymentPlan = paymentPlans.length ? {
-          date: today,
           amount
         } : {
           date: addDays(today, Number(invoiceTerms)),
@@ -395,7 +415,9 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
 
         planItems.push(paymentPlan);
 
-        dispatch(checkoutUpdateSummaryField("invoiceDueDate", format(paymentPlan.date, YYYY_MM_DD_MINUSED)));
+        if (paymentPlan.date) {
+          dispatch(checkoutUpdateSummaryField("invoiceDueDate", format(paymentPlan.date, YYYY_MM_DD_MINUSED)));
+        }
       }
     }
 
@@ -421,29 +443,16 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
       });
     }
 
-    let payLaterTotal = 0;
-    let payLaterAdjustment = 0;
-
-    checkoutSummary.previousOwing.invoices.forEach(i => {
-      if (i.checked) {
-        payLaterTotal = decimalPlus(payLaterTotal, i.paymentPlans.length ? 0 : parseFloat(i.amountOwing));
-      } else {
-        payLaterAdjustment = decimalPlus(payLaterAdjustment, parseFloat(i.amountOwing));
-      }
-    });
-
-    payLaterTotal = decimalPlus(payLaterTotal > 0 ? decimalMinus(payLaterTotal, payNowExCredit) : 0, payLaterAdjustment);
-
-    dispatch(change(form, "paymentPlans", [
+    const plansFinal = [
       {
         amount: checkoutSummary.payNowTotal,
       },
-      ...planItems,
       ...updatedPaymentPlans,
-      {
-        amount: payLaterTotal > 0 ? payLaterTotal : 0,
-      }
-    ]));
+      ...planItems
+    ];
+
+    dispatch(change(form, "paymentPlans", plansFinal));
+    setPaymentPlans(plansFinal.filter(p => p.date && p.amount > 0).map(({ amount, date }) => ({ amount, date: format(date, YYYY_MM_DD_MINUSED) })));
   }, [
     checkoutItems,
     paymentPlansTotal,
@@ -531,6 +540,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         name="vouchers"
         placeholder="Enter voucher code"
         onFocus={clearSelectedDiscount}
+        validate={validateVoucher}
         form={form}
         dispatch={dispatch}
         onSearch={onGetPromoVoucher}
@@ -547,6 +557,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           selectedPaymentType={availablePaymentTypes.find(p => p.name === paymentMethod)}
           onPayNowChange={onPayNowChange}
           onPayNowFocus={onPayNowFocus}
+          onPayNowBlur={onPayNowBlur}
           onDueDateChange={onDueDateChange}
           onPayDateChange={onPayDateChange}
           validatePayNow={validatePayNow}
@@ -619,6 +630,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setPaymentMethod: (selectedType: string) => dispatch(checkoutSetPaymentMethod(selectedType)),
+  setPaymentPlans: plans => dispatch(checkoutSetPaymentPlans(plans)),
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   getVoucher: code => dispatch(checkoutGetVoucherPromo(code)),
   removeVoucher: index => dispatch(checkoutRemoveVoucher(index)),

@@ -24,7 +24,7 @@ import { State } from "../../../../reducers/state";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import {
- getMinMaxFee, clearMinMaxFee
+  getMinMaxFee, clearMinMaxFee
 } from "../actions";
 import EditInPlaceMoneyField from "../../../../common/components/form/form-fields/EditInPlaceMoneyField";
 import RelationsCommon from "../../common/components/RelationsCommon";
@@ -35,6 +35,7 @@ import {
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -310,7 +311,10 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         items={productStatusItems}
         selectLabelMark="value"
       />
-      <FormField type="multilineText" name="description" label="Web description" />
+      <FormEditorField
+        name="description"
+        label="Web description"
+      />
       <RelationsCommon
         values={values}
         dispatch={dispatch}

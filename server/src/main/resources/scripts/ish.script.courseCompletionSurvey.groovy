@@ -1,13 +1,9 @@
 def classes = query {
     entity "CourseClass"
-    query "isCancelled is false and endDateTime is today or endDateTime is yesterday"
+    query "isCancelled is false and endDateTime is yesterday and (taggingRelations is null or taggingRelations.tag.name not is \"no survey\")"
 }
-
-classes.each { courseClass ->
-    if (!courseClass.hasTag("no survey")) {
-        message {
-            template courseSurveyTemplate
-            records courseClass.successAndQueuedEnrolments
-        }
-    }
+records = classes*.successAndQueuedEnrolments
+message {
+    template courseSurveyTemplate
+    record records
 }

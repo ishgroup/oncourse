@@ -10,11 +10,11 @@ import PreferencesService from "../services/PreferencesService";
 import { GET_LANGUAGES_REQUEST, GET_LANGUAGES_REQUEST_FULFILLED } from "../actions";
 import { Language } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_LANGUAGES_REQUEST,
   getData: () => PreferencesService.getLanguages(),
   processData: (data: Language[]) => {
-    const languages = data.sort((a, b) => (a.name[0] > b.name[0] ? 1 : -1));
+    const languages = data.sort((a, b) => (a.name > b.name ? 1 : -1));
 
     return [
       {

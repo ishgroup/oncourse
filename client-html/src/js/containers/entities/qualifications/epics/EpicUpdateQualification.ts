@@ -5,25 +5,24 @@
 
 import { Epic } from "redux-observable";
 
+import { initialize } from "redux-form";
+import { Qualification } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {
+  GET_QUALIFICATION_ITEM,
   UPDATE_QUALIFICATION_ITEM,
-  UPDATE_QUALIFICATION_ITEM_FULFILLED,
-  GET_QUALIFICATION_ITEM
+  UPDATE_QUALIFICATION_ITEM_FULFILLED
 } from "../actions/index";
 import { FETCH_SUCCESS } from "../../../../common/actions/index";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { initialize } from "redux-form";
-import { Qualification } from "@api/model";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { id: number; qualification: Qualification }> = {
+const request: EpicUtils.Request<any, { id: number; qualification: Qualification }> = {
   type: UPDATE_QUALIFICATION_ITEM,
   getData: ({ id, qualification }) => updateEntityItemById("Qualification", id, qualification),
-  processData: (v, s, { id }) => {
-    return [
+  processData: (v, s, { id }) => [
       {
         type: UPDATE_QUALIFICATION_ITEM_FULFILLED
       },
@@ -35,18 +34,15 @@ const request: EpicUtils.Request<any, any, { id: number; qualification: Qualific
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Qualification", listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [] : [{
         type: GET_QUALIFICATION_ITEM,
         payload: id
-      }
-    ];
-  },
-  processError: (response, { qualification }) => {
-    return [
+      }]
+    ],
+  processError: (response, { qualification }) => [
       ...FetchErrorHandler(response, "Qualification was not updated"),
       initialize(LIST_EDIT_VIEW_FORM_NAME, qualification)
-    ];
-  }
+    ]
 };
 
 export const EpicUpdateQualification: Epic<any, any> = EpicUtils.Create(request);

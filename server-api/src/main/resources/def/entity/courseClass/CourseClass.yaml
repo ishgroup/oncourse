@@ -43,12 +43,8 @@ properties:
   expectedHours:
     type: number
   feeExcludeGST:
-    type: number
-  feeHelpClass:
-    type: boolean
+    type: number 
   finalDetExport:
-    type: string
-  fullTimeLoad:
     type: string
   initialDetExport:
     type: string
@@ -73,8 +69,6 @@ properties:
   minStudentAge:
     type: integer
   minimumPlaces:
-    type: integer
-  reportingPeriod:
     type: integer
   sessionsCount:
     type: integer
@@ -155,4 +149,5 @@ properties:
     type: object
     additionalProperties:
       type: string
-
+  feeHelpClass:
+    type: boolean

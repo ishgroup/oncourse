@@ -1,5 +1,4 @@
 import {
-  Account,
   Holiday,
   Audit,
   AvetmissExportOutcome,
@@ -12,7 +11,6 @@ import {
   FieldType,
   Filter,
   PaymentType,
-  StatisticData,
   Tax,
   UserPreference,
   Currency,
@@ -23,7 +21,8 @@ import {
   EmailTemplate,
   ImportModel,
   EntityRelationType,
-  Language
+  Language,
+  GradingType
 } from "@api/model";
 import { mockPreferences } from "./data/preferences";
 import { mockIntegrations } from "./data/integrations";
@@ -89,6 +88,14 @@ import { mockImportTemplates } from "./data/automation/importTemplates";
 import { mockNotes } from "./data/notes";
 import { mockEntityRelationTypes } from "./data/entityRelationTypes";
 import { mockLanguages } from "./data/languages";
+import { mockDocuments } from "./data/entities/documents";
+import { mockPriorLearnings } from "./data/entities/priorLearnings";
+import { mockTutorRoles } from "./data/preference/tutorRoles";
+import { mockFundingContracts } from "./data/preference/fundingContracts";
+import { mockCheckout } from "./data/checkout";
+import { mockGradingTypes } from "./data/preference/grading";
+import { mockSecurityRoles } from "./data/security/roles";
+import { mockSecurityUsers } from "./data/security/users";
 
 export const CreateMockDB = (): MockDB => new MockDB();
 
@@ -121,7 +128,7 @@ export class MockDB {
 
   holiday: Holiday[];
 
-  account: Account[];
+  accounts: any;
 
   audit: Audit[];
 
@@ -223,6 +230,22 @@ export class MockDB {
 
   languages: Language[];
 
+  documents: any;
+
+  priorLearnings: any;
+
+  tutorRoles: any;
+
+  fundingContracts: any;
+
+  checkout: any;
+
+  gradingTypes: GradingType[];
+
+  securityRoles: any;
+
+  securityUsers: any;
+
   constructor() {
     this.init();
   }
@@ -245,6 +268,9 @@ export class MockDB {
     this.listExport = mockListExport.call(this);
     this.notes = mockNotes.call(this);
     this.languages = mockLanguages.call(this);
+    this.tutorRoles = mockTutorRoles.call(this);
+    this.fundingContracts = mockFundingContracts.call(this);
+    this.gradingTypes = mockGradingTypes.call(this);
 
     //  Automation
     this.scripts = mockScripts.call(this);
@@ -268,9 +294,6 @@ export class MockDB {
     // Audits App
     this.audit = mockAudits.call(this);
 
-    // Accounts
-    this.account = mockAccounts.call(this);
-
     // Common
     this.filters = mockFilters.call(this);
     this.tags = mockTags.call(this);
@@ -289,6 +312,7 @@ export class MockDB {
     this.countries = mockCountries.call(this);
 
     // Entities
+    this.accounts = mockAccounts.call(this);
     this.waitingLists = mockWaitingLists.call(this);
     this.contacts = mockContacts.call(this);
     this.courses = mockCourses.call(this);
@@ -311,6 +335,7 @@ export class MockDB {
     this.payslips = mockPayslips.call(this);
     this.bankings = mockBankings.call(this);
     this.discounts = mockDiscounts.call(this);
+    this.documents = mockDocuments.call(this);
     this.applications = mockApplications.call(this);
     this.certificates = mockCertificates.call(this);
     this.surveys = mockSurvey.call(this);
@@ -318,8 +343,17 @@ export class MockDB {
     this.voucherProducts = mockVoucherProducts.call(this);
     this.membershipProducts = mockMembershipProducts.call(this);
     this.sales = mockSales.call(this);
+    this.priorLearnings = mockPriorLearnings.call(this);
+
     // Timetable
     this.timetable = mockTimetable.call(this);
+
+    // Checkout
+    this.checkout = mockCheckout.call(this);
+
+    // Secutiry
+    this.securityRoles = mockSecurityRoles.call(this);
+    this.securityUsers = mockSecurityUsers.call(this);
   }
 
   getList(entity: string) {

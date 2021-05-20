@@ -4,45 +4,29 @@
  */
 package ish.oncourse.server.cayenne
 
-import ish.CayenneIshTestCase
+import groovy.transform.CompileStatic
+import ish.TestWithDatabase
 import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
-import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.validation.ValidationResult
-import org.junit.Assert
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Ignore
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-/**
- */
-class VoucherTest extends CayenneIshTestCase {
+@CompileStatic
+class VoucherTest extends TestWithDatabase {
 
-	private ICayenneService cayenneService
-
-    @Before
-    void setup() throws Exception {
-		this.cayenneService = injector.getInstance(ICayenneService.class)
-        super.setup()
-    }
-
-	@Test
+    @Test
     void testValidationRules() {
-		ObjectContext context = cayenneService.getNewNonReplicatingContext()
         ValidationResult result = new ValidationResult()
 
-        VoucherProduct vProduct = context.newObject(VoucherProduct.class)
+        VoucherProduct vProduct = cayenneContext.newObject(VoucherProduct.class)
         vProduct.setPriceExTax(new Money("100.0"))
         vProduct.setValue(new Money("100.0"))
 
-        InvoiceLine il = context.newObject(InvoiceLine.class)
+        InvoiceLine il = cayenneContext.newObject(InvoiceLine.class)
 
-        Voucher voucher = context.newObject(Voucher.class)
+        Voucher voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setExpiryDate(new Date())
@@ -54,10 +38,10 @@ class VoucherTest extends CayenneIshTestCase {
 
         voucher.validateForSave(result)
 
-        assertFalse(result.hasFailures())
+        Assertions.assertFalse(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setExpiryDate(new Date())
         voucher.setStatus(ProductStatus.ACTIVE)
@@ -67,10 +51,10 @@ class VoucherTest extends CayenneIshTestCase {
 
         voucher.validateForSave(result)
 
-        assertTrue(result.hasFailures())
+        Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setStatus(ProductStatus.ACTIVE)
@@ -80,10 +64,10 @@ class VoucherTest extends CayenneIshTestCase {
 
         voucher.validateForSave(result)
 
-        assertTrue(result.hasFailures())
+        Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setExpiryDate(new Date())
@@ -93,10 +77,10 @@ class VoucherTest extends CayenneIshTestCase {
 
         voucher.validateForSave(result)
 
-        assertTrue(result.hasFailures())
+        Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setExpiryDate(new Date())
@@ -106,10 +90,10 @@ class VoucherTest extends CayenneIshTestCase {
 
         voucher.validateForSave(result)
 
-        assertTrue(result.hasFailures())
+        Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setExpiryDate(new Date())
@@ -119,10 +103,10 @@ class VoucherTest extends CayenneIshTestCase {
 
         voucher.validateForSave(result)
 
-        assertTrue(result.hasFailures())
+        Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
 
-        voucher = context.newObject(Voucher.class)
+        voucher = cayenneContext.newObject(Voucher.class)
 
         voucher.setCode("code")
         voucher.setExpiryDate(new Date())
@@ -132,31 +116,8 @@ class VoucherTest extends CayenneIshTestCase {
 
         voucher.validateForSave(result)
 
-        assertTrue(result.hasFailures())
+        Assertions.assertTrue(result.hasFailures())
         result = new ValidationResult()
     }
-
-	// TODO: disable status change rules for now (perhaps need to remove it at all?)
-	// it is required to change voucher status from REDEEMED to ACTIVE when changes to it are reverted
-	// due to change in enrolment selection or not successful money payment
-	@Ignore
-	@Test
-    void testStatusChangeRules() {
-		ObjectContext context = cayenneService.getNewNonReplicatingContext()
-
-        Voucher voucher = context.newObject(Voucher.class)
-
-        voucher.setStatus(ProductStatus.ACTIVE)
-        voucher.setPersistenceState(PersistenceState.COMMITTED)
-
-        voucher.setStatus(ProductStatus.REDEEMED)
-
-        try {
-			voucher.setStatus(ProductStatus.ACTIVE)
-            Assert.fail()
-        } catch (IllegalStateException e) {
-			// that is expected
-		}
-	}
 
 }

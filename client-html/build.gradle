@@ -15,8 +15,7 @@ task webpack(type: YarnTask, dependsOn: 'queryGrammar') {
     inputs.dir("src")
     outputs.dir("$buildDir/assets")
     inputs.property('version', version)
-
-    args = ['build:prod', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
+    args = ['build:prod', '--env', 'NODE_ENV=production', '--env', "BUILD_NUMBER=${version ?: '99-SNAPSHOT'}"]
 }
 
 clean {
@@ -41,7 +40,6 @@ task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'ge
 task jest(type: YarnTask, dependsOn: 'queryGrammar') {
     args = ['test', '--runInBand']
 }
-
 test.dependsOn(jest)
 
 sourceSets {

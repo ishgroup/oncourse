@@ -22,7 +22,7 @@ const getEditingDocumentAction = (
     payload: { editingDocument, editingFormName }
   }));
 
-const request: EpicUtils.Request<any, any, { inputDocument: File; editingFormName: string }> = {
+const request: EpicUtils.Request<any, { inputDocument: File; editingFormName: string }> = {
   type: SEARCH_DOCUMENT_BY_HASH,
   hideLoadIndicator: true,
   getData: ({ inputDocument }) => DocumentsService.searchDocument(inputDocument),
@@ -33,6 +33,14 @@ const request: EpicUtils.Request<any, any, { inputDocument: File; editingFormNam
         payload: {
           message: "Document is already uploaded and has restricted status"
         }
+      }];
+    }
+    if (editingDocument && editingDocument.removed) {
+      return [{
+          type: SHOW_MESSAGE,
+          payload: {
+              message: "This document was moved to the bin. If you need it, you could restore it and then try again."
+          }
       }];
     }
     return editingDocument

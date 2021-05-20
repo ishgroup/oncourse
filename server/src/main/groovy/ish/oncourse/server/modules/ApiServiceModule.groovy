@@ -14,9 +14,11 @@ package ish.oncourse.server.modules
 import com.google.inject.Binder
 import com.google.inject.Module
 import com.google.inject.Scopes
+import ish.oncourse.server.api.service.ApiTokenApiService
 import ish.oncourse.server.api.service.ApplicationApiService
 import ish.oncourse.server.api.service.ArticleProductApiService
 import ish.oncourse.server.api.service.AssessmentApiService
+import ish.oncourse.server.api.service.AssessmentSubmissionApiService
 import ish.oncourse.server.api.service.CertificateApiService
 import ish.oncourse.server.api.service.ClassCostApiService
 import ish.oncourse.server.api.service.ContactApiService
@@ -28,6 +30,7 @@ import ish.oncourse.server.api.service.EmailTemplateApiService
 import ish.oncourse.server.api.service.EnrolmentApiService
 import ish.oncourse.server.api.service.EntityRelationTypeApiService
 import ish.oncourse.server.api.service.ExportTemplateApiService
+import ish.oncourse.server.api.service.GradingApiService
 import ish.oncourse.server.api.service.ImportApiService
 import ish.oncourse.server.api.service.InvoiceApiService
 import ish.oncourse.server.api.service.MembershipProductApiService
@@ -45,6 +48,7 @@ import ish.oncourse.server.api.service.TutorRoleApiService
 import ish.oncourse.server.api.service.VoucherProductApiService
 import ish.oncourse.server.api.service.WaitingListApiService
 import ish.oncourse.server.api.validation.EntityValidator
+import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.dashboard.ClassSearchService
 import ish.oncourse.server.dashboard.ContactSearchService
@@ -69,9 +73,11 @@ class ApiServiceModule implements Module {
 
         binder.bind(EntityValidator).in(Scopes.SINGLETON)
 
+        binder.bind(ApiTokenApiService).in(Scopes.NO_SCOPE)
         binder.bind(ApplicationApiService).in(Scopes.SINGLETON)
         binder.bind(ArticleProductApiService).in(Scopes.SINGLETON)
         binder.bind(AssessmentApiService).in(Scopes.SINGLETON)
+        binder.bind(AssessmentSubmissionApiService).in(Scopes.SINGLETON)
         binder.bind(CertificateApiService).in(Scopes.SINGLETON)
         binder.bind(ClassCostApiService).in(Scopes.SINGLETON)
         binder.bind(ContactApiService).in(Scopes.SINGLETON)
@@ -83,6 +89,7 @@ class ApiServiceModule implements Module {
         binder.bind(EnrolmentApiService).in(Scopes.SINGLETON)
         binder.bind(EntityRelationTypeApiService).in(Scopes.NO_SCOPE)
         binder.bind(ExportTemplateApiService).in(Scopes.SINGLETON)
+        binder.bind(GradingApiService).in(Scopes.SINGLETON)
         binder.bind(ImportApiService).in(Scopes.SINGLETON)
         binder.bind(InvoiceApiService).in(Scopes.SINGLETON)
         binder.bind(MembershipProductApiService).in(Scopes.SINGLETON)

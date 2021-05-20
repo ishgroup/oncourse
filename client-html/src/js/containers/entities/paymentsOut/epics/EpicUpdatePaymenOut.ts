@@ -5,22 +5,21 @@
 
 import { Epic } from "redux-observable";
 
+import { initialize } from "redux-form";
+import { PaymentOut } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_PAYMENT_OUT_ITEM, UPDATE_PAYMENT_OUT_ITEM, UPDATE_PAYMENT_OUT_ITEM_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { initialize } from "redux-form";
-import { PaymentOut } from "@api/model";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { PaymentOutModel } from "../reducers/state";
 
-const request: EpicUtils.Request<any, any, { id: number; paymentOut: PaymentOutModel }> = {
+const request: EpicUtils.Request<any, { id: number; paymentOut: PaymentOutModel }> = {
   type: UPDATE_PAYMENT_OUT_ITEM,
   getData: ({ id, paymentOut }) => updateEntityItemById("PaymentOut", id, paymentOut),
-  processData: (v, s, { id }) => {
-    return [
+  processData: (v, s, { id }) => [
       {
         type: UPDATE_PAYMENT_OUT_ITEM_FULFILLED
       },
@@ -32,15 +31,12 @@ const request: EpicUtils.Request<any, any, { id: number; paymentOut: PaymentOutM
         type: GET_RECORDS_REQUEST,
         payload: { entity: "PaymentOut", listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_PAYMENT_OUT_ITEM,
         payload: id
-      }
-    ];
-  },
-  processError: (response, { paymentOut }) => {
-    return [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, paymentOut)];
-  }
+      }] : []
+    ],
+  processError: (response, { paymentOut }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, paymentOut)]
 };
 
 export const EpicUpdatePaymentOut: Epic<any, any> = EpicUtils.Create(request);

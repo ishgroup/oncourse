@@ -1,40 +1,27 @@
 package ish.oncourse.server.imports
 
-import ish.CayenneIshTestCase
+import groovy.transform.CompileStatic
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Banking
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.SessionTest
 import ish.oncourse.server.db.SanityCheckService
 import ish.oncourse.server.upgrades.DataPopulation
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-/**
- * Created by anarut on 7/6/17.
- */
-class PaymentInCSVImportTest extends CayenneIshTestCase {
+@CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/imports/paymentInCSVImportTestDataSet.xml")
+class PaymentInCSVImportTest extends TestWithDatabase {
 
-    @Before
-    void setup() throws Exception {
-        wipeTables()
-
-        InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/imports/paymentInCSVImportTestDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        executeDatabaseOperation(rDataSet)
-
-
+    @BeforeEach
+    void population() throws Exception {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
         dataPopulation.run()
 
@@ -42,14 +29,12 @@ class PaymentInCSVImportTest extends CayenneIshTestCase {
         sanityCheckService.performCheck()
     }
 
+
     @Test
     void test() throws IOException {
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        DataContext context = cayenneService.getNewContext()
-
-        assertEquals(0, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(PaymentInLine.class).select(context).size())
-        assertEquals(0, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(0, ObjectSelect.query(PaymentIn.class).select(cayenneContext).size())
+        Assertions.assertEquals(0, ObjectSelect.query(PaymentInLine.class).select(cayenneContext).size())
+        Assertions.assertEquals(0, ObjectSelect.query(Banking.class).select(cayenneContext).size())
 
 
         ImportService importService = injector.getInstance(ImportService.class)
@@ -65,9 +50,9 @@ class PaymentInCSVImportTest extends CayenneIshTestCase {
         importService.performImport(parameter)
 
 
-        assertEquals(185, ObjectSelect.query(PaymentIn.class).select(context).size())
-        assertEquals(187, ObjectSelect.query(PaymentInLine.class).select(context).size())
-        assertEquals(16, ObjectSelect.query(Banking.class).select(context).size())
+        Assertions.assertEquals(185, ObjectSelect.query(PaymentIn.class).select(cayenneContext).size())
+        Assertions.assertEquals(187, ObjectSelect.query(PaymentInLine.class).select(cayenneContext).size())
+        Assertions.assertEquals(16, ObjectSelect.query(Banking.class).select(cayenneContext).size())
     }
 
     private static final String[] EXPECTED_HEADERS = [
@@ -81,6 +66,7 @@ class PaymentInCSVImportTest extends CayenneIshTestCase {
     ]
 
     //the attached example contains '\uFEFF' which blocks right
+
     @Test
     void testHeaderValues() throws IOException {
         InputStream inputStream = ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/imports/PaymentInCSVImportTest.csv")
@@ -91,10 +77,10 @@ class PaymentInCSVImportTest extends CayenneIshTestCase {
 
         String[] header = (String[]) csvParser.getHeader()
 
-        assertEquals(7, header.length)
+        Assertions.assertEquals(7, header.length)
 
-        for (int i = 0; i < 7; i ++) {
-            assertEquals(EXPECTED_HEADERS[i], header[i])
+        for (int i = 0; i < 7; i++) {
+            Assertions.assertEquals(EXPECTED_HEADERS[i], header[i])
         }
     }
 }

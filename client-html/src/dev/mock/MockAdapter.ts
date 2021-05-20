@@ -60,6 +60,13 @@ import { AccessApiMock } from "./api/common/AccessApiMock";
 import { EmailTemplateApiMock } from "./api/automation/EmailTemplateApiMock";
 import { ImportTemplateApiMock } from "./api/automation/ImportTemplateApiMock";
 import { EntityRelationTypesApiMock } from "./api/preference/EntityRelationTypesApiMock";
+import { DocumentApiMock } from "./api/entities/DocumentApiMock";
+import { PriorLearningApiMock } from "./api/entities/PriorLearningApiMock";
+import { TutorRoleApiMock } from "./api/preference/TutorRoleApiMock";
+import { FundingContractsApiMock } from "./api/preference/FundingContractsApiMock";
+import { CheckoutApiMock } from "./api/checkout/CheckoutApiMock";
+import { GradingTypesApiMock } from "./api/preference/GradingTypesApiMock";
+import { SecurityApiMock } from "./api/security/SecurityApiMock";
 
 export const initMockDB = () => new MockAdapter();
 
@@ -83,6 +90,9 @@ export class MockAdapter {
     ContactRelationTypesApiMock.apply(this);
     EntityRelationTypesApiMock.apply(this);
     CustomFieldApiMock.apply(this);
+    TutorRoleApiMock.apply(this);
+    FundingContractsApiMock.apply(this);
+    GradingTypesApiMock.apply(this);
 
     // User Preferences
     UserPreferenceApiMock.apply(this);
@@ -123,6 +133,7 @@ export class MockAdapter {
     PayslipApiMock.apply(this);
     BankingApiMock.apply(this);
     DiscountApiMock.apply(this);
+    DocumentApiMock.apply(this);
     ApplicationApiMock.apply(this);
     CertificateApiMock.apply(this);
     SurveyApiMock.apply(this);
@@ -131,6 +142,7 @@ export class MockAdapter {
     ContactApiMock.apply(this);
     MembershipProductApiMock.apply(this);
     SalesApiMock.apply(this);
+    PriorLearningApiMock.apply(this);
 
     //  Automation
     ScriptApiMock.apply(this);
@@ -142,6 +154,12 @@ export class MockAdapter {
 
     // Timetable
     TimetableApiMock.apply(this);
+
+    // Checkout
+    CheckoutApiMock.apply(this);
+
+    // Security
+    SecurityApiMock.apply(this);
 
     // Handle get login request
     this.api.onGet("/").reply(config => promiseResolve(config));

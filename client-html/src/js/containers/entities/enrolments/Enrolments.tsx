@@ -37,7 +37,6 @@ import OutcomeService from "../outcomes/services/OutcomeService";
 import { getEnrolment, updateEnrolment } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import { ManualType } from "../../../model/common/Manual";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getListTags } from "../../tags/actions";
@@ -50,6 +49,7 @@ import { State } from "../../../reducers/state";
 import { openInternalLink } from "../../../common/utils/links";
 import { checkPermissions } from "../../../common/actions";
 import { Classes } from "../../../model/entities/CourseClass";
+import { getGradingTypes } from "../../preferences/actions";
 
 const nameCondition = (val: Enrolment) => defaultContactName(val.studentName);
 
@@ -62,6 +62,7 @@ interface EnrolmentsProps {
   getFilters?: () => void;
   clearListState?: () => void;
   getTags?: () => void;
+  getGradingTypes?: () => void;
   getPermissions?: () => void;
   getFundingContracts?: () => void;
   getCustomFieldTypes?: () => void;
@@ -155,7 +156,10 @@ const findRelatedGroup: any = [
   { title: "Invoices", list: "invoice", expression: "invoiceLines.enrolment.id" },
   { title: "Outcomes", list: "outcome", expression: "enrolment.id" },
   { title: "Voucher redeemed", list: "sale", expression: "redeemedEnrolment.id" },
-  { title: "Students", list: "contact", expression: "student.enrolments.id" }
+  { title: "Students", list: "contact", expression: "student.enrolments.id" },
+  { title: "Submissions", list: "assessmentSubmission", expression: "enrolment.id" },
+  { title: "Certificates", list: "certificate", expression: "certificateOutcomes.outcome.enrolment.id" },
+
 ];
 
 const nestedEditFields = {
@@ -192,6 +196,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     getTags,
     getFundingContracts,
     getCustomFieldTypes,
+    getGradingTypes,
     customFieldTypesUpdating,
     customFieldTypes,
     hasQePermissions,
@@ -210,6 +215,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     getTags();
     getFundingContracts();
     getPermissions();
+    getGradingTypes();
 
     return clearListState;
   }, []);
@@ -293,7 +299,8 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     }
 
     setChangedFields([]);
-    onSave(values.id, values);
+
+    if (values) onSave(values.id, values);
   };
 
   return (
@@ -411,9 +418,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setListEditRecord(initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, initial));
   },
-  getTags: () => {
-    dispatch(getListTags("Enrolment"));
-  },
+  getTags: () => dispatch(getListTags("Enrolment")),
+  getGradingTypes: () => dispatch(getGradingTypes()),
   getFilters: () => dispatch(getFilters("Enrolment")),
   getFundingContracts: () => dispatch(getActiveFundingContracts(true)),
   getCustomFieldTypes: () => dispatch(getCustomFieldTypes("Enrolment")),

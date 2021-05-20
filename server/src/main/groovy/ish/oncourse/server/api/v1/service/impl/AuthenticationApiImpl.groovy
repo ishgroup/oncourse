@@ -13,6 +13,8 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.oncourse.server.api.dao.UserDao
+
 import static ish.common.types.TwoFactorAuthorizationStatus.DISABLED
 import static ish.common.types.TwoFactorAuthorizationStatus.ENABLED_FOR_ADMIN
 import static ish.common.types.TwoFactorAuthorizationStatus.ENABLED_FOR_ALL
@@ -22,6 +24,9 @@ import ish.oncourse.server.api.servlet.ISessionManager
 import static ish.oncourse.server.api.v1.function.AuthenticationFunctions.*
 import ish.oncourse.server.api.v1.model.LoginRequestDTO
 import ish.oncourse.server.api.v1.model.LoginResponseDTO
+
+import static ish.oncourse.server.api.v1.function.UserFunctions.updateLoginAttemptNumber
+import static ish.oncourse.server.api.v1.function.UserFunctions.validateUserPassword
 import static ish.oncourse.server.api.v1.model.LoginStatusDTO.CONCURRENT_SESSIONS_FOUND
 import static ish.oncourse.server.api.v1.model.LoginStatusDTO.FORCED_PASSWORD_UPDATE
 import static ish.oncourse.server.api.v1.model.LoginStatusDTO.INVALID_CREDENTIALS
@@ -78,17 +83,27 @@ class AuthenticationApiImpl implements AuthenticationApi {
     LoginResponseDTO login(LoginRequestDTO details) {
         //login and password always required
         if (!details.login || !details.password) {
-            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Login / password data must be specified')
+            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Email / password data must be specified')
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(content).build())
         }
 
         //associate with system user
         ObjectContext context = cayenneService.newContext
 
-        SystemUser user = getSystemUserByLogin(details.login, context, prefController.autoDisableInactiveAccounts)
+        SystemUser user = UserDao.getByLogin(context, details.login)
 
         if (!user) {
-            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Invalid login / password')
+            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Invalid email / password')
+            throwUnauthorizedException(content)
+        }
+
+        if (user.loginAttemptNumber >= prefController.numberOfLoginAttempts) {
+            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Login access was disabled after too many incorrect login attempts. Please contact onCourse Administrator.')
+            throwUnauthorizedException(content)
+        }
+
+        if (prefController.autoDisableInactiveAccounts && !user.isActive) {
+            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'User is disabled. Please contact onCourse Administrator.')
             throwUnauthorizedException(content)
         }
 
@@ -103,6 +118,8 @@ class AuthenticationApiImpl implements AuthenticationApi {
                 checkLdapAuth(user, details.password, prefController) :
                 checkInternalAuth(user, details.password)
         if (errorMessage) {
+            updateLoginAttemptNumber(user, prefController.numberOfLoginAttempts)
+            user.context.commitChanges()
             LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, errorMessage)
             throwUnauthorizedException(content)
         }
@@ -121,7 +138,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         }
 
         //check password complexity
-        errorMessage = complexityRequired ? validateComplexPassword(passToCheck) : validatePassword(user.login, passToCheck)
+        errorMessage = validateUserPassword(user.email, user.login, passToCheck, complexityRequired)
         if (errorMessage) {
             LoginResponseDTO content = createAuthenticationContent(WEAK_PASSWORD, errorMessage)
             content.passwordComlexity = complexityRequired
@@ -159,7 +176,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         switch (prefController.twoFactorAuthStatus) {
             case DISABLED:
                 if (!details.skipTfa && noDataForTFA) {
-                    LoginResponseDTO content = createAuthenticationContent(TFA_OPTIONAL, '', totpService.generateKey(user.login).url)
+                    LoginResponseDTO content = createAuthenticationContent(TFA_OPTIONAL, '', totpService.generateKey(user.email).url)
                     throwUnauthorizedException(content)
                 }
                 break
@@ -176,7 +193,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         }
 
         if (errorMessage) {
-            LoginResponseDTO content = createAuthenticationContent(TFA_REQUIRED, errorMessage, totpService.generateKey(user.login).url)
+            LoginResponseDTO content = createAuthenticationContent(TFA_REQUIRED, errorMessage, totpService.generateKey(user.email).url)
             throwUnauthorizedException(content)
         }
 
@@ -218,6 +235,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
         user.lastLoginOn = new Date()
         user.passwordUpdateRequired = false
+        user.loginAttemptNumber = 0
 
         if (details.newPassword) {
             user.password = AuthenticationUtil.generatePasswordHash(details.newPassword)

@@ -1,6 +1,6 @@
 def enrolmentsJustEnded = query {
     entity "Enrolment"
-    query "courseClass.endDateTime is yesterday or courseClass.endDateTime is today"
+    query "courseClass.endDateTime is yesterday"
 }
 
 enrolmentsJustEnded.each { enrolment ->

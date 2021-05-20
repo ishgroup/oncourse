@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { CheckoutPaymentPlan } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
 
 export const CHECKOUT_GET_ACTIVE_PAYMENT_TYPES = _toRequestType("checkout/get/peyment/method");
@@ -24,10 +25,12 @@ export const CHECKOUT_SET_PAYMENT_STATUS = "checkout/get/payment/status";
 export const CHECKOUT_SET_PAYMENT_STATUS_DETAILS = "checkout/set/payment/status/details";
 export const CHECKOUT_CLEAR_PAYMENT_STATUS = _toRequestType("checkout/clear/payment/status");
 
-export const CHECKOUT_PROCESS_CC_PAYMENT = _toRequestType("checkout/process/cc/payment");
-export const CHECKOUT_PROCESS_CC_PAYMENT_FULFILLED = FULFILLED(CHECKOUT_PROCESS_CC_PAYMENT);
+export const CHECKOUT_PROCESS_PAYMENT = _toRequestType("checkout/process/cc/payment");
+export const CHECKOUT_PROCESS_PAYMENT_FULFILLED = FULFILLED(CHECKOUT_PROCESS_PAYMENT);
 
 export const CHECKOUT_CLEAR_CC_IFRAME_URL = "checkout/clear/wcIframe/url";
+
+export const CHECKOUT_SET_PAYMENT_PLANS = "checkout/set/payment/plans";
 
 export const checkoutGetSavedCard = (payerId: number, paymentMethodId: number) => ({
   type: CHECKOUT_GET_SAVED_CARD,
@@ -41,6 +44,11 @@ export const checkoutGetActivePaymentMethods = () => ({
 export const checkoutSetPaymentMethod = (selectedType: string) => ({
   type: CHECKOUT_SET_PAYMENT_TYPE,
   payload: { selectedType }
+});
+
+export const checkoutSetPaymentPlans = (paymentPlans: CheckoutPaymentPlan[]) => ({
+  type: CHECKOUT_SET_PAYMENT_PLANS,
+  payload: paymentPlans
 });
 
 export const checkoutSetPaymentProcessing = (isProcessing: boolean) => ({
@@ -58,12 +66,12 @@ export const checkoutSetPaymentSuccess = (isSuccess: boolean) => ({
   payload: { isSuccess }
 });
 
-export const checkoutProcessCcPayment = (
+export const checkoutProcessPayment = (
   xValidateOnly: boolean,
   xPaymentSessionId: string,
   xOrigin: string
 ) => ({
-  type: CHECKOUT_PROCESS_CC_PAYMENT,
+  type: CHECKOUT_PROCESS_PAYMENT,
   payload: {
     xValidateOnly, xPaymentSessionId, xOrigin
   }

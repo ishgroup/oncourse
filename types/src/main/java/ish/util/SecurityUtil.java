@@ -29,21 +29,22 @@ public final class SecurityUtil {
 	public static final int VOUCHER_CODE_LENGTH = 8;
 	public static final int USI_SOFTWARE_ID_LENGTH = 9;
 	public static final int CERTIFICATE_CODE_LENGTH = 11;
+	public static final int INVITATION_CODE_LENGTH = 32;
 	public static final String CERTIFICATE_NAME_SPACE = "c";
 
-	private static SecureRandom random = new SecureRandom();
+	private static final SecureRandom random = new SecureRandom();
 
 	/*
 	 * A list of human readable characters without ambiguous '1/l/I' and 'O/0'
 	 */
-	private static String humanReadableChars = "23456789qwertyuiopkjhgfdsazxcvbnmQWERTYUPLKJHGFDSAZXCVBNM";
+	private static final String humanReadableChars = "23456789qwertyuiopkjhgfdsazxcvbnmQWERTYUPLKJHGFDSAZXCVBNM";
 
 	/*
 	 * A list of legal for voucher code human readable characters without ambiguous '1/l/L/i/I' and 'O/0'
 	 */
-	private static String voucherCodeLegalChars = "23456789qwertyupkjhgfdsazxcvbnmQWERTYUPKJHGFDSAZXCVBNM";
+	private static final String voucherCodeLegalChars = "23456789qwertyupkjhgfdsazxcvbnmQWERTYUPKJHGFDSAZXCVBNM";
 
-	private static int[] numericChars = {1,2,3,4,5,6,7,8,9,0};
+	private static final int[] numericChars = {1,2,3,4,5,6,7,8,9,0};
 
 	private SecurityUtil() {}
 
@@ -73,6 +74,16 @@ public final class SecurityUtil {
 
 	public static String generateCertificateCode() {
 		return  String.format("%s%s",CERTIFICATE_NAME_SPACE, (RandomStringUtils.random(CERTIFICATE_CODE_LENGTH, 0, voucherCodeLegalChars.length(), false, false, voucherCodeLegalChars.toCharArray(), random)));
+	}
+
+	public static String generateUserInvitationToken() {
+		return RandomStringUtils.random(INVITATION_CODE_LENGTH,
+				0,
+				humanReadableChars.length(),
+				false,
+				false,
+				humanReadableChars.toCharArray(),
+				random);
 	}
 
 	public static String generateUSISoftwareId() {

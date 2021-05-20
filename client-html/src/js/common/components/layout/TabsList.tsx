@@ -13,7 +13,8 @@ import clsx from "clsx";
 import ListItem from "@material-ui/core/ListItem";
 import createStyles from "@material-ui/core/styles/createStyles";
 import { RouteComponentProps, withRouter } from "react-router";
-import { APP_BAR_HEIGHT } from "../../../constants/Config";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
+import { LSGetItem } from "../../utils/storage";
 
 const styles = theme => createStyles({
     listContainer: {
@@ -202,7 +203,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
           <div className={clsx("relative",
             classes.listContainer,
             customAppBar ? "appBarContainer" : "h-100",
-            localStorage.getItem("theme") === "christmas" && "christmasHeader")}
+            LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
           >
             <div className={classes.listContainerInner}>
               {items.map((i, index) => (

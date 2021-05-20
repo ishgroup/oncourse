@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
-import { State } from "../../../../../../reducers/state";
-import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { Epic } from "redux-observable";
+import { TrainingPlan } from "@api/model";
+import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
+import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { UPDATE_COURSE_CLASS_TRAINING_PLANS } from "../actions";
 import CourseClassAttendanceService from "../services/CourseClassAttendanceService";
-import { TrainingPlan } from "@api/model";
 
-const request: EpicUtils.Request<any, State, { id: number; trainingPlans: TrainingPlan[] }> = {
+const request: EpicUtils.Request<any, { id: number; trainingPlans: TrainingPlan[] }> = {
   type: UPDATE_COURSE_CLASS_TRAINING_PLANS,
   getData: ({ id, trainingPlans }) => CourseClassAttendanceService.updateTrainingPlans(id, trainingPlans),
   processData: () => [],

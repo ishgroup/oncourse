@@ -1,0 +1,6 @@
+The following documents will be permanently deleted from your ish onCourse system after ${DateFormatter.getNextDayOfWeekForToday(Calendar.SUNDAY, "dd MMMM yyyy")}
+
+DOCUMENTS FOR DELETION:
+<% documents.each { d -> %>
+${d.fileName} - ${d.displayableSize}
+<% } %>

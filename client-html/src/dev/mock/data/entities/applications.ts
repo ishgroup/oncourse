@@ -1,4 +1,4 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockApplications() {
   this.getApplications = () => this.applications;
@@ -64,7 +64,7 @@ export function mockApplications() {
   });
 
   this.removeApplication = id => {
-    this.applications.rows = this.applications.rows.filter(a => a.id !== id);
+    this.applications = removeItemByEntity(this.applications, id);
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -80,74 +80,50 @@ export function mockApplications() {
     values: [l.source, l.studentName, l.courseName, l.createdOn, "Withdrawn", l.feeOverride]
   }));
 
-  const columns = [
-    {
-      title: "Source",
-      attribute: "source",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Student",
-      attribute: "student.contact.fullName",
-      sortable: true,
-      visible: true,
-      width: 300,
-      type: null,
-      sortFields: ["student.contact.lastName", "student.contact.firstName", "student.contact.middleName"]
-    },
-    {
-      title: "Course",
-      attribute: "course.name",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Date of application",
-      attribute: "createdOn",
-      sortable: true,
-      visible: true,
-      width: 100,
-      type: "Datetime",
-      sortFields: []
-    },
-    {
-      title: "Status",
-      attribute: "displayStatus",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: ["status"]
-    },
-    {
-      title: "Fee Override",
-      attribute: "feeOverride",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Money",
-      sortFields: []
+  return getEntityResponse({
+    entity: "Application",
+    rows,
+    columns: [
+      {
+        title: "Source",
+        attribute: "source",
+        sortable: true
+      },
+      {
+        title: "Student",
+        attribute: "student.contact.fullName",
+        sortable: true,
+        width: 300,
+        sortFields: ["student.contact.lastName", "student.contact.firstName", "student.contact.middleName"]
+      },
+      {
+        title: "Course",
+        attribute: "course.name",
+        sortable: true
+      },
+      {
+        title: "Date of application",
+        attribute: "createdOn",
+        sortable: true,
+        width: 100,
+        type: "Datetime"
+      },
+      {
+        title: "Status",
+        attribute: "displayStatus",
+        sortable: true,
+        sortFields: ["status"]
+      },
+      {
+        title: "Fee Override",
+        attribute: "feeOverride",
+        sortable: true,
+        type: "Money"
+      }
+    ],
+    res: {
+      search: "( ((status == NEW) and ((enrolBy >= today) or (enrolBy == null))) or ((status == IN_PROGRESS) and ((enrolBy >= today) or (enrolBy == null))) or ((status == OFFERED) and ((enrolBy >= today) or (enrolBy == null))) or ((status == ACCEPTED)) or ((status == REJECTED)) or ((status == WITHDRAWN)) )",
+      sort: [{ attribute: "source", ascending: true, complexAttribute: [] }]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "Application";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = "( ((status == NEW) and ((enrolBy >= today) or (enrolBy == null))) or ((status == IN_PROGRESS) and ((enrolBy >= today) or (enrolBy == null))) or ((status == OFFERED) and ((enrolBy >= today) or (enrolBy == null))) or ((status == ACCEPTED)) or ((status == REJECTED)) or ((status == WITHDRAWN)) )";
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [{ attribute: "source", ascending: true, complexAttribute: [] }];
-
-  return response;
+  });
 }

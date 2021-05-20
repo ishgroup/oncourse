@@ -5,17 +5,10 @@
 package ish.oncourse.server.cayenne
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
-import ish.common.types.AccountType
-import ish.common.types.AttendanceType
-import ish.common.types.DeliveryMode
-import ish.common.types.EnrolmentStatus
-import ish.common.types.OutcomeStatus
-import ish.common.types.PaymentSource
-import ish.common.types.StudyReason
+import ish.TestWithDatabase
+import ish.DatabaseSetup
+import ish.common.types.*
 import ish.math.Money
-import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.exp.ExpressionFactory
@@ -24,44 +17,29 @@ import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.*
+import static org.junit.jupiter.api.Assertions.*
 
-/**
- */
 @CompileStatic
-class EnrolmentTest extends CayenneIshTestCase {
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/enrolment-outcomeTest.xml")
+class EnrolmentTest extends TestWithDatabase {
 
-	private ICayenneService cayenneService
-
-
-    @Before
-    void setup() throws Exception {
-		wipeTables()
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = EnrolmentTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/enrolment-outcomeTest.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+    @Override
+    void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
         Date start1 = DateUtils.addDays(new Date(), -2)
         Date start2 = DateUtils.addDays(new Date(), -2)
         rDataSet.addReplacementObject("[start_date1]", start1)
         rDataSet.addReplacementObject("[start_date2]", start2)
         rDataSet.addReplacementObject("[end_date1]", DateUtils.addHours(start1, 2))
         rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
-
-        executeDatabaseOperation(rDataSet)
-        injector.getInstance(PreferenceController.class).setReplicationEnabled(true)
     }
 
-	// disabling this test until we implement a proper enrolment status safety
-	// @Test
-	void testEnrolmentStatusChanges() {
-		DataContext newContext = cayenneService.getNewContext()
+    // disabling this test until we implement a proper enrolment status safety
+    // @Test
+    
+    void testEnrolmentStatusChanges() {
+        DataContext newContext = cayenneService.getNewContext()
 
         Course course = newContext.newObject(Course.class)
         course.setCode("courseCode")
@@ -106,9 +84,9 @@ class EnrolmentTest extends CayenneIshTestCase {
 
         EnrolmentStatus[] initialStatuses = [null, EnrolmentStatus.NEW, EnrolmentStatus.QUEUED, EnrolmentStatus.IN_TRANSACTION]
         try {
-			for (EnrolmentStatus initialStatus : initialStatuses)
-				for (EnrolmentStatus s : EnrolmentStatus.STATUSES_FINAL) {
-					Enrolment enrolment = newContext.newObject(Enrolment.class)
+            for (EnrolmentStatus initialStatus : initialStatuses)
+                for (EnrolmentStatus s : EnrolmentStatus.STATUSES_FINAL) {
+                    Enrolment enrolment = newContext.newObject(Enrolment.class)
                     enrolment.setStatus(initialStatus)
                     enrolment.setStudent(student)
                     enrolment.setCourseClass(cc)
@@ -117,76 +95,77 @@ class EnrolmentTest extends CayenneIshTestCase {
                     enrolment.setStatus(s)
                     newContext.deleteObjects(enrolment)
                 }
-		} catch (IllegalStateException ise) {
-			fail("should be able to set enrolment status: " + ise.getMessage())
+        } catch (IllegalStateException ise) {
+            fail("should be able to set enrolment status: " + ise.getMessage())
         }
 
-		for (EnrolmentStatus initialStatus : EnrolmentStatus.STATUSES_FINAL)
-			for (EnrolmentStatus s : EnrolmentStatus.values()) {
-				boolean exceptionCaught = false
+        for (EnrolmentStatus initialStatus : EnrolmentStatus.STATUSES_FINAL)
+            for (EnrolmentStatus s : EnrolmentStatus.values()) {
+                boolean exceptionCaught = false
                 Enrolment enrolment = newContext.newObject(Enrolment.class)
                 enrolment.setStatus(initialStatus)
                 enrolment.setStudent(student)
                 enrolment.setCourseClass(cc)
                 enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
                 try {
-					enrolment.setStatus(s)
+                    enrolment.setStatus(s)
                 } catch (IllegalStateException ise) {
-					// all good
-					exceptionCaught = true
+                    // all good
+                    exceptionCaught = true
                 } finally {
-					newContext.deleteObjects(enrolment)
+                    newContext.deleteObjects(enrolment)
                 }
-				if (!exceptionCaught) {
-					if (!(EnrolmentStatus.SUCCESS.equals(initialStatus) && (EnrolmentStatus.CANCELLED.equals(s) || EnrolmentStatus.REFUNDED.equals(s)))) {
-						fail("should not be able to change a enrolment status when finalised " + initialStatus + " -> " + s)
+                if (!exceptionCaught) {
+                    if (!(EnrolmentStatus.SUCCESS.equals(initialStatus) && (EnrolmentStatus.CANCELLED.equals(s) || EnrolmentStatus.REFUNDED.equals(s)))) {
+                        fail("should not be able to change a enrolment status when finalised " + initialStatus + " -> " + s)
                     }
-				}
-			}
+                }
+            }
 
-	}
+    }
 
-	@Test
+    
+    @Test
     void testOutcomeNonVetNoModules() throws Exception {
 
-		DataContext newContext = cayenneService.getNewContext()
+        DataContext newContext = cayenneService.getNewContext()
 
         Student student = newContext.select(SelectQuery.query(Student.class, ExpressionFactory.matchExp(Student.ID_PROPERTY, 1L))).get(0)
         CourseClass cc = newContext.select(SelectQuery.query(CourseClass.class, ExpressionFactory.matchExp(CourseClass.ID_PROPERTY, 1L)))
-				.get(0)
+                .get(0)
 
         Enrolment enrolment = newContext.newObject(Enrolment.class)
         enrolment.setStudent(student)
         enrolment.setCourseClass(cc)
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
-        assertEquals("Check outcomes ", 0, enrolment.getOutcomes().size())
+        assertEquals(0, enrolment.getOutcomes().size(), "Check outcomes ")
 
         // test setup ends here
 
-		newContext.commitChanges()
+        newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 1, enrolment.getOutcomes().size())
+        assertEquals(1, enrolment.getOutcomes().size(), "Check outcomes ")
         enrolment.setStatus(EnrolmentStatus.QUEUED)
         newContext.commitChanges()
-        assertEquals("Check outcomes ", 1, enrolment.getOutcomes().size())
+        assertEquals(1, enrolment.getOutcomes().size(), "Check outcomes ")
 
         enrolment.setStatus(EnrolmentStatus.SUCCESS)
         newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 1, enrolment.getOutcomes().size())
+        assertEquals(1, enrolment.getOutcomes().size(), "Check outcomes ")
 
-        assertEquals("Check outcome state", OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(0).getStatus())
-        assertNull("Check outcome type", enrolment.getOutcomes().get(0).getModule())
+        assertEquals(OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(0).getStatus(), "Check outcome state")
+        assertNull(enrolment.getOutcomes().get(0).getModule(), "Check outcome type")
         Long idOutcomes = enrolment.getOutcomes().get(0).getId()
 
         enrolment.setStatus(EnrolmentStatus.CANCELLED)// this is a workaround for enrollment change status check
-		newContext.commitChanges()
+        newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
         // do not delete outcomes on server side when user perform cancel/refund
-		assertEquals("Check outcomes ", 1, enrolment.getOutcomes().size())
+        assertEquals(1, enrolment.getOutcomes().size(), "Check outcomes ")
         assertNotNull(SelectById.query(Outcome.class, idOutcomes).selectOne(cayenneService.getNewContext()))
 
         newContext.deleteObjects(enrolment.getOutcomes())
@@ -201,7 +180,7 @@ class EnrolmentTest extends CayenneIshTestCase {
         newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 1, enrolment.getOutcomes().size())
+        assertEquals(1, enrolment.getOutcomes().size(), "Check outcomes ")
         idOutcomes = enrolment.getOutcomes().get(0).getId()
 
         newContext.deleteObjects(enrolment)
@@ -213,14 +192,15 @@ class EnrolmentTest extends CayenneIshTestCase {
 
     }
 
-	@Test
+    
+    @Test
     void testOutcomeNotVETWithModules() throws Exception {
 
-		DataContext newContext = cayenneService.getNewContext()
+        DataContext newContext = cayenneService.getNewContext()
 
         Student student = newContext.select(SelectQuery.query(Student.class, ExpressionFactory.matchExp(Student.ID_PROPERTY, 1L))).get(0)
         CourseClass cc = newContext.select(SelectQuery.query(CourseClass.class, ExpressionFactory.matchExp(CourseClass.ID_PROPERTY, 2L)))
-				.get(0)
+                .get(0)
 
         Enrolment enrolment = newContext.newObject(Enrolment.class)
 
@@ -229,28 +209,28 @@ class EnrolmentTest extends CayenneIshTestCase {
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
 
         // test setup ends here
-		assertEquals("Check outcomes ", 0, enrolment.getOutcomes().size())
+        assertEquals(0, enrolment.getOutcomes().size(), "Check outcomes ")
         newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
-        assertEquals("Check outcome state", OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(0).getStatus())
-        assertEquals("Check outcome state", OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(1).getStatus())
-        assertEquals("Check outcome state", OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(2).getStatus())
-        assertNotNull("Check outcome type", enrolment.getOutcomes().get(0).getModule())
-        assertNotNull("Check outcome type", enrolment.getOutcomes().get(1).getModule())
-        assertNotNull("Check outcome type", enrolment.getOutcomes().get(2).getModule())
+        assertEquals(OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(0).getStatus(), "Check outcome state")
+        assertEquals(OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(1).getStatus(), "Check outcome state")
+        assertEquals(OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(2).getStatus(), "Check outcome state")
+        assertNotNull(enrolment.getOutcomes().get(0).getModule(), "Check outcome type")
+        assertNotNull(enrolment.getOutcomes().get(1).getModule(), "Check outcome type")
+        assertNotNull(enrolment.getOutcomes().get(2).getModule(), "Check outcome type")
 
         enrolment.setStatus(EnrolmentStatus.QUEUED)
         newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
         enrolment.setStatus(EnrolmentStatus.SUCCESS)
         newContext.commitChanges()
-        assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
         Long idOutcome1 = enrolment.getOutcomes().get(0).getId()
         Long idOutcome2 = enrolment.getOutcomes().get(1).getId()
@@ -272,7 +252,7 @@ class EnrolmentTest extends CayenneIshTestCase {
         newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
         idOutcome1 = enrolment.getOutcomes().get(0).getId()
         idOutcome2 = enrolment.getOutcomes().get(1).getId()
@@ -282,7 +262,7 @@ class EnrolmentTest extends CayenneIshTestCase {
         newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 0, enrolment.getOutcomes().size())
+        assertEquals(0, enrolment.getOutcomes().size(), "Check outcomes ")
 
         assertNull(SelectById.query(Outcome.class, idOutcome1).selectOne(cayenneService.getNewContext()))
         assertNull(SelectById.query(Outcome.class, idOutcome2).selectOne(cayenneService.getNewContext()))
@@ -298,14 +278,15 @@ class EnrolmentTest extends CayenneIshTestCase {
         newContext.commitChanges()
     }
 
-	@Test
+    
+    @Test
     void testOutcomeVETNoModules() throws Exception {
 
-		DataContext newContext = cayenneService.getNewContext()
+        DataContext newContext = cayenneService.getNewContext()
 
         Student student = newContext.select(SelectQuery.query(Student.class, ExpressionFactory.matchExp(Student.ID_PROPERTY, 1L))).get(0)
         CourseClass cc = newContext.select(SelectQuery.query(CourseClass.class, ExpressionFactory.matchExp(CourseClass.ID_PROPERTY, 3L)))
-				.get(0)
+                .get(0)
 
         Enrolment enrolment = newContext.newObject(Enrolment.class)
         enrolment.setStudent(student)
@@ -313,29 +294,29 @@ class EnrolmentTest extends CayenneIshTestCase {
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
 
         // test setup finishes here
-		newContext.commitChanges()
+        newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 1, enrolment.getOutcomes().size())
+        assertEquals(1, enrolment.getOutcomes().size(), "Check outcomes ")
 
         enrolment.setStatus(EnrolmentStatus.QUEUED)
         newContext.commitChanges()
-        assertEquals("Check outcomes ", 1, enrolment.getOutcomes().size())
+        assertEquals(1, enrolment.getOutcomes().size(), "Check outcomes ")
 
         enrolment.setStatus(EnrolmentStatus.SUCCESS)
         newContext.commitChanges()
-        assertEquals("Check outcomes ", 1, enrolment.getOutcomes().size())
+        assertEquals(1, enrolment.getOutcomes().size(), "Check outcomes ")
 
-        assertEquals("Check outcome state", OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(0).getStatus())
-        assertNull("Check outcome type", enrolment.getOutcomes().get(0).getModule())
+        assertEquals(OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(0).getStatus(), "Check outcome state")
+        assertNull(enrolment.getOutcomes().get(0).getModule(), "Check outcome type")
         Long idOutcomes = enrolment.getOutcomes().get(0).getId()
 
         enrolment.setStatus(EnrolmentStatus.CANCELLED)// this is a workaround for enrollment change status check
-		newContext.commitChanges()
+        newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
         // do not delete outcomes on server side when user perform cancel/refund
-		assertEquals("Check outcomes ", 1, enrolment.getOutcomes().size())
+        assertEquals(1, enrolment.getOutcomes().size(), "Check outcomes ")
         assertNotNull(SelectById.query(Outcome.class, idOutcomes).selectOne(cayenneService.getNewContext()))
 
         newContext.deleteObjects(enrolment.getOutcomes())
@@ -350,7 +331,7 @@ class EnrolmentTest extends CayenneIshTestCase {
         newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 1, enrolment.getOutcomes().size())
+        assertEquals(1, enrolment.getOutcomes().size(), "Check outcomes ")
         idOutcomes = enrolment.getOutcomes().get(0).getId()
 
         newContext.deleteObjects(enrolment)
@@ -362,14 +343,15 @@ class EnrolmentTest extends CayenneIshTestCase {
 
     }
 
-	@Test
+    
+    @Test
     void testOutcomeVETWithModules() throws Exception {
 
-		DataContext newContext = cayenneService.getNewContext()
+        DataContext newContext = cayenneService.getNewContext()
 
         Student student = newContext.select(SelectQuery.query(Student.class, ExpressionFactory.matchExp(Student.ID_PROPERTY, 1L))).get(0)
         CourseClass cc = newContext.select(SelectQuery.query(CourseClass.class, ExpressionFactory.matchExp(CourseClass.ID_PROPERTY, 4L)))
-				.get(0)
+                .get(0)
 
         Enrolment enrolment = newContext.newObject(Enrolment.class)
         enrolment.setStudent(student)
@@ -377,46 +359,46 @@ class EnrolmentTest extends CayenneIshTestCase {
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
 
         // test setup finishes here
-		enrolment.setStatus(EnrolmentStatus.SUCCESS)
-        assertEquals("Check outcomes ", 0, enrolment.getOutcomes().size())
+        enrolment.setStatus(EnrolmentStatus.SUCCESS)
+        assertEquals(0, enrolment.getOutcomes().size(), "Check outcomes ")
         newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
-        assertEquals("Check outcome state", OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(0).getStatus())
-        assertEquals("Check outcome state", OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(1).getStatus())
-        assertEquals("Check outcome state", OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(2).getStatus())
-        assertNotNull("Check outcome type", enrolment.getOutcomes().get(0).getModule())
-        assertNotNull("Check outcome type", enrolment.getOutcomes().get(1).getModule())
-        assertNotNull("Check outcome type", enrolment.getOutcomes().get(2).getModule())
+        assertEquals(OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(0).getStatus(), "Check outcome state")
+        assertEquals(OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(1).getStatus(), "Check outcome state")
+        assertEquals(OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(2).getStatus(), "Check outcome state")
+        assertNotNull(enrolment.getOutcomes().get(0).getModule(), "Check outcome type")
+        assertNotNull(enrolment.getOutcomes().get(1).getModule(), "Check outcome type")
+        assertNotNull(enrolment.getOutcomes().get(2).getModule(), "Check outcome type")
 
         newContext.commitChanges()
 
-        assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
         Long idOutcome1 = enrolment.getOutcomes().get(0).getId()
         Long idOutcome2 = enrolment.getOutcomes().get(1).getId()
         Long idOutcome3 = enrolment.getOutcomes().get(2).getId()
 
         // try deleting one outcome
-		DataContext newContext2 = cayenneService.getNewContext()
+        DataContext newContext2 = cayenneService.getNewContext()
         Outcome o = SelectById.query(Outcome.class, idOutcome1).selectOne(newContext2)
         newContext2.deleteObjects(o)
         newContext2.commitChanges()
 
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 2, enrolment.getOutcomes().size())
+        assertEquals(2, enrolment.getOutcomes().size(), "Check outcomes ")
         assertNull(SelectById.query(Outcome.class, idOutcome1).selectOne(cayenneService.getNewContext()))
 
         enrolment.setStatus(EnrolmentStatus.SUCCESS)
         newContext.commitChanges()
-        assertEquals("Check outcomes ", 2, enrolment.getOutcomes().size())
+        assertEquals(2, enrolment.getOutcomes().size(), "Check outcomes ")
         assertNull(SelectById.query(Outcome.class, idOutcome1).selectOne(cayenneService.getNewContext()))
 
         // now delete whole enrolment
-		newContext.deleteObjects(enrolment)
+        newContext.deleteObjects(enrolment)
         newContext.commitChanges()
 
         assertNull(SelectById.query(Outcome.class, idOutcome1).selectOne(cayenneService.getNewContext()))
@@ -431,19 +413,19 @@ class EnrolmentTest extends CayenneIshTestCase {
         newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
         idOutcome1 = enrolment.getOutcomes().get(0).getId()
         idOutcome2 = enrolment.getOutcomes().get(1).getId()
         idOutcome3 = enrolment.getOutcomes().get(2).getId()
 
         enrolment.setStatus(EnrolmentStatus.CANCELLED)// this is a workaround for enrollment change status check
-		newContext.commitChanges()
+        newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
         // do not delete outcomes on server side when user perform cancel or refund manually (through oncourse UI)
-		// it was done on client side if user selected such option
-		assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        // it was done on client side if user selected such option
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
         assertNotNull(SelectById.query(Outcome.class, idOutcome1).selectOne(cayenneService.getNewContext()))
         assertNotNull(SelectById.query(Outcome.class, idOutcome2).selectOne(cayenneService.getNewContext()))
@@ -458,14 +440,15 @@ class EnrolmentTest extends CayenneIshTestCase {
 
     }
 
-	@Test
+    
+    @Test
     void testOutcomeVETTraineeship() throws Exception {
 
-		DataContext newContext = cayenneService.getNewContext()
+        DataContext newContext = cayenneService.getNewContext()
 
         Student student = newContext.select(SelectQuery.query(Student.class, ExpressionFactory.matchExp(Student.ID_PROPERTY, 2L))).get(0)
         CourseClass cc = newContext.select(SelectQuery.query(CourseClass.class, ExpressionFactory.matchExp(CourseClass.ID_PROPERTY, 5L)))
-				.get(0)
+                .get(0)
 
         Enrolment enrolment = newContext.newObject(Enrolment.class)
         enrolment.setStudent(student)
@@ -474,26 +457,26 @@ class EnrolmentTest extends CayenneIshTestCase {
 
         // test setup ends here
 
-		assertEquals("Check outcomes ", 0, enrolment.getOutcomes().size())
+        assertEquals(0, enrolment.getOutcomes().size(), "Check outcomes ")
         newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
-        assertEquals("Check outcome state", OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(0).getStatus())
-        assertEquals("Check outcome state", OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(1).getStatus())
-        assertEquals("Check outcome state", OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(2).getStatus())
-        assertNotNull("Check outcome type", enrolment.getOutcomes().get(0).getModule())
-        assertNotNull("Check outcome type", enrolment.getOutcomes().get(1).getModule())
-        assertNotNull("Check outcome type", enrolment.getOutcomes().get(2).getModule())
+        assertEquals(OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(0).getStatus(), "Check outcome state")
+        assertEquals(OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(1).getStatus(), "Check outcome state")
+        assertEquals(OutcomeStatus.STATUS_NOT_SET, enrolment.getOutcomes().get(2).getStatus(), "Check outcome state")
+        assertNotNull(enrolment.getOutcomes().get(0).getModule(), "Check outcome type")
+        assertNotNull(enrolment.getOutcomes().get(1).getModule(), "Check outcome type")
+        assertNotNull(enrolment.getOutcomes().get(2).getModule(), "Check outcome type")
 
         enrolment.setStatus(EnrolmentStatus.QUEUED)
         newContext.commitChanges()
-        assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
         enrolment.setStatus(EnrolmentStatus.SUCCESS)
         newContext.commitChanges()
-        assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
         Long idOutcome1 = enrolment.getOutcomes().get(0).getId()
         Long idOutcome2 = enrolment.getOutcomes().get(1).getId()
@@ -515,19 +498,19 @@ class EnrolmentTest extends CayenneIshTestCase {
         newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
         idOutcome1 = enrolment.getOutcomes().get(0).getId()
         idOutcome2 = enrolment.getOutcomes().get(1).getId()
         idOutcome3 = enrolment.getOutcomes().get(2).getId()
 
         enrolment.setStatus(EnrolmentStatus.CANCELLED)// this is a workaround for enrollment change status check
-		newContext.commitChanges()
+        newContext.commitChanges()
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
         // do not delete outcomes on server side when user perform cancel or refund manually (through oncourse UI)
-		// it was done on client side if user selected such option
-		assertEquals("Check outcomes ", 3, enrolment.getOutcomes().size())
+        // it was done on client side if user selected such option
+        assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
 
         assertNotNull(SelectById.query(Outcome.class, idOutcome1).selectOne(cayenneService.getNewContext()))
         assertNotNull(SelectById.query(Outcome.class, idOutcome2).selectOne(cayenneService.getNewContext()))
@@ -541,14 +524,15 @@ class EnrolmentTest extends CayenneIshTestCase {
         newContext.commitChanges()
     }
 
-	@Test
+    
+    @Test
     void testEnrolmentPostAddTrigger() throws Exception {
 
-		DataContext newContext = cayenneService.getNewContext()
+        DataContext newContext = cayenneService.getNewContext()
 
         Student student = newContext.select(SelectQuery.query(Student.class, ExpressionFactory.matchExp(Student.ID_PROPERTY, 3L))).get(0)
         CourseClass cc = newContext.select(SelectQuery.query(CourseClass.class, ExpressionFactory.matchExp(CourseClass.ID_PROPERTY, 1L)))
-				.get(0)
+                .get(0)
 
         Enrolment enrolment = newContext.newObject(Enrolment.class)
         enrolment.setStatus(EnrolmentStatus.SUCCESS)
@@ -557,28 +541,29 @@ class EnrolmentTest extends CayenneIshTestCase {
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
 
         try {
-			newContext.commitChanges()
+            newContext.commitChanges()
             enrolment = ObjectSelect.query(Enrolment.class).selectFirst(newContext)
-            assertEquals("Check EligibilityExemptionIndicator ", false, enrolment.getEligibilityExemptionIndicator())
-            assertEquals("Check VetIsFullTime ", false, enrolment.getVetIsFullTime())
-            assertEquals("Check VetFeeIndicator ", false, enrolment.getVetFeeIndicator())
-            assertEquals("Check StudyReason ", StudyReason.STUDY_REASON_NOT_STATED, enrolment.getStudyReason())
+            assertEquals(false, enrolment.getEligibilityExemptionIndicator(), "Check EligibilityExemptionIndicator ")
+            assertEquals(false, enrolment.getVetIsFullTime(), "Check VetIsFullTime ")
+            assertEquals(false, enrolment.getVetFeeIndicator(), "Check VetFeeIndicator ")
+            assertEquals(StudyReason.STUDY_REASON_NOT_STATED, enrolment.getStudyReason(), "Check StudyReason ")
         } finally {
-			newContext.deleteObjects(enrolment)
+            newContext.deleteObjects(enrolment)
             newContext.deleteObjects(student)
             newContext.commitChanges()
         }
 
-	}
+    }
 
-	@Test
+    
+    @Test
     void testAttendance() throws Exception {
 
-		DataContext newContext = cayenneService.getNewContext()
+        DataContext newContext = cayenneService.getNewContext()
 
         Student student = newContext.select(SelectQuery.query(Student.class, Student.ID.eq(5L))).get(0)
         CourseClass cc = newContext.select(SelectQuery.query(CourseClass.class, CourseClass.ID.eq(5L)))
-				.get(0)
+                .get(0)
 
         Enrolment enrolment = newContext.newObject(Enrolment.class)
         enrolment.setStudent(student)
@@ -587,23 +572,23 @@ class EnrolmentTest extends CayenneIshTestCase {
 
         // test setup ends here
 
-		newContext.commitChanges()
+        newContext.commitChanges()
         student = SelectById.query(Student.class, student.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check attendance ", 2, student.getAttendances().size())
+        assertEquals(2, student.getAttendances().size(), "Check attendance ")
         enrolment.setModifiedOn(new Date())
         newContext.commitChanges()
-        assertEquals("Check attendance ", 2, student.getAttendances().size())
+        assertEquals(2, student.getAttendances().size(), "Check attendance ")
 
         enrolment.setStatus(EnrolmentStatus.CANCELLED)
         newContext.commitChanges()
         student = SelectById.query(Student.class, student.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check attendance ", 0, student.getAttendances().size())
+        assertEquals(0, student.getAttendances().size(), "Check attendance ")
 
         enrolment.setModifiedOn(new Date())
         newContext.commitChanges()
-        assertEquals("Check attendance ", 0, student.getAttendances().size())
+        assertEquals(0, student.getAttendances().size(), "Check attendance ")
 
         Enrolment enrolment2 = newContext.newObject(Enrolment.class)
         enrolment2.setStatus(EnrolmentStatus.SUCCESS)
@@ -621,17 +606,17 @@ class EnrolmentTest extends CayenneIshTestCase {
         newContext.commitChanges()
         student = SelectById.query(Student.class, student.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check attendance ", 2, student.getAttendances().size())
+        assertEquals(2, student.getAttendances().size(), "Check attendance ")
 
         newContext.deleteObjects(s2)
         newContext.commitChanges()
-        assertEquals("Check attendance ", 1, student.getAttendances().size())
+        assertEquals(1, student.getAttendances().size(), "Check attendance ")
 
         enrolment2.setModifiedOn(new Date())
         newContext.commitChanges()
         student = SelectById.query(Student.class, student.getObjectId())
                 .selectOne(newContext)
-        assertEquals("Check attendance ", 1, student.getAttendances().size())
+        assertEquals(1, student.getAttendances().size(), "Check attendance ")
 
         Session s3 = newContext.newObject(Session.class)
         s3.setCourseClass(cc)
@@ -642,7 +627,7 @@ class EnrolmentTest extends CayenneIshTestCase {
         student = SelectById.query(Student.class, student.getObjectId())
                 .selectOne(newContext)
         // TODO: attendance should be 3 now...
-		assertEquals("Check attendance ", 1, student.getAttendances().size())
+        assertEquals(1, student.getAttendances().size(), "Check attendance ")
 
         newContext.deleteObjects(enrolment.getOutcomes())
         newContext.deleteObjects(enrolment2.getOutcomes())
@@ -653,26 +638,27 @@ class EnrolmentTest extends CayenneIshTestCase {
 
     }
 
-	@Test
+    
+    @Test
     void testStatusConstraints() {
-		/**
-		 * List of allowed status changes: <br>
-		 * <ul>
-		 * <li>null -> anything</li>
-		 * <li>NEW -> anything but null</li>
-		 * <li>QUEUED -> anything but null/NEW</li>
-		 * <li>IN_TRANSACTION -> anything but null/NEW/QUEUED</li>
-		 * <li>SUCCESS -> only CANCELLED/REFUNDED allowed</li>
-		 * <li>FAILED/FAILED_CARD_DECLINED/FAILED_NO_PLACES -> no further status change allowed</li>
-		 * <li>CANCELLED/REFUNDED -> no further status change allowed</li>
-		 * </ul>
-		 */
+        /**
+         * List of allowed status changes: <br>
+         * <ul>
+         * <li>null -> anything</li>
+         * <li>NEW -> anything but null</li>
+         * <li>QUEUED -> anything but null/NEW</li>
+         * <li>IN_TRANSACTION -> anything but null/NEW/QUEUED</li>
+         * <li>SUCCESS -> only CANCELLED/REFUNDED allowed</li>
+         * <li>FAILED/FAILED_CARD_DECLINED/FAILED_NO_PLACES -> no further status change allowed</li>
+         * <li>CANCELLED/REFUNDED -> no further status change allowed</li>
+         * </ul>
+         */
 
-		ObjectContext context = cayenneService.getNewNonReplicatingContext()
+        ObjectContext context = cayenneService.getNewNonReplicatingContext()
 
         // allowed changes
 
-		assertFalse(checkStatusChangeAvailability(context, EnrolmentStatus.NEW, null))
+        assertFalse(checkStatusChangeAvailability(context, EnrolmentStatus.NEW, null))
         assertTrue(checkStatusChangeAvailability(context, EnrolmentStatus.NEW, EnrolmentStatus.QUEUED))
         assertTrue(checkStatusChangeAvailability(context, EnrolmentStatus.NEW, EnrolmentStatus.IN_TRANSACTION))
         assertTrue(checkStatusChangeAvailability(context, EnrolmentStatus.NEW, EnrolmentStatus.SUCCESS))
@@ -764,15 +750,16 @@ class EnrolmentTest extends CayenneIshTestCase {
 
     }
 
-	private boolean checkStatusChangeAvailability(ObjectContext context, EnrolmentStatus from, EnrolmentStatus to) {
-		try {
-			Enrolment enrolment = context.newObject(Enrolment.class)
+    
+    private boolean checkStatusChangeAvailability(ObjectContext context, EnrolmentStatus from, EnrolmentStatus to) {
+        try {
+            Enrolment enrolment = context.newObject(Enrolment.class)
             enrolment.setStatus(from)
             enrolment.setStatus(to)
 
             return true
         } catch (IllegalArgumentException e) {
-			return false
+            return false
         }
-	}
+    }
 }

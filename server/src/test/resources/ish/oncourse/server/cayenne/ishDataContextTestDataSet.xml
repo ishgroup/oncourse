@@ -1,62 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Preference CREATEDON="2007-11-19 13:30:29.497" ID="903" MODIFIEDON="2013-05-06 00:33:41.913" VALUESTRING="31-Dec-2015" NAME="finance.transaction_locked" UNIQUEKEY="finance.transaction_locked"/>
-	<Preference CREATEDON="2007-11-19 13:30:29.497" ID="902" MODIFIEDON="2013-05-06 00:33:41.913" VALUESTRING="true" NAME="replication.enabled" UNIQUEKEY="replication.enabled"/>
-	<Preference CREATEDON="2014-02-11 19:10:54.702" ID="912" MODIFIEDON="2014-02-11 19:10:56.825" NAME="account.default.debtors.id" UNIQUEKEY="account.default.debtors.id" VALUESTRING="50"/>
-	<Preference CREATEDON="2014-02-11 19:10:54.856" ID="904" MODIFIEDON="2014-02-11 19:10:56.856" NAME="account.prepaidFees.id" UNIQUEKEY="account.prepaidFees.id" VALUESTRING="60"/>
-	<Preference CREATEDON="2013-03-21 14:31:45.608" ID="933" MODIFIEDON="2013-03-21 14:31:45.608" NAME="account.default.studentEnrolments.id" VALUESTRING="70" UNIQUEKEY="account.default.studentEnrolments.id"/>
-	<Preference CREATEDON="2014-02-11 19:10:54.621" ID="901" MODIFIEDON="2014-02-11 19:10:56.804" NAME="account.default.bank.id" UNIQUEKEY="account.default.bank.id" VALUESTRING="80"/>
-	<Preference CREATEDON="2014-02-11 19:10:55.230" ID="905" MODIFIEDON="2014-02-11 19:10:57.055" NAME="account.default.voucherUnderpayment.id" UNIQUEKEY="account.default.voucherUnderpayment.id" VALUESTRING="90"/>
+  <Preference CREATEDON="2007-11-19 13:30:29.497" ID="903" MODIFIEDON="2013-05-06 00:33:41.913"
+              VALUESTRING="31-Dec-2015" NAME="finance.transaction_locked" UNIQUEKEY="finance.transaction_locked"/>
+  <Preference CREATEDON="2007-11-19 13:30:29.497" ID="902" MODIFIEDON="2013-05-06 00:33:41.913" VALUESTRING="true"
+              NAME="replication.enabled" UNIQUEKEY="replication.enabled"/>
+  <Preference CREATEDON="2014-02-11 19:10:54.702" ID="912" MODIFIEDON="2014-02-11 19:10:56.825"
+              NAME="account.default.debtors.id" UNIQUEKEY="account.default.debtors.id" VALUESTRING="50"/>
+  <Preference CREATEDON="2014-02-11 19:10:54.856" ID="904" MODIFIEDON="2014-02-11 19:10:56.856"
+              NAME="account.prepaidFees.id" UNIQUEKEY="account.prepaidFees.id" VALUESTRING="60"/>
+  <Preference CREATEDON="2013-03-21 14:31:45.608" ID="933" MODIFIEDON="2013-03-21 14:31:45.608"
+              NAME="account.default.studentEnrolments.id" VALUESTRING="70"
+              UNIQUEKEY="account.default.studentEnrolments.id"/>
+  <Preference CREATEDON="2014-02-11 19:10:54.621" ID="901" MODIFIEDON="2014-02-11 19:10:56.804"
+              NAME="account.default.bank.id" UNIQUEKEY="account.default.bank.id" VALUESTRING="80"/>
+  <Preference CREATEDON="2014-02-11 19:10:55.230" ID="905" MODIFIEDON="2014-02-11 19:10:57.055"
+              NAME="account.default.voucherUnderpayment.id" UNIQUEKEY="account.default.voucherUnderpayment.id"
+              VALUESTRING="90"/>
 
-	<Account id="50" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
-	<Account id="60" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
-	<Account id="70" accountCode="55000" description="Test voucher liability" isEnabled="1" type="2"/>
-	<Account id="80" accountCode="11100" description="Cheque account" isEnabled="1" type="1"/>
-	<Account id="90" accountCode="vUnderpay" description="Test voucher underpay acc" isEnabled="1" type="6"/>
+  <Account id="50" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
+  <Account id="60" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
+  <Account id="70" accountCode="55000" description="Test voucher liability" isEnabled="1" type="2"/>
+  <Account id="80" accountCode="11100" description="Cheque account" isEnabled="1" type="1"/>
+  <Account id="90" accountCode="vUnderpay" description="Test voucher underpay acc" isEnabled="1" type="6"/>
 
-	<PaymentMethod id="300" name="EFT" accountId="60" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
-	<PaymentMethod id="500" name="Zero" accountId="60" active="1" bankedAutomatically="1" reconcilable="1" type="5"/>
-	<PaymentMethod id="200" name="Credit card" accountId="50" active="1" bankedAutomatically="1" reconcilable="1" type="2"/>
+  <PaymentMethod id="300" name="EFT" accountId="60" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
+  <PaymentMethod id="500" name="Zero" accountId="60" active="1" bankedAutomatically="1" reconcilable="1" type="5"/>
+  <PaymentMethod id="200" name="Credit card" accountId="50" active="1" bankedAutomatically="1" reconcilable="1"
+                 type="2"/>
 
-	<Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="50" receivableFromStudentAccountId="50" taxCode="GST" taxrate="0.1"/>
+  <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="50" receivableFromStudentAccountId="50" taxCode="GST"
+       taxrate="0.1"/>
 
-	<FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<Course id="1"  code="ATT1" willowId="1" name="Non vet no modules" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+  <Course id="1" feeHelpClass="0" code="ATT1" willowId="1" name="Non vet no modules" allowWaitingLists="1"
+          currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0"
+          enrolmentType="1" fieldConfigurationSchemaId="1"/>
 
-	<Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney" isVirtual="0"/>
+  <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney"
+        isVirtual="0"/>
 
-	<Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
+  <Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
 
-	<CourseClass id="1" code="123" fundingSource="3" taxAdjustment="0.1" taxId="1" sessionCount="3" minimumPlaces="1"
-                 maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
-                 isCancelled="0" isActive="1" incomeAccountId="50" deliveryMode="1" courseId="1"
-                 feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
-                 budgetedPlaces="10" attendanceType="0" feeHelpClass="0" />
+  <CourseClass id="1" code="123" fundingSource="3" taxAdjustment="0.1" taxId="1" sessionCount="3" minimumPlaces="1"
+               maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
+               isCancelled="0" isActive="1" incomeAccountId="50" deliveryMode="1" courseId="1"
+               feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
+               budgetedPlaces="10" attendanceType="0"/>
 
-	<Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name" lastName="name" email="test@test.te"/>
+  <Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="123AB" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name"
+           lastName="name" email="test@test.te"/>
 
-	<Student id="1" contactId="1" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="1" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="1" contactId="1" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="1" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
 
-	<CourseSession id="1" courseClass_Id="1" startDatetime="[start_date1]" endDatetime="[end_date1]" payAdjustment="0.00"/>
-	<CourseSession id="2" courseClass_Id="1" startDatetime="[start_date2]" endDatetime="[end_date2]" payAdjustment="0.00"/>
+  <CourseSession id="1" courseClass_Id="1" startDatetime="[start_date1]" endDatetime="[end_date1]"
+                 payAdjustment="0.00"/>
+  <CourseSession id="2" courseClass_Id="1" startDatetime="[start_date2]" endDatetime="[end_date2]"
+                 payAdjustment="0.00"/>
 
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" amoutOwing="20.00" contactId="1" dateDue="[start_date1]" debtorsAccountId="50" invoiceDate="[start_date1]" invoiceNumber="1" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="2" amoutOwing="30.00" contactId="1" dateDue="[start_date1]" debtorsAccountId="50" invoiceDate="[start_date1]" invoiceNumber="2" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="3" amoutOwing="-30.00" contactId="1" dateDue="[start_date1]" debtorsAccountId="50" invoiceDate="[start_date1]" invoiceNumber="3" source="O" confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" amoutOwing="20.00" contactId="1" dateDue="[start_date1]"
+           debtorsAccountId="50" invoiceDate="[start_date1]" invoiceNumber="1" source="O" confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="2" amoutOwing="30.00" contactId="1" dateDue="[start_date1]"
+           debtorsAccountId="50" invoiceDate="[start_date1]" invoiceNumber="2" source="O" confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="3" amoutOwing="-30.00" contactId="1" dateDue="[start_date1]"
+           debtorsAccountId="50" invoiceDate="[start_date1]" invoiceNumber="3" source="O" confirmationStatus="2"/>
 
-	<InvoiceLine id="100" accountId="50" discountEachexTax="0" invoiceId="1" priceEachExTax="20.00" quantity="1" taxEach="0" taxId="1" title="line1" prepaidFeesAccountId="60" prepaidFeesRemaining="0"/>
-	<InvoiceLine id="200" accountId="50" discountEachexTax="0" invoiceId="2" priceEachExTax="30.00" quantity="2" taxEach="0" taxId="1" title="line2" prepaidFeesAccountId="60" prepaidFeesRemaining="0"/>
-	<InvoiceLine id="300" accountId="50" discountEachexTax="0" invoiceId="3" priceEachExTax="-30.00" quantity="1" taxEach="0" taxId="1" title="line3" prepaidFeesAccountId="60" prepaidFeesRemaining="0"/>
+  <InvoiceLine id="100" accountId="50" discountEachexTax="0" invoiceId="1" priceEachExTax="20.00" quantity="1"
+               taxEach="0" taxId="1" title="line1" prepaidFeesAccountId="60" prepaidFeesRemaining="0"/>
+  <InvoiceLine id="200" accountId="50" discountEachexTax="0" invoiceId="2" priceEachExTax="30.00" quantity="2"
+               taxEach="0" taxId="1" title="line2" prepaidFeesAccountId="60" prepaidFeesRemaining="0"/>
+  <InvoiceLine id="300" accountId="50" discountEachexTax="0" invoiceId="3" priceEachExTax="-30.00" quantity="1"
+               taxEach="0" taxId="1" title="line3" prepaidFeesAccountId="60" prepaidFeesRemaining="0"/>
 
 </dataset>

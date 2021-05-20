@@ -7,11 +7,10 @@ import { ClassCost } from "@api/model";
 import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { State } from "../../../../reducers/state";
 import { GET_DUPLICATE_COURSE_CLASSES_BUDGET, SET_DUPLICATE_COURSE_CLASSES_BUDGET } from "../actions";
 import CourseClassCostService from "../components/budget/services/ClassCostService";
 
-const request: EpicUtils.Request<ClassCost[], State, number> = {
+const request: EpicUtils.Request<ClassCost[], number> = {
   type: GET_DUPLICATE_COURSE_CLASSES_BUDGET,
   hideLoadIndicator: true,
   getData: id => CourseClassCostService.getCourseClassCosts(id),

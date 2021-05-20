@@ -12,7 +12,7 @@ import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/F
 import { parseIntegrations } from "../utils/index";
 import { UPDATE_INTEGRATION_ITEM_FULFILLED, UPDATE_INTEGRATION_ITEM_REQUEST } from "../../../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: UPDATE_INTEGRATION_ITEM_REQUEST,
   getData: payload => IntegrationService.updateIntegration(payload.id, payload.item),
   retrieveData: () => IntegrationService.getIntegrations(),

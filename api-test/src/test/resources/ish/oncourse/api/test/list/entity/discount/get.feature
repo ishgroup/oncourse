@@ -47,13 +47,13 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
 
     Scenario: (+) Get discount by admin
 
-        Given path ishPath + '/1001'
+        Given path ishPath + '/1003'
         When method GET
         Then status 200
         And match $ ==
         """
         {
-        "id":1001,
+        "id":1003,
         "name":"discount1",
         "discountType":"Percent",
         "rounding":"No Rounding",
@@ -77,18 +77,15 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "studentPostcode":null,
         "discountConcessionTypes":[],
         "discountMemberships":#ignore,
-        "discountCourseClasses":
-            [
-            {"expiryDate":null,"entityToId":null,"code":"course1-3","entityFromId":null,"name":"Course1","active":true,"relationId":null,"id":3,"type":"Class"},
-            {"expiryDate":null,"entityToId":null,"code":"course1-2","entityFromId":null,"name":"Course1","active":true,"relationId":null,"id":2,"type":"Class"}
-            ],
+        "discountCourseClasses":[],
         "addByDefault":false,
         "minEnrolments":1,
         "minValue":0.00,
         "corporatePassDiscounts":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "limitPreviousEnrolment":false
+        "limitPreviousEnrolment":false,
+        "relationDiscount":false
         }
         """
 
@@ -148,7 +145,8 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "corporatePassDiscounts":[{"id":1001,"contactFullName":"company #1"}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "limitPreviousEnrolment":false
+        "limitPreviousEnrolment":false,
+        "relationDiscount":false
         }
         """
 

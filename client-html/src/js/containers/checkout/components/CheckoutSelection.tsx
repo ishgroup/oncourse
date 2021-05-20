@@ -18,7 +18,7 @@ import {
   Category, CheckoutSaleRelation, ColumnWidth, createStringEnum
 } from "@api/model";
 import debounce from "lodash.debounce";
-import uniqid from "uniqid";
+
 import { LinkAdornment } from "../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../common/utils/links";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
@@ -114,6 +114,8 @@ import {
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../common/actions/CommonPlainRecordsActions";
+import uniqid from "../../../common/utils/uniqid";
+import { ShowConfirmCaller } from "../../../model/common/Confirm";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 export const CONTACT_ENTITY_NAME: string = "Contact";
@@ -177,7 +179,7 @@ interface Props extends Partial<EditViewProps> {
   openNestedEditView?: any;
   value?: any;
   contactEditRecord?: any;
-  openConfirm?: any;
+  showConfirm?: ShowConfirmCaller;
   selectedContacts?: any[];
   addSelectedContact?: (contact: any) => void;
   removeContact?: (index: number) => void;
@@ -231,7 +233,7 @@ interface Props extends Partial<EditViewProps> {
   salesRelations?: CheckoutSaleRelation[];
 }
 
-const titles = {
+export const titles = {
   [CheckoutPage.default]: "Type in student name or code in order to search",
   [CheckoutPage.contacts]: "Search for a contact by name.",
   [CheckoutPage.items]: "Search for a course, product, membership or voucher by name or code.",
@@ -287,7 +289,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     handleSubmit,
     value,
     contactEditRecord,
-    openConfirm,
+    showConfirm,
     getContactRecord,
     selectedContacts,
     addSelectedContact,
@@ -353,6 +355,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
   const [selectedDiscount, setSelectedDiscount] = React.useState(undefined);
   const [openDiscountView, setOpenDiscountView] = React.useState(false);
   const [customLoading, setCustomLoading] = React.useState(false);
+  const [disablePayment, setDisablePayment] = React.useState(false);
   const [itemsSearch, setItemsSearch] = React.useState<string>(null);
 
   const mapedProducts = useMemo(() => products.map(checkoutProductMap), [products]);
@@ -471,15 +474,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [selectedCourse, openClassListView, selectedItems, checkoutStep, openedItem]
   );
 
-  const showConfirm = (handler, confirmMessage?: string, confirmText?: string, onCancel?: any) => {
-    openConfirm(
-      handler,
-      confirmMessage || "You have unsaved changes. Do you want to discard them and proceed?",
-      confirmText || "DISCARD CHANGES",
-      onCancel
-    );
-  };
-
   const openContactRow = React.useCallback(
     (item, checkDirty = true) => {
       if (selectedContact && selectedContact.id === item.id) {
@@ -487,7 +481,11 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       }
 
       if ((isContactEditViewDirty || createNewContact) && checkDirty) {
-        showConfirm(() => openContactRow(item, false), createNewContact ? createConfirmMessage : "");
+        showConfirm({
+          onConfirm: () => openContactRow(item, false),
+          confirmMessage: createNewContact ? createConfirmMessage : "",
+          ...createNewContact ? { title: null } : {}
+          });
         return;
       }
 
@@ -496,7 +494,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       getContactRecord(item.id);
       setOpenContactEditView(true);
       setSelectedContact(item);
-      reset();
       setListContacts([]);
       onCloseClassList();
       onCloseItemView();
@@ -528,6 +525,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           reset();
           setListContacts([]);
         } else {
+          dispatch(change(form, "contacts", null));
           const check = selectedContacts.filter(c => c.id === row.id);
           if (check.length === 0) {
             row.relations = [];
@@ -707,14 +705,16 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       if ((isContactEditViewDirty || createNewContact) && checkDirtyContactViewOnFocus) {
         setCheckDirtyContactViewOnFocus(false);
         showConfirm(
-          () => {
-            handleFocusCallback(props, name);
-            onClearContactsSearch();
-          },
-          createNewContact ? createConfirmMessage : "",
-          undefined,
-          () => {
-            setCheckDirtyContactViewOnFocusCancel(true);
+          {
+            onConfirm: () => {
+              handleFocusCallback(props, name);
+              onClearContactsSearch();
+            },
+            confirmMessage: createNewContact ? createConfirmMessage : "",
+            onCancel: () => {
+              setCheckDirtyContactViewOnFocusCancel(true);
+            },
+            ...createNewContact ? { title: null } : {}
           }
         );
         return;
@@ -755,7 +755,9 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
   const onClose = React.useCallback(
     (props?: any, checkDirty = true) => {
       if ((isContactEditViewDirty || createNewContact) && checkDirty) {
-        showConfirm(() => onClose(props, false));
+        showConfirm({
+          onConfirm: () => onClose(props, false)
+        });
         return;
       }
       setActiveField(CheckoutPage.default);
@@ -873,11 +875,11 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       };
 
       if (row.cartAction === "Add but do not allow removal") {
-        openConfirm(
-          onRemove,
-          "The item you are removing is required by another item in the shopping cart.",
-          "Override"
-        );
+        showConfirm({
+          onConfirm: onRemove,
+          confirmMessage: "The item you are removing is required by another item in the shopping cart.",
+          cancelButtonText: "Override"
+        });
       } else {
         onRemove();
       }
@@ -1102,6 +1104,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                     setActiveField={setActiveField}
                     selectedDiscount={selectedDiscount}
                     setSelectedDiscount={setSelectedDiscount}
+                    setDisablePayment={setDisablePayment}
                     formInvalid={invalid}
                   />
                 </CheckoutSectionExpandableRenderer>
@@ -1206,6 +1209,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             openDiscountView={openDiscountView}
             selectedDiscount={selectedDiscount}
             selectedContacts={selectedContacts}
+            summaryList={summary.list}
           />
         </div>
         <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice) })}>
@@ -1219,6 +1223,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             activeField={activeField}
             titles={titles}
             selectedDiscount={selectedDiscount}
+            disablePayment={disablePayment}
           />
         </div>
       </div>
@@ -1321,8 +1326,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
   openNestedEditView: (entity: string, id: number, threeColumn: boolean) =>
     dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string, onCancel?: any) =>
-    dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel)),
+  showConfirm: props =>
+    dispatch(showConfirm(props)),
   getCourses: (offset?: number) => dispatch(
     getCommonPlainRecords("Course", offset, "code,name,isTraineeship", true, null, PLAIN_LIST_MAX_PAGE_SIZE)
   ),

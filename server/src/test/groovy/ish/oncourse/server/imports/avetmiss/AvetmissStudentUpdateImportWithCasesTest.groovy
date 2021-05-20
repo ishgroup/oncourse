@@ -1,9 +1,10 @@
 package ish.oncourse.server.imports.avetmiss
 
-import ish.CayenneIshTestCase
+import groovy.transform.CompileStatic
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.imports.ImportParameter
 import ish.oncourse.common.ResourcesUtil
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.imports.ImportService
@@ -11,155 +12,156 @@ import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotEquals
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertNull
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-class AvetmissStudentUpdateImportWithCasesTest extends CayenneIshTestCase {
+@CompileStatic
+@DatabaseSetup
+class AvetmissStudentUpdateImportWithCasesTest extends TestWithDatabase {
     public static final String ANGIE_CONTACT_FIRST_NAME = "ANGIE"
     ImportService importService
-    ICayenneService cayenneService
-    ObjectContext context
     ImportParameter parameter
-    
-    @Before
-    void setup() throws Exception {
-        wipeTables()
+
+    @BeforeEach
+    @Order(3)
+    void populateData() throws Exception {
         DataPopulation dataPopulation = injector.getInstance(DataPopulation)
         dataPopulation.run()
-        
+
         importService = injector.getInstance(ImportService)
-        cayenneService = importService.cayenneService
-        context = cayenneService.newContext
         parameter = new ImportParameter()
         parameter.setKeyCode("ish.onCourse.import.update.avetmiss.student")
     }
-    
+
+
     @Test
-    void updateNotStudent(){
-        Contact notStudent = createAngieContact(context)
+    void updateNotStudent() {
+        Contact notStudent = createAngieContact(cayenneContext)
         notStudent.isStudent = false
         notStudent.student = null
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
-        assertFalse(notStudent.getIsStudent())
-        assertNull(notStudent.getStudent())
-        
+        Assertions.assertFalse(notStudent.getIsStudent())
+        Assertions.assertNull(notStudent.getStudent())
+
         processImport("studentNAT00080.txt", "studentNAT00085.txt")
-        
+
         notStudent = ObjectSelect.query(Contact).where(Contact.FIRST_NAME.eq(ANGIE_CONTACT_FIRST_NAME)).selectOne(cayenneService.newContext)
-        assertTrue("contact was not a student, after import it is", notStudent.getIsStudent())
-        assertNotNull("contact was not a student, after import it is", notStudent.getStudent())
+        Assertions.assertTrue(notStudent.getIsStudent(), "contact was not a student, after import it is")
+        Assertions.assertNotNull(notStudent.getStudent(), "contact was not a student, after import it is")
     }
+
 
     @Test
     void createStudentFromNat80Nat85ByImportUpdateScript() {
-        assertTrue("There are no contacts in DB before Import", ObjectSelect.query(Contact).select(context).isEmpty())
+        Assertions.assertTrue(ObjectSelect.query(Contact).select(cayenneContext).isEmpty(), "There are no contacts in DB before Import")
 
         processImport("createStudentNAT00080.txt", "createStudentNAT00085.txt")
 
-        assertEquals(2, ObjectSelect.query(Contact).select(cayenneService.newContext).size())
+        Assertions.assertEquals(2, ObjectSelect.query(Contact).select(cayenneService.newContext).size())
     }
 
     /**
      * Contact duplication case!
      */
+
     @Test
-    void updateStudentWithoutBirthdate(){
-        Contact withoutBirthdate = createAngieContact(context)
+    void updateStudentWithoutBirthdate() {
+        Contact withoutBirthdate = createAngieContact(cayenneContext)
         withoutBirthdate.birthDate = null
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
-        assertEquals("There are 1 contact in DB before Import", 1, ObjectSelect.query(Contact).select(context).size())
+        Assertions.assertEquals(1, ObjectSelect.query(Contact).select(cayenneContext).size(), "There are 1 contact in DB before Import")
 
         processImport("studentNAT00080.txt", "studentNAT00085.txt")
 
-        assertEquals(2, ObjectSelect.query(Contact).select(cayenneService.newContext).size())
-        assertEquals("NAT80 is self-contained and is searching for name, surname AND BIRTHDAY to define existing contact. If contact in DB have no BIRTHDAY, studentUpdateImport will create duplicate contact with BIRTHDAY", 2, ObjectSelect.query(Contact).where(Contact.FIRST_NAME.eq(ANGIE_CONTACT_FIRST_NAME)).select(context).size())
+        Assertions.assertEquals(2, ObjectSelect.query(Contact).select(cayenneService.newContext).size())
+        Assertions.assertEquals(2, ObjectSelect.query(Contact).where(Contact.FIRST_NAME.eq(ANGIE_CONTACT_FIRST_NAME)).select(cayenneContext).size(), "NAT80 is self-contained and is searching for name, surname AND BIRTHDAY to define existing contact. If contact in DB have no BIRTHDAY, studentUpdateImport will create duplicate contact with BIRTHDAY")
     }
 
     /**
      * Contact duplication case!
      */
+
     @Test
-    void updateStudentWithoutEmail(){
-        Contact withoutEmail = createAngieContact(context)
+    void updateStudentWithoutEmail() {
+        Contact withoutEmail = createAngieContact(cayenneContext)
         withoutEmail.email = null
-        context.commitChanges()
-        
+        cayenneContext.commitChanges()
+
         processImport("studentNAT00080.txt", "studentNAT00085.txt")
-        
-        assertEquals(2, ObjectSelect.query(Contact).select(cayenneService.newContext).size())
-        assertEquals("NAT85 is self-contained and is searching for name, surname AND EMAIL to define existing contact. If contact in DB have no EMAIL, studentUpdateImport will create duplicate contact with EMAIL", 2, ObjectSelect.query(Contact).where(Contact.FIRST_NAME.eq(ANGIE_CONTACT_FIRST_NAME)).select(context).size())
+
+        Assertions.assertEquals(2, ObjectSelect.query(Contact).select(cayenneService.newContext).size())
+        Assertions.assertEquals(2, ObjectSelect.query(Contact).where(Contact.FIRST_NAME.eq(ANGIE_CONTACT_FIRST_NAME)).select(cayenneContext).size(), "NAT85 is self-contained and is searching for name, surname AND EMAIL to define existing contact. If contact in DB have no EMAIL, studentUpdateImport will create duplicate contact with EMAIL")
     }
 
     /**
      * we can change contact's name or/and surname
      * Condition: contact must be NEW (NOT exist in DB)
      */
+
     @Test
-    void changeNameViaImportForNewContact(){
-        assertTrue(ObjectSelect.query(Contact).select(context).isEmpty())
+    void changeNameViaImportForNewContact() {
+        Assertions.assertTrue(ObjectSelect.query(Contact).select(cayenneContext).isEmpty())
         processImport("changeNameNAT00080.txt", "changeNameNAT00085.txt")
 
-        List<Contact> contacts = ObjectSelect.query(Contact).select(context)
-        assertEquals(1, contacts.size())
-        assertNotEquals(ANGIE_CONTACT_FIRST_NAME, contacts.get(0).firstName)
-        assertEquals("Karol".toUpperCase(), contacts.get(0).firstName)
+        List<Contact> contacts = ObjectSelect.query(Contact).select(cayenneContext)
+        Assertions.assertEquals(1, contacts.size())
+        Assertions.assertNotEquals(ANGIE_CONTACT_FIRST_NAME, contacts.get(0).firstName)
+        Assertions.assertEquals("Karol".toUpperCase(), contacts.get(0).firstName)
     }
 
     /**
      * Contact duplication case!
      * we CAN'T change contact's name or/and surname during update of existing contact
      */
+
     @Test
-    void changeNameViaImportForExistingContact(){
-        createAngieContact(context)
-        context.commitChanges()
+    void changeNameViaImportForExistingContact() {
+        createAngieContact(cayenneContext)
+        cayenneContext.commitChanges()
 
         processImport("changeNameNAT00080.txt", "changeNameNAT00085.txt")
 
         List<Contact> contacts = ObjectSelect.query(Contact).select(cayenneService.newContext)
-        assertEquals(2, contacts.size())
-        assertNotNull(contacts.stream().find {c -> c.firstName.equals(ANGIE_CONTACT_FIRST_NAME)})
-        assertNotNull(contacts.stream().find {c -> c.firstName.equalsIgnoreCase("Karol")})
+        Assertions.assertEquals(2, contacts.size())
+        Assertions.assertNotNull(contacts.findAll() { c -> c.firstName.equals(ANGIE_CONTACT_FIRST_NAME) })
+        Assertions.assertNotNull(contacts.findAll() { c -> c.firstName.equalsIgnoreCase("Karol") })
     }
 
     /**
      * it was a case, where 2+ same CustomFieldTypes were created
      * case: nat80 contains first existing contact and 2+ new contacts, nat85 also contains 1+ new contacts
      */
+
     @Test
-    void oneCustomFieldTypeCreated(){
-        createAngieContact(context)
-        context.commitChanges()
-        
-        assertEquals(0, ObjectSelect.query(CustomFieldType).where(CustomFieldType.NAME.eq("clientId")).selectCount(context))
-        
+    void oneCustomFieldTypeCreated() {
+        createAngieContact(cayenneContext)
+        cayenneContext.commitChanges()
+
+        Assertions.assertEquals(0, ObjectSelect.query(CustomFieldType).where(CustomFieldType.NAME.eq("clientId")).selectCount(cayenneContext))
+
         processImport("twoNewContactsNAT00080.txt", "twoNewContactsNAT00085.txt")
 
-        assertEquals(1, ObjectSelect.query(CustomFieldType).where(CustomFieldType.NAME.eq("clientId")).selectCount(cayenneService.newContext))
+        Assertions.assertEquals(1, ObjectSelect.query(CustomFieldType).where(CustomFieldType.NAME.eq("clientId")).selectCount(cayenneService.newContext))
     }
-    
+
     private void processImport(String nat80Name, String nat85Name) {
         Map<String, byte[]> data = new HashMap<>()
         data.put("avetmiss80", IOUtils.toByteArray(
-            ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/export/avetmiss8/import/" + nat80Name)))
+            ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/imports/avetmiss8/" + nat80Name)))
         data.put("avetmiss85", IOUtils.toByteArray(
-            ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/export/avetmiss8/import/" + nat85Name)))
+            ResourcesUtil.getResourceAsInputStream("ish/oncourse/server/imports/avetmiss8/" + nat85Name)))
         parameter.setData(data)
         
         importService.performImport(parameter)
     }
-    
-    private Contact createAngieContact(ObjectContext context){
+
+    private Contact createAngieContact(ObjectContext context) {
         Contact angieContact = context.newObject(Contact)
         angieContact.firstName = ANGIE_CONTACT_FIRST_NAME
         angieContact.lastName = "JONES"

@@ -1,5 +1,5 @@
 import { CustomFieldType } from "@api/model";
-import { generateArraysOfRecords } from "../mockUtils";
+import { generateArraysOfRecords, getEntityResponse } from "../mockUtils";
 
 export function mockCustomFields(): CustomFieldType[] {
   this.saveCustomFields = items => {
@@ -7,7 +7,7 @@ export function mockCustomFields(): CustomFieldType[] {
   };
 
   this.removeCustomField = id => {
-    this.customFields = this.customFields.filter(it => it.id !== id);
+    this.customFields = this.customFields.filter(it => Number(it.id) !== Number(id));
   };
 
   this.getCustomFields = () => {
@@ -24,19 +24,11 @@ export function mockCustomFields(): CustomFieldType[] {
       values: Object.values(rest)
     }));
 
-    const columns = [];
-    const response = { rows, columns } as any;
-
-    response.entity = "CustomFieldType";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = 0;
-    response.search = null;
-    response.count = rows.length;
-    response.sort = [];
-
-    return response;
+    return getEntityResponse({
+      entity: "CustomFieldType",
+      rows,
+      plain: true
+    });
   };
 
   return [

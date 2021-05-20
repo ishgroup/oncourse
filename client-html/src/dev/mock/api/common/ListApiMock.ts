@@ -58,7 +58,7 @@ export function listApiMock() {
     } if (entity === "TraineeshipCourse") {
       return promiseResolve(config, this.db.getTraineeshipCourses());
     } if (entity === "Course") {
-      return promiseResolve(config, this.db.getPlainCourses());
+      return promiseResolve(config, this.db.getCourses());
     } if (entity === "Qualification") {
       return promiseResolve(config, this.db.getQualifications());
     } if (entity === "Assessment") {
@@ -87,6 +87,8 @@ export function listApiMock() {
       return promiseResolve(config, this.db.getBankings());
     } if (entity === "Discount") {
       return promiseResolve(config, this.db.getDiscounts());
+    } if (entity === "Document") {
+      return promiseResolve(config, this.db.getDocuments());
     } if (entity === "Application") {
       return promiseResolve(config, this.db.getApplications());
     } if (entity === "Certificate") {
@@ -101,6 +103,8 @@ export function listApiMock() {
       return promiseResolve(config, this.db.getMembershipProducts());
     } if (entity === "ProductItem") {
       return promiseResolve(config, this.db.getProductItems());
+    } if (entity === "PriorLearning") {
+      return promiseResolve(config, this.db.getPriorLearnings());
     }
 
     const list = this.db.getList(entity);
@@ -193,7 +197,11 @@ export function listApiMock() {
       }
 
       case "Course": {
-        return promiseResolve(config, this.db.getPlainCourses());
+        return promiseResolve(config, this.db.getCourses());
+      }
+
+      case "Discount": {
+        return promiseResolve(config, this.db.getPlainDiscounts(config.params));
       }
 
       case "Site": {
@@ -213,11 +221,15 @@ export function listApiMock() {
       }
 
       case "Enrolment": {
-        return promiseResolve(config, this.db.getPlainEnrolments());
+        return promiseResolve(config, this.db.getPlainEnrolments(config.params));
       }
 
       case "ArticleProduct": {
         return promiseResolve(config, this.db.getPlainArticleProductList());
+      }
+
+      case "InvoiceLine": {
+        return promiseResolve(config, this.db.getPlainInvoiceLines());
       }
 
       case "Account": {
@@ -237,7 +249,7 @@ export function listApiMock() {
       }
 
       case "Qualification": {
-        return promiseResolve(config, this.db.getPlainQualifications());
+        return promiseResolve(config, this.db.getPlainQualifications(config.params));
       }
 
       case "PriorLearning": {
@@ -253,7 +265,7 @@ export function listApiMock() {
       }
 
       case "CourseClass": {
-        return promiseResolve(config, this.db.getPlainCourseClassList());
+        return promiseResolve(config, this.db.getPlainCourseClassList(config.params));
       }
 
       case "ProductItem": {
@@ -278,6 +290,22 @@ export function listApiMock() {
 
       case "Report": {
         return promiseResolve(config, this.db.getPlainReports());
+      }
+
+      case "PaymentIn": {
+        return promiseResolve(config, this.db.getPlainPaymentsIn(config.params));
+      }
+
+      case "PaymentOut": {
+        return promiseResolve(config, this.db.getPlainPaymentsOut(config.params));
+      }
+
+      case "Invoice": {
+        return promiseResolve(config, this.db.getPlainInvoices(config.params));
+      }
+
+      case "DefinedTutorRole": {
+        return promiseResolve(config, this.db.getPlainTutorRoles());
       }
 
       default: {

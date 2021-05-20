@@ -13,30 +13,30 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
+import ish.oncourse.server.document.DocumentService
+import ish.s3.AmazonS3Service
 import ish.oncourse.server.api.service.DocumentApiService
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocumentVersion
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocumentVersion
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateForSave
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.DocumentDTO
 import ish.oncourse.server.api.v1.model.DocumentVersionDTO
 import ish.oncourse.server.api.v1.model.DocumentVisibilityDTO
 import ish.oncourse.server.api.v1.service.DocumentApi
-import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.users.SystemUserService
-import ish.s3.S3Service
-import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateStoragePlace
+import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.getDocumentByHash
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocument
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocumentVersion
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocumentVersion
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateForSave
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateVersionForSave
 
 class DocumentApiImpl implements DocumentApi {
 
@@ -46,7 +46,7 @@ class DocumentApiImpl implements DocumentApi {
     private ICayenneService cayenneService
 
     @Inject
-    PreferenceController preferenceController
+    DocumentService documentService
 
     @Inject
     SystemUserService systemUserService
@@ -61,45 +61,45 @@ class DocumentApiImpl implements DocumentApi {
         DocumentVisibilityDTO visibility = DocumentVisibilityDTO.fromValue(access)
         List<Long> tagIds = tags ? tags.split(',').collect {Long.valueOf(it)} : []
 
-        checkForBadRequest(validateForSave(content.getBytes(), fileName, name,  visibility, tagIds, shared, context))
+        checkForBadRequest(validateStoragePlace(content.getBytes(), documentService, context))
+        checkForBadRequest(validateForSave(fileName, name,  visibility, tagIds, shared, context))
+        checkForBadRequest(validateVersionForSave(content.getBytes(), context))
 
         Document dbDocument = createDocument(name, description, visibility, tagIds, shared,  context)
         dbDocument.fileUUID = UUID.randomUUID().toString()
-        DocumentVersion version = createDocumentVersion(dbDocument, content.getBytes(), fileName, context, preferenceController, systemUserService.currentUser)
+        DocumentVersion version = createDocumentVersion(dbDocument, content.getBytes(), fileName, context, documentService, systemUserService.currentUser)
         context.commitChanges()
 
-        return toRestDocument(dbDocument, version.id, preferenceController)
+        return toRestDocument(dbDocument, version.id, documentService)
     }
 
     @Override
     DocumentVersionDTO createVersion(Long id, String fileName, File content) {
         ObjectContext context = cayenneService.newContext
-        Document document = getRecordById(context, Document, id)
-        S3Service s3Service = null
-        if (preferenceController.usingExternalStorage) {
-            s3Service = new S3Service(preferenceController)
+        checkForBadRequest(validateStoragePlace(content.getBytes(), documentService, context))
+        checkForBadRequest(validateVersionForSave(content.getBytes(), context))
+        Document document = service.getEntityAndValidateExistence(context, id)
+        AmazonS3Service s3Service = null
+        if (documentService.usingExternalStorage) {
+            s3Service = new AmazonS3Service(documentService)
         }
-        DocumentVersion version = createDocumentVersion(document, content.getBytes(), fileName, context, preferenceController, systemUserService.currentUser)
+        DocumentVersion version = createDocumentVersion(document, content.getBytes(), fileName, context, documentService, systemUserService.currentUser)
         context.commitChanges()
         return toRestDocumentVersion(version, s3Service)
     }
 
     @Override
     DocumentDTO get(Long id) {
-        return toRestDocument(getRecordById(cayenneService.newContext, Document, id), null, preferenceController)
+        return toRestDocument(service.getEntityAndValidateExistence(cayenneService.newContext, id), null, documentService)
     }
 
     @Override
     DocumentDTO search(byte[] content) {
         ObjectContext context = cayenneService.newContext
         if (content && content.length) {
-            String hash = SecurityUtil.hashByteArray(content)
-
-            Document document = ObjectSelect.query(Document)
-                    .where(Document.VERSIONS.dot(DocumentVersion.HASH).eq(hash))
-                    .selectFirst(context)
+            Document document = getDocumentByHash(content, context)
             if (document) {
-                return toRestDocument(document, null, preferenceController)
+                return toRestDocument(document, null, documentService)
             }
         }
         return null
@@ -118,12 +118,12 @@ class DocumentApiImpl implements DocumentApi {
         Document dbDocument = service.getEntityAndValidateExistence(context, id)
         service.validateModelBeforeSave(documentDto, context, id)
         service.toCayenneModel(documentDto, dbDocument)
-        if (preferenceController.usingExternalStorage && dbDocument.fileUUID != null) {
-            S3Service s3Service = new S3Service(preferenceController)
+        if (documentService.usingExternalStorage && dbDocument.fileUUID != null) {
+            AmazonS3Service s3Service = new AmazonS3Service(documentService)
             String uuid = dbDocument.getFileUUID()
             dbDocument.versions.each { version ->
                 try {
-                    s3Service .changeVisibility(uuid, [version.versionId], dbDocument.webVisibility)
+                    s3Service.changeVisibility(uuid, version.versionId, dbDocument.webVisibility)
                 } catch (Exception e) {
                     logger.error("Could not change document visibility uuid: {}, versionId: {}", dbDocument.getId(), version.versionId, e)
                 }

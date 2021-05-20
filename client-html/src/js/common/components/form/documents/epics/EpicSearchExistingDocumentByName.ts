@@ -32,13 +32,13 @@ export interface DocumentSearchItem {
   attachedRecordsCount: number;
 }
 
-const request: EpicUtils.Request<any, any, { documentName: string; editingFormName: string }> = {
+const request: EpicUtils.Request<any, { documentName: string; editingFormName: string }> = {
   type: SEARCH_DOCUMENT_BY_NAME,
   hideLoadIndicator: true,
   getData: ({ documentName }) => EntityService.getPlainRecords(
       "Document",
       "link,name,added,currentVersion.byteSize,currentVersion.fileName,isShared,attachedRecordsCount",
-      `~ "${documentName}"`
+      `~ "${documentName}" and isRemoved = false`
     ),
   processData: (plainRecords: DataResponse, state: any, { editingFormName }) => {
     const searchDocuments: DocumentSearchItem[] = plainRecords.rows.map(defaultDocumentMap)

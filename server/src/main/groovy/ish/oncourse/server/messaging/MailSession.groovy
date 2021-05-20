@@ -13,7 +13,6 @@ package ish.oncourse.server.messaging
 
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
-import ish.oncourse.server.PreferenceController
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -29,6 +28,7 @@ class MailSession {
 
     //mail SMTP keys
     private static final String SMTP_HOST = 'mail.smtp.host'
+    private static final String SMTP_DEFAULT_USER_NAME = 'user.name'
     private static final String SMTP_CONNECTION_TIMEOUT = 'mail.smtp.connectiontimeout'
     private static final String SMTP_IO_TIMEOUT = 'mail.smtp.timeout'
     private static final String SMTP_AUTH = 'mail.smtp.auth'
@@ -36,25 +36,42 @@ class MailSession {
     private static final String SMTP_PORT = 'mail.smtp.port'
 
     //mail SMTP values
+    private static final String SMTP_DEFAULT_USER_NAME_VALUE = "noreply"
     private static final int SMTP_CONNECTION_TIMEOUT_VALUE = 300000
     private static final int SMTP_IO_TIMEOUT_VALUE = 300000
 
-    PreferenceController preferenceController
+    SMTPService smtpService
 
     @Inject
-    MailSession(PreferenceController preferenceController) {
-        this.preferenceController = preferenceController
+    MailSession(SMTPService smtpService) {
+        this.smtpService = smtpService
     }
 
     Session getSession() {
         Properties properties = new Properties()
+        properties.put(SMTP_DEFAULT_USER_NAME, SMTP_DEFAULT_USER_NAME_VALUE)
         properties.put(SMTP_CONNECTION_TIMEOUT, SMTP_CONNECTION_TIMEOUT_VALUE)
         properties.put(SMTP_IO_TIMEOUT, SMTP_IO_TIMEOUT_VALUE)
-        properties.put(SMTP_HOST, preferenceController.emailSMTPHost)
-        properties.put(SMTP_START_TLS, preferenceController.SMTPStartTLS)
-        properties.put(SMTP_PORT, preferenceController.SMTPPort)
+        properties.put(SMTP_HOST, smtpService.host)
+        properties.put(SMTP_PORT, smtpService.port)
+        
+        switch (smtpService.mode) {
+            case SMTPService.Mode.ssl:
+                properties.put("mail.smtp.ssl.enable", "true")
+                properties.put("mail.smtp.starttls.enable", "false")
+                break
+            case SMTPService.Mode.starttls:
+                properties.put("mail.smtp.ssl.enable", "false")
+                properties.put("mail.smtp.starttls.enable", "true")
+                break
+            case SMTPService.Mode.unsafe:
+                properties.put("mail.smtp.ssl.enable", "false")
+                properties.put("mail.smtp.starttls.enable", "false")
+                break
+        }
+        
         if (authNeed) {
-            properties.put(SMTP_AUTH, 'true')
+            properties.put(SMTP_AUTH, Boolean.TRUE)
         }
 
         Session session = Session.getInstance(properties, authNeed ? authenticator : null)
@@ -63,14 +80,14 @@ class MailSession {
     }
 
     private boolean isAuthNeed() {
-        StringUtils.isNotBlank(preferenceController.SMTPUsername) && StringUtils.isNotBlank(preferenceController.SMTPPassword)
+        StringUtils.isNotBlank(smtpService.userName) && StringUtils.isNotBlank(smtpService.password)
     }
 
     private Authenticator getAuthenticator() {
         new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(preferenceController.SMTPUsername, preferenceController.SMTPPassword)
+                return new PasswordAuthentication(smtpService.userName, smtpService.password)
             }
         }
     }

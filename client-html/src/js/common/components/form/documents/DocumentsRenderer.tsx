@@ -14,6 +14,7 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import IconButton from "@material-ui/core/IconButton";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { WrappedFieldArrayProps } from "redux-form";
 import { AppTheme } from "../../../../model/common/Theme";
 import { openInternalLink } from "../../../utils/links";
 import DocumentItem from "./components/items/DocumentItem";
@@ -29,6 +30,8 @@ import {
 } from "./actions";
 import DocumentEditDialog, { DocumentDialogType } from "./components/dialogs/DocumentEditDialog";
 import { getEntityTags } from "../../../../containers/tags/actions";
+import { EntityName } from "../../../../model/entities/common";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 
 const styles = (theme: AppTheme) => createStyles({
   dropInfo: {
@@ -55,7 +58,30 @@ interface DocumentsRendererState {
   isDragging: boolean;
 }
 
-class DocumentsRenderer extends React.PureComponent<any, DocumentsRendererState> {
+interface DocumentsRendererProps {
+  editingDocument: any;
+  editingFormName: string;
+  form: string;
+  classes: any;
+  label: string;
+  xsGrid: any;
+  mdGrid: any;
+  lgGrid: any;
+  dispatch: Dispatch;
+  entity: EntityName;
+  setDocumentFile: any;
+  getDocumentTags: any;
+  viewDocument: any;
+  setEditingDocument: any;
+  clearEditingDocument: any;
+  searchExistingDocument: any;
+  showConfirm: ShowConfirmCaller;
+  clearSearchDocuments: any;
+  createDocument: any;
+  tags: any;
+}
+
+class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & WrappedFieldArrayProps, DocumentsRendererState> {
   state = {
     openAddDialog: false,
     editingDocumentIndex: null,
@@ -109,7 +135,7 @@ class DocumentsRenderer extends React.PureComponent<any, DocumentsRendererState>
 
     const { editingDocumentPath } = this.state;
 
-    showConfirm(() => fields.remove(index), "Document will be unlinked", "AGREE");
+    showConfirm({ onConfirm: () => fields.remove(index), confirmMessage: "Document will be unlinked" });
 
     if (editingDocumentPath) {
       this.closeEdit();
@@ -140,6 +166,10 @@ class DocumentsRenderer extends React.PureComponent<any, DocumentsRendererState>
   fileDragEvent = (e, openAddDialog) => {
     e.stopPropagation();
     e.preventDefault();
+    if (!e.dataTransfer.types.some(t => t === "Files")) {
+      return;
+    }
+
     this.setState(prev => ({
       ...prev,
       openAddDialog: prev.editingDocumentIndex !== null ? false : openAddDialog,
@@ -284,7 +314,6 @@ class DocumentsRenderer extends React.PureComponent<any, DocumentsRendererState>
           item={editItem}
           dispatch={dispatch}
           form={form}
-          showConfirm={showConfirm}
           tags={menuTags}
           type={editingDocumentType}
           index={editingDocumentIndex}

@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <Account id="1" accountCode="11500" description="Test debtors account" isEnabled="1" type="1"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="3" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="4" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+
+  <Site id="100" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0"
+        localTimezone="Australia/Sydney"/>
+  <Room id="1" siteId="100" name="Room 1" seatedCapacity="20" directions="Some directions..."
+        facilities="Some facilities..." createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
+
+  <DefinedTutorRole description="Tutor" name="Tutor" id="1" active="1"/>
+
+  <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="3" receivableFromStudentAccountId="4" taxCode="GST"
+       taxrate="0.1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+
+  <SystemUser email="admin@mail.com" createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1"
+              lastLoginOn="2014-10-20 12:33:13.0" login="admin" modifiedOn="2014-10-20 12:33:13.0"
+              password="PBKDF2WithHmacSHA1:1000:5b5814a658527cd9fd6f61224eb05fec699fb20900b4193d:0fd68ff3c15901a1b835cdd571a536f678104c6592f05322"
+              surname="Administrator" isActive="1" isAdmin="1" defaultAdministrationCentreId="100" canEditTara="0"
+              canEditCMS="0" willowid="21" PASSWORDUPDATEREQUIRED="0"/>
+
+  <GradingType id="1" CREATEDON="2021-04-13 10:22:44.0" MODIFIEDON="2021-04-21 21:30:45.0" NAME="Pass/Fail"
+               MIN_VALUE="0.00" MAX_VALUE="100.00" ENTRYTYPE="2"/>
+
+  <Assessment id="1" createdOn="2017-07-24 13:24:51" modifiedOn="2017-07-24 13:26:58" active="1"
+              code="test.assessment.101" description="Description" gradingTypeId="1" name="Test Assessment Task"/>
+  <Assessment id="2" createdOn="2020-03-27 17:59:03" modifiedOn="2020-04-03 05:42:59" active="0"
+              code="test.assessment.103" description="Description" gradingTypeId="1" name="testAssessment"/>
+
+  <Course id="1" code="TEST" name="Test Course" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"
+          currentlyOffered="1" fieldOfEducation="field1" isVET="1" reportableHours="2.0" webDescription="some text"
+          allowWaitingLists="0" isShownOnWeb="1" isSufficientForQualification="1"
+          printedBrochureDescription="Printed Brochure text"
+          enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
+
+  <CourseClass id="1" code="123" startDateTime="2013-01-01 00:00:00" endDateTime="2033-01-02 00:00:00"
+               createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
+               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
+               attendanceType="0"/>
+
+  <Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="1abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="First" lastName="Student"
+           email="student@test.com"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Student id="1" contactId="1" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0" studentNumber="1"
+           usiStatus="0" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"
+           citizenship="9" feeHelpEligible="0"/>
+
+  <Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="2abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="Second" lastName="Student"
+           email="secondstudent@test.com"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Student id="2" contactId="2" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0" studentNumber="2"
+           usiStatus="0" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"
+           citizenship="9" feeHelpEligible="0"/>
+
+  <Contact id="3" isCompany="0" isStudent="0" isTutor="1" uniqueCode="1abct" deliveryStatusSms="1"
+           deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="Test" lastName="Tutor"
+           email="tutor@test.com"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Tutor id="1" contactId="3" dateStarted="2012-01-01 00:00:00" dateFinished="2013-01-01 00:00:00" resume="some text"
+         createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" wwChildrenStatus="0"/>
+
+  <CourseClassTutor id="1" tutorId="1" courseClassId="1" inPublicity="1" definedTutorRoleId="1"
+                    modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
+
+  <Enrolment id="1" courseClass_id="1" studentId="1" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0"
+             status="3" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" confirmationStatus="2"
+             feeHelpAmount="0" attendanceType="9"/>
+  <Enrolment id="2" courseClass_id="1" studentId="2" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0"
+             status="3" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" confirmationStatus="2"
+             feeHelpAmount="0" attendanceType="9"/>
+
+  <AssessmentClass id="1" assessmentId="1" courseClassId="1" dueDate="2032-01-03 11:00:00"
+                   modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
+
+  <AssessmentClass id="2" assessmentId="2" courseClassId="1" dueDate="2032-01-03 11:00:00"
+                   modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
+
+  <AssessmentSubmission id="1" assessmentClassId="1" enrolmentId="1" markedById="3" submittedOn="2021-01-03 11:00:00"
+                        markedOn="2021-01-05 11:00:00" grade="85.43" modifiedOn="2012-01-03 11:00:00"
+                        createdOn="2012-01-03 10:00:00"/>
+
+  <AssessmentSubmission id="2" assessmentClassId="2" enrolmentId="2" markedById="3" submittedOn="2021-01-04 11:00:00"
+                        modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
+
+</dataset>

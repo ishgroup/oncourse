@@ -7,10 +7,10 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import UserRolesService from "../services/UserRolesService";
-import { GET_USER_ROLES_REQUEST, GET_USER_ROLES_FULFILLED } from "../../../actions";
+import { GET_USER_ROLES_FULFILLED, GET_USER_ROLES_REQUEST } from "../../../actions";
 import { UserRole } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_USER_ROLES_REQUEST,
   getData: () => UserRolesService.getUserRoles(),
   processData: (userRoles: UserRole[]) => {

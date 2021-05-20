@@ -6,7 +6,7 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../epics/EpicUtils";
-import { GET_TAG_MANAGER_PARAMETERS, GET_GOOGLE_TAG_MANAGER_PARAMETERS_FULFILLED } from "../actions";
+import { GET_GOOGLE_TAG_MANAGER_PARAMETERS_FULFILLED, GET_TAG_MANAGER_PARAMETERS } from "../actions";
 import UserPreferenceService from "../../../services/UserPreferenceService";
 import { GET_USER_PREFERENCES_FULFILLED } from "../../../actions";
 import {
@@ -16,7 +16,7 @@ import {
   GOOGLE_ANALYTICS_USER_ID_KEY
 } from "../../../../constants/Config";
 
-const request: EpicUtils.Request<{ [key: string]: string }, any, any> = {
+const request: EpicUtils.Request<{ [key: string]: string }, any> = {
   type: GET_TAG_MANAGER_PARAMETERS,
   getData: () =>
     UserPreferenceService.getUserPreferencesByKeys([

@@ -18,12 +18,14 @@ import { getUserPreferences, showConfirm, setUserPreference } from "../../common
 import {
   DASHBOARD_NEWS_LATEST_READ,
   DASHBOARD_CATEGORY_WIDTH_KEY,
-  DASHBOARD_THEME_KEY
+  DASHBOARD_THEME_KEY,
+  APPLICATION_THEME_STORAGE_NAME
 } from "../../constants/Config";
 import { AppTheme, ThemeValues } from "../../model/common/Theme";
 import { toggleSwipeableDrawer } from "../../common/components/layout/swipeable-sidebar/actions";
 import { VARIANTS } from "../../common/components/layout/swipeable-sidebar/utils";
 import { SWIPEABLE_SIDEBAR_WIDTH } from "../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
+import { LSGetItem } from "../../common/utils/storage";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -77,7 +79,7 @@ class Dashboard extends React.PureComponent<any, any> {
           {
             [classes.drawerOpenedContainer]: drawerOpened
           },
-          localStorage.getItem("theme") === "christmas" && "christmasBody"
+          LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBody"
         )}
       >
         <Grid item xs={12}>
@@ -115,8 +117,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getDashboardPreferences: () => dispatch(getUserPreferences([DASHBOARD_CATEGORY_WIDTH_KEY, DASHBOARD_NEWS_LATEST_READ])),
   setDashboardColumnWidth: (key: PreferenceEnum, value: string) => dispatch(setUserPreference({ key, value })),
   setPreferencesTheme: (value: ThemeValues) => dispatch(setUserPreference({ key: DASHBOARD_THEME_KEY, value })),
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) =>
-    dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText)),
+  openConfirm: props => dispatch(showConfirm(props)),
   toggleSwipeableDrawer: () => dispatch(toggleSwipeableDrawer(VARIANTS.persistent)),
   setDashboardNewsLatestReadDate: (value: string) => dispatch(setUserPreference({ key: DASHBOARD_NEWS_LATEST_READ, value }))
 });

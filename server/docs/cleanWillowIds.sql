@@ -1,5 +1,3 @@
-connect 'jdbc:derby://localhost/onCourse' user 'onCourse' password 'sjhdf8hJHG';
-
 UPDATE BinaryData SET willowid=null
 UPDATE BinaryInfo SET willowid=null
 UPDATE BinaryRelation SET willowid=null

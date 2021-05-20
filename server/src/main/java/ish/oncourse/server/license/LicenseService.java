@@ -17,6 +17,7 @@ import ish.util.RuntimeUtil;
 public class LicenseService {
     public static final String SERVICES_SECURITYKEY = "services.securitykey";
     private Integer max_concurrent_users = null;
+    private Integer purge_audit_after_days = null;
 
     private String services_host =  "https://secure-payment.oncourse.net.au";
     private String usi_host = "https://secure-payment.oncourse.net.au";
@@ -26,10 +27,6 @@ public class LicenseService {
 
 
 
-    private Boolean admin_password_reset = false;
-    private Boolean replication_debug = false;
-
-
     @BQConfigProperty
     public void setMax_concurrent_users(int max_concurrent_users) {
         RuntimeUtil.println("server will limit number of concurrent users to " + max_concurrent_users);
@@ -37,11 +34,12 @@ public class LicenseService {
     }
 
     @BQConfigProperty
-    public void setReplication_debug(boolean replication_debug) {
-        if (replication_debug) {
-            RuntimeUtil.println("replication debug mode enabled " + max_concurrent_users);
+    public void setPurge_audit_after_days(Integer purge_audit_after_days) {
+        if (purge_audit_after_days < 1) {
+            purge_audit_after_days = 1;
         }
-        this.replication_debug = replication_debug;
+        RuntimeUtil.println("server will limit number of days for storing audit logs to " + purge_audit_after_days);
+        this.purge_audit_after_days = purge_audit_after_days;
     }
 
     @BQConfigProperty
@@ -61,21 +59,12 @@ public class LicenseService {
     }
 
     @BQConfigProperty
-    public void setAdmin_password_reset(boolean admin_password_reset) {
-        this.admin_password_reset = admin_password_reset;
-    }
-
-    @BQConfigProperty
     public void setUsi_host(String usi_host) {
         this.usi_host = usi_host;
     }
 
     public String getUsi_host() {
         return usi_host;
-    }
-
-    public Boolean isAdmin_password_reset() {
-        return admin_password_reset;
     }
 
     public String getSecurity_key() {
@@ -94,11 +83,11 @@ public class LicenseService {
         return max_concurrent_users;
     }
 
-    public Boolean isReplicationDisabled() {
-        return security_key == null;
+    public Integer getPurge_audit_after_days() {
+        return purge_audit_after_days;
     }
 
-    public Boolean isReplication_debug() {
-        return replication_debug;
+    public Boolean isReplicationDisabled() {
+        return security_key == null;
     }
 }

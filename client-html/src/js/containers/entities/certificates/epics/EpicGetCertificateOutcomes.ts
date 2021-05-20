@@ -1,12 +1,11 @@
 import { Epic } from "redux-observable";
+import { CertificateOutcome, Outcome } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { GET_CERTIFICATE_OUTCOMES, GET_CERTIFICATE_OUTCOMES_FULFILLED } from "../actions/index";
-import { Outcome, CertificateOutcome } from "@api/model";
-import { State } from "../../../../reducers/state";
 import { formatToDateOnly } from "../../../../common/utils/dates/datesNormalizing";
 
-const request: EpicUtils.Request<any, State, number> = {
+const request: EpicUtils.Request<any, number> = {
   type: GET_CERTIFICATE_OUTCOMES,
   hideLoadIndicator: true,
   getData: (

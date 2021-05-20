@@ -10,7 +10,7 @@ import IntegrationService from "../services";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_MYOB_AUTH_URL_FULFILLED, GET_MYOB_AUTH_URL_REQUEST } from "../../../actions";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_MYOB_AUTH_URL_REQUEST,
   hideLoadIndicator: true,
   getData: () => IntegrationService.getMyobIntegrationAuthUrl(),

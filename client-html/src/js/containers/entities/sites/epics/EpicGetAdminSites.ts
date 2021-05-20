@@ -12,7 +12,7 @@ import { GET_ADMINISTRATION_SITES, GET_ADMINISTRATION_SITES_FULFILLED } from "..
 import { SelectItemDefault } from "../../../../model/entities/common";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_ADMINISTRATION_SITES,
   getData: () => EntityService.getPlainRecords("Site", "name", "isAdministrationCentre == true"),
   processData: (response: DataResponse) => {

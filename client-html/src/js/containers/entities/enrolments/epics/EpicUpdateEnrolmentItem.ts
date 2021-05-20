@@ -16,10 +16,15 @@ import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/act
 import EnrolmentService from "../services/EnrolmentService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
-const request: EpicUtils.Request<any, any, { id: number; enrolment: Enrolment & { notes: any } }> = {
+const request: EpicUtils.Request<any, { id: number; enrolment: Enrolment & { notes: any } }> = {
   type: UPDATE_ENROLMENT_ITEM,
   getData: ({ id, enrolment }) => {
     delete enrolment.notes;
+
+    enrolment.assessments.forEach((a: any) => {
+      delete a.tutors;
+    });
+
     processCustomFields(enrolment);
     return EnrolmentService.updateEnrolment(id, enrolment);
   },
@@ -36,10 +41,10 @@ const request: EpicUtils.Request<any, any, { id: number; enrolment: Enrolment & 
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Enrolment", listUpdate: true, savedID: id }
       },
-      {
+      ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
         type: GET_ENROLMENT_ITEM,
         payload: id
-      }
+      }] : []
     ],
   processError: (response, { enrolment }) => [...FetchErrorHandler(response), initialize(LIST_EDIT_VIEW_FORM_NAME, enrolment)]
 };

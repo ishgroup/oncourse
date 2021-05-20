@@ -6,7 +6,6 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import {
   GET_TUTOR_ROLE_REQUEST,
@@ -18,7 +17,7 @@ import PreferencesService from "../../../services/PreferencesService";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import { DefinedTutorRole } from "@api/model";
 
-const request: EpicUtils.Request<any, State, { tutorRole: DefinedTutorRole }> = {
+const request: EpicUtils.Request<any,  { tutorRole: DefinedTutorRole }> = {
   type: UPDATE_TUTOR_ROLE_REQUEST,
   getData: ({ tutorRole }) => PreferencesService.updateTutorRole(tutorRole.id, tutorRole),
   processData: (v, s, { tutorRole: { id } }) => {

@@ -5,16 +5,15 @@
 
 import { Epic } from "redux-observable";
 
+import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { GET_AUTOMATION_PDF_REPORTS_LIST, GET_AUTOMATION_PDF_REPORTS_LIST_FULFILLED } from "../actions/index";
-import { DataResponse } from "@api/model";
-import { State } from "../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../../../common/services/EntityService";
 import history from "../../../../../constants/History";
 import { CommonListItem } from "../../../../../model/common/sidebar";
 
-const request: EpicUtils.Request<any, State, { selectFirst: boolean; keyCodeToSelect: string }> = {
+const request: EpicUtils.Request<any, { selectFirst: boolean; keyCodeToSelect: string }> = {
   type: GET_AUTOMATION_PDF_REPORTS_LIST,
   getData: () => EntityService.getPlainRecords("Report", "name,keyCode,enabled", null, null, null, "name", true),
   processData: (response: DataResponse, s, p) => {

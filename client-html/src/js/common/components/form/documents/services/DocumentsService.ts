@@ -1,10 +1,16 @@
-import { Document, DocumentApi, DocumentVersion } from "@api/model";
+import {
+ Diff, Document, DocumentApi, DocumentVersion
+} from "@api/model";
 import { DefaultHttpService } from "../../../../services/HttpService";
 
 class DocumentsService {
   readonly service = new DefaultHttpService();
 
   readonly documentApi = new DocumentApi(this.service);
+
+  public bulkChange(diff: Diff): Promise<any> {
+    return this.documentApi.bulkChange(diff);
+  }
 
   public createDocument(
     name: string,
@@ -16,11 +22,6 @@ class DocumentsService {
     fileName: string,
   ): Promise<Document> {
     return this.documentApi.create(name, description, shared, access, fileName, content, tags);
-    // return this.service.POST("/v1/list/entity/document", content, {
-    //   params: {
-    //    name, description, shared, access, tags, fileName
-    //   }
-    // });
   }
 
   public getDocumentItem(id: number): Promise<Document> {

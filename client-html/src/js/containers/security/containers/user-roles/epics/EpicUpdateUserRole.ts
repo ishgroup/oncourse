@@ -7,12 +7,12 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import UserRolesService from "../services/UserRolesService";
-import { POST_USER_ROLES_REQUEST, POST_USER_ROLES_FULFILLED } from "../../../actions";
+import { POST_USER_ROLES_FULFILLED, POST_USER_ROLES_REQUEST } from "../../../actions";
 import { UserRole } from "@api/model";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: POST_USER_ROLES_REQUEST,
   getData: (userRole: UserRole) => UserRolesService.updateUserRole(userRole),
   retrieveData: () => UserRolesService.getUserRoles(),

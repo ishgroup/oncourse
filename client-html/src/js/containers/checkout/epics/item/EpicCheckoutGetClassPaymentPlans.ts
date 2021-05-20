@@ -10,13 +10,12 @@ import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { CheckoutCourse } from "../../../../model/checkout";
-import { State } from "../../../../reducers/state";
 import ClassCostService from "../../../entities/courseClasses/components/budget/services/ClassCostService";
 import { updateClassItem } from "../../actions";
 import { checkoutChangeSummaryItemField } from "../../actions/checkoutSummary";
 import { CHECKOUT_GET_CLASS_PAYMENT_PLANS } from "../../actions/chekoutItem";
 
-const request: EpicUtils.Request<ClassCost[], State, { item: CheckoutCourse }> = {
+const request: EpicUtils.Request<ClassCost[], { item: CheckoutCourse }> = {
   type: CHECKOUT_GET_CLASS_PAYMENT_PLANS,
   getData: ({ item }) => ClassCostService.getCourseClassCosts(item.class.id),
   processData: (costs, s, { item }) => {
@@ -28,7 +27,8 @@ const request: EpicUtils.Request<ClassCost[], State, { item: CheckoutCourse }> =
     toomorrow.setHours(0, 0, 0, 0);
 
     if (studentFee && studentFee.paymentPlan.length) {
-      const classStart = new Date(item.class.startDateTime);
+      const classStart = item.class.startDateTime ? new Date(item.class.startDateTime) : new Date();
+
       classStart.setHours(0, 0, 0, 0);
 
       let passedPlansPrice = 0;

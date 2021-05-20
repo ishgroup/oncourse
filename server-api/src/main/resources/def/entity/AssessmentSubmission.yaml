@@ -1,0 +1,46 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  submittedOn:
+    type: string
+    format: date
+  markedById:
+    type: integer
+    format: int64
+  tutorName:
+    type: string
+  markedOn:
+    type: string
+    format: date
+  enrolmentId:
+    type: integer
+    format: int64
+  studentId:
+    type: integer
+    format: int64
+  studentName:
+    type: string
+  classId:
+    type: integer
+    format: int64
+  courseClassName:
+    type: string
+  assessmentId:
+    type: integer
+    format: int64
+  assessment:
+    type: string
+  grade:
+    type: number
+  documents:
+    type: array
+    items:
+      $ref: './Document.yaml'

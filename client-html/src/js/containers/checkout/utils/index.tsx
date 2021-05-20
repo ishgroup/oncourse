@@ -7,7 +7,7 @@ import {
   CheckoutArticle,
   CheckoutEnrolment,
   CheckoutMembership,
-  CheckoutModel,
+  CheckoutModel, CheckoutPaymentPlan,
   CheckoutVoucher,
   ContactNode,
   Invoice,
@@ -47,34 +47,6 @@ export const getExpireDate = month => {
   }
   return toDay;
 };
-
-export const prepareVoucherDiscount = (voucher, remainingCartTotal) => {
-  if (remainingCartTotal >= voucher.redemptionValue) {
-    voucher.appliedValue = voucher.redemptionValue;
-    voucher.availableValue = 0;
-  } else {
-    voucher.appliedValue = remainingCartTotal;
-    voucher.availableValue = voucher.redemptionValue - remainingCartTotal;
-  }
-  return voucher;
-};
-
-export const prepareAllVouchers = (vouchers, finalTotal) => {
-  let remainingCartTotal = finalTotal;
-  vouchers.map(v => {
-    const voucher = prepareVoucherDiscount(v, remainingCartTotal);
-    remainingCartTotal -= voucher.appliedValue;
-    return voucher;
-  });
-  return { vouchers, finalTotal: remainingCartTotal };
-};
-
-export const prepareVoucherHistory = voucherHistory => voucherHistory.payments.map(v => ({
-  date: v.createdOn,
-  invoiceNo: v.invoiceNo,
-  invoiceText: `Invoice ${v.invoiceNo}`,
-  price: v.amount
-}));
 
 export const isPromotionalCodeExist = (code, checkout) => {
   const inDiscounts = checkout.summary.discounts.filter(d => d.code === code).length;
@@ -183,6 +155,7 @@ export const mergeInvoicePaymentPlans = (paymentPlans: InvoicePaymentPlan[]) => 
 
 export const getCheckoutModel = (
   state: CheckoutState,
+  paymentPlans: CheckoutPaymentPlan[],
   fundingInvoices: CheckoutFundingInvoice[],
   summaryValues: any = {},
   pricesOnly?: boolean
@@ -204,21 +177,19 @@ export const getCheckoutModel = (
 
   const absCredit = Math.abs(summary.previousCredit.invoiceTotal);
 
-  let payForThisInvoice = decimalMinus(
-    summary.payNowTotal || 0, summary.previousCredit.invoiceTotal,
-    -vouchersTotal,
-    summary.previousOwing.invoiceTotal
-  );
+  const paymentPlansTotal = paymentPlans.reduce((p, c) => decimalPlus(p, c.amount), 0);
 
-  if (payForThisInvoice < 0) {
-    payForThisInvoice = 0;
-  }
+  let payForThisInvoice = decimalMinus(
+    summary.payNowTotal || 0,
+    summary.previousCredit.invoiceTotal,
+    -vouchersTotal
+  );
 
   if (payForThisInvoice > summary.finalTotal) {
     payForThisInvoice = summary.finalTotal;
   }
 
-  if (pricesOnly) {
+  if (pricesOnly || payForThisInvoice < 0 || paymentPlansTotal >= summary.finalTotal) {
     payForThisInvoice = 0;
   }
 
@@ -238,7 +209,11 @@ export const getCheckoutModel = (
       const amount = parseFloat(c.amountOwing);
       const absAmount = Math.abs(amount);
 
-      p[c.id] = amount > 0 ? (invoicesCover > amount ? amount : invoicesCover) : (appliedCredit > absAmount ? amount : -appliedCredit);
+      const pAmount = amount > 0 ? (invoicesCover > amount ? amount : invoicesCover) : (appliedCredit > absAmount ? amount : -appliedCredit);
+
+      if (pAmount !== 0) {
+        p[c.id] = pAmount;
+      }
 
       if (amount > 0) {
         if (invoicesCover > amount) {
@@ -275,6 +250,8 @@ export const getCheckoutModel = (
     payNow: pricesOnly ? 0 : summary.payNowTotal,
 
     paymentDate: summary.paymentDate,
+
+    paymentPlans,
 
     merchantReference: payment.merchantReference,
 

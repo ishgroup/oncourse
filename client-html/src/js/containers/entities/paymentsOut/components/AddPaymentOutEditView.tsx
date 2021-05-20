@@ -177,23 +177,51 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
   const onPaymentCheck = (row, checked) => {
       let owing;
       const fieldIndex = values.invoices.findIndex(i => i.id === row.id);
+
       if (!checked) {
         owing = row.amountOwing;
+
+        if (!values.invoices.some(e => e.payable && e.id !== row.id)) {
+          dispatch(change(form, `invoices[${fieldIndex}].outstanding`, owing));
+        } else if (values.invoices.some(e => e.payable && e.id !== row.id)) {
+          let amount = values.amount;
+
+          const invoices = values.invoices.map(elem => {
+            if (elem.id === row.id) {
+              elem.outstanding = owing;
+              return elem;
+            }
+
+            if (!elem.payable) return elem;
+
+            if (amount > 0 && elem.outstanding < 0) {
+              const outstanding = elem.outstanding;
+              elem.outstanding = outstanding + amount;
+
+              amount -= Math.abs(outstanding);
+
+              return elem;
+            }
+
+            return elem;
+          });
+
+          dispatch(change(form, "invoices", invoices));
+        }
       } else {
         const amountToAllocate = getAmountToAllocate(values.invoices, values.amount);
-
         if (amountToAllocate > 0) {
           owing = row.outstanding + amountToAllocate;
           if (owing > 0) {
             owing = 0;
           }
         }
+        dispatch(change(form, `invoices[${fieldIndex}].outstanding`, owing));
       }
-      dispatch(change(form, `invoices[${fieldIndex}].outstanding`, owing));
     };
 
   useEffect(() => {
-    const invoiceIndex = values.invoices.findIndex(i => i.id === Number(selection[0]));
+    const invoiceIndex = values.invoices?.findIndex(i => i.id === Number(selection[0]));
     if (invoiceIndex !== -1) {
       const amount = Math.abs(values.invoices[invoiceIndex].amountOwing);
       const amountToAllocate = getAmountToAllocate(values.invoices, amount);
@@ -272,7 +300,6 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
   const validateInvoices = useCallback(
     (value, allValues) => {
       const amountToAllocate = Math.round((allValues.amount + initialTotalOwing - getTotalOutstanding(allValues.invoices)) * 100) / 100;
-
       return amountToAllocate > 0 ? "Payment amount does not match to allocated invoices amount." : undefined;
     },
     [initialTotalOwing]

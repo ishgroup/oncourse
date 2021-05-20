@@ -18,7 +18,7 @@ import { YYYY_MM_DD_MINUSED } from "../../../../../../common/utils/dates/format"
 import { formatCurrency } from "../../../../../../common/utils/numbers/numbersNormalizing";
 import {
   checkoutClearPaymentStatus,
-  checkoutProcessCcPayment,
+  checkoutProcessPayment,
   checkoutSetPaymentSuccess
 } from "../../../../actions/checkoutPayment";
 import { FORM as CheckoutSelectionForm } from "../../../CheckoutSelection";
@@ -190,7 +190,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setPaymentSuccess: (isSuccess: boolean) => dispatch(checkoutSetPaymentSuccess(isSuccess)),
   checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
-    dispatch(checkoutProcessCcPayment(xValidateOnly, xPaymentSessionId, xOrigin));
+    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
   },
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus())
 });

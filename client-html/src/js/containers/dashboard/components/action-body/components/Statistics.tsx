@@ -25,6 +25,7 @@ import { getDashboardStatistic } from "../../../actions";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
+import ScriptStatistic from "./ScriptStatistic";
 
 const styles = theme => createStyles({
     root: {
@@ -91,13 +92,34 @@ const styles = theme => createStyles({
     rightColumn: {
       flex: "0 0 auto",
       color: theme.statistics.rightColumn.color
+    },
+    displayBlock: {
+      display: "block",
+    },
+    doneIcon: {
+      color: "#018759",
+    },
+    failedIcon: {
+      color: "#DE340C",
+    },
+    smallScriptGroup: {
+      display: "flex",
+      padding: "0",
+    },
+    smallScriptText: {
+      fontSize: "12px",
+      marginRight: "12px",
+    },
+    headingMargin: {
+      margin: "10px 0",
     }
   });
 
 const TotalStatisticInfo = props => {
   const {
- totalStudents, totalEnrolments, classes, currency
-} = props;
+    totalStudents, totalEnrolments, classes, currency
+  } = props;
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Typography className={clsx(classes.totalText)}>
@@ -105,10 +127,28 @@ const TotalStatisticInfo = props => {
         {' '}
         <span>{totalStudents}</span>
         <strong className={classes.revenueColor}>{currency && currency.shortCurrencySymbol}</strong>
-        <span className="money">{formatCurrency(totalEnrolments, "")}</span>
+        {totalEnrolments && (<span className="money">{formatCurrency(totalEnrolments, "")}</span>)}
       </Typography>
     </div>
   );
+};
+
+const ChartTooltip = args => {
+  const { payload, active } = args;
+
+  return active ? (
+    <Paper className="p-1">
+      {payload.map((i, n) => (
+        <Typography key={n} noWrap>
+          <span style={{ color: i.color }} className="mr-1">
+            {i.name}
+            :
+          </span>
+          <span className={n === 0 ? "money" : undefined}>{i.payload[`${i.name}Value`]}</span>
+        </Typography>
+      ))}
+    </Paper>
+  ) : null;
 };
 
 const Chart = props => (
@@ -132,24 +172,6 @@ const Chart = props => (
   </AutoSizer>
   );
 
-const ChartTooltip = args => {
-  const { payload, active } = args;
-
-  return active ? (
-    <Paper className="p-1">
-      {payload.map((i, n) => (
-        <Typography key={n} noWrap>
-          <span style={{ color: i.color }} className="mr-1">
-            {i.name}
-            :
-          </span>
-          <span className={n === 0 ? "money" : undefined}>{i.payload[`${i.name}Value`]}</span>
-        </Typography>
-      ))}
-    </Paper>
-  ) : null;
-};
-
 const preformatChartNumbers = (values: number[], reduceTo?: number) => {
   const max = Math.max(...values);
 
@@ -169,6 +191,8 @@ interface Props {
   getCurrency?: AnyArgFunction;
   currency?: Currency;
   isUpdating?: boolean;
+  hasScriptsPermissions?: boolean;
+  dispatch?: Dispatch;
 }
 
 class Statistics extends React.Component<Props, any> {
@@ -224,7 +248,9 @@ class Statistics extends React.Component<Props, any> {
   };
 
   render() {
-    const { classes, statisticData, currency } = this.props;
+    const {
+     classes, hasScriptsPermissions, statisticData, currency, dispatch
+    } = this.props;
 
     const { chartData } = this.state;
 
@@ -344,6 +370,15 @@ class Statistics extends React.Component<Props, any> {
             </Grid>
           </List>
         </Grid>
+
+        {hasScriptsPermissions && (
+          <Grid item xs={12} className="mt-2">
+            <Typography className={clsx("heading", classes.headingMargin)}>
+              Automation status
+            </Typography>
+            <ScriptStatistic dispatch={dispatch} />
+          </Grid>
+        )}
       </Grid>
     ) : null;
   }
@@ -352,10 +387,12 @@ class Statistics extends React.Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   statisticData: state.dashboard.statistics.data,
   isUpdating: state.dashboard.statistics.updating,
+  hasScriptsPermissions: state.access["ADMIN"],
   currency: state.currency
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  dispatch,
   getStatistic: () => dispatch(getDashboardStatistic())
 });
 

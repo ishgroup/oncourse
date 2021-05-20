@@ -12,6 +12,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import { darken } from "@material-ui/core/styles";
+import { Dispatch } from "redux";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { ThemeContext } from "../../ThemeContext";
 import { APPLICATION_THEME_STORAGE_NAME, DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../constants/Config";
@@ -21,6 +22,8 @@ import onCourseLogoChristmas from "../../../../images/onCourseLogoChristmas.png"
 import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
 import DashboardService from "../services/DashboardService";
+import { LSGetItem, LSRemoveItem } from "../../../common/utils/storage";
+import { ShowConfirmCaller } from "../../../model/common/Confirm";
 
 const styles = theme => ({
   appBar: {
@@ -42,7 +45,16 @@ const styles = theme => ({
   logo: { height: "36px", width: "auto" }
 });
 
-class DashboardHeader extends React.PureComponent<any, any> {
+interface Props {
+  classes: any;
+  theme: any;
+  upgradePlanLink: any;
+  setPreferencesTheme: any;
+  openConfirm: ShowConfirmCaller;
+  dispatch: Dispatch;
+}
+
+class DashboardHeader extends React.PureComponent<Props, any> {
   state = {
     themeMenu: null
   };
@@ -56,8 +68,8 @@ class DashboardHeader extends React.PureComponent<any, any> {
   };
 
   logout = () => {
-    localStorage.removeItem(APPLICATION_THEME_STORAGE_NAME);
-    localStorage.removeItem(DASHBOARD_ACTIVITY_STORAGE_NAME);
+    LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
+    LSRemoveItem(DASHBOARD_ACTIVITY_STORAGE_NAME);
 
     DashboardService.logout()
       .then(() => {
@@ -67,15 +79,15 @@ class DashboardHeader extends React.PureComponent<any, any> {
   };
 
   toggleConfirm = () => {
-    this.props.openConfirm(this.logout, "Do you want to logout?", "Yes");
+    this.props.openConfirm({ onConfirm: this.logout, confirmMessage: "Do you want to logout?", confirmButtonText: "Yes" });
   };
 
   render() {
     const { themeMenu } = this.state;
     const {
- classes, theme, upgradePlanLink, setPreferencesTheme
-} = this.props;
-    const isChristmas = localStorage.getItem("theme") === "christmas";
+      classes, theme, upgradePlanLink, setPreferencesTheme
+    } = this.props;
+    const isChristmas = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas";
     return (
       <AppBar className={clsx(classes.appBar, isChristmas && "christmasHeaderDashboard")}>
         <Toolbar

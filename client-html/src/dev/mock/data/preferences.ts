@@ -6,31 +6,104 @@
 import * as Model from "../../../js/model/preferences";
 
 export function mockPreferences() {
-  this.getPreferences = (keys: string[]) => {
-    return keys.map(key => ({
-      uniqueKey: key,
-      valueString: this.preference[key]
-    }));
-  };
+  this.getPreferences = (keys: string[]) => keys.map(key => ({
+    uniqueKey: key,
+    valueString: this.preference[key]
+  }));
 
-  this.preferencesLockedDate = () => {
-    return {
-      year: 2015,
-      month: "DECEMBER",
-      leapYear: false,
-      dayOfYear: 365,
-      dayOfWeek: "THURSDAY",
-      era: "CE",
-      chronology: { calendarType: "iso8601", id: "ISO" },
-      monthValue: 12,
-      dayOfMonth: 31
-    };
-  };
+  this.preferencesLockedDate = () => ({
+    year: 2015,
+    month: "DECEMBER",
+    leapYear: false,
+    dayOfYear: 365,
+    dayOfWeek: "THURSDAY",
+    era: "CE",
+    chronology: { calendarType: "iso8601", id: "ISO" },
+    monthValue: 12,
+    dayOfMonth: 31
+  });
 
   this.savePreferences = fields =>
     fields.forEach(item => {
       this.preference[item.uniqueKey] = item.valueString;
     });
+
+  this.getPreferencesEnumByName = enumName => {
+    if (enumName === "ExportJurisdiction") {
+      return [
+        {
+          value: "1",
+          label: "NCVER (Standard AVETMISS)"
+        },
+        {
+          value: "2",
+          label: "NSW Department of Education"
+        },
+        {
+          value: "3",
+          label: "CSO (Community Colleges)"
+        },
+        {
+          value: "4",
+          label: "STSOnline (NSW)"
+        },
+        {
+          value: "5",
+          label: "DETConnect (Queensland)"
+        },
+        {
+          value: "6",
+          label: "STELA (South Australia)"
+        },
+        {
+          value: "7",
+          label: "Skills Tasmania"
+        },
+        {
+          value: "8",
+          label: "Skills Victoria"
+        },
+        {
+          value: "9",
+          label: "STARS (WA)"
+        },
+        {
+          value: "10",
+          label: "AQTF Competency Completions"
+        },
+        {
+          value: "11",
+          label: "WA RAPT"
+        },
+        {
+          value: "12",
+          label: "Northern Territories VET Provider Portal"
+        },
+        {
+          value: "13",
+          label: "AVETARS (ACT)"
+        }
+      ];
+    }
+
+    if (enumName === "TwoFactorAuthStatus") {
+      return [
+        {
+          "value": "disabled",
+          "label": "Optional for all users"
+        },
+        {
+          "value": "enabled.admin",
+          "label": "Required for admin users"
+        },
+        {
+          "value": "enabled.all",
+          "label": "Required for all users"
+        }
+      ];
+    }
+    return [];
+  };
 
   return {
     // College info preferences
@@ -64,12 +137,7 @@ export function mockPreferences() {
     [Model.EmailPop3Account.uniqueKey]: "test.com.au",
     [Model.EmailPop3Host.uniqueKey]: "test",
     [Model.EmailPop3Password.uniqueKey]: "test",
-    [Model.EmailSMTPHost.uniqueKey]: "test.com.au",
     [Model.SMSFromAddress.uniqueKey]: "+55555555",
-    [Model.SMTPPassword.uniqueKey]: "test",
-    [Model.SMTPPort.uniqueKey]: "25",
-    [Model.SMTPStartTLS.uniqueKey]: false,
-    [Model.SMTPUsername.uniqueKey]: "testuser",
 
     // Class defaults preferences
     [Model.ClassMinPlaces.uniqueKey]: 10,
@@ -117,15 +185,15 @@ export function mockPreferences() {
     [Model.Fax.uniqueKey]: "test",
     [Model.FeeHelpProviderCode.uniqueKey]: "test",
     [Model.Id.uniqueKey]: "test",
-    [Model.Jurisdiction.uniqueKey]: 3,
+    [Model.Jurisdiction.uniqueKey]: "3",
     [Model.Phone.uniqueKey]: "test",
     [Model.Postcode.uniqueKey]: "test",
     [Model.QldIdentifier.uniqueKey]: "test",
     [Model.ShowGUI.uniqueKey]: true,
-    [Model.State.uniqueKey]: 1,
+    [Model.State.uniqueKey]: "1",
     [Model.StateName.uniqueKey]: "test",
     [Model.Suburb.uniqueKey]: "test",
-    [Model.Type.uniqueKey]: 4,
+    [Model.Type.uniqueKey]: "4",
     [Model.showOfferedQM.uniqueKey]: true,
 
     // Financial preferences
@@ -134,12 +202,20 @@ export function mockPreferences() {
     [Model.AccountTax.uniqueKey]: "3",
     [Model.AccountStudentEnrolments.uniqueKey]: "5",
     [Model.AccountPrepaidFees.uniqueKey]: "4",
-    [Model.AccountPrepaidFeesPostAt.uniqueKey]: "7",
+    [Model.AccountPrepaidFeesPostAt.uniqueKey]: "everySession",
     [Model.AccountVoucherLiability.uniqueKey]: "3",
     [Model.AccountVoucherUnderpayment.uniqueKey]: "9",
-    [Model.AccountDefaultCurrency.uniqueKey]: "2",
-    [Model.AccountInvoiceTerms.uniqueKey]: "1",
+    [Model.AccountDefaultCurrency.uniqueKey]: "AUD",
+    [Model.AccountInvoiceTerms.uniqueKey]: "7",
     [Model.PaymentInfo.uniqueKey]: "Some payment info",
-    [Model.QePaymentDefaultZero.uniqueKey]: false
+    [Model.QePaymentDefaultZero.uniqueKey]: false,
+
+    // Security
+    [Model.SecurityAutoDisableInactiveAccount.uniqueKey]: true,
+    [Model.SecurityPasswordComplexity.uniqueKey]: true,
+    [Model.SecurityPasswordExpiryPeriod.uniqueKey]: 180,
+    [Model.SecurityTFAExpiryPeriod.uniqueKey]: 180,
+    [Model.SecurityNumberIncorrectLoginAttempts.uniqueKey]: 5,
+    [Model.SecurityTFAStatus.uniqueKey]: "disabled",
   };
 }

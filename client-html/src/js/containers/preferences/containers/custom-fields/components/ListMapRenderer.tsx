@@ -26,21 +26,25 @@ interface Props {
 }
 
 const getDefaultFields = value => {
+  let result = [];
+
   if (value) {
-    let result = JSON.parse(value);
+    try {
+      result = JSON.parse(value);
 
-    if (Array.isArray(result)) {
-      result = result.filter(v => !v.value.includes("*"));
+      if (Array.isArray(result)) {
+        result = result.filter(v => !v.value.includes("*"));
+      }
+    } catch (e) {
+      console.error(e);
     }
-
-    return result;
   }
-  return [];
+  return result;
 };
 
 const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
   const {
-    label, dataType, input: { value, onChange, name }, onKeyPress
+    label, dataType, input: { value, onChange, name }, meta: { error }, onKeyPress
   } = props;
 
   const hoverClasses = useHoverShowStyles();
@@ -83,6 +87,11 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
             <AddCircle className="addButtonColor" />
           </IconButton>
         </div>
+        {error && (
+          <Typography className="shakingError" component="div" variant="caption" color="error" noWrap>
+            {error}
+          </Typography>
+        )}
 
         <Typography variant="body1" component="div">
           <div>
@@ -95,7 +104,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
 
                   return (
                     <li className={hoverClasses.container}>
-                      <Typography variant="body2" color="inherit" className="d-inline-flex" noWrap>
+                      <Typography variant="body2" color="inherit" component="span">
                         <EditInPlaceField
                           meta={{
                           error: isMap ? labelError : valueError,
@@ -110,6 +119,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                           formatting="inline"
                           onKeyPress={onKeyPress}
                           hidePlaceholderInEditMode
+                          multiline
                         />
 
                         {
@@ -130,6 +140,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                               onKeyPress={onKeyPress}
                               formatting="inline"
                               hidePlaceholderInEditMode
+                              multiline
                             />
                             )
                           </>
@@ -138,7 +149,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                       </Typography>
                       <IconButton
                         onClick={() => onDelete(index)}
-                        className={clsx(hoverClasses.target, "p-0-5 d-inline-flex vert-align-mid")}
+                        className={clsx(hoverClasses.target, "p-0-5  vert-align-mid")}
                       >
                         <Delete className="editInPlaceIcon" />
                       </IconButton>

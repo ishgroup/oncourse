@@ -17,7 +17,6 @@ import ish.common.types.Mask
 import ish.duplicate.CourseDuplicationRequest
 import ish.messaging.ICourse
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.CourseClassDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.CourseModuleDao
@@ -26,10 +25,7 @@ import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.QualificationDao
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.util.EntityUtil
-import org.apache.cayenne.query.SelectById
+import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.v1.function.CourseFunctions.ENROLMENT_TYPE_MAP
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
@@ -75,7 +71,7 @@ import javax.ws.rs.core.Response
 class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao>  {
 
     @Inject
-    private PreferenceController preferenceController
+    private DocumentService documentService
 
     @Inject
     private SystemUserService systemUserService
@@ -137,7 +133,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.studentWaitingListCount = course.waitingLists.size()
             courseDTO.hasEnrolments = course.courseClasses.find { c -> !c.enrolments.empty} != null
             courseDTO.webDescription = course.webDescription
-            courseDTO.documents = course.attachmentRelations.collect { toRestDocument(it.document, it.documentVersion?.id, preferenceController) }
+            courseDTO.documents = course.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             courseDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(course.context, Course.simpleName, course.id).collect { it -> toRestFromEntityRelation(it) } +
                     EntityRelationDao.getRelatedTo(course.context, Course.simpleName, course.id).collect { it -> toRestToEntityRelation(it) })
             courseDTO.qualificationId = course.qualification?.id
@@ -162,6 +158,8 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             }
             courseDTO.customFields = course.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
             courseDTO.rules = course.unavailableRuleRelations.collect{ toRestHoliday(it.rule) }
+            courseDTO.feeHelpClass = course.feeHelpClass
+            courseDTO.fullTimeLoad = course.fullTimeLoad
             courseDTO
         }
     }
@@ -174,6 +172,8 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         course.allowWaitingLists = courseDTO.allowWaitingLists
         course.fieldConfigurationSchema = fieldConfigurationSchemeDao.getById(course.context, courseDTO.dataCollectionRuleId)
         course.isTraineeship = courseDTO.isTraineeship
+        course.fullTimeLoad = courseDTO.fullTimeLoad
+        course.feeHelpClass = courseDTO.feeHelpClass
         if (course.isTraineeship) {
             course.currentlyOffered = courseDTO.currentlyOffered
         } else {
@@ -252,7 +252,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         if (courseDTO.reportableHours == null) {
             validator.throwClientErrorException(id, 'reportableHours', 'Reportable hours is required.')
         }
-
+        if (courseDTO.feeHelpClass == null) {
+            validator.throwClientErrorException(id, 'feeHelpClass', 'Fee help class flag is required')
+        }
         if (courseDTO.allowWaitingLists == null) {
             validator.throwClientErrorException(id, 'allowWaitingLists', 'Allow waiting lists flag is required.')
         }

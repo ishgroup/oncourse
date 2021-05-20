@@ -4,50 +4,34 @@
  */
 package ish.oncourse.server.cayenne
 
-import ish.CayenneIshTestCase
+import groovy.transform.CompileStatic
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
-import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-/**
- */
-class SurveyTest extends CayenneIshTestCase {
+@CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/SurveyTest.xml")
+class SurveyTest extends TestWithDatabase {
 
-	private ICayenneService cayenneService
-
-    @Before
-    void setup() throws Exception {
-        wipeTables()
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = SurveyTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/SurveyTest.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+    @Override
+    void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
         Date start1 = DateUtils.addDays(new Date(), -2)
         Date start2 = DateUtils.addDays(new Date(), -2)
         rDataSet.addReplacementObject("[start_date1]", start1)
         rDataSet.addReplacementObject("[start_date2]", start2)
         rDataSet.addReplacementObject("[end_date1]", DateUtils.addHours(start1, 2))
         rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
-
-        executeDatabaseOperation(rDataSet)
-
     }
 
-
     @Test
-    void testSurvey()
-    {
+    void testSurvey() {
         ObjectContext context = cayenneService.getNewContext()
 
         Enrolment enrolment = context.newObject(Enrolment.class)
@@ -70,12 +54,12 @@ class SurveyTest extends CayenneIshTestCase {
 
         context.commitChanges()
 
-        Survey survey1 = SelectById.query(survey.getClass(), survey.getObjectId()).selectOne(cayenneService.getNewContext())
-        assertEquals(survey.getComment(), survey1.getComment())
-        assertEquals(survey.getCourseScore(), survey1.getCourseScore())
-        assertEquals(survey.getTutorScore(), survey1.getTutorScore())
-        assertEquals(survey.getVenueScore(), survey1.getVenueScore())
-        assertEquals(survey.getEnrolment().getId(), survey1.getEnrolment().getId())
+        Survey survey1 = SelectById.query(survey.getClass() as Class<Object>, survey.getObjectId()).selectOne(cayenneService.getNewContext()) as Survey
+        Assertions.assertEquals(survey.getComment(), survey1.getComment())
+        Assertions.assertEquals(survey.getCourseScore(), survey1.getCourseScore())
+        Assertions.assertEquals(survey.getTutorScore(), survey1.getTutorScore())
+        Assertions.assertEquals(survey.getVenueScore(), survey1.getVenueScore())
+        Assertions.assertEquals(survey.getEnrolment().getId(), survey1.getEnrolment().getId())
     }
 
 }

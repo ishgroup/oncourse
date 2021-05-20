@@ -8,14 +8,15 @@ import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
-import { State } from "../../../../reducers/state";
 import {
-  CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS, checkoutUpdateSummaryItems, checkoutUpdateSummaryPrices
+  CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS,
+  checkoutUpdateSummaryItems,
+  checkoutUpdateSummaryPrices
 } from "../../actions/checkoutSummary";
 import { CHECKOUT_SUMMARY_FORM as summmaryForm } from "../../components/summary/CheckoutSummaryList";
 import CheckoutService from "../../services/CheckoutService";
 
-const request: EpicUtils.Request<any, State, boolean> = {
+const request: EpicUtils.Request<any, boolean> = {
   type: CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS,
   getData: (forcePricesUpdate, state) => new Promise(async resolve => {
     const codes = state.checkout.summary.discounts.map(d => d.id).join(",");
@@ -39,6 +40,8 @@ const request: EpicUtils.Request<any, State, boolean> = {
             enrolments.push({
               contactId: l.contact.id,
               classItem: i,
+              courseIds: l.items.filter(item => item.checked && item.type === "course").map(item => item.courseId).toString(),
+              productIds: l.items.filter(item => item.checked && item.type !== "course").map(item => item.id).toString(),
               listIndex,
               itemIndex,
               membershipIds: l.items.filter(i => i.type === "membership" && i.checked).map(i => i.id).join(",")
@@ -53,7 +56,7 @@ const request: EpicUtils.Request<any, State, boolean> = {
 
     await enrolments.map(e => () =>
       CheckoutService
-        .getContactDiscounts(e.contactId, e.classItem.class.id, codes, e.membershipIds, totalEnrolmentsCount, totalAmountExDiscount)
+        .getContactDiscounts(e.contactId, e.classItem.class.id, e.courseIds, e.productIds, codes, e.membershipIds, totalEnrolmentsCount, totalAmountExDiscount)
         .then(res => {
           const discounts = res.map(i => i.discount);
 

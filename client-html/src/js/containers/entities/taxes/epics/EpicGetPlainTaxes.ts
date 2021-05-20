@@ -10,7 +10,7 @@ import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { DataResponse, Tax } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: GET_PLAIN_TAX_ITEMS,
   getData: () => {
     return EntityService.getPlainRecords("Tax", "id,taxCode,rate,isGSTTaxType", "taxCode !== '*'");

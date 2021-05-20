@@ -28,5 +28,5 @@ export const OutcomesContentLine: React.FunctionComponent<any> = React.memo((pro
 
   const getFieldName = useCallback(name => `${item}.${name}`, [item]);
 
-  return <OutcomeEditFields {...rest} values={row} getFieldName={getFieldName} isPriorLearningBinded />;
+  return <OutcomeEditFields {...rest} values={row} getFieldName={getFieldName} isPriorLearningBinded priorLearningEditView />;
 });

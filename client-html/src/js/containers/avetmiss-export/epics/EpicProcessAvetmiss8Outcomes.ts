@@ -7,7 +7,7 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import AvetmissExportService from "../services/AvetmissExportService";
-import { GET_AVETMISS_EXPORT_OUTCOMES, GET_AVETMISS8_OUTCOMES_STATUS, CLEAR_AVETMISS8_EXPORT_ID } from "../actions";
+import { CLEAR_AVETMISS8_EXPORT_ID, GET_AVETMISS8_OUTCOMES_STATUS, GET_AVETMISS_EXPORT_OUTCOMES } from "../actions";
 import { ProcessResult } from "@api/model";
 import { CLEAR_PROCESS, FETCH_FAIL, UPDATE_PROCESS } from "../../../common/actions";
 import { State } from "../../../reducers/state";
@@ -63,7 +63,7 @@ const switchByStatus = (process, storedID) => {
   }
 };
 
-const request: EpicUtils.DelayedRequest<any, any, any> = {
+const request: EpicUtils.DelayedRequest = {
   type: GET_AVETMISS8_OUTCOMES_STATUS,
   delay: 1000,
   getData: (exportID: string) => {

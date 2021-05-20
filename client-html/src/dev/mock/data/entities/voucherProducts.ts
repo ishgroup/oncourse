@@ -1,9 +1,7 @@
-import { generateArraysOfRecords } from "../../mockUtils";
+import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
 
 export function mockVoucherProducts() {
-  this.getVoucherProducts = () => {
-    return this.voucherProducts;
-  };
+  this.getVoucherProducts = () => this.voucherProducts;
 
   this.getVoucherProduct = id => {
     const row = this.voucherProducts.rows.find(row => row.id == id);
@@ -59,33 +57,6 @@ export function mockVoucherProducts() {
     };
   };
 
-  this.getVoucherProductPlainList = () => {
-    const rows = generateArraysOfRecords(20, [
-      { name: "id", type: "number" },
-      { name: "code", type: "string" },
-      { name: "name", type: "string" },
-      { name: "price", type: "number" }
-    ]).map(l => ({
-      id: l.id,
-      values: [l.code, l.name, l.price]
-    }));
-
-    const columns = [];
-
-    const response = { rows, columns } as any;
-
-    response.entity = "VoucherProduct";
-    response.offset = 0;
-    response.filterColumnWidth = null;
-    response.layout = null;
-    response.pageSize = rows.length;
-    response.search = null;
-    response.count = null;
-    response.sort = [];
-
-    return response;
-  };
-
   this.createVoucherProduct = item => {
     const data = JSON.parse(item);
     const voucherProducts = this.voucherProducts;
@@ -110,8 +81,22 @@ export function mockVoucherProducts() {
     this.voucherProducts = voucherProducts;
   };
 
-  this.removeVoucherProduct = id => {
-    this.voucherProducts.rows = this.voucherProducts.rows.filter(a => a.id !== id);
+  this.getVoucherProductPlainList = () => {
+    const rows = generateArraysOfRecords(20, [
+      { name: "id", type: "number" },
+      { name: "code", type: "string" },
+      { name: "name", type: "string" },
+      { name: "price", type: "number" }
+    ]).map(l => ({
+      id: l.id,
+      values: [l.code, l.name, l.price]
+    }));
+
+    return getEntityResponse({
+      entity: "VoucherProduct",
+      rows,
+      plain: true
+    });
   };
 
   const rows = generateArraysOfRecords(20, [
@@ -126,65 +111,41 @@ export function mockVoucherProducts() {
     values: [l.code, l.name, l.feeExTax, "true", l.soldVouchersCount]
   }));
 
-  const columns = [
-    {
-      title: "SKU",
-      attribute: "sku",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Name",
-      attribute: "name",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: null,
-      sortFields: []
-    },
-    {
-      title: "Price",
-      attribute: "priceExTax",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Money",
-      sortFields: []
-    },
-    {
-      title: "Online purchase",
-      attribute: "isWebVisible",
-      sortable: true,
-      visible: true,
-      width: 200,
-      type: "Boolean",
-      sortFields: []
-    },
-    {
-      title: "Number sold",
-      attribute: "soldVouchersCount",
-      sortable: false,
-      visible: true,
-      width: 100,
-      type: null,
-      sortFields: []
+  return getEntityResponse({
+    entity: "VoucherProduct",
+    rows,
+    columns: [
+      {
+        title: "SKU",
+        attribute: "sku",
+        sortable: true
+      },
+      {
+        title: "Name",
+        attribute: "name",
+        sortable: true
+      },
+      {
+        title: "Price",
+        attribute: "priceExTax",
+        sortable: true,
+        type: "Money"
+      },
+      {
+        title: "Online purchase",
+        attribute: "isWebVisible",
+        sortable: true,
+        type: "Boolean"
+      },
+      {
+        title: "Number sold",
+        attribute: "soldVouchersCount",
+        width: 100
+      }
+    ],
+    res: {
+      search: "(isOnSale == true)",
+      sort: [{ attribute: "sku", ascending: true, complexAttribute: [] }]
     }
-  ];
-
-  const response = { rows, columns } as any;
-
-  response.entity = "VoucherProduct";
-  response.offset = 0;
-  response.filterColumnWidth = 200;
-  response.layout = "Three column";
-  response.pageSize = 20;
-  response.search = "(isOnSale == true)";
-  response.count = rows.length;
-  response.filteredCount = rows.length;
-  response.sort = [{ attribute: "sku", ascending: true, complexAttribute: [] }];
-
-  return response;
+  });
 }

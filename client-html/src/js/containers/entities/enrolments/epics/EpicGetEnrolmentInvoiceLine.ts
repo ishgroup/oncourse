@@ -16,7 +16,7 @@ const defaultCourseMap = ({ id, values }) => ({
   contactName: (values[4] === "true" || (values[2] === values[3])) ? values[2] : `${values[3]} ${values[2]}`
 });
 
-const request: EpicUtils.Request<any, any, string> = {
+const request: EpicUtils.Request<any, string> = {
   type: GET_ENROLMENT_INVOICE_LINES,
   hideLoadIndicator: true,
   getData: id =>

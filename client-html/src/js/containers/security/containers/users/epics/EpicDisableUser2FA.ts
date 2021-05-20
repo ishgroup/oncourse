@@ -13,7 +13,7 @@ import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { User } from "@api/model";
 
-const request: EpicUtils.Request<any, any, any> = {
+const request: EpicUtils.Request = {
   type: DISABLE_USER_2FA,
   hideLoadIndicator: true,
   getData: (id: number) => UserService.disableTFA(id),

@@ -17,11 +17,8 @@ import ish.common.types.MessageStatus
 import ish.common.types.MessageType
 import ish.messaging.SendMessageRequest
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.api.service.EmailTemplateApiService
-import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
+import ish.oncourse.server.IPreferenceController
 import ish.oncourse.server.scripting.api.MessageBuilder
-import ish.oncourse.server.scripting.api.MessageForSmtp
 import ish.oncourse.server.scripting.api.NeedToSendEmail
 import ish.oncourse.server.scripting.api.SendEmailViaSmtp
 import ish.oncourse.server.scripting.api.SmtpParameters
@@ -52,13 +49,13 @@ import javax.mail.MessagingException
 class MessageService {
 
 	ICayenneService cayenneService
-    PreferenceController preferenceController
+	IPreferenceController preferenceController
 	TemplateService templateService
 	MailDeliveryService mailDeliveryService
 	AuditService auditService
 
     @Inject
-    MessageService(ICayenneService cayenneService, PreferenceController preferenceController, TemplateService templateService,
+    MessageService(ICayenneService cayenneService, IPreferenceController preferenceController, TemplateService templateService,
 				   MailDeliveryService mailDeliveryService, AuditService auditService) {
 		this.cayenneService = cayenneService
         this.preferenceController = preferenceController
@@ -184,7 +181,7 @@ class MessageService {
 				{ contact -> NeedToSendEmail.valueOf(auditService, messageSpec.keyCollision, messageSpec.creatorKey, cayenneService.getNewContext(), contact).get() }
 
 		if (messageSpec.entityRecords.isEmpty()) {
-			if (!messageSpec.toList.isEmpty() && (messageSpec.content != null || !messageSpec.attachments.isEmpty())) {
+			if (!messageSpec.toList.isEmpty() && (messageSpec.templateIdentifier != null || messageSpec.content != null || !messageSpec.attachments.isEmpty())) {
 				SmtpParameters parameters = new SmtpParameters(messageSpec)
 				SendEmailViaSmtp.valueOf(parameters, cayenneService.newContext, templateService, mailDeliveryService, collision).send()
 			}
@@ -225,7 +222,7 @@ class MessageService {
 
 			recipients.each { recipient ->
 
-				bindings.put(entityName.uncapitalize(), record)
+				bindings.put(record.class.simpleName.uncapitalize(), record)
 				bindings.put(templateService.RECORD, record)
 				bindings.put(templateService.TO, recipient)
 
