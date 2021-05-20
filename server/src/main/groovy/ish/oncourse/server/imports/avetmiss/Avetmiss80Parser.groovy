@@ -12,13 +12,7 @@
 package ish.oncourse.server.imports.avetmiss
 
 import groovy.transform.CompileDynamic
-import ish.common.types.AvetmissStudentDisabilityType
-import ish.common.types.AvetmissStudentEnglishProficiency
-import ish.common.types.AvetmissStudentIndigenousStatus
-import ish.common.types.AvetmissStudentLabourStatus
-import ish.common.types.AvetmissStudentPriorEducation
-import ish.common.types.Gender
-import ish.common.types.UsiStatus
+import ish.common.types.*
 import ish.oncourse.server.cayenne.Contact
 import ish.util.EnumUtil
 import org.apache.cayenne.ObjectContext
@@ -62,7 +56,7 @@ class Avetmiss80Parser extends AbstractAvetmissParser {
      * isStillAtSchool(99+1), suburb(100+50), usi(150+10), stateIdentifier(160+2), buildingName(162+50),
      * unit(212+30), streetNumber(242+15), streetName(257+70)
      */
-    def parse() {
+    Map<Object, Object> parse() {
 
         // ------------------
         // client identifier p9
@@ -228,7 +222,7 @@ class Avetmiss80Parser extends AbstractAvetmissParser {
         contact.student.usiStatus = result.usiStatus
     }
 
-    static valueOf(InputLine line, Integer lineNumber,
+    static Avetmiss80Parser valueOf(InputLine line, Integer lineNumber,
                    ObjectContext context) {
         Avetmiss80Parser result = new Avetmiss80Parser()
         result.line = line

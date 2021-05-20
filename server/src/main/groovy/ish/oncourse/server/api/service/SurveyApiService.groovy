@@ -50,10 +50,10 @@ class SurveyApiService extends EntityApiService<SurveyItemDTO, Survey, SurveyDao
             feedbackDTO.testimonial = survey.testimonial
             feedbackDTO.comment = survey.comment
             feedbackDTO.customFields = survey.customFields.collectEntries { [(it.customFieldType.key): it.value] }
-            feedbackDTO.siteId = survey.enrolment.courseClass.room.site.id
-            feedbackDTO.siteName = survey.enrolment.courseClass.room.site.name
-            feedbackDTO.roomId = survey.enrolment.courseClass.room.id
-            feedbackDTO.roomName = survey.enrolment.courseClass.room.name
+            feedbackDTO.siteId = survey.enrolment.courseClass.room?.site?.id
+            feedbackDTO.siteName = survey.enrolment.courseClass.room?.site?.name
+            feedbackDTO.roomId = survey.enrolment.courseClass.room?.id
+            feedbackDTO.roomName = survey.enrolment.courseClass.room?.name
             feedbackDTO.classId = survey.enrolment.courseClass.id
             feedbackDTO.className = survey.enrolment.courseClass.with { "$it.uniqueCode $it.course.name" }
             Set<Contact> set = survey.enrolment.courseClass.tutorRoles*.tutor*.contact.stream().collect(Collectors.toSet())

@@ -60,11 +60,12 @@ const NestedNotes = React.memo<Props>(
         updatedNotes.splice(index, 1);
 
         showConfirm(
-          () => {
-            dispatch(change(form, "notes", updatedNotes));
-          },
-          "This item will be removed from Notes list",
-          "AGREE"
+          {
+            onConfirm: () => {
+              dispatch(change(form, "notes", updatedNotes));
+            },
+            confirmMessage: "This item will be removed from Notes list",
+          }
         );
       },
       [values.notes]
@@ -108,7 +109,7 @@ const NestedNotes = React.memo<Props>(
 );
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  showConfirm: (...args) => dispatch(showConfirm(...args as [any]))
+  showConfirm: props => dispatch(showConfirm(props))
 });
 
 export default connect(null, mapDispatchToProps)(withStyles(styles)(NestedNotes));

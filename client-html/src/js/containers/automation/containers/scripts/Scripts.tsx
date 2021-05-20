@@ -93,7 +93,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id, script, method, viewMode) => dispatch(saveScriptItem(id, script, method, viewMode)),
   onCreate: (script, viewMode) => dispatch(createScriptItem(script, viewMode)),
   onDelete: (id: number) => dispatch(deleteScriptItem(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
+  openConfirm: props => dispatch(showConfirm(props)),
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 

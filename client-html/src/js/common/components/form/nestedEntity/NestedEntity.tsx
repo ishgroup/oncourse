@@ -48,13 +48,12 @@ const NestedEntity: React.FC<Props> = ({
   );
 
   const saveAlert = () =>
-    showConfirm(
-      () => null,
-      preventAddMessage,
-      "OK",
-      () => null,
-      preventAddMessage
-    );
+  showConfirm(
+    {
+      confirmMessage: preventAddMessage,
+      cancelButtonText: "OK"
+    },
+  );
 
   const openAddLink = useCallback(() => {
     openInternalLink(addLink);

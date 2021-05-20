@@ -4,7 +4,9 @@
  */
 package ish.oncourse.server.db
 
-import ish.CayenneIshTestCase
+import groovy.transform.CompileStatic
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
 import org.apache.cayenne.CayenneRuntimeException
@@ -12,58 +14,46 @@ import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.tx.TransactionalOperation
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.fail
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutionException
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
+import java.util.concurrent.*
 
-/**
- */
-class CayenneServiceTest extends CayenneIshTestCase {
+import static org.junit.jupiter.api.Assertions.fail
 
-	private static final Logger logger = LogManager.getLogger()
+@CompileStatic
+@DatabaseSetup
+class CayenneServiceTest extends TestWithDatabase {
 
     /**
-	 * check if the network interface of the db comes up.
-	 *
-	 * @throws URISyntaxException
-	 */
-	@Test
+     * check if the network interface of the db comes up.
+     *
+     * @throws URISyntaxException
+     */
+    @Test
     void testInitCayenneStack() throws URISyntaxException {
 
-		try {
-			ICayenneService cayService = injector.getInstance(ICayenneService.class)
+        try {
+            //Assertions.assertEquals("Checking cayenne context", ISHDataContext.class, dc.getClass());
+            Assertions.assertEquals(true, cayenneContext.getUserProperty("replicating"), "Checking cayenne context")
 
-            DataContext dc = cayService.getNewContext()
-            // assertEquals("Checking cayenne context", ISHDataContext.class, dc.getClass());
-			assertEquals("Checking cayenne context", true, dc.getUserProperty("replicating"))
-
-            dc = cayService.getNewNonReplicatingContext()
-            // assertEquals("Checking cayenne context", ISHDataContext.class, dc.getClass());
-			assertEquals("Checking cayenne context", false, dc.getUserProperty("replicating"))
+            cayenneContext = cayenneService.getNewNonReplicatingContext()
+            //Assertions.assertEquals("Checking cayenne context", ISHDataContext.class, dc.getClass());
+            Assertions.assertEquals(false, cayenneContext.getUserProperty("replicating"), "Checking cayenne context")
 
         } catch (Exception e) {
-			logger.warn("the test database startup failed", e)
             fail("the test database startup failed")
         }
-	}
+    }
 
-	/**
-	 * check if the network interface of the db comes up.
-	 *
-	 * @throws URISyntaxException
-	 */
-	@Test
+    /**
+     * check if the network interface of the db comes up.
+     *
+     * @throws URISyntaxException
+     */
+    @Test
     void testInitCayenneStack2() throws URISyntaxException {
-	    //TODO Refactoring
+        //TODO Refactoring
 //		DatabaseService dbService;
 //		try {
 //		    // load the map from XML
@@ -76,27 +66,26 @@ class CayenneServiceTest extends CayenneIshTestCase {
 //			DbLoader loader = new DbLoader(adapter, dbService.getDBAdapter().createConnection(), new DbLoaderConfiguration(), new DefaultDbLoaderDelegate(), new DefaultObjectNameGenerator());
 //            DataMap dbMap = loader.load();
 //
-//			assertEquals("comparing data map", cayMap.getDbEntities().size(), dbMap.getDbEntities().size());
+//		Assertions.assertEquals("comparing data map", cayMap.getDbEntities().size(), dbMap.getDbEntities().size());
 //
 //		} catch (Exception e) {
 //			logger.warn("the test db startup failed", e);
 //			fail("the test db startup failed");
 //		}
-	}
+    }
 
     //@Test
+    
     void testTansactions() {
-        final ICayenneService cayService = injector.getInstance(ICayenneService.class)
-        ServerRuntime runtime = cayService.getServerRuntime()
-
+        ServerRuntime runtime = cayenneService.getServerRuntime()
         ExecutorService asyncThreadExecutor = Executors.newFixedThreadPool(3)
 
-        final DataContext context1 = cayService.getNewContext()
+        final DataContext context1 = cayenneService.getNewContext()
         Contact contact1 = context1.newObject(Contact.class)
         contact1.setFirstName("John")
         contact1.setLastName("Smith")
 
-        final DataContext context2 = cayService.getNewContext()
+        final DataContext context2 = cayenneService.getNewContext()
         Contact contact2 = context2.newObject(Contact.class)
         contact2.setFirstName("John")
         contact2.setLastName("Lie")
@@ -106,16 +95,12 @@ class CayenneServiceTest extends CayenneIshTestCase {
             Object perform() {
                 try {
 
-                    List<Contact> contacts = ObjectSelect.query(Contact.class).select(cayService.getSharedContext())
-                    assertTrue(contacts.isEmpty())
-                    logger.warn("Make the first commit in transaction")
+                    List<Contact> contacts = ObjectSelect.query(Contact.class).select(cayenneService.getSharedContext())
+                    Assertions.assertTrue(contacts.isEmpty())
                     context1.commitChanges()
 
-                    Thread.sleep(10000)
-
-                    contacts = ObjectSelect.query(Contact.class).select(cayService.getSharedContext())
-                    assertEquals(1, contacts.size())
-
+                    contacts = ObjectSelect.query(Contact.class).select(cayenneService.getSharedContext())
+                    Assertions.assertEquals(1, contacts.size())
 
                 } catch (InterruptedException e) {
                     fail()
@@ -128,11 +113,9 @@ class CayenneServiceTest extends CayenneIshTestCase {
             @Override
             Boolean call() throws InterruptedException {
                 Thread.sleep(10000)
-                logger.warn("Try to commit transaction, wait finishing of first transaction")
                 context2.commitChanges()
-                logger.warn("Second transaction complit")
-                List<Contact> contacts = ObjectSelect.query(Contact.class).select(cayService.getSharedContext())
-                assertEquals(2, contacts.size())
+                List<Contact> contacts = ObjectSelect.query(Contact.class).select(cayenneService.getSharedContext())
+                Assertions.assertEquals(2, contacts.size())
                 return true
             }
         })
@@ -149,7 +132,6 @@ class CayenneServiceTest extends CayenneIshTestCase {
             asyncThreadExecutor.shutdown()
         }
     }
-
 
     @Test
     void testRollback() {
@@ -170,20 +152,21 @@ class CayenneServiceTest extends CayenneIshTestCase {
             Object perform() {
                 context1.commitChanges()
                 List<Contact> contacts = ObjectSelect.query(Contact.class).select(cayService.getSharedContext())
-                assertEquals(1, contacts.size())
+                Assertions.assertEquals(1, contacts.size())
                 context2.commitChanges()
                 contacts = ObjectSelect.query(Contact.class).select(cayService.getSharedContext())
-                assertEquals(2, contacts.size())
+                Assertions.assertEquals(2, contacts.size())
                 throw new CayenneRuntimeException("Commit failed")
             }
         }
 
         try {
             runtime.performInTransaction(operation)
-        } catch (CayenneRuntimeException e) {}
+        } catch (CayenneRuntimeException e) {
+        }
 
         List<Contact> contacts = ObjectSelect.query(Contact.class).select(cayService.getSharedContext())
-        assertEquals(0, contacts.size())
+        Assertions.assertEquals(0, contacts.size())
 
     }
 }

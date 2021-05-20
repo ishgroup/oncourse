@@ -1,76 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Preference CREATEDON="2007-11-19 13:30:29.497" ID="903" MODIFIEDON="2013-05-06 00:33:41.913" VALUESTRING="31-Dec-2015" NAME="finance.transaction_locked" UNIQUEKEY="finance.transaction_locked"/>
+  <Preference CREATEDON="2007-11-19 13:30:29.497" ID="903" MODIFIEDON="2013-05-06 00:33:41.913"
+              VALUESTRING="31-Dec-2015" NAME="finance.transaction_locked" UNIQUEKEY="finance.transaction_locked"/>
 
-	<Site id="1" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0" localTimezone="Australia/Sydney"/>
-	<SystemUser email="admin@mail.com" id="1" login="admin" firstName="admin" surname="admin" isActive="1" isAdmin="1" password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" defaultAdministrationCentreId="1" PASSWORDUPDATEREQUIRED="0"/>
+  <Site id="1" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0"
+        localTimezone="Australia/Sydney"/>
+  <SystemUser email="admin@mail.com" id="1" login="admin" firstName="admin" surname="admin" isActive="1" isAdmin="1"
+              password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00"
+              modifiedOn="2012-05-10 00:00:00" defaultAdministrationCentreId="1" PASSWORDUPDATEREQUIRED="0"/>
 
-	<Account ACCOUNTCODE="10000" CREATEDON="2007-03-01 14:35:11.047" DESCRIPTION="Assets" ID="100" ISENABLED="0" MODIFIEDON="2007-11-16 18:24:33.217" TYPE="1"/>
-	<Account ACCOUNTCODE="11000" CREATEDON="2007-03-01 14:35:11.071" DESCRIPTION="Current assets" ID="200" ISENABLED="0" MODIFIEDON="2007-11-16 18:24:33.218" TYPE="1"/>
-	<Account ACCOUNTCODE="11100" CREATEDON="2007-03-01 14:35:11.086" DESCRIPTION="Cheque account" ID="300" ISENABLED="1" MODIFIEDON="2012-05-08 16:02:04.217" TYPE="1"/>
-	<Account ACCOUNTCODE="11200" CREATEDON="2007-03-01 14:35:11.108" DESCRIPTION="Petty cash" ID="400" ISENABLED="1" MODIFIEDON="2007-11-16 18:24:33.219" TYPE="1"/>
-	<Account ACCOUNTCODE="11500" CREATEDON="2007-03-01 14:35:11.118" DESCRIPTION="Trade debtors" ID="500" ISENABLED="1" MODIFIEDON="2013-01-08 15:22:12.014" TYPE="1"/>
+  <Account ACCOUNTCODE="10000" CREATEDON="2007-03-01 14:35:11.047" DESCRIPTION="Assets" ID="100" ISENABLED="0"
+           MODIFIEDON="2007-11-16 18:24:33.217" TYPE="1"/>
+  <Account ACCOUNTCODE="11000" CREATEDON="2007-03-01 14:35:11.071" DESCRIPTION="Current assets" ID="200" ISENABLED="0"
+           MODIFIEDON="2007-11-16 18:24:33.218" TYPE="1"/>
+  <Account ACCOUNTCODE="11100" CREATEDON="2007-03-01 14:35:11.086" DESCRIPTION="Cheque account" ID="300" ISENABLED="1"
+           MODIFIEDON="2012-05-08 16:02:04.217" TYPE="1"/>
+  <Account ACCOUNTCODE="11200" CREATEDON="2007-03-01 14:35:11.108" DESCRIPTION="Petty cash" ID="400" ISENABLED="1"
+           MODIFIEDON="2007-11-16 18:24:33.219" TYPE="1"/>
+  <Account ACCOUNTCODE="11500" CREATEDON="2007-03-01 14:35:11.118" DESCRIPTION="Trade debtors" ID="500" ISENABLED="1"
+           MODIFIEDON="2013-01-08 15:22:12.014" TYPE="1"/>
 
-	<Banking id="10" type="1" settlementDate="2010-10-14"/>
-	<Banking id="20" type="1" settlementDate="2010-10-14"/>
-	
-
-	<Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="300" receivableFromStudentAccountId="400" taxCode="GST" taxrate="0.1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-
-
-	<PaymentMethod id="1" name="Cash" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-	<PaymentMethod id="2" name="Cheque" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="1"/>
-	<PaymentMethod id="3" name="Credit card" accountId="300" active="1" bankedAutomatically="1" reconcilable="1"  type="2"/>
-	<PaymentMethod id="4" name="EFT" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
-	<PaymentMethod id="5" name="B-Pay" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-	<PaymentMethod id="6" name="Zero" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="5"/>
-	<PaymentMethod id="7" name="Other" accountId="300" active="0" bankedAutomatically="0" reconcilable="1" type="6"/>
-	<PaymentMethod id="8" name="Contra" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="7"/>
-	<PaymentMethod id="9" name="Voucher" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="8"/>
-	<PaymentMethod id="10" name="PayPal" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
-	<PaymentMethod id="11" name="Reverse" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="10"/>
-	<PaymentMethod id="12" name="EFTPOS" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
-	
-	<Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00" deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000" workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW" uniqueCode="ST1UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
-	
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" invoiceNumber="1" debtorsAccountId="100" contactId="1" amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..." createdByUserId="1" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
-
-	<InvoiceLine id="1" invoiceId="1" accountId="100" sortOrder="0" prepaidFeesAccountId="500" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-
-	<PaymentIn paymentDate="2010-10-14" id="7" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="O" paymentMethodId="1" status="3" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3" bankingId="10"/>
-	<PaymentIn paymentDate="2010-10-10" id="1" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="W" paymentMethodId="3" status="3" creditCardExpiry="01/2013" creditCardName="TEST PAYER" creditCardNumber="0000000000000000" creditCardType="V" gatewayReference="000000" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentIn paymentDate="2010-10-11" id="2" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="O" paymentMethodId="1" status="3" creditCardExpiry="01/2013" creditCardName="TEST PAYER" creditCardNumber="0000000000000000" creditCardType="V" gatewayReference="000000" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentIn paymentDate="2010-10-13" id="3" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="W" paymentMethodId="3" status="3" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentIn paymentDate="2010-10-13" id="4" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="W" paymentMethodId="3" status="3" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentIn paymentDate="2010-10-14" id="5" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="W" paymentMethodId="3" status="3" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentIn paymentDate="2010-10-14" id="6" payerId="1" accountInId="100" amount="0"    reconciled="0" source="O" paymentMethodId="6" status="3" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentIn paymentDate="2010-10-14" id="8" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="O" paymentMethodId="3" status="2" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+  <Banking id="10" type="1" settlementDate="2010-10-14"/>
+  <Banking id="20" type="1" settlementDate="2010-10-14"/>
 
 
-	<PaymentInLine id="1" paymentInId="1" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-11 00:00:00" modifiedOn="2012-05-11 00:00:00"/>
-	<PaymentInLine id="2" paymentInId="2" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-12 00:00:00" modifiedOn="2012-05-12 00:00:00"/>
-	<PaymentInLine id="3" paymentInId="3" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-13 00:00:00" modifiedOn="2012-05-13 00:00:00"/>
-	<PaymentInLine id="4" paymentInId="4" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-14 00:00:00" modifiedOn="2012-05-14 00:00:00"/>
-	<PaymentInLine id="5" paymentInId="5" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-14 00:00:00" modifiedOn="2012-05-14 00:00:00"/>
-	<PaymentInLine id="6" paymentInId="6" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-15 00:00:00" modifiedOn="2012-05-15 00:00:00"/>
-	<PaymentInLine id="7" paymentInId="7" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-15 00:00:00" modifiedOn="2012-05-15 00:00:00"/>
-	<PaymentInLine id="8" paymentInId="8" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-15 00:00:00" modifiedOn="2012-05-15 00:00:00"/>
-
-	<PaymentOut paymentDate="2010-10-14" id="6" payeeId="1" accountOutId="100" amount="10.0" reconciled="0" paymentMethodId="3" status="3" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3" bankingId="20"/>
-	<PaymentOut paymentDate="2010-10-10" id="1" payeeId="1" accountOutId="100" amount="10.0" reconciled="0" paymentMethodId="1" status="3" creditCardExpiry="01/2013" creditCardName="TEST PAYER" creditCardNumber="0000000000000000" creditCardType="V" gatewayReference="000000" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentOut paymentDate="2010-10-11" id="2" payeeId="1" accountOutId="100" amount="10.0" reconciled="0" paymentMethodId="1" status="3" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentOut paymentDate="2010-10-12" id="3" payeeId="1" accountOutId="100" amount="10.0" reconciled="0" paymentMethodId="3" status="3" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentOut paymentDate="2010-10-13" id="4" payeeId="1" accountOutId="100" amount="10.0" reconciled="0" paymentMethodId="3" status="3" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentOut paymentDate="2010-10-14" id="5" payeeId="1" accountOutId="100" amount="10.0" reconciled="0" paymentMethodId="3" status="3" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentOut paymentDate="2010-10-14" id="7" payeeId="1" accountOutId="100" amount="10.0" reconciled="0" paymentMethodId="1" status="4" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+  <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="300" receivableFromStudentAccountId="400" taxCode="GST"
+       taxrate="0.1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
 
-	<PaymentOutLine id="1" paymentOutId="1" amount="10.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
-	<PaymentOutLine id="2" paymentOutId="2" amount="10.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
-	<PaymentOutLine id="3" paymentOutId="3" amount="10.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
-	<PaymentOutLine id="4" paymentOutId="4" amount="10.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
-	<PaymentOutLine id="5" paymentOutId="5" amount="5.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
-	<PaymentOutLine id="6" paymentOutId="6" amount="5.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
-	<PaymentOutLine id="7" paymentOutId="7" amount="5.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
+  <PaymentMethod id="1" name="Cash" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="2" name="Cheque" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="1"/>
+  <PaymentMethod id="3" name="Credit card" accountId="300" active="1" bankedAutomatically="1" reconcilable="1"
+                 type="2"/>
+  <PaymentMethod id="4" name="EFT" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
+  <PaymentMethod id="5" name="B-Pay" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="6" name="Zero" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="5"/>
+  <PaymentMethod id="7" name="Other" accountId="300" active="0" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="8" name="Contra" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="7"/>
+  <PaymentMethod id="9" name="Voucher" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="8"/>
+  <PaymentMethod id="10" name="PayPal" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
+  <PaymentMethod id="11" name="Reverse" accountId="300" active="1" bankedAutomatically="0" reconcilable="1" type="10"/>
+  <PaymentMethod id="12" name="EFTPOS" accountId="300" active="1" bankedAutomatically="1" reconcilable="1" type="6"/>
+
+  <Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
+           modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000"
+           workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW"
+           uniqueCode="ST1UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
+
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" invoiceNumber="1" debtorsAccountId="100" contactId="1"
+           amoutOwing="0.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdByUserId="1" createdOn="2012-05-10 00:00:00"
+           modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
+
+  <InvoiceLine id="1" invoiceId="1" accountId="100" sortOrder="0" prepaidFeesAccountId="500" prepaidFeesRemaining="0.00"
+               discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
+               title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+
+  <PaymentIn paymentDate="2010-10-14" id="7" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="O"
+             paymentMethodId="1" status="3" privateNotes="Notes..." createdOn="2012-05-10 00:00:00"
+             modifiedOn="2012-05-10 00:00:00" confirmationStatus="3" bankingId="10"/>
+  <PaymentIn paymentDate="2010-10-10" id="1" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="W"
+             paymentMethodId="3" status="3" creditCardExpiry="01/2013" creditCardName="TEST PAYER"
+             creditCardNumber="0000000000000000" creditCardType="V" gatewayReference="000000" privateNotes="Notes..."
+             createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+  <PaymentIn paymentDate="2010-10-11" id="2" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="O"
+             paymentMethodId="1" status="3" creditCardExpiry="01/2013" creditCardName="TEST PAYER"
+             creditCardNumber="0000000000000000" creditCardType="V" gatewayReference="000000" privateNotes="Notes..."
+             createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+  <PaymentIn paymentDate="2010-10-13" id="3" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="W"
+             paymentMethodId="3" status="3" privateNotes="Notes..." createdOn="2012-05-10 00:00:00"
+             modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+  <PaymentIn paymentDate="2010-10-13" id="4" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="W"
+             paymentMethodId="3" status="3" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+             confirmationStatus="3"/>
+  <PaymentIn paymentDate="2010-10-14" id="5" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="W"
+             paymentMethodId="3" status="3" privateNotes="Notes..." createdOn="2012-05-10 00:00:00"
+             modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+  <PaymentIn paymentDate="2010-10-14" id="6" payerId="1" accountInId="100" amount="0" reconciled="0" source="O"
+             paymentMethodId="6" status="3" privateNotes="Notes..." createdOn="2012-05-10 00:00:00"
+             modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+  <PaymentIn paymentDate="2010-10-14" id="8" payerId="1" accountInId="100" amount="10.0" reconciled="0" source="O"
+             paymentMethodId="3" status="2" privateNotes="Notes..." createdOn="2012-05-10 00:00:00"
+             modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+
+
+  <PaymentInLine id="1" paymentInId="1" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-11 00:00:00"
+                 modifiedOn="2012-05-11 00:00:00"/>
+  <PaymentInLine id="2" paymentInId="2" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-12 00:00:00"
+                 modifiedOn="2012-05-12 00:00:00"/>
+  <PaymentInLine id="3" paymentInId="3" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-13 00:00:00"
+                 modifiedOn="2012-05-13 00:00:00"/>
+  <PaymentInLine id="4" paymentInId="4" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-14 00:00:00"
+                 modifiedOn="2012-05-14 00:00:00"/>
+  <PaymentInLine id="5" paymentInId="5" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-14 00:00:00"
+                 modifiedOn="2012-05-14 00:00:00"/>
+  <PaymentInLine id="6" paymentInId="6" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-15 00:00:00"
+                 modifiedOn="2012-05-15 00:00:00"/>
+  <PaymentInLine id="7" paymentInId="7" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-15 00:00:00"
+                 modifiedOn="2012-05-15 00:00:00"/>
+  <PaymentInLine id="8" paymentInId="8" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-15 00:00:00"
+                 modifiedOn="2012-05-15 00:00:00"/>
+
+  <PaymentOut paymentDate="2010-10-14" id="6" payeeId="1" accountOutId="100" amount="10.0" reconciled="0"
+              paymentMethodId="3" status="3" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer"
+              privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+              confirmationStatus="3" bankingId="20"/>
+  <PaymentOut paymentDate="2010-10-10" id="1" payeeId="1" accountOutId="100" amount="10.0" reconciled="0"
+              paymentMethodId="1" status="3" creditCardExpiry="01/2013" creditCardName="TEST PAYER"
+              creditCardNumber="0000000000000000" creditCardType="V" gatewayReference="000000" privateNotes="Notes..."
+              createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+  <PaymentOut paymentDate="2010-10-11" id="2" payeeId="1" accountOutId="100" amount="10.0" reconciled="0"
+              paymentMethodId="1" status="3" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer"
+              privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+              confirmationStatus="3"/>
+  <PaymentOut paymentDate="2010-10-12" id="3" payeeId="1" accountOutId="100" amount="10.0" reconciled="0"
+              paymentMethodId="3" status="3" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer"
+              privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+              confirmationStatus="3"/>
+  <PaymentOut paymentDate="2010-10-13" id="4" payeeId="1" accountOutId="100" amount="10.0" reconciled="0"
+              paymentMethodId="3" status="3" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer"
+              privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+              confirmationStatus="3"/>
+  <PaymentOut paymentDate="2010-10-14" id="5" payeeId="1" accountOutId="100" amount="10.0" reconciled="0"
+              paymentMethodId="3" status="3" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer"
+              privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+              confirmationStatus="3"/>
+  <PaymentOut paymentDate="2010-10-14" id="7" payeeId="1" accountOutId="100" amount="10.0" reconciled="0"
+              paymentMethodId="1" status="4" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer"
+              privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+              confirmationStatus="3"/>
+
+
+  <PaymentOutLine id="1" paymentOutId="1" amount="10.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00"
+                  modifiedOn="2012-05-10 00:00:00"/>
+  <PaymentOutLine id="2" paymentOutId="2" amount="10.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00"
+                  modifiedOn="2012-05-10 00:00:00"/>
+  <PaymentOutLine id="3" paymentOutId="3" amount="10.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00"
+                  modifiedOn="2012-05-10 00:00:00"/>
+  <PaymentOutLine id="4" paymentOutId="4" amount="10.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00"
+                  modifiedOn="2012-05-10 00:00:00"/>
+  <PaymentOutLine id="5" paymentOutId="5" amount="5.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00"
+                  modifiedOn="2012-05-10 00:00:00"/>
+  <PaymentOutLine id="6" paymentOutId="6" amount="5.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00"
+                  modifiedOn="2012-05-10 00:00:00"/>
+  <PaymentOutLine id="7" paymentOutId="7" amount="5.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00"
+                  modifiedOn="2012-05-10 00:00:00"/>
 
 </dataset>

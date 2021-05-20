@@ -24,6 +24,7 @@ import { idsToString } from "../../../../../common/utils/numbers/numbersNormaliz
 import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const manualLink = getManualLink("generalPrefs_sellableItemsRelationTypes");
 
@@ -41,7 +42,7 @@ interface Props {
   form: string;
   onDelete: (id: string) => void;
   onUpdate: (entityRelationTypes: EntityRelationType[]) => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
   history?: any,
   nextLocation?: string,
   setNextLocation?: (nextLocation: string) => void,
@@ -162,7 +163,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from types list", "DELETE");
+    openConfirm({ onConfirm, confirmMessage: "This item will be removed from types list", confirmButtonText: "DELETE" });
   };
 
   render() {

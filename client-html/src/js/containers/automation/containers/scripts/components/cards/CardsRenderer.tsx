@@ -7,6 +7,8 @@ import * as React from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Grid from "@material-ui/core/Grid";
 import { FormControlLabel } from "@material-ui/core";
+import { WrappedFieldArrayProps } from "redux-form";
+import { Dispatch } from "redux";
 import FormField from "../../../../../../common/components/form/form-fields/FormField";
 import { ScriptComponent } from "../../../../../../model/scripts";
 import ScriptCard from "./CardBase";
@@ -14,6 +16,7 @@ import QueryCardContent from "./QueryCardContent";
 import MessageCardContent from "./MessageCardContent";
 import ReportCardContent from "./ReportCardContent";
 import { getType } from "../../utils";
+import { ShowConfirmCaller } from "../../../../../../model/common/Confirm";
 
 const onDragEnd = ({ destination, source, fields }) => {
   if (destination && destination.index !== source.index) {
@@ -21,7 +24,17 @@ const onDragEnd = ({ destination, source, fields }) => {
   }
 };
 
-const CardsRenderer = props => {
+interface Props {
+  dispatch: Dispatch;
+  classes: any;
+  showConfirm: ShowConfirmCaller;
+  hasUpdateAccess: boolean;
+  isInternal: boolean;
+  onInternalSaveClick: any;
+  emailTemplates: any[];
+}
+
+const CardsRenderer: React.FC<Props & WrappedFieldArrayProps> = props => {
   const {
     fields,
     dispatch,
@@ -36,9 +49,12 @@ const CardsRenderer = props => {
 
   const onDelete = (e, index) => {
     e.stopPropagation();
-    showConfirm(() => {
-      fields.remove(index);
-    }, "Script component will be deleted permanently");
+    showConfirm({
+      onConfirm: () => {
+        fields.remove(index);
+      },
+      confirmMessage: "Script component will be deleted permanently"
+    });
   };
 
   const renderVariables = (variables, name, disabled) => (

@@ -65,7 +65,6 @@ public class ServiceModule implements Module {
 
 		// jobs
 		binder.bind(EmailDequeueJob.class);
-		binder.bind(BackupJob.class);
 		binder.bind(StatsService.class).in(Scopes.SINGLETON);
 		
 		binder.bind(AccountTransactionService.class).in(Scopes.SINGLETON);

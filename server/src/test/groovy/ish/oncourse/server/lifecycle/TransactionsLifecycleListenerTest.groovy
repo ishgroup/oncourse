@@ -1,45 +1,26 @@
 package ish.oncourse.server.lifecycle
 
-import ish.CayenneIshTestCase
-import static ish.common.types.PaymentStatus.SUCCESS
-import ish.oncourse.server.ICayenneService
+import groovy.transform.CompileStatic
+import ish.TestWithDatabase
+import ish.DatabaseSetup
 import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.PaymentIn
-import static junit.framework.Assert.assertEquals
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
-/**
- * Created by Artem on 30/12/2016.
- */
-class TransactionsLifecycleListenerTest extends CayenneIshTestCase {
+import static ish.common.types.PaymentStatus.SUCCESS
 
-    ICayenneService cayenneService
-
-    @Before
-    void setup() throws Exception {
-        wipeTables()
-        cayenneService = injector.getInstance(ICayenneService.class)
-        InputStream st = TransactionsLifecycleListenerTest.classLoader.getResourceAsStream("ish/oncourse/server/lifecycle/transactionsLifecycleListenerTestDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-        rDataSet.addReplacementObject("[null]", null)
-        executeDatabaseOperation(rDataSet)
-        super.setup()
-    }
-
-
+@CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/lifecycle/transactionsLifecycleListenerTestDataSet.xml")
+class TransactionsLifecycleListenerTest extends TestWithDatabase {
+    
     @Test
     void testCayenneTransaction() {
         PaymentIn paymentIn = SelectById.query(PaymentIn, 1L).selectOne(cayenneService.newContext)
@@ -48,9 +29,7 @@ class TransactionsLifecycleListenerTest extends CayenneIshTestCase {
         paymentIn.status = SUCCESS
         paymentIn1.status = SUCCESS
 
-
         ExecutorService asyncThreadExecutor = Executors.newFixedThreadPool(2)
-
 
         Future<?> future1 = asyncThreadExecutor.submit {
             paymentIn.objectContext.commitChanges()
@@ -65,14 +44,14 @@ class TransactionsLifecycleListenerTest extends CayenneIshTestCase {
                 //do nothing, need to keep main thread
             }
         } catch (InterruptedException e) {
-            assertTrue(false)
+            Assertions.assertTrue(false)
         } catch (ExecutionException e) {
-            assertTrue(false)
+            Assertions.assertTrue(false)
         } finally {
             asyncThreadExecutor.shutdown()
         }
 
         List<AccountTransaction> lines = ObjectSelect.query(AccountTransaction).select(cayenneService.newContext)
-        assertEquals(2, lines.size())
+        Assertions.assertEquals(2, lines.size())
     }
 }

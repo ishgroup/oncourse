@@ -69,10 +69,11 @@ const ApiTokensBase:React.FC<Props> = (
       dispatch(arrayRemove(form, "tokens", index));
     } else {
       dispatch(
-        showConfirm(
-          () => dispatch(deleteApiToken(item.id)),
-          "API token will be deleted permanently"
-        )
+        showConfirm({
+          onConfirm: () => dispatch(deleteApiToken(item.id)),
+          confirmMessage: "API token will be deleted permanently",
+          confirmButtonText: "Delete"
+        })
       );
     }
   };

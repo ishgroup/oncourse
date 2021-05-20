@@ -9,4 +9,4 @@ description: Unsubscribe contact from a mailchimp list
 options:
   - name: integrationAction
     dataType: TEXT
-    value: "subscribe"
+    value: "unsubscribe"

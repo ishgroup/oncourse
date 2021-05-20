@@ -12,7 +12,7 @@ import { GradingType } from "@api/model";
 export const useGradeErrors = (grade: number, gradeType: GradingType) => {
   const errors: any = {};
 
-  if (typeof grade !== "number") {
+  if (typeof grade !== "number" || !gradeType) {
     return errors;
   }
 

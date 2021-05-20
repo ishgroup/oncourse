@@ -12,7 +12,7 @@ import { plainCorporatePassPath } from "../../../../constants/Api";
 import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
 import ArticleProductGeneral from "./ArticleProductGeneral";
-import { EditViewContainerProps, EditViewProps } from "../../../../model/common/ListView";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 interface ArticleProductEditViewProps extends EditViewProps<ArticleProduct> {
   classes?: any;

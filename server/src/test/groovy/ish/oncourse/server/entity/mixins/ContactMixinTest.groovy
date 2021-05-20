@@ -1,24 +1,24 @@
 package ish.oncourse.server.entity.mixins
 
-import ish.IshTestCase
+import groovy.transform.CompileDynamic
+import ish.TestWithBootique
 import ish.oncourse.server.cayenne.Contact
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
-/**
- * Created by anarut on 7/6/16.
- */
-class ContactMixinTest extends IshTestCase {
+// Note that bootique is needed here to add mixins to the model
+@CompileDynamic
+class ContactMixinTest extends TestWithBootique {
 
     @Test
     void testPortalLoginURL() {
         Contact contactWitoutEmail = Mockito.mock(Contact)
         Mockito.when(contactWitoutEmail.email).thenReturn(null)
-        assertEquals("https://www.skillsoncourse.com.au/portal/login", contactWitoutEmail.portalLoginURL)
+        Assertions.assertEquals("https://www.skillsoncourse.com.au/portal/login", contactWitoutEmail.portalLoginURL)
 
         Contact contactWithEmail = Mockito.mock(Contact)
         Mockito.when(contactWithEmail.email).thenReturn("test.email@ish.com.au")
-        assertEquals("https://www.skillsoncourse.com.au/portal/login?e=test.email@ish.com.au", contactWithEmail.portalLoginURL)
+        Assertions.assertEquals("https://www.skillsoncourse.com.au/portal/login?e=test.email@ish.com.au", contactWithEmail.portalLoginURL)
     }
 }

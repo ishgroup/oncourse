@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Discount id="1" name="test discount 1" code="tst1" discountType="1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" discountPercent="0.2" rounding="0" publicDescription="some text" validFrom="2013-01-01 00:00:00" validTo="2013-02-01 00:00:00" studentAge="20" studentEnrolledWithinDays="30" studentPostcode="1001" hideOnWeb="0" isAvailableOnWeb="1" predictedStudentsPercentage="0.1"  addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
-	<Discount id="2" name="test discount 2" code="tst2" discountType="2" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" discountDollar="20" rounding="0" validFrom="2013-01-01 00:00:00" validTo="2013-02-01 00:00:00" studentPostcode="1002" hideOnWeb="0" isAvailableOnWeb="1" predictedStudentsPercentage="0.1"  addByDefault="0" minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
+  <Discount id="1" name="test discount 1" code="tst1" discountType="1" createdOn="2013-01-01 00:00:00"
+            modifiedOn="2013-01-01 00:00:00" discountPercent="0.2" rounding="0" publicDescription="some text"
+            validFrom="2013-01-01 00:00:00" validTo="2013-02-01 00:00:00" studentAge="20" studentEnrolledWithinDays="30"
+            studentPostcode="1001" hideOnWeb="0" isAvailableOnWeb="1" predictedStudentsPercentage="0.1" addByDefault="0"
+            minEnrolments="1" minValue="0" limitPreviousEnrolment="0"/>
+  <Discount id="2" name="test discount 2" code="tst2" discountType="2" createdOn="2013-01-01 00:00:00"
+            modifiedOn="2013-01-01 00:00:00" discountDollar="20" rounding="0" validFrom="2013-01-01 00:00:00"
+            validTo="2013-02-01 00:00:00" studentPostcode="1002" hideOnWeb="0" isAvailableOnWeb="1"
+            predictedStudentsPercentage="0.1" addByDefault="0" minEnrolments="1" minValue="0"
+            limitPreviousEnrolment="0"/>
 </dataset>

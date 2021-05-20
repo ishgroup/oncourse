@@ -1,1796 +1,1922 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
-    <script id='1'>
-        <name>send_invoice</name>
-        <script>def run(args) {
-            def invoice = args.entity
-            if (invoice.confirmationStatus == ConfirmationStatus.NOT_SENT) {
-            def m = Email.create("Tax Invoice")
-            m.bind(invoice: invoice)
-            m.to(invoice.contact)
-            m.send()
-            invoice.setConfirmationStatus(ConfirmationStatus.SENT)
-            args.context.commitChanges()
-            }
-            }</script>
-        <modifiedOn />
-        <createdOn />
-        <enabled>true</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>Invoice</entityClass>
-        <entityEventType>CREATE</entityEventType>
-        <description />
-        <systemEventType />
+  <script id='1'>
+    <name>send_invoice</name>
+    <script>def run(args) {
+      def invoice = args.entity
+      if (invoice.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+      def m = Email.create("Tax Invoice")
+      m.bind(invoice: invoice)
+      m.to(invoice.contact)
+      m.send()
+      invoice.setConfirmationStatus(ConfirmationStatus.SENT)
+      args.context.commitChanges()
+      }
+      }
     </script>
-    <script id='2'>
-        <name>send_enrolment</name>
-        <script>def run(args) {
-            def enrolment = args.entity
-            if (enrolment.status == EnrolmentStatus.SUCCESS &amp;&amp; enrolment.confirmationStatus == ConfirmationStatus.NOT_SENT) {
-            def m = Email.create("Enrolment Confirmation")
-            m.bind(enrolment: enrolment)
-            m.to(enrolment.student.contact)
-            m.send()
-            enrolment.setConfirmationStatus(ConfirmationStatus.SENT)
-            args.context.commitChanges()
-            }
-            }</script>
-        <modifiedOn />
-        <createdOn />
-        <enabled>true</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>Enrolment</entityClass>
-        <entityEventType>CREATE_OR_UPDATE</entityEventType>
-        <description />
-        <systemEventType />
+    <modifiedOn />
+    <createdOn />
+    <enabled>true</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>Invoice</entityClass>
+    <entityEventType>CREATE</entityEventType>
+    <description />
+    <systemEventType />
+  </script>
+  <script id='2'>
+    <name>send_enrolment</name>
+    <script>def run(args) {
+      def enrolment = args.entity
+      if (enrolment.status == EnrolmentStatus.SUCCESS &amp;&amp; enrolment.confirmationStatus ==
+      ConfirmationStatus.NOT_SENT) {
+      def m = Email.create("Enrolment Confirmation")
+      m.bind(enrolment: enrolment)
+      m.to(enrolment.student.contact)
+      m.send()
+      enrolment.setConfirmationStatus(ConfirmationStatus.SENT)
+      args.context.commitChanges()
+      }
+      }
     </script>
-    <script id='1673'>
-        <name>mailchimp unsubscribe</name>
-        <script>def run(args) {
-            def tagRelation = args.entity
+    <modifiedOn />
+    <createdOn />
+    <enabled>true</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>Enrolment</entityClass>
+    <entityEventType>CREATE_OR_UPDATE</entityEventType>
+    <description />
+    <systemEventType />
+  </script>
+  <script id='1673'>
+    <name>mailchimp unsubscribe</name>
+    <script>def run(args) {
+      def tagRelation = args.entity
 
-            if (getIntegration(tagRelation.tag.name) &amp;&amp; NodeSpecialType.MAILING_LISTS.equals(tagRelation.tag?.parentTag?.specialType) &amp;&amp; tagRelation.taggedContact.email) {
-            mailchimp {
-            name tagRelation.tag.name
-            action "unsubscribe"
-            email tagRelation.taggedContact.email
-            }
-            }
-            }
-        </script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>ContactTagRelation</entityClass>
-        <entityEventType>REMOVE</entityEventType>
-        <description>Unsubscribe contact from a mailchimp list</description>
-        <systemEventType />
+      if (getIntegration(tagRelation.tag.name) &amp;&amp;
+      NodeSpecialType.MAILING_LISTS.equals(tagRelation.tag?.parentTag?.specialType) &amp;&amp;
+      tagRelation.taggedContact.email) {
+      mailchimp {
+      name tagRelation.tag.name
+      action "unsubscribe"
+      email tagRelation.taggedContact.email
+      }
+      }
+      }
     </script>
-    <script id='1674'>
-        <name>SurveyGizmo send invite on enrolment</name>
-        <script>import ish.integrations.*
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>ContactTagRelation</entityClass>
+    <entityEventType>REMOVE</entityEventType>
+    <description>Unsubscribe contact from a mailchimp list</description>
+    <systemEventType />
+  </script>
+  <script id='1674'>
+    <name>SurveyGizmo send invite on enrolment</name>
+    <script>import ish.integrations.*
 
-            def run(args) {
-            def enrolment = args.value
+      def run(args) {
+      def enrolment = args.value
 
-            ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
-            .select(args.context).findAll { integration -&gt;
-            integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
-            }.each { integration -&gt;
-            def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
-            if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
-            surveyGizmo {
-            name integration.name
-            template "survey invitation"
-            reply preference.email.from
-            contact enrolment.student.contact
-            }
-            }
-            }
-            }
-        </script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ONCOURSE_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass />
-        <entityEventType />
-        <description>Send SurveyGizmo invite upon enrolment</description>
-        <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
+      .select(args.context).findAll { integration -&gt;
+      integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
+      }.each { integration -&gt;
+      def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
+      if (tag == null || enrolment.courseClass.course.hasTag(tag)) {
+      surveyGizmo {
+      name integration.name
+      template "survey invitation"
+      reply preference.email.from
+      contact enrolment.student.contact
+      }
+      }
+      }
+      }
     </script>
-    <script id='1675'>
-        <name>send product purchased email</name>
-        <script>def run(args) {
-            def article = args.entity
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ONCOURSE_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
+    <description>Send SurveyGizmo invite upon enrolment</description>
+    <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+  </script>
+  <script id='1675'>
+    <name>send product purchased email</name>
+    <script>def run(args) {
+      def article = args.entity
 
-            if (PaymentSource.SOURCE_WEB.equals(article.invoiceLine.invoice.source)) {
-            email {
-            to preference.email.admin
-            from preference.email.admin
-            subject "${article.product.name} purchased"
-            content "Hi \n\n${article.contact.fullName} has just purchased ${article.product.name} on the web \n\nThis is an automated notification from onCourse"
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>true</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>Article</entityClass>
-        <entityEventType>CREATE</entityEventType>
-        <description>email notification when someone purchases a product though the onCourse website</description>
-        <systemEventType />
+      if (PaymentSource.SOURCE_WEB.equals(article.invoiceLine.invoice.source)) {
+      email {
+      to preference.email.admin
+      from preference.email.admin
+      subject "${article.product.name} purchased"
+      content "Hi \n\n${article.contact.fullName} has just purchased ${article.product.name} on the web \n\nThis is an
+      automated notification from onCourse"
+      }
+      }
+      }
     </script>
-    <script id='1676'>
-        <name>send application decision</name>
-        <script>def run(args) {
-            def application = args.entity
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>true</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>Article</entityClass>
+    <entityEventType>CREATE</entityEventType>
+    <description>email notification when someone purchases a product though the onCourse website</description>
+    <systemEventType />
+  </script>
+  <script id='1676'>
+    <name>send application decision</name>
+    <script>def run(args) {
+      def application = args.entity
 
-            if (application.confirmationStatus == ConfirmationStatus.NOT_SENT) {
-            def m = null
+      if (application.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+      def m = null
 
-            if (application.status == ApplicationStatus.OFFERED) {
-            m = Email.create("Enrolment application accepted")
-            } else if (application.status == ApplicationStatus.REJECTED) {
-            m = Email.create("Enrolment application rejected")
-            }
+      if (application.status == ApplicationStatus.OFFERED) {
+      m = Email.create("Enrolment application accepted")
+      } else if (application.status == ApplicationStatus.REJECTED) {
+      m = Email.create("Enrolment application rejected")
+      }
 
-            if (m) {
-            m.bind(application: application)
-            m.to(application.student.contact)
+      if (m) {
+      m.bind(application: application)
+      m.to(application.student.contact)
 
-            m.send()
+      m.send()
 
-            application.setConfirmationStatus(ConfirmationStatus.SENT)
-            args.context.commitChanges()
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>Application</entityClass>
-        <entityEventType>CREATE_OR_UPDATE</entityEventType>
-        <description>Send an email to the student about whether their application has been offered or rejected</description>
-        <systemEventType />
+      application.setConfirmationStatus(ConfirmationStatus.SENT)
+      args.context.commitChanges()
+      }
+      }
+      }
     </script>
-    <script id='1677'>
-        <name>SurveyMonkey send invite on enrolment completion</name>
-        <script>import ish.integrations.*
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>Application</entityClass>
+    <entityEventType>CREATE_OR_UPDATE</entityEventType>
+    <description>Send an email to the student about whether their application has been offered or rejected</description>
+    <systemEventType />
+  </script>
+  <script id='1677'>
+    <name>SurveyMonkey send invite on enrolment completion</name>
+    <script>import ish.integrations.*
 
-            def run(args) {
-            def yesterdayStart = new Date() - 1
-            yesterdayStart.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+      def run(args) {
+      def yesterdayStart = new Date() - 1
+      yesterdayStart.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
 
-            def yesterdayEnd = new Date()
-            yesterdayEnd.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+      def yesterdayEnd = new Date()
+      yesterdayEnd.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
 
-            def enrolmentsJustEnded = ObjectSelect.query(Enrolment)
-            .where(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).between(yesterdayStart, yesterdayEnd)).select(args.context)
+      def enrolmentsJustEnded = ObjectSelect.query(Enrolment)
+      .where(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).between(yesterdayStart,
+      yesterdayEnd)).select(args.context)
 
-            ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYMONKEY))
-            .select(args.context).findAll { integration -&gt;
-            integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
-            }.each { integration -&gt;
-            def tag = integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_COURSE_TAG)?.value?.trim()
+      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYMONKEY))
+      .select(args.context).findAll { integration -&gt;
+      integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
+      }.each { integration -&gt;
+      def tag = integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_COURSE_TAG)?.value?.trim()
 
-            enrolmentsJustEnded.each { enrolment -&gt;
-            if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
-            surveyMonkey {
-            name integration.name
-            contact enrolment.student.contact
-            template "survey invitation"
-            reply preference.email.from
-            }
-            }
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 9 * * ?</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send SurveyMonkey survey invite upon enrolment completion</description>
-        <systemEventType />
+      enrolmentsJustEnded.each { enrolment -&gt;
+      if (tag == null || enrolment.courseClass.course.hasTag(tag)) {
+      surveyMonkey {
+      name integration.name
+      contact enrolment.student.contact
+      template "survey invitation"
+      reply preference.email.from
+      }
+      }
+      }
+      }
+      }
     </script>
-    <script id='1678'>
-        <name>send class confirmed</name>
-        <script>def run(args) {
-            List&lt;CourseClass&gt; classes = ObjectSelect.query(CourseClass)
-            .select(args.context)
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 9 * * ?</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send SurveyMonkey survey invite upon enrolment completion</description>
+    <systemEventType />
+  </script>
+  <script id='1678'>
+    <name>send class confirmed</name>
+    <script>def run(args) {
+      List&lt;CourseClass&gt; classes = ObjectSelect.query(CourseClass)
+      .select(args.context)
 
-            //to change profit condition of class confirm, just set 'expectedProfit' with value you want. $500 is the default
-            def expectedProfit = 500
+      //to change profit condition of class confirm, just set 'expectedProfit' with value you want. $500 is the default
+      def expectedProfit = 500
 
-            for (CourseClass courseClass : classes) {
-            //conditions to send 'Class Confirmed' messages to students
-            if (courseClass.getSuccessAndQueuedEnrolments().size() &gt;= courseClass.getMinimumPlaces() &amp;&amp; courseClass.actualTotalProfit &gt;= expectedProfit) {
-            courseClass.getSuccessAndQueuedEnrolments().each { e -&gt;
-            email {
-            template "Class Confirmed"
-            key "send-class-confirmed", courseClass
-            keyCollision "drop"
-            to e.student.contact
-            bindings courseClass: courseClass, contact: e.student.contact
-            }
-            }
-            }
-            //send notification to admin
-            else {
-            Message lastStudentMessage = ObjectSelect.query(Message.class)
-            .where(Message.CREATOR_KEY.eq(MessageUtils.generateCreatorKey("send-class-confirmed", courseClass)))
-            .orderBy(Message.ID.desc())
-            .selectFirst(args.context)
+      for (CourseClass courseClass : classes) {
+      //conditions to send 'Class Confirmed' messages to students
+      if (courseClass.getSuccessAndQueuedEnrolments().size() &gt;= courseClass.getMinimumPlaces() &amp;&amp;
+      courseClass.actualTotalProfit &gt;= expectedProfit) {
+      courseClass.getSuccessAndQueuedEnrolments().each { e -&gt;
+      email {
+      template "Class Confirmed"
+      key "send-class-confirmed", courseClass
+      keyCollision "drop"
+      to e.student.contact
+      bindings courseClass: courseClass, contact: e.student.contact
+      }
+      }
+      }
+      //send notification to admin
+      else {
+      Message lastStudentMessage = ObjectSelect.query(Message.class)
+      .where(Message.CREATOR_KEY.eq(MessageUtils.generateCreatorKey("send-class-confirmed", courseClass)))
+      .orderBy(Message.ID.desc())
+      .selectFirst(args.context)
 
-            if (lastStudentMessage){
+      if (lastStudentMessage){
 
-            //Attention! Set your own 'prefix'
-            String prefix = "class no viable " + preference.email.from
-            String messageUniqueKey = MessageUtils.generateCreatorKey(prefix, courseClass)
-            Message lastAdminMessage = ObjectSelect.query(Message.class)
-            .where(Message.CREATOR_KEY.eq(messageUniqueKey))
-            .orderBy(Message.ID.desc())
-            .selectFirst(args.context)
+      //Attention! Set your own 'prefix'
+      String prefix = "class no viable " + preference.email.from
+      String messageUniqueKey = MessageUtils.generateCreatorKey(prefix, courseClass)
+      Message lastAdminMessage = ObjectSelect.query(Message.class)
+      .where(Message.CREATOR_KEY.eq(messageUniqueKey))
+      .orderBy(Message.ID.desc())
+      .selectFirst(args.context)
 
-            if (!lastAdminMessage || lastAdminMessage.getCreatedOn() &lt; lastStudentMessage.getCreatedOn()) {
-            email {
+      if (!lastAdminMessage || lastAdminMessage.getCreatedOn() &lt; lastStudentMessage.getCreatedOn()) {
+      email {
 
-            from preference.email.from
-            to preference.email.admin
-            subject "Confirmed class now below class minimum"
-            key messageUniqueKey
-            content "Due to enrolment cancellations or other class changes ${courseClass.code} ${courseClass.course.name}, is no longer viable. It has already been confirmed as running via emails to the students. Please investigate. "
-            }
-            }
-            }
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 20 1/1 * ? *</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send an email to students when course class is confirmed</description>
-        <systemEventType />
+      from preference.email.from
+      to preference.email.admin
+      subject "Confirmed class now below class minimum"
+      key messageUniqueKey
+      content "Due to enrolment cancellations or other class changes ${courseClass.code} ${courseClass.course.name}, is
+      no longer viable. It has already been confirmed as running via emails to the students. Please investigate. "
+      }
+      }
+      }
+      }
+      }
+      }
     </script>
-    <script id='1679'>
-        <name>send payment receipt</name>
-        <script>def run(args) {
-            def paymentIn = args.entity
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 20 1/1 * ? *</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send an email to students when course class is confirmed</description>
+    <systemEventType />
+  </script>
+  <script id='1679'>
+    <name>send payment receipt</name>
+    <script>def run(args) {
+      def paymentIn = args.entity
 
-            if (paymentIn.status == PaymentStatus.SUCCESS &amp;&amp; paymentIn.confirmationStatus == ConfirmationStatus.NOT_SENT &amp;&amp; !Money.ZERO.equals(paymentIn.amount)) {
-            email {
-            template "Payment Receipt"
-            bindings paymentIn: paymentIn
-            to paymentIn.payer
-            }
+      if (paymentIn.status == PaymentStatus.SUCCESS &amp;&amp; paymentIn.confirmationStatus ==
+      ConfirmationStatus.NOT_SENT &amp;&amp; !Money.ZERO.equals(paymentIn.amount)) {
+      email {
+      template "Payment Receipt"
+      bindings paymentIn: paymentIn
+      to paymentIn.payer
+      }
 
-            paymentIn.setConfirmationStatus(ConfirmationStatus.SENT)
-            args.context.commitChanges()
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>true</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>PaymentIn</entityClass>
-        <entityEventType>CREATE_OR_UPDATE</entityEventType>
-        <description>Send a payment receipt email to the payer</description>
-        <systemEventType />
+      paymentIn.setConfirmationStatus(ConfirmationStatus.SENT)
+      args.context.commitChanges()
+      }
+      }
     </script>
-    <script id='1680'>
-        <name>Synchronise availability (enrolment)</name>
-        <script>def run(args) {
-            def Enrolment enrolment = args.value
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>true</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>PaymentIn</entityClass>
+    <entityEventType>CREATE_OR_UPDATE</entityEventType>
+    <description>Send a payment receipt email to the payer</description>
+    <systemEventType />
+  </script>
+  <script id='1680'>
+    <name>Synchronise availability (enrolment)</name>
+    <script>def run(args) {
+      def Enrolment enrolment = args.value
 
-            if (enrolment.courseClass.sessionsCount == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
-            enrolment.courseClass.endDateTime != null &amp;&amp; !enrolment.courseClass.tutorRoles.isEmpty()) {
+      if (enrolment.courseClass.sessionsCount == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
+      enrolment.courseClass.endDateTime != null &amp;&amp; !enrolment.courseClass.tutorRoles.isEmpty()) {
 
-            def classes = ObjectSelect.query(CourseClass)
-            .where(CourseClass.START_DATE_TIME.isNotNull()).and(CourseClass.START_DATE_TIME.lt(enrolment.courseClass.endDateTime))
-            .and(CourseClass.END_DATE_TIME.isNotNull()).and(CourseClass.END_DATE_TIME.gt(enrolment.courseClass.startDateTime))
-            .and(CourseClass.ROOM.eq(enrolment.courseClass.room))
-            .and(CourseClass.SESSIONS_COUNT.eq(1))
-            .and(CourseClass.ID.ne(enrolment.courseClass.id)).select(args.context)
-            .findAll { cc -&gt; cc.tutorRoles.collect { tr -&gt; tr.tutor }
-            .contains(enrolment.courseClass.tutorRoles.collect { tr -&gt; tr.tutor }.get(0)) }
+      def classes = ObjectSelect.query(CourseClass)
+      .where(CourseClass.START_DATE_TIME.isNotNull()).and(CourseClass.START_DATE_TIME.lt(enrolment.courseClass.endDateTime))
+      .and(CourseClass.END_DATE_TIME.isNotNull()).and(CourseClass.END_DATE_TIME.gt(enrolment.courseClass.startDateTime))
+      .and(CourseClass.ROOM.eq(enrolment.courseClass.room))
+      .and(CourseClass.SESSIONS_COUNT.eq(1))
+      .and(CourseClass.ID.ne(enrolment.courseClass.id)).select(args.context)
+      .findAll { cc -&gt; cc.tutorRoles.collect { tr -&gt; tr.tutor }
+      .contains(enrolment.courseClass.tutorRoles.collect { tr -&gt; tr.tutor }.get(0)) }
 
-            classes.each { cc -&gt; cc.maximumPlaces = cc.maximumPlaces - 1 }
+      classes.each { cc -&gt; cc.maximumPlaces = cc.maximumPlaces - 1 }
 
-            args.context.commitChanges()
-            }
-            }
-        </script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ONCOURSE_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass />
-        <entityEventType />
-        <description>This script finds all single session classes taught by the same tutor in the same room with overlapping times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where students need only come to the second half of the regular First Aid class). If you enable this script, you'll also want to enable 'Synchronise availability (cancellation)'</description>
-        <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+      args.context.commitChanges()
+      }
+      }
     </script>
-    <script id='1681'>
-        <name>send class cancellation</name>
-        <script>import groovy.time.TimeCategory
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ONCOURSE_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
+    <description>This script finds all single session classes taught by the same tutor in the same room with overlapping
+      times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class
+      B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where
+      students need only come to the second half of the regular First Aid class). If you enable this script, you'll also
+      want to enable 'Synchronise availability (cancellation)'
+    </description>
+    <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+  </script>
+  <script id='1681'>
+    <name>send class cancellation</name>
+    <script>import groovy.time.TimeCategory
 
 
-            def run(args) {
-            def courseClass = args.entity
+      def run(args) {
+      def courseClass = args.entity
 
-            def last5Mins
-            use( TimeCategory ) {
-            last5Mins = new Date() - 5.minutes
-            }
+      def last5Mins
+      use( TimeCategory ) {
+      last5Mins = new Date() - 5.minutes
+      }
 
-            def cancelledEnrolments = Enrolment.STATUS.in(EnrolmentStatus.CANCELLED, EnrolmentStatus.REFUNDED).andExp(Enrolment.MODIFIED_ON.gte(last5Mins)).filterObjects(courseClass.getEnrolments())
+      def cancelledEnrolments = Enrolment.STATUS.in(EnrolmentStatus.CANCELLED,
+      EnrolmentStatus.REFUNDED).andExp(Enrolment.MODIFIED_ON.gte(last5Mins)).filterObjects(courseClass.getEnrolments())
 
-            cancelledEnrolments.each { e -&gt;
-            email {
-            template "Class Cancellation"
-            to e.student.contact
-            bindings enrolment : e
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ONCOURSE_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass />
-        <entityEventType />
-        <description>Send an email to the student with information about class cancellation</description>
-        <systemEventType>CLASS_CANCELLED</systemEventType>
+      cancelledEnrolments.each { e -&gt;
+      email {
+      template "Class Cancellation"
+      to e.student.contact
+      bindings enrolment : e
+      }
+      }
+      }
     </script>
-    <script id='1682'>
-        <name>mailchimp subscribe</name>
-        <script>def run(args) {
-            def tagRelation = args.entity
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ONCOURSE_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
+    <description>Send an email to the student with information about class cancellation</description>
+    <systemEventType>CLASS_CANCELLED</systemEventType>
+  </script>
+  <script id='1682'>
+    <name>mailchimp subscribe</name>
+    <script>def run(args) {
+      def tagRelation = args.entity
 
-            if (getIntegration(tagRelation.tag.name) &amp;&amp; NodeSpecialType.MAILING_LISTS.equals(tagRelation.tag?.parentTag?.specialType) &amp;&amp; tagRelation.taggedContact.email) {
-            mailchimp {
-            name tagRelation.tag.name
-            action "subscribe"
-            email tagRelation.taggedContact.email
-            firstName tagRelation.taggedContact.firstName
-            lastName tagRelation.taggedContact.lastName
-            }
-            }
-            }
-        </script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>ContactTagRelation</entityClass>
-        <entityEventType>CREATE</entityEventType>
-        <description>Subscribe contact to a mailchimp list</description>
-        <systemEventType />
+      if (getIntegration(tagRelation.tag.name) &amp;&amp;
+      NodeSpecialType.MAILING_LISTS.equals(tagRelation.tag?.parentTag?.specialType) &amp;&amp;
+      tagRelation.taggedContact.email) {
+      mailchimp {
+      name tagRelation.tag.name
+      action "subscribe"
+      email tagRelation.taggedContact.email
+      firstName tagRelation.taggedContact.firstName
+      lastName tagRelation.taggedContact.lastName
+      }
+      }
+      }
     </script>
-    <script id='1683'>
-        <name>send certificate vet created notification</name>
-        <script>def run(args) {
-            def currentDate = new Date()
-            def allCertificates = ObjectSelect.query(Certificate)
-            .where(Certificate.STUDENT.dot(Student.USI_STATUS).eq(UsiStatus.VERIFIED))
-            .and(Certificate.PRINTED_ON.isNull())
-            .select(args.context)
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>ContactTagRelation</entityClass>
+    <entityEventType>CREATE</entityEventType>
+    <description>Subscribe contact to a mailchimp list</description>
+    <systemEventType />
+  </script>
+  <script id='1683'>
+    <name>send certificate vet created notification</name>
+    <script>def run(args) {
+      def currentDate = new Date()
+      def allCertificates = ObjectSelect.query(Certificate)
+      .where(Certificate.STUDENT.dot(Student.USI_STATUS).eq(UsiStatus.VERIFIED))
+      .and(Certificate.PRINTED_ON.isNull())
+      .select(args.context)
 
-            allCertificates.each { c -&gt;
-            def eLsit = c.student.enrolments.findAll { e -&gt;
-            e.outcomes.contains(c.certificateOutcomes[0].outcome) &amp;&amp;
-            EnrolmentStatus.STATUSES_LEGIT.contains(e.status) &amp;&amp;
-            e.documents.find { d -&gt; d.name == "${e.courseClass.uniqueCode}_${c.student.contact.lastName}_${c.student.contact.firstName}_Certificate.pdf" } == null
-            }
+      allCertificates.each { c -&gt;
+      def eLsit = c.student.enrolments.findAll { e -&gt;
+      e.outcomes.contains(c.certificateOutcomes[0].outcome) &amp;&amp;
+      EnrolmentStatus.STATUSES_LEGIT.contains(e.status) &amp;&amp;
+      e.documents.find { d -&gt; d.name ==
+      "${e.courseClass.uniqueCode}_${c.student.contact.lastName}_${c.student.contact.firstName}_Certificate.pdf" } ==
+      null
+      }
 
-            if (eLsit.size() &gt; 0) {
+      if (eLsit.size() &gt; 0) {
 
-            def bg = c.isQualification ? (QualificationType.SKILLSET_TYPE == c.qualification.type ? 'vet_skillset_background.pdf' :'vet_qualification_background.pdf') :  'vet_soa_background.pdf'
+      def bg = c.isQualification ? (QualificationType.SKILLSET_TYPE == c.qualification.type ?
+      'vet_skillset_background.pdf' :'vet_qualification_background.pdf') : 'vet_soa_background.pdf'
 
-            def printData = report {
-            keycode "ish.onCourse.certificate"
-            records Arrays.asList(c)
-            background bg
-            }
+      def printData = report {
+      keycode "ish.onCourse.certificate"
+      records Arrays.asList(c)
+      background bg
+      }
 
-            eLsit.each { e -&gt;
-            document {
-            action "create"
-            content printData
-            name "${e.courseClass.uniqueCode}_${c.student.contact.lastName}_${c.student.contact.firstName}_Certificate.pdf"
-            mimeType "application/pdf"
-            permission AttachmentInfoVisibility.STUDENTS
-            attach e
-            }
+      eLsit.each { e -&gt;
+      document {
+      action "create"
+      content printData
+      name "${e.courseClass.uniqueCode}_${c.student.contact.lastName}_${c.student.contact.firstName}_Certificate.pdf"
+      mimeType "application/pdf"
+      permission AttachmentInfoVisibility.STUDENTS
+      attach e
+      }
 
-            email {
-            template "Certificate available"
-            bindings enrolment: e
-            to e.student.contact
-            }
+      email {
+      template "Certificate available"
+      bindings enrolment: e
+      to e.student.contact
+      }
 
-            c.setPrintedOn(currentDate)
-            if (c.issuedOn == null) {
-            c.setIssuedOn(currentDate);
-            }
-            args.context.commitChanges()
+      c.setPrintedOn(currentDate)
+      if (c.issuedOn == null) {
+      c.setIssuedOn(currentDate);
+      }
+      args.context.commitChanges()
 
-            }
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 5 ? * *</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Print and upload to the portal VET certifcates where the student meets the requirements for certification, including having supplied their USI. Send an email to notify the student that their certificate is available in the portal.</description>
-        <systemEventType />
+      }
+      }
+      }
+      }
     </script>
-    <script id='1684'>
-        <name>send enrolment</name>
-        <script>def run(args) {
-            def enrolment = args.entity
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 5 ? * *</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Print and upload to the portal VET certifcates where the student meets the requirements for
+      certification, including having supplied their USI. Send an email to notify the student that their certificate is
+      available in the portal.
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1684'>
+    <name>send enrolment</name>
+    <script>def run(args) {
+      def enrolment = args.entity
 
-            if (enrolment.status == EnrolmentStatus.SUCCESS &amp;&amp; enrolment.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+      if (enrolment.status == EnrolmentStatus.SUCCESS &amp;&amp; enrolment.confirmationStatus ==
+      ConfirmationStatus.NOT_SENT) {
 
-            email {
-            template "Enrolment Confirmation"
-            bindings enrolment: enrolment
-            to enrolment.student.contact
-            }
+      email {
+      template "Enrolment Confirmation"
+      bindings enrolment: enrolment
+      to enrolment.student.contact
+      }
 
-            enrolment.setConfirmationStatus(ConfirmationStatus.SENT)
-            args.context.commitChanges()
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>true</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>Enrolment</entityClass>
-        <entityEventType>CREATE_OR_UPDATE</entityEventType>
-        <description>Send the enrolment confirmation email to the student</description>
-        <systemEventType />
+      enrolment.setConfirmationStatus(ConfirmationStatus.SENT)
+      args.context.commitChanges()
+      }
+      }
     </script>
-    <script id='1685'>
-        <name>Xero manual journal</name>
-        <script>import ish.integrations.*
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>true</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>Enrolment</entityClass>
+    <entityEventType>CREATE_OR_UPDATE</entityEventType>
+    <description>Send the enrolment confirmation email to the student</description>
+    <systemEventType />
+  </script>
+  <script id='1685'>
+    <name>Xero manual journal</name>
+    <script>import ish.integrations.*
 
-            def run(args) {
-            def start = new Date() - 1
-            start.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+      def run(args) {
+      def start = new Date() - 1
+      start.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
 
-            def end = new Date()
-            end.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+      def end = new Date()
+      end.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
 
-            def accountTransactions = ObjectSelect.query(AccountTransaction).where(AccountTransaction.CREATED_ON.between(start, end)).select(args.context)
+      def accountTransactions =
+      ObjectSelect.query(AccountTransaction).where(AccountTransaction.CREATED_ON.between(start,
+      end)).select(args.context)
 
-            ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.XERO)).select(args.context)
-            .each { integration -&gt;
-            xero {
-            name integration.name
-            narration "onCourse transaction summary for period ${start.format("h a d MMM yyyy")} to ${end.format("h a d MMM yyyy")}"
-            transactions accountTransactions
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 3 * * ?</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Create Xero manual journal for transactions created on previous day</description>
-        <systemEventType />
+      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.XERO)).select(args.context)
+      .each { integration -&gt;
+      xero {
+      name integration.name
+      narration "onCourse transaction summary for period ${start.format("h a d MMM yyyy")} to
+      ${end.format("h a d MMM yyyy")}"
+      transactions accountTransactions
+      }
+      }
+      }
     </script>
-    <script id='1686'>
-        <name>Course Completion Survey</name>
-        <script>def run(args) {
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 3 * * ?</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Create Xero manual journal for transactions created on previous day</description>
+    <systemEventType />
+  </script>
+  <script id='1686'>
+    <name>Course Completion Survey</name>
+    <script>def run(args) {
 
-            // Ended yesterday
-            def endDate = Calendar.getInstance().getTime()
-            endDate.set(hourOfDay: 0, minute: 0, second: 0)
+      // Ended yesterday
+      def endDate = Calendar.getInstance().getTime()
+      endDate.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def classes = ObjectSelect.query(CourseClass)
-            .where(CourseClass.IS_CANCELLED.eq(false))
-            .and(CourseClass.END_DATE_TIME.between(endDate - 1, endDate))
-            .select(args.context)
+      def classes = ObjectSelect.query(CourseClass)
+      .where(CourseClass.IS_CANCELLED.eq(false))
+      .and(CourseClass.END_DATE_TIME.between(endDate - 1, endDate))
+      .select(args.context)
 
-            classes.each { c -&gt;
-            if (!c.hasTag("no survey")) {
-            c.successAndQueuedEnrolments.each { e -&gt;
-            email {
-            template "Course completion survey"
-            bindings enrolment: e
-            to e.student.contact
-            }
-            }
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 8 1/1 * ? *</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send the completion survey to all students who completed a course recently.</description>
-        <systemEventType />
+      classes.each { c -&gt;
+      if (!c.hasTag("no survey")) {
+      c.successAndQueuedEnrolments.each { e -&gt;
+      email {
+      template "Course completion survey"
+      bindings enrolment: e
+      to e.student.contact
+      }
+      }
+      }
+      }
+      }
     </script>
-    <script id='1687'>
-        <name>ecoach enrol</name>
-        <script>import groovyx.net.http.ContentType
-            import groovyx.net.http.Method
-            import groovyx.net.http.RESTClient
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 8 1/1 * ? *</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send the completion survey to all students who completed a course recently.</description>
+    <systemEventType />
+  </script>
+  <script id='1687'>
+    <name>ecoach enrol</name>
+    <script>import groovyx.net.http.ContentType
+      import groovyx.net.http.Method
+      import groovyx.net.http.RESTClient
 
-            BASE_URL = ""
-            apiKey = ""
-            userId = ""
+      BASE_URL = ""
+      apiKey = ""
+      userId = ""
 
-            def run (args) {
-
-
-            def enrolment = args.entity
-
-            // make or get students
-            def member = postMember(enrolment)
-
-            //get course id for group add
-            def courses =  getCourses()
-
-            def course = courses .find { c -&gt; c.title == enrolment.courseClass.course.name }
-
-            // get groups (classes) in course
-            def courseClasses = getGroups(course["id"])
-            def courseClass = courseClasses.find { cc -&gt; cc.name == enrolment.courseClass.uniqueCode }
-
-            if (!courseClass) {
-            //create groupClass if one does not exist
-            courseClass = postGroup(enrolment, course["id"])
-            }
-
-            ////add student to group
-            enrolMemberToGroup(member["id"], courseClass["id"])
-            }
-
-            def getCourses() {
-            def client = new RESTClient(BASE_URL)
-            client.headers["Authorization"] = "ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}"
-            client.headers["Content-Type"] = "application/json"
-            client.headers["Accept"] = "application/json"
-
-            client.request(Method.GET, ContentType.JSON) {
-            uri.path = "/api/v1/courses"
-            response.success = { resp, result -&gt;
-            return result
-            }
-            }
-            }
-
-            def getGroups(courseId) {
-
-            def client = new RESTClient(BASE_URL)
-            client.headers["Authorization"] = "ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}"
-            client.headers["Content-Type"] = "application/json"
-            client.headers["Accept"] = "application/json"
+      def run (args) {
 
 
-            client.request(Method.GET, ContentType.JSON) {
-            uri.path = "/api/v1/courses/${courseId}/groups"
+      def enrolment = args.entity
 
-            response.success = { resp, result -&gt;
-            return result
-            }
-            }
-            }
+      // make or get students
+      def member = postMember(enrolment)
 
-            def postMember(enrolment) {
-            def client = new RESTClient(BASE_URL)
-            client.headers["Authorization"] = "ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}"
-            client.headers["Content-Type"] = "application/json"
-            client.headers["Accept"] = "application/json"
+      //get course id for group add
+      def courses = getCourses()
 
-            client.request(Method.POST, ContentType.JSON) {
-            uri.path = "/api/v1/members"
-            uri.query = [
-            username: enrolment.student.contact.email,
-            firstname: enrolment.student.contact.firstName,
-            lastname: enrolment.student.contact.lastName,
-            email: enrolment.student.contact.email
-            ]
+      def course = courses .find { c -&gt; c.title == enrolment.courseClass.course.name }
 
-            response.success = { resp, result -&gt;
-            return result
-            }
-            }
-            }
+      // get groups (classes) in course
+      def courseClasses = getGroups(course["id"])
+      def courseClass = courseClasses.find { cc -&gt; cc.name == enrolment.courseClass.uniqueCode }
 
-            def postGroup(enrolment, courseId) {
+      if (!courseClass) {
+      //create groupClass if one does not exist
+      courseClass = postGroup(enrolment, course["id"])
+      }
 
-            def client = new RESTClient(BASE_URL)
-            client.headers["Authorization"] = "ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}"
-            client.headers["Content-Type"] = "application/json"
-            client.headers["Accept"] = "application/json"
+      ////add student to group
+      enrolMemberToGroup(member["id"], courseClass["id"])
+      }
 
-            client.request(Method.POST, ContentType.JSON) {
-            uri.path = "/api/v1/courses/${courseId}/groups"
-            body = [
-            name: enrolment.courseClass.uniqueCode
-            ]
+      def getCourses() {
+      def client = new RESTClient(BASE_URL)
+      client.headers["Authorization"] = "ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}"
+      client.headers["Content-Type"] = "application/json"
+      client.headers["Accept"] = "application/json"
 
-            response.success = { resp, result -&gt;
-            return result
-            }
-            }
-            }
+      client.request(Method.GET, ContentType.JSON) {
+      uri.path = "/api/v1/courses"
+      response.success = { resp, result -&gt;
+      return result
+      }
+      }
+      }
 
-            def enrolMemberToGroup(memberId, groupId) {
+      def getGroups(courseId) {
 
-            def client = new RESTClient(BASE_URL)
-            client.headers["Authorization"] = "ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}"
-            client.headers["Content-Type"] = "application/json"
-            client.headers["Accept"] = "application/json"
+      def client = new RESTClient(BASE_URL)
+      client.headers["Authorization"] = "ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}"
+      client.headers["Content-Type"] = "application/json"
+      client.headers["Accept"] = "application/json"
 
-            def id = [memberId] as int[]
 
-            client.request(Method.POST, ContentType.JSON) {
-            uri.path = "/api/v1/groups/${groupId}/students"
-            body = [
-            ids: id
-            ]
+      client.request(Method.GET, ContentType.JSON) {
+      uri.path = "/api/v1/courses/${courseId}/groups"
 
-            response.success = { resp, result -&gt;
-            return result
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ONCOURSE_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass />
-        <entityEventType />
-        <description>Enrol user to eCoach course upon onCourse enrolment. eCoach course must have the same title as onCourse course name</description>
-        <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+      response.success = { resp, result -&gt;
+      return result
+      }
+      }
+      }
+
+      def postMember(enrolment) {
+      def client = new RESTClient(BASE_URL)
+      client.headers["Authorization"] = "ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}"
+      client.headers["Content-Type"] = "application/json"
+      client.headers["Accept"] = "application/json"
+
+      client.request(Method.POST, ContentType.JSON) {
+      uri.path = "/api/v1/members"
+      uri.query = [
+      username: enrolment.student.contact.email,
+      firstname: enrolment.student.contact.firstName,
+      lastname: enrolment.student.contact.lastName,
+      email: enrolment.student.contact.email
+      ]
+
+      response.success = { resp, result -&gt;
+      return result
+      }
+      }
+      }
+
+      def postGroup(enrolment, courseId) {
+
+      def client = new RESTClient(BASE_URL)
+      client.headers["Authorization"] = "ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}"
+      client.headers["Content-Type"] = "application/json"
+      client.headers["Accept"] = "application/json"
+
+      client.request(Method.POST, ContentType.JSON) {
+      uri.path = "/api/v1/courses/${courseId}/groups"
+      body = [
+      name: enrolment.courseClass.uniqueCode
+      ]
+
+      response.success = { resp, result -&gt;
+      return result
+      }
+      }
+      }
+
+      def enrolMemberToGroup(memberId, groupId) {
+
+      def client = new RESTClient(BASE_URL)
+      client.headers["Authorization"] = "ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}"
+      client.headers["Content-Type"] = "application/json"
+      client.headers["Accept"] = "application/json"
+
+      def id = [memberId] as int[]
+
+      client.request(Method.POST, ContentType.JSON) {
+      uri.path = "/api/v1/groups/${groupId}/students"
+      body = [
+      ids: id
+      ]
+
+      response.success = { resp, result -&gt;
+      return result
+      }
+      }
+      }
     </script>
-    <script id='1688'>
-        <name>send usi reminder</name>
-        <script>def run(args) {
-            def usiRequiredDate = Date.parse("dd/MM/yyyy", "01/01/2015")
-            def monthBefore = new Date().minus(30)
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ONCOURSE_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
+    <description>Enrol user to eCoach course upon onCourse enrolment. eCoach course must have the same title as onCourse
+      course name
+    </description>
+    <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+  </script>
+  <script id='1688'>
+    <name>send usi reminder</name>
+    <script>def run(args) {
+      def usiRequiredDate = Date.parse("dd/MM/yyyy", "01/01/2015")
+      def monthBefore = new Date().minus(30)
 
-            def context = args.context
+      def context = args.context
 
-            def enrolmentsWithoutUsi = ObjectSelect.query(Enrolment)
-            .where(Enrolment.CREATED_ON.gt(monthBefore))
-            .and(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS))
-            .and(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).dot(Course.COURSE_MODULES).ne(null))
-            .and(Enrolment.STUDENT.dot(Student.USI).eq(null))
-            .and(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).eq(null).orExp(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).gt(usiRequiredDate)))
-            .select(context)
+      def enrolmentsWithoutUsi = ObjectSelect.query(Enrolment)
+      .where(Enrolment.CREATED_ON.gt(monthBefore))
+      .and(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS))
+      .and(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).dot(Course.COURSE_MODULES).ne(null))
+      .and(Enrolment.STUDENT.dot(Student.USI).eq(null))
+      .and(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).eq(null).orExp(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).gt(usiRequiredDate)))
+      .select(context)
 
-            enrolmentsWithoutUsi.each() { enrolment -&gt;
-            email {
-            template "USI reminder email"
-            bindings enrolment: enrolment
-            to enrolment.student.contact
-            }
-            }
+      enrolmentsWithoutUsi.each() { enrolment -&gt;
+      email {
+      template "USI reminder email"
+      bindings enrolment: enrolment
+      to enrolment.student.contact
+      }
+      }
 
-            email {
-            from preference.email.admin
-            subject 'USI reminder email notification'
-            to preference.email.admin
-            content "A USI reminder was sent to ${enrolmentsWithoutUsi.size()} students enrolled in VET classes who have not supplied their USI."
-            }
-            }
+      email {
+      from preference.email.admin
+      subject 'USI reminder email notification'
+      to preference.email.admin
+      content "A USI reminder was sent to ${enrolmentsWithoutUsi.size()} students enrolled in VET classes who have not
+      supplied their USI."
+      }
+      }
 
-        </script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 9 ? * MON</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send an email to the student remindering them to supply their USI number, and send a notice to the default onCourse admin of how many students were contacted each time this message is sent</description>
-        <systemEventType />
     </script>
-    <script id='1689'>
-        <name>send voucher</name>
-        <script>def run(args) {
-            def voucher = args.entity
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 9 ? * MON</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send an email to the student remindering them to supply their USI number, and send a notice to the
+      default onCourse admin of how many students were contacted each time this message is sent
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1689'>
+    <name>send voucher</name>
+    <script>def run(args) {
+      def voucher = args.entity
 
-            if (voucher.status == ProductStatus.ACTIVE &amp;&amp; voucher.confirmationStatus == ConfirmationStatus.NOT_SENT) {
-            email {
-            template "Voucher Email"
-            bindings voucher: voucher
-            to (voucher.redeemableBy ? voucher.redeemableBy : voucher.invoiceLine.invoice.contact)
-            }
+      if (voucher.status == ProductStatus.ACTIVE &amp;&amp; voucher.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+      email {
+      template "Voucher Email"
+      bindings voucher: voucher
+      to (voucher.redeemableBy ? voucher.redeemableBy : voucher.invoiceLine.invoice.contact)
+      }
 
-            voucher.setConfirmationStatus(ConfirmationStatus.SENT)
-            args.context.commitChanges()
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>true</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>Voucher</entityClass>
-        <entityEventType>CREATE_OR_UPDATE</entityEventType>
-        <description>Send an email to the student with information about a voucher they have purchased</description>
-        <systemEventType />
+      voucher.setConfirmationStatus(ConfirmationStatus.SENT)
+      args.context.commitChanges()
+      }
+      }
     </script>
-    <script id='1690'>
-        <name>notify tutor of unmarked attendance</name>
-        <script>def run(args) {
-            def endOfDate = Calendar.getInstance().getTime()
-            endOfDate.set(hourOfDay: 0, minute: 0, second: 0)
-            def startOfDate = endOfDate - 7
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>true</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>Voucher</entityClass>
+    <entityEventType>CREATE_OR_UPDATE</entityEventType>
+    <description>Send an email to the student with information about a voucher they have purchased</description>
+    <systemEventType />
+  </script>
+  <script id='1690'>
+    <name>notify tutor of unmarked attendance</name>
+    <script>def run(args) {
+      def endOfDate = Calendar.getInstance().getTime()
+      endOfDate.set(hourOfDay: 0, minute: 0, second: 0)
+      def startOfDate = endOfDate - 7
 
-            List&lt;Session&gt; sessions = ObjectSelect.query(Session)
-            .where(Session.START_DATETIME.between(startOfDate, endOfDate))
-            .and(Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).eq(false))
-            .and(Session.COURSE_CLASS.dot(CourseClass.IS_ACTIVE).eq(true))
-            .select(args.context)
+      List&lt;Session&gt; sessions = ObjectSelect.query(Session)
+      .where(Session.START_DATETIME.between(startOfDate, endOfDate))
+      .and(Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).eq(false))
+      .and(Session.COURSE_CLASS.dot(CourseClass.IS_ACTIVE).eq(true))
+      .select(args.context)
 
-            List&lt;Session&gt; sessionsWithUnmarkedAttendance = sessions.findAll { s -&gt;
-            s.attendance.findAll { a -&gt;
-            AttendanceType.UNMARKED.equals(a.attendanceType)
-            }.size() &gt; 0
-            }
+      List&lt;Session&gt; sessionsWithUnmarkedAttendance = sessions.findAll { s -&gt;
+      s.attendance.findAll { a -&gt;
+      AttendanceType.UNMARKED.equals(a.attendanceType)
+      }.size() &gt; 0
+      }
 
-            sessionsWithUnmarkedAttendance.each { s -&gt;
-            s.tutorRoles.each { role -&gt;
+      sessionsWithUnmarkedAttendance.each { s -&gt;
+      s.tutorRoles.each { role -&gt;
 
-            email {
-            template "Tutor notice of unmarked attendance"
-            to role.tutor.contact
-            bindings s:s, tutor: role.tutor.contact, AttendanceType: AttendanceType
-            }
-            }
-            }
+      email {
+      template "Tutor notice of unmarked attendance"
+      to role.tutor.contact
+      bindings s:s, tutor: role.tutor.contact, AttendanceType: AttendanceType
+      }
+      }
+      }
 
 
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 3 ? * *</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>This script runs at 3am each day and checks for every session run on the previous 7 days. If any student attendance is unmarked, sends to the tutors email notification to mark their class roll.</description>
-        <systemEventType />
+      }
     </script>
-    <script id='1691'>
-        <name>send enrolment notice for tutors</name>
-        <script>def run(args) {
-            def enrolment = args.value
-            if (enrolment.courseClass.hasTag("Notify Manager")) {
-            def tutorRoles = enrolment.courseClass.tutorRoles.findAll() { tutorRole -&gt;
-            tutorRole.definedTutorRole.name == "Course Manager"
-            }
-            tutorRoles.each() { tutorRole -&gt;
-            email {
-            template "Enrolment notification"
-            bindings enrolment: enrolment
-            to tutorRole.tutor.contact
-            }
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ONCOURSE_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass />
-        <entityEventType />
-        <description>Send an enrolment notification email to tutors attached to classes with the role 'Course Manager', where the class is tagged with 'Notify Manager'</description>
-        <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 3 ? * *</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>This script runs at 3am each day and checks for every session run on the previous 7 days. If any
+      student attendance is unmarked, sends to the tutors email notification to mark their class roll.
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1691'>
+    <name>send enrolment notice for tutors</name>
+    <script>def run(args) {
+      def enrolment = args.value
+      if (enrolment.courseClass.hasTag("Notify Manager")) {
+      def tutorRoles = enrolment.courseClass.tutorRoles.findAll() { tutorRole -&gt;
+      tutorRole.definedTutorRole.name == "Course Manager"
+      }
+      tutorRoles.each() { tutorRole -&gt;
+      email {
+      template "Enrolment notification"
+      bindings enrolment: enrolment
+      to tutorRole.tutor.contact
+      }
+      }
+      }
+      }
     </script>
-    <script id='1692'>
-        <name>SurveyMonkey send invite on enrolment</name>
-        <script>import ish.integrations.*
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ONCOURSE_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
+    <description>Send an enrolment notification email to tutors attached to classes with the role 'Course Manager',
+      where the class is tagged with 'Notify Manager'
+    </description>
+    <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+  </script>
+  <script id='1692'>
+    <name>SurveyMonkey send invite on enrolment</name>
+    <script>import ish.integrations.*
 
-            def run(args) {
-            def enrolment = args.value
+      def run(args) {
+      def enrolment = args.value
 
-            ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYMONKEY))
-            .select(args.context).findAll { integration -&gt;
-            integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
-            }.each { integration -&gt;
-            def tag = integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_COURSE_TAG)?.value?.trim()
-            if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
-            surveyMonkey {
-            name integration.name
-            contact enrolment.student.contact
-            template "survey invitation"
-            reply preference.email.from
-            }
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ONCOURSE_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass />
-        <entityEventType />
-        <description>Send SurveyMonkey survey invite upon enrolment</description>
-        <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYMONKEY))
+      .select(args.context).findAll { integration -&gt;
+      integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
+      }.each { integration -&gt;
+      def tag = integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_COURSE_TAG)?.value?.trim()
+      if (tag == null || enrolment.courseClass.course.hasTag(tag)) {
+      surveyMonkey {
+      name integration.name
+      contact enrolment.student.contact
+      template "survey invitation"
+      reply preference.email.from
+      }
+      }
+      }
+      }
     </script>
-    <script id='1693'>
-        <name>send account statement</name>
-        <script>def run(args) {
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ONCOURSE_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
+    <description>Send SurveyMonkey survey invite upon enrolment</description>
+    <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+  </script>
+  <script id='1693'>
+    <name>send account statement</name>
+    <script>def run(args) {
 
-            def contactList = ObjectSelect.query(Contact)
-            .where(Contact.EMAIL.isNotNull())
-            .select(args.context)
+      def contactList = ObjectSelect.query(Contact)
+      .where(Contact.EMAIL.isNotNull())
+      .select(args.context)
 
-            contactList.findAll { contact -&gt; contact.totalOwing &gt; 0 }.each { c -&gt;
-            email {
-            from preference.email.from
-            to c.email
-            subject "Account statement"
-            content "Dear ${c.fullName}, \n\n Your statement from ${preference.college.name} is attached. The total outstanding on the account is ${c?.totalOwing}. \n\n" \
-            + "If you wish to pay by credit card or view the invoice visit ${c.getPortalLink('history', 30)} \n\n" \
-            + "If you need to speak about this statement or use another payment method, please contact us on ${Preferences.get("avetmiss.phone")}. \n\n" \
-            + "Regards,\n" \
-            + "${preference.college.name}"
-            attachment "Statement_Report.pdf", "application/pdf", report {
-            keycode "ish.onCourse.statementReport.all"
-            records Arrays.asList(c)
-            background "statement_record_background.pdf"
-            }
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 3 1 * ? *</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send a statement report to all contacts with outstanding balances on the first on the month</description>
-        <systemEventType />
+      contactList.findAll { contact -&gt; contact.totalOwing &gt; 0 }.each { c -&gt;
+      email {
+      from preference.email.from
+      to c.email
+      subject "Account statement"
+      content "Dear ${c.fullName}, \n\n Your statement from ${preference.college.name} is attached. The total
+      outstanding on the account is ${c?.totalOwing}. \n\n" \
+      + "If you wish to pay by credit card or view the invoice visit ${c.getPortalLink('history', 30)} \n\n" \
+      + "If you need to speak about this statement or use another payment method, please contact us on
+      ${Preferences.get("avetmiss.phone")}. \n\n" \
+      + "Regards,\n" \
+      + "${preference.college.name}"
+      attachment "Statement_Report.pdf", "application/pdf", report {
+      keycode "ish.onCourse.statementReport.all"
+      records Arrays.asList(c)
+      background "statement_record_background.pdf"
+      }
+      }
+      }
+      }
     </script>
-    <script id='1694'>
-        <name>automatic creation of VET Certificates</name>
-        <script>def run(args) {
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 3 1 * ? *</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send a statement report to all contacts with outstanding balances on the first on the month
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1694'>
+    <name>automatic creation of VET Certificates</name>
+    <script>def run(args) {
 
-            def yesterdayStart = new Date() - 1
-            yesterdayStart.set(hourOfDay: 0, minute: 0, second: 0)
+      def yesterdayStart = new Date() - 1
+      yesterdayStart.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def yesterdayEnd = new Date()
-            yesterdayEnd.set(hourOfDay: 0, minute: 0, second: 0)
+      def yesterdayEnd = new Date()
+      yesterdayEnd.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def context = args.context
+      def context = args.context
 
-            def enrolments = ObjectSelect.query(Enrolment)
-            .where(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).dot(Course.IS_VET).eq(true))
-            .and(Enrolment.OUTCOMES.dot(Outcome.MODIFIED_ON).between(yesterdayStart, yesterdayEnd))
-            .select(context);
+      def enrolments = ObjectSelect.query(Enrolment)
+      .where(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).dot(Course.IS_VET).eq(true))
+      .and(Enrolment.OUTCOMES.dot(Outcome.MODIFIED_ON).between(yesterdayStart, yesterdayEnd))
+      .select(context);
 
-            enrolments = enrolments.findAll { e -&gt;  e.outcomes.findAll { o -&gt; OutcomeStatus.STATUS_NOT_SET.equals(o.status) }.empty }
+      enrolments = enrolments.findAll { e -&gt; e.outcomes.findAll { o -&gt;
+      OutcomeStatus.STATUS_NOT_SET.equals(o.status) }.empty }
 
-            enrolments.each { e -&gt;
+      enrolments.each { e -&gt;
 
-            def unlinkedOutcomes = e.outcomes.findAll { o -&gt; o.certificateOutcomes.empty }
-            int successfulOutcomesCount = unlinkedOutcomes.findAll { o -&gt; OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(o.status) }.size()
+      def unlinkedOutcomes = e.outcomes.findAll { o -&gt; o.certificateOutcomes.empty }
+      int successfulOutcomesCount = unlinkedOutcomes.findAll { o -&gt;
+      OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(o.status) }.size()
 
-            if (successfulOutcomesCount &gt; 0) {
-            boolean fullQualification = e.courseClass.course.isSufficientForQualification
-            boolean validToCertificate = successfulOutcomesCount == e.outcomes.size()
+      if (successfulOutcomesCount &gt; 0) {
+      boolean fullQualification = e.courseClass.course.isSufficientForQualification
+      boolean validToCertificate = successfulOutcomesCount == e.outcomes.size()
 
-            context.newObject(Certificate).with { certificate -&gt;
-            certificate.setStudent(e.student)
-            certificate.setQualification(e.courseClass.course.qualification)
-            certificate.setAwardedOn(new Date())
-            unlinkedOutcomes.each { o -&gt;
-            certificate.addToOutcomes(o)
-            }
+      context.newObject(Certificate).with { certificate -&gt;
+      certificate.setStudent(e.student)
+      certificate.setQualification(e.courseClass.course.qualification)
+      certificate.setAwardedOn(new Date())
+      unlinkedOutcomes.each { o -&gt;
+      certificate.addToOutcomes(o)
+      }
 
-            if (fullQualification &amp;&amp; validToCertificate) {
-            certificate.setIsQualification(true)
-            } else {
-            certificate.setIsQualification(false)
-            }
-            }
-            context.commitChanges()
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 4 * * ?</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>For each enrolment, at 4am every day check for outcomes which have been modified in the previous 24 hrs. If any outcomes attached to the enrolment are not yet marked, skip this enrolment. For students with at least one successful outcome, create the certificate record (statement of attainment or qualification, based on the isFullQual flag at the course level). If the outcome is already joined to a certificate, do not create a new certificate containing that outcome</description>
-        <systemEventType />
+      if (fullQualification &amp;&amp; validToCertificate) {
+      certificate.setIsQualification(true)
+      } else {
+      certificate.setIsQualification(false)
+      }
+      }
+      context.commitChanges()
+      }
+      }
+      }
     </script>
-    <script id='1695'>
-        <name>VET Course completion survey</name>
-        <script>def run(args) {
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 4 * * ?</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>For each enrolment, at 4am every day check for outcomes which have been modified in the previous 24
+      hrs. If any outcomes attached to the enrolment are not yet marked, skip this enrolment. For students with at least
+      one successful outcome, create the certificate record (statement of attainment or qualification, based on the
+      isFullQual flag at the course level). If the outcome is already joined to a certificate, do not create a new
+      certificate containing that outcome
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1695'>
+    <name>VET Course completion survey</name>
+    <script>def run(args) {
 
-            // We want to search on a period of one day, two weeks ago
-            def periodStart = new Date() - 14
-            periodStart.set(hourOfDay: 0, minute: 0, second: 0)
-            def periodEnd = periodStart + 1
+      // We want to search on a period of one day, two weeks ago
+      def periodStart = new Date() - 14
+      periodStart.set(hourOfDay: 0, minute: 0, second: 0)
+      def periodEnd = periodStart + 1
 
-            def classes = ObjectSelect.query(CourseClass)
-            .where(CourseClass.IS_CANCELLED.eq(false))
-            .and(CourseClass.COURSE.dot(Course.IS_VET).eq(true))
-            .and(CourseClass.END_DATE_TIME.between(periodStart, periodEnd))
-            .select(args.context)
+      def classes = ObjectSelect.query(CourseClass)
+      .where(CourseClass.IS_CANCELLED.eq(false))
+      .and(CourseClass.COURSE.dot(Course.IS_VET).eq(true))
+      .and(CourseClass.END_DATE_TIME.between(periodStart, periodEnd))
+      .select(args.context)
 
-            classes.each { c -&gt;
-            if (c.course.modules.size() != 0) {
-            c.successAndQueuedEnrolments.each { e -&gt;
-            email {
-            template "VET Course completion survey"
-            bindings enrolment: e
-            to e.student.contact
-            }
-            }
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 3 * * ?</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send the VET completion survey to all students who completed a VET course recently.</description>
-        <systemEventType />
+      classes.each { c -&gt;
+      if (c.course.modules.size() != 0) {
+      c.successAndQueuedEnrolments.each { e -&gt;
+      email {
+      template "VET Course completion survey"
+      bindings enrolment: e
+      to e.student.contact
+      }
+      }
+      }
+      }
+      }
     </script>
-    <script id='1696'>
-        <name>moodle enrol</name>
-        <script>import ish.integrations.*
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 3 * * ?</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send the VET completion survey to all students who completed a VET course recently.</description>
+    <systemEventType />
+  </script>
+  <script id='1696'>
+    <name>moodle enrol</name>
+    <script>import ish.integrations.*
 
-            def run(args) {
-            def e = args.value
+      def run(args) {
+      def e = args.value
 
-            ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.MOODLE)).select(args.context)
-            .each { integration -&gt;
-            def tag = integration.getProperty(IntegrationsConfiguration.MOODLE_COURSE_TAG)?.value?.trim()
-            if (tag != null &amp;&amp; e.courseClass.course.hasTag(tag)) {
-            moodle {
-            name integration.name
-            enrolment e
-            }
-            }
-            }
-            }
-        </script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ONCOURSE_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass />
-        <entityEventType />
-        <description>Enrol user to Moodle course upon onCourse enrolment</description>
-        <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.MOODLE)).select(args.context)
+      .each { integration -&gt;
+      def tag = integration.getProperty(IntegrationsConfiguration.MOODLE_COURSE_TAG)?.value?.trim()
+      if (tag != null &amp;&amp; e.courseClass.course.hasTag(tag)) {
+      moodle {
+      name integration.name
+      enrolment e
+      }
+      }
+      }
+      }
     </script>
-    <script id='1697'>
-        <name>send tutor class commencement notice</name>
-        <script>def run(args) {
-            def dayAfterTomorrowStart = new Date() + 2
-            dayAfterTomorrowStart.set(hourOfDay: 0, minute: 0, second: 0)
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ONCOURSE_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
+    <description>Enrol user to Moodle course upon onCourse enrolment</description>
+    <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+  </script>
+  <script id='1697'>
+    <name>send tutor class commencement notice</name>
+    <script>def run(args) {
+      def dayAfterTomorrowStart = new Date() + 2
+      dayAfterTomorrowStart.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def dayAfterTomorrowEnd = new Date() + 3
-            dayAfterTomorrowEnd.set(hourOfDay: 0, minute: 0, second: 0)
+      def dayAfterTomorrowEnd = new Date() + 3
+      dayAfterTomorrowEnd.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def context = args.context
+      def context = args.context
 
-            def classesStartingTomorrow = ObjectSelect.query(CourseClass)
-            .where(CourseClass.IS_CANCELLED.eq(false))
-            .and(CourseClass.START_DATE_TIME.ne(null))
-            .and(CourseClass.START_DATE_TIME.between(dayAfterTomorrowStart, dayAfterTomorrowEnd))
-            .select(context)
+      def classesStartingTomorrow = ObjectSelect.query(CourseClass)
+      .where(CourseClass.IS_CANCELLED.eq(false))
+      .and(CourseClass.START_DATE_TIME.ne(null))
+      .and(CourseClass.START_DATE_TIME.between(dayAfterTomorrowStart, dayAfterTomorrowEnd))
+      .select(context)
 
-            classesStartingTomorrow.findAll { cc -&gt;
-            cc.successAndQueuedEnrolments.size() &gt;= cc.minimumPlaces
-            }*.tutorRoles.flatten().each() { role -&gt;
-            email {
-            template "Tutor notice of class commencement"
-            bindings courseClass: role.courseClass, tutor: role.tutor
-            to role.tutor.contact
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 9 * * ?</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send an email to the tutor with information about when their class is starting, two days before it starts</description>
-        <systemEventType />
+      classesStartingTomorrow.findAll { cc -&gt;
+      cc.successAndQueuedEnrolments.size() &gt;= cc.minimumPlaces
+      }*.tutorRoles.flatten().each() { role -&gt;
+      email {
+      template "Tutor notice of class commencement"
+      bindings courseClass: role.courseClass, tutor: role.tutor
+      to role.tutor.contact
+      }
+      }
+      }
     </script>
-    <script id='1698'>
-        <name>mailchimp subscribe on enrolment</name>
-        <script>def run(args) {
-            def e = args.value
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 9 * * ?</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send an email to the tutor with information about when their class is starting, two days before it
+      starts
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1698'>
+    <name>mailchimp subscribe on enrolment</name>
+    <script>def run(args) {
+      def e = args.value
 
-            if (e.student.contact.email &amp;&amp; e.student.contact.allowEmail) {
-            mailchimp {
-            name "Enrolment"
-            action "subscribe"
-            email e.student.contact.email
-            firstName e.student.contact.firstName
-            lastName e.student.contact.lastName
-            }
-            }
-            }
-        </script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ONCOURSE_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass />
-        <entityEventType />
-        <description>Subscribe user to Mailchimp upon enrolment</description>
-        <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+      if (e.student.contact.email &amp;&amp; e.student.contact.allowEmail) {
+      mailchimp {
+      name "Enrolment"
+      action "subscribe"
+      email e.student.contact.email
+      firstName e.student.contact.firstName
+      lastName e.student.contact.lastName
+      }
+      }
+      }
     </script>
-    <script id='1699'>
-        <name>Membership Renewal</name>
-        <script>def run(args) {
-            def oneWeek = new Date() + 1
-            oneWeek.set(hourOfDay: 0, minute: 0, second: 0)
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ONCOURSE_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
+    <description>Subscribe user to Mailchimp upon enrolment</description>
+    <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+  </script>
+  <script id='1699'>
+    <name>Membership Renewal</name>
+    <script>def run(args) {
+      def oneWeek = new Date() + 1
+      oneWeek.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def oneWeekOneDay = new Date() + 8
-            oneWeekOneDay.set(hourOfDay: 0, minute: 0, second: 0)
+      def oneWeekOneDay = new Date() + 8
+      oneWeekOneDay.set(hourOfDay: 0, minute: 0, second: 0)
 
-            ObjectSelect.query(Membership)
-            .where(Membership.EXPIRY_DATE.between(oneWeek, oneWeekOneDay))
-            .select(args.context)
-            .each { membership -&gt;
-            email {
-            template "Membership Notification Renewal"
-            bindings membership: membership
-            to membership.contact
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 3 ? * MON</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>This script identifies members whose membership will expire in the next 7 days and send an email with notification.</description>
-        <systemEventType />
+      ObjectSelect.query(Membership)
+      .where(Membership.EXPIRY_DATE.between(oneWeek, oneWeekOneDay))
+      .select(args.context)
+      .each { membership -&gt;
+      email {
+      template "Membership Notification Renewal"
+      bindings membership: membership
+      to membership.contact
+      }
+      }
+      }
     </script>
-    <script id='1700'>
-        <name>send refund advice</name>
-        <script>def run(args) {
-            def paymentOut = args.entity
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 3 ? * MON</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>This script identifies members whose membership will expire in the next 7 days and send an email with
+      notification.
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1700'>
+    <name>send refund advice</name>
+    <script>def run(args) {
+      def paymentOut = args.entity
 
-            if (paymentOut.status == PaymentStatus.SUCCESS &amp;&amp; paymentOut.confirmationStatus == ConfirmationStatus.NOT_SENT) {
-            email {
-            template "Refund advice"
-            bindings paymentOut: paymentOut
-            to paymentOut.payee
-            }
+      if (paymentOut.status == PaymentStatus.SUCCESS &amp;&amp; paymentOut.confirmationStatus ==
+      ConfirmationStatus.NOT_SENT) {
+      email {
+      template "Refund advice"
+      bindings paymentOut: paymentOut
+      to paymentOut.payee
+      }
 
-            paymentOut.setConfirmationStatus(ConfirmationStatus.SENT)
-            args.context.commitChanges()
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>PaymentOut</entityClass>
-        <entityEventType>CREATE_OR_UPDATE</entityEventType>
-        <description>Send an email to the payer about a refund that has been processed</description>
-        <systemEventType />
+      paymentOut.setConfirmationStatus(ConfirmationStatus.SENT)
+      args.context.commitChanges()
+      }
+      }
     </script>
-    <script id='1701'>
-        <name>Synchronise availability (cancellation)</name>
-        <script>def run(args) {
-            def Enrolment enrolment = args.value
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>PaymentOut</entityClass>
+    <entityEventType>CREATE_OR_UPDATE</entityEventType>
+    <description>Send an email to the payer about a refund that has been processed</description>
+    <systemEventType />
+  </script>
+  <script id='1701'>
+    <name>Synchronise availability (cancellation)</name>
+    <script>def run(args) {
+      def Enrolment enrolment = args.value
 
-            if (enrolment.courseClass.sessionsCount == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
-            enrolment.courseClass.endDateTime != null &amp;&amp; !enrolment.courseClass.tutorRoles.isEmpty()) {
+      if (enrolment.courseClass.sessionsCount == 1 &amp;&amp; enrolment.courseClass.startDateTime != null &amp;&amp;
+      enrolment.courseClass.endDateTime != null &amp;&amp; !enrolment.courseClass.tutorRoles.isEmpty()) {
 
-            def classes = ObjectSelect.query(CourseClass)
-            .where(CourseClass.START_DATE_TIME.isNotNull()).and(CourseClass.START_DATE_TIME.lt(enrolment.courseClass.endDateTime))
-            .and(CourseClass.END_DATE_TIME.isNotNull()).and(CourseClass.END_DATE_TIME.gt(enrolment.courseClass.startDateTime))
-            .and(CourseClass.ROOM.eq(enrolment.courseClass.room))
-            .and(CourseClass.SESSIONS_COUNT.eq(1))
-            .and(CourseClass.ID.ne(enrolment.courseClass.id)).select(args.context)
-            .findAll { cc -&gt; cc.tutorRoles.collect { tr -&gt; tr.tutor }
-            .contains(enrolment.courseClass.tutorRoles.collect { tr -&gt; tr.tutor }.get(0)) }
+      def classes = ObjectSelect.query(CourseClass)
+      .where(CourseClass.START_DATE_TIME.isNotNull()).and(CourseClass.START_DATE_TIME.lt(enrolment.courseClass.endDateTime))
+      .and(CourseClass.END_DATE_TIME.isNotNull()).and(CourseClass.END_DATE_TIME.gt(enrolment.courseClass.startDateTime))
+      .and(CourseClass.ROOM.eq(enrolment.courseClass.room))
+      .and(CourseClass.SESSIONS_COUNT.eq(1))
+      .and(CourseClass.ID.ne(enrolment.courseClass.id)).select(args.context)
+      .findAll { cc -&gt; cc.tutorRoles.collect { tr -&gt; tr.tutor }
+      .contains(enrolment.courseClass.tutorRoles.collect { tr -&gt; tr.tutor }.get(0)) }
 
-            classes.each { cc -&gt; cc.maximumPlaces = cc.maximumPlaces + 1 }
+      classes.each { cc -&gt; cc.maximumPlaces = cc.maximumPlaces + 1 }
 
-            args.context.commitChanges()
-            }
-            }
-        </script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ONCOURSE_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass />
-        <entityEventType />
-        <description>This script finds all single session classes taught by the same tutor in the same room with overlapping times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where students need only come to the second half of the regular First Aid class). If you enable this script, you'll also want to enable 'Synchronise availability (enrolment)'</description>
-        <systemEventType>ENROLMENT_CANCELLED</systemEventType>
+      args.context.commitChanges()
+      }
+      }
     </script>
-    <script id='1702'>
-        <name>notification of unmarked attendance</name>
-        <script>def run(args) {
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ONCOURSE_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
+    <description>This script finds all single session classes taught by the same tutor in the same room with overlapping
+      times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class
+      B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where
+      students need only come to the second half of the regular First Aid class). If you enable this script, you'll also
+      want to enable 'Synchronise availability (enrolment)'
+    </description>
+    <systemEventType>ENROLMENT_CANCELLED</systemEventType>
+  </script>
+  <script id='1702'>
+    <name>notification of unmarked attendance</name>
+    <script>def run(args) {
 
-            def context = args.context
+      def context = args.context
 
-            def endOfDate = Calendar.getInstance().getTime()
-            endOfDate.set(hourOfDay: 0, minute: 0, second: 0)
-            def startOfDate = endOfDate -1
+      def endOfDate = Calendar.getInstance().getTime()
+      endOfDate.set(hourOfDay: 0, minute: 0, second: 0)
+      def startOfDate = endOfDate -1
 
-            def sessions = ObjectSelect.query(Session)
-            .where(Session.START_DATETIME.between(startOfDate, endOfDate))
-            .and(Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).eq(false))
-            .and(Session.COURSE_CLASS.dot(CourseClass.IS_ACTIVE).eq(true))
-            .select(context)
+      def sessions = ObjectSelect.query(Session)
+      .where(Session.START_DATETIME.between(startOfDate, endOfDate))
+      .and(Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).eq(false))
+      .and(Session.COURSE_CLASS.dot(CourseClass.IS_ACTIVE).eq(true))
+      .select(context)
 
-            //uncomment this section to only run for courses tagged with 'checkAttendance'
-            //    sessions = sessions.findAll { s -&gt;
-            //        s.courseClass.course.hasTag('checkAttendance')
-            //    }
-
-
-            def sessionsWithUnmarkedAttendance = sessions.findAll { s -&gt;
-            s.attendance.findAll { a -&gt;
-            AttendanceType.UNMARKED.equals(a.attendanceType)
-            }.size() &gt; 0
-            }
-
-            if (!sessionsWithUnmarkedAttendance.empty) {
-            def bodyContent = [
-            'Dear Admin,',
-            '',
-            "The following sessions ran on ${startOfDate.format("d/M/yy")} and had unmarked attendance:"
-            ]
+      //uncomment this section to only run for courses tagged with 'checkAttendance'
+      // sessions = sessions.findAll { s -&gt;
+      // s.courseClass.course.hasTag('checkAttendance')
+      // }
 
 
-            sessionsWithUnmarkedAttendance.each { s -&gt;
-            def tutors = s.tutors*.contact*.fullName.flatten()
-            def tutorString = tutors.size() &gt; 0 ? "Tutor${tutors.size() &gt; 1 ? 's' : ''}: ${tutors.join(", ")}" : ''
+      def sessionsWithUnmarkedAttendance = sessions.findAll { s -&gt;
+      s.attendance.findAll { a -&gt;
+      AttendanceType.UNMARKED.equals(a.attendanceType)
+      }.size() &gt; 0
+      }
 
-            bodyContent &lt;&lt; ''
-            bodyContent &lt;&lt; "${s.courseClass.course.name} (${s.courseClass.uniqueCode}) ${tutorString}"
-            bodyContent &lt;&lt; "Enrolled: ${s.courseClass.successAndQueuedEnrolments.size()}"
-            bodyContent &lt;&lt; "Unmarked attendance: ${s.attendance.findAll{ a -&gt; AttendanceType.UNMARKED.equals(a.attendanceType)}.size()}"
-            bodyContent &lt;&lt; "Absent: ${s.attendance.findAll{ a -&gt; [AttendanceType.DID_NOT_ATTEND_WITH_REASON, AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON].contains(a.attendanceType)}.size()}"
-            bodyContent &lt;&lt; "Attended: ${s.attendance.findAll{ a -&gt; [AttendanceType.ATTENDED, AttendanceType.PARTIAL].contains(a.attendanceType)}.size()}"
+      if (!sessionsWithUnmarkedAttendance.empty) {
+      def bodyContent = [
+      'Dear Admin,',
+      '',
+      "The following sessions ran on ${startOfDate.format("d/M/yy")} and had unmarked attendance:"
+      ]
 
-            }
 
-            email {
-            from preference.email.from
-            subject 'Notification of unmarked attendance'
-            to preference.email.admin
-            content bodyContent.join(System.getProperty('line.separator'))
-            }
-            }
-            }
+      sessionsWithUnmarkedAttendance.each { s -&gt;
+      def tutors = s.tutors*.contact*.fullName.flatten()
+      def tutorString = tutors.size() &gt; 0 ? "Tutor${tutors.size() &gt; 1 ? 's' : ''}: ${tutors.join(", ")}" : ''
 
-        </script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 3 ? * *</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>This script runs at 3am each day and checks for every session run on the previous day, if any student attendance is unmarked. A summary of the session details containing unmarked attendance is sent to the default admin email address.</description>
-        <systemEventType />
+      bodyContent &lt;&lt; ''
+      bodyContent &lt;&lt; "${s.courseClass.course.name} (${s.courseClass.uniqueCode}) ${tutorString}"
+      bodyContent &lt;&lt; "Enrolled: ${s.courseClass.successAndQueuedEnrolments.size()}"
+      bodyContent &lt;&lt; "Unmarked attendance:
+      ${s.attendance.findAll{ a -&gt; AttendanceType.UNMARKED.equals(a.attendanceType)}.size()}"
+      bodyContent &lt;&lt; "Absent:
+      ${s.attendance.findAll{ a -&gt; [AttendanceType.DID_NOT_ATTEND_WITH_REASON, AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON].contains(a.attendanceType)}.size()}"
+      bodyContent &lt;&lt; "Attended:
+      ${s.attendance.findAll{ a -&gt; [AttendanceType.ATTENDED, AttendanceType.PARTIAL].contains(a.attendanceType)}.size()}"
+
+      }
+
+      email {
+      from preference.email.from
+      subject 'Notification of unmarked attendance'
+      to preference.email.admin
+      content bodyContent.join(System.getProperty('line.separator'))
+      }
+      }
+      }
+
     </script>
-    <script id='1703'>
-        <name>send waiting list reminder</name>
-        <script>def run(args) {
-            def context = args.context
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 3 ? * *</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>This script runs at 3am each day and checks for every session run on the previous day, if any student
+      attendance is unmarked. A summary of the session details containing unmarked attendance is sent to the default
+      admin email address.
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1703'>
+    <name>send waiting list reminder</name>
+    <script>def run(args) {
+      def context = args.context
 
-            def waitingLists = ObjectSelect.query(WaitingList)
-            .select(context)
+      def waitingLists = ObjectSelect.query(WaitingList)
+      .select(context)
 
-            waitingLists.each() { waitingList -&gt;
-            def courseClasses = waitingList.course.courseClasses.findAll() { courseClass -&gt;
-            courseClass.isActive &amp;&amp; courseClass.isShownOnWeb &amp;&amp; courseClass.successAndQueuedEnrolments.size() &lt; courseClass.maximumPlaces &amp;&amp; (courseClass.isDistantLearningCourse || new Date() &lt; courseClass.startDateTime)
-            }
+      waitingLists.each() { waitingList -&gt;
+      def courseClasses = waitingList.course.courseClasses.findAll() { courseClass -&gt;
+      courseClass.isActive &amp;&amp; courseClass.isShownOnWeb &amp;&amp; courseClass.successAndQueuedEnrolments.size()
+      &lt; courseClass.maximumPlaces &amp;&amp; (courseClass.isDistantLearningCourse || new Date() &lt;
+      courseClass.startDateTime)
+      }
 
-            if (courseClasses.size() &gt; 0) {
-            email {
-            template "Waiting List reminder"
-            bindings waitingList : waitingList, courseClasses : courseClasses
-            to waitingList.student.contact
-            }
-            }
-            }
-            return null
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 9 ? * MON</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send an email to the student if they are on the waiting list with information about upcoming classes scheduled</description>
-        <systemEventType />
+      if (courseClasses.size() &gt; 0) {
+      email {
+      template "Waiting List reminder"
+      bindings waitingList : waitingList, courseClasses : courseClasses
+      to waitingList.student.contact
+      }
+      }
+      }
+      return null
+      }
     </script>
-    <script id='1704'>
-        <name>cloudassess course enrolment create</name>
-        <script>def run(args) {
-            def e = args.entity
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 9 ? * MON</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send an email to the student if they are on the waiting list with information about upcoming classes
+      scheduled
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1704'>
+    <name>cloudassess course enrolment create</name>
+    <script>def run(args) {
+      def e = args.entity
 
-            cloudassess {
-            name "cloud assess"
-            action "enrol"
-            enrolment e
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ONCOURSE_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass />
-        <entityEventType />
-        <description>Create course enrolment in Cloud Assess</description>
-        <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+      cloudassess {
+      name "cloud assess"
+      action "enrol"
+      enrolment e
+      }
+      }
     </script>
-    <script id='1705'>
-        <name>MYOB manual journal</name>
-        <script>import ish.integrations.*
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ONCOURSE_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
+    <description>Create course enrolment in Cloud Assess</description>
+    <systemEventType>ENROLMENT_SUCCESSFUL</systemEventType>
+  </script>
+  <script id='1705'>
+    <name>MYOB manual journal</name>
+    <script>import ish.integrations.*
 
-            def run(args) {
-            def start = new Date() - 1
-            start.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+      def run(args) {
+      def start = new Date() - 1
+      start.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
 
-            def end = new Date()
-            end.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+      def end = new Date()
+      end.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
 
-            def accountTransactions = ObjectSelect.query(AccountTransaction).where(AccountTransaction.CREATED_ON.between(start, end)).select(args.context)
+      def accountTransactions =
+      ObjectSelect.query(AccountTransaction).where(AccountTransaction.CREATED_ON.between(start,
+      end)).select(args.context)
 
-            ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.MYOB)).select(args.context)
-            .each { integration -&gt;
-            myob {
-            name integration.name
-            transactions accountTransactions
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 3 * * ?</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Create MYOB manual journal for transactions created on previous day</description>
-        <systemEventType />
+      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.MYOB)).select(args.context)
+      .each { integration -&gt;
+      myob {
+      name integration.name
+      transactions accountTransactions
+      }
+      }
+      }
     </script>
-    <script id='1706'>
-        <name>send student class commencement notice 7 days</name>
-        <script>def run(args) {
-            def nextWeekStart = new Date() + 7
-            nextWeekStart.set(hourOfDay: 0, minute: 0, second: 0)
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 3 * * ?</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Create MYOB manual journal for transactions created on previous day</description>
+    <systemEventType />
+  </script>
+  <script id='1706'>
+    <name>send student class commencement notice 7 days</name>
+    <script>def run(args) {
+      def nextWeekStart = new Date() + 7
+      nextWeekStart.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def nextWeekEnd = new Date() + 8
-            nextWeekEnd.set(hourOfDay: 0, minute: 0, second: 0)
+      def nextWeekEnd = new Date() + 8
+      nextWeekEnd.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def context = args.context
+      def context = args.context
 
-            def exp = CourseClass.IS_CANCELLED.eq(false)
-            .andExp(CourseClass.START_DATE_TIME.ne(null))
-            .andExp(CourseClass.START_DATE_TIME.between(nextWeekStart, nextWeekEnd))
+      def exp = CourseClass.IS_CANCELLED.eq(false)
+      .andExp(CourseClass.START_DATE_TIME.ne(null))
+      .andExp(CourseClass.START_DATE_TIME.between(nextWeekStart, nextWeekEnd))
 
-            def classesStartingTomorrow = context.select(SelectQuery.query(CourseClass, exp))
+      def classesStartingTomorrow = context.select(SelectQuery.query(CourseClass, exp))
 
-            classesStartingTomorrow.each() { courseClass -&gt;
-            courseClass.successAndQueuedEnrolments.each() { enrolment -&gt;
-            def m = Email.create("Student notice of class commencement")
-            m.bind(enrolment: enrolment)
+      classesStartingTomorrow.each() { courseClass -&gt;
+      courseClass.successAndQueuedEnrolments.each() { enrolment -&gt;
+      def m = Email.create("Student notice of class commencement")
+      m.bind(enrolment: enrolment)
 
-            m.to(enrolment.student.contact)
+      m.to(enrolment.student.contact)
 
-            m.send()
+      m.send()
 
-            context.commitChanges()
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 15 9 1/1 * ? *</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send an email to the student with information about when their class is starting, 7 days before it starts</description>
-        <systemEventType />
+      context.commitChanges()
+      }
+      }
+      }
     </script>
-    <script id='1707'>
-        <name>send student class commencement notice</name>
-        <script>def run(args) {
-            def tomorrowStart = new Date() + 1
-            tomorrowStart.set(hourOfDay: 0, minute: 0, second: 0)
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 15 9 1/1 * ? *</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send an email to the student with information about when their class is starting, 7 days before it
+      starts
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1707'>
+    <name>send student class commencement notice</name>
+    <script>def run(args) {
+      def tomorrowStart = new Date() + 1
+      tomorrowStart.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def tomorrowEnd = new Date() + 2
-            tomorrowEnd.set(hourOfDay: 0, minute: 0, second: 0)
+      def tomorrowEnd = new Date() + 2
+      tomorrowEnd.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def context = args.context
+      def context = args.context
 
-            def classesStartingTomorrow = ObjectSelect.query(CourseClass)
-            .where(CourseClass.IS_CANCELLED.eq(false))
-            .and(CourseClass.START_DATE_TIME.ne(null))
-            .and(CourseClass.START_DATE_TIME.between(tomorrowStart, tomorrowEnd))
-            .select(context)
+      def classesStartingTomorrow = ObjectSelect.query(CourseClass)
+      .where(CourseClass.IS_CANCELLED.eq(false))
+      .and(CourseClass.START_DATE_TIME.ne(null))
+      .and(CourseClass.START_DATE_TIME.between(tomorrowStart, tomorrowEnd))
+      .select(context)
 
-            classesStartingTomorrow.findAll { cc -&gt;
-            cc.successAndQueuedEnrolments.size() &gt;= cc.minimumPlaces
-            }*.successAndQueuedEnrolments.flatten().each() { enrolment -&gt;
-            email {
-            template "Student notice of class commencement"
-            bindings enrolment: enrolment
-            to enrolment.student.contact
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 9 * * ?</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send an email to the student with information about when their class is starting, the day before it starts</description>
-        <systemEventType />
+      classesStartingTomorrow.findAll { cc -&gt;
+      cc.successAndQueuedEnrolments.size() &gt;= cc.minimumPlaces
+      }*.successAndQueuedEnrolments.flatten().each() { enrolment -&gt;
+      email {
+      template "Student notice of class commencement"
+      bindings enrolment: enrolment
+      to enrolment.student.contact
+      }
+      }
+      }
     </script>
-    <script id='1708'>
-        <name>SurveyGizmo send invite on enrolment completion</name>
-        <script>import ish.integrations.*
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 9 * * ?</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send an email to the student with information about when their class is starting, the day before it
+      starts
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1708'>
+    <name>SurveyGizmo send invite on enrolment completion</name>
+    <script>import ish.integrations.*
 
-            def run(args) {
-            def yesterdayStart = new Date() - 1
-            yesterdayStart.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+      def run(args) {
+      def yesterdayStart = new Date() - 1
+      yesterdayStart.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
 
-            def yesterdayEnd = new Date()
-            yesterdayEnd.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+      def yesterdayEnd = new Date()
+      yesterdayEnd.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
 
-            def enrolmentsJustEnded = ObjectSelect.query(Enrolment)
-            .where(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).between(yesterdayStart, yesterdayEnd)).select(args.context)
+      def enrolmentsJustEnded = ObjectSelect.query(Enrolment)
+      .where(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).between(yesterdayStart,
+      yesterdayEnd)).select(args.context)
 
-            ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
-            .select(args.context).findAll { integration -&gt;
-            integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
-            }.each { integration -&gt;
-            def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
+      ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
+      .select(args.context).findAll { integration -&gt;
+      integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
+      }.each { integration -&gt;
+      def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
 
-            enrolmentsJustEnded.each { enrolment -&gt;
-            if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
-            surveyGizmo {
-            name integration.name
-            template "survey invitation"
-            reply preference.email.from
-            contact enrolment.student.contact
-            }
-            }
-            }
-            }
-            }
-        </script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 9 * * ?</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send SurveyGizmo invite upon enrolment completion</description>
-        <systemEventType />
+      enrolmentsJustEnded.each { enrolment -&gt;
+      if (tag == null || enrolment.courseClass.course.hasTag(tag)) {
+      surveyGizmo {
+      name integration.name
+      template "survey invitation"
+      reply preference.email.from
+      contact enrolment.student.contact
+      }
+      }
+      }
+      }
+      }
     </script>
-    <script id='1709'>
-        <name>cancelled class notice for tutor</name>
-        <script>def run(args) {
-            def courseClass = args.entity
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 9 * * ?</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send SurveyGizmo invite upon enrolment completion</description>
+    <systemEventType />
+  </script>
+  <script id='1709'>
+    <name>cancelled class notice for tutor</name>
+    <script>def run(args) {
+      def courseClass = args.entity
 
-            courseClass.tutorRoles*.tutor.unique().each { tutor -&gt;
-            email {
-            template "Tutor notice of class cancellation"
-            to tutor.contact
-            bindings tutor : tutor, courseClass : courseClass
-            }
+      courseClass.tutorRoles*.tutor.unique().each { tutor -&gt;
+      email {
+      template "Tutor notice of class cancellation"
+      to tutor.contact
+      bindings tutor : tutor, courseClass : courseClass
+      }
 
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ONCOURSE_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass />
-        <entityEventType />
-        <description>Send an email to the tutor with information about class cancellation</description>
-        <systemEventType>CLASS_CANCELLED</systemEventType>
+      }
+      }
     </script>
-    <script id='1710'>
-        <name>alert students of related class</name>
-        <script>def run (args) {
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ONCOURSE_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass />
+    <entityEventType />
+    <description>Send an email to the tutor with information about class cancellation</description>
+    <systemEventType>CLASS_CANCELLED</systemEventType>
+  </script>
+  <script id='1710'>
+    <name>alert students of related class</name>
+    <script>def run (args) {
 
-            CourseClass marketingClass = args.entity
+      CourseClass marketingClass = args.entity
 
-            if (!marketingClass || marketingClass.isDistantLearningCourse) {
-            return
-            }
-
-
-            if (marketingClass?.firstSession?.tutors?.empty) {
-            return
-            }
-
-
-            Tutor ccTutor = marketingClass.firstSession.tutors[0]
-            List&lt;Enrolment&gt; enrolmentList =  new ArrayList&lt;&gt;()
-
-            def today = Calendar.getInstance().getTime()
-            today.set(hourOfDay: 0, minute: 0, second: 0)
-
-            def eighteenMonths = today.minus(548) // 18 months ago
-
-            /**
-            * Iterate over a list of classes the tutor has taught over the last 18 months
-            */
-            List&lt;Student&gt; students = ccTutor.courseClasses.findAll { cc -&gt;  cc.course.id != marketingClass.course.id &amp;&amp;
-            cc.firstSession?.startDatetime?.after(eighteenMonths) &amp;&amp;
-            cc.firstSession?.startDatetime?.before(today) &amp;&amp;
-            cc.successAndQueuedEnrolments.size() &gt; 0
-            }*.enrolments.flatten().findAll { e -&gt; EnrolmentStatus.SUCCESS == e.status }*.student.flatten().unique()
+      if (!marketingClass || marketingClass.isDistantLearningCourse) {
+      return
+      }
 
 
-            /**
-            * Exclude students that are already enrolled to marketingClass or any class with the same courseId
-            */
-            students.removeAll { s -&gt;
-            s.enrolments.any { e -&gt; EnrolmentStatus.SUCCESS == e.status &amp;&amp; e.courseClass.course.id == marketingClass.course.id }
-            }
+      if (marketingClass?.firstSession?.tutors?.empty) {
+      return
+      }
 
-            /**
-            * Once you have a non-duped student list, notify all students in the list
-            */
-            students*.contact.flatten().each { student -&gt;
 
-            email {
-            template "alert students of related class"
-            bindings student: student, tutor: ccTutor.contact, courseClass: marketingClass
-            to student
-            key "alert students of related classes", marketingClass
-            keyCollision "drop"
-            }
-            }
+      Tutor ccTutor = marketingClass.firstSession.tutors[0]
+      List&lt;Enrolment&gt; enrolmentList = new ArrayList&lt;&gt;()
 
-            email {
-            to preference.email.admin
-            subject 'marketing: students updated about upcoming class'
-            content "${students.size()} prior students who attended ${ccTutor.getContact().getName(true)}\'s were notified about the upcoming class ${marketingClass?.firstSession?.startDatetime?.format("dd/MM/yyyy")} ${marketingClass.course.name}."
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>CourseClass</entityClass>
-        <entityEventType>CREATE_OR_UPDATE</entityEventType>
-        <description>email notification to promote the class to a short list of students who attended a previously class of the same tutor in the past.</description>
-        <systemEventType />
+      def today = Calendar.getInstance().getTime()
+      today.set(hourOfDay: 0, minute: 0, second: 0)
+
+      def eighteenMonths = today.minus(548) // 18 months ago
+
+      /**
+      * Iterate over a list of classes the tutor has taught over the last 18 months
+      */
+      List&lt;Student&gt; students = ccTutor.courseClasses.findAll { cc -&gt; cc.course.id != marketingClass.course.id
+      &amp;&amp;
+      cc.firstSession?.startDatetime?.after(eighteenMonths) &amp;&amp;
+      cc.firstSession?.startDatetime?.before(today) &amp;&amp;
+      cc.successAndQueuedEnrolments.size() &gt; 0
+      }*.enrolments.flatten().findAll { e -&gt; EnrolmentStatus.SUCCESS == e.status }*.student.flatten().unique()
+
+
+      /**
+      * Exclude students that are already enrolled to marketingClass or any class with the same courseId
+      */
+      students.removeAll { s -&gt;
+      s.enrolments.any { e -&gt; EnrolmentStatus.SUCCESS == e.status &amp;&amp; e.courseClass.course.id ==
+      marketingClass.course.id }
+      }
+
+      /**
+      * Once you have a non-duped student list, notify all students in the list
+      */
+      students*.contact.flatten().each { student -&gt;
+
+      email {
+      template "alert students of related class"
+      bindings student: student, tutor: ccTutor.contact, courseClass: marketingClass
+      to student
+      key "alert students of related classes", marketingClass
+      keyCollision "drop"
+      }
+      }
+
+      email {
+      to preference.email.admin
+      subject 'marketing: students updated about upcoming class'
+      content "${students.size()} prior students who attended ${ccTutor.getContact().getName(true)}\'s were notified
+      about the upcoming class ${marketingClass?.firstSession?.startDatetime?.format("dd/MM/yyyy")}
+      ${marketingClass.course.name}."
+      }
+      }
     </script>
-    <script id='1711'>
-        <name>send weekly finance summary report</name>
-        <script>import java.time.LocalDate
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>CourseClass</entityClass>
+    <entityEventType>CREATE_OR_UPDATE</entityEventType>
+    <description>email notification to promote the class to a short list of students who attended a previously class of
+      the same tutor in the past.
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1711'>
+    <name>send weekly finance summary report</name>
+    <script>import java.time.LocalDate
 
-            def run(args) {
-            def context = args.context
-            def accounts = ObjectSelect.query(Account)
-            .orderBy(Account.ACCOUNT_CODE.ascs())
-            .select(context)
+      def run(args) {
+      def context = args.context
+      def accounts = ObjectSelect.query(Account)
+      .orderBy(Account.ACCOUNT_CODE.ascs())
+      .select(context)
 
-            //If you want to change date period use one of the sections below:
+      //If you want to change date period use one of the sections below:
 
-            //set period in number of days (e.g. for the last 7 days)
-            LocalDate endDate = LocalDate.now().minusDays(1)
-            LocalDate startDate = endDate.minusDays(6)
+      //set period in number of days (e.g. for the last 7 days)
+      LocalDate endDate = LocalDate.now().minusDays(1)
+      LocalDate startDate = endDate.minusDays(6)
 
 
+      // set period in calendar months (e.g. for the last month)
+      // LocalDate endDate = LocalDate.now().minusMonths(1)
+      // endDate = endDate.withDayOfMonth(endDate.lengthOfMonth())
+      // LocalDate startDate = endDate.withDayOfMonth(1)
 
-            //    set period in calendar months (e.g. for the last month)
-            //    LocalDate endDate = LocalDate.now().minusMonths(1)
-            //    endDate = endDate.withDayOfMonth(endDate.lengthOfMonth())
-            //    LocalDate startDate = endDate.withDayOfMonth(1)
-
-            email {
-            from preference.email.from
-            to preference.email.admin
-            subject "onCourse transaction summary ${startDate.format("dd/MM/yy")} to ${endDate.format("dd/MM/yy")}"
-            content "'Trial Balance' report for the previous 7 days."
-            attachment "Trial_Balance.pdf", "application/pdf", report {
-            keycode "ish.onCourse.trialBalance"
-            records accounts
-            param 'localdateRange_from' : startDate, 'localdateRange_to' : endDate
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 3 ? * MON</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send an email with weekly finance summary based on 'Trial Balance' report.</description>
-        <systemEventType />
+      email {
+      from preference.email.from
+      to preference.email.admin
+      subject "onCourse transaction summary ${startDate.format("dd/MM/yy")} to ${endDate.format("dd/MM/yy")}"
+      content "'Trial Balance' report for the previous 7 days."
+      attachment "Trial_Balance.pdf", "application/pdf", report {
+      keycode "ish.onCourse.trialBalance"
+      records accounts
+      param 'localdateRange_from' : startDate, 'localdateRange_to' : endDate
+      }
+      }
+      }
     </script>
-    <script id='1712'>
-        <name>send payment plan reminder</name>
-        <script>import java.time.LocalDate
-            import java.time.Period
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 3 ? * MON</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send an email with weekly finance summary based on 'Trial Balance' report.</description>
+    <systemEventType />
+  </script>
+  <script id='1712'>
+    <name>send payment plan reminder</name>
+    <script>import java.time.LocalDate
+      import java.time.Period
 
-            def run(args) {
+      def run(args) {
 
-            def context = args.context
+      def context = args.context
 
-            def today = LocalDate.now()
-            def plusWeek = today.plusDays(7)
+      def today = LocalDate.now()
+      def plusWeek = today.plusDays(7)
 
-            def invoices = ObjectSelect.query(Invoice)
-            .where(Invoice.AMOUNT_OWING.gt(Money.ZERO))
-            .and(Invoice.DATE_DUE.lte(plusWeek))
-            .select(context)
+      def invoices = ObjectSelect.query(Invoice)
+      .where(Invoice.AMOUNT_OWING.gt(Money.ZERO))
+      .and(Invoice.DATE_DUE.lte(plusWeek))
+      .select(context)
 
-            invoices.findAll { i -&gt;
-            plusWeek.isEqual(i.dateDue) || // 7 days before the payment due date
-            today.isEqual(i.dateDue.plusDays(1)) || // day after the payment is due to avoid a $0 payable instance
-            ((Period.between(today, i.dateDue).days % 7 == 0) &amp;&amp; i.overdue.isGreaterThan(Money.ZERO)) // every 7 days of overdue
-            }.each { i -&gt;
-            email {
-            template "Payment reminder"
-            bindings invoice: i
-            to i.contact
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 2 3 ? * *</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Send an email reminder with payment due date to the payer.</description>
-        <systemEventType />
+      invoices.findAll { i -&gt;
+      plusWeek.isEqual(i.dateDue) || // 7 days before the payment due date
+      today.isEqual(i.dateDue.plusDays(1)) || // day after the payment is due to avoid a $0 payable instance
+      ((Period.between(today, i.dateDue).days % 7 == 0) &amp;&amp; i.overdue.isGreaterThan(Money.ZERO)) // every 7 days
+      of overdue
+      }.each { i -&gt;
+      email {
+      template "Payment reminder"
+      bindings invoice: i
+      to i.contact
+      }
+      }
+      }
     </script>
-    <script id='1713'>
-        <name>send application received notification</name>
-        <script>def run(args) {
-            def application = args.entity
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 2 3 ? * *</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Send an email reminder with payment due date to the payer.</description>
+    <systemEventType />
+  </script>
+  <script id='1713'>
+    <name>send application received notification</name>
+    <script>def run(args) {
+      def application = args.entity
 
-            email {
-            template "Enrolment application received"
-            bindings application: application
-            to application.student.contact
-            }
+      email {
+      template "Enrolment application received"
+      bindings application: application
+      to application.student.contact
+      }
 
-            email {
-            to preference.email.admin
-            subject "Application for enrolment received"
-            content "Hi \n\n${application.student.contact.fullName} has just applied for ${application.course.name}. \n\nThis is an automated notification from onCourse to advise follow up may be required"
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>Application</entityClass>
-        <entityEventType>CREATE</entityEventType>
-        <description>Send an email to the student when their application has been received</description>
-        <systemEventType />
+      email {
+      to preference.email.admin
+      subject "Application for enrolment received"
+      content "Hi \n\n${application.student.contact.fullName} has just applied for ${application.course.name}. \n\nThis
+      is an automated notification from onCourse to advise follow up may be required"
+      }
+      }
     </script>
-    <script id='1714'>
-        <name>send birthday voucher</name>
-        <script>import ish.util.ProductUtil
-            import ish.util.SecurityUtil
-            import org.apache.cayenne.query.SQLTemplate
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>Application</entityClass>
+    <entityEventType>CREATE</entityEventType>
+    <description>Send an email to the student when their application has been received</description>
+    <systemEventType />
+  </script>
+  <script id='1714'>
+    <name>send birthday voucher</name>
+    <script>import ish.util.ProductUtil
+      import ish.util.SecurityUtil
+      import org.apache.cayenne.query.SQLTemplate
 
-            def run(args) {
+      def run(args) {
 
-            def today = new Date()
-            today.set(hourOfDay: 0, minute: 0, second: 0)
+      def today = new Date()
+      today.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def birthdayProdSku = "birthday"
+      def birthdayProdSku = "birthday"
 
-            def query = new SQLTemplate (Contact.class, "SELECT * FROM Contact WHERE DAYOFYEAR(BIRTHDATE) BETWEEN DAYOFYEAR(NOW())+1 AND DAYOFYEAR(NOW())+7" )
-            def contacts = args.context.performQuery(query)
+      def query = new SQLTemplate (Contact.class, "SELECT * FROM Contact WHERE DAYOFYEAR(BIRTHDATE) BETWEEN
+      DAYOFYEAR(NOW())+1 AND DAYOFYEAR(NOW())+7" )
+      def contacts = args.context.performQuery(query)
 
 
-            def VoucherProduct product = ObjectSelect.query(VoucherProduct)
-            .where(VoucherProduct.SKU.eq(birthdayProdSku))
-            .selectOne(args.context)
+      def VoucherProduct product = ObjectSelect.query(VoucherProduct)
+      .where(VoucherProduct.SKU.eq(birthdayProdSku))
+      .selectOne(args.context)
 
-            contacts.each { c -&gt;
+      contacts.each { c -&gt;
 
-            //must create an invoice/invoiceline for voucher validation
-            def Invoice invoice = args.context.newObject(Invoice)
-            invoice.contact = c
-            invoice.amountOwing = Money.ZERO
-            invoice.source = PaymentSource.SOURCE_ONCOURSE
-            invoice.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
+      //must create an invoice/invoiceline for voucher validation
+      def Invoice invoice = args.context.newObject(Invoice)
+      invoice.contact = c
+      invoice.amountOwing = Money.ZERO
+      invoice.source = PaymentSource.SOURCE_ONCOURSE
+      invoice.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
 
-            def InvoiceLine invoiceLine = args.context.newObject(InvoiceLine)
-            invoiceLine.invoice = invoice
-            invoiceLine.account = product.liabilityAccount
-            invoiceLine.tax = product.tax
-            invoiceLine.title = product.name
-            invoiceLine.priceEachExTax = Money.ZERO
-            invoiceLine.taxEach = Money.ZERO
-            invoiceLine.discountEachExTax = Money.ZERO
-            invoiceLine.quantity = 1
-            invoiceLine.description = "${c.getName(true)} (${product.sku} ${product.name})"
+      def InvoiceLine invoiceLine = args.context.newObject(InvoiceLine)
+      invoiceLine.invoice = invoice
+      invoiceLine.account = product.liabilityAccount
+      invoiceLine.tax = product.tax
+      invoiceLine.title = product.name
+      invoiceLine.priceEachExTax = Money.ZERO
+      invoiceLine.taxEach = Money.ZERO
+      invoiceLine.discountEachExTax = Money.ZERO
+      invoiceLine.quantity = 1
+      invoiceLine.description = "${c.getName(true)} (${product.sku} ${product.name})"
 
-            // Creates the voucher from the product
-            def Voucher voucher = args.context.newObject(Voucher)
-            voucher.product = product
-            voucher.redeemableBy = c
-            voucher.code = SecurityUtil.generateVoucherCode()
-            voucher.source = PaymentSource.SOURCE_ONCOURSE
-            voucher.status = ProductStatus.ACTIVE
-            voucher.invoiceLine = invoiceLine
-            voucher.redemptionValue = product.value
-            voucher.valueOnPurchase = product.value
-            voucher.redeemedCourseCount = 0
-            voucher.expiryDate = ProductUtil.calculateExpiryDate(ProductUtil.getToday(), product.expiryType, product.expiryDays)
-            voucher.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
+      // Creates the voucher from the product
+      def Voucher voucher = args.context.newObject(Voucher)
+      voucher.product = product
+      voucher.redeemableBy = c
+      voucher.code = SecurityUtil.generateVoucherCode()
+      voucher.source = PaymentSource.SOURCE_ONCOURSE
+      voucher.status = ProductStatus.ACTIVE
+      voucher.invoiceLine = invoiceLine
+      voucher.redemptionValue = product.value
+      voucher.valueOnPurchase = product.value
+      voucher.redeemedCourseCount = 0
+      voucher.expiryDate = ProductUtil.calculateExpiryDate(ProductUtil.getToday(), product.expiryType,
+      product.expiryDays)
+      voucher.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
 
-            email {
-            to c
-            template "Birthday voucher email"
-            bindings contact: c, voucher: voucher
-            }
-            }
-            args.context.commitChanges()
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 4 ? * SUN *</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>This script sends a student a birthday voucher on the week of their birthday. Before activating this script, you will need to create a new VoucherType with the sku 'birthday'. Vouchers of this type will be created and sent to students on the week of their birthday. This VoucherType must also be ticked as 'Is on sale' to be able to be redeemed by students. </description>
-        <systemEventType />
+      email {
+      to c
+      template "Birthday voucher email"
+      bindings contact: c, voucher: voucher
+      }
+      }
+      args.context.commitChanges()
+      }
     </script>
-    <script id='1715'>
-        <name>send invoice</name>
-        <script>def run(args) {
-            def invoice = args.entity
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 4 ? * SUN *</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>This script sends a student a birthday voucher on the week of their birthday. Before activating this
+      script, you will need to create a new VoucherType with the sku 'birthday'. Vouchers of this type will be created
+      and sent to students on the week of their birthday. This VoucherType must also be ticked as 'Is on sale' to be
+      able to be redeemed by students.
+    </description>
+    <systemEventType />
+  </script>
+  <script id='1715'>
+    <name>send invoice</name>
+    <script>def run(args) {
+      def invoice = args.entity
 
-            if (invoice.confirmationStatus == ConfirmationStatus.NOT_SENT) {
-            if (!Money.ZERO.equals(invoice.totalIncTax)) {
-            email {
-            template "Tax Invoice"
-            bindings invoice: invoice
-            to invoice.contact &gt;&gt; (invoice.corporatePassUsed ? invoice.corporatePassUsed.email : invoice.contact.email)
-            }
-            }
+      if (invoice.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+      if (!Money.ZERO.equals(invoice.totalIncTax)) {
+      email {
+      template "Tax Invoice"
+      bindings invoice: invoice
+      to invoice.contact &gt;&gt; (invoice.corporatePassUsed ? invoice.corporatePassUsed.email : invoice.contact.email)
+      }
+      }
 
-            invoice.setConfirmationStatus(ConfirmationStatus.SENT)
-            args.context.commitChanges()
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>true</enabled>
-        <triggerType>ENTITY_EVENT</triggerType>
-        <cronSchedule />
-        <entityClass>Invoice</entityClass>
-        <entityEventType>CREATE_OR_UPDATE</entityEventType>
-        <description>Send an email to the payer with their invoice</description>
-        <systemEventType />
+      invoice.setConfirmationStatus(ConfirmationStatus.SENT)
+      args.context.commitChanges()
+      }
+      }
     </script>
-    <script id='1716'>
-        <name>send certificate created notification</name>
-        <script>def run(args) {
-            def endDate = Calendar.getInstance().getTime()
-            endDate.set(hourOfDay: 0, minute: 0, second: 0)
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>true</enabled>
+    <triggerType>ENTITY_EVENT</triggerType>
+    <cronSchedule />
+    <entityClass>Invoice</entityClass>
+    <entityEventType>CREATE_OR_UPDATE</entityEventType>
+    <description>Send an email to the payer with their invoice</description>
+    <systemEventType />
+  </script>
+  <script id='1716'>
+    <name>send certificate created notification</name>
+    <script>def run(args) {
+      def endDate = Calendar.getInstance().getTime()
+      endDate.set(hourOfDay: 0, minute: 0, second: 0)
 
-            def allClasses = ObjectSelect.query(CourseClass)
-            .where(CourseClass.END_DATE_TIME.between(endDate - 1, endDate))
-            .and(CourseClass.IS_CANCELLED.eq(false))
-            .select(args.context)
+      def allClasses = ObjectSelect.query(CourseClass)
+      .where(CourseClass.END_DATE_TIME.between(endDate - 1, endDate))
+      .and(CourseClass.IS_CANCELLED.eq(false))
+      .select(args.context)
 
-            def nonVetClasses = allClasses.findAll { cc -&gt; cc.course.courseModules.isEmpty() }
+      def nonVetClasses = allClasses.findAll { cc -&gt; cc.course.courseModules.isEmpty() }
 
-            //change 'notVETClasses' below to 'allClasses' to create attendance certificates for all classes, including those with Units of Competency attached
-            nonVetClasses.each { cc -&gt;
+      //change 'notVETClasses' below to 'allClasses' to create attendance certificates for all classes, including those
+      with Units of Competency attached
+      nonVetClasses.each { cc -&gt;
 
-            //Uncomment the line below to create attendance certificates for enrolments with attendance over 80%
-            //def enrolmentsOver80 = cc.successAndQueuedEnrolments.findAll { e -&gt; e.attendancePercent &gt;= 80 }
+      //Uncomment the line below to create attendance certificates for enrolments with attendance over 80%
+      //def enrolmentsOver80 = cc.successAndQueuedEnrolments.findAll { e -&gt; e.attendancePercent &gt;= 80 }
 
-            //change 'cc.successAndQueuedEnrolments' to 'enrolmentsOver80' if you uncommented line before
-            cc.successAndQueuedEnrolments.each { e -&gt;
-            def printData = report {
-            keycode "ish.oncourse.nonVetCertificate"
-            records Arrays.asList(e)
-            background "certificate_attendance_backgound.pdf"
-            }
+      //change 'cc.successAndQueuedEnrolments' to 'enrolmentsOver80' if you uncommented line before
+      cc.successAndQueuedEnrolments.each { e -&gt;
+      def printData = report {
+      keycode "ish.oncourse.nonVetCertificate"
+      records Arrays.asList(e)
+      background "certificate_attendance_backgound.pdf"
+      }
 
-            document {
-            action "create"
-            content printData
-            name "${cc.uniqueCode}_${e.student.contact.lastName}_${e.student.contact.firstName}_Certificate_Attendance.pdf"
-            mimeType "application/pdf"
-            permission AttachmentInfoVisibility.STUDENTS
-            attach e
-            }
+      document {
+      action "create"
+      content printData
+      name "${cc.uniqueCode}_${e.student.contact.lastName}_${e.student.contact.firstName}_Certificate_Attendance.pdf"
+      mimeType "application/pdf"
+      permission AttachmentInfoVisibility.STUDENTS
+      attach e
+      }
 
-            email {
-            template "Certificate available"
-            bindings enrolment: e
-            to e.student.contact
-            }
-            }
-            }
-            }</script>
-        <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
-        <createdOn>2019-02-13T16:53:24Z</createdOn>
-        <enabled>false</enabled>
-        <triggerType>CRON</triggerType>
-        <cronSchedule>0 0 6 ? * *</cronSchedule>
-        <entityClass />
-        <entityEventType />
-        <description>Create a certificate of attendance for non-VET training with your custom certificate_attendance_backgound.pdf, upload the certificate to the portal and send an email to the student containing the link. There are options in the script to check attendance requirements before creating certificates, which are commented out by default.</description>
-        <systemEventType />
+      email {
+      template "Certificate available"
+      bindings enrolment: e
+      to e.student.contact
+      }
+      }
+      }
+      }
     </script>
+    <modifiedOn>2019-02-13T16:53:24Z</modifiedOn>
+    <createdOn>2019-02-13T16:53:24Z</createdOn>
+    <enabled>false</enabled>
+    <triggerType>CRON</triggerType>
+    <cronSchedule>0 0 6 ? * *</cronSchedule>
+    <entityClass />
+    <entityEventType />
+    <description>Create a certificate of attendance for non-VET training with your custom
+      certificate_attendance_backgound.pdf, upload the certificate to the portal and send an email to the student
+      containing the link. There are options in the script to check attendance requirements before creating
+      certificates, which are commented out by default.
+    </description>
+    <systemEventType />
+  </script>
 </data>

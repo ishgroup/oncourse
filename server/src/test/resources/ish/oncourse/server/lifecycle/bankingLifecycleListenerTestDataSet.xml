@@ -1,46 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <Site id="1" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0" localTimezone="Australia/Sydney"/>
+  <Site id="1" name="Default site" isAdministrationCentre="1" isShownOnWeb="0" isVirtual="0"
+        localTimezone="Australia/Sydney"/>
 
-    <SystemUser email="admin@mail.com" id="1" login="admin" firstName="admin" surname="admin" isActive="1" isAdmin="1" password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" defaultAdministrationCentreId="1" PASSWORDUPDATEREQUIRED="0"/>
+  <SystemUser email="admin@mail.com" id="1" login="admin" firstName="admin" surname="admin" isActive="1" isAdmin="1"
+              password="test" canEditCMS="1" canEditTara="1" createdOn="2012-05-10 00:00:00"
+              modifiedOn="2012-05-10 00:00:00" defaultAdministrationCentreId="1" PASSWORDUPDATEREQUIRED="0"/>
 
-    <Account id="100" accountCode="11500" description="Test debtors account" isEnabled="1" type="1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Account id="200" accountCode="41000" description="Test income account" isEnabled="1" type="4" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" taxId="1"/>
-    <Account id="300" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Account id="400" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Account id="500" accountCode="21010" description="Test prepaid fees account" isEnabled="1" type="2" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Account id="600" accountCode="50050" description="Test discount account" isEnabled="1" type="5" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Account id="700" accountCode="accBank" description="Test bank account" isEnabled="1" type="1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Account id="800" accountCode="vLability" description="Test voucher liability acc" isEnabled="1" type="2" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Account id="900" accountCode="vUnderpay" description="Test voucher underpay acc" isEnabled="1" type="6" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Account id="1000" accountCode="6345 - uf" description="Undeposited funds" isEnabled="1" type="1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="100" accountCode="11500" description="Test debtors account" isEnabled="1" type="1"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="200" accountCode="41000" description="Test income account" isEnabled="1" type="4"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" taxId="1"/>
+  <Account id="300" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="400" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="500" accountCode="21010" description="Test prepaid fees account" isEnabled="1" type="2"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="600" accountCode="50050" description="Test discount account" isEnabled="1" type="5"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="700" accountCode="accBank" description="Test bank account" isEnabled="1" type="1"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="800" accountCode="vLability" description="Test voucher liability acc" isEnabled="1" type="2"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="900" accountCode="vUnderpay" description="Test voucher underpay acc" isEnabled="1" type="6"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Account id="1000" accountCode="6345 - uf" description="Undeposited funds" isEnabled="1" type="1"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
-    <PaymentMethod id="100" name="Cheque" accountId="100" active="1" bankedAutomatically="0" reconcilable="1" type="1"/>
-    <PaymentMethod id="200" name="Credit card" accountId="100" active="1" bankedAutomatically="1" reconcilable="1" type="2"/>
+  <PaymentMethod id="100" name="Cheque" accountId="100" active="1" bankedAutomatically="0" reconcilable="1" type="1"/>
+  <PaymentMethod id="200" name="Credit card" accountId="100" active="1" bankedAutomatically="1" reconcilable="1"
+                 type="2"/>
 
-    <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="300" receivableFromStudentAccountId="400" taxCode="GST" taxrate="0.1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="300" receivableFromStudentAccountId="400" taxCode="GST"
+       taxrate="0.1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
-    <Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00" deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000" workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW" uniqueCode="ST1UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
-    <Contact id="2" firstName="Test" lastName="Tutor" isMale="1" isCompany="0" createdOn="2012-05-20 00:00:00" modifiedOn="2012-05-20 00:00:00" allowEmail="1" allowPost="0" allowSms="0" birthDate="1990-01-01 00:00:00" deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110001" workPhone="331110001" mobilePhone="331110001" street="1st" postcode="1002" suburb="Sydney" state="NSW" uniqueCode="TUT1UNIQUE" isStudent="0" isTutor="1" email="tutor@tutor.tutor"/>
+  <Contact id="1" firstName="Test" lastName="Student" isMale="1" isCompany="0" createdOn="2012-05-10 00:00:00"
+           modifiedOn="2012-05-10 00:00:00" allowEmail="1" allowPost="0" allowSms="1" birthDate="1991-01-01 00:00:00"
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110000"
+           workPhone="331110000" mobilePhone="331110000" street="Main" postcode="1001" suburb="Sydney" state="NSW"
+           uniqueCode="ST1UNIQUE" isStudent="1" isTutor="0" email="test@test.test"/>
+  <Contact id="2" firstName="Test" lastName="Tutor" isMale="1" isCompany="0" createdOn="2012-05-20 00:00:00"
+           modifiedOn="2012-05-20 00:00:00" allowEmail="1" allowPost="0" allowSms="0" birthDate="1990-01-01 00:00:00"
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" homePhone="331110001"
+           workPhone="331110001" mobilePhone="331110001" street="1st" postcode="1002" suburb="Sydney" state="NSW"
+           uniqueCode="TUT1UNIQUE" isStudent="0" isTutor="1" email="tutor@tutor.tutor"/>
 
-    <Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" invoiceNumber="1" debtorsAccountId="100" contactId="1" amoutOwing="100.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..." shippingAddress="Shipping Address 1..." createdByUserId="1" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
-    <Invoice allowAutoPay="1" type="1" overdue="0.00" id="2" invoiceNumber="2" debtorsAccountId="100" contactId="2" amoutOwing="210.0" source="W" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00" billToAddress="Address 2" description="Description 2..." publicNotes="Public notes 2..." shippingAddress="Shipping Address 2..." createdByUserId="1" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" invoiceNumber="1" debtorsAccountId="100" contactId="1"
+           amoutOwing="100.0" source="O" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 1" description="Description 1..." publicNotes="Public notes 1..."
+           shippingAddress="Shipping Address 1..." createdByUserId="1" createdOn="2012-05-10 00:00:00"
+           modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="2" invoiceNumber="2" debtorsAccountId="100" contactId="2"
+           amoutOwing="210.0" source="W" invoiceDate="2013-02-01 00:00:00" dateDue="2013-03-01 00:00:00"
+           billToAddress="Address 2" description="Description 2..." publicNotes="Public notes 2..."
+           shippingAddress="Shipping Address 2..." createdByUserId="1" createdOn="2012-05-10 00:00:00"
+           modifiedOn="2012-05-10 00:00:00" confirmationStatus="2"/>
 
-    <InvoiceLine id="1" invoiceId="1" accountId="100" enrolmentId="[null]" prepaidFeesAccountId="500" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <InvoiceLine id="2" invoiceId="1" accountId="100" enrolmentId="[null]" prepaidFeesAccountId="500" prepaidFeesRemaining="33.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline2" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <InvoiceLine id="3" invoiceId="2" accountId="100" enrolmentId="[null]" prepaidFeesAccountId="500" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline3" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <InvoiceLine id="1" invoiceId="1" accountId="100" enrolmentId="[null]" prepaidFeesAccountId="500"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00"
+               taxId="1" title="test invoiceline1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <InvoiceLine id="2" invoiceId="1" accountId="100" enrolmentId="[null]" prepaidFeesAccountId="500"
+               prepaidFeesRemaining="33.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1"
+               taxEach="10.00" taxId="1" title="test invoiceline2" createdOn="2013-01-01 00:00:00"
+               modifiedOn="2013-01-01 00:00:00"/>
+  <InvoiceLine id="3" invoiceId="2" accountId="100" enrolmentId="[null]" prepaidFeesAccountId="500"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00"
+               taxId="1" title="test invoiceline3" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
-    <Banking id="1" type="1" settlementDate="2016-01-01 00:00:00"/>
+  <Banking id="1" type="1" settlementDate="2016-01-01 00:00:00"/>
 
-    <PaymentIn paymentDate="2010-10-14 22:04:34.551" id="1" payerId="1" accountInId="100" undepositedFundsAccountId="1000" amount="10.0" reconciled="0" source="W" paymentMethodId="200" status="3" bankingId="1" creditCardExpiry="01/2013" creditCardName="TEST PAYER" creditCardNumber="0000000000000000" creditCardType="V" gatewayReference="000000" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"  confirmationStatus="3"/>
-    <PaymentIn paymentDate="2010-10-14 22:04:34.551" id="2" payerId="2" accountInId="100" undepositedFundsAccountId="1000" amount="10.0" reconciled="0" source="O" paymentMethodId="100" status="3" bankingId="1" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"  confirmationStatus="3"/>
+  <PaymentIn paymentDate="2010-10-14 22:04:34.551" id="1" payerId="1" accountInId="100" undepositedFundsAccountId="1000"
+             amount="10.0" reconciled="0" source="W" paymentMethodId="200" status="3" bankingId="1"
+             creditCardExpiry="01/2013" creditCardName="TEST PAYER" creditCardNumber="0000000000000000"
+             creditCardType="V" gatewayReference="000000" privateNotes="Notes..." createdOn="2012-05-10 00:00:00"
+             modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+  <PaymentIn paymentDate="2010-10-14 22:04:34.551" id="2" payerId="2" accountInId="100" undepositedFundsAccountId="1000"
+             amount="10.0" reconciled="0" source="O" paymentMethodId="100" status="3" bankingId="1" chequeBank="bank"
+             chequeBranch="branch" chequeDrawer="drawer" privateNotes="Notes..." createdOn="2012-05-10 00:00:00"
+             modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
 
-    <PaymentInLine id="1" paymentInId="1" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
-    <PaymentInLine id="2" paymentInId="2" amount="10.00" invoiceId="2" accountOutId="100" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
+  <PaymentInLine id="1" paymentInId="1" amount="10.00" invoiceId="1" accountOutId="100" createdOn="2012-05-10 00:00:00"
+                 modifiedOn="2012-05-10 00:00:00"/>
+  <PaymentInLine id="2" paymentInId="2" amount="10.00" invoiceId="2" accountOutId="100" createdOn="2012-05-10 00:00:00"
+                 modifiedOn="2012-05-10 00:00:00"/>
 
-    <PaymentOut paymentDate="2010-10-14 22:04:34.551" id="1" payeeId="1" accountOutId="100" undepositedFundsAccountId="1000" amount="10.0" reconciled="0" paymentMethodId="200" status="3" bankingId="1" creditCardExpiry="01/2013" creditCardName="TEST PAYER" creditCardNumber="0000000000000000" creditCardType="V" gatewayReference="000000" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-    <PaymentOut paymentDate="2010-10-14 22:04:34.551" id="2" payeeId="2" accountOutId="100" undepositedFundsAccountId="1000" amount="10.0" reconciled="0" paymentMethodId="100" status="3" bankingId="1" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer" privateNotes="Notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+  <PaymentOut paymentDate="2010-10-14 22:04:34.551" id="1" payeeId="1" accountOutId="100"
+              undepositedFundsAccountId="1000" amount="10.0" reconciled="0" paymentMethodId="200" status="3"
+              bankingId="1" creditCardExpiry="01/2013" creditCardName="TEST PAYER" creditCardNumber="0000000000000000"
+              creditCardType="V" gatewayReference="000000" privateNotes="Notes..." createdOn="2012-05-10 00:00:00"
+              modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
+  <PaymentOut paymentDate="2010-10-14 22:04:34.551" id="2" payeeId="2" accountOutId="100"
+              undepositedFundsAccountId="1000" amount="10.0" reconciled="0" paymentMethodId="100" status="3"
+              bankingId="1" chequeBank="bank" chequeBranch="branch" chequeDrawer="drawer" privateNotes="Notes..."
+              createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
 
-    <PaymentOutLine id="1" paymentOutId="1" amount="10.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
-    <PaymentOutLine id="2" paymentOutId="2" amount="10.00" invoiceId="2" accountInId="100" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"/>
+  <PaymentOutLine id="1" paymentOutId="1" amount="10.00" invoiceId="1" accountInId="100" createdOn="2012-05-10 00:00:00"
+                  modifiedOn="2012-05-10 00:00:00"/>
+  <PaymentOutLine id="2" paymentOutId="2" amount="10.00" invoiceId="2" accountInId="100" createdOn="2012-05-10 00:00:00"
+                  modifiedOn="2012-05-10 00:00:00"/>
 </dataset>

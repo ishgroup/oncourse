@@ -40,7 +40,6 @@ interface Props {
   itemPath: string;
   form: string;
   dispatch: any;
-  showConfirm: any;
   tags: Tag[];
   classes?: any;
   entity?: string;

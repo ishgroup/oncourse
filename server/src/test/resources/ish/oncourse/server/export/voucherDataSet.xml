@@ -1,197 +1,323 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Account id="1" accountCode="11500" description="Test debtors account" isEnabled="1" type="1"/>
-	<Account id="2" accountCode="41000" description="Test income account" isEnabled="1" type="4" taxId="1"/>
-	<Account id="3" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1"/>
-	<Account id="4" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2"/>
-	<Account id="5" accountCode="21010" description="Test prepaid fees account" isEnabled="1" type="2"/>
-	<Account id="6" accountCode="50050" description="Test discount account" isEnabled="1" type="5"/>
-	<Account id="7" accountCode="accBank" description="Test bank account" isEnabled="1" type="1"/>
+  <Account id="1" accountCode="11500" description="Test debtors account" isEnabled="1" type="1"/>
+  <Account id="2" accountCode="41000" description="Test income account" isEnabled="1" type="4" taxId="1"/>
+  <Account id="3" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1"/>
+  <Account id="4" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2"/>
+  <Account id="5" accountCode="21010" description="Test prepaid fees account" isEnabled="1" type="2"/>
+  <Account id="6" accountCode="50050" description="Test discount account" isEnabled="1" type="5"/>
+  <Account id="7" accountCode="accBank" description="Test bank account" isEnabled="1" type="1"/>
 
-	<FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<Course id="1"  code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
-	<Course id="2"  code="ATT2" willowId="2" name="Test 2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
+  <Course id="1" code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
+  <Course id="2" code="ATT2" willowId="2" name="Test 2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
 
-	<Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney" isVirtual="0"/>
+  <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney"
+        isVirtual="0"/>
 
-	<Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
+  <Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
 
-	<Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="3" receivableFromStudentAccountId="4" taxCode="GST" taxrate="0.1"/>
+  <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="3" receivableFromStudentAccountId="4" taxCode="GST"
+       taxrate="0.1"/>
 
-	<CourseClass id="1" code="123" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
-				 isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
-				 incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
-				 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
-	<CourseClass id="2" code="124" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
-				 isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
-				 incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
-				 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
-	<CourseClass id="3" code="125" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
-				 isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
-				 incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
-				 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
-	<CourseClass id="4" code="126" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
-				 isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
-				 incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
-				 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
-
-
-	<Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="1abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1" lastName="name" email="test@test.te"/>
-	<Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="2abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name2" lastName="name" email="test2@test.te"/>
-	<Contact id="3" isCompany="0" isStudent="1" isTutor="0" uniqueCode="3abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name3" lastName="name" email="test3@test.te"/>
-	<Contact id="4" isCompany="0" isStudent="1" isTutor="0" uniqueCode="4abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name4" lastName="name" email="test4@test.te"/>
-	<Contact id="5" isCompany="0" isStudent="1" isTutor="0" uniqueCode="5abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name5" lastName="name" email="test5@test.te"/>
-	<Contact id="6" isCompany="0" isStudent="1" isTutor="0" uniqueCode="6abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name6" lastName="name" email="test6@test.te"/>
-	<Contact id="7" isCompany="0" isStudent="1" isTutor="0" uniqueCode="7abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name7" lastName="name" email="test7@test.te"/>
-	<Contact id="8" isCompany="0" isStudent="1" isTutor="0" uniqueCode="8abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name8" lastName="name" email="test7@test.te"/>
-	<Contact id="9" isCompany="0" isStudent="1" isTutor="0" uniqueCode="9abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name9" lastName="name" email="test7@test.te"/>
-	<Contact id="10" isCompany="0" isStudent="1" isTutor="0" uniqueCode="10abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name10" lastName="name" email="test7@test.te"/>
-
-	<Student id="1" contactId="1" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-			 highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-			 studentNumber="1" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="2" contactId="2" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-			 highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-			 studentNumber="2" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="3" contactId="3" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-			 highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-			 studentNumber="3" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="4" contactId="4" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-			 highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-			 studentNumber="4" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="5" contactId="5" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-			 highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-			 studentNumber="5" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="6" contactId="6" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-			 highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-			 studentNumber="6" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="7" contactId="7" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-			 highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-			 studentNumber="7" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="8" contactId="8" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-			 highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-			 studentNumber="8" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="9" contactId="9" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-			 highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-			 studentNumber="9" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
-	<Student id="10" contactId="10" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-			 highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-			 studentNumber="10" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <CourseClass id="1" code="123" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+               isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
+  <CourseClass id="2" code="124" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+               isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
+  <CourseClass id="3" code="125" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+               isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
+  <CourseClass id="4" code="126" taxAdjustment="0.0" taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100"
+               isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 
 
-	<CourseSession id="1" courseClass_Id="1" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00" payAdjustment="0.00"/>
-	<CourseSession id="2" courseClass_Id="1" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00" payAdjustment="0.00"/>
-	<CourseSession id="3" courseClass_Id="1" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00" payAdjustment="0.00"/>
+  <Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="1abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1" lastName="name"
+           email="test@test.te"/>
+  <Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="2abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name2" lastName="name"
+           email="test2@test.te"/>
+  <Contact id="3" isCompany="0" isStudent="1" isTutor="0" uniqueCode="3abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name3" lastName="name"
+           email="test3@test.te"/>
+  <Contact id="4" isCompany="0" isStudent="1" isTutor="0" uniqueCode="4abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name4" lastName="name"
+           email="test4@test.te"/>
+  <Contact id="5" isCompany="0" isStudent="1" isTutor="0" uniqueCode="5abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name5" lastName="name"
+           email="test5@test.te"/>
+  <Contact id="6" isCompany="0" isStudent="1" isTutor="0" uniqueCode="6abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name6" lastName="name"
+           email="test6@test.te"/>
+  <Contact id="7" isCompany="0" isStudent="1" isTutor="0" uniqueCode="7abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name7" lastName="name"
+           email="test7@test.te"/>
+  <Contact id="8" isCompany="0" isStudent="1" isTutor="0" uniqueCode="8abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name8" lastName="name"
+           email="test7@test.te"/>
+  <Contact id="9" isCompany="0" isStudent="1" isTutor="0" uniqueCode="9abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name9" lastName="name"
+           email="test7@test.te"/>
+  <Contact id="10" isCompany="0" isStudent="1" isTutor="0" uniqueCode="10abc" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name10"
+           lastName="name" email="test7@test.te"/>
 
-	<CourseSession id="4" courseClass_Id="2" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00" payAdjustment="0.00"/>
-	<CourseSession id="5" courseClass_Id="2" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00" payAdjustment="0.00"/>
-	<CourseSession id="6" courseClass_Id="2" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00" payAdjustment="0.00"/>
+  <Student id="1" contactId="1" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="1" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="2" contactId="2" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="2" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="3" contactId="3" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="3" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="4" contactId="4" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="4" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="5" contactId="5" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="5" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="6" contactId="6" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="6" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="7" contactId="7" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="7" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="8" contactId="8" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="8" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="9" contactId="9" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="9" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
+  <Student id="10" contactId="10" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="10" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
 
-	<CourseSession id="7" courseClass_Id="3" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00" payAdjustment="0.00"/>
-	<CourseSession id="8" courseClass_Id="3" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00" payAdjustment="0.00"/>
 
-	<CourseSession id="9" courseClass_Id="4" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00" payAdjustment="0.00"/>
-	<CourseSession id="10" courseClass_Id="4" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00" payAdjustment="0.00"/>
+  <CourseSession id="1" courseClass_Id="1" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
+                 payAdjustment="0.00"/>
+  <CourseSession id="2" courseClass_Id="1" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
+                 payAdjustment="0.00"/>
+  <CourseSession id="3" courseClass_Id="1" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
+                 payAdjustment="0.00"/>
+
+  <CourseSession id="4" courseClass_Id="2" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
+                 payAdjustment="0.00"/>
+  <CourseSession id="5" courseClass_Id="2" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
+                 payAdjustment="0.00"/>
+  <CourseSession id="6" courseClass_Id="2" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
+                 payAdjustment="0.00"/>
+
+  <CourseSession id="7" courseClass_Id="3" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
+                 payAdjustment="0.00"/>
+  <CourseSession id="8" courseClass_Id="3" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
+                 payAdjustment="0.00"/>
+
+  <CourseSession id="9" courseClass_Id="4" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
+                 payAdjustment="0.00"/>
+  <CourseSession id="10" courseClass_Id="4" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
+                 payAdjustment="0.00"/>
 
 
+  <Enrolment id="1" courseClass_id="1" studentId="3" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="2" courseClass_id="1" studentId="4" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="3" courseClass_id="2" studentId="3" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="4" courseClass_id="2" studentId="4" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="5" courseClass_id="3" studentId="5" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="6" courseClass_id="4" studentId="6" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="7" courseClass_id="2" studentId="7" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="8" courseClass_id="2" studentId="8" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="9" courseClass_id="2" studentId="9" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="10" courseClass_id="2" studentId="10" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="11" courseClass_id="2" studentId="10" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="8" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
+  <Enrolment id="12" courseClass_id="4" studentId="10" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="4" confirmationStatus="2" feeHelpAmount="0"
+             attendanceType="9"/>
 
-	<Enrolment id="1" courseClass_id="1" studentId="3" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="2" courseClass_id="1" studentId="4" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="3" courseClass_id="2" studentId="3" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="4" courseClass_id="2" studentId="4" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="5" courseClass_id="3" studentId="5" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="6" courseClass_id="4" studentId="6" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="7" courseClass_id="2" studentId="7" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="8" courseClass_id="2" studentId="8" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="9" courseClass_id="2" studentId="9" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="10" courseClass_id="2" studentId="10" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="11" courseClass_id="2" studentId="10" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="8" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
-	<Enrolment id="12" courseClass_id="4" studentId="10" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="4" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" invoiceNumber="1" amoutOwing="0.00" contactId="3"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="2" invoiceNumber="2" amoutOwing="0.00" contactId="3"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="3" invoiceNumber="3" amoutOwing="0.00" contactId="4"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="4" invoiceNumber="4" amoutOwing="0.00" contactId="4"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="5" invoiceNumber="5" amoutOwing="0.00" contactId="5"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="6" invoiceNumber="6" amoutOwing="0.00" contactId="6"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="7" invoiceNumber="7" amoutOwing="0.00" contactId="7"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="8" invoiceNumber="8" amoutOwing="0.00" contactId="8"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="9" invoiceNumber="9" amoutOwing="0.00" contactId="9"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="10" invoiceNumber="10" amoutOwing="0.00" contactId="10"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="11" invoiceNumber="11" amoutOwing="0.00" contactId="10"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="12" invoiceNumber="12" amoutOwing="0.00" contactId="10"
+           dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O"
+           confirmationStatus="2"/>
 
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="1" invoiceNumber="1" amoutOwing="0.00" contactId="3" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="2" invoiceNumber="2" amoutOwing="0.00" contactId="3" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="3" invoiceNumber="3" amoutOwing="0.00" contactId="4" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="4" invoiceNumber="4" amoutOwing="0.00" contactId="4" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="5" invoiceNumber="5" amoutOwing="0.00" contactId="5" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="6" invoiceNumber="6" amoutOwing="0.00" contactId="6" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="7" invoiceNumber="7" amoutOwing="0.00" contactId="7" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="8" invoiceNumber="8" amoutOwing="0.00" contactId="8" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="9" invoiceNumber="9" amoutOwing="0.00" contactId="9" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="10" invoiceNumber="10" amoutOwing="0.00" contactId="10" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="11" invoiceNumber="11" amoutOwing="0.00" contactId="10" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id ="12" invoiceNumber="12" amoutOwing="0.00" contactId="10" dateDue="2015-01-24 18:00:00" debtorsAccountId="1" invoiceDate="2015-01-24 18:00:00" source="O" confirmationStatus="2"/>
+  <InvoiceLine id="1" invoiceId="1" accountId="2" enrolmentId="[null]" prepaidFeesAccountId="5"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00"
+               taxId="1" title="test invoiceline"/>
+  <InvoiceLine id="2" invoiceId="1" accountId="2" enrolmentId="1" prepaidFeesAccountId="5" prepaidFeesRemaining="33.00"
+               discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
+               title="test invoiceline"/>
+  <InvoiceLine id="3" invoiceId="2" accountId="2" enrolmentId="2" prepaidFeesAccountId="5" prepaidFeesRemaining="0.00"
+               discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
+               title="test invoiceline"/>
+  <InvoiceLine id="4" invoiceId="3" accountId="2" enrolmentId="3" prepaidFeesAccountId="5" prepaidFeesRemaining="100.00"
+               discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
+               title="test invoiceline"/>
+  <InvoiceLine id="5" invoiceId="4" accountId="2" enrolmentId="4" prepaidFeesAccountId="5" prepaidFeesRemaining="67.00"
+               discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
+               title="test invoiceline"/>
+  <InvoiceLine id="6" invoiceId="5" accountId="2" enrolmentId="5" prepaidFeesAccountId="5" prepaidFeesRemaining="10.00"
+               discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
+               title="test invoiceline"/>
+  <InvoiceLine id="7" invoiceId="6" accountId="2" enrolmentId="6" prepaidFeesAccountId="5" prepaidFeesRemaining="10.00"
+               discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
+               title="test invoiceline"/>
+  <InvoiceLine id="8" invoiceId="7" accountId="2" enrolmentId="7" prepaidFeesAccountId="5" prepaidFeesRemaining="100.00"
+               discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
+               title="test invoiceline"/>
+  <InvoiceLine id="9" invoiceId="8" accountId="2" enrolmentId="8" prepaidFeesAccountId="5" prepaidFeesRemaining="80.00"
+               discountEachExTax="20.00" priceEachExTax="100.00" quantity="1" taxEach="8.00" taxId="1"
+               title="test invoiceline"/>
+  <InvoiceLine id="10" invoiceId="9" accountId="2" enrolmentId="9" prepaidFeesAccountId="5" prepaidFeesRemaining="0.00"
+               discountEachExTax="100.00" priceEachExTax="100.00" quantity="1" taxEach="0.00" taxId="1"
+               title="test invoiceline"/>
+  <InvoiceLine id="11" invoiceId="10" accountId="2" enrolmentId="10" prepaidFeesAccountId="5"
+               prepaidFeesRemaining="0.00" discountEachExTax="20.00" priceEachExTax="100.00" quantity="1" taxEach="8.00"
+               taxId="1" title="test invoiceline"/>
+  <InvoiceLine id="12" invoiceId="11" accountId="2" enrolmentId="11" prepaidFeesAccountId="5"
+               prepaidFeesRemaining="100.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1"
+               taxEach="10.00" taxId="1" title="test invoiceline"/>
+  <InvoiceLine id="13" invoiceId="12" accountId="2" enrolmentId="12" prepaidFeesAccountId="5"
+               prepaidFeesRemaining="100.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1"
+               taxEach="10.00" taxId="1" title="test invoiceline"/>
 
-	<InvoiceLine id="1" invoiceId="1" accountId="2" enrolmentId="[null]" prepaidFeesAccountId="5" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="2" invoiceId="1" accountId="2" enrolmentId="1" prepaidFeesAccountId="5" prepaidFeesRemaining="33.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="3" invoiceId="2" accountId="2" enrolmentId="2" prepaidFeesAccountId="5" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="4" invoiceId="3" accountId="2" enrolmentId="3" prepaidFeesAccountId="5" prepaidFeesRemaining="100.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="5" invoiceId="4" accountId="2" enrolmentId="4" prepaidFeesAccountId="5" prepaidFeesRemaining="67.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="6" invoiceId="5" accountId="2" enrolmentId="5" prepaidFeesAccountId="5" prepaidFeesRemaining="10.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="7" invoiceId="6" accountId="2" enrolmentId="6" prepaidFeesAccountId="5" prepaidFeesRemaining="10.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="8" invoiceId="7" accountId="2" enrolmentId="7" prepaidFeesAccountId="5" prepaidFeesRemaining="100.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="9" invoiceId="8" accountId="2" enrolmentId="8" prepaidFeesAccountId="5" prepaidFeesRemaining="80.00" discountEachExTax="20.00" priceEachExTax="100.00" quantity="1" taxEach="8.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="10" invoiceId="9" accountId="2" enrolmentId="9" prepaidFeesAccountId="5" prepaidFeesRemaining="0.00" discountEachExTax="100.00" priceEachExTax="100.00" quantity="1" taxEach="0.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="11" invoiceId="10" accountId="2" enrolmentId="10" prepaidFeesAccountId="5" prepaidFeesRemaining="0.00" discountEachExTax="20.00" priceEachExTax="100.00" quantity="1" taxEach="8.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="12" invoiceId="11" accountId="2" enrolmentId="11" prepaidFeesAccountId="5" prepaidFeesRemaining="100.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
-	<InvoiceLine id="13" invoiceId="12" accountId="2" enrolmentId="12" prepaidFeesAccountId="5" prepaidFeesRemaining="100.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline"/>
+  <Product SKU="234" createdOn="2012-05-10 17:59:42" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="1" ISONSALE="1"
+           ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23" NAME="test membership product" PRICEEXTAX="10.00" TYPE="3"
+           TAXADJUSTMENT="0.00" incomeAccountId="2" taxId="1" maxCoursesRedemption="3" expiryDays="365"/>
 
-	<Product SKU="234" createdOn="2012-05-10 17:59:42" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="1" ISONSALE="1"
-			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23" NAME="test membership product" PRICEEXTAX="10.00" TYPE="3"
-			 TAXADJUSTMENT="0.00" incomeAccountId="2" taxId="1" maxCoursesRedemption="3" expiryDays="365"/>
+  <Product SKU="1234" createdOn="2012-05-10 17:59:42" DESCRIPTION="$11 product 123" EXPIRYTYPE="4" ID="2" ISONSALE="1"
+           ISWEBVISIBLE="0" modifiedOn="2012-05-15 16:29:23" NAME="test membership product qwerty" PRICEEXTAX="10.00"
+           TYPE="3"
+           TAXADJUSTMENT="0.00" incomeAccountId="2" taxId="1" expiryDays="365"/>
 
-	<Product SKU="1234" createdOn="2012-05-10 17:59:42" DESCRIPTION="$11 product 123" EXPIRYTYPE="4" ID="2" ISONSALE="1"
-			 ISWEBVISIBLE="0" modifiedOn="2012-05-15 16:29:23" NAME="test membership product qwerty" PRICEEXTAX="10.00" TYPE="3"
-			 TAXADJUSTMENT="0.00" incomeAccountId="2" taxId="1" expiryDays="365"/>
+  <Product SKU="456" createdOn="2012-05-10 17:59:42" DESCRIPTION="$11 product double edition" EXPIRYTYPE="4" ID="3"
+           ISONSALE="1"
+           ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23" NAME="test membership product part 2" PRICEEXTAX="11.00"
+           TYPE="3"
+           TAXADJUSTMENT="0.00" incomeAccountId="2" taxId="1" expiryDays="365"/>
 
-	<Product SKU="456" createdOn="2012-05-10 17:59:42" DESCRIPTION="$11 product double edition" EXPIRYTYPE="4" ID="3" ISONSALE="1"
-			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23" NAME="test membership product part 2" PRICEEXTAX="11.00" TYPE="3"
-			 TAXADJUSTMENT="0.00" incomeAccountId="2" taxId="1" expiryDays="365"/>
+  <Product SKU="123" createdOn="2012-05-10 17:59:42" DESCRIPTION="11$ product tae" EXPIRYTYPE="4" ID="4" ISONSALE="1"
+           ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23" NAME="my test membership product tae" PRICEEXTAX="10.00"
+           TYPE="3"
+           TAXADJUSTMENT="0.00" incomeAccountId="2" taxId="1" expiryDays="365"/>
 
-	<Product SKU="123" createdOn="2012-05-10 17:59:42" DESCRIPTION="11$ product tae" EXPIRYTYPE="4" ID="4" ISONSALE="1"
-			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23" NAME="my test membership product tae" PRICEEXTAX="10.00" TYPE="3"
-			 TAXADJUSTMENT="0.00" incomeAccountId="2" taxId="1" expiryDays="365"/>
+  <Product SKU="aaaa" createdOn="2012-05-10 17:59:42" DESCRIPTION="1 course" EXPIRYTYPE="4" ID="5" ISONSALE="1"
+           ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23" NAME="test voucher product" PRICEEXTAX="10.00" TYPE="3"
+           TAXADJUSTMENT="0.00" incomeAccountId="2" taxId="1" maxCoursesRedemption="1" expiryDays="365"/>
 
-	<Product SKU="aaaa" createdOn="2012-05-10 17:59:42" DESCRIPTION="1 course" EXPIRYTYPE="4" ID="5" ISONSALE="1"
-			 ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23" NAME="test voucher product" PRICEEXTAX="10.00" TYPE="3"
-			 TAXADJUSTMENT="0.00" incomeAccountId="2" taxId="1" maxCoursesRedemption="1" expiryDays="365"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="1"
+               MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="1" TYPE="3" code="qwerty" value="100.00"
+               redeemedCoursesCount="0" source="W"
+               status="0" INVOICELINEID="1" confirmationStatus="2"/>
 
-	<ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="1"
-				 MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="1" TYPE="3" code="qwerty" value="100.00" redeemedCoursesCount="0" source="W"
-				 status="0" INVOICELINEID="1" confirmationStatus="2"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="2"
+               MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="3" TYPE="3" code="qwerty_2" value="110.00"
+               redeemedCoursesCount="0" source="O"
+               status="0" INVOICELINEID="3" confirmationStatus="2"/>
 
-	<ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="2"
-				 MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="3" TYPE="3" code="qwerty_2" value="110.00" redeemedCoursesCount="0" source="O"
-				 status="0" INVOICELINEID="3" confirmationStatus="2"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="3"
+               MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="1" TYPE="3" code="qwertyb" value="50.00"
+               redeemedCoursesCount="0" source="W"
+               status="0" INVOICELINEID="1" confirmationStatus="2"/>
 
-	<ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="3"
-				 MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="1" TYPE="3" code="qwertyb" value="50.00" redeemedCoursesCount="0" source="W"
-				 status="0" INVOICELINEID="1" confirmationStatus="2"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="4"
+               MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="3" TYPE="3" code="qwerty_3" value="50.00"
+               redeemedCoursesCount="0" source="O"
+               status="0" INVOICELINEID="3" confirmationStatus="2"/>
 
-	<ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="4"
-				 MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="3" TYPE="3" code="qwerty_3" value="50.00" redeemedCoursesCount="0" source="O"
-				 status="0" INVOICELINEID="3" confirmationStatus="2"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="5"
+               MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="3" TYPE="3" code="qwerty_5" value="50.00"
+               redeemedCoursesCount="0" source="O"
+               status="0" INVOICELINEID="3" confirmationStatus="2"/>
 
-	<ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="5"
-				 MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="3" TYPE="3" code="qwerty_5" value="50.00" redeemedCoursesCount="0" source="O"
-				 status="0" INVOICELINEID="3" confirmationStatus="2"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="6"
+               MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="3" TYPE="3" code="qwerty_6" value="120.00"
+               redeemedCoursesCount="0" source="O"
+               status="0" INVOICELINEID="3" confirmationStatus="2"/>
 
-	<ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="6"
-				 MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="3" TYPE="3" code="qwerty_6" value="120.00" redeemedCoursesCount="0" source="O"
-				 status="0" INVOICELINEID="3" confirmationStatus="2"/>
+  <ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="7"
+               MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="5" TYPE="3" code="qwertya" value="50.00"
+               redeemedCoursesCount="0" source="W"
+               status="0" INVOICELINEID="1" confirmationStatus="2"/>
 
-	<ProductItem CREATEDON="2012-05-14 14:33:16" EXPIRYDATE="2113-07-01 00:00:00" ID="7"
-				 MODIFIEDON="2012-05-14 14:35:01" PRODUCTID="5" TYPE="3" code="qwertya" value="50.00" redeemedCoursesCount="0" source="W"
-				 status="0" INVOICELINEID="1" confirmationStatus="2"/>
-
-	<VoucherProduct_Course id="1" voucherProductId="1" courseId="1"/>
-	<VoucherProduct_Course id="2" voucherProductId="5" courseId="1"/>
+  <VoucherProduct_Course id="1" voucherProductId="1" courseId="1"/>
+  <VoucherProduct_Course id="2" voucherProductId="5" courseId="1"/>
 </dataset>

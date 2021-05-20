@@ -1,83 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <Account ID="1100" ACCOUNTCODE="65387" DESCRIPTION="Voucher underpayment" ISENABLED="1" TYPE="6"/>
-    <Account ID="200" ACCOUNTCODE="11305" DESCRIPTION="Trade debtors" ISENABLED="1" TYPE="1"/>
-    <Account ID="500" ACCOUNTCODE="28000" DESCRIPTION="Voucher liability" ISENABLED="1" TYPE="2"/>
-    <Account ID="100" ACCOUNTCODE="11103" DESCRIPTION="Cheque Account" ISENABLED="1" TYPE="1"/>
-    <Account ID="300" ACCOUNTCODE="11600" DESCRIPTION="GST payable to suppliers" ISENABLED="1" TYPE="1"/>
-    <Account ID="600" ACCOUNTCODE="21600" DESCRIPTION="GST receivable from customers" ISENABLED="1" TYPE="2"/>
-    <Account ID="400" ACCOUNTCODE="28050" DESCRIPTION="Cheque Account" ISENABLED="1" TYPE="1"/>
+  <Account ID="1100" ACCOUNTCODE="65387" DESCRIPTION="Voucher underpayment" ISENABLED="1" TYPE="6"/>
+  <Account ID="200" ACCOUNTCODE="11305" DESCRIPTION="Trade debtors" ISENABLED="1" TYPE="1"/>
+  <Account ID="500" ACCOUNTCODE="28000" DESCRIPTION="Voucher liability" ISENABLED="1" TYPE="2"/>
+  <Account ID="100" ACCOUNTCODE="11103" DESCRIPTION="Cheque Account" ISENABLED="1" TYPE="1"/>
+  <Account ID="300" ACCOUNTCODE="11600" DESCRIPTION="GST payable to suppliers" ISENABLED="1" TYPE="1"/>
+  <Account ID="600" ACCOUNTCODE="21600" DESCRIPTION="GST receivable from customers" ISENABLED="1" TYPE="2"/>
+  <Account ID="400" ACCOUNTCODE="28050" DESCRIPTION="Cheque Account" ISENABLED="1" TYPE="1"/>
 
 
-    <!--PaymentIn with 2 PaymentInLines and incorrect AccountTransactions-->
-    <AccountTransaction ID="23553" accountId="1100" amount="480" tableName="P" foreignRecordId="14013" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
-    <AccountTransaction ID="23557" accountId="200" amount="-480" tableName="P" foreignRecordId="14013" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
-    <AccountTransaction ID="23559" accountId="1100" amount="-480" tableName="P" foreignRecordId="14013" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
-    <AccountTransaction ID="23563" accountId="500" amount="-480" tableName="P" foreignRecordId="14013" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
+  <!--PaymentIn with 2 PaymentInLines and incorrect AccountTransactions-->
+  <AccountTransaction ID="23553" accountId="1100" amount="480" tableName="P" foreignRecordId="14013"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
+  <AccountTransaction ID="23557" accountId="200" amount="-480" tableName="P" foreignRecordId="14013"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
+  <AccountTransaction ID="23559" accountId="1100" amount="-480" tableName="P" foreignRecordId="14013"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
+  <AccountTransaction ID="23563" accountId="500" amount="-480" tableName="P" foreignRecordId="14013"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
 
-    <AccountTransaction ID="23555" accountId="1100" amount="480" tableName="P" foreignRecordId="14019" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
-    <AccountTransaction ID="23561" accountId="200" amount="-480" tableName="P" foreignRecordId="14019" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
-    <AccountTransaction ID="23565" accountId="1100" amount="-480" tableName="P" foreignRecordId="14019" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
-    <AccountTransaction ID="23567" accountId="500" amount="-480" tableName="P" foreignRecordId="14019" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
+  <AccountTransaction ID="23555" accountId="1100" amount="480" tableName="P" foreignRecordId="14019"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
+  <AccountTransaction ID="23561" accountId="200" amount="-480" tableName="P" foreignRecordId="14019"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
+  <AccountTransaction ID="23565" accountId="1100" amount="-480" tableName="P" foreignRecordId="14019"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
+  <AccountTransaction ID="23567" accountId="500" amount="-480" tableName="P" foreignRecordId="14019"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
 
-    <Contact id="7234" isCompany="1" isStudent="0" isTutor="0" lastName="Weave Youth and Community Services - Strawberry Hills" allowEmail="0" allowPost="0" allowSms="0"
-             deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" uniqueCode="mDmFBmkZds3VSgor"/>
-    <Contact id="9675" isCompany="1" isStudent="0" isTutor="0" lastName="Weave Community Hub" allowEmail="0" allowPost="0" allowSms="0"
-             deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" uniqueCode="DwLNLPpjQKa6RyxE"/>
+  <Contact id="7234" isCompany="1" isStudent="0" isTutor="0"
+           lastName="Weave Youth and Community Services - Strawberry Hills" allowEmail="0" allowPost="0" allowSms="0"
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" uniqueCode="mDmFBmkZds3VSgor"/>
+  <Contact id="9675" isCompany="1" isStudent="0" isTutor="0" lastName="Weave Community Hub" allowEmail="0" allowPost="0"
+           allowSms="0"
+           deliveryStatusEmail="0" deliveryStatusPost="0" deliveryStatusSms="0" uniqueCode="DwLNLPpjQKa6RyxE"/>
 
-    <PaymentMethod id="800" name="Voucher" accountId="100" active="1" type="8" reconcilable="0" bankedAutomatically="1"/>
+  <PaymentMethod id="800" name="Voucher" accountId="100" active="1" type="8" reconcilable="0" bankedAutomatically="1"/>
 
-    <PaymentIn ID="10957" accountInId="500" amount="480" status="3" confirmationStatus="3" paymentMethodId="800" payerId="7234" source="O" paymentDate="2017-11-15" reconciled="0"/>
+  <PaymentIn ID="10957" accountInId="500" amount="480" status="3" confirmationStatus="3" paymentMethodId="800"
+             payerId="7234" source="O" paymentDate="2017-11-15" reconciled="0"/>
 
-    <Invoice allowAutoPay="1" id="6413" debtorsAccountId="200" amoutOwing="0" contactId="7234" type="1" confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-09-04" invoiceNumber="6447"
-             dateDue="2017-10-30"/>
-    <Invoice allowAutoPay="1" id="6423" debtorsAccountId="200" amoutOwing="0" contactId="7234" type="1" confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-09-05" invoiceNumber="6458"
-             dateDue="2017-10-30"/>
-    <Invoice allowAutoPay="1" id="10333" debtorsAccountId="200" amoutOwing="0" contactId="9675" type="1" confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-11-15" invoiceNumber="8760"
-             dateDue="2017-12-15"/>
+  <Invoice allowAutoPay="1" id="6413" debtorsAccountId="200" amoutOwing="0" contactId="7234" type="1"
+           confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-09-04" invoiceNumber="6447"
+           dateDue="2017-10-30"/>
+  <Invoice allowAutoPay="1" id="6423" debtorsAccountId="200" amoutOwing="0" contactId="7234" type="1"
+           confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-09-05" invoiceNumber="6458"
+           dateDue="2017-10-30"/>
+  <Invoice allowAutoPay="1" id="10333" debtorsAccountId="200" amoutOwing="0" contactId="9675" type="1"
+           confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-11-15" invoiceNumber="8760"
+           dateDue="2017-12-15"/>
 
-    <PaymentInLine ID="14013" accountOutId="200" amount="200" invoiceId="6413" paymentInId="10957"/>
-    <PaymentInLine ID="14019" accountOutId="200" amount="280" invoiceId="6423" paymentInId="10957"/>
-    
-    
-    <Tax id="3" isGstTaxType="0" PAYABLETOSUPPLIERACCOUNTID="300" RECEIVABLEFROMSTUDENTACCOUNTID="600" TAXCODE="*"/>
-
-    <InvoiceLine id="12437" accountId="500" invoiceId="10333" prepaidFeesAccountId="400" discountEachExTax="0" prepaidFeesRemaining="0" priceEachExTax="2120" quantity="1" taxEach="0"
-                 taxId="3" TITLE="Training Prepayment Voucher"/>
-
-    <Product id="20" isWebVisible="0" taxAdjustment="0" taxId="3" sku="Voucher" expiryDays="365" expiryType="1" isOnSale="1" liabilityAccountId="500"
-             name="Training Prepayment Voucher" type="3"/>
-
-    <ProductItem id="175" type="3" productId="20" invoiceLineId="12437" code="Mj3NWRzx" value="0" redeemedCoursesCount="0" status="3" source="O" valueOnPurchase="2120"
-                 confirmationStatus="1"/>
-
-    <Voucher_PaymentIn id="53" paymentInId="10957" voucherId="175" enrolmentsCount="0" status="0"/>
+  <PaymentInLine ID="14013" accountOutId="200" amount="200" invoiceId="6413" paymentInId="10957"/>
+  <PaymentInLine ID="14019" accountOutId="200" amount="280" invoiceId="6423" paymentInId="10957"/>
 
 
-    <!--PaymentIn with 1 PaymentInLine and correct AccountTransactions-->
-    <AccountTransaction ID="24555" accountId="1100" amount="100" tableName="P" foreignRecordId="14021" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
-    <AccountTransaction ID="24561" accountId="200" amount="-100" tableName="P" foreignRecordId="14021" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
-    <AccountTransaction ID="24565" accountId="1100" amount="-100" tableName="P" foreignRecordId="14021" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
-    <AccountTransaction ID="24567" accountId="500" amount="-100" tableName="P" foreignRecordId="14021" createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
-                        transactionDate="2017-11-15"/>
+  <Tax id="3" isGstTaxType="0" PAYABLETOSUPPLIERACCOUNTID="300" RECEIVABLEFROMSTUDENTACCOUNTID="600" TAXCODE="*"/>
 
-    <PaymentMethod id="900" name="Voucher" accountId="100" active="1" type="8" reconcilable="0" bankedAutomatically="1"/>
+  <InvoiceLine id="12437" accountId="500" invoiceId="10333" prepaidFeesAccountId="400" discountEachExTax="0"
+               prepaidFeesRemaining="0" priceEachExTax="2120" quantity="1" taxEach="0"
+               taxId="3" TITLE="Training Prepayment Voucher"/>
 
-    <PaymentIn ID="11000" accountInId="500" amount="100" status="3" confirmationStatus="3" paymentMethodId="800" payerId="7234" source="O" paymentDate="2017-11-15" reconciled="0"/>
+  <Product id="20" isWebVisible="0" taxAdjustment="0" taxId="3" sku="Voucher" expiryDays="365" expiryType="1"
+           isOnSale="1" liabilityAccountId="500"
+           name="Training Prepayment Voucher" type="3"/>
 
-    <Invoice allowAutoPay="1" id="6433" debtorsAccountId="200" amoutOwing="0" contactId="7234" type="1" confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-09-04" invoiceNumber="6500"
-             dateDue="2017-10-30"/>
+  <ProductItem id="175" type="3" productId="20" invoiceLineId="12437" code="Mj3NWRzx" value="0" redeemedCoursesCount="0"
+               status="3" source="O" valueOnPurchase="2120"
+               confirmationStatus="1"/>
 
-    <PaymentInLine ID="14021" accountOutId="200" amount="100" invoiceId="6433" paymentInId="11000"/>
+  <Voucher_PaymentIn id="53" paymentInId="10957" voucherId="175" enrolmentsCount="0" status="0"/>
+
+
+  <!--PaymentIn with 1 PaymentInLine and correct AccountTransactions-->
+  <AccountTransaction ID="24555" accountId="1100" amount="100" tableName="P" foreignRecordId="14021"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
+  <AccountTransaction ID="24561" accountId="200" amount="-100" tableName="P" foreignRecordId="14021"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
+  <AccountTransaction ID="24565" accountId="1100" amount="-100" tableName="P" foreignRecordId="14021"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
+  <AccountTransaction ID="24567" accountId="500" amount="-100" tableName="P" foreignRecordId="14021"
+                      createdOn="2017-11-15 16:52:11" modifiedOn="2017-11-15 16:52:11"
+                      transactionDate="2017-11-15"/>
+
+  <PaymentMethod id="900" name="Voucher" accountId="100" active="1" type="8" reconcilable="0" bankedAutomatically="1"/>
+
+  <PaymentIn ID="11000" accountInId="500" amount="100" status="3" confirmationStatus="3" paymentMethodId="800"
+             payerId="7234" source="O" paymentDate="2017-11-15" reconciled="0"/>
+
+  <Invoice allowAutoPay="1" id="6433" debtorsAccountId="200" amoutOwing="0" contactId="7234" type="1"
+           confirmationStatus="3" source="O" overdue="0" invoiceDate="2017-09-04" invoiceNumber="6500"
+           dateDue="2017-10-30"/>
+
+  <PaymentInLine ID="14021" accountOutId="200" amount="100" invoiceId="6433" paymentInId="11000"/>
 </dataset>

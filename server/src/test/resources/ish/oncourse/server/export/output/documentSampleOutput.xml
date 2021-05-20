@@ -1,39 +1,39 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
-    <document id='1'>
-        <createdOn>15-6-2020 23:09:02</createdOn>
-        <modifiedOn>15-6-2020 23:09:02</modifiedOn>
-        <fileName>Screen</fileName>
-        <fileType>image/png</fileType>
-        <securityLevel>Private</securityLevel>
-        <description>testDescription1</description>
-        <isShared>false</isShared>
-        <isRemoved>false</isRemoved>
-        <added>Mon Jun 15 23:08:57 UTC 2020</added>
-        <fileUUID>68a12519-afb1-44b2-99e8-8fc7b31a9d6f</fileUUID>
-    </document>
-    <document id='2'>
-        <createdOn>22-5-2020 23:01:44</createdOn>
-        <modifiedOn>22-5-2020 23:01:44</modifiedOn>
-        <fileName>Text</fileName>
-        <fileType>text/csv</fileType>
-        <securityLevel>Website</securityLevel>
-        <description>testDescription2</description>
-        <isShared>true</isShared>
-        <isRemoved>false</isRemoved>
-        <added>Fri May 22 23:01:44 UTC 2020</added>
-        <fileUUID>00cc4893-9010-4582-a5ee-156381ed6e1f</fileUUID>
-    </document>
-    <document id='3'>
-        <createdOn>24-4-2020 20:58:03</createdOn>
-        <modifiedOn>24-4-2020 20:58:03</modifiedOn>
-        <fileName>Photo</fileName>
-        <fileType>image/png</fileType>
-        <securityLevel>Private</securityLevel>
-        <description>testDescription3</description>
-        <isShared>false</isShared>
-        <isRemoved>true</isRemoved>
-        <added>Fri Apr 24 20:57:58 UTC 2020</added>
-        <fileUUID>385e1153-5ee7-4d7b-bef0-53f06d84b1eb</fileUUID>
-    </document>
+  <document id='1'>
+    <createdOn>15-6-2020 23:09:02</createdOn>
+    <modifiedOn>15-6-2020 23:09:02</modifiedOn>
+    <fileName>Screen</fileName>
+    <fileType>image/png</fileType>
+    <securityLevel>Private</securityLevel>
+    <description>testDescription1</description>
+    <isShared>false</isShared>
+    <isRemoved>false</isRemoved>
+    <added>Mon Jun 15 23:08:57 UTC 2020</added>
+    <fileUUID>68a12519-afb1-44b2-99e8-8fc7b31a9d6f</fileUUID>
+  </document>
+  <document id='2'>
+    <createdOn>22-5-2020 23:01:44</createdOn>
+    <modifiedOn>22-5-2020 23:01:44</modifiedOn>
+    <fileName>Text</fileName>
+    <fileType>text/csv</fileType>
+    <securityLevel>Website</securityLevel>
+    <description>testDescription2</description>
+    <isShared>true</isShared>
+    <isRemoved>false</isRemoved>
+    <added>Fri May 22 23:01:44 UTC 2020</added>
+    <fileUUID>00cc4893-9010-4582-a5ee-156381ed6e1f</fileUUID>
+  </document>
+  <document id='3'>
+    <createdOn>24-4-2020 20:58:03</createdOn>
+    <modifiedOn>24-4-2020 20:58:03</modifiedOn>
+    <fileName>Photo</fileName>
+    <fileType>image/png</fileType>
+    <securityLevel>Private</securityLevel>
+    <description>testDescription3</description>
+    <isShared>false</isShared>
+    <isRemoved>true</isRemoved>
+    <added>Fri Apr 24 20:57:58 UTC 2020</added>
+    <fileUUID>385e1153-5ee7-4d7b-bef0-53f06d84b1eb</fileUUID>
+  </document>
 </data>

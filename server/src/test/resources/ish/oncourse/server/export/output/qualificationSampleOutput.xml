@@ -1,31 +1,31 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
-    <qualification id='1'>
-        <title>Qualification 1</title>
-        <nationalCode>QUALCODE1</nationalCode>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <isAccreditedCourse>Accredited course</isAccreditedCourse>
-        <level>Level 1</level>
-        <nominalHours>3.50</nominalHours>
-        <reviewDate>2013-01-01</reviewDate>
-        <anzsco>ANZSC1</anzsco>
-        <fieldOfEducation>field1</fieldOfEducation>
-        <isOffered>true</isOffered>
-        <newApprenticeship>text1</newApprenticeship>
-    </qualification>
-    <qualification id='2'>
-        <title>Qualification 2</title>
-        <nationalCode>QUALCODE2</nationalCode>
-        <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
-        <createdOn>2013-01-01T00:00:00Z</createdOn>
-        <isAccreditedCourse>Accredited course</isAccreditedCourse>
-        <level>Level 2</level>
-        <nominalHours>2.00</nominalHours>
-        <reviewDate>2013-01-01</reviewDate>
-        <anzsco>ANZSC2</anzsco>
-        <fieldOfEducation>field2</fieldOfEducation>
-        <isOffered>true</isOffered>
-        <newApprenticeship>text2</newApprenticeship>
-    </qualification>
+  <qualification id='1'>
+    <title>Qualification 1</title>
+    <nationalCode>QUALCODE1</nationalCode>
+    <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
+    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <isAccreditedCourse>Accredited course</isAccreditedCourse>
+    <level>Level 1</level>
+    <nominalHours>3.50</nominalHours>
+    <reviewDate>2013-01-01</reviewDate>
+    <anzsco>ANZSC1</anzsco>
+    <fieldOfEducation>field1</fieldOfEducation>
+    <isOffered>true</isOffered>
+    <newApprenticeship>text1</newApprenticeship>
+  </qualification>
+  <qualification id='2'>
+    <title>Qualification 2</title>
+    <nationalCode>QUALCODE2</nationalCode>
+    <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
+    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <isAccreditedCourse>Accredited course</isAccreditedCourse>
+    <level>Level 2</level>
+    <nominalHours>2.00</nominalHours>
+    <reviewDate>2013-01-01</reviewDate>
+    <anzsco>ANZSC2</anzsco>
+    <fieldOfEducation>field2</fieldOfEducation>
+    <isOffered>true</isOffered>
+    <newApprenticeship>text2</newApprenticeship>
+  </qualification>
 </data>

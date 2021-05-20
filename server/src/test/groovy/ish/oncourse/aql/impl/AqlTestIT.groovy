@@ -5,49 +5,35 @@
 
 package ish.oncourse.aql.impl
 
-import ish.CayenneIshTestCase
+import groovy.transform.CompileStatic
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.SessionTest
-import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-class AqlTestIT extends CayenneIshTestCase {
+@CompileStatic
+@DatabaseSetup(readOnly = true, value = "ish/oncourse/aql/SyntheticPathTestDataSet.xml")
+class AqlTestIT extends TestWithDatabase {
 
-    private DataContext cayenneContext
-    private AqlService aqlService
-
-    @Before
-    void setup() throws Exception {
-        wipeTables()
-        InputStream st = SessionTest.class.getClassLoader().getResourceAsStream("ish/oncourse/aql/SyntheticPathTestDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        executeDatabaseOperation(dataSet)
-        cayenneContext = injector.getInstance(ICayenneService.class).getNewReadonlyContext()
-        aqlService = new AntlrAqlService()
-    }
+    private AqlService aqlService = new AntlrAqlService()
 
     @Test
     void testContactRootTags() {
         CompilationResult result = aqlService
                 .compile("#ContactTag",
                         Contact.class, cayenneContext)
-        assertTrue(result.getCayenneExpression().isPresent())
-        assertTrue(result.getErrors().isEmpty())
+        Assertions.assertTrue(result.getCayenneExpression().isPresent())
+        Assertions.assertTrue(result.getErrors().isEmpty())
 
         List<Contact> contacts = ObjectSelect.query(Contact)
                 .where(result.getCayenneExpression().get())
                 .select(cayenneContext)
-        assertEquals(1, contacts.size())
-        assertEquals("1abc", contacts.get(0).uniqueCode)
+        Assertions.assertEquals(1, contacts.size())
+        Assertions.assertEquals("1abc", contacts.get(0).uniqueCode)
     }
 
     @Test
@@ -55,14 +41,14 @@ class AqlTestIT extends CayenneIshTestCase {
         CompilationResult result = aqlService
                 .compile("studentCourseClass #CourseChildTag",
                         Contact.class, cayenneContext)
-        assertTrue(result.getCayenneExpression().isPresent())
-        assertTrue(result.getErrors().isEmpty())
+        Assertions.assertTrue(result.getCayenneExpression().isPresent())
+        Assertions.assertTrue(result.getErrors().isEmpty())
 
         List<Contact> contacts = ObjectSelect.query(Contact)
                 .where(result.getCayenneExpression().get())
                 .select(cayenneContext)
-        assertEquals(1, contacts.size())
-        assertEquals("1abc", contacts.get(0).uniqueCode)
+        Assertions.assertEquals(1, contacts.size())
+        Assertions.assertEquals("1abc", contacts.get(0).uniqueCode)
     }
 
     @Test
@@ -70,14 +56,14 @@ class AqlTestIT extends CayenneIshTestCase {
         CompilationResult result = aqlService
                 .compile("tutorCourseClass #CourseChildTag",
                         Contact.class, cayenneContext)
-        assertTrue(result.getCayenneExpression().isPresent())
-        assertTrue(result.getErrors().isEmpty())
+        Assertions.assertTrue(result.getCayenneExpression().isPresent())
+        Assertions.assertTrue(result.getErrors().isEmpty())
 
         List<Contact> contacts = ObjectSelect.query(Contact)
                 .where(result.getCayenneExpression().get())
                 .select(cayenneContext)
-        assertEquals(1, contacts.size())
-        assertEquals("1abc", contacts.get(0).uniqueCode)
+        Assertions.assertEquals(1, contacts.size())
+        Assertions.assertEquals("1abc", contacts.get(0).uniqueCode)
     }
 
     @Test
@@ -85,16 +71,16 @@ class AqlTestIT extends CayenneIshTestCase {
         CompilationResult result = aqlService
                 .compile("messages is empty",
                         Contact.class, cayenneContext)
-        assertTrue(result.getCayenneExpression().isPresent())
-        assertTrue(result.getErrors().isEmpty())
+        Assertions.assertTrue(result.getCayenneExpression().isPresent())
+        Assertions.assertTrue(result.getErrors().isEmpty())
 
         List<Contact> contacts = ObjectSelect.query(Contact)
                 .where(result.getCayenneExpression().get())
                 .orderBy(Contact.UNIQUE_CODE.asc())
                 .select(cayenneContext)
-        assertEquals(2, contacts.size())
-        assertEquals("2abc", contacts.get(0).uniqueCode)
-        assertEquals("2abcd", contacts.get(1).uniqueCode)
+        Assertions.assertEquals(2, contacts.size())
+        Assertions.assertEquals("2abc", contacts.get(0).uniqueCode)
+        Assertions.assertEquals("2abcd", contacts.get(1).uniqueCode)
     }
 
     @Test
@@ -102,25 +88,25 @@ class AqlTestIT extends CayenneIshTestCase {
         CompilationResult result1 = aqlService
                 .compile("studentEnrolments is empty",
                         Contact.class, cayenneContext)
-        assertTrue(result1.getCayenneExpression().isPresent())
-        assertTrue(result1.getErrors().isEmpty())
+        Assertions.assertTrue(result1.getCayenneExpression().isPresent())
+        Assertions.assertTrue(result1.getErrors().isEmpty())
 
         List<Contact> contacts = ObjectSelect.query(Contact)
                 .where(result1.getCayenneExpression().get())
                 .orderBy(Contact.UNIQUE_CODE.asc())
                 .select(cayenneContext)
-        assertEquals(2, contacts.size())
+        Assertions.assertEquals(2, contacts.size())
 
         CompilationResult result2 = aqlService
                 .compile("student.enrolments is empty",
                         Contact.class, cayenneContext)
-        assertTrue(result2.getCayenneExpression().isPresent())
-        assertTrue(result2.getErrors().isEmpty())
+        Assertions.assertTrue(result2.getCayenneExpression().isPresent())
+        Assertions.assertTrue(result2.getErrors().isEmpty())
 
         List<Contact> contacts2 = ObjectSelect.query(Contact)
                 .where(result2.getCayenneExpression().get())
                 .orderBy(Contact.UNIQUE_CODE.asc())
                 .select(cayenneContext)
-        assertEquals(contacts, contacts2)
+        Assertions.assertEquals(contacts, contacts2)
     }
 }

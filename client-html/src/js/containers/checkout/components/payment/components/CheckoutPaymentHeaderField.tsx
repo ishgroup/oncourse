@@ -95,7 +95,7 @@ interface PaymentHeaderFieldProps {
 
 const noPaymentItems = [{ value: "No payment", label: "No payment" }];
 
-const validateVoucher = val => !val || val.length > 7 ? undefined : "Voucher code should be 8 or more characters long";
+const validateVoucher = val => (!val || val.length > 7 ? undefined : "Voucher code should be 8 or more characters long");
 
 const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props => {
   const {
@@ -181,7 +181,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
 
     checkoutSummary.previousOwing.invoices.forEach(inv => {
       if (inv.checked && inv.paymentPlans.length) {
-        inv.paymentPlans.forEach(mergeDuplicate);
+        inv.paymentPlans.map(({ date, ...rest }) => ({ ...rest })).forEach(mergeDuplicate);
       }
     });
 
@@ -402,15 +402,10 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
 
       const invoiceTerms = payerContact.invoiceTerms || defaultTerms;
 
-      let amount = decimalMinus(totalIncOwing, payNowExCredit);
-
-      if (amount > checkoutSummary.finalTotal) {
-        amount = checkoutSummary.finalTotal;
-      }
+      const amount = decimalMinus(totalIncOwing, payNowExCredit);
 
       if (amount > 0) {
         const paymentPlan = paymentPlans.length ? {
-          date: today,
           amount
         } : {
           date: addDays(today, Number(invoiceTerms)),
@@ -420,7 +415,9 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
 
         planItems.push(paymentPlan);
 
-        dispatch(checkoutUpdateSummaryField("invoiceDueDate", format(paymentPlan.date, YYYY_MM_DD_MINUSED)));
+        if (paymentPlan.date) {
+          dispatch(checkoutUpdateSummaryField("invoiceDueDate", format(paymentPlan.date, YYYY_MM_DD_MINUSED)));
+        }
       }
     }
 
@@ -446,28 +443,12 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
       });
     }
 
-    let payLaterTotal = 0;
-    let payLaterAdjustment = 0;
-
-    checkoutSummary.previousOwing.invoices.forEach(i => {
-      if (i.checked) {
-        payLaterTotal = decimalPlus(payLaterTotal, i.paymentPlans.length ? 0 : parseFloat(i.amountOwing));
-      } else {
-        payLaterAdjustment = decimalPlus(payLaterAdjustment, parseFloat(i.amountOwing));
-      }
-    });
-
-    payLaterTotal = decimalPlus(payLaterTotal > 0 ? decimalMinus(payLaterTotal, payNowExCredit) : 0, payLaterAdjustment);
-
     const plansFinal = [
       {
         amount: checkoutSummary.payNowTotal,
       },
-      ...planItems,
       ...updatedPaymentPlans,
-      {
-        amount: payLaterTotal > 0 ? payLaterTotal : 0,
-      }
+      ...planItems
     ];
 
     dispatch(change(form, "paymentPlans", plansFinal));

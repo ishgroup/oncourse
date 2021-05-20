@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<TrainingPackage id="1" nationalISC="CODE1" title="Training Package 1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-	<TrainingPackage id="2" nationalISC="CODE2" title="Training Package 2" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <TrainingPackage id="1" nationalISC="CODE1" title="Training Package 1" createdOn="2013-01-01 00:00:00"
+                   modifiedOn="2013-01-01 00:00:00"/>
+  <TrainingPackage id="2" nationalISC="CODE2" title="Training Package 2" createdOn="2013-01-01 00:00:00"
+                   modifiedOn="2013-01-01 00:00:00"/>
 </dataset>

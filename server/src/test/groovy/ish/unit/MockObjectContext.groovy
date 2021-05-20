@@ -19,16 +19,8 @@
 
 package ish.unit
 
-
-import org.apache.cayenne.DataChannel
-import org.apache.cayenne.DeleteDenyException
-import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.ObjectId
-import org.apache.cayenne.Persistent
-import org.apache.cayenne.QueryResponse
-import org.apache.cayenne.ResultBatchIterator
-import org.apache.cayenne.ResultIterator
-import org.apache.cayenne.ResultIteratorCallback
+import groovy.transform.CompileStatic
+import org.apache.cayenne.*
 import org.apache.cayenne.event.EventManager
 import org.apache.cayenne.graph.GraphDiff
 import org.apache.cayenne.graph.GraphManager
@@ -39,36 +31,37 @@ import org.apache.cayenne.query.Select
 /**
  * A noop ObjectContext used for unit testing.
  */
+@CompileStatic
 class MockObjectContext implements ObjectContext {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L
     protected GraphManager graphManager
 
     MockObjectContext() {
-		super()
+        super()
     }
 
     MockObjectContext(GraphManager graphManager) {
-		this.graphManager = graphManager
+        this.graphManager = graphManager
     }
 
     EntityResolver getEntityResolver() {
-		return null
+        return null
     }
 
     DataChannel getChannel() {
-		return null
+        return null
     }
 
     GraphManager getGraphManager() {
-		return this.graphManager
+        return this.graphManager
     }
 
     Persistent localObject(ObjectId id, Object prototype) {
-		return null
+        return null
     }
 
     void commitChangesToParent() {}
@@ -78,56 +71,56 @@ class MockObjectContext implements ObjectContext {
     void rollbackChanges() {}
 
     Collection newObjects() {
-		return null
+        return null
     }
 
     Collection deletedObjects() {
-		return Collections.emptyList()
+        return Collections.emptyList()
     }
 
     Collection modifiedObjects() {
-		return Collections.emptyList()
+        return Collections.emptyList()
     }
 
     List performQuery(Query query) {
-		return Collections.emptyList()
+        return Collections.emptyList()
     }
 
-	@Override
+    @Override
     <T> List<T> select(Select<T> query) {
-		return null
+        return null
     }
 
-	@Override
+    @Override
     <T> void iterate(Select<T> query, ResultIteratorCallback<T> callback) {
-		
-	}
 
-	@Override
-    <T> ResultIterator<T> iterator(Select<T> query) {
-		return null
     }
-	
-	@Override
+
+    @Override
+    <T> ResultIterator<T> iterator(Select<T> query) {
+        return null
+    }
+
+    @Override
     <T> ResultBatchIterator<T> batchIterator(Select<T> query, int size) {
-		return null
+        return null
     }
 
     int[] performNonSelectingQuery(Query query) {
-		return null
+        return null
     }
 
     void commitChanges() {
 
-	}
+    }
 
     void deleteObject(Object object) {}
 
-	/**
-	 * @see org.apache.cayenne.ObjectContext#newObject(java.lang.Class)
-	 */
-	def <T> T newObject(Class<T> arg0) {
-		return null
+    /**
+     * @see org.apache.cayenne.ObjectContext#newObject(java.lang.Class)
+     */
+    def <T> T newObject(Class<T> arg0) {
+        return null
     }
 
     void registerNewObject(Object object) {}
@@ -141,83 +134,83 @@ class MockObjectContext implements ObjectContext {
     void removedFromCollectionProperty(Persistent object, String property, Persistent removed) {}
 
     Collection uncommittedObjects() {
-		return Collections.emptyList()
+        return Collections.emptyList()
     }
 
     QueryResponse performGenericQuery(Query queryPlan) {
-		return null
+        return null
     }
 
-	/**
-	 * @see org.apache.cayenne.ObjectContext#getUserProperty(java.lang.String)
-	 */
-	Object getUserProperty(String arg0) {
-		return null
+    /**
+     * @see org.apache.cayenne.ObjectContext#getUserProperty(java.lang.String)
+     */
+    Object getUserProperty(String arg0) {
+        return null
     }
 
-	/**
-	 * @see org.apache.cayenne.ObjectContext#hasChanges()
-	 */
-	boolean hasChanges() {
-		return false
+    /**
+     * @see org.apache.cayenne.ObjectContext#hasChanges()
+     */
+    boolean hasChanges() {
+        return false
     }
 
-	/**
-	 * @see org.apache.cayenne.ObjectContext#invalidateObjects(java.util.Collection)
-	 */
-	void invalidateObjects(Collection arg0) {}
+    /**
+     * @see org.apache.cayenne.ObjectContext#invalidateObjects(java.util.Collection)
+     */
+    void invalidateObjects(Collection arg0) {}
 
-	/**
-	 * @see org.apache.cayenne.ObjectContext#setUserProperty(java.lang.String, java.lang.Object)
-	 */
-	void setUserProperty(String arg0, Object arg1) {}
+    /**
+     * @see org.apache.cayenne.ObjectContext#setUserProperty(java.lang.String, java.lang.Object)
+     */
+    void setUserProperty(String arg0, Object arg1) {}
 
-	/**
-	 * @see org.apache.cayenne.ObjectContext#deleteObjects(java.util.Collection)
-	 */
-	void deleteObjects(Collection<?> arg0) throws DeleteDenyException {}
+    /**
+     * @see org.apache.cayenne.ObjectContext#deleteObjects(java.util.Collection)
+     */
+    void deleteObjects(Collection<?> arg0) throws DeleteDenyException {}
 
-	/**
-	 * @see org.apache.cayenne.ObjectContext#localObject(org.apache.cayenne.Persistent)
-	 */
-	def <T extends Persistent> T localObject(T objectFromAnotherContext) {
-		return null
+    /**
+     * @see org.apache.cayenne.ObjectContext#localObject(org.apache.cayenne.Persistent)
+     */
+    def <T extends Persistent> T localObject(T objectFromAnotherContext) {
+        return null
     }
 
-	/**
-	 * @see org.apache.cayenne.ObjectContext#deleteObjects(T[])
-	 */
-	def <T> void deleteObjects(T... objects) throws DeleteDenyException {}
+    /**
+     * @see org.apache.cayenne.ObjectContext#deleteObjects(T [ ])
+     */
+    def <T> void deleteObjects(T... objects) throws DeleteDenyException {}
 
-	/**
-	 * @see org.apache.cayenne.ObjectContext#invalidateObjects(T[])
-	 */
-	def <T> void invalidateObjects(T... objects) {
+    /**
+     * @see org.apache.cayenne.ObjectContext#invalidateObjects(T [ ])
+     */
+    def <T> void invalidateObjects(T... objects) {
 
-	}
+    }
 
-	@Override
+    @Override
     <T> T selectOne(Select<T> query) {
-		return null
+        return null
     }
-	
-	@Override
+
+    @Override
     <T> T selectFirst(Select<T> query) {
-		return null
+        return null
     }
 
-	@Override
+    @Override
     GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType) {
-		return null
+        return null
     }
 
-	@Override
+    @Override
     EventManager getEventManager() {
-		return null
+        return null
     }
 
-	@Override
+    @Override
     QueryResponse onQuery(ObjectContext originatingContext, Query query) {
-		return null
+        return null
     }
 }

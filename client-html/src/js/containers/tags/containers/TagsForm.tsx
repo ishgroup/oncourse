@@ -19,7 +19,6 @@ import { AddCircle } from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "../../../common/components/buttons/Button";
 import FormField from "../../../common/components/form/form-fields/FormField";
-import HeaderTextField from "../../../common/components/form/form-fields/HeaderTextField";
 import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
 import AppBarHelpMenu from "../../../common/components/form/AppBarHelpMenu";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
@@ -37,6 +36,7 @@ import { getManualLink } from "../../../common/utils/getManualLink";
 import TagItemEditView from "../components/TagItemEditView";
 import { setNextLocation, showConfirm } from "../../../common/actions";
 import { getAllTags } from "../utils";
+import { ShowConfirmCaller } from "../../../model/common/Confirm";
 
 const styles = () => ({
   noTransform: {
@@ -56,7 +56,7 @@ interface Props {
   tags?: FormTag[];
   isNew?: boolean;
   redirectOnDelete?: () => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
 }
 
 interface FormProps extends Props {
@@ -166,7 +166,9 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
   }
 
   componentDidUpdate(prevProps) {
-    const { rootTag, submitSucceeded, fetch, nextLocation, setNextLocation, dirty, history } = this.props;
+    const {
+ rootTag, submitSucceeded, fetch, nextLocation, setNextLocation, dirty, history
+} = this.props;
 
     if (rootTag && (!prevProps.rootTag || prevProps.rootTag.id !== rootTag.id || submitSucceeded)) {
       setDragIndex(getAllTags([rootTag]));
@@ -334,7 +336,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
   removeChildTag = (parent, index, item) => {
     const { dispatch, values, openConfirm } = this.props;
 
-    const message = item.childrenCount
+    const confirmMessage = item.childrenCount
       ? `Deleting this tag will automatically delete ${item.childrenCount} 
     children tag${item.childrenCount === 1 ? "" : "s"}. ${
           item.taggedRecordsCount ? item.taggedRecordsCount + " records will be untagged. " : ""
@@ -353,7 +355,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       dispatch(change("TagsForm", "childTags", clone.childTags));
     };
 
-    openConfirm(onConfirm, message, "DELETE");
+    openConfirm({ onConfirm, confirmMessage, confirmButtonText: "DELETE" });
   };
 
   removeRequirement = index => {
@@ -584,8 +586,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onDelete: (id: number) => dispatch(deleteTag(id)),
   openTagEditView: (item: Tag, parent: string) => dispatch(updateTagEditViewState(item, true, parent)),
   closeTagEditView: () => dispatch(updateTagEditViewState({}, false, null)),
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: any, onCancel?: any, title?: string) =>
-    dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel, title)),
+  openConfirm: props => dispatch(showConfirm(props)),
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 

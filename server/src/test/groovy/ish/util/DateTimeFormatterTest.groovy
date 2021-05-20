@@ -5,17 +5,21 @@
 
 package ish.util
 
-import ish.IshTestCase
-import static org.junit.Assert.*
-import org.junit.BeforeClass
-import org.junit.Test
+import groovy.transform.CompileStatic
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 
+@CompileStatic
 class DateTimeFormatterTest {
 
-	private static HashMap<String, GregorianCalendar> dateList = new HashMap<>()
-    private static HashMap<String, String> dateList2 = new HashMap<>()
+    private static HashMap<String, GregorianCalendar> dateList = new HashMap<>()
+    private static TimeZone tz = TimeZone.getDefault()
 
-	@BeforeClass
+    @BeforeAll
     static void setUp() throws Exception {
         int currentYear = new GregorianCalendar().get(GregorianCalendar.YEAR)
         int currentMonth = new GregorianCalendar().get(GregorianCalendar.MONTH)
@@ -30,58 +34,67 @@ class DateTimeFormatterTest {
         dateList.put("+10d 08:05 AM", new GregorianCalendar(currentYear, currentMonth, currentDate + 10, 8, 5, 0))
         dateList.put("+10d 08:05 PM", new GregorianCalendar(currentYear, currentMonth, currentDate + 10, 20, 5, 0))
         dateList.put("+10d 08:05", new GregorianCalendar(currentYear, currentMonth, currentDate + 10, 8, 5, 0))
-
-        dateList2.put("2/10/04 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2/10/2004 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2/10/04 11:24", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2/10/2004 11:24AM", "Sat 2 Oct 2004 11:24am")
-
-        dateList2.put("2/10/04 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2\\10\\04 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2.10.04 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2,10,04 11:24 AM", "Sat 2 Oct 2004 11:24am")
-        dateList2.put("2-10-04 11:24 AM", "Sat 2 Oct 2004 11:24am")
-
-        dateList2.put("2/10/04", "Sat 2 Oct 2004 12am")
-
-        dateList2.put("2/5/06 3:30 p", "Tue 2 May 2006 3:30pm")
-        dateList2.put("2/5/06 15:30 p", "Tue 2 May 2006 3:30pm")
-
-        dateList2.put("2/5/06 15:30:21 p", "Tue 2 May 2006 3:30pm")
-
-        dateList2.put("Sun 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm")
-        dateList2.put("Wed 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm")
-        dateList2.put("Xxx 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm")
-        dateList2.put("Sun 18 Feb 2007 6:30 pm", "Sun 18 Feb 2007 6:30pm")
-        dateList2.put("Sun 18 Feb 2007 6:30 A", "Sun 18 Feb 2007 6:30am")
-        dateList2.put("Sun 18 Feb 2007 6:30x", "Sun 18 Feb 2007 6:30am")
-        dateList2.put("Sun 18 Feb 2007 6:30pmm", "Sun 18 Feb 2007 6:30pm")
     }
 
-	@Test
+    static Collection<Arguments> values() {
+        def data = [
+            ["2/10/04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2/10/2004 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2/10/04 11:24", "Sat 2 Oct 2004 11:24am"],
+            ["2/10/2004 11:24AM", "Sat 2 Oct 2004 11:24am"],
+
+            ["2/10/04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2\\10\\04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2.10.04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2,10,04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+            ["2-10-04 11:24 AM", "Sat 2 Oct 2004 11:24am"],
+
+            ["2/10/04", "Sat 2 Oct 2004 12am"],
+
+            ["2/5/06 3:30 p", "Tue 2 May 2006 3:30pm"],
+            ["2/5/06 15:30 p", "Tue 2 May 2006 3:30pm"],
+
+            ["2/5/06 15:30:21 p", "Tue 2 May 2006 3:30pm"],
+
+            ["Sun 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm"],
+            ["Wed 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm"],
+            ["Xxx 18 Feb 2007 6:30pm", "Sun 18 Feb 2007 6:30pm"],
+            ["Sun 18 Feb 2007 6:30 pm", "Sun 18 Feb 2007 6:30pm"],
+            ["Sun 18 Feb 2007 6:30 A", "Sun 18 Feb 2007 6:30am"],
+            ["Sun 18 Feb 2007 6:30x", "Sun 18 Feb 2007 6:30am"],
+            ["Sun 18 Feb 2007 6:30pmm", "Sun 18 Feb 2007 6:30pm"]
+        ]
+        Collection<Arguments> dataList = new ArrayList<>()
+        for (List test : data) {
+            dataList.add(Arguments.of(test[0], test[1]))
+        }
+        return dataList
+    }
+
+    @Test
     void testStringToValue() throws Exception {
-		for (Map.Entry<String, GregorianCalendar> entry : dateList.entrySet()) {
-			GregorianCalendar correctResult = entry.getValue()
+        for (Map.Entry<String, GregorianCalendar> entry : dateList.entrySet()) {
+            GregorianCalendar correctResult = entry.getValue()
             String stringInput = entry.getKey()
 
             Date d = DateTimeFormatter.parseDateTime(stringInput, TimeZone.getDefault())
             GregorianCalendar result = new GregorianCalendar()
             result.setTime(d)
 
-            assertEquals(stringInput + " year", correctResult.get(GregorianCalendar.YEAR), result.get(GregorianCalendar.YEAR))
-            assertEquals(stringInput + " month", correctResult.get(GregorianCalendar.MONTH), result.get(GregorianCalendar.MONTH))
-            assertEquals(stringInput + " day", correctResult.get(GregorianCalendar.DAY_OF_MONTH), result.get(GregorianCalendar.DAY_OF_MONTH))
+            Assertions.assertEquals(correctResult.get(GregorianCalendar.YEAR), result.get(GregorianCalendar.YEAR), stringInput + " year")
+            Assertions.assertEquals(correctResult.get(GregorianCalendar.MONTH), result.get(GregorianCalendar.MONTH), stringInput + " month")
+            Assertions.assertEquals(correctResult.get(GregorianCalendar.DAY_OF_MONTH), result.get(GregorianCalendar.DAY_OF_MONTH), stringInput + " day")
 
-            assertEquals(stringInput + " hour", correctResult.get(GregorianCalendar.HOUR), result.get(GregorianCalendar.HOUR))
-            assertEquals(stringInput + " minute", correctResult.get(GregorianCalendar.MINUTE), result.get(GregorianCalendar.MINUTE))
-            assertEquals(stringInput + " am/pm", correctResult.get(GregorianCalendar.AM_PM), result.get(GregorianCalendar.AM_PM))
+            Assertions.assertEquals(correctResult.get(GregorianCalendar.HOUR), result.get(GregorianCalendar.HOUR), stringInput + " hour")
+            Assertions.assertEquals(correctResult.get(GregorianCalendar.MINUTE), result.get(GregorianCalendar.MINUTE), stringInput + " minute")
+            Assertions.assertEquals(correctResult.get(GregorianCalendar.AM_PM), result.get(GregorianCalendar.AM_PM), stringInput + " am/pm")
         }
 
-	}
+    }
 
-	@Test
+    @Test
     void testValueToString() {
-		DateTimeFormatter instance = new DateTimeFormatter(TimeZone.getDefault())
+        DateTimeFormatter instance = new DateTimeFormatter(TimeZone.getDefault())
 
         GregorianCalendar gc = new GregorianCalendar()
         Date d = new Date()
@@ -97,12 +110,12 @@ class DateTimeFormatterTest {
 
         String expResult = "Fri 1 Oct 2004 11:20am"
         String result = instance.valueToString(d)
-        assertEquals(expResult, result)
+        Assertions.assertEquals(expResult, result)
     }
 
-	@Test
+    @Test
     void testValueToString2() {
-		DateTimeFormatter instance = new DateTimeFormatter(TimeZone.getDefault())
+        DateTimeFormatter instance = new DateTimeFormatter(TimeZone.getDefault())
 
         GregorianCalendar gc = new GregorianCalendar()
         Date d = new Date()
@@ -118,12 +131,12 @@ class DateTimeFormatterTest {
 
         String expResult = "Sun 13 Jun 1993 9:07pm"
         String result = instance.valueToString(d)
-        assertEquals(expResult, result)
+        Assertions.assertEquals(expResult, result)
     }
 
-	@Test
+    @Test
     void testValueToString3() {
-		DateTimeFormatter instance = new DateTimeFormatter(TimeZone.getDefault())
+        DateTimeFormatter instance = new DateTimeFormatter(TimeZone.getDefault())
 
         GregorianCalendar gc = new GregorianCalendar()
         Date d = new Date()
@@ -139,26 +152,22 @@ class DateTimeFormatterTest {
 
         String expResult = "Tue 1 Jan 2008 1:01am"
         String result = instance.valueToString(d)
-        assertEquals(expResult, result)
+        Assertions.assertEquals(expResult, result)
     }
 
-	@Test
-    void testBoth() throws Exception {
-		for (Map.Entry<String, String> entry : dateList2.entrySet()) {
-			String correctResult = entry.getValue()
-            String stringInput = entry.getKey()
+    @ParameterizedTest
+    @MethodSource("values")
+    void testBoth(String stringInput, String correctResult) throws Exception {
+        def d = DateTimeFormatter.parseDateTime(stringInput, tz)
+        def result = DateTimeFormatter.formatDateTime(d, tz)
+        Assertions.assertEquals(correctResult, result, stringInput)
+    }
 
-            String result = DateTimeFormatter.formatDateTime(DateTimeFormatter.parseDateTime(stringInput, TimeZone.getDefault()), TimeZone.getDefault())
-
-            assertEquals(stringInput, correctResult, result)
-        }
-	}
-
-	@Test
+    @Test
     void testDaylightSavingsDateTime() {
-		String dateTimeInput = "6/4/2008 11pm"
+        String dateTimeInput = "6/4/2008 11pm"
         Calendar cal = Calendar.getInstance()
         cal.setTime(DateTimeFormatter.parseDateTime(dateTimeInput, TimeZone.getDefault()))
-        assertEquals("DateTime parsed wrong", 23, cal.get(Calendar.HOUR_OF_DAY))
+        Assertions.assertEquals(23, cal.get(Calendar.HOUR_OF_DAY))
     }
 }

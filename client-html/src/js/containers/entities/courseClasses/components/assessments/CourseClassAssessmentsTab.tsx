@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { AssessmentClass, GradingType } from "@api/model";
 import { connect } from "react-redux";
 import MinifiedEntitiesList from "../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import CourseClassAssessmentItems from "./CourseClassAssessmentItem";
+import CourseClassAssessmentItems from "./CourseClassAssessmentItems";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { AssessmentClassExtended, CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
@@ -27,6 +27,7 @@ const assessmentInitial: AssessmentClass = {
   assessmentName: null,
   contactIds: [],
   moduleIds: [],
+  submissions: [],
   releaseDate: null,
   dueDate: null
 };
@@ -59,7 +60,8 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
         }
         const gradeType: GradingType = gradingTypes?.find(g => g.id === a.gradingTypeId);
 
-        if (gradeType && a.submissions.some(s => s.grade > gradeType.maxValue || s.grade < gradeType.minValue)) {
+        if (gradeType && a.submissions.some(s => typeof s.grade === "number"
+          && (s.grade > gradeType.maxValue || s.grade < gradeType.minValue))) {
           error = "Some assessments grades are invalid";
         }
       });
@@ -108,36 +110,37 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
 
   const deleteAssessmentItem = useCallback(
     (index: number) => {
-      showConfirm(
-        () => {
-          const onDeleteConfirm = () => {
-            dispatch(arrayRemove(form, "assessments", index));
-          };
+      showConfirm({
+          onConfirm: () => {
+            const onDeleteConfirm = () => {
+              dispatch(arrayRemove(form, "assessments", index));
+            };
 
-          const assessment = values.assessments[index];
+            const assessment = values.assessments[index];
 
-          if (assessment.id) {
-            CourseClassAssessmentService.validateDelete(assessment.id)
-              .then(() => {
-                onDeleteConfirm();
-                dispatch(
-                  addActionToQueue(
-                    deleteCourseClassAssessment(assessment.id),
-                    "DELETE",
-                    "AssessmentClass",
-                    assessment.id
-                  )
-                );
-              })
-              .catch(response => instantFetchErrorHandler(dispatch, response));
-            return;
-          }
-          dispatch(removeActionsFromQueue([{ entity: "AssessmentClass", id: assessment.temporaryId }]));
+            if (assessment.id) {
+              CourseClassAssessmentService.validateDelete(assessment.id)
+                .then(() => {
+                  onDeleteConfirm();
+                  dispatch(
+                    addActionToQueue(
+                      deleteCourseClassAssessment(assessment.id),
+                      "DELETE",
+                      "AssessmentClass",
+                      assessment.id
+                    )
+                  );
+                })
+                .catch(response => instantFetchErrorHandler(dispatch, response));
+              return;
+            }
+            dispatch(removeActionsFromQueue([{ entity: "AssessmentClass", id: assessment.temporaryId }]));
 
-          onDeleteConfirm();
-        },
-        "Assessment will be deleted permanently",
-        "Delete"
+            onDeleteConfirm();
+          },
+          confirmButtonText: "Delete",
+          confirmMessage: "Assessment will be deleted permanently"
+        }
       );
     },
     [values.assessments && values.assessments.length]

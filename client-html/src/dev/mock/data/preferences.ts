@@ -85,6 +85,23 @@ export function mockPreferences() {
         }
       ];
     }
+
+    if (enumName === "TwoFactorAuthStatus") {
+      return [
+        {
+          "value": "disabled",
+          "label": "Optional for all users"
+        },
+        {
+          "value": "enabled.admin",
+          "label": "Required for admin users"
+        },
+        {
+          "value": "enabled.all",
+          "label": "Required for all users"
+        }
+      ];
+    }
     return [];
   };
 
@@ -191,6 +208,14 @@ export function mockPreferences() {
     [Model.AccountDefaultCurrency.uniqueKey]: "AUD",
     [Model.AccountInvoiceTerms.uniqueKey]: "7",
     [Model.PaymentInfo.uniqueKey]: "Some payment info",
-    [Model.QePaymentDefaultZero.uniqueKey]: false
+    [Model.QePaymentDefaultZero.uniqueKey]: false,
+
+    // Security
+    [Model.SecurityAutoDisableInactiveAccount.uniqueKey]: true,
+    [Model.SecurityPasswordComplexity.uniqueKey]: true,
+    [Model.SecurityPasswordExpiryPeriod.uniqueKey]: 180,
+    [Model.SecurityTFAExpiryPeriod.uniqueKey]: 180,
+    [Model.SecurityNumberIncorrectLoginAttempts.uniqueKey]: 5,
+    [Model.SecurityTFAStatus.uniqueKey]: "disabled",
   };
 }

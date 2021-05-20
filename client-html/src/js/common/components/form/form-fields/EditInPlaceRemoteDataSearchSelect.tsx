@@ -15,6 +15,7 @@ import {
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../actions/CommonPlainRecordsActions";
+import { EntityName } from "../../../../model/entities/common";
 
 interface Props {
   onSearchChange: StringArgFunction;
@@ -23,15 +24,32 @@ interface Props {
   rowHeight?: number;
   items: any[];
   loading?: boolean;
+  entity: EntityName;
+  aqlFilter?: string;
+  aqlColumns?: string;
 }
 
-const EditInPlaceRemoteDataSearchSelect: React.FC<Props> = ({ onLoadMoreRows, onSearchChange, ...rest }) => {
+const EditInPlaceRemoteDataSearchSelect: React.FC<Props> = (
+  {
+    onLoadMoreRows,
+    onSearchChange,
+    entity,
+    aqlFilter,
+    aqlColumns,
+    ...rest
+  }
+) => {
+  useEffect(() => {
+    onSearchChange("");
+    return () => onSearchChange("");
+  }, []);
+
   const onInputChange = useCallback(debounce((input: string) => {
     onSearchChange(input);
     if (input) {
       onLoadMoreRows(0);
     }
-  }, 800), []);
+  }, 800), [aqlFilter, aqlColumns, entity]);
 
   const onLoadMoreRowsOwn = startIndex => {
     if (!rest.loading) {
@@ -42,22 +60,6 @@ const EditInPlaceRemoteDataSearchSelect: React.FC<Props> = ({ onLoadMoreRows, on
   return (
     <EditInPlaceSearchSelect {...rest as any} onInputChange={onInputChange} loadMoreRows={onLoadMoreRowsOwn} remoteData />
   );
-};
-
-const EntityResolver: React.FC<any> = (
-  {
-    entity,
-    aqlFilter,
-    aqlColumns,
-    ...rest
-  }
-) => {
-  useEffect(() => {
-    rest.onSearchChange("");
-    return () => rest.onSearchChange("");
-  }, []);
-
-  return <EditInPlaceRemoteDataSearchSelect {...rest} />;
 };
 
 const mapStateToProps = (state: State, ownProps) => ({
@@ -102,4 +104,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
   };
 };
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EntityResolver);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EditInPlaceRemoteDataSearchSelect);

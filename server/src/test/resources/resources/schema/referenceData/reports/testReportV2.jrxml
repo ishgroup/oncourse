@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TestReport" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="764" leftMargin="39" rightMargin="39" topMargin="28" bottomMargin="50">
-	<property name="name" value="Test Report"/>
-	<property name="entity" value="Enrolment"/>
-	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-	<property name="versionNumber" value="2"/>
-	<property name="keyCode" value="ish.onCourse.test"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="TestReport" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="764"
+              leftMargin="39" rightMargin="39" topMargin="28" bottomMargin="50">
+  <property name="name" value="Test Report"/>
+  <property name="entity" value="Enrolment"/>
+  <property name="isSubreport" value="false"/>
+  <property name="isVisible" value="true"/>
+  <property name="versionNumber" value="2"/>
+  <property name="keyCode" value="ish.onCourse.test"/>
 </jasperReport>

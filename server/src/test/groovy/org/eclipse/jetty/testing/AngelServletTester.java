@@ -5,6 +5,7 @@
 package org.eclipse.jetty.testing;
 
 import com.google.inject.Provider;
+import groovy.transform.CompileStatic;
 import ish.oncourse.server.AngelServerFactory;
 import ish.oncourse.server.PreferenceController;
 import org.eclipse.jetty.server.Connector;
@@ -24,34 +25,32 @@ import javax.servlet.Servlet;
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
 
-/**
- */
+@CompileStatic
 public class AngelServletTester extends ContainerLifeCycle {
 
-	private static PreferenceController prefController;
-	private static Provider<Server> serverProvider;
-	private static AngelServerFactory serverFactory;
+    private static PreferenceController prefController;
+    private static Provider<Server> serverProvider;
+    private static AngelServerFactory serverFactory;
 
 
-	public AngelServletTester(final Provider<Server> serverProvider,
-							  final PreferenceController prefController,
-							  final AngelServerFactory serverFactory) {
-		this("/",ServletContextHandler.SECURITY|ServletContextHandler.SESSIONS);
-		AngelServletTester.prefController = prefController;
-		AngelServletTester.serverProvider = serverProvider;
-		AngelServletTester.serverFactory = serverFactory;
-	}
+    public AngelServletTester(final Provider<Server> serverProvider,
+                              final PreferenceController prefController,
+                              final AngelServerFactory serverFactory) {
+        this("/", ServletContextHandler.SECURITY | ServletContextHandler.SESSIONS);
+        AngelServletTester.prefController = prefController;
+        AngelServletTester.serverProvider = serverProvider;
+        AngelServletTester.serverFactory = serverFactory;
+    }
 
-	public AngelServletTester(String contextPath,int options)
-	{
-		_context=new ServletContextHandler(_server,contextPath,options);
-		_server.setConnectors(new Connector[]{_connector});
-		addBean(_server);
-	}
+    public AngelServletTester(String contextPath, int options) {
+        _context = new ServletContextHandler(_server, contextPath, options);
+        _server.setConnectors(new Connector[]{_connector});
+        addBean(_server);
+    }
 
-	public void addServlet(ServletHolder holder, String pathSpec) {
-		this._context.addServlet(holder, pathSpec);
-	}
+    public void addServlet(ServletHolder holder, String pathSpec) {
+        this._context.addServlet(holder, pathSpec);
+    }
 
 //	public void addSecurityFilter(String pathSpec, EnumSet<DispatcherType> dispatches) {
 //		SecurityFilter filter = new SecurityFilter();
@@ -59,43 +58,36 @@ public class AngelServletTester extends ContainerLifeCycle {
 //		_context.addFilter(new FilterHolder(filter), pathSpec, dispatches);
 //	}
 
-	private static final Logger LOG = Log.getLogger(AngelServletTester.class);
+    private static final Logger LOG = Log.getLogger(AngelServletTester.class);
 
-	private final Server _server=new Server();
-	private final LocalConnector _connector=new LocalConnector(_server);
-	private final ServletContextHandler _context;
+    private final Server _server = new Server();
+    private final LocalConnector _connector = new LocalConnector(_server);
+    private final ServletContextHandler _context;
 
-	public Server getServer()
-	{
-		return _server;
-	}
+    public Server getServer() {
+        return _server;
+    }
 
-	public ServletHolder addServlet(Class<? extends Servlet> servlet, String pathSpec)
-	{
-		return _context.addServlet(servlet,pathSpec);
-	}
+    public ServletHolder addServlet(Class<? extends Servlet> servlet, String pathSpec) {
+        return _context.addServlet(servlet, pathSpec);
+    }
 
-	public FilterHolder addFilter(Class<? extends Filter> filterClass, String pathSpec, EnumSet<DispatcherType> dispatches)
-	{
-		return _context.addFilter(filterClass,pathSpec,dispatches);
-	}
+    public FilterHolder addFilter(Class<? extends Filter> filterClass, String pathSpec, EnumSet<DispatcherType> dispatches) {
+        return _context.addFilter(filterClass, pathSpec, dispatches);
+    }
 
-	public void setContextPath(String contextPath)
-	{
-		_context.setContextPath(contextPath);
-	}
+    public void setContextPath(String contextPath) {
+        _context.setContextPath(contextPath);
+    }
 
-	public ServletContextHandler getContext()
-	{
-		return _context;
-	}
+    public ServletContextHandler getContext() {
+        return _context;
+    }
 
-	public ByteBuffer getResponses(ByteBuffer request) throws Exception
-	{
-		if (LOG.isDebugEnabled())
-		{
-			LOG.debug("Request (Buffer): {}", BufferUtil.toUTF8String(request));
-		}
-		return _connector.getResponses(request);
-	}
+    public ByteBuffer getResponses(ByteBuffer request) throws Exception {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Request (Buffer): {}", BufferUtil.toUTF8String(request));
+        }
+        return _connector.getResponses(request);
+    }
 }

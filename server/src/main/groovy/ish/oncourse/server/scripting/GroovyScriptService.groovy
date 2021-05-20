@@ -13,17 +13,14 @@ package ish.oncourse.server.scripting
 import com.google.inject.Inject
 import com.google.inject.Injector
 import groovy.transform.CompileStatic
+import io.bootique.BQRuntime
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
-import ish.oncourse.server.IPreferenceController
-
-import static ish.common.types.TriggerType.CRON
-import static ish.common.types.TriggerType.ENTITY_EVENT
-import static ish.common.types.TriggerType.ONCOURSE_EVENT
-import static ish.common.types.TriggerType.ON_DEMAND
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.IPreferenceController
 import ish.oncourse.server.ISHDataContext
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.document.DocumentService
@@ -31,22 +28,18 @@ import ish.oncourse.server.export.ExportService
 import ish.oncourse.server.imports.ImportService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.integration.GroovyScriptEventListener
-import static ish.oncourse.server.integration.PluginService.PLUGIN_PACKAGE
-import static ish.oncourse.server.lifecycle.ChangeFilter.getAtrAttributeChange
 import ish.oncourse.server.messaging.MessageService
 import ish.oncourse.server.print.PrintService
 import ish.oncourse.server.querying.QueryService
-import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.scripting.api.CollegePreferenceService
 import ish.oncourse.server.scripting.api.EmailService
 import ish.oncourse.server.scripting.api.TemplateService
 import ish.oncourse.server.services.AuditService
+import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.services.ISystemUserService
 import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.types.AuditAction
 import ish.scripting.ScriptResult
-import static ish.scripting.ScriptResult.ResultType.FAILURE
-import static ish.scripting.ScriptResult.ResultType.SUCCESS
 import ish.util.TimeZoneUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
@@ -55,23 +48,17 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.codehaus.groovy.runtime.MethodClosure
-import org.quartz.CronScheduleBuilder
-import org.quartz.JobBuilder
-import org.quartz.JobKey
-import org.quartz.SchedulerException
-import org.quartz.TriggerBuilder
+import org.quartz.*
 import org.reflections.Reflections
 
-import javax.script.Bindings
-import javax.script.ScriptContext
-import javax.script.ScriptEngineManager
-import javax.script.ScriptException
-import javax.script.SimpleBindings
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutionException
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
+import javax.script.*
+import java.util.concurrent.*
+
+import static ish.common.types.TriggerType.*
+import static ish.oncourse.server.integration.PluginService.PLUGIN_PACKAGE
+import static ish.oncourse.server.lifecycle.ChangeFilter.getAtrAttributeChange
+import static ish.scripting.ScriptResult.ResultType.FAILURE
+import static ish.scripting.ScriptResult.ResultType.SUCCESS
 
 @CompileStatic
 class GroovyScriptService {
@@ -170,6 +157,8 @@ class GroovyScriptService {
         // create single thread executor with FIFO task queue
         this.executorService = Executors.newSingleThreadExecutor()
     }
+
+    GroovyScriptService(ICayenneService iCayenneService, ISchedulerService iSchedulerService, PreferenceController preferenceController, BQRuntime bqRuntime) {}
 
     void registerThreadInCayenneRuntime() {
         // since executor has just single thread in his pool - it is enough to register this thread to cayenne runtime

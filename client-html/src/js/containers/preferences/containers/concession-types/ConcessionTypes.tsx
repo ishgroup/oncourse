@@ -6,14 +6,15 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { getConcessionTypes, updateConcessionTypes, deleteConcessionType } from "../../actions";
 import { getFormValues } from "redux-form";
-import { State } from "../../../../reducers/state";
 import { ConcessionType } from "@api/model";
+import { getConcessionTypes, updateConcessionTypes, deleteConcessionType } from "../../actions";
+import { State } from "../../../../reducers/state";
 import { Fetch } from "../../../../model/common/Fetch";
 import ConcessionTypesForm from "./components/ConcessionTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { showConfirm } from "../../../../common/actions";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 
 interface Props {
   getTypes: () => void;
@@ -23,7 +24,7 @@ interface Props {
   data: ConcessionType[];
   timestamps: Date[];
   fetch: Fetch;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
 }
 
 class ConcessionTypes extends React.Component<Props, any> {
@@ -69,13 +70,11 @@ const mapStateToProps = (state: State) => ({
   fetch: state.fetch
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getTypes: () => dispatch(getConcessionTypes()),
     updateConcessionTypes: (taxTypes: ConcessionType[]) => dispatch(updateConcessionTypes(taxTypes)),
     deleteConcessionType: (id: string) => dispatch(deleteConcessionType(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
-  };
-};
+    openConfirm: props => dispatch(showConfirm(props))
+  });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ConcessionTypes);

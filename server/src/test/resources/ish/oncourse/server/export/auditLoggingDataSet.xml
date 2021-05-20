@@ -1,12 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-    <Site createdOn="2012-06-20 10:27:51.0" id="200" modifiedOn="2014-10-17 23:09:56.0" name="Default site" willowId="5001184" isAdministrationCentre="1" isShownOnWeb="0" localTimezone="Australia/Brisbane" isVirtual="0"/>
+  <Site createdOn="2012-06-20 10:27:51.0" id="200" modifiedOn="2014-10-17 23:09:56.0" name="Default site"
+        willowId="5001184" isAdministrationCentre="1" isShownOnWeb="0" localTimezone="Australia/Brisbane"
+        isVirtual="0"/>
 
-    <SystemUser email="admin@mail.com" createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1" lastLoginOn="2014-10-20 12:33:13.0" login="admin" modifiedOn="2014-10-20 12:33:13.0" password="PBKDF2WithHmacSHA1:1000:5b5814a658527cd9fd6f61224eb05fec699fb20900b4193d:0fd68ff3c15901a1b835cdd571a536f678104c6592f05322" surname="Administrator" isActive="1" isAdmin="1" defaultAdministrationCentreId="200" canEditTara="0" canEditCMS="0" willowid="21" PASSWORDUPDATEREQUIRED="0"/>
-    
-    <Audit id="1" created="2015-01-20 10:22:44" systemUserId="1" entityId="2" entityName="Invoice" action="UPDATE" message="testMessage1"/>
-    <Audit id="2" created="2016-02-20 10:22:44" systemUserId="1" entityId="33" entityName="PaymentIn" action="CREATE" message="testMessage2"/>
-    <Audit id="3" created="2014-03-20 10:22:44" systemUserId="1" entityId="22" entityName="Contact" action="UPDATE" message="testMessage3"/>
-    <Audit id="4" created="2012-04-20 10:22:44" systemUserId="1" entityId="27" entityName="Script" action="CREATE" message="testMessage4"/>
-    <Audit id="5" created="2012-06-20 10:22:44" systemUserId="1" entityId="26" entityName="Invoice" action="DELETE" message="testMessage5"/>
+  <SystemUser email="admin@mail.com" createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1"
+              lastLoginOn="2014-10-20 12:33:13.0" login="admin" modifiedOn="2014-10-20 12:33:13.0"
+              password="PBKDF2WithHmacSHA1:1000:5b5814a658527cd9fd6f61224eb05fec699fb20900b4193d:0fd68ff3c15901a1b835cdd571a536f678104c6592f05322"
+              surname="Administrator" isActive="1" isAdmin="1" defaultAdministrationCentreId="200" canEditTara="0"
+              canEditCMS="0" willowid="21" PASSWORDUPDATEREQUIRED="0"/>
+
+  <Audit id="1" created="2015-01-20 10:22:44" systemUserId="1" entityId="2" entityName="Invoice" action="UPDATE"
+         message="testMessage1"/>
+  <Audit id="2" created="2016-02-20 10:22:44" systemUserId="1" entityId="33" entityName="PaymentIn" action="CREATE"
+         message="testMessage2"/>
+  <Audit id="3" created="2014-03-20 10:22:44" systemUserId="1" entityId="22" entityName="Contact" action="UPDATE"
+         message="testMessage3"/>
+  <Audit id="4" created="2012-04-20 10:22:44" systemUserId="1" entityId="27" entityName="Script" action="CREATE"
+         message="testMessage4"/>
+  <Audit id="5" created="2012-06-20 10:22:44" systemUserId="1" entityId="26" entityName="Invoice" action="DELETE"
+         message="testMessage5"/>
 </dataset>

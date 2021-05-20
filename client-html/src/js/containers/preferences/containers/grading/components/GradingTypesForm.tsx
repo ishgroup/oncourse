@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { FieldArray, Form, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
+import {
+ FieldArray, Form, getFormValues, initialize, InjectedFormProps, reduxForm
+} from "redux-form";
 import { Dispatch } from "redux";
 import { GradingType } from "@api/model";
 import AddIcon from "@material-ui/icons/Add";
@@ -63,17 +65,15 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
   const onClickDelete = index => {
     const field = values.types[index];
 
-    console.log(index, values.types);
-
     if (field.id) {
-      return dispatch(showConfirm(
-        () => {
+      return dispatch(showConfirm({
+        onConfirm: () => {
           array.remove("types", index);
           dispatch(deleteGradingType(field.id));
         },
-        "Grading type will be deleted permanently",
-        "Delete"
-      ));
+        confirmMessage: "Grading type will be deleted permanently",
+        confirmButtonText: "Delete"
+      }));
     }
     array.remove("types", index);
   };

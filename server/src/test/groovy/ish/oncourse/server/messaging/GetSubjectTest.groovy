@@ -1,30 +1,29 @@
 package ish.oncourse.server.messaging
 
+
+import groovy.transform.CompileStatic
 import ish.oncourse.server.scripting.api.TemplateService
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
-/**
- * Created by anarut on 8/23/16.
- */
+@CompileStatic
 class GetSubjectTest {
 
     private static final String SUBJECT_RESULT = 'this is a test subject'
-
 
     @Test
     void testGetSubjectTestFunction() {
         String subject = 'test subject'
 
         GetSubject getSubject1 = GetSubject.valueOf(subject)
-        assertEquals(subject, getSubject1.get())
+        Assertions.assertEquals(subject, getSubject1.get())
 
         GetSubject getSubject2 = GetSubject.valueOf(null, null, null, subject)
-        assertEquals(subject, getSubject2.get())
+        Assertions.assertEquals(subject, getSubject2.get())
 
         GetSubject getSubject3 = GetSubject.valueOf(templateService, 'test', Collections.emptyMap(), subject)
-        assertEquals(SUBJECT_RESULT, getSubject3.get())
+        Assertions.assertEquals(SUBJECT_RESULT, getSubject3.get())
     }
 
     private static TemplateService getTemplateService() {

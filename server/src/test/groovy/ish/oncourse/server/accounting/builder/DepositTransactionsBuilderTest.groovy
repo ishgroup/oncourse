@@ -1,24 +1,22 @@
 package ish.oncourse.server.accounting.builder
 
+import groovy.transform.CompileStatic
 import ish.common.types.AccountTransactionType
 import ish.math.Money
 import ish.oncourse.server.accounting.AccountTransactionDetail
 import ish.oncourse.server.accounting.TransactionSettings
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.PaymentOutLine
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertFalse
-import org.junit.Before
-import org.junit.Test
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import ish.oncourse.server.cayenne.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
 
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
+
+@CompileStatic
 class DepositTransactionsBuilderTest {
 
     private PaymentOutLine paymentOutLine
@@ -26,18 +24,17 @@ class DepositTransactionsBuilderTest {
     private Account undepositAccountOut
     private Money amountOut
     private Long pOutId
-    
+
     private PaymentInLine paymentInLine
     private Account depositAccountIn
     private Account undepositAccountIn
     private Money amountIn
     private Long pInId
-    
+
     private LocalDate transactionDate1
     private LocalDate transactionDate2
 
-
-    @Before
+    @BeforeEach
     void prepareData() {
         undepositAccountOut = mock(Account)
         when(undepositAccountOut.id).thenReturn(111L)
@@ -46,7 +43,7 @@ class DepositTransactionsBuilderTest {
         PaymentOut paymentOut = mock(PaymentOut)
         when(paymentOut.undepositedFundsAccount).thenReturn(undepositAccountOut)
         when(paymentOut.accountOut).thenReturn(depositAccountOut)
-        amountOut = new Money(666)
+        amountOut = new Money(666.0)
         pOutId = 23L
         paymentOutLine = mock(PaymentOutLine)
         when(paymentOutLine.paymentOut).thenReturn(paymentOut)
@@ -61,13 +58,13 @@ class DepositTransactionsBuilderTest {
         PaymentIn paymentIn = mock(PaymentIn)
         when(paymentIn.undepositedFundsAccount).thenReturn(undepositAccountIn)
         when(paymentIn.accountIn).thenReturn(depositAccountIn)
-        amountIn = new Money(555)
+        amountIn = new Money(555.0)
         pInId = 24L
         paymentInLine = mock(PaymentInLine)
         when(paymentInLine.paymentIn).thenReturn(paymentIn)
         when(paymentInLine.amount).thenReturn(amountIn)
         when(paymentInLine.id).thenReturn(pInId)
-        
+
         transactionDate1 = LocalDate.of(2017, Month.MAY, 12)
         transactionDate2 = LocalDate.of(2017, Month.OCTOBER, 22)
     }
@@ -76,64 +73,64 @@ class DepositTransactionsBuilderTest {
     @Test
     void test() {
         TransactionSettings settings = DepositTransactionsBuilder.valueOf(paymentOutLine, transactionDate1).build()
-        assertFalse(settings.isInitialTransaction)
-        assertEquals(1, settings.details.size())
+        Assertions.assertFalse(settings.isInitialTransaction)
+        Assertions.assertEquals(1, settings.details.size())
         AccountTransactionDetail detail = settings.details[0]
-        assertEquals(depositAccountOut.id, detail.primaryAccount.id)
-        assertEquals(undepositAccountOut.id, detail.secondaryAccount.id)
-        assertEquals(amountOut, detail.amount)
-        assertEquals(pOutId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.PAYMENT_OUT_LINE, detail.tableName)
-        assertEquals(transactionDate1, detail.transactionDate)
+        Assertions.assertEquals(depositAccountOut.id, detail.primaryAccount.id)
+        Assertions.assertEquals(undepositAccountOut.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amountOut, detail.amount)
+        Assertions.assertEquals(pOutId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.PAYMENT_OUT_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate1, detail.transactionDate)
 
-        
+
         settings = DepositTransactionsBuilder.valueOf(paymentOutLine, transactionDate1, transactionDate2).build()
-        assertFalse(settings.isInitialTransaction)
-        assertEquals(2, settings.details.size())
+        Assertions.assertFalse(settings.isInitialTransaction)
+        Assertions.assertEquals(2, settings.details.size())
         detail = settings.details[0]
-        assertEquals(depositAccountOut.id, detail.primaryAccount.id)
-        assertEquals(undepositAccountOut.id, detail.secondaryAccount.id)
-        assertEquals(amountOut, detail.amount)
-        assertEquals(pOutId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.PAYMENT_OUT_LINE, detail.tableName)
-        assertEquals(transactionDate1, detail.transactionDate)
+        Assertions.assertEquals(depositAccountOut.id, detail.primaryAccount.id)
+        Assertions.assertEquals(undepositAccountOut.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amountOut, detail.amount)
+        Assertions.assertEquals(pOutId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.PAYMENT_OUT_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate1, detail.transactionDate)
         detail = settings.details[1]
-        assertEquals(undepositAccountOut.id, detail.primaryAccount.id)
-        assertEquals(depositAccountOut.id, detail.secondaryAccount.id)
-        assertEquals(amountOut, detail.amount)
-        assertEquals(pOutId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.PAYMENT_OUT_LINE, detail.tableName)
-        assertEquals(transactionDate2, detail.transactionDate)
+        Assertions.assertEquals(undepositAccountOut.id, detail.primaryAccount.id)
+        Assertions.assertEquals(depositAccountOut.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amountOut, detail.amount)
+        Assertions.assertEquals(pOutId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.PAYMENT_OUT_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate2, detail.transactionDate)
 
 
         settings = DepositTransactionsBuilder.valueOf(paymentInLine, transactionDate2).build()
-        assertFalse(settings.isInitialTransaction)
-        assertEquals(1, settings.details.size())
+        Assertions.assertFalse(settings.isInitialTransaction)
+        Assertions.assertEquals(1, settings.details.size())
         detail = settings.details[0]
-        assertEquals(undepositAccountIn.id, detail.primaryAccount.id)
-        assertEquals(depositAccountIn.id, detail.secondaryAccount.id)
-        assertEquals(amountIn, detail.amount)
-        assertEquals(pInId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
-        assertEquals(transactionDate2, detail.transactionDate)
+        Assertions.assertEquals(undepositAccountIn.id, detail.primaryAccount.id)
+        Assertions.assertEquals(depositAccountIn.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amountIn, detail.amount)
+        Assertions.assertEquals(pInId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate2, detail.transactionDate)
 
 
         settings = DepositTransactionsBuilder.valueOf(paymentInLine, transactionDate2, transactionDate1).build()
-        assertFalse(settings.isInitialTransaction)
-        assertEquals(2, settings.details.size())
+        Assertions.assertFalse(settings.isInitialTransaction)
+        Assertions.assertEquals(2, settings.details.size())
         detail = settings.details[0]
-        assertEquals(undepositAccountIn.id, detail.primaryAccount.id)
-        assertEquals(depositAccountIn.id, detail.secondaryAccount.id)
-        assertEquals(amountIn, detail.amount)
-        assertEquals(pInId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
-        assertEquals(transactionDate2, detail.transactionDate)
+        Assertions.assertEquals(undepositAccountIn.id, detail.primaryAccount.id)
+        Assertions.assertEquals(depositAccountIn.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amountIn, detail.amount)
+        Assertions.assertEquals(pInId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate2, detail.transactionDate)
         detail = settings.details[1]
-        assertEquals(depositAccountIn.id, detail.primaryAccount.id)
-        assertEquals(undepositAccountIn.id, detail.secondaryAccount.id)
-        assertEquals(amountIn, detail.amount)
-        assertEquals(pInId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
-        assertEquals(transactionDate1, detail.transactionDate)
+        Assertions.assertEquals(depositAccountIn.id, detail.primaryAccount.id)
+        Assertions.assertEquals(undepositAccountIn.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amountIn, detail.amount)
+        Assertions.assertEquals(pInId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate1, detail.transactionDate)
     }
 }

@@ -107,6 +107,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
 
         if (gradeType
           && submission
+          && typeof submission.grade === "number"
           && (submission.grade > gradeType.maxValue || submission.grade < gradeType.minValue)) {
           error = "Some assessments grades are invalid";
         }
@@ -174,7 +175,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           </div>
         </CustomAppBar>
       )}
-      <Grid container className="p-3">
+      <Grid container className="pt-3 pl-3 pr-3">
         <Grid item xs={12}>
           <FormField
             type="tags"
@@ -440,6 +441,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           gradingTypes={gradingTypes}
           dispatch={dispatch}
           validate={validateAssesments}
+          twoColumn={twoColumn}
         />
       </Grid>
     </>

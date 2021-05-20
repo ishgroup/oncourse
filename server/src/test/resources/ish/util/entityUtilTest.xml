@@ -1,41 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Account id="5" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1" taxId="[NULL]"/>
-	<Account id="6" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="3"/>
-	<Account id="7" accountCode="accEnrl" description="Test asset account" isEnabled="1" type="1" taxId="[NULL]"/>
-	<Account id="8" accountCode="accDebt" description="Test income account" isEnabled="1" type="4" taxId="3"/>
-	<Account id="9" accountCode="accFees" description="Test fees account" isEnabled="1" type="2" taxId="[NULL]"/>
-	<Account id="10" accountCode="accLiab" description="Test liability account" isEnabled="1" type="2" taxId="[NULL]"/>
-	<Account id="12" accountCode="accDisc" description="Test discount account" isEnabled="1" type="5" taxId="[NULL]"/>
-	
-	<Country id="1"	name="Country1" />
-	<Country id="2"	name="Country2" />
-	<Country id="3"	name="Country3" />
-	<Country id="4"	name="Country4" />
-	
-	<Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="7" receivableFromStudentAccountId="8" taxCode="GST" taxrate="0.1"/>	
-		
-	<Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="Test Site1" localTimezone="Australia/Sydney" isVirtual="0" countryId="1" />
-	<Site id="2" isAdministrationCentre="0" isShownOnWeb="1" name="Test Site2" localTimezone="Australia/Sydney" isVirtual="1" countryId="2" />
-	<Site id="3" isAdministrationCentre="0" isShownOnWeb="0" name="Test Site3" localTimezone="Australia/Sydney" isVirtual="1" countryId="3" />
-	<Site id="4" isAdministrationCentre="0" isShownOnWeb="0" name="Test Site4" localTimezone="Australia/Sydney" isVirtual="0" countryId="4" />
+  <Account id="5" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1" taxId="[NULL]"/>
+  <Account id="6" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="3"/>
+  <Account id="7" accountCode="accEnrl" description="Test asset account" isEnabled="1" type="1" taxId="[NULL]"/>
+  <Account id="8" accountCode="accDebt" description="Test income account" isEnabled="1" type="4" taxId="3"/>
+  <Account id="9" accountCode="accFees" description="Test fees account" isEnabled="1" type="2" taxId="[NULL]"/>
+  <Account id="10" accountCode="accLiab" description="Test liability account" isEnabled="1" type="2" taxId="[NULL]"/>
+  <Account id="12" accountCode="accDisc" description="Test discount account" isEnabled="1" type="5" taxId="[NULL]"/>
 
-	<Room id="1" name="Test Room1" seatedCapacity="15" siteId="1" />
-	<Room id="2" name="Test Room2" seatedCapacity="25" siteId="1" />
-	<Room id="3" name="Test Room3" seatedCapacity="35" siteId="1" />
-		
-	<Room id="4" name="Test Room1" seatedCapacity="15" siteId="2" />
-	<Room id="5" name="Test Room2" seatedCapacity="35" siteId="2" />
+  <Country id="1" name="Country1"/>
+  <Country id="2" name="Country2"/>
+  <Country id="3" name="Country3"/>
+  <Country id="4" name="Country4"/>
 
-	<Room id="6" name="Test Room1" seatedCapacity="15" siteId="3" />
-	<Room id="7" name="Test Room2" seatedCapacity="25" siteId="3" />
-	<Room id="8" name="Test Room3" seatedCapacity="35" siteId="3" />
-	<Room id="9" name="Test Room4" seatedCapacity="45" siteId="3" />
+  <Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="7" receivableFromStudentAccountId="8" taxCode="GST"
+       taxrate="0.1"/>
 
-	<Room id="10" name="Test Room1" seatedCapacity="15" siteId="4" />
-	<Room id="11" name="Test Room2" seatedCapacity="25" siteId="4" />
-	<Room id="12" name="Test Room3" seatedCapacity="35" siteId="4" />
-	<Room id="13" name="Test Room4" seatedCapacity="45" siteId="4" />
+  <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="Test Site1" localTimezone="Australia/Sydney"
+        isVirtual="0" countryId="1"/>
+  <Site id="2" isAdministrationCentre="0" isShownOnWeb="1" name="Test Site2" localTimezone="Australia/Sydney"
+        isVirtual="1" countryId="2"/>
+  <Site id="3" isAdministrationCentre="0" isShownOnWeb="0" name="Test Site3" localTimezone="Australia/Sydney"
+        isVirtual="1" countryId="3"/>
+  <Site id="4" isAdministrationCentre="0" isShownOnWeb="0" name="Test Site4" localTimezone="Australia/Sydney"
+        isVirtual="0" countryId="4"/>
 
-	<SystemUser createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1" login="admin" modifiedOn="2020-12-15 02:01:57.0" password="d033e22ae348aeb566fc214aec3585c4da997" surName="Administrator" isActive="1" isAdmin="1" email="admin@example.edu" defaultAdministrationCentreId="1" canEdiTtara="0" canEditCMS="0" willowId="84" passwordUpdateRequired="0"/>
+  <Room id="1" name="Test Room1" seatedCapacity="15" siteId="1"/>
+  <Room id="2" name="Test Room2" seatedCapacity="25" siteId="1"/>
+  <Room id="3" name="Test Room3" seatedCapacity="35" siteId="1"/>
+
+  <Room id="4" name="Test Room1" seatedCapacity="15" siteId="2"/>
+  <Room id="5" name="Test Room2" seatedCapacity="35" siteId="2"/>
+
+  <Room id="6" name="Test Room1" seatedCapacity="15" siteId="3"/>
+  <Room id="7" name="Test Room2" seatedCapacity="25" siteId="3"/>
+  <Room id="8" name="Test Room3" seatedCapacity="35" siteId="3"/>
+  <Room id="9" name="Test Room4" seatedCapacity="45" siteId="3"/>
+
+  <Room id="10" name="Test Room1" seatedCapacity="15" siteId="4"/>
+  <Room id="11" name="Test Room2" seatedCapacity="25" siteId="4"/>
+  <Room id="12" name="Test Room3" seatedCapacity="35" siteId="4"/>
+  <Room id="13" name="Test Room4" seatedCapacity="45" siteId="4"/>
+
+  <SystemUser createdOn="2012-06-20 10:22:44.0" firstName="onCourse" id="1" login="admin"
+              modifiedOn="2020-12-15 02:01:57.0" password="d033e22ae348aeb566fc214aec3585c4da997"
+              surName="Administrator" isActive="1" isAdmin="1" email="admin@example.edu"
+              defaultAdministrationCentreId="1" canEdiTtara="0" canEditCMS="0" willowId="84"
+              passwordUpdateRequired="0"/>
 </dataset>

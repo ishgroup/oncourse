@@ -1,35 +1,28 @@
 package ish.oncourse.server.imports.avetmiss
 
-import groovy.mock.interceptor.MockFor
-import ish.oncourse.server.cayenne.Country
-import ish.oncourse.server.cayenne.Language
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import org.apache.cayenne.ObjectContext
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-/**
- * Created by akoiro on 5/03/2016.
- */
+import static org.mockito.Mockito.mock
+
+@CompileStatic
 class Avetmiss85ParserTest {
-    private language = new Language()
-    private country = new Country()
 
 
+    @CompileDynamic
     private Avetmiss85Parser getParser(String text) {
-        MockFor contextMock = new MockFor(ObjectContext)
 
-        MockFor parsersMock = new MockFor(AvetmissImportService)
-        parsersMock.ignore(~'parseNames')
-        parsersMock.ignore(~'parseHighestSchoolLevel')
-        parsersMock.ignore.getCountryBy { if (it == 5204) return country }
-        parsersMock.ignore.getLanguageBy { if (it == 6511) return language }
+        ObjectContext contextMock = mock(ObjectContext)
 
         InputLine line = new InputLine(text)
-        Avetmiss85Parser parser = Avetmiss85Parser.valueOf(line, 0, contextMock.proxyDelegateInstance())
-        parser.service = parsersMock.proxyDelegateInstance()
+        Avetmiss85Parser parser = Avetmiss85Parser.valueOf(line, 0, contextMock)
         return parser
     }
 
+    
     @Test
     void test() {
 
@@ -50,7 +43,7 @@ class Avetmiss85ParserTest {
                 mobilePhone: "",
                 email      : "vincentcastejon@kearnan.wa.edu.au"
         ]
-        assertEquals("Wrong values:" + expected*.key.findAll{ expected[it] != result[it]}, expected, result)
+        Assertions.assertEquals(expected, result, "Wrong values:" + expected*.key.findAll { expected[it] != result[it] })
     }
 
 }

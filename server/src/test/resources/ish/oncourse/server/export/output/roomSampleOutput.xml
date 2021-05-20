@@ -20,7 +20,7 @@
       <facilities>Some facilities...</facilities>
       <name>Room 1</name>
       <notes>firstRoomNote1
-secondRoomNote1</notes>
+        secondRoomNote1</notes>
       <seatedCapacity>20</seatedCapacity>
     </room>
   </site>
@@ -44,7 +44,7 @@ secondRoomNote1</notes>
       <facilities>Facilities...</facilities>
       <name>Room 2</name>
       <notes>firstRoomNote2
-secondRoomNote2</notes>
+        secondRoomNote2</notes>
       <seatedCapacity>10</seatedCapacity>
     </room>
   </site>

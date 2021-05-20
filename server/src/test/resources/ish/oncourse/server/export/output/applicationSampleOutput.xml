@@ -1,17 +1,17 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
-    <application id='1'>
-        <confirmationStatus>DO_NOT_SEND</confirmationStatus>
-        <createdOn>23-6-2017 12:00:00</createdOn>
-        <modifiedOn>23-6-2017 12:00:00</modifiedOn>
-        <enrolBy />
-        <feeOverride />
-        <reason />
-        <source>office</source>
-        <status>New</status>
-        <studentFirstName>name1</studentFirstName>
-        <studentLastName>name</studentLastName>
-        <courseCode>ATT1</courseCode>
-        <courseName>Test 1</courseName>
-    </application>
+  <application id='1'>
+    <confirmationStatus>DO_NOT_SEND</confirmationStatus>
+    <createdOn>23-6-2017 12:00:00</createdOn>
+    <modifiedOn>23-6-2017 12:00:00</modifiedOn>
+    <enrolBy />
+    <feeOverride />
+    <reason />
+    <source>office</source>
+    <status>New</status>
+    <studentFirstName>name1</studentFirstName>
+    <studentLastName>name</studentLastName>
+    <courseCode>ATT1</courseCode>
+    <courseName>Test 1</courseName>
+  </application>
 </data>

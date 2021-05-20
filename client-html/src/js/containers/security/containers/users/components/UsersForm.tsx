@@ -35,6 +35,7 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../../../../common/utils/dates/format";
 import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import Uneditable from "../../../../../common/components/form/Uneditable";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const manualUrl = getManualLink("users");
 
@@ -90,7 +91,7 @@ interface Props {
   passwordComplexityFlag?: string;
   isNew?: boolean;
   oldEmail?: string;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
 }
 
 interface FormProps extends Props {
@@ -223,10 +224,14 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       openConfirm
     } = this.props;
 
-    openConfirm(() => {
-      resetUserPassword(id);
-    }, "Remove existing password and send the user an invite to reset their password.",
-     "Send invite");
+    openConfirm({
+      onConfirm: () => {
+        resetUserPassword(id);
+      },
+      confirmMessage: "Remove existing password and send the user an invite to reset their password.",
+      confirmButtonText: "Send invite",
+      title: null
+    });
   };
 
   onDisable2FA = () => {
@@ -236,9 +241,12 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       openConfirm
     } = this.props;
 
-    openConfirm(() => {
-      disableUser2FA(id);
-    }, "Current password will be changed to generated one");
+    openConfirm({
+      onConfirm: () => {
+        disableUser2FA(id);
+      },
+      confirmMessage: "Current password will be changed to generated one",
+    });
   };
 
   clearMessage = () => {
@@ -466,9 +474,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   updateUser: (user: User) => dispatch(updateUser(user)),
   resetUserPassword: (id: number) => dispatch(resetUserPassword(id)),
   disableUser2FA: (id: number) => dispatch(disableUser2FA(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(
-    showConfirm(onConfirm, confirmMessage, confirmButtonText)
-),
+  openConfirm: props => dispatch(showConfirm(props)),
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 

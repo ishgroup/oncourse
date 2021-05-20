@@ -3,15 +3,8 @@
  */
 package org.eclipse.jetty.testing
 
-import org.eclipse.jetty.http.HttpField
-import org.eclipse.jetty.http.HttpFields
-import org.eclipse.jetty.http.HttpGenerator
-import org.eclipse.jetty.http.HttpHeader
-import org.eclipse.jetty.http.HttpParser
-import org.eclipse.jetty.http.HttpURI
-import org.eclipse.jetty.http.HttpVersion
-import org.eclipse.jetty.http.MetaData
-import org.eclipse.jetty.http.MimeTypes
+import groovy.transform.CompileStatic
+import org.eclipse.jetty.http.*
 import org.eclipse.jetty.util.BufferUtil
 import org.eclipse.jetty.util.StringUtil
 
@@ -19,6 +12,7 @@ import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
+@CompileStatic
 class HttpTester {
     private HttpTester() {
     }

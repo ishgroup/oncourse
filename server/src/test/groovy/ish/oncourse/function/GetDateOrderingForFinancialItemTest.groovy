@@ -1,16 +1,15 @@
 package ish.oncourse.function
 
+import groovy.transform.CompileStatic
 import ish.oncourse.cayenne.FinancialItem
 import org.apache.cayenne.query.Ordering
-import static org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
 import java.time.LocalDate
 
-/**
- * Created by anarut on 11/10/16.
- */
+@CompileStatic
 class GetDateOrderingForFinancialItemTest {
 
     private FinancialItem item1
@@ -24,17 +23,17 @@ class GetDateOrderingForFinancialItemTest {
 
         Ordering.orderList(financialItems, GetDateOrderingForFinancialItem.valueOf().get())
 
-        assertEquals(item4, financialItems.get(0))
-        assertEquals(item2, financialItems.get(1))
-        assertEquals(item1, financialItems.get(2))
-        assertEquals(item3, financialItems.get(3))
+        Assertions.assertEquals(item4, financialItems.get(0))
+        Assertions.assertEquals(item2, financialItems.get(1))
+        Assertions.assertEquals(item1, financialItems.get(2))
+        Assertions.assertEquals(item3, financialItems.get(3))
 
         Ordering.orderList(financialItems, GetDateOrderingForFinancialItem.valueOf(false).get())
 
-        assertEquals(item3, financialItems.get(0))
-        assertEquals(item1, financialItems.get(1))
-        assertEquals(item2, financialItems.get(2))
-        assertEquals(item4, financialItems.get(3))
+        Assertions.assertEquals(item3, financialItems.get(0))
+        Assertions.assertEquals(item1, financialItems.get(1))
+        Assertions.assertEquals(item2, financialItems.get(2))
+        Assertions.assertEquals(item4, financialItems.get(3))
     }
 
     private List<FinancialItem> prepareList() {

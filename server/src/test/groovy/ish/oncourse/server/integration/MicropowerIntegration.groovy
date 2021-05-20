@@ -1,5 +1,7 @@
 package ish.oncourse.server.integration
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
@@ -10,6 +12,7 @@ import java.security.KeyFactory
 import java.security.PublicKey
 import java.security.spec.RSAPublicKeySpec
 
+@CompileStatic
 class MicropowerIntegration {
 
     private static final String modulusString = '0gUU0AmpFmqte4Ei6jztrcnqwQzXYqkn+xRPZiAs8zoDQasx/JpL5PSLnB8wNcQMlj+l4LIAwTt7ex75pRafvfUhEndkM7fuoaVprF6q470BtddgnsxEiGjGeC0ylv/3ldRs3xRqc4henDRswoeOH6uZUVmPIyYZO02k8zsGd/c='
@@ -48,6 +51,7 @@ class MicropowerIntegration {
         new String(encode, StandardCharsets.ISO_8859_1)
     }
 
+    @CompileDynamic
     private getMembers() {
         RESTClient httpClient = new RESTClient(baseUrl)
         httpClient.headers['Authorization'] = "Basic ${encryption}".toString()

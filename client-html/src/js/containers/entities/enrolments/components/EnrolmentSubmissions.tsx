@@ -31,13 +31,14 @@ interface Props {
   values: EnrolmentExtended;
   dispatch: Dispatch;
   gradingTypes: GradingType[];
+  twoColumn: boolean;
 }
 
 const today = format(new Date(), YYYY_MM_DD_MINUSED);
 
 const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => {
   const {
-    classes, values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = []
+    classes, values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = [], twoColumn
   } = props;
 
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);
@@ -68,7 +69,8 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         studentId: values.studentContactId,
         studentName: values.studentName,
         assessmentId: a.id,
-        grade: value
+        grade: value,
+        classId: values.courseClassId
       };
     }).filter(s => s)));
   };
@@ -76,6 +78,8 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
   const onChangeGrade = (value: number, elem: EnrolmentAssessmentExtended) => {
     const grade = normalizeNumber(value);
     const submissionIndex = values.submissions.findIndex(s => s.assessmentId === elem.id);
+    let updatedSubmissions;
+
     if (submissionIndex === -1) {
       const newSubmission: AssessmentSubmission = {
         id: null,
@@ -86,22 +90,25 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         studentId: values.studentContactId,
         studentName: values.studentName,
         assessmentId: elem.id,
+        classId: values.courseClassId,
         grade
       };
-      dispatch(change(form, "submissions", [newSubmission, ...values.submissions]));
+      updatedSubmissions = [newSubmission, ...values.submissions];
     } else {
-      dispatch(change(form, "submissions", values.submissions.map((s, index) => {
+      updatedSubmissions = values.submissions.map((s, index) => {
         if (submissionIndex === index) {
-          return { ...s, grade };
+          return { ...s, grade, ...grade === "" ? { markedById: null, markedOn: null } : { markedOn: s.markedOn || today } };
         }
         return s;
-      })));
+      });
     }
+    dispatch(change(form, "submissions", updatedSubmissions));
   };
 
-  const onToggleGrade = (elem: EnrolmentAssessmentExtended, grade: GradingItem) => {
+  const onToggleGrade = (elem: EnrolmentAssessmentExtended, prevGrade: GradingItem) => {
     const submissionIndex = values.submissions.findIndex(s => s.assessmentId === elem.id);
     const gradeItems: GradingItem[] = gradingTypes?.find(g => g.id === elem.gradingTypeId)?.gradingItems;
+    let updatedSubmissions;
 
     if (submissionIndex === -1) {
       const newSubmission: AssessmentSubmission = {
@@ -113,21 +120,24 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         studentId: values.studentContactId,
         studentName: values.studentName,
         assessmentId: elem.id,
-        grade: gradeItems ? gradeItems[0]?.lowerBound : null
+        grade: gradeItems ? gradeItems[0]?.lowerBound : null,
+        classId: values.courseClassId
       };
-      dispatch(change(form, "submissions", [newSubmission, ...values.submissions]));
+      updatedSubmissions = [newSubmission, ...values.submissions];
     } else {
-      dispatch(change(form, "submissions", values.submissions.map((s, index) => {
+      updatedSubmissions = values.submissions.map((s, index) => {
         if (submissionIndex === index) {
-          const gradeIndex = grade ? gradeItems?.findIndex(g => g.lowerBound === grade.lowerBound) : -1;
-          return { ...s, grade: gradeItems[gradeIndex + 1]?.lowerBound };
+          const gradeIndex = prevGrade ? gradeItems?.findIndex(g => g.lowerBound === prevGrade.lowerBound) : -1;
+          const grade = gradeItems[gradeIndex + 1]?.lowerBound;
+          return { ...s, grade, ...typeof grade === "number" ? { markedOn: s.markedOn || today } : { markedById: null, markedOn: null } };
         }
         return s;
-      })));
+      });
     }
+    dispatch(change(form, "submissions", updatedSubmissions));
   };
 
-  const onChangeStatus = (type, submissionIndex, prevStatus, assessment, index) => {
+  const onChangeStatus = (type, submissionIndex, prevStatus, assessment) => {
     let pathIndex = submissionIndex;
 
     if (prevStatus !== "Submitted") {
@@ -142,6 +152,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
           studentId: values.studentContactId,
           studentName: values.studentName,
           assessmentId: assessment.id,
+          classId: values.courseClassId,
           grade: null
         };
         dispatch(arrayInsert(form, "submissions", pathIndex, newSubmission));
@@ -156,9 +167,6 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
     if (type === "Marked" && prevStatus !== "Submitted" && submissionIndex !== -1) {
       dispatch(change(form, `submissions[${submissionIndex}].markedOn`, today));
     }
-    if (prevStatus !== "Submitted") {
-      setModalOpenedBy(`${type}-${pathIndex}-${assessment.name}-${index}`);
-    }
   };
 
   const triggerAsyncChange = (newValue, field, index) => {
@@ -167,7 +175,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
       [field]: sInd === index ? newValue : s[field]
     }));
 
-    if (field === "submittedOn" && modalProps[2] !== "all") {
+    if (field === "submittedOn" && modalProps.length && modalProps[2] !== "all") {
       if (!newValue) {
         updatedSubmissions.splice(index, 1);
       } else {
@@ -183,6 +191,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
             studentId: values.studentContactId,
             studentName: values.studentName,
             assessmentId: assessment?.id,
+            classId: values.courseClassId,
             grade: null
           });
         }
@@ -216,7 +225,8 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
           studentId: values.studentContactId,
           studentName: values.studentName,
           assessmentId: a.id,
-          grade: submission?.grade
+          grade: submission?.grade,
+          classId: values.courseClassId
         };
       }).filter(s => s)));
     }
@@ -232,6 +242,8 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
     g.id === values.assessments[gradeMenuAnchorEl?.attributes?.id?.value?.replace("grade", "")]?.gradingTypeId);
 
   const modalGradeItems = modalGradeType?.gradingItems;
+
+  const hasGrades = Boolean(values.assessments.some(a => gradingTypes.some(g => g.id === a.gradingTypeId)));
 
   return values.assessments && values.assessments.length ? (
     <Grid item={true} xs={12} id={name} container>
@@ -258,19 +270,16 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
           : values.submissions[modalProps[1]]?.markedOn || today}
       />
 
-      <div className="heading">Assessments Submissions</div>
+      <Grid item xs={12} className="mb-2">
+        <div className="heading">Assessments Submissions</div>
+        <Typography variant="caption" color="error" className="mt-1 shakingError">
+          {error}
+        </Typography>
+      </Grid>
 
-      {error && (
-        <Grid item xs={12} className="mt-1 shakingError">
-          <Typography variant="caption" color="error">
-            {error}
-          </Typography>
-        </Grid>
-      )}
-
-      <Grid container item={true} xs={12} className={classes.tableHeader}>
-        <Grid item xs={4} />
-        <Grid item xs={2} className={classes.center}>
+      <Grid container item={true} xs={twoColumn ? 8 : 12} className={classes.tableHeader}>
+        <Grid item xs={3} />
+        <Grid item xs={hasGrades ? 3 : 6} className={classes.center}>
           <span className="relative">
             Submitted
             <IconButton
@@ -284,25 +293,32 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
             </IconButton>
           </span>
         </Grid>
-        <Grid xs={2} className={classes.center}>
-          <span className="relative">
-            Marked
-            <IconButton
-              size="small"
-              className={classes.hiddenTitleIcon}
-              onClick={() => {
+
+        {hasGrades
+          && (
+          <>
+            <Grid xs={3} className={classes.center}>
+              <span className="relative">
+                Marked
+                <IconButton
+                  size="small"
+                  className={classes.hiddenTitleIcon}
+                  onClick={() => {
                 setModalOpenedBy(`Marked-0-all`);
               }}
-            >
-              <DateRange color="disabled" fontSize="small" />
-            </IconButton>
-          </span>
-        </Grid>
-        <Grid xs={2} className={classes.center}>
-          Grade
-        </Grid>
+                >
+                  <DateRange color="disabled" fontSize="small" />
+                </IconButton>
+              </span>
+            </Grid>
+            <Grid xs={3} className={classes.center}>
+              Grade
+            </Grid>
+          </>
+      )}
+
       </Grid>
-      <Grid container item={true} xs={12} className={classes.items}>
+      <Grid container item={true} xs={twoColumn ? 8 : 12} className={classes.items}>
         {values.assessments.map((elem, index) => {
           const elemGradeType = gradingTypes?.find(g => g.id === elem.gradingTypeId);
           return (
@@ -315,8 +331,8 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
               onToggleGrade={onToggleGrade}
               onChangeGrade={onChangeGrade}
               handleGradeMenuOpen={handleGradeMenuOpen}
+              triggerAsyncChange={triggerAsyncChange}
               classes={classes}
-              setModalOpenedBy={setModalOpenedBy}
               index={index}
             />
           );

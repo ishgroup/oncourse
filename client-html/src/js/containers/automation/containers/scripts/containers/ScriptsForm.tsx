@@ -45,6 +45,7 @@ import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/d
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -130,7 +131,7 @@ interface Props {
   initialized?: boolean;
   invalid?: boolean;
   form?: string;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm?: ShowConfirmCaller;
   handleSubmit?: any;
   onSave?: (id: number, script: Script, method: ApiMethods, viewMode: ScriptViewMode) => void;
   onCreate?: (script: Script, viewMode: ScriptViewMode) => void;
@@ -228,7 +229,10 @@ const ScriptsForm = React.memo<Props>(props => {
 
   const removeImports = e => {
     e.stopPropagation();
-    openConfirm(() => dispatch(change(form, "imports", null)), "Script component will be deleted permanently");
+    openConfirm({
+      onConfirm: () => dispatch(change(form, "imports", null)),
+      confirmMessage: "Script component will be deleted permanently"
+    });
   };
 
   const handleDelete = () => {
@@ -245,7 +249,6 @@ const ScriptsForm = React.memo<Props>(props => {
       setDisableRouteConfirm(false);
     }
   }, [values && values.id, prevId, disableRouteConfirm]);
-
 
   useEffect(() => {
     if (!dirty && nextLocation) {
@@ -277,12 +280,12 @@ const ScriptsForm = React.memo<Props>(props => {
     (valuesToSave: Script) => {
       setDisableRouteConfirm(true);
 
+      valuesToSave.entity = valuesToSave?.trigger?.entityName;
+
       if (isNew) {
         onCreate(valuesToSave, viewMode);
         return;
       }
-
-      valuesToSave.entity = valuesToSave?.trigger?.entityName;
 
       if (isInternal) {
         onSave(valuesToSave.id, valuesToSave, "PATCH", viewMode);
