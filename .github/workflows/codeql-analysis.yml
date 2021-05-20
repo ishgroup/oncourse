@@ -30,7 +30,7 @@ jobs:
             **/node_modules
             ~/.gradle/caches
             ~/.gradle/wrapper
-        key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1

@@ -30,7 +30,7 @@ jobs:
             **/node_modules
             ~/.gradle/caches
             ~/.gradle/wrapper
-        key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
       - name: Types unit tests
         run: ./gradlew types:test --stacktrace -Duser.language=en -Duser.country=AU
@@ -78,7 +78,7 @@ jobs:
             **/node_modules
             ~/.gradle/caches
             ~/.gradle/wrapper
-        key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
       - name: Integration tests
         run: ./gradlew server:integration -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angelTest_trunk?user=root --stacktrace -Duser.language=en -Duser.country=AU
