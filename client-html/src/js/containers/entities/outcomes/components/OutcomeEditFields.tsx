@@ -7,7 +7,7 @@
  */
 
 import {
- Card, Chip, Grid, Typography
+  Card, Chip, Grid, Tooltip, Typography
 } from "@material-ui/core";
 import React, {
  useCallback, useEffect, useMemo, useState
@@ -126,6 +126,9 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     minWidth: "8em",
     height: "26px",
   },
+  tooltip: {
+    marginTop: theme.spacing(-2)
+  }
 }));
 
 const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
@@ -292,7 +295,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 label="End date"
                 validate={validateEndtDate}
                 listSpacing={false}
-                placeHolder="Leave empty to calculate date from class"
+                placeholder="Leave empty to calculate date from class"
               />
             </div>
           </Grid>
@@ -302,46 +305,60 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           <Grid container>
             <Grid xs={twoColumn ? 3 : 12}>
               <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</Grid>
-              <FormField
-                type="date"
-                name={getFieldName("trainingPlanStartDate")}
-                placeHolder="Leave empty to calculate date from class"
-                label="Start date"
-                disabled
-              />
-              <FormField
-                type="date"
-                name={getFieldName("trainingPlanEndDate")}
-                placeHolder="Leave empty to calculate date from class"
-                label="End date"
-                disabled
-              />
-            </Grid>
-            <Grid xs={twoColumn ? 3 : 12}>
-              <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</Grid>
-              {values.actualStartDate && new Date(values.actualStartDate) > today
-                ? <Uneditable label="Start date" value="Not yet started" />
-                : (
+              <Tooltip
+                placement="top-start"
+                title="First session related to this outcome"
+              >
+                <div>
                   <FormField
                     type="date"
-                    name={getFieldName("actualStartDate")}
-                    placeHolder="Leave empty to calculate date from class"
+                    name={getFieldName("trainingPlanStartDate")}
                     label="Start date"
                     disabled
                   />
-              )}
-
-              {values.actualEndDate && new Date(values.actualEndDate) > today
-                ? <Uneditable label="End date" value="Not yet finished" />
-                : (
+                </div>
+              </Tooltip>
+              <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
+                <div>
                   <FormField
                     type="date"
-                    name={getFieldName("actualEndDate")}
-                    placeHolder="Leave empty to calculate date from class"
+                    name={getFieldName("trainingPlanEndDate")}
                     label="End date"
                     disabled
                   />
-              )}
+                </div>
+              </Tooltip>
+            </Grid>
+            <Grid xs={twoColumn ? 3 : 12}>
+              <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</Grid>
+              <Tooltip placement="top-start" title="First session related to this outcome where student was not marked as absent">
+                <div>
+                  {values.actualStartDate && new Date(values.actualStartDate) > today
+                    ? <Uneditable label="Start date" value="Not yet started" />
+                    : (
+                      <FormField
+                        type="date"
+                        name={getFieldName("actualStartDate")}
+                        label="Start date"
+                        disabled
+                      />
+                    )}
+                </div>
+              </Tooltip>
+              <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
+                <div>
+                  {values.actualEndDate && new Date(values.actualEndDate) > today
+                    ? <Uneditable label="End date" value="Not yet finished" />
+                    : (
+                      <FormField
+                        type="date"
+                        name={getFieldName("actualEndDate")}
+                        label="End date"
+                        disabled
+                      />
+                    )}
+                </div>
+              </Tooltip>
             </Grid>
             <Grid xs={twoColumn ? 3 : 12}>
               <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</Grid>
@@ -353,7 +370,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                       name={getFieldName("startDate")}
                       validate={validateStartDate}
                       disabled={!isPriorLearningBinded && !values.startDateOverridden}
-                      placeHolder="Leave empty to calculate date from class"
+                      placeholder={(!isPriorLearningBinded && !values.startDateOverridden) ? null : "Leave empty to calculate date from class"}
                       label="Start date"
                     />
                     <IconButton className="inputAdornmentButton" onClick={onLockStartDate}>
@@ -374,7 +391,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                       name={getFieldName("endDate")}
                       validate={validateEndtDate}
                       disabled={!isPriorLearningBinded && !values.endDateOverridden}
-                      placeHolder="Leave empty to calculate date from class"
+                      placeholder={(!isPriorLearningBinded && !values.endDateOverridden) ? null : "Leave empty to calculate date from class"}
                       label="End date"
                     />
                     <IconButton className="inputAdornmentButton" onClick={onLockEndDate}>
