@@ -1,16 +1,25 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Card, Chip, Grid, Typography } from "@material-ui/core";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+ Card, Chip, Grid, Typography
+} from "@material-ui/core";
+import React, {
+ useCallback, useEffect, useMemo, useState
+} from "react";
 import { change } from "redux-form";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete';
-import { ClassFundingSource, DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus } from "@api/model";
+import {
+ ClassFundingSource, DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus
+} from "@api/model";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../../../common/components/form/form-fields/FormField";
@@ -199,6 +208,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
       mapSelectItems
     )), [values]);
 
+  const today = new Date();
+
   return (
     <Grid container className={className}>
       {!twoColumn && (
@@ -308,20 +319,29 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             </Grid>
             <Grid xs={twoColumn ? 3 : 12}>
               <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</Grid>
-              <FormField
-                type="date"
-                name={getFieldName("actualStartDate")}
-                placeHolder="Leave empty to calculate date from class"
-                label="Start date"
-                disabled
-              />
-              <FormField
-                type="date"
-                name={getFieldName("actualEndDate")}
-                placeHolder="Leave empty to calculate date from class"
-                label="End date"
-                disabled
-              />
+              {values.actualStartDate && new Date(values.actualStartDate) > today
+                ? <Uneditable label="Start date" value="Not yet started" />
+                : (
+                  <FormField
+                    type="date"
+                    name={getFieldName("actualStartDate")}
+                    placeHolder="Leave empty to calculate date from class"
+                    label="Start date"
+                    disabled
+                  />
+              )}
+
+              {values.actualEndDate && new Date(values.actualEndDate) > today
+                ? <Uneditable label="End date" value="Not yet finished" />
+                : (
+                  <FormField
+                    type="date"
+                    name={getFieldName("actualEndDate")}
+                    placeHolder="Leave empty to calculate date from class"
+                    label="End date"
+                    disabled
+                  />
+              )}
             </Grid>
             <Grid xs={twoColumn ? 3 : 12}>
               <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</Grid>
