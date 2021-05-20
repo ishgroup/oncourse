@@ -117,9 +117,9 @@ class TestWithDatabaseExtension implements
                     ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
                     databaseTest.dataSourceReplaceValues(rDataSet)
                     IDatabaseConnection testDatabaseConnection = getTestDatabaseConnection()
-                    //                new CompositeOperation(org.dbunit.operation.DatabaseOperation.TRUNCATE_TABLE, org.dbunit.operation.DatabaseOperation.INSERT).execute(testDatabaseConnection, dataSet)
+                                    new CompositeOperation(org.dbunit.operation.DatabaseOperation.TRUNCATE_TABLE, org.dbunit.operation.DatabaseOperation.INSERT).execute(testDatabaseConnection, dataSet)
 
-                    org.dbunit.operation.DatabaseOperation.CLEAN_INSERT.execute(testDatabaseConnection, rDataSet)
+//                    org.dbunit.operation.DatabaseOperation.CLEAN_INSERT.execute(testDatabaseConnection, rDataSet)
                 }
                 store.put("db_data_loaded", true)
             }
