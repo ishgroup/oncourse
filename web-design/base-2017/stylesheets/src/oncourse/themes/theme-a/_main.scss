@@ -75,7 +75,7 @@
     }
 
     @if $blocksEnable == true {
-      .blocks {
+      .blocks > ul {
         list-style: $blocksListStyle;
         margin: $blocksMargin;
         background: $blocksBackground;
@@ -133,73 +133,60 @@
 
     @if $popularCoursesEnable == true {
       .popular-courses-list {
-        background: $popularCoursesBackground;
-        list-style: $popularCoursesListStyle;
-        margin: $popularCoursesMargin;
-        margin-bottom: $popularCoursesMarginBottom;
-        padding: $popularCoursesPadding;
-
-        @include bootstrap(false) {
-          width: $popularCoursesWidth;
-          float: $popularCoursesFloat;
-        }
-
-        @include responsive($media-tablet) {
-          margin-bottom: $popularCoursesMarginBottomMediaTablet;
+        padding: 0;
+        > ul {
+          background: $popularCoursesBackground;
+          list-style: $popularCoursesListStyle;
+          margin: $popularCoursesMargin;
+          margin-bottom: $popularCoursesMarginBottom;
+          padding: $popularCoursesPadding;
 
           @include bootstrap(false) {
-            width: $popularCoursesWidthMediaTablet;
+            width: $popularCoursesWidth;
+            float: $popularCoursesFloat;
           }
-        }
 
-        + p {
-          display: none;
-        }
+          @include responsive($media-tablet) {
+            margin-bottom: $popularCoursesMarginBottomMediaTablet;
 
-        > li {
-          border-bottom: $popularCoursesListBorderBottom;
-
-          &:first-child {
-            padding: $popularCoursesListFirstChildPadding;
-            text-transform: $popularCoursesListFirstChildTextTransform;
-          }
-          a {
-            text-decoration: $popularCoursesListAnchorTextDecoration;
-            padding: $popularCoursesListAnchorPadding;
-            display: $popularCoursesListAnchorBlock;
-            position: $popularCoursesListAnchorPosition;
-            font-size: $popularCoursesListAnchorFontSize;
-            &:after {
-              content: $popularCoursesListAnchorAfterContent;
-              display: $popularCoursesListAnchorAfterDisplay;
-              background: $popularCoursesListAnchorAfterBackground;
-              width: $popularCoursesListAnchorAfterWidth;
-              height: $popularCoursesListAnchorAfterHeight;
-              position: $popularCoursesListAnchorAfterPosition;
-              right: $popularCoursesListAnchorAfterPositionRight;
-              top: $popularCoursesListAnchorAfterPositionTop;
-              margin-top: $popularCoursesListAnchorAfterMarginTop;
-            }
-            &:hover:after {
-              background-position: $popularCoursesListHoverAfterBackgroundPosition;
+            @include bootstrap(false) {
+              width: $popularCoursesWidthMediaTablet;
             }
           }
-        }
-      }
-    }
 
-    @if $coursesInfoEnable == true {
-      .courses-info {
-        padding: $coursesInfoPadding;
-        text-align: $coursesInfoTextAlign;
-        background: $coursesInfoBackground;
-        color: $coursesInfoColor;
-        margin-bottom: $coursesInfoMarginBottom;
-        font-size: $coursesInfoFontSize;
+          + p {
+            display: none;
+          }
 
-        a {
-          color: $coursesInfoAnchorColor;
-          text-decoration: $coursesInfoAnchorTextDecoration;
+          > li {
+            border-bottom: $popularCoursesListBorderBottom;
+
+            &:first-child {
+              padding: $popularCoursesListFirstChildPadding;
+              text-transform: $popularCoursesListFirstChildTextTransform;
+            }
+            a {
+              text-decoration: $popularCoursesListAnchorTextDecoration;
+              padding: $popularCoursesListAnchorPadding;
+              display: $popularCoursesListAnchorBlock;
+              position: $popularCoursesListAnchorPosition;
+              font-size: $popularCoursesListAnchorFontSize;
+              &:after {
+                content: $popularCoursesListAnchorAfterContent;
+                display: $popularCoursesListAnchorAfterDisplay;
+                background: $popularCoursesListAnchorAfterBackground;
+                width: $popularCoursesListAnchorAfterWidth;
+                height: $popularCoursesListAnchorAfterHeight;
+                position: $popularCoursesListAnchorAfterPosition;
+                right: $popularCoursesListAnchorAfterPositionRight;
+                top: $popularCoursesListAnchorAfterPositionTop;
+                margin-top: $popularCoursesListAnchorAfterMarginTop;
+              }
+              &:hover:after {
+                background-position: $popularCoursesListHoverAfterBackgroundPosition;
+              }
+            }
+          }
         }
       }
     }
@@ -227,11 +214,7 @@
         }
       }
 
-      > p, > br {
-        display: none;
-      }
-
-      > a {
+      > p > a {
         float: $featuredBlockButtonFloat;
         text-transform: $featuredBlockButtonTextTransform;
         text-decoration: $featuredBlockButtonTextDecoration;
@@ -271,25 +254,42 @@
   }
 
   @if $coursesTitleEnable == true {
-    h1.courses-title {
-      text-align: $coursesTitleTextAlign;
-      font-size: $coursesTitleFontSize;
-      padding-top: $coursesTitlePaddingTop;
-      margin-bottom: $coursesTitleMarginBottom;
-      clear: $coursesTitleClear;
-      vertical-align: $coursesTitleVerticalAlign;
-      border-top: $coursesTitleBorderTop;
-      @include responsive($media-tablet) {
-        padding-top: $coursesTitlePaddingTopMediaTablet;
+    .home-courses-tags-list {
+      > h1 {
+        text-align: $coursesTitleTextAlign;
+        font-size: $coursesTitleFontSize;
+        padding-top: $coursesTitlePaddingTop;
+        margin-bottom: $coursesTitleMarginBottom;
+        clear: $coursesTitleClear;
+        vertical-align: $coursesTitleVerticalAlign;
+        border-top: $coursesTitleBorderTop;
+        @include responsive($media-tablet) {
+          padding-top: $coursesTitlePaddingTopMediaTablet;
+        }
+        &:before {
+          content: $coursesTitleBeforeContent;
+          display: $coursesTitleBeforeDisplay;
+          background: $coursesTitleBeforeBackground;
+          width: $coursesTitleBeforeWidth;
+          height: $coursesTitleBeforeHeight;
+          margin-right: $coursesTitleBeforeMarginRight;
+          vertical-align: $coursesTitleBeforeVerticalAlign;
+        }
       }
-      &:before {
-        content: $coursesTitleBeforeContent;
-        display: $coursesTitleBeforeDisplay;
-        background: $coursesTitleBeforeBackground;
-        width: $coursesTitleBeforeWidth;
-        height: $coursesTitleBeforeHeight;
-        margin-right: $coursesTitleBeforeMarginRight;
-        vertical-align: $coursesTitleBeforeVerticalAlign;
+      @if $coursesInfoEnable == true {
+        > p {
+          padding: $coursesInfoPadding;
+          text-align: $coursesInfoTextAlign;
+          background: $coursesInfoBackground;
+          color: $coursesInfoColor;
+          margin-bottom: $coursesInfoMarginBottom;
+          font-size: $coursesInfoFontSize;
+
+          a {
+            color: $coursesInfoAnchorColor;
+            text-decoration: $coursesInfoAnchorTextDecoration;
+          }
+        }
       }
     }
   }
@@ -345,9 +345,6 @@
           margin: $coursesListSub2Margin;
           list-style: $coursesListSubListStyle;
         }
-      }
-      + p {
-        display: none;
       }
     }
   }

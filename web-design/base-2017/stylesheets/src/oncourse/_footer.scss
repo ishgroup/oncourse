@@ -111,12 +111,6 @@
     .contact-courses {
       line-height: 26px;
       margin-top: 20px;
-      text-align: center;
-
-      // Following function handles responsive media screen
-      @include responsive($media-tablet) {
-        text-align: left;
-      }
     }
 
     // Footer address information

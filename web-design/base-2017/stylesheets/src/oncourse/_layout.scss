@@ -16,10 +16,8 @@ a, button {
   @include transition(all 0.5s);
 }
 
-ul {
-  @include blocks("&.grid", $media-tablet, "table");
-  @include blocks("&.column", $media-tablet);
-}
+@include blocks(".grid", $media-tablet, "table");
+@include blocks(".column", $media-tablet);
 
 #cmsWrapper {
   a {

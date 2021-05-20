@@ -1,0 +1,48 @@
+//
+//
+// social-icons.scss
+//
+// Contains social icon's settings
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+$useDefaultSocialIcons: true !default;
+$socialLinksWithEffect: false !default;
+
+$footerMainSocialLinksWrapperMarginTop: 25px !default;
+
+$footerMainSocialLinksMargin: 0 !default;
+$footerMainSocialLinksPadding: 0 !default;
+$footerMainSocialLinksDisplay: flex !default;
+$footerMainSocialLinksAlignItems: center !default;
+$footerMainSocialLinksJustifyContent: start !default;
+
+$footerMainSocialLinksListPadding: 0 !default;
+$footerMainSocialLinksListMargin: 0px 3px !default;
+$footerMainSocialLinksListDisplay: inline-block !default;
+
+$footerMainSocialLinksListFirstChildMarginLeft: 0px !default;
+
+$footerMainSocialLinksListAnchorColor: #d0d4e8 !default;
+$footerMainSocialLinksListAnchorBorder: 2px solid !default;
+$footerMainSocialLinksListAnchorBorderColor: $theme-color !default;
+$footerMainSocialLinksListAnchorBorderRadius: 100% !default;
+$footerMainSocialLinksListAnchorPadding: 2px !default;
+$footerMainSocialLinksListAnchorWidth: 30px !default;
+$footerMainSocialLinksListAnchorHeight: 30px !default;
+$footerMainSocialLinksListAnchorDisplay: flex !default;
+$footerMainSocialLinksListAnchorAlignItems: center !default;
+$footerMainSocialLinksListAnchorJustifyContent: center !default;
+$footerMainSocialLinksListAnchorTextAlign: center !default;
+$footerMainSocialLinksListAnchorFontSize: 20px !default;
+$footerMainSocialLinksListAnchorPosition: relative !default;
+$footerMainSocialLinksListAnchorOpacity: 0.7 !default;
+
+$footerMainSocialLinksListAnchorBackgroundColor: $theme-color !default;
+$footerMainSocialLinksListAnchorOpacityHover: 1 !default;
+
+$socialLinksListIcons: ("instagram": #0073b2, "linkedin": #007bb6, "facebook": #4867aa, "twitter": #55acee, "google-plus": #dd5144, "youtube": #f00, "youtube-play": #f00);
+
+$footerMainSocialLinksListAnchorColorHover: $white !default;

@@ -67,7 +67,7 @@
     .slider-wrapper {
       position: relative;
     }
-    .content-blocks {
+    .content-blocks > ul {
       width: 100%;
       position: relative;
       top: $contentBlocksPositionTop;
@@ -157,10 +157,14 @@
 
     #content {
       .main-title {
-        color: $contentMainTitle;
+        &, >h1 {
+          color: $contentMainTitle;
+        }
       }
       .sub-title {
-        color: $contentSubTitle;
+        &, >h3 {
+          color: $contentSubTitle;
+        }
       }
       .home-design-starting {
         @include responsive($media-tablet) {
@@ -245,7 +249,7 @@
             border-top: $homeDesignStartingRightBorderTopTablet;
             padding-top: $homeDesignStartingRightPaddingTopTablet;
           }
-          .starting-soon {
+          .starting-soon ul {
             list-style: none;
             margin: $homeDesignStartingListMargin;
             li {
@@ -393,6 +397,10 @@
               }
             }
           }
+          .youtube-video {
+            height: 315px;
+            margin-bottom: 25px;
+          }
         }
       }
       .home-info {
@@ -478,54 +486,61 @@
                 height: $ourCoursesListItemHeightSmall;
                 max-width: $ourCoursesListItemMaxWidthSmall;
               }
-              >a {
+              > p {
                 display: $ourCoursesListItemLinkDisplay;
                 position: relative;
                 width: 100%;
                 height: 100%;
-                img {
-                  width: $ourCoursesListItemWidth;
-                  max-width: $ourCoursesListItemMaxWidth;
-                  height: $ourCoursesListItemImageHeight;
-                  position: absolute;
-                  left: 0;
-                  right: 0;
-                  @include transition(all 0.5s);
-                  @include responsive($media-small) {
-                    height: $ourCoursesListItemImageHeightSmall;
-                    max-width: $ourCoursesListItemMaxWidthSmall;
-                  }
-                }
-                >span {
-                  display: $ourCoursesListItemLinkTextDisplay;
-                  vertical-align: $ourCoursesListItemLinkTextVerticalAlign;
-                  position: $ourCoursesListItemLinkTextPosition;
-                  >span {
-                    position: $ourCoursesListItemLinkTextContentPosition;
-                    bottom: $ourCoursesListItemLinkTextContentPositionBottom;
-                    left: $ourCoursesListItemLinkTextContentPositionLeft;
-                    right: $ourCoursesListItemLinkTextContentPositionRight;
-                    background: $ourCoursesListItemLinkTextContentBackground;
-                    background: $ourCoursesListItemLinkTextContentBackgroundRgba;
-                    width: $ourCoursesListItemLinkTextContentWidth;
-                    color: $ourCoursesListItemLinkTextContentColor;
-                    font-size: $ourCoursesListItemLinkTextContentFontSize;
-                    font-weight: $ourCoursesListItemLinkTextContentFontWeight;
-                    padding: $ourCoursesListItemLinkTextContentPadding;
-                    display: $ourCoursesListItemLinkTextContentDisplay;
-                    margin: $ourCoursesListItemLinkTextContentMargin;
-                    text-align: $ourCoursesListItemLinkTextContentTextAlign;
+                margin-bottom: 0;
+                > a {
+                  display: $ourCoursesListItemLinkDisplay;
+                  position: relative;
+                  width: 100%;
+                  height: 100%;
+                  img {
+                    width: $ourCoursesListItemWidth;
+                    max-width: $ourCoursesListItemMaxWidth;
+                    height: $ourCoursesListItemImageHeight;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
                     @include transition(all 0.5s);
                     @include responsive($media-small) {
-                      bottom: $ourCoursesListItemLinkTextContentPositionBottomSmall;
-                      width: $ourCoursesListItemLinkTextContentWidthSmall;
-                      font-size: $ourCoursesListItemLinkTextContentFontSizeSmall;
+                      height: $ourCoursesListItemImageHeightSmall;
+                      max-width: $ourCoursesListItemMaxWidthSmall;
                     }
                   }
-                }
-                &.oc-item {
-                  position: absolute;
-                  top: 0;
+                  >span {
+                    display: $ourCoursesListItemLinkTextDisplay;
+                    vertical-align: $ourCoursesListItemLinkTextVerticalAlign;
+                    position: $ourCoursesListItemLinkTextPosition;
+                    >span {
+                      position: $ourCoursesListItemLinkTextContentPosition;
+                      bottom: $ourCoursesListItemLinkTextContentPositionBottom;
+                      left: $ourCoursesListItemLinkTextContentPositionLeft;
+                      right: $ourCoursesListItemLinkTextContentPositionRight;
+                      background: $ourCoursesListItemLinkTextContentBackground;
+                      background: $ourCoursesListItemLinkTextContentBackgroundRgba;
+                      width: $ourCoursesListItemLinkTextContentWidth;
+                      color: $ourCoursesListItemLinkTextContentColor;
+                      font-size: $ourCoursesListItemLinkTextContentFontSize;
+                      font-weight: $ourCoursesListItemLinkTextContentFontWeight;
+                      padding: $ourCoursesListItemLinkTextContentPadding;
+                      display: $ourCoursesListItemLinkTextContentDisplay;
+                      margin: $ourCoursesListItemLinkTextContentMargin;
+                      text-align: $ourCoursesListItemLinkTextContentTextAlign;
+                      @include transition(all 0.5s);
+                      @include responsive($media-small) {
+                        bottom: $ourCoursesListItemLinkTextContentPositionBottomSmall;
+                        width: $ourCoursesListItemLinkTextContentWidthSmall;
+                        font-size: $ourCoursesListItemLinkTextContentFontSizeSmall;
+                      }
+                    }
+                  }
+                  &.oc-item {
+                    position: absolute;
+                    top: 0;
+                  }
                 }
               }
             }

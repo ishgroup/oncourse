@@ -74,38 +74,42 @@
 
 @mixin blocks($clsss, $media, $display: "left", $col-gap: 10px) {
   #{$clsss} {
-    @if $display == "table" {
-      display: table;
-      width: 100%;
-      margin: 0;
-    } @else {
-      display: block;
-      margin-left: -#{$col-gap};
-      margin-right: -#{$col-gap};
-      @include clearfix;
-    }
-    >li {
-      width: 100%;
-      display: block;
-      padding-left: #{$col-gap};
-      padding-right: #{$col-gap};
-      @include responsive($media) {
-        @if $display == "left" or $display == "right" {
-          float: left;
-        }
-        @else if $display == "table" {
-          display: table-cell;
-        } @else {
-          display: $display;
+    ul {
+      @if $display == "table" {
+        display: table;
+        width: 100%;
+        margin: 0;
+      } @else {
+        display: block;
+        margin-left: -#{$col-gap};
+        margin-right: -#{$col-gap};
+        @include clearfix;
+      }
+      >li {
+        width: 100%;
+        display: block;
+        padding-left: #{$col-gap};
+        padding-right: #{$col-gap};
+        @include responsive($media) {
+          @if $display == "left" or $display == "right" {
+            float: left;
+          }
+          @else if $display == "table" {
+            display: table-cell;
+          } @else {
+            display: $display;
+          }
         }
       }
     }
     @include responsive($media) {
       @for $i from 1 through 5 {
         $width: 100/$i;
-        #{$clsss}-#{$i} {
-          >li {
-            width: #{$width + "%"};
+        &#{$clsss}-#{$i} {
+          ul {
+            >li {
+              width: #{$width + "%"};
+            }
           }
         }
       }

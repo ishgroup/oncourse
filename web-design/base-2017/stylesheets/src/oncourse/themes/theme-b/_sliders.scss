@@ -39,6 +39,9 @@
           @include responsive($media-tablet) {
             height: $home-slider-height;
           }
+          >p {
+            margin: 0;
+          }
           img {
             position: absolute;
             z-index: 1;

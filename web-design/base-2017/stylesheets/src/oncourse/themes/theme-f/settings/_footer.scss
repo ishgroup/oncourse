@@ -208,35 +208,18 @@ $footerMainPhoneTextFontSize: 20px !default;
 $footerMainPhoneTextFontWeight: bold !default;
 $footerMainPhoneTextDisplay: block !default;
 
-$footerMainSocialLinksMarginTop: 30px !default;
-$footerMainSocialLinksMarginBottom: 20px !default;
-$footerMainSocialLinksDisplay: flex !default;
-$footerMainSocialLinksAlignItems: center !default;
+$socialLinksWithEffect: true !default;
+$footerMainSocialLinksMargin: 30px -10px 20px !default;
 $footerMainSocialLinksJustifyContent: center !default;
 
-$footerMainSocialLinksListWidth: 62px !default;
-$footerMainSocialLinksListPadding: 0 2.5px 0px 2.5px !default;
-$footerMainSocialLinksListDisplay: inline-block !default;
-$footerMainSocialLinksListAnchorColor: #fff !default;
+$footerMainSocialLinksListMargin: 0 4px !default;
 
-$footerMainSocialLinksListAnchorBorder: 2px solid !default;
-$footerMainSocialLinksListAnchorBorderColor: $theme-color !default;
-$footerMainSocialLinksListAnchorBorderRadius: 100% !default;
-$footerMainSocialLinksListAnchorPadding: 2px !default;
+$footerMainSocialLinksListFirstChildMarginLeft: 3px !default;
+
+$footerMainSocialLinksListAnchorColor: #fff !default;
 $footerMainSocialLinksListAnchorWidth: 52px !default;
 $footerMainSocialLinksListAnchorHeight: 52px !default;
-$footerMainSocialLinksListAnchorDisplay: flex !default;
-$footerMainSocialLinksListAnchorAlignItems: center !default;
-$footerMainSocialLinksListAnchorJustifyContent: center !default;
-$footerMainSocialLinksListAnchorTextAlign: center !default;
 $footerMainSocialLinksListAnchorFontSize: 26px !default;
-$footerMainSocialLinksListAnchorPosition: relative !default;
-
-$footerMainSocialLinksListAnchorInstagram: #0073b2 !default;
-$footerMainSocialLinksListAnchorFacebook: #4867aa !default;
-$footerMainSocialLinksListAnchorTwitter: #55acee !default;
-$footerMainSocialLinksListAnchorGooglePlus: #dd5144 !default;
-$footerMainSocialLinksListAnchorYoutube: #f00 !default;
 
 $footerMainSocialLinksListAnchorColorHover: $theme-color !default;
 

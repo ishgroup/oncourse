@@ -1,0 +1,12 @@
+
+@mixin _social-icon($iconName, $color) {
+  &.#{$iconName} {
+    border-color: $color;
+    &::after {
+      background-color: $color;
+    }
+    &:hover {
+      color: $color;
+    }
+  }
+}

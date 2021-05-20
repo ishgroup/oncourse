@@ -38,18 +38,8 @@
         > br {
           display: none;
         }
-        > img {
+        > p > img {
           background-color: $footerLeftSocialContentSiteLogoBackgroundColor;
-        }
-        .social-links {
-          margin-top: $footerLeftSocialContentLinksMarginTop;
-          li {
-            display: $footerLeftSocialContentLinksListDisplay;
-
-            &:first-child {
-              margin-left: $footerLeftSocialContentLinksListFirstChildMarginLeft;
-            }
-          }
         }
       }
       .address-info {
