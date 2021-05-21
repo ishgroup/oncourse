@@ -1,0 +1,30 @@
+type: object
+properties:
+  futureTimetable:
+    type: number
+    required: true
+    description: attendance future timetable hours
+  notMarked:
+    type: number
+    required: true
+    description: attendance not marked hours
+  absent:
+    type: number
+    required: true
+    description: attendance absent hours
+  attended:
+    type: number
+    required: true
+    description: attendance attended hours
+  notReleased:
+    type: number
+    required: true
+    description: not released assessments number
+  submitted:
+    type: number
+    required: true
+    description: submitted assessments number
+  marked:
+    type: number
+    required: true
+    description: marked assessments number

@@ -292,13 +292,13 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         <Card className={classes.card}>
           <Grid container>
             <Grid item xs={12}>
-              <div className="heading">Progression</div>
+              <div className="heading">OUTCOME PROGRESSION</div>
             </Grid>
             <Grid item xs={twoColumn ? 6 : 12} className="d-flex justify-content-center">
-              <AttendanceChart />
+              <AttendanceChart data={values.progression} />
             </Grid>
             <Grid item xs={twoColumn ? 6 : 12} className="d-flex justify-content-center">
-              <AssessmentChart />
+              <AssessmentChart data={values.progression} />
             </Grid>
           </Grid>
         </Card>

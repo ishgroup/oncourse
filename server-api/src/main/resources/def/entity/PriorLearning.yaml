@@ -27,7 +27,7 @@ properties:
   outcomes:
     type: array
     items:
-      $ref: './Outcome.yaml'
+      $ref: './outcome/Outcome.yaml'
   documents:
     type: array
     items:

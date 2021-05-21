@@ -6,33 +6,45 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import {
  PieChart, Pie, Legend, Cell
 } from "recharts";
 import { useTheme } from '@material-ui/core/styles';
+import { OutcomeProgression } from "@api/model";
 
-const data1 = [
-  { name: "not marked (6 hrs)", value: 600 },
-  { name: "absent (2 hrs)", value: 200 },
-  { name: "attended (3 hrs)", value: 300 },
-];
+interface Props {
+  data: OutcomeProgression
+}
 
-const data2 = [
-  { name: "not released (3)", value: 300 },
-  { name: "submitted (2)", value: 200 },
-  { name: "marked (2)", value: 200 },
-];
+export function AttendanceChart({ data = {} }: Props) {
+  const chartData = useMemo(() => {
+    const result = [];
+    Object.keys(data).forEach(k => {
+      switch (k) {
+        case "futureTimetable":
+          return result.push({ name: `future timetable (${data[k]} hrs)`, value: data[k] });
+        case "notMarked":
+          return result.push({ name: `not marked (${data[k]} hrs)`, value: data[k] });
+        case "absent":
+          return result.push({ name: `absent (${data[k]} hrs)`, value: data[k] });
+        case "attended":
+          return result.push({ name: `attended (${data[k]} hrs)`, value: data[k] });
+        default:
+          return null;
+      }
+    });
+    return result;
+  }, [data]);
 
-export function AttendanceChart() {
-  const { palette: { divider } } = useTheme();
+  const { palette: { divider, text: { disabled, primary } } } = useTheme();
 
-  const COLORS = [divider, "red", "green"];
+  const COLORS = [divider, disabled, "red", "green"];
 
   return (
     <PieChart width={200} height={270}>
       <Pie
-        data={data1}
+        data={chartData}
         cx={95}
         cy={90}
         innerRadius={60}
@@ -41,13 +53,13 @@ export function AttendanceChart() {
         paddingAngle={0}
         dataKey="value"
       >
-        {data1.map((entry, index) => (
+        {chartData.map((entry, index) => (
           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
         ))}
       </Pie>
-      <text x={100} y={85} dy={8} textAnchor="middle">
+      <text x={100} y={85} dy={8} textAnchor="middle" fill={primary}>
         <tspan fontSize="30">
-          {Math.round(data1[2].value/(data1.reduce((p, c) => p + c.value, 0)/100))}
+          {chartData.length && Math.round(chartData[2].value / (chartData.reduce((p, c) => p + c.value, 0) / 100))}
           %
         </tspan>
         <tspan x="100" dy="15">attended</tspan>
@@ -63,15 +75,32 @@ export function AttendanceChart() {
   );
 }
 
-export function AssessmentChart() {
-  const { palette: { divider } } = useTheme();
+export function AssessmentChart({ data = {} }: Props) {
+  const chartData = useMemo(() => {
+    const result = [];
+    Object.keys(data).forEach(k => {
+      switch (k) {
+        case "notReleased":
+          return result.push({ name: `not released (${data[k]})`, value: data[k] });
+        case "submitted":
+          return result.push({ name: `submitted (${data[k]})`, value: data[k] });
+        case "marked":
+          return result.push({ name: `marked (${data[k]})`, value: data[k] });
+        default:
+          return null;
+      }
+    });
+    return result;
+  }, [data]);
+
+  const { palette: { divider, text: { primary } } } = useTheme();
 
   const COLORS = [divider, "#0088FE", "#FF8042"];
 
   return (
     <PieChart width={200} height={270}>
       <Pie
-        data={data2}
+        data={chartData}
         cx={95}
         cy={90}
         innerRadius={60}
@@ -80,13 +109,13 @@ export function AssessmentChart() {
         paddingAngle={0}
         dataKey="value"
       >
-        {data2.map((entry, index) => (
+        {chartData.map((entry, index) => (
           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
         ))}
       </Pie>
-      <text x={100} y={85} dy={8} textAnchor="middle">
+      <text x={100} y={85} dy={8} textAnchor="middle" fill={primary}>
         <tspan fontSize="30">
-          {Math.round(data2[2].value/(data2.reduce((p, c) => p + c.value, 0)/100))}
+          {chartData.length && Math.round(chartData[2].value / (chartData.reduce((p, c) => p + c.value, 0) / 100))}
           %
         </tspan>
         <tspan x="100" dy="15">assessments</tspan>
