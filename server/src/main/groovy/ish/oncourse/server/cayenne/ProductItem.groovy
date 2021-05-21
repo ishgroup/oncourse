@@ -33,7 +33,7 @@ import java.util.Date
  */
 @API
 @QueueableEntity
-class ProductItem extends _ProductItem implements Queueable, ExpandableTrait {
+class ProductItem extends _ProductItem implements Queueable {
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -161,10 +161,5 @@ class ProductItem extends _ProductItem implements Queueable, ExpandableTrait {
 				throw new IllegalStateException()
 		}
 
-	}
-
-	@Override
-	Class<? extends CustomField> getCustomFieldClass() {
-		return ProductItemCustomField
 	}
 }

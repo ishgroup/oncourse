@@ -1649,7 +1649,7 @@
 	<obj-entity name="Article" superEntityName="ProductItem" className="ish.oncourse.server.cayenne.Article" clientClassName="ish.oncourse.cayenne.Article">
 		<qualifier><![CDATA[type = 1]]></qualifier>
 	</obj-entity>
-	<obj-entity name="ArticleCustomField" superEntityName="ProductItemCustomField" className="ish.oncourse.server.cayenne.ArticleCustomField">
+	<obj-entity name="ArticleCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.ArticleCustomField">
 		<qualifier><![CDATA[entityIdentifier = "Product"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="ArticleFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.server.cayenne.ArticleFieldConfiguration">
@@ -2444,7 +2444,7 @@
 	<obj-entity name="Membership" superEntityName="ProductItem" className="ish.oncourse.server.cayenne.Membership" clientClassName="ish.oncourse.cayenne.Membership">
 		<qualifier><![CDATA[type = 2]]></qualifier>
 	</obj-entity>
-	<obj-entity name="MembershipCustomField" superEntityName="ProductItemCustomField" className="ish.oncourse.server.cayenne.MembershipCustomField">
+	<obj-entity name="MembershipCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.MembershipCustomField">
 		<qualifier><![CDATA[entityIdentifier = "Membership"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="MembershipFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.server.cayenne.MembershipFieldConfiguration">
@@ -2710,7 +2710,6 @@
 		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="ProductItemCustomField" abstract="true" superEntityName="CustomField" className="ish.oncourse.server.cayenne.ProductItemCustomField"/>
 	<obj-entity name="Qualification" className="ish.oncourse.server.cayenne.Qualification" clientClassName="ish.oncourse.cayenne.Qualification" dbEntityName="Qualification" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="anzsco" type="java.lang.String" db-attribute-path="ANZSCO"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -3098,7 +3097,7 @@
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="valueOnPurchase" type="ish.math.Money" db-attribute-path="valueOnPurchase"/>
 	</obj-entity>
-	<obj-entity name="VoucherCustomField" superEntityName="ProductItemCustomField" className="ish.oncourse.server.cayenne.VoucherCustomField">
+	<obj-entity name="VoucherCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.VoucherCustomField">
 		<qualifier><![CDATA[entityIdentifier = "Voucher"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="VoucherFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.server.cayenne.VoucherFieldConfiguration">
@@ -3730,7 +3729,13 @@
 	<db-relationship name="relatedEnrolment" source="CustomField" target="Enrolment">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relatedSale" source="CustomField" target="ProductItem">
+	<db-relationship name="relatedArticle" source="CustomField" target="ProductItem">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedMembership" source="CustomField" target="ProductItem">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedVoucher" source="CustomField" target="ProductItem">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="relatedSurvey" source="CustomField" target="Survey">
@@ -5121,8 +5126,12 @@
 	<obj-relationship name="contact" source="ProductItem" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="invoiceLine" source="ProductItem" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="product" source="ProductItem" target="Product" deleteRule="Nullify" db-relationship-path="product"/>
-	<obj-relationship name="customFields" source="ProductItem" target="ProductItemCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
-	<obj-relationship name="relatedObject" source="ProductItemCustomField" target="ProductItem" deleteRule="Nullify" db-relationship-path="relatedSale"/>
+	<obj-relationship name="customFields" source="Article" target="ArticleCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="ArticleCustomField" target="Article" deleteRule="Nullify" db-relationship-path="relatedArticle"/>
+	<obj-relationship name="customFields" source="Membership" target="MembershipCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="MembershipCustomField" target="Membership" deleteRule="Nullify" db-relationship-path="relatedMembership"/>
+	<obj-relationship name="customFields" source="Voucher" target="VoucherCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="VoucherCustomField" target="Voucher" deleteRule="Nullify" db-relationship-path="relatedVoucher"/>
 	<obj-relationship name="certificates" source="Qualification" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="courses" source="Qualification" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
 	<obj-relationship name="defaultModules" source="Qualification" target="Module" deleteRule="Deny" db-relationship-path="defaultModules"/>

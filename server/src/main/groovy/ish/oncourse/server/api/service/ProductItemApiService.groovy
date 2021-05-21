@@ -46,7 +46,7 @@ import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
 import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.ProductItemCustomField
+
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tax
 import ish.oncourse.server.cayenne.Voucher
@@ -115,7 +115,17 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
             productItemDTO.redeemableById = type == ProductTypeDTO.VOUCHER ? (productItem as Voucher).redeemableBy?.id : null
             productItemDTO.redeemableByName = (type == ProductTypeDTO.VOUCHER && (productItem as Voucher).redeemableBy != null) ? GetContactFullName.valueOf((productItem as Voucher).redeemableBy, true).get() : null
             productItemDTO.payments = getPayments(type, productItem)
-            productItemDTO.customFields = productItem.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
+            switch (type) {
+                case ProductTypeDTO.PRODUCT:
+                    productItemDTO.customFields = (productItem as Article).customFields.collectEntries {[(it.customFieldType.key) : it.value] }
+                    break
+                case ProductTypeDTO.MEMBERSHIP:
+                    productItemDTO.customFields = (productItem as Membership).customFields.collectEntries {[(it.customFieldType.key) : it.value] }
+                    break
+                case ProductTypeDTO.VOUCHER:
+                    productItemDTO.customFields = (productItem as Voucher).customFields.collectEntries {[(it.customFieldType.key) : it.value] }
+                    break
+            }
 
             return productItemDTO
         }
@@ -252,19 +262,17 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
                 voucher.redeemableBy = null
             }
         }
-        Class<? extends CustomField> clzz = null
         switch (productItemDTO.productType) {
             case ProductTypeDTO.PRODUCT:
-                clzz = ArticleCustomField
+                updateCustomFields(productItem.context, productItem as Article, productItemDTO.customFields, ArticleCustomField)
                 break
             case ProductTypeDTO.MEMBERSHIP:
-                clzz = MembershipCustomField
+                updateCustomFields(productItem.context, productItem as Membership, productItemDTO.customFields, MembershipCustomField)
                 break
             case ProductTypeDTO.VOUCHER:
-                clzz = VoucherCustomField
+                updateCustomFields(productItem.context, productItem as Voucher, productItemDTO.customFields, VoucherCustomField)
                 break
         }
-        updateCustomFields(productItem.context, productItem, productItemDTO.customFields, clzz)
         productItem
     }
 
