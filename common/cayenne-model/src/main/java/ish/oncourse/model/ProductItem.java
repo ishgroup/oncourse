@@ -30,4 +30,9 @@ public class ProductItem extends _ProductItem implements Queueable {
 			setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND);
 		}
     }
+
+	@Override
+	public void setCustomFieldValue(String key, String value) {
+
+	}
 }

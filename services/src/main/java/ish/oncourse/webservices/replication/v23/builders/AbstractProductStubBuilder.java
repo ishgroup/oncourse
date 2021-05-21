@@ -25,6 +25,9 @@ public abstract class AbstractProductStubBuilder<E extends Product, S extends Pr
 			stub.setTaxAdjustment(entity.getTaxAdjustment().toBigDecimal());
 		}
 		stub.setType(entity.getType());
+		if (entity.getFieldConfigurationScheme() != null) {
+			stub.setFieldConfigurationSchemeId(entity.getFieldConfigurationScheme().getId());
+		}
 		return stub;
 	}
 

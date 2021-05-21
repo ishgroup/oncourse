@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.v23.updaters;
 
 import ish.math.Money;
+import ish.oncourse.model.FieldConfigurationScheme;
 import ish.oncourse.model.Product;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
@@ -34,6 +35,9 @@ public abstract class AbstractProductUpdater<S extends ProductStub, E extends Pr
 		}
 		if (stub.getTaxAdjustment() != null) {
 			entity.setTaxAdjustment(new Money(stub.getTaxAdjustment()));
+		}
+		if (stub.getFieldConfigurationSchemeId() != null) {
+			entity.setFieldConfigurationScheme(callback.updateRelationShip(stub.getFieldConfigurationSchemeId(), FieldConfigurationScheme.class));
 		}
 		entity.setTaxAmount(stub.getTaxAmount() != null ? Money.valueOf(stub.getTaxAmount()) : Money.ZERO);
 	}
