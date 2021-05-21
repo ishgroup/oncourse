@@ -13,14 +13,14 @@
 apply plugin: 'java'
 
 dependencies {
-    implementation 'org.dbunit:dbunit:2.6.0'
+    implementation 'org.dbunit:dbunit:2.7.0'
     implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
 
     testImplementation "com.sun.activation:javax.activation:$javaxActivationVersion"
-    testImplementation 'com.intuit.karate:karate-junit4:0.9.6'
-    testImplementation 'com.intuit.karate:karate-jersey:0.9.6'
-    testImplementation 'com.intuit.karate:karate-core:0.9.6'
-    testImplementation 'org.glassfish.jersey.connectors:jersey-jetty-connector:2.26'
+    testImplementation 'com.intuit.karate:karate-junit4:1.0.1'
+    testImplementation 'com.intuit.karate:karate-jersey:1.0.1'
+    testImplementation 'com.intuit.karate:karate-core:1.0.1'
+    testImplementation 'org.glassfish.jersey.connectors:jersey-jetty-connector:3.0.2'
     testImplementation "org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion"
     testImplementation "org.eclipse.jetty:jetty-client:$jettyVersion"
 }
@@ -50,10 +50,10 @@ test {
     testLogging {
         events "failed", "standardOut"
     }
-    
+
     tasks.getByName('prepareTestDb').mustRunAfter(':server:startDaemon').mustRunAfter('copyConfig')
 
-    dependsOn "copyConfig" 
+    dependsOn "copyConfig"
     dependsOn ":server:startDaemon"
     dependsOn "prepareTestDb"
     // pull cucumber options into the cucumber jvm

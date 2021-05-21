@@ -82,7 +82,7 @@ dependencies {
 	implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
 
 	implementation 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
-	implementation ('net.sf.jasperreports:jasperreports:6.1.1') {
+	implementation ('net.sf.jasperreports:jasperreports:6.17.0') {
 		exclude group:'org.apache.poi', module: 'poi-ooxml'
 		exclude group:'org.codehaus.castor'
 		exclude group:'com.fasterxml.jackson.core'
@@ -103,8 +103,8 @@ dependencies {
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.11.939'
 	implementation 'com.azure:azure-storage-blob:12.0.0'
 
-	api 'org.quartz-scheduler:quartz:2.2.2'
-	implementation 'org.apache.pdfbox:pdfbox:2.0.17'
+	api 'org.quartz-scheduler:quartz:2.3.2'
+	implementation 'org.apache.pdfbox:pdfbox:2.0.23'
 	implementation 'org.scribe:scribe:1.3.7'
 	implementation 'commons-io:commons-io:2.6'
 	implementation 'org.apache.commons:commons-lang3:3.7'
@@ -137,7 +137,7 @@ dependencies {
 	testImplementation 'org.mockito:mockito-core:2.18.3'
 	testImplementation 'commons-dbcp:commons-dbcp:1.4'
 	testImplementation 'xmlunit:xmlunit:1.6' //used for xml export validation tests
-	testImplementation 'org.kohsuke:wordnet-random-name:1.3'
+	testImplementation 'org.kohsuke:wordnet-random-name:1.5'
 	testImplementation "io.bootique:bootique-test:$bootiqueVersion"
 }
 
