@@ -18,6 +18,7 @@ import {checkoutSettingsReducer} from "../containers/settings/containers/checkou
 
 import {configReducer, fetchReducer} from "../common/reducers";
 import {specialPagesReducer} from "../containers/settings/containers/specialPages/reducers";
+import { webDavReducer } from "../common/webdav/reducer/webDavReducer";
 
 export const combinedReducers = combineReducers({
   auth: authReducer,
@@ -39,4 +40,5 @@ export const combinedReducers = combineReducers({
   }),
   form: reduxFormReducer,
   fetching: fetchReducer,
+  webDav: webDavReducer,
 });

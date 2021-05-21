@@ -13,6 +13,7 @@ import {SpecialPageSettingsState} from "../containers/settings/containers/specia
 import {CmsConfig} from "../configLoader";
 import {NavigationState} from "../common/containers/Navigation/reducers/State";
 import {MessageState} from "../common/components/message/reducer/State";
+import {WebDav} from "../common/webdav/reducer/webDavReducer";
 
 interface SettingsState {
   redirectSettings: RedirectSettingsState;
@@ -37,5 +38,6 @@ export interface State {
   navigation: NavigationState;
   message: MessageState;
   fetching: boolean;
+  webDav: WebDav;
 }
 

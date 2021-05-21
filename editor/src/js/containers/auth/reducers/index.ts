@@ -6,8 +6,11 @@ import {User} from "../../../model";
 export const authReducer = (state: AuthState = new AuthState(), action: IAction<any>): AuthState => {
   switch (action.type) {
     case SUBMIT_LOGIN_FORM_FULFILLED:
+      const { credentials } = action.payload;
+
       return {
         ...state,
+        credentials,
         token: '',
         isAuthenticated: true,
       };

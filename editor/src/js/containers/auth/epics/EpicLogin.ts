@@ -12,7 +12,7 @@ import {Observable} from "rxjs";
 const request: EpicUtils.Request<any, any> = {
   type: SUBMIT_LOGIN_FORM_REQUEST,
   getData: (payload, state) => AuthService.login(payload),
-  processData: (state: any) => {
+  processData: (state: any, s, p) => {
 
     // add CMS Cookie
     CookieService.set(DefaultConfig.COOKIE_NAME, 'true');
@@ -24,6 +24,9 @@ const request: EpicUtils.Request<any, any> = {
     return [
       {
         type: SUBMIT_LOGIN_FORM_FULFILLED,
+        payload: {
+          credentials: p,
+        },
       },
       pageReload(),
     ];

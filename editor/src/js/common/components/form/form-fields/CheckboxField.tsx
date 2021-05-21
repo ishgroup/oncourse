@@ -76,6 +76,7 @@ export const CheckboxField = props => {
 
   return (
     <StyledCheckbox
+      name={input.name}
       checked={getValue(input.value, stringValue)}
       onChange={onChange}
       color={color}

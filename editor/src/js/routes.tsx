@@ -24,6 +24,7 @@ import Redirect from './containers/settings/containers/redirect/Redirect';
 import Website from './containers/settings/containers/website/Website';
 import Checkout from './containers/settings/containers/checkout/Checkout';
 import SpecialPage from "./containers/settings/containers/specialPages/SpecialPage";
+import StylesSettings from "./containers/stylesSettings/StylesSettings";
 
 export const URL = {
   SITE: '/',
@@ -33,6 +34,7 @@ export const URL = {
   MENUS: '/menus',
   DESIGN: '/design',
   THEMES: '/themes',
+  STYLES_SETTINGS: '/stylesSettings',
   SETTINGS: '/settings',
   SETTINGS_SKILLS: '/settings/skills',
   SETTINGS_WEBSITE: '/settings/website',
@@ -126,6 +128,13 @@ export const routes: Route[] = [
     url: URL.THEMES,
     main: props => <Themes {...props}/>,
     sidebar: props => <ThemesSidebar {...props}/>,
+  },
+  {
+    title: 'Fonts and colors',
+    path: '/stylesSettings',
+    parent: URL.DESIGN,
+    url: URL.STYLES_SETTINGS,
+    main: props => <StylesSettings {...props} />,
   },
 
   // Settings

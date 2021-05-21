@@ -39,7 +39,11 @@ const _common = (dirname, options) => {
         path.resolve(dirname, 'src/dev'),
         path.resolve(dirname, 'src/scss'),
       ],
-      extensions: [".ts", ".tsx", ".js", ".css"]
+      extensions: [".ts", ".tsx", ".js", ".css"],
+      fallback: {
+        path: require.resolve("path-browserify"),
+        stream: require.resolve("stream-browserify")
+      }
     },
     module: {
       rules: [
@@ -60,7 +64,7 @@ const _common = (dirname, options) => {
       new CKEditorWebpackPlugin( {
         language: 'en'
       }),
-      _DefinePlugin('development', options.BUILD_NUMBER),
+      _DefinePlugin('development', options.BUILD_NUMBER)
     ],
     devServer: {
       inline: false

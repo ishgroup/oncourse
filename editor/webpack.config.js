@@ -43,7 +43,11 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
         path.resolve(__dirname, 'src/js'),
         path.resolve(__dirname, 'src/scss'),
       ],
-      extensions: [".ts", ".tsx", ".js", ".css"]
+      extensions: [".ts", ".tsx", ".js", ".css"],
+      fallback: {
+        path: require.resolve("path-browserify"),
+        stream: require.resolve("stream-browserify")
+      }
     },
     optimization: {
       minimizer: [
@@ -91,7 +95,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
     new CKEditorWebpackPlugin( {
       language: 'en'
     }),
-    __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
+    __common.DefinePlugin(NODE_ENV, BUILD_NUMBER)
   ];
 
   switch (NODE_ENV) {

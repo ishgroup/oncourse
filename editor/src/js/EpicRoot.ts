@@ -10,6 +10,7 @@ import {EpicRedirectSettings} from "./containers/settings/containers/redirect/ep
 import {EpicWebsiteSettings} from "./containers/settings/containers/website/epics";
 import {EpicCheckoutSettings} from "./containers/settings/containers/checkout/epics";
 import {EpicSpecialPages} from "./containers/settings/containers/specialPages/epics";
+import { EpicGetFileContents, EpicGetDirectoryContents, EpicPutFileContents } from "./common/webdav/epics";
 
 export const EpicRoot = combineEpics(
   EpicAuth,
@@ -23,4 +24,7 @@ export const EpicRoot = combineEpics(
   EpicWebsiteSettings,
   EpicCheckoutSettings,
   EpicSpecialPages,
+  EpicGetFileContents,
+  EpicPutFileContents,
+  EpicGetDirectoryContents,
 );
