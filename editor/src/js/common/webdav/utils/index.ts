@@ -37,26 +37,25 @@ export const formatSectionField = fileText => {
   const code = fileText ? fileText.replace(/\t/gm, "") : "";
 
   if (fileText) {
-    // const docVars = ["label", "section", "type"];
-    // const matchedVars = {
-    //   label: [],
-    //   section: [],
-    //   type: [],
-    // };
+    const docVars = ["label", "section", "type"];
+    const matchedVars = {
+      label: [],
+      section: [],
+      type: [],
+    };
 
     // const variables = code.split(";").map(c => (c.includes('$') ? c.replace(";", "") : null)).filter(c => !!c).map(c => {
     const variables = code.split("\n").map(c => (c.includes('$') && !c.includes('//') ? c.replace(";", "") : null)).filter(c => !!c).map(c => {
-      // docVars.forEach(docValue => {
-      //   const regex = new RegExp(`@${docValue}\\s[\\S]*[\\t]*[^*]+$`, 'gm');
-      //   const matched = c.match(regex);
-      //   matchedVars[docValue] = matched && matched.length ? matched[0] : null;
-      // });
+      docVars.forEach(docValue => {
+        const regex = new RegExp(`@${docValue}\\s[\\S]*[\\t]*[^*]+$`, 'gm');
+        const matched = c.match(regex);
+        matchedVars[docValue] = matched && matched.length ? matched[0] : null;
+      });
 
       const variablesRegex = new RegExp('\\$[^*]+:\\s[\\S]*[\\t]*[^*]*$', 'gm');
       const variablesMatched = c.match(variablesRegex);
 
-      return {setting: variablesMatched ? `${variablesMatched[0]};` : null};
-      // return {setting: variablesMatched ? `${variablesMatched[0]};` : null, ...matchedVars};
+      return {setting: variablesMatched ? `${variablesMatched[0]};` : null, ...matchedVars};
     });
 
     variables.forEach((variable, index) => {
