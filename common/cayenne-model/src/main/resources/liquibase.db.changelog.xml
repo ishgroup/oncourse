@@ -495,5 +495,16 @@
 			<column name="pattern" type="VARCHAR(128)"/>
 		</addColumn>
 	</changeSet>
+
+	<changeSet id="41" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="fieldConfigurationId" tableName="Product"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Product">
+			<column name="fieldConfigurationId" type="BIGINT"/>
+		</addColumn>
+	</changeSet>
 	
 </databaseChangeLog>
