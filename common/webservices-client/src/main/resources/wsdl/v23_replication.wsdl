@@ -675,6 +675,7 @@
                             <xs:element name="taxAdjustment" type="xs:decimal" nillable="false"/>
                             <xs:element name="taxId" type="xs:long" nillable="false"/>
                             <xs:element name="type" type="xs:int" nillable="false"/>
+                            <xs:element name="fieldConfigurationSchemeId" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

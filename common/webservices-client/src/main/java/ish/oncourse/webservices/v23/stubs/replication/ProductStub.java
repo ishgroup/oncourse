@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="taxAdjustment" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
  *         &lt;element name="taxId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="fieldConfigurationSchemeId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -54,7 +55,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "taxAmount",
     "taxAdjustment",
     "taxId",
-    "type"
+    "type",
+    "fieldConfigurationSchemeId"
 })
 @XmlSeeAlso({
     ArticleProductStub.class,
@@ -99,6 +101,10 @@ public class ProductStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer type;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "long")
+    protected Long fieldConfigurationSchemeId;
 
     /**
      * Gets the value of the sku property.
@@ -386,6 +392,30 @@ public class ProductStub
      */
     public void setType(Integer value) {
         this.type = value;
+    }
+
+    /**
+     * Gets the value of the fieldConfigurationSchemeId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getFieldConfigurationSchemeId() {
+        return fieldConfigurationSchemeId;
+    }
+
+    /**
+     * Sets the value of the fieldConfigurationSchemeId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFieldConfigurationSchemeId(Long value) {
+        this.fieldConfigurationSchemeId = value;
     }
 
 }
