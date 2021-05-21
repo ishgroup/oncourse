@@ -31,6 +31,9 @@ class ProductStubBuilder extends AbstractAngelStubBuilder<Product, ProductStub> 
 		stub.setTaxAmount(entity.getFeeGST().toBigDecimal())
 		stub.setType(entity.getType())
 		stub.setWillowId(entity.getWillowId())
+		if (entity.getFieldConfigurationScheme() != null) {
+			stub.setFieldConfigurationSchemeId(entity.getFieldConfigurationScheme().getId())
+		}
 		return stub
 	}
 }

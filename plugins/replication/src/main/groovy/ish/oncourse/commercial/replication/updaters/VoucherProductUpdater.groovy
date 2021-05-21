@@ -7,6 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.common.types.ExpiryType
 import ish.common.types.TypesUtil
 import ish.math.Money
+import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.VoucherProduct
 import ish.oncourse.webservices.v23.stubs.replication.VoucherProductStub
 
@@ -36,6 +37,9 @@ class VoucherProductUpdater extends AbstractAngelUpdater<VoucherProductStub, Vou
 		entity.setMaxCoursesRedemption(stub.getMaxCoursesRedemption())
 		if (stub.getValue() != null) {
 			entity.setValue(Money.valueOf(stub.getValue()))
+		}
+		if (stub.getFieldConfigurationSchemeId() != null) {
+			entity.setFieldConfigurationScheme(callback.updateRelationShip(stub.getFieldConfigurationSchemeId(), FieldConfigurationScheme.class))
 		}
 	}
 }

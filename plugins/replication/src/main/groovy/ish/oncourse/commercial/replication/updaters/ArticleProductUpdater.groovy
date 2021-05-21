@@ -7,6 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 
 import ish.math.Money
 import ish.oncourse.server.cayenne.ArticleProduct
+import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.webservices.v23.stubs.replication.ArticleProductStub
 
 /**
@@ -30,5 +31,8 @@ class ArticleProductUpdater extends AbstractAngelUpdater<ArticleProductStub, Art
 		}
 		entity.setType(stub.getType())
 		entity.setWeight(stub.getWeight())
+		if (stub.getFieldConfigurationSchemeId() != null) {
+			entity.setFieldConfigurationScheme(callback.updateRelationShip(stub.getFieldConfigurationSchemeId(), FieldConfigurationScheme.class))
+		}
 	}
 }

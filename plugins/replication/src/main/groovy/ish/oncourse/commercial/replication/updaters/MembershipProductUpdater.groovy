@@ -7,6 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.common.types.ExpiryType
 import ish.common.types.TypesUtil
 import ish.math.Money
+import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.webservices.v23.stubs.replication.MembershipProductStub
 
@@ -33,5 +34,8 @@ class MembershipProductUpdater extends AbstractAngelUpdater<MembershipProductStu
         entity.setType(stub.getType())
         entity.setExpiryDays(stub.getExpiryDays())
         entity.setExpiryType(TypesUtil.getEnumForDatabaseValue(stub.getExpiryType(), ExpiryType.class))
+        if (stub.getFieldConfigurationSchemeId() != null) {
+            entity.setFieldConfigurationScheme(callback.updateRelationShip(stub.getFieldConfigurationSchemeId(), FieldConfigurationScheme.class))
+        }
     }
 }
