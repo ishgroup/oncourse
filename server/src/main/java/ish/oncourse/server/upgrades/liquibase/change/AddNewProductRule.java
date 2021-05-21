@@ -9,17 +9,15 @@
 package ish.oncourse.server.upgrades.liquibase.change;
 
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.FieldConfiguration;
-import ish.oncourse.server.cayenne.FieldConfigurationLink;
-import ish.oncourse.server.cayenne.FieldConfigurationScheme;
-import ish.oncourse.server.cayenne.Product;
+import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.db.SchemaUpdateService;
 import liquibase.database.Database;
 import liquibase.exception.CustomChangeException;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.SQLSelect;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddNewProductRule extends IshTaskChange {
@@ -40,8 +38,13 @@ public class AddNewProductRule extends IshTaskChange {
 
             scheme.setName(SCHEMA_NAME);
 
-            List<FieldConfiguration> configurations = SQLSelect.query(FieldConfiguration.class,
-                    "select * from FieldConfiguration fc group by type having max(id)").select(context);
+            List<FieldConfiguration> configurations = new ArrayList<>();
+            configurations.add(ObjectSelect.query(EnrolmentFieldConfiguration.class).where(EnrolmentFieldConfiguration.ID.eq(-1L)).selectOne(context));
+            configurations.add(getFirstFieldConfiguration(context, ApplicationFieldConfiguration.class));
+            configurations.add(getFirstFieldConfiguration(context, WaitingListFieldConfiguration.class));
+            configurations.add(getFirstFieldConfiguration(context, ArticleFieldConfiguration.class));
+            configurations.add(getFirstFieldConfiguration(context, MembershipFieldConfiguration.class));
+            configurations.add(getFirstFieldConfiguration(context, VoucherFieldConfiguration.class));
 
             configurations.forEach( fieldConfiguration -> {
                 FieldConfigurationLink link = context.newObject(FieldConfigurationLink.class);
@@ -59,5 +62,9 @@ public class AddNewProductRule extends IshTaskChange {
 
             context.commitChanges();
         }
+    }
+
+    private FieldConfiguration getFirstFieldConfiguration(ObjectContext context, Class<? extends FieldConfiguration> clzz) {
+        return ObjectSelect.query(clzz).orderBy(FieldConfiguration.ID.asc()).selectFirst(context);
     }
 }
