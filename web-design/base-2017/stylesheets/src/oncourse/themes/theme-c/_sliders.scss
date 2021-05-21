@@ -22,7 +22,7 @@
           height: 100%;
           li {
             height: 100%;
-            >span {
+            >p>span {
               @include responsive-image(true);
               width: 100%;
               height: 100%;
@@ -71,7 +71,7 @@
                   margin: 0 auto;
                   font-weight: 400;
                 }
-                >a {
+                >p>a {
                   @extend .square-btn;
                 }
               }
@@ -202,6 +202,13 @@
     }
   }
   .gallery-wrapper {
+    .courses-gallery-items ul {
+      li {
+        img {
+          margin: 0 auto;
+        }
+      }
+    }
     .bx-wrapper {
       &:hover {
         .bx-controls-direction a {
@@ -211,13 +218,6 @@
           }
           &.bx-next {
             right: 10px;
-          }
-        }
-      }
-      .courses-gallery-items {
-        li {
-          img {
-            margin: 0 auto;
           }
         }
       }

@@ -49,14 +49,6 @@
           color: $footerInfoHoverColor;
         }
       }
-      .social-links {
-        li {
-          margin-left: $footerSocialLinksListMarginLeft;
-          padding: $footerSocialLinksListPadding;
-          width: $footerSocialLinksListWidth;
-          float: $footerSocialLinksListFloat;
-        }
-      }
     }
     .courses-list, .quicklinks {
       ul >li {
@@ -73,7 +65,7 @@
       list-style: none;
     }
     .container {
-      a {
+      #contact-us a {
         color: $footerInfoColor;
         &:hover {
           color: $footerInfoHoverColor;

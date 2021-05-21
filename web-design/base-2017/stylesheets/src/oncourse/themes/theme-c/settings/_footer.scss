@@ -50,10 +50,20 @@ $footerContactLinkHoverColor: $white !default;
 $footerContactLinkDisplaySmall: initial !default;
 $footerContactLinkPaddingRightSmall: 26px !default;
 
-$footerSocialLinksListMarginLeft: 6px !default;
-$footerSocialLinksListPadding: 0 !default;
-$footerSocialLinksListWidth: auto !default;
-$footerSocialLinksListFloat: left !default;
+$socialLinksWithEffect: true !default;
+$footerMainSocialLinksMargin: 0px -10px 0px !default;
+$footerMainSocialLinksJustifyContent: center !default;
+
+$footerMainSocialLinksListMargin: 0 4px !default;
+
+$footerMainSocialLinksListFirstChildMarginLeft: 3px !default;
+
+$footerMainSocialLinksListAnchorColor: #fff !default;
+$footerMainSocialLinksListAnchorWidth: 52px !default;
+$footerMainSocialLinksListAnchorHeight: 52px !default;
+$footerMainSocialLinksListAnchorFontSize: 26px !default;
+
+$footerMainSocialLinksListAnchorColorHover: $theme-color !default;
 
 $footerContainerMargin: 15px 0 14px 0 !default;
 

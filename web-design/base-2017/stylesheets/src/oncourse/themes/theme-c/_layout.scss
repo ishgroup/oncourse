@@ -98,12 +98,6 @@
       right: 0;
     }
   }
-  .content, .dialogBox, .rodal-dialog {
-    .bottom-line {
-      margin-bottom: 45px;
-      line-height: 1.4;
-    }
-  }
   .title-one {
     font-weight: $titleOneFontWeight;
     text-align: $titleOneTextAlign;
@@ -445,6 +439,11 @@
             min-height: 100%;
             background: $theme-color;
           }
+          p {
+            height: 100%;
+            width: 100%;
+            margin-bottom: 0;
+          }
         }
         .square-btn {
           color: $white;
@@ -520,8 +519,6 @@
       }
     }
     .footer-social-links {
-      width: 215px;
-      margin: 0 auto;
       @extend .clearfix;
     }
   }
