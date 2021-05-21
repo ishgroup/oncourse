@@ -96,6 +96,9 @@ public class V23BuildersMap {
 		builderMap.put(SurveyFieldConfiguration.class.getSimpleName(), new FieldConfigurationStubBuilder());
 		builderMap.put(PayerFieldConfiguration.class.getSimpleName(), new FieldConfigurationStubBuilder());
 		builderMap.put(ParentFieldConfiguration.class.getSimpleName(), new FieldConfigurationStubBuilder());
+		builderMap.put(ArticleFieldConfiguration.class.getSimpleName(), new FieldConfigurationStubBuilder());
+		builderMap.put(MembershipFieldConfiguration.class.getSimpleName(), new FieldConfigurationStubBuilder());
+		builderMap.put(VoucherFieldConfiguration.class.getSimpleName(), new FieldConfigurationStubBuilder());
 		builderMap.put(FieldConfigurationLink.class.getSimpleName(), new FieldConfigurationLinkStubBuilder());
 		builderMap.put(FieldConfigurationScheme.class.getSimpleName(), new FieldConfigurationSchemeStubBuilder());
 		builderMap.put(AssessmentClassModule.class.getSimpleName(), new AssessmentClassModuleStubBuilder());

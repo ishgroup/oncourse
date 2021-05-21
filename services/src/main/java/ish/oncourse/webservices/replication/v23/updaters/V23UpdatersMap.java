@@ -106,6 +106,9 @@ public class V23UpdatersMap {
 		updaterMap.put(SurveyFieldConfiguration.class.getSimpleName(), new FieldConfigurationUpdater());
 		updaterMap.put(PayerFieldConfiguration.class.getSimpleName(), new FieldConfigurationUpdater());
 		updaterMap.put(ParentFieldConfiguration.class.getSimpleName(), new FieldConfigurationUpdater());
+		updaterMap.put(ArticleFieldConfiguration.class.getSimpleName(), new FieldConfigurationUpdater());
+		updaterMap.put(MembershipFieldConfiguration.class.getSimpleName(), new FieldConfigurationUpdater());
+		updaterMap.put(VoucherFieldConfiguration.class.getSimpleName(), new FieldConfigurationUpdater());
 		updaterMap.put(FieldHeading.class.getSimpleName(), new FieldHeadingUpdater());
 		updaterMap.put(FieldConfigurationLink.class.getSimpleName(), new FieldConfigurationLinkUpdater());
 		updaterMap.put(FieldConfigurationScheme.class.getSimpleName(), new FieldConfigurationSchemeUpdater());
