@@ -16,6 +16,7 @@ import ish.common.types.StudentStatusForUnitOfStudy
 import ish.math.Money
 import ish.oncourse.commercial.plugin.tcsi.TCSIIntegration
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.scripting.api.EmailService
@@ -28,19 +29,19 @@ import static groovyx.net.http.Method.*
 
 @CompileDynamic
 class UnitAPI extends TCSI_API {
-
+    
+    private Course highEducation
+    
     static final String UNITS_PATH = TCSIIntegration.BASE_API_PATH + '/unit-enrolments'
 
-    UnitAPI(RESTClient client, Enrolment enrolment, EmailService emailService, PreferenceController preferenceController) {
+    UnitAPI(Course highEducation, RESTClient client, Enrolment enrolment, EmailService emailService, PreferenceController preferenceController) {
         super(client, enrolment, emailService, preferenceController)
+        this.highEducation = highEducation
     }
     
     String getUnit(String admissionUid) {
         String message = 'getting unit enrolments'
-        String unitCode = enrolment.outcomes[0].module?.fieldOfEducation
-        if (!unitCode) {
-            interraptExport("The unit course has no 'discipline_code'")
-        }
+        
         
         client.request(GET, JSON) {
             uri.path = AdmissionAPI.ADMISSIONS_PATH + "/$admissionUid/unit-enrolments"
@@ -48,7 +49,7 @@ class UnitAPI extends TCSI_API {
 
                 def units = handleResponce(result, message)
                 if (units.empty) {
-                    def unit = units.find {it['unit_enrolment']['discipline_code'] == unitCode}
+                    def unit = units.find {it['unit_enrolment']['unit_of_study_code'] == enrolment.courseClass.uniqueCode}
                     if (unit) {
                         return unit['unit_enrolment']['unit_enrolments_uid']
                     }
@@ -97,16 +98,17 @@ class UnitAPI extends TCSI_API {
         Map<String, Object> unit = [:]
         CourseClass clazz = enrolment.courseClass
         unit["course_admissions_uid"] = Long.valueOf(admissionUid)
-        unit["unit_of_study_code"] =  clazz.course.code
+        unit["unit_of_study_code"] =  clazz.uniqueCode
         if (campuseUid) {
             unit["campuses_uid"] = Long.valueOf(campuseUid)
         }
         if (clazz.censusDate) {
             unit["unit_of_study_census_date"] = clazz.censusDate.format(DATE_FORMAT)
         }
-        if (!enrolment.outcomes.empty  && enrolment.outcomes[0].module?.fieldOfEducation ) {
-            unit["discipline_code"] =enrolment.outcomes[0].module?.fieldOfEducation
-        }
+        
+        String foe = highEducation.modules*.fieldOfEducation.sort().first()
+        unit["discipline_code"] = foe
+        
 
         if (clazz.startDateTime && clazz.endDateTime) {
             unit["unit_of_study_year_long_indicator"] = (Duration.between(clazz.startDateTime.toInstant(), clazz.endDateTime.toInstant()).toDays() > 300)
