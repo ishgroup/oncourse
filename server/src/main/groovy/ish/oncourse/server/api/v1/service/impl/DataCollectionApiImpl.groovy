@@ -195,7 +195,7 @@ class DataCollectionApiImpl implements DataCollectionApi {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(id, null, "The data collection rule $id is not exist")).build())
         }
 
-        validateRule(context, rule)
+        validateRule(context, rule, dbRule)
         try {
             cayenneService.serverRuntime.performInTransaction {
                 context.deleteObjects(dbRule.fieldConfigurationLinks)
