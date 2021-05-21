@@ -499,11 +499,11 @@
 	<changeSet id="41" author="rostislav" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists columnName="fieldConfigurationId" tableName="Product"/>
+				<columnExists columnName="fieldConfigurationSchemeId" tableName="Product"/>
 			</not>
 		</preConditions>
 		<addColumn tableName="Product">
-			<column name="fieldConfigurationId" type="BIGINT"/>
+			<column name="fieldConfigurationSchemeId" type="BIGINT"/>
 		</addColumn>
 	</changeSet>
 	
