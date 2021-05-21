@@ -12,7 +12,7 @@ import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.webservices.v22.stubs.replication.ContactStub
+import ish.oncourse.webservices.v23.stubs.replication.ContactStub
 import org.apache.cayenne.ObjectContext
 import org.junit.Before
 import org.junit.Test

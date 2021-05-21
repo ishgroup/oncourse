@@ -6,20 +6,19 @@
 package ish.oncourse.commercial.replication.updaters
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.commercial.replication.handler.OutboundReplicationHandlerTest
 import ish.oncourse.commercial.replication.services.TransactionGroupProcessorImpl
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.v22.stubs.replication.*
+import ish.oncourse.webservices.v23.stubs.replication.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
+
 import org.junit.Test
 
 import java.time.LocalDate
@@ -27,19 +26,10 @@ import java.time.LocalDate
 import static org.junit.Assert.*
 
 @CompileStatic
-class PaymentInUpdaterTest extends CayenneIshTestCase {
+@DatabaseSetup(value = "ish/oncourse/commercial/replication/updaters/PaymentInUpdaterTest.xml")
+class PaymentInUpdaterTest extends TestWithDatabase {
 
     private ICayenneService cayenneService
-
-    @Before
-    void setup() throws Exception {
-        wipeTables()
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/updaters/PaymentInUpdaterTest.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        executeDatabaseOperation(dataSet)
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-        super.setup()
-    }
 
     @Test
     void testWillowVoucherPaymentIn() {

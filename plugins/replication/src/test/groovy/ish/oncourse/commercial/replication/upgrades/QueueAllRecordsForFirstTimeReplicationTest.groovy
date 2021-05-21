@@ -4,7 +4,8 @@
  */
 package ish.oncourse.commercial.replication.upgrades
 
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
@@ -18,10 +19,11 @@ import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
 
 import static org.junit.Assert.*
-
-class QueueAllRecordsForFirstTimeReplicationTest extends CayenneIshTestCase {
+@DatabaseSetup(value = "ish/oncourse/commercial/replication/upgrades/recordQueuingTestDataSet.xml")
+class QueueAllRecordsForFirstTimeReplicationTest extends TestWithDatabase {
 
 	private static final List<Class<? extends Queueable>> EXCLUDED_QUEUEABLE_ENTITIES = new ArrayList<>()
 
@@ -39,8 +41,7 @@ class QueueAllRecordsForFirstTimeReplicationTest extends CayenneIshTestCase {
         EXCLUDED_QUEUEABLE_ENTITIES.add(ArticleProduct.class)
         EXCLUDED_QUEUEABLE_ENTITIES.add(VoucherPaymentIn.class)
         EXCLUDED_QUEUEABLE_ENTITIES.add(InvoiceLineDiscount.class)
-        EXCLUDED_QUEUEABLE_ENTITIES.add(CourseProductRelation.class)
-        EXCLUDED_QUEUEABLE_ENTITIES.add(CourseCourseRelation.class)
+        EXCLUDED_QUEUEABLE_ENTITIES.add(EntityRelationType.class)
         EXCLUDED_QUEUEABLE_ENTITIES.add(InvoiceDueDate.class)
         EXCLUDED_QUEUEABLE_ENTITIES.add(ContactDuplicate.class)
         EXCLUDED_QUEUEABLE_ENTITIES.add(Module.class)
@@ -52,21 +53,7 @@ class QueueAllRecordsForFirstTimeReplicationTest extends CayenneIshTestCase {
     }
 
 	private ICayenneService cayenneService
-
-    @Before
-    void setup() throws Exception {
-		wipeTables()
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = QueueAllRecordsForFirstTimeReplicationTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/commercial/replication/upgrades/recordQueuingTestDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-
-        ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet)
-        replacementDataSet.addReplacementObject("[null]", null)
-
-        executeDatabaseOperation(replacementDataSet)
-    }
+    
 
 	@Test
     void testAllQueueablesAreProcessed() {

@@ -5,7 +5,7 @@
 
 package ish.oncourse.commercial.replication.updaters
 
-import ish.CayenneIshTestCase
+import ish.TestWithDatabase
 import ish.oncourse.server.cayenne.Application
 import ish.oncourse.server.cayenne.ApplicationCustomField
 import ish.oncourse.server.cayenne.Contact
@@ -21,13 +21,13 @@ import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.server.cayenne.WaitingList
 import ish.oncourse.server.cayenne.WaitingListCustomField
 import ish.oncourse.webservices.util.GenericReplicationStub
-import ish.oncourse.webservices.v22.stubs.replication.CustomFieldStub
+import ish.oncourse.webservices.v23.stubs.replication.CustomFieldStub
 import static org.junit.Assert.assertNotNull
 import org.junit.Test
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
-class RelatedObjectCustomFieldUpdaterTest extends CayenneIshTestCase {
+class RelatedObjectCustomFieldUpdaterTest extends TestWithDatabase {
 
     @Test
     void test() throws Exception {
