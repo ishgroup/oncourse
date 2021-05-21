@@ -1,4 +1,8 @@
 {
+  "name": "api-doc",
+  "license": "AGPL-3.0-only",
+  "description": "API documentation for oncourse application",
+  "main": "webpack.api.doc.config.js",
   "scripts": {
     "build": "webpack --progress --node-env production --config webpack.api.doc.config.js",
     "start": "webpack serve --history-api-fallback --progress --open --node-env development --config webpack.api.doc.config.js --env schema ../server-api/build/swagger-merged/swagger.yaml "
