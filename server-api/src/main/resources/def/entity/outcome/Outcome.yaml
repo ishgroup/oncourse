@@ -45,11 +45,13 @@ properties:
   reportableHours:
     type: number
   deliveryMode:
-    $ref: '../enum/DeliveryMode.yaml'
+    $ref: '../../enum/DeliveryMode.yaml'
   fundingSource:
-    $ref: '../enum/ClassFundingSource.yaml'
+    $ref: '../../enum/ClassFundingSource.yaml'
   status:
-    $ref: '../enum/OutcomeStatus.yaml'
+    $ref: '../../enum/OutcomeStatus.yaml'
+  progression:
+    $ref: './OutcomeProgression.yaml'
   hoursAttended:
     type: integer
   vetPurchasingContractID:

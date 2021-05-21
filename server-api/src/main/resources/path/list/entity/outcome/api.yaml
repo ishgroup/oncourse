@@ -14,7 +14,7 @@ get:
     '200':
       description: Success response
       schema:
-        $ref: './def/entity/Outcome.yaml'
+        $ref: './def/entity/outcome/Outcome.yaml'
     '400':
       description: Bad request error.
     default:
@@ -38,7 +38,7 @@ put:
     - name: outcome
       in: body
       schema:
-        $ref: './def/entity/Outcome.yaml'
+        $ref: './def/entity/outcome/Outcome.yaml'
       required: true
       description: outcome for update
   responses:
@@ -87,7 +87,7 @@ post:
       description: Outcome definition which will be added
       required: true
       schema:
-        $ref: './def/entity/Outcome.yaml'
+        $ref: './def/entity/outcome/Outcome.yaml'
   responses:
     '200':
       description: Outcome successfully created
