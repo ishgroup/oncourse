@@ -32,13 +32,16 @@ import ish.oncourse.server.api.v1.model.ProductTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.Article
+import ish.oncourse.server.cayenne.ArticleCustomField
 import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.CustomField
 import ish.oncourse.server.cayenne.Discount
 import ish.oncourse.server.cayenne.DiscountMembership
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.InvoiceLineDiscount
 import ish.oncourse.server.cayenne.Membership
+import ish.oncourse.server.cayenne.MembershipCustomField
 import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
@@ -47,6 +50,7 @@ import ish.oncourse.server.cayenne.ProductItemCustomField
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tax
 import ish.oncourse.server.cayenne.Voucher
+import ish.oncourse.server.cayenne.VoucherCustomField
 import ish.oncourse.server.cayenne.VoucherProduct
 
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
@@ -248,7 +252,19 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
                 voucher.redeemableBy = null
             }
         }
-        updateCustomFields(productItem.context, productItem, productItemDTO.customFields, ProductItemCustomField)
+        Class<? extends CustomField> clzz = null
+        switch (productItemDTO.productType) {
+            case ProductTypeDTO.PRODUCT:
+                clzz = ArticleCustomField
+                break
+            case ProductTypeDTO.MEMBERSHIP:
+                clzz = MembershipCustomField
+                break
+            case ProductTypeDTO.VOUCHER:
+                clzz = VoucherCustomField
+                break
+        }
+        updateCustomFields(productItem.context, productItem, productItemDTO.customFields, clzz)
         productItem
     }
 
