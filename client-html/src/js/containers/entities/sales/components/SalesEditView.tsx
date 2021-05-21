@@ -1,9 +1,12 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   Contact,
   ProductItem, ProductItemPayment,
@@ -24,6 +27,7 @@ import { contactLabelCondition } from "../../contacts/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { buildUrl, productUrl } from "../utils";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { getCustomFieldTypes } from "../../customFieldTypes/actions";
 
 interface SalesGeneralViewProps {
   classes?: any;
@@ -100,6 +104,10 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
     },
     [form]
   );
+
+  useEffect(() => {
+    dispatch(getCustomFieldTypes(type as any));
+  }, [type]);
 
   return values ? (
     <div className="pl-3 pr-3 flex-column h-100">
