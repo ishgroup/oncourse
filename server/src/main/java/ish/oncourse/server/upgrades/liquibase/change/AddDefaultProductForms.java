@@ -13,6 +13,7 @@ import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.db.SchemaUpdateService;
 import liquibase.database.Database;
 import liquibase.exception.CustomChangeException;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
 
@@ -29,6 +30,7 @@ public class AddDefaultProductForms extends IshTaskChange {
 
         FieldConfiguration enrolmentForm = ObjectSelect.query(FieldConfiguration.class)
                 .where(FieldConfiguration.ID.eq(-1L))
+                .prefetch(FieldConfiguration.FIELDS.joint())
                 .prefetch(FieldConfiguration.FIELD_HEADINGS.joint())
                 .prefetch(FieldConfiguration.FIELD_HEADINGS.dot(FieldHeading.FIELDS).joint())
                 .selectOne(context);
@@ -57,19 +59,20 @@ public class AddDefaultProductForms extends IshTaskChange {
                     newFieldHeading.setFieldOrder(defaultFieldHeading.getFieldOrder());
                     newFieldHeading.setFieldConfiguration(newForm);
 
-                    defaultFieldHeading.getFields().forEach(defaultField -> {
-                        Field newField = context.newObject(Field.class);
-
-                        newField.setName(defaultField.getName());
-                        newField.setDescription(defaultField.getDescription());
-                        newField.setDefaultValue(defaultField.getDefaultValue());
-                        newField.setMandatory(defaultField.getMandatory());
-                        newField.setProperty(defaultField.getProperty());
-                        newField.setOrder(defaultField.getOrder());
-                        newField.setFieldHeading(newFieldHeading);
-                        newField.setFieldConfiguration(newForm);
+                    defaultFieldHeading.getFields()
+                            .stream()
+                            .filter(field -> !field.getProperty().startsWith("customField."))
+                            .forEach(defaultField -> {
+                                createNewField(context, defaultField, newForm, newFieldHeading);
                     });
                 });
+
+                enrolmentForm.getFields()
+                        .stream()
+                        .filter(field -> field.getFieldHeading() == null && !field.getProperty().startsWith("customField."))
+                        .forEach(defaultField -> {
+                            createNewField(context, defaultField, newForm, null);
+                        });
 
                 context.commitChanges();
 
@@ -84,5 +87,20 @@ public class AddDefaultProductForms extends IshTaskChange {
                 context.commitChanges();
             }
         });
+    }
+
+    private void createNewField(ObjectContext context, Field defaultField, FieldConfiguration configuration, FieldHeading heading) {
+        Field newField = context.newObject(Field.class);
+
+        newField.setName(defaultField.getName());
+        newField.setDescription(defaultField.getDescription());
+        newField.setDefaultValue(defaultField.getDefaultValue());
+        newField.setMandatory(defaultField.getMandatory());
+        newField.setProperty(defaultField.getProperty());
+        newField.setOrder(defaultField.getOrder());
+        newField.setFieldConfiguration(configuration);
+        if (heading != null) {
+            newField.setFieldHeading(heading);
+        }
     }
 }
