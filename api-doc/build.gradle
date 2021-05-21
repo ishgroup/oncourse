@@ -14,18 +14,23 @@ clean {
 }
 
 task apiDoc(type: YarnTask, dependsOn: [':server-api:apiDocs_mergeSwagger', 'yarn']) {
+    def swagger_file = tasks.getByPath(':server-api:apiDocs_mergeSwagger').outputs.files.first()
+    inputs.file(swagger_file)
+    inputs.dir('src')
+    inputs.files('webpack.api.doc.config.js', 'yarn.lock', 'tsconfig.json')
+    inputs.property('version', version)
+
     group = "documentation"
-    args = ['build',
-            '--env',
-            'schema',
-            tasks.getByPath(':server-api:apiDocs_mergeSwagger').outputs.files.first().toString()]
+    args = ['build', '--env', 'schema', swagger_file.toString()]
+
+    outputs.dir("${buildDir}/api-docs")
 }
 
 build.dependsOn(apiDoc)
 
 task packageApiDoc (type: Zip, dependsOn: apiDoc) {
     group = "documentation"
-    from file("${buildDir}/api-docs")
+    from apiDoc.outputs.files
     archiveClassifier = 'documentation'
 }
 
