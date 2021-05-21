@@ -46,6 +46,7 @@ class CustomFieldFunctions {
     }
 
     static CustomFieldType getCustomFieldType(ObjectContext objectContext, String entityName, String customFieldKey) {
+        entityName = entityName != "Article" ?: "Product"
         ObjectSelect.query(CustomFieldType)
                 .where(CustomFieldType.ENTITY_IDENTIFIER.eq(entityName))
                 .and(CustomFieldType.KEY.eq(customFieldKey))
