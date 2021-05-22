@@ -282,23 +282,6 @@
             font-weight: $footerMainPhoneTextFontWeight;
             display: $footerMainPhoneTextDisplay;
           }
-          .social-links {
-            margin-top: $footerMainSocialLinksMarginTop;
-            margin-bottom: $footerMainSocialLinksMarginBottom;
-            li {
-              width: $footerMainSocialLinksListWidth;
-              padding: $footerMainSocialLinksListPadding;
-              display: $footerMainSocialLinksListDisplay;
-              a {
-                display: $footerMainSocialLinksListAnchorDisplay;
-                color: $footerMainSocialLinksListAnchorColor;
-                &:hover {
-                  @include opacity($footerMainSocialLinksListAnchorOpacityHover);
-                  color: $footerMainSocialLinksListAnchorColorHover;
-                }
-              }
-            }
-          }
           .f-title {
             font-weight: $footerMainTitleFontWeight;
             font-size: $footerMainTitleFontSize;

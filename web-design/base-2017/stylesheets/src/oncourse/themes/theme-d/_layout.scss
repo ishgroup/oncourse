@@ -177,7 +177,7 @@
         >p {
           display: $topBlocksParagraphDisplay;
         }
-        >ul {
+        >div>ul {
           text-align: $topBlocksListTextAlign;
           li {
             margin-bottom: $topBlocksListChildMarginBottom;
@@ -186,7 +186,7 @@
               margin-bottom: $topBlocksListChildMarginBottomMediaTablet;
             }
             .t-item {
-              >img, >a>img {
+              >p>img, >p>a>img {
                 margin-bottom: $topBlocksListChildItemImgMarginBottom;
               }
               .t-content {
