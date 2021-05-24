@@ -10,8 +10,9 @@ import React, { useMemo } from "react";
 import {
  PieChart, Pie, Legend, Cell
 } from "recharts";
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, fade } from '@material-ui/core/styles';
 import { OutcomeProgression } from "@api/model";
+import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 
 interface Props {
   data: OutcomeProgression
@@ -37,9 +38,9 @@ export function AttendanceChart({ data = {} }: Props) {
     return result;
   }, [data]);
 
-  const { palette: { divider, text: { disabled, primary } } } = useTheme();
+  const { palette: { text: { primary }, background: { paper }, getContrastText } } = useTheme();
 
-  const COLORS = [divider, disabled, "red", "green"];
+  const COLORS = [fade(getContrastText(paper), 0.4), fade(getContrastText(paper), 0.6), "red", "green"];
 
   return (
     <PieChart width={200} height={270}>
@@ -59,7 +60,7 @@ export function AttendanceChart({ data = {} }: Props) {
       </Pie>
       <text x={100} y={85} dy={8} textAnchor="middle" fill={primary}>
         <tspan fontSize="30">
-          {chartData.length && Math.round(chartData[2].value / (chartData.reduce((p, c) => p + c.value, 0) / 100))}
+          {normalizeNumber(chartData.length && chartData[2].value && Math.round(chartData[2].value / (chartData.reduce((p, c) => p + c.value, 0) / 100)))}
           %
         </tspan>
         <tspan x="100" dy="15">attended</tspan>
@@ -93,9 +94,9 @@ export function AssessmentChart({ data = {} }: Props) {
     return result;
   }, [data]);
 
-  const { palette: { divider, text: { primary } } } = useTheme();
+  const { palette: { text: { primary }, background: { paper }, getContrastText } } = useTheme();
 
-  const COLORS = [divider, "#0088FE", "#FF8042"];
+  const COLORS = [fade(getContrastText(paper), 0.4), "#0088FE", "#FF8042"];
 
   return (
     <PieChart width={200} height={270}>
@@ -115,7 +116,7 @@ export function AssessmentChart({ data = {} }: Props) {
       </Pie>
       <text x={100} y={85} dy={8} textAnchor="middle" fill={primary}>
         <tspan fontSize="30">
-          {chartData.length && Math.round(chartData[2].value / (chartData.reduce((p, c) => p + c.value, 0) / 100))}
+          {normalizeNumber(chartData.length && chartData[2].value && Math.round(chartData[2].value / (chartData.reduce((p, c) => p + c.value, 0) / 100)))}
           %
         </tspan>
         <tspan x="100" dy="15">assessments</tspan>
