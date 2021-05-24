@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { Dispatch, useEffect, useState } from "react";
@@ -18,7 +21,6 @@ import { FilterGroup } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
 import SurveyEditView from "./components/SurveyEditView";
 import { State } from "../../../reducers/state";
-import { getCustomFieldTypes } from "../customFieldTypes/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { Classes } from "../../../model/entities/CourseClass";
 
@@ -27,7 +29,6 @@ interface StudentFeedbackProps {
   onInit?: (initial: SurveyItem) => void;
   onSave?: (id: string, studentFeedback: SurveyItem) => void;
   getFilters?: () => void;
-  getCustomFieldTypes?: () => void;
   clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   customFieldTypesUpdating?: boolean;
@@ -98,7 +99,6 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
     onInit,
     onSave,
     getFilters,
-    getCustomFieldTypes,
     customFieldTypesUpdating,
     customFieldTypes
   } = props;
@@ -106,7 +106,6 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
   const [initNew, setInitNew] = useState(false);
 
   useEffect(() => {
-    getCustomFieldTypes();
     getFilters();
     return () => {
       clearListState();
@@ -164,7 +163,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState()),
   getStudentFeedbackRecord: (id: string) => dispatch(getSurveyItem(id)),
   onSave: (id: string, surveyItem: SurveyItem) => dispatch(updateSurveyItem(id, surveyItem)),
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes("Survey"))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(StudentFeedbackComp);

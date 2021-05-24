@@ -48,10 +48,10 @@ import { EditViewProps } from "../../../model/common/ListView";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
 import { latestActivityStorageHandler } from "../../../common/utils/storage";
-import { getCustomFieldTypes } from "../../entities/customFieldTypes/actions";
 import {
+  CHECKOUT_MEMBERSHIP_COLUMNS,
   CHECKOUT_CONTACT_COLUMNS,
-  CHECKOUT_MEMBERSHIP_COLUMNS, CHECKOUT_PRODUCT_COLUMNS,
+  CHECKOUT_PRODUCT_COLUMNS,
   CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep
 } from "../constants";
@@ -1325,7 +1325,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getLanguages: () => dispatch(getLanguages()),
   getContactsRelationTypes: () => dispatch(getContactsRelationTypes()),
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes("Contact")),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
   openNestedEditView: (entity: string, id: number, threeColumn: boolean) =>
     dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
