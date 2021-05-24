@@ -90,7 +90,9 @@
       z-index: 0;
       @extend .responsive-image;
       >span {
-        height: 100%;
+        &, >p {
+          height: 100%;
+        }
         img {
           @include transition(transform .55s cubic-bezier(.19,1,.22,1));
           min-height: 100%;
@@ -139,7 +141,7 @@
         >p {
           display: $topBlocksParagraphDisplay;
         }
-        >ul {
+        >div>ul {
           text-align: $topBlocksListTextAlign;
           li {
             margin-bottom: $topBlocksListChildMarginBottom;
@@ -148,7 +150,7 @@
               margin-bottom: $topBlocksListChildMarginBottomMediaTablet;
             }
             .t-item {
-              >img, >a>img {
+              >p>img, >p>a>img {
                 margin-bottom: $topBlocksListChildItemImgMarginBottom;
               }
               .t-content {
@@ -251,26 +253,28 @@
         }
       }
       .pc-slider {
-        margin-left: $popularCoursesSliderMarginLeft;
-        li {
-          width: $popularCoursesSliderItemWidth;
-          height: $popularCoursesSliderItemHeight;
-          background: $popularCoursesSliderItemBackground;
-          color: $popularCoursesSliderItemTextColor;
-          position: $popularCoursesSliderItemPosition;
-          .pc-item {
-            position: $popularCoursesItemPosition;
-            top: $popularCoursesItemPositionTop;
-            @include transform(translateY($popularCoursesItemTranslateY));
-            padding: $popularCoursesItemPadding;
-            font-size: $popularCoursesItemFontSize;
-            > a, > span {
-              font-weight: $popularCoursesItemTitleFontWeight;
-              font-size: $popularCoursesItemTitleFontSize;
-              color: $popularCoursesItemTitleColor;
-            }
-            >a:hover {
-              color: $popularCoursesItemTitleColorHover;
+        ul {
+          margin-left: $popularCoursesSliderMarginLeft;
+          li {
+            width: $popularCoursesSliderItemWidth;
+            height: $popularCoursesSliderItemHeight;
+            background: $popularCoursesSliderItemBackground;
+            color: $popularCoursesSliderItemTextColor;
+            position: $popularCoursesSliderItemPosition;
+            .pc-item {
+              position: $popularCoursesItemPosition;
+              top: $popularCoursesItemPositionTop;
+              @include transform(translateY($popularCoursesItemTranslateY));
+              padding: $popularCoursesItemPadding;
+              font-size: $popularCoursesItemFontSize;
+              > a, > span {
+                font-weight: $popularCoursesItemTitleFontWeight;
+                font-size: $popularCoursesItemTitleFontSize;
+                color: $popularCoursesItemTitleColor;
+              }
+              >a:hover {
+                color: $popularCoursesItemTitleColorHover;
+              }
             }
           }
         }

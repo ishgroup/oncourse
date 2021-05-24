@@ -216,12 +216,12 @@ $footerMainSocialLinksListMargin: 0 4px !default;
 
 $footerMainSocialLinksListFirstChildMarginLeft: 3px !default;
 
-$footerMainSocialLinksListAnchorColor: #fff !default;
+$footerMainSocialLinksListAnchorColor: #fff !important !default;
 $footerMainSocialLinksListAnchorWidth: 52px !default;
 $footerMainSocialLinksListAnchorHeight: 52px !default;
 $footerMainSocialLinksListAnchorFontSize: 26px !default;
 
-$footerMainSocialLinksListAnchorColorHover: $theme-color !default;
+$footerMainSocialLinksListAnchorColorHover: $theme-color !important !default;
 
 $footerMainTitleFontWeight: bold !default;
 $footerMainTitleFontSize: 20px !default;

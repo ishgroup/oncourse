@@ -131,7 +131,9 @@
       height: $browseCoursesHeight;
       @extend .responsive-image-h;
       >span {
-        height: 100%;
+        &, >p {
+          height: 100%;
+        }
         img {
           height: auto;
           min-height: 100%;
@@ -289,26 +291,28 @@
         }
       }
       .pc-slider {
-        margin-left: $popularCoursesSliderMarginLeft;
-        li {
-          width: $popularCoursesSliderItemWidth;
-          height: $popularCoursesSliderItemHeight;
-          background: $popularCoursesSliderItemBackground;
-          color: $popularCoursesSliderItemTextColor;
-          position: $popularCoursesSliderItemPosition;
-          .pc-item {
-            position: $popularCoursesItemPosition;
-            top: $popularCoursesItemPositionTop;
-            @include transform(translateY($popularCoursesItemTranslateY));
-            padding: $popularCoursesItemPadding;
-            font-size: $popularCoursesItemFontSize;
-            > a, > span {
-              font-weight: $popularCoursesItemTitleFontWeight;
-              font-size: $popularCoursesItemTitleFontSize;
-              color: $popularCoursesItemTitleColor;
-            }
-            >a:hover {
-              color: $popularCoursesItemTitleColorHover;
+        ul {
+          margin-left: $popularCoursesSliderMarginLeft;
+          li {
+            width: $popularCoursesSliderItemWidth;
+            height: $popularCoursesSliderItemHeight;
+            background: $popularCoursesSliderItemBackground;
+            color: $popularCoursesSliderItemTextColor;
+            position: $popularCoursesSliderItemPosition;
+            .pc-item {
+              position: $popularCoursesItemPosition;
+              top: $popularCoursesItemPositionTop;
+              @include transform(translateY($popularCoursesItemTranslateY));
+              padding: $popularCoursesItemPadding;
+              font-size: $popularCoursesItemFontSize;
+              > a, > span {
+                font-weight: $popularCoursesItemTitleFontWeight;
+                font-size: $popularCoursesItemTitleFontSize;
+                color: $popularCoursesItemTitleColor;
+              }
+              >a:hover {
+                color: $popularCoursesItemTitleColorHover;
+              }
             }
           }
         }
