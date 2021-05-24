@@ -7,6 +7,9 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
 public abstract class AbstractWillowUpdater<V extends GenericReplicationStub, T extends Queueable> implements IWillowUpdater {
+	public static final String ARTICLE_ENTITY_NAME = Article.class.getSimpleName();
+	public static final String MEMBERSHIP_ENTITY_NAME = Membership.class.getSimpleName();
+	public static final String VOUCHER_ENTITY_NAME = Voucher.class.getSimpleName();
 	public static final String CONTACT_ENTITY_NAME = Contact.class.getSimpleName();
 	public static final String COURSE_ENTITY_NAME = Course.class.getSimpleName();
 	public static final String COURSE_CLASS_ENTITY_NAME = CourseClass.class.getSimpleName();
