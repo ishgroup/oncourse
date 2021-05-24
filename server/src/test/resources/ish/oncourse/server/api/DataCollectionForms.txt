@@ -62,7 +62,70 @@
     }]
     deliverySchedule: null
 }, class DataCollectionFormDTO {
-    
+
+    name: Article form
+    type: Product
+    fields: [class FieldDTO {
+        type: class FieldTypeDTO {
+            uniqueKey: street
+            label: Street
+        }
+        label: Street
+        helpText: Street
+        mandatory: true
+    }, class FieldDTO {
+        type: class FieldTypeDTO {
+            uniqueKey: citizenship
+            label: Citizenship
+        }
+        label: Citizenship
+        helpText: Citizenship
+        mandatory: true
+    }]
+    headings: [class HeadingDTO {
+        name: Enrol heading 1
+        description: Enrol heading 1
+        fields: [class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: postcode
+                label: Postcode
+            }
+            label: Postcode
+            helpText: Postcode
+            mandatory: true
+        }, class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: state
+                label: State
+            }
+            label: State
+            helpText: State
+            mandatory: true
+        }]
+    }, class HeadingDTO {
+        name: Enrol heading 2
+        description: Enrol heading 2
+        fields: [class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: country
+                label: Country
+            }
+            label: Country
+            helpText: Country
+            mandatory: true
+        }, class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: suburb
+                label: Suburb
+            }
+            label: Suburb
+            helpText: suburb
+            mandatory: true
+        }]
+    }]
+    deliverySchedule: null
+}, class DataCollectionFormDTO {
+
     name: Enrol form
     type: Enrolment
     fields: [class FieldDTO {
@@ -125,7 +188,70 @@
     }]
     deliverySchedule: null
 }, class DataCollectionFormDTO {
-    
+
+    name: Membership form
+    type: Membership
+    fields: [class FieldDTO {
+        type: class FieldTypeDTO {
+            uniqueKey: street
+            label: Street
+        }
+        label: Street
+        helpText: Street
+        mandatory: true
+    }, class FieldDTO {
+        type: class FieldTypeDTO {
+            uniqueKey: citizenship
+            label: Citizenship
+        }
+        label: Citizenship
+        helpText: Citizenship
+        mandatory: true
+    }]
+    headings: [class HeadingDTO {
+        name: Enrol heading 1
+        description: Enrol heading 1
+        fields: [class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: postcode
+                label: Postcode
+            }
+            label: Postcode
+            helpText: Postcode
+            mandatory: true
+        }, class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: state
+                label: State
+            }
+            label: State
+            helpText: State
+            mandatory: true
+        }]
+    }, class HeadingDTO {
+        name: Enrol heading 2
+        description: Enrol heading 2
+        fields: [class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: country
+                label: Country
+            }
+            label: Country
+            helpText: Country
+            mandatory: true
+        }, class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: suburb
+                label: Suburb
+            }
+            label: Suburb
+            helpText: suburb
+            mandatory: true
+        }]
+    }]
+    deliverySchedule: null
+}, class DataCollectionFormDTO {
+
     name: Survey form MIDWAY
     type: Survey
     fields: [class FieldDTO {
@@ -160,7 +286,7 @@
     }]
     deliverySchedule: Midway
 }, class DataCollectionFormDTO {
-    
+
     name: Survey form ON_ENROL
     type: Survey
     fields: [class FieldDTO {
@@ -194,6 +320,69 @@
         }]
     }]
     deliverySchedule: On enrol
+}, class DataCollectionFormDTO {
+
+    name: Voucher form
+    type: Voucher
+    fields: [class FieldDTO {
+        type: class FieldTypeDTO {
+            uniqueKey: street
+            label: Street
+        }
+        label: Street
+        helpText: Street
+        mandatory: true
+    }, class FieldDTO {
+        type: class FieldTypeDTO {
+            uniqueKey: citizenship
+            label: Citizenship
+        }
+        label: Citizenship
+        helpText: Citizenship
+        mandatory: true
+    }]
+    headings: [class HeadingDTO {
+        name: Enrol heading 1
+        description: Enrol heading 1
+        fields: [class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: postcode
+                label: Postcode
+            }
+            label: Postcode
+            helpText: Postcode
+            mandatory: true
+        }, class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: state
+                label: State
+            }
+            label: State
+            helpText: State
+            mandatory: true
+        }]
+    }, class HeadingDTO {
+        name: Enrol heading 2
+        description: Enrol heading 2
+        fields: [class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: country
+                label: Country
+            }
+            label: Country
+            helpText: Country
+            mandatory: true
+        }, class FieldDTO {
+            type: class FieldTypeDTO {
+                uniqueKey: suburb
+                label: Suburb
+            }
+            label: Suburb
+            helpText: suburb
+            mandatory: true
+        }]
+    }]
+    deliverySchedule: null
 }, class DataCollectionFormDTO {
     
     name: WaitingList form
