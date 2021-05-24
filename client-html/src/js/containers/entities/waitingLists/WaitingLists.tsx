@@ -1,13 +1,16 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import { Dispatch } from "redux";
-import { CustomFieldType, WaitingList } from "@api/model";
+import { WaitingList } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import WaitingListEditView from "./components/WaitingListEditView";
@@ -21,7 +24,6 @@ import {
   createWaitingList, getWaitingList, removeWaitingList, updateWaitingList
 } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getCustomFieldTypes } from "../customFieldTypes/actions";
 import { State } from "../../../reducers/state";
 import WaitingListCogWheel from "./components/WaitingListCogWheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -57,7 +59,6 @@ class WaitingLists extends React.Component<any, any> {
     this.props.getTags();
     this.props.getFilters();
     this.props.getQePermissions();
-    this.props.getCustomFieldTypes();
     this.props.getTagsForSitesSearch();
   }
 
@@ -90,7 +91,6 @@ class WaitingLists extends React.Component<any, any> {
 
   onInit = () => {
     this.initializingNew = true;
-    this.props.getCustomFieldTypes();
   };
 
   render() {
@@ -142,7 +142,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTagsForSitesSearch: () => {
     dispatch(getEntityTags("Site"));
   },
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes("WaitingList")),
   getFilters: () => dispatch(getFilters("WaitingList")),
   getTags: () => dispatch(getListTags("WaitingList")),
   clearListState: () => dispatch(clearListState()),

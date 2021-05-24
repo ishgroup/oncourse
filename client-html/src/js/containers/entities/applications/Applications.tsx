@@ -1,13 +1,16 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { connect } from "react-redux";
 import React, { Dispatch } from "react";
 import { initialize } from "redux-form";
 import { format as formatDate } from "date-fns";
-import { Application, CustomFieldType } from "@api/model";
+import { Application } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import {
@@ -24,7 +27,6 @@ import {
 import ApplicationEditView from "./components/ApplicationEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getCustomFieldTypes } from "../customFieldTypes/actions";
 import { State } from "../../../reducers/state";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -39,7 +41,6 @@ interface ApplicationsProps {
   getFilters?: () => void;
   getTags?: () => void;
   clearListState?: () => void;
-  getCustomFieldTypes?: () => void;
   customFieldTypesUpdating: any;
   customFieldTypes: any;
 }
@@ -125,7 +126,6 @@ class Applications extends React.Component<ApplicationsProps, any> {
 
   componentDidMount() {
     this.props.getTags();
-    this.props.getCustomFieldTypes();
     this.props.getFilters();
   }
 
@@ -158,7 +158,6 @@ class Applications extends React.Component<ApplicationsProps, any> {
 
   onInit = () => {
     this.initializingNew = true;
-    this.props.getCustomFieldTypes();
   };
 
   render() {
@@ -215,7 +214,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: string, application: Application) => dispatch(updateApplication(id, application)),
   onCreate: (application: Application) => dispatch(createApplication(application)),
   onDelete: (id: string) => dispatch(removeApplication(id)),
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes("Application"))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Applications);

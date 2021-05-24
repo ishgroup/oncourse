@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import {
   Contact,
   ProductItem, ProductItemPayment,
@@ -27,7 +27,6 @@ import { contactLabelCondition } from "../../contacts/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { buildUrl, productUrl } from "../utils";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import { getCustomFieldTypes } from "../../customFieldTypes/actions";
 
 interface SalesGeneralViewProps {
   classes?: any;
@@ -88,6 +87,8 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
 
   const type = values ? values.productType : undefined;
 
+  const customFieldType: any = type === "Product" ? "Article" : type;
+
   const redeemableById = values ? values.redeemableById : undefined;
 
   const contactUrl = buildUrl(redeemableById, "Contacts");
@@ -104,10 +105,6 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
     },
     [form]
   );
-
-  useEffect(() => {
-    dispatch(getCustomFieldTypes(type as any));
-  }, [type]);
 
   return values ? (
     <div className="pl-3 pr-3 flex-column h-100">
@@ -132,7 +129,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
       </Grid>
 
       <CustomFields
-        entityName={type}
+        entityName={customFieldType}
         fieldName="customFields"
         entityValues={values}
         dispatch={dispatch}
