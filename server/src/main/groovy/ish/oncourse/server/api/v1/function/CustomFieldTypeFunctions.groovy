@@ -154,7 +154,7 @@ class CustomFieldTypeFunctions {
 
         if (dbType.newRecord) {
             dbType.key = type.fieldKey
-            dbType.entityIdentifier = type.entityType.toString()
+            dbType.entityIdentifierExtended = type.entityType.toString()
         }
         dbType.name = type.name
         dbType.defaultValue = type.defaultValue
