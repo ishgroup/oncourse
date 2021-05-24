@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import { CheckoutPaymentPlan, PaymentMethod } from "@api/model";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -391,8 +394,10 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
       checkoutSummary.previousCredit.invoiceTotal
     );
 
+    const totalExOwing = decimalMinus(checkoutSummary.finalTotal, paymentPlansTotal);
+
     const totalIncOwing = decimalPlus(
-      decimalMinus(checkoutSummary.finalTotal, paymentPlansTotal),
+      checkoutSummary.finalTotal,
       checkoutSummary.previousOwing.invoiceTotal
     );
 
@@ -405,18 +410,34 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
       const amount = decimalMinus(totalIncOwing, payNowExCredit);
 
       if (amount > 0) {
-        const paymentPlan = paymentPlans.length ? {
-          amount
-        } : {
-          date: addDays(today, Number(invoiceTerms)),
-          dateEditable: true,
-          amount
-        };
+        const invoicePayLater = decimalMinus(amount, paymentPlansTotal, checkoutSummary.previousOwing.invoiceTotal);
+        let owingPaylater = decimalPlus(checkoutSummary.previousOwing.invoiceTotal, paymentPlansTotal, invoicePayLater);
 
-        planItems.push(paymentPlan);
+        if (owingPaylater > checkoutSummary.previousOwing.invoiceTotal) {
+          owingPaylater = checkoutSummary.previousOwing.invoiceTotal;
+        }
 
-        if (paymentPlan.date) {
-          dispatch(checkoutUpdateSummaryField("invoiceDueDate", format(paymentPlan.date, YYYY_MM_DD_MINUSED)));
+        let invoiceDueDate = null;
+
+        if (invoicePayLater > 0) {
+          invoiceDueDate = addDays(today, Number(invoiceTerms));
+          planItems.push(
+            {
+              date: invoiceDueDate,
+              dateEditable: true,
+              amount: invoicePayLater
+            }
+          );
+        }
+
+        if (owingPaylater > 0) {
+          planItems.push({
+            amount: owingPaylater
+          });
+        }
+
+        if (invoiceDueDate) {
+          dispatch(checkoutUpdateSummaryField("invoiceDueDate", format(invoiceDueDate, YYYY_MM_DD_MINUSED)));
         }
       }
     }
@@ -425,8 +446,8 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
       updatedPaymentPlans.push(...paymentPlans.filter(p => p.date));
     }
 
-    if (paymentPlans.length && payNowExCredit > totalIncOwing) {
-      let diff = decimalMinus(payNowExCredit, totalIncOwing);
+    if (paymentPlans.length && payNowExCredit > totalExOwing) {
+      let diff = decimalMinus(payNowExCredit, totalExOwing);
 
       updatedPaymentPlans = updatedPaymentPlans.map(p => {
         const updated = { ...p };
