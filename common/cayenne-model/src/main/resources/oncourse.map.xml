@@ -1601,7 +1601,7 @@
 		<qualifier><![CDATA[type = 1]]></qualifier>
 	</obj-entity>
 	<obj-entity name="ArticleCustomField" superEntityName="CustomField" className="ish.oncourse.model.ArticleCustomField">
-		<qualifier><![CDATA[entityIdentifier = "Product"]]></qualifier>
+		<qualifier><![CDATA[entityName = "Article"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="ArticleFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.model.ArticleFieldConfiguration">
 		<qualifier><![CDATA[intType = 7]]></qualifier>
@@ -2216,7 +2216,7 @@
 		<qualifier><![CDATA[type = 2]]></qualifier>
 	</obj-entity>
 	<obj-entity name="MembershipCustomField" superEntityName="CustomField" className="ish.oncourse.model.MembershipCustomField">
-		<qualifier><![CDATA[entityIdentifier = "Membership"]]></qualifier>
+		<qualifier><![CDATA[entityName = "Membership"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="MembershipFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.model.MembershipFieldConfiguration">
 		<qualifier><![CDATA[intType = 8]]></qualifier>
@@ -2729,7 +2729,7 @@
 		<obj-attribute name="valueOnPurchase" type="ish.math.Money" db-attribute-path="valueOnPurchase"/>
 	</obj-entity>
 	<obj-entity name="VoucherCustomField" superEntityName="CustomField" className="ish.oncourse.model.VoucherCustomField">
-		<qualifier><![CDATA[entityIdentifier = "Voucher"]]></qualifier>
+		<qualifier><![CDATA[entityName = "Voucher"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="VoucherFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.model.VoucherFieldConfiguration">
 		<qualifier><![CDATA[intType = 9]]></qualifier>
