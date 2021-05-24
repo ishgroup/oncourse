@@ -1650,7 +1650,7 @@
 		<qualifier><![CDATA[type = 1]]></qualifier>
 	</obj-entity>
 	<obj-entity name="ArticleCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.ArticleCustomField">
-		<qualifier><![CDATA[entityIdentifier = "Product"]]></qualifier>
+		<qualifier><![CDATA[entityIdentifier = "Article"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="ArticleFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.server.cayenne.ArticleFieldConfiguration">
 		<qualifier><![CDATA[intType = 7]]></qualifier>
