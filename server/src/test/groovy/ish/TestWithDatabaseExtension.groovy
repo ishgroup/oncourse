@@ -305,6 +305,9 @@ class TestWithDatabaseExtension implements
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedApplication"))
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedWaitingList"))
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedSurvey"))
+        customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedArticle"))
+        customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedMembership"))
+        customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedVoucher"))
         for (Relationship rel : customFieldRelationships) {
             datamap.getDbEntity("CustomField").removeRelationship(rel.getName())
         }
