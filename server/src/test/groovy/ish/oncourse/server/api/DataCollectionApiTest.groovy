@@ -91,7 +91,7 @@ class DataCollectionApiTest extends TestWithDatabase {
         Assertions.assertEquals(new File(getClass().getResource('/ish/oncourse/server/api/DataCollectionForms.txt')
                 .toURI()).text,
                 forms.sort { it.name }.toString()
-                        .replaceAll(/id: .+\n/, '\n')
+                        .replaceAll(/\n.+id: .+\n/, '\n')
                         .replaceAll(/.+created: .+\n/, '')
                         .replaceAll(/.+modified: .+\n/, '')
 
