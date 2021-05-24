@@ -1,5 +1,4 @@
 [class DataCollectionFormDTO {
-    
     name: Application form
     type: Application
     fields: [class FieldDTO {
@@ -62,7 +61,6 @@
     }]
     deliverySchedule: null
 }, class DataCollectionFormDTO {
-
     name: Article form
     type: Product
     fields: [class FieldDTO {
@@ -125,7 +123,6 @@
     }]
     deliverySchedule: null
 }, class DataCollectionFormDTO {
-
     name: Enrol form
     type: Enrolment
     fields: [class FieldDTO {
@@ -188,7 +185,6 @@
     }]
     deliverySchedule: null
 }, class DataCollectionFormDTO {
-
     name: Membership form
     type: Membership
     fields: [class FieldDTO {
@@ -251,7 +247,6 @@
     }]
     deliverySchedule: null
 }, class DataCollectionFormDTO {
-
     name: Survey form MIDWAY
     type: Survey
     fields: [class FieldDTO {
@@ -286,7 +281,6 @@
     }]
     deliverySchedule: Midway
 }, class DataCollectionFormDTO {
-
     name: Survey form ON_ENROL
     type: Survey
     fields: [class FieldDTO {
@@ -321,7 +315,6 @@
     }]
     deliverySchedule: On enrol
 }, class DataCollectionFormDTO {
-
     name: Voucher form
     type: Voucher
     fields: [class FieldDTO {
@@ -384,7 +377,6 @@
     }]
     deliverySchedule: null
 }, class DataCollectionFormDTO {
-    
     name: WaitingList form
     type: WaitingList
     fields: [class FieldDTO {
