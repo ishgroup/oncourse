@@ -183,19 +183,19 @@ class PageSettings extends React.PureComponent<Props, any> {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     this.setState({
       [key]: value,
-    });
+    }, () => (key === "suppressOnSitemap" || key === "visible") && this.onSave());
   }
 
   onSetDefaultUrl = (url) => {
     const urls = this.state.urls
       .map(item => item.link === url.link ? {...item, isDefault: true} : {...item, isDefault: false});
 
-    this.setState({urls});
+    this.setState({urls}, () => this.onSave());
   }
 
   onDeleteUrl = (url) => {
     const urls = this.state.urls.filter(item => item.link !== url.link);
-    this.setState({urls});
+    this.setState({urls}, () => this.onSave());
   }
 
   onClickDelete = e => {
@@ -228,7 +228,7 @@ class PageSettings extends React.PureComponent<Props, any> {
     this.setState({
       urls,
       newLink: '',
-    });
+    }, () => this.onSave());
   }
 
   formatLink = (link) => {
@@ -244,7 +244,6 @@ class PageSettings extends React.PureComponent<Props, any> {
       <div>
         <ul>
           <li className={classes.navWrapper}>
-
             <IconButton onClick={showNavigation}>
               <MenuIcon/>
             </IconButton>
@@ -264,7 +263,7 @@ class PageSettings extends React.PureComponent<Props, any> {
               input={{
                 onChange: e => this.onChange(e, 'title'),
                 onFocus: stubFunction,
-                onBlur: stubFunction,
+                onBlur: this.onSave,
                 value: title,
               }}
             />
@@ -358,12 +357,12 @@ class PageSettings extends React.PureComponent<Props, any> {
                 Remove
               </CustomButton>
 
-              <CustomButton
-                styleType="submit"
-                onClick={this.onSave}
-              >
-                Save
-              </CustomButton>
+              {/*<CustomButton*/}
+              {/*  styleType="submit"*/}
+              {/*  onClick={this.onSave}*/}
+              {/*>*/}
+              {/*  Save*/}
+              {/*</CustomButton>*/}
             </div>
           </form>
         </div>

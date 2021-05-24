@@ -110,7 +110,7 @@ class BlockSettings extends React.Component<Props, any> {
               meta={{}}
               input={{
                 onChange: e => this.onChange(e, 'title'),
-                onBlur: stubFunction,
+                onBlur: this.onSave,
                 onFocus: stubFunction,
                 value: title,
               }}
@@ -127,12 +127,12 @@ class BlockSettings extends React.Component<Props, any> {
               Remove
             </CustomButton>
 
-            <CustomButton
-              styleType="submit"
-              onClick={this.onSave}
-            >
-              Save
-            </CustomButton>
+            {/*<CustomButton*/}
+            {/*  styleType="submit"*/}
+            {/*  onClick={this.onSave}*/}
+            {/*>*/}
+            {/*  Save*/}
+            {/*</CustomButton>*/}
           </div>
         </div>
       </div>

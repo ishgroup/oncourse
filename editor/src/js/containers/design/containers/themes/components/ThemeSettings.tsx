@@ -164,7 +164,7 @@ class ThemeSettings extends React.Component<Props, any> {
       urls,
       newLink: '',
       exactMatch: false,
-    });
+    }, () => this.onSave());
   }
 
   onUpdatePath = (event, path) => {
@@ -178,18 +178,18 @@ class ThemeSettings extends React.Component<Props, any> {
 
     this.setState({
       urls: updatedUrls,
-    });
+    }, () => this.onSave());
   }
 
   onChange = (event, key) => {
     this.setState({
       [key]: event.target && event.target.value || event,
-    });
+    }, () => key === "layoutId" && this.onSave());
   }
 
   onDeleteUrl = (url) => {
     const urls = this.state.urls.filter(item => item.path !== url);
-    this.setState({urls});
+    this.setState({urls}, () => this.onSave());
   }
 
   onSave = () => {
@@ -238,7 +238,7 @@ class ThemeSettings extends React.Component<Props, any> {
               input={{
                 onChange: e => this.onChange(e, 'title'),
                 onFocus: stubFunction,
-                onBlur: stubFunction,
+                onBlur: this.onSave,
                 value: title,
               }}
             />
@@ -322,12 +322,12 @@ class ThemeSettings extends React.Component<Props, any> {
               >
                 Remove
               </CustomButton>
-              <CustomButton
-                styleType="submit"
-                onClick={e => this.onSave()}
-              >
-                Save
-              </CustomButton>
+              {/*<CustomButton*/}
+              {/*  styleType="submit"*/}
+              {/*  onClick={e => this.onSave()}*/}
+              {/*>*/}
+              {/*  Save*/}
+              {/*</CustomButton>*/}
             </div>
           </form>
         </div>
