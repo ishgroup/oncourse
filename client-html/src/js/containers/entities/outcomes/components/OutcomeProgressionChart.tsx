@@ -18,7 +18,11 @@ interface Props {
   data: OutcomeProgression
 }
 
-export function AttendanceChart({ data = {} }: Props) {
+export function AttendanceChart({ data }: Props) {
+  if (!data) {
+    data = {};
+  }
+
   const chartData = useMemo(() => {
     const result = [];
     Object.keys(data).forEach(k => {
@@ -76,7 +80,11 @@ export function AttendanceChart({ data = {} }: Props) {
   );
 }
 
-export function AssessmentChart({ data = {} }: Props) {
+export function AssessmentChart({ data }: Props) {
+  if (!data) {
+    data = {};
+  }
+
   const chartData = useMemo(() => {
     const result = [];
     Object.keys(data).forEach(k => {
