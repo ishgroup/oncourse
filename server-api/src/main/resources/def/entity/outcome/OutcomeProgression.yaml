@@ -17,14 +17,18 @@ properties:
     required: true
     description: attendance attended hours
   notReleased:
-    type: number
+    type: integer
     required: true
     description: not released assessments number
+  released:
+    type: integer
+    required: true
+    description: released assessments number
   submitted:
-    type: number
+    type: integer
     required: true
     description: submitted assessments number
   marked:
-    type: number
+    type: integer
     required: true
     description: marked assessments number
