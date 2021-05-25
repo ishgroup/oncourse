@@ -11,7 +11,16 @@
 
 package ish.oncourse.server.api.v1.function
 
+import ish.common.types.AttendanceType
 import ish.common.types.OutcomeStatus
+import ish.oncourse.server.api.v1.model.OutcomeProgressionDTO
+import ish.oncourse.server.cayenne.AssessmentClass
+import ish.oncourse.server.cayenne.AssessmentSubmission
+import ish.oncourse.server.cayenne.Attendance
+import ish.oncourse.server.cayenne.CourseClass
+import ish.oncourse.server.cayenne.Session
+import ish.oncourse.server.cayenne.Student
+
 import static ish.common.types.OutcomeStatus.*
 import ish.oncourse.function.CalculateOutcomeReportableHours
 import ish.oncourse.server.api.BidiMap
@@ -99,7 +108,9 @@ class OutcomeFunctions {
             outcomeDTO.createdOn = LocalDateUtils.dateToTimeValue(outcome.createdOn)
             outcomeDTO.modifiedOn = LocalDateUtils.dateToTimeValue(outcome.modifiedOn)
             outcomeDTO.vetPurchasingContractScheduleID = outcome.vetPurchasingContractScheduleID
-
+            if (outcome.enrolment) {
+                outcomeDTO.progression = getProgression(outcome)
+            }
             outcomeDTO
         }
     }
@@ -169,5 +180,87 @@ class OutcomeFunctions {
 
     static boolean isVetOutcome(Outcome o) {
         o.module != null
+    }
+
+    static OutcomeProgressionDTO getProgression(Outcome outcome)  {
+        OutcomeProgressionDTO progression = new OutcomeProgressionDTO()
+        CourseClass clazz = outcome.enrolment.courseClass
+        Student student = outcome.enrolment.student
+
+        progression.attended = BigDecimal.ZERO
+        progression.notMarked = BigDecimal.ZERO
+        progression.absent = BigDecimal.ZERO
+        progression.futureTimetable = BigDecimal.ZERO
+        
+        if (clazz.isDistantLearningCourse || clazz.sessions.empty) {
+            // skip attendance diagram since no sessions
+        } else {
+            List<Session> outcomeSessions
+
+            //if vet outcome - take in account only training plan sessions
+            if (outcome.module) {
+                outcomeSessions = clazz.sessions.findAll {session -> outcome.module in session.modules }
+            } else {
+                // all sessions for defaullt outcome
+                outcomeSessions = clazz.sessions
+            }
+            
+            List<Session> futureSessions = outcomeSessions.findAll { session -> session.endDatetime.after(new Date())}
+            progression.futureTimetable = futureSessions.collect { session -> session.durationInHours }.inject BigDecimal.ZERO, { a,b -> a.add(b) }
+           
+            List<Session> pastSessions = outcomeSessions.findAll { session -> session.endDatetime.before(new Date())}
+
+            pastSessions.each {session -> 
+                Attendance attendance = session.getAttendance(student)
+                BigDecimal duration = session.durationInHours
+                if (attendance && attendance.attendanceType) {
+                    switch (attendance.attendanceType) {
+                        case AttendanceType.UNMARKED:
+                            progression.notMarked =+ duration
+                            break
+                        case AttendanceType.ATTENDED:
+                            progression.attended =+ duration
+                            break
+                        case AttendanceType.DID_NOT_ATTEND_WITH_REASON:
+                        case AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON:
+                            progression.absent =+ duration 
+                            break
+                        case AttendanceType.PARTIAL:
+                            BigDecimal attended = attendance.durationInHours
+                            progression.attended =+ attended
+                            progression.absent =+ (duration - attended)
+                            break
+                    }
+                } else {
+                    progression.notMarked =+ session.durationInHours
+                }
+                
+            }
+        }
+        
+        progression.released = 0
+        progression.notReleased = 0
+        progression.submitted =  0
+        progression.marked = 0
+
+        List<AssessmentClass> allAssessments =  clazz.assessmentClasses
+        if (!allAssessments.empty) {
+            List<AssessmentClass> releasedAssessments = allAssessments.findAll {assessment -> assessment.releaseDate.before(new Date())}
+            progression.released = releasedAssessments.size()
+            progression.notReleased = allAssessments.size() - progression.released
+            releasedAssessments.each { assessment ->
+                AssessmentSubmission submission = assessment.getAssessmentSubmission(outcome.enrolment)
+                if (submission) {
+                    if (submission.markedOn != null) {
+                        progression.marked = progression.marked + 1
+                    } else {
+                        progression.submitted = progression.submitted + 1
+                    }
+                    
+                }
+            }
+        }
+        
+        return progression
     }
 }
