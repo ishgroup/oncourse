@@ -15,6 +15,6 @@ class ArticleFieldConfiguration extends _ArticleFieldConfiguration {
 
     @Override
     FieldConfigurationType getType() {
-        return FieldConfigurationType.PRODUCT
+        return FieldConfigurationType.ARTICLE
     }
 }

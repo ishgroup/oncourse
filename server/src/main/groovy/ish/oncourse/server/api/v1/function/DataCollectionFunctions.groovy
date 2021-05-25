@@ -372,7 +372,7 @@ class DataCollectionFunctions {
             rule.payerFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.PAYER}?.fieldConfiguration?.name
             rule.parentFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.PARENT}?.fieldConfiguration?.name
             rule.surveyForms = dbRule.fieldConfigurationLinks.findAll {it.fieldConfiguration.type == FieldConfigurationType.SURVEY}.collect {it.fieldConfiguration.name}
-            rule.productFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.PRODUCT}.fieldConfiguration.name
+            rule.productFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.ARTICLE}.fieldConfiguration.name
             rule.membershipFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.MEMBERSHIP}.fieldConfiguration.name
             rule.voucherFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.VOUCHER}.fieldConfiguration.name
             rule
