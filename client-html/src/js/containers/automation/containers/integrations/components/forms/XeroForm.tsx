@@ -90,13 +90,16 @@ class XeroBaseForm extends React.Component<any, any> {
     );
   }
 
+  onDisconnect = () => {
+    const { dispatch } = this.props;
+    dispatch(change("XeroForm", "fields.active", "false"));
+  }
+
   render() {
     const {
-      appBarContent, dirty, handleSubmit, values, item, form
+      appBarContent, dirty, handleSubmit, values = {}, item, form
     } = this.props;
     const { hideConfig, loading } = this.state;
-
-    const name = values && values.name;
 
     return (
       <form onSubmit={handleSubmit(this.beforeSubmit)}>
@@ -104,9 +107,22 @@ class XeroBaseForm extends React.Component<any, any> {
         <CustomAppBar>{appBarContent}</CustomAppBar>
 
         {item.id ? (
-          <Typography variant="caption" component="div">
-            Xero integration is set up
-          </Typography>
+          <>
+            <Typography variant="caption" component="div">
+              {values.fields.active === "true"
+                 ? `You are connected to Xero organisation: ${values.fields.companyName}`
+                 : "Xero integration is disconected. Press \"Save\" to complete configuration process"}
+            </Typography>
+            {values.fields.active === "true"
+              && (
+              <Button
+                text="Disconnect from Xero"
+                variant="contained"
+                className="mt-1"
+                onClick={this.onDisconnect}
+              />
+            )}
+          </>
         ) : (
           <>
             <FormField
@@ -117,8 +133,8 @@ class XeroBaseForm extends React.Component<any, any> {
 
             <Typography variant="caption" component="div">
               {hideConfig
-                      ? 'Xero access has been set up. Press "Save" to complete configuration process.'
-                      : ' Press to proceed with authorising onCourse to access your Xero account.'}
+                ? 'Xero access has been set up. Press "Save" to complete configuration process.'
+                : 'Press to proceed with authorising onCourse to access your Xero account.'}
             </Typography>
 
             {!hideConfig && (
@@ -126,7 +142,7 @@ class XeroBaseForm extends React.Component<any, any> {
                 text="Connect to Xero"
                 variant="contained"
                 className="mt-1"
-                disabled={!name}
+                disabled={!values.name}
                 loading={loading}
                 onClick={this.showTokenField}
               />
@@ -147,7 +163,6 @@ export const XeroForm = reduxForm({
   onSubmitFail
 })(
   connect<any, any, any>(
-    mapStateToProps,
-    null
+    mapStateToProps
   )(XeroBaseForm)
 );
