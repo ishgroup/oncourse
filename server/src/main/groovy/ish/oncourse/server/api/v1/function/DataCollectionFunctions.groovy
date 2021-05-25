@@ -110,7 +110,7 @@ class DataCollectionFunctions {
             fieldTypes << new FieldTypeDTO(uniqueKey: COMMENT.key, label: COMMENT.displayName)
         } else {
             fieldTypes = ObjectSelect.query(CustomFieldType)
-                    .where(CustomFieldType.ENTITY_IDENTIFIER.in(Contact.class.simpleName, formType))
+                    .where(CustomFieldType.ENTITY_IDENTIFIER.in(Contact.class.simpleName, formType == 'Product' ? 'Article' : formType))
                     .orderBy(CustomFieldType.SORT_ORDER.asc())
                     .select(context)
                     .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
