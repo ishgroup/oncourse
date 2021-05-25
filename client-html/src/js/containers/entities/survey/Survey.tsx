@@ -6,22 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { Dispatch, useEffect, useState } from "react";
-import { initialize } from "redux-form";
+import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
 import { CustomFieldType, SurveyItem, TableModel } from "@api/model";
 import { defaultContactName } from "../contacts/utils";
 import { updateSurveyItem, getSurveyItem } from "./actions";
 import {
   getFilters,
-  setListEditRecord,
   clearListState
 } from "../../../common/components/list-view/actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
 import SurveyEditView from "./components/SurveyEditView";
-import { State } from "../../../reducers/state";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { Classes } from "../../../model/entities/CourseClass";
 
 interface StudentFeedbackProps {
@@ -34,26 +30,6 @@ interface StudentFeedbackProps {
   customFieldTypesUpdating?: boolean;
   customFieldTypes?: CustomFieldType[];
 }
-
-const Initial: SurveyItem = {
-  comment: null,
-  classId: 0,
-  className: null,
-  courseScore: 0,
-  customFields: null,
-  id: 0,
-  netPromoterScore: 0,
-  roomId: 0,
-  roomName: null,
-  siteId: 0,
-  siteName: null,
-  studentContactId: 0,
-  studentName: null,
-  testimonial: null,
-  tutorScore: 0,
-  venueScore: 0,
-  visibility: "Waiting review"
-};
 
 const filterGroups: FilterGroup[] = [
   {
@@ -96,14 +72,9 @@ const findRelatedGroup: any[] = [
 const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
   const {
     getStudentFeedbackRecord,
-    onInit,
     onSave,
     getFilters,
-    customFieldTypesUpdating,
-    customFieldTypes
   } = props;
-
-  const [initNew, setInitNew] = useState(false);
 
   useEffect(() => {
     getFilters();
@@ -111,19 +82,6 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
       clearListState();
     };
   }, []);
-
-  useEffect(() => {
-    if (initNew && customFieldTypes && !customFieldTypesUpdating) {
-      setInitNew(false);
-      const customFields = {};
-      // customFieldTypes.forEach((field: CustomFieldType) => {
-      //   if (field.defaultValue && !field.defaultValue.match(/[;*]/g)) {
-      //     customFields[field.fieldKey] = field.defaultValue;
-      //   }
-      // });
-      onInit({ ...Initial, customFields });
-    }
-  }, [initNew, customFieldTypes, customFieldTypesUpdating]);
 
   return (
     <div>
@@ -138,7 +96,6 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
         EditViewContent={SurveyEditView}
         getEditRecord={getStudentFeedbackRecord}
         rootEntity="Survey"
-        onInit={() => setInitNew(true)}
         onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
@@ -149,20 +106,11 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  customFieldTypesUpdating: state.customFieldTypes.updating,
-  customFieldTypes: state.customFieldTypes.types["Survey"]
-});
-
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onInit: (initial: SurveyItem) => {
-    dispatch(setListEditRecord(initial));
-    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, initial));
-  },
   getFilters: () => dispatch(getFilters("Survey")),
   clearListState: () => dispatch(clearListState()),
   getStudentFeedbackRecord: (id: string) => dispatch(getSurveyItem(id)),
   onSave: (id: string, surveyItem: SurveyItem) => dispatch(updateSurveyItem(id, surveyItem)),
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(StudentFeedbackComp);
+export default connect<any, any, any>(null, mapDispatchToProps)(StudentFeedbackComp);
