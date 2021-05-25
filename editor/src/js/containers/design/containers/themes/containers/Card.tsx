@@ -3,8 +3,15 @@ import {DragSource, DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
 import clsx from "clsx";
+import {IconButton} from "@material-ui/core";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import flow from 'lodash/flow';
 import {withStyles} from "@material-ui/core/styles";
+import {stubFunction} from "../../../../../common/utils/Components";
+import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import {saveBlock} from "../../../../content/containers/blocks/actions";
+import {addContentMarker} from "../../../../content/utils";
 
 const styles = theme => ({
   themeCard: {
@@ -29,7 +36,7 @@ const styles = theme => ({
     maxWidth: "200px",
   },
   removeIcon: {
-    fontSize: "15px",
+    fontSize: "16px",
     display: "none",
     color: "rgba(0, 0, 0, 0.2);",
     "&:hover": {
@@ -39,6 +46,29 @@ const styles = theme => ({
 });
 
 class Card extends Component<any, any> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      title: props.card.title,
+    };
+  }
+
+  onChange(event) {
+    this.setState({
+      title: event.target.value,
+    });
+  }
+
+  onSave(block) {
+    const { saveBlock } = this.props;
+
+    saveBlock(block.id, {
+      title: this.state.title,
+      content: addContentMarker(block.content, block.contentMode),
+    });
+  }
+
   render() {
     const {
       card,
@@ -55,8 +85,23 @@ class Card extends Component<any, any> {
 
     return connectDragSource(connectDropTarget(
       <div className={clsx(classes.themeCard, isDragging && classes.dragging)}>
-        {card.title} {!isDefault && (
-          <DeleteIcon className={classes.removeIcon} onClick={() => removeCard(index)}/>
+        <EditInPlaceField
+          // label="Block title"
+          name="blockTitle"
+          id="blockTitle"
+          meta={{}}
+          input={{
+            onChange: e => this.onChange(e),
+            onFocus: stubFunction,
+            onBlur: () => this.onSave(card),
+            value: this.state.title,
+          }}
+        />
+
+        {!isDefault && (
+          <IconButton size="small">
+            <DeleteIcon className={classes.removeIcon} onClick={() => removeCard(index)}/>
+          </IconButton>
         )}
       </div>,
     ));
@@ -133,6 +178,12 @@ const cardTarget = {
   },
 };
 
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+  return {
+    saveBlock: (blockId, settings) => dispatch(saveBlock(blockId, settings)),
+  };
+};
+
 export default flow<any, any, any>(
   DropTarget("CARD", cardTarget, connect => ({
     connectDropTarget: connect.dropTarget(),
@@ -141,4 +192,4 @@ export default flow<any, any, any>(
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging(),
   })),
-)(withStyles(styles)(Card));
+)(connect<any, any, any>(null, mapDispatchToProps)(withStyles(styles)(Card)));
