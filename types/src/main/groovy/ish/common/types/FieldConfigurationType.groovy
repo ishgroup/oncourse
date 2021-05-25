@@ -66,7 +66,7 @@ enum FieldConfigurationType implements DisplayableExtendedEnumeration<Integer> {
 	 * Field Configuration will be used for articles
 	 */
 	@API
-	PRODUCT(7, "Product"),
+	ARTICLE(7, "Product"),
 
 	/**
 	 * Database value: 8
