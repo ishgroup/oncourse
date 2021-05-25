@@ -53,8 +53,6 @@ const manualLink = getManualLink("waitingLists");
 const nameCondition = (value: WaitingList) => value.courseName;
 
 class WaitingLists extends React.Component<any, any> {
-  private initializingNew: boolean = false;
-
   componentDidMount() {
     this.props.getTags();
     this.props.getFilters();
@@ -66,36 +64,9 @@ class WaitingLists extends React.Component<any, any> {
     this.props.clearListState();
   }
 
-  componentDidUpdate(prev) {
-    const { customFieldTypesUpdating, customFieldTypes } = this.props;
-
-    if (this.initializingNew && prev.customFieldTypesUpdating && !customFieldTypesUpdating) {
-      this.initializingNew = false;
-
-      const customFields = {};
-
-      // customFieldTypes.forEach((field: CustomFieldType) => {
-      //   if (field.defaultValue && !field.defaultValue.match(/[;*]/g)) {
-      //     customFields[field.fieldKey] = field.defaultValue;
-      //   }
-      // });
-
-      const initial = {
-        ...Initial,
-        customFields
-      };
-
-      this.props.onInit(initial);
-    }
-  }
-
-  onInit = () => {
-    this.initializingNew = true;
-  };
-
   render() {
     const {
-      getWaitingListRecord, onCreate, onDelete, onSave, updateTableModel
+      getWaitingListRecord, onCreate, onDelete, onSave, updateTableModel, onInit
     } = this.props;
 
     return (
@@ -114,7 +85,7 @@ class WaitingLists extends React.Component<any, any> {
           EditViewContent={WaitingListEditView}
           getEditRecord={getWaitingListRecord}
           rootEntity="WaitingList"
-          onInit={this.onInit}
+          onInit={onInit}
           onCreate={onCreate}
           onDelete={onDelete}
           onSave={onSave}
@@ -132,9 +103,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onInit: (initial: WaitingList) => {
-    dispatch(setListEditRecord(initial));
-    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, initial));
+  onInit: () => {
+    dispatch(setListEditRecord(Initial));
+    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   getQePermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
