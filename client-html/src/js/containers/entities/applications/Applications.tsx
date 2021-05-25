@@ -34,7 +34,7 @@ import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption"
 
 interface ApplicationsProps {
   getApplicationRecord?: () => void;
-  onInit?: (initial: Application) => void;
+  onInit?: () => void;
   onCreate?: (application: Application) => void;
   onDelete?: (id: string) => void;
   onSave?: (id: string, application: Application) => void;
@@ -122,47 +122,18 @@ const nestedEditFields = {
 };
 
 class Applications extends React.Component<ApplicationsProps, any> {
-  private initializingNew: boolean = false;
-
   componentDidMount() {
     this.props.getTags();
     this.props.getFilters();
-  }
-
-  componentDidUpdate(prev) {
-    const { customFieldTypesUpdating, customFieldTypes } = this.props;
-
-    if (this.initializingNew && prev.customFieldTypesUpdating && !customFieldTypesUpdating) {
-      this.initializingNew = false;
-
-      const customFields = {};
-
-      // customFieldTypes.forEach((field: CustomFieldType) => {
-      //   if (field.defaultValue && !field.defaultValue.match(/[;*]/g)) {
-      //     customFields[field.fieldKey] = field.defaultValue;
-      //   }
-      // });
-
-      const initial = {
-        ...Initial,
-        customFields
-      };
-
-      this.props.onInit(initial);
-    }
   }
 
   componentWillUnmount(): void {
     this.props.clearListState();
   }
 
-  onInit = () => {
-    this.initializingNew = true;
-  };
-
   render() {
     const {
-      getApplicationRecord, onCreate, onDelete, onSave
+      getApplicationRecord, onCreate, onDelete, onSave, onInit
     } = this.props;
 
     return (
@@ -183,7 +154,7 @@ class Applications extends React.Component<ApplicationsProps, any> {
           CogwheelAdornment={BulkEditCogwheelOption}
           getEditRecord={getApplicationRecord}
           rootEntity="Application"
-          onInit={this.onInit}
+          onInit={onInit}
           onCreate={onCreate}
           onDelete={onDelete}
           onSave={onSave}
@@ -201,9 +172,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onInit: (initial: Application) => {
-    dispatch(setListEditRecord(initial));
-    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, initial));
+  onInit: () => {
+    dispatch(setListEditRecord(Initial));
+    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   getFilters: () => dispatch(getFilters("Application")),
   getTags: () => {
