@@ -206,7 +206,7 @@ class OutcomeFunctions {
             }
             
             List<Session> futureSessions = outcomeSessions.findAll { session -> session.endDatetime.after(new Date())}
-            progression.futureTimetable = futureSessions.collect { session -> session.durationInHours }.inject BigDecimal.ZERO, { a,b -> a.add(b) }
+            progression.futureTimetable = futureSessions.collect { session -> session.durationInHours }.inject (BigDecimal.ZERO) { a,b -> a.add(b) } as BigDecimal
            
             List<Session> pastSessions = outcomeSessions.findAll { session -> session.endDatetime.before(new Date())}
 
