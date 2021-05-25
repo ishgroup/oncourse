@@ -122,7 +122,7 @@ class CustomFieldTypeFunctions {
             if (dbType.key != type.fieldKey) {
                 return new ValidationErrorDTO(type.id, 'fieldKey', "Custom field key can not be changed")
             }
-            if (dbType.entityIdentifier != type.entityType.toString()) {
+            if (dbType.entityIdentifierExtended != type.entityType.toString()) {
                 return new ValidationErrorDTO(type.id, 'entityType', "Custom field entity type can not be changed")
             }
             if (dbType.dataType != type.dataType.dbType) {
