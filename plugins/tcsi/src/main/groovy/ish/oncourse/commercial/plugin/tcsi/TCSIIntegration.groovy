@@ -261,7 +261,7 @@ class TCSIIntegration implements PluginTrait {
         
         if (!enrolment.courseClass.course.equalsIgnoreContext(highEducation)) {
             
-            UnitAPI unitAPI = new UnitAPI(getClient(), enrolment, emailService, preferenceController)
+            UnitAPI unitAPI = new UnitAPI(highEducation, getClient(), enrolment, emailService, preferenceController)
             // export unit
             String unitUid = unitAPI.getUnit(admissionUid)
             if (unitUid) {
