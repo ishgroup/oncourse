@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme =>
 );
 
 interface RedirectItemState extends RedirectItemModel {
+  index?: number;
   submitted?: boolean;
 }
 
@@ -47,6 +48,7 @@ const areEqual = (prev: Props, cur: Props) => {
       break;
     }
   }
+
   return equal;
 };
 
@@ -69,14 +71,14 @@ const RedirectItem = React.memo<Props>((
         <Grid item xs={5}>
           <EditInPlaceField
             label="From"
-            name={`from-${index}`}
-            id={`from-${index}`}
+            name={`from-${item.index}`}
+            id={`from-${item.index}`}
             meta={{
               invalid: (item.submitted && item.to && !item.from) || item.error,
               error: item.error,
             }}
             input={{
-              onChange: e => onChange(e, index, 'from'),
+              onChange: e => onChange(e, item.index, 'from'),
               onBlur: stubFunction,
               onFocus: stubFunction,
               value: item.from,
@@ -88,14 +90,14 @@ const RedirectItem = React.memo<Props>((
         <Grid item xs={5}>
           <EditInPlaceField
             label="To"
-            name={`to-${index}`}
-            id={`to-${index}`}
+            name={`to-${item.index}`}
+            id={`to-${item.index}`}
             meta={{
               invalid: (item.submitted && !item.to && item.from) || item.error,
               error: item.error,
             }}
             input={{
-              onChange: e => onChange(e, index, 'to'),
+              onChange: e => onChange(e, item.index, 'to'),
               onBlur: stubFunction,
               onFocus: stubFunction,
               value: item.to,
@@ -110,7 +112,7 @@ const RedirectItem = React.memo<Props>((
               "invisible": !parent,
               "dndActionIconButton": true
             })}
-            onClick={() => onRemove(index)}
+            onClick={() => onRemove(item.index)}
           >
             <Delete className={classes.deleteIcon} />
           </IconButton>

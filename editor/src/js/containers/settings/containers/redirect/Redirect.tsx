@@ -5,14 +5,14 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import clsx from "clsx";
 import {AddCircle} from "@material-ui/icons";
-import {getRedirectSettings, setRedirectSettings} from "./actions";
-import RedirectComp from "./components/RedirectItem";
 import {FixedSizeList as List} from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
+import {getRedirectSettings, setRedirectSettings} from "./actions";
+import RedirectComp from "./components/RedirectItem";
 import {RedirectSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
 import CustomButton from "../../../../common/components/CustomButton";
-import {RedirectItem} from "../../../../../../build/generated-sources";
+import {RedirectItem as RedirectItemModel} from "../../../../../../build/generated-sources";
 
 const styles: any = theme => ({
   redirectWrapper: {
@@ -24,6 +24,11 @@ const styles: any = theme => ({
     marginLeft: theme.spacing(2),
   },
 });
+
+interface RedirectItemState extends RedirectItemModel {
+  index?: number;
+  submitted?: boolean;
+}
 
 interface Props {
   classes: any;
@@ -41,30 +46,42 @@ const Redirect: React.FC<Props> = (
     classes,
     fetching,
   }) => {
-  const [rules, setRules] = useState<RedirectItem[]>(redirect.rules.map(r => ({...r, submitted: false})) || []);
+  const [rules, setRules] = useState<RedirectItemState[]>(redirect.rules.map(r => ({...r, submitted: false})) || []);
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
     onInit();
   }, []);
 
-
   useEffect(() => {
-    setRules(redirect.rules);
-  },        [redirect.refreshSettings]);
+    setIndexes(redirect.rules)
+  }, [redirect.refreshSettings]);
 
+  const checkUniqueRule = (rule, newValue) => {
+    const value = rules.find((elem) => elem.index !== rule.index && elem.from === newValue);
+
+    return value ? "The from field must be unique" : null;
+  };
 
   const onChange = (e, index, key) => {
-    const updated = rules.map((r, rIndex) => ({
-      ...r,
-      [key]: rIndex === index ? e.target.value : r[key],
-      submitted: false,
-    }));
+    const updated = rules.map((r, rIndex) => {
+      if (rIndex === index) {
+        return ({
+          ...r,
+          [key]: e.target.value,
+          submitted: false,
+          error: checkUniqueRule(r, e.target.value),
+        })
+      } else {
+        return ({ ...r, submitted: false, })
+      }
+    });
+
     setRules(updated);
   };
 
   const onAddNew = () => {
-    setRules([{from: '', to: ''}, ...rules]);
+    setIndexes([{from: '', to: ''}, ...rules]);
   };
 
   const onSaveHandler = () => {
@@ -78,10 +95,15 @@ const Redirect: React.FC<Props> = (
     onSave({rules: rulesForUpdate.map(({from, to}) => ({from, to}))});
   };
 
+  const setIndexes = (rules) => {
+    const rulesWithIndex = rules.map((elem, index) => ({...elem, index}));
+    setRules(rulesWithIndex);
+  }
+
   const onRemove = index => {
     const updated = [...rules];
     updated.splice(index, 1);
-    setRules(updated);
+    setIndexes(updated);
   };
 
   const onChangeFilter = e => {
@@ -127,7 +149,7 @@ const Redirect: React.FC<Props> = (
       </div>
 
       <div className={"mt-3"}>
-        <div style={{height: (window.innerHeight - 230) < (filteredRules.length * 47) ? window.innerHeight - 230 : filteredRules.length * 47}}>
+        <div style={{height: (window.innerHeight - 230) < (filteredRules.length * 65) ? window.innerHeight - 230 : filteredRules.length * 65}}>
           <AutoSizer>
             {({height, width}) => (
               <List
@@ -135,7 +157,7 @@ const Redirect: React.FC<Props> = (
                 height={height}
                 itemCount={filteredRules.length}
                 itemData={{onChange, onRemove, items: filteredRules}}
-                itemSize={47}
+                itemSize={65}
                 width={width}
               >
                 {RedirectComp}
