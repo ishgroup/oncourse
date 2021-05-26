@@ -21,6 +21,9 @@ import ish.common.types.DataType
 import ish.common.types.Gender
 import ish.common.types.PayslipStatus
 import ish.math.Money
+
+import static ish.oncourse.commercial.plugin.xero.AuthentificationContext.XERO_CLIENT_ID
+import static ish.oncourse.commercial.plugin.xero.AuthentificationContext.XERO_CLIENT_SECRET
 import static ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl.VERIFICATION_CODE
 import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.Contact
@@ -70,17 +73,16 @@ Review all the other employee settings and ensure they are correct.
 	static final String MESSAGE_CONFIGURE_CALENDAR = "Add a 'payroll calendar' to this employee in Xero."
 	static final String MESSAGE_PAYSLIP_MISSING =  "The draft pay run in Xero has this employee disabled. Log into Xero, go to 'Pay Employee' menu, choose the payrun and ensure there is a green tick next to the employee."
 
-	// ish group developer credentials
-	private static final String XERO_CLIENT_ID = "A05FD21034974F29ABD4301FC54513BC"
-	private static final String XERO_CLIENT_SECRET ="tGJcGIqd0U2Ok4EJBO-7KNbBtkgcbKGD9k5osIm7Jl745V0o"
 
 	private static final String XERO_ACCESS_TOKEN = "accessToken"
 	private static final String XERO_REFRESH_TOKEN = "refreshToken"
+	private static final String XERO_ACTIVE = "active"
+	private static final String XERO_ORGANISATION = "companyName"
 
 	private static final String EMPLOYEE_FIELD_KEY = "xeroEmployeeId"
 	private static final String EMPLOYEE_FIELD_NAME = "Xero employee identifier"
 
-	private static final XERO_API_BASE = "https://api.xero.com"
+	static final XERO_API_BASE = "https://api.xero.com"
 
 	private static final String DATE_FORMAT = "yyyy-MM-dd"
 	private static final String today = LocalDate.now().format(DATE_FORMAT)
@@ -98,6 +100,10 @@ Review all the other employee settings and ensure they are correct.
 
 	@OnSave
 	static void onSave(IntegrationConfiguration configuration, Map<String, String> props) {
+		String initialAccessToken = null 
+		String initialRefreshToken = null
+		String organisationName = null
+
 		new RESTClient('https://identity.xero.com').request(POST, URLENC) {
 			uri.path = '/connect/token'
 			headers.'Authorization' = "Basic ${"$XERO_CLIENT_ID:$XERO_CLIENT_SECRET".bytes.encodeBase64().toString()}"
@@ -105,8 +111,8 @@ Review all the other employee settings and ensure they are correct.
 
 			response.success = { resp, body ->
 				Map<String, String> jsonResponce = new JsonSlurper().parseText(body.keySet()[0])
-				configuration.setProperty(XERO_ACCESS_TOKEN, jsonResponce['access_token'])
-				configuration.setProperty(XERO_REFRESH_TOKEN, jsonResponce['refresh_token'])
+				initialAccessToken =  jsonResponce['access_token']
+				initialRefreshToken =  jsonResponce['refresh_token']
 			}
 
 			response.failure = { resp, body ->
@@ -116,11 +122,38 @@ Review all the other employee settings and ensure they are correct.
 				throw new RuntimeException("Xero app authentication error: $error")
 			}
 		}
+		
+		AuthentificationContext authContext = new AuthentificationContext(initialRefreshToken)
+		authContext.init()
+		
+		
+		new RESTClient(XERO_API_BASE).request(GET, JSON) {
+			uri.path = '/api.xro/2.0/Organisations'
+			headers.'Authorization' = "Bearer ${authContext.newAccessToken}"
+			headers.'Xero-tenant-id' = authContext.tenantId
+			response.success = { resp, body ->
+				organisationName = body['Organisations'][0]['Name']
+			}
+			response.failure = { resp, body ->
+				String error = body.keySet()[0]
+				logger.error(error)
+
+				throw new RuntimeException("Xero app authentication error: $error")
+			}
+		}
+
+
+		configuration.setProperty(XERO_ACCESS_TOKEN, authContext.newAccessToken)
+		configuration.setProperty(XERO_REFRESH_TOKEN, authContext.newRefreshToken)
+		configuration.setProperty(XERO_ACTIVE, 'true')
+		configuration.setProperty(XERO_ORGANISATION, organisationName)
+
+
 	}
 
 	@GetProps
 	static List<IntegrationProperty> getProps(IntegrationConfiguration configuration) {
-		return []
+		return [configuration.getIntegrationProperty(XERO_ACTIVE), configuration.getIntegrationProperty(XERO_ACTIVE)]
 	}
 
 	XeroIntegration(Map args) {
@@ -145,39 +178,20 @@ Review all the other employee settings and ensure they are correct.
 	}
 
 	void refreshXeroAccessToken()  {
-		this.accessToken = configuration.getIntegrationProperty(XERO_ACCESS_TOKEN).value
+		String oldRefreshToken = this.configuration.getIntegrationProperty(XERO_REFRESH_TOKEN).value
 
-		new RESTClient('https://identity.xero.com').request(POST, URLENC) {
-			uri.path = '/connect/token'
-			headers.'Authorization' = "Basic ${"$XERO_CLIENT_ID:$XERO_CLIENT_SECRET".bytes.encodeBase64().toString()}"
-			body = "grant_type=refresh_token&refresh_token=${this.configuration.getIntegrationProperty(XERO_REFRESH_TOKEN).value}"
-
-			response.success = { resp, body ->
-				Map<String, String> jsonResponce = new JsonSlurper().parseText(body.keySet()[0])
-				accessToken = jsonResponce['access_token']
-				this.configuration = this.objectContext.localObject(this.configuration)
-				this.configuration.setProperty(XERO_ACCESS_TOKEN, accessToken)
-				this.configuration.setProperty(XERO_REFRESH_TOKEN, jsonResponce['refresh_token'])
-				objectContext.commitChanges()
-
-			}
-
-			response.failure = { resp, body ->
-				String error = body.keySet()[0]
-				logger.error(error)
-
-				throw new RuntimeException("Xero app refresh token error error: $error")
-			}
-		}
-
-		new RESTClient(XERO_API_BASE).request(GET, JSON) {
-			uri.path = '/connections'
-			headers.'Authorization' = "Bearer $accessToken"
-
-			response.success = { resp, body ->
-				this.tenantId = body[0]['tenantId']
-			}
-		}
+		AuthentificationContext authContext = new AuthentificationContext(oldRefreshToken)
+		authContext.init()
+		
+		//save actual refresh token
+		this.configuration = this.objectContext.localObject(this.configuration)
+		this.configuration.setProperty(XERO_ACCESS_TOKEN, authContext.newAccessToken)
+		this.configuration.setProperty(XERO_REFRESH_TOKEN, authContext.newRefreshToken)
+		objectContext.commitChanges()
+		
+		this.accessToken = authContext.newAccessToken
+		this.tenantId = authContext.tenantId
+		
 	}
 
 	private addManualJournal(String narration, Map<String, Money> entries, LocalDate date, Boolean posted) {
